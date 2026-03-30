@@ -38,7 +38,7 @@ UIScene::~UIScene() {
     /* Destroy the Iggy player. */
     IggyPlayerDestroy(swf);
 
-    for (AUTO_VAR(it, m_registeredTextures.begin());
+    for (auto it = m_registeredTextures.begin();
          it != m_registeredTextures.end(); ++it) {
         ui.unregisterSubstitutionTexture(it->first, it->second);
     }
@@ -90,7 +90,7 @@ void UIScene::reloadMovie(bool force) {
     handlePreReload();
 
     // Reload controls
-    for (AUTO_VAR(it, m_controls.begin()); it != m_controls.end(); ++it) {
+    for (auto it = m_controls.begin(); it != m_controls.end(); ++it) {
         (*it)->ReInit();
     }
 
@@ -377,7 +377,7 @@ void UIScene::tick() {
     if (m_hasTickedOnce) m_bCanHandleInput = true;
     while (IggyPlayerReadyToTick(swf)) {
         tickTimers();
-        for (AUTO_VAR(it, m_controls.begin()); it != m_controls.end(); ++it) {
+        for (auto it = m_controls.begin(); it != m_controls.end(); ++it) {
             (*it)->tick();
         }
         IggyPlayerTickRS(swf);
@@ -398,7 +398,7 @@ void UIScene::addTimer(int id, int ms) {
 }
 
 void UIScene::killTimer(int id) {
-    AUTO_VAR(it, m_timers.find(id));
+    auto it = m_timers.find(id);
     if (it != m_timers.end()) {
         it->second.running = false;
     }
@@ -406,7 +406,7 @@ void UIScene::killTimer(int id) {
 
 void UIScene::tickTimers() {
     int currentTime = System::currentTimeMillis();
-    for (AUTO_VAR(it, m_timers.begin()); it != m_timers.end();) {
+    for (auto it = m_timers.begin(); it != m_timers.end();) {
         if (!it->second.running) {
             it = m_timers.erase(it);
         } else {
@@ -423,7 +423,7 @@ void UIScene::tickTimers() {
 
 IggyName UIScene::registerFastName(const std::wstring& name) {
     IggyName var;
-    AUTO_VAR(it, m_fastNames.find(name));
+    auto it = m_fastNames.find(name);
     if (it != m_fastNames.end()) {
         var = it->second;
     } else {
@@ -551,7 +551,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
 
                     PIXBeginNamedEvent(0, "Draw all cache");
                     // Draw all the cached slots
-                    for (AUTO_VAR(it, m_cachedSlotDraw.begin());
+                    for (auto it = m_cachedSlotDraw.begin();
                          it != m_cachedSlotDraw.end(); ++it) {
                         CachedSlotDrawData* drawData = *it;
                         ui.setupCustomDrawMatrices(this,
@@ -1094,7 +1094,7 @@ void UIScene::registerSubstitutionTexture(const std::wstring& textureName,
 
 bool UIScene::hasRegisteredSubstitutionTexture(
     const std::wstring& textureName) {
-    AUTO_VAR(it, m_registeredTextures.find(textureName));
+    auto it = m_registeredTextures.find(textureName);
 
     return it != m_registeredTextures.end();
 }

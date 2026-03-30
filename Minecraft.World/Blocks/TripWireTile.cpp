@@ -138,7 +138,7 @@ void TripWireTile::checkPressed(Level* level, int x, int y, int z) {
     std::vector<std::shared_ptr<Entity> >* entities =
         level->getEntities(nullptr, &offs_aabb);
     if (!entities->empty()) {
-        for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+        for (auto it = entities->begin(); it != entities->end(); ++it) {
             std::shared_ptr<Entity> e = *it;
             if (!e->isIgnoringTileTriggers()) {
                 shouldBePressed = true;

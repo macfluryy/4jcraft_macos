@@ -1331,8 +1331,8 @@ void Gui::tick() {
         // viewing the Pause Menu. We don't show the guiMessages when a menu is
         // up, so don't fade them out
         if (!ui.GetMenuDisplayed(iPad)) {
-            AUTO_VAR(itEnd, guiMessages[iPad].end());
-            for (AUTO_VAR(it, guiMessages[iPad].begin()); it != itEnd; it++) {
+            auto itEnd = guiMessages[iPad].end();
+            for (auto it = guiMessages[iPad].begin(); it != itEnd; it++) {
                 (*it).ticks++;
             }
         }

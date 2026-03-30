@@ -21,7 +21,7 @@ bool AreaTask::isCompleted() {
     switch (m_completionState) {
         case eAreaTaskCompletion_CompleteOnConstraintsSatisfied: {
             bool allSatisfied = true;
-            for (AUTO_VAR(it, constraints.begin()); it != constraints.end();
+            for (auto it = constraints.begin(); it != constraints.end();
                  ++it) {
                 TutorialConstraint* constraint = *it;
                 if (!constraint->isConstraintSatisfied(tutorial->getPad())) {

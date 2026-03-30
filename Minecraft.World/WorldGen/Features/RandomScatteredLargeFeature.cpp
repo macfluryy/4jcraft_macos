@@ -29,7 +29,7 @@ RandomScatteredLargeFeature::RandomScatteredLargeFeature(
     std::unordered_map<std::wstring, std::wstring> options) {
     _init();
 
-    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+    for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_SPACING) == 0) {
             spacing = Mth::getInt(it->second, spacing, minSeparation + 1);
         }
@@ -67,7 +67,7 @@ bool RandomScatteredLargeFeature::isFeatureChunk(int x, int z,
         (x == xCenterFeatureChunk && z == zCenterFeatureChunk)) {
         Biome* biome =
             level->getBiomeSource()->getBiome(x * 16 + 8, z * 16 + 8);
-        for (AUTO_VAR(it, allowedBiomes.begin()); it != allowedBiomes.end();
+        for (auto it = allowedBiomes.begin(); it != allowedBiomes.end();
              ++it) {
             Biome* a = *it;
             if (biome == a) {
@@ -120,7 +120,7 @@ bool RandomScatteredLargeFeature::isSwamphut(int cellX, int cellY, int cellZ) {
         return false;
     }
     StructurePiece* first = NULL;
-    AUTO_VAR(it, structureAt->pieces.begin());
+    auto it = structureAt->pieces.begin();
     if (it != structureAt->pieces.end()) first = *it;
     return dynamic_cast<ScatteredFeaturePieces::SwamplandHut*>(first) != NULL;
 }

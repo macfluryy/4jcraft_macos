@@ -74,14 +74,14 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
                 }
     }
 
-    AUTO_VAR(itEnd, toRemove.end());
-    for (AUTO_VAR(it, toRemove.begin()); it != itEnd; it++) {
+    auto itEnd = toRemove.end();
+    for (auto it = toRemove.begin(); it != itEnd; it++) {
         TilePos* p = *it;  // toRemove[i];
         level->setTileAndData(p->x, p->y, p->z, 0, 0, Tile::UPDATE_CLIENTS);
     }
 
     itEnd = toRemove.end();
-    for (AUTO_VAR(it, toRemove.begin()); it != itEnd; it++) {
+    for (auto it = toRemove.begin(); it != itEnd; it++) {
         TilePos* p = *it;  // toRemove[i];
         if (level->getTile(p->x, p->y - 1, p->z) == Tile::dirt_Id &&
             level->getDaytimeRawBrightness(p->x, p->y, p->z) > 8) {

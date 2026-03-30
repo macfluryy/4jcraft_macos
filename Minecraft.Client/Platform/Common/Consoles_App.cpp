@@ -1127,7 +1127,7 @@ void CMinecraftApp::ActionGameSettings(int iPad, eGameSetting eVal) {
 
                 PlayerList* players =
                     MinecraftServer::getInstance()->getPlayerList();
-                for (AUTO_VAR(it3, players->players.begin());
+                for (auto it3 = players->players.begin();
                      it3 != players->players.end(); ++it3) {
                     std::shared_ptr<ServerPlayer> decorationPlayer = *it3;
                     decorationPlayer->setShowOnMaps(
@@ -4564,7 +4564,7 @@ bool CMinecraftApp::isXuidNotch(PlayerUID xuid) {
 }
 
 bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid) {
-    AUTO_VAR(it, MojangData.find(xuid));  // 4J Stu - The .at and [] accessors
+    auto it = MojangData.find(xuid);  // 4J Stu - The .at and [] accessors
                                           // insert elements if they don't exist
     if (it != MojangData.end()) {
         MOJANG_DATA* pMojangData = MojangData[xuid];
@@ -4582,7 +4582,7 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
     EnterCriticalSection(&csMemFilesLock);
     // check it's not already in
     PMEMDATA pData = NULL;
-    AUTO_VAR(it, m_MEM_Files.find(wName));
+    auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) {
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Incrementing the memory texture file count for %ls\n",
@@ -4625,7 +4625,7 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
 void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring& wName) {
     EnterCriticalSection(&csMemFilesLock);
 
-    AUTO_VAR(it, m_MEM_Files.find(wName));
+    auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) {
 #if !defined(_CONTENT_PACKAGE)
         wprintf(L"Decrementing the memory texture file count for %ls\n",
@@ -4650,7 +4650,7 @@ bool CMinecraftApp::DefaultCapeExists() {
     bool val = false;
 
     EnterCriticalSection(&csMemFilesLock);
-    AUTO_VAR(it, m_MEM_Files.find(wTex));
+    auto it = m_MEM_Files.find(wTex);
     if (it != m_MEM_Files.end()) val = true;
     LeaveCriticalSection(&csMemFilesLock);
 
@@ -4661,7 +4661,7 @@ bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring& wName) {
     bool val = false;
 
     EnterCriticalSection(&csMemFilesLock);
-    AUTO_VAR(it, m_MEM_Files.find(wName));
+    auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) val = true;
     LeaveCriticalSection(&csMemFilesLock);
 
@@ -4672,7 +4672,7 @@ void CMinecraftApp::GetMemFileDetails(const std::wstring& wName,
                                       std::uint8_t** ppbData,
                                       unsigned int* pByteCount) {
     EnterCriticalSection(&csMemFilesLock);
-    AUTO_VAR(it, m_MEM_Files.find(wName));
+    auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) {
         PMEMDATA pData = (*it).second;
         *ppbData = pData->pbData;
@@ -4686,7 +4686,7 @@ void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
     EnterCriticalSection(&csMemTPDLock);
     // check it's not already in
     PMEMDATA pData = NULL;
-    AUTO_VAR(it, m_MEM_TPD.find(iConfig));
+    auto it = m_MEM_TPD.find(iConfig);
     if (it == m_MEM_TPD.end()) {
         pData = new MEMDATA();
         pData->pbData = pbData;
@@ -4703,7 +4703,7 @@ void CMinecraftApp::RemoveMemoryTPDFile(int iConfig) {
     EnterCriticalSection(&csMemTPDLock);
     // check it's not already in
     PMEMDATA pData = NULL;
-    AUTO_VAR(it, m_MEM_TPD.find(iConfig));
+    auto it = m_MEM_TPD.find(iConfig);
     if (it != m_MEM_TPD.end()) {
         pData = m_MEM_TPD[iConfig];
         delete pData;
@@ -4720,7 +4720,7 @@ bool CMinecraftApp::IsFileInTPD(int iConfig) {
     bool val = false;
 
     EnterCriticalSection(&csMemTPDLock);
-    AUTO_VAR(it, m_MEM_TPD.find(iConfig));
+    auto it = m_MEM_TPD.find(iConfig);
     if (it != m_MEM_TPD.end()) val = true;
     LeaveCriticalSection(&csMemTPDLock);
 
@@ -4730,7 +4730,7 @@ bool CMinecraftApp::IsFileInTPD(int iConfig) {
 void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
                            unsigned int* pByteCount) {
     EnterCriticalSection(&csMemTPDLock);
-    AUTO_VAR(it, m_MEM_TPD.find(iConfig));
+    auto it = m_MEM_TPD.find(iConfig);
     if (it != m_MEM_TPD.end()) {
         PMEMDATA pData = (*it).second;
         *ppbData = pData->pbData;
@@ -5610,7 +5610,7 @@ HRESULT CMinecraftApp::RegisterDLCData(char* pchDLCName,
 
 bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
                                                ULONGLONG* pullVal) {
-    AUTO_VAR(it, DLCInfo_SkinName.find(FirstSkin));
+    auto it = DLCInfo_SkinName.find(FirstSkin);
     if (it == DLCInfo_SkinName.end()) {
         return false;
     } else {
@@ -5620,7 +5620,7 @@ bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
 }
 bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,
                                                ULONGLONG* pullVal) {
-    AUTO_VAR(it, DLCTextures_PackID.find(iPackID));
+    auto it = DLCTextures_PackID.find(iPackID);
     if (it == DLCTextures_PackID.end()) {
         *pullVal = (ULONGLONG)0;
         return false;
@@ -5632,7 +5632,7 @@ bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,
 DLC_INFO* CMinecraftApp::GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial) {
     // DLC_INFO *pDLCInfo=NULL;
     if (DLCInfo_Trial.size() > 0) {
-        AUTO_VAR(it, DLCInfo_Trial.find(ullOfferID_Trial));
+        auto it = DLCInfo_Trial.find(ullOfferID_Trial);
 
         if (it == DLCInfo_Trial.end()) {
             // nothing for this
@@ -5678,7 +5678,7 @@ ULONGLONG CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
 
 DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(ULONGLONG ullOfferID_Full) {
     if (DLCInfo_Full.size() > 0) {
-        AUTO_VAR(it, DLCInfo_Full.find(ullOfferID_Full));
+        auto it = DLCInfo_Full.find(ullOfferID_Full);
 
         if (it == DLCInfo_Full.end()) {
             // nothing for this
@@ -5857,7 +5857,7 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
             static_cast<unsigned int>(sizeof(BANNEDLISTDATA) * bannedListCount);
         PBANNEDLISTDATA pBannedList = new BANNEDLISTDATA[bannedListCount];
         int iCount = 0;
-        for (AUTO_VAR(it, m_vBannedListA[iPad]->begin());
+        for (auto it = m_vBannedListA[iPad]->begin();
              it != m_vBannedListA[iPad]->end(); ++it) {
             PBANNEDLISTDATA pData = *it;
             memcpy(&pBannedList[iCount++], pData, sizeof(BANNEDLISTDATA));
@@ -5876,7 +5876,7 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
 
 bool CMinecraftApp::IsInBannedLevelList(int iPad, PlayerUID xuid,
                                         char* pszLevelName) {
-    for (AUTO_VAR(it, m_vBannedListA[iPad]->begin());
+    for (auto it = m_vBannedListA[iPad]->begin();
          it != m_vBannedListA[iPad]->end(); ++it) {
         PBANNEDLISTDATA pData = *it;
         if (IsEqualXUID(pData->xuid, xuid) &&
@@ -5896,7 +5896,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
 
     // we will have retrieved the banned level list from TMS, so remove this one
     // from it and write it back to TMS
-    for (AUTO_VAR(it, m_vBannedListA[iPad]->begin());
+    for (auto it = m_vBannedListA[iPad]->begin();
          it != m_vBannedListA[iPad]->end();) {
         PBANNEDLISTDATA pBannedListData = *it;
 
@@ -6507,7 +6507,7 @@ unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t* textMetadata,
 void CMinecraftApp::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
                                               int x, int z) {
     // check we don't already have this in
-    for (AUTO_VAR(it, m_vTerrainFeatures.begin());
+    for (auto it = m_vTerrainFeatures.begin();
          it < m_vTerrainFeatures.end(); ++it) {
         FEATURE_DATA* pFeatureData = *it;
 
@@ -6525,7 +6525,7 @@ void CMinecraftApp::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
 }
 
 _eTerrainFeatureType CMinecraftApp::IsTerrainFeature(int x, int z) {
-    for (AUTO_VAR(it, m_vTerrainFeatures.begin());
+    for (auto it = m_vTerrainFeatures.begin();
          it < m_vTerrainFeatures.end(); ++it) {
         FEATURE_DATA* pFeatureData = *it;
 
@@ -6538,7 +6538,7 @@ _eTerrainFeatureType CMinecraftApp::IsTerrainFeature(int x, int z) {
 
 bool CMinecraftApp::GetTerrainFeaturePosition(_eTerrainFeatureType eType,
                                               int* pX, int* pZ) {
-    for (AUTO_VAR(it, m_vTerrainFeatures.begin());
+    for (auto it = m_vTerrainFeatures.begin();
          it < m_vTerrainFeatures.end(); ++it) {
         FEATURE_DATA* pFeatureData = *it;
 
@@ -6666,7 +6666,7 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
 
     // If it's already in there, promote it to the top of the list
     int iPosition = 0;
-    for (AUTO_VAR(it, m_DLCDownloadQueue.begin());
+    for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
@@ -6717,7 +6717,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
     bool bPromoted=false;
 
 
-    for(AUTO_VAR(it, m_TMSPPDownloadQueue.begin()); it !=
+    for(auto it = m_TMSPPDownloadQueue.begin(); it !=
     m_TMSPPDownloadQueue.end(); ++it)
     {
     TMSPPRequest  *pCurrent = *it;
@@ -6776,7 +6776,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                             // of a previous trial/full offer
 
                             bool bAlreadyInQueue = false;
-                            for (AUTO_VAR(it, m_TMSPPDownloadQueue.begin());
+                            for (auto it = m_TMSPPDownloadQueue.begin();
                                  it != m_TMSPPDownloadQueue.end(); ++it) {
                                 TMSPPRequest* pCurrent = *it;
 
@@ -6843,7 +6843,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                         // a previous trial/full offer
 
                         bool bAlreadyInQueue = false;
-                        for (AUTO_VAR(it, m_TMSPPDownloadQueue.begin());
+                        for (auto it = m_TMSPPDownloadQueue.begin();
                              it != m_TMSPPDownloadQueue.end(); ++it) {
                             TMSPPRequest* pCurrent = *it;
 
@@ -6895,7 +6895,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
 
 bool CMinecraftApp::CheckTMSDLCCanStop() {
     EnterCriticalSection(&csTMSPPDownloadQueue);
-    for (AUTO_VAR(it, m_TMSPPDownloadQueue.begin());
+    for (auto it = m_TMSPPDownloadQueue.begin();
          it != m_TMSPPDownloadQueue.end(); ++it) {
         TMSPPRequest* pCurrent = *it;
 
@@ -6921,7 +6921,7 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
     }
 
     EnterCriticalSection(&csDLCDownloadQueue);
-    for (AUTO_VAR(it, m_DLCDownloadQueue.begin());
+    for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
@@ -6932,7 +6932,7 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
     }
 
     // Now look for the next retrieval
-    for (AUTO_VAR(it, m_DLCDownloadQueue.begin());
+    for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
@@ -6970,7 +6970,7 @@ int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
 
     // find the right one in the vector
     EnterCriticalSection(&pClass->csTMSPPDownloadQueue);
-    for (AUTO_VAR(it, pClass->m_TMSPPDownloadQueue.begin());
+    for (auto it = pClass->m_TMSPPDownloadQueue.begin();
          it != pClass->m_TMSPPDownloadQueue.end(); ++it) {
         TMSPPRequest* pCurrent = *it;
 #if defined(_WINDOWS64)
@@ -7030,7 +7030,7 @@ void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
 
     int iPosition = 0;
     EnterCriticalSection(&csTMSPPDownloadQueue);
-    for (AUTO_VAR(it, m_DLCDownloadQueue.begin());
+    for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
@@ -7052,7 +7052,7 @@ void CMinecraftApp::TickTMSPPFilesRetrieved() {
 void CMinecraftApp::ClearTMSPPFilesRetrieved() {
     int iPosition = 0;
     EnterCriticalSection(&csTMSPPDownloadQueue);
-    for (AUTO_VAR(it, m_TMSPPDownloadQueue.begin());
+    for (auto it = m_TMSPPDownloadQueue.begin();
          it != m_TMSPPDownloadQueue.end(); ++it) {
         TMSPPRequest* pCurrent = *it;
 
@@ -7070,7 +7070,7 @@ int CMinecraftApp::DLCOffersReturned(void* pParam, int iOfferC,
 
     // find the right one in the vector
     EnterCriticalSection(&pClass->csTMSPPDownloadQueue);
-    for (AUTO_VAR(it, pClass->m_DLCDownloadQueue.begin());
+    for (auto it = pClass->m_DLCDownloadQueue.begin();
          it != pClass->m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
@@ -7102,7 +7102,7 @@ bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType) {
     // If there's already a retrieve in progress, quit
     // we may have re-ordered the list, so need to check every item
     EnterCriticalSection(&csDLCDownloadQueue);
-    for (AUTO_VAR(it, m_DLCDownloadQueue.begin());
+    for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
@@ -7168,7 +7168,7 @@ std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
         dwSkinID & 0x0FFFFFFF);
 
     // convert the skin boxes into model parts, and add to the humanoid model
-    for (AUTO_VAR(it, pvSkinBoxA->begin()); it != pvSkinBoxA->end(); ++it) {
+    for (auto it = pvSkinBoxA->begin(); it != pvSkinBoxA->end(); ++it) {
         if (pModel) {
             ModelPart* pModelPart = pModel->AddOrRetrievePart(*it);
             pvModelPart->push_back(pModelPart);
@@ -7192,7 +7192,7 @@ std::vector<ModelPart*>* CMinecraftApp::GetAdditionalModelParts(
     EnterCriticalSection(&csAdditionalModelParts);
     std::vector<ModelPart*>* pvModelParts = NULL;
     if (m_AdditionalModelParts.size() > 0) {
-        AUTO_VAR(it, m_AdditionalModelParts.find(dwSkinID));
+        auto it = m_AdditionalModelParts.find(dwSkinID);
         if (it != m_AdditionalModelParts.end()) {
             pvModelParts = (*it).second;
         }
@@ -7207,7 +7207,7 @@ std::vector<SKIN_BOX*>* CMinecraftApp::GetAdditionalSkinBoxes(
     EnterCriticalSection(&csAdditionalSkinBoxes);
     std::vector<SKIN_BOX*>* pvSkinBoxes = NULL;
     if (m_AdditionalSkinBoxes.size() > 0) {
-        AUTO_VAR(it, m_AdditionalSkinBoxes.find(dwSkinID));
+        auto it = m_AdditionalSkinBoxes.find(dwSkinID);
         if (it != m_AdditionalSkinBoxes.end()) {
             pvSkinBoxes = (*it).second;
         }
@@ -7222,7 +7222,7 @@ unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
     unsigned int uiAnimOverrideBitmask = 0L;
 
     if (m_AnimOverrides.size() > 0) {
-        AUTO_VAR(it, m_AnimOverrides.find(dwSkinID));
+        auto it = m_AnimOverrides.find(dwSkinID);
         if (it != m_AnimOverrides.end()) {
             uiAnimOverrideBitmask = (*it).second;
         }
@@ -7238,7 +7238,7 @@ void CMinecraftApp::SetAnimOverrideBitmask(std::uint32_t dwSkinID,
     EnterCriticalSection(&csAnimOverrideBitmask);
 
     if (m_AnimOverrides.size() > 0) {
-        AUTO_VAR(it, m_AnimOverrides.find(dwSkinID));
+        auto it = m_AnimOverrides.find(dwSkinID);
         if (it != m_AnimOverrides.end()) {
             LeaveCriticalSection(&csAnimOverrideBitmask);
             return;  // already in here

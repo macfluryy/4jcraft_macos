@@ -4484,8 +4484,8 @@ void Minecraft::tickAllConnections() {
 
 bool Minecraft::addPendingClientTextureRequest(
     const std::wstring& textureName) {
-    AUTO_VAR(it, find(m_pendingTextureRequests.begin(),
-                      m_pendingTextureRequests.end(), textureName));
+    auto it = find(m_pendingTextureRequests.begin(),
+                      m_pendingTextureRequests.end(), textureName);
     if (it == m_pendingTextureRequests.end()) {
         m_pendingTextureRequests.push_back(textureName);
         return true;
@@ -4494,8 +4494,8 @@ bool Minecraft::addPendingClientTextureRequest(
 }
 
 void Minecraft::handleClientTextureReceived(const std::wstring& textureName) {
-    AUTO_VAR(it, find(m_pendingTextureRequests.begin(),
-                      m_pendingTextureRequests.end(), textureName));
+    auto it = find(m_pendingTextureRequests.begin(),
+                      m_pendingTextureRequests.end(), textureName);
     if (it != m_pendingTextureRequests.end()) {
         m_pendingTextureRequests.erase(it);
     }

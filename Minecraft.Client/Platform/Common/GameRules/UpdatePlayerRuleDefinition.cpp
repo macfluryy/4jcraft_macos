@@ -17,7 +17,7 @@ UpdatePlayerRuleDefinition::UpdatePlayerRuleDefinition() {
 }
 
 UpdatePlayerRuleDefinition::~UpdatePlayerRuleDefinition() {
-    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); ++it) {
+    for (auto it = m_items.begin(); it != m_items.end(); ++it) {
         delete *it;
     }
 }
@@ -54,7 +54,7 @@ void UpdatePlayerRuleDefinition::writeAttributes(DataOutputStream* dos,
 void UpdatePlayerRuleDefinition::getChildren(
     std::vector<GameRuleDefinition*>* children) {
     GameRuleDefinition::getChildren(children);
-    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); it++)
+    for (auto it = m_items.begin(); it != m_items.end(); it++)
         children->push_back(*it);
 }
 
@@ -147,7 +147,7 @@ void UpdatePlayerRuleDefinition::postProcessPlayer(
     if (m_spawnPos != NULL || m_bUpdateYRot)
         player->absMoveTo(x, y, z, yRot, xRot);
 
-    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); ++it) {
+    for (auto it = m_items.begin(); it != m_items.end(); ++it) {
         AddItemRuleDefinition* addItem = *it;
 
         addItem->addItemToContainer(player->inventory, -1);

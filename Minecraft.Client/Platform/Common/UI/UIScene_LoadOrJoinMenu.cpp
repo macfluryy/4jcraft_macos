@@ -166,7 +166,7 @@ UIScene_LoadOrJoinMenu::~UIScene_LoadOrJoinMenu() {
     app.SetLiveLinkRequired(false);
 
     if (m_currentSessions) {
-        for (AUTO_VAR(it, m_currentSessions->begin());
+        for (auto it = m_currentSessions->begin();
              it < m_currentSessions->end(); ++it) {
             delete (*it);
         }
@@ -641,7 +641,7 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons() {
 
     int i = 0;
 
-    for (AUTO_VAR(it, app.getLevelGenerators()->begin());
+    for (auto it = app.getLevelGenerators()->begin();
          it != app.getLevelGenerators()->end(); ++it) {
         LevelGenerationOptions* levelGen = *it;
 
@@ -1176,7 +1176,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
         unsigned int sessionIndex = 0;
         m_buttonListGames.setCurrentSelection(0);
 
-        for (AUTO_VAR(it, m_currentSessions->begin());
+        for (auto it = m_currentSessions->begin();
              it < m_currentSessions->end(); ++it) {
             FriendSessionInfo* sessionInfo = *it;
 

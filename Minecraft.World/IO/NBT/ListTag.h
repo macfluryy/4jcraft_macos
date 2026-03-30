@@ -20,8 +20,8 @@ public:
         dos->writeByte(type);
         dos->writeInt((int)list.size());
 
-        AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) (*it)->write(dos);
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) (*it)->write(dos);
     }
 
     void load(DataInput* dis, int tagDepth) {
@@ -61,8 +61,8 @@ public:
         char* newPrefix = new char[strlen(prefix) + 4];
         strcpy(newPrefix, prefix);
         strcat(newPrefix, "   ");
-        AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) {
             (*it)->print(newPrefix, out);
         }
         delete[] newPrefix;
@@ -85,8 +85,8 @@ public:
     int size() { return (int)list.size(); }
 
     virtual ~ListTag() {
-        AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) {
             delete *it;
         }
     }
@@ -94,8 +94,8 @@ public:
     virtual Tag* copy() {
         ListTag<T>* res = new ListTag<T>(getName());
         res->type = type;
-        AUTO_VAR(itEnd, list.end());
-        for (AUTO_VAR(it, list.begin()); it != itEnd; it++) {
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) {
             T* copy = (T*)(*it)->copy();
             res->list.push_back(copy);
         }
@@ -109,13 +109,13 @@ public:
                 bool equal = false;
                 if (list.size() == o->list.size()) {
                     equal = true;
-                    AUTO_VAR(itEnd, list.end());
+                    auto itEnd = list.end();
                     // 4J Stu - Pretty inefficient method, but I think we can
                     // live with it give how often it will happen, and the small
                     // sizes of the data sets
-                    for (AUTO_VAR(it, list.begin()); it != itEnd; ++it) {
+                    for (auto it = list.begin(); it != itEnd; ++it) {
                         bool thisMatches = false;
-                        for (AUTO_VAR(it2, o->list.begin());
+                        for (auto it2 = o->list.begin();
                              it2 != o->list.end(); ++it2) {
                             if ((*it)->equals(*it2)) {
                                 thisMatches = true;

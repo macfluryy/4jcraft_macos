@@ -227,7 +227,7 @@ bool DLCAudioFile::processDLCDataFile(std::uint8_t* pbData,
         for (unsigned int j = 0; j < uiParameterCount; j++) {
             // EAudioParameterType paramType = e_AudioParamType_Invalid;
 
-            AUTO_VAR(it, parameterMapping.find(paramBuf.dwType));
+            auto it = parameterMapping.find(paramBuf.dwType);
 
             if (it != parameterMapping.end()) {
                 addParameter(type, (EAudioParameterType)paramBuf.dwType,

@@ -110,8 +110,8 @@ std::vector<CompoundTag*>* NbtSlotFile::readAll(int slot) {
     std::vector<int>* fileSlots = fileSlotMap[slot];
     int skipped = 0;
 
-    AUTO_VAR(itEnd, fileSlots->end());
-    for (AUTO_VAR(it, fileSlots->begin()); it != itEnd; it++) {
+    auto itEnd = fileSlots->end();
+    for (auto it = fileSlots->begin(); it != itEnd; it++) {
         int c = *it;  // fileSlots->at(i);
 
         int pos = 0;
@@ -179,8 +179,8 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
     toReplace = fileSlotMap[slot];
     fileSlotMap[slot] = new std::vector<int>();
 
-    AUTO_VAR(itEndTags, tags->end());
-    for (AUTO_VAR(it, tags->begin()); it != itEndTags; it++) {
+    auto itEndTags = tags->end();
+    for (auto it = tags->begin(); it != itEndTags; it++) {
         CompoundTag* tag = *it;  // tags->at(i);
         byteArray compressed = NbtIo::compress(tag);
         if (compressed.length > largest) {
@@ -235,8 +235,8 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
         delete[] compressed.data;
     }
 
-    AUTO_VAR(itEndToRep, toReplace->end());
-    for (AUTO_VAR(it, toReplace->begin()); it != itEndToRep; it++) {
+    auto itEndToRep = toReplace->end();
+    for (auto it = toReplace->begin(); it != itEndToRep; it++) {
         int c = *it;  // toReplace->at(i);
 
         freeFileSlots.push_back(c);

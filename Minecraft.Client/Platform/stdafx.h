@@ -14,7 +14,6 @@
 
 // use  - #pragma message(__LOC__"Need to do something here")
 
-#define AUTO_VAR(_var, _val) auto _var = _val
 #include <stdio.h>
 #include <stdlib.h>
 #include <unordered_map>

@@ -28,7 +28,7 @@ bool CompleteAllRuleDefinition::onCollectItem(
 void CompleteAllRuleDefinition::updateStatus(GameRule* rule) {
     int goal = 0;
     int progress = 0;
-    for (AUTO_VAR(it, rule->m_parameters.begin());
+    for (auto it = rule->m_parameters.begin();
          it != rule->m_parameters.end(); ++it) {
         if (it->second.isPointer) {
             goal += it->second.gr->getGameRuleDefinition()->getGoal();

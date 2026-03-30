@@ -20,7 +20,7 @@ public:
     CompoundTag(const std::wstring& name) : Tag(name) {}
 
     void write(DataOutput* dos) {
-        AUTO_VAR(itEnd, tags.end());
+        auto itEnd = tags.end();
         for (std::unordered_map<std::wstring, Tag*>::iterator it = tags.begin();
              it != itEnd; it++) {
             Tag::writeNamedTag(it->second, dos);
@@ -50,7 +50,7 @@ public:
         // 4J - was return tags.values();
         std::vector<Tag*>* ret = new std::vector<Tag*>;
 
-        AUTO_VAR(itEnd, tags.end());
+        auto itEnd = tags.end();
         for (std::unordered_map<std::wstring, Tag*>::iterator it = tags.begin();
              it != itEnd; it++) {
             ret->push_back(it->second);
@@ -109,7 +109,7 @@ public:
     }
 
     Tag* get(const std::wstring& name) {
-        AUTO_VAR(it, tags.find(name));
+        auto it = tags.find(name);
         if (it != tags.end()) return it->second;
         return NULL;
     }
@@ -178,7 +178,7 @@ public:
     }
 
     void remove(const std::wstring& name) {
-        AUTO_VAR(it, tags.find(name));
+        auto it = tags.find(name);
         if (it != tags.end()) tags.erase(it);
         // tags.remove(name);
     }
@@ -199,7 +199,7 @@ public:
         strcpy( newPrefix, prefix);
         strcat( newPrefix, "   ");
 
-        AUTO_VAR(itEnd, tags.end());
+        auto itEnd = tags.end();
         for( unordered_map<string, Tag *>::iterator it = tags.begin(); it !=
         itEnd; it++ )
         {
@@ -213,8 +213,8 @@ public:
     bool isEmpty() { return tags.empty(); }
 
     virtual ~CompoundTag() {
-        AUTO_VAR(itEnd, tags.end());
-        for (AUTO_VAR(it, tags.begin()); it != itEnd; it++) {
+        auto itEnd = tags.end();
+        for (auto it = tags.begin(); it != itEnd; it++) {
             delete it->second;
         }
     }
@@ -222,8 +222,8 @@ public:
     Tag* copy() {
         CompoundTag* tag = new CompoundTag(getName());
 
-        AUTO_VAR(itEnd, tags.end());
-        for (AUTO_VAR(it, tags.begin()); it != itEnd; it++) {
+        auto itEnd = tags.end();
+        for (auto it = tags.begin(); it != itEnd; it++) {
             tag->put((wchar_t*)it->first.c_str(), it->second->copy());
         }
         return tag;
@@ -235,9 +235,9 @@ public:
 
             if (tags.size() == o->tags.size()) {
                 bool equal = true;
-                AUTO_VAR(itEnd, tags.end());
-                for (AUTO_VAR(it, tags.begin()); it != itEnd; it++) {
-                    AUTO_VAR(itFind, o->tags.find(it->first));
+                auto itEnd = tags.end();
+                for (auto it = tags.begin(); it != itEnd; it++) {
+                    auto itFind = o->tags.find(it->first);
                     if (itFind == o->tags.end() ||
                         !it->second->equals(itFind->second)) {
                         equal = false;

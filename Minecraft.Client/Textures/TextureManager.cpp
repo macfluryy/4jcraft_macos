@@ -36,7 +36,7 @@ void TextureManager::registerName(const std::wstring& name, Texture* texture) {
 }
 
 void TextureManager::registerTexture(Texture* texture) {
-    for (AUTO_VAR(it, idToTextureMap.begin()); it != idToTextureMap.end();
+    for (auto it = idToTextureMap.begin(); it != idToTextureMap.end();
          ++it) {
         if (it->second == texture) {
             // Minecraft.getInstance().getLogger().warning("TextureManager.registerTexture
@@ -55,10 +55,10 @@ void TextureManager::registerTexture(Texture* texture) {
 
 void TextureManager::unregisterTexture(const std::wstring& name,
                                        Texture* texture) {
-    AUTO_VAR(it, idToTextureMap.find(texture->getManagerId()));
+    auto it = idToTextureMap.find(texture->getManagerId());
     if (it != idToTextureMap.end()) idToTextureMap.erase(it);
 
-    AUTO_VAR(it2, stringToIDMap.find(name));
+    auto it2 = stringToIDMap.find(name);
     if (it2 != stringToIDMap.end()) stringToIDMap.erase(it2);
 }
 

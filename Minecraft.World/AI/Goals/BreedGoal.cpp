@@ -53,7 +53,7 @@ std::shared_ptr<Animal> BreedGoal::getFreePartner() {
         level->getEntitiesOfClass(typeid(*animal), &grown_bb);
     double dist = std::numeric_limits<double>::max();
     std::shared_ptr<Animal> partner = nullptr;
-    for (AUTO_VAR(it, others->begin()); it != others->end(); ++it) {
+    for (auto it = others->begin(); it != others->end(); ++it) {
         std::shared_ptr<Animal> p = std::dynamic_pointer_cast<Animal>(*it);
         if (animal->canMate(p) && animal->distanceToSqr(p) < dist) {
             partner = p;

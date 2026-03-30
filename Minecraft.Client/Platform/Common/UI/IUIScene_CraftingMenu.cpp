@@ -631,7 +631,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();
         int iRecipeC = (int)recipes->size();
-        AUTO_VAR(itRecipe, recipes->begin());
+        auto itRecipe = recipes->begin();
 
         // dump out the recipe products
 

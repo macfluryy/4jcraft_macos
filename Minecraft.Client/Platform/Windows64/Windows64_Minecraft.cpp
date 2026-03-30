@@ -1028,7 +1028,7 @@ SIZE_T WINAPI XMemSize(PVOID pAddress, DWORD dwAllocAttributes) {
 
 void DumpMem() {
     int totalLeak = 0;
-    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
         if (it->second > 0) {
             app.DebugPrintf("%d %d %d %d\n", (it->first >> 26) & 0x3f,
                             it->first & 0x03ffffff, it->second,
@@ -1070,7 +1070,7 @@ void MemPixStuff() {
 
     int totals[MAX_SECT] = {0};
 
-    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
         if (it->second > 0) {
             int sect = (it->first >> 26) & 0x3f;
             int bytes = it->first & 0x03ffffff;

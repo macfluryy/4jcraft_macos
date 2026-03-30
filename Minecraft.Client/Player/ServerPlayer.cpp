@@ -153,8 +153,8 @@ void ServerPlayer::flagEntitiesToBeRemoved(unsigned int* flags,
         memset(flags, 0, 2048 / 32);
     }
 
-    AUTO_VAR(it, entitiesToRemove.begin());
-    for (AUTO_VAR(it, entitiesToRemove.begin()); it != entitiesToRemove.end();
+    auto it = entitiesToRemove.begin();
+    for (auto it = entitiesToRemove.begin(); it != entitiesToRemove.end();
          it++) {
         int index = *it;
         if (index < 2048) {
@@ -259,7 +259,7 @@ void ServerPlayer::flushEntitiesToRemove() {
         intArray ids(amount);
         int pos = 0;
 
-        AUTO_VAR(it, entitiesToRemove.begin());
+        auto it = entitiesToRemove.begin();
         while (it != entitiesToRemove.end() && pos < amount) {
             ids[pos++] = *it;
             it = entitiesToRemove.erase(it);
@@ -331,7 +331,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
         // the spiral of chunks that that method creates, long before
         // transmission of them is complete.
         double dist = DBL_MAX;
-        for (AUTO_VAR(it, chunksToSend.begin()); it != chunksToSend.end();
+        for (auto it = chunksToSend.begin(); it != chunksToSend.end();
              it++) {
             ChunkPos chunk = *it;
             if (level->isChunkFinalised(chunk.x, chunk.z)) {
@@ -572,7 +572,7 @@ void ServerPlayer::doTickB() {
             players.push_back(
                 std::dynamic_pointer_cast<Player>(shared_from_this()));
 
-            for (AUTO_VAR(it, objectives->begin()); it != objectives->end();
+            for (auto it = objectives->begin(); it != objectives->end();
                  ++it) {
                 Objective* objective = *it;
                 getScoreboard()
@@ -806,9 +806,9 @@ void ServerPlayer::changeDimension(int i) {
                             thisPlayer->GetUserIndex());
         }
         if (thisPlayer != NULL) {
-            for (AUTO_VAR(it, MinecraftServer::getInstance()
+            for (auto it = MinecraftServer::getInstance()
                                   ->getPlayers()
-                                  ->players.begin());
+                                  ->players.begin();
                  it !=
                  MinecraftServer::getInstance()->getPlayers()->players.end();
                  ++it) {

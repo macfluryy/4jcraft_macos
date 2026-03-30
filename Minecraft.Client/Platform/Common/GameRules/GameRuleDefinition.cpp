@@ -24,7 +24,7 @@ void GameRuleDefinition::write(DataOutputStream* dos) {
 
     // Write children.
     dos->writeInt(children->size());
-    for (AUTO_VAR(it, children->begin()); it != children->end(); it++)
+    for (auto it = children->begin(); it != children->end(); it++)
         (*it)->write(dos);
 }
 
@@ -119,7 +119,7 @@ GameRuleDefinition::enumerateMap() {
 
     int i = 0;
     std::vector<GameRuleDefinition*>* gRules = enumerate();
-    for (AUTO_VAR(it, gRules->begin()); it != gRules->end(); it++)
+    for (auto it = gRules->begin(); it != gRules->end(); it++)
         out->insert(std::pair<GameRuleDefinition*, int>(*it, i++));
 
     return out;

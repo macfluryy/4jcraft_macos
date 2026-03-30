@@ -323,7 +323,7 @@ void ConsoleSaveFileSplit::RegionFileReference::ReleaseCompressed() {
 
 FileEntry* ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex) {
     // Is a region file - determine if we've got it as a separate file
-    AUTO_VAR(it, regionFiles.find(regionIndex));
+    auto it = regionFiles.find(regionIndex);
     if (it != regionFiles.end()) {
         // Already got it
         return it->second->fileEntry;
@@ -376,7 +376,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile* sourceSave,
             sourceSave->getFilesWithPrefix(L"");
 
         unsigned int bytesWritten = 0;
-        for (AUTO_VAR(it, sourceFiles->begin()); it != sourceFiles->end();
+        for (auto it = sourceFiles->begin(); it != sourceFiles->end();
              ++it) {
             FileEntry* sourceEntry = *it;
             sourceSave->setFilePointer(sourceEntry, 0,
@@ -545,7 +545,7 @@ ConsoleSaveFileSplit::~ConsoleSaveFileSplit() {
     // Make sure we don't have any thumbnail data still waiting round - we can't
     // need it now we've destroyed the save file anyway
 
-    for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
+    for (auto it = regionFiles.begin(); it != regionFiles.end(); it++) {
         delete it->second;
     }
 
@@ -895,7 +895,7 @@ void ConsoleSaveFileSplit::tick() {
     // Get total amount of data written over the time period we are interested
     // in averaging over. Remove any older data.
     unsigned int bytesWritten = 0;
-    for (AUTO_VAR(it, writeHistory.begin()); it != writeHistory.end();) {
+    for (auto it = writeHistory.begin(); it != writeHistory.end();) {
         if ((currentTime - it->writeTime) >
             (WRITE_BANDWIDTH_MEASUREMENT_PERIOD_SECONDS * 1000)) {
             it = writeHistory.erase(it);
@@ -907,7 +907,7 @@ void ConsoleSaveFileSplit::tick() {
 
     // Compile a vector of dirty regions.
     std::vector<DirtyRegionFile> dirtyRegions;
-    for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
+    for (auto it = regionFiles.begin(); it != regionFiles.end(); it++) {
         DirtyRegionFile dirtyRegion;
 
         if (it->second->dirty) {
@@ -965,7 +965,7 @@ void ConsoleSaveFileSplit::tick() {
         unsigned int totalDirty = 0;
         unsigned int totalDirtyBytes = 0;
         int64_t oldestDirty = currentTime;
-        for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
+        for (auto it = regionFiles.begin(); it != regionFiles.end(); it++) {
             if (it->second->dirty) {
                 if (it->second->lastWritten < oldestDirty) {
                     oldestDirty = it->second->lastWritten;
@@ -1219,7 +1219,7 @@ std::wstring ConsoleSaveFileSplit::GetNameFromNumericIdentifier(
 // Compress any dirty region files, and tell the storage manager about them so
 // that it will process them when we ask it to save sub files
 void ConsoleSaveFileSplit::processSubfilesForWrite() {
-    for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
+    for (auto it = regionFiles.begin(); it != regionFiles.end(); it++) {
         RegionFileReference* region = it->second;
         if (region->dirty) {
             region->Compress();
@@ -1236,7 +1236,7 @@ void ConsoleSaveFileSplit::processSubfilesForWrite() {
 void ConsoleSaveFileSplit::processSubfilesAfterWrite() {
     // This is called from the StorageManager.Tick() which should always be on
     // the main thread
-    for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
+    for (auto it = regionFiles.begin(); it != regionFiles.end(); it++) {
         RegionFileReference* region = it->second;
         region->ReleaseCompressed();
     }
@@ -1486,7 +1486,7 @@ std::vector<FileEntry*>* ConsoleSaveFileSplit::getRegionFilesByDimension(
     unsigned int dimensionIndex) {
     std::vector<FileEntry*>* files = NULL;
 
-    for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); ++it) {
+    for (auto it = regionFiles.begin(); it != regionFiles.end(); ++it) {
         unsigned int entryDimension = ((it->first) >> 16) & 0xFF;
 
         if (entryDimension == dimensionIndex) {
@@ -1583,7 +1583,7 @@ void ConsoleSaveFileSplit::ConvertToLocalPlatform() {
     // convert each of the region files to the local platform
     std::vector<FileEntry*>* allFilesInSave =
         getFilesWithPrefix(std::wstring(L""));
-    for (AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end();
+    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end();
          ++it) {
         FileEntry* fe = *it;
         std::wstring fName(fe->data.filename);

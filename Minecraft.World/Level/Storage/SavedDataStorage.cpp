@@ -21,7 +21,7 @@ SavedDataStorage::SavedDataStorage(LevelStorage* levelStorage) {
 
 std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
                                                  const std::wstring& id) {
-    AUTO_VAR(it, cache.find(id));
+    auto it = cache.find(id);
     if (it != cache.end()) return (*it).second;
 
     std::shared_ptr<SavedData> data = nullptr;
@@ -76,9 +76,9 @@ void SavedDataStorage::set(const std::wstring& id,
         // TODO 4J Stu - throw new RuntimeException("Can't set null data");
         assert(false);
     }
-    AUTO_VAR(it, cache.find(id));
+    auto it = cache.find(id);
     if (it != cache.end()) {
-        AUTO_VAR(it2, find(savedDatas.begin(), savedDatas.end(), it->second));
+        auto it2 = find(savedDatas.begin(), savedDatas.end(), it->second);
         if (it2 != savedDatas.end()) {
             savedDatas.erase(it2);
         }
@@ -89,8 +89,8 @@ void SavedDataStorage::set(const std::wstring& id,
 }
 
 void SavedDataStorage::save() {
-    AUTO_VAR(itEnd, savedDatas.end());
-    for (AUTO_VAR(it, savedDatas.begin()); it != itEnd; it++) {
+    auto itEnd = savedDatas.end();
+    for (auto it = savedDatas.begin(); it != itEnd; it++) {
         std::shared_ptr<SavedData> data = *it;  // savedDatas->at(i);
         if (data->isDirty()) {
             save(data);
@@ -135,8 +135,8 @@ void SavedDataStorage::loadAuxValues() {
 
         Tag* tag;
         std::vector<Tag*>* allTags = tags->getAllTags();
-        AUTO_VAR(itEnd, allTags->end());
-        for (AUTO_VAR(it, allTags->begin()); it != itEnd; it++) {
+        auto itEnd = allTags->end();
+        for (auto it = allTags->begin(); it != itEnd; it++) {
             tag = *it;  // tags->getAllTags()->at(i);
 
             if (dynamic_cast<ShortTag*>(tag) != NULL) {
@@ -151,7 +151,7 @@ void SavedDataStorage::loadAuxValues() {
 }
 
 int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id) {
-    AUTO_VAR(it, usedAuxIds.find(id));
+    auto it = usedAuxIds.find(id);
     short val = 0;
     if (it != usedAuxIds.end()) {
         val = (*it).second;
@@ -167,7 +167,7 @@ int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id) {
 
         // TODO 4J Stu - This was iterating over the keySet in Java, so
         // potentially we are looking at more items?
-        AUTO_VAR(itEndAuxIds, usedAuxIds.end());
+        auto itEndAuxIds = usedAuxIds.end();
         for (uaiMapType::iterator it2 = usedAuxIds.begin(); it2 != itEndAuxIds;
              it2++) {
             short value = it2->second;

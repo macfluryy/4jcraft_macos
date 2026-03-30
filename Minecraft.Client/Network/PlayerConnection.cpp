@@ -851,8 +851,8 @@ void PlayerConnection::handleTextureAndGeometry(
 void PlayerConnection::handleTextureReceived(const std::wstring& textureName) {
     // This sends the server received texture out to any other players waiting
     // for the data
-    AUTO_VAR(it, find(m_texturesRequested.begin(), m_texturesRequested.end(),
-                      textureName));
+    auto it = find(m_texturesRequested.begin(), m_texturesRequested.end(),
+                      textureName);
     if (it != m_texturesRequested.end()) {
         std::uint8_t* pbData = NULL;
         unsigned int dwBytes = 0;
@@ -870,8 +870,8 @@ void PlayerConnection::handleTextureAndGeometryReceived(
     const std::wstring& textureName) {
     // This sends the server received texture out to any other players waiting
     // for the data
-    AUTO_VAR(it, find(m_texturesRequested.begin(), m_texturesRequested.end(),
-                      textureName));
+    auto it = find(m_texturesRequested.begin(), m_texturesRequested.end(),
+                      textureName);
     if (it != m_texturesRequested.end()) {
         std::uint8_t* pbData = NULL;
         unsigned int dwTextureBytes = 0;
@@ -1270,7 +1270,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
 
 void PlayerConnection::handleContainerAck(
     std::shared_ptr<ContainerAckPacket> packet) {
-    AUTO_VAR(it, expectedAcks.find(player->containerMenu->containerId));
+    auto it = expectedAcks.find(player->containerMenu->containerId);
 
     if (it != expectedAcks.end() && packet->uid == it->second &&
         player->containerMenu->containerId == packet->containerId &&
@@ -1335,7 +1335,7 @@ void PlayerConnection::handlePlayerInfo(
         player->isModerator()) {
         std::shared_ptr<ServerPlayer> serverPlayer;
         // Find the player being edited
-        for (AUTO_VAR(it, server->getPlayers()->players.begin());
+        for (auto it = server->getPlayers()->players.begin();
              it != server->getPlayers()->players.end(); ++it) {
             std::shared_ptr<ServerPlayer> checkingPlayer = *it;
             if (checkingPlayer->connection->getNetworkPlayer() != NULL &&

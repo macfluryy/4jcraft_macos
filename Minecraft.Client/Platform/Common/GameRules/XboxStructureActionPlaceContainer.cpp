@@ -12,7 +12,7 @@ XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer() {
 }
 
 XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer() {
-    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); ++it) {
+    for (auto it = m_items.begin(); it != m_items.end(); ++it) {
         delete *it;
     }
 }
@@ -24,7 +24,7 @@ XboxStructureActionPlaceContainer::~XboxStructureActionPlaceContainer() {
 void XboxStructureActionPlaceContainer::getChildren(
     std::vector<GameRuleDefinition*>* children) {
     XboxStructureActionPlaceBlock::getChildren(children);
-    for (AUTO_VAR(it, m_items.begin()); it != m_items.end(); it++)
+    for (auto it = m_items.begin(); it != m_items.end(); it++)
         children->push_back(*it);
 }
 
@@ -88,7 +88,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(
                            Tile::UPDATE_CLIENTS);
             // Add items
             int slotId = 0;
-            for (AUTO_VAR(it, m_items.begin());
+            for (auto it = m_items.begin();
                  it != m_items.end() &&
                  (slotId < container->getContainerSize());
                  ++it, ++slotId) {

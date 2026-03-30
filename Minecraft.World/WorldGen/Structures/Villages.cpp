@@ -19,14 +19,14 @@ Villages::Villages(Level* level) : SavedData(VILLAGE_FILE_ID) {
 }
 
 Villages::~Villages() {
-    for (AUTO_VAR(it, queries.begin()); it != queries.end(); ++it) delete *it;
+    for (auto it = queries.begin(); it != queries.end(); ++it) delete *it;
 }
 
 void Villages::setLevel(Level* level) {
     this->level = level;
 
     // for (Village village : villages)
-    for (AUTO_VAR(it, villages.begin()); it != villages.end(); ++it) {
+    for (auto it = villages.begin(); it != villages.end(); ++it) {
         std::shared_ptr<Village> village = *it;
         village->setLevel(level);
     }
@@ -40,7 +40,7 @@ void Villages::queryUpdateAround(int x, int y, int z) {
 void Villages::tick() {
     ++_tick;
     // for (Village village : villages)
-    for (AUTO_VAR(it, villages.begin()); it != villages.end(); ++it) {
+    for (auto it = villages.begin(); it != villages.end(); ++it) {
         std::shared_ptr<Village> village = *it;
         village->tick(_tick);
     }
@@ -55,7 +55,7 @@ void Villages::tick() {
 
 void Villages::removeVillages() {
     // for (Iterator<Village> it = villages.iterator(); it.hasNext();)
-    for (AUTO_VAR(it, villages.begin()); it != villages.end();) {
+    for (auto it = villages.begin(); it != villages.end();) {
         std::shared_ptr<Village> village = *it;  // it.next();
         if (village->canRemove()) {
             it = villages.erase(it);
@@ -76,7 +76,7 @@ std::shared_ptr<Village> Villages::getClosestVillage(int x, int y, int z,
     std::shared_ptr<Village> closest = nullptr;
     float closestDistSqr = std::numeric_limits<float>::max();
     // for (Village village : villages)
-    for (AUTO_VAR(it, villages.begin()); it != villages.end(); ++it) {
+    for (auto it = villages.begin(); it != villages.end(); ++it) {
         std::shared_ptr<Village> village = *it;
         float distSqr = village->getCenter()->distSqr(x, y, z);
         if (distSqr >= closestDistSqr) continue;
@@ -101,12 +101,12 @@ void Villages::processNextQuery() {
 void Villages::cluster() {
     // note doesn't merge or split existing villages
     // for (int i = 0; i < unclustered.size(); ++i)
-    for (AUTO_VAR(it, unclustered.begin()); it != unclustered.end(); ++it) {
+    for (auto it = unclustered.begin(); it != unclustered.end(); ++it) {
         std::shared_ptr<DoorInfo> di = *it;  // unclustered.get(i);
 
         bool found = false;
         // for (Village village : villages)
-        for (AUTO_VAR(itV, villages.begin()); itV != villages.end(); ++itV) {
+        for (auto itV = villages.begin(); itV != villages.end(); ++itV) {
             std::shared_ptr<Village> village = *itV;
             int dist = (int)village->getCenter()->distSqr(di->x, di->y, di->z);
             int radius = MaxDoorDist + village->getRadius();
@@ -147,12 +147,12 @@ void Villages::addDoorInfos(Pos* pos) {
 
 std::shared_ptr<DoorInfo> Villages::getDoorInfo(int x, int y, int z) {
     // for (DoorInfo di : unclustered)
-    for (AUTO_VAR(it, unclustered.begin()); it != unclustered.end(); ++it) {
+    for (auto it = unclustered.begin(); it != unclustered.end(); ++it) {
         std::shared_ptr<DoorInfo> di = *it;
         if (di->x == x && di->z == z && abs(di->y - y) <= 1) return di;
     }
     // for (Village v : villages)
-    for (AUTO_VAR(it, villages.begin()); it != villages.end(); ++it) {
+    for (auto it = villages.begin(); it != villages.end(); ++it) {
         std::shared_ptr<Village> v = *it;
         std::shared_ptr<DoorInfo> di = v->getDoorInfo(x, y, z);
         if (di != NULL) return di;
@@ -185,7 +185,7 @@ void Villages::createDoorInfo(int x, int y, int z) {
 
 bool Villages::hasQuery(int x, int y, int z) {
     // for (Pos pos : queries)
-    for (AUTO_VAR(it, queries.begin()); it != queries.end(); ++it) {
+    for (auto it = queries.begin(); it != queries.end(); ++it) {
         Pos* pos = *it;
         if (pos->x == x && pos->y == y && pos->z == z) return true;
     }
@@ -214,7 +214,7 @@ void Villages::save(CompoundTag* tag) {
     tag->putInt(L"Tick", _tick);
     ListTag<CompoundTag>* villageTags = new ListTag<CompoundTag>(L"Villages");
     // for (Village village : villages)
-    for (AUTO_VAR(it, villages.begin()); it != villages.end(); ++it) {
+    for (auto it = villages.begin(); it != villages.end(); ++it) {
         std::shared_ptr<Village> village = *it;
         CompoundTag* villageTag = new CompoundTag(L"Village");
         village->addAdditonalSaveData(villageTag);

@@ -151,7 +151,7 @@ DLCManager::DLCManager() {
 }
 
 DLCManager::~DLCManager() {
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         DLCPack* pack = *it;
         delete pack;
     }
@@ -174,7 +174,7 @@ DLCManager::EDLCParameterType DLCManager::getParameterType(
 unsigned int DLCManager::getPackCount(EDLCType type /*= e_DLCType_All*/) {
     unsigned int packCount = 0;
     if (type != e_DLCType_All) {
-        for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+        for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
             DLCPack* pack = *it;
             if (pack->getDLCItemsCount(type) > 0) {
                 ++packCount;
@@ -190,14 +190,14 @@ void DLCManager::addPack(DLCPack* pack) { m_packs.push_back(pack); }
 
 void DLCManager::removePack(DLCPack* pack) {
     if (pack != NULL) {
-        AUTO_VAR(it, find(m_packs.begin(), m_packs.end(), pack));
+        auto it = find(m_packs.begin(), m_packs.end(), pack);
         if (it != m_packs.end()) m_packs.erase(it);
         delete pack;
     }
 }
 
 void DLCManager::removeAllPacks(void) {
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         DLCPack* pack = (DLCPack*)*it;
         delete pack;
     }
@@ -206,7 +206,7 @@ void DLCManager::removeAllPacks(void) {
 }
 
 void DLCManager::LanguageChanged(void) {
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         DLCPack* pack = (DLCPack*)*it;
         // update the language
         pack->UpdateLanguage();
@@ -217,7 +217,7 @@ DLCPack* DLCManager::getPack(const std::wstring& name) {
     DLCPack* pack = NULL;
     // DWORD currentIndex = 0;
     DLCPack* currentPack = NULL;
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         currentPack = *it;
         std::wstring wsName = currentPack->getName();
 
@@ -236,7 +236,7 @@ DLCPack* DLCManager::getPack(unsigned int index,
     if (type != e_DLCType_All) {
         unsigned int currentIndex = 0;
         DLCPack* currentPack = NULL;
-        for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+        for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
             currentPack = *it;
             if (currentPack->getDLCItemsCount(type) > 0) {
                 if (currentIndex == index) {
@@ -271,7 +271,7 @@ unsigned int DLCManager::getPackIndex(DLCPack* pack, bool& found,
     }
     if (type != e_DLCType_All) {
         unsigned int index = 0;
-        for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+        for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
             DLCPack* thisPack = *it;
             if (thisPack->getDLCItemsCount(type) > 0) {
                 if (thisPack == pack) {
@@ -284,7 +284,7 @@ unsigned int DLCManager::getPackIndex(DLCPack* pack, bool& found,
         }
     } else {
         unsigned int index = 0;
-        for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+        for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
             DLCPack* thisPack = *it;
             if (thisPack == pack) {
                 found = true;
@@ -302,7 +302,7 @@ unsigned int DLCManager::getPackIndexContainingSkin(const std::wstring& path,
     unsigned int foundIndex = 0;
     found = false;
     unsigned int index = 0;
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         DLCPack* pack = *it;
         if (pack->getDLCItemsCount(e_DLCType_Skin) > 0) {
             if (pack->doesPackContainSkin(path)) {
@@ -318,7 +318,7 @@ unsigned int DLCManager::getPackIndexContainingSkin(const std::wstring& path,
 
 DLCPack* DLCManager::getPackContainingSkin(const std::wstring& path) {
     DLCPack* foundPack = NULL;
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         DLCPack* pack = *it;
         if (pack->getDLCItemsCount(e_DLCType_Skin) > 0) {
             if (pack->doesPackContainSkin(path)) {
@@ -332,7 +332,7 @@ DLCPack* DLCManager::getPackContainingSkin(const std::wstring& path) {
 
 DLCSkinFile* DLCManager::getSkinFile(const std::wstring& path) {
     DLCSkinFile* foundSkinfile = NULL;
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         DLCPack* pack = *it;
         foundSkinfile = pack->getSkinFile(path);
         if (foundSkinfile != NULL) {
@@ -348,7 +348,7 @@ unsigned int DLCManager::checkForCorruptDLCAndAlert(
     DLCPack* pack = NULL;
     DLCPack* firstCorruptPack = NULL;
 
-    for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
+    for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         pack = *it;
         if (pack->IsCorrupt()) {
             ++corruptDLCCount;
@@ -529,7 +529,7 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
             // DLCManager::EDLCParameterType paramType =
             // DLCManager::e_DLCParamType_Invalid;
 
-            AUTO_VAR(it, parameterMapping.find(parBuf.dwType));
+            auto it = parameterMapping.find(parBuf.dwType);
 
             if (it != parameterMapping.end()) {
                 if (type == e_DLCType_PackConfig) {
@@ -686,7 +686,7 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t* pbData,
         pbTemp += sizeof(int);
         ReadDlcStruct(&paramBuf, pbTemp);
         for (unsigned int j = 0; j < uiParameterCount; j++) {
-            AUTO_VAR(it, parameterMapping.find(paramBuf.dwType));
+            auto it = parameterMapping.find(paramBuf.dwType);
 
             if (it != parameterMapping.end()) {
                 if (type == e_DLCType_PackConfig) {

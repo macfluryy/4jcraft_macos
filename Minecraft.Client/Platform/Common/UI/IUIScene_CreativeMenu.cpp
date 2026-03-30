@@ -982,8 +982,8 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
 
     // Fill the dynamic group
     if (m_dynamicGroupsCount > 0 && m_dynamicGroupsA != NULL) {
-        for (AUTO_VAR(it,
-                      categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin());
+        for (auto it=
+                      categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin();
              it != categoryGroups[m_dynamicGroupsA[dynamicIndex]].rend() &&
              lastSlotIndex < MAX_SIZE;
              ++it) {

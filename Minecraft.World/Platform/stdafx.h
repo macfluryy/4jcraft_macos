@@ -4,8 +4,6 @@
 //
 #pragma once
 
-#define AUTO_VAR(_var, _val) auto _var = _val
-
 #ifdef _WINDOWS64
 typedef unsigned __int64 __uint64;
 #endif

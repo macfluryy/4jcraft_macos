@@ -43,7 +43,7 @@ StitchedTexture::StitchedTexture(const std::wstring& name,
 
 void StitchedTexture::freeFrameTextures() {
     if (frames != NULL) {
-        for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
+        for (auto it = frames->begin(); it != frames->end(); ++it) {
             TextureManager::getInstance()->unregisterTexture(L"", *it);
             delete *it;
         }
@@ -54,7 +54,7 @@ void StitchedTexture::freeFrameTextures() {
 
 StitchedTexture::~StitchedTexture() {
     if (frames != NULL) {
-        for (AUTO_VAR(it, frames->begin()); it != frames->end(); ++it) {
+        for (auto it = frames->begin(); it != frames->end(); ++it) {
             delete *it;
         }
         delete frames;
@@ -218,7 +218,7 @@ void StitchedTexture::loadAnimationFrames(BufferedReader* bufferedReader) {
         if (line.length() > 0) {
             std::vector<std::wstring> tokens = stringSplit(line, L',');
             // for (String token : tokens)
-            for (AUTO_VAR(it, tokens.begin()); it != tokens.end(); ++it) {
+            for (auto it = tokens.begin(); it != tokens.end(); ++it) {
                 std::wstring token = *it;
                 int multiPos = token.find_first_of('*');
                 if (multiPos > 0) {
@@ -258,7 +258,7 @@ void StitchedTexture::loadAnimationFrames(const std::wstring& string) {
 
     std::vector<std::wstring> tokens = stringSplit(trimString(string), L',');
     // for (String token : tokens)
-    for (AUTO_VAR(it, tokens.begin()); it != tokens.end(); ++it) {
+    for (auto it = tokens.begin(); it != tokens.end(); ++it) {
         std::wstring token = trimString(*it);
         int multiPos = token.find_first_of('*');
         if (multiPos > 0) {

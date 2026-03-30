@@ -68,7 +68,7 @@ void VillageSiege::tick() {
 bool VillageSiege::tryToSetupSiege() {
     std::vector<std::shared_ptr<Player> >* players = &level->players;
     // for (Player player : players)
-    for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+    for (auto it = players->begin(); it != players->end(); ++it) {
         std::shared_ptr<Player> player = *it;
         std::shared_ptr<Village> _village = level->villages->getClosestVillage(
             (int)player->x, (int)player->y, (int)player->z, 1);
@@ -96,7 +96,7 @@ bool VillageSiege::tryToSetupSiege() {
             std::vector<std::shared_ptr<Village> >* villages =
                 level->villages->getVillages();
             // for (Village v : level.villages.getVillages())
-            for (AUTO_VAR(itV, villages->begin()); itV != villages->end();
+            for (auto itV = villages->begin(); itV != villages->end();
                  ++itV) {
                 std::shared_ptr<Village> v = *itV;
                 if (v == _village) continue;

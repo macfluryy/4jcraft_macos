@@ -355,14 +355,14 @@ void ColourTable::loadColoursFromData(std::uint8_t* pbData,
         std::wstring colourId = dis.readUTF();
         int colourValue = dis.readInt();
         setColour(colourId, colourValue);
-        AUTO_VAR(it, s_colourNamesMap.find(colourId));
+        auto it = s_colourNamesMap.find(colourId);
     }
 
     bais.reset();
 }
 
 void ColourTable::setColour(const std::wstring& colourName, int value) {
-    AUTO_VAR(it, s_colourNamesMap.find(colourName));
+    auto it = s_colourNamesMap.find(colourName);
     if (it != s_colourNamesMap.end()) {
         m_colourValues[(int)it->second] = value;
     }

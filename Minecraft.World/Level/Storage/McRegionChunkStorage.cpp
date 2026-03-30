@@ -67,7 +67,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
 }
 
 McRegionChunkStorage::~McRegionChunkStorage() {
-    for (AUTO_VAR(it, m_entityData.begin()); it != m_entityData.end(); ++it) {
+    for (auto it = m_entityData.begin(); it != m_entityData.end(); ++it) {
         delete it->second.data;
     }
 }
@@ -85,7 +85,7 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
         uint64_t index =
             ((uint64_t)(uint32_t)(x) << 32) | (((uint64_t)(uint32_t)(z)));
 
-        AUTO_VAR(it, m_entityData.find(index));
+        auto it = m_entityData.find(index);
         if (it != m_entityData.end()) {
             delete it->second.data;
             m_entityData.erase(it);
@@ -268,7 +268,7 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
 
         m_entityData[index] = savedData;
     } else {
-        AUTO_VAR(it, m_entityData.find(index));
+        auto it = m_entityData.find(index);
         if (it != m_entityData.end()) {
             m_entityData.erase(it);
         }
@@ -283,7 +283,7 @@ void McRegionChunkStorage::loadEntities(Level* level, LevelChunk* levelChunk) {
     int64_t index = ((int64_t)(levelChunk->x) << 32) |
                     (((int64_t)(levelChunk->z)) & 0x00000000FFFFFFFF);
 
-    AUTO_VAR(it, m_entityData.find(index));
+    auto it = m_entityData.find(index);
     if (it != m_entityData.end()) {
         ByteArrayInputStream bais(it->second);
         DataInputStream dis(&bais);
@@ -310,7 +310,7 @@ void McRegionChunkStorage::flush() {
     PIXBeginNamedEvent(0, "Writing to stream");
     dos.writeInt(m_entityData.size());
 
-    for (AUTO_VAR(it, m_entityData.begin()); it != m_entityData.end(); ++it) {
+    for (auto it = m_entityData.begin(); it != m_entityData.end(); ++it) {
         dos.writeLong(it->first);
         dos.write(it->second, 0, it->second.length);
     }

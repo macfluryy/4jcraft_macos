@@ -28,7 +28,7 @@ GameRules::GameRules() {
 }
 
 GameRules::~GameRules() {
-    /*for(AUTO_VAR(it,rules.begin()); it != rules.end(); ++it)
+    /*for(auto it = rules.begin(); it != rules.end(); ++it)
     {
             delete it->second;
     }*/
@@ -67,7 +67,7 @@ void GameRules::registerRule(const std::wstring &name, const std::wstring
 
 void GameRules::set(const std::wstring &ruleName, const std::wstring &newValue)
 {
-        AUTO_VAR(it, rules.find(ruleName));
+        auto it = rules.find(ruleName);
         if(it != rules.end() )
         {
                 GameRule *gameRule = it->second;
@@ -81,7 +81,7 @@ void GameRules::set(const std::wstring &ruleName, const std::wstring &newValue)
 
 std::wstring GameRules::get(const std::wstring &ruleName)
 {
-        AUTO_VAR(it, rules.find(ruleName));
+        auto it = rules.find(ruleName);
         if(it != rules.end() )
         {
                 GameRule *gameRule = it->second;
@@ -92,7 +92,7 @@ std::wstring GameRules::get(const std::wstring &ruleName)
 
 int GameRules::getInt(const std::wstring &ruleName)
 {
-        AUTO_VAR(it, rules.find(ruleName));
+        auto it = rules.find(ruleName);
         if(it != rules.end() )
         {
                 GameRule *gameRule = it->second;
@@ -103,7 +103,7 @@ int GameRules::getInt(const std::wstring &ruleName)
 
 double GameRules::getDouble(const std::wstring &ruleName)
 {
-        AUTO_VAR(it, rules.find(ruleName));
+        auto it = rules.find(ruleName);
         if(it != rules.end() )
         {
                 GameRule *gameRule = it->second;
@@ -116,7 +116,7 @@ CompoundTag *GameRules::createTag()
 {
         CompoundTag *result = new CompoundTag(L"GameRules");
 
-        for(AUTO_VAR(it,rules.begin()); it != rules.end(); ++it)
+        for(auto it = rules.begin(); it != rules.end(); ++it)
         {
                 GameRule *gameRule = it->second;
                 result->putString(it->first, gameRule->get());
@@ -128,7 +128,7 @@ CompoundTag *GameRules::createTag()
 void GameRules::loadFromTag(CompoundTag *tag)
 {
         vector<Tag *> *allTags = tag->getAllTags();
-        for (AUTO_VAR(it, allTags->begin()); it != allTags->end(); ++it)
+        for (auto it = allTags->begin(); it != allTags->end(); ++it)
         {
                 Tag *ruleTag = *it;
                 std::wstring ruleName = ruleTag->getName();
@@ -143,13 +143,13 @@ void GameRules::loadFromTag(CompoundTag *tag)
 vector<std::wstring> *GameRules::getRuleNames()
 {
         vector<std::wstring> *out = new vector<std::wstring>();
-        for (AUTO_VAR(it, rules.begin()); it != rules.end(); it++)
+        for (auto it = rules.begin(); it != rules.end(); it++)
 out->push_back(it->first); return out;
 }
 
 bool GameRules::contains(const std::wstring &rule)
 {
-        AUTO_VAR(it, rules.find(rule));
+        auto it = rules.find(rule);
         return it != rules.end();
 }
 

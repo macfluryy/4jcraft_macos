@@ -30,8 +30,8 @@ bool NotGateTile::isToggledTooFrequently(Level* level, int x, int y, int z,
         recentToggles[level]->push_back(Toggle(x, y, z, level->getGameTime()));
     int count = 0;
 
-    AUTO_VAR(itEnd, recentToggles[level]->end());
-    for (AUTO_VAR(it, recentToggles[level]->begin()); it != itEnd; it++) {
+    auto itEnd = recentToggles[level]->end();
+    for (auto it = recentToggles[level]->begin(); it != itEnd; it++) {
         if (it->x == x && it->y == y && it->z == z) {
             count++;
             if (count >= MAX_RECENT_TOGGLES) {
@@ -207,7 +207,7 @@ void NotGateTile::levelTimeChanged(Level* level, int64_t delta,
     std::deque<Toggle>* toggles = recentToggles[level];
 
     if (toggles != NULL) {
-        for (AUTO_VAR(it, toggles->begin()); it != toggles->end(); ++it) {
+        for (auto it = toggles->begin(); it != toggles->end(); ++it) {
             (*it).when += delta;
         }
     }

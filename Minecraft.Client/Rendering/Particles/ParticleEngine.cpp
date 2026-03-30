@@ -261,8 +261,8 @@ void ParticleEngine::moveParticleInList(std::shared_ptr<Particle> particle,
                 ? 0
                 : (particle->level->dimension->id == -1 ? 1 : 2);
     for (int tt = 0; tt < TEXTURE_COUNT; tt++) {
-        AUTO_VAR(it, find(particles[l][tt][source].begin(),
-                          particles[l][tt][source].end(), particle));
+        auto it = find(particles[l][tt][source].begin(),
+                          particles[l][tt][source].end(), particle);
         if (it != particles[l][tt][source].end()) {
             (*it) = particles[l][tt][source].back();
             particles[l][tt][source].pop_back();

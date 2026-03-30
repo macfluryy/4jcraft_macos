@@ -89,11 +89,11 @@ void PistonPieceEntity::moveCollidedEntities(float progress, float amount) {
             level->getEntities(nullptr, &*aabb);
         if (!entities->empty()) {
             std::vector<std::shared_ptr<Entity> > collisionHolder;
-            for (AUTO_VAR(it, entities->begin()); it != entities->end(); it++) {
+            for (auto it = entities->begin(); it != entities->end(); it++) {
                 collisionHolder.push_back(*it);
             }
 
-            for (AUTO_VAR(it, collisionHolder.begin());
+            for (auto it = collisionHolder.begin();
                  it != collisionHolder.end(); it++) {
                 (*it)->move(amount * Facing::STEP_X[facing],
                             amount * Facing::STEP_Y[facing],

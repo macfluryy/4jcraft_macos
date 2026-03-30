@@ -320,7 +320,7 @@ void Packet::recordOutgoingPacket(std::shared_ptr<Packet> packet,
     if (packet->getId() != 51) {
         idx = 100;
     }
-    AUTO_VAR(it, outgoingStatistics.find(idx));
+    auto it = outgoingStatistics.find(idx);
 
     if (it == outgoingStatistics.end()) {
         Packet::PacketStatistics* packetStatistics = new PacketStatistics(idx);
@@ -337,7 +337,7 @@ void Packet::updatePacketStatsPIX() {
 #if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
 
-    for (AUTO_VAR(it, outgoingStatistics.begin());
+    for (auto it = outgoingStatistics.begin();
          it != outgoingStatistics.end(); it++) {
         Packet::PacketStatistics* stat = it->second;
         int64_t count = stat->getRunningCount();
@@ -444,7 +444,7 @@ std::shared_ptr<Packet> Packet::readPacket(
     // with what we have
 #if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
-    AUTO_VAR(it, statistics.find(id));
+    auto it = statistics.find(id);
 
     if (it == statistics.end()) {
         Packet::PacketStatistics* packetStatistics = new PacketStatistics(id);

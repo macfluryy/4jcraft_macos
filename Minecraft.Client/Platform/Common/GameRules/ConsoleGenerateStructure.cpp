@@ -18,7 +18,7 @@ void ConsoleGenerateStructure::getChildren(
     std::vector<GameRuleDefinition*>* children) {
     GameRuleDefinition::getChildren(children);
 
-    for (AUTO_VAR(it, m_actions.begin()); it != m_actions.end(); it++)
+    for (auto it = m_actions.begin(); it != m_actions.end(); it++)
         children->push_back(*it);
 }
 
@@ -104,7 +104,7 @@ BoundingBox* ConsoleGenerateStructure::getBoundingBox() {
         // Find the max bounds
         int maxX, maxY, maxZ;
         maxX = maxY = maxZ = 1;
-        for (AUTO_VAR(it, m_actions.begin()); it != m_actions.end(); ++it) {
+        for (auto it = m_actions.begin(); it != m_actions.end(); ++it) {
             ConsoleGenerateStructureAction* action = *it;
             maxX = std::max(maxX, action->getEndX());
             maxY = std::max(maxY, action->getEndY());
@@ -121,7 +121,7 @@ bool ConsoleGenerateStructure::postProcess(Level* level, Random* random,
                                            BoundingBox* chunkBB) {
     if (level->dimension->id != m_dimension) return false;
 
-    for (AUTO_VAR(it, m_actions.begin()); it != m_actions.end(); ++it) {
+    for (auto it = m_actions.begin(); it != m_actions.end(); ++it) {
         ConsoleGenerateStructureAction* action = *it;
 
         switch (action->getActionType()) {

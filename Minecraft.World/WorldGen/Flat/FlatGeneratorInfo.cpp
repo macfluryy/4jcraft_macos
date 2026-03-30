@@ -17,7 +17,7 @@ const std::wstring FlatGeneratorInfo::STRUCTURE_DUNGEON = L"dungeon";
 FlatGeneratorInfo::FlatGeneratorInfo() { biome = 0; }
 
 FlatGeneratorInfo::~FlatGeneratorInfo() {
-    for (AUTO_VAR(it, layers.begin()); it != layers.end(); ++it) {
+    for (auto it = layers.begin(); it != layers.end(); ++it) {
         delete *it;
     }
 }
@@ -37,7 +37,7 @@ std::vector<FlatLayerInfo*>* FlatGeneratorInfo::getLayers() { return &layers; }
 void FlatGeneratorInfo::updateLayers() {
     int y = 0;
 
-    for (AUTO_VAR(it, layers.begin()); it != layers.end(); ++it) {
+    for (auto it = layers.begin(); it != layers.end(); ++it) {
         FlatLayerInfo* layer = *it;
         layer->setStart(y);
         y += layer->getHeight();
@@ -62,7 +62,7 @@ std::vector<FlatLayerInfo*>* FlatGeneratorInfo::getLayersFromString(
 
     int yOffset = 0;
 
-    for (AUTO_VAR(it, depths.begin()); it != depths.end(); ++it) {
+    for (auto it = depths.begin(); it != depths.end(); ++it) {
         FlatLayerInfo* layer = getLayerFromString(*it, yOffset);
         if (layer == NULL) return NULL;
         result->push_back(layer);

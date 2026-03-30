@@ -122,7 +122,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
     textures->bind(
         textures->loadTexture(TN_MISC_MAPICONS));  // L"/misc/mapicons.png"));
 
-    AUTO_VAR(itEnd, data->decorations.end());
+    auto itEnd = data->decorations.end();
 
 #if defined(_LARGE_WORLDS)
     std::vector<MapItemSavedData::MapDecoration*> m_edgeIcons;
@@ -188,7 +188,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
     textures->bind(textures->loadTexture(TN_MISC_ADDITIONALMAPICONS));
 
     fIconZ = -0.04f;  // 4J - moved to -0.04 (was -0.02) to stop z fighting
-    for (AUTO_VAR(it, m_edgeIcons.begin()); it != m_edgeIcons.end(); it++) {
+    for (auto it = m_edgeIcons.begin(); it != m_edgeIcons.end(); it++) {
         MapItemSavedData::MapDecoration* dec = *it;
 
         char imgIndex = dec->img;

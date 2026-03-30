@@ -1396,7 +1396,7 @@ void MinecraftServer::broadcastStopSavingPacket() {
 
 void MinecraftServer::tick() {
     std::vector<std::wstring> toRemove;
-    for (AUTO_VAR(it, ironTimers.begin()); it != ironTimers.end(); it++) {
+    for (auto it = ironTimers.begin(); it != ironTimers.end(); it++) {
         int t = it->second;
         if (t > 0) {
             ironTimers[it->first] = t - 1;
@@ -1512,7 +1512,7 @@ void MinecraftServer::handleConsoleInput(const std::wstring& msg,
 
 void MinecraftServer::handleConsoleInputs() {
     while (consoleInput.size() > 0) {
-        AUTO_VAR(it, consoleInput.begin());
+        auto it = consoleInput.begin();
         ConsoleInput* input = *it;
         consoleInput.erase(it);
         //        commands->handleCommand(input);		// 4J - removed
@@ -1612,8 +1612,8 @@ void MinecraftServer::chunkPacketManagement_PreTick() {
 
         do {
             int longestTime = 0;
-            AUTO_VAR(playerConnectionBest, playersOrig.begin());
-            for (AUTO_VAR(it, playersOrig.begin()); it != playersOrig.end();
+            auto playerConnectionBest = playersOrig.begin();
+            for (auto it = playersOrig.begin(); it != playersOrig.end();
                  it++) {
                 int thisTime = 0;
                 INetworkPlayer* np = (*it)->getNetworkPlayer();

@@ -110,7 +110,7 @@ NetherBridgeFeature::NetherBridgeStart::NetherBridgeStart(Level* level,
     std::vector<StructurePiece*>* pendingChildren = &start->pendingChildren;
     while (!pendingChildren->empty()) {
         int pos = random->nextInt((int)pendingChildren->size());
-        AUTO_VAR(it, pendingChildren->begin() + pos);
+        auto it = pendingChildren->begin() + pos;
         StructurePiece* structurePiece = *it;
         pendingChildren->erase(it);
         structurePiece->addChildren(start, &pieces, random);

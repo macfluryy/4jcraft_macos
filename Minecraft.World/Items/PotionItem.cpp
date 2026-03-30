@@ -35,7 +35,7 @@ std::vector<MobEffectInstance*>* PotionItem::getMobEffects(
     if (!potion->hasTag() ||
         !potion->getTag()->contains(L"CustomPotionEffects")) {
         std::vector<MobEffectInstance*>* effects = NULL;
-        AUTO_VAR(it, cachedMobEffects.find(potion->getAuxValue()));
+        auto it = cachedMobEffects.find(potion->getAuxValue());
         if (it != cachedMobEffects.end()) effects = it->second;
         if (effects == NULL) {
             effects = PotionBrewing::getEffects(potion->getAuxValue(), false);
@@ -63,7 +63,7 @@ std::vector<MobEffectInstance*>* PotionItem::getMobEffects(
 
 std::vector<MobEffectInstance*>* PotionItem::getMobEffects(int auxValue) {
     std::vector<MobEffectInstance*>* effects = NULL;
-    AUTO_VAR(it, cachedMobEffects.find(auxValue));
+    auto it = cachedMobEffects.find(auxValue);
     if (it != cachedMobEffects.end()) effects = it->second;
     if (effects == NULL) {
         effects = PotionBrewing::getEffects(auxValue, false);
@@ -84,7 +84,7 @@ std::shared_ptr<ItemInstance> PotionItem::useTimeDepleted(
         std::vector<MobEffectInstance*>* effects = getMobEffects(instance);
         if (effects != NULL) {
             // for (MobEffectInstance effect : effects)
-            for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
+            for (auto it = effects->begin(); it != effects->end(); ++it) {
                 player->addEffect(new MobEffectInstance(*it));
             }
         }
@@ -176,7 +176,7 @@ bool PotionItem::hasInstantenousEffects(int itemAuxValue) {
         return false;
     }
     // for (MobEffectInstance effect : mobEffects) {
-    for (AUTO_VAR(it, mobEffects->begin()); it != mobEffects->end(); ++it) {
+    for (auto it = mobEffects->begin(); it != mobEffects->end(); ++it) {
         MobEffectInstance* effect = *it;
         if (MobEffect::effects[effect->getId()]->isInstantenous()) {
             return true;
@@ -238,7 +238,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
     attrAttrModMap modifiers;
     if (effects != NULL && !effects->empty()) {
         // for (MobEffectInstance effect : effects)
-        for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
+        for (auto it = effects->begin(); it != effects->end(); ++it) {
             MobEffectInstance* effect = *it;
             std::wstring effectString =
                 app.GetString(effect->getDescriptionId());
@@ -248,7 +248,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                 effectModifiers = mobEffect->getAttributeModifiers();
 
             if (effectModifiers != NULL && effectModifiers->size() > 0) {
-                for (AUTO_VAR(it, effectModifiers->begin());
+                for (auto it = effectModifiers->begin();
                      it != effectModifiers->end(); ++it) {
                     // 4J - anonymous modifiers added here are destroyed
                     // shortly?
@@ -318,7 +318,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
                                     eHTMLColor_5));
 
         // Add modifier descriptions
-        for (AUTO_VAR(it, modifiers.begin()); it != modifiers.end(); ++it) {
+        for (auto it = modifiers.begin(); it != modifiers.end(); ++it) {
             // 4J: Moved modifier string building to AttributeModifier
             lines->push_back(it->second->getHoverText(it->first));
         }
@@ -388,7 +388,7 @@ std::vector<std::pair<int, int> >* PotionItem::getUniquePotionValues() {
                     // http://docs.oracle.com/javase/6/docs/api/java/util/List.html#hashCode()
                     // and adding deleting to clear up as we go
                     int effectsHashCode = 1;
-                    for (AUTO_VAR(it, effects->begin()); it != effects->end();
+                    for (auto it = effects->begin(); it != effects->end();
                          ++it) {
                         MobEffectInstance* mei = *it;
                         effectsHashCode = 31 * effectsHashCode +
@@ -397,7 +397,7 @@ std::vector<std::pair<int, int> >* PotionItem::getUniquePotionValues() {
                     }
 
                     bool toAdd = true;
-                    for (AUTO_VAR(it, s_uniquePotionValues.begin());
+                    for (auto it = s_uniquePotionValues.begin();
                          it != s_uniquePotionValues.end(); ++it) {
                         // Some potions hash the same (identical effects) but
                         // are throwable so account for that

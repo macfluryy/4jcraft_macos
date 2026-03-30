@@ -62,7 +62,7 @@ bool StrongholdPieces::PieceWeight::isValid() {
 }
 
 void StrongholdPieces::resetPieces() {
-    for (AUTO_VAR(it, currentPieces.begin()); it != currentPieces.end(); it++) {
+    for (auto it = currentPieces.begin(); it != currentPieces.end(); it++) {
         delete (*it);
     }
     currentPieces.clear();
@@ -88,7 +88,7 @@ void StrongholdPieces::resetPieces() {
 bool StrongholdPieces::updatePieceWeight() {
     bool hasAnyPieces = false;
     totalWeight = 0;
-    for (AUTO_VAR(it, currentPieces.begin()); it != currentPieces.end(); it++) {
+    for (auto it = currentPieces.begin(); it != currentPieces.end(); it++) {
         PieceWeight* piece = *it;
         if (piece->maxPlaceCount > 0 &&
             piece->placeCount < piece->maxPlaceCount) {
@@ -165,7 +165,7 @@ StrongholdPieces::StrongholdPiece* StrongholdPieces::generatePieceFromSmallDoor(
         numAttempts++;
 
         int weightSelection = random->nextInt(totalWeight);
-        for (AUTO_VAR(it, currentPieces.begin()); it != currentPieces.end();
+        for (auto it = currentPieces.begin(); it != currentPieces.end();
              it++) {
             PieceWeight* piece = *it;
             weightSelection -= piece->weight;
@@ -214,7 +214,7 @@ StructurePiece* StrongholdPieces::generateAndAddPiece(
         if (startPiece->m_level->getOriginalSaveVersion() >=
                 SAVE_FILE_VERSION_MOVED_STRONGHOLD &&
             !startPiece->m_level->getLevelData()->getHasStrongholdEndPortal()) {
-            for (AUTO_VAR(it, currentPieces.begin()); it != currentPieces.end();
+            for (auto it = currentPieces.begin(); it != currentPieces.end();
                  it++) {
                 PieceWeight* piece = *it;
 

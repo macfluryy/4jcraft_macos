@@ -1929,7 +1929,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
 }
 
 Tutorial::~Tutorial() {
-    for (AUTO_VAR(it, m_globalConstraints.begin());
+    for (auto it = m_globalConstraints.begin();
          it != m_globalConstraints.end(); ++it) {
         delete (*it);
     }
@@ -1939,11 +1939,11 @@ Tutorial::~Tutorial() {
         delete (*it).second;
     }
     for (unsigned int i = 0; i < e_Tutorial_State_Max; ++i) {
-        for (AUTO_VAR(it, activeTasks[i].begin()); it < activeTasks[i].end();
+        for (auto it = activeTasks[i].begin(); it < activeTasks[i].end();
              ++it) {
             delete (*it);
         }
-        for (AUTO_VAR(it, hints[i].begin()); it < hints[i].end(); ++it) {
+        for (auto it = hints[i].begin(); it < hints[i].end(); ++it) {
             delete (*it);
         }
 
@@ -1968,7 +1968,7 @@ void Tutorial::setCompleted(int completableId) {
     // }
 
     int completableIndex = -1;
-    for (AUTO_VAR(it, s_completableTasks.begin());
+    for (auto it = s_completableTasks.begin();
          it < s_completableTasks.end(); ++it) {
         ++completableIndex;
         if (*it == completableId) {
@@ -1996,7 +1996,7 @@ bool Tutorial::getCompleted(int completableId) {
     // }
 
     int completableIndex = -1;
-    for (AUTO_VAR(it, s_completableTasks.begin());
+    for (auto it = s_completableTasks.begin();
          it < s_completableTasks.end(); ++it) {
         ++completableIndex;
         if (*it == completableId) {
@@ -2079,7 +2079,7 @@ void Tutorial::tick() {
     bool taskChanged = false;
 
     for (unsigned int state = 0; state < e_Tutorial_State_Max; ++state) {
-        AUTO_VAR(it, constraintsToRemove[state].begin());
+        auto it = constraintsToRemove[state].begin();
         while (it < constraintsToRemove[state].end()) {
             ++(*it).second;
             if ((*it).second > m_iTutorialConstraintDelayRemoveTicks) {
@@ -2152,7 +2152,7 @@ void Tutorial::tick() {
     }
 
     // Check constraints
-    for (AUTO_VAR(it, m_globalConstraints.begin());
+    for (auto it = m_globalConstraints.begin();
          it < m_globalConstraints.end(); ++it) {
         TutorialConstraint* constraint = *it;
         constraint->tick(m_iPad);
@@ -2167,7 +2167,7 @@ void Tutorial::tick() {
             m_isFullTutorial || app.GetGameSettings(m_iPad, eGameSetting_Hints);
 
         if (hintsOn) {
-            for (AUTO_VAR(it, hints[m_CurrentState].begin());
+            for (auto it = hints[m_CurrentState].begin();
                  it < hints[m_CurrentState].end(); ++it) {
                 TutorialHint* hint = *it;
                 hintNeeded = hint->tick();
@@ -2195,7 +2195,7 @@ void Tutorial::tick() {
             constraintChanged = true;
             currentFailedConstraint[m_CurrentState] = NULL;
         }
-        for (AUTO_VAR(it, constraints[m_CurrentState].begin());
+        for (auto it = constraints[m_CurrentState].begin();
              it < constraints[m_CurrentState].end(); ++it) {
             TutorialConstraint* constraint = *it;
             if (!constraint->isConstraintSatisfied(m_iPad) &&
@@ -2210,7 +2210,7 @@ void Tutorial::tick() {
         currentFailedConstraint[m_CurrentState] == NULL) {
         // Update tasks
         bool isCurrentTask = true;
-        AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+        auto it = activeTasks[m_CurrentState].begin();
         while (activeTasks[m_CurrentState].size() > 0 &&
                it < activeTasks[m_CurrentState].end()) {
             TutorialTask* task = *it;
@@ -2233,9 +2233,9 @@ void Tutorial::tick() {
                                 // 4J Stu - Move the delayed constraints to the
                                 // gameplay state so that they are in effect for
                                 // a bit longer
-                                AUTO_VAR(itCon,
+                                auto itCon =
                                          constraintsToRemove[m_CurrentState]
-                                             .begin());
+                                             .begin();
                                 while (
                                     itCon !=
                                     constraintsToRemove[m_CurrentState].end()) {
@@ -2259,9 +2259,9 @@ void Tutorial::tick() {
                             }
                                 // Fall through the the normal complete state
                             case e_Tutorial_Completion_Complete_State:
-                                for (AUTO_VAR(
-                                         itRem,
-                                         activeTasks[m_CurrentState].begin());
+                                for (auto
+                                         itRem =
+                                         activeTasks[m_CurrentState].begin();
                                      itRem < activeTasks[m_CurrentState].end();
                                      ++itRem) {
                                     delete (*itRem);
@@ -2273,9 +2273,9 @@ void Tutorial::tick() {
                                     activeTasks[m_CurrentState].at(
                                         activeTasks[m_CurrentState].size() - 1);
                                 activeTasks[m_CurrentState].pop_back();
-                                for (AUTO_VAR(
-                                         itRem,
-                                         activeTasks[m_CurrentState].begin());
+                                for (auto
+                                         itRem =
+                                         activeTasks[m_CurrentState].begin();
                                      itRem < activeTasks[m_CurrentState].end();
                                      ++itRem) {
                                     delete (*itRem);
@@ -2433,7 +2433,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         if (!message->m_messageString.empty()) {
             text = message->m_messageString;
         } else {
-            AUTO_VAR(it, messages.find(message->m_messageId));
+            auto it = messages.find(message->m_messageId);
             if (it != messages.end() && it->second != NULL) {
                 TutorialMessage* messageString = it->second;
                 text = std::wstring(messageString->getMessageForDisplay());
@@ -2457,7 +2457,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         if (!message->m_promptString.empty()) {
             text.append(message->m_promptString);
         } else if (message->m_promptId >= 0) {
-            AUTO_VAR(it, messages.find(message->m_promptId));
+            auto it = messages.find(message->m_promptId);
             if (it != messages.end() && it->second != NULL) {
                 TutorialMessage* prompt = it->second;
                 text.append(prompt->getMessageForDisplay());
@@ -2555,7 +2555,7 @@ void Tutorial::showTutorialPopup(bool show) {
 
 void Tutorial::useItemOn(Level* level, std::shared_ptr<ItemInstance> item,
                          int x, int y, int z, bool bTestUseOnly) {
-    for (AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+    for (auto it = activeTasks[m_CurrentState].begin();
          it < activeTasks[m_CurrentState].end(); ++it) {
         TutorialTask* task = *it;
         task->useItemOn(level, item, x, y, z, bTestUseOnly);
@@ -2564,7 +2564,7 @@ void Tutorial::useItemOn(Level* level, std::shared_ptr<ItemInstance> item,
 
 void Tutorial::useItemOn(std::shared_ptr<ItemInstance> item,
                          bool bTestUseOnly) {
-    for (AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+    for (auto it = activeTasks[m_CurrentState].begin();
          it < activeTasks[m_CurrentState].end(); ++it) {
         TutorialTask* task = *it;
         task->useItem(item, bTestUseOnly);
@@ -2572,7 +2572,7 @@ void Tutorial::useItemOn(std::shared_ptr<ItemInstance> item,
 }
 
 void Tutorial::completeUsingItem(std::shared_ptr<ItemInstance> item) {
-    for (AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+    for (auto it = activeTasks[m_CurrentState].begin();
          it < activeTasks[m_CurrentState].end(); ++it) {
         TutorialTask* task = *it;
         task->completeUsingItem(item);
@@ -2581,7 +2581,7 @@ void Tutorial::completeUsingItem(std::shared_ptr<ItemInstance> item) {
     // Fix for #46922 - TU5: UI: Player receives a reminder that he is hungry
     // while "hunger bar" is full (triggered in split-screen mode)
     if (m_CurrentState != e_Tutorial_State_Gameplay) {
-        for (AUTO_VAR(it, activeTasks[e_Tutorial_State_Gameplay].begin());
+        for (auto it = activeTasks[e_Tutorial_State_Gameplay].begin();
              it < activeTasks[e_Tutorial_State_Gameplay].end(); ++it) {
             TutorialTask* task = *it;
             task->completeUsingItem(item);
@@ -2592,7 +2592,7 @@ void Tutorial::completeUsingItem(std::shared_ptr<ItemInstance> item) {
 void Tutorial::startDestroyBlock(std::shared_ptr<ItemInstance> item,
                                  Tile* tile) {
     int hintNeeded = -1;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->startDestroyBlock(item, tile);
@@ -2607,7 +2607,7 @@ void Tutorial::startDestroyBlock(std::shared_ptr<ItemInstance> item,
 
 void Tutorial::destroyBlock(Tile* tile) {
     int hintNeeded = -1;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->destroyBlock(tile);
@@ -2623,7 +2623,7 @@ void Tutorial::destroyBlock(Tile* tile) {
 void Tutorial::attack(std::shared_ptr<Player> player,
                       std::shared_ptr<Entity> entity) {
     int hintNeeded = -1;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->attack(player->inventory->getSelected(), entity);
@@ -2638,7 +2638,7 @@ void Tutorial::attack(std::shared_ptr<Player> player,
 
 void Tutorial::itemDamaged(std::shared_ptr<ItemInstance> item) {
     int hintNeeded = -1;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->itemDamaged(item);
@@ -2654,7 +2654,7 @@ void Tutorial::itemDamaged(std::shared_ptr<ItemInstance> item) {
 void Tutorial::handleUIInput(int iAction) {
     if (m_hintDisplayed) return;
 
-    // for(AUTO_VAR(it, activeTasks[m_CurrentState].begin()); it <
+    // for(auto it = activeTasks[m_CurrentState].begin(); it <
     // activeTasks[m_CurrentState].end(); ++it)
     //{
     //	TutorialTask *task = *it;
@@ -2667,7 +2667,7 @@ void Tutorial::handleUIInput(int iAction) {
 void Tutorial::createItemSelected(std::shared_ptr<ItemInstance> item,
                                   bool canMake) {
     int hintNeeded = -1;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->createItemSelected(item, canMake);
@@ -2682,7 +2682,7 @@ void Tutorial::createItemSelected(std::shared_ptr<ItemInstance> item,
 
 void Tutorial::onCrafted(std::shared_ptr<ItemInstance> item) {
     for (unsigned int state = 0; state < e_Tutorial_State_Max; ++state) {
-        for (AUTO_VAR(it, activeTasks[state].begin());
+        for (auto it = activeTasks[state].begin();
              it < activeTasks[state].end(); ++it) {
             TutorialTask* task = *it;
             task->onCrafted(item);
@@ -2695,7 +2695,7 @@ void Tutorial::onTake(std::shared_ptr<ItemInstance> item,
                       unsigned int invItemCountThisAux) {
     if (!m_hintDisplayed) {
         bool hintNeeded = false;
-        for (AUTO_VAR(it, hints[m_CurrentState].begin());
+        for (auto it = hints[m_CurrentState].begin();
              it < hints[m_CurrentState].end(); ++it) {
             TutorialHint* hint = *it;
             hintNeeded = hint->onTake(item);
@@ -2706,7 +2706,7 @@ void Tutorial::onTake(std::shared_ptr<ItemInstance> item,
     }
 
     for (unsigned int state = 0; state < e_Tutorial_State_Max; ++state) {
-        for (AUTO_VAR(it, activeTasks[state].begin());
+        for (auto it = activeTasks[state].begin();
              it < activeTasks[state].end(); ++it) {
             TutorialTask* task = *it;
             task->onTake(item, invItemCountAnyAux, invItemCountThisAux);
@@ -2738,7 +2738,7 @@ void Tutorial::onLookAt(int id, int iData) {
     if (m_hintDisplayed) return;
 
     bool hintNeeded = false;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->onLookAt(id, iData);
@@ -2764,7 +2764,7 @@ void Tutorial::onLookAtEntity(std::shared_ptr<Entity> entity) {
     if (m_hintDisplayed) return;
 
     bool hintNeeded = false;
-    for (AUTO_VAR(it, hints[m_CurrentState].begin());
+    for (auto it = hints[m_CurrentState].begin();
          it < hints[m_CurrentState].end(); ++it) {
         TutorialHint* hint = *it;
         hintNeeded = hint->onLookAtEntity(entity->GetType());
@@ -2778,7 +2778,7 @@ void Tutorial::onLookAtEntity(std::shared_ptr<Entity> entity) {
         changeTutorialState(e_Tutorial_State_Horse);
     }
 
-    for (AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+    for (auto it = activeTasks[m_CurrentState].begin();
          it != activeTasks[m_CurrentState].end(); ++it) {
         (*it)->onLookAtEntity(entity);
     }
@@ -2798,14 +2798,14 @@ void Tutorial::onRideEntity(std::shared_ptr<Entity> entity) {
         }
     }
 
-    for (AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+    for (auto it = activeTasks[m_CurrentState].begin();
          it != activeTasks[m_CurrentState].end(); ++it) {
         (*it)->onRideEntity(entity);
     }
 }
 
 void Tutorial::onEffectChanged(MobEffect* effect, bool bRemoved) {
-    for (AUTO_VAR(it, activeTasks[m_CurrentState].begin());
+    for (auto it = activeTasks[m_CurrentState].begin();
          it < activeTasks[m_CurrentState].end(); ++it) {
         TutorialTask* task = *it;
         task->onEffectChanged(effect, bRemoved);
@@ -2815,7 +2815,7 @@ void Tutorial::onEffectChanged(MobEffect* effect, bool bRemoved) {
 bool Tutorial::canMoveToPosition(double xo, double yo, double zo, double xt,
                                  double yt, double zt) {
     bool allowed = true;
-    for (AUTO_VAR(it, constraints[m_CurrentState].begin());
+    for (auto it = constraints[m_CurrentState].begin();
          it < constraints[m_CurrentState].end(); ++it) {
         TutorialConstraint* constraint = *it;
         if (!constraint->isConstraintSatisfied(m_iPad) &&
@@ -2837,7 +2837,7 @@ bool Tutorial::isInputAllowed(int mapping) {
         return true;
 
     bool allowed = true;
-    for (AUTO_VAR(it, constraints[m_CurrentState].begin());
+    for (auto it = constraints[m_CurrentState].begin();
          it < constraints[m_CurrentState].end(); ++it) {
         TutorialConstraint* constraint = *it;
         if (constraint->isMappingConstrained(m_iPad, mapping)) {
@@ -2852,7 +2852,7 @@ std::vector<TutorialTask*>* Tutorial::getTasks() { return &tasks; }
 
 unsigned int Tutorial::getCurrentTaskIndex() {
     unsigned int index = 0;
-    for (AUTO_VAR(it, tasks.begin()); it < tasks.end(); ++it) {
+    for (auto it = tasks.begin(); it < tasks.end(); ++it) {
         if (*it == currentTask[e_Tutorial_State_Gameplay]) break;
 
         ++index;
@@ -2875,7 +2875,7 @@ void Tutorial::RemoveConstraint(TutorialConstraint* c,
 
     if (c->getQueuedForRemoval()) {
         // If it is already queued for removal, remove it on the next tick
-        /*for(AUTO_VAR(it, constraintsToRemove[m_CurrentState].begin()); it <
+        /*for(auto it = constraintsToRemove[m_CurrentState].begin(); it <
         constraintsToRemove[m_CurrentState].end(); ++it)
         {
         if( it->first == c )
@@ -2889,7 +2889,7 @@ void Tutorial::RemoveConstraint(TutorialConstraint* c,
         constraintsToRemove[m_CurrentState].push_back(
             std::pair<TutorialConstraint*, unsigned char>(c, 0));
     } else {
-        for (AUTO_VAR(it, constraintsToRemove[m_CurrentState].begin());
+        for (auto it = constraintsToRemove[m_CurrentState].begin();
              it < constraintsToRemove[m_CurrentState].end(); ++it) {
             if (it->first == c) {
                 constraintsToRemove[m_CurrentState].erase(it);
@@ -2897,8 +2897,8 @@ void Tutorial::RemoveConstraint(TutorialConstraint* c,
             }
         }
 
-        AUTO_VAR(it, find(constraints[m_CurrentState].begin(),
-                          constraints[m_CurrentState].end(), c));
+        auto it = find(constraints[m_CurrentState].begin(),
+                          constraints[m_CurrentState].end(), c);
         if (it != constraints[m_CurrentState].end())
             constraints[m_CurrentState].erase(
                 find(constraints[m_CurrentState].begin(),
@@ -2990,7 +2990,7 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
         m_UIScene = scene;
 
         if (m_CurrentState != newState) {
-            for (AUTO_VAR(it, activeTasks[newState].begin());
+            for (auto it = activeTasks[newState].begin();
                  it < activeTasks[newState].end(); ++it) {
                 TutorialTask* task = *it;
                 task->onStateChange(newState);

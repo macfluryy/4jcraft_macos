@@ -75,7 +75,7 @@ BiomeCache::~BiomeCache() {
     // 4J Stu - Delete source?
     // delete source;
 
-    for (AUTO_VAR(it, all.begin()); it != all.end(); ++it) {
+    for (auto it = all.begin(); it != all.end(); ++it) {
         delete (*it);
     }
     DeleteCriticalSection(&m_CS);
@@ -87,7 +87,7 @@ BiomeCache::Block* BiomeCache::getBlockAt(int x, int z) {
     z >>= ZONE_SIZE_BITS;
     int64_t slot =
         (((int64_t)x) & 0xffffffffl) | ((((int64_t)z) & 0xffffffffl) << 32l);
-    AUTO_VAR(it, cached.find(slot));
+    auto it = cached.find(slot);
     Block* block = NULL;
     if (it == cached.end()) {
         MemSect(48);
@@ -122,7 +122,7 @@ void BiomeCache::update() {
     if (utime > DECAY_TIME / 4 || utime < 0) {
         lastUpdateTime = now;
 
-        for (AUTO_VAR(it, all.begin()); it != all.end();) {
+        for (auto it = all.begin(); it != all.end();) {
             Block* block = *it;
             int64_t time = now - block->lastUse;
             if (time > DECAY_TIME || time < 0) {

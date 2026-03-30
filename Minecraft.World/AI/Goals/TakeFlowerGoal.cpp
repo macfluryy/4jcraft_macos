@@ -32,7 +32,7 @@ bool TakeFlowerGoal::canUse() {
     }
 
     // for (Entity e : golems)
-    for (AUTO_VAR(it, golems->begin()); it != golems->end(); ++it) {
+    for (auto it = golems->begin(); it != golems->end(); ++it) {
         std::shared_ptr<VillagerGolem> vg =
             std::dynamic_pointer_cast<VillagerGolem>(*it);
         if (vg->getOfferFlowerTick() > 0) {

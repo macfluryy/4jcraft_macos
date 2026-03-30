@@ -83,8 +83,8 @@ bool EnderCrystal::hurt(DamageSource* source, float damage) {
                 std::vector<std::shared_ptr<Entity> > entities =
                     level->getAllEntities();
                 std::shared_ptr<EnderDragon> dragon = nullptr;
-                AUTO_VAR(itEnd, entities.end());
-                for (AUTO_VAR(it, entities.begin()); it != itEnd; it++) {
+                auto itEnd = entities.end();
+                for (auto it = entities.begin(); it != itEnd; it++) {
                     std::shared_ptr<Entity> e = *it;  // entities->at(i);
                     dragon = std::dynamic_pointer_cast<EnderDragon>(e);
                     if (dragon != NULL) {

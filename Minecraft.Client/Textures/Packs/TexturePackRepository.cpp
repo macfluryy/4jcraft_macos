@@ -125,7 +125,7 @@ TexturePackRepository::getTexturePackIdNames() {
     std::vector<std::pair<std::uint32_t, std::wstring> >* packList =
         new std::vector<std::pair<std::uint32_t, std::wstring> >();
 
-    for (AUTO_VAR(it, texturePacks->begin()); it != texturePacks->end(); ++it) {
+    for (auto it = texturePacks->begin(); it != texturePacks->end(); ++it) {
         TexturePack* pack = *it;
         packList->push_back(std::pair<std::uint32_t, std::wstring>(
             pack->getId(), pack->getName()));
@@ -142,7 +142,7 @@ bool TexturePackRepository::selectTexturePackById(std::uint32_t id) {
     //  pack is installed
     app.SetRequiredTexturePackID(id);
 
-    AUTO_VAR(it, cacheById.find(id));
+    auto it = cacheById.find(id);
     if (it != cacheById.end()) {
         TexturePack* newPack = it->second;
         if (newPack != selected) {
@@ -177,7 +177,7 @@ bool TexturePackRepository::selectTexturePackById(std::uint32_t id) {
 }
 
 TexturePack* TexturePackRepository::getTexturePackById(std::uint32_t id) {
-    AUTO_VAR(it, cacheById.find(id));
+    auto it = cacheById.find(id);
     if (it != cacheById.end()) {
         return it->second;
     }
@@ -213,19 +213,19 @@ TexturePack* TexturePackRepository::addTexturePackFromDLC(DLCPack* dlcPack,
 }
 
 void TexturePackRepository::clearInvalidTexturePacks() {
-    for (AUTO_VAR(it, m_texturePacksToDelete.begin());
+    for (auto it = m_texturePacksToDelete.begin();
          it != m_texturePacksToDelete.end(); ++it) {
         delete *it;
     }
 }
 
 void TexturePackRepository::removeTexturePackById(std::uint32_t id) {
-    AUTO_VAR(it, cacheById.find(id));
+    auto it = cacheById.find(id);
     if (it != cacheById.end()) {
         TexturePack* oldPack = it->second;
 
-        AUTO_VAR(it2,
-                 find(texturePacks->begin(), texturePacks->end(), oldPack));
+        auto it2 =
+                 find(texturePacks->begin(), texturePacks->end(), oldPack);
         if (it2 != texturePacks->end()) {
             texturePacks->erase(it2);
             if (lastSelected == oldPack) {
@@ -264,7 +264,7 @@ TexturePack* TexturePackRepository::getTexturePackByIndex(unsigned int index) {
 
 unsigned int TexturePackRepository::getTexturePackIndex(std::uint32_t id) {
     int currentIndex = 0;
-    for (AUTO_VAR(it, texturePacks->begin()); it != texturePacks->end(); ++it) {
+    for (auto it = texturePacks->begin(); it != texturePacks->end(); ++it) {
         TexturePack* pack = *it;
         if (pack->getId() == id) break;
         ++currentIndex;
