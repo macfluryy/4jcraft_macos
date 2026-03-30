@@ -1,4 +1,4 @@
-name: Check Format (Linux, x86-64)
+name: Format Check (Linux, x86-64)
 
 on: [push, pull_request]
   paths:
