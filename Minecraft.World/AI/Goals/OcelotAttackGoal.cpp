@@ -20,13 +20,13 @@ OcelotAttackGoal::OcelotAttackGoal(Mob* mob) {
 
 bool OcelotAttackGoal::canUse() {
     std::shared_ptr<LivingEntity> bestTarget = mob->getTarget();
-    if (bestTarget == NULL) return false;
+    if (bestTarget == nullptr) return false;
     target = std::weak_ptr<LivingEntity>(bestTarget);
     return true;
 }
 
 bool OcelotAttackGoal::canContinueToUse() {
-    if (target.lock() == NULL || !target.lock()->isAlive()) return false;
+    if (target.lock() == nullptr || !target.lock()->isAlive()) return false;
     if (mob->distanceToSqr(target.lock()) > 15 * 15) return false;
     return !mob->getNavigation()->isDone() || canUse();
 }

@@ -26,7 +26,7 @@ ExplodePacket::ExplodePacket(
     this->r = r;
     m_bKnockbackOnly = knockBackOnly;
 
-    if (toBlow != NULL) {
+    if (toBlow != nullptr) {
         this->toBlow.assign(toBlow->begin(), toBlow->end());
         // for( auto it = toBlow->begin(); it != toBlow->end(); it++ )
         //{
@@ -34,7 +34,7 @@ ExplodePacket::ExplodePacket(
         // }
     }
 
-    if (knockback != NULL) {
+    if (knockback != nullptr) {
         knockbackX = (float)knockback->x;
         knockbackY = (float)knockback->y;
         knockbackZ = (float)knockback->z;

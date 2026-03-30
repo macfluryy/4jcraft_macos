@@ -40,7 +40,7 @@ bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile* saveFile,
                                                const std::wstring& levelId) {
     // check if there is old file format level data
     LevelData* levelData = getDataTagFor(saveFile, levelId);
-    if (levelData == NULL || levelData->getVersion() != 0) {
+    if (levelData == nullptr || levelData->getVersion() != 0) {
         delete levelData;
         return false;
     }
@@ -52,7 +52,7 @@ bool McRegionLevelStorageSource::isConvertible(ConsoleSaveFile* saveFile,
 bool McRegionLevelStorageSource::requiresConversion(
     ConsoleSaveFile* saveFile, const std::wstring& levelId) {
     LevelData* levelData = getDataTagFor(saveFile, levelId);
-    if (levelData == NULL || levelData->getVersion() != 0) {
+    if (levelData == nullptr || levelData->getVersion() != 0) {
         delete levelData;
         return false;
     }

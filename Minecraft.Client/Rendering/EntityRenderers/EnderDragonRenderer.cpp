@@ -102,7 +102,7 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
         std::dynamic_pointer_cast<EnderDragon>(_mob);
     BossMobGuiInfo::setBossHealth(mob, false);
     MobRenderer::render(mob, x, y, z, rot, a);
-    if (mob->nearestCrystal != NULL) {
+    if (mob->nearestCrystal != nullptr) {
         float tt = mob->nearestCrystal->time + a;
         float hh = sin(tt * 0.2f) / 2 + 0.5f;
         hh = (hh * hh + hh) * 0.2f;

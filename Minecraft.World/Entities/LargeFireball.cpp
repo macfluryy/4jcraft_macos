@@ -22,7 +22,7 @@ LargeFireball::LargeFireball(Level* level, std::shared_ptr<LivingEntity> mob,
 
 void LargeFireball::onHit(HitResult* res) {
     if (!level->isClientSide) {
-        if (res->entity != NULL) {
+        if (res->entity != nullptr) {
             DamageSource* damageSource = DamageSource::fireball(
                 std::dynamic_pointer_cast<Fireball>(shared_from_this()), owner);
             res->entity->hurt(damageSource, 6);

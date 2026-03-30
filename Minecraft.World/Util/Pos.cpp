@@ -20,9 +20,9 @@ Pos::Pos(Pos* position) {
 // public boolean equals(Object other)
 bool Pos::equals(void* other) {
     // TODO 4J Stu I cannot do a dynamic_cast from a void pointer
-    // If I cast it to a Pos then do a dynamic_cast will it still return NULL if
+    // If I cast it to a Pos then do a dynamic_cast will it still return nullptr if
     // it wasn't originally a Pos?
-    if (!(dynamic_cast<Pos*>((Pos*)other) != NULL)) {
+    if (!(dynamic_cast<Pos*>((Pos*)other) != nullptr)) {
         return false;
     }
 

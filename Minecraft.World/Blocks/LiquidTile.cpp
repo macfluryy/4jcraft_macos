@@ -379,5 +379,5 @@ Icon* LiquidTile::getTexture(const std::wstring& name) {
     if (name.compare(TEXTURE_WATER_FLOW) == 0) return Tile::water->icons[1];
     if (name.compare(TEXTURE_LAVA_STILL) == 0) return Tile::lava->icons[0];
     if (name.compare(TEXTURE_LAVA_FLOW) == 0) return Tile::lava->icons[1];
-    return NULL;
+    return nullptr;
 }

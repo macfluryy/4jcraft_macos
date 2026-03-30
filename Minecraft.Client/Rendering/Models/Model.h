@@ -30,7 +30,7 @@ public:
     virtual ModelPart* getRandomModelPart(Random random) {
         return cubes.at(random.nextInt((int)cubes.size()));
     }
-    virtual ModelPart* AddOrRetrievePart(SKIN_BOX* pBox) { return NULL; }
+    virtual ModelPart* AddOrRetrievePart(SKIN_BOX* pBox) { return nullptr; }
 
     void setMapTex(std::wstring id, int x, int y);
     TexOffs* getMapTex(std::wstring id);

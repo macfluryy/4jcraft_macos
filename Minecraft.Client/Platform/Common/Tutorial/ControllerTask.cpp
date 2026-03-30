@@ -14,7 +14,7 @@ ControllerTask::ControllerTask(Tutorial* tutorial, int descriptionId,
                                int iCompletionMaskACount,
                                int iSouthpawMappings[],
                                unsigned int uiSouthpawMappingsCount)
-    : TutorialTask(tutorial, descriptionId, enablePreCompletion, NULL,
+    : TutorialTask(tutorial, descriptionId, enablePreCompletion, nullptr,
                    showMinimumTime) {
     for (unsigned int i = 0; i < mappingsLength; ++i) {
         constraints.push_back(new InputConstraint(mappings[i]));

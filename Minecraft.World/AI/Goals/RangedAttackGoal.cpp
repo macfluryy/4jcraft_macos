@@ -46,7 +46,7 @@ RangedAttackGoal::RangedAttackGoal(RangedAttackMob* rangedMob, Mob* mob,
 
 bool RangedAttackGoal::canUse() {
     std::shared_ptr<LivingEntity> bestTarget = mob->getTarget();
-    if (bestTarget == NULL) return false;
+    if (bestTarget == nullptr) return false;
     target = std::weak_ptr<LivingEntity>(bestTarget);
     return true;
 }
@@ -64,7 +64,7 @@ void RangedAttackGoal::stop() {
 void RangedAttackGoal::tick() {
     // 4J: It's possible the target has gone since canUse selected it, don't do
     // tick if target is null
-    if (target.lock() == NULL) return;
+    if (target.lock() == nullptr) return;
 
     double targetDistSqr = mob->distanceToSqr(
         target.lock()->x, target.lock()->bb.y0, target.lock()->z);

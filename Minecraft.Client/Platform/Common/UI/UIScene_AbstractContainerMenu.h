@@ -56,7 +56,7 @@ protected:
     virtual bool isSlotEmpty(ESceneSection eSection, int iSlot);
     virtual void adjustPointerForSafeZone();
 
-    virtual UIControl* getSection(ESceneSection eSection) { return NULL; }
+    virtual UIControl* getSection(ESceneSection eSection) { return nullptr; }
     virtual int GetBaseSlotCount() { return 0; }
 
 public:

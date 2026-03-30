@@ -42,7 +42,7 @@ bool XboxStructureActionPlaceSpawner::placeSpawnerInLevel(
     int worldZ = structure->getWorldZ(m_x, m_z);
 
     if (chunkBB->isInside(worldX, worldY, worldZ)) {
-        if (level->getTileEntity(worldX, worldY, worldZ) != NULL) {
+        if (level->getTileEntity(worldX, worldY, worldZ) != nullptr) {
             // Remove the current tile entity
             level->removeTileEntity(worldX, worldY, worldZ);
             level->setTileAndData(worldX, worldY, worldZ, 0, 0,
@@ -61,7 +61,7 @@ bool XboxStructureActionPlaceSpawner::placeSpawnerInLevel(
             L"(%d,%d,%d)\n",
             m_entityId.c_str(), worldX, worldY, worldZ);
 #endif
-        if (entity != NULL) {
+        if (entity != nullptr) {
             entity->setEntityId(m_entityId);
         }
         return true;

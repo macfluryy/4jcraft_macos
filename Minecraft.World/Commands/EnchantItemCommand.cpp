@@ -22,15 +22,15 @@ void EnchantItemCommand::execute(std::shared_ptr<CommandSender> source,
 
     std::shared_ptr<ServerPlayer> player = getPlayer(uid);
 
-    if (player == NULL) return;
+    if (player == nullptr) return;
 
     std::shared_ptr<ItemInstance> selectedItem = player->getSelectedItem();
 
-    if (selectedItem == NULL) return;
+    if (selectedItem == nullptr) return;
 
     Enchantment* e = Enchantment::enchantments[enchantmentId];
 
-    if (e == NULL) return;
+    if (e == nullptr) return;
     if (!e->canEnchant(selectedItem)) return;
 
     if (enchantmentLevel < e->getMinLevel())
@@ -41,12 +41,12 @@ void EnchantItemCommand::execute(std::shared_ptr<CommandSender> source,
     if (selectedItem->hasTag()) {
         ListTag<CompoundTag>* enchantmentTags =
             selectedItem->getEnchantmentTags();
-        if (enchantmentTags != NULL) {
+        if (enchantmentTags != nullptr) {
             for (int i = 0; i < enchantmentTags->size(); i++) {
                 int type = enchantmentTags->get(i)->getShort(
                     (wchar_t*)ItemInstance::TAG_ENCH_ID);
 
-                if (Enchantment::enchantments[type] != NULL) {
+                if (Enchantment::enchantments[type] != nullptr) {
                     Enchantment* other = Enchantment::enchantments[type];
                     if (!other->isCompatibleWith(e)) {
                         return;
@@ -69,7 +69,7 @@ void EnchantItemCommand::execute(std::shared_ptr<CommandSender> source,
 
 std::shared_ptr<GameCommandPacket> EnchantItemCommand::preparePacket(
     std::shared_ptr<Player> player, int enchantmentId, int enchantmentLevel) {
-    if (player == NULL) return nullptr;
+    if (player == nullptr) return nullptr;
 
     ByteArrayOutputStream baos;
     DataOutputStream dos(&baos);

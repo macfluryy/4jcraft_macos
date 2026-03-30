@@ -40,7 +40,7 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
     Vec3 to(xa * range, ya * range, za * range);
     to = to.add(from.x, from.y, from.z);
     HitResult* hr = level->clip(&from, &to, true);
-    if (hr == NULL) return false;
+    if (hr == nullptr) return false;
 
     if (hr->type == HitResult::TILE) {
         delete hr;
@@ -77,7 +77,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     Vec3 to(xa * range, ya * range, za * range);
     to = to.add(from.x, from.y, from.z);
     HitResult* hr = level->clip(&from, &to, true);
-    if (hr == NULL) return itemInstance;
+    if (hr == nullptr) return itemInstance;
 
     // check entity collision
     Vec3 b = player->getViewVector(a);

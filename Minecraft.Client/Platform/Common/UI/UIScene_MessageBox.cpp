@@ -47,7 +47,7 @@ UIScene_MessageBox::UIScene_MessageBox(int iPad, void* initData,
 
     out = IggyPlayerCallMethodRS(getMovie(), &result,
                                  IggyPlayerRootPath(getMovie()),
-                                 m_funcAutoResize, 0, NULL);
+                                 m_funcAutoResize, 0, nullptr);
 
     m_Func = param->Func;
     m_lpParam = param->lpParam;
@@ -89,7 +89,7 @@ void UIScene_MessageBox::handleReload() {
 
     out = IggyPlayerCallMethodRS(getMovie(), &result,
                                  IggyPlayerRootPath(getMovie()),
-                                 m_funcAutoResize, 0, NULL);
+                                 m_funcAutoResize, 0, nullptr);
 }
 
 void UIScene_MessageBox::handleInput(int iPad, int key, bool repeat,

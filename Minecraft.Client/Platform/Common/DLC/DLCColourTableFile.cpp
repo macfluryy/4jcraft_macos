@@ -7,11 +7,11 @@
 
 DLCColourTableFile::DLCColourTableFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_ColourTable, path) {
-    m_colourTable = NULL;
+    m_colourTable = nullptr;
 }
 
 DLCColourTableFile::~DLCColourTableFile() {
-    if (m_colourTable != NULL) {
+    if (m_colourTable != nullptr) {
         app.DebugPrintf("Deleting DLCColourTableFile data\n");
         delete m_colourTable;
     }

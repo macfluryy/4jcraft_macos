@@ -52,7 +52,7 @@ bool MoveEntityPacket::canBeInvalidated() { return true; }
 bool MoveEntityPacket::isInvalidatedBy(std::shared_ptr<Packet> packet) {
     std::shared_ptr<MoveEntityPacket> target =
         std::dynamic_pointer_cast<MoveEntityPacket>(packet);
-    return target != NULL && target->id == id;
+    return target != nullptr && target->id == id;
 }
 
 MoveEntityPacket::PosRot::PosRot() { hasRot = true; }

@@ -10,8 +10,8 @@
 
 CactusTile::CactusTile(int id) : Tile(id, Material::cactus, false) {
     setTicking(true);
-    iconTop = NULL;
-    iconBottom = NULL;
+    iconTop = nullptr;
+    iconBottom = nullptr;
 }
 
 void CactusTile::tick(Level* level, int x, int y, int z, Random* random) {

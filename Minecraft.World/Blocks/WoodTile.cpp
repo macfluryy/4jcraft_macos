@@ -21,7 +21,7 @@ const std::wstring WoodTile::TEXTURE_NAMES[] = {L"oak", L"spruce", L"birch",
 // 		"oak", "spruce", "birch", "jungle"
 // 	};
 
-WoodTile::WoodTile(int id) : Tile(id, Material::wood) { icons = NULL; }
+WoodTile::WoodTile(int id) : Tile(id, Material::wood) { icons = nullptr; }
 
 unsigned int WoodTile::getDescriptionId(int iData) {
     if (iData < 0 || iData >= WOOD_NAMES_LENGTH) iData = 0;

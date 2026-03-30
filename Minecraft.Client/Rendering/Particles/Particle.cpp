@@ -18,7 +18,7 @@ double Particle::zOff = 0;
 void Particle::_init(Level* level, double x, double y, double z) {
     // 4J - added these initialisers
     alpha = 1.0f;
-    tex = NULL;
+    tex = nullptr;
     gravity = 0.0f;
 
     setSize(0.2f, 0.2f);
@@ -132,7 +132,7 @@ void Particle::render(Tesselator* t, float a, float xa, float ya, float za,
     float v1 = v0 + 0.999f / 16.0f;
     float r = 0.1f * size;
 
-    if (tex != NULL) {
+    if (tex != nullptr) {
         u0 = tex->getU0();
         u1 = tex->getU1();
         v0 = tex->getV0();

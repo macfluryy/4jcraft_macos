@@ -10,7 +10,7 @@
 
 MemoryLevelStorage::MemoryLevelStorage() {}
 
-LevelData* MemoryLevelStorage::prepareLevel() { return NULL; }
+LevelData* MemoryLevelStorage::prepareLevel() { return nullptr; }
 
 void MemoryLevelStorage::checkSession() {}
 
@@ -33,7 +33,7 @@ bool MemoryLevelStorage::load(std::shared_ptr<Player> player) { return false; }
 
 CompoundTag* MemoryLevelStorage::loadPlayerDataTag(
     const std::wstring& playerName) {
-    return NULL;
+    return nullptr;
 }
 
 ConsoleSavePath MemoryLevelStorage::getDataFile(const std::wstring& id) {

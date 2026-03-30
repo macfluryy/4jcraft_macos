@@ -83,7 +83,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void* initData,
 
     m_bGameModeCreative = false;
     m_iGameModeId = GameType::SURVIVAL->getId();
-    m_pDLCPack = NULL;
+    m_pDLCPack = nullptr;
     m_bRebuildTouchBoxes = false;
 
     m_bMultiplayerAllowed = ProfileManager.IsSignedInLive(m_iPad) &&
@@ -101,7 +101,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void* initData,
     // setting in the More Options #ifdef 0
     // 	if(ProfileManager.IsSignedInLive( m_iPad ))
     // 	{
-    // 		ProfileManager.GetChatAndContentRestrictions(m_iPad,true,&bChatRestricted,&bContentRestricted,NULL);
+    // 		ProfileManager.GetChatAndContentRestrictions(m_iPad,true,&bChatRestricted,&bContentRestricted,nullptr);
     // 	}
     // #endif
 
@@ -183,7 +183,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void* initData,
         // 4J-PB - there may be texture packs we don't have, so use the info
         // from TMS for this
 
-        DLC_INFO* pDLCInfo = NULL;
+        DLC_INFO* pDLCInfo = nullptr;
 
         // first pass - look to see if there are any that are not in the list
         bool bTexturePackAlreadyListed;
@@ -379,7 +379,7 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
         TexturePack* pTexturePack = pMinecraft->skins->getTexturePackById(
             m_MoreOptionsParams.dwTexturePack);
 
-        if (pTexturePack == NULL) {
+        if (pTexturePack == nullptr) {
 #if TO_BE_IMPLEMENTED
             // They've selected a texture pack they don't have yet
             // upsell
@@ -749,7 +749,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
     }
 
     param->seed = seedValue;
-    param->saveData = NULL;
+    param->saveData = nullptr;
     param->texturePackId = pClass->m_MoreOptionsParams.dwTexturePack;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();

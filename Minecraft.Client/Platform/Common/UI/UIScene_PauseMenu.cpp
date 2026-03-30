@@ -59,7 +59,7 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
     TelemetryManager->RecordPauseOrInactive(m_iPad);
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft != NULL && pMinecraft->localgameModes[iPad] != NULL) {
+    if (pMinecraft != nullptr && pMinecraft->localgameModes[iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[iPad];
 
@@ -71,7 +71,7 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
 
 UIScene_PauseMenu::~UIScene_PauseMenu() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft != NULL && pMinecraft->localgameModes[m_iPad] != NULL) {
+    if (pMinecraft != nullptr && pMinecraft->localgameModes[m_iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 
@@ -348,7 +348,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                 // is it the primary player exiting?
                 if (m_iPad == ProfileManager.GetPrimaryPad()) {
                     int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != NULL) {
+                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
                         playTime = (int)pMinecraft->localplayers[m_iPad]
                                        ->getSessionTimer();
                     }
@@ -396,7 +396,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                     }
                 } else {
                     int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != NULL) {
+                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
                         playTime = (int)pMinecraft->localplayers[m_iPad]
                                        ->getSessionTimer();
                     }
@@ -411,7 +411,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                 // is it the primary player exiting?
                 if (m_iPad == ProfileManager.GetPrimaryPad()) {
                     int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != NULL) {
+                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
                         playTime = (int)pMinecraft->localplayers[m_iPad]
                                        ->getSessionTimer();
                     }
@@ -431,7 +431,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 
                 } else {
                     int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != NULL) {
+                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
                         playTime = (int)pMinecraft->localplayers[m_iPad]
                                        ->getSessionTimer();
                     }

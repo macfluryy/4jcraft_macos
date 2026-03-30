@@ -7,7 +7,7 @@
 void TileEntityDataPacket::_init() {
     x = y = z = 0;
     type = TYPE_MOB_SPAWNER;
-    tag = NULL;
+    tag = nullptr;
 }
 
 TileEntityDataPacket::TileEntityDataPacket() {

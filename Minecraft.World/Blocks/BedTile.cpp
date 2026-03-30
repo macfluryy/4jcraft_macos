@@ -13,9 +13,9 @@ BedTile::BedTile(int id)
     : DirectionalTile(id, Material::cloth, false) {
     setShape();
 
-    iconEnd = NULL;
-    iconSide = NULL;
-    iconTop = NULL;
+    iconEnd = nullptr;
+    iconSide = nullptr;
+    iconTop = nullptr;
 }
 
 // 4J Added override
@@ -108,7 +108,7 @@ bool BedTile::use(Level* level, int x, int y, int z,
             }
         }
 
-        if (sleepingPlayer == NULL) {
+        if (sleepingPlayer == nullptr) {
             setOccupied(level, x, y, z, false);
         } else {
             player->displayClientMessage(IDS_TILE_BED_OCCUPIED);
@@ -262,7 +262,7 @@ Pos* BedTile::findStandUpPosition(Level* level, int x, int y, int z,
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void BedTile::spawnResources(Level* level, int x, int y, int z, int data,

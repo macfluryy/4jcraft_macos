@@ -62,11 +62,11 @@ void TileEntity::setId(tileEntityCreateFn createFn, eINSTANCEOF clas,
 }
 
 TileEntity::TileEntity() {
-    level = NULL;
+    level = nullptr;
     x = y = z = 0;
     remove = false;
     data = -1;
-    tile = NULL;
+    tile = nullptr;
     renderRemoveStage = e_RenderRemoveStageKeep;
 }
 
@@ -74,7 +74,7 @@ Level* TileEntity::getLevel() { return level; }
 
 void TileEntity::setLevel(Level* level) { this->level = level; }
 
-bool TileEntity::hasLevel() { return level != NULL; }
+bool TileEntity::hasLevel() { return level != nullptr; }
 
 void TileEntity::load(CompoundTag* tag) {
     x = tag->getInt(L"x");
@@ -112,7 +112,7 @@ std::shared_ptr<TileEntity> TileEntity::loadStatic(CompoundTag* tag) {
     // TODO 4J Stu - Exception handling?
     //	e->printStackTrace();
     //}
-    if (entity != NULL) {
+    if (entity != nullptr) {
         entity->load(tag);
     } else {
 #ifdef _DEBUG
@@ -135,10 +135,10 @@ void TileEntity::setData(int data, int updateFlags) {
 }
 
 void TileEntity::setChanged() {
-    if (level != NULL) {
+    if (level != nullptr) {
         data = level->getData(x, y, z);
         level->tileEntityChanged(x, y, z, shared_from_this());
-        if (getTile() != NULL)
+        if (getTile() != nullptr)
             level->updateNeighbourForOutputSignal(x, y, z, getTile()->id);
     }
 }
@@ -154,7 +154,7 @@ double TileEntity::distanceToSqr(double xPlayer, double yPlayer,
 double TileEntity::getViewDistance() { return 64 * 64; }
 
 Tile* TileEntity::getTile() {
-    if (tile == NULL) tile = Tile::tiles[level->getTile(x, y, z)];
+    if (tile == nullptr) tile = Tile::tiles[level->getTile(x, y, z)];
     return tile;
 }
 
@@ -169,7 +169,7 @@ void TileEntity::clearRemoved() { remove = false; }
 bool TileEntity::triggerEvent(int b0, int b1) { return false; }
 
 void TileEntity::clearCache() {
-    tile = NULL;
+    tile = nullptr;
     data = -1;
 }
 

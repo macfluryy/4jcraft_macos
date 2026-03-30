@@ -51,5 +51,5 @@ EntityPos* EntityPos::lerp(std::shared_ptr<Entity> e, float f) {
     if (rot) {
         return new EntityPos(yrd, xrd);
     }
-    return NULL;
+    return nullptr;
 }

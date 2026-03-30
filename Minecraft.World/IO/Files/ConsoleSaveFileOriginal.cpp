@@ -22,14 +22,14 @@
 #define COMMIT_ALLOCATION MEM_COMMIT
 
 unsigned int ConsoleSaveFileOriginal::pagesCommitted = 0;
-void* ConsoleSaveFileOriginal::pvHeap = NULL;
+void* ConsoleSaveFileOriginal::pvHeap = nullptr;
 
 ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
-    const std::wstring& fileName, void* pvSaveData /*= NULL*/,
+    const std::wstring& fileName, void* pvSaveData /*= nullptr*/,
     unsigned int initialFileSize /*= 0*/, bool forceCleanSave /*= false*/,
     ESavePlatform plat /*= SAVE_FILE_PLATFORM_LOCAL*/) {
     // One time initialise of static stuff required for our storage
-    if (pvHeap == NULL) {
+    if (pvHeap == nullptr) {
         // Reserve a chunk of 64MB of virtual address space for our saves, using
         // 64KB pages. We'll only be committing these as required to grow the
         // storage we need, which will the storage to grow without having to use
@@ -39,7 +39,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
         // been implemented in PSVitaStubs.cpp. All access to the memory must be
         // done via the access function as the pointer returned from
         // VirtualAlloc can't be used directly.
-        pvHeap = VirtualAlloc(NULL, MAX_PAGE_COUNT * CSF_PAGE_SIZE,
+        pvHeap = VirtualAlloc(nullptr, MAX_PAGE_COUNT * CSF_PAGE_SIZE,
                               RESERVE_ALLOCATION, PAGE_READWRITE);
     }
 
@@ -51,13 +51,13 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
     // Load a save from the game rules
     bool bLevelGenBaseSave = false;
     LevelGenerationOptions* levelGen = app.getLevelGenerationOptions();
-    if (pvSaveData == NULL && levelGen != NULL &&
+    if (pvSaveData == nullptr && levelGen != nullptr &&
         levelGen->requiresBaseSave()) {
         pvSaveData = levelGen->getBaseSaveData(fileSize);
         if (pvSaveData && fileSize != 0) bLevelGenBaseSave = true;
     }
 
-    if (pvSaveData == NULL || fileSize == 0)
+    if (pvSaveData == nullptr || fileSize == 0)
         fileSize = StorageManager.GetSaveSize();
 
     if (forceCleanSave) fileSize = 0;
@@ -82,7 +82,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
 
     void* pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE,
                                COMMIT_ALLOCATION, PAGE_READWRITE);
-    if (pvRet == NULL) {
+    if (pvRet == nullptr) {
 #ifndef _CONTENT_PACKAGE
         // Out of physical memory
         __debugbreak();
@@ -91,7 +91,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
     pagesCommitted = pagesRequired;
 
     if (fileSize > 0) {
-        if (pvSaveData != NULL) {
+        if (pvSaveData != nullptr) {
             memcpy(pvSaveMem, pvSaveData, fileSize);
             if (bLevelGenBaseSave) {
                 levelGen->deleteBaseSaveData();
@@ -143,7 +143,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
                                                pagesRequired * CSF_PAGE_SIZE,
                                                COMMIT_ALLOCATION,
                                                PAGE_READWRITE);
-                    if (pvRet == NULL) {
+                    if (pvRet == nullptr) {
                         // Out of physical memory
                         __debugbreak();
                     }
@@ -180,7 +180,7 @@ FileEntry* ConsoleSaveFileOriginal::createFile(
 }
 
 void ConsoleSaveFileOriginal::deleteFile(FileEntry* file) {
-    if (file == NULL) return;
+    if (file == nullptr) return;
 
     LockSaveAccess();
 
@@ -278,8 +278,8 @@ void ConsoleSaveFileOriginal::PrepareForWrite(
 bool ConsoleSaveFileOriginal::writeFile(FileEntry* file, const void* lpBuffer,
                                         unsigned int nNumberOfBytesToWrite,
                                         unsigned int* lpNumberOfBytesWritten) {
-    assert(pvSaveMem != NULL);
-    if (pvSaveMem == NULL) {
+    assert(pvSaveMem != nullptr);
+    if (pvSaveMem == nullptr) {
         return false;
     }
 
@@ -312,8 +312,8 @@ bool ConsoleSaveFileOriginal::writeFile(FileEntry* file, const void* lpBuffer,
 bool ConsoleSaveFileOriginal::zeroFile(FileEntry* file,
                                        unsigned int nNumberOfBytesToWrite,
                                        unsigned int* lpNumberOfBytesWritten) {
-    assert(pvSaveMem != NULL);
-    if (pvSaveMem == NULL) {
+    assert(pvSaveMem != nullptr);
+    if (pvSaveMem == nullptr) {
         return false;
     }
 
@@ -347,8 +347,8 @@ bool ConsoleSaveFileOriginal::readFile(FileEntry* file, void* lpBuffer,
                                        unsigned int nNumberOfBytesToRead,
                                        unsigned int* lpNumberOfBytesRead) {
     unsigned int actualBytesToRead;
-    assert(pvSaveMem != NULL);
-    if (pvSaveMem == NULL) {
+    assert(pvSaveMem != nullptr);
+    if (pvSaveMem == nullptr) {
         return false;
     }
 
@@ -419,7 +419,7 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
             (desiredSize + (CSF_PAGE_SIZE - 1)) / CSF_PAGE_SIZE;
         void* pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE,
                                    COMMIT_ALLOCATION, PAGE_READWRITE);
-        if (pvRet == NULL) {
+        if (pvRet == nullptr) {
             // Out of physical memory
             __debugbreak();
         }
@@ -574,10 +574,10 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
     std::uint8_t* compData =
         (std::uint8_t*)StorageManager.AllocateSaveData(compLength);
 
-    // If we failed to allocate then compData will be NULL
+    // If we failed to allocate then compData will be nullptr
     // Pre-calculate the compressed data size so that we can attempt to allocate
     // a smaller buffer
-    if (compData == NULL) {
+    if (compData == nullptr) {
         // Length should be 0 here so that the compression call knows that we
         // want to know the length back
         compLength = 0;
@@ -586,7 +586,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         PIXBeginNamedEvent(0, "Pre-calc save compression");
         // Save the start time
         const auto startTime = std::chrono::steady_clock::now();
-        Compression::getCompression()->Compress(NULL, &compLength, pvSaveMem,
+        Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
         fElapsedTime =
             std::chrono::duration<float>(std::chrono::steady_clock::now() -
@@ -604,7 +604,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         compData = (std::uint8_t*)StorageManager.AllocateSaveData(compLength);
     }
 
-    if (compData != NULL) {
+    if (compData != nullptr) {
         // Re-compress all save data before we save it to disk
         PIXBeginNamedEvent(0, "Actual save compression");
         // Save the start time
@@ -627,10 +627,10 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         app.DebugPrintf("Save data compressed from %d to %d\n", fileSize,
                         compLength);
 
-        std::uint8_t* pbThumbnailData = NULL;
+        std::uint8_t* pbThumbnailData = nullptr;
         unsigned int dwThumbnailDataSize = 0;
 
-        std::uint8_t* pbDataSaveImage = NULL;
+        std::uint8_t* pbDataSaveImage = nullptr;
         unsigned int dwDataSizeSaveImage = 0;
 
 #ifdef _WINDOWS64
@@ -642,8 +642,8 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
 
         int64_t seed = 0;
         bool hasSeed = false;
-        if (MinecraftServer::getInstance() != NULL &&
-            MinecraftServer::getInstance()->levels[0] != NULL) {
+        if (MinecraftServer::getInstance() != nullptr &&
+            MinecraftServer::getInstance()->levels[0] != nullptr) {
             seed = MinecraftServer::getInstance()
                        ->levels[0]
                        ->getLevelData()
@@ -701,7 +701,7 @@ int ConsoleSaveFileOriginal::SaveSaveDataCallback(void* lpParam, bool bRes) {
 
 #ifndef _CONTENT_PACKAGE
 void ConsoleSaveFileOriginal::DebugFlushToFile(
-    void* compressedData /*= NULL*/, unsigned int compressedDataSize /*= 0*/) {
+    void* compressedData /*= nullptr*/, unsigned int compressedDataSize /*= 0*/) {
     LockSaveAccess();
 
     finalizeWrite();
@@ -715,7 +715,7 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(
 
     wchar_t* fileName = new wchar_t[XCONTENT_MAX_FILENAME_LENGTH + 1];
 
-    std::time_t now = std::time(NULL);
+    std::time_t now = std::time(nullptr);
     std::tm t = *std::gmtime(&now);
 
     // 14 chars for the digits
@@ -734,7 +734,7 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(
         targetFileDir.getPath() + std::wstring(fileName);
     bool writeSucceeded = false;
 
-    if (compressedData != NULL && compressedDataSize > 0) {
+    if (compressedData != nullptr && compressedDataSize > 0) {
         writeSucceeded = PortableFileIO::WriteBinaryFile(
             outputPath, compressedData, compressedDataSize);
         numberOfBytesWritten = writeSucceeded ? compressedDataSize : 0;
@@ -765,7 +765,7 @@ std::vector<FileEntry*>* ConsoleSaveFileOriginal::getFilesWithPrefix(
 
 std::vector<FileEntry*>* ConsoleSaveFileOriginal::getRegionFilesByDimension(
     unsigned int dimensionIndex) {
-    return NULL;
+    return nullptr;
 }
 
 int ConsoleSaveFileOriginal::getSaveVersion() {

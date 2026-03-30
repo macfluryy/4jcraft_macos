@@ -195,7 +195,7 @@ int PotionBrewing::getColorValue(std::vector<MobEffectInstance*>* effects) {
 
     int baseColor = colourTable->getColor(eMinecraftColour_Potion_BaseColour);
 
-    if (effects == NULL || effects->empty()) {
+    if (effects == nullptr || effects->empty()) {
         return baseColor;
     }
 
@@ -243,7 +243,7 @@ int PotionBrewing::getColorValue(int brew, bool includeDisabledEffects) {
         }
         std::vector<MobEffectInstance*>* effects = getEffects(brew, false);
         int color = getColorValue(effects);
-        if (effects != NULL) {
+        if (effects != nullptr) {
             for (auto it = effects->begin(); it != effects->end(); ++it) {
                 MobEffectInstance* effect = *it;
                 delete effect;
@@ -518,12 +518,12 @@ int PotionBrewing::parseEffectFormulaValue(const std::wstring& definition,
 
 std::vector<MobEffectInstance*>* PotionBrewing::getEffects(
     int brew, bool includeDisabledEffects) {
-    std::vector<MobEffectInstance*>* list = NULL;
+    std::vector<MobEffectInstance*>* list = nullptr;
 
     // for (MobEffect effect : MobEffect.effects)
     for (unsigned int i = 0; i < MobEffect::NUM_EFFECTS; ++i) {
         MobEffect* effect = MobEffect::effects[i];
-        if (effect == NULL ||
+        if (effect == nullptr ||
             (effect->isDisabled() && !includeDisabledEffects)) {
             continue;
         }
@@ -563,7 +563,7 @@ std::vector<MobEffectInstance*>* PotionBrewing::getEffects(
                 }
             }
 
-            if (list == NULL) {
+            if (list == nullptr) {
                 list = new std::vector<MobEffectInstance*>();
             }
             MobEffectInstance* instance =

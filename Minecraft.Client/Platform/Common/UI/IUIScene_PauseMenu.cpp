@@ -261,7 +261,7 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
 
     bool saveStats = true;
     if (pMinecraft->isClientSide() || g_NetworkManager.IsInSession()) {
-        if (lpParameter != NULL) {
+        if (lpParameter != nullptr) {
             // 4J-PB - check if we have lost connection to Live
             if (ProfileManager.GetLiveConnectionStatus() !=
                 XONLINE_S_LOGON_CONNECTION_ESTABLISHED) {
@@ -336,21 +336,21 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
 
             // 4J - Force a disconnection, this handles the situation that the
             // server has already disconnected
-            if (pMinecraft->levels[0] != NULL)
+            if (pMinecraft->levels[0] != nullptr)
                 pMinecraft->levels[0]->disconnect(false);
-            if (pMinecraft->levels[1] != NULL)
+            if (pMinecraft->levels[1] != nullptr)
                 pMinecraft->levels[1]->disconnect(false);
-            if (pMinecraft->levels[2] != NULL)
+            if (pMinecraft->levels[2] != nullptr)
                 pMinecraft->levels[2]->disconnect(false);
         } else {
             exitReasonStringId = IDS_EXITING_GAME;
             pMinecraft->progressRenderer->progressStartNoAbort(
                 IDS_EXITING_GAME);
-            if (pMinecraft->levels[0] != NULL)
+            if (pMinecraft->levels[0] != nullptr)
                 pMinecraft->levels[0]->disconnect();
-            if (pMinecraft->levels[1] != NULL)
+            if (pMinecraft->levels[1] != nullptr)
                 pMinecraft->levels[1]->disconnect();
-            if (pMinecraft->levels[2] != NULL)
+            if (pMinecraft->levels[2] != nullptr)
                 pMinecraft->levels[2]->disconnect();
         }
 
@@ -366,7 +366,7 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
         // 4J Stu - Leave the session once the disconnect packet has been sent
         g_NetworkManager.LeaveGame(FALSE);
     } else {
-        if (lpParameter != NULL &&
+        if (lpParameter != nullptr &&
             ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
             switch (app.GetDisconnectReason()) {
                 case DisconnectPacket::eDisconnect_Kicked:
@@ -419,7 +419,7 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
     while (g_NetworkManager.IsNetworkThreadRunning()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    pMinecraft->setLevel(NULL, exitReasonStringId, nullptr, saveStats);
+    pMinecraft->setLevel(nullptr, exitReasonStringId, nullptr, saveStats);
 
     TelemetryManager->Flush();
 

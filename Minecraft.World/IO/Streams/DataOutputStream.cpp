@@ -20,10 +20,10 @@ void DataOutputStream::deleteChildStream() { delete stream; }
 // incremented by 1. Implements the write method of OutputStream. Parameters: b
 // - the byte to be written.
 void DataOutputStream::write(unsigned int b) {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataOutputStream::write(unsigned int) called but underlying "
-            "stream is NULL\n");
+            "stream is nullptr\n");
         return;
     }
     stream->write(b);
@@ -32,9 +32,9 @@ void DataOutputStream::write(unsigned int b) {
 }
 
 void DataOutputStream::flush() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataOutputStream::flush() called but underlying stream is NULL\n");
+            "DataOutputStream::flush() called but underlying stream is nullptr\n");
         return;
     }
     stream->flush();
@@ -51,10 +51,10 @@ void DataOutputStream::write(byteArray b) { write(b, 0, b.length); }
 // data. len - the number of bytes to write.
 void DataOutputStream::write(byteArray b, unsigned int offset,
                              unsigned int length) {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataOutputStream::write(byteArray,...) called but underlying "
-            "stream is NULL\n");
+            "stream is nullptr\n");
         return;
     }
     stream->write(b, offset, length);
@@ -66,9 +66,9 @@ void DataOutputStream::write(byteArray b, unsigned int offset,
 // the stream. The close method of FilterOutputStream calls its flush method,
 // and then calls the close method of its underlying output stream.
 void DataOutputStream::close() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataOutputStream::close() called but underlying stream is NULL\n");
+            "DataOutputStream::close() called but underlying stream is nullptr\n");
         return;
     }
     stream->close();
@@ -148,10 +148,10 @@ void DataOutputStream::writeShort(short a) {
 }
 
 void DataOutputStream::writeUnsignedShort(unsigned short a) {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataOutputStream::writeUnsignedShort() but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return;
     }
     stream->write(static_cast<unsigned int>((a >> 8) & 0xff));

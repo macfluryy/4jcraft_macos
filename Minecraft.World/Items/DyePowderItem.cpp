@@ -16,7 +16,7 @@
 DyePowderItem::DyePowderItem(int id) : Item(id) {
     setStackedByData(true);
     setMaxDamage(0);
-    icons = NULL;
+    icons = nullptr;
 }
 
 const unsigned int DyePowderItem::COLOR_DESCS[] = {
@@ -247,9 +247,9 @@ void DyePowderItem::addGrowthParticles(Level* level, int x, int y, int z,
                                        int count) {
     int id = level->getTile(x, y, z);
     if (count == 0) count = 15;
-    Tile* tile = id > 0 && id < Tile::TILE_NUM_COUNT ? Tile::tiles[id] : NULL;
+    Tile* tile = id > 0 && id < Tile::TILE_NUM_COUNT ? Tile::tiles[id] : nullptr;
 
-    if (tile == NULL) return;
+    if (tile == nullptr) return;
     tile->updateShape(level, x, y, z);
 
     for (int i = 0; i < count; i++) {
@@ -266,7 +266,7 @@ void DyePowderItem::addGrowthParticles(Level* level, int x, int y, int z,
 bool DyePowderItem::interactEnemy(std::shared_ptr<ItemInstance> itemInstance,
                                   std::shared_ptr<Player> player,
                                   std::shared_ptr<LivingEntity> mob) {
-    if (std::dynamic_pointer_cast<Sheep>(mob) != NULL) {
+    if (std::dynamic_pointer_cast<Sheep>(mob) != nullptr) {
         std::shared_ptr<Sheep> sheep = std::dynamic_pointer_cast<Sheep>(mob);
         // convert to tile-based color value (0 is white instead of black)
         int newColor = ColoredTile::getTileDataForItemAuxValue(

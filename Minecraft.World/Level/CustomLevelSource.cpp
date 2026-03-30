@@ -31,20 +31,20 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     std::string path = "GAME:\\GameRules\\heightmap.bin";
 #endif
 #endif
-    HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, NULL, OPEN_EXISTING,
-                             FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING,
+                             FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE) {
         app.FatalLoadError();
         DWORD error = GetLastError();
         assert(false);
     } else {
-        DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
+        DWORD bytesRead, dwFileSize = GetFileSize(file, nullptr);
         if (dwFileSize > m_heightmapOverride.length) {
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
         }
         bool bSuccess = ReadFile(file, m_heightmapOverride.data, dwFileSize,
-                                 &bytesRead, NULL);
+                                 &bytesRead, nullptr);
 
         if (bSuccess == FALSE) {
             app.FatalLoadError();
@@ -64,21 +64,21 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
 #endif
 #endif
-    file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, NULL,
-                      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, nullptr,
+                      OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE) {
         DWORD error = GetLastError();
         // assert(false);
         memset(m_waterheightOverride.data, level->seaLevel,
                m_waterheightOverride.length);
     } else {
-        DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
+        DWORD bytesRead, dwFileSize = GetFileSize(file, nullptr);
         if (dwFileSize > m_waterheightOverride.length) {
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
         }
         bool bSuccess = ReadFile(file, m_waterheightOverride.data, dwFileSize,
-                                 &bytesRead, NULL);
+                                 &bytesRead, nullptr);
 
         if (bSuccess == FALSE) {
             app.FatalLoadError();
@@ -270,7 +270,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
             uint8_t material = b->material;
 
             LevelGenerationOptions* lgo = app.getLevelGenerationOptions();
-            if (lgo != NULL) {
+            if (lgo != nullptr) {
                 lgo->getBiomeOverride(b->id, material, top);
             }
 
@@ -306,7 +306,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                                        y <= waterHeight + 1) {
                                 top = b->topMaterial;
                                 material = b->material;
-                                if (lgo != NULL) {
+                                if (lgo != nullptr) {
                                     lgo->getBiomeOverride(b->id, material, top);
                                 }
                             }
@@ -348,7 +348,7 @@ LevelChunk* CustomLevelSource::create(int x, int z) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     return getChunk(x, z);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -408,7 +408,7 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
 
     return levelChunk;
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -590,8 +590,8 @@ std::vector<Biome::MobSpawnerData*>* CustomLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     Biome* biome = level->getBiome(x, z);
-    if (biome == NULL) {
-        return NULL;
+    if (biome == nullptr) {
+        return nullptr;
     }
     if (mobCategory == MobCategory::monster &&
         scatteredFeature->isSwamphut(x, y, z)) {
@@ -599,18 +599,18 @@ std::vector<Biome::MobSpawnerData*>* CustomLevelSource::getMobsAt(
     }
     return biome->getMobs(mobCategory);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
 TilePos* CustomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
 #if defined(_OVERRIDE_HEIGHTMAP)
-    if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != NULL) {
+    if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != nullptr) {
         return strongholdFeature->getNearestGeneratedFeature(level, x, y, z);
     }
 #endif
-    return NULL;
+    return nullptr;
 }
 
 void CustomLevelSource::recreateLogicStructuresForChunk(int chunkX,

@@ -45,7 +45,7 @@ void MerchantResultSlot::onTake(std::shared_ptr<Player> player,
     checkTakeAchievements(carried);
 
     MerchantRecipe* activeRecipe = slots->getActiveRecipe();
-    if (activeRecipe != NULL) {
+    if (activeRecipe != nullptr) {
         std::shared_ptr<ItemInstance> item1 =
             slots->getItem(MerchantMenu::PAYMENT1_SLOT);
         std::shared_ptr<ItemInstance> item2 =
@@ -78,12 +78,12 @@ bool MerchantResultSlot::removePaymentItemsIfMatching(
     std::shared_ptr<ItemInstance> buyA = activeRecipe->getBuyAItem();
     std::shared_ptr<ItemInstance> buyB = activeRecipe->getBuyBItem();
 
-    if (a != NULL && a->id == buyA->id) {
-        if (buyB != NULL && b != NULL && buyB->id == b->id) {
+    if (a != nullptr && a->id == buyA->id) {
+        if (buyB != nullptr && b != nullptr && buyB->id == b->id) {
             a->count -= buyA->count;
             b->count -= buyB->count;
             return true;
-        } else if (buyB == NULL && b == NULL) {
+        } else if (buyB == nullptr && b == nullptr) {
             a->count -= buyA->count;
             return true;
         }

@@ -579,7 +579,7 @@ static inline HANDLE FindFirstFileA(const char* lpFileName,
     strncpy(fh->pattern, pattern, MAX_PATH - 1);
 
     struct dirent* ent;
-    while ((ent = readdir(fh->dir)) != NULL) {
+    while ((ent = readdir(fh->dir)) != nullptr) {
         if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
             continue;
         if (fnmatch(fh->pattern, ent->d_name, 0) == 0) {
@@ -614,7 +614,7 @@ static inline bool FindNextFileA(HANDLE hFindFile,
     _LINUXSTUBS_FIND_HANDLE* fh = (_LINUXSTUBS_FIND_HANDLE*)hFindFile;
 
     struct dirent* ent;
-    while ((ent = readdir(fh->dir)) != NULL) {
+    while ((ent = readdir(fh->dir)) != nullptr) {
         if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
             continue;
         if (fnmatch(fh->pattern, ent->d_name, 0) == 0) {
@@ -664,7 +664,7 @@ static inline void _CurrentTimeSpec(struct timespec* ts) {
     clock_gettime(CLOCK_REALTIME, ts);
 #else
     struct timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, nullptr);
     ts->tv_sec = tv.tv_sec;
     ts->tv_nsec = tv.tv_usec * 1000;
 #endif
@@ -785,8 +785,8 @@ typedef struct {
 
 static inline HANDLE CreateEvent(int manual_reset, int initial_state) {
     Event* ev = (Event*)malloc(sizeof(Event));
-    pthread_mutex_init(&ev->mutex, NULL);
-    pthread_cond_init(&ev->cond, NULL);
+    pthread_mutex_init(&ev->mutex, nullptr);
+    pthread_cond_init(&ev->cond, nullptr);
     ev->signaled = initial_state;
     ev->manual_reset = manual_reset;
     return (HANDLE)ev;
@@ -925,7 +925,7 @@ static inline void* _linux_thread_entry(void* arg) {
     lt->completed = 1;
     pthread_cond_broadcast(&lt->completionCond);
     pthread_mutex_unlock(&lt->completionMutex);
-    return NULL;
+    return nullptr;
 }
 
 static inline DWORD _WaitForThread(struct LinuxThread* lt,
@@ -977,10 +977,10 @@ static inline HANDLE CreateThread(void*, SIZE_T stackSize,
     lt->suspended = (dwCreationFlags & CREATE_SUSPENDED) ? 1 : 0;
     lt->completed = 0;
     lt->threadId = __sync_fetch_and_add(&g_nextThreadId, 1);
-    pthread_mutex_init(&lt->suspendMutex, NULL);
-    pthread_cond_init(&lt->suspendCond, NULL);
-    pthread_mutex_init(&lt->completionMutex, NULL);
-    pthread_cond_init(&lt->completionCond, NULL);
+    pthread_mutex_init(&lt->suspendMutex, nullptr);
+    pthread_cond_init(&lt->suspendCond, nullptr);
+    pthread_mutex_init(&lt->completionMutex, nullptr);
+    pthread_cond_init(&lt->completionCond, nullptr);
     if (lpThreadId) *lpThreadId = lt->threadId;
     pthread_attr_t attr;
     pthread_attr_init(&attr);
@@ -1071,16 +1071,16 @@ static inline void* VirtualAlloc(void* lpAddress, SIZE_T dwSize,
         prot = PROT_READ | PROT_WRITE;  // default
 
     int flags = MAP_PRIVATE | MAP_ANONYMOUS;
-    if (lpAddress != NULL) flags |= MAP_FIXED;
+    if (lpAddress != nullptr) flags |= MAP_FIXED;
 
     void* p = mmap(lpAddress, dwSize, prot, flags, -1, 0);
-    if (p == MAP_FAILED) return NULL;
+    if (p == MAP_FAILED) return nullptr;
     return p;
 }
 
 static inline bool VirtualFree(void* lpAddress, SIZE_T dwSize,
                                DWORD dwFreeType) {
-    if (lpAddress == NULL) return FALSE;
+    if (lpAddress == nullptr) return FALSE;
     // MEM_RELEASE (0x8000) frees the whole region
     if (dwFreeType == 0x8000 /*MEM_RELEASE*/) {
         // dwSize should be 0 for MEM_RELEASE per Win32 API, but we don't track

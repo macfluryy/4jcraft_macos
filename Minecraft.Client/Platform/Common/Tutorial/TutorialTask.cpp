@@ -19,7 +19,7 @@ TutorialTask::TutorialTask(Tutorial* tutorial, int descriptionId,
       m_bTaskReminders(bTaskReminders),
       m_bShowMinimumTime(bShowMinimumTime),
       m_bShownForMinimumTime(false) {
-    if (inConstraints != NULL) {
+    if (inConstraints != nullptr) {
         for (auto it = inConstraints->begin(); it < inConstraints->end();
              ++it) {
             TutorialConstraint* constraint = *it;

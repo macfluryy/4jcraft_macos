@@ -26,7 +26,7 @@ std::shared_ptr<Entity> EntityDamageSource::getEntity() { return entity; }
 std::shared_ptr<ChatPacket> EntityDamageSource::getDeathMessagePacket(
     std::shared_ptr<LivingEntity> player) {
     std::shared_ptr<ItemInstance> held =
-        (entity != NULL) && entity->instanceof(eTYPE_LIVINGENTITY)
+        (entity != nullptr) && entity->instanceof(eTYPE_LIVINGENTITY)
             ? std::dynamic_pointer_cast<LivingEntity>(entity)->getCarriedItem()
             : nullptr;
     std::wstring additional = L"";
@@ -40,7 +40,7 @@ std::shared_ptr<ChatPacket> EntityDamageSource::getDeathMessagePacket(
         }
     }
 
-    if ((held != NULL) && held->hasCustomHoverName()) {
+    if ((held != nullptr) && held->hasCustomHoverName()) {
         return std::shared_ptr<ChatPacket>(new ChatPacket(
             player->getNetworkName(), m_msgWithItemId, entity->GetType(),
             additional, held->getHoverName()));
@@ -51,7 +51,7 @@ std::shared_ptr<ChatPacket> EntityDamageSource::getDeathMessagePacket(
 }
 
 bool EntityDamageSource::scalesWithDifficulty() {
-    return (entity != NULL) && entity->instanceof(eTYPE_LIVINGENTITY) &&
+    return (entity != nullptr) && entity->instanceof(eTYPE_LIVINGENTITY) &&
            !entity->instanceof(eTYPE_PLAYER);
 }
 

@@ -13,7 +13,7 @@ public:
     XuiCraftingTask(Tutorial* tutorial, int descriptionId,
                     Recipy::_eGroupType groupToSelect,
                     bool enablePreCompletion = false,
-                    std::vector<TutorialConstraint*>* inConstraints = NULL,
+                    std::vector<TutorialConstraint*>* inConstraints = nullptr,
                     bool bShowMinimumTime = false, bool bAllowFade = true,
                     bool m_bTaskReminders = true)
         : TutorialTask(tutorial, descriptionId, enablePreCompletion,
@@ -25,7 +25,7 @@ public:
     // Select Item
     XuiCraftingTask(Tutorial* tutorial, int descriptionId, int itemId,
                     bool enablePreCompletion = false,
-                    std::vector<TutorialConstraint*>* inConstraints = NULL,
+                    std::vector<TutorialConstraint*>* inConstraints = nullptr,
                     bool bShowMinimumTime = false, bool bAllowFade = true,
                     bool m_bTaskReminders = true)
         : TutorialTask(tutorial, descriptionId, enablePreCompletion,

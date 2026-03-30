@@ -38,7 +38,7 @@ PendingConnection::PendingConnection(MinecraftServer* server, Socket* socket,
 PendingConnection::~PendingConnection() { delete connection; }
 
 void PendingConnection::tick() {
-    if (acceptedLogin != NULL) {
+    if (acceptedLogin != nullptr) {
         this->handleAcceptedLogin(acceptedLogin);
         acceptedLogin = nullptr;
     }
@@ -104,7 +104,7 @@ void PendingConnection::sendPreLoginResponse() {
         // PADDY - this is failing when a local player with chat restrictions
         // joins an online game
 
-        if (player != NULL &&
+        if (player != nullptr &&
             player->connection->m_offlineXUID != INVALID_XUID &&
             player->connection->m_onlineXUID != INVALID_XUID) {
             if (player->connection->m_friendsOnlyUGC) {
@@ -114,7 +114,7 @@ void PendingConnection::sendPreLoginResponse() {
             // the client
             ugcXuids[ugcXuidCount] = player->connection->m_onlineXUID;
 
-            if (player->connection->getNetworkPlayer() != NULL &&
+            if (player->connection->getNetworkPlayer() != nullptr &&
                 player->connection->getNetworkPlayer()->IsHost())
                 hostIndex = ugcXuidCount;
 
@@ -178,10 +178,10 @@ void PendingConnection::handleAcceptedLogin(
     std::shared_ptr<ServerPlayer> playerEntity =
         server->getPlayers()->getPlayerForLogin(this, name, playerXuid,
                                                 packet->m_onlineXuid);
-    if (playerEntity != NULL) {
+    if (playerEntity != nullptr) {
         server->getPlayers()->placeNewPlayer(connection, playerEntity, packet);
-        connection = NULL;  // We've moved responsibility for this over to the
-                            // new PlayerConnection, NULL so we don't delete our
+        connection = nullptr;  // We've moved responsibility for this over to the
+                            // new PlayerConnection, nullptr so we don't delete our
                             // reference to it here in our dtor
     }
     done = true;

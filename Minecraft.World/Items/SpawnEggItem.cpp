@@ -15,7 +15,7 @@ SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll
                           // never be able to place that many
     setStackedByData(true);
-    overlay = NULL;
+    overlay = nullptr;
 }
 
 std::wstring SpawnEggItem::getHoverName(
@@ -62,7 +62,7 @@ Icon* SpawnEggItem::getLayerIcon(int auxValue, int spriteLayer) {
 std::shared_ptr<Entity> SpawnEggItem::canSpawn(int iAuxVal, Level* level,
                                                int* piResult) {
     std::shared_ptr<Entity> newEntity = EntityIO::newById(iAuxVal, level);
-    if (newEntity != NULL) {
+    if (newEntity != nullptr) {
         bool canSpawn = false;
 
         switch (newEntity->GetType()) {
@@ -172,7 +172,7 @@ bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
         std::shared_ptr<MobSpawnerTileEntity> mste =
             std::dynamic_pointer_cast<MobSpawnerTileEntity>(
                 level->getTileEntity(x, y, z));
-        if (mste != NULL) {
+        if (mste != nullptr) {
             mste->setEntityId(
                 EntityIO::getEncodeId(itemInstance->getAuxValue()));
             return true;
@@ -186,7 +186,7 @@ bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
 
     double yOff = 0;
     if (face == Facing::UP &&
-        (Tile::tiles[tile] != NULL &&
+        (Tile::tiles[tile] != nullptr &&
          Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_FENCE)) {
         // special case
         yOff = .5;
@@ -197,10 +197,10 @@ bool SpawnEggItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
         level, itemInstance->getAuxValue(), x + .5, y + yOff, z + .5, &iResult);
 
     if (bTestUseOnOnly) {
-        return result != NULL;
+        return result != nullptr;
     }
 
-    if (result != NULL) {
+    if (result != nullptr) {
         // 4J-JEV: SetCustomName is a method for Mob not LivingEntity; so change
         // instanceof to check for Mobs.
         if (result->instanceof(eTYPE_MOB) &&
@@ -224,7 +224,7 @@ std::shared_ptr<ItemInstance> SpawnEggItem::use(
     if (level->isClientSide) return itemInstance;
 
     HitResult* hr = getPlayerPOVHitResult(level, player, true);
-    if (hr == NULL) {
+    if (hr == nullptr) {
         delete hr;
         return itemInstance;
     }
@@ -245,7 +245,7 @@ std::shared_ptr<ItemInstance> SpawnEggItem::use(
             int iResult = 0;
             std::shared_ptr<Entity> result = spawnMobAt(
                 level, itemInstance->getAuxValue(), xt, yt, zt, &iResult);
-            if (result != NULL) {
+            if (result != nullptr) {
                 // 4J-JEV: SetCustomName is a method for Mob not LivingEntity;
                 // so change instanceof to check for Mobs.
                 if (result->instanceof(eTYPE_MOB) &&
@@ -286,7 +286,7 @@ std::shared_ptr<Entity> SpawnEggItem::spawnMobAt(Level* level, int auxVal,
 
         // 4J-JEV: DynCasting to Mob not LivingEntity; so change instanceof to
         // check for Mobs.
-        if (newEntity != NULL && newEntity->instanceof(eTYPE_MOB)) {
+        if (newEntity != nullptr && newEntity->instanceof(eTYPE_MOB)) {
             std::shared_ptr<Mob> mob =
                 std::dynamic_pointer_cast<Mob>(newEntity);
             newEntity->moveTo(
@@ -298,7 +298,7 @@ std::shared_ptr<Entity> SpawnEggItem::spawnMobAt(Level* level, int auxVal,
             mob->yHeadRot = mob->yRot;
             mob->yBodyRot = mob->yRot;
 
-            mob->finalizeMobSpawn(NULL, extraData);
+            mob->finalizeMobSpawn(nullptr, extraData);
             level->addEntity(newEntity);
             mob->playAmbientSound();
         }

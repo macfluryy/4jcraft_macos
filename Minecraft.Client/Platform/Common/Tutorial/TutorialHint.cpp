@@ -15,7 +15,7 @@ TutorialHint::TutorialHint(eTutorial_Hint id, Tutorial* tutorial,
       m_descriptionId(descriptionId),
       m_type(type),
       m_counter(0),
-      m_lastTile(NULL),
+      m_lastTile(nullptr),
       m_hintNeeded(true),
       m_allowFade(allowFade) {
     tutorial->addMessage(descriptionId, type != e_Hint_NoIngredients);

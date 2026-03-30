@@ -7,7 +7,7 @@
 #include "TextureManager.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-TextureManager* TextureManager::instance = NULL;
+TextureManager* TextureManager::instance = nullptr;
 
 void TextureManager::createInstance() { instance = new TextureManager(); }
 
@@ -22,7 +22,7 @@ Texture* TextureManager::getTexture(const std::wstring& name) {
         return idToTextureMap.find(stringToIDMap.find(name)->second)->second;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void TextureManager::registerName(const std::wstring& name, Texture* texture) {
@@ -119,7 +119,7 @@ std::vector<Texture*>* TextureManager::createTextures(
             Texture* texture =
                 createTexture(texName, mode, frameWidth, frameHeight, clamp,
                               format, minFilter, magFilter,
-                              mipmap || image->getData(1) != NULL, subImage);
+                              mipmap || image->getData(1) != nullptr, subImage);
             delete subImage;
             result->push_back(texture);
         }
@@ -129,7 +129,7 @@ std::vector<Texture*>* TextureManager::createTextures(
         if (width == height) {
             result->push_back(createTexture(
                 texName, mode, width, height, clamp, format, minFilter,
-                magFilter, mipmap || image->getData(1) != NULL, image));
+                magFilter, mipmap || image->getData(1) != nullptr, image));
         } else {
             // Minecraft.getInstance().getLogger().warning("TextureManager.createTexture:
             // Skipping " + filename + " because of broken aspect ratio and not
@@ -187,8 +187,8 @@ Texture* TextureManager::createTexture(const std::wstring& name, int mode,
     // 4J Stu - Don't clamp as it causes issues with how we signal
     // non-mipmmapped textures to the pixel shader
     // return createTexture(name, mode, width, height, Texture::WM_CLAMP,
-    // format, Texture::TFLT_NEAREST, Texture::TFLT_NEAREST, mipmap, NULL);
+    // format, Texture::TFLT_NEAREST, Texture::TFLT_NEAREST, mipmap, nullptr);
     return createTexture(name, mode, width, height, Texture::WM_WRAP, format,
                          Texture::TFLT_NEAREST, Texture::TFLT_NEAREST, mipmap,
-                         NULL);
+                         nullptr);
 }

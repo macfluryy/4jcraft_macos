@@ -167,7 +167,7 @@ private:
     bool m_bLoadingData;
 
 public:
-    LevelGenerationOptions(DLCPack* parentPack = NULL);
+    LevelGenerationOptions(DLCPack* parentPack = nullptr);
     ~LevelGenerationOptions();
 
     virtual ConsoleGameRules::EGameRuleType getActionType();
@@ -210,7 +210,7 @@ public:
                           std::uint8_t& topTile);
     bool isFeatureChunk(int chunkX, int chunkZ,
                         StructureFeature::EFeatureTypes feature,
-                        int* orientation = NULL);
+                        int* orientation = nullptr);
 
     void loadStringTable(StringTable* table);
     const wchar_t* getString(const std::wstring& key);

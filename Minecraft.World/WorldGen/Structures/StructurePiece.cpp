@@ -43,20 +43,20 @@
  */
 
 StructurePiece::StructurePiece() {
-    boundingBox = NULL;
+    boundingBox = nullptr;
     orientation = 0;
     genDepth = 0;
     // for reflection
 }
 
 StructurePiece::StructurePiece(int genDepth) {
-    boundingBox = NULL;
+    boundingBox = nullptr;
     this->genDepth = genDepth;
     orientation = Direction::UNDEFINED;
 }
 
 StructurePiece::~StructurePiece() {
-    if (boundingBox != NULL) delete boundingBox;
+    if (boundingBox != nullptr) delete boundingBox;
 }
 
 CompoundTag* StructurePiece::createTag() {
@@ -101,12 +101,12 @@ StructurePiece* StructurePiece::findCollisionPiece(
     std::list<StructurePiece*>* pieces, BoundingBox* box) {
     for (auto it = pieces->begin(); it != pieces->end(); it++) {
         StructurePiece* piece = *it;
-        if (piece->getBoundingBox() != NULL &&
+        if (piece->getBoundingBox() != nullptr &&
             piece->getBoundingBox()->intersects(box)) {
             return piece;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 // 4J-PB - Added from 1.2.3
@@ -340,7 +340,7 @@ int StructurePiece::getOrientationData(int tile, int data) {
             }
         }
     } else if (tile == Tile::tripWireSource_Id ||
-               (Tile::tiles[tile] != NULL &&
+               (Tile::tiles[tile] != nullptr &&
                 dynamic_cast<DirectionalTile*>(Tile::tiles[tile]))) {
         if (orientation == Direction::SOUTH) {
             if (data == Direction::SOUTH || data == Direction::NORTH) {
@@ -661,7 +661,7 @@ bool StructurePiece::createChest(Level* level, BoundingBox* chunkBB,
             std::shared_ptr<ChestTileEntity> chest =
                 std::dynamic_pointer_cast<ChestTileEntity>(
                     level->getTileEntity(worldX, worldY, worldZ));
-            if (chest != NULL)
+            if (chest != nullptr)
                 WeighedTreasure::addChestItems(random, treasure, chest,
                                                numRolls);
             return true;
@@ -687,7 +687,7 @@ bool StructurePiece::createDispenser(Level* level, BoundingBox* chunkBB,
             std::shared_ptr<DispenserTileEntity> dispenser =
                 std::dynamic_pointer_cast<DispenserTileEntity>(
                     level->getTileEntity(worldX, worldY, worldZ));
-            if (dispenser != NULL)
+            if (dispenser != nullptr)
                 WeighedTreasure::addDispenserItems(random, items, dispenser,
                                                    numRolls);
             return true;

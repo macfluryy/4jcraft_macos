@@ -147,7 +147,7 @@ void RepairScreen::mouseClicked(int mouseX, int mouseY, int buttonNum) {
 void RepairScreen::updateItemName() {
     std::wstring itemName;
     Slot* slot = repairMenu->getSlot(0);
-    if (slot != NULL && slot->hasItem()) {
+    if (slot != nullptr && slot->hasItem()) {
         if (!slot->getItem()->hasCustomHoverName() &&
             itemName == slot->getItem()->getHoverName()) {
             itemName = L"";
@@ -176,9 +176,9 @@ void RepairScreen::refreshContainer(
 void RepairScreen::slotChanged(AbstractContainerMenu* container, int slotIndex,
                                std::shared_ptr<ItemInstance> item) {
     if (slotIndex == AnvilMenu::INPUT_SLOT) {
-        std::wstring itemName = item == NULL ? L"" : item->getHoverName();
+        std::wstring itemName = item == nullptr ? L"" : item->getHoverName();
         editName->setValue(itemName);
-        if (item != NULL) {
+        if (item != nullptr) {
             editName->focus(true);
             updateItemName();
         } else {

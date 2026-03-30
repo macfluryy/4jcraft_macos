@@ -13,7 +13,7 @@
 #include "../../Minecraft.World/Util/JavaMath.h"
 
 // 4J JEV - Images for each tab.
-IUIScene_CreativeMenu::TabSpec** IUIScene_CreativeMenu::specs = NULL;
+IUIScene_CreativeMenu::TabSpec** IUIScene_CreativeMenu::specs = nullptr;
 
 std::vector<std::shared_ptr<ItemInstance> >
     IUIScene_CreativeMenu::categoryGroups[eCreativeInventoryGroupsCount];
@@ -508,7 +508,7 @@ void IUIScene_CreativeMenu::staticCtor() {
 
     for (unsigned int i = 0; i < Enchantment::enchantments.length; ++i) {
         Enchantment* enchantment = Enchantment::enchantments[i];
-        if (enchantment == NULL || enchantment->category == NULL) continue;
+        if (enchantment == nullptr || enchantment->category == nullptr) continue;
         list->push_back(Item::enchantedBook->createForEnchantment(
             new EnchantmentInstance(enchantment, enchantment->getMaxLevel())));
     }
@@ -803,7 +803,7 @@ void IUIScene_CreativeMenu::staticCtor() {
         eCreativeInventory_ArtToolsDecorations};
     specs[eCreativeInventoryTab_Decorations] =
         new TabSpec(L"Decoration", IDS_GROUPNAME_DECORATIONS, 1,
-                    decorationsGroup, 0, NULL, 1, debugDecorationsGroup);
+                    decorationsGroup, 0, nullptr, 1, debugDecorationsGroup);
 #else
     ECreative_Inventory_Groups decorationsGroup[] = {
         eCreativeInventory_Decoration};
@@ -862,7 +862,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     ECreative_Inventory_Groups debugMiscGroup[] = {
         eCreativeInventory_ArtToolsMisc};
     specs[eCreativeInventoryTab_Misc] =
-        new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup, 0, NULL,
+        new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup, 0, nullptr,
                     1, debugMiscGroup);
 #else
     ECreative_Inventory_Groups miscGroup[] = {eCreativeInventory_Misc};
@@ -926,14 +926,14 @@ IUIScene_CreativeMenu::TabSpec::TabSpec(
     const wchar_t* icon, int descriptionId, int staticGroupsCount,
     ECreative_Inventory_Groups* staticGroups, int dynamicGroupsCount,
     ECreative_Inventory_Groups* dynamicGroups, int debugGroupsCount /*= 0*/,
-    ECreative_Inventory_Groups* debugGroups /*= NULL*/)
+    ECreative_Inventory_Groups* debugGroups /*= nullptr*/)
     : m_icon(icon),
       m_descriptionId(descriptionId),
       m_staticGroupsCount(staticGroupsCount),
       m_dynamicGroupsCount(dynamicGroupsCount),
       m_debugGroupsCount(debugGroupsCount) {
     m_pages = 0;
-    m_staticGroupsA = NULL;
+    m_staticGroupsA = nullptr;
 
     unsigned int dynamicItems = 0;
     m_staticItems = 0;
@@ -946,7 +946,7 @@ IUIScene_CreativeMenu::TabSpec::TabSpec(
         }
     }
 
-    m_debugGroupsA = NULL;
+    m_debugGroupsA = nullptr;
     m_debugItems = 0;
     if (debugGroupsCount > 0) {
         m_debugGroupsA = new ECreative_Inventory_Groups[debugGroupsCount];
@@ -956,8 +956,8 @@ IUIScene_CreativeMenu::TabSpec::TabSpec(
         }
     }
 
-    m_dynamicGroupsA = NULL;
-    if (dynamicGroupsCount > 0 && dynamicGroups != NULL) {
+    m_dynamicGroupsA = nullptr;
+    if (dynamicGroupsCount > 0 && dynamicGroups != nullptr) {
         m_dynamicGroupsA = new ECreative_Inventory_Groups[dynamicGroupsCount];
         for (int i = 0; i < dynamicGroupsCount; ++i) {
             m_dynamicGroupsA[i] = dynamicGroups[i];
@@ -970,9 +970,9 @@ IUIScene_CreativeMenu::TabSpec::TabSpec(
 }
 
 IUIScene_CreativeMenu::TabSpec::~TabSpec() {
-    if (m_staticGroupsA != NULL) delete[] m_staticGroupsA;
-    if (m_dynamicGroupsA != NULL) delete[] m_dynamicGroupsA;
-    if (m_debugGroupsA != NULL) delete[] m_debugGroupsA;
+    if (m_staticGroupsA != nullptr) delete[] m_staticGroupsA;
+    if (m_dynamicGroupsA != nullptr) delete[] m_dynamicGroupsA;
+    if (m_debugGroupsA != nullptr) delete[] m_debugGroupsA;
 }
 
 void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
@@ -981,7 +981,7 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
     int lastSlotIndex = 0;
 
     // Fill the dynamic group
-    if (m_dynamicGroupsCount > 0 && m_dynamicGroupsA != NULL) {
+    if (m_dynamicGroupsCount > 0 && m_dynamicGroupsA != nullptr) {
         for (auto it=
                       categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin();
              it != categoryGroups[m_dynamicGroupsA[dynamicIndex]].rend() &&
@@ -1101,7 +1101,7 @@ IUIScene_CreativeMenu::ItemPickerMenu::ItemPickerMenu(
 
     // int startLength = slots->size();
 
-    Slot* slot = NULL;
+    Slot* slot = nullptr;
     for (int i = 0; i < TabSpec::MAX_SIZE; i++) {
         // 4J JEV -  These values get set by addSlot anyway.
         slot = new Slot(creativeContainer, i, -1, -1);
@@ -1181,7 +1181,7 @@ bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum,
             std::shared_ptr<ItemInstance> newItem =
                 m_menu->getSlot(i)->getItem();
 
-            if (newItem != NULL) {
+            if (newItem != nullptr) {
                 m_menu->getSlot(i)->set(nullptr);
                 // call this function to synchronize multiplayer item bar
                 pMinecraft->localgameModes[iPad]->handleCreativeModeItemAdd(
@@ -1201,7 +1201,7 @@ void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum,
 
     std::shared_ptr<Inventory> playerInventory =
         pMinecraft->localplayers[iPad]->inventory;
-    if (playerInventory->getCarried() != NULL) {
+    if (playerInventory->getCarried() != nullptr) {
         if (buttonNum == 0) {
             pMinecraft->localgameModes[iPad]->handleCreativeModeItemDrop(
                 playerInventory->getCarried());
@@ -1283,7 +1283,7 @@ void IUIScene_CreativeMenu::handleSlotListClicked(ESceneSection eSection,
                 playerInventory->getCarried();
             std::shared_ptr<ItemInstance> clicked =
                 m_menu->getSlot(currentIndex)->getItem();
-            if (clicked != NULL) {
+            if (clicked != nullptr) {
                 playerInventory->setCarried(ItemInstance::clone(clicked));
                 carried = playerInventory->getCarried();
                 if (quickKeyHeld) {
@@ -1366,7 +1366,7 @@ bool IUIScene_CreativeMenu::getEmptyInventorySlot(
     // Jump to the slot with this item already on it, if we can stack more
     for (unsigned int i = TabSpec::MAX_SIZE; i < TabSpec::MAX_SIZE + 9; ++i) {
         std::shared_ptr<ItemInstance> slotItem = m_menu->getSlot(i)->getItem();
-        if (slotItem != NULL && slotItem->sameItemWithTags(item) &&
+        if (slotItem != nullptr && slotItem->sameItemWithTags(item) &&
             (slotItem->GetCount() + item->GetCount() <=
              item->getMaxStackSize())) {
             sameItemFound = true;
@@ -1379,7 +1379,7 @@ bool IUIScene_CreativeMenu::getEmptyInventorySlot(
         // Find an empty slot
         for (unsigned int i = TabSpec::MAX_SIZE; i < TabSpec::MAX_SIZE + 9;
              ++i) {
-            if (m_menu->getSlot(i)->getItem() == NULL) {
+            if (m_menu->getSlot(i)->getItem() == nullptr) {
                 slotX = i - TabSpec::MAX_SIZE;
                 emptySlotFound = true;
                 break;

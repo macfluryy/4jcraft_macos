@@ -14,15 +14,15 @@
 
 LevelType* LevelType::levelTypes[16];  // = new LevelType[16];
 LevelType* LevelType::lvl_normal =
-    NULL;  // = new LevelType(0, "default", 1).setHasReplacement();
-LevelType* LevelType::lvl_flat = NULL;  // = new LevelType(1, "flat");
+    nullptr;  // = new LevelType(0, "default", 1).setHasReplacement();
+LevelType* LevelType::lvl_flat = nullptr;  // = new LevelType(1, "flat");
 LevelType* LevelType::lvl_largeBiomes =
-    NULL;  // = new LevelType(2, "largeBiomes");
+    nullptr;  // = new LevelType(2, "largeBiomes");
 LevelType* LevelType::lvl_normal_1_1 =
-    NULL;  // = new LevelType(8, "default_1_1", 0).setSelectableByUser(false);
+    nullptr;  // = new LevelType(8, "default_1_1", 0).setSelectableByUser(false);
 
 void LevelType::staticCtor() {
-    for (int i = 0; i < 16; i++) levelTypes[i] = NULL;
+    for (int i = 0; i < 16; i++) levelTypes[i] = nullptr;
     lvl_normal = new LevelType(0, L"default", 1);
     lvl_normal->setHasReplacement();
     lvl_flat = new LevelType(1, L"flat");
@@ -84,12 +84,12 @@ LevelType* LevelType::getLevelType(std::wstring name) {
         for (int i = 0; i < 16; i++) {
             std::wstring genname = levelTypes[i]->m_generatorName;
 
-            if (levelTypes[i] != NULL && (genname.compare(name) == 0)) {
+            if (levelTypes[i] != nullptr && (genname.compare(name) == 0)) {
                 return levelTypes[i];
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 int LevelType::getId() { return id; }

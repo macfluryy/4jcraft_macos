@@ -25,7 +25,7 @@ Village::Village() {
     golemCount = 0;
     noBreedTimer = 0;
 
-    level = NULL;
+    level = nullptr;
 }
 
 Village::Village(Level* level) {
@@ -197,7 +197,7 @@ std::shared_ptr<DoorInfo> Village::getBestDoorInfo(int x, int y, int z) {
 }
 
 bool Village::hasDoorInfo(int x, int y, int z) {
-    return getDoorInfo(x, y, z) != NULL;
+    return getDoorInfo(x, y, z) != nullptr;
 }
 
 std::shared_ptr<DoorInfo> Village::getDoorInfo(int x, int y, int z) {
@@ -236,7 +236,7 @@ void Village::addAggressor(std::shared_ptr<LivingEntity> mob) {
 std::shared_ptr<LivingEntity> Village::getClosestAggressor(
     std::shared_ptr<LivingEntity> from) {
     double closestSqr = std::numeric_limits<double>::max();
-    Aggressor* closest = NULL;
+    Aggressor* closest = nullptr;
     // for (int i = 0; i < aggressors.size(); ++i)
     for (auto it = aggressors.begin(); it != aggressors.end(); ++it) {
         Aggressor* a = *it;  // aggressors.get(i);
@@ -245,7 +245,7 @@ std::shared_ptr<LivingEntity> Village::getClosestAggressor(
         closest = a;
         closestSqr = distSqr;
     }
-    return closest != NULL ? closest->mob : nullptr;
+    return closest != nullptr ? closest->mob : nullptr;
 }
 
 std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
@@ -259,7 +259,7 @@ std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
         std::wstring player = it->first;
         if (isVeryBadStanding(player)) {
             std::shared_ptr<Player> mob = level->getPlayerByName(player);
-            if (mob != NULL) {
+            if (mob != nullptr) {
                 double distSqr = mob->distanceToSqr(from);
                 if (distSqr > closestSqr) continue;
                 closest = mob;

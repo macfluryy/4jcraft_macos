@@ -27,8 +27,8 @@ PlayerInfoPacket::PlayerInfoPacket(std::uint8_t networkSmallId,
 
 PlayerInfoPacket::PlayerInfoPacket(std::shared_ptr<ServerPlayer> player) {
     m_networkSmallId = 0;
-    if (player->connection != NULL &&
-        player->connection->getNetworkPlayer() != NULL)
+    if (player->connection != nullptr &&
+        player->connection->getNetworkPlayer() != nullptr)
         m_networkSmallId = player->connection->getNetworkPlayer()->GetSmallId();
     m_playerColourIndex = player->getPlayerIndex();
     m_playerPrivileges = player->getAllPlayerGamePrivileges();

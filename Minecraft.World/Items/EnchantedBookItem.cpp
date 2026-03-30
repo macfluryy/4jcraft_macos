@@ -30,7 +30,7 @@ const Rarity* EnchantedBookItem::getRarity(
 
 ListTag<CompoundTag>* EnchantedBookItem::getEnchantments(
     std::shared_ptr<ItemInstance> item) {
-    if (item->tag == NULL ||
+    if (item->tag == nullptr ||
         !item->tag->contains((wchar_t*)TAG_STORED_ENCHANTMENTS.c_str())) {
         return new ListTag<CompoundTag>();
     }
@@ -46,7 +46,7 @@ void EnchantedBookItem::appendHoverText(
 
     ListTag<CompoundTag>* list = getEnchantments(itemInstance);
 
-    if (list != NULL) {
+    if (list != nullptr) {
         std::wstring unformatted = L"";
         for (int i = 0; i < list->size(); i++) {
             int type =
@@ -54,7 +54,7 @@ void EnchantedBookItem::appendHoverText(
             int level =
                 list->get(i)->getShort((wchar_t*)ItemInstance::TAG_ENCH_LEVEL);
 
-            if (Enchantment::enchantments[type] != NULL) {
+            if (Enchantment::enchantments[type] != nullptr) {
                 lines->push_back(
                     Enchantment::enchantments[type]->getFullname(level));
             }

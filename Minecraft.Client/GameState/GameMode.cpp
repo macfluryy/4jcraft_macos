@@ -20,7 +20,7 @@ void GameMode::initLevel(Level* level) {}
 bool GameMode::destroyBlock(int x, int y, int z, int face) {
     Level* level = minecraft->level;
     Tile* oldTile = Tile::tiles[level->getTile(x, y, z)];
-    if (oldTile == NULL) return false;
+    if (oldTile == nullptr) return false;
 
     //  4J - Let the rendering side of thing know we are about to destroy the
     //  tile, so we can synchronise collision with async render data upates.
@@ -37,7 +37,7 @@ bool GameMode::destroyBlock(int x, int y, int z, int face) {
     level->getChunkAt(x, z)->recalcHeightmapOnly();
     bool changed = level->setTile(x, y, z, 0);
 
-    if (oldTile != NULL && changed) {
+    if (oldTile != nullptr && changed) {
         oldTile->destroy(level, x, y, z, data);
     }
     return changed;
@@ -91,7 +91,7 @@ void GameMode::adjustPlayer(std::shared_ptr<Player> player) {}
 //		}
 //	}
 //
-//     if (item == NULL) return false;
+//     if (item == nullptr) return false;
 //     return item->useOn(player, level, x, y, z, face, bTestUseOnOnly);
 // }
 

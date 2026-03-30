@@ -4,7 +4,7 @@
 #include "ConsoleGameRules.h"
 #include "LevelRuleset.h"
 
-LevelRuleset::LevelRuleset() { m_stringTable = NULL; }
+LevelRuleset::LevelRuleset() { m_stringTable = nullptr; }
 
 LevelRuleset::~LevelRuleset() {
     for (auto it = m_areas.begin(); it != m_areas.end(); ++it) {
@@ -20,7 +20,7 @@ void LevelRuleset::getChildren(std::vector<GameRuleDefinition*>* children) {
 
 GameRuleDefinition* LevelRuleset::addChild(
     ConsoleGameRules::EGameRuleType ruleType) {
-    GameRuleDefinition* rule = NULL;
+    GameRuleDefinition* rule = nullptr;
     if (ruleType == ConsoleGameRules::eGameRuleType_NamedArea) {
         rule = new NamedAreaRuleDefinition();
         m_areas.push_back((NamedAreaRuleDefinition*)rule);
@@ -35,7 +35,7 @@ void LevelRuleset::loadStringTable(StringTable* table) {
 }
 
 const wchar_t* LevelRuleset::getString(const std::wstring& key) {
-    if (m_stringTable == NULL) {
+    if (m_stringTable == nullptr) {
         return L"";
     } else {
         return m_stringTable->getString(key);
@@ -43,7 +43,7 @@ const wchar_t* LevelRuleset::getString(const std::wstring& key) {
 }
 
 AABB* LevelRuleset::getNamedArea(const std::wstring& areaName) {
-    AABB* area = NULL;
+    AABB* area = nullptr;
     for (auto it = m_areas.begin(); it != m_areas.end(); ++it) {
         if ((*it)->getName().compare(areaName) == 0) {
             area = (*it)->getArea();

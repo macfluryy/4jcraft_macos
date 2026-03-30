@@ -107,8 +107,8 @@ public:
 
 	void				SetMenuDisplayed(int iPad, bool bVal);
 
-// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(void*,const bool),void* lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=NULL);
-// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, LPCWSTR pwchDefault, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(void*,const bool),void* lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=NULL);
+// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(void*,const bool),void* lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
+// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, LPCWSTR pwchDefault, UINT uiDesc, DWORD dwPad, WCHAR *pwchResult, UINT uiResultSize,int( *Func)(void*,const bool),void* lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
 	EKeyboardResult		RequestKeyboard(const wchar_t *Title, const wchar_t *Text, int iPad, unsigned int uiMaxChars, int( *Func)(void *,const bool), void *lpParam, C_4JInput::EKeyboardMode eMode);
 	void GetText(uint16_t *UTF16String);
 

@@ -328,7 +328,7 @@ void HellRandomLevelSource::lightChunk(LevelChunk* lc) {
 doubleArray HellRandomLevelSource::getHeights(doubleArray buffer, int x, int y,
                                               int z, int xSize, int ySize,
                                               int zSize) {
-    if (buffer.data == NULL) {
+    if (buffer.data == nullptr) {
         buffer = doubleArray(xSize * ySize * zSize);
     }
 
@@ -548,15 +548,15 @@ std::vector<Biome::MobSpawnerData*>* HellRandomLevelSource::getMobsAt(
     }
 
     Biome* biome = level->getBiome(x, z);
-    if (biome == NULL) {
-        return NULL;
+    if (biome == nullptr) {
+        return nullptr;
     }
     return biome->getMobs(mobCategory);
 }
 
 TilePos* HellRandomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
-    return NULL;
+    return nullptr;
 }
 
 void HellRandomLevelSource::recreateLogicStructuresForChunk(int chunkX,

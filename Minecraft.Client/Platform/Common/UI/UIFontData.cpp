@@ -649,9 +649,9 @@ unsigned short SFontData::Codepoints[FONTSIZE] = {
 CFontData::CFontData() {
     m_unicodeMap = std::unordered_map<unsigned int, unsigned short>();
 
-    m_sFontData = NULL;
-    m_kerningTable = NULL;
-    m_pbRawImage = NULL;
+    m_sFontData = nullptr;
+    m_kerningTable = nullptr;
+    m_pbRawImage = nullptr;
 }
 
 CFontData::CFontData(SFontData& sFontData, int* pbRawImage)

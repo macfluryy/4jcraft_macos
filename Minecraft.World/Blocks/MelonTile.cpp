@@ -4,7 +4,7 @@
 #include "../Headers/net.minecraft.world.h"
 #include "../Util/Facing.h"
 
-MelonTile::MelonTile(int id) : Tile(id, Material::vegetable) { iconTop = NULL; }
+MelonTile::MelonTile(int id) : Tile(id, Material::vegetable) { iconTop = nullptr; }
 
 Icon* MelonTile::getTexture(int face, int data) {
     if (face == Facing::UP || face == Facing::DOWN) return iconTop;

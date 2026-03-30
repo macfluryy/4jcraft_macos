@@ -3,10 +3,10 @@
 #include "../../Headers/net.minecraft.world.level.storage.h"
 #include "LevelType.h"
 
-GameType* GameType::NOT_SET = NULL;
-GameType* GameType::SURVIVAL = NULL;
-GameType* GameType::CREATIVE = NULL;
-GameType* GameType::ADVENTURE = NULL;
+GameType* GameType::NOT_SET = nullptr;
+GameType* GameType::SURVIVAL = nullptr;
+GameType* GameType::CREATIVE = nullptr;
+GameType* GameType::ADVENTURE = nullptr;
 
 void GameType::staticCtor() {
     NOT_SET = new GameType(-1, L"");

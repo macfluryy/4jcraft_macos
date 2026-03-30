@@ -30,30 +30,30 @@ std::vector<ItemStat*>* Stats::itemsCraftedStats = new std::vector<ItemStat*>;
 std::vector<ItemStat*>* Stats::blocksPlacedStats = new std::vector<ItemStat*>;
 #endif
 
-Stat* Stats::walkOneM = NULL;
-Stat* Stats::swimOneM = NULL;
-Stat* Stats::fallOneM = NULL;
-Stat* Stats::climbOneM = NULL;
-Stat* Stats::minecartOneM = NULL;
-Stat* Stats::boatOneM = NULL;
-Stat* Stats::pigOneM = NULL;
-Stat* Stats::portalsCreated = NULL;
-Stat* Stats::cowsMilked = NULL;
-Stat* Stats::netherLavaCollected = NULL;
-Stat* Stats::killsZombie = NULL;
-Stat* Stats::killsSkeleton = NULL;
-Stat* Stats::killsCreeper = NULL;
-Stat* Stats::killsSpider = NULL;
-Stat* Stats::killsSpiderJockey = NULL;
-Stat* Stats::killsZombiePigman = NULL;
-Stat* Stats::killsSlime = NULL;
-Stat* Stats::killsGhast = NULL;
-Stat* Stats::killsNetherZombiePigman = NULL;
+Stat* Stats::walkOneM = nullptr;
+Stat* Stats::swimOneM = nullptr;
+Stat* Stats::fallOneM = nullptr;
+Stat* Stats::climbOneM = nullptr;
+Stat* Stats::minecartOneM = nullptr;
+Stat* Stats::boatOneM = nullptr;
+Stat* Stats::pigOneM = nullptr;
+Stat* Stats::portalsCreated = nullptr;
+Stat* Stats::cowsMilked = nullptr;
+Stat* Stats::netherLavaCollected = nullptr;
+Stat* Stats::killsZombie = nullptr;
+Stat* Stats::killsSkeleton = nullptr;
+Stat* Stats::killsCreeper = nullptr;
+Stat* Stats::killsSpider = nullptr;
+Stat* Stats::killsSpiderJockey = nullptr;
+Stat* Stats::killsZombiePigman = nullptr;
+Stat* Stats::killsSlime = nullptr;
+Stat* Stats::killsGhast = nullptr;
+Stat* Stats::killsNetherZombiePigman = nullptr;
 
 // 4J : WESTY : Added for new achievements.
-Stat* Stats::befriendsWolf = NULL;
-Stat* Stats::totalBlocksMined = NULL;
-Stat* Stats::timePlayed = NULL;
+Stat* Stats::befriendsWolf = nullptr;
+Stat* Stats::totalBlocksMined = nullptr;
+Stat* Stats::timePlayed = nullptr;
 
 StatArray Stats::blocksMined;
 StatArray Stats::itemsCollected;
@@ -66,9 +66,9 @@ StatArray Stats::biomesVisisted;
 #endif
 
 Stat* Stats::killsEnderdragon =
-    NULL;  // The number of times this player has dealt the killing blow to the
+    nullptr;  // The number of times this player has dealt the killing blow to the
            // Enderdragon
-Stat* Stats::completeTheEnd = NULL;  // The number of times this player has been
+Stat* Stats::completeTheEnd = nullptr;  // The number of times this player has been
                                      // present when the Enderdragon has died
 
 void Stats::staticCtor() {
@@ -611,7 +611,7 @@ void Stats::buildAdditionalStats() {
         blocksPlaced[itemStat->getItemId()] = itemStat;
         itemStat->postConstruct();
 
-        GeneralStat* generalStat = NULL;
+        GeneralStat* generalStat = nullptr;
 
         rainbowCollection = StatArray(16);
         for (unsigned int i = 0; i < 16; i++) {

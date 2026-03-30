@@ -7,7 +7,7 @@
 // 4J added
 
 ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
-    ModelPart* pAttachTo = NULL;
+    ModelPart* pAttachTo = nullptr;
 
     switch (pBox->ePart) {
         case eBodyPart_Unknown:
@@ -41,10 +41,10 @@ ModelPart* HumanoidModel::AddOrRetrievePart(SKIN_BOX* pBox) {
             app.DebugPrintf(
                 "HumanoidModel::AddOrRetrievePart - Box geometry was found, "
                 "but with different uvs\n");
-            pNewBox = NULL;
+            pNewBox = nullptr;
         }
     }
-    if (pNewBox == NULL) {
+    if (pNewBox == nullptr) {
         // app.DebugPrintf("HumanoidModel::AddOrRetrievePart - Adding box to
         // model part\n");
 
@@ -141,7 +141,7 @@ HumanoidModel::HumanoidModel(float g, float yOffset, int texWidth,
 void HumanoidModel::render(std::shared_ptr<Entity> entity, float time, float r,
                            float bob, float yRot, float xRot, float scale,
                            bool usecompiled) {
-    if (entity != NULL) {
+    if (entity != nullptr) {
         m_uiAnimOverrideBitmask = entity->getAnimOverrideBitmask();
     }
 

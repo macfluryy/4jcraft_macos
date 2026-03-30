@@ -41,11 +41,11 @@ bool TakeFlowerGoal::canUse() {
         }
     }
     delete golems;
-    return golem.lock() != NULL;
+    return golem.lock() != nullptr;
 }
 
 bool TakeFlowerGoal::canContinueToUse() {
-    return golem.lock() != NULL && golem.lock()->getOfferFlowerTick() > 0;
+    return golem.lock() != nullptr && golem.lock()->getOfferFlowerTick() > 0;
 }
 
 void TakeFlowerGoal::start() {

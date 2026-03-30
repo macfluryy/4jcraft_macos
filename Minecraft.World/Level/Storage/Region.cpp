@@ -39,7 +39,7 @@ Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2,
     for (int xc = xc1; xc <= xc2; xc++) {
         for (int zc = zc1; zc <= zc2; zc++) {
             LevelChunk* chunk = level->getChunk(xc, zc);
-            if (chunk != NULL) {
+            if (chunk != nullptr) {
                 LevelChunkArray* lca = (*chunks)[xc - xc1];
                 lca->data[zc - zc1] = chunk;
             }
@@ -49,7 +49,7 @@ Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2,
         for (int zc = (z1 >> 4); zc <= (z2 >> 4); zc++) {
             LevelChunkArray* lca = (*chunks)[xc - xc1];
             LevelChunk* chunk = lca->data[zc - zc1];
-            if (chunk != NULL) {
+            if (chunk != nullptr) {
                 if (!chunk->isYSpaceEmpty(y1, y2)) {
                     allEmpty = false;
                 }
@@ -60,7 +60,7 @@ Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2,
     // AP - added a caching system for Chunk::rebuild to take advantage of
     xcCached = -1;
     zcCached = -1;
-    CachedTiles = NULL;
+    CachedTiles = nullptr;
 }
 
 bool Region::isAllEmpty() { return allEmpty; }
@@ -82,7 +82,7 @@ int Region::getTile(int x, int y, int z) {
     }
 
     LevelChunk* lc = (*chunks)[xc]->data[zc];
-    if (lc == NULL) return 0;
+    if (lc == nullptr) return 0;
 
     return lc->getTile(x & 15, y, z & 15);
 }
@@ -92,7 +92,7 @@ void Region::setCachedTiles(unsigned char* tiles, int xc, int zc) {
     xcCached = xc;
     zcCached = zc;
     int size = 16 * 16 * Level::maxBuildHeight;
-    if (CachedTiles == NULL) {
+    if (CachedTiles == nullptr) {
         CachedTiles = (unsigned char*)malloc(size);
     }
     memcpy(CachedTiles, tiles, size);
@@ -100,14 +100,14 @@ void Region::setCachedTiles(unsigned char* tiles, int xc, int zc) {
 
 LevelChunk* Region::getLevelChunk(int x, int y, int z) {
     if (y < 0) return 0;
-    if (y >= Level::maxBuildHeight) return NULL;
+    if (y >= Level::maxBuildHeight) return nullptr;
 
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
     if (xc < 0 || xc >= (int)chunks->length || zc < 0 ||
         zc >= (int)(*chunks)[xc]->length) {
-        return NULL;
+        return nullptr;
     }
 
     LevelChunk* lc = (*chunks)[xc]->data[zc];
@@ -205,7 +205,7 @@ Biome* Region::getBiome(int x, int z) { return level->getBiome(x, z); }
 
 bool Region::isSolidRenderTile(int x, int y, int z) {
     Tile* tile = Tile::tiles[getTile(x, y, z)];
-    if (tile == NULL) return false;
+    if (tile == nullptr) return false;
 
     // 4J - addition here to make rendering big blocks of leaves more efficient.
     // Normally leaves never consider themselves as solid, so blocks of leaves
@@ -223,7 +223,7 @@ bool Region::isSolidRenderTile(int x, int y, int z) {
         int azo[6] = {0, 0, 0, 0, 1, -1};
         for (int i = 0; i < 6; i++) {
             int t = getTile(x + axo[i], y + ayo[i], z + azo[i]);
-            if ((t != Tile::leaves_Id) && ((Tile::tiles[t] == NULL) ||
+            if ((t != Tile::leaves_Id) && ((Tile::tiles[t] == nullptr) ||
                                            !Tile::tiles[t]->isSolidRender())) {
                 return false;
             }
@@ -237,7 +237,7 @@ bool Region::isSolidRenderTile(int x, int y, int z) {
 
 bool Region::isSolidBlockingTile(int x, int y, int z) {
     Tile* tile = Tile::tiles[getTile(x, y, z)];
-    if (tile == NULL) return false;
+    if (tile == nullptr) return false;
     return tile->material->blocksMotion() && tile->isCubeShaped();
 }
 
@@ -248,7 +248,7 @@ bool Region::isTopSolidBlocking(int x, int y, int z) {
 
 bool Region::isEmptyTile(int x, int y, int z) {
     Tile* tile = Tile::tiles[getTile(x, y, z)];
-    return (tile == NULL);
+    return (tile == nullptr);
 }
 
 // 4J - brought forward from 1.8.2

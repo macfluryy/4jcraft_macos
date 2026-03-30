@@ -295,16 +295,16 @@ int UIScene_JoinMenu::StartGame_SignInReturned(void* pParam, bool bContinue,
                                                int iPad) {
     UIScene_JoinMenu* pClass = (UIScene_JoinMenu*)ui.GetSceneFromCallbackId(
         reinterpret_cast<size_t>(pParam));
-    if (pClass == NULL) {
+    if (pClass == nullptr) {
         pClass = (UIScene_JoinMenu*)pParam;
     }
 
-    if (bContinue == true && pClass != NULL &&
+    if (bContinue == true && pClass != nullptr &&
         ProfileManager.IsSignedIn(iPad)) {
         JoinGame(pClass);
     }
 
-    if (pClass != NULL) {
+    if (pClass != nullptr) {
         pClass->m_bIgnoreInput = false;
     }
 
@@ -443,7 +443,7 @@ void UIScene_JoinMenu::handleTimerComplete(int id) {
                 playersList.DeleteItems(0, playersList.GetItemCount());
                 int selectedIndex = 0;
                 for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
-                    if (m_selectedSession->data.players[i] != NULL) {
+                    if (m_selectedSession->data.players[i] != nullptr) {
                         if (m_selectedSession->data.players[i] ==
                             selectedPlayerXUID)
                             selectedIndex = i;
@@ -462,7 +462,7 @@ void UIScene_JoinMenu::handleTimerComplete(int id) {
                                        .c_str());
                         }
                     } else {
-                        // Leave the loop when we hit the first NULL player
+                        // Leave the loop when we hit the first nullptr player
                         break;
                     }
                 }

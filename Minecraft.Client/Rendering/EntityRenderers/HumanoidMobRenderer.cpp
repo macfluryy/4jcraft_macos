@@ -18,8 +18,8 @@ std::map<std::wstring, ResourceLocation>
 void HumanoidMobRenderer::_init(HumanoidModel* humanoidModel, float scale) {
     this->humanoidModel = humanoidModel;
     this->_scale = scale;
-    armorParts1 = NULL;
-    armorParts2 = NULL;
+    armorParts1 = nullptr;
+    armorParts2 = nullptr;
 
     createArmorParts();
 }
@@ -83,9 +83,9 @@ ResourceLocation* HumanoidMobRenderer::getArmorLocation(ArmorItem* armorItem,
 void HumanoidMobRenderer::prepareSecondPassArmor(
     std::shared_ptr<LivingEntity> mob, int layer, float a) {
     std::shared_ptr<ItemInstance> itemInstance = mob->getArmor(3 - layer);
-    if (itemInstance != NULL) {
+    if (itemInstance != nullptr) {
         Item* item = itemInstance->getItem();
-        if (dynamic_cast<ArmorItem*>(item) != NULL) {
+        if (dynamic_cast<ArmorItem*>(item) != nullptr) {
             bindTexture(
                 getArmorLocation(dynamic_cast<ArmorItem*>(item), layer, true));
 
@@ -107,9 +107,9 @@ int HumanoidMobRenderer::prepareArmor(std::shared_ptr<LivingEntity> _mob,
         std::dynamic_pointer_cast<LivingEntity>(_mob);
 
     std::shared_ptr<ItemInstance> itemInstance = mob->getArmor(3 - layer);
-    if (itemInstance != NULL) {
+    if (itemInstance != nullptr) {
         Item* item = itemInstance->getItem();
-        if (dynamic_cast<ArmorItem*>(item) != NULL) {
+        if (dynamic_cast<ArmorItem*>(item) != nullptr) {
             ArmorItem* armorItem = dynamic_cast<ArmorItem*>(item);
             bindTexture(getArmorLocation(armorItem, layer));
 
@@ -181,13 +181,13 @@ void HumanoidMobRenderer::render(std::shared_ptr<Entity> _mob, double x,
 ResourceLocation* HumanoidMobRenderer::getTextureLocation(
     std::shared_ptr<Entity> mob) {
     // TODO -- Figure out of we need some data in here
-    return NULL;
+    return nullptr;
 }
 
 void HumanoidMobRenderer::prepareCarriedItem(
     std::shared_ptr<Entity> mob, std::shared_ptr<ItemInstance> item) {
     armorParts1->holdingRightHand = armorParts2->holdingRightHand =
-        humanoidModel->holdingRightHand = item != NULL ? 1 : 0;
+        humanoidModel->holdingRightHand = item != nullptr ? 1 : 0;
     armorParts1->sneaking = armorParts2->sneaking = humanoidModel->sneaking =
         mob->isSneaking();
 }
@@ -200,7 +200,7 @@ void HumanoidMobRenderer::additionalRendering(std::shared_ptr<LivingEntity> mob,
     std::shared_ptr<ItemInstance> item = mob->getCarriedItem();
     std::shared_ptr<ItemInstance> headGear = mob->getArmor(3);
 
-    if (headGear != NULL) {
+    if (headGear != nullptr) {
         // don't render the pumpkin of skulls for the skins with that disabled
         // 4J-PB - need to disable rendering armour/skulls/pumpkins for some
         // special skins (Daleks)
@@ -211,7 +211,7 @@ void HumanoidMobRenderer::additionalRendering(std::shared_ptr<LivingEntity> mob,
             humanoidModel->head->translateTo(1 / 16.0f);
 
             if (headGear->getItem()->id < 256) {
-                if (Tile::tiles[headGear->id] != NULL &&
+                if (Tile::tiles[headGear->id] != nullptr &&
                     TileRenderer::canRender(
                         Tile::tiles[headGear->id]->getRenderShape())) {
                     float s = 10 / 16.0f;
@@ -240,7 +240,7 @@ void HumanoidMobRenderer::additionalRendering(std::shared_ptr<LivingEntity> mob,
         }
     }
 
-    if (item != NULL) {
+    if (item != nullptr) {
         glPushMatrix();
 
         if (model->young) {

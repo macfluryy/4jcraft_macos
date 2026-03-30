@@ -27,7 +27,7 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
     std::shared_ptr<ServerPlayer> destination =
         players->getPlayer(destinationID);
 
-    if (subject != NULL && destination != NULL &&
+    if (subject != nullptr && destination != nullptr &&
         subject->level->dimension->id == destination->level->dimension->id &&
         subject->isAlive()) {
         subject->ride(nullptr);

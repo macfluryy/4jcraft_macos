@@ -10,7 +10,7 @@ const std::wstring Villages::VILLAGE_FILE_ID = L"villages";
 
 Villages::Villages(const std::wstring& id) : SavedData(id) {
     _tick = 0;
-    level = NULL;
+    level = nullptr;
 }
 
 Villages::Villages(Level* level) : SavedData(VILLAGE_FILE_ID) {
@@ -135,7 +135,7 @@ void Villages::addDoorInfos(Pos* pos) {
                 if (isDoor(xx, yy, zz)) {
                     std::shared_ptr<DoorInfo> currentDoor =
                         getDoorInfo(xx, yy, zz);
-                    if (currentDoor == NULL)
+                    if (currentDoor == nullptr)
                         createDoorInfo(xx, yy, zz);
                     else
                         currentDoor->timeStamp = _tick;
@@ -155,7 +155,7 @@ std::shared_ptr<DoorInfo> Villages::getDoorInfo(int x, int y, int z) {
     for (auto it = villages.begin(); it != villages.end(); ++it) {
         std::shared_ptr<Village> v = *it;
         std::shared_ptr<DoorInfo> di = v->getDoorInfo(x, y, z);
-        if (di != NULL) return di;
+        if (di != nullptr) return di;
     }
     return nullptr;
 }

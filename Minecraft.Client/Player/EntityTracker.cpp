@@ -71,7 +71,7 @@ void EntityTracker::addEntity(std::shared_ptr<Entity> e) {
         addEntity(e, 16 * 5, 3, false);
     else if (e->instanceof(eTYPE_BAT))
         addEntity(e, 16 * 5, 3, false);
-    else if (std::dynamic_pointer_cast<Creature>(e) != NULL)
+    else if (std::dynamic_pointer_cast<Creature>(e) != nullptr)
         addEntity(e, 16 * 5, 3, true);
     else if (e->instanceof(eTYPE_ENDERDRAGON))
         addEntity(e, 16 * 10, 3, true);
@@ -159,9 +159,9 @@ void EntityTracker::tick() {
         std::shared_ptr<ServerPlayer> ep = server->getPlayers()->players[i];
         if (ep->dimension != level->dimension->id) continue;
 
-        if (ep->connection == NULL) continue;
+        if (ep->connection == nullptr) continue;
         INetworkPlayer* thisPlayer = ep->connection->getNetworkPlayer();
-        if (thisPlayer == NULL) continue;
+        if (thisPlayer == nullptr) continue;
 
         bool addPlayer = false;
         for (unsigned int j = 0; j < movedPlayers.size(); j++) {
@@ -169,9 +169,9 @@ void EntityTracker::tick() {
 
             if (sp == ep) break;
 
-            if (sp->connection == NULL) continue;
+            if (sp->connection == nullptr) continue;
             INetworkPlayer* otherPlayer = sp->connection->getNetworkPlayer();
-            if (otherPlayer != NULL && thisPlayer->IsSameSystem(otherPlayer)) {
+            if (otherPlayer != nullptr && thisPlayer->IsSameSystem(otherPlayer)) {
                 addPlayer = true;
                 break;
             }
@@ -181,7 +181,7 @@ void EntityTracker::tick() {
 
     for (unsigned int i = 0; i < movedPlayers.size(); i++) {
         std::shared_ptr<ServerPlayer> player = movedPlayers[i];
-        if (player->connection == NULL) continue;
+        if (player->connection == nullptr) continue;
         for (auto it = entities.begin(); it != entities.end(); it++) {
             std::shared_ptr<TrackedEntity> te = *it;
             if (te->e != player) {

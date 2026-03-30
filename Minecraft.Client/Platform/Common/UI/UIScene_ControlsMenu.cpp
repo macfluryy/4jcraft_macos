@@ -20,7 +20,7 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcSetPlatform, 1, value);
 
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
 
     if (bNotInGame) {
         LPWSTR layoutString = new wchar_t[128];

@@ -24,8 +24,8 @@ TextureMap::TextureMap(int type, const std::wstring& name,
     this->missingTexture = missingTexture;
 
     // 4J Initialisers
-    missingPosition = NULL;
-    stitchResult = NULL;
+    missingPosition = nullptr;
+    stitchResult = nullptr;
 
     m_mipMap = mipmap;
 }
@@ -36,7 +36,7 @@ void TextureMap::stitch() {
     if (iconType == Icon::TYPE_TERRAIN) {
         // for (Tile tile : Tile.tiles)
         for (unsigned int i = 0; i < Tile::TILE_NUM_COUNT; ++i) {
-            if (Tile::tiles[i] != NULL) {
+            if (Tile::tiles[i] != nullptr) {
                 Tile::tiles[i]->registerIcons(this);
             }
         }
@@ -48,7 +48,7 @@ void TextureMap::stitch() {
     // for (Item item : Item.items)
     for (unsigned int i = 0; i < Item::ITEM_NUM_COUNT; ++i) {
         Item* item = Item::items[i];
-        if (item != NULL && item->getIconType() == iconType) {
+        if (item != nullptr && item->getIconType() == iconType) {
             item->registerIcons(this);
         }
     }
@@ -94,7 +94,7 @@ void TextureMap::stitch() {
         std::vector<Texture*>* frames =
             TextureManager::getInstance()->createTextures(filename, m_mipMap);
 
-        if (frames == NULL || frames->empty()) {
+        if (frames == nullptr || frames->empty()) {
             continue;  // Couldn't load a texture, skip it
         }
 
@@ -131,7 +131,7 @@ void TextureMap::stitch() {
 
         std::vector<Texture*>* frames = textures.find(textureHolder)->second;
 
-        StitchedTexture* stored = NULL;
+        StitchedTexture* stored = nullptr;
 
         auto itTex = texturesToRegister.find(textureName);
         if (itTex != texturesToRegister.end()) stored = itTex->second;
@@ -139,7 +139,7 @@ void TextureMap::stitch() {
         // [EB]: What is this code for? debug warnings for when during
         // transition?
         bool missing = false;
-        if (stored == NULL) {
+        if (stored == nullptr) {
             missing = true;
             stored = StitchedTexture::create(textureName);
 
@@ -206,7 +206,7 @@ void TextureMap::stitch() {
 
 StitchedTexture* TextureMap::getTexture(const std::wstring& name) {
     StitchedTexture* result = texturesByName.find(name)->second;
-    if (result == NULL) result = missingPosition;
+    if (result == nullptr) result = missingPosition;
     return result;
 }
 
@@ -224,7 +224,7 @@ Texture* TextureMap::getStitchedTexture() { return stitchResult; }
 // 4J Stu - register is a reserved keyword in C++
 Icon* TextureMap::registerIcon(const std::wstring& name) {
     if (name.empty()) {
-        app.DebugPrintf("Don't register NULL\n");
+        app.DebugPrintf("Don't register nullptr\n");
 #ifndef _CONTENT_PACKAGE
         __debugbreak();
 #endif
@@ -232,11 +232,11 @@ Icon* TextureMap::registerIcon(const std::wstring& name) {
     }
 
     // TODO: [EB]: Why do we allow multiple registrations?
-    StitchedTexture* result = NULL;
+    StitchedTexture* result = nullptr;
     auto it = texturesToRegister.find(name);
     if (it != texturesToRegister.end()) result = it->second;
 
-    if (result == NULL) {
+    if (result == nullptr) {
         result = StitchedTexture::create(name);
         texturesToRegister.insert(
             stringStitchedTextureMap::value_type(name, result));

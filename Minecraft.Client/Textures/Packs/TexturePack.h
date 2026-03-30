@@ -40,11 +40,11 @@ return TexturePack.class.getResourceAsStream(name);
         */
         return name;
     }
-    virtual DLCPack* getDLCPack() { return NULL; }
+    virtual DLCPack* getDLCPack() { return nullptr; }
 
     // 4J Added
     virtual std::wstring getPath(bool bTitleUpdateTexture = false,
-                                 const char* pchBDPatchFilename = NULL);
+                                 const char* pchBDPatchFilename = nullptr);
     virtual std::wstring getAnimationString(const std::wstring& textureName,
                                             const std::wstring& path,
                                             bool allowFallback) = 0;

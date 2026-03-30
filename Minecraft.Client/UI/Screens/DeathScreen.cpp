@@ -13,7 +13,7 @@ void DeathScreen::init() {
     buttons.push_back(
         new Button(2, width / 2 - 100, height / 4 + 24 * 4, L"Title menu"));
 
-    if (minecraft->user == NULL) {
+    if (minecraft->user == nullptr) {
         buttons[1]->active = false;
     }
 }
@@ -27,11 +27,11 @@ void DeathScreen::buttonClicked(Button* button) {
     }
     if (button->id == 1) {
         minecraft->player->respawn();
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         //          minecraft.setScreen(new NewLevelScreen(this));
     }
     if (button->id == 2) {
-        // minecraft->setLevel(NULL);
+        // minecraft->setLevel(nullptr);
         // minecraft->setScreen(new TitleScreen());
 
         // 4jcraft: use the static method from PauseScreen to exit

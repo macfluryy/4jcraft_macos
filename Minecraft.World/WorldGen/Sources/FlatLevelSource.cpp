@@ -113,8 +113,8 @@ std::wstring FlatLevelSource::gatherStats() { return L"FlatLevelSource"; }
 std::vector<Biome::MobSpawnerData*>* FlatLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
     Biome* biome = level->getBiome(x, z);
-    if (biome == NULL) {
-        return NULL;
+    if (biome == nullptr) {
+        return nullptr;
     }
     return biome->getMobs(mobCategory);
 }
@@ -122,7 +122,7 @@ std::vector<Biome::MobSpawnerData*>* FlatLevelSource::getMobsAt(
 TilePos* FlatLevelSource::findNearestMapFeature(Level* level,
                                                 const std::wstring& featureName,
                                                 int x, int y, int z) {
-    return NULL;
+    return nullptr;
 }
 
 void FlatLevelSource::recreateLogicStructuresForChunk(int chunkX, int chunkZ) {

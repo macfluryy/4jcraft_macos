@@ -17,7 +17,7 @@ AttributeModifier* PathfinderMob::SPEED_MODIFIER_FLEEING =
         ->setSerialize(false);
 
 PathfinderMob::PathfinderMob(Level* level) : Mob(level) {
-    path = NULL;
+    path = nullptr;
     attackTarget = nullptr;
     holdGround = false;
     fleeTime = 0;
@@ -47,9 +47,9 @@ void PathfinderMob::serverAiStep() {
     holdGround = shouldHoldGround();
     float maxDist = 16;
 
-    if (attackTarget == NULL) {
+    if (attackTarget == nullptr) {
         attackTarget = findAttackTarget();
-        if (attackTarget != NULL) {
+        if (attackTarget != nullptr) {
             setPath(level->findPath(
                 shared_from_this(), attackTarget, maxDist, true, false, false,
                 true));  // 4J - changed to setPath from path =
@@ -80,17 +80,17 @@ void PathfinderMob::serverAiStep() {
     // these can keep doing random strolling.
 
     if (!holdGround &&
-        (attackTarget != NULL && (path == NULL || random->nextInt(20) == 0))) {
+        (attackTarget != nullptr && (path == nullptr || random->nextInt(20) == 0))) {
         setPath(level->findPath(shared_from_this(), attackTarget, maxDist, true,
                                 false, false,
                                 true));  // 4J - changed to setPath from path =
     } else if (!holdGround &&
-               ((path == NULL && (random->nextInt(180) == 0) || fleeTime > 0) ||
+               ((path == nullptr && (random->nextInt(180) == 0) || fleeTime > 0) ||
                 (random->nextInt(120) == 0 || fleeTime > 0))) {
         if (noActionTime < SharedConstants::TICKS_PER_SECOND * 5) {
             findRandomStrollLocation();
         }
-    } else if (!holdGround && (path == NULL)) {
+    } else if (!holdGround && (path == nullptr)) {
         if ((noActionTime >= SharedConstants::TICKS_PER_SECOND * 5) &&
             isExtraWanderingEnabled()) {
             // This entity wouldn't normally be randomly strolling. However, if
@@ -114,9 +114,9 @@ void PathfinderMob::serverAiStep() {
     bool inWater = isInWater();
     bool inLava = isInLava();
     xRot = 0;
-    if (path == NULL || random->nextInt(100) == 0) {
+    if (path == nullptr || random->nextInt(100) == 0) {
         this->Mob::serverAiStep();
-        setPath(NULL);  // 4J - changed to setPath from path =
+        setPath(nullptr);  // 4J - changed to setPath from path =
         return;
     }
 
@@ -125,7 +125,7 @@ void PathfinderMob::serverAiStep() {
     while (target.distanceToSqr(x, target.y, z) < r * r) {
         path->next();
         if (path->isDone()) {
-            setPath(NULL);  // 4J - changed to setPath from path =
+            setPath(nullptr);  // 4J - changed to setPath from path =
             break;
         } else
             target = path->currentPos(shared_from_this());
@@ -134,7 +134,7 @@ void PathfinderMob::serverAiStep() {
     jumping = false;
     // 4jcraft - refactoring Vec3 shows this branch never hits
     /*
-    if (target != NULL) {
+    if (target != nullptr) {
         double xd = target->x - x;
         double zd = target->z - z;
         double yd = target->y - yFloor;
@@ -151,7 +151,7 @@ void PathfinderMob::serverAiStep() {
         yRot += rotDiff;
 
         if (holdGround) {
-            if (attackTarget != NULL) {
+            if (attackTarget != nullptr) {
                 double xd2 = attackTarget->x - x;
                 double zd2 = attackTarget->z - z;
 
@@ -169,7 +169,7 @@ void PathfinderMob::serverAiStep() {
     }
     */
 
-    if (attackTarget != NULL) {
+    if (attackTarget != nullptr) {
         lookAt(attackTarget, 30, 30);
     }
 
@@ -231,7 +231,7 @@ bool PathfinderMob::canSpawn() {
     return this->Mob::canSpawn() && getWalkTargetValue(xt, yt, zt) >= 0;
 }
 
-bool PathfinderMob::isPathFinding() { return path != NULL; }
+bool PathfinderMob::isPathFinding() { return path != nullptr; }
 
 void PathfinderMob::setPath(Path* path) {
     delete this->path;
@@ -272,7 +272,7 @@ bool PathfinderMob::hasRestriction() { return restrictRadius != -1; }
 void PathfinderMob::tickLeash() {
     Mob::tickLeash();
 
-    if (isLeashed() && getLeashHolder() != NULL &&
+    if (isLeashed() && getLeashHolder() != nullptr &&
         getLeashHolder()->level == this->level) {
         // soft restriction
         std::shared_ptr<Entity> leashHolder = getLeashHolder();
@@ -285,7 +285,7 @@ void PathfinderMob::tickLeash() {
             shared_from_this()->instanceof(eTYPE_TAMABLE_ANIMAL)
                 ? std::dynamic_pointer_cast<TamableAnimal>(shared_from_this())
                 : nullptr;
-        if ((tamabaleAnimal != NULL) && tamabaleAnimal->isSitting()) {
+        if ((tamabaleAnimal != nullptr) && tamabaleAnimal->isSitting()) {
             if (_distanceTo > 10) {
                 dropLeash(true, true);
             }

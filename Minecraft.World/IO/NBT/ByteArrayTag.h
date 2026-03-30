@@ -41,8 +41,8 @@ public:
     bool equals(Tag* obj) {
         if (Tag::equals(obj)) {
             ByteArrayTag* o = (ByteArrayTag*)obj;
-            return ((data.data == NULL && o->data.data == NULL) ||
-                    (data.data != NULL && data.length == o->data.length &&
+            return ((data.data == nullptr && o->data.data == nullptr) ||
+                    (data.data != nullptr && data.length == o->data.length &&
                      memcmp(data.data, o->data.data, data.length) == 0));
         }
         return false;

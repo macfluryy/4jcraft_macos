@@ -2,7 +2,7 @@
 #include "TexturePack.h"
 
 std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
-                                  const char* pchBDPatchFileName /*= NULL*/) {
+                                  const char* pchBDPatchFileName /*= nullptr*/) {
     std::wstring wDrive;
 
     if (bTitleUpdateTexture) {

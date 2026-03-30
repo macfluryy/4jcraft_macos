@@ -17,12 +17,12 @@ private:
 public:
     UseTileTask(const int tileId, int x, int y, int z, Tutorial* tutorial,
                 int descriptionId, bool enablePreCompletion = false,
-                std::vector<TutorialConstraint*>* inConstraints = NULL,
+                std::vector<TutorialConstraint*>* inConstraints = nullptr,
                 bool bShowMinimumTime = false, bool bAllowFade = true,
                 bool bTaskReminders = true);
     UseTileTask(const int tileId, Tutorial* tutorial, int descriptionId,
                 bool enablePreCompletion = false,
-                std::vector<TutorialConstraint*>* inConstraints = NULL,
+                std::vector<TutorialConstraint*>* inConstraints = nullptr,
                 bool bShowMinimumTime = false, bool bAllowFade = true,
                 bool bTaskReminders = true);
     virtual bool isCompleted();

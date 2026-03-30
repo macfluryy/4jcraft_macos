@@ -79,7 +79,7 @@ const wchar_t* UIControl_Base::getLabel() {
     IggyDataValue result;
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_funcGetLabel, 0, NULL);
+                               getIggyValuePath(), m_funcGetLabel, 0, nullptr);
 
     if (result.type == IGGY_DATATYPE_string_UTF16) {
         m_label = u16string_to_wstring(result.string16.string);

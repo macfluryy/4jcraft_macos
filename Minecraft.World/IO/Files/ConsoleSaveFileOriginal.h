@@ -33,7 +33,7 @@ public:
     static int SaveSaveDataCallback(void* lpParam, bool bRes);
 #endif
     ConsoleSaveFileOriginal(const std::wstring& fileName,
-                            void* pvSaveData = NULL, unsigned int fileSize = 0,
+                            void* pvSaveData = nullptr, unsigned int fileSize = 0,
                             bool forceCleanSave = false,
                             ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
     virtual ~ConsoleSaveFileOriginal();
@@ -63,7 +63,7 @@ public:
     virtual void Flush(bool autosave, bool updateThumbnail = true);
 
 #if !defined(_CONTENT_PACKAGE)
-    virtual void DebugFlushToFile(void* compressedData = NULL,
+    virtual void DebugFlushToFile(void* compressedData = nullptr,
                                   unsigned int compressedDataSize = 0);
 #endif
     virtual unsigned int getSizeOnDisk();

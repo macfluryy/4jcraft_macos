@@ -92,7 +92,7 @@ void UIScene_SignEntryMenu::tick() {
         if (pMinecraft->level->isClientSide) {
             std::shared_ptr<MultiplayerLocalPlayer> player =
                 pMinecraft->localplayers[m_iPad];
-            if (player != NULL && player->connection &&
+            if (player != nullptr && player->connection &&
                 player->connection->isStarted()) {
                 player->connection->send(
                     std::shared_ptr<SignUpdatePacket>(new SignUpdatePacket(

@@ -33,7 +33,7 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
     m_textureLocation = textureLocation;
 
     // Build character map
-    if (charMap != NULL) {
+    if (charMap != nullptr) {
         for (int i = 0; i < charC; i++) {
             m_charMap.insert(std::make_pair(charMap[i], i));
         }
@@ -245,7 +245,7 @@ void Font::draw(const std::wstring& str, int x, int y, int color,
 int Font::width(const std::wstring& str) {
     std::wstring cleanStr = sanitize(str);
 
-    if (cleanStr == L"") return 0;  // 4J - was NULL comparison
+    if (cleanStr == L"") return 0;  // 4J - was nullptr comparison
     int len = 0;
 
     for (int i = 0; i < cleanStr.length(); ++i) {

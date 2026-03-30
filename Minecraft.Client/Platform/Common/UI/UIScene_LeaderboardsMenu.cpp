@@ -474,7 +474,7 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
         return true;
     }
 
-    // assert( LeaderboardManager::Instance()->GetStats() != NULL );
+    // assert( LeaderboardManager::Instance()->GetStats() != nullptr );
     // PXUSER_STATS_READ_RESULTS stats =
     // LeaderboardManager::Instance()->GetStats(); if( m_currentFilter ==
     // LeaderboardManager::eFM_Friends  )

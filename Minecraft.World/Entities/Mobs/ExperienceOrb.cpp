@@ -92,7 +92,7 @@ void ExperienceOrb::tick() {
     // lagspikes
     if (followingTime <
         tickCount - SharedConstants::TICKS_PER_SECOND + (entityId % 100)) {
-        if (followingPlayer == NULL ||
+        if (followingPlayer == nullptr ||
             followingPlayer->distanceToSqr(shared_from_this()) >
                 maxDist * maxDist) {
             followingPlayer =
@@ -100,7 +100,7 @@ void ExperienceOrb::tick() {
         }
         followingTime = tickCount;
     }
-    if (followingPlayer != NULL) {
+    if (followingPlayer != nullptr) {
         double xdd = (followingPlayer->x - x) / maxDist;
         double ydd =
             (followingPlayer->y + followingPlayer->getHeadHeight() - y) /

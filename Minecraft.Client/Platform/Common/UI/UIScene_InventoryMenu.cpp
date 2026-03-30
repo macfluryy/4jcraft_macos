@@ -27,7 +27,7 @@ UIScene_InventoryMenu::UIScene_InventoryMenu(int iPad, void* _initData,
     InventoryScreenInput* initData = (InventoryScreenInput*)_initData;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -182,7 +182,7 @@ void UIScene_InventoryMenu::setSectionSelectedSlot(ESceneSection eSection,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionInventoryArmor:
             slotList = &m_slotListArmor;
@@ -197,13 +197,13 @@ void UIScene_InventoryMenu::setSectionSelectedSlot(ESceneSection eSection,
             break;
     }
 
-    if (slotList != NULL) {
+    if (slotList != nullptr) {
         slotList->setHighlightSlot(index);
     }
 }
 
 UIControl* UIScene_InventoryMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionInventoryArmor:
             control = &m_slotListArmor;
@@ -222,8 +222,8 @@ UIControl* UIScene_InventoryMenu::getSection(ESceneSection eSection) {
 
 void UIScene_InventoryMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     if (std::char_traits<char16_t>::compare(region->name, u"player", 6) == 0) {
@@ -252,7 +252,7 @@ void UIScene_InventoryMenu::updateEffectsDisplay() {
     std::shared_ptr<MultiplayerLocalPlayer> player =
         pMinecraft->localplayers[m_iPad];
 
-    if (player == NULL) return;
+    if (player == nullptr) return;
 
     std::vector<MobEffectInstance*>* activeEffects = player->getActiveEffects();
 

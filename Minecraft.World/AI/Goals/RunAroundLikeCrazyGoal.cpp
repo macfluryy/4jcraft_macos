@@ -16,7 +16,7 @@ RunAroundLikeCrazyGoal::RunAroundLikeCrazyGoal(EntityHorse* mob,
 }
 
 bool RunAroundLikeCrazyGoal::canUse() {
-    if (horse->isTamed() || horse->rider.lock() == NULL) return false;
+    if (horse->isTamed() || horse->rider.lock() == nullptr) return false;
     auto pos = RandomPos::getPos(
         std::dynamic_pointer_cast<PathfinderMob>(horse->shared_from_this()), 5,
         4);
@@ -32,7 +32,7 @@ void RunAroundLikeCrazyGoal::start() {
 }
 
 bool RunAroundLikeCrazyGoal::canContinueToUse() {
-    return !horse->getNavigation()->isDone() && horse->rider.lock() != NULL;
+    return !horse->getNavigation()->isDone() && horse->rider.lock() != nullptr;
 }
 
 void RunAroundLikeCrazyGoal::tick() {

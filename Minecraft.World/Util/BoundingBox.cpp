@@ -121,7 +121,7 @@ void BoundingBox::expand(BoundingBox* other) {
 
 BoundingBox* BoundingBox::getIntersection(BoundingBox* other) {
     if (!intersects(other)) {
-        return NULL;
+        return nullptr;
     }
     BoundingBox* result = new BoundingBox();
     result->x0 = Math::_max(x0, other->x0);

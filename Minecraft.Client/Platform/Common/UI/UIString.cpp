@@ -113,26 +113,26 @@ UIString::~UIString() {
     m_core = nullptr;
 }
 
-bool UIString::empty() { return m_core.get() == NULL; }
+bool UIString::empty() { return m_core.get() == nullptr; }
 
 bool UIString::compare(const UIString& uiString) {
     return m_core.get() != uiString.m_core.get();
 }
 
 bool UIString::needsUpdating() {
-    if (m_core != NULL)
+    if (m_core != nullptr)
         return m_core->needsUpdating();
     else
         return false;
 }
 
 void UIString::setUpdated() {
-    if (m_core != NULL) m_core->setUpdated();
+    if (m_core != nullptr) m_core->setUpdated();
 }
 
 std::wstring& UIString::getString() {
     static std::wstring blank(L"");
-    if (m_core != NULL)
+    if (m_core != nullptr)
         return m_core->getString();
     else
         return blank;

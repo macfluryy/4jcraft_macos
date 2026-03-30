@@ -9,7 +9,7 @@
 #include "../../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Rendering/Minimap.h"
 
-TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = NULL;
+TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = nullptr;
 
 TexturePackRepository::TexturePackRepository(File workingDirectory,
                                              Minecraft* minecraft) {
@@ -17,7 +17,7 @@ TexturePackRepository::TexturePackRepository(File workingDirectory,
 
     // 4J - added
     usingWeb = false;
-    selected = NULL;
+    selected = nullptr;
     texturePacks = new std::vector<TexturePack*>;
 
     this->minecraft = minecraft;
@@ -28,9 +28,9 @@ TexturePackRepository::TexturePackRepository(File workingDirectory,
 
     DEFAULT_TEXTURE_PACK->loadColourTable();
 
-    m_dummyTexturePack = NULL;
-    m_dummyDLCTexturePack = NULL;
-    lastSelected = NULL;
+    m_dummyTexturePack = nullptr;
+    m_dummyDLCTexturePack = nullptr;
+    lastSelected = nullptr;
 
     updateList();
 }
@@ -182,19 +182,19 @@ TexturePack* TexturePackRepository::getTexturePackById(std::uint32_t id) {
         return it->second;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 TexturePack* TexturePackRepository::addTexturePackFromDLC(DLCPack* dlcPack,
                                                           std::uint32_t id) {
-    TexturePack* newPack = NULL;
+    TexturePack* newPack = nullptr;
     // 4J-PB - The City texture pack went out with a child id for the texture
     // pack of 1 instead of zero we need to mask off the child id here to deal
     // with this
     const std::uint32_t parentId =
         id & 0xFFFFFFu;  // child id is <<24 and Or'd with parent
 
-    if (dlcPack != NULL) {
+    if (dlcPack != nullptr) {
         newPack = new DLCTexturePack(parentId, dlcPack, DEFAULT_TEXTURE_PACK);
         texturePacks->push_back(newPack);
         cacheById[parentId] = newPack;
@@ -229,7 +229,7 @@ void TexturePackRepository::removeTexturePackById(std::uint32_t id) {
         if (it2 != texturePacks->end()) {
             texturePacks->erase(it2);
             if (lastSelected == oldPack) {
-                lastSelected = NULL;
+                lastSelected = nullptr;
             }
         }
         m_texturePacksToDelete.push_back(oldPack);
@@ -237,17 +237,17 @@ void TexturePackRepository::removeTexturePackById(std::uint32_t id) {
 }
 
 void TexturePackRepository::updateUI() {
-    if (lastSelected != NULL && lastSelected != selected) {
+    if (lastSelected != nullptr && lastSelected != selected) {
         lastSelected->unloadUI();
         selected->loadUI();
         Minimap::reloadColours();
         ui.StartReloadSkinThread();
-        lastSelected = NULL;
+        lastSelected = nullptr;
     }
 }
 
 bool TexturePackRepository::needsUIUpdate() {
-    return lastSelected != NULL && lastSelected != selected;
+    return lastSelected != nullptr && lastSelected != selected;
 }
 
 unsigned int TexturePackRepository::getTexturePackCount() {
@@ -255,7 +255,7 @@ unsigned int TexturePackRepository::getTexturePackCount() {
 }
 
 TexturePack* TexturePackRepository::getTexturePackByIndex(unsigned int index) {
-    TexturePack* pack = NULL;
+    TexturePack* pack = nullptr;
     if (index < texturePacks->size()) {
         pack = texturePacks->at(index);
     }

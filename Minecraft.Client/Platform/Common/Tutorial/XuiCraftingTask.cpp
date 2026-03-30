@@ -15,13 +15,13 @@ bool XuiCraftingTask::isCompleted() {
 
     switch (m_type) {
         case e_Crafting_SelectGroup:
-            if (craftScene != NULL &&
+            if (craftScene != nullptr &&
                 craftScene->getCurrentGroup() == m_group) {
                 completed = true;
             }
             break;
         case e_Crafting_SelectItem:
-            if (craftScene != NULL && craftScene->isItemSelected(m_item)) {
+            if (craftScene != nullptr && craftScene->isItemSelected(m_item)) {
                 completed = true;
             }
             break;

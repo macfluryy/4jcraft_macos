@@ -7,12 +7,12 @@
 #include "Texture.h"
 #include "CompassTexture.h"
 
-CompassTexture* CompassTexture::instance = NULL;
+CompassTexture* CompassTexture::instance = nullptr;
 
 CompassTexture::CompassTexture() : StitchedTexture(L"compass", L"compass") {
     instance = this;
 
-    m_dataTexture = NULL;
+    m_dataTexture = nullptr;
     m_iPad = XUSER_INDEX_ANY;
 
     rot = rota = 0.0;
@@ -29,15 +29,15 @@ CompassTexture::CompassTexture(int iPad, CompassTexture* dataTexture)
 void CompassTexture::cycleFrames() {
     Minecraft* mc = Minecraft::GetInstance();
 
-    if (m_iPad >= 0 && m_iPad < XUSER_MAX_COUNT && mc->level != NULL &&
-        mc->localplayers[m_iPad] != NULL) {
+    if (m_iPad >= 0 && m_iPad < XUSER_MAX_COUNT && mc->level != nullptr &&
+        mc->localplayers[m_iPad] != nullptr) {
         updateFromPosition(mc->localplayers[m_iPad]->level,
                            mc->localplayers[m_iPad]->x,
                            mc->localplayers[m_iPad]->z,
                            mc->localplayers[m_iPad]->yRot, false, false);
     } else {
         frame = 1;
-        updateFromPosition(NULL, 0, 0, 0, false, true);
+        updateFromPosition(nullptr, 0, 0, 0, false, true);
     }
 }
 
@@ -45,7 +45,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
                                         double yRot, bool noNeedle,
                                         bool instant) {
     double rott = 0;
-    if (level != NULL && !noNeedle) {
+    if (level != nullptr && !noNeedle) {
         Pos* spawnPos = level->getSharedSpawnPos();
         double xa = spawnPos->x - x;
         double za = spawnPos->z - z;
@@ -71,7 +71,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
     }
 
     // 4J Stu - We share data with another texture
-    if (m_dataTexture != NULL) {
+    if (m_dataTexture != nullptr) {
         int newFrame =
             (int)(((rot / (PI * 2)) + 1.0) * m_dataTexture->frames->size()) %
             m_dataTexture->frames->size();
@@ -103,7 +103,7 @@ int CompassTexture::getSourceWidth() const { return source->getWidth(); }
 int CompassTexture::getSourceHeight() const { return source->getHeight(); }
 
 int CompassTexture::getFrames() {
-    if (m_dataTexture == NULL) {
+    if (m_dataTexture == nullptr) {
         return StitchedTexture::getFrames();
     } else {
         return m_dataTexture->getFrames();
@@ -111,9 +111,9 @@ int CompassTexture::getFrames() {
 }
 
 void CompassTexture::freeFrameTextures() {
-    if (m_dataTexture == NULL) {
+    if (m_dataTexture == nullptr) {
         StitchedTexture::freeFrameTextures();
     }
 }
 
-bool CompassTexture::hasOwnData() { return m_dataTexture == NULL; }
+bool CompassTexture::hasOwnData() { return m_dataTexture == nullptr; }

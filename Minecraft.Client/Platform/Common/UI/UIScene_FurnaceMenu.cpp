@@ -22,7 +22,7 @@ UIScene_FurnaceMenu::UIScene_FurnaceMenu(int iPad, void* _initData,
     m_progressFurnaceArrow.init(L"", 0, 0, 24, 0);
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -195,7 +195,7 @@ void UIScene_FurnaceMenu::setSectionSelectedSlot(ESceneSection eSection, int x,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionFurnaceResult:
             slotList = &m_slotListResult;
@@ -221,7 +221,7 @@ void UIScene_FurnaceMenu::setSectionSelectedSlot(ESceneSection eSection, int x,
 }
 
 UIControl* UIScene_FurnaceMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionFurnaceResult:
             control = &m_slotListResult;

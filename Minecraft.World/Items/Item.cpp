@@ -34,223 +34,223 @@ Random* Item::random = new Random();
 
 ItemArray Item::items = ItemArray(ITEM_NUM_COUNT);
 
-Item* Item::shovel_iron = NULL;
-Item* Item::pickAxe_iron = NULL;
-Item* Item::hatchet_iron = NULL;
-Item* Item::flintAndSteel = NULL;
-Item* Item::apple = NULL;
-BowItem* Item::bow = NULL;
-Item* Item::arrow = NULL;
-Item* Item::coal = NULL;
-Item* Item::diamond = NULL;
-Item* Item::ironIngot = NULL;
-Item* Item::goldIngot = NULL;
-Item* Item::sword_iron = NULL;
+Item* Item::shovel_iron = nullptr;
+Item* Item::pickAxe_iron = nullptr;
+Item* Item::hatchet_iron = nullptr;
+Item* Item::flintAndSteel = nullptr;
+Item* Item::apple = nullptr;
+BowItem* Item::bow = nullptr;
+Item* Item::arrow = nullptr;
+Item* Item::coal = nullptr;
+Item* Item::diamond = nullptr;
+Item* Item::ironIngot = nullptr;
+Item* Item::goldIngot = nullptr;
+Item* Item::sword_iron = nullptr;
 
-Item* Item::sword_wood = NULL;
-Item* Item::shovel_wood = NULL;
-Item* Item::pickAxe_wood = NULL;
-Item* Item::hatchet_wood = NULL;
+Item* Item::sword_wood = nullptr;
+Item* Item::shovel_wood = nullptr;
+Item* Item::pickAxe_wood = nullptr;
+Item* Item::hatchet_wood = nullptr;
 
-Item* Item::sword_stone = NULL;
-Item* Item::shovel_stone = NULL;
-Item* Item::pickAxe_stone = NULL;
-Item* Item::hatchet_stone = NULL;
+Item* Item::sword_stone = nullptr;
+Item* Item::shovel_stone = nullptr;
+Item* Item::pickAxe_stone = nullptr;
+Item* Item::hatchet_stone = nullptr;
 
-Item* Item::sword_diamond = NULL;
-Item* Item::shovel_diamond = NULL;
-Item* Item::pickAxe_diamond = NULL;
-Item* Item::hatchet_diamond = NULL;
+Item* Item::sword_diamond = nullptr;
+Item* Item::shovel_diamond = nullptr;
+Item* Item::pickAxe_diamond = nullptr;
+Item* Item::hatchet_diamond = nullptr;
 
-Item* Item::stick = NULL;
-Item* Item::bowl = NULL;
-Item* Item::mushroomStew = NULL;
+Item* Item::stick = nullptr;
+Item* Item::bowl = nullptr;
+Item* Item::mushroomStew = nullptr;
 
-Item* Item::sword_gold = NULL;
-Item* Item::shovel_gold = NULL;
-Item* Item::pickAxe_gold = NULL;
-Item* Item::hatchet_gold = NULL;
+Item* Item::sword_gold = nullptr;
+Item* Item::shovel_gold = nullptr;
+Item* Item::pickAxe_gold = nullptr;
+Item* Item::hatchet_gold = nullptr;
 
-Item* Item::string = NULL;
-Item* Item::feather = NULL;
-Item* Item::gunpowder = NULL;
+Item* Item::string = nullptr;
+Item* Item::feather = nullptr;
+Item* Item::gunpowder = nullptr;
 
-Item* Item::hoe_wood = NULL;
-Item* Item::hoe_stone = NULL;
-Item* Item::hoe_iron = NULL;
-Item* Item::hoe_diamond = NULL;
-Item* Item::hoe_gold = NULL;
+Item* Item::hoe_wood = nullptr;
+Item* Item::hoe_stone = nullptr;
+Item* Item::hoe_iron = nullptr;
+Item* Item::hoe_diamond = nullptr;
+Item* Item::hoe_gold = nullptr;
 
-Item* Item::seeds_wheat = NULL;
-Item* Item::wheat = NULL;
-Item* Item::bread = NULL;
+Item* Item::seeds_wheat = nullptr;
+Item* Item::wheat = nullptr;
+Item* Item::bread = nullptr;
 
-ArmorItem* Item::helmet_leather = NULL;
-ArmorItem* Item::chestplate_leather = NULL;
-ArmorItem* Item::leggings_leather = NULL;
-ArmorItem* Item::boots_leather = NULL;
+ArmorItem* Item::helmet_leather = nullptr;
+ArmorItem* Item::chestplate_leather = nullptr;
+ArmorItem* Item::leggings_leather = nullptr;
+ArmorItem* Item::boots_leather = nullptr;
 
-ArmorItem* Item::helmet_chain = NULL;
-ArmorItem* Item::chestplate_chain = NULL;
-ArmorItem* Item::leggings_chain = NULL;
-ArmorItem* Item::boots_chain = NULL;
+ArmorItem* Item::helmet_chain = nullptr;
+ArmorItem* Item::chestplate_chain = nullptr;
+ArmorItem* Item::leggings_chain = nullptr;
+ArmorItem* Item::boots_chain = nullptr;
 
-ArmorItem* Item::helmet_iron = NULL;
-ArmorItem* Item::chestplate_iron = NULL;
-ArmorItem* Item::leggings_iron = NULL;
-ArmorItem* Item::boots_iron = NULL;
+ArmorItem* Item::helmet_iron = nullptr;
+ArmorItem* Item::chestplate_iron = nullptr;
+ArmorItem* Item::leggings_iron = nullptr;
+ArmorItem* Item::boots_iron = nullptr;
 
-ArmorItem* Item::helmet_diamond = NULL;
-ArmorItem* Item::chestplate_diamond = NULL;
-ArmorItem* Item::leggings_diamond = NULL;
-ArmorItem* Item::boots_diamond = NULL;
+ArmorItem* Item::helmet_diamond = nullptr;
+ArmorItem* Item::chestplate_diamond = nullptr;
+ArmorItem* Item::leggings_diamond = nullptr;
+ArmorItem* Item::boots_diamond = nullptr;
 
-ArmorItem* Item::helmet_gold = NULL;
-ArmorItem* Item::chestplate_gold = NULL;
-ArmorItem* Item::leggings_gold = NULL;
-ArmorItem* Item::boots_gold = NULL;
+ArmorItem* Item::helmet_gold = nullptr;
+ArmorItem* Item::chestplate_gold = nullptr;
+ArmorItem* Item::leggings_gold = nullptr;
+ArmorItem* Item::boots_gold = nullptr;
 
-Item* Item::flint = NULL;
-Item* Item::porkChop_raw = NULL;
-Item* Item::porkChop_cooked = NULL;
-Item* Item::painting = NULL;
+Item* Item::flint = nullptr;
+Item* Item::porkChop_raw = nullptr;
+Item* Item::porkChop_cooked = nullptr;
+Item* Item::painting = nullptr;
 
-Item* Item::apple_gold = NULL;
+Item* Item::apple_gold = nullptr;
 
-Item* Item::sign = NULL;
-Item* Item::door_wood = NULL;
+Item* Item::sign = nullptr;
+Item* Item::door_wood = nullptr;
 
-Item* Item::bucket_empty = NULL;
-Item* Item::bucket_water = NULL;
-Item* Item::bucket_lava = NULL;
+Item* Item::bucket_empty = nullptr;
+Item* Item::bucket_water = nullptr;
+Item* Item::bucket_lava = nullptr;
 
-Item* Item::minecart = NULL;
-Item* Item::saddle = NULL;
-Item* Item::door_iron = NULL;
-Item* Item::redStone = NULL;
-Item* Item::snowBall = NULL;
+Item* Item::minecart = nullptr;
+Item* Item::saddle = nullptr;
+Item* Item::door_iron = nullptr;
+Item* Item::redStone = nullptr;
+Item* Item::snowBall = nullptr;
 
-Item* Item::boat = NULL;
+Item* Item::boat = nullptr;
 
-Item* Item::leather = NULL;
-Item* Item::bucket_milk = NULL;
-Item* Item::brick = NULL;
-Item* Item::clay = NULL;
-Item* Item::reeds = NULL;
-Item* Item::paper = NULL;
-Item* Item::book = NULL;
-Item* Item::slimeBall = NULL;
-Item* Item::minecart_chest = NULL;
-Item* Item::minecart_furnace = NULL;
-Item* Item::egg = NULL;
-Item* Item::compass = NULL;
-FishingRodItem* Item::fishingRod = NULL;
-Item* Item::clock = NULL;
-Item* Item::yellowDust = NULL;
-Item* Item::fish_raw = NULL;
-Item* Item::fish_cooked = NULL;
+Item* Item::leather = nullptr;
+Item* Item::bucket_milk = nullptr;
+Item* Item::brick = nullptr;
+Item* Item::clay = nullptr;
+Item* Item::reeds = nullptr;
+Item* Item::paper = nullptr;
+Item* Item::book = nullptr;
+Item* Item::slimeBall = nullptr;
+Item* Item::minecart_chest = nullptr;
+Item* Item::minecart_furnace = nullptr;
+Item* Item::egg = nullptr;
+Item* Item::compass = nullptr;
+FishingRodItem* Item::fishingRod = nullptr;
+Item* Item::clock = nullptr;
+Item* Item::yellowDust = nullptr;
+Item* Item::fish_raw = nullptr;
+Item* Item::fish_cooked = nullptr;
 
-Item* Item::dye_powder = NULL;
-Item* Item::bone = NULL;
-Item* Item::sugar = NULL;
-Item* Item::cake = NULL;
+Item* Item::dye_powder = nullptr;
+Item* Item::bone = nullptr;
+Item* Item::sugar = nullptr;
+Item* Item::cake = nullptr;
 
-Item* Item::bed = NULL;
+Item* Item::bed = nullptr;
 
-Item* Item::repeater = NULL;
-Item* Item::cookie = NULL;
+Item* Item::repeater = nullptr;
+Item* Item::cookie = nullptr;
 
-MapItem* Item::map = NULL;
+MapItem* Item::map = nullptr;
 
-Item* Item::record_01 = NULL;
-Item* Item::record_02 = NULL;
-Item* Item::record_03 = NULL;
-Item* Item::record_04 = NULL;
-Item* Item::record_05 = NULL;
-Item* Item::record_06 = NULL;
-Item* Item::record_07 = NULL;
-Item* Item::record_08 = NULL;
-Item* Item::record_09 = NULL;
-Item* Item::record_10 = NULL;
-Item* Item::record_11 = NULL;
-Item* Item::record_12 = NULL;
+Item* Item::record_01 = nullptr;
+Item* Item::record_02 = nullptr;
+Item* Item::record_03 = nullptr;
+Item* Item::record_04 = nullptr;
+Item* Item::record_05 = nullptr;
+Item* Item::record_06 = nullptr;
+Item* Item::record_07 = nullptr;
+Item* Item::record_08 = nullptr;
+Item* Item::record_09 = nullptr;
+Item* Item::record_10 = nullptr;
+Item* Item::record_11 = nullptr;
+Item* Item::record_12 = nullptr;
 
-ShearsItem* Item::shears = NULL;
+ShearsItem* Item::shears = nullptr;
 
-Item* Item::melon = NULL;
+Item* Item::melon = nullptr;
 
-Item* Item::seeds_pumpkin = NULL;
-Item* Item::seeds_melon = NULL;
+Item* Item::seeds_pumpkin = nullptr;
+Item* Item::seeds_melon = nullptr;
 
-Item* Item::beef_raw = NULL;
-Item* Item::beef_cooked = NULL;
-Item* Item::chicken_raw = NULL;
-Item* Item::chicken_cooked = NULL;
-Item* Item::rotten_flesh = NULL;
+Item* Item::beef_raw = nullptr;
+Item* Item::beef_cooked = nullptr;
+Item* Item::chicken_raw = nullptr;
+Item* Item::chicken_cooked = nullptr;
+Item* Item::rotten_flesh = nullptr;
 
-Item* Item::enderPearl = NULL;
+Item* Item::enderPearl = nullptr;
 
-Item* Item::blazeRod = NULL;
-Item* Item::ghastTear = NULL;
-Item* Item::goldNugget = NULL;
-Item* Item::netherwart_seeds = NULL;
-PotionItem* Item::potion = NULL;
-Item* Item::glassBottle = NULL;
-Item* Item::spiderEye = NULL;
-Item* Item::fermentedSpiderEye = NULL;
-Item* Item::blazePowder = NULL;
-Item* Item::magmaCream = NULL;
-Item* Item::brewingStand = NULL;
-Item* Item::cauldron = NULL;
-Item* Item::eyeOfEnder = NULL;
-Item* Item::speckledMelon = NULL;
+Item* Item::blazeRod = nullptr;
+Item* Item::ghastTear = nullptr;
+Item* Item::goldNugget = nullptr;
+Item* Item::netherwart_seeds = nullptr;
+PotionItem* Item::potion = nullptr;
+Item* Item::glassBottle = nullptr;
+Item* Item::spiderEye = nullptr;
+Item* Item::fermentedSpiderEye = nullptr;
+Item* Item::blazePowder = nullptr;
+Item* Item::magmaCream = nullptr;
+Item* Item::brewingStand = nullptr;
+Item* Item::cauldron = nullptr;
+Item* Item::eyeOfEnder = nullptr;
+Item* Item::speckledMelon = nullptr;
 
-Item* Item::spawnEgg = NULL;
+Item* Item::spawnEgg = nullptr;
 
-Item* Item::expBottle = NULL;
+Item* Item::expBottle = nullptr;
 
 // TU9
-Item* Item::fireball = NULL;
-Item* Item::frame = NULL;
+Item* Item::fireball = nullptr;
+Item* Item::frame = nullptr;
 
-Item* Item::skull = NULL;
+Item* Item::skull = nullptr;
 
 // TU14
-// Item *Item::writingBook = NULL;
-// Item *Item::writtenBook = NULL;
+// Item *Item::writingBook = nullptr;
+// Item *Item::writtenBook = nullptr;
 
-Item* Item::emerald = NULL;
+Item* Item::emerald = nullptr;
 
-Item* Item::flowerPot = NULL;
+Item* Item::flowerPot = nullptr;
 
-Item* Item::carrots = NULL;
-Item* Item::potato = NULL;
-Item* Item::potatoBaked = NULL;
-Item* Item::potatoPoisonous = NULL;
+Item* Item::carrots = nullptr;
+Item* Item::potato = nullptr;
+Item* Item::potatoBaked = nullptr;
+Item* Item::potatoPoisonous = nullptr;
 
-EmptyMapItem* Item::emptyMap = NULL;
+EmptyMapItem* Item::emptyMap = nullptr;
 
-Item* Item::carrotGolden = NULL;
+Item* Item::carrotGolden = nullptr;
 
-Item* Item::carrotOnAStick = NULL;
-Item* Item::netherStar = NULL;
-Item* Item::pumpkinPie = NULL;
-Item* Item::fireworks = NULL;
-Item* Item::fireworksCharge = NULL;
+Item* Item::carrotOnAStick = nullptr;
+Item* Item::netherStar = nullptr;
+Item* Item::pumpkinPie = nullptr;
+Item* Item::fireworks = nullptr;
+Item* Item::fireworksCharge = nullptr;
 
-EnchantedBookItem* Item::enchantedBook = NULL;
+EnchantedBookItem* Item::enchantedBook = nullptr;
 
-Item* Item::comparator = NULL;
-Item* Item::netherbrick = NULL;
-Item* Item::netherQuartz = NULL;
-Item* Item::minecart_tnt = NULL;
-Item* Item::minecart_hopper = NULL;
+Item* Item::comparator = nullptr;
+Item* Item::netherbrick = nullptr;
+Item* Item::netherQuartz = nullptr;
+Item* Item::minecart_tnt = nullptr;
+Item* Item::minecart_hopper = nullptr;
 
-Item* Item::horseArmorMetal = NULL;
-Item* Item::horseArmorGold = NULL;
-Item* Item::horseArmorDiamond = NULL;
-Item* Item::lead = NULL;
-Item* Item::nameTag = NULL;
+Item* Item::horseArmorMetal = nullptr;
+Item* Item::horseArmorGold = nullptr;
+Item* Item::horseArmorDiamond = nullptr;
+Item* Item::lead = nullptr;
+Item* Item::nameTag = nullptr;
 
 void Item::staticCtor() {
     Item::sword_wood =
@@ -1316,11 +1316,11 @@ int _Tier::getTierItemId() const {
 Item::Item(int id) : id(256 + id) {
     maxStackSize = Item::MAX_STACK_SIZE;
     maxDamage = 0;
-    icon = NULL;
+    icon = nullptr;
     m_handEquipped = false;
     m_isStackedByData = false;
 
-    craftingRemainingItem = NULL;
+    craftingRemainingItem = nullptr;
     potionBrewingFormula = L"";
 
     m_iMaterial = eMaterial_undefined;
@@ -1331,7 +1331,7 @@ Item::Item(int id) : id(256 + id) {
     // string descriptionId;
 
     // this->id = 256 + id;
-    if (items[256 + id] != NULL) {
+    if (items[256 + id] != nullptr) {
         app.DebugPrintf("CONFLICT @ %d", id);
     }
 
@@ -1519,7 +1519,7 @@ bool Item::shouldOverrideMultiplayerNBT() { return true; }
 
 Item* Item::getCraftingRemainingItem() { return craftingRemainingItem; }
 
-bool Item::hasCraftingRemainingItem() { return craftingRemainingItem != NULL; }
+bool Item::hasCraftingRemainingItem() { return craftingRemainingItem != nullptr; }
 
 std::wstring Item::getName() {
     return L"";  // I18n::get(getDescriptionId() + L".name");

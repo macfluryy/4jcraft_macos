@@ -71,7 +71,7 @@ void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
         }
 
         std::shared_ptr<Player> p = std::dynamic_pointer_cast<Player>(target);
-        if (p->getSelectedItem() == NULL || !isFood(p->getSelectedItem())) {
+        if (p->getSelectedItem() == nullptr || !isFood(p->getSelectedItem())) {
             attackTarget = nullptr;
         }
 
@@ -84,7 +84,7 @@ void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
                 holdGround = true;
             }
         } else if (getInLoveValue() > 0 && a->getInLoveValue() > 0) {
-            if (a->attackTarget == NULL) a->attackTarget = shared_from_this();
+            if (a->attackTarget == nullptr) a->attackTarget = shared_from_this();
 
             if (a->attackTarget == shared_from_this() && d < 3.5) {
                 a->setInLoveValue(a->getInLoveValue() + 1);
@@ -119,10 +119,10 @@ void Animal::breedWith(std::shared_ptr<Animal> target) {
     target->loveTime = 0;
     target->setInLoveValue(0);
 
-    // 4J - we have offspring of NULL returned when we have hit our limits of
+    // 4J - we have offspring of nullptr returned when we have hit our limits of
     // spawning any particular type of animal. In these cases try and do
     // everything we can apart from actually spawning the entity.
-    if (offspring != NULL) {
+    if (offspring != nullptr) {
         // Only want to set the age to this +ve value if something is actually
         // spawned, as during this period the animal will attempt to follow
         // offspring and ignore players.
@@ -158,7 +158,7 @@ float Animal::getWalkTargetValue(int x, int y, int z) {
 
 bool Animal::hurt(DamageSource* dmgSource, float dmg) {
     if (isInvulnerable()) return false;
-    if (dynamic_cast<EntityDamageSource*>(dmgSource) != NULL) {
+    if (dynamic_cast<EntityDamageSource*>(dmgSource) != nullptr) {
         std::shared_ptr<Entity> source = dmgSource->getDirectEntity();
 
         // 4J-JEV: Changed from dynamic cast to use eINSTANCEOF
@@ -168,13 +168,13 @@ bool Animal::hurt(DamageSource* dmgSource, float dmg) {
             return false;
         }
 
-        if ((source != NULL) && source->instanceof(eTYPE_ARROW)) {
+        if ((source != nullptr) && source->instanceof(eTYPE_ARROW)) {
             std::shared_ptr<Arrow> arrow =
                 std::dynamic_pointer_cast<Arrow>(source);
 
             // 4J: Check that the arrow's owner can attack animals (dispenser
             // arrows are not owned)
-            if (arrow->owner != NULL &&
+            if (arrow->owner != nullptr &&
                 arrow->owner->instanceof(eTYPE_PLAYER) &&
                 !std::dynamic_pointer_cast<Player>(arrow->owner)
                      ->isAllowedToAttackAnimals()) {
@@ -188,7 +188,7 @@ bool Animal::hurt(DamageSource* dmgSource, float dmg) {
     if (!useNewAi()) {
         AttributeInstance* speed =
             getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
-        if (speed->getModifier(eModifierId_MOB_FLEEING) == NULL) {
+        if (speed->getModifier(eModifierId_MOB_FLEEING) == nullptr) {
             speed->addModifier(
                 new AttributeModifier(*Animal::SPEED_MODIFIER_FLEEING));
         }
@@ -239,7 +239,7 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
 
                 std::shared_ptr<Player> p =
                     std::dynamic_pointer_cast<Player>(*it);
-                if (p->getSelectedItem() != NULL &&
+                if (p->getSelectedItem() != nullptr &&
                     this->isFood(p->getSelectedItem())) {
                     delete players;
                     return p;
@@ -290,7 +290,7 @@ bool Animal::isFood(std::shared_ptr<ItemInstance> itemInstance) {
 
 bool Animal::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item != NULL && isFood(item) && getAge() == 0 &&
+    if (item != nullptr && isFood(item) && getAge() == 0 &&
         getInLoveValue() <= 0) {
         if (!player->abilities.instabuild) {
             item->count--;

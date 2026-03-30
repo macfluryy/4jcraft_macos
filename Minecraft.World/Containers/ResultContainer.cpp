@@ -18,7 +18,7 @@ bool ResultContainer::hasCustomName() { return false; }
 
 std::shared_ptr<ItemInstance> ResultContainer::removeItem(unsigned int slot,
                                                           int count) {
-    if (items[0] != NULL) {
+    if (items[0] != nullptr) {
         std::shared_ptr<ItemInstance> item = items[0];
         items[0] = nullptr;
         return item;
@@ -27,7 +27,7 @@ std::shared_ptr<ItemInstance> ResultContainer::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> ResultContainer::removeItemNoUpdate(int slot) {
-    if (items[0] != NULL) {
+    if (items[0] != nullptr) {
         std::shared_ptr<ItemInstance> item = items[0];
         items[0] = nullptr;
         return item;

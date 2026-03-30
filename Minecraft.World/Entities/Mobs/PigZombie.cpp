@@ -49,7 +49,7 @@ void PigZombie::tick() {
             getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
         speed->removeModifier(SPEED_MODIFIER_ATTACKING);
 
-        if (attackTarget != NULL) {
+        if (attackTarget != nullptr) {
             speed->addModifier(
                 new AttributeModifier(*SPEED_MODIFIER_ATTACKING));
         }
@@ -99,7 +99,7 @@ std::shared_ptr<Entity> PigZombie::findAttackTarget() {
 
 bool PigZombie::hurt(DamageSource* source, float dmg) {
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
-    if (sourceEntity != NULL && sourceEntity->instanceof(eTYPE_PLAYER)) {
+    if (sourceEntity != nullptr && sourceEntity->instanceof(eTYPE_PLAYER)) {
         AABB grown = bb.grow(32, 32, 32);
         std::vector<std::shared_ptr<Entity> >* nearby =
             level->getEntities(shared_from_this(), &grown);

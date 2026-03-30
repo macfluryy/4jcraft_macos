@@ -239,7 +239,7 @@ public:
 
 	// Messages
 	C4JStorage::EMessageResult			RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-		int( *Func)(void*,int,const C4JStorage::EMessageResult)=NULL,void* lpParam=NULL, C4JStringTable *pStringTable=NULL, WCHAR *pwchFormatString=NULL,DWORD dwFocusButton=0);
+		int( *Func)(void*,int,const C4JStorage::EMessageResult)=nullptr,void* lpParam=nullptr, C4JStringTable *pStringTable=nullptr, WCHAR *pwchFormatString=nullptr,DWORD dwFocusButton=0);
 
 
 	C4JStorage::EMessageResult			GetMessageBoxResult();
@@ -296,25 +296,25 @@ public:
 
 	C4JStorage::EDLCStatus				GetInstalledDLC(int iPad,int( *Func)(void*, int, int),void* lpParam);
 	XCONTENT_DATA&						GetDLC(DWORD dw);
-	DWORD								MountInstalledDLC(int iPad,DWORD dwDLC,int( *Func)(void*, int, DWORD,DWORD),void* lpParam,const char* szMountDrive=NULL);
-	DWORD								UnmountInstalledDLC(const char* szMountDrive = NULL);
+	DWORD								MountInstalledDLC(int iPad,DWORD dwDLC,int( *Func)(void*, int, DWORD,DWORD),void* lpParam,const char* szMountDrive=nullptr);
+	DWORD								UnmountInstalledDLC(const char* szMountDrive = nullptr);
 	void								GetMountedDLCFileList(const char* szMountDrive, std::vector<std::string>& fileList);
 	std::string							GetMountedPath(std::string szMount);
 
 	// Global title storage
 	C4JStorage::ETMSStatus				ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType,
-											WCHAR *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(void*, WCHAR *,int, bool, int)=NULL,void* lpParam=NULL, int iAction=0);
+											WCHAR *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(void*, WCHAR *,int, bool, int)=nullptr,void* lpParam=nullptr, int iAction=0);
 	bool								WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename,BYTE *pBuffer,DWORD dwBufferSize);
 	bool								DeleteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename);
-	void								StoreTMSPathName(WCHAR *pwchName=NULL);
+	void								StoreTMSPathName(WCHAR *pwchName=nullptr);
 
 	// TMS++
 
-	// 	C4JStorage::ETMSStatus				TMSPP_WriteFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,C4JStorage::eTMS_UGCTYPE eUGCType,CHAR *pchFilePath,CHAR *pchBuffer,DWORD dwBufferSize,int( *Func)(void*,int,int)=NULL,void* lpParam=NULL, int iUserData=0);
+	// 	C4JStorage::ETMSStatus				TMSPP_WriteFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,C4JStorage::eTMS_UGCTYPE eUGCType,CHAR *pchFilePath,CHAR *pchBuffer,DWORD dwBufferSize,int( *Func)(void*,int,int)=nullptr,void* lpParam=nullptr, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_GetUserQuotaInfo(int iPad,TMSCLIENT_CALLBACK Func,void* lpParam, int iUserData=0);
-	C4JStorage::ETMSStatus				TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,const char* szFilename,int( *Func)(void*,int,int,PTMSPP_FILEDATA, const char*)=NULL,void* lpParam=NULL, int iUserData=0);
-	// 	C4JStorage::ETMSStatus				TMSPP_ReadFileList(int iPad,C4JStorage::eGlobalStorage eStorageFacility,CHAR *pchFilePath,int( *Func)(void*,int,int,PTMSPP_FILE_LIST)=NULL,void* lpParam=NULL, int iUserData=0);
-	// 	C4JStorage::ETMSStatus				TMSPP_DeleteFile(int iPad,const char* szFilePath,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,int( *Func)(void*,int,int),void* lpParam=NULL, int iUserData=0);
+	C4JStorage::ETMSStatus				TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,const char* szFilename,int( *Func)(void*,int,int,PTMSPP_FILEDATA, const char*)=nullptr,void* lpParam=nullptr, int iUserData=0);
+	// 	C4JStorage::ETMSStatus				TMSPP_ReadFileList(int iPad,C4JStorage::eGlobalStorage eStorageFacility,CHAR *pchFilePath,int( *Func)(void*,int,int,PTMSPP_FILE_LIST)=nullptr,void* lpParam=nullptr, int iUserData=0);
+	// 	C4JStorage::ETMSStatus				TMSPP_DeleteFile(int iPad,const char* szFilePath,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,int( *Func)(void*,int,int),void* lpParam=nullptr, int iUserData=0);
 	// 	bool								TMSPP_InFileList(eGlobalStorage eStorageFacility, int iPad,const std::wstring &Filename);
 	// 	unsigned int						CRC(unsigned char *buf, int len);
 

@@ -30,7 +30,7 @@ public:
     virtual std::wstring getLevelId() = 0;
 
 public:
-    virtual ConsoleSaveFile* getSaveFile() { return NULL; }
+    virtual ConsoleSaveFile* getSaveFile() { return nullptr; }
     virtual void flushSaveFile(bool autosave) {}
 
     // 4J Added

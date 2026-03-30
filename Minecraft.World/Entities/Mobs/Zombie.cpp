@@ -93,7 +93,7 @@ bool Zombie::isBaby() {
 void Zombie::setBaby(bool baby) {
     getEntityData()->set(DATA_BABY_ID, (uint8_t)(baby ? 1 : 0));
 
-    if (level != NULL && !level->isClientSide) {
+    if (level != nullptr && !level->isClientSide) {
         AttributeInstance* speed =
             getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
         speed->removeModifier(SPEED_MODIFIER_BABY);
@@ -120,7 +120,7 @@ void Zombie::aiStep() {
             bool burn = true;
 
             std::shared_ptr<ItemInstance> helmet = getCarried(SLOT_HELM);
-            if (helmet != NULL) {
+            if (helmet != nullptr) {
                 if (helmet->isDamageableItem()) {
                     helmet->setAuxValue(helmet->getDamageValue() +
                                         random->nextInt(2));
@@ -144,15 +144,15 @@ void Zombie::aiStep() {
 bool Zombie::hurt(DamageSource* source, float dmg) {
     if (Monster::hurt(source, dmg)) {
         std::shared_ptr<LivingEntity> target = getTarget();
-        if ((target == NULL) && getAttackTarget() != NULL &&
+        if ((target == nullptr) && getAttackTarget() != nullptr &&
             getAttackTarget()->instanceof(eTYPE_LIVINGENTITY))
             target = std::dynamic_pointer_cast<LivingEntity>(getAttackTarget());
-        if ((target == NULL) && source->getEntity() != NULL &&
+        if ((target == nullptr) && source->getEntity() != nullptr &&
             source->getEntity()->instanceof(eTYPE_LIVINGENTITY))
             target =
                 std::dynamic_pointer_cast<LivingEntity>(source->getEntity());
 
-        if ((target != NULL) && level->difficulty >= Difficulty::HARD &&
+        if ((target != nullptr) && level->difficulty >= Difficulty::HARD &&
             random->nextFloat() <
                 getAttribute(SPAWN_REINFORCEMENTS_CHANCE)->getValue()) {
             int x = Mth::floor(this->x);
@@ -182,7 +182,7 @@ bool Zombie::hurt(DamageSource* source, float dmg) {
                         !level->containsAnyLiquid(&reinforcement->bb)) {
                         level->addEntity(reinforcement);
                         reinforcement->setTarget(target);
-                        reinforcement->finalizeMobSpawn(NULL);
+                        reinforcement->finalizeMobSpawn(nullptr);
 
                         getAttribute(SPAWN_REINFORCEMENTS_CHANCE)
                             ->addModifier(new AttributeModifier(
@@ -220,7 +220,7 @@ bool Zombie::doHurtTarget(std::shared_ptr<Entity> target) {
     bool result = Monster::doHurtTarget(target);
 
     if (result) {
-        if (getCarriedItem() == NULL && isOnFire() &&
+        if (getCarriedItem() == nullptr && isOnFire() &&
             random->nextFloat() < level->difficulty * 0.3f) {
             target->setOnFire(2 * level->difficulty);
         }
@@ -308,7 +308,7 @@ void Zombie::killed(std::shared_ptr<LivingEntity> mob) {
             std::shared_ptr<Zombie>(new Zombie(level));
         zombie->copyPosition(mob);
         level->removeEntity(mob);
-        zombie->finalizeMobSpawn(NULL);
+        zombie->finalizeMobSpawn(nullptr);
         zombie->setVillager(true);
         if (mob->isBaby()) zombie->setBaby(true);
         level->addEntity(zombie);
@@ -326,12 +326,12 @@ MobGroupData* Zombie::finalizeMobSpawn(
 
     setCanPickUpLoot(random->nextFloat() < MAX_PICKUP_LOOT_CHANCE * difficulty);
 
-    if (groupData == NULL) {
+    if (groupData == nullptr) {
         groupData = new ZombieGroupData(level->random->nextFloat() < 0.05f,
                                         level->random->nextFloat() < 0.05f);
     }
 
-    if (dynamic_cast<ZombieGroupData*>(groupData) != NULL) {
+    if (dynamic_cast<ZombieGroupData*>(groupData) != nullptr) {
         ZombieGroupData* zombieData = (ZombieGroupData*)groupData;
 
         if (zombieData->isVillager) {
@@ -346,7 +346,7 @@ MobGroupData* Zombie::finalizeMobSpawn(
     populateDefaultEquipmentSlots();
     populateDefaultEquipmentEnchantments();
 
-    if (getCarried(SLOT_HELM) == NULL) {
+    if (getCarried(SLOT_HELM) == nullptr) {
         // [EB]: We have this code in quite some places, shouldn't we set
         // something like this globally?
         if (Calendar::GetMonth() + 1 == 10 && Calendar::GetDayOfMonth() == 31 &&
@@ -389,7 +389,7 @@ MobGroupData* Zombie::finalizeMobSpawn(
 bool Zombie::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->getSelectedItem();
 
-    if (item != NULL && item->getItem() == Item::apple_gold &&
+    if (item != nullptr && item->getItem() == Item::apple_gold &&
         item->getAuxValue() == 0 && isVillager() &&
         hasEffect(MobEffect::weakness)) {
         if (!player->abilities.instabuild) item->count--;
@@ -446,7 +446,7 @@ void Zombie::finishConversion() {
     std::shared_ptr<Villager> villager =
         std::shared_ptr<Villager>(new Villager(level));
     villager->copyPosition(shared_from_this());
-    villager->finalizeMobSpawn(NULL);
+    villager->finalizeMobSpawn(nullptr);
     villager->setRewardPlayersInVillage();
     if (isBaby()) villager->setAge(-20 * 60 * 20);
     level->removeEntity(shared_from_this());

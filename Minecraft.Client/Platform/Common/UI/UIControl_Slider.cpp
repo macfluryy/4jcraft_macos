@@ -82,7 +82,7 @@ S32 UIControl_Slider::GetRealWidth() {
     IggyDataValue result;
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_funcGetRealWidth, 0, NULL);
+                               getIggyValuePath(), m_funcGetRealWidth, 0, nullptr);
 
     S32 iRealWidth = m_width;
     if (result.type == IGGY_DATATYPE_number) {

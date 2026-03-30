@@ -32,14 +32,14 @@ bool FollowParentGoal::canUse() {
     }
     delete parents;
 
-    if (closest == NULL) return false;
+    if (closest == nullptr) return false;
     if (closestDistSqr < 3 * 3) return false;
     parent = std::weak_ptr<Animal>(closest);
     return true;
 }
 
 bool FollowParentGoal::canContinueToUse() {
-    if (parent.lock() == NULL || !parent.lock()->isAlive()) return false;
+    if (parent.lock() == nullptr || !parent.lock()->isAlive()) return false;
     double distSqr = animal->distanceToSqr(parent.lock());
     if (distSqr < 3 * 3 || distSqr > 16 * 16) return false;
     return true;

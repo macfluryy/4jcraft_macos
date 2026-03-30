@@ -19,12 +19,12 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_isCorrupt = false;
     m_packId = 0;
     m_packVersion = 0;
-    m_parentPack = NULL;
+    m_parentPack = nullptr;
     m_dlcMountIndex = -1;
 
     // This pointer is for all the data used for this pack, so deleting it
     // invalidates ALL of it's children.
-    m_data = NULL;
+    m_data = nullptr;
 }
 
 
@@ -48,21 +48,21 @@ DLCPack::~DLCPack() {
         // For the same reason, don't delete data pointer for any child pack as
         // it just points to a region within the parent pack that has already
         // been freed
-        if (m_parentPack == NULL) {
+        if (m_parentPack == nullptr) {
             delete[] m_data;
         }
     }
 }
 
 int DLCPack::GetDLCMountIndex() {
-    if (m_parentPack != NULL) {
+    if (m_parentPack != nullptr) {
         return m_parentPack->GetDLCMountIndex();
     }
     return m_dlcMountIndex;
 }
 
 XCONTENTDEVICEID DLCPack::GetDLCDeviceID() {
-    if (m_parentPack != NULL) {
+    if (m_parentPack != nullptr) {
         return m_parentPack->GetDLCDeviceID();
     }
     return m_dlcDeviceID;
@@ -141,7 +141,7 @@ bool DLCPack::getParameterAsUInt(DLCManager::EDLCParameterType type,
 }
 
 DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
-    DLCFile* newFile = NULL;
+    DLCFile* newFile = nullptr;
 
     switch (type) {
         case DLCManager::e_DLCType_Skin: {
@@ -187,7 +187,7 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
             break;
     };
 
-    if (newFile != NULL) {
+    if (newFile != nullptr) {
         m_files[newFile->getType()].push_back(newFile);
     }
 
@@ -196,7 +196,7 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
 
 // MGH - added this comp func, as the embedded func in find_if was confusing the
 // PS3 compiler
-static const std::wstring* g_pathCmpString = NULL;
+static const std::wstring* g_pathCmpString = nullptr;
 static bool pathCmp(DLCFile* val) {
     return (g_pathCmpString->compare(val->getPath()) == 0);
 }
@@ -224,13 +224,13 @@ bool DLCPack::doesPackContainFile(DLCManager::EDLCType type,
 }
 
 DLCFile* DLCPack::getFile(DLCManager::EDLCType type, unsigned int index) {
-    DLCFile* file = NULL;
+    DLCFile* file = nullptr;
     if (type == DLCManager::e_DLCType_All) {
         for (DLCManager::EDLCType currentType = (DLCManager::EDLCType)0;
              currentType < DLCManager::e_DLCType_Max;
              currentType = (DLCManager::EDLCType)(currentType + 1)) {
             file = getFile(currentType, index);
-            if (file != NULL) break;
+            if (file != nullptr) break;
         }
     } else {
         if (m_files[type].size() > index) file = m_files[type][index];
@@ -242,13 +242,13 @@ DLCFile* DLCPack::getFile(DLCManager::EDLCType type, unsigned int index) {
 }
 
 DLCFile* DLCPack::getFile(DLCManager::EDLCType type, const std::wstring& path) {
-    DLCFile* file = NULL;
+    DLCFile* file = nullptr;
     if (type == DLCManager::e_DLCType_All) {
         for (DLCManager::EDLCType currentType = (DLCManager::EDLCType)0;
              currentType < DLCManager::e_DLCType_Max;
              currentType = (DLCManager::EDLCType)(currentType + 1)) {
             file = getFile(currentType, path);
-            if (file != NULL) break;
+            if (file != nullptr) break;
         }
     } else {
         g_pathCmpString = &path;
@@ -256,7 +256,7 @@ DLCFile* DLCPack::getFile(DLCManager::EDLCType type, const std::wstring& path) {
 
         if (it == m_files[type].end()) {
             // Not found
-            file = NULL;
+            file = nullptr;
         } else {
             file = *it;
         }

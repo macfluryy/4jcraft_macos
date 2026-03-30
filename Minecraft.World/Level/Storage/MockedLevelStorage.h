@@ -18,5 +18,5 @@ public:
     virtual std::wstring getLevelId();
 
 public:
-    virtual ConsoleSaveFile* getSaveFile() { return NULL; }
+    virtual ConsoleSaveFile* getSaveFile() { return nullptr; }
 };

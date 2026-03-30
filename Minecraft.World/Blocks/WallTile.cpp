@@ -134,7 +134,7 @@ bool WallTile::connectsTo(LevelSource* level, int x, int y, int z) {
         return true;
     }
     Tile* tileInstance = Tile::tiles[tile];
-    if (tileInstance != NULL) {
+    if (tileInstance != nullptr) {
         if (tileInstance->material->isSolidBlocking() &&
             tileInstance->isCubeShaped()) {
             return tileInstance->material != Material::vegetable;

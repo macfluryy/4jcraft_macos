@@ -30,7 +30,7 @@ void XboxStructureActionPlaceContainer::getChildren(
 
 GameRuleDefinition* XboxStructureActionPlaceContainer::addChild(
     ConsoleGameRules::EGameRuleType ruleType) {
-    GameRuleDefinition* rule = NULL;
+    GameRuleDefinition* rule = nullptr;
     if (ruleType == ConsoleGameRules::eGameRuleType_AddItem) {
         rule = new AddItemRuleDefinition();
         m_items.push_back((AddItemRuleDefinition*)rule);
@@ -66,7 +66,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(
     int worldZ = structure->getWorldZ(m_x, m_z);
 
     if (chunkBB->isInside(worldX, worldY, worldZ)) {
-        if (level->getTileEntity(worldX, worldY, worldZ) != NULL) {
+        if (level->getTileEntity(worldX, worldY, worldZ) != nullptr) {
             // Remove the current tile entity
             level->removeTileEntity(worldX, worldY, worldZ);
             level->setTileAndData(worldX, worldY, worldZ, 0, 0,
@@ -83,7 +83,7 @@ bool XboxStructureActionPlaceContainer::placeContainerInLevel(
             "XboxStructureActionPlaceContainer - placing a container at "
             "(%d,%d,%d)\n",
             worldX, worldY, worldZ);
-        if (container != NULL) {
+        if (container != nullptr) {
             level->setData(worldX, worldY, worldZ, m_data,
                            Tile::UPDATE_CLIENTS);
             // Add items

@@ -7,8 +7,8 @@
 CombatEntry::CombatEntry(DamageSource* source, int time, float health,
                          float damage, CombatTracker::eLOCATION location,
                          float fallDistance) {
-    this->source = NULL;
-    if (source != NULL) {
+    this->source = nullptr;
+    if (source != nullptr) {
         // 4J: this might actually be a derived damage source so use copy func
         this->source = source->copy();
     }
@@ -39,7 +39,7 @@ bool CombatEntry::isCombatRelated() {
 CombatTracker::eLOCATION CombatEntry::getLocation() { return location; }
 
 std::wstring CombatEntry::getAttackerName() {
-    return getSource()->getEntity() == NULL
+    return getSource()->getEntity() == nullptr
                ? L""
                : getSource()->getEntity()->getNetworkName();
 }

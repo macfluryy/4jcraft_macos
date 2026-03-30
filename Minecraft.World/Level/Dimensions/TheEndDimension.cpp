@@ -21,7 +21,7 @@ float TheEndDimension::getTimeOfDay(int64_t time, float a) const {
     return 0.0f;
 }
 
-float* TheEndDimension::getSunriseColor(float td, float a) { return NULL; }
+float* TheEndDimension::getSunriseColor(float td, float a) { return nullptr; }
 
 Vec3 TheEndDimension::getFogColor(float td, float a) const {
     int fogColor = Minecraft::GetInstance()->getColourTable()->getColor(

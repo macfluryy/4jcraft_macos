@@ -18,8 +18,8 @@ public:
 	int GetType()			{ return m_type; }
 	void *GetBufferPointer()	{ return m_pBuffer; }
 	int GetBufferSize()			{ return m_bufferSize; }
-	void Release()				{ free(m_pBuffer); m_pBuffer = NULL; }
-	bool Allocated() { return m_pBuffer != NULL; }
+	void Release()				{ free(m_pBuffer); m_pBuffer = nullptr; }
+	bool Allocated() { return m_pBuffer != nullptr; }
 };
 
 typedef struct

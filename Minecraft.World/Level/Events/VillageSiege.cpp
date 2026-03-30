@@ -74,7 +74,7 @@ bool VillageSiege::tryToSetupSiege() {
             (int)player->x, (int)player->y, (int)player->z, 1);
         village = _village;
 
-        if (_village == NULL) continue;
+        if (_village == nullptr) continue;
         if (_village->getDoorCount() < 10) continue;
         if (_village->getStableAge() < 20) continue;
         if (_village->getPopulationSize() < 20) continue;
@@ -126,7 +126,7 @@ bool VillageSiege::trySpawn() {
     // try
     {
         mob = std::shared_ptr<Zombie>(new Zombie(level));
-        mob->finalizeMobSpawn(NULL);
+        mob->finalizeMobSpawn(nullptr);
         mob->setVillager(false);
     }
     // catch (Exception e) {
@@ -137,7 +137,7 @@ bool VillageSiege::trySpawn() {
                 level->random->nextFloat() * 360, 0);
     level->addEntity(mob);
     std::shared_ptr<Village> _village = village.lock();
-    if (_village == NULL) return false;
+    if (_village == nullptr) return false;
 
     Pos* center = _village->getCenter();
     mob->restrictTo(center->x, center->y, center->z, _village->getRadius());
@@ -146,7 +146,7 @@ bool VillageSiege::trySpawn() {
 
 std::optional<Vec3> VillageSiege::findRandomSpawnPos(int x, int y, int z) {
     std::shared_ptr<Village> _village = village.lock();
-    if (_village == NULL) return std::nullopt;
+    if (_village == nullptr) return std::nullopt;
 
     for (int i = 0; i < 10; ++i) {
         int xx = x + level->random->nextInt(16) - 8;

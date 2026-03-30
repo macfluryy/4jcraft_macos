@@ -24,11 +24,11 @@ bool MoveIndoorsGoal::canUse() {
         return false;
     std::shared_ptr<Village> village = mob->level->villages->getClosestVillage(
         Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z), 14);
-    if (village == NULL) return false;
+    if (village == nullptr) return false;
     std::shared_ptr<DoorInfo> _doorInfo = village->getBestDoorInfo(
         Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z));
     doorInfo = _doorInfo;
-    return _doorInfo != NULL;
+    return _doorInfo != nullptr;
 }
 
 bool MoveIndoorsGoal::canContinueToUse() {
@@ -38,7 +38,7 @@ bool MoveIndoorsGoal::canContinueToUse() {
 void MoveIndoorsGoal::start() {
     insideX = -1;
     std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
-    if (_doorInfo == NULL) {
+    if (_doorInfo == nullptr) {
         doorInfo = std::weak_ptr<DoorInfo>();
         return;
     }
@@ -59,7 +59,7 @@ void MoveIndoorsGoal::start() {
 
 void MoveIndoorsGoal::stop() {
     std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
-    if (_doorInfo == NULL) {
+    if (_doorInfo == nullptr) {
         doorInfo = std::weak_ptr<DoorInfo>();
         return;
     }

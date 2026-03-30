@@ -47,7 +47,7 @@ bool Ghast::isCharging() { return entityData->getByte(DATA_IS_CHARGING) != 0; }
 bool Ghast::hurt(DamageSource* source, float dmg) {
     if (isInvulnerable()) return false;
     if (source->getMsgId() == ChatPacket::e_ChatDeathFireball) {
-        if ((source->getEntity() != NULL) &&
+        if ((source->getEntity() != nullptr) &&
             source->getEntity()->instanceof(eTYPE_PLAYER)) {
             // reflected fireball, kill the ghast
             FlyingMob::hurt(source, 1000);
@@ -106,16 +106,16 @@ void Ghast::serverAiStep() {
         }
     }
 
-    if (target != NULL && target->removed) target = nullptr;
-    if (target == NULL || retargetTime-- <= 0) {
+    if (target != nullptr && target->removed) target = nullptr;
+    if (target == nullptr || retargetTime-- <= 0) {
         target = level->getNearestAttackablePlayer(shared_from_this(), 100);
-        if (target != NULL) {
+        if (target != nullptr) {
             retargetTime = 20;
         }
     }
 
     double maxDist = 64.0f;
-    if (target != NULL &&
+    if (target != nullptr &&
         target->distanceToSqr(shared_from_this()) < maxDist * maxDist) {
         double xdd = target->x - x;
         double ydd =

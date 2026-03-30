@@ -14,7 +14,7 @@ TutorialMode::TutorialMode(int iPad, Minecraft* minecraft,
     : MultiPlayerGameMode(minecraft, connection), m_iPad(iPad) {}
 
 TutorialMode::~TutorialMode() {
-    if (tutorial != NULL) delete tutorial;
+    if (tutorial != nullptr) delete tutorial;
 }
 
 void TutorialMode::startDestroyBlock(int x, int y, int z, int face) {
@@ -33,13 +33,13 @@ bool TutorialMode::destroyBlock(int x, int y, int z, int face) {
     }
     std::shared_ptr<ItemInstance> item = minecraft->player->getSelectedItem();
     int damageBefore;
-    if (item != NULL) {
+    if (item != nullptr) {
         damageBefore = item->getDamageValue();
     }
     bool changed = MultiPlayerGameMode::destroyBlock(x, y, z, face);
 
     if (!tutorial->m_allTutorialsComplete) {
-        if (item != NULL && item->isDamageableItem()) {
+        if (item != nullptr && item->isDamageableItem()) {
             int max = item->getMaxDamage();
             int damageNow = item->getDamageValue();
 
@@ -78,7 +78,7 @@ bool TutorialMode::useItemOn(std::shared_ptr<Player> player, Level* level,
         tutorial->useItemOn(level, item, x, y, z, bTestUseOnly);
 
         if (!bTestUseOnly) {
-            if (item != NULL) {
+            if (item != nullptr) {
                 haveItem = true;
                 itemCount = item->count;
             }

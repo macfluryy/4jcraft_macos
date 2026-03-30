@@ -28,7 +28,7 @@ bool FlowerPotTile::use(Level* level, int x, int y, int z,
                         float clickX, float clickY, float clickZ,
                         bool soundOnly) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item == NULL) return false;
+    if (item == nullptr) return false;
     if (level->getData(x, y, z) != 0) return false;
     int type = getTypeFromItem(item);
 
@@ -52,7 +52,7 @@ int FlowerPotTile::cloneTileId(Level* level, int x, int y, int z) {
     std::shared_ptr<ItemInstance> item =
         getItemFromType(level->getData(x, y, z));
 
-    if (item == NULL) {
+    if (item == nullptr) {
         return Item::flowerPot_Id;
     } else {
         return item->id;
@@ -63,7 +63,7 @@ int FlowerPotTile::cloneTileData(Level* level, int x, int y, int z) {
     std::shared_ptr<ItemInstance> item =
         getItemFromType(level->getData(x, y, z));
 
-    if (item == NULL) {
+    if (item == nullptr) {
         return Item::flowerPot_Id;
     } else {
         return item->getAuxValue();
@@ -92,7 +92,7 @@ void FlowerPotTile::spawnResources(Level* level, int x, int y, int z, int data,
 
     if (data > 0) {
         std::shared_ptr<ItemInstance> item = getItemFromType(data);
-        if (item != NULL) popResource(level, x, y, z, item);
+        if (item != nullptr) popResource(level, x, y, z, item);
     }
 }
 

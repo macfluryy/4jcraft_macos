@@ -52,8 +52,8 @@ void JustGrSource::setBaseSavePath(const std::wstring& x) {
 bool JustGrSource::ready() { return true; }
 
 LevelGenerationOptions::LevelGenerationOptions(DLCPack* parentPack) {
-    m_spawnPos = NULL;
-    m_stringTable = NULL;
+    m_spawnPos = nullptr;
+    m_stringTable = nullptr;
 
     m_hasLoadedData = false;
 
@@ -64,7 +64,7 @@ LevelGenerationOptions::LevelGenerationOptions(DLCPack* parentPack) {
     m_minY = INT_MAX;
     m_bRequiresGameRules = false;
 
-    m_pbBaseSaveData = NULL;
+    m_pbBaseSaveData = nullptr;
     m_baseSaveSize = 0;
 
     m_parentDLCPack = parentPack;
@@ -73,7 +73,7 @@ LevelGenerationOptions::LevelGenerationOptions(DLCPack* parentPack) {
 
 LevelGenerationOptions::~LevelGenerationOptions() {
     clearSchematics();
-    if (m_spawnPos != NULL) delete m_spawnPos;
+    if (m_spawnPos != nullptr) delete m_spawnPos;
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
          ++it) {
         delete *it;
@@ -143,7 +143,7 @@ void LevelGenerationOptions::getChildren(
 
 GameRuleDefinition* LevelGenerationOptions::addChild(
     ConsoleGameRules::EGameRuleType ruleType) {
-    GameRuleDefinition* rule = NULL;
+    GameRuleDefinition* rule = nullptr;
     if (ruleType == ConsoleGameRules::eGameRuleType_ApplySchematic) {
         rule = new ApplySchematicRuleDefinition(this);
         m_schematicRules.push_back((ApplySchematicRuleDefinition*)rule);
@@ -174,19 +174,19 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter m_seed=%I64d\n", m_seed);
     } else if (attributeName.compare(L"spawnX") == 0) {
-        if (m_spawnPos == NULL) m_spawnPos = new Pos();
+        if (m_spawnPos == nullptr) m_spawnPos = new Pos();
         int value = _fromString<int>(attributeValue);
         m_spawnPos->x = value;
         app.DebugPrintf("LevelGenerationOptions: Adding parameter spawnX=%d\n",
                         value);
     } else if (attributeName.compare(L"spawnY") == 0) {
-        if (m_spawnPos == NULL) m_spawnPos = new Pos();
+        if (m_spawnPos == nullptr) m_spawnPos = new Pos();
         int value = _fromString<int>(attributeValue);
         m_spawnPos->y = value;
         app.DebugPrintf("LevelGenerationOptions: Adding parameter spawnY=%d\n",
                         value);
     } else if (attributeName.compare(L"spawnZ") == 0) {
-        if (m_spawnPos == NULL) m_spawnPos = new Pos();
+        if (m_spawnPos == nullptr) m_spawnPos = new Pos();
         int value = _fromString<int>(attributeValue);
         m_spawnPos->z = value;
         app.DebugPrintf("LevelGenerationOptions: Adding parameter spawnZ=%d\n",
@@ -271,7 +271,7 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
         if (structureStart->getBoundingBox()->intersects(cx, cz, cx + 15,
                                                          cz + 15)) {
             BoundingBox* bb = new BoundingBox(cx, cz, cx + 15, cz + 15);
-            structureStart->postProcess(chunk->level, NULL, bb);
+            structureStart->postProcess(chunk->level, nullptr, bb);
             delete bb;
         }
     }
@@ -363,7 +363,7 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
         return it->second;
     }
 
-    ConsoleSchematicFile* schematic = NULL;
+    ConsoleSchematicFile* schematic = nullptr;
     byteArray data(pbData, dataLength);
     ByteArrayInputStream bais(data);
     DataInputStream dis(&bais);
@@ -376,7 +376,7 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
 
 ConsoleSchematicFile* LevelGenerationOptions::getSchematicFile(
     const std::wstring& filename) {
-    ConsoleSchematicFile* schematic = NULL;
+    ConsoleSchematicFile* schematic = nullptr;
     // If we have already loaded this, just return
     auto it = m_schematics.find(filename);
     if (it != m_schematics.end()) {
@@ -407,7 +407,7 @@ void LevelGenerationOptions::loadStringTable(StringTable* table) {
 }
 
 const wchar_t* LevelGenerationOptions::getString(const std::wstring& key) {
-    if (m_stringTable == NULL) {
+    if (m_stringTable == nullptr) {
         return L"";
     } else {
         return m_stringTable->getString(key);
@@ -462,7 +462,7 @@ LevelGenerationOptions::getUnfinishedSchematicFiles() {
 
 void LevelGenerationOptions::loadBaseSaveData() {
     int mountIndex = -1;
-    if (m_parentDLCPack != NULL)
+    if (m_parentDLCPack != nullptr)
         mountIndex = m_parentDLCPack->GetDLCMountIndex();
 
     if (mountIndex > -1) {
@@ -518,12 +518,12 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                         GENERIC_READ,  // access mode
                         0,  // share mode // TODO 4J Stu - Will we need to share
                             // file? Probably not but...
-                        NULL,           // Unused
+                        nullptr,           // Unused
                         OPEN_EXISTING,  // how to create // TODO 4J Stu -
                                         // Assuming that the file already exists
                                         // if we are opening to read from it
                         FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                        NULL                        // Unsupported
+                        nullptr                        // Unsupported
                     );
 #else
                     const char* pchFilename = wstringtofilename(grf.getPath());
@@ -532,12 +532,12 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                         GENERIC_READ,  // access mode
                         0,  // share mode // TODO 4J Stu - Will we need to share
                             // file? Probably not but...
-                        NULL,           // Unused
+                        nullptr,           // Unused
                         OPEN_EXISTING,  // how to create // TODO 4J Stu -
                                         // Assuming that the file already exists
                                         // if we are opening to read from it
                         FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                        NULL                        // Unsupported
+                        nullptr                        // Unsupported
                     );
 #endif
 
@@ -546,7 +546,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                         DWORD bytesRead;
                         PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
                         bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
-                                                 &bytesRead, NULL);
+                                                 &bytesRead, nullptr);
                         if (bSuccess == FALSE) {
                             app.FatalLoadError();
                         }
@@ -576,12 +576,12 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                     GENERIC_READ,  // access mode
                     0,     // share mode // TODO 4J Stu - Will we need to share
                            // file? Probably not but...
-                    NULL,  // Unused
+                    nullptr,  // Unused
                     OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
                                     // that the file already exists if we are
                                     // opening to read from it
                     FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                    NULL                        // Unsupported
+                    nullptr                        // Unsupported
                 );
 #else
                 const char* pchFilename = wstringtofilename(save.getPath());
@@ -590,20 +590,20 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                     GENERIC_READ,  // access mode
                     0,     // share mode // TODO 4J Stu - Will we need to share
                            // file? Probably not but...
-                    NULL,  // Unused
+                    nullptr,  // Unused
                     OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
                                     // that the file already exists if we are
                                     // opening to read from it
                     FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                    NULL                        // Unsupported
+                    nullptr                        // Unsupported
                 );
 #endif
 
                 if (fileHandle != INVALID_HANDLE_VALUE) {
-                    DWORD bytesRead, dwFileSize = GetFileSize(fileHandle, NULL);
+                    DWORD bytesRead, dwFileSize = GetFileSize(fileHandle, nullptr);
                     PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
                     bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
-                                             &bytesRead, NULL);
+                                             &bytesRead, nullptr);
                     if (bSuccess == FALSE) {
                         app.FatalLoadError();
                     }
@@ -632,8 +632,8 @@ void LevelGenerationOptions::reset_start() {
 
 void LevelGenerationOptions::reset_finish() {
     // if (m_spawnPos)				{ delete m_spawnPos; m_spawnPos
-    // = NULL; } if (m_stringTable)			{ delete m_stringTable;
-    // m_stringTable = NULL; }
+    // = nullptr; } if (m_stringTable)			{ delete m_stringTable;
+    // m_stringTable = nullptr; }
 
     if (isFromDLC()) {
         m_hasLoadedData = false;
@@ -739,11 +739,11 @@ std::uint8_t* LevelGenerationOptions::getBaseSaveData(unsigned int& size) {
     return m_pbBaseSaveData;
 }
 bool LevelGenerationOptions::hasBaseSaveData() {
-    return m_baseSaveSize > 0 && m_pbBaseSaveData != NULL;
+    return m_baseSaveSize > 0 && m_pbBaseSaveData != nullptr;
 }
 void LevelGenerationOptions::deleteBaseSaveData() {
     delete[] m_pbBaseSaveData;
-    m_pbBaseSaveData = NULL;
+    m_pbBaseSaveData = nullptr;
     m_baseSaveSize = 0;
 }
 

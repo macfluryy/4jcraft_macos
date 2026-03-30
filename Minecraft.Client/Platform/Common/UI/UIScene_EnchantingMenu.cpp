@@ -22,7 +22,7 @@ UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,
                                                : initData->name);
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -190,7 +190,7 @@ void UIScene_EnchantingMenu::setSectionSelectedSlot(ESceneSection eSection,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionEnchantSlot:
             slotList = &m_slotListIngredient;
@@ -210,7 +210,7 @@ void UIScene_EnchantingMenu::setSectionSelectedSlot(ESceneSection eSection,
 }
 
 UIControl* UIScene_EnchantingMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionEnchantSlot:
             control = &m_slotListIngredient;
@@ -239,8 +239,8 @@ UIControl* UIScene_EnchantingMenu::getSection(ESceneSection eSection) {
 
 void UIScene_EnchantingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     if (std::char_traits<char16_t>::compare(region->name, u"EnchantmentBook",

@@ -3,7 +3,7 @@
 
 NetworkPlayerQNet::NetworkPlayerQNet(IQNetPlayer* qnetPlayer) {
     m_qnetPlayer = qnetPlayer;
-    m_pSocket = NULL;
+    m_pSocket = nullptr;
 }
 
 unsigned char NetworkPlayerQNet::GetSmallId() {

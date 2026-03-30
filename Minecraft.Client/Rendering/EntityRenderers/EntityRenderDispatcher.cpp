@@ -87,7 +87,7 @@ double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;
 double EntityRenderDispatcher::zOff = 0.0;
 
-EntityRenderDispatcher* EntityRenderDispatcher::instance = NULL;
+EntityRenderDispatcher* EntityRenderDispatcher::instance = nullptr;
 
 void EntityRenderDispatcher::staticCtor() {
     instance = new EntityRenderDispatcher();
@@ -284,7 +284,7 @@ void EntityRenderDispatcher::render(std::shared_ptr<Entity> entity, double x,
                                     double y, double z, float rot, float a,
                                     bool bItemFrame, bool bRenderPlayerShadow) {
     EntityRenderer* renderer = getRenderer(entity);
-    if (renderer != NULL) {
+    if (renderer != nullptr) {
         renderer->SetItemFrame(bItemFrame);
 
         renderer->render(entity, x, y, z, rot, a);

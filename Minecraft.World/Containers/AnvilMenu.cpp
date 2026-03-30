@@ -53,7 +53,7 @@ void AnvilMenu::createResult() {
 
     if (DEBUG_COST) app.DebugPrintf("----");
 
-    if (input == NULL) {
+    if (input == nullptr) {
         resultSlots->setItem(0, nullptr);
         cost = 0;
         return;
@@ -66,17 +66,17 @@ void AnvilMenu::createResult() {
         bool usingBook = false;
 
         tax += input->getBaseRepairCost() +
-               (addition == NULL ? 0 : addition->getBaseRepairCost());
+               (addition == nullptr ? 0 : addition->getBaseRepairCost());
         if (DEBUG_COST) {
             app.DebugPrintf(
                 "Starting with base repair tax of %d (%d + %d)\n", tax,
                 input->getBaseRepairCost(),
-                (addition == NULL ? 0 : addition->getBaseRepairCost()));
+                (addition == nullptr ? 0 : addition->getBaseRepairCost()));
         }
 
         repairItemCountCost = 0;
 
-        if (addition != NULL) {
+        if (addition != nullptr) {
             usingBook =
                 addition->id == Item::enchantedBook_Id &&
                 Item::enchantedBook->getEnchantments(addition)->size() > 0;
@@ -295,9 +295,9 @@ void AnvilMenu::createResult() {
             result = nullptr;
         }
 
-        if (result != NULL) {
+        if (result != nullptr) {
             int baseCost = result->getBaseRepairCost();
-            if (addition != NULL && baseCost < addition->getBaseRepairCost())
+            if (addition != nullptr && baseCost < addition->getBaseRepairCost())
                 baseCost = addition->getBaseRepairCost();
             if (result->hasCustomHoverName()) baseCost -= 9;
             if (baseCost < 0) baseCost = 0;
@@ -342,7 +342,7 @@ void AnvilMenu::removed(std::shared_ptr<Player> player) {
 
     for (int i = 0; i < repairSlots->getContainerSize(); i++) {
         std::shared_ptr<ItemInstance> item = repairSlots->removeItemNoUpdate(i);
-        if (item != NULL) {
+        if (item != nullptr) {
             player->drop(item);
         }
     }
@@ -358,7 +358,7 @@ std::shared_ptr<ItemInstance> AnvilMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
     Slot* slot = slots.at(slotIndex);
-    if (slot != NULL && slot->hasItem()) {
+    if (slot != nullptr && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();
 

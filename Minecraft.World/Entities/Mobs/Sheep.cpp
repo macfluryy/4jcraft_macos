@@ -151,7 +151,7 @@ bool Sheep::mobInteract(std::shared_ptr<Player> player) {
     if (!player->isAllowedToInteract(shared_from_this()))
         return false;  // Animal::interact(player);
 
-    if (item != NULL && item->id == Item::shears->id && !isSheared() &&
+    if (item != nullptr && item->id == Item::shears->id && !isSheared() &&
         !isBaby()) {
         if (!level->isClientSide) {
             setSheared(true);
@@ -281,7 +281,7 @@ int Sheep::getOffspringColor(std::shared_ptr<Animal> animal,
         Recipes::getInstance()->getItemFor(container, animal->level);
 
     int color = 0;
-    if (instance != NULL && instance->getItem()->id == Item::dye_powder_Id) {
+    if (instance != nullptr && instance->getItem()->id == Item::dye_powder_Id) {
         color = instance->getAuxValue();
     } else {
         color =

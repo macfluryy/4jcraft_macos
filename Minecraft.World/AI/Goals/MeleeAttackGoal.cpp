@@ -39,7 +39,7 @@ MeleeAttackGoal::~MeleeAttackGoal() = default;
 
 bool MeleeAttackGoal::canUse() {
     std::shared_ptr<LivingEntity> target = mob->getTarget();
-    if (target == NULL) return false;
+    if (target == nullptr) return false;
     if (!target->isAlive()) return false;
     if (attackType != eTYPE_NOTSET && !target->instanceof(attackType))
         return false;
@@ -49,7 +49,7 @@ bool MeleeAttackGoal::canUse() {
 
 bool MeleeAttackGoal::canContinueToUse() {
     std::shared_ptr<LivingEntity> target = mob->getTarget();
-    if (target == NULL) return false;
+    if (target == nullptr) return false;
     if (!target->isAlive()) return false;
     if (!trackTarget) return !mob->getNavigation()->isDone();
     if (!mob->isWithinRestriction(Mth::floor(target->x), Mth::floor(target->y),
@@ -84,6 +84,6 @@ void MeleeAttackGoal::tick() {
         return;
     if (attackTime > 0) return;
     attackTime = 20;
-    if (mob->getCarriedItem() != NULL) mob->swing();
+    if (mob->getCarriedItem() != nullptr) mob->swing();
     mob->doHurtTarget(target);
 }

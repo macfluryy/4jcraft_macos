@@ -461,7 +461,7 @@ void SparseLightStorage::tick() {
 
     //	printf("Free queue: %d,
     //%d\n",deleteQueue[freeIndex].GetEntryCount(),deleteQueue[freeIndex].GetAllocated());
-    unsigned char* toFree = NULL;
+    unsigned char* toFree = nullptr;
     do {
         toFree = deleteQueue[freeIndex].Pop();
 //		if( toFree ) printf("Deleting 0x%x\n", toFree);

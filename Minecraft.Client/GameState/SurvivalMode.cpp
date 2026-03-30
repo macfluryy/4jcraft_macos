@@ -20,7 +20,7 @@ SurvivalMode::SurvivalMode(Minecraft* minecraft) : GameMode(minecraft) {
     destroyDelay = 0;
 
     if (ClientConstants::IS_DEMO_VERSION) {
-        if (dynamic_cast<DemoMode*>(this) == NULL) {
+        if (dynamic_cast<DemoMode*>(this) == nullptr) {
             assert(false);
             //            throw new IllegalStateException("Invalid game mode");
             //            // 4J - removed
@@ -55,7 +55,7 @@ bool SurvivalMode::destroyBlock(int x, int y, int z, int face) {
 
     std::shared_ptr<ItemInstance> item = minecraft->player->getSelectedItem();
     bool couldDestroy = minecraft->player->canDestroy(Tile::tiles[t]);
-    if (item != NULL) {
+    if (item != nullptr) {
         item->mineBlock(t, x, y, z, minecraft->player);
         if (item->count == 0) {
             minecraft->player->removeSelectedItem();
@@ -98,7 +98,7 @@ void SurvivalMode::continueDestroyBlock(int x, int y, int z, int face) {
         destroyProgress += tile->getDestroyProgress(minecraft->player);
 
         if (destroyTicks % 4 == 0) {
-            if (tile != NULL) {
+            if (tile != nullptr) {
                 minecraft->soundEngine->play(
                     tile->soundType->getStepSound(), x + 0.5f, y + 0.5f,
                     z + 0.5f, (tile->soundType->getVolume() + 1) / 8,
@@ -164,7 +164,7 @@ bool SurvivalMode::useItemOn(std::shared_ptr<Player> player, Level* level,
     if (t > 0) {
         if (Tile::tiles[t]->use(level, x, y, z, player)) return true;
     }
-    if (item == NULL) return false;
+    if (item == nullptr) return false;
     return item->useOn(player, level, x, y, z, face);
 }
 

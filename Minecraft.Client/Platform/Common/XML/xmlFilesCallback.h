@@ -47,7 +47,7 @@ public:
 					{
 						ZeroMemory(wTemp,sizeof(WCHAR)*35);
 						wcsncpy_s( wTemp, pAttributes[i].strValue, pAttributes[i].ValueLen);
-						xuid=_wcstoui64(wTemp,NULL,10);					
+						xuid=_wcstoui64(wTemp,nullptr,10);					
 					}
 				}
 				else if (_wcsicmp(wAttName,L"cape")==0)
@@ -135,7 +135,7 @@ public:
 					{
 						wcsncpy_s( wValue, pAttributes[i].strValue, pAttributes[i].ValueLen);			
 
-						iValue=wcstol(wValue, NULL, 10);
+						iValue=wcstol(wValue, nullptr, 10);
 					}
 				}
 			}
@@ -216,7 +216,7 @@ public:
 					{
 						ZeroMemory(wTemp,sizeof(WCHAR)*35);
 						wcsncpy_s( wTemp, pAttributes[i].strValue, pAttributes[i].ValueLen);
-						uiSortIndex=wcstoul(wTemp,NULL,16);
+						uiSortIndex=wcstoul(wTemp,nullptr,16);
 					}
 				}
 				else if (_wcsicmp(wAttName,L"Banner")==0)
@@ -232,7 +232,7 @@ public:
 					{		
 						ZeroMemory(wTemp,sizeof(WCHAR)*35);
 						wcsncpy_s( wTemp, pAttributes[i].strValue, pAttributes[i].ValueLen);
-						ullFull=_wcstoui64(wTemp,NULL,16);
+						ullFull=_wcstoui64(wTemp,nullptr,16);
 					}
 				}
 				else if (_wcsicmp(wAttName,L"Trial")==0)
@@ -241,7 +241,7 @@ public:
 					{
 						ZeroMemory(wTemp,sizeof(WCHAR)*35);
 						wcsncpy_s( wTemp, pAttributes[i].strValue, pAttributes[i].ValueLen);
-						ullTrial=_wcstoui64(wTemp,NULL,16);					
+						ullTrial=_wcstoui64(wTemp,nullptr,16);					
 					}
 				}				
 				else if (_wcsicmp(wAttName,L"FirstSkin")==0)
@@ -279,7 +279,7 @@ public:
 					{
 						wcsncpy_s( wConfig, pAttributes[i].strValue, pAttributes[i].ValueLen);			
 
-						iConfig=wcstol(wConfig, NULL, 10);
+						iConfig=wcstol(wConfig, nullptr, 10);
 					}
 				}
 				else if (_wcsicmp(wAttName,L"DataFile")==0)

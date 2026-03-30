@@ -24,7 +24,7 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void* initData,
     for (int i = 0; i < playerCount; ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
-        if (player != NULL) {
+        if (player != nullptr) {
             PlayerInfo* info = BuildPlayerInfo(player);
 
             m_players.push_back(info);
@@ -39,7 +39,7 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void* initData,
     INetworkPlayer* thisPlayer =
         g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
     m_isHostPlayer = false;
-    if (thisPlayer != NULL) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
+    if (thisPlayer != nullptr) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     std::shared_ptr<MultiplayerLocalPlayer> localPlayer =
@@ -104,7 +104,7 @@ void UIScene_InGameInfoMenu::updateTooltips() {
     if (isOp) {
         if (m_buttonGameOptions.hasFocus()) {
             keyA = IDS_TOOLTIPS_SELECT;
-        } else if (selectedPlayer != NULL) {
+        } else if (selectedPlayer != nullptr) {
             bool editingHost = selectedPlayer->IsHost();
             if ((cheats && (m_isHostPlayer || !editingHost)) ||
                 (!trust && (m_isHostPlayer || !editingHost))
@@ -125,7 +125,7 @@ void UIScene_InGameInfoMenu::updateTooltips() {
 
     if (!m_buttonGameOptions.hasFocus()) {
         // if the player is me, then view gamer profile
-        if (selectedPlayer != NULL && selectedPlayer->IsLocal() &&
+        if (selectedPlayer != nullptr && selectedPlayer->IsLocal() &&
             selectedPlayer->GetUserIndex() == m_iPad) {
             ikeyY = IDS_TOOLTIPS_VIEW_GAMERPROFILE;
         } else {
@@ -161,7 +161,7 @@ void UIScene_InGameInfoMenu::handleReload() {
     for (DWORD i = 0; i < playerCount; ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
-        if (player != NULL) {
+        if (player != nullptr) {
             PlayerInfo* info = BuildPlayerInfo(player);
 
             m_players.push_back(info);
@@ -173,7 +173,7 @@ void UIScene_InGameInfoMenu::handleReload() {
     INetworkPlayer* thisPlayer =
         g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
     m_isHostPlayer = false;
-    if (thisPlayer != NULL) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
+    if (thisPlayer != nullptr) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     std::shared_ptr<MultiplayerLocalPlayer> localPlayer =
@@ -196,7 +196,7 @@ void UIScene_InGameInfoMenu::tick() {
     for (DWORD i = 0; i < m_players.size(); ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
-        if (player != NULL) {
+        if (player != nullptr) {
             PlayerInfo* info = BuildPlayerInfo(player);
 
             m_players[i]->m_smallId = info->m_smallId;
@@ -243,7 +243,7 @@ void UIScene_InGameInfoMenu::handleInput(int iPad, int key, bool repeat,
                 (m_playerList.getCurrentSelection() < m_players.size())) {
                 INetworkPlayer* player = g_NetworkManager.GetPlayerBySmallId(
                     m_players[m_playerList.getCurrentSelection()]->m_smallId);
-                if (player != NULL) {
+                if (player != nullptr) {
                     PlayerUID uid = player->GetUID();
                     if (uid != INVALID_XUID) {
                         ProfileManager.ShowProfileCard(iPad, uid);
@@ -291,7 +291,7 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
             bool trust =
                 app.GetGameHostOption(eGameHostOption_TrustPlayers) != 0;
 
-            if (isOp && selectedPlayer != NULL) {
+            if (isOp && selectedPlayer != nullptr) {
                 bool editingHost = selectedPlayer->IsHost();
                 if ((cheats && (m_isHostPlayer || !editingHost)) ||
                     (!trust && (m_isHostPlayer || !editingHost))
@@ -444,7 +444,7 @@ UIScene_InGameInfoMenu::PlayerInfo* UIScene_InGameInfoMenu::BuildPlayerInfo(
     }
 
     int voiceStatus = 0;
-    if (player != NULL && player->HasVoice()) {
+    if (player != nullptr && player->HasVoice()) {
         if (player->IsMutedByLocalUser(m_iPad)) {
             // Muted image
             voiceStatus = 3;

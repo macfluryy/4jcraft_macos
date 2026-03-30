@@ -379,7 +379,7 @@ bitmap->pixel_scale_max = actualScale * glyphScaleMax * 1.001f; */
     bitmap->stride_in_bytes = m_cFontData->getFontData()->m_uiGlyphMapX;
 
     // 4J-JEV: Additional information needed to release memory afterwards.
-    bitmap->user_context_for_free = NULL;
+    bitmap->user_context_for_free = nullptr;
 
     return true;
 }

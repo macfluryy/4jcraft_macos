@@ -7,11 +7,11 @@ UITTFFont::UITTFFont(const std::string& name, const std::string& path,
                      S32 fallbackCharacter)
     : m_strFontName(name) {
     app.DebugPrintf("UITTFFont opening %s\n", path.c_str());
-    pbData = NULL;
+    pbData = nullptr;
 
     std::wstring wPath = convStringToWstring(path);
     std::FILE* file = PortableFileIO::OpenBinaryFileForRead(wPath);
-    if (file == NULL) {
+    if (file == nullptr) {
         app.DebugPrintf("Failed to open TTF file\n");
         assert(false);
     }

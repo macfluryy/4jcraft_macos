@@ -33,7 +33,7 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
 
         // 4J Stu Added to stop cave features generating areas previously place
         // by game rule generation
-        if (app.getLevelGenerationOptions() != NULL) {
+        if (app.getLevelGenerationOptions() != nullptr) {
             LevelGenerationOptions* levelGenOptions =
                 app.getLevelGenerationOptions();
             bool intersects = levelGenOptions->checkIntersects(

@@ -42,7 +42,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
     // 4J-PB - there may be texture packs we don't have, so use the info from
     // TMS for this REMOVE UNTIL WORKING
-    DLC_INFO* pDLCInfo = NULL;
+    DLC_INFO* pDLCInfo = nullptr;
 
     // first pass - look to see if there are any that are not in the list
     bool bTexturePackAlreadyListed;
@@ -71,7 +71,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
         // add a TMS request for them
         app.DebugPrintf("+++ Adding TMSPP request for texture pack data\n");
         app.AddTMSPPFileTypeRequest(e_DLC_TexturePackData);
-        if (m_iConfigA != NULL) {
+        if (m_iConfigA != nullptr) {
             delete m_iConfigA;
         }
         m_iConfigA = new int[m_iTexturePacksNotInstalled];
@@ -113,14 +113,14 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index) {
     TexturePack* tp =
         Minecraft::GetInstance()->skins->getTexturePackByIndex(index);
 
-    if (tp == NULL) {
+    if (tp == nullptr) {
 #if TO_BE_IMPLEMENTED
         // this is probably a texture pack icon added from TMS
 
         unsigned int dwBytes = 0;
         unsigned int dwFileBytes = 0;
-        std::uint8_t* pbData = NULL;
-        std::uint8_t* pbFileData = NULL;
+        std::uint8_t* pbData = nullptr;
+        std::uint8_t* pbFileData = nullptr;
 
         CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
         // get the current index of the list, and then get the data
@@ -153,7 +153,7 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index) {
                                             &m_hTexturePackComparisonBrush);
             m_texturePackComparison->UseBrush(m_hTexturePackComparisonBrush);
         } else {
-            m_texturePackComparison->UseBrush(NULL);
+            m_texturePackComparison->UseBrush(nullptr);
         }
 #endif
     } else {
@@ -192,7 +192,7 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot) {
         m_currentTexturePackIndex);
 
     // if the texture pack is null, you don't have it yet
-    if (tp == NULL) {
+    if (tp == nullptr) {
 #if TO_BE_IMPLEMENTED
         // Upsell
 

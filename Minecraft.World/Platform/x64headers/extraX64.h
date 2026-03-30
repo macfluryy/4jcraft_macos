@@ -53,7 +53,7 @@ public:
             return ret;
         }
 
-        return NULL;
+        return nullptr;
     }
 };
 

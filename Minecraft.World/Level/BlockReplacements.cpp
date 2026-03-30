@@ -7,7 +7,7 @@ byteArray BlockReplacements::replacements = byteArray(256);
 void BlockReplacements::staticCtor() {
     for (int i = 0; i < 256; i++) {
         uint8_t b = (uint8_t)i;
-        if (b != 0 && Tile::tiles[b & 0xff] == NULL) {
+        if (b != 0 && Tile::tiles[b & 0xff] == nullptr) {
             b = 0;
         }
         BlockReplacements::replacements[i] = b;

@@ -13,9 +13,9 @@ const std::wstring CauldronTile::TEXTURE_BOTTOM = L"cauldron_bottom";
 
 CauldronTile::CauldronTile(int id)
     : Tile(id, Material::metal, false) {
-    iconInner = NULL;
-    iconTop = NULL;
-    iconBottom = NULL;
+    iconInner = nullptr;
+    iconTop = nullptr;
+    iconBottom = nullptr;
 }
 
 Icon* CauldronTile::getTexture(int face, int data) {
@@ -38,7 +38,7 @@ void CauldronTile::registerIcons(IconRegister* iconRegister) {
 Icon* CauldronTile::getTexture(const std::wstring& name) {
     if (name.compare(TEXTURE_INSIDE) == 0) return Tile::cauldron->iconInner;
     if (name.compare(TEXTURE_BOTTOM) == 0) return Tile::cauldron->iconBottom;
-    return NULL;
+    return nullptr;
 }
 
 void CauldronTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
@@ -78,7 +78,7 @@ bool CauldronTile::use(Level* level, int x, int y, int z,
     }
 
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item == NULL) {
+    if (item == nullptr) {
         return true;
     }
 

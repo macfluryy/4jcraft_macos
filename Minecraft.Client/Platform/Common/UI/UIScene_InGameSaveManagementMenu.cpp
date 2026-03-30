@@ -29,10 +29,10 @@ int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(
             .dwThumbnailSize = dwThumbnailBytes;
     } else {
         pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .pbThumbnailData = NULL;
+            .pbThumbnailData = nullptr;
         pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
             .dwThumbnailSize = 0;
-        app.DebugPrintf("Save thumbnail data is NULL, or has size 0\n");
+        app.DebugPrintf("Save thumbnail data is nullptr, or has size 0\n");
     }
     pClass->m_bSaveThumbnailReady = true;
 
@@ -62,9 +62,9 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     m_bRetrievingSaveThumbnails = false;
     m_bSaveThumbnailReady = false;
     m_bExitScene = false;
-    m_pSaveDetails = NULL;
+    m_pSaveDetails = nullptr;
     m_bSavesDisplayed = false;
-    m_saveDetails = NULL;
+    m_saveDetails = nullptr;
     m_iSaveDetailsCount = 0;
 
 
@@ -176,14 +176,14 @@ void UIScene_InGameSaveManagementMenu::tick() {
         // Display the saves if we have them
         if (!m_bSavesDisplayed) {
             m_pSaveDetails = StorageManager.ReturnSavesInfo();
-            if (m_pSaveDetails != NULL) {
+            if (m_pSaveDetails != nullptr) {
                 m_spaceIndicatorSaves.reset();
 
                 m_bSavesDisplayed = true;
 
-                if (m_saveDetails != NULL) {
+                if (m_saveDetails != nullptr) {
                     for (unsigned int i = 0; i < m_pSaveDetails->iSaveC; ++i) {
-                        if (m_saveDetails[i].pbThumbnailData != NULL) {
+                        if (m_saveDetails[i].pbThumbnailData != nullptr) {
                             delete m_saveDetails[i].pbThumbnailData;
                         }
                     }
@@ -331,9 +331,9 @@ void UIScene_InGameSaveManagementMenu::GetSaveInfo() {
     m_controlSavesTimer.setVisible(true);
 
     m_pSaveDetails = StorageManager.ReturnSavesInfo();
-    if (m_pSaveDetails == NULL) {
+    if (m_pSaveDetails == nullptr) {
         C4JStorage::ESaveGameState eSGIStatus =
-            StorageManager.GetSavesInfo(m_iPad, NULL, this, (char*)"save");
+            StorageManager.GetSavesInfo(m_iPad, nullptr, this, (char*)"save");
     }
 
     return;

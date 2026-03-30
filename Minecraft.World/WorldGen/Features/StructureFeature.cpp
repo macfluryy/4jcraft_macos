@@ -110,7 +110,7 @@ bool StructureFeature::isIntersection(int cellX, int cellZ) {
 
 bool StructureFeature::isInsideFeature(int cellX, int cellY, int cellZ) {
     restoreSavedData(level);
-    return getStructureAt(cellX, cellY, cellZ) != NULL;
+    return getStructureAt(cellX, cellY, cellZ) != nullptr;
 }
 
 StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
@@ -145,7 +145,7 @@ StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool StructureFeature::isInsideBoundingFeature(int cellX, int cellY,
@@ -181,7 +181,7 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
     addFeature(level, cellX >> 4, cellZ >> 4, 0, 0, byteArray());
 
     double minDistance = DBL_MAX;
-    TilePos* selected = NULL;
+    TilePos* selected = nullptr;
 
     for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          ++it) {
@@ -205,12 +205,12 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
             }
         }
     }
-    if (selected != NULL) {
+    if (selected != nullptr) {
         return selected;
     } else {
         std::vector<TilePos>* guesstimatedFeaturePositions =
             getGuesstimatedFeaturePositions();
-        if (guesstimatedFeaturePositions != NULL) {
+        if (guesstimatedFeaturePositions != nullptr) {
             TilePos* pSelectedPos = new TilePos(0, 0, 0);
 
             for (auto it = guesstimatedFeaturePositions->begin();
@@ -231,21 +231,21 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
             return pSelectedPos;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 std::vector<TilePos>* StructureFeature::getGuesstimatedFeaturePositions() {
-    return NULL;
+    return nullptr;
 }
 
 void StructureFeature::restoreSavedData(Level* level) {
 #ifdef ENABLE_STRUCTURE_SAVING
-    if (savedData == NULL) {
+    if (savedData == nullptr) {
         savedData = std::dynamic_pointer_cast<StructureFeatureSavedData>(
             level->getSavedData(typeid(StructureFeatureSavedData),
                                 getFeatureName()));
 
-        if (savedData == NULL) {
+        if (savedData == nullptr) {
             savedData = std::shared_ptr<StructureFeatureSavedData>(
                 new StructureFeatureSavedData(getFeatureName()));
             level->setSavedData(getFeatureName(), savedData);

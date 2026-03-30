@@ -13,12 +13,12 @@ SimpleContainer::SimpleContainer(int name, std::wstring stringName,
     this->size = size;
     items = new ItemInstanceArray(size);
 
-    listeners = NULL;
+    listeners = nullptr;
 }
 
 void SimpleContainer::addListener(
     net_minecraft_world::ContainerListener* listener) {
-    if (listeners == NULL)
+    if (listeners == nullptr)
         listeners = new std::vector<net_minecraft_world::ContainerListener*>();
     listeners->push_back(listener);
 }
@@ -43,7 +43,7 @@ std::shared_ptr<ItemInstance> SimpleContainer::getItem(unsigned int slot) {
 
 std::shared_ptr<ItemInstance> SimpleContainer::removeItem(unsigned int slot,
                                                           int count) {
-    if ((*items)[slot] != NULL) {
+    if ((*items)[slot] != nullptr) {
         if ((*items)[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = (*items)[slot];
             (*items)[slot] = nullptr;
@@ -60,7 +60,7 @@ std::shared_ptr<ItemInstance> SimpleContainer::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> SimpleContainer::removeItemNoUpdate(int slot) {
-    if ((*items)[slot] != NULL) {
+    if ((*items)[slot] != nullptr) {
         std::shared_ptr<ItemInstance> item = (*items)[slot];
         (*items)[slot] = nullptr;
         return item;
@@ -71,7 +71,7 @@ std::shared_ptr<ItemInstance> SimpleContainer::removeItemNoUpdate(int slot) {
 void SimpleContainer::setItem(unsigned int slot,
                               std::shared_ptr<ItemInstance> item) {
     (*items)[slot] = item;
-    if (item != NULL && item->count > getMaxStackSize())
+    if (item != nullptr && item->count > getMaxStackSize())
         item->count = getMaxStackSize();
     setChanged();
 }
@@ -98,7 +98,7 @@ int SimpleContainer::getMaxStackSize() {
 }
 
 void SimpleContainer::setChanged() {
-    if (listeners != NULL)
+    if (listeners != nullptr)
         for (unsigned int i = 0; i < listeners->size(); i++) {
             listeners->at(i)->containerChanged();  // shared_from_this());
         }

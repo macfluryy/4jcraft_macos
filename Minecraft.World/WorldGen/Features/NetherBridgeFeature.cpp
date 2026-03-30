@@ -16,11 +16,11 @@ NetherBridgeFeature::NetherBridgeFeature() : StructureFeature() {
     bridgeEnemies.push_back(
         new Biome::MobSpawnerData(eTYPE_LAVASLIME, 3, 4, 4));
     isSpotSelected = false;
-    netherFortressPos = NULL;
+    netherFortressPos = nullptr;
 }
 
 NetherBridgeFeature::~NetherBridgeFeature() {
-    if (netherFortressPos != NULL) delete netherFortressPos;
+    if (netherFortressPos != nullptr) delete netherFortressPos;
 }
 
 std::wstring NetherBridgeFeature::getFeatureName() { return L"Fortress"; }
@@ -51,7 +51,7 @@ bool NetherBridgeFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 
     bool forcePlacement = false;
     LevelGenerationOptions* levelGenOptions = app.getLevelGenerationOptions();
-    if (levelGenOptions != NULL) {
+    if (levelGenOptions != nullptr) {
         forcePlacement =
             levelGenOptions->isFeatureChunk(x, z, eFeature_NetherBridge);
     }

@@ -23,8 +23,8 @@ public:
     ControllerTask(Tutorial* tutorial, int descriptionId,
                    bool enablePreCompletion, bool showMinimumTime,
                    int mappings[], unsigned int mappingsLength,
-                   int iCompletionMaskA[] = NULL, int iCompletionMaskACount = 0,
-                   int iSouthpawMappings[] = NULL,
+                   int iCompletionMaskA[] = nullptr, int iCompletionMaskACount = 0,
+                   int iSouthpawMappings[] = nullptr,
                    unsigned int uiSouthpawMappingsCount = 0);
     ~ControllerTask();
     virtual bool isCompleted();

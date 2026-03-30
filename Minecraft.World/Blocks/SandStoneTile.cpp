@@ -13,9 +13,9 @@ int SandStoneTile::SANDSTONE_NAMES[SANDSTONE_BLOCK_NAMES] = {
     IDS_TILE_SANDSTONE, IDS_TILE_SANDSTONE_CHISELED, IDS_TILE_SANDSTONE_SMOOTH};
 
 SandStoneTile::SandStoneTile(int id) : Tile(id, Material::stone) {
-    icons = NULL;
-    iconTop = NULL;
-    iconBottom = NULL;
+    icons = nullptr;
+    iconTop = nullptr;
+    iconBottom = nullptr;
 }
 
 Icon* SandStoneTile::getTexture(int face, int data) {

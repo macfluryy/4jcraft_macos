@@ -37,7 +37,7 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void* initData,
     for (int i = 0; i < playerCount; ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
-        if (player != NULL &&
+        if (player != nullptr &&
             !(player->IsLocal() && player->GetUserIndex() == m_iPad)) {
             m_players[m_playersCount] = player->GetSmallId();
             ++m_playersCount;
@@ -55,7 +55,7 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void* initData,
             }
 
             int voiceStatus = 0;
-            if (player != NULL && player->HasVoice()) {
+            if (player != nullptr && player->HasVoice()) {
                 if (player->IsMutedByLocalUser(m_iPad)) {
                     // Muted image
                     voiceStatus = 3;
@@ -119,7 +119,7 @@ void UIScene_TeleportMenu::handleReload() {
     for (int i = 0; i < playerCount; ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
-        if (player != NULL &&
+        if (player != nullptr &&
             !(player->IsLocal() && player->GetUserIndex() == m_iPad)) {
             m_players[m_playersCount] = player->GetSmallId();
             ++m_playersCount;
@@ -137,7 +137,7 @@ void UIScene_TeleportMenu::handleReload() {
             }
 
             int voiceStatus = 0;
-            if (player != NULL && player->HasVoice()) {
+            if (player != nullptr && player->HasVoice()) {
                 if (player->IsMutedByLocalUser(m_iPad)) {
                     // Muted image
                     voiceStatus = 3;
@@ -172,7 +172,7 @@ void UIScene_TeleportMenu::tick() {
         INetworkPlayer* player =
             g_NetworkManager.GetPlayerBySmallId(m_players[i]);
 
-        if (player != NULL) {
+        if (player != nullptr) {
             m_players[i] = player->GetSmallId();
 
             short icon = app.GetPlayerColour(m_players[i]);
@@ -298,7 +298,7 @@ void UIScene_TeleportMenu::OnPlayerChanged(void* callbackParam,
         }
 
         int voiceStatus = 0;
-        if (pPlayer != NULL && pPlayer->HasVoice()) {
+        if (pPlayer != nullptr && pPlayer->HasVoice()) {
             if (pPlayer->IsMutedByLocalUser(scene->m_iPad)) {
                 // Muted image
                 voiceStatus = 3;

@@ -5,7 +5,7 @@
 #include "ConsoleGameRules.h"
 
 CompoundGameRuleDefinition::CompoundGameRuleDefinition() {
-    m_lastRuleStatusChanged = NULL;
+    m_lastRuleStatusChanged = nullptr;
 }
 
 CompoundGameRuleDefinition::~CompoundGameRuleDefinition() {
@@ -23,7 +23,7 @@ void CompoundGameRuleDefinition::getChildren(
 
 GameRuleDefinition* CompoundGameRuleDefinition::addChild(
     ConsoleGameRules::EGameRuleType ruleType) {
-    GameRuleDefinition* rule = NULL;
+    GameRuleDefinition* rule = nullptr;
     if (ruleType == ConsoleGameRules::eGameRuleType_CompleteAllRule) {
         rule = new CompleteAllRuleDefinition();
     } else if (ruleType == ConsoleGameRules::eGameRuleType_CollectItemRule) {
@@ -40,13 +40,13 @@ GameRuleDefinition* CompoundGameRuleDefinition::addChild(
             ruleType);
 #endif
     }
-    if (rule != NULL) m_children.push_back(rule);
+    if (rule != nullptr) m_children.push_back(rule);
     return rule;
 }
 
 void CompoundGameRuleDefinition::populateGameRule(
     GameRulesInstance::EGameRulesInstanceType type, GameRule* rule) {
-    GameRule* newRule = NULL;
+    GameRule* newRule = nullptr;
     int i = 0;
     for (auto it = m_children.begin(); it != m_children.end(); ++it) {
         newRule = new GameRule(*it, rule->getConnection());

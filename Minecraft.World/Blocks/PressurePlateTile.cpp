@@ -23,7 +23,7 @@ int PressurePlateTile::getSignalForData(int data) {
 }
 
 int PressurePlateTile::getSignalStrength(Level* level, int x, int y, int z) {
-    std::vector<std::shared_ptr<Entity> >* entities = NULL;
+    std::vector<std::shared_ptr<Entity> >* entities = nullptr;
     AABB at_bb = getSensitiveAABB(x, y, z);
     if (sensitivity == everything)
         entities = level->getEntities(nullptr, &at_bb);
@@ -35,7 +35,7 @@ int PressurePlateTile::getSignalStrength(Level* level, int x, int y, int z) {
         __debugbreak();  // 4J-JEV: We're going to delete something at a random
                          // location.
 
-    if (entities != NULL && !entities->empty()) {
+    if (entities != nullptr && !entities->empty()) {
         for (auto it = entities->begin(); it != entities->end(); ++it) {
             std::shared_ptr<Entity> e = *it;
             if (!e->isIgnoringTileTriggers()) {

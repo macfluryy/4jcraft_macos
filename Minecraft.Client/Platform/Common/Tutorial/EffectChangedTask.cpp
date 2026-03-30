@@ -7,7 +7,7 @@ EffectChangedTask::EffectChangedTask(Tutorial* tutorial, int descriptionId,
                                      bool enablePreCompletion,
                                      bool bShowMinimumTime, bool bAllowFade,
                                      bool bTaskReminders)
-    : TutorialTask(tutorial, descriptionId, enablePreCompletion, NULL,
+    : TutorialTask(tutorial, descriptionId, enablePreCompletion, nullptr,
                    bShowMinimumTime, bAllowFade, bTaskReminders) {
     m_effect = effect;
     m_apply = apply;

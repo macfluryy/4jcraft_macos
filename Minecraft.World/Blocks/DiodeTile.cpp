@@ -256,7 +256,7 @@ bool DiodeTile::isSolidRender(bool isServerLevel) { return false; }
 
 bool DiodeTile::isAlternateInput(int tile) {
     Tile* tt = Tile::tiles[tile];
-    return tt != NULL && tt->isSignalSource();
+    return tt != nullptr && tt->isSignalSource();
 }
 
 int DiodeTile::getOutputSignal(LevelSource* level, int x, int y, int z,

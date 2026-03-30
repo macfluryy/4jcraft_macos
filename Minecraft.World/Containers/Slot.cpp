@@ -15,7 +15,7 @@ Slot::Slot(std::shared_ptr<Container> container, int slot, int x, int y)
 
 void Slot::onQuickCraft(std::shared_ptr<ItemInstance> picked,
                         std::shared_ptr<ItemInstance> original) {
-    if (picked == NULL || original == NULL) {
+    if (picked == nullptr || original == nullptr) {
         return;
     }
     if (picked->id != original->id) {
@@ -36,12 +36,12 @@ void Slot::swap(Slot* other) {
     std::shared_ptr<ItemInstance> item2 =
         other->container->getItem(other->slot);
 
-    if (item1 != NULL && item1->count > other->getMaxStackSize()) {
-        if (item2 != NULL) return;
+    if (item1 != nullptr && item1->count > other->getMaxStackSize()) {
+        if (item2 != nullptr) return;
         item2 = item1->remove(item1->count - other->getMaxStackSize());
     }
-    if (item2 != NULL && item2->count > getMaxStackSize()) {
-        if (item1 != NULL) return;
+    if (item2 != nullptr && item2->count > getMaxStackSize()) {
+        if (item1 != nullptr) return;
         item1 = item2->remove(item2->count - getMaxStackSize());
     }
     other->container->setItem(other->slot, item1);
@@ -61,7 +61,7 @@ std::shared_ptr<ItemInstance> Slot::getItem() {
     return container->getItem(slot);
 }
 
-bool Slot::hasItem() { return getItem() != NULL; }
+bool Slot::hasItem() { return getItem() != nullptr; }
 
 void Slot::set(std::shared_ptr<ItemInstance> item) {
     container->setItem(slot, item);
@@ -72,7 +72,7 @@ void Slot::setChanged() { container->setChanged(); }
 
 int Slot::getMaxStackSize() { return container->getMaxStackSize(); }
 
-Icon* Slot::getNoItemIcon() { return NULL; }
+Icon* Slot::getNoItemIcon() { return nullptr; }
 
 std::shared_ptr<ItemInstance> Slot::remove(int c) {
     return container->removeItem(slot, c);
@@ -89,7 +89,7 @@ bool Slot::isActive() { return true; }
 bool Slot::mayCombine(std::shared_ptr<ItemInstance> second) {
     std::shared_ptr<ItemInstance> first = getItem();
 
-    if (first == NULL || second == NULL) return false;
+    if (first == nullptr || second == nullptr) return false;
 
     ArmorItem* thisItem = dynamic_cast<ArmorItem*>(first->getItem());
     if (thisItem) {
@@ -100,7 +100,7 @@ bool Slot::mayCombine(std::shared_ptr<ItemInstance> second) {
     }
     // 4J Stu - This condition taken from Recipes::getItemFor to repair items,
     // but added the damaged check to skip when the result is pointless
-    else if (first != NULL && second != NULL && first->id == second->id &&
+    else if (first != nullptr && second != nullptr && first->id == second->id &&
              first->count == 1 && second->count == 1 &&
              Item::items[first->id]->canBeDepleted() &&
              (first->isDamaged() || second->isDamaged())) {
@@ -117,7 +117,7 @@ std::shared_ptr<ItemInstance> Slot::combine(
     std::shared_ptr<ItemInstance> first = getItem();
 
     std::shared_ptr<CraftingContainer> craftSlots =
-        std::shared_ptr<CraftingContainer>(new CraftingContainer(NULL, 2, 2));
+        std::shared_ptr<CraftingContainer>(new CraftingContainer(nullptr, 2, 2));
     craftSlots->setItem(0, item);
     craftSlots->setItem(1, first);
 
@@ -125,7 +125,7 @@ std::shared_ptr<ItemInstance> Slot::combine(
     if (thisItem) {
         result = ArmorDyeRecipe::assembleDyedArmor(craftSlots);
     } else {
-        result = Recipes::getInstance()->getItemFor(craftSlots, NULL);
+        result = Recipes::getInstance()->getItemFor(craftSlots, nullptr);
     }
 
     craftSlots->setItem(0, nullptr);

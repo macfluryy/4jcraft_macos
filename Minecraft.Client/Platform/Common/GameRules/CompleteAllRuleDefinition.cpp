@@ -36,7 +36,7 @@ void CompleteAllRuleDefinition::updateStatus(GameRule* rule) {
                 it->second.gr);
         }
     }
-    if (rule->getConnection() != NULL) {
+    if (rule->getConnection() != nullptr) {
         PacketData data;
         data.goal = goal;
         data.progress = progress;
@@ -44,10 +44,10 @@ void CompleteAllRuleDefinition::updateStatus(GameRule* rule) {
         int icon = -1;
         int auxValue = 0;
 
-        if (m_lastRuleStatusChanged != NULL) {
+        if (m_lastRuleStatusChanged != nullptr) {
             icon = m_lastRuleStatusChanged->getIcon();
             auxValue = m_lastRuleStatusChanged->getAuxValue();
-            m_lastRuleStatusChanged = NULL;
+            m_lastRuleStatusChanged = nullptr;
         }
         rule->getConnection()->send(
             std::shared_ptr<UpdateGameRuleProgressPacket>(

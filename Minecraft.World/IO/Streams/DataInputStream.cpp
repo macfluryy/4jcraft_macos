@@ -16,9 +16,9 @@ DataInputStream::DataInputStream(InputStream* in) : stream(in) {}
 // an exception is thrown. This method simply performs in.read() and returns the
 // result.
 int DataInputStream::read() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::read() called but underlying stream is NULL\n");
+            "DataInputStream::read() called but underlying stream is nullptr\n");
         return -1;
     }
     return stream->read();
@@ -50,10 +50,10 @@ int DataInputStream::read() {
 // the total number of bytes read into the buffer, or -1 if there is no more
 // data because the end of the stream has been reached.
 int DataInputStream::read(byteArray b) {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataInputStream::read(byteArray) called but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return -1;
     }
     return read(b, 0, b.length);
@@ -90,10 +90,10 @@ int DataInputStream::read(byteArray b) {
 // data because the end of the stream has been reached.
 int DataInputStream::read(byteArray b, unsigned int offset,
                           unsigned int length) {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataInputStream::read(byteArray,offset,length) called but "
-            "underlying stream is NULL\n");
+            "underlying stream is nullptr\n");
         return -1;
     }
     return stream->read(b, offset, length);
@@ -102,9 +102,9 @@ int DataInputStream::read(byteArray b, unsigned int offset,
 // Closes this input stream and releases any system resources associated with
 // the stream. This method simply performs in.close()
 void DataInputStream::close() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::close() called but underlying stream is NULL\n");
+            "DataInputStream::close() called but underlying stream is nullptr\n");
         return;
     }
     stream->close();
@@ -114,9 +114,9 @@ void DataInputStream::close() {
 // byte is zero. This method is suitable for reading the byte written by the
 // writeBoolean method of interface DataOutput. Returns: the boolean value read.
 bool DataInputStream::readBoolean() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readBoolean() but underlying stream is NULL\n");
+            "DataInputStream::readBoolean() but underlying stream is nullptr\n");
         return false;
     }
     return stream->read() != 0;
@@ -127,19 +127,19 @@ bool DataInputStream::readBoolean() {
 // the byte written by the writeByte method of interface DataOutput. Returns:
 // the 8-bit value read.
 uint8_t DataInputStream::readByte() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readByte() but underlying stream is NULL\n");
+            "DataInputStream::readByte() but underlying stream is nullptr\n");
         return 0;
     }
     return (uint8_t)stream->read();
 }
 
 unsigned char DataInputStream::readUnsignedByte() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataInputStream::readUnsignedByte() but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return 0;
     }
     return (unsigned char)stream->read();
@@ -152,9 +152,9 @@ unsigned char DataInputStream::readUnsignedByte() {
 // This method is suitable for reading bytes written by the writeChar method of
 // interface DataOutput. Returns: the char value read.
 wchar_t DataInputStream::readChar() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readChar() but underlying stream is NULL\n");
+            "DataInputStream::readChar() but underlying stream is nullptr\n");
         return 0;
     }
     int a = stream->read();
@@ -182,10 +182,10 @@ bool DataInputStream::readFully(byteArray b) {
     // of the Java library
     // TODO 4J Stu - Need to handle exceptions here is we throw them in other
     // InputStreams
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataInputStream::readFully(byteArray) but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return false;
     }
     for (unsigned int i = 0; i < b.length; i++) {
@@ -204,10 +204,10 @@ bool DataInputStream::readFully(charArray b) {
     // of the Java library
     // TODO 4J Stu - Need to handle exceptions here is we throw them in other
     // InputStreams
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataInputStream::readFully(charArray) but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return false;
     }
     for (unsigned int i = 0; i < b.length; i++) {
@@ -253,9 +253,9 @@ float DataInputStream::readFloat() {
 // This method is suitable for reading bytes written by the writeInt method of
 // interface DataOutput. Returns: the int value read.
 int DataInputStream::readInt() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readInt() but underlying stream is NULL\n");
+            "DataInputStream::readInt() but underlying stream is nullptr\n");
         return 0;
     }
     int a = stream->read();
@@ -285,9 +285,9 @@ int DataInputStream::readInt() {
 // Returns:
 // the long value read.
 int64_t DataInputStream::readLong() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readLong() but underlying stream is NULL\n");
+            "DataInputStream::readLong() but underlying stream is nullptr\n");
         return 0;
     }
     int64_t a = stream->read();
@@ -314,9 +314,9 @@ int64_t DataInputStream::readLong() {
 // This method is suitable for reading the bytes written by the writeShort
 // method of interface DataOutput. Returns: the 16-bit value read.
 short DataInputStream::readShort() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readShort() but underlying stream is NULL\n");
+            "DataInputStream::readShort() but underlying stream is nullptr\n");
         return 0;
     }
     int a = stream->read();
@@ -325,10 +325,10 @@ short DataInputStream::readShort() {
 }
 
 unsigned short DataInputStream::readUnsignedShort() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "DataInputStream::readUnsignedShort() but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return 0;
     }
     int a = stream->read();
@@ -384,9 +384,9 @@ unsigned short DataInputStream::readUnsignedShort() {
 // a Unicode string.
 std::wstring DataInputStream::readUTF() {
     std::wstring outputString;
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readUTF() but underlying stream is NULL\n");
+            "DataInputStream::readUTF() but underlying stream is nullptr\n");
         return outputString;
     }
     int a = stream->read();
@@ -511,9 +511,9 @@ std::wstring DataInputStream::readUTF() {
 
 int DataInputStream::readUTFChar() {
     int returnValue = -1;
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readUTFChar() but underlying stream is NULL\n");
+            "DataInputStream::readUTFChar() but underlying stream is nullptr\n");
         return returnValue;
     }
     int firstByte = stream->read();

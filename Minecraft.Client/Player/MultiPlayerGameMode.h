@@ -48,7 +48,7 @@ public:
     virtual bool useItemOn(std::shared_ptr<Player> player, Level* level,
                            std::shared_ptr<ItemInstance> item, int x, int y,
                            int z, int face, Vec3* hit,
-                           bool bTestUseOnly = false, bool* pbUsedItem = NULL);
+                           bool bTestUseOnly = false, bool* pbUsedItem = nullptr);
     virtual bool useItem(std::shared_ptr<Player> player, Level* level,
                          std::shared_ptr<ItemInstance> item,
                          bool bTestUseOnly = false);
@@ -80,5 +80,5 @@ public:
     // 4J Stu - Added for tutorial checks
     virtual bool isInputAllowed(int mapping) { return true; }
     virtual bool isTutorial() { return false; }
-    virtual Tutorial* getTutorial() { return NULL; }
+    virtual Tutorial* getTutorial() { return nullptr; }
 };

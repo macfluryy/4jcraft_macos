@@ -11,7 +11,7 @@
 ResourceLocation PistonPieceRenderer::SIGN_LOCATION =
     ResourceLocation(TN_ITEM_SIGN);
 
-PistonPieceRenderer::PistonPieceRenderer() { tileRenderer = NULL; }
+PistonPieceRenderer::PistonPieceRenderer() { tileRenderer = nullptr; }
 
 void PistonPieceRenderer::render(std::shared_ptr<TileEntity> _entity, double x,
                                  double y, double z, float a, bool setColor,
@@ -22,7 +22,7 @@ void PistonPieceRenderer::render(std::shared_ptr<TileEntity> _entity, double x,
         std::dynamic_pointer_cast<PistonPieceEntity>(_entity);
 
     Tile* tile = Tile::tiles[entity->getId()];
-    if (tile != NULL &&
+    if (tile != nullptr &&
         entity->getProgress(a) <=
             1)  // 4J - changed condition from < to <= as our chunk update is
                 // async to main thread and so we can have to render these with

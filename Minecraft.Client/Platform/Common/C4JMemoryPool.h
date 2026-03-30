@@ -36,8 +36,8 @@ public:
 		m_sizeOfEachBlock = 0;
 		m_numFreeBlocks = 0;
 		m_numInitialized = 0;
-		m_memStart = NULL;
-		m_memEnd = NULL;
+		m_memStart = nullptr;
+		m_memEnd = nullptr;
 		m_next = 0;
 	}
 
@@ -65,7 +65,7 @@ public:
 	void DestroyPool()
 	{
 		delete[] m_memStart;
-		m_memStart = NULL;
+		m_memStart = nullptr;
 	}
 
 	uchar* AddrFromIndex(uint i) const
@@ -89,7 +89,7 @@ public:
 			*p = m_numInitialized + 1;
 			m_numInitialized++;
 		}
-		void* ret = NULL;
+		void* ret = nullptr;
 		if ( m_numFreeBlocks > 0 )
 		{
 			ret = (void*)m_next;
@@ -100,7 +100,7 @@ public:
 			}
 			else
 			{
-				m_next = NULL;
+				m_next = nullptr;
 			}
 		}
 // 		LeaveCriticalSection(&m_CS);
@@ -115,7 +115,7 @@ public:
 			return;
 		}
 // 		EnterCriticalSection(&m_CS);
-		if (m_next != NULL)
+		if (m_next != nullptr)
 		{
 			(*(uint*)ptr) = IndexFromAddr( m_next );
 			m_next = (uchar*)ptr;

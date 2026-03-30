@@ -64,14 +64,14 @@ void Explosion::explode() {
                     if (t > 0) {
                         Tile* tile = Tile::tiles[t];
                         float resistance =
-                            source != NULL
+                            source != nullptr
                                 ? source->getTileExplosionResistance(
                                       this, level, xt, yt, zt, tile)
                                 : tile->getExplosionResistance(source);
                         remainingPower -= (resistance + 0.3f) * stepSize;
                     }
                     if (remainingPower > 0 &&
-                        (source == NULL ||
+                        (source == nullptr ||
                          source->shouldTileExplode(this, level, xt, yt, zt, t,
                                                    remainingPower))) {
                         toBlow.insert(TilePos(xt, yt, zt));
@@ -173,7 +173,7 @@ void Explosion::explode() {
 void Explosion::finalizeExplosion(
     bool generateParticles,
     std::vector<TilePos>*
-        toBlowDirect /*=NULL*/)  // 4J - added toBlowDirect parameter
+        toBlowDirect /*=nullptr*/)  // 4J - added toBlowDirect parameter
 {
     level->playSound(
         x, y, z, eSoundType_RANDOM_EXPLODE, 4,
@@ -276,7 +276,7 @@ void Explosion::finalizeExplosion(
     }
 
     PIXEndNamedEvent();
-    if (toBlowDirect == NULL) delete toBlowArray;
+    if (toBlowDirect == nullptr) delete toBlowArray;
 }
 
 Explosion::playerVec3Map* Explosion::getHitPlayers() { return &hitPlayers; }
@@ -290,7 +290,7 @@ Vec3 Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
 }
 
 std::shared_ptr<LivingEntity> Explosion::getSourceMob() {
-    if (source == NULL) return nullptr;
+    if (source == nullptr) return nullptr;
     if (source->instanceof(eTYPE_PRIMEDTNT))
         return std::dynamic_pointer_cast<PrimedTnt>(source)->getOwner();
     if (source->instanceof(eTYPE_LIVINGENTITY))

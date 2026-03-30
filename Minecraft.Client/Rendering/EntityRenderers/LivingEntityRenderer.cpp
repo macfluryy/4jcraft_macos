@@ -16,7 +16,7 @@ int LivingEntityRenderer::MAX_ARMOR_LAYERS = 4;
 LivingEntityRenderer::LivingEntityRenderer(Model* model, float shadow) {
     this->model = model;
     shadowRadius = shadow;
-    armor = NULL;
+    armor = nullptr;
 }
 
 void LivingEntityRenderer::setArmor(Model* armor) { this->armor = armor; }
@@ -37,11 +37,11 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
     glDisable(GL_CULL_FACE);
 
     model->attackTime = getAttackAnim(mob, a);
-    if (armor != NULL) armor->attackTime = model->attackTime;
+    if (armor != nullptr) armor->attackTime = model->attackTime;
     model->riding = mob->isRiding();
-    if (armor != NULL) armor->riding = model->riding;
+    if (armor != nullptr) armor->riding = model->riding;
     model->young = mob->isBaby();
-    if (armor != NULL) armor->young = model->young;
+    if (armor != nullptr) armor->young = model->young;
 
     /*try*/
     {
@@ -426,7 +426,7 @@ bool LivingEntityRenderer::shouldShowName(std::shared_ptr<LivingEntity> mob) {
     return Minecraft::renderNames() &&
            mob != entityRenderDispatcher->cameraEntity &&
            !mob->isInvisibleTo(Minecraft::GetInstance()->player) &&
-           mob->rider.lock() == NULL;
+           mob->rider.lock() == nullptr;
 }
 
 void LivingEntityRenderer::renderNameTags(std::shared_ptr<LivingEntity> mob,

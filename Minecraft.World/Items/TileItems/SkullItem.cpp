@@ -54,7 +54,7 @@ bool SkullItem::useOn(
         std::shared_ptr<SkullTileEntity> skull =
             std::dynamic_pointer_cast<SkullTileEntity>(skullTE);
 
-        if (skull != NULL) {
+        if (skull != nullptr) {
             std::wstring extra = L"";
             if (instance->hasTag() &&
                 instance->getTag()->contains(L"SkullOwner")) {

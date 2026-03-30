@@ -41,7 +41,7 @@ bool FileSeek(std::FILE* file, int64_t offset, int origin) {
 // than a regular file, or for some other reason cannot be opened for reading.
 // SecurityException - if a security manager exists and its checkRead method
 // denies read access to the file.
-FileInputStream::FileInputStream(const File& file) : m_fileHandle(NULL) {
+FileInputStream::FileInputStream(const File& file) : m_fileHandle(nullptr) {
 #if defined(_WIN32)
     m_fileHandle = _wfopen(file.getPath().c_str(), L"rb");
 #else
@@ -49,7 +49,7 @@ FileInputStream::FileInputStream(const File& file) : m_fileHandle(NULL) {
     m_fileHandle = std::fopen(nativePath.c_str(), "rb");
 #endif
 
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         // TODO 4J Stu - Any form of error/exception handling
         //__debugbreak();
         app.FatalLoadError();
@@ -57,7 +57,7 @@ FileInputStream::FileInputStream(const File& file) : m_fileHandle(NULL) {
 }
 
 FileInputStream::~FileInputStream() {
-    if (m_fileHandle != NULL) {
+    if (m_fileHandle != nullptr) {
         std::fclose(m_fileHandle);
     }
 }
@@ -66,7 +66,7 @@ FileInputStream::~FileInputStream() {
 // is yet available. Returns: the next byte of data, or -1 if the end of the
 // file is reached.
 int FileInputStream::read() {
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return -1;
     }
 
@@ -91,7 +91,7 @@ int FileInputStream::read() {
 // into the buffer, or -1 if there is no more data because the end of the file
 // has been reached.
 int FileInputStream::read(byteArray b) {
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return -1;
     }
 
@@ -122,7 +122,7 @@ int FileInputStream::read(byteArray b, unsigned int offset,
     // 4J Stu - We don't want to read any more than the array buffer can hold
     assert(length <= (b.length - offset));
 
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return -1;
     }
 
@@ -145,7 +145,7 @@ int FileInputStream::read(byteArray b, unsigned int offset,
 // with the stream. If this stream has an associated channel then the channel is
 // closed as well.
 void FileInputStream::close() {
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         // printf("\n\nFileInputStream::close - TRYING TO CLOSE AN INVALID FILE
         // HANDLE\n\n");
         return;
@@ -158,7 +158,7 @@ void FileInputStream::close() {
     }
 
     // Stop the dtor from trying to close it again
-    m_fileHandle = NULL;
+    m_fileHandle = nullptr;
 }
 
 // Skips n bytes of input from this input stream. Fewer bytes might be skipped
@@ -168,7 +168,7 @@ void FileInputStream::close() {
 // the number of bytes to be skipped. Returns: the actual number of bytes
 // skipped.
 int64_t FileInputStream::skip(int64_t n) {
-    if (m_fileHandle == NULL || n <= 0) {
+    if (m_fileHandle == nullptr || n <= 0) {
         return 0;
     }
 

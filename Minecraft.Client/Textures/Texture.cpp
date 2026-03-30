@@ -29,7 +29,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
     immediateUpdate = false;
     m_bInitialised = false;
     for (int i = 0; i < 10; i++) {
-        data[i] = NULL;
+        data[i] = nullptr;
     }
 
     rect = new Rect2i(0, 0, width, height);
@@ -86,7 +86,7 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
                     int magFilter, BufferedImage* image, bool mipMap) {
     _init(name, mode, width, height, depth, wrapMode, format, minFilter,
           magFilter, mipMap);
-    if (image == NULL) {
+    if (image == nullptr) {
         if (width == -1 || height == -1) {
             valid = false;
         } else {
@@ -156,7 +156,7 @@ Texture::~Texture() {
     delete rect;
 
     for (int i = 0; i < 10; i++) {
-        if (data[i] != NULL) delete data[i];
+        if (data[i] != nullptr) delete data[i];
     }
 
     if (glId >= 0) {
@@ -220,7 +220,7 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
     for (unsigned int level = 0; level < m_iMipLevels; ++level) {
         ByteBuffer* srcBuffer = source->getData(level);
 
-        if (srcBuffer == NULL) break;
+        if (srcBuffer == nullptr) break;
 
         int yy = y >> level;
         int xx = x >> level;
@@ -380,9 +380,9 @@ void Texture::transferFromImage(BufferedImage* image) {
     }
 
     for (int i = 0; i < 10; i++) {
-        if (data[i] != NULL) {
+        if (data[i] != nullptr) {
             delete data[i];
-            data[i] = NULL;
+            data[i] = nullptr;
         }
     }
 
@@ -395,7 +395,7 @@ void Texture::transferFromImage(BufferedImage* image) {
 
     delete[] tempBytes.data;
 
-    if (mipmapped || image->getData(1) != NULL) {
+    if (mipmapped || image->getData(1) != nullptr) {
         mipmapped = true;
         for (unsigned int level = 1; level < MAX_MIP_LEVELS; ++level) {
             int ww = width >> level;
@@ -561,7 +561,7 @@ void Texture::updateOnGPU() {
     data[0]->flip();
     if (mipmapped) {
         for (int level = 1; level < m_iMipLevels; level++) {
-            if (data[level] == NULL) break;
+            if (data[level] == nullptr) break;
 
             data[level]->flip();
         }

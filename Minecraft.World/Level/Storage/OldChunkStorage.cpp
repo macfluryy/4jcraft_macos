@@ -116,7 +116,7 @@ LevelChunk* OldChunkStorage::load(Level* level, int x, int z) {
                     "Chunk file at %d, %d is missing level data, skipping\n", x,
                     z);
             app.DebugPrintf(buf);
-            return NULL;
+            return nullptr;
         }
         if (!tag->getCompound(L"Level")->contains(L"Blocks")) {
             char buf[256];
@@ -124,7 +124,7 @@ LevelChunk* OldChunkStorage::load(Level* level, int x, int z) {
                     "Chunk file at %d, %d is missing block data, skipping\n", x,
                     z);
             app.DebugPrintf(buf);
-            return NULL;
+            return nullptr;
         }
         LevelChunk* levelChunk =
             OldChunkStorage::load(level, tag->getCompound(L"Level"));
@@ -146,7 +146,7 @@ LevelChunk* OldChunkStorage::load(Level* level, int x, int z) {
         //			e.printStackTrace();
         //		}
     }
-    return NULL;
+    return nullptr;
 }
 
 void OldChunkStorage::save(Level* level, LevelChunk* levelChunk) {
@@ -275,7 +275,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
     PIXBeginNamedEvent(0, "Saving tile tick data");
     std::vector<TickNextTickData>* ticksInChunk =
         level->fetchTicksInChunk(lc, false);
-    if (ticksInChunk != NULL) {
+    if (ticksInChunk != nullptr) {
         int64_t levelTime = level->getGameTime();
 
         ListTag<CompoundTag>* tickTags = new ListTag<CompoundTag>();
@@ -373,7 +373,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     PIXBeginNamedEvent(0, "Saving tile tick data");
     std::vector<TickNextTickData>* ticksInChunk =
         level->fetchTicksInChunk(lc, false);
-    if (ticksInChunk != NULL) {
+    if (ticksInChunk != nullptr) {
         int64_t levelTime = level->getGameTime();
 
         ListTag<CompoundTag>* tickTags = new ListTag<CompoundTag>();
@@ -400,12 +400,12 @@ void OldChunkStorage::loadEntities(LevelChunk* lc, Level* level,
                                    CompoundTag* tag) {
     ListTag<CompoundTag>* entityTags =
         (ListTag<CompoundTag>*)tag->getList(L"Entities");
-    if (entityTags != NULL) {
+    if (entityTags != nullptr) {
         for (int i = 0; i < entityTags->size(); i++) {
             CompoundTag* teTag = entityTags->get(i);
             std::shared_ptr<Entity> te = EntityIO::loadStatic(teTag, level);
             lc->lastSaveHadEntities = true;
-            if (te != NULL) {
+            if (te != nullptr) {
                 lc->addEntity(te);
             }
         }
@@ -413,11 +413,11 @@ void OldChunkStorage::loadEntities(LevelChunk* lc, Level* level,
 
     ListTag<CompoundTag>* tileEntityTags =
         (ListTag<CompoundTag>*)tag->getList(L"TileEntities");
-    if (tileEntityTags != NULL) {
+    if (tileEntityTags != nullptr) {
         for (int i = 0; i < tileEntityTags->size(); i++) {
             CompoundTag* teTag = tileEntityTags->get(i);
             std::shared_ptr<TileEntity> te = TileEntity::loadStatic(teTag);
-            if (te != NULL) {
+            if (te != nullptr) {
                 lc->addTileEntity(te);
             }
         }
@@ -479,7 +479,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
         ListTag<CompoundTag>* tileTicks =
             (ListTag<CompoundTag>*)tag->getList(L"TileTicks");
 
-        if (tileTicks != NULL) {
+        if (tileTicks != nullptr) {
             for (int i = 0; i < tileTicks->size(); i++) {
                 CompoundTag* teTag = tileTicks->get(i);
 
@@ -584,7 +584,7 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
         ListTag<CompoundTag>* tileTicks =
             (ListTag<CompoundTag>*)tag->getList(L"TileTicks");
 
-        if (tileTicks != NULL) {
+        if (tileTicks != nullptr) {
             for (int i = 0; i < tileTicks->size(); i++) {
                 CompoundTag* teTag = tileTicks->get(i);
 

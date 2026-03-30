@@ -15,7 +15,7 @@ AttributeInstance* ServersideAttributeMap::getInstance(eATTRIBUTE_ID id) {
 
     // 4J: Removed legacy name
     // If we didn't find it, search by legacy name
-    /*if (result == NULL)
+    /*if (result == nullptr)
     {
             auto it = attributesByLegacy.find(name);
             if(it != attributesByLegacy.end())
@@ -42,7 +42,7 @@ AttributeInstance* ServersideAttributeMap::registerAttribute(
     // 4J: Removed legacy name
     // If this is a ranged attribute also add to legacy name map
     /*RangedAttribute *rangedAttribute =
-    dynamic_cast<RangedAttribute*>(attribute); if (rangedAttribute != NULL &&
+    dynamic_cast<RangedAttribute*>(attribute); if (rangedAttribute != nullptr &&
     rangedAttribute->getImportLegacyName() != L"")
     {
             attributesByLegacy.insert(std::pair<std::wstring,

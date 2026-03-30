@@ -19,7 +19,7 @@ Random* TitleScreen::random = new Random();
 TitleScreen::TitleScreen() {
     // 4J - added initialisers
     vo = 0;
-    multiplayerButton = NULL;
+    multiplayerButton = nullptr;
 
     splash = L"missingno";
     //    try {	// 4J - removed try/catch
@@ -122,7 +122,7 @@ if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
                                      language->getElement(L"menu.quit")));
     }
 
-    if (minecraft->user == NULL) {
+    if (minecraft->user == nullptr) {
         multiplayerButton->active = false;
     }
 }

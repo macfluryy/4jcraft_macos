@@ -16,7 +16,7 @@ StemTile::StemTile(int id, Tile* fruit) : Bush(id) {
     float ss = 0.125f;
     this->setShape(0.5f - ss, 0, 0.5f - ss, 0.5f + ss, 0.25f, 0.5f + ss);
 
-    iconAngled = NULL;
+    iconAngled = nullptr;
 }
 
 bool StemTile::mayPlaceOn(int tile) { return tile == Tile::farmland_Id; }
@@ -175,7 +175,7 @@ void StemTile::spawnResources(Level* level, int x, int y, int z, int data,
         return;
     }
 
-    Item* seed = NULL;
+    Item* seed = nullptr;
     if (fruit == Tile::pumpkin) seed = Item::seeds_pumpkin;
     if (fruit == Tile::melon) seed = Item::seeds_melon;
     for (int i = 0; i < 3; i++) {

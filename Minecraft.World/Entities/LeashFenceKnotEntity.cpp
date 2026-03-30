@@ -50,7 +50,7 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->getCarriedItem();
 
     bool attachedMob = false;
-    if (item != NULL && item->id == Item::lead_Id) {
+    if (item != nullptr && item->id == Item::lead_Id) {
         if (!level->isClientSide) {
             // look for entities that can be attached to the fence
             double range = 7;
@@ -58,7 +58,7 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
                           x + range, y + range, z + range};
             std::vector<std::shared_ptr<Entity> >* mobs =
                 level->getEntitiesOfClass(typeid(Mob), &mob_aabb);
-            if (mobs != NULL) {
+            if (mobs != nullptr) {
                 for (auto it = mobs->begin(); it != mobs->end(); ++it) {
                     std::shared_ptr<Mob> mob =
                         std::dynamic_pointer_cast<Mob>(*it);
@@ -82,7 +82,7 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
                           x + range, y + range, z + range};
             std::vector<std::shared_ptr<Entity> >* mobs =
                 level->getEntitiesOfClass(typeid(Mob), &mob_aabb);
-            if (mobs != NULL) {
+            if (mobs != nullptr) {
                 for (auto it = mobs->begin(); it != mobs->end(); ++it) {
                     std::shared_ptr<Mob> mob =
                         std::dynamic_pointer_cast<Mob>(*it);
@@ -101,7 +101,7 @@ bool LeashFenceKnotEntity::interact(std::shared_ptr<Player> player) {
 bool LeashFenceKnotEntity::survives() {
     // knots are placed on top of fence tiles
     int tile = level->getTile(xTile, yTile, zTile);
-    if (Tile::tiles[tile] != NULL &&
+    if (Tile::tiles[tile] != nullptr &&
         Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_FENCE) {
         return true;
     }
@@ -124,7 +124,7 @@ std::shared_ptr<LeashFenceKnotEntity> LeashFenceKnotEntity::findKnotAt(
                                       x + 1.0, y + 1.0, z + 1.0};
     std::vector<std::shared_ptr<Entity> >* knots = level->getEntitiesOfClass(
         typeid(LeashFenceKnotEntity), &leash_fence_knot_entity_aabb);
-    if (knots != NULL) {
+    if (knots != nullptr) {
         for (auto it = knots->begin(); it != knots->end(); ++it) {
             std::shared_ptr<LeashFenceKnotEntity> knot =
                 std::dynamic_pointer_cast<LeashFenceKnotEntity>(*it);

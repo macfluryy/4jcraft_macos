@@ -22,10 +22,10 @@ BufferedOutputStream::~BufferedOutputStream() {
 // Flushes this buffered output stream. This forces any buffered output bytes to
 // be written out to the underlying output stream.
 void BufferedOutputStream::flush() {
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "BufferedOutputStream::flush() called but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return;
     }
 
@@ -40,10 +40,10 @@ void BufferedOutputStream::flush() {
 // and then calls the close method of its underlying output stream.
 void BufferedOutputStream::close() {
     flush();
-    if (stream == NULL) {
+    if (stream == nullptr) {
         app.DebugPrintf(
             "BufferedOutputStream::close() called but underlying stream is "
-            "NULL\n");
+            "nullptr\n");
         return;
     }
     stream->close();

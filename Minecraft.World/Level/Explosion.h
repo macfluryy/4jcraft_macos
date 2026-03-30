@@ -40,7 +40,7 @@ public:
 public:
     void finalizeExplosion(bool generateParticles,
                            std::vector<TilePos>* toBlowDirect =
-                               NULL);  // 4J - added toBlow parameter
+                               nullptr);  // 4J - added toBlow parameter
     playerVec3Map* getHitPlayers();
     Vec3 getHitPlayerKnockback(std::shared_ptr<Player> player);
     std::shared_ptr<LivingEntity> getSourceMob();

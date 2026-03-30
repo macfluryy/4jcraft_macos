@@ -98,7 +98,7 @@ CreativeInventoryScreen::ContainerCreative::clicked(
     // Handle clicks outside the GUI
     if (slotIndex == SLOT_CLICKED_OUTSIDE) {
         // Drop the carried item
-        if (carried != NULL) {
+        if (carried != nullptr) {
             if (buttonNum == 0) {
                 player->drop(carried, true);
                 inventory->setCarried(std::shared_ptr<ItemInstance>());
@@ -128,7 +128,7 @@ CreativeInventoryScreen::ContainerCreative::clicked(
 
         // Handle SWAP (number key) - copy item to hotbar
         if (clickType == CLICK_SWAP) {
-            if (slotItem != NULL && buttonNum >= 0 && buttonNum < 9) {
+            if (slotItem != nullptr && buttonNum >= 0 && buttonNum < 9) {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
                 copy->count = copy->getMaxStackSize();
                 inventory->setItem(buttonNum, copy);
@@ -138,7 +138,7 @@ CreativeInventoryScreen::ContainerCreative::clicked(
 
         // Handle CLONE (middle click)
         if (clickType == CLICK_CLONE) {
-            if (slotItem != NULL) {
+            if (slotItem != nullptr) {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
                 copy->count = copy->getMaxStackSize();
                 inventory->setCarried(copy);
@@ -147,7 +147,7 @@ CreativeInventoryScreen::ContainerCreative::clicked(
         }
 
         // Handle normal clicks
-        if (slotItem != NULL) {
+        if (slotItem != nullptr) {
             if (buttonNum == 0)  // Left click
             {
                 std::shared_ptr<ItemInstance> copy = slotItem->copy();
@@ -159,7 +159,7 @@ CreativeInventoryScreen::ContainerCreative::clicked(
                 copy->count = 1;
                 inventory->setCarried(copy);
             }
-        } else if (carried != NULL) {
+        } else if (carried != nullptr) {
             // Clicking on empty creative slot with item - clear the carried
             // item
             inventory->setCarried(std::shared_ptr<ItemInstance>());
@@ -289,7 +289,7 @@ void CreativeInventoryScreen::mouseClicked(int x, int y, int buttonNum) {
             (x < xo || y < yo || x >= xo + imageWidth || y >= yo + imageHeight);
 
         int slotId = -1;
-        if (slot != NULL) slotId = slot->index;
+        if (slot != nullptr) slotId = slot->index;
         if (clickedOutside)
             slotId = AbstractContainerMenu::SLOT_CLICKED_OUTSIDE;
 

@@ -171,9 +171,9 @@ bool TrapDoorTile::attachesTo(int id) {
     }
     Tile* tile = Tile::tiles[id];
 
-    return tile != NULL &&
+    return tile != nullptr &&
                (tile->material->isSolidBlocking() && tile->isCubeShaped()) ||
            tile == Tile::glowstone ||
-           (dynamic_cast<HalfSlabTile*>(tile) != NULL) ||
-           (dynamic_cast<StairTile*>(tile) != NULL);
+           (dynamic_cast<HalfSlabTile*>(tile) != nullptr) ||
+           (dynamic_cast<StairTile*>(tile) != nullptr);
 }

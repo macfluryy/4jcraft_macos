@@ -20,7 +20,7 @@ UIScene_HorseInventoryMenu::UIScene_HorseInventoryMenu(int iPad,
     m_horse = initData->horse;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[iPad] != NULL) {
+    if (pMinecraft->localgameModes[iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -228,7 +228,7 @@ void UIScene_HorseInventoryMenu::setSectionSelectedSlot(ESceneSection eSection,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionHorseArmor:
             slotList = &m_slotArmor;
@@ -254,7 +254,7 @@ void UIScene_HorseInventoryMenu::setSectionSelectedSlot(ESceneSection eSection,
 }
 
 UIControl* UIScene_HorseInventoryMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionHorseArmor:
             control = &m_slotArmor;
@@ -281,8 +281,8 @@ UIControl* UIScene_HorseInventoryMenu::getSection(ESceneSection eSection) {
 void UIScene_HorseInventoryMenu::customDraw(
     IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     if (std::char_traits<char16_t>::compare(region->name, u"horse", 5) == 0) {

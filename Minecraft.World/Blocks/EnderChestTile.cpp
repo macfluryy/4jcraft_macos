@@ -55,7 +55,7 @@ bool EnderChestTile::use(Level* level, int x, int y, int z,
     std::shared_ptr<EnderChestTileEntity> enderChest =
         std::dynamic_pointer_cast<EnderChestTileEntity>(
             level->getTileEntity(x, y, z));
-    if (container == NULL || enderChest == NULL) return true;
+    if (container == nullptr || enderChest == nullptr) return true;
 
     if (level->isSolidBlockingTile(x, y + 1, z)) return true;
 

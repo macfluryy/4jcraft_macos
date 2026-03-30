@@ -54,10 +54,10 @@ int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(
             .dwThumbnailSize = dwThumbnailBytes;
     } else {
         pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .pbThumbnailData = NULL;
+            .pbThumbnailData = nullptr;
         pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
             .dwThumbnailSize = 0;
-        app.DebugPrintf("Save thumbnail data is NULL, or has size 0\n");
+        app.DebugPrintf("Save thumbnail data is nullptr, or has size 0\n");
     }
     pClass->m_bSaveThumbnailReady = true;
 
@@ -85,7 +85,7 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
     m_bIgnoreInput = false;
     m_bShowingPartyGamesOnly = false;
     m_bInParty = false;
-    m_currentSessions = NULL;
+    m_currentSessions = nullptr;
     m_iState = e_SavesIdle;
     // m_bRetrievingSaveInfo=false;
 
@@ -105,9 +105,9 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
     m_bRetrievingSaveThumbnails = false;
     m_bSaveThumbnailReady = false;
     m_bExitScene = false;
-    m_pSaveDetails = NULL;
+    m_pSaveDetails = nullptr;
     m_bSavesDisplayed = false;
-    m_saveDetails = NULL;
+    m_saveDetails = nullptr;
     m_iSaveDetailsCount = 0;
     m_iTexturePacksNotInstalled = 0;
     m_bCopying = false;
@@ -162,7 +162,7 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
 }
 
 UIScene_LoadOrJoinMenu::~UIScene_LoadOrJoinMenu() {
-    g_NetworkManager.SetSessionsUpdatedCallback(NULL, NULL);
+    g_NetworkManager.SetSessionsUpdatedCallback(nullptr, nullptr);
     app.SetLiveLinkRequired(false);
 
     if (m_currentSessions) {
@@ -396,16 +396,16 @@ void UIScene_LoadOrJoinMenu::tick() {
         // Display the saves if we have them
         if (!m_bSavesDisplayed) {
             m_pSaveDetails = StorageManager.ReturnSavesInfo();
-            if (m_pSaveDetails != NULL) {
+            if (m_pSaveDetails != nullptr) {
                 // CD - Fix - Adding define for ORBIS/XBOXONE
 
                 AddDefaultButtons();
                 m_bSavesDisplayed = true;
                 UpdateGamesList();
 
-                if (m_saveDetails != NULL) {
+                if (m_saveDetails != nullptr) {
                     for (unsigned int i = 0; i < m_iSaveDetailsCount; ++i) {
-                        if (m_saveDetails[i].pbThumbnailData != NULL) {
+                        if (m_saveDetails[i].pbThumbnailData != nullptr) {
                             delete m_saveDetails[i].pbThumbnailData;
                         }
                     }
@@ -614,9 +614,9 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         m_controlSavesTimer.setVisible(true);
 
         m_pSaveDetails = StorageManager.ReturnSavesInfo();
-        if (m_pSaveDetails == NULL) {
+        if (m_pSaveDetails == nullptr) {
             C4JStorage::ESaveGameState eSGIStatus =
-                StorageManager.GetSavesInfo(m_iPad, NULL, this, (char*)"save");
+                StorageManager.GetSavesInfo(m_iPad, nullptr, this, (char*)"save");
         }
 
 #if TO_BE_IMPLEMENTED
@@ -925,7 +925,7 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
                     params->iSaveGameInfoIndex = -1;
                     // params->pbSaveRenamed=&m_bSaveRenamed;
                     params->levelGen = levelGen;
-                    params->saveDetails = NULL;
+                    params->saveDetails = nullptr;
 
                     // navigate to the settings scene
                     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
@@ -948,7 +948,7 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
                         params->iSaveGameInfoIndex =
                             ((int)childId) - m_iDefaultButtonsC;
                         // params->pbSaveRenamed=&m_bSaveRenamed;
-                        params->levelGen = NULL;
+                        params->levelGen = nullptr;
                         params->saveDetails =
                             &m_saveDetails[((int)childId) - m_iDefaultButtonsC];
 
@@ -1062,7 +1062,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions* levelGen) {
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = 0;
-    param->saveData = NULL;
+    param->saveData = nullptr;
     param->settings = app.GetGameHostOption(eGameHostOption_Tutorial);
     param->levelGen = levelGen;
 
@@ -1093,7 +1093,7 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions* levelGen) {
 }
 
 void UIScene_LoadOrJoinMenu::UpdateGamesListCallback(void* pParam) {
-    if (pParam != NULL) {
+    if (pParam != nullptr) {
         UIScene_LoadOrJoinMenu* pScene = (UIScene_LoadOrJoinMenu*)pParam;
         pScene->UpdateGamesList();
     }
@@ -1116,7 +1116,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
         return;
     }
 
-    FriendSessionInfo* pSelectedSession = NULL;
+    FriendSessionInfo* pSelectedSession = nullptr;
     if (DoesGamesListHaveFocus() && m_buttonListGames.getItemCount() > 0) {
         const int nIndex = m_buttonListGames.getCurrentSelection();
         pSelectedSession = m_currentSessions->at(nIndex);
@@ -1124,9 +1124,9 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
 
     SessionID selectedSessionId;
     ZeroMemory(&selectedSessionId, sizeof(SessionID));
-    if (pSelectedSession != NULL)
+    if (pSelectedSession != nullptr)
         selectedSessionId = pSelectedSession->sessionId;
-    pSelectedSession = NULL;
+    pSelectedSession = nullptr;
 
     m_controlJoinTimer.setVisible(false);
 
@@ -1191,11 +1191,11 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
                 HRESULT hr;
 
                 std::uint32_t imageBytes = 0;
-                std::uint8_t* imageData = NULL;
+                std::uint8_t* imageData = nullptr;
 
-                if (tp == NULL) {
+                if (tp == nullptr) {
                     unsigned int dwBytes = 0;
-                    std::uint8_t* pbData = NULL;
+                    std::uint8_t* pbData = nullptr;
                     app.GetTPD(sessionInfo->data.texturePackParentId, &pbData,
                                &dwBytes);
 
@@ -1675,7 +1675,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
     pMinecraft->progressRenderer->progressStage(
         IDS_TOOLTIPS_SAVETRANSFER_DOWNLOAD);
 
-    ConsoleSaveFile* pSave = NULL;
+    ConsoleSaveFile* pSave = nullptr;
 
     pClass->m_eSaveTransferState = eSaveTransfer_GetRemoteSaveInfo;
 
@@ -1733,10 +1733,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 mbstowcs(wSaveName, pNameUTF8,
                          strlen(pNameUTF8) + 1);  // plus null
                 StorageManager.SetSaveTitle(wSaveName);
-                std::uint8_t* pbThumbnailData = NULL;
+                std::uint8_t* pbThumbnailData = nullptr;
                 unsigned int dwThumbnailDataSize = 0;
 
-                std::uint8_t* pbDataSaveImage = NULL;
+                std::uint8_t* pbDataSaveImage = nullptr;
                 unsigned int dwDataSizeSaveImage = 0;
 
                 StorageManager.GetDefaultSaveImage(
@@ -1908,10 +1908,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
 
                 StorageManager.ResetSaveData();
                 {
-                    std::uint8_t* pbThumbnailData = NULL;
+                    std::uint8_t* pbThumbnailData = nullptr;
                     unsigned int dwThumbnailDataSize = 0;
 
-                    std::uint8_t* pbDataSaveImage = NULL;
+                    std::uint8_t* pbDataSaveImage = nullptr;
                     unsigned int dwDataSizeSaveImage = 0;
 
                     StorageManager.GetDefaultSaveImage(
@@ -2142,7 +2142,7 @@ void UIScene_LoadOrJoinMenu::SaveTransferReturned(void* lpParam,
             error_code);
     }
 }
-ConsoleSaveFile* UIScene_LoadOrJoinMenu::SonyCrossSaveConvert() { return NULL; }
+ConsoleSaveFile* UIScene_LoadOrJoinMenu::SonyCrossSaveConvert() { return nullptr; }
 
 void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void* lpParam) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;

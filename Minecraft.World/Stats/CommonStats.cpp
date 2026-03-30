@@ -52,7 +52,7 @@ Stat* CommonStats::get_breedEntity(eINSTANCEOF mobType) {
     if (mobType == eTYPE_COW)
         return GenericStats::repopulation();
     else
-        return NULL;
+        return nullptr;
 }
 
 Stat* CommonStats::get_tamedEntity(eINSTANCEOF mobType) {
@@ -61,21 +61,21 @@ Stat* CommonStats::get_tamedEntity(eINSTANCEOF mobType) {
     else if (mobType == eTYPE_WOLF)
         return Stats::befriendsWolf;
     else
-        return NULL;
+        return nullptr;
 }
 
 Stat* CommonStats::get_craftedEntity(eINSTANCEOF mobType) {
     if (mobType == eTYPE_VILLAGERGOLEM)
         return GenericStats::bodyGuard();
     else
-        return NULL;
+        return nullptr;
 }
 
 Stat* CommonStats::get_shearedEntity(eINSTANCEOF mobType) {
     if (mobType == eTYPE_SHEEP)
         return GenericStats::haveAShearfulDay();
     else
-        return NULL;
+        return nullptr;
 }
 
 Stat* CommonStats::get_totalBlocksMined() { return Stats::totalBlocksMined; }
@@ -86,7 +86,7 @@ Stat* CommonStats::get_blocksPlaced(int blockId) {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return Stats::blocksPlaced[blockId];
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -105,7 +105,7 @@ Stat* CommonStats::get_itemsCollected(int itemId, int itemAux) {
     if (itemId != Item::emerald_Id)
         return Stats::itemsCollected[itemId];
     else
-        return NULL;
+        return nullptr;
 }
 
 Stat* CommonStats::get_itemsCrafted(int itemId) {
@@ -122,7 +122,7 @@ Stat* CommonStats::get_itemsUsed(int itemId) {
     if (itemId == Item::porkChop_cooked_Id) return Stats::blocksPlaced[itemId];
 #endif
 
-    return NULL;
+    return nullptr;
 }
 
 Stat* CommonStats::get_itemsBought(int itemId) {
@@ -133,7 +133,7 @@ Stat* CommonStats::get_itemsBought(int itemId) {
     if (itemId == Item::emerald_Id)
         return Stats::itemsCollected[itemId];
     else
-        return NULL;
+        return nullptr;
 }
 
 Stat* CommonStats::get_killsEnderdragon() { return Stats::killsEnderdragon; }
@@ -144,7 +144,7 @@ Stat* CommonStats::get_enteredBiome(int biomeId) {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return Stats::biomesVisisted[biomeId];
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -208,7 +208,7 @@ Stat* CommonStats::get_achievement(eAward achievementId) {
         case eAward_diamonds:
             return (Stat*)Achievements::diamonds;
         case eAward_portal:
-            return (Stat*)NULL;  // TODO
+            return (Stat*)nullptr;  // TODO
         case eAward_ghast:
             return (Stat*)Achievements::ghast;
         case eAward_blazeRod:
@@ -268,7 +268,7 @@ Stat* CommonStats::get_achievement(eAward achievementId) {
 #endif
 
         default:
-            return (Stat*)NULL;
+            return (Stat*)nullptr;
     }
 }
 

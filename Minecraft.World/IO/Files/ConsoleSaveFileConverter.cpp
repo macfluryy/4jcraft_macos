@@ -83,7 +83,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
     std::vector<FileEntry*>* playerFiles =
         sourceSave->getFilesWithPrefix(DirectoryLevelStorage::getPlayerDir());
 
-    if (playerFiles != NULL) {
+    if (playerFiles != nullptr) {
         for (int fileIdx = 0; fileIdx < playerFiles->size(); fileIdx++) {
             ConsoleSavePath sourcePlayerDatPath(
                 playerFiles->at(fileIdx)->data.filename);

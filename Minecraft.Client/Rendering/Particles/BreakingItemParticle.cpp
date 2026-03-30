@@ -45,7 +45,7 @@ void BreakingItemParticle::render(Tesselator* t, float a, float xa, float ya,
     float v1 = v0 + 0.999f / 16.0f / 4;
     float r = 0.1f * size;
 
-    if (tex != NULL) {
+    if (tex != nullptr) {
         u0 = tex->getU((uo / 4.0f) * SharedConstants::WORLD_RESOLUTION);
         u1 = tex->getU(((uo + 1) / 4.0f) * SharedConstants::WORLD_RESOLUTION);
         v0 = tex->getV((vo / 4.0f) * SharedConstants::WORLD_RESOLUTION);

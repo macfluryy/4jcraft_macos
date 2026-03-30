@@ -23,9 +23,9 @@ UIGroup::UIGroup(EUIGroup group, int iPad) {
         (UIComponent_Tooltips*)m_layers[(int)eUILayer_Tooltips]->addComponent(
             0, eUIComponent_Tooltips);
 
-    m_tutorialPopup = NULL;
-    m_hud = NULL;
-    m_pressStartToPlay = NULL;
+    m_tutorialPopup = nullptr;
+    m_hud = nullptr;
+    m_pressStartToPlay = nullptr;
     if (m_group != eUIGroup_Fullscreen) {
         m_tutorialPopup =
             (UIComponent_TutorialPopup*)m_layers[(int)eUILayer_Popup]
@@ -141,7 +141,7 @@ bool UIGroup::NavigateBack(int iPad, EUIScene eScene, EUILayer eLayer) {
 void UIGroup::closeAllScenes() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (m_iPad >= 0) {
-        if (pMinecraft != NULL && pMinecraft->localgameModes[m_iPad] != NULL) {
+        if (pMinecraft != nullptr && pMinecraft->localgameModes[m_iPad] != nullptr) {
             TutorialMode* gameMode =
                 (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 
@@ -339,9 +339,9 @@ void UIGroup::PrintTotalMemoryUsage(int64_t& totalStatic,
 
 int UIGroup::getCommandBufferList() { return m_commandBufferList; }
 
-// Returns the first scene of given type if it exists, NULL otherwise
+// Returns the first scene of given type if it exists, nullptr otherwise
 UIScene* UIGroup::FindScene(EUIScene sceneType) {
-    UIScene* pScene = NULL;
+    UIScene* pScene = nullptr;
 
     for (int i = 0; i < eUILayer_COUNT; i++) {
         pScene = m_layers[i]->FindScene(sceneType);

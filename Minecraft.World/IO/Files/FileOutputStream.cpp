@@ -14,7 +14,7 @@
 //
 // Parameters:
 // file - the file to be opened for writing.
-FileOutputStream::FileOutputStream(const File& file) : m_fileHandle(NULL) {
+FileOutputStream::FileOutputStream(const File& file) : m_fileHandle(nullptr) {
     if (file.exists() && file.isDirectory()) {
         // TODO 4J Stu - FileNotFoundException
         return;
@@ -27,14 +27,14 @@ FileOutputStream::FileOutputStream(const File& file) : m_fileHandle(NULL) {
     m_fileHandle = std::fopen(nativePath.c_str(), "wb");
 #endif
 
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         // TODO 4J Stu - Any form of error/exception handling
         perror("FileOutputStream::FileOutputStream");
     }
 }
 
 FileOutputStream::~FileOutputStream() {
-    if (m_fileHandle != NULL) {
+    if (m_fileHandle != nullptr) {
         std::fclose(m_fileHandle);
     }
 }
@@ -42,7 +42,7 @@ FileOutputStream::~FileOutputStream() {
 // Writes the specified byte to this file output stream. Implements the write
 // method of OutputStream. Parameters: b - the byte to be written.
 void FileOutputStream::write(unsigned int b) {
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return;
     }
 
@@ -60,7 +60,7 @@ void FileOutputStream::write(unsigned int b) {
 // Writes b.length bytes from the specified byte array to this file output
 // stream. Parameters: b - the data.
 void FileOutputStream::write(byteArray b) {
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return;
     }
 
@@ -83,7 +83,7 @@ void FileOutputStream::write(byteArray b, unsigned int offset,
     // 4J Stu - We don't want to write any more than the array buffer holds
     assert(length <= (b.length - offset));
 
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return;
     }
 
@@ -103,7 +103,7 @@ void FileOutputStream::write(byteArray b, unsigned int offset,
 // bytes. If this stream has an associated channel then the channel is closed as
 // well.
 void FileOutputStream::close() {
-    if (m_fileHandle == NULL) {
+    if (m_fileHandle == nullptr) {
         return;
     }
 
@@ -113,11 +113,11 @@ void FileOutputStream::close() {
     }
 
     // Stop the dtor from trying to close it again
-    m_fileHandle = NULL;
+    m_fileHandle = nullptr;
 }
 
 void FileOutputStream::flush() {
-    if (m_fileHandle != NULL) {
+    if (m_fileHandle != nullptr) {
         std::fflush(m_fileHandle);
     }
 }

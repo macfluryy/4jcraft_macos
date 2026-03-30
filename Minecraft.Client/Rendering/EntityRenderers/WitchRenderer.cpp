@@ -17,7 +17,7 @@ void WitchRenderer::render(std::shared_ptr<Entity> entity, double x, double y,
 
     std::shared_ptr<ItemInstance> item = mob->getCarriedItem();
 
-    witchModel->holdingItem = item != NULL;
+    witchModel->holdingItem = item != nullptr;
     MobRenderer::render(mob, x, y, z, rot, a);
 }
 
@@ -38,7 +38,7 @@ void WitchRenderer::additionalRendering(std::shared_ptr<LivingEntity> entity,
 
     std::shared_ptr<ItemInstance> item = mob->getCarriedItem();
 
-    if (item != NULL) {
+    if (item != nullptr) {
         glPushMatrix();
 
         if (model->young) {

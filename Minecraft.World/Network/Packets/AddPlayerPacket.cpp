@@ -21,11 +21,11 @@ AddPlayerPacket::AddPlayerPacket() {
     m_capeId = 0;
     m_uiGamePrivileges = 0;
     entityData = nullptr;
-    unpack = NULL;
+    unpack = nullptr;
 }
 
 AddPlayerPacket::~AddPlayerPacket() {
-    if (unpack != NULL) delete unpack;
+    if (unpack != nullptr) delete unpack;
 }
 
 AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
@@ -52,7 +52,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 
     std::shared_ptr<ItemInstance> itemInstance =
         player->inventory->getSelected();
-    carriedItem = itemInstance == NULL ? 0 : itemInstance->id;
+    carriedItem = itemInstance == nullptr ? 0 : itemInstance->id;
 
     this->xuid = xuid;
     this->OnlineXuid = OnlineXuid;
@@ -62,7 +62,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
     m_uiGamePrivileges = player->getAllPlayerGamePrivileges();
 
     entityData = player->getEntityData();
-    unpack = NULL;
+    unpack = nullptr;
 }
 
 void AddPlayerPacket::read(DataInputStream* dis)  // throws IOException
@@ -121,9 +121,9 @@ int AddPlayerPacket::getEstimatedSize() {
                 sizeof(int) + sizeof(BYTE) + sizeof(unsigned int) +
                 sizeof(uint8_t);
 
-    if (entityData != NULL) {
+    if (entityData != nullptr) {
         iSize += entityData->getSizeInBytes();
-    } else if (unpack != NULL) {
+    } else if (unpack != nullptr) {
         // 4J Stu - This is an incoming value which we aren't currently
         // analysing
         // iSize += unpack->get
@@ -134,7 +134,7 @@ int AddPlayerPacket::getEstimatedSize() {
 
 std::vector<std::shared_ptr<SynchedEntityData::DataItem> >*
 AddPlayerPacket::getUnpackedData() {
-    if (unpack == NULL) {
+    if (unpack == nullptr) {
         unpack = entityData->getAll();
     }
     return unpack;

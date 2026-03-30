@@ -6,7 +6,7 @@ LeaderboardInterface::LeaderboardInterface(LeaderboardManager* man) {
     m_pending = false;
 
     m_filter = (LeaderboardManager::EFilterMode)-1;
-    m_callback = NULL;
+    m_callback = nullptr;
     m_difficulty = 0;
     m_type = LeaderboardManager::eStatsType_UNDEFINED;
     m_startIndex = 0;

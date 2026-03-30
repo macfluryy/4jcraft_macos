@@ -14,7 +14,7 @@ Bat::Bat(Level* level) : AmbientCreature(level) {
     registerAttributes();
     setHealth(getMaxHealth());
 
-    targetPosition = NULL;
+    targetPosition = nullptr;
 
     setSize(.5f, .9f);
     setResting(true);
@@ -106,21 +106,21 @@ void Bat::newServerAiStep() {
                 yHeadRot = random->nextInt(360);
             }
 
-            if (level->getNearestPlayer(shared_from_this(), 4.0f) != NULL) {
+            if (level->getNearestPlayer(shared_from_this(), 4.0f) != nullptr) {
                 setResting(false);
                 level->levelEvent(nullptr, LevelEvent::SOUND_BAT_LIFTOFF,
                                   (int)x, (int)y, (int)z, 0);
             }
         }
     } else {
-        if (targetPosition != NULL &&
+        if (targetPosition != nullptr &&
             (!level->isEmptyTile(targetPosition->x, targetPosition->y,
                                  targetPosition->z) ||
              targetPosition->y < 1)) {
             delete targetPosition;
-            targetPosition = NULL;
+            targetPosition = nullptr;
         }
-        if (targetPosition == NULL || random->nextInt(30) == 0 ||
+        if (targetPosition == nullptr || random->nextInt(30) == 0 ||
             targetPosition->distSqr((int)x, (int)y, (int)z) < 4) {
             delete targetPosition;
             targetPosition =

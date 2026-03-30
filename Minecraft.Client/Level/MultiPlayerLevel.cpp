@@ -45,7 +45,7 @@ MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
         levelData->setInitialized(true);
     }
 
-    if (connection != NULL) {
+    if (connection != nullptr) {
         this->connections.push_back(connection);
     }
     this->difficulty = difficulty;
@@ -57,7 +57,7 @@ MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
     // setSpawnPos(new Pos(8, 64, 8));
     // The base ctor already has made some storage, so need to delete that
     if (this->savedDataStorage) delete savedDataStorage;
-    if (connection != NULL) {
+    if (connection != nullptr) {
         savedDataStorage = connection->savedDataStorage;
     }
     unshareCheckX = 0;
@@ -73,7 +73,7 @@ MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
 MultiPlayerLevel::~MultiPlayerLevel() {
     // Don't let the base class delete this, it comes from the connection for
     // multiplayerlevels, and we'll delete there
-    this->savedDataStorage = NULL;
+    this->savedDataStorage = nullptr;
 }
 
 void MultiPlayerLevel::unshareChunkAt(int x, int z) {
@@ -459,7 +459,7 @@ void MultiPlayerLevel::entityRemoved(std::shared_ptr<Entity> e) {
 
 void MultiPlayerLevel::putEntity(int id, std::shared_ptr<Entity> e) {
     std::shared_ptr<Entity> old = getEntity(id);
-    if (old != NULL) {
+    if (old != nullptr) {
         removeEntity(old);
     }
 
@@ -626,7 +626,7 @@ void MultiPlayerLevel::disconnect(bool sendDisconnect /*= true*/) {
 
 Tickable* MultiPlayerLevel::makeSoundUpdater(
     std::shared_ptr<Minecart> minecart) {
-    return NULL;  // new MinecartSoundUpdater(minecraft->soundEngine, minecart,
+    return nullptr;  // new MinecartSoundUpdater(minecraft->soundEngine, minecart,
                   // minecraft->player);
 }
 
@@ -730,7 +730,7 @@ void MultiPlayerLevel::animateTickDoWork() {
         }
     }
 
-    Minecraft::GetInstance()->animateTickLevel = NULL;
+    Minecraft::GetInstance()->animateTickLevel = nullptr;
     delete animateRandom;
 
     chunksToAnimate.clear();
@@ -850,7 +850,7 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     while (it != entities.end()) {
         std::shared_ptr<Entity> e = *it;  // entities.at(i);
 
-        if (e->riding != NULL) {
+        if (e->riding != nullptr) {
             if (e->riding->removed || e->riding->rider.lock() != e) {
                 e->riding->rider = std::weak_ptr<Entity>();
                 e->riding = nullptr;
@@ -915,11 +915,11 @@ void MultiPlayerLevel::removeUnusedTileEntitiesInRegion(int x0, int y0, int z0,
         if (te->x >= x0 && te->y >= y0 && te->z >= z0 && te->x < x1 &&
             te->y < y1 && te->z < z1) {
             LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
-            if (lc != NULL) {
+            if (lc != nullptr) {
                 // Only remove tile entities where this is no longer a tile
                 // entity
                 int tileId = lc->getTile(te->x & 15, te->y, te->z & 15);
-                if (Tile::tiles[tileId] == NULL ||
+                if (Tile::tiles[tileId] == nullptr ||
                     !Tile::tiles[tileId]->isEntityTile()) {
                     tileEntityList[i] = tileEntityList.back();
                     tileEntityList.pop_back();

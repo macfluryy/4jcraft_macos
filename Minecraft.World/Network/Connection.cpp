@@ -30,7 +30,7 @@ void Connection::_init() {
     quitting = false;
     disconnected = false;
     disconnectReason = DisconnectPacket::eDisconnect_None;
-    disconnectReasonObjects = NULL;
+    disconnectReasonObjects = nullptr;
     noInputTicks = 0;
     estimatedRemaining = 0;
     fakeLag = 0;
@@ -64,16 +64,16 @@ Connection::~Connection() {
     // These should all have been destroyed in close() but no harm in checking
     // again
     delete byteArrayDos;
-    byteArrayDos = NULL;
+    byteArrayDos = nullptr;
     delete baos;
-    baos = NULL;
+    baos = nullptr;
     if (bufferedDos) {
         bufferedDos->deleteChildStream();
         delete bufferedDos;
-        bufferedDos = NULL;
+        bufferedDos = nullptr;
     }
     delete dis;
-    dis = NULL;
+    dis = nullptr;
 }
 
 Connection::Connection(Socket* socket, const std::wstring& id,
@@ -180,7 +180,7 @@ bool Connection::writeTick() {
 
     // 4J Stu - If the connection is closed and the output stream has been
     // deleted
-    if (bufferedDos == NULL || byteArrayDos == NULL) return didSomething;
+    if (bufferedDos == nullptr || byteArrayDos == nullptr) return didSomething;
 
     // try {
     if (!outgoing.empty() &&
@@ -320,14 +320,14 @@ bool Connection::readTick() {
 
     // 4J Stu - If the connection has closed and the input stream has been
     // deleted
-    if (dis == NULL) return didSomething;
+    if (dis == nullptr) return didSomething;
 
     // try {
 
     std::shared_ptr<Packet> packet =
         Packet::readPacket(dis, packetListener->isServerPacketListener());
 
-    if (packet != NULL) {
+    if (packet != nullptr) {
         readSizes[packet->getId()] += packet->getEstimatedSize() + 1;
         EnterCriticalSection(&incoming_cs);
         if (!quitting) {
@@ -368,7 +368,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
     disconnected = true;
 
     disconnectReason = reason;  // va_arg( input, const wstring );
-    disconnectReasonObjects = NULL;
+    disconnectReasonObjects = nullptr;
 
     //	int count = 0, sum = 0, i = first;
     //	va_list marker;
@@ -383,7 +383,7 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
     //	va_end( marker );
     //	return( sum ? (sum / count) : 0 );
 
-    //	CreateThread(NULL, 0, runClose, this, 0, &closeThreadID);
+    //	CreateThread(nullptr, 0, runClose, this, 0, &closeThreadID);
 
     running = false;
 
@@ -398,21 +398,21 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
     writeThread->WaitForCompletion(INFINITE);
 
     delete dis;
-    dis = NULL;
+    dis = nullptr;
     if (bufferedDos) {
         bufferedDos->close();
         bufferedDos->deleteChildStream();
         delete bufferedDos;
-        bufferedDos = NULL;
+        bufferedDos = nullptr;
     }
     if (byteArrayDos) {
         byteArrayDos->close();
         delete byteArrayDos;
-        byteArrayDos = NULL;
+        byteArrayDos = nullptr;
     }
     if (socket) {
         socket->close(packetListener->isServerPacketListener());
-        socket = NULL;
+        socket = nullptr;
     }
 }
 
@@ -534,7 +534,7 @@ int Connection::runRead(void* lpParam) {
     ShutdownManager::HasStarted(ShutdownManager::eConnectionReadThreads);
     Connection* con = (Connection*)lpParam;
 
-    if (con == NULL) {
+    if (con == nullptr) {
         return 0;
     }
 
@@ -580,7 +580,7 @@ int Connection::runWrite(void* lpParam) {
     ShutdownManager::HasStarted(ShutdownManager::eConnectionWriteThreads);
     Connection* con = dynamic_cast<Connection*>((Connection*)lpParam);
 
-    if (con == NULL) {
+    if (con == nullptr) {
         ShutdownManager::HasFinished(ShutdownManager::eConnectionWriteThreads);
         return 0;
     }
@@ -609,8 +609,8 @@ int Connection::runWrite(void* lpParam) {
         //  whether we should do that as well
         waitResult = con->m_hWakeWriteThread->WaitForSignal(100L);
 
-        if (con->bufferedDos != NULL) con->bufferedDos->flush();
-        // if (con->byteArrayDos != NULL) con->byteArrayDos->flush();
+        if (con->bufferedDos != nullptr) con->bufferedDos->flush();
+        // if (con->byteArrayDos != nullptr) con->byteArrayDos->flush();
     }
 
     // 4J was in a finally block.
@@ -625,7 +625,7 @@ int Connection::runWrite(void* lpParam) {
 int Connection::runClose(void* lpParam) {
     Connection* con = dynamic_cast<Connection*>((Connection*)lpParam);
 
-    if (con == NULL) return 0;
+    if (con == nullptr) return 0;
 
     // try {
 
@@ -647,7 +647,7 @@ int Connection::runSendAndQuit(void* lpParam) {
     Connection* con = dynamic_cast<Connection*>((Connection*)lpParam);
     //	printf("Con:0x%x runSendAndQuit\n",con);
 
-    if (con == NULL) return 0;
+    if (con == nullptr) return 0;
 
     // try {
 

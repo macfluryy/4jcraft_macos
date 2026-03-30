@@ -14,7 +14,7 @@ SubselectEntitySelector::~SubselectEntitySelector() { delete m_subselector; }
 
 bool SubselectEntitySelector::matches(std::shared_ptr<Entity> entity) const {
     if (!entity->instanceof(eTYPE_LIVINGENTITY)) return false;
-    if (m_subselector != NULL && !m_subselector->matches(entity)) return false;
+    if (m_subselector != nullptr && !m_subselector->matches(entity)) return false;
     return m_parent->canAttack(std::dynamic_pointer_cast<LivingEntity>(entity),
                                false);
 }
@@ -36,7 +36,7 @@ bool NearestAttackableTargetGoal::DistComp::operator()(
 NearestAttackableTargetGoal::NearestAttackableTargetGoal(
     PathfinderMob* mob, const std::type_info& targetType, int randomInterval,
     bool mustSee, bool mustReach /*= false*/,
-    EntitySelector* entitySelector /* =NULL */)
+    EntitySelector* entitySelector /* =nullptr */)
     : TargetGoal(mob, mustSee, mustReach), targetType(targetType) {
     this->randomInterval = randomInterval;
     this->distComp = new DistComp(mob);
@@ -60,7 +60,7 @@ bool NearestAttackableTargetGoal::canUse() {
         mob->level->getEntitiesOfClass(targetType, &mob_bb, selector);
 
     bool result = false;
-    if (entities != NULL && !entities->empty()) {
+    if (entities != nullptr && !entities->empty()) {
         std::sort(entities->begin(), entities->end(), *distComp);
         target = std::weak_ptr<LivingEntity>(
             std::dynamic_pointer_cast<LivingEntity>(entities->at(0)));

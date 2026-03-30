@@ -12,15 +12,15 @@ AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File* file,
     : id(id), name(name) {
     // 4J init
     textureId = -1;
-    m_colourTable = NULL;
+    m_colourTable = nullptr;
 
     this->file = file;
     this->fallback = fallback;
 
-    m_iconData = NULL;
+    m_iconData = nullptr;
     m_iconSize = 0;
 
-    m_comparisonData = NULL;
+    m_comparisonData = nullptr;
     m_comparisonSize = 0;
 
     // 4J Stu - These calls need to be in the most derived version of the class
@@ -52,7 +52,7 @@ InputStream* AbstractTexturePack::getResource(
 {
     app.DebugPrintf("texture - %ls\n", name.c_str());
     InputStream* is = getResourceImplementation(name);
-    if (is == NULL && fallback != NULL && allowFallback) {
+    if (is == nullptr && fallback != nullptr && allowFallback) {
         is = fallback->getResource(name, true);
     }
 
@@ -67,13 +67,13 @@ InputStream* AbstractTexturePack::getResource(
 //}
 
 void AbstractTexturePack::unload(Textures* textures) {
-    if (iconImage != NULL && textureId != -1) {
+    if (iconImage != nullptr && textureId != -1) {
         textures->releaseTexture(textureId);
     }
 }
 
 void AbstractTexturePack::load(Textures* textures) {
-    if (iconImage != NULL) {
+    if (iconImage != nullptr) {
         if (textureId == -1) {
             textureId = textures->getTexture(iconImage);
         }
@@ -89,7 +89,7 @@ bool AbstractTexturePack::hasFile(const std::wstring& name,
                                   bool allowFallback) {
     bool hasFile = this->hasFile(name);
 
-    return !hasFile && (allowFallback && fallback != NULL)
+    return !hasFile && (allowFallback && fallback != nullptr)
                ? fallback->hasFile(name, allowFallback)
                : hasFile;
 }
@@ -178,7 +178,7 @@ void AbstractTexturePack::loadDefaultColourTable() {
         FileInputStream fis(coloursFile);
         fis.read(data, 0, dataLength);
         fis.close();
-        if (m_colourTable != NULL) delete m_colourTable;
+        if (m_colourTable != nullptr) delete m_colourTable;
         m_colourTable = new ColourTable(data.data, dataLength);
 
         delete[] data.data;
@@ -209,7 +209,7 @@ void AbstractTexturePack::unloadUI() {
 }
 
 std::wstring AbstractTexturePack::getXuiRootPath() {
-    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
+    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(nullptr);
 
     // Load new skin
     constexpr int LOCATOR_SIZE =
@@ -222,14 +222,14 @@ std::wstring AbstractTexturePack::getXuiRootPath() {
 }
 
 std::uint8_t* AbstractTexturePack::getPackIcon(std::uint32_t& imageBytes) {
-    if (m_iconSize == 0 || m_iconData == NULL) loadIcon();
+    if (m_iconSize == 0 || m_iconData == nullptr) loadIcon();
     imageBytes = m_iconSize;
     return m_iconData;
 }
 
 std::uint8_t* AbstractTexturePack::getPackComparison(
     std::uint32_t& imageBytes) {
-    if (m_comparisonSize == 0 || m_comparisonData == NULL) loadComparison();
+    if (m_comparisonSize == 0 || m_comparisonData == nullptr) loadComparison();
 
     imageBytes = m_comparisonSize;
     return m_comparisonData;

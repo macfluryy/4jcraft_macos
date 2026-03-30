@@ -43,7 +43,7 @@ void UIComponent_Panorama::tick() {
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     EnterCriticalSection(&pMinecraft->m_setLevelCS);
-    if (pMinecraft->level != NULL) {
+    if (pMinecraft->level != nullptr) {
         int64_t i64TimeOfDay = 0;
         // are we in the Nether? - Leave the time as 0 if we are, so we show
         // daylight

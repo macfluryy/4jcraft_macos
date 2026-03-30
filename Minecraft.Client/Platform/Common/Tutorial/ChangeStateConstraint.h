@@ -37,7 +37,7 @@ public:
                           std::size_t sourceStatesCount, double x0, double y0,
                           double z0, double x1, double y1, double z1,
                           bool contains = true, bool changeGameMode = false,
-                          GameType* targetGameMode = NULL);
+                          GameType* targetGameMode = nullptr);
     ~ChangeStateConstraint();
 
     virtual void tick(int iPad);

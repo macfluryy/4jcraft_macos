@@ -19,8 +19,8 @@ MerchantRecipe* MerchantRecipeList::getRecipeFor(
         // attempt to match vs the hint
         MerchantRecipe* r = m_recipes.at(selectionHint);
         if (buyA->id == r->getBuyAItem()->id &&
-            ((buyB == NULL && !r->hasSecondaryBuyItem()) ||
-             (r->hasSecondaryBuyItem() && buyB != NULL &&
+            ((buyB == nullptr && !r->hasSecondaryBuyItem()) ||
+             (r->hasSecondaryBuyItem() && buyB != nullptr &&
               r->getBuyBItem()->id == buyB->id))) {
             if (buyA->count >= r->getBuyAItem()->count &&
                 (!r->hasSecondaryBuyItem() ||
@@ -28,20 +28,20 @@ MerchantRecipe* MerchantRecipeList::getRecipeFor(
                 return r;
             }
         }
-        return NULL;
+        return nullptr;
     }
     for (int i = 0; i < m_recipes.size(); i++) {
         MerchantRecipe* r = m_recipes.at(i);
         if (buyA->id == r->getBuyAItem()->id &&
             buyA->count >= r->getBuyAItem()->count &&
-            ((!r->hasSecondaryBuyItem() && buyB == NULL) ||
-             (r->hasSecondaryBuyItem() && buyB != NULL &&
+            ((!r->hasSecondaryBuyItem() && buyB == nullptr) ||
+             (r->hasSecondaryBuyItem() && buyB != nullptr &&
               r->getBuyBItem()->id == buyB->id &&
               buyB->count >= r->getBuyBItem()->count))) {
             return r;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool MerchantRecipeList::addIfNewOrBetter(MerchantRecipe* recipe) {
@@ -70,13 +70,13 @@ MerchantRecipe* MerchantRecipeList::getMatchingRecipeFor(
             buy->count >= r->getBuyAItem()->count &&
             sell->id == r->getSellItem()->id) {
             if (!r->hasSecondaryBuyItem() ||
-                (buyB != NULL && buyB->id == r->getBuyBItem()->id &&
+                (buyB != nullptr && buyB->id == r->getBuyBItem()->id &&
                  buyB->count >= r->getBuyBItem()->count)) {
                 return r;
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void MerchantRecipeList::writeToStream(DataOutputStream* stream) {
@@ -87,8 +87,8 @@ void MerchantRecipeList::writeToStream(DataOutputStream* stream) {
         Packet::writeItem(r->getSellItem(), stream);
 
         std::shared_ptr<ItemInstance> buyBItem = r->getBuyBItem();
-        stream->writeBoolean(buyBItem != NULL);
-        if (buyBItem != NULL) {
+        stream->writeBoolean(buyBItem != nullptr);
+        if (buyBItem != nullptr) {
             Packet::writeItem(buyBItem, stream);
         }
         stream->writeBoolean(r->isDeprecated());

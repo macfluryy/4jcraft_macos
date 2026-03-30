@@ -39,7 +39,7 @@ std::wstring CraftingContainer::getCustomName() { return L""; }
 bool CraftingContainer::hasCustomName() { return false; }
 
 std::shared_ptr<ItemInstance> CraftingContainer::removeItemNoUpdate(int slot) {
-    if ((*items)[slot] != NULL) {
+    if ((*items)[slot] != nullptr) {
         std::shared_ptr<ItemInstance> item = (*items)[slot];
         (*items)[slot] = nullptr;
         return item;
@@ -49,7 +49,7 @@ std::shared_ptr<ItemInstance> CraftingContainer::removeItemNoUpdate(int slot) {
 
 std::shared_ptr<ItemInstance> CraftingContainer::removeItem(unsigned int slot,
                                                             int count) {
-    if ((*items)[slot] != NULL) {
+    if ((*items)[slot] != nullptr) {
         if ((*items)[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = (*items)[slot];
             (*items)[slot] = nullptr;

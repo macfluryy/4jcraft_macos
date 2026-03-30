@@ -50,12 +50,12 @@ std::wstring FlatGeneratorInfo::toString() {
 
 FlatLayerInfo* FlatGeneratorInfo::getLayerFromString(const std::wstring& input,
                                                      int yOffset) {
-    return NULL;
+    return nullptr;
 }
 
 std::vector<FlatLayerInfo*>* FlatGeneratorInfo::getLayersFromString(
     const std::wstring& input) {
-    if (input.empty()) return NULL;
+    if (input.empty()) return nullptr;
 
     std::vector<FlatLayerInfo*>* result = new std::vector<FlatLayerInfo*>();
     std::vector<std::wstring> depths = stringSplit(input, L',');
@@ -64,7 +64,7 @@ std::vector<FlatLayerInfo*>* FlatGeneratorInfo::getLayersFromString(
 
     for (auto it = depths.begin(); it != depths.end(); ++it) {
         FlatLayerInfo* layer = getLayerFromString(*it, yOffset);
-        if (layer == NULL) return NULL;
+        if (layer == nullptr) return nullptr;
         result->push_back(layer);
         yOffset += layer->getHeight();
     }

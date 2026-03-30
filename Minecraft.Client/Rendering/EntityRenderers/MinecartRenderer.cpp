@@ -80,7 +80,7 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
     Tile* tile = cart->getDisplayTile();
     int tileData = cart->getDisplayData();
 
-    if (tile != NULL) {
+    if (tile != nullptr) {
         glPushMatrix();
 
         bindTexture(&TextureAtlas::LOCATION_BLOCKS);

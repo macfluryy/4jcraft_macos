@@ -28,11 +28,11 @@ ServerPlayerGameMode::ServerPlayerGameMode(Level* level) {
     this->level = level;
 
     // 4J Added
-    m_gameRules = NULL;
+    m_gameRules = nullptr;
 }
 
 ServerPlayerGameMode::~ServerPlayerGameMode() {
-    if (m_gameRules != NULL) delete m_gameRules;
+    if (m_gameRules != nullptr) delete m_gameRules;
 }
 
 void ServerPlayerGameMode::setGameModeForPlayer(GameType* gameModeForPlayer) {
@@ -93,7 +93,7 @@ void ServerPlayerGameMode::tick() {
         int t = level->getTile(xDestroyBlock, yDestroyBlock, zDestroyBlock);
         Tile* tile = Tile::tiles[t];
 
-        if (tile == NULL) {
+        if (tile == nullptr) {
             level->destroyTileProgress(player->entityId, xDestroyBlock,
                                        yDestroyBlock, zDestroyBlock, -1);
             lastSentState = -1;
@@ -202,12 +202,12 @@ bool ServerPlayerGameMode::superDestroyBlock(int x, int y, int z) {
     Tile* oldTile = Tile::tiles[level->getTile(x, y, z)];
     int data = level->getData(x, y, z);
 
-    if (oldTile != NULL) {
+    if (oldTile != nullptr) {
         oldTile->playerWillDestroy(level, x, y, z, data, player);
     }
 
     bool changed = level->removeTile(x, y, z);
-    if (oldTile != NULL && changed) {
+    if (oldTile != nullptr && changed) {
         oldTile->destroy(level, x, y, z, data);
     }
     return changed;
@@ -221,9 +221,9 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z) {
     }
 
     if (gameModeForPlayer->isCreative()) {
-        if (player->getCarriedItem() != NULL &&
+        if (player->getCarriedItem() != nullptr &&
             dynamic_cast<WeaponItem*>(player->getCarriedItem()->getItem()) !=
-                NULL) {
+                nullptr) {
             return false;
         }
     }
@@ -287,7 +287,7 @@ bool ServerPlayerGameMode::destroyBlock(int x, int y, int z) {
     } else {
         std::shared_ptr<ItemInstance> item = player->getSelectedItem();
         bool canDestroy = player->canDestroy(Tile::tiles[t]);
-        if (item != NULL) {
+        if (item != nullptr) {
             item->mineBlock(level, t, x, y, z, player);
             if (item->count == 0) {
                 player->removeSelectedItem();
@@ -309,7 +309,7 @@ bool ServerPlayerGameMode::useItem(std::shared_ptr<Player> player, Level* level,
     int oldAux = item->getAuxValue();
     std::shared_ptr<ItemInstance> itemInstance = item->use(level, player);
     if (itemInstance != item ||
-        (itemInstance != NULL && (itemInstance->count != oldCount ||
+        (itemInstance != nullptr && (itemInstance->count != oldCount ||
                                   itemInstance->getUseDuration() > 0 ||
                                   itemInstance->getAuxValue() != oldAux))) {
         player->inventory->items[player->inventory->selected] = itemInstance;
@@ -338,21 +338,21 @@ bool ServerPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
                                      bool bTestUseOnOnly, bool* pbUsedItem) {
     // 4J-PB - Adding a test only version to allow tooltips to be displayed
     int t = level->getTile(x, y, z);
-    if (!player->isSneaking() || player->getCarriedItem() == NULL) {
+    if (!player->isSneaking() || player->getCarriedItem() == nullptr) {
         if (t > 0 && player->isAllowedToUse(Tile::tiles[t])) {
             if (bTestUseOnOnly) {
                 if (Tile::tiles[t]->TestUse()) return true;
             } else {
                 if (Tile::tiles[t]->use(level, x, y, z, player, face, clickX,
                                         clickY, clickZ)) {
-                    if (m_gameRules != NULL) m_gameRules->onUseTile(t, x, y, z);
+                    if (m_gameRules != nullptr) m_gameRules->onUseTile(t, x, y, z);
                     return true;
                 }
             }
         }
     }
 
-    if (item == NULL || !player->isAllowedToUse(item)) return false;
+    if (item == nullptr || !player->isAllowedToUse(item)) return false;
     if (isCreative()) {
         int aux = item->getAuxValue();
         int count = item->count;
@@ -371,6 +371,6 @@ void ServerPlayerGameMode::setLevel(ServerLevel* newLevel) { level = newLevel; }
 
 // 4J Added
 void ServerPlayerGameMode::setGameRules(GameRulesInstance* rules) {
-    if (m_gameRules != NULL) delete m_gameRules;
+    if (m_gameRules != nullptr) delete m_gameRules;
     m_gameRules = rules;
 }

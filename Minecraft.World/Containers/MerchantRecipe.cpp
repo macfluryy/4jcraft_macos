@@ -46,7 +46,7 @@ std::shared_ptr<ItemInstance> MerchantRecipe::getBuyAItem() { return buyA; }
 
 std::shared_ptr<ItemInstance> MerchantRecipe::getBuyBItem() { return buyB; }
 
-bool MerchantRecipe::hasSecondaryBuyItem() { return buyB != NULL; }
+bool MerchantRecipe::hasSecondaryBuyItem() { return buyB != nullptr; }
 
 std::shared_ptr<ItemInstance> MerchantRecipe::getSellItem() { return sell; }
 
@@ -54,15 +54,15 @@ bool MerchantRecipe::isSame(MerchantRecipe* other) {
     if (buyA->id != other->buyA->id || sell->id != other->sell->id) {
         return false;
     }
-    return (buyB == NULL && other->buyB == NULL) ||
-           (buyB != NULL && other->buyB != NULL && buyB->id == other->buyB->id);
+    return (buyB == nullptr && other->buyB == nullptr) ||
+           (buyB != nullptr && other->buyB != nullptr && buyB->id == other->buyB->id);
 }
 
 bool MerchantRecipe::isSameSameButBetter(MerchantRecipe* other) {
     // same deal, but cheaper
     return isSame(other) &&
            (buyA->count < other->buyA->count ||
-            (buyB != NULL && buyB->count < other->buyB->count));
+            (buyB != nullptr && buyB->count < other->buyB->count));
 }
 
 int MerchantRecipe::getUses() { return uses; }
@@ -99,7 +99,7 @@ CompoundTag* MerchantRecipe::createTag() {
     CompoundTag* tag = new CompoundTag();
     tag->putCompound(L"buy", buyA->save(new CompoundTag(L"buy")));
     tag->putCompound(L"sell", sell->save(new CompoundTag(L"sell")));
-    if (buyB != NULL) {
+    if (buyB != nullptr) {
         tag->putCompound(L"buyB", buyB->save(new CompoundTag(L"buyB")));
     }
     tag->putInt(L"uses", uses);

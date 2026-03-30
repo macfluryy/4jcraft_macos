@@ -11,11 +11,11 @@ Random EnchantmentHelper::random;
 
 int EnchantmentHelper::getEnchantmentLevel(
     int enchantmentId, std::shared_ptr<ItemInstance> piece) {
-    if (piece == NULL) {
+    if (piece == nullptr) {
         return 0;
     }
     ListTag<CompoundTag>* enchantmentTags = piece->getEnchantmentTags();
-    if (enchantmentTags == NULL) {
+    if (enchantmentTags == nullptr) {
         return 0;
     }
     for (int i = 0; i < enchantmentTags->size(); i++) {
@@ -39,7 +39,7 @@ std::unordered_map<int, int>* EnchantmentHelper::getEnchantments(
             ? Item::enchantedBook->getEnchantments(item)
             : item->getEnchantmentTags();
 
-    if (list != NULL) {
+    if (list != nullptr) {
         for (int i = 0; i < list->size(); i++) {
             int type =
                 list->get(i)->getShort((wchar_t*)ItemInstance::TAG_ENCH_ID);
@@ -87,7 +87,7 @@ void EnchantmentHelper::setEnchantments(
 
 int EnchantmentHelper::getEnchantmentLevel(int enchantmentId,
                                            ItemInstanceArray inventory) {
-    if (inventory.data == NULL) return 0;
+    if (inventory.data == nullptr) return 0;
     int bestLevel = 0;
     // for (ItemInstance piece : inventory)
     for (unsigned int i = 0; i < inventory.length; ++i) {
@@ -101,11 +101,11 @@ int EnchantmentHelper::getEnchantmentLevel(int enchantmentId,
 
 void EnchantmentHelper::runIterationOnItem(
     EnchantmentIterationMethod& method, std::shared_ptr<ItemInstance> piece) {
-    if (piece == NULL) {
+    if (piece == nullptr) {
         return;
     }
     ListTag<CompoundTag>* enchantmentTags = piece->getEnchantmentTags();
-    if (enchantmentTags == NULL) {
+    if (enchantmentTags == nullptr) {
         return;
     }
     for (int i = 0; i < enchantmentTags->size(); i++) {
@@ -114,7 +114,7 @@ void EnchantmentHelper::runIterationOnItem(
         int level = enchantmentTags->get(i)->getShort(
             (wchar_t*)ItemInstance::TAG_ENCH_LEVEL);
 
-        if (Enchantment::enchantments[type] != NULL) {
+        if (Enchantment::enchantments[type] != nullptr) {
             method.doEnchantment(Enchantment::enchantments[type], level);
         }
     }
@@ -242,7 +242,7 @@ std::shared_ptr<ItemInstance> EnchantmentHelper::getRandomItemWith(
     ItemInstanceArray items = source->getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
-        if (item != NULL && getEnchantmentLevel(enchantment->id, item) > 0) {
+        if (item != nullptr && getEnchantmentLevel(enchantment->id, item) > 0) {
             return item;
         }
     }
@@ -298,7 +298,7 @@ std::shared_ptr<ItemInstance> EnchantmentHelper::enchantItem(
 
     if (isBook) itemInstance->id = Item::enchantedBook_Id;
 
-    if (newEnchantment != NULL) {
+    if (newEnchantment != nullptr) {
         for (auto it = newEnchantment->begin(); it != newEnchantment->end();
              ++it) {
             EnchantmentInstance* e = *it;
@@ -329,7 +329,7 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
     int itemBonus = item->getEnchantmentValue();
 
     if (itemBonus <= 0) {
-        return NULL;
+        return nullptr;
     }
     // 4J Stu - Update function to 1.3 version for TU7
     itemBonus /= 2;
@@ -345,11 +345,11 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
         realValue = 1;
     }
 
-    std::vector<EnchantmentInstance*>* results = NULL;
+    std::vector<EnchantmentInstance*>* results = nullptr;
 
     std::unordered_map<int, EnchantmentInstance*>* availableEnchantments =
         getAvailableEnchantmentResults(realValue, itemInstance);
-    if (availableEnchantments != NULL && !availableEnchantments->empty()) {
+    if (availableEnchantments != nullptr && !availableEnchantments->empty()) {
         std::vector<WeighedRandomItem*> values;
         for (auto it = availableEnchantments->begin();
              it != availableEnchantments->end(); ++it) {
@@ -359,7 +359,7 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
             (EnchantmentInstance*)WeighedRandom::getRandomItem(random, &values);
         values.clear();
 
-        if (instance != NULL) {
+        if (instance != nullptr) {
             results = new std::vector<EnchantmentInstance*>();
             results->push_back(
                 instance->copy());  // 4J Stu - Inserting a copy so we can clear
@@ -415,7 +415,7 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
             }
         }
     }
-    if (availableEnchantments != NULL) {
+    if (availableEnchantments != nullptr) {
         for (auto it = availableEnchantments->begin();
              it != availableEnchantments->end(); ++it) {
             delete it->second;
@@ -430,14 +430,14 @@ std::unordered_map<int, EnchantmentInstance*>*
 EnchantmentHelper::getAvailableEnchantmentResults(
     int value, std::shared_ptr<ItemInstance> itemInstance) {
     Item* item = itemInstance->getItem();
-    std::unordered_map<int, EnchantmentInstance*>* results = NULL;
+    std::unordered_map<int, EnchantmentInstance*>* results = nullptr;
 
     bool isBook = itemInstance->id == Item::book_Id;
 
     // for (Enchantment e : Enchantment.enchantments)
     for (unsigned int i = 0; i < Enchantment::enchantments.length; ++i) {
         Enchantment* e = Enchantment::enchantments[i];
-        if (e == NULL) {
+        if (e == nullptr) {
             continue;
         }
 
@@ -449,7 +449,7 @@ EnchantmentHelper::getAvailableEnchantmentResults(
         for (int level = e->getMinLevel(); level <= e->getMaxLevel(); level++) {
             if (value >= e->getMinCost(level) &&
                 value <= e->getMaxCost(level)) {
-                if (results == NULL) {
+                if (results == nullptr) {
                     results =
                         new std::unordered_map<int, EnchantmentInstance*>();
                 }

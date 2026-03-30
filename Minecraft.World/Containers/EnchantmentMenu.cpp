@@ -74,7 +74,7 @@ void EnchantmentMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
 {
     std::shared_ptr<ItemInstance> item = enchantSlots->getItem(0);
 
-    if (item == NULL || !item->isEnchantable()) {
+    if (item == nullptr || !item->isEnchantable()) {
         for (int i = 0; i < 3; i++) {
             costs[i] = 0;
         }
@@ -136,14 +136,14 @@ void EnchantmentMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
 
 bool EnchantmentMenu::clickMenuButton(std::shared_ptr<Player> player, int i) {
     std::shared_ptr<ItemInstance> item = enchantSlots->getItem(0);
-    if (costs[i] > 0 && item != NULL &&
+    if (costs[i] > 0 && item != nullptr &&
         (player->experienceLevel >= costs[i] || player->abilities.instabuild)) {
         if (!level->isClientSide) {
             bool isBook = item->id == Item::book_Id;
 
             std::vector<EnchantmentInstance*>* newEnchantment =
                 EnchantmentHelper::selectEnchantment(&random, item, costs[i]);
-            if (newEnchantment != NULL) {
+            if (newEnchantment != nullptr) {
                 player->giveExperienceLevels(-costs[i]);
                 if (isBook) item->id = Item::enchantedBook_Id;
                 int randomIndex =
@@ -176,7 +176,7 @@ void EnchantmentMenu::removed(std::shared_ptr<Player> player) {
     if (level->isClientSide) return;
 
     std::shared_ptr<ItemInstance> item = enchantSlots->removeItemNoUpdate(0);
-    if (item != NULL) {
+    if (item != nullptr) {
         player->drop(item);
     }
 }
@@ -193,7 +193,7 @@ std::shared_ptr<ItemInstance> EnchantmentMenu::quickMoveStack(
     Slot* slot = slots.at(slotIndex);
     Slot* IngredientSlot = slots.at(INGREDIENT_SLOT);
 
-    if (slot != NULL && slot->hasItem()) {
+    if (slot != nullptr && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();
 

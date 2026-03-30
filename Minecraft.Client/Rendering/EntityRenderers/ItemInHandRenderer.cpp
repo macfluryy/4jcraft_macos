@@ -231,7 +231,7 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
     // 4J - code borrowed from render method below, although not factoring in
     // brightness as that should already be being taken into account by texture
     // lighting. This is for colourising things held in 3rd person view.
-    if ((setColor) && (item != NULL)) {
+    if ((setColor) && (item != nullptr)) {
         int col = Item::items[item->id]->getColor(item, 0);
         float red = ((col >> 16) & 0xff) / 255.0f;
         float g = ((col >> 8) & 0xff) / 255.0f;
@@ -242,7 +242,7 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
 
     glPushMatrix();
     Tile* tile = Tile::tiles[item->id];
-    if (item->getIconType() == Icon::TYPE_TERRAIN && tile != NULL &&
+    if (item->getIconType() == Icon::TYPE_TERRAIN && tile != nullptr &&
         TileRenderer::canRender(tile->getRenderShape())) {
         MemSect(31);
         minecraft->textures->bindTexture(
@@ -257,7 +257,7 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
     } else {
         MemSect(31);
         Icon* icon = mob->getItemInHandIcon(item, layer);
-        if (icon == NULL) {
+        if (icon == nullptr) {
             glPopMatrix();
             MemSect(0);
             return;
@@ -308,7 +308,7 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
         renderItem3D(t, u0, v0, u1, v1, icon->getSourceWidth(),
                      icon->getSourceHeight(), 1 / 16.0f, false, bIsTerrain);
 
-        if (item != NULL && item->isFoil() && layer == 0) {
+        if (item != nullptr && item->isFoil() && layer == 0) {
             glDepthFunc(GL_EQUAL);
             glDisable(GL_LIGHTING);
             minecraft->textures->bindTexture(&ENCHANT_GLINT_LOCATION);
@@ -453,7 +453,7 @@ void ItemInHandRenderer::render(float a) {
         glMultiTexCoord2f(GL_TEXTURE1, u / 1.0f, v / 1.0f);
         glColor4f(1, 1, 1, 1);
     }
-    if (item != NULL) {
+    if (item != nullptr) {
         int col = Item::items[item->id]->getColor(item, 0);
         float red = ((col >> 16) & 0xff) / 255.0f;
         float g = ((col >> 8) & 0xff) / 255.0f;
@@ -464,7 +464,7 @@ void ItemInHandRenderer::render(float a) {
         glColor4f(br, br, br, 1);
     }
 
-    if (item != NULL && item->id == Item::map->id) {
+    if (item != nullptr && item->id == Item::map->id) {
         glPushMatrix();
         float d = 0.8f;
 
@@ -578,13 +578,13 @@ void ItemInHandRenderer::render(float a) {
         std::shared_ptr<MapItemSavedData> data =
             Item::map->getSavedData(item, minecraft->level);
         PIXBeginNamedEvent(0, "Minimap render");
-        if (data != NULL)
+        if (data != nullptr)
             minimap->render(minecraft->player, minecraft->textures, data,
                             minecraft->player->entityId);
         PIXEndNamedEvent();
 
         glPopMatrix();
-    } else if (item != NULL) {
+    } else if (item != nullptr) {
         glPushMatrix();
         float d = 0.8f;
 
@@ -793,7 +793,7 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
             }
         }
 
-        if (Tile::tiles[tile] != NULL)
+        if (Tile::tiles[tile] != nullptr)
             renderTex(a, Tile::tiles[tile]->getTexture(2));
     }
 
@@ -943,10 +943,10 @@ void ItemInHandRenderer::tick() {
 
     bool matches =
         lastSlot == player->inventory->selected && nextTile == selectedItem;
-    if (selectedItem == NULL && nextTile == NULL) {
+    if (selectedItem == nullptr && nextTile == nullptr) {
         matches = true;
     }
-    if (nextTile != NULL && selectedItem != NULL && nextTile != selectedItem &&
+    if (nextTile != nullptr && selectedItem != nullptr && nextTile != selectedItem &&
         nextTile->id == selectedItem->id &&
         nextTile->getAuxValue() == selectedItem->getAuxValue()) {
         selectedItem = nextTile;

@@ -33,7 +33,7 @@ void DragonFireball::onHit(HitResult* res) {
         std::vector<std::shared_ptr<Entity> >* entitiesOfClass =
             level->getEntitiesOfClass(typeid(LivingEntity), &aoe);
 
-        if (entitiesOfClass != NULL && !entitiesOfClass->empty()) {
+        if (entitiesOfClass != nullptr && !entitiesOfClass->empty()) {
             // for (Entity e : entitiesOfClass)
             for (auto it = entitiesOfClass->begin();
                  it != entitiesOfClass->end(); ++it) {

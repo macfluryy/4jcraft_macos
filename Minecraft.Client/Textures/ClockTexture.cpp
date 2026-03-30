@@ -9,7 +9,7 @@
 
 ClockTexture::ClockTexture() : StitchedTexture(L"clock", L"clock") {
     rot = rota = 0.0;
-    m_dataTexture = NULL;
+    m_dataTexture = nullptr;
     m_iPad = XUSER_INDEX_ANY;
 }
 
@@ -24,8 +24,8 @@ void ClockTexture::cycleFrames() {
     Minecraft* mc = Minecraft::GetInstance();
 
     double rott = 0;
-    if (m_iPad >= 0 && m_iPad < XUSER_MAX_COUNT && mc->level != NULL &&
-        mc->localplayers[m_iPad] != NULL) {
+    if (m_iPad >= 0 && m_iPad < XUSER_MAX_COUNT && mc->level != nullptr &&
+        mc->localplayers[m_iPad] != nullptr) {
         float time = mc->localplayers[m_iPad]->level->getTimeOfDay(1);
         rott = time;
         if (!mc->localplayers[m_iPad]->level->dimension->isNaturalDimension()) {
@@ -48,7 +48,7 @@ void ClockTexture::cycleFrames() {
     rot += rota;
 
     // 4J Stu - We share data with another texture
-    if (m_dataTexture != NULL) {
+    if (m_dataTexture != nullptr) {
         int newFrame = (int)((rot + 1.0) * m_dataTexture->frames->size()) %
                        m_dataTexture->frames->size();
         while (newFrame < 0) {
@@ -77,7 +77,7 @@ int ClockTexture::getSourceWidth() const { return source->getWidth(); }
 int ClockTexture::getSourceHeight() const { return source->getHeight(); }
 
 int ClockTexture::getFrames() {
-    if (m_dataTexture == NULL) {
+    if (m_dataTexture == nullptr) {
         return StitchedTexture::getFrames();
     } else {
         return m_dataTexture->getFrames();
@@ -85,9 +85,9 @@ int ClockTexture::getFrames() {
 }
 
 void ClockTexture::freeFrameTextures() {
-    if (m_dataTexture == NULL) {
+    if (m_dataTexture == nullptr) {
         StitchedTexture::freeFrameTextures();
     }
 }
 
-bool ClockTexture::hasOwnData() { return m_dataTexture == NULL; }
+bool ClockTexture::hasOwnData() { return m_dataTexture == nullptr; }

@@ -71,7 +71,7 @@ bool VillageFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 
     bool forcePlacement = false;
     LevelGenerationOptions* levelGenOptions = app.getLevelGenerationOptions();
-    if (levelGenOptions != NULL) {
+    if (levelGenOptions != nullptr) {
         forcePlacement =
             levelGenOptions->isFeatureChunk(x, z, eFeature_Village);
     }
@@ -144,7 +144,7 @@ VillageFeature::VillageStart::VillageStart(Level* level, Random* random,
     int count = 0;
     for (auto it = pieces.begin(); it != pieces.end(); it++) {
         StructurePiece* piece = *it;
-        if (dynamic_cast<VillagePieces::VillageRoadPiece*>(piece) == NULL) {
+        if (dynamic_cast<VillagePieces::VillageRoadPiece*>(piece) == nullptr) {
             count++;
         }
     }

@@ -11,7 +11,7 @@ GameCommandPacket::GameCommandPacket(EGameCommand command, byteArray data) {
     this->data = data;
     length = 0;
 
-    if (data.data != NULL) {
+    if (data.data != nullptr) {
         length = data.length;
 
         if (length > std::numeric_limits<short>::max()) {
@@ -32,7 +32,7 @@ void GameCommandPacket::read(DataInputStream* dis) {
     length = dis->readShort();
 
     if (length > 0 && length < std::numeric_limits<short>::max()) {
-        if (data.data != NULL) {
+        if (data.data != nullptr) {
             delete[] data.data;
         }
         data = byteArray(length);
@@ -43,7 +43,7 @@ void GameCommandPacket::read(DataInputStream* dis) {
 void GameCommandPacket::write(DataOutputStream* dos) {
     dos->writeInt(command);
     dos->writeShort((short)length);
-    if (data.data != NULL) {
+    if (data.data != nullptr) {
         dos->write(data);
     }
 }

@@ -93,44 +93,44 @@ void UIScene_Keyboard::handleInput(int iPad, int key, bool repeat, bool pressed,
             case ACTION_MENU_X:  // X
                 out = IggyPlayerCallMethodRS(
                     getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                    m_funcBackspaceButtonPressed, 0, NULL);
+                    m_funcBackspaceButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_PAGEUP:  // LT
                 out = IggyPlayerCallMethodRS(
                     getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                    m_funcSymbolButtonPressed, 0, NULL);
+                    m_funcSymbolButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_Y:  // Y
                 out = IggyPlayerCallMethodRS(getMovie(), &result,
                                              IggyPlayerRootPath(getMovie()),
-                                             m_funcSpaceButtonPressed, 0, NULL);
+                                             m_funcSpaceButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_STICK_PRESS:  // LS
                 out = IggyPlayerCallMethodRS(getMovie(), &result,
                                              IggyPlayerRootPath(getMovie()),
-                                             m_funcCapsButtonPressed, 0, NULL);
+                                             m_funcCapsButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_LEFT_SCROLL:  // LB
                 out = IggyPlayerCallMethodRS(
                     getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                    m_funcCursorLeftButtonPressed, 0, NULL);
+                    m_funcCursorLeftButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_RIGHT_SCROLL:  // RB
                 out = IggyPlayerCallMethodRS(
                     getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                    m_funcCursorRightButtonPressed, 0, NULL);
+                    m_funcCursorRightButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_PAUSEMENU:  // Start
                 if (!m_bKeyboardDonePressed) {
                     out = IggyPlayerCallMethodRS(
                         getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                        m_funcDoneButtonPressed, 0, NULL);
+                        m_funcDoneButtonPressed, 0, nullptr);
 
                     // kick off done timer
                     addTimer(KEYBOARD_DONE_TIMER_ID, KEYBOARD_DONE_TIMER_TIME);

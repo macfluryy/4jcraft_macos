@@ -29,13 +29,13 @@ public:
     bool hasPartyMember;
 
     FriendSessionInfo() {
-        displayLabel = NULL;
+        displayLabel = nullptr;
         displayLabelLength = 0;
         displayLabelViewableStartIndex = 0;
         hasPartyMember = false;
     }
 
     ~FriendSessionInfo() {
-        if (displayLabel != NULL) delete displayLabel;
+        if (displayLabel != nullptr) delete displayLabel;
     }
 };

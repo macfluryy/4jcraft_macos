@@ -35,7 +35,7 @@ void CreativeMode::adjustPlayer(std::shared_ptr<Player> player) {
     enableCreativeForPlayer(player);
 
     for (int i = 0; i < 9; i++) {
-        if (player->inventory->items[i] == NULL) {
+        if (player->inventory->items[i] == nullptr) {
             player->inventory->items[i] = std::shared_ptr<ItemInstance>(
                 new ItemInstance(User::allowedTiles[i]));
         } else {
@@ -61,7 +61,7 @@ bool CreativeMode::useItemOn(std::shared_ptr<Player> player, Level* level,
     if (t > 0) {
         if (Tile::tiles[t]->use(level, x, y, z, player)) return true;
     }
-    if (item == NULL) return false;
+    if (item == nullptr) return false;
     int aux = item->getAuxValue();
     int count = item->count;
     bool success = item->useOn(player, level, x, y, z, face);

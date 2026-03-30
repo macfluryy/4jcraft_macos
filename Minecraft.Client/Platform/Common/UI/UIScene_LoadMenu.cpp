@@ -39,7 +39,7 @@ int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(
         pClass->m_uiThumbnailSize = dwThumbnailBytes;
         pClass->m_bSaveThumbnailReady = true;
     } else {
-        app.DebugPrintf("Thumbnail data is NULL, or has size 0\n");
+        app.DebugPrintf("Thumbnail data is nullptr, or has size 0\n");
         pClass->m_bThumbnailGetFailed = true;
     }
     pClass->m_bRetrievingSaveThumbnail = false;
@@ -98,7 +98,7 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
     m_bSaveThumbnailReady = false;
     m_bRetrievingSaveThumbnail = true;
     m_bShowTimer = false;
-    m_pDLCPack = NULL;
+    m_pDLCPack = nullptr;
     m_bAvailableTexturePacksChecked = false;
     m_bRequestQuadrantSignin = false;
     m_iTexturePacksNotInstalled = 0;
@@ -280,10 +280,10 @@ void UIScene_LoadMenu::tick() {
         // #ifdef _DEBUG
         // 			// dump out the thumbnail
         // 			HANDLE hThumbnail =
-        // CreateFile("GAME:\\thumbnail.png", GENERIC_WRITE, 0, NULL,
-        // OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, NULL);
+        // CreateFile("GAME:\\thumbnail.png", GENERIC_WRITE, 0, nullptr,
+        // OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, nullptr);
         // DWORD dwBytes;
-        // 			WriteFile(hThumbnail,pbImageData,dwImageBytes,&dwBytes,NULL);
+        // 			WriteFile(hThumbnail,pbImageData,dwImageBytes,&dwBytes,nullptr);
         // 			XCloseHandle(hThumbnail);
         // #endif
 
@@ -538,7 +538,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
         TexturePack* pTexturePack = pMinecraft->skins->getTexturePackById(
             m_MoreOptionsParams.dwTexturePack);
 
-        if (pTexturePack == NULL) {
+        if (pTexturePack == nullptr) {
 #if TO_BE_IMPLEMENTED
             // They've selected a texture pack they don't have yet
             // upsell
@@ -754,7 +754,7 @@ void UIScene_LoadMenu::LaunchGame(void) {
                     // IDS_CONFIRM_START_SAVEDINCREATIVE_CONTINUE, uiIDA, 1,
                     // m_iPad,&CScene_LoadGameSettings::ConfirmLoadReturned,this,app.GetStringTable());
 
-                    if (m_levelGen != NULL) {
+                    if (m_levelGen != nullptr) {
                         m_bIsCorrupt = false;
                         LoadDataComplete(this);
                     } else {
@@ -805,7 +805,7 @@ void UIScene_LoadMenu::LaunchGame(void) {
                 2, m_iPad, &UIScene_LoadMenu::ConfirmLoadReturned, this);
         }
     } else {
-        if (m_levelGen != NULL) {
+        if (m_levelGen != nullptr) {
             m_bIsCorrupt = false;
             LoadDataComplete(this);
         } else {
@@ -864,7 +864,7 @@ int UIScene_LoadMenu::ConfirmLoadReturned(void* pParam, int iPad,
     UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)pParam;
 
     if (result == C4JStorage::EMessage_ResultAccept) {
-        if (pClass->m_levelGen != NULL) {
+        if (pClass->m_levelGen != nullptr) {
             pClass->m_bIsCorrupt = false;
             pClass->LoadDataComplete(pClass);
         } else {
@@ -1058,7 +1058,7 @@ int UIScene_LoadMenu::DeleteSaveDataReturned(void* pParam, bool bSuccess) {
 // sign-in or not
 void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
                                          int localUsersMask) {
-    if (pClass->m_levelGen == NULL) {
+    if (pClass->m_levelGen == nullptr) {
         INT saveOrCheckpointId = 0;
         bool validSave =
             StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
@@ -1088,7 +1088,7 @@ void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = pClass->m_seed;
-    param->saveData = NULL;
+    param->saveData = nullptr;
     param->levelGen = pClass->m_levelGen;
     param->texturePackId = pClass->m_MoreOptionsParams.dwTexturePack;
 

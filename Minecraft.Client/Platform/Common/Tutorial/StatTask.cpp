@@ -7,7 +7,7 @@
 
 StatTask::StatTask(Tutorial* tutorial, int descriptionId,
                    bool enablePreCompletion, Stat* stat, int variance /*= 1*/)
-    : TutorialTask(tutorial, descriptionId, enablePreCompletion, NULL) {
+    : TutorialTask(tutorial, descriptionId, enablePreCompletion, nullptr) {
     this->stat = stat;
 
     Minecraft* minecraft = Minecraft::GetInstance();

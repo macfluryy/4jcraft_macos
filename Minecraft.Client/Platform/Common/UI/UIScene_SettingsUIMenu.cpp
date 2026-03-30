@@ -8,7 +8,7 @@ UIScene_SettingsUIMenu::UIScene_SettingsUIMenu(int iPad, void* initData,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-    m_bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    m_bNotInGame = (Minecraft::GetInstance()->level == nullptr);
 
     m_checkboxDisplayHUD.init(
         app.GetString(IDS_CHECKBOX_DISPLAY_HUD), eControl_DisplayHUD,
@@ -49,7 +49,7 @@ UIScene_SettingsUIMenu::UIScene_SettingsUIMenu(int iPad, void* initData,
 
     doHorizontalResizeCheck();
 
-    bool bInGame = (Minecraft::GetInstance()->level != NULL);
+    bool bInGame = (Minecraft::GetInstance()->level != nullptr);
     bool bPrimaryPlayer = ProfileManager.GetPrimaryPad() == m_iPad;
 
     // if we're not in the game, we need to use basescene 0
@@ -75,7 +75,7 @@ void UIScene_SettingsUIMenu::updateTooltips() {
 }
 
 void UIScene_SettingsUIMenu::updateComponents() {
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
     if (bNotInGame) {
         m_parentLayer->showComponent(m_iPad, eUIComponent_Panorama, true);
         m_parentLayer->showComponent(m_iPad, eUIComponent_Logo, true);

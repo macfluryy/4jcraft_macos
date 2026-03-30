@@ -12,7 +12,7 @@ protected:
 public:
     RideEntityTask(const int eTYPE, Tutorial* tutorial, int descriptionId,
                    bool enablePreCompletion = false,
-                   std::vector<TutorialConstraint*>* inConstraints = NULL,
+                   std::vector<TutorialConstraint*>* inConstraints = nullptr,
                    bool bShowMinimumTime = false, bool bAllowFade = true,
                    bool bTaskReminders = true);
 

@@ -24,12 +24,12 @@ McRegionLevelStorage::~McRegionLevelStorage() {
 ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
     // File folder = getFolder();
 
-    if (dynamic_cast<HellDimension*>(dimension) != NULL) {
+    if (dynamic_cast<HellDimension*>(dimension) != nullptr) {
         if (app.GetResetNether()) {
 #ifdef SPLIT_SAVES
             std::vector<FileEntry*>* netherFiles =
                 m_saveFile->getRegionFilesByDimension(1);
-            if (netherFiles != NULL) {
+            if (netherFiles != nullptr) {
                 DWORD bytesWritten = 0;
                 for (auto it = netherFiles->begin();
                      it != netherFiles->end(); ++it) {
@@ -41,7 +41,7 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
 #else
             std::vector<FileEntry*>* netherFiles =
                 m_saveFile->getFilesWithPrefix(LevelStorage::NETHER_FOLDER);
-            if (netherFiles != NULL) {
+            if (netherFiles != nullptr) {
                 for (auto it = netherFiles->begin();
                      it != netherFiles->end(); ++it) {
                     m_saveFile->deleteFile(*it);
@@ -77,7 +77,7 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
                 m_saveFile->getFilesWithPrefix(LevelStorage::ENDER_FOLDER);
 
             // 4J-PB - There will be no End in early saves
-            if (endFiles != NULL) {
+            if (endFiles != nullptr) {
                 for (auto it = endFiles->begin(); it != endFiles->end();
                      ++it) {
                     m_saveFile->deleteFile(*it);

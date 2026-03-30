@@ -18,7 +18,7 @@ CRITICAL_SECTION Socket::s_hostQueueLock[2];
 std::queue<std::uint8_t> Socket::s_hostQueue[2];
 Socket::SocketOutputStreamLocal* Socket::s_hostOutStream[2];
 Socket::SocketInputStreamLocal* Socket::s_hostInStream[2];
-ServerConnection* Socket::s_serverConnection = NULL;
+ServerConnection* Socket::s_serverConnection = nullptr;
 
 void Socket::EnsureStreamsInitialised() {
     // Thread-safe one-time initialisation via C++11 magic-statics guarantee.
@@ -71,19 +71,19 @@ Socket::Socket(bool response) {
     } else {
         m_end = SOCKET_CLIENT_END;
         Socket* socket = new Socket(1);
-        if (s_serverConnection != NULL) {
+        if (s_serverConnection != nullptr) {
             s_serverConnection->NewIncomingSocket(socket);
         } else {
             app.DebugPrintf(
                 "SOCKET: Warning - attempted to notify server of new incoming "
-                "socket but s_serverConnection is NULL\n");
+                "socket but s_serverConnection is nullptr\n");
         }
     }
 
     for (int i = 0; i < 2; i++) {
         m_endClosed[i] = false;
     }
-    m_socketClosedEvent = NULL;
+    m_socketClosedEvent = nullptr;
     createdOk = true;
     networkPlayerSmallId = g_NetworkManager.GetHostPlayer()->GetSmallId();
 }
@@ -95,8 +95,8 @@ Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
 
     for (int i = 0; i < 2; i++) {
         InitializeCriticalSection(&m_queueLockNetwork[i]);
-        m_inputStream[i] = NULL;
-        m_outputStream[i] = NULL;
+        m_inputStream[i] = nullptr;
+        m_outputStream[i] = nullptr;
         m_endClosed[i] = false;
     }
 
@@ -116,14 +116,14 @@ Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
     createdOk = true;
 }
 
-SocketAddress* Socket::getRemoteSocketAddress() { return NULL; }
+SocketAddress* Socket::getRemoteSocketAddress() { return nullptr; }
 
 INetworkPlayer* Socket::getPlayer() {
     return g_NetworkManager.GetPlayerBySmallId(networkPlayerSmallId);
 }
 
 void Socket::setPlayer(INetworkPlayer* player) {
-    if (player != NULL) {
+    if (player != nullptr) {
         networkPlayerSmallId = player->GetSmallId();
     } else {
         networkPlayerSmallId = 0;
@@ -151,7 +151,7 @@ void Socket::pushDataToQueue(const std::uint8_t* pbData, std::size_t dataSize,
 }
 
 void Socket::addIncomingSocket(Socket* socket) {
-    if (s_serverConnection != NULL) {
+    if (s_serverConnection != nullptr) {
         s_serverConnection->NewIncomingSocket(socket);
     }
 }
@@ -168,9 +168,9 @@ InputStream* Socket::getInputStream(bool isServerConnection) {
             return m_inputStream[m_end];
         }
     } else {
-        if (s_hostInStream[m_end] == NULL) {
+        if (s_hostInStream[m_end] == nullptr) {
             app.DebugPrintf(
-                "SOCKET: Warning - s_hostInStream[%d] is NULL in "
+                "SOCKET: Warning - s_hostInStream[%d] is nullptr in "
                 "getInputStream(); calling EnsureStreamsInitialised()\n",
                 m_end);
             EnsureStreamsInitialised();
@@ -196,9 +196,9 @@ Socket::SocketOutputStream* Socket::getOutputStream(bool isServerConnection) {
         }
     } else {
         int outIdx = 1 - m_end;
-        if (s_hostOutStream[outIdx] == NULL) {
+        if (s_hostOutStream[outIdx] == nullptr) {
             app.DebugPrintf(
-                "SOCKET: Warning - s_hostOutStream[%d] is NULL in "
+                "SOCKET: Warning - s_hostOutStream[%d] is nullptr in "
                 "getOutputStream(); calling EnsureStreamsInitialised()\n",
                 outIdx);
             EnsureStreamsInitialised();
@@ -225,7 +225,7 @@ bool Socket::close(bool isServerConnection) {
         allClosed = true;
         m_endClosed[m_end] = true;
     }
-    if (allClosed && m_socketClosedEvent != NULL) {
+    if (allClosed && m_socketClosedEvent != nullptr) {
         m_socketClosedEvent->Set();
     }
     if (allClosed) createdOk = false;
@@ -452,15 +452,15 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
         buffer.dwDataSize = length;
 
         INetworkPlayer* hostPlayer = g_NetworkManager.GetHostPlayer();
-        if (hostPlayer == NULL) {
+        if (hostPlayer == nullptr) {
             app.DebugPrintf(
-                "Trying to write to network, but the hostPlayer is NULL\n");
+                "Trying to write to network, but the hostPlayer is nullptr\n");
             return;
         }
         INetworkPlayer* socketPlayer = m_socket->getPlayer();
-        if (socketPlayer == NULL) {
+        if (socketPlayer == nullptr) {
             app.DebugPrintf(
-                "Trying to write to network, but the socketPlayer is NULL\n");
+                "Trying to write to network, but the socketPlayer is nullptr\n");
             return;
         }
 
@@ -477,7 +477,7 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             hostPlayer->SendData(socketPlayer, buffer.pbyData,
                                  buffer.dwDataSize, lowPriority, requireAck);
 
-            // 		DWORD queueSize = hostPlayer->GetSendQueueSize( NULL,
+            // 		DWORD queueSize = hostPlayer->GetSendQueueSize( nullptr,
             // QNET_GETSENDQUEUESIZE_BYTES  ); 		if( queueSize > 24000 )
             // 		{
             // 			//printf("Queue size is: %d, forcing

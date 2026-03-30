@@ -122,7 +122,7 @@ bool Achievement::isAchievement() { return true; }
  * @return wstring
  **/
 std::wstring Achievement::getDescription() {
-    if (descFormatter != NULL) {
+    if (descFormatter != nullptr) {
         return descFormatter->format(desc);
     }
     return desc;
