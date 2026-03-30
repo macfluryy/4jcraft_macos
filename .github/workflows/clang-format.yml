@@ -1,20 +1,19 @@
 name: Check Format (Linux, x86-64)
 
-on:
-  push:
-    paths:
-      - '**.cpp'
-      - '**.h'
-      - '**.c'
-      - '**.cc'
-      - '**.cxx'
-      - '**.hh'
-      - '**.hpp'
-      - '**.hxx'
-      - '**.inl'
-      - '.clang-format'
-      - '.github/workflows/clang-format.yml'
-      - '.github/scripts/check-clang-format.sh'
+on: [push, pull_request]
+  paths:
+    - '**.cpp'
+    - '**.h'
+    - '**.c'
+    - '**.cc'
+    - '**.cxx'
+    - '**.hh'
+    - '**.hpp'
+    - '**.hxx'
+    - '**.inl'
+    - "**meson.build"
+    - "flake.nix"
+    - '.github/workflows/build-linux.yml'
 
 jobs:
   formatting-check:
