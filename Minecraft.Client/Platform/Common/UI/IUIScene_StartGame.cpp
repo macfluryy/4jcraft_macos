@@ -50,7 +50,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
     for (unsigned int i = 0; i < app.GetDLCInfoTexturesOffersCount(); ++i) {
         bTexturePackAlreadyListed = false;
-        ULONGLONG ull = app.GetDLCInfoTexturesFullOffer(i);
+        uint64_t ull = app.GetDLCInfoTexturesFullOffer(i);
         pDLCInfo = app.GetDLCInfoForFullOfferID(ull);
         for (unsigned int i = 0; i < texturePacksCount; ++i) {
             TexturePack* tp = pMinecraft->skins->getTexturePackByIndex(i);
@@ -79,7 +79,7 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
         for (unsigned int i = 0; i < app.GetDLCInfoTexturesOffersCount(); ++i) {
             bTexturePackAlreadyListed = false;
-            ULONGLONG ull = app.GetDLCInfoTexturesFullOffer(i);
+            uint64_t ull = app.GetDLCInfoTexturesFullOffer(i);
             pDLCInfo = app.GetDLCInfoForFullOfferID(ull);
             for (unsigned int i = 0; i < texturePacksCount; ++i) {
                 TexturePack* tp = pMinecraft->skins->getTexturePackByIndex(i);
@@ -202,7 +202,7 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot) {
 
         // upsell the texture pack
         // tell sentient about the upsell of the full version of the skin pack
-        ULONGLONG ullOfferID_Full;
+        uint64_t ullOfferID_Full;
         app.GetDLCFullOfferIDForPackID(ListItem.iData, &ullOfferID_Full);
 
         TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(),

@@ -512,7 +512,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                 if (grf.exists()) {
 #if defined(_UNICODE)
                     std::wstring path = grf.getPath();
-                    const WCHAR* pchFilename = path.c_str();
+                    const wchar_t* pchFilename = path.c_str();
                     HANDLE fileHandle = CreateFile(
                         pchFilename,   // file name
                         GENERIC_READ,  // access mode
@@ -570,7 +570,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
             if (save.exists()) {
 #if defined(_UNICODE)
                 std::wstring path = save.getPath();
-                const WCHAR* pchFilename = path.c_str();
+                const wchar_t* pchFilename = path.c_str();
                 HANDLE fileHandle = CreateFile(
                     pchFilename,   // file name
                     GENERIC_READ,  // access mode
@@ -667,7 +667,7 @@ std::wstring LevelGenerationOptions::getDefaultSaveName() {
     }
     return L"";
 }
-LPCWSTR LevelGenerationOptions::getWorldName() {
+const wchar_t* LevelGenerationOptions::getWorldName() {
     switch (getSrc()) {
         case eSrc_fromSave:
             return getString(info()->getWorldName());
@@ -680,7 +680,7 @@ LPCWSTR LevelGenerationOptions::getWorldName() {
     }
     return L"";
 }
-LPCWSTR LevelGenerationOptions::getDisplayName() {
+const wchar_t* LevelGenerationOptions::getDisplayName() {
     switch (getSrc()) {
         case eSrc_fromSave:
             return getString(info()->getDisplayName());

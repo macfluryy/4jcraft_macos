@@ -444,7 +444,7 @@ std::wstring CPlatformNetworkManagerStub::GatherRTTStats() {
             ((NetworkPlayerQNet*)GetPlayerByIndex(i))->GetQNetPlayer();
 
         if (!pQNetPlayer->IsLocal()) {
-            ZeroMemory(stat, 32 * sizeof(WCHAR));
+            ZeroMemory(stat, 32 * sizeof(wchar_t));
             swprintf(stat, 32, L"%d: %d/", i, pQNetPlayer->GetCurrentRtt());
             stats.append(stat);
         }

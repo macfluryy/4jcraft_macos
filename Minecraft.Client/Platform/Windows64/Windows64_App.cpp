@@ -116,17 +116,17 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart()
 	thread->Run();
 }
 
-int CConsoleMinecraftApp::GetLocalTMSFileIndex(WCHAR *wchTMSFile,bool bFilenameIncludesExtension,eFileExtensionType eEXT)
+int CConsoleMinecraftApp::GetLocalTMSFileIndex(wchar_t *wchTMSFile,bool bFilenameIncludesExtension,eFileExtensionType eEXT)
 {
 	return -1;
 }
 
-int CConsoleMinecraftApp::LoadLocalTMSFile(WCHAR *wchTMSFile)
+int CConsoleMinecraftApp::LoadLocalTMSFile(wchar_t *wchTMSFile)
 {
 	return -1;
 }
 
-int CConsoleMinecraftApp::LoadLocalTMSFile(WCHAR *wchTMSFile, eFileExtensionType eExt)
+int CConsoleMinecraftApp::LoadLocalTMSFile(wchar_t *wchTMSFile, eFileExtensionType eExt)
 {
 	return -1;
 }

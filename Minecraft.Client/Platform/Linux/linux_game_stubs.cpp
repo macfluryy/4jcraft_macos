@@ -10,7 +10,7 @@
 
 void Display::update() {}
 
-int CMinecraftApp::GetTPConfigVal(WCHAR* pwchDataFile) { return 0; }
+int CMinecraftApp::GetTPConfigVal(wchar_t* pwchDataFile) { return 0; }
 
 #include "../../Minecraft.World/Platform/x64headers/extraX64.h"
 

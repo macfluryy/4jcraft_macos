@@ -137,17 +137,17 @@ typedef struct {
 
 typedef struct {
     eXUID eXuid;
-    WCHAR wchCape[MAX_CAPENAME_SIZE];
-    WCHAR wchSkin[MAX_CAPENAME_SIZE];
+    wchar_t wchCape[MAX_CAPENAME_SIZE];
+    wchar_t wchSkin[MAX_CAPENAME_SIZE];
 } MOJANG_DATA;
 
 typedef struct {
     eDLCContentType eDLCType;
 
-    ULONGLONG ullOfferID_Full;
-    ULONGLONG ullOfferID_Trial;
-    WCHAR wchBanner[MAX_BANNERNAME_SIZE];
-    WCHAR wchDataFile[MAX_BANNERNAME_SIZE];
+    uint64_t ullOfferID_Full;
+    uint64_t ullOfferID_Trial;
+    wchar_t wchBanner[MAX_BANNERNAME_SIZE];
+    wchar_t wchDataFile[MAX_BANNERNAME_SIZE];
     int iGender;
     int iConfig;
     unsigned int uiSortIndex;
@@ -177,7 +177,7 @@ typedef struct _TMSPPRequest {
     // char szFilename[MAX_TMSFILENAME_SIZE];
     int (*CallbackFunc)(void*, int, int, C4JStorage::PTMSPP_FILEDATA,
                         const char* szFilename);
-    WCHAR wchFilename[MAX_TMSFILENAME_SIZE];
+    wchar_t wchFilename[MAX_TMSFILENAME_SIZE];
 
     void* lpCallbackParam;
 } TMSPPRequest;

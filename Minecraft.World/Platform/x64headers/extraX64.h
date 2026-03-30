@@ -14,14 +14,13 @@
 
 #define MULTITHREAD_ENABLE
 
-typedef unsigned char byte;
 constexpr int MINECRAFT_NET_MAX_PLAYERS = 8;
 
 static_assert(
     MINECRAFT_NET_MAX_PLAYERS <= std::numeric_limits<std::uint8_t>::max(),
     "MINECRAFT_NET_MAX_PLAYERS must fit in the 8-bit network protocol");
 
-typedef ULONGLONG SessionID;
+typedef uint64_t SessionID;
 typedef PlayerUID GameSessionUID;
 class INVITE_INFO;
 
@@ -60,7 +59,7 @@ public:
 void XMemCpy(void* a, const void* b, size_t s);
 void XMemSet(void* a, int t, size_t s);
 void XMemSet128(void* a, int t, size_t s);
-void* XPhysicalAlloc(SIZE_T a, ULONG_PTR b, ULONG_PTR c, DWORD d);
+void* XPhysicalAlloc(size_t a, ULONG_PTR b, ULONG_PTR c, DWORD d);
 void XPhysicalFree(void* a);
 
 class DLCManager;
@@ -128,7 +127,7 @@ public:
     bool IsGuest();
     bool IsLocal();
     PlayerUID GetXuid();
-    LPCWSTR GetGamertag();
+    const wchar_t* GetGamertag();
     int GetSessionIndex();
     bool IsTalking();
     bool IsMutedByLocalUser(DWORD dwUserIndex);
@@ -265,32 +264,32 @@ DWORD XUserGetSigninInfo(DWORD dwUserIndex, DWORD dwFlags,
 
 class CXuiStringTable {
 public:
-    LPCWSTR Lookup(LPCWSTR szId);
-    LPCWSTR Lookup(UINT nIndex);
+    const wchar_t* Lookup(const wchar_t* szId);
+    const wchar_t* Lookup(UINT nIndex);
     void Clear();
-    HRESULT Load(LPCWSTR szId);
+    HRESULT Load(const wchar_t* szId);
 };
 
-typedef VOID* XMEMDECOMPRESSION_CONTEXT;
-typedef VOID* XMEMCOMPRESSION_CONTEXT;
+typedef void* XMEMDECOMPRESSION_CONTEXT;
+typedef void* XMEMCOMPRESSION_CONTEXT;
 
 typedef enum _XMEMCODEC_TYPE {
     XMEMCODEC_DEFAULT = 0,
     XMEMCODEC_LZX = 1
 } XMEMCODEC_TYPE;
 
-HRESULT XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, VOID* pDestination,
-                       SIZE_T* pDestSize, VOID* pSource, SIZE_T SrcSize);
+HRESULT XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
+                       size_t* pDestSize, void* pSource, size_t SrcSize);
 
-HRESULT XMemCompress(XMEMCOMPRESSION_CONTEXT Context, VOID* pDestination,
-                     SIZE_T* pDestSize, VOID* pSource, SIZE_T SrcSize);
+HRESULT XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
+                     size_t* pDestSize, void* pSource, size_t SrcSize);
 
 HRESULT XMemCreateCompressionContext(XMEMCODEC_TYPE CodecType,
-                                     const VOID* pCodecParams, DWORD Flags,
+                                     const void* pCodecParams, DWORD Flags,
                                      XMEMCOMPRESSION_CONTEXT* pContext);
 
 HRESULT XMemCreateDecompressionContext(XMEMCODEC_TYPE CodecType,
-                                       const VOID* pCodecParams, DWORD Flags,
+                                       const void* pCodecParams, DWORD Flags,
                                        XMEMDECOMPRESSION_CONTEXT* pContext);
 
 typedef struct _XMEMCODEC_PARAMETERS_LZX {

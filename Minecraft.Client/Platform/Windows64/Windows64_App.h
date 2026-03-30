@@ -16,11 +16,11 @@ public:
 	virtual void ReleaseSaveThumbnail();
 	virtual void GetScreenshot(int iPad, std::uint8_t **screenshotData, unsigned int *screenshotSize);
 
-	virtual int LoadLocalTMSFile(WCHAR *wchTMSFile);
-	virtual int LoadLocalTMSFile(WCHAR *wchTMSFile, eFileExtensionType eExt);
+	virtual int LoadLocalTMSFile(wchar_t *wchTMSFile);
+	virtual int LoadLocalTMSFile(wchar_t *wchTMSFile, eFileExtensionType eExt);
 
 	virtual void FreeLocalTMSFiles(eTMSFileType eType);
-	virtual int GetLocalTMSFileIndex(WCHAR *wchTMSFile,bool bFilenameIncludesExtension,eFileExtensionType eEXT=eFileExtensionType_PNG);
+	virtual int GetLocalTMSFileIndex(wchar_t *wchTMSFile,bool bFilenameIncludesExtension,eFileExtensionType eEXT=eFileExtensionType_PNG);
 
 	// BANNED LEVEL LIST
 	virtual void ReadBannedList(int iPad, eTMSAction action=(eTMSAction)0, bool bCallback=false) {}

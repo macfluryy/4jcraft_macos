@@ -720,8 +720,8 @@ public:
     virtual bool isHandEquipped();
     virtual bool isMirroredArt();
     Item* setDescriptionId(unsigned int id);
-    LPCWSTR getDescription();
-    LPCWSTR getDescription(std::shared_ptr<ItemInstance> instance);
+    const wchar_t* getDescription();
+    const wchar_t* getDescription(std::shared_ptr<ItemInstance> instance);
     virtual unsigned int getDescriptionId(int iData = -1);
     virtual unsigned int getDescriptionId(
         std::shared_ptr<ItemInstance> instance);

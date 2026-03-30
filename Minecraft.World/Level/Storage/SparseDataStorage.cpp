@@ -415,7 +415,7 @@ void SparseDataStorage::addNewPlane(int y) {
         // lastDataAndCount, and will return the value present just before the
         // write took place
         int64_t lastDataAndCount2 = InterlockedCompareExchangeRelease64(
-            (LONG64*)&dataAndCount, newDataAndCount, lastDataAndCount);
+            (int64_t*)&dataAndCount, newDataAndCount, lastDataAndCount);
 
         if (lastDataAndCount2 == lastDataAndCount) {
             success = true;
@@ -489,7 +489,7 @@ void SparseDataStorage::updateDataAndCount(int64_t newDataAndCount) {
         // lastDataAndCount, and will return the value present just before the
         // write took place
         int64_t lastDataAndCount2 = InterlockedCompareExchangeRelease64(
-            (LONG64*)&dataAndCount, newDataAndCount, lastDataAndCount);
+            (int64_t*)&dataAndCount, newDataAndCount, lastDataAndCount);
 
         if (lastDataAndCount2 == lastDataAndCount) {
             success = true;
@@ -564,7 +564,7 @@ int SparseDataStorage::compress() {
         // lastDataAndCount, and will return the value present just before the
         // write took place
         int64_t lastDataAndCount2 = InterlockedCompareExchangeRelease64(
-            (LONG64*)&dataAndCount, newDataAndCount, lastDataAndCount);
+            (int64_t*)&dataAndCount, newDataAndCount, lastDataAndCount);
 
         if (lastDataAndCount2 != lastDataAndCount) {
             // Failed to write. Don't bother trying again... being very

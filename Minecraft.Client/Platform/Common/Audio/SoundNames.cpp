@@ -2,7 +2,7 @@
 
 #include "Consoles_SoundEngine.h"
 
-const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
+const wchar_t* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"mob/chicken/chicken",              //	eSoundType_MOB_CHICKEN_AMBIENT
     L"mob/chicken/chickenhurt",          //	eSoundType_MOB_CHICKEN_HURT
     L"mob/chicken/chickenplop",          //	eSoundType_MOB_CHICKENPLOP
@@ -224,6 +224,6 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"fire/new_ignite",
 };
 
-const WCHAR* ConsoleSoundEngine::wchUISoundNames[eSFX_MAX] = {
+const wchar_t* ConsoleSoundEngine::wchUISoundNames[eSFX_MAX] = {
     L"back", L"craft", L"craftfail", L"focus", L"press", L"scroll",
 };

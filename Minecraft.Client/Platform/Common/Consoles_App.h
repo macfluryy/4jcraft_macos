@@ -439,7 +439,7 @@ public:
     bool IsFileInTPD(int iConfig);
     void GetTPD(int iConfig, std::uint8_t** ppbData, unsigned int* pByteCount);
     int GetTPDSize() { return m_MEM_TPD.size(); }
-    int GetTPConfigVal(WCHAR* pwchDataFile);
+    int GetTPConfigVal(wchar_t* pwchDataFile);
 
     bool DefaultCapeExists();
     // void InstallDefaultCape(); // attempt  to install the default cape once
@@ -672,16 +672,16 @@ public:
                                    int* pZ);
     std::vector<FEATURE_DATA*> m_vTerrainFeatures;
 
-    static HRESULT RegisterMojangData(WCHAR*, PlayerUID, WCHAR*, WCHAR*);
+    static HRESULT RegisterMojangData(wchar_t*, PlayerUID, wchar_t*, wchar_t*);
     MOJANG_DATA* GetMojangDataForXuid(PlayerUID xuid);
-    static HRESULT RegisterConfigValues(WCHAR* pType, int iValue);
+    static HRESULT RegisterConfigValues(wchar_t* pType, int iValue);
 
-    static HRESULT RegisterDLCData(WCHAR*, WCHAR*, int, uint64_t, uint64_t,
-                                   WCHAR*, unsigned int, int, WCHAR* pDataFile);
+    static HRESULT RegisterDLCData(wchar_t*, wchar_t*, int, uint64_t, uint64_t,
+                                   wchar_t*, unsigned int, int, wchar_t* pDataFile);
     bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
-                                    ULONGLONG* pullVal);
-    DLC_INFO* GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial);
-    DLC_INFO* GetDLCInfoForFullOfferID(ULONGLONG ullOfferID_Full);
+                                    uint64_t* pullVal);
+    DLC_INFO* GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial);
+    DLC_INFO* GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full);
 
     unsigned int GetDLCCreditsCount();
     SCreditTextItemDef* GetDLCCredits(int iIndex);
@@ -707,13 +707,13 @@ private:
     std::vector<SCreditTextItemDef*> vDLCCredits;
 
     static std::unordered_map<PlayerUID, MOJANG_DATA*> MojangData;
-    static std::unordered_map<int, ULONGLONG>
+    static std::unordered_map<int, uint64_t>
         DLCTextures_PackID;  // for mash-up packs & texture packs
-    static std::unordered_map<ULONGLONG, DLC_INFO*>
+    static std::unordered_map<uint64_t, DLC_INFO*>
         DLCInfo_Trial;  // full offerid, dlc_info
-    static std::unordered_map<ULONGLONG, DLC_INFO*>
+    static std::unordered_map<uint64_t, DLC_INFO*>
         DLCInfo_Full;  // full offerid, dlc_info
-    static std::unordered_map<std::wstring, ULONGLONG>
+    static std::unordered_map<std::wstring, uint64_t>
         DLCInfo_SkinName;  // skin name, full offer id
     //	bool m_bRead_TMS_XUIDS_XML; // track whether we have already read the
     // TMS xuids.xml file 	bool m_bRead_TMS_DLCINFO_XML; // track whether
@@ -875,8 +875,8 @@ public:
 
     int GetDLCInfoTrialOffersCount();
     int GetDLCInfoFullOffersCount();
-    bool GetDLCFullOfferIDForPackID(const int iPackID, ULONGLONG* pullVal);
-    ULONGLONG GetDLCInfoTexturesFullOffer(int iIndex);
+    bool GetDLCFullOfferIDForPackID(const int iPackID, uint64_t* pullVal);
+    uint64_t GetDLCInfoTexturesFullOffer(int iIndex);
 
     void SetCorruptSaveDeleted(bool bVal) { m_bCorruptSaveDeleted = bVal; }
     bool GetCorruptSaveDeleted(void) { return m_bCorruptSaveDeleted; }
@@ -913,11 +913,11 @@ public:
     unsigned int m_dwDLCFileSize;
     std::uint8_t* m_pDLCFileBuffer;
 
-    // 	static int CallbackReadXuidsFileFromTMS(void* lpParam, WCHAR
+    // 	static int CallbackReadXuidsFileFromTMS(void* lpParam, wchar_t
     // *wchFilename, int iPad, bool bResult, int iAction); 	static int
-    // CallbackDLCFileFromTMS(void* lpParam, WCHAR *wchFilename, int iPad, bool
+    // CallbackDLCFileFromTMS(void* lpParam, wchar_t *wchFilename, int iPad, bool
     // bResult, int iAction); 	static int CallbackBannedListFileFromTMS(void*
-    // lpParam, WCHAR *wchFilename, int iPad, bool bResult, int iAction);
+    // lpParam, wchar_t *wchFilename, int iPad, bool bResult, int iAction);
 
     // Storing additional model parts per skin texture
     void SetAdditionalSkinBoxes(std::uint32_t dwSkinID, SKIN_BOX* SkinBoxA,
@@ -933,11 +933,11 @@ public:
     static std::uint32_t getSkinIdFromPath(const std::wstring& skin);
     static std::wstring getSkinPathFromId(std::uint32_t skinId);
 
-    virtual int LoadLocalTMSFile(WCHAR* wchTMSFile) = 0;
-    virtual int LoadLocalTMSFile(WCHAR* wchTMSFile,
+    virtual int LoadLocalTMSFile(wchar_t* wchTMSFile) = 0;
+    virtual int LoadLocalTMSFile(wchar_t* wchTMSFile,
                                  eFileExtensionType eExt) = 0;
     virtual void FreeLocalTMSFiles(eTMSFileType eType) = 0;
-    virtual int GetLocalTMSFileIndex(WCHAR* wchTMSFile,
+    virtual int GetLocalTMSFileIndex(wchar_t* wchTMSFile,
                                      bool bFilenameIncludesExtension,
                                      eFileExtensionType eEXT) = 0;
 
@@ -987,8 +987,8 @@ private:
 public:
     void LocaleAndLanguageInit();
     void getLocale(std::vector<std::wstring>& vecWstrLocales);
-    int get_eMCLang(WCHAR* pwchLocale);
-    int get_xcLang(WCHAR* pwchLocale);
+    int get_eMCLang(wchar_t* pwchLocale);
+    int get_xcLang(wchar_t* pwchLocale);
 
     void SetTickTMSDLCFiles(bool bVal);
 

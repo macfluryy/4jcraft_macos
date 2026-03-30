@@ -3473,7 +3473,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     uiIDA[1] = IDS_EXIT_GAME;
 
                     // pass in the gamertag format std::string
-                    WCHAR wchFormat[40];
+                    wchar_t wchFormat[40];
                     INetworkPlayer* player =
                         g_NetworkManager.GetLocalPlayerByUserIndex(i);
 
@@ -4714,7 +4714,7 @@ void CMinecraftApp::RemoveMemoryTPDFile(int iConfig) {
 }
 
 #if defined(_WINDOWS64)
-int CMinecraftApp::GetTPConfigVal(WCHAR* pwchDataFile) { return -1; }
+int CMinecraftApp::GetTPConfigVal(wchar_t* pwchDataFile) { return -1; }
 #endif
 bool CMinecraftApp::IsFileInTPD(int iConfig) {
     bool val = false;
@@ -4756,7 +4756,7 @@ void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
 // 		fis.read(ba);
 // 		fis.close();
 //
-// 		bRes=StorageManager.WriteTMSFile(iQuadrant,eStorageFacility,(WCHAR
+// 		bRes=StorageManager.WriteTMSFile(iQuadrant,eStorageFacility,(wchar_t
 // *)wsFile->c_str(),ba.data, ba.length);
 //
 // 	}
@@ -5429,13 +5429,13 @@ std::wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon) {
 }
 
 std::unordered_map<PlayerUID, MOJANG_DATA*> CMinecraftApp::MojangData;
-std::unordered_map<int, ULONGLONG> CMinecraftApp::DLCTextures_PackID;
-std::unordered_map<ULONGLONG, DLC_INFO*> CMinecraftApp::DLCInfo_Trial;
-std::unordered_map<ULONGLONG, DLC_INFO*> CMinecraftApp::DLCInfo_Full;
-std::unordered_map<std::wstring, ULONGLONG> CMinecraftApp::DLCInfo_SkinName;
+std::unordered_map<int, uint64_t> CMinecraftApp::DLCTextures_PackID;
+std::unordered_map<uint64_t, DLC_INFO*> CMinecraftApp::DLCInfo_Trial;
+std::unordered_map<uint64_t, DLC_INFO*> CMinecraftApp::DLCInfo_Full;
+std::unordered_map<std::wstring, uint64_t> CMinecraftApp::DLCInfo_SkinName;
 
-HRESULT CMinecraftApp::RegisterMojangData(WCHAR* pXuidName, PlayerUID xuid,
-                                          WCHAR* pSkin, WCHAR* pCape) {
+HRESULT CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
+                                          wchar_t* pSkin, wchar_t* pCape) {
     HRESULT hr = S_OK;
     eXUID eTempXuid = eXUID_Undefined;
     MOJANG_DATA* pMojangData = nullptr;
@@ -5469,7 +5469,7 @@ MOJANG_DATA* CMinecraftApp::GetMojangDataForXuid(PlayerUID xuid) {
     return MojangData[xuid];
 }
 
-HRESULT CMinecraftApp::RegisterConfigValues(WCHAR* pType, int iValue) {
+HRESULT CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
     HRESULT hr = S_OK;
 
     // #ifdef 0
@@ -5498,12 +5498,12 @@ HRESULT CMinecraftApp::RegisterConfigValues(WCHAR* pType, int iValue) {
 }
 
 #if defined(_WINDOWS64)
-HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
+HRESULT CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
-                                       WCHAR* pFirstSkin,
+                                       wchar_t* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
-                                       WCHAR* pDataFile) {
+                                       wchar_t* pDataFile) {
     HRESULT hr = S_OK;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
@@ -5548,12 +5548,12 @@ HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
     return hr;
 }
 #elif defined(__linux__)
-HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
+HRESULT CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
-                                       WCHAR* pFirstSkin,
+                                       wchar_t* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
-                                       WCHAR* pDataFile) {
+                                       wchar_t* pDataFile) {
     fprintf(stderr,
             "warning: CMinecraftApp::RegisterDLCData unimplemented for "
             "platform `__linux__`\n");
@@ -5609,28 +5609,28 @@ HRESULT CMinecraftApp::RegisterDLCData(char* pchDLCName,
 #endif
 
 bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
-                                               ULONGLONG* pullVal) {
+                                               uint64_t* pullVal) {
     auto it = DLCInfo_SkinName.find(FirstSkin);
     if (it == DLCInfo_SkinName.end()) {
         return false;
     } else {
-        *pullVal = (ULONGLONG)it->second;
+        *pullVal = (uint64_t)it->second;
         return true;
     }
 }
 bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,
-                                               ULONGLONG* pullVal) {
+                                               uint64_t* pullVal) {
     auto it = DLCTextures_PackID.find(iPackID);
     if (it == DLCTextures_PackID.end()) {
-        *pullVal = (ULONGLONG)0;
+        *pullVal = (uint64_t)0;
         return false;
     } else {
-        *pullVal = (ULONGLONG)it->second;
+        *pullVal = (uint64_t)it->second;
         return true;
     }
 }
-DLC_INFO* CMinecraftApp::GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial) {
-    // DLC_INFO *pDLCInfo=nullptr;
+DLC_INFO* CMinecraftApp::GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial) {
+    // DLC_INFO *pDLCInfo=NULL;
     if (DLCInfo_Trial.size() > 0) {
         auto it = DLCInfo_Trial.find(ullOfferID_Trial);
 
@@ -5645,7 +5645,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial) {
 }
 
 DLC_INFO* CMinecraftApp::GetDLCInfoTrialOffer(int iIndex) {
-    std::unordered_map<ULONGLONG, DLC_INFO*>::iterator it =
+    std::unordered_map<uint64_t, DLC_INFO*>::iterator it =
         DLCInfo_Trial.begin();
 
     for (int i = 0; i < iIndex; i++) {
@@ -5655,7 +5655,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoTrialOffer(int iIndex) {
     return it->second;
 }
 DLC_INFO* CMinecraftApp::GetDLCInfoFullOffer(int iIndex) {
-    std::unordered_map<ULONGLONG, DLC_INFO*>::iterator it =
+    std::unordered_map<uint64_t, DLC_INFO*>::iterator it =
         DLCInfo_Full.begin();
 
     for (int i = 0; i < iIndex; i++) {
@@ -5664,8 +5664,8 @@ DLC_INFO* CMinecraftApp::GetDLCInfoFullOffer(int iIndex) {
 
     return it->second;
 }
-ULONGLONG CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
-    std::unordered_map<int, ULONGLONG>::iterator it =
+uint64_t CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
+    std::unordered_map<int, uint64_t>::iterator it =
         DLCTextures_PackID.begin();
 
     for (int i = 0; i < iIndex; i++) {
@@ -5676,7 +5676,7 @@ ULONGLONG CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
 }
 
 
-DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(ULONGLONG ullOfferID_Full) {
+DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
     if (DLCInfo_Full.size() > 0) {
         auto it = DLCInfo_Full.find(ullOfferID_Full);
 
@@ -5944,8 +5944,8 @@ void CMinecraftApp::AddCreditText(const wchar_t* lpStr) {
     pCreditStruct->m_eType = eSmallText;
     pCreditStruct->m_iStringID[0] = NO_TRANSLATED_STRING;
     pCreditStruct->m_iStringID[1] = NO_TRANSLATED_STRING;
-    pCreditStruct->m_Text = new WCHAR[wcslen(lpStr) + 1];
-    wcscpy((WCHAR*)pCreditStruct->m_Text, lpStr);
+    pCreditStruct->m_Text = new wchar_t[wcslen(lpStr) + 1];
+    wcscpy((wchar_t*)pCreditStruct->m_Text, lpStr);
 
     vDLCCredits.push_back(pCreditStruct);
 }
@@ -5961,7 +5961,7 @@ bool CMinecraftApp::AlreadySeenCreditText(const std::wstring& wstemp) {
     }
 
     // add this text
-    m_vCreditText.push_back((WCHAR*)wstemp.c_str());
+    m_vCreditText.push_back((wchar_t*)wstemp.c_str());
     return false;
 }
 
@@ -6760,7 +6760,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                 // since we might be loading some from the Title Update
                 // partition
                 if (pDLC->wchDataFile[0] != 0) {
-                    // WCHAR *cString = pDLC->wchDataFile;
+                    // wchar_t *cString = pDLC->wchDataFile;
                     //  4J-PB - shouldn't check this here - let the TMS files
                     //  override it, so if they are on TMS, we'll take them
                     //  first
@@ -6799,7 +6799,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                                     C4JStorage::TMS_FILETYPE_BINARY;
                                 memcpy(pTMSPPreq->wchFilename,
                                        pDLC->wchDataFile,
-                                       sizeof(WCHAR) * MAX_BANNERNAME_SIZE);
+                                       sizeof(wchar_t) * MAX_BANNERNAME_SIZE);
                                 pTMSPPreq->eType = e_DLC_TexturePackData;
                                 pTMSPPreq->eState = e_TMS_ContentState_Queued;
                                 m_bAllTMSContentRetrieved = false;
@@ -6829,7 +6829,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                 // since we might be loading some from the Title Update
                 // partition
 
-                WCHAR* cString = pDLC->wchBanner;
+                wchar_t* cString = pDLC->wchBanner;
                 // 4J-PB - shouldn't check this here - let the TMS files
                 // override it, so if they are on TMS, we'll take them first
                 // int iIndex = app.GetLocalTMSFileIndex(cString,true);
@@ -6872,7 +6872,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                             // wcstombs(pTMSPPreq->szFilename,pDLC->wchBanner,MAX_TMSFILENAME_SIZE);
 
                             memcpy(pTMSPPreq->wchFilename, pDLC->wchBanner,
-                                   sizeof(WCHAR) * MAX_BANNERNAME_SIZE);
+                                   sizeof(wchar_t) * MAX_BANNERNAME_SIZE);
                             pTMSPPreq->eType = eType;
                             pTMSPPreq->eState = e_TMS_ContentState_Queued;
                             m_bAllTMSContentRetrieved = false;
@@ -7573,11 +7573,11 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
     }
 }
 
-int CMinecraftApp::get_eMCLang(WCHAR* pwchLocale) {
+int CMinecraftApp::get_eMCLang(wchar_t* pwchLocale) {
     return m_eMCLangA[pwchLocale];
 }
 
-int CMinecraftApp::get_xcLang(WCHAR* pwchLocale) {
+int CMinecraftApp::get_xcLang(wchar_t* pwchLocale) {
     return m_xcLangA[pwchLocale];
 }
 

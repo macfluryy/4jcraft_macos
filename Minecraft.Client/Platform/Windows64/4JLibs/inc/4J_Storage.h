@@ -47,23 +47,23 @@ public:
 	{
 		unsigned int	uiFileSize;
 		DWORD			dwType;
-		DWORD			dwWchCount; // count of WCHAR in next array
-		WCHAR			wchFile[1];
+		DWORD			dwWchCount; // count of wchar_t in next array
+		wchar_t			wchFile[1];
 	}
 	DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
 
 	typedef struct
 	{
 		DWORD	dwType;
-		DWORD	dwWchCount; // count of WCHAR in next array;
-		WCHAR	wchData[1]; // will be an array of size dwBytes
+		DWORD	dwWchCount; // count of wchar_t in next array;
+		wchar_t	wchData[1]; // will be an array of size dwBytes
 	}
 	DLC_FILE_PARAM, *PDLC_FILE_PARAM;
 	// End of DLC_Creator structs
 
 	typedef struct  
 	{
- 		WCHAR                               wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
+ 		wchar_t                               wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
  		CHAR                                szFileName[XCONTENT_MAX_FILENAME_LENGTH];
 		DWORD								dwImageOffset;
 		DWORD								dwImageBytes;
@@ -239,7 +239,7 @@ public:
 
 	// Messages
 	C4JStorage::EMessageResult			RequestMessageBox(UINT uiTitle, UINT uiText, UINT *uiOptionA,UINT uiOptionC, DWORD dwPad=XUSER_INDEX_ANY,
-		int( *Func)(void*,int,const C4JStorage::EMessageResult)=nullptr,void* lpParam=nullptr, C4JStringTable *pStringTable=nullptr, WCHAR *pwchFormatString=nullptr,DWORD dwFocusButton=0);
+	int( *Func)(void*,int,const C4JStorage::EMessageResult)=nullptr,void* lpParam=nullptr, C4JStringTable *pStringTable=nullptr, wchar_t *pwchFormatString=nullptr,DWORD dwFocusButton=0);
 
 
 	C4JStorage::EMessageResult			GetMessageBoxResult();
@@ -248,10 +248,10 @@ public:
 	bool								SetSaveDevice(int( *Func)(void*,const bool),void* lpParam, bool bForceResetOfSaveDevice=false);
 
 	// savegame
-	void						Init(unsigned int uiSaveVersion,LPCWSTR pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize,int( *Func)(void*, const ESavingMessage, int),void* lpParam,const char* szGroupID);
+	void						Init(unsigned int uiSaveVersion,const wchar_t* pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize,int( *Func)(void*, const ESavingMessage, int),void* lpParam,const char* szGroupID);
 	void						ResetSaveData(); // Call before a new save to clear out stored save file name
-	void						SetDefaultSaveNameForKeyboardDisplay(LPCWSTR pwchDefaultSaveName);
-	void						SetSaveTitle(LPCWSTR pwchDefaultSaveName);
+	void						SetDefaultSaveNameForKeyboardDisplay(const wchar_t* pwchDefaultSaveName);
+	void						SetSaveTitle(const wchar_t* pwchDefaultSaveName);
 	bool						GetSaveUniqueNumber(INT *piVal);
 	bool						GetSaveUniqueFilename(char *pszName);
 	void						SetSaveUniqueFilename(char *szFilename);
@@ -260,10 +260,10 @@ public:
 	bool						GetSaveDisabled(void);
 	unsigned int				GetSaveSize();
 	void						GetSaveData(void *pvData,unsigned int *puiBytes);
-	PVOID						AllocateSaveData(unsigned int uiBytes);
+	void*						AllocateSaveData(unsigned int uiBytes);
 	void						SetSaveImages( PBYTE pbThumbnail,DWORD dwThumbnailBytes,PBYTE pbImage,DWORD dwImageBytes, PBYTE pbTextData ,DWORD dwTextDataBytes);					// Sets the thumbnail & image for the save, optionally setting the metadata in the png
 	C4JStorage::ESaveGameState	SaveSaveData(int( *Func)(void* ,const bool),void* lpParam);
-	void						CopySaveDataToNewSave(PBYTE pbThumbnail,DWORD cbThumbnail,WCHAR *wchNewName,int ( *Func)(void* lpParam, bool), void* lpParam);
+	void						CopySaveDataToNewSave(PBYTE pbThumbnail,DWORD cbThumbnail,wchar_t *wchNewName,int ( *Func)(void* lpParam, bool), void* lpParam);
 	void						SetSaveDeviceSelected(unsigned int uiPad,bool bSelected);	
 	bool						GetSaveDeviceSelected(unsigned int iPad);
 	C4JStorage::ESaveGameState	DoesSaveExist(bool *pbExists);
@@ -303,10 +303,11 @@ public:
 
 	// Global title storage
 	C4JStorage::ETMSStatus				ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType,
-											WCHAR *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(void*, WCHAR *,int, bool, int)=nullptr,void* lpParam=nullptr, int iAction=0);
-	bool								WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename,BYTE *pBuffer,DWORD dwBufferSize);
-	bool								DeleteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename);
-	void								StoreTMSPathName(WCHAR *pwchName=nullptr);
+
+										wchar_t *pwchFilename,BYTE **ppBuffer,DWORD *pdwBufferSize,int( *Func)(void*, wchar_t *,int, bool, int)=nullptr,void* lpParam=nullptr, int iAction=0);
+	bool								WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,wchar_t *pwchFilename,BYTE *pBuffer,DWORD dwBufferSize);
+	bool								DeleteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,wchar_t *pwchFilename);
+	void								StoreTMSPathName(wchar_t *pwchName=NULL);
 
 	// TMS++
 

@@ -468,7 +468,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                     // in CHAR's (= bytes), including end-of-string \0
                     (wchar_t*)u16Message,    // destination buffer
                     MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
-                                             // WCHAR's
+                                             // wchar_t's
                 );
 #else
                 std::uint32_t srcmax, dstmax;
@@ -660,7 +660,7 @@ void UIScene_LoadOrJoinMenu::AddDefaultButtons() {
         }
 
         // 4J-JEV: For debug. Ignore worlds with no name.
-        LPCWSTR wstr = levelGen->getWorldName();
+        const wchar_t* wstr = levelGen->getWorldName();
         m_buttonListSaves.addItem(wstr);
         m_generators.push_back(levelGen);
 

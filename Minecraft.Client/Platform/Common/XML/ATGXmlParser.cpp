@@ -45,7 +45,7 @@ XMLParser::~XMLParser()
 // Name: XMLParser::FillBuffer
 // Desc: Reads a block from the current open file
 //-------------------------------------------------------------------------------------
-VOID XMLParser::FillBuffer()
+void XMLParser::FillBuffer()
 {
     DWORD NChars;
 
@@ -83,7 +83,7 @@ VOID XMLParser::FillBuffer()
 // Name: XMLParser::SkipNextAdvance
 // Desc: Puts the last character read back on the input stream
 //-------------------------------------------------------------------------------------
-VOID XMLParser::SkipNextAdvance()
+void XMLParser::SkipNextAdvance()
 {
     m_bSkipNextAdvance = TRUE;
 }
@@ -119,7 +119,7 @@ HRESULT XMLParser::ConsumeSpace()
 HRESULT XMLParser::ConvertEscape()
 {      
     HRESULT hr;
-    WCHAR wVal = 0;
+    wchar_t wVal = 0;
         
     if( FAILED( hr = AdvanceCharacter() ) )
         return hr;
@@ -193,7 +193,7 @@ HRESULT XMLParser::ConvertEscape()
 
     // must be an entity reference
 
-    WCHAR *pEntityRefVal = m_pWritePtr;
+    wchar_t *pEntityRefVal = m_pWritePtr;
     UINT EntityRefLen;
 
     SkipNextAdvance();
@@ -246,7 +246,7 @@ HRESULT XMLParser::ConvertEscape()
 HRESULT XMLParser::AdvanceAttrVal()
 {
     HRESULT hr;
-    WCHAR wQuoteChar;
+    wchar_t wQuoteChar;
 
     if( FAILED( hr = AdvanceCharacter() ) )
         return hr;
@@ -383,7 +383,7 @@ HRESULT XMLParser::AdvanceCharacter( bool bOkToFail )
     }
     else // if( m_bUnicode == TRUE )
     {
-        m_Ch = *((WCHAR *)m_pReadPtr);
+        m_Ch = *((wchar_t *)m_pReadPtr);
         
         if( m_bReverseBytes )
         {
@@ -494,7 +494,7 @@ HRESULT XMLParser::AdvanceElement()
     }
     else if( m_Ch == '/' ) 
     {
-        WCHAR *pEntityRefVal = m_pWritePtr;
+        wchar_t *pEntityRefVal = m_pWritePtr;
      
         if( FAILED( hr = AdvanceName() ) ) 
             return hr;
@@ -532,7 +532,7 @@ HRESULT XMLParser::AdvanceElement()
         XMLAttribute   Attributes[ XML_MAX_ATTRIBUTES_PER_ELEMENT ]; 
         UINT           NumAttrs;
 
-        WCHAR *pEntityRefVal = m_pWritePtr;
+        wchar_t *pEntityRefVal = m_pWritePtr;
         UINT  EntityRefLen;
 
         NumAttrs = 0;
@@ -715,7 +715,7 @@ HRESULT XMLParser::AdvanceComment()
 // Name: XMLParser::RegisterSAXCallbackInterface
 // Desc: Registers callback interface 
 //-------------------------------------------------------------------------------------
-VOID XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback )
+void XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback )
 {
     m_pISAXCallback = pISAXCallback;
 }
@@ -747,24 +747,24 @@ HRESULT XMLParser::MainParseLoop()
 
     FillBuffer();
 
-    if ( *((WCHAR *) m_pReadBuf ) == 0xFEFF )
+    if ( *((wchar_t *) m_pReadBuf ) == 0xFEFF )
     {
         m_bUnicode = TRUE;
         m_bReverseBytes = FALSE;
         m_pReadPtr += 2;
     }
-    else if ( *((WCHAR *) m_pReadBuf ) == 0xFFFE )    
+    else if ( *((wchar_t *) m_pReadBuf ) == 0xFFFE )    
     {
         m_bUnicode = TRUE;
         m_bReverseBytes = TRUE;
         m_pReadPtr += 2;        
     }
-    else if ( *((WCHAR *) m_pReadBuf ) == 0x003C )    
+    else if ( *((wchar_t *) m_pReadBuf ) == 0x003C )    
     {
         m_bUnicode = TRUE;      
         m_bReverseBytes = FALSE;
     }
-    else if ( *((WCHAR *) m_pReadBuf ) == 0x3C00 )    
+    else if ( *((wchar_t *) m_pReadBuf ) == 0x3C00 )    
     {
         m_bUnicode = TRUE;
         m_bReverseBytes = TRUE;        
@@ -946,9 +946,9 @@ HRESULT XMLParser::ParseXMLBuffer( CONST CHAR *strBuffer, UINT uBufferSize )
 //      Logs an error through the callback interface
 //-------------------------------------------------------------------------------------
 #ifdef  _Printf_format_string_  // VC++ 2008 and later support this annotation
-VOID XMLParser::Error( HRESULT hErr, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... )
+void XMLParser::Error( HRESULT hErr, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... )
 #else
-VOID XMLParser::Error( HRESULT hErr, CONST CHAR* strFormat, ... )
+void XMLParser::Error( HRESULT hErr, CONST CHAR* strFormat, ... )
 #endif
 {
     CONST INT MAX_OUTPUT_STR = 160;

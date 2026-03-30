@@ -12,7 +12,7 @@
 #include "ConsoleGameRules.h"
 #include "GameRuleManager.h"
 
-const WCHAR* GameRuleManager::wchTagNameA[] = {
+const wchar_t* GameRuleManager::wchTagNameA[] = {
     L"",                   // eGameRuleType_Root
     L"MapOptions",         // eGameRuleType_LevelGenerationOptions
     L"ApplySchematic",     // eGameRuleType_ApplySchematic
@@ -33,7 +33,7 @@ const WCHAR* GameRuleManager::wchTagNameA[] = {
     L"UpdatePlayer",       // eGameRuleType_UpdatePlayerRule
 };
 
-const WCHAR* GameRuleManager::wchAttrNameA[] = {
+const wchar_t* GameRuleManager::wchAttrNameA[] = {
     L"descriptionName",   // eGameRuleAttr_descriptionName
     L"promptName",        // eGameRuleAttr_promptName
     L"dataTag",           // eGameRuleAttr_dataTag

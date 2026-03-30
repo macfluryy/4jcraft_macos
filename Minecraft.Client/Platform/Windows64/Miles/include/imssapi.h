@@ -2703,7 +2703,7 @@ __stdcall
 XMemSet(
          PVOID                       pDest,
           INT                         c,
-          SIZE_T                      count
+          size_t                      count
     );
 
 PVOID
@@ -2711,7 +2711,7 @@ __stdcall
 XMemCpy(
          PVOID                       pDest,
           const void*                 pSrc,
-          SIZE_T                      count
+          size_t                      count
     );
 
 char * __cdecl strcpy( char *_Dest,  const char * _Source);

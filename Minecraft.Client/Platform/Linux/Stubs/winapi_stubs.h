@@ -18,25 +18,17 @@
 
 #define S_OK 0
 typedef unsigned int DWORD;
-typedef wchar_t WCHAR;
 typedef unsigned char BYTE;
 typedef BYTE* PBYTE;
-typedef const wchar_t* LPCWSTR;
-typedef unsigned long long ULONGLONG;
 typedef int HRESULT;
 typedef unsigned int UINT;
 typedef void* HANDLE;
 typedef int INT;
-typedef long* PLONG;
 typedef unsigned int* LPDWORD;
-typedef const void* LPCVOID;
 typedef char CHAR;
-typedef void* PVOID;
 typedef uintptr_t ULONG_PTR;
 typedef long LONG;
-typedef long LONG64, *PLONG64;
-typedef void VOID;
-typedef ULONGLONG PlayerUID;
+typedef unsigned long long PlayerUID;
 typedef DWORD WORD;
 typedef DWORD* PDWORD;
 
@@ -53,8 +45,7 @@ typedef struct {
 } ULARGE_INTEGER;
 
 typedef long long LONGLONG;
-typedef size_t SIZE_T;
-typedef WCHAR *LPWSTR, *PWSTR;
+typedef wchar_t *LPWSTR, *PWSTR;
 typedef unsigned char boolean;  // java brainrot
 #define __debugbreak()
 #define CONST const
@@ -175,12 +166,12 @@ typedef struct _FILETIME {
 typedef struct _MEMORYSTATUS {
     DWORD dwLength;
     DWORD dwMemoryLoad;
-    SIZE_T dwTotalPhys;
-    SIZE_T dwAvailPhys;
-    SIZE_T dwTotalPageFile;
-    SIZE_T dwAvailPageFile;
-    SIZE_T dwTotalVirtual;
-    SIZE_T dwAvailVirtual;
+    size_t dwTotalPhys;
+    size_t dwAvailPhys;
+    size_t dwTotalPageFile;
+    size_t dwAvailPageFile;
+    size_t dwTotalVirtual;
+    size_t dwAvailVirtual;
 } MEMORYSTATUS, *LPMEMORYSTATUS;
 
 typedef struct _WIN32_FIND_DATAA {
@@ -214,8 +205,8 @@ typedef enum _GET_FILEEX_INFO_LEVELS {
     GetFileExMaxInfoLevel
 } GET_FILEEX_INFO_LEVELS;
 
-typedef VOID* XMEMCOMPRESSION_CONTEXT;
-typedef VOID* XMEMDECOMPRESSION_CONTEXT;
+typedef void* XMEMCOMPRESSION_CONTEXT;
+typedef void* XMEMDECOMPRESSION_CONTEXT;
 
 // internal search state for FindFirstFile/FindNextFile
 typedef struct _LINUXSTUBS_FIND_HANDLE {
@@ -299,23 +290,23 @@ static inline ULONG TryEnterCriticalSection(
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
-static inline VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
+static inline void GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
     // TODO: Parse /proc/meminfo and set lpBuffer based on that. Probably will
     // also need another different codepath for macOS too.
 }
 
-static inline DWORD GetLastError(VOID) { return errno; }
+static inline DWORD GetLastError(void) { return errno; }
 
 #ifdef __LP64__
-static inline LONG64 InterlockedCompareExchangeRelease64(
-    LONG64 volatile* Destination, LONG64 Exchange, LONG64 Comperand) {
-    LONG64 expected = Comperand;
+static inline int64_t InterlockedCompareExchangeRelease64(
+    int64_t volatile* Destination, int64_t Exchange, int64_t Comperand) {
+    int64_t expected = Comperand;
     __atomic_compare_exchange_n(Destination, &expected, Exchange, false,
                                 __ATOMIC_RELEASE, __ATOMIC_RELAXED);
     return expected;
 }
 #else
-static inline LONG64 InterlockedCompareExchangeRelease(
+static inline int64_t InterlockedCompareExchangeRelease(
     LONG volatile* Destination, LONG Exchange, LONG Comperand) {
     LONG expected = Comperand;
     __atomic_compare_exchange_n(Destination, &expected, Exchange, false,
@@ -327,8 +318,8 @@ static inline LONG64 InterlockedCompareExchangeRelease(
 // internal helper: convert time_t to FILETIME (100ns intervals since
 // 1601-01-01)
 static inline FILETIME _TimeToFileTime(time_t t) {
-    const ULONGLONG EPOCH_DIFF = 11644473600ULL;
-    ULONGLONG val = ((ULONGLONG)t + EPOCH_DIFF) * 10000000ULL;
+    const uint64_t EPOCH_DIFF = 11644473600ULL;
+    uint64_t val = ((uint64_t)t + EPOCH_DIFF) * 10000000ULL;
     FILETIME ft;
     ft.dwLowDateTime = (DWORD)(val & 0xFFFFFFFF);
     ft.dwHighDateTime = (DWORD)(val >> 32);
@@ -651,8 +642,8 @@ static inline bool FindClose(HANDLE hFindFile) {
 // internal helper: convert FILETIME (100ns since 1601) to time_t (seconds since
 // 1970)
 static inline time_t _FileTimeToTimeT(const FILETIME& ft) {
-    ULONGLONG val = ((ULONGLONG)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
-    const ULONGLONG EPOCH_DIFF =
+    uint64_t val = ((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+    const uint64_t EPOCH_DIFF =
         116444736000000000ULL;  // 100ns intervals between 1601-01-01 and
                                 // 1970-01-01
     return (time_t)((val - EPOCH_DIFF) / 10000000ULL);
@@ -684,7 +675,7 @@ static inline void _FillSystemTime(const struct tm* tm, long tv_nsec,
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtime
-static inline VOID GetSystemTime(LPSYSTEMTIME lpSystemTime) {
+static inline void GetSystemTime(LPSYSTEMTIME lpSystemTime) {
     struct timespec ts;
     _CurrentTimeSpec(&ts);
     struct tm tm;
@@ -693,7 +684,7 @@ static inline VOID GetSystemTime(LPSYSTEMTIME lpSystemTime) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlocaltime
-static inline VOID GetLocalTime(LPSYSTEMTIME lpSystemTime) {
+static inline void GetLocalTime(LPSYSTEMTIME lpSystemTime) {
     struct timespec ts;
     _CurrentTimeSpec(&ts);
     struct tm tm;
@@ -715,7 +706,7 @@ static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
     time_t t = timegm(&tm);
     if (t == (time_t)-1) return FALSE;
 
-    ULONGLONG ft = ((ULONGLONG)t + 11644473600ULL) * 10000000ULL;
+    uint64_t ft = ((uint64_t)t + 11644473600ULL) * 10000000ULL;
     ft += lpSystemTime->wMilliseconds * 10000ULL;
     lpFileTime->dwLowDateTime = (DWORD)(ft & 0xFFFFFFFF);
     lpFileTime->dwHighDateTime = (DWORD)(ft >> 32);
@@ -725,7 +716,7 @@ static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
 static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
                                         LPSYSTEMTIME lpSystemTime) {
-    ULONGLONG ft = ((ULONGLONG)lpFileTime->dwHighDateTime << 32) |
+    uint64_t ft = ((uint64_t)lpFileTime->dwHighDateTime << 32) |
                    lpFileTime->dwLowDateTime;
     time_t t = _FileTimeToTimeT(*lpFileTime);
     long remainder_ns = (long)((ft % 10000000ULL) * 100);
@@ -761,18 +752,18 @@ static inline bool QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa
-static inline VOID OutputDebugStringA(const char* lpOutputString) {
+static inline void OutputDebugStringA(const char* lpOutputString) {
     if (!lpOutputString) return;
     fputs(lpOutputString, stderr);
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw
-static inline VOID OutputDebugStringW(LPCWSTR lpOutputString) {
+static inline void OutputDebugStringW(const wchar_t* lpOutputString) {
     if (!lpOutputString) return;
     fprintf(stderr, "%ls", lpOutputString);
 }
 
-static inline VOID OutputDebugString(const char* lpOutputString) {
+static inline void OutputDebugString(const char* lpOutputString) {
     return OutputDebugStringA(lpOutputString);
 }
 
@@ -965,7 +956,7 @@ static inline DWORD _WaitForThread(struct LinuxThread* lt,
 
 static DWORD g_nextThreadId = 1000;
 
-static inline HANDLE CreateThread(void*, SIZE_T stackSize,
+static inline HANDLE CreateThread(void*, size_t stackSize,
                                   LPTHREAD_START_ROUTINE lpStartAddress,
                                   void* lpParameter, DWORD dwCreationFlags,
                                   DWORD* lpThreadId) {
@@ -1057,7 +1048,7 @@ static inline int swprintf_s(wchar_t* buf, size_t sz, const wchar_t* fmt, ...) {
 
 static inline HMODULE GetModuleHandle(const char* lpModuleName) { return 0; }
 
-static inline void* VirtualAlloc(void* lpAddress, SIZE_T dwSize,
+static inline void* VirtualAlloc(void* lpAddress, size_t dwSize,
                                   DWORD flAllocationType, DWORD flProtect) {
     // MEM_COMMIT | MEM_RESERVE → mmap anonymous
     int prot = 0;
@@ -1078,7 +1069,7 @@ static inline void* VirtualAlloc(void* lpAddress, SIZE_T dwSize,
     return p;
 }
 
-static inline bool VirtualFree(void* lpAddress, SIZE_T dwSize,
+static inline bool VirtualFree(void* lpAddress, size_t dwSize,
                                DWORD dwFreeType) {
     if (lpAddress == nullptr) return FALSE;
     // MEM_RELEASE (0x8000) frees the whole region

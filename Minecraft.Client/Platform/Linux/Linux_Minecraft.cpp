@@ -1008,7 +1008,7 @@ std::string wstring_to_utf8(const std::wstring& str) {
 }
 
 uint8_t* mallocAndCreateUTF8ArrayFromString(int iID) {
-    LPCWSTR wchString = app.GetString(iID);
+    const wchar_t* wchString = app.GetString(iID);
 
     std::wstring srcString = wchString;
     std::string dstString = wstring_to_utf8(srcString);
@@ -1049,7 +1049,7 @@ volatile int sectCheck = 48;
 CRITICAL_SECTION memCS;
 DWORD tlsIdx;
 
-void* XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
+void* XMemAlloc(size_t dwSize, DWORD dwAllocAttributes) {
     if (!trackStarted) {
         void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
         size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
@@ -1100,7 +1100,7 @@ void operator delete(void* p) {
                     XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP));
 }
 
-void WINAPI XMemFree(PVOID pAddress, DWORD dwAllocAttributes) {
+void WINAPI XMemFree(void* pAddress, DWORD dwAllocAttributes) {
     bool special = false;
     if (dwAllocAttributes == 0) {
         dwAllocAttributes = MAKE_XALLOC_ATTRIBUTES(
@@ -1132,7 +1132,7 @@ void WINAPI XMemFree(PVOID pAddress, DWORD dwAllocAttributes) {
     LeaveCriticalSection(&memCS);
 }
 
-SIZE_T WINAPI XMemSize(PVOID pAddress, DWORD dwAllocAttributes) {
+size_t WINAPI XMemSize(void* pAddress, DWORD dwAllocAttributes) {
     if (trackStarted) {
         return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
     } else {

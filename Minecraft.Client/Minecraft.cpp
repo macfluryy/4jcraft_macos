@@ -3459,7 +3459,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     // #ifndef _CONTENT_PACKAGE
     // 	if(!(ui.GetMenuDisplayed(iPad)))
     // 	{
-    // 		WCHAR wchInput;
+    // 		wchar_t wchInput;
     // 		if(InputManager.InputDetected(iPad,&wchInput))
     // 		{
     // 			printf("Input Detected!\n");

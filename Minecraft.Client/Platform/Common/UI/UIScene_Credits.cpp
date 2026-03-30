@@ -239,7 +239,7 @@ void UIScene_Credits::tick() {
                 if (pDef->m_iStringID[0] == NO_TRANSLATED_STRING) {
                     ZeroMemory(creditsString, 128);
                     memcpy(creditsString, sanitisedString.c_str(),
-                           sizeof(WCHAR) * sanitisedString.length());
+                           sizeof(wchar_t) * sanitisedString.length());
                 } else if (pDef->m_iStringID[1] != NO_TRANSLATED_STRING) {
                     swprintf(creditsString, 128, sanitisedString.c_str(),
                              app.GetString(pDef->m_iStringID[0]),

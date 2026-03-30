@@ -321,10 +321,10 @@ public:
     static LPCGUID getPlayerSession();
 
     static void setMultiplayerCorrelationId(Platform::String ^ mpcId);
-    static LPCWSTR getMultiplayerCorrelationId();
+    static const wchar_t* getMultiplayerCorrelationId();
 
-    static LPCWSTR getUserId(std::shared_ptr<LocalPlayer> plr);
-    static LPCWSTR getUserId(int iPad);
+    static const wchar_t* getUserId(std::shared_ptr<LocalPlayer> plr);
+    static const wchar_t* getUserId(int iPad);
 
     static void playerSessionStart(PlayerUID, std::shared_ptr<Player>);
     static void playerSessionStart(int iPad);
