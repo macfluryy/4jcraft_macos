@@ -4,6 +4,36 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+
+    shiggy = {
+      url = "github:4jcraft/shiggy/main";
+      flake = false;
+    };
+
+    "4jlibs" = {
+      url = "github:4jcraft/4jlibs/main";
+      flake = false;
+    };
+
+    miniaudio = {
+      url = "https://github.com/mackron/miniaudio/archive/refs/tags/0.11.22.tar.gz";
+      flake = false;
+    };
+
+    miniaudio-patch = {
+      url = "https://wrapdb.mesonbuild.com/v2/miniaudio_0.11.22-2/get_patch";
+      flake = false;
+    };
+
+    stb = {
+      url = "github:nothings/stb/master";
+      flake = false;
+    };
+
+    simdutf = {
+      url = "github:simdutf/simdutf";
+      flake = false;
+    };
   };
 
   outputs =
@@ -26,6 +56,36 @@
 
           dontFixup = true;
           dontUseCmakeConfigure = true;
+
+          # 4jcraft - Meson expects this subprojects structure
+          postUnpack = ''
+            mkdir -p $sourceRoot/subprojects
+
+            cp -r ${inputs.shiggy} $sourceRoot/subprojects/shiggy
+            cp -r ${inputs."4jlibs"} $sourceRoot/subprojects/4jlibs
+            cp -r ${inputs.stb} $sourceRoot/subprojects/stb
+            cp -r ${inputs.simdutf} $sourceRoot/subprojects/simdutf
+            cp -r ${inputs.miniaudio} $sourceRoot/subprojects/miniaudio
+
+            chmod -R u+w $sourceRoot/subprojects
+          '';
+
+          # 4jcraft - `stb` and `simdutf` patches
+          postPatch = ''
+            cp subprojects/packagefiles/stb/meson.build subprojects/stb/meson.build
+            cp subprojects/packagefiles/simdutf/meson.build subprojects/simdutf/meson.build
+            cp subprojects/packagefiles/simdutf/meson.options subprojects/simdutf/meson.options
+
+            unzip ${inputs.miniaudio-patch} -d miniaudio-patch-tmp
+            cp -r miniaudio-patch-tmp/*/. subprojects/miniaudio/
+
+            cat > subprojects/miniaudio.wrap <<EOF
+            [wrap-file]
+            directory = miniaudio
+            [provide]
+            dependency_names = miniaudio
+            EOF
+          '';
 
           nativeBuildInputs = with pkgs; [
             lld
