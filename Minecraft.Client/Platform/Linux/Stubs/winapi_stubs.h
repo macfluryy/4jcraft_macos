@@ -18,7 +18,6 @@
 
 #define S_OK 0
 typedef unsigned int DWORD;
-typedef bool bool;
 typedef wchar_t WCHAR;
 typedef unsigned char BYTE;
 typedef BYTE* PBYTE;
