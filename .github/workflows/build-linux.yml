@@ -1,11 +1,12 @@
-name: Build (Linux x86/64)
+name: Build (Linux, x86-64)
 
 on:
   push:
     - "**.cpp"
     - "**.h"
     - "**.meson.build"
-    - ".github/workflows/*"
+    - '.github/workflows/build-linux.yml'
+
 
 jobs:
   build-linux:
