@@ -651,8 +651,9 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         // 					if(pTempItemInst->id<256)
         // 					{
         // 						Tile
-        // *pTile=Tile::tiles[pTempItemInst->id]; 						printf("[TILE] ID\t%d\tAux
-        // val\t%d\tBase type\t%d\tMaterial\t%d\t Count=%d\n",pTempItemInst->id,
+        // *pTile=Tile::tiles[pTempItemInst->id];
+        // printf("[TILE] ID\t%d\tAux val\t%d\tBase type\t%d\tMaterial\t%d\t
+        // Count=%d\n",pTempItemInst->id,
         // pTempItemInst->getAuxValue(),pTile->getBaseItemType(),pTile->getMaterial(),pTempItemInst->GetCount());
         // 					}
         // 					else

@@ -19,7 +19,6 @@ void ClothDyeRecipes::addRecipes(Recipes* r) {
             L"sssczczg", L"###", L"#X#", L"###", L'#',
             new ItemInstance(Tile::clayHardened), L'X',
             new ItemInstance(Item::dye_powder, 1, i), L'D');
-
     }
 
     // some dye recipes

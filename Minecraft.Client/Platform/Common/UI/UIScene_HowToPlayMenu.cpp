@@ -28,7 +28,7 @@ unsigned int UIScene_HowToPlayMenu::m_uiHTPButtonNameA[] = {
 
     IDS_HOW_TO_PLAY_MENU_NETHERPORTAL,  // eHTPButton_NetherPortal,
     IDS_HOW_TO_PLAY_MENU_THEEND,        // eHTPButton_TheEnd,
-    IDS_HOW_TO_PLAY_MENU_HOSTOPTIONS,  // eHTPButton_HostOptions,
+    IDS_HOW_TO_PLAY_MENU_HOSTOPTIONS,   // eHTPButton_HostOptions,
 };
 
 // mapping the buttons to a scene value
@@ -100,7 +100,9 @@ void UIScene_HowToPlayMenu::updateComponents() {
 void UIScene_HowToPlayMenu::handleReload() {
     for (unsigned int i = 0; i < eHTPButton_Max; ++i) {
         // 4J Stu - Re-add for future platforms
-        { m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]), i); }
+        {
+            m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]), i);
+        }
     }
 
     doHorizontalResizeCheck();

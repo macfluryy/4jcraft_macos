@@ -49,7 +49,7 @@ static UIScene_HowToPlay::SHowToPlayPageDef gs_aPageDefs[eHowToPlay_NumPages] =
         {IDS_HOW_TO_PLAY_DROPPERS, 0, 0},      // eHowToPlay_Droppers
         {IDS_HOW_TO_PLAY_NETHERPORTAL, 0, 0},  // eHowToPlay_NetherPortal
         {IDS_HOW_TO_PLAY_THEEND, 0, 0},        // eHowToPlay_NetherPortal
-        {IDS_HOW_TO_PLAY_HOSTOPTIONS, 0, 0},  // eHowToPlay_HostOptions
+        {IDS_HOW_TO_PLAY_HOSTOPTIONS, 0, 0},   // eHowToPlay_HostOptions
 };
 
 int gs_pageToFlashMapping[eHowToPlay_NumPages] = {
@@ -328,5 +328,4 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
 
     TelemetryManager->RecordMenuShown(m_iPad, eUIScene_HowToPlay,
                                       (ETelemetry_HowToPlay_SubMenuId)ePage);
-
 }

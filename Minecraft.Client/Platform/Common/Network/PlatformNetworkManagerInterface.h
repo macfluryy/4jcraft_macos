@@ -141,5 +141,4 @@ public:
     virtual void FakeLocalPlayerJoined() {
     };  // Temporary method whilst we don't have real networking to make this
         // happen
-
 };

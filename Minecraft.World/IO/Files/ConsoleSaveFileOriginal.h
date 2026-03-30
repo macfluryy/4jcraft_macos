@@ -34,7 +34,8 @@ public:
     static int SaveSaveDataCallback(void* lpParam, bool bRes);
 #endif
     ConsoleSaveFileOriginal(const std::wstring& fileName,
-                            void* pvSaveData = nullptr, unsigned int fileSize = 0,
+                            void* pvSaveData = nullptr,
+                            unsigned int fileSize = 0,
                             bool forceCleanSave = false,
                             ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
     virtual ~ConsoleSaveFileOriginal();
@@ -75,7 +76,6 @@ public:
         const std::wstring& prefix);
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex);
-
 
     virtual int getSaveVersion();
     virtual int getOriginalSaveVersion();

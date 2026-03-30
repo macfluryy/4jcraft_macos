@@ -64,7 +64,6 @@ bool UIControl::setupControl(UIScene* scene, IggyValuePath* parent,
     return res;
 }
 
-
 void UIControl::ReInit() {
     if (!m_isValid) return;
 
@@ -86,7 +85,8 @@ void UIControl::ReInit() {
             m_funcSetAlpha, 2, value);
     }
 
-    IggyValueSetBooleanRS(getIggyValuePath(), m_nameVisible, nullptr, m_isVisible);
+    IggyValueSetBooleanRS(getIggyValuePath(), m_nameVisible, nullptr,
+                          m_isVisible);
 }
 
 IggyValuePath* UIControl::getIggyValuePath() { return &m_iggyPath; }

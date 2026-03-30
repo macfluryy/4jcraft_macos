@@ -173,9 +173,7 @@ public:
         return (ListTag<Tag>*)tags[name];
     }
 
-    bool getBoolean(const std::wstring& string) {
-        return getByte(string) != 0;
-    }
+    bool getBoolean(const std::wstring& string) { return getByte(string) != 0; }
 
     void remove(const std::wstring& name) {
         auto it = tags.find(name);

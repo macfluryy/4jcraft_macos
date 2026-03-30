@@ -39,7 +39,6 @@ int RemoveEntitiesPacket::getEstimatedSize() { return 1 + (ids.length * 4); }
         4J: These are necesary on the PS3.
                 (and 4).
 */
-#if (0 || 0 || 0 || \
-     defined __linux__)
+#if (0 || 0 || 0 || defined __linux__)
 const int RemoveEntitiesPacket::MAX_PER_PACKET;
 #endif

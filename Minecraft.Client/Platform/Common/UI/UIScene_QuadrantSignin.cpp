@@ -17,7 +17,6 @@ UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
 
     _initQuadrants();
 
-
     parentLayer->addComponent(iPad, eUIComponent_MenuBackground);
 }
 
@@ -67,21 +66,19 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
         switch (key) {
             case ACTION_MENU_CANCEL: {
                 if (pressed) {
-                        {
-                            m_bIgnoreInput = true;
-                            m_signInInfo.Func(m_signInInfo.lpParam, false,
-                                              iPad);
-                            ProfileManager.CancelProfileAvatarRequest();
+                    {
+                        m_bIgnoreInput = true;
+                        m_signInInfo.Func(m_signInInfo.lpParam, false, iPad);
+                        ProfileManager.CancelProfileAvatarRequest();
 
-                            navigateBack();
-                        }
+                        navigateBack();
                     }
+                }
             } break;
             case ACTION_MENU_OK:
                 if (pressed) {
                     m_bIgnoreInput = true;
-                    if (ProfileManager.IsSignedIn(iPad))
-                    {
+                    if (ProfileManager.IsSignedIn(iPad)) {
                         app.DebugPrintf("Signed in pad pressed\n");
                         ProfileManager.CancelProfileAvatarRequest();
 
@@ -111,8 +108,7 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
 }
 
 int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
-                                           int iPad)
-{
+                                           int iPad) {
     app.DebugPrintf("SignInReturned for pad %d\n", iPad);
 
     UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)pParam;
@@ -124,7 +120,6 @@ int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
 
     return 0;
 }
-
 
 namespace {
 int AvatarReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,

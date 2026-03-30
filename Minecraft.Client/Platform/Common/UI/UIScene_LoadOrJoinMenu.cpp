@@ -28,8 +28,6 @@ bool UIScene_LoadOrJoinMenu::m_bSaveTransferRunning = false;
 #define JOIN_LOAD_ONLINE_TIMER_ID 0
 #define JOIN_LOAD_ONLINE_TIMER_TIME 100
 
-
-
 namespace {
 int LoadOrJoinThumbnailReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
                                      unsigned int thumbnailBytes) {
@@ -120,10 +118,7 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
     m_bMultiplayerAllowed = ProfileManager.IsSignedInLive(m_iPad) &&
                             ProfileManager.AllowedToPlayMultiplayer(m_iPad);
 
-
     int iLB = -1;
-
-
 
     // block input if we're waiting for DLC to install, and wipe the saves list.
     // The end of dlc mounting custom message will fill the list again
@@ -134,7 +129,6 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
     } else {
         Initialise();
     }
-
 
     UpdateGamesList();
 
@@ -187,7 +181,6 @@ UIScene_LoadOrJoinMenu::~UIScene_LoadOrJoinMenu() {
 }
 
 void UIScene_LoadOrJoinMenu::updateTooltips() {
-
     // update the tooltips
     // if the saves list has focus, then we should show the Delete Save tooltip
     // if the games list has focus, then we should the the View Gamercard
@@ -222,7 +215,6 @@ void UIScene_LoadOrJoinMenu::updateTooltips() {
         else
             iLB = IDS_TOOLTIPS_PARTY_GAMES;
     }
-
 
     if (ProfileManager.IsFullVersion() == false) {
         iRB = -1;
@@ -265,7 +257,6 @@ void UIScene_LoadOrJoinMenu::Initialise() {
         m_pSavesList->SetCurSelVisible(0);
 #endif
     } else if (StorageManager.GetSaveDisabled()) {
-
 #if TO_BE_IMPLEMENTED
         if (StorageManager.GetSaveDeviceSelected(m_iPad))
 #endif
@@ -299,7 +290,6 @@ void UIScene_LoadOrJoinMenu::updateComponents() {
 }
 
 void UIScene_LoadOrJoinMenu::handleDestroy() {
-
     // shut down the keyboard if it is displayed
 }
 
@@ -568,7 +558,6 @@ void UIScene_LoadOrJoinMenu::tick() {
     }
 #endif
 
-
     // SAVE TRANSFERS
 }
 
@@ -578,7 +567,6 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
     // This will return with the number retrieved in uiSaveC
 
     if (app.DebugSettingsOn() && app.GetLoadSavesFromFolderEnabled()) {
-
         uiSaveC = 0;
         File savesDir(L"Saves");
         if (savesDir.exists()) {
@@ -615,8 +603,8 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
 
         m_pSaveDetails = StorageManager.ReturnSavesInfo();
         if (m_pSaveDetails == nullptr) {
-            C4JStorage::ESaveGameState eSGIStatus =
-                StorageManager.GetSavesInfo(m_iPad, nullptr, this, (char*)"save");
+            C4JStorage::ESaveGameState eSGIStatus = StorageManager.GetSavesInfo(
+                m_iPad, nullptr, this, (char*)"save");
         }
 
 #if TO_BE_IMPLEMENTED
@@ -983,7 +971,6 @@ void UIScene_LoadOrJoinMenu::handlePress(F64 controlId, F64 childId) {
 void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex) {
     if (m_buttonListGames.getItemCount() > 0 &&
         gameIndex < m_currentSessions->size()) {
-
         // CScene_MultiGameInfo::JoinMenuInitData *initData = new
         // CScene_MultiGameInfo::JoinMenuInitData();
         m_initData->iPad = 0;
@@ -1025,10 +1012,8 @@ void UIScene_LoadOrJoinMenu::CheckAndJoinGame(int gameIndex) {
 
                 return;
             }
-
         }
         m_controlJoinTimer.setVisible(false);
-
 
         m_bIgnoreInput = true;
         ui.NavigateToScene(ProfileManager.GetPrimaryPad(), eUIScene_JoinMenu,
@@ -1283,7 +1268,6 @@ bool UIScene_LoadOrJoinMenu::DoesGamesListHaveFocus() {
 void UIScene_LoadOrJoinMenu::handleTimerComplete(int id) {
     switch (id) {
         case JOIN_LOAD_ONLINE_TIMER_ID: {
-
             bool bMultiplayerAllowed =
                 ProfileManager.IsSignedInLive(m_iPad) &&
                 ProfileManager.AllowedToPlayMultiplayer(m_iPad);
@@ -1301,7 +1285,7 @@ void UIScene_LoadOrJoinMenu::handleTimerComplete(int id) {
                 m_bMultiplayerAllowed = bMultiplayerAllowed;
             }
         } break;
-        // 4J-PB - Only Xbox will not have trial DLC patched into the game
+            // 4J-PB - Only Xbox will not have trial DLC patched into the game
     }
 }
 
@@ -1488,7 +1472,6 @@ int UIScene_LoadOrJoinMenu::RenameSaveDataReturned(void* lpParam, bool bRes) {
     return 0;
 }
 
-
 int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)pParam;
@@ -1554,7 +1537,6 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
     return 0;
 }
 
-
 int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)pParam;
@@ -1563,12 +1545,10 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(
     if (result == C4JStorage::EMessage_ResultAccept) {
         // we need to enable background downloading for the DLC
         XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
-
     }
     pClass->m_bIgnoreInput = false;
     return 0;
 }
-
 
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
 
@@ -2142,7 +2122,9 @@ void UIScene_LoadOrJoinMenu::SaveTransferReturned(void* lpParam,
             error_code);
     }
 }
-ConsoleSaveFile* UIScene_LoadOrJoinMenu::SonyCrossSaveConvert() { return nullptr; }
+ConsoleSaveFile* UIScene_LoadOrJoinMenu::SonyCrossSaveConvert() {
+    return nullptr;
+}
 
 void UIScene_LoadOrJoinMenu::CancelSaveTransferCallback(void* lpParam) {
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;

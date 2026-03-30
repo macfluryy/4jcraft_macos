@@ -7,6 +7,7 @@ private:
     IggyName m_funcInitLeaderboard, m_funcAddDataSet;
     IggyName m_funcResetLeaderboard;
     IggyName m_funcSetupTitles, m_funcSetColumnIcon;
+
 public:
     enum ELeaderboardIcons {
         e_ICON_TYPE_IGGY = 0,
@@ -43,5 +44,4 @@ public:
                     const std::wstring& col2, const std::wstring& col3,
                     const std::wstring& col4, const std::wstring& col5,
                     const std::wstring& col6);
-
 };

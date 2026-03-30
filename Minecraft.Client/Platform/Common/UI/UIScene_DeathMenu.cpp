@@ -30,7 +30,8 @@ UIScene_DeathMenu::UIScene_DeathMenu(int iPad, void* initData,
 
 UIScene_DeathMenu::~UIScene_DeathMenu() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft != nullptr && pMinecraft->localgameModes[m_iPad] != nullptr) {
+    if (pMinecraft != nullptr &&
+        pMinecraft->localgameModes[m_iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 

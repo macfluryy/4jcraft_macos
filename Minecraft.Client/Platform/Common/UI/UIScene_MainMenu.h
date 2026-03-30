@@ -40,7 +40,6 @@ private:
     bool m_bTrialVersion;
     bool m_bLoadTrialOnNetworkManagerReady;
 
-
     float m_fScreenWidth, m_fScreenHeight;
     float m_fRawWidth, m_fRawHeight;
     std::vector<std::wstring> m_splashes;

@@ -84,7 +84,8 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
     }
 
     if (m_editingSelf) {
-#if defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
+#if defined(_CONTENT_PACKAGE) || \
+    defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
         removeControl(&m_checkboxes[eControl_Op], true);
 #else
         m_checkboxes[eControl_Op].init(
@@ -278,7 +279,6 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
 
     g_NetworkManager.RegisterPlayerChangedCallback(
         m_iPad, &UIScene_InGamePlayerOptionsMenu::OnPlayerChanged, this);
-
 }
 
 std::wstring UIScene_InGamePlayerOptionsMenu::getMoviePath() {
@@ -315,7 +315,8 @@ void UIScene_InGamePlayerOptionsMenu::handleReload() {
     }
 
     if (m_editingSelf) {
-#if defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
+#if defined(_CONTENT_PACKAGE) || \
+    defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
         removeControl(&m_checkboxes[eControl_Op], true);
 #endif
 
@@ -406,7 +407,8 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
                 bool cheats =
                     app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
                 if (m_editingSelf) {
-#if defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
+#if defined(_CONTENT_PACKAGE) || \
+    defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
 #else
                     Player::setPlayerGamePrivilege(
                         m_playerPrivileges,
@@ -462,8 +464,8 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
                 } else {
                     INetworkPlayer* editingPlayer =
                         g_NetworkManager.GetPlayerBySmallId(m_networkSmallId);
-                    if (!trustPlayers &&
-                        (editingPlayer != nullptr && !editingPlayer->IsHost())) {
+                    if (!trustPlayers && (editingPlayer != nullptr &&
+                                          !editingPlayer->IsHost())) {
                         Player::setPlayerGamePrivilege(
                             m_playerPrivileges,
                             Player::ePlayerGamePrivilege_CannotMine,

@@ -10,7 +10,6 @@
 #include <vector>
 #include <string>
 
-
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];
 

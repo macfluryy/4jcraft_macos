@@ -176,7 +176,7 @@ void ConsoleSaveFileSplit::RegionFileReference::Compress() {
     //	std::int64_t endTime = System::currentTimeMillis();
     //	app.DebugPrintf("Compressing region file 0x%.8x from %d to %d bytes -
     //%dms\n", fileEntry->data.regionIndex, fileEntry->data.length,
-    //dataCompressedSize, endTime - startTime);
+    // dataCompressedSize, endTime - startTime);
 }
 
 // Decompress from dataCompressed -> data. See comment in Compress method for
@@ -256,7 +256,7 @@ void ConsoleSaveFileSplit::RegionFileReference::Decompress() {
     //	std::int64_t endTime = System::currentTimeMillis();
     //	app.DebugPrintf("Decompressing region file from 0x%.8x %d to %d bytes -
     //%dms\n", fileEntry->data.regionIndex, dataCompressedSize,
-    //fileEntry->data.length, endTime - startTime);//
+    // fileEntry->data.length, endTime - startTime);//
 }
 
 unsigned int ConsoleSaveFileSplit::RegionFileReference::GetCompressedSize() {
@@ -315,7 +315,7 @@ unsigned int ConsoleSaveFileSplit::RegionFileReference::GetCompressedSize() {
 // Release dataCompressed
 void ConsoleSaveFileSplit::RegionFileReference::ReleaseCompressed() {
     //	app.DebugPrintf("Releasing compressed data for region file from
-    //0x%.8x\n", fileEntry->data.regionIndex );
+    // 0x%.8x\n", fileEntry->data.regionIndex );
     free(dataCompressed);
     dataCompressed = nullptr;
     dataCompressedSize = 0;
@@ -376,8 +376,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile* sourceSave,
             sourceSave->getFilesWithPrefix(L"");
 
         unsigned int bytesWritten = 0;
-        for (auto it = sourceFiles->begin(); it != sourceFiles->end();
-             ++it) {
+        for (auto it = sourceFiles->begin(); it != sourceFiles->end(); ++it) {
             FileEntry* sourceEntry = *it;
             sourceSave->setFilePointer(sourceEntry, 0,
                                        SaveFileSeekOrigin::Begin);
@@ -703,9 +702,9 @@ bool ConsoleSaveFileSplit::writeFile(FileEntry* file, const void* lpBuffer,
                nNumberOfBytesToWrite);
 
         //		app.DebugPrintf(">>>>>>>>>>>>>> writing a region file's
-        //data 0x%.8x, 0x%x offset %d of %d bytes (writing %d
-        //bytes)\n",file->data.regionIndex,fileRef->data,file->currentFilePointer,
-        //file->getFileSize(), nNumberOfBytesToWrite);
+        // data 0x%.8x, 0x%x offset %d of %d bytes (writing %d
+        // bytes)\n",file->data.regionIndex,fileRef->data,file->currentFilePointer,
+        // file->getFileSize(), nNumberOfBytesToWrite);
 
         file->currentFilePointer += nNumberOfBytesToWrite;
         file->updateLastModifiedTime();
@@ -770,9 +769,9 @@ bool ConsoleSaveFileSplit::zeroFile(FileEntry* file,
                nNumberOfBytesToWrite);
 
         //		app.DebugPrintf(">>>>>>>>>>>>>> writing a region file's
-        //data 0x%.8x, 0x%x offset %d of %d bytes (writing %d
-        //bytes)\n",file->data.regionIndex,fileRef->data,file->currentFilePointer,
-        //file->getFileSize(), nNumberOfBytesToWrite);
+        // data 0x%.8x, 0x%x offset %d of %d bytes (writing %d
+        // bytes)\n",file->data.regionIndex,fileRef->data,file->currentFilePointer,
+        // file->getFileSize(), nNumberOfBytesToWrite);
 
         file->currentFilePointer += nNumberOfBytesToWrite;
         file->updateLastModifiedTime();
@@ -948,8 +947,8 @@ void ConsoleSaveFileSplit::tick() {
 
         regionRef->Compress();
         //		app.DebugPrintf("Tick: Writing region 0x%.8x, compressed
-        //as %d bytes\n",regionRef->fileEntry->getRegionFileIndex(),
-        //regionRef->dataCompressedSize);
+        // as %d bytes\n",regionRef->fileEntry->getRegionFileIndex(),
+        // regionRef->dataCompressedSize);
         StorageManager.UpdateSubfile(regionRef->index,
                                      regionRef->dataCompressed,
                                      regionRef->dataCompressedSize);
@@ -1251,11 +1250,9 @@ bool ConsoleSaveFileSplit::doesFileExist(ConsoleSavePath file) {
 void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     LockSaveAccess();
 
-
     // The storage manage might potentially be busy doing a sub-file write
     // initiated from the tick. Wait until this is totally processed.
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
-
         app.DebugPrintf("Flush wait\n");
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
@@ -1346,7 +1343,6 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             std::uint8_t* pbDataSaveImage = nullptr;
             unsigned int dwDataSizeSaveImage = 0;
 
-
             std::uint8_t bTextMetadata[88];
             ZeroMemory(bTextMetadata, 88);
 
@@ -1417,7 +1413,8 @@ int ConsoleSaveFileSplit::SaveRegionFilesCallback(void* lpParam, bool bRes) {
 
 #if !defined(_CONTENT_PACKAGE)
 void ConsoleSaveFileSplit::DebugFlushToFile(
-    void* compressedData /*= nullptr*/, unsigned int compressedDataSize /*= 0*/) {
+    void* compressedData /*= nullptr*/,
+    unsigned int compressedDataSize /*= 0*/) {
     LockSaveAccess();
 
     finalizeWrite();
@@ -1498,7 +1495,6 @@ std::vector<FileEntry*>* ConsoleSaveFileSplit::getRegionFilesByDimension(
 
     return files;
 }
-
 
 int ConsoleSaveFileSplit::getSaveVersion() { return header.getSaveVersion(); }
 
@@ -1581,8 +1577,7 @@ void ConsoleSaveFileSplit::ConvertToLocalPlatform() {
     // convert each of the region files to the local platform
     std::vector<FileEntry*>* allFilesInSave =
         getFilesWithPrefix(std::wstring(L""));
-    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end();
-         ++it) {
+    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end(); ++it) {
         FileEntry* fe = *it;
         std::wstring fName(fe->data.filename);
         std::wstring suffix(L".mcr");

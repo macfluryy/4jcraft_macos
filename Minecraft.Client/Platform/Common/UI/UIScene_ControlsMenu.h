@@ -51,13 +51,11 @@ private:
     IggyName m_funcSetPlatform, m_funcSetControllerLayout;
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
 
-    {
-        UI_MAP_ELEMENT(m_labelCurrentLayout, "CurrentLayout")
+    UI_MAP_ELEMENT(m_labelCurrentLayout, "CurrentLayout")
 
-        UI_MAP_ELEMENT(m_buttonLayouts[0], "Button1")
-        UI_MAP_ELEMENT(m_buttonLayouts[1], "Button2")
-        UI_MAP_ELEMENT(m_buttonLayouts[2], "Button3")
-    }
+    UI_MAP_ELEMENT(m_buttonLayouts[0], "Button1")
+    UI_MAP_ELEMENT(m_buttonLayouts[1], "Button2")
+    UI_MAP_ELEMENT(m_buttonLayouts[2], "Button3")
 
     UI_MAP_ELEMENT(m_labelsPad[e_PadBack], "LabelBack")
     UI_MAP_ELEMENT(m_labelsPad[e_PadLT], "LabelLT")

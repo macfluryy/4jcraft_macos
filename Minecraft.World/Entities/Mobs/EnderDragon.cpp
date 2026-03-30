@@ -464,8 +464,7 @@ void EnderDragon::aiStep() {
                 std::vector<std::shared_ptr<Entity> >* targets =
                     level->getEntities(shared_from_this(), &m_acidArea);
 
-                for (auto it = targets->begin(); it != targets->end();
-                     ++it) {
+                for (auto it = targets->begin(); it != targets->end(); ++it) {
                     if ((*it)->instanceof(eTYPE_LIVINGENTITY)) {
                         // app.DebugPrintf("Attacking entity with acid\n");
                         std::shared_ptr<LivingEntity> e =
@@ -688,7 +687,7 @@ void EnderDragon::aiStep() {
         double acidY = y + yOffset + ssTilt * 10.5f;
         double acidZ = z - cc * 9.5f * ccTilt;
         m_acidArea = {acidX - 5, acidY - 17, acidZ - 5,
-                       acidX + 5, acidY + 4,  acidZ + 5};
+                      acidX + 5, acidY + 4,  acidZ + 5};
 
         // app.DebugPrintf("\nDragon is %s, yRot = %f, yRotA = %f, ss = %f, cc =
         // %f, ccTilt = %f\n",level->isClientSide?"client":"server", yRot,
@@ -794,8 +793,8 @@ void EnderDragon::aiStep() {
     // End fireball attack
 
     if (!level->isClientSide) {
-        inWall =
-            checkWalls(&head->bb) | checkWalls(&neck->bb) | checkWalls(&body->bb);
+        inWall = checkWalls(&head->bb) | checkWalls(&neck->bb) |
+                 checkWalls(&body->bb);
     }
 }
 

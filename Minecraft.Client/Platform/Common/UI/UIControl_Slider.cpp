@@ -54,7 +54,6 @@ void UIControl_Slider::init(UIString label, int id, int min, int max,
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 5, value);
-
 }
 
 void UIControl_Slider::handleSliderMove(int newValue) {
@@ -80,9 +79,9 @@ void UIControl_Slider::SetSliderTouchPos(float fTouchPos) {
 
 S32 UIControl_Slider::GetRealWidth() {
     IggyDataValue result;
-    IggyResult out =
-        IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_funcGetRealWidth, 0, nullptr);
+    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
+                                            getIggyValuePath(),
+                                            m_funcGetRealWidth, 0, nullptr);
 
     S32 iRealWidth = m_width;
     if (result.type == IGGY_DATATYPE_number) {

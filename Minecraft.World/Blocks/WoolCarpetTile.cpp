@@ -22,7 +22,7 @@ std::optional<AABB> WoolCarpetTile::getAABB(Level* level, int x, int y, int z) {
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
-                         y + (height * offset), z + tls->zz1);
+                y + (height * offset), z + tls->zz1);
 }
 
 bool WoolCarpetTile::blocksLight() { return false; }

@@ -185,8 +185,7 @@ int NetherBridgePieces::NetherBridgePiece::updatePieceWeight(
     std::list<PieceWeight*>* currentPieces) {
     bool hasAnyPieces = false;
     int totalWeight = 0;
-    for (auto it = currentPieces->begin(); it != currentPieces->end();
-         it++) {
+    for (auto it = currentPieces->begin(); it != currentPieces->end(); it++) {
         PieceWeight* piece = *it;
 
         if (piece->maxPlaceCount > 0 &&

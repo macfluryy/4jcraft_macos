@@ -22,6 +22,7 @@ const int NON_QNET_SENDDATA_ACK_REQUIRED = 1;
 
 class CGameNetworkManager {
     friend class CPlatformNetworkManagerStub;
+
 public:
     CGameNetworkManager();
     // Misc high level flow
@@ -122,7 +123,6 @@ public:
     static int ServerThreadProc(void* lpParameter);
     static int ExitAndJoinFromInviteThreadProc(void* lpParam);
 
-
     static void _LeaveGame();
     static int ChangeSessionTypeThreadProc(void* lpParam);
 
@@ -133,11 +133,12 @@ public:
 
     // Events
 
-    void ServerReadyCreate(bool create);  // Create the signal (or set to nullptr)
-    void ServerReady();                   // Signal that we are ready
-    void ServerReadyWait();               // Wait for the signal
-    void ServerReadyDestroy();            // Destroy signal
-    bool ServerReadyValid();              // Is non-nullptr
+    void ServerReadyCreate(
+        bool create);           // Create the signal (or set to nullptr)
+    void ServerReady();         // Signal that we are ready
+    void ServerReadyWait();     // Wait for the signal
+    void ServerReadyDestroy();  // Destroy signal
+    bool ServerReadyValid();    // Is non-nullptr
 
     void ServerStoppedCreate(bool create);  // Create the signal
     void ServerStopped();                   // Signal that we are ready
@@ -204,4 +205,3 @@ public:
 };
 
 extern CGameNetworkManager g_NetworkManager;
-

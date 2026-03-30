@@ -33,5 +33,4 @@ public:
 
 protected:
     void handlePress(F64 controlId, F64 childId);
-
 };

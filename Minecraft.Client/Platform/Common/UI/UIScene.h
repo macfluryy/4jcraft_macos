@@ -113,7 +113,6 @@ public:
     int getRenderWidth() { return m_renderWidth; }
     int getRenderHeight() { return m_renderHeight; }
 
-
 protected:
     virtual F64 getSafeZoneHalfHeight();
     virtual F64 getSafeZoneHalfWidth();
@@ -142,6 +141,7 @@ public:
     virtual void tick();
 
     IggyName registerFastName(const std::wstring& name);
+
 protected:
     void addTimer(int id, int ms);
     void killTimer(int id);
@@ -279,7 +279,6 @@ public:
     }
 
 protected:
-
     size_t GetCallbackUniqueId();
 
     virtual bool isReadyToDelete();

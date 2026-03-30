@@ -312,7 +312,9 @@ BaseRailTile::BaseRailTile(int id, bool usesDataBit)
 
 bool BaseRailTile::isUsesDataBit() { return usesDataBit; }
 
-std::optional<AABB> BaseRailTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> BaseRailTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 bool BaseRailTile::blocksLight() { return false; }
 

@@ -176,9 +176,10 @@ void FurnaceTileEntity::tick() {
                                               ->getItem()
                                               ->getCraftingRemainingItem();
                         items[SLOT_FUEL] =
-                            remaining != nullptr ? std::shared_ptr<ItemInstance>(
-                                                    new ItemInstance(remaining))
-                                              : nullptr;
+                            remaining != nullptr
+                                ? std::shared_ptr<ItemInstance>(
+                                      new ItemInstance(remaining))
+                                : nullptr;
                     }
                 }
             }

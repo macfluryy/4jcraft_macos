@@ -168,7 +168,6 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
 }
 
 void UIScene_SignEntryMenu::handleDestroy() {
-
     // another player destroyed the anvil, so shut down the keyboard if it is
     // displayed
 }

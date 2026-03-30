@@ -10,7 +10,8 @@
 #undef Byte
 #endif
 
-thread_local Compression::ThreadStorage* Compression::m_tlsCompression = nullptr;
+thread_local Compression::ThreadStorage* Compression::m_tlsCompression =
+    nullptr;
 Compression::ThreadStorage* Compression::m_tlsCompressionDefault = nullptr;
 
 Compression::ThreadStorage::ThreadStorage() { compression = new Compression(); }
@@ -440,7 +441,6 @@ Compression::Compression() {
 }
 
 Compression::~Compression() {
-
     XMemDestroyCompressionContext(compressionContext);
     XMemDestroyDecompressionContext(decompressionContext);
 }

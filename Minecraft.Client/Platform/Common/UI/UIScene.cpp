@@ -225,7 +225,6 @@ void UIScene::initialiseMovie() {
     m_bUpdateOpacity = true;
 }
 
-
 bool UIScene::mapElementsAndNames() {
     m_rootPath = IggyPlayerRootPath(swf);
 
@@ -240,9 +239,8 @@ bool UIScene::mapElementsAndNames() {
     IggyDatatype safeZoneType = IGGY_DATATYPE__invalid_request;
     IggyResult safeZoneResult = IggyValueGetTypeRS(
         m_rootPath, m_funcSetSafeZone, nullptr, &safeZoneType);
-    m_hasSetSafeZoneMethod =
-        safeZoneResult == IGGY_RESULT_SUCCESS &&
-        safeZoneType == IGGY_DATATYPE_function;
+    m_hasSetSafeZoneMethod = safeZoneResult == IGGY_RESULT_SUCCESS &&
+                             safeZoneType == IGGY_DATATYPE_function;
     return true;
 }
 
@@ -319,7 +317,7 @@ void UIScene::loadMovie() {
 
     IggyPlayerSetUserdata(swf, this);
 
-// #ifdef _DEBUG
+    // #ifdef _DEBUG
     UIController::ms_reloadSkinCS.unlock();
 }
 
@@ -452,7 +450,6 @@ void UIScene::removeControl(UIControl_Base* control, bool centreScene) {
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcRemoveObject, 2, value);
-
 }
 
 void UIScene::slideLeft() {
@@ -728,7 +725,6 @@ void UIScene::navigateBack() {
 #endif
     } else {
         //		m_parentLayer->removeScene(this);
-
     }
 }
 
@@ -787,8 +783,7 @@ void UIScene::loseFocus() {
     }
 }
 
-void UIScene::handleGainFocus(bool navBack) {
-}
+void UIScene::handleGainFocus(bool navBack) {}
 
 void UIScene::updateTooltips() {
     if (!ui.IsReloadingSkin()) ui.SetTooltips(m_iPad, -1);
@@ -852,11 +847,9 @@ int UIScene::convertGameActionToIggyKeycode(int action) {
         case ACTION_MENU_PAGEUP:
             keycode = IGGY_KEYCODE_PAGE_UP;
             break;
-        case ACTION_MENU_PAGEDOWN:
-            {
-                keycode = IGGY_KEYCODE_PAGE_DOWN;
-            }
-            break;
+        case ACTION_MENU_PAGEDOWN: {
+            keycode = IGGY_KEYCODE_PAGE_DOWN;
+        } break;
         case ACTION_MENU_RIGHT_SCROLL:
             keycode = IGGY_KEYCODE_F3;
             break;

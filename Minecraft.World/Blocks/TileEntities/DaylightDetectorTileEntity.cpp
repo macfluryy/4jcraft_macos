@@ -9,7 +9,8 @@ void DaylightDetectorTileEntity::tick() {
     if (level != nullptr && !level->isClientSide &&
         (level->getGameTime() % SharedConstants::TICKS_PER_SECOND) == 0) {
         tile = getTile();
-        if (tile != nullptr && dynamic_cast<DaylightDetectorTile*>(tile) != nullptr) {
+        if (tile != nullptr &&
+            dynamic_cast<DaylightDetectorTile*>(tile) != nullptr) {
             ((DaylightDetectorTile*)tile)->updateSignalStrength(level, x, y, z);
         }
     }

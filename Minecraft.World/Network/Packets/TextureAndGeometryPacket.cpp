@@ -98,8 +98,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(
         this->BoxDataA = new SKIN_BOX[this->dwBoxC];
         int iCount = 0;
 
-        for (auto it = pvSkinBoxes->begin(); it != pvSkinBoxes->end();
-             ++it) {
+        for (auto it = pvSkinBoxes->begin(); it != pvSkinBoxes->end(); ++it) {
             SKIN_BOX* pSkinBox = *it;
             this->BoxDataA[iCount++] = *pSkinBox;
         }

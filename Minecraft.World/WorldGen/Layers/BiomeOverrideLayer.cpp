@@ -9,16 +9,16 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
 
 #if defined(_UNICODE)
     std::wstring path = L"GAME:\\GameRules\\biomemap.bin";
-    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING,
-                             FILE_ATTRIBUTE_NORMAL, nullptr);
+    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr,
+                            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 #else
 #if defined(_WINDOWS64)
     std::string path = "GameRules\\biomemap.bin";
 #else
     std::string path = "GAME:\\GameRules\\biomemap.bin";
 #endif
-    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING,
-                             FILE_ATTRIBUTE_NORMAL, nullptr);
+    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr,
+                            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 #endif
     if (file == INVALID_HANDLE_VALUE) {
         uint32_t error = GetLastError();
@@ -32,8 +32,8 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
             __debugbreak();
         }
-        bool bSuccess =
-            ReadFile(file, m_biomeOverride.data, dwFileSize, &bytesRead, nullptr);
+        bool bSuccess = ReadFile(file, m_biomeOverride.data, dwFileSize,
+                                 &bytesRead, nullptr);
 
         if (bSuccess == false) {
             app.FatalLoadError();

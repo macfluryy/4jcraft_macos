@@ -22,7 +22,8 @@ public:
     virtual bool useItemOn(std::shared_ptr<Player> player, Level* level,
                            std::shared_ptr<ItemInstance> item, int x, int y,
                            int z, int face, Vec3* hit,
-                           bool bTestUseOnly = false, bool* pbUsedItem = nullptr);
+                           bool bTestUseOnly = false,
+                           bool* pbUsedItem = nullptr);
     virtual void attack(std::shared_ptr<Player> player,
                         std::shared_ptr<Entity> entity);
 

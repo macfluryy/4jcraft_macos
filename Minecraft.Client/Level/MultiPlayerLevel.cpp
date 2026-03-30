@@ -628,8 +628,8 @@ void MultiPlayerLevel::disconnect(bool sendDisconnect /*= true*/) {
 
 Tickable* MultiPlayerLevel::makeSoundUpdater(
     std::shared_ptr<Minecart> minecart) {
-    return nullptr;  // new MinecartSoundUpdater(minecraft->soundEngine, minecart,
-                  // minecraft->player);
+    return nullptr;  // new MinecartSoundUpdater(minecraft->soundEngine,
+                     // minecart, minecraft->player);
 }
 
 void MultiPlayerLevel::tickWeather() {

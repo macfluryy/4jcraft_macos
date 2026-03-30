@@ -1356,8 +1356,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
         std::lock_guard<std::mutex> lock(m_limiterCS);
         //		printf("entity removed: item entity count
         //%d\n",m_itemEntities.size());
-        auto it =
-                 find(m_hangingEntities.begin(), m_hangingEntities.end(), e);
+        auto it = find(m_hangingEntities.begin(), m_hangingEntities.end(), e);
         if (it != m_hangingEntities.end()) {
             //			printf("Item to remove found\n");
             m_hangingEntities.erase(it);
@@ -1380,7 +1379,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
         //		printf("entity removed: experience orb entity count
         //%d\n",m_arrowEntities.size());
         auto it = find(m_experienceOrbEntities.begin(),
-                          m_experienceOrbEntities.end(), e);
+                       m_experienceOrbEntities.end(), e);
         if (it != m_experienceOrbEntities.end()) {
             //			printf("Item to remove found\n");
             m_experienceOrbEntities.erase(it);

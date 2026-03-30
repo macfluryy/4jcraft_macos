@@ -12,7 +12,8 @@ ColoredTileItem::ColoredTileItem(int id, bool stackedByData) : TileItem(id) {
 }
 
 ColoredTileItem::~ColoredTileItem() {
-    if (descriptionPostfixes.data != nullptr) delete[] descriptionPostfixes.data;
+    if (descriptionPostfixes.data != nullptr)
+        delete[] descriptionPostfixes.data;
 }
 
 int ColoredTileItem::getColor(std::shared_ptr<ItemInstance> item,

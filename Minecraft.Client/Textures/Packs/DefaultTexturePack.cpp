@@ -41,7 +41,8 @@ InputStream* DefaultTexturePack::getResourceImplementation(
 
     InputStream* resource = InputStream::getResourceAsStream(wDrive + name);
     // InputStream *stream =
-    // DefaultTexturePack::class->getResourceAsStream(name); if (stream == nullptr)
+    // DefaultTexturePack::class->getResourceAsStream(name); if (stream ==
+    // nullptr)
     //{
     //	throw new FileNotFoundException(name);
     // }
@@ -56,6 +57,4 @@ void DefaultTexturePack::loadUI() {
     AbstractTexturePack::loadUI();
 }
 
-void DefaultTexturePack::unloadUI() {
-    AbstractTexturePack::unloadUI();
-}
+void DefaultTexturePack::unloadUI() { AbstractTexturePack::unloadUI(); }

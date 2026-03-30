@@ -110,8 +110,7 @@ std::list<VillagePieces::PieceWeight*>* VillagePieces::createPieceSet(
 int VillagePieces::updatePieceWeight(std::list<PieceWeight*>* currentPieces) {
     bool hasAnyPieces = false;
     int totalWeight = 0;
-    for (auto it = currentPieces->begin(); it != currentPieces->end();
-         it++) {
+    for (auto it = currentPieces->begin(); it != currentPieces->end(); it++) {
         PieceWeight* piece = *it;
         if (piece->maxPlaceCount > 0 &&
             piece->placeCount < piece->maxPlaceCount) {
@@ -599,8 +598,8 @@ VillagePieces::StartPiece::StartPiece(BiomeSource* biomeSource, int genDepth,
                                       std::list<PieceWeight*>* pieceSet,
                                       int villageSize, Level* level)
     : Well(nullptr, 0, random, west, north) {
-    isLibraryAdded = false;  // 4J - added initialiser
-    previousPiece = nullptr;    // 4J - added initialiser
+    isLibraryAdded = false;   // 4J - added initialiser
+    previousPiece = nullptr;  // 4J - added initialiser
     this->biomeSource = biomeSource;
     this->pieceSet = pieceSet;
     this->villageSize = villageSize;

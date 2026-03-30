@@ -37,7 +37,8 @@ public:
     void tick(int tick);
 
 private:
-    std::optional<Vec3> findRandomSpawnPos(int x, int y, int z, int sx, int sy, int sz);
+    std::optional<Vec3> findRandomSpawnPos(int x, int y, int z, int sx, int sy,
+                                           int sz);
     bool canSpawnAt(int x, int y, int z, int sx, int sy, int sz);
     void countGolem();
     void countPopulation();

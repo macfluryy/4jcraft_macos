@@ -24,7 +24,6 @@ protected:
     IggyName m_funcSetTooltip, m_funcSetOpacity, m_funcSetABSwap,
         m_funcUpdateLayout;
 
-
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
     UI_MAP_NAME(m_funcSetTooltip, L"SetToolTip")
     UI_MAP_NAME(m_funcSetOpacity, L"SetOpacity")
@@ -81,5 +80,4 @@ private:
     void _Relayout();
 
     bool m_overrideSFX[XUSER_MAX_COUNT][ACTION_MAX_MENU];
-
 };

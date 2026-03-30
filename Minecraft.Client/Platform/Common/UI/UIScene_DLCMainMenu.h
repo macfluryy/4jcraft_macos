@@ -23,7 +23,6 @@ private:
     static int ExitDLCMainMenu(void* pParam, int iPad,
                                C4JStorage::EMessageResult result);
 
-
 public:
     UIScene_DLCMainMenu(int iPad, void* initData, UILayer* parentLayer);
     ~UIScene_DLCMainMenu();

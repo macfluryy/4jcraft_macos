@@ -73,7 +73,5 @@ protected:
 private:
     void PerformActionSaveGame();
 
-
 protected:
-
 };

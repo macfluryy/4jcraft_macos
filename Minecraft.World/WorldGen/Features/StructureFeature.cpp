@@ -134,8 +134,7 @@ StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
                 std::list<StructurePiece*>* pieces =
                     pStructureStart->getPieces();
 
-                for (auto it2 = pieces->begin(); it2 != pieces->end();
-                     it2++) {
+                for (auto it2 = pieces->begin(); it2 != pieces->end(); it2++) {
                     StructurePiece* piece = *it2;
                     if (piece->getBoundingBox()->isInside(cellX, cellY,
                                                           cellZ)) {

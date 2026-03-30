@@ -101,7 +101,6 @@ void Player::_init() {
     m_bCheckedForModelParts = false;
     m_bCheckedDLCForModelParts = false;
 
-
     enderChestInventory = std::shared_ptr<PlayerEnderChestContainer>(
         new PlayerEnderChestContainer());
 
@@ -225,10 +224,11 @@ void Player::updateFrameTick() {
         // 4J Stu - Fix for #45508 - TU5: Gameplay: Eating one piece of food
         // will result in a second piece being eaten as well Original code was
         // item != useItem. Changed this now to use the equals function, and add
-        // the nullptr check as well for the other possible not equals (useItem is
-        // not nullptr if we are here) This is because the useItem and item could
-        // be different objects due to an inventory update from the server, but
-        // still be the same item (with the same id,count and auxvalue)
+        // the nullptr check as well for the other possible not equals (useItem
+        // is not nullptr if we are here) This is because the useItem and item
+        // could be different objects due to an inventory update from the
+        // server, but still be the same item (with the same id,count and
+        // auxvalue)
         if (item == nullptr || !item->equals(useItem)) {
             stopUsingItem();
         } else {
@@ -614,9 +614,7 @@ unsigned int Player::getSkinAnimOverrideBitmask(std::uint32_t skinId) {
     return bitmask;
 }
 
-void Player::setXuid(PlayerUID xuid) {
-    m_xuid = xuid;
-}
+void Player::setXuid(PlayerUID xuid) { m_xuid = xuid; }
 
 void Player::setCustomCape(std::uint32_t capeId) {
 #if !defined(_CONTENT_PACKAGE)
@@ -1331,7 +1329,8 @@ void Player::attack(std::shared_ptr<Entity> entity) {
     if (dmg > 0 || magicBoost > 0) {
         bool bCrit = fallDistance > 0 && !onGround && !onLadder() &&
                      !isInWater() && !hasEffect(MobEffect::blindness) &&
-                     (riding == nullptr) && entity->instanceof(eTYPE_LIVINGENTITY);
+                     (riding == nullptr) &&
+                     entity->instanceof(eTYPE_LIVINGENTITY);
         if (bCrit && dmg > 0) {
             dmg *= 1.5f;
         }
@@ -1591,7 +1590,8 @@ void Player::stopSleepInBed(bool forcefulWakeUp, bool updateLevelList,
 
     Pos* pos = bedPosition;
     Pos* standUp = bedPosition;
-    if (pos != nullptr && level->getTile(pos->x, pos->y, pos->z) == Tile::bed_Id) {
+    if (pos != nullptr &&
+        level->getTile(pos->x, pos->y, pos->z) == Tile::bed_Id) {
         BedTile::setOccupied(level, pos->x, pos->y, pos->z, false);
 
         standUp =
@@ -2636,7 +2636,8 @@ std::vector<ModelPart*>* Player::GetAdditionalModelParts() {
             app.IsFileInMemoryTextures(customTextureUrl)) {
             m_bCheckedForModelParts = true;
         }
-        if (m_ppAdditionalModelParts == nullptr && !m_bCheckedDLCForModelParts) {
+        if (m_ppAdditionalModelParts == nullptr &&
+            !m_bCheckedDLCForModelParts) {
             m_bCheckedDLCForModelParts = true;
 
             // we don't have the data from the dlc skin yet
@@ -2679,4 +2680,3 @@ void Player::SetAdditionalModelParts(
     std::vector<ModelPart*>* ppAdditionalModelParts) {
     m_ppAdditionalModelParts = ppAdditionalModelParts;
 }
-

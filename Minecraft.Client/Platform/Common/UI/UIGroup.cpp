@@ -141,7 +141,8 @@ bool UIGroup::NavigateBack(int iPad, EUIScene eScene, EUILayer eLayer) {
 void UIGroup::closeAllScenes() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (m_iPad >= 0) {
-        if (pMinecraft != nullptr && pMinecraft->localgameModes[m_iPad] != nullptr) {
+        if (pMinecraft != nullptr &&
+            pMinecraft->localgameModes[m_iPad] != nullptr) {
             TutorialMode* gameMode =
                 (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 
@@ -184,7 +185,6 @@ bool UIGroup::HasFocus(int iPad) {
     }
     return hasFocus;
 }
-
 
 // INPUT
 void UIGroup::handleInput(int iPad, int key, bool repeat, bool pressed,
@@ -257,7 +257,6 @@ void UIGroup::HandleDLCInstalled() {
         m_layers[i]->HandleDLCInstalled();
     }
 }
-
 
 void UIGroup::HandleMessage(EUIMessage message, void* data) {
     // Ignore this group if the player isn't signed in

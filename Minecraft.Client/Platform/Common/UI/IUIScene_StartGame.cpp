@@ -166,7 +166,7 @@ void IUIScene_StartGame::UpdateTexturePackDescription(int index) {
         // if(imageBytes > 0 && imageData)
         //{
         //	registerSubstitutionTexture(L"texturePackIcon", imageData,
-        //imageBytes);
+        // imageBytes);
         //	m_bitmapTexturePackIcon.setTextureName(L"texturePackIcon");
         // }
 
@@ -249,7 +249,6 @@ int IUIScene_StartGame::UnlockTexturePackReturned(
 
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedIn(iPad)) {
-
             // the license change coming in when the offer has been installed
             // will cause this scene to refresh
         }

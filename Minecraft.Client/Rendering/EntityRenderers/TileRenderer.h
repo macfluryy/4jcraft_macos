@@ -115,8 +115,7 @@ private:
                                bool render);
     float tesselateAnvilPiece(AnvilTile* tt, int x, int y, int z, int part,
                               float bottom, float width, float height,
-                              float length, bool rotate, bool render,
-                              int data);
+                              float length, bool rotate, bool render, int data);
 
 public:
     bool tesselateTorchInWorld(Tile* tt, int x, int y, int z);

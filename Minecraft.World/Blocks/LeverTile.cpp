@@ -5,10 +5,11 @@
 #include "LeverTile.h"
 #include "Util/AABB.h"
 
-LeverTile::LeverTile(int id)
-    : Tile(id, Material::decoration, false) {}
+LeverTile::LeverTile(int id) : Tile(id, Material::decoration, false) {}
 
-std::optional<AABB> LeverTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> LeverTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 bool LeverTile::blocksLight() { return false; }
 

@@ -70,7 +70,8 @@ public:
 private:
     void translateToPos();
     void reconcileRenderableTileEntities(
-        const std::vector<std::shared_ptr<TileEntity> >& renderableTileEntities);
+        const std::vector<std::shared_ptr<TileEntity> >&
+            renderableTileEntities);
 
 public:
     void makeCopyForRebuild(Chunk* source);

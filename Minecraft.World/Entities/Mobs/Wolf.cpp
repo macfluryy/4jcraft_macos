@@ -243,7 +243,7 @@ bool Wolf::hurt(DamageSource* source, float dmg) {
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
     sitGoal->wantToSit(false);
     if (sourceEntity != nullptr && !(sourceEntity->instanceof(eTYPE_PLAYER) ||
-                                  sourceEntity->instanceof(eTYPE_ARROW))) {
+                                     sourceEntity->instanceof(eTYPE_ARROW))) {
         // Take half damage from non-players and arrows
         dmg = (dmg + 1) / 2;
     }

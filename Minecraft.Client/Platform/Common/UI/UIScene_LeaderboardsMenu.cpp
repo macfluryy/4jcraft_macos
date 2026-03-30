@@ -112,7 +112,6 @@ UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
     m_labelEntries.init(entriesBuffer);
 
     ReadStats(-1);
-
 }
 
 UIScene_LeaderboardsMenu::~UIScene_LeaderboardsMenu() {
@@ -124,7 +123,6 @@ UIScene_LeaderboardsMenu::~UIScene_LeaderboardsMenu() {
 void UIScene_LeaderboardsMenu::updateTooltips() {
     int iTooltipFriendRequest = -1;
     int iTooltipGamerCardOrProfile = -1;
-
 
     ui.SetTooltips(m_iPad, iTooltipFriendRequest, IDS_TOOLTIPS_BACK,
                    IDS_TOOLTIPS_CHANGE_FILTER, iTooltipGamerCardOrProfile);
@@ -262,7 +260,6 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
                 if (m_leaderboard.m_totalEntryCount <= 10) break;
 
                 sendInputToMovie(key, repeat, pressed, released);
-
             }
             handled = true;
         } break;
@@ -688,7 +685,6 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
             }
         }
     }
-
 }
 
 void UIScene_LeaderboardsMenu::PopulateLeaderboard(
@@ -772,7 +768,7 @@ void UIScene_LeaderboardsMenu::PopulateLeaderboard(
 
         // Show the no results message
 #if !defined(_WINDOWS64)
-                            // so we check this for other platforms
+        // so we check this for other platforms
         if (ret == LeaderboardManager::eStatsReturn_NetworkError)
             m_labelInfo.setLabel(app.GetString(IDS_ERROR_NETWORK));
         else
@@ -849,8 +845,7 @@ void UIScene_LeaderboardsMenu::handleRequestMoreData(F64 startIndex, bool up) {
     }
 }
 
-void UIScene_LeaderboardsMenu::handleTimerComplete(int id) {
-}
+void UIScene_LeaderboardsMenu::handleTimerComplete(int id) {}
 
 int UIScene_LeaderboardsMenu::ExitLeaderboards(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {

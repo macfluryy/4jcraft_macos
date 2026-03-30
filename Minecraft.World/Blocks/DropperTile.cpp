@@ -60,7 +60,8 @@ void DropperTile::dispenseFrom(Level* level, int x, int y, int z) {
             }
         } else {
             remaining = DISPENSE_BEHAVIOUR->dispense(&source, item);
-            if (remaining != nullptr && remaining->count == 0) remaining = nullptr;
+            if (remaining != nullptr && remaining->count == 0)
+                remaining = nullptr;
         }
 
         trap->setItem(slot, remaining);

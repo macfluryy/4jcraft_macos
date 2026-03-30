@@ -34,8 +34,8 @@ public:
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
             TileEntity>());  // 4J added forceData, forceEntity param
 
-    std::optional<AABB> getAABB(Level* level, int x, int y, int z, int tile, float progress,
-                  int facing);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z, int tile,
+                                float progress, int facing);
 
 private:
     std::shared_ptr<PistonPieceEntity> getEntity(LevelSource* level, int x,

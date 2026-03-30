@@ -223,7 +223,6 @@ UIScene_LoadMenu::UIScene_LoadMenu(int iPad, void* initData,
         // 4J-PB - Only Xbox will not have trial DLC patched into the game
     }
 
-
     if (params) delete params;
     addTimer(GAME_CREATE_ONLINE_TIMER_ID, GAME_CREATE_ONLINE_TIMER_TIME);
 }
@@ -275,7 +274,6 @@ void UIScene_LoadMenu::tick() {
         app.GetImageTextData(
             m_pbThumbnailData, m_uiThumbnailSize, (unsigned char*)&szSeed,
             uiHostOptions, bHostOptionsRead, m_MoreOptionsParams.dwTexturePack);
-
 
         // #ifdef _DEBUG
         // 			// dump out the thumbnail
@@ -437,10 +435,8 @@ void UIScene_LoadMenu::tick() {
                            eUIScene_QuadrantSignin, &info);
     }
 
-
     UIScene::tick();
 }
-
 
 void UIScene_LoadMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
                                    bool released, bool& handled) {
@@ -528,7 +524,6 @@ void UIScene_LoadMenu::handlePress(F64 controlId, F64 childId) {
         } break;
     };
 }
-
 
 void UIScene_LoadMenu::StartSharedLaunchFlow() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -639,7 +634,6 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
     }
     app.SetGameHostOption(eGameHostOption_WasntSaveOwner, (!m_bIsSaveOwner));
 
-
 #if TO_BE_IMPLEMENTED
     // Reset the background downloading, in case we changed it by attempting to
     // download a texture pack
@@ -680,7 +674,6 @@ void UIScene_LoadMenu::handleSliderMove(F64 sliderId, F64 currentValue) {
 void UIScene_LoadMenu::handleTouchBoxRebuild() { m_bRebuildTouchBoxes = true; }
 
 void UIScene_LoadMenu::handleTimerComplete(int id) {
-
     switch (id) {
         case GAME_CREATE_ONLINE_TIMER_ID: {
             bool bMultiplayerAllowed =
@@ -720,7 +713,7 @@ void UIScene_LoadMenu::handleTimerComplete(int id) {
                 m_bMultiplayerAllowed = bMultiplayerAllowed;
             }
         } break;
-        // 4J-PB - Only Xbox will not have trial DLC patched into the game
+            // 4J-PB - Only Xbox will not have trial DLC patched into the game
     }
 }
 
@@ -961,9 +954,7 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
 
                 ui.RequestContentRestrictedMessageBox();
                 pClass->m_bIgnoreInput = false;
-            }
-            else {
-
+            } else {
                 int localUsersMask = CGameNetworkManager::GetLocalPlayerMask(
                     ProfileManager.GetPrimaryPad());
 
@@ -983,8 +974,7 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
                 pClass->setVisible(true);
                 ui.RequestContentRestrictedMessageBox();
                 pClass->m_bIgnoreInput = false;
-            }
-            else {
+            } else {
                 pClass->m_bRequestQuadrantSignin = true;
             }
         }
@@ -1011,13 +1001,11 @@ int UIScene_LoadMenu::LoadSaveDataReturned(void* pParam, bool bIsCorrupt,
 
     pClass->m_bIsCorrupt = bIsCorrupt;
 
-
     if (bIsOwner) {
         LoadDataComplete(pClass);
     } else {
         // messagebox
         pClass->m_bIgnoreInput = false;
-
     }
 
     return 0;
@@ -1293,4 +1281,3 @@ void UIScene_LoadMenu::handleGainFocus(bool navBack) {
         m_checkboxOnline.setChecked(m_MoreOptionsParams.bOnlineGame == true);
     }
 }
-

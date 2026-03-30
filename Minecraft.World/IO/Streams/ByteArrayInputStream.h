@@ -9,7 +9,7 @@ protected:
                     // stream.
     unsigned int count;  // The index one greater than the last valid character
                          // in the input stream buffer.
-    unsigned int mark;  // The currently marked position in the stream.
+    unsigned int mark;   // The currently marked position in the stream.
     unsigned int pos;  // The index of the next character to read from the input
                        // stream buffer.
 

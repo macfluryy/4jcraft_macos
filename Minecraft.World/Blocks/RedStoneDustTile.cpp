@@ -423,7 +423,6 @@ void RedStoneDustTile::registerIcons(IconRegister* iconRegister) {
 }
 
 Icon* RedStoneDustTile::getTexture(const std::wstring& name) {
-
     if (name.compare(TEXTURE_CROSS) == 0) return Tile::redStoneDust->iconCross;
     if (name.compare(TEXTURE_LINE) == 0) return Tile::redStoneDust->iconLine;
     if (name.compare(TEXTURE_CROSS_OVERLAY) == 0)

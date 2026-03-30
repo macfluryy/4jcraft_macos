@@ -110,7 +110,6 @@ int GrassTile::getResource(int data, Random* random, int playerBonusLevel) {
 }
 
 Icon* GrassTile::getSideTextureOverlay() {
-
     return Tile::grass->iconSideOverlay;
 }
 

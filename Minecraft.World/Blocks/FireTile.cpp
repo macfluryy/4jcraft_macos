@@ -58,7 +58,9 @@ void FireTile::setFlammable(int id, int flame, int burn) {
     burnOdds[id] = burn;
 }
 
-std::optional<AABB> FireTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> FireTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 bool FireTile::blocksLight() { return false; }
 
@@ -345,9 +347,6 @@ void FireTile::registerIcons(IconRegister* iconRegister) {
     icons[1] = iconRegister->registerIcon(TEXTURE_SECOND);
 }
 
-Icon* FireTile::getTextureLayer(int layer) {
-
-    return icons[layer];
-}
+Icon* FireTile::getTextureLayer(int layer) { return icons[layer]; }
 
 Icon* FireTile::getTexture(int face, int data) { return icons[0]; }

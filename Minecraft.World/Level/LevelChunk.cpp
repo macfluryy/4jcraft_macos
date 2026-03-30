@@ -469,7 +469,6 @@ int LevelChunk::getHighestSectionPosition() {
 void LevelChunk::recalcBlockLights() {}
 
 void LevelChunk::recalcHeightmapOnly() {
-
     int min = Level::maxBuildHeight - 1;
     for (int x = 0; x < 16; x++)
         for (int z = 0; z < 16; z++) {
@@ -478,8 +477,8 @@ void LevelChunk::recalcHeightmapOnly() {
                       // value changed from -999 to 255
 
             int y = Level::maxBuildHeight - 1;
-        //            int p = x << level->depthBitsPlusFour | z <<
-        //            level->depthBits;		// 4J - removed
+            //            int p = x << level->depthBitsPlusFour | z <<
+            //            level->depthBits;		// 4J - removed
             CompressedTileStorage* blocks =
                 (y - 1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperBlocks
                                                                   : lowerBlocks;
@@ -504,7 +503,6 @@ void LevelChunk::recalcHeightmapOnly() {
 
     this->minHeight = min;
     this->setUnsaved(true);
-
 }
 
 void LevelChunk::recalcHeightmap() {
@@ -514,8 +512,8 @@ void LevelChunk::recalcHeightmap() {
     for (int x = 0; x < 16; x++)
         for (int z = 0; z < 16; z++) {
             int y = Level::maxBuildHeight - 1;
-        //            int p = x << level->depthBitsPlusFour | z <<
-        //            level->depthBits;			// 4J - removed
+            //            int p = x << level->depthBitsPlusFour | z <<
+            //            level->depthBits;			// 4J - removed
 
             CompressedTileStorage* blocks =
                 (y - 1) >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT ? upperBlocks
@@ -579,7 +577,6 @@ void LevelChunk::recalcHeightmap() {
         }
 
     this->setUnsaved(true);
-
 }
 
 // 4J - this code is fully commented out in the java version, but we have
@@ -1406,8 +1403,7 @@ void LevelChunk::load() {
 
         std::vector<std::shared_ptr<TileEntity> > values;
         { std::lock_guard<std::mutex> lock(m_csTileEntities);
-        for (auto it = tileEntities.begin(); it != tileEntities.end();
-             it++) {
+        for (auto it = tileEntities.begin(); it != tileEntities.end(); it++) {
             values.push_back(it->second);
         }
         }
@@ -1439,8 +1435,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
     if (unloadTileEntities) {
         std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
         { std::lock_guard<std::mutex> lock(m_csTileEntities);
-        for (auto it = tileEntities.begin(); it != tileEntities.end();
-             it++) {
+        for (auto it = tileEntities.begin(); it != tileEntities.end(); it++) {
             tileEntitiesToRemove.push_back(it->second);
         }
         }

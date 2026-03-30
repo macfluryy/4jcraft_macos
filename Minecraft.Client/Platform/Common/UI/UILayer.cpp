@@ -28,8 +28,8 @@ void UILayer::tick() {
     // Delete the scenes in our copy if they are ready to delete, otherwise add
     // back to the ones that are still to be deleted. Actually deleting a scene
     // might also add something back into m_scenesToDelete.
-    for (auto it = scenesToDeleteCopy.begin();
-         it != scenesToDeleteCopy.end(); it++) {
+    for (auto it = scenesToDeleteCopy.begin(); it != scenesToDeleteCopy.end();
+         it++) {
         UIScene* scene = (*it);
         if (scene->isReadyToDelete()) {
             delete scene;
@@ -63,8 +63,7 @@ void UILayer::tick() {
 
 void UILayer::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
     if (!ui.IsExpectingOrReloadingSkin()) {
-        for (auto it = m_components.begin(); it != m_components.end();
-             ++it) {
+        for (auto it = m_components.begin(); it != m_components.end(); ++it) {
             auto itRef = m_componentRefCount.find((*it)->getSceneType());
             if (itRef != m_componentRefCount.end() && itRef->second.second) {
                 if ((*it)->isVisible()) {
@@ -459,8 +458,8 @@ UIScene* UILayer::addComponent(int iPad, EUIScene scene, void* initData) {
     if (it != m_componentRefCount.end()) {
         ++it->second.first;
 
-        for (auto itComp = m_components.begin();
-             itComp != m_components.end(); ++itComp) {
+        for (auto itComp = m_components.begin(); itComp != m_components.end();
+             ++itComp) {
             if ((*itComp)->getSceneType() == scene) {
                 return *itComp;
             }
@@ -547,9 +546,7 @@ void UILayer::removeComponent(EUIScene scene) {
 }
 
 void UILayer::removeScene(UIScene* scene) {
-
-    auto newEnd =
-             std::remove(m_sceneStack.begin(), m_sceneStack.end(), scene);
+    auto newEnd = std::remove(m_sceneStack.begin(), m_sceneStack.end(), scene);
     m_sceneStack.erase(newEnd, m_sceneStack.end());
 
     m_scenesToDelete.push_back(scene);
@@ -691,7 +688,6 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
     return m_hasFocus;
 }
 
-
 void UILayer::handleInput(int iPad, int key, bool repeat, bool pressed,
                           bool released, bool& handled) {
     // Note: reverse iterator, the last element is the top of the stack
@@ -732,7 +728,6 @@ void UILayer::HandleDLCInstalled() {
         topScene->HandleDLCInstalled();
     }
 }
-
 
 void UILayer::HandleMessage(EUIMessage message, void* data) {
     for (auto it = m_sceneStack.rbegin(); it != m_sceneStack.rend(); ++it) {

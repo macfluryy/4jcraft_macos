@@ -132,6 +132,5 @@ protected:
     virtual int32_t fillByIdsQuery(const SceNpId& myNpId, SceNpId*& npIds,
                                    uint32_t& len);
 
-
     virtual char* getComment(SceNpScoreComment* comment) = 0;
 };

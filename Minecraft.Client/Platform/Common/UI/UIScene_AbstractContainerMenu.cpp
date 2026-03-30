@@ -107,7 +107,6 @@ void UIScene_AbstractContainerMenu::PlatformInitialize(int iPad,
     m_fPanelMinY = fPanelY;
     m_fPanelMaxY = fPanelY + fPanelHeight;
 
-
     // 4J-PB - need to limit this in splitscreen
     if (app.GetLocalPlayerCount() > 1) {
         // don't let the pointer go into someone's screen

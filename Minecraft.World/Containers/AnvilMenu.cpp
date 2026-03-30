@@ -242,8 +242,7 @@ void AnvilMenu::createResult() {
         }
 
         int count = 0;
-        for (auto it = enchantments->begin(); it != enchantments->end();
-             ++it) {
+        for (auto it = enchantments->begin(); it != enchantments->end(); ++it) {
             int id = it->first;
             Enchantment* enchantment = Enchantment::enchantments[id];
             int level = it->second;

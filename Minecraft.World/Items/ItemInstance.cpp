@@ -350,8 +350,8 @@ std::wstring ItemInstance::toString() {
     std::wostringstream oss;
     // 4J-PB - TODO - temp fix until ore recipe issue is fixed
     if (Item::items[id] == nullptr) {
-        oss << std::dec << count << L"x" << L" Item::items[id] is nullptr " << L"@"
-            << auxValue;
+        oss << std::dec << count << L"x" << L" Item::items[id] is nullptr "
+            << L"@" << auxValue;
     } else {
         oss << std::dec << count << L"x"
             << Item::items[id]->getDescription(shared_from_this()) << L"@"

@@ -44,9 +44,7 @@ void FlatGeneratorInfo::updateLayers() {
     }
 }
 
-std::wstring FlatGeneratorInfo::toString() {
-    return L"";
-}
+std::wstring FlatGeneratorInfo::toString() { return L""; }
 
 FlatLayerInfo* FlatGeneratorInfo::getLayerFromString(const std::wstring& input,
                                                      int yOffset) {
@@ -74,7 +72,6 @@ std::vector<FlatLayerInfo*>* FlatGeneratorInfo::getLayersFromString(
 
 FlatGeneratorInfo* FlatGeneratorInfo::fromValue(const std::wstring& input) {
     return getDefault();
-
 }
 
 FlatGeneratorInfo* FlatGeneratorInfo::getDefault() {

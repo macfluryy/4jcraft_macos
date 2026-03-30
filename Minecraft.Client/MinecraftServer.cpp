@@ -890,8 +890,7 @@ void MinecraftServer::stopServer(bool didInit) {
     // also need to check for a profile switch here - primary player signs out,
     // and another player signs in before dismissing the dash
     if ((m_bPrimaryPlayerSignedOut == false) &&
-        ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
-    {
+        ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
         // if trial version or saving is disabled, then don't save anything.
         // Also don't save anything if we didn't actually get through the server
         // initialisation.
@@ -917,7 +916,7 @@ void MinecraftServer::stopServer(bool didInit) {
             saveGameRules();
             app.m_gameRules.unloadCurrentGameRules();
             if (levels[0] != nullptr)  // This can be null if stopServer happens
-                                    // very quickly due to network error
+                                       // very quickly due to network error
             {
                 levels[0]->saveToDisc(
                     Minecraft::GetInstance()->progressRenderer, false);
@@ -942,7 +941,6 @@ void MinecraftServer::stopServer(bool didInit) {
             levels[i] = nullptr;
         }
     }
-
 
     delete connection;
     connection = nullptr;
@@ -1614,8 +1612,7 @@ void MinecraftServer::chunkPacketManagement_PreTick() {
         do {
             int longestTime = 0;
             auto playerConnectionBest = playersOrig.begin();
-            for (auto it = playersOrig.begin(); it != playersOrig.end();
-                 it++) {
+            for (auto it = playersOrig.begin(); it != playersOrig.end(); it++) {
                 int thisTime = 0;
                 INetworkPlayer* np = (*it)->getNetworkPlayer();
                 if (np) {
@@ -1701,8 +1698,8 @@ void MinecraftServer::cycleSlowQueueIndex() {
             s_slowQueuePlayerIndex = 0;
         }
     } while (g_NetworkManager.IsInSession() && currentPlayerCount > 0 &&
-             s_slowQueuePlayerIndex != startingIndex && currentPlayer != nullptr &&
-             currentPlayer->IsLocal());
+             s_slowQueuePlayerIndex != startingIndex &&
+             currentPlayer != nullptr && currentPlayer->IsLocal());
     //	app.DebugPrintf("Cycled slow queue index to %d\n",
     // s_slowQueuePlayerIndex);
 }

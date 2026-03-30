@@ -139,10 +139,9 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
                 if (desiredSize > currentHeapSize) {
                     unsigned int pagesRequired =
                         (desiredSize + (CSF_PAGE_SIZE - 1)) / CSF_PAGE_SIZE;
-                    void* pvRet = VirtualAlloc(pvHeap,
-                                               pagesRequired * CSF_PAGE_SIZE,
-                                               COMMIT_ALLOCATION,
-                                               PAGE_READWRITE);
+                    void* pvRet =
+                        VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE,
+                                     COMMIT_ALLOCATION, PAGE_READWRITE);
                     if (pvRet == nullptr) {
                         // Out of physical memory
                         __debugbreak();
@@ -588,10 +587,9 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         const auto startTime = std::chrono::steady_clock::now();
         Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
-        fElapsedTime =
-            std::chrono::duration<float>(std::chrono::steady_clock::now() -
-                                         startTime)
-                .count();
+        fElapsedTime = std::chrono::duration<float>(
+                           std::chrono::steady_clock::now() - startTime)
+                           .count();
 
         app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
@@ -611,10 +609,9 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         const auto startTime = std::chrono::steady_clock::now();
         Compression::getCompression()->Compress(compData + 8, &compLength,
                                                 pvSaveMem, fileSize);
-        fElapsedTime =
-            std::chrono::duration<float>(std::chrono::steady_clock::now() -
-                                         startTime)
-                .count();
+        fElapsedTime = std::chrono::duration<float>(
+                           std::chrono::steady_clock::now() - startTime)
+                           .count();
 
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
@@ -701,7 +698,8 @@ int ConsoleSaveFileOriginal::SaveSaveDataCallback(void* lpParam, bool bRes) {
 
 #ifndef _CONTENT_PACKAGE
 void ConsoleSaveFileOriginal::DebugFlushToFile(
-    void* compressedData /*= nullptr*/, unsigned int compressedDataSize /*= 0*/) {
+    void* compressedData /*= nullptr*/,
+    unsigned int compressedDataSize /*= 0*/) {
     LockSaveAccess();
 
     finalizeWrite();
@@ -727,8 +725,8 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(
     }
     swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH + 1,
              L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs", VER_PRODUCTBUILD,
-             cutFileName.c_str(), t.tm_mon + 1, t.tm_mday, t.tm_hour,
-             t.tm_min, t.tm_sec);
+             cutFileName.c_str(), t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min,
+             t.tm_sec);
 
     const std::wstring outputPath =
         targetFileDir.getPath() + std::wstring(fileName);
@@ -857,8 +855,7 @@ void ConsoleSaveFileOriginal::ConvertToLocalPlatform() {
     // convert each of the region files to the local platform
     std::vector<FileEntry*>* allFilesInSave =
         getFilesWithPrefix(std::wstring(L""));
-    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end();
-         ++it) {
+    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end(); ++it) {
         FileEntry* fe = *it;
         std::wstring fName(fe->data.filename);
         std::wstring suffix(L".mcr");

@@ -16,11 +16,9 @@ public:
 
 protected:
     virtual bool findPoweredRailSignal(Level* level, int x, int y, int z,
-                                       int data, bool forward,
-                                       int searchDepth);
+                                       int data, bool forward, int searchDepth);
     virtual bool isSameRailWithPower(Level* level, int x, int y, int z,
-                                     bool forward, int searchDepth,
-                                     int dir);
+                                     bool forward, int searchDepth, int dir);
     virtual void updateState(Level* level, int x, int y, int z, int data,
                              int dir, int type);
 };

@@ -240,8 +240,8 @@ rrbool UIBitmapFont::CanProvideBitmap(S32 glyph, F32 pixel_scale) {
 //	Parameters
 //	glyph  The glyph to compute/get the bitmap for
 //	pixel_scale  The scale factor (pseudo point size) requested by the
-//textfield,adjusted for display resolution 	bitmap  The structure to store the
-//bitmap into
+// textfield,adjusted for display resolution 	bitmap  The structure to store
+// the bitmap into
 rrbool UIBitmapFont::GetGlyphBitmap(S32 glyph, F32 pixel_scale,
                                     IggyBitmapCharacter* bitmap) {
     // Description
@@ -326,8 +326,9 @@ rrbool UIBitmapFont::GetGlyphBitmap(S32 glyph, F32 pixel_scale,
 #endif
 
     // app.DebugPrintf("Request glyph_%d (U+%.4X) at %f, converted to %f
-    // (%f)\n", 				glyph, GetUnicode(glyph), pixel_scale, targetPixelScale,
-    //glyphScale);
+    // (%f)\n", 				glyph, GetUnicode(glyph),
+    // pixel_scale, targetPixelScale,
+    // glyphScale);
 
     // It is not necessary to shrink the glyph width here
     // as its already been done in 'GetGlyphMetrics' by:

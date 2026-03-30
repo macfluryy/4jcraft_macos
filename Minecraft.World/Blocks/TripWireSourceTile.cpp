@@ -12,7 +12,8 @@ TripWireSourceTile::TripWireSourceTile(int id)
     this->setTicking(true);
 }
 
-std::optional<AABB> TripWireSourceTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> TripWireSourceTile::getAABB(Level* level, int x, int y,
+                                                int z) {
     return std::nullopt;
 }
 

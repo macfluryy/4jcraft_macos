@@ -28,7 +28,6 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
 
     m_buttons[(int)eControl_PlayGame].init(IDS_PLAY_GAME, eControl_PlayGame);
 
-
     m_buttons[(int)eControl_Leaderboards].init(IDS_LEADERBOARDS,
                                                eControl_Leaderboards);
     m_buttons[(int)eControl_Achievements].init((UIString)IDS_ACHIEVEMENTS,
@@ -47,7 +46,6 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
 
     m_buttons[(int)eControl_Exit].init(app.GetString(IDS_EXIT_GAME),
                                        eControl_Exit);
-
 
     doHorizontalResizeCheck();
 
@@ -98,7 +96,6 @@ void UIScene_MainMenu::updateTooltips() {
     int iA = -1;
     if (!m_bIgnorePress) {
         iA = IDS_TOOLTIPS_SELECT;
-
     }
     ui.SetTooltips(DEFAULT_XUI_MENU_USER, iA, -1, iX);
 }
@@ -132,7 +129,6 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
 
     m_bIgnorePress = false;
     updateTooltips();
-
 
     if (navBack && ProfileManager.IsFullVersion()) {
         // Replace the Unlock Full Game with Downloadable Content
@@ -177,8 +173,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
 
 std::wstring UIScene_MainMenu::getMoviePath() { return L"MainMenu"; }
 
-void UIScene_MainMenu::handleReload() {
-}
+void UIScene_MainMenu::handleReload() {}
 
 void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
                                    bool released, bool& handled) {
@@ -187,7 +182,6 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
     // pressed?"true":"false", released?"true":"false");
 
     if (m_bIgnorePress || (eNavigateWhenReady >= 0)) return;
-
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
@@ -219,7 +213,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
             ui.PlayUISFX(eSFX_Press);
 
             signInReturnedFunc = &UIScene_MainMenu::CreateLoad_SignInReturned;
-        break;
+            break;
         case eControl_Leaderboards:
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
@@ -428,10 +422,8 @@ int UIScene_MainMenu::MustSignInReturned(void* pParam, int iPad,
     return 0;
 }
 
-
 int UIScene_MainMenu::HelpAndOptions_SignInReturned(void* pParam,
-                                                    bool bContinue, int iPad)
-{
+                                                    bool bContinue, int iPad) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
     if (bContinue) {
@@ -482,10 +474,8 @@ int UIScene_MainMenu::HelpAndOptions_SignInReturned(void* pParam,
     return 0;
 }
 
-
 int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
-                                                int iPad)
-{
+                                                int iPad) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
     if (bContinue) {
@@ -597,7 +587,6 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                 // ensure we've applied this player's settings
                 // app.ApplyGameSettingsChanged(iPad);
 
-
                 {
                     // go straight in to the trial level
                     LoadTrial();
@@ -621,8 +610,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
 }
 
 int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
-                                                  int iPad)
-{
+                                                  int iPad) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
     if (bContinue) {
@@ -648,7 +636,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
             if (bContentRestricted) {
                 pClass->m_bIgnorePress = false;
 #if !defined(_WINDOWS64)
-                           // we check this for other platforms
+                // we check this for other platforms
                 // you can't see leaderboards
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_CONFIRM_OK;
@@ -678,8 +666,7 @@ int UIScene_MainMenu::Leaderboards_SignInReturned(void* pParam, bool bContinue,
 }
 
 int UIScene_MainMenu::Achievements_SignInReturned(void* pParam, bool bContinue,
-                                                  int iPad)
-{
+                                                  int iPad) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
     if (bContinue) {
@@ -706,8 +693,7 @@ int UIScene_MainMenu::Achievements_SignInReturned(void* pParam, bool bContinue,
 }
 
 int UIScene_MainMenu::UnlockFullGame_SignInReturned(void* pParam,
-                                                    bool bContinue, int iPad)
-{
+                                                    bool bContinue, int iPad) {
     UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
 
     if (bContinue) {
@@ -733,7 +719,6 @@ int UIScene_MainMenu::UnlockFullGame_SignInReturned(void* pParam,
     return 0;
 }
 
-
 int UIScene_MainMenu::ExitGameReturned(void* pParam, int iPad,
                                        C4JStorage::EMessageResult result) {
     // UIScene_MainMenu* pClass = (UIScene_MainMenu*)pParam;
@@ -746,7 +731,6 @@ int UIScene_MainMenu::ExitGameReturned(void* pParam, int iPad,
 
     return 0;
 }
-
 
 void UIScene_MainMenu::RunPlayGame(int iPad) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -849,7 +833,6 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
             // this player's settings
             // app.ApplyGameSettingsChanged(iPad);
 
-
             {
                 LoadTrial();
             }
@@ -866,8 +849,8 @@ void UIScene_MainMenu::RunLeaderboards(int iPad) {
         ui.RequestErrorMessage(IDS_PRO_GUESTPROFILE_TITLE,
                                IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
     } else if (!ProfileManager.IsSignedInLive(iPad)) {
-        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                               IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
+        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
+                               uiIDA, 1);
     } else {
         // we're supposed to check for parental control restrictions before
         // showing leaderboards The title enforces the user's NP parental
@@ -882,13 +865,13 @@ void UIScene_MainMenu::RunLeaderboards(int iPad) {
         bool bContentRestricted = false;
         if (bContentRestricted) {
 #if !defined(_WINDOWS64)
-                           // we check this for other platforms
+            // we check this for other platforms
             // you can't see leaderboards
             unsigned int uiIDA[1];
             uiIDA[0] = IDS_CONFIRM_OK;
-            ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
-                                   IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                   ProfileManager.GetPrimaryPad(), nullptr, this);
+            ui.RequestErrorMessage(
+                IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                ProfileManager.GetPrimaryPad(), nullptr, this);
 #endif
         } else {
             ProfileManager.SetLockedProfile(iPad);
@@ -924,7 +907,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                     if (bContentRestricted) {
                         m_bIgnorePress = false;
 #if !defined(_WINDOWS64)
-                           // we check this for other platforms
+                        // we check this for other platforms
                         // you can't see the store
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_CONFIRM_OK;
@@ -1016,9 +999,6 @@ void UIScene_MainMenu::tick() {
             eNavigateWhenReady = -1;
         }
     }
-
-
-
 }
 
 void UIScene_MainMenu::RunAchievements(int iPad) {
@@ -1138,4 +1118,3 @@ void UIScene_MainMenu::handleUnlockFullVersion() {
     m_buttons[(int)eControl_UnlockOrDLC].setLabel(IDS_DOWNLOADABLECONTENT,
                                                   true);
 }
-

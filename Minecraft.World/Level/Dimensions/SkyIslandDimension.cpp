@@ -18,7 +18,9 @@ float SkyIslandDimension::getTimeOfDay(int64_t time, float a) const {
     return 0.0f;
 }
 
-float* SkyIslandDimension::getSunriseColor(float td, float a) { return nullptr; }
+float* SkyIslandDimension::getSunriseColor(float td, float a) {
+    return nullptr;
+}
 
 Vec3 SkyIslandDimension::getFogColor(float td, float a) const {
     int fogColor = 0x8080a0;

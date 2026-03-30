@@ -16,8 +16,7 @@ const unsigned int AnvilTile::ANVIL_NAMES[ANVIL_NAMES_LENGTH] = {
 std::wstring AnvilTile::TEXTURE_DAMAGE_NAMES[ANVIL_NAMES_LENGTH] = {
     L"anvil_top", L"anvil_top_damaged_1", L"anvil_top_damaged_2"};
 
-AnvilTile::AnvilTile(int id)
-    : HeavyTile(id, Material::heavyMetal, false) {
+AnvilTile::AnvilTile(int id) : HeavyTile(id, Material::heavyMetal, false) {
     part = PART_BASE;
     setLightBlock(0);
     icons = nullptr;

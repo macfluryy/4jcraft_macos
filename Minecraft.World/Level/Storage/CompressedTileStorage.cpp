@@ -1,8 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "CompressedTileStorage.h"
 
-
-
 // Note: See header for an overview of this class
 
 int CompressedTileStorage::deleteQueueIndex;
@@ -757,13 +755,12 @@ void CompressedTileStorage::tick() {
     unsigned char* toFree = nullptr;
     do {
         toFree = deleteQueue[freeIndex].Pop();
-//		if( toFree ) printf("Deleting 0x%x\n", toFree);
+        //		if( toFree ) printf("Deleting 0x%x\n", toFree);
         if (toFree) XPhysicalFree(toFree);
     } while (toFree);
 
     deleteQueueIndex = (deleteQueueIndex + 1) % 3;
 }
-
 
 // Compresses the data currently stored in one of two ways:
 // (1) Attempt to compresses every block as much as possible (if upgradeBlock is
@@ -771,7 +768,6 @@ void CompressedTileStorage::tick() {
 // ( if > -1 ), which is changed to be the next-most-accomodating storage from
 // its current state
 void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
-
     unsigned char tempdata[64];
     unsigned short _blockIndices[512];
 
@@ -845,7 +841,6 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                 // unpacked_data isn't set then there isn't any data so we can't
                 // compress any further and require no storage. Store flags for
                 // each tile type used in an array of 4 64-bit flags.
-
 
                 uint64_t usedFlags[4] = {0, 0, 0, 0};
                 int64_t i64_1 =

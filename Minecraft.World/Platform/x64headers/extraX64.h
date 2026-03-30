@@ -260,7 +260,7 @@ typedef struct _XUSER_SIGNIN_INFO {
 #define XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY 0x00000002
 
 uint32_t XUserGetSigninInfo(uint32_t dwUserIndex, uint32_t dwFlags,
-                         PXUSER_SIGNIN_INFO pSigninInfo);
+                            PXUSER_SIGNIN_INFO pSigninInfo);
 
 class CXuiStringTable {
 public:

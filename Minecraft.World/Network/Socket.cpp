@@ -468,7 +468,8 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
         INetworkPlayer* socketPlayer = m_socket->getPlayer();
         if (socketPlayer == nullptr) {
             app.DebugPrintf(
-                "Trying to write to network, but the socketPlayer is nullptr\n");
+                "Trying to write to network, but the socketPlayer is "
+                "nullptr\n");
             return;
         }
 
@@ -485,11 +486,12 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             hostPlayer->SendData(socketPlayer, buffer.pbyData,
                                  buffer.dwDataSize, lowPriority, requireAck);
 
-            // 		uint32_t queueSize = hostPlayer->GetSendQueueSize( nullptr,
-            // QNET_GETSENDQUEUESIZE_BYTES  ); 		if( queueSize > 24000 )
+            // 		uint32_t queueSize = hostPlayer->GetSendQueueSize(
+            // nullptr, QNET_GETSENDQUEUESIZE_BYTES  ); 		if(
+            // queueSize > 24000 )
             // 		{
             // 			//printf("Queue size is: %d, forcing
-            // doWork()\n",queueSize); 			g_NetworkManager.DoWork();
+            // doWork()\n",queueSize); g_NetworkManager.DoWork();
             // 		}
         } else {
             // printf( "Sent %u bytes of data from \"%ls\" to \"%ls\"\n",

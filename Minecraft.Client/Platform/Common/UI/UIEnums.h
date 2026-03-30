@@ -101,15 +101,14 @@ enum EUIScene {
     eUIScene_HorseMenu,
     eUIScene_FireworksMenu,
 
-
-// ****************************************
-// ****************************************
-// **********  IMPORTANT ******************
-// ****************************************
-// ****************************************
-// When adding new scenes here, you must also update the switches in
-// CConsoleMinecraftApp::NavigateToScene There are quite a few so you need to
-// check them all Also update UILayer::updateFocusState
+    // ****************************************
+    // ****************************************
+    // **********  IMPORTANT ******************
+    // ****************************************
+    // ****************************************
+    // When adding new scenes here, you must also update the switches in
+    // CConsoleMinecraftApp::NavigateToScene There are quite a few so you need
+    // to check them all Also update UILayer::updateFocusState
 
     // Anything non-xbox should be added here. The ordering of scenes above is
     // required for sentient reporting on xbox 360 to continue to be accurate

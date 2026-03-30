@@ -333,7 +333,6 @@ bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
     // can happen on another thread
     if (!level->hasChunkAt(x, y, z)) return false;
 
-
     if (category->getSpawnPositionMaterial() == Material::water) {
         // 4J - changed to spawn water things only in deep water
         int yo = 0;

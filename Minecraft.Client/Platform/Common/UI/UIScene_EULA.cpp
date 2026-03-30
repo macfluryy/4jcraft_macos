@@ -42,7 +42,6 @@ UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)
     m_bIgnoreInput = false;
 
     // ui.setFontCachingCalculationBuffer(20000);
-
 }
 
 UIScene_EULA::~UIScene_EULA() {
@@ -59,7 +58,6 @@ void UIScene_EULA::updateTooltips() {
 void UIScene_EULA::handleInput(int iPad, int key, bool repeat, bool pressed,
                                bool released, bool& handled) {
     if (m_bIgnoreInput) return;
-
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 

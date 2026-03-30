@@ -26,7 +26,16 @@ constexpr std::uint64_t kNsPerMs = 1000ULL * 1000ULL;
 constexpr std::uint64_t kReportIntervalNs = 1000ULL * 1000ULL * 1000ULL;
 constexpr std::size_t kBucketCount = FrameProfiler::BucketCount();
 constexpr auto kFalseTokens = std::to_array<std::string_view>({
-    "0", "false", "False", "false", "no", "No", "NO", "off", "Off", "OFF",
+    "0",
+    "false",
+    "False",
+    "false",
+    "no",
+    "No",
+    "NO",
+    "off",
+    "Off",
+    "OFF",
 });
 constexpr std::array<FrameProfiler::BucketDescriptor, kBucketCount>
     kBucketDescriptors = {{
@@ -103,8 +112,7 @@ static_assert(kBucketDescriptors.size() == kBucketCount);
     return static_cast<double>(ns) / static_cast<double>(kNsPerMs);
 }
 
-[[nodiscard]] constexpr bool envSaysDisabled(
-    std::string_view value) noexcept {
+[[nodiscard]] constexpr bool envSaysDisabled(std::string_view value) noexcept {
     if (value.empty()) return false;
 
     for (std::string_view falseToken : kFalseTokens) {
@@ -123,7 +131,8 @@ inline void updateAtomicMax(std::atomic<std::uint64_t>& value,
     }
 }
 
-inline void recordWorkerBucket(Bucket bucket, std::uint64_t elapsedNs) noexcept {
+inline void recordWorkerBucket(Bucket bucket,
+                               std::uint64_t elapsedNs) noexcept {
     AtomicBucketTotals& state =
         g_profilerState.workerBuckets[FrameProfiler::BucketIndex(bucket)];
     state.totalNs.fetch_add(elapsedNs, std::memory_order_relaxed);
@@ -147,8 +156,7 @@ FRAME_PROFILER_NOINLINE void emitWindowReport(
         buckets[FrameProfiler::BucketIndex(Bucket::Frame)].calls;
     if (frames == 0) return;
 
-    std::fprintf(stderr,
-                 "[frame-prof] avg/frame(ms) frames=%llu",
+    std::fprintf(stderr, "[frame-prof] avg/frame(ms) frames=%llu",
                  static_cast<unsigned long long>(frames));
     for (const auto& descriptor : kBucketDescriptors) {
         const BucketTotals& bucket =
@@ -164,17 +172,16 @@ FRAME_PROFILER_NOINLINE void emitWindowReport(
         const BucketTotals& bucket =
             buckets[FrameProfiler::BucketIndex(descriptor.bucket)];
         const std::string_view label = descriptor.label;
-        std::fprintf(stderr, " %.*s=%.2f/%llu",
-                     static_cast<int>(label.size()), label.data(),
-                     nsToMs(bucket.maxNs),
+        std::fprintf(stderr, " %.*s=%.2f/%llu", static_cast<int>(label.size()),
+                     label.data(), nsToMs(bucket.maxNs),
                      static_cast<unsigned long long>(bucket.calls));
     }
     std::fputc('\n', stderr);
     std::fflush(stderr);
 }
 
-[[nodiscard]] std::array<BucketTotals, kBucketCount> snapshotAndResetWorkerBuckets()
-    noexcept {
+[[nodiscard]] std::array<BucketTotals, kBucketCount>
+snapshotAndResetWorkerBuckets() noexcept {
     std::array<BucketTotals, kBucketCount> snapshot = {};
     for (std::size_t i = 0; i < kBucketCount; ++i) {
         AtomicBucketTotals& workerBucket = g_profilerState.workerBuckets[i];

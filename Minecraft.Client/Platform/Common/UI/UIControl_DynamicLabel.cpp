@@ -41,8 +41,7 @@ void UIControl_DynamicLabel::addText(const std::wstring& text,
 
 void UIControl_DynamicLabel::ReInit() { UIControl_Base::ReInit(); }
 
-void UIControl_DynamicLabel::SetupTouch() {
-}
+void UIControl_DynamicLabel::SetupTouch() {}
 
 void UIControl_DynamicLabel::TouchScroll(S32 iY, bool bActive) {
     IggyDataValue result;
@@ -60,9 +59,9 @@ void UIControl_DynamicLabel::TouchScroll(S32 iY, bool bActive) {
 
 S32 UIControl_DynamicLabel::GetRealWidth() {
     IggyDataValue result;
-    IggyResult out =
-        IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_funcGetRealWidth, 0, nullptr);
+    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
+                                            getIggyValuePath(),
+                                            m_funcGetRealWidth, 0, nullptr);
 
     S32 iRealWidth = m_width;
     if (result.type == IGGY_DATATYPE_number) {

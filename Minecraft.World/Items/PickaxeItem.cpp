@@ -58,8 +58,8 @@ bool PickaxeItem::canDestroySpecial(Tile* tile) {
 float PickaxeItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                    Tile* tile) {
     if (tile != nullptr && (tile->material == Material::metal ||
-                         tile->material == Material::heavyMetal ||
-                         tile->material == Material::stone)) {
+                            tile->material == Material::heavyMetal ||
+                            tile->material == Material::stone)) {
         return speed;
     }
     return DiggerItem::getDestroySpeed(itemInstance, tile);

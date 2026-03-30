@@ -92,7 +92,7 @@ void PreStitchedTextureMap::stitch() {
     std::wstring drive = L"";
 
     // 4J-PB - need to check for BD patched files
-        if (texturePack->hasFile(L"res/" + filename, false)) {
+    if (texturePack->hasFile(L"res/" + filename, false)) {
         drive = texturePack->getPath(true);
     } else {
         drive = Minecraft::GetInstance()->skins->getDefault()->getPath(true);
@@ -119,8 +119,7 @@ void PreStitchedTextureMap::stitch() {
     TextureManager::getInstance()->registerName(name, stitchResult);
     // stitchResult = stitcher->constructTexture(m_mipMap);
 
-    for (auto it = texturesByName.begin(); it != texturesByName.end();
-         ++it) {
+    for (auto it = texturesByName.begin(); it != texturesByName.end(); ++it) {
         StitchedTexture* preStitched = (StitchedTexture*)it->second;
 
         int x = preStitched->getU0() * stitchResult->getWidth();
@@ -132,8 +131,7 @@ void PreStitchedTextureMap::stitch() {
     }
 
     MemSect(52);
-    for (auto it = texturesByName.begin(); it != texturesByName.end();
-         ++it) {
+    for (auto it = texturesByName.begin(); it != texturesByName.end(); ++it) {
         StitchedTexture* preStitched = (StitchedTexture*)(it->second);
 
         makeTextureAnimated(texturePack, preStitched);
@@ -144,7 +142,6 @@ void PreStitchedTextureMap::stitch() {
 
     stitchResult->writeAsPNG(L"debug.stitched_" + name + L".png");
     stitchResult->updateOnGPU();
-
 }
 
 void PreStitchedTextureMap::makeTextureAnimated(TexturePack* texturePack,
@@ -265,8 +262,7 @@ void PreStitchedTextureMap::loadUVs() {
         return;
     }
 
-    for (auto it = texturesByName.begin(); it != texturesByName.end();
-         ++it) {
+    for (auto it = texturesByName.begin(); it != texturesByName.end(); ++it) {
         delete it->second;
     }
     texturesByName.clear();

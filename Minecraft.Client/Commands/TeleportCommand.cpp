@@ -65,22 +65,23 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
     //			int pos = args.length - 3;
     //			int maxPos = Level.MAX_LEVEL_SIZE;
     //			int x = convertArgToInt(source, args[pos++], -maxPos,
-    //maxPos); 			int y = convertArgToInt(source, args[pos++],
-    //Level.minBuildHeight, Level.maxBuildHeight); 			int z =
-    //convertArgToInt(source, args[pos++], -maxPos, maxPos);
+    // maxPos); 			int y = convertArgToInt(source,
+    // args[pos++], Level.minBuildHeight, Level.maxBuildHeight);
+    // int z = convertArgToInt(source, args[pos++], -maxPos, maxPos);
 
     //			victim.teleportTo(x + 0.5f, y, z + 0.5f);
     //			logAdminAction(source, "commands.tp.coordinates",
-    //victim.getAName(), x, y, z);
+    // victim.getAName(), x, y, z);
     //		}
     //	} else if (args.length == 1 || args.length == 2) {
     //		ServerPlayer destination =
-    //server.getPlayers().getPlayer(args[args.length - 1]); 		if (destination ==
-    //null) throw new PlayerNotFoundException();
+    // server.getPlayers().getPlayer(args[args.length - 1]); 		if
+    // (destination == null) throw new PlayerNotFoundException();
 
     //		victim.connection.teleport(destination.x, destination.y,
-    //destination.z, destination.yRot, destination.xRot); 		logAdminAction(source,
-    //"commands.tp.success", victim.getAName(), destination.getAName());
+    // destination.z, destination.yRot, destination.xRot);
+    // logAdminAction(source, "commands.tp.success", victim.getAName(),
+    // destination.getAName());
     //	}
     //}
 }

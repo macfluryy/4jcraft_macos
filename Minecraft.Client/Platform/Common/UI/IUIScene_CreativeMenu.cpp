@@ -211,7 +211,6 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM_AUX(Tile::woolCarpet_Id, 13)  // Green
     ITEM_AUX(Tile::woolCarpet_Id, 12)  // Brown
 
-
 #if !defined(_CONTENT_PACKAGE)
     DEF(eCreativeInventory_ArtToolsDecorations)
     if (app.DebugSettingsOn()) {
@@ -508,7 +507,8 @@ void IUIScene_CreativeMenu::staticCtor() {
 
     for (unsigned int i = 0; i < Enchantment::enchantments.length; ++i) {
         Enchantment* enchantment = Enchantment::enchantments[i];
-        if (enchantment == nullptr || enchantment->category == nullptr) continue;
+        if (enchantment == nullptr || enchantment->category == nullptr)
+            continue;
         list->push_back(Item::enchantedBook->createForEnchantment(
             new EnchantmentInstance(enchantment, enchantment->getMaxLevel())));
     }
@@ -862,8 +862,8 @@ void IUIScene_CreativeMenu::staticCtor() {
     ECreative_Inventory_Groups debugMiscGroup[] = {
         eCreativeInventory_ArtToolsMisc};
     specs[eCreativeInventoryTab_Misc] =
-        new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup, 0, nullptr,
-                    1, debugMiscGroup);
+        new TabSpec(L"Misc", IDS_GROUPNAME_MISCELLANEOUS, 1, miscGroup, 0,
+                    nullptr, 1, debugMiscGroup);
 #else
     ECreative_Inventory_Groups miscGroup[] = {eCreativeInventory_Misc};
     specs[eCreativeInventoryTab_Misc] =
@@ -982,8 +982,7 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
 
     // Fill the dynamic group
     if (m_dynamicGroupsCount > 0 && m_dynamicGroupsA != nullptr) {
-        for (auto it=
-                      categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin();
+        for (auto it = categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin();
              it != categoryGroups[m_dynamicGroupsA[dynamicIndex]].rend() &&
              lastSlotIndex < MAX_SIZE;
              ++it) {

@@ -771,8 +771,9 @@ void LocalPlayer::hurtTo(float newHealth, ETelemetryChallenges damageSource) {
     if (this->getHealth() <= 0) {
         int deathTime =
             (int)(level->getGameTime() % Level::TICKS_PER_DAY) / 1000;
-        int carriedId =
-            inventory->getSelected() == nullptr ? 0 : inventory->getSelected()->id;
+        int carriedId = inventory->getSelected() == nullptr
+                            ? 0
+                            : inventory->getSelected()->id;
         TelemetryManager->RecordPlayerDiedOrFailed(GetXboxPad(), 0, y, 0, 0,
                                                    carriedId, 0, damageSource);
 
@@ -933,7 +934,6 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
                 }
             }
         }
-
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
 
@@ -1445,7 +1445,8 @@ bool LocalPlayer::handleMouseClick(int button) {
     // multiplayer game - we need to wake up, and we don't have the
     // inbedchatscreen with a button
 
-    if (button == 1 && (isSleeping() && level != nullptr && level->isClientSide)) {
+    if (button == 1 &&
+        (isSleeping() && level != nullptr && level->isClientSide)) {
         if (lastClickState == lastClick_oldRepeat) return false;
 
         std::shared_ptr<MultiplayerLocalPlayer> mplp =
@@ -1551,9 +1552,11 @@ bool LocalPlayer::handleMouseClick(int button) {
 void LocalPlayer::updateRichPresence() {
     if ((m_iPad != -1) /* && !ui.GetMenuDisplayed(m_iPad)*/) {
         std::shared_ptr<ItemInstance> selectedItem = inventory->getSelected();
-        if (selectedItem != nullptr && selectedItem->id == Item::fishingRod_Id) {
+        if (selectedItem != nullptr &&
+            selectedItem->id == Item::fishingRod_Id) {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_FISHING);
-        } else if (selectedItem != nullptr && selectedItem->id == Item::map_Id) {
+        } else if (selectedItem != nullptr &&
+                   selectedItem->id == Item::map_Id) {
             app.SetRichPresenceContext(m_iPad, CONTEXT_GAME_STATE_MAP);
         } else if ((riding != nullptr) && riding->instanceof(eTYPE_MINECART)) {
             app.SetRichPresenceContext(m_iPad,

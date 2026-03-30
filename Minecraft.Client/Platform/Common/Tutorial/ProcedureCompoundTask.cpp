@@ -2,8 +2,7 @@
 #include "ProcedureCompoundTask.h"
 
 ProcedureCompoundTask::~ProcedureCompoundTask() {
-    for (auto it = m_taskSequence.begin(); it < m_taskSequence.end();
-         ++it) {
+    for (auto it = m_taskSequence.begin(); it < m_taskSequence.end(); ++it) {
         delete (*it);
     }
 }

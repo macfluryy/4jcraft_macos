@@ -115,8 +115,8 @@ public:
                     // sizes of the data sets
                     for (auto it = list.begin(); it != itEnd; ++it) {
                         bool thisMatches = false;
-                        for (auto it2 = o->list.begin();
-                             it2 != o->list.end(); ++it2) {
+                        for (auto it2 = o->list.begin(); it2 != o->list.end();
+                             ++it2) {
                             if ((*it)->equals(*it2)) {
                                 thisMatches = true;
                                 break;

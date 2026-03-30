@@ -35,7 +35,6 @@ void UIControl_Button::init(UIString label, int id) {
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 2, value);
-
 }
 
 void UIControl_Button::ReInit() {

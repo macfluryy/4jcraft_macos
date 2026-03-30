@@ -32,7 +32,7 @@ void UIControl_SpaceIndicatorBar::init(UIString label, int id, int64_t min,
     m_max = max;
 
     const std::u16string convLabel = wstring_to_u16string(label.getString());
-    
+
     IggyDataValue result;
     IggyDataValue value[1];
     value[0].type = IGGY_DATATYPE_string_UTF16;

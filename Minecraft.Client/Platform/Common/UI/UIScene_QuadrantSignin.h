@@ -112,7 +112,6 @@ private:
     void updateState();
     void setControllerState(int iPad, EControllerStatus state);
 
-
 protected:
     void _initQuadrants();
 

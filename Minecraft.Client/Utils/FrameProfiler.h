@@ -85,10 +85,10 @@ private:
 
 #define FRAME_PROFILE_CONCAT_INNER(a, b) a##b
 #define FRAME_PROFILE_CONCAT(a, b) FRAME_PROFILE_CONCAT_INNER(a, b)
-#define FRAME_PROFILE_SCOPE(bucket_name)                                     \
-    FrameProfiler::Scope FRAME_PROFILE_CONCAT(frameProfileScope_, __LINE__)( \
-        FrameProfiler::Bucket::bucket_name)
-#define FRAME_PROFILE_FRAME_SCOPE()                                     \
+#define FRAME_PROFILE_SCOPE(bucket_name)       \
+    FrameProfiler::Scope FRAME_PROFILE_CONCAT( \
+        frameProfileScope_, __LINE__)(FrameProfiler::Bucket::bucket_name)
+#define FRAME_PROFILE_FRAME_SCOPE()                                         \
     FrameProfiler::FrameScope FRAME_PROFILE_CONCAT(frameProfileFrameScope_, \
                                                    __LINE__)
 

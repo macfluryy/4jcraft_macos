@@ -1730,7 +1730,9 @@ std::wstring Entity::getAName() {
 #endif
 }
 
-std::vector<std::shared_ptr<Entity> >* Entity::getSubEntities() { return nullptr; }
+std::vector<std::shared_ptr<Entity> >* Entity::getSubEntities() {
+    return nullptr;
+}
 
 bool Entity::is(std::shared_ptr<Entity> other) {
     return shared_from_this() == other;

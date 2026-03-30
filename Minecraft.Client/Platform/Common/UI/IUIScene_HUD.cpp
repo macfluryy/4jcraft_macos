@@ -205,7 +205,8 @@ void IUIScene_HUD::renderPlayerHealth() {
 
     std::shared_ptr<Entity> riding = pMinecraft->localplayers[iPad]->riding;
 
-    if (riding == nullptr || riding && !riding->instanceof(eTYPE_LIVINGENTITY)) {
+    if (riding == nullptr ||
+        riding && !riding->instanceof(eTYPE_LIVINGENTITY)) {
         SetRidingHorse(false, false, 0);
 
         ShowFood(true);

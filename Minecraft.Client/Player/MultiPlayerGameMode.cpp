@@ -320,8 +320,8 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
     }
 
     // 4J Stu - In Java we send the use packet before the above check for item
-    // being nullptr so the following never gets executed but the packet still gets
-    // sent (for opening chests etc)
+    // being nullptr so the following never gets executed but the packet still
+    // gets sent (for opening chests etc)
     if (item != nullptr) {
         if (!didSomething && player->isAllowedToUse(item)) {
             if (localPlayerMode->isCreative()) {

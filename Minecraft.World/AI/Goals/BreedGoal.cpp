@@ -70,9 +70,9 @@ void BreedGoal::breed() {
     animal->setDespawnProtected();
     partner.lock()->setDespawnProtected();
     if (offspring == nullptr) {
-        // This will be nullptr if we've hit our limits for spawning any particular
-        // type of animal... reset things as normally as we can, without
-        // actually producing any offspring
+        // This will be nullptr if we've hit our limits for spawning any
+        // particular type of animal... reset things as normally as we can,
+        // without actually producing any offspring
         animal->resetLove();
         partner.lock()->resetLove();
         return;

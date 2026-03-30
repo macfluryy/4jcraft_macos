@@ -55,7 +55,8 @@ bool MerchantRecipe::isSame(MerchantRecipe* other) {
         return false;
     }
     return (buyB == nullptr && other->buyB == nullptr) ||
-           (buyB != nullptr && other->buyB != nullptr && buyB->id == other->buyB->id);
+           (buyB != nullptr && other->buyB != nullptr &&
+            buyB->id == other->buyB->id);
 }
 
 bool MerchantRecipe::isSameSameButBetter(MerchantRecipe* other) {

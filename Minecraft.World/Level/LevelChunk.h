@@ -19,7 +19,6 @@ class EntitySelector;
 #define SHARING_ENABLED
 class TileCompressData_SPU;
 
-
 class LevelChunk {
     friend class TileCompressData_SPU;
     friend class LevelRenderer;

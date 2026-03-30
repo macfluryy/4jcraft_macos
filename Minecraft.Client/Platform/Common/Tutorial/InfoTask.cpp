@@ -12,7 +12,8 @@ InfoTask::InfoTask(
     Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
     bool requiresUserInput /*= false*/, int iMapping /*= 0*/,
     ETelemetryChallenges telemetryEvent /*= eTelemetryTutorial_NoEvent*/)
-    : TutorialTask(tutorial, descriptionId, false, nullptr, true, false, false) {
+    : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
+                   false) {
     if (requiresUserInput == true) {
         constraints.push_back(new InputConstraint(iMapping));
     }
@@ -45,8 +46,8 @@ bool InfoTask::isCompleted() {
         // If a menu is displayed, then we use the handleUIInput to complete the
         // task
         bAllComplete = true;
-        for (auto it = completedMappings.begin();
-             it != completedMappings.end(); ++it) {
+        for (auto it = completedMappings.begin(); it != completedMappings.end();
+             ++it) {
             bool current = (*it).second;
             if (!current) {
                 bAllComplete = false;
@@ -56,8 +57,8 @@ bool InfoTask::isCompleted() {
     } else {
         int iCurrent = 0;
 
-        for (auto it = completedMappings.begin();
-             it != completedMappings.end(); ++it) {
+        for (auto it = completedMappings.begin(); it != completedMappings.end();
+             ++it) {
             bool current = (*it).second;
             if (!current) {
                 if (InputManager.GetValue(pMinecraft->player->GetXboxPad(),
@@ -94,8 +95,8 @@ void InfoTask::setAsCurrentTask(bool active /*= true*/) {
 
 void InfoTask::handleUIInput(int iAction) {
     if (bHasBeenActivated) {
-        for (auto it = completedMappings.begin();
-             it != completedMappings.end(); ++it) {
+        for (auto it = completedMappings.begin(); it != completedMappings.end();
+             ++it) {
             if (iAction == (*it).first) {
                 (*it).second = true;
             }

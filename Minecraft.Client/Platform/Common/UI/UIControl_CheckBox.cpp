@@ -43,7 +43,6 @@ void UIControl_CheckBox::init(UIString label, int id, bool checked) {
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 3, value);
-
 }
 
 bool UIControl_CheckBox::IsChecked() {

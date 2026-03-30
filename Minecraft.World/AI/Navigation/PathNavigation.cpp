@@ -137,7 +137,8 @@ void PathNavigation::updatePath() {
 
     // find first elevations in path
     int firstElevation = path->getSize();
-    for (int i = path->getIndex(); path != nullptr && i < path->getSize(); ++i) {
+    for (int i = path->getIndex(); path != nullptr && i < path->getSize();
+         ++i) {
         if ((int)path->get(i)->y != (int)mobPos.y) {
             firstElevation = i;
             break;

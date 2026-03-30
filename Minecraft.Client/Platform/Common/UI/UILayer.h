@@ -28,7 +28,6 @@ public:
     bool m_bIgnoreAutosaveMenuDisplayed;
     bool m_bIgnorePlayerJoinMenuDisplayed;
 
-
     UIGroup* m_parentGroup;
 
 public:

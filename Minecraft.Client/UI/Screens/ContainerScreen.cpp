@@ -17,8 +17,7 @@ ContainerScreen::ContainerScreen(std::shared_ptr<Container> inventory,
     imageHeight = noRowHeight + containerRows * 18;
 }
 
-void ContainerScreen::renderLabels() {
-}
+void ContainerScreen::renderLabels() {}
 
 void ContainerScreen::renderBg(float a) {
     // 4J Unused

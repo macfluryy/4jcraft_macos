@@ -120,19 +120,18 @@ void Village::countGolem() {
     AABB village_golem_bb =
         AABB(center->x, center->y, center->z, center->x, center->y, center->z)
             .grow(radius, 4, radius);
-    std::vector<std::shared_ptr<Entity> >* golems = level->getEntitiesOfClass(
-        typeid(VillagerGolem),
-        &village_golem_bb);
+    std::vector<std::shared_ptr<Entity> >* golems =
+        level->getEntitiesOfClass(typeid(VillagerGolem), &village_golem_bb);
     golemCount = golems->size();
     delete golems;
 }
 
 void Village::countPopulation() {
-    AABB villager_bb = AABB(center->x, center->y, center->z, center->x, center->y, center->z).grow(radius, 4, radius);
+    AABB villager_bb =
+        AABB(center->x, center->y, center->z, center->x, center->y, center->z)
+            .grow(radius, 4, radius);
     std::vector<std::shared_ptr<Entity> >* villagers =
-        level->getEntitiesOfClass(
-            typeid(Villager),
-            &villager_bb);
+        level->getEntitiesOfClass(typeid(Villager), &villager_bb);
     populationSize = villagers->size();
     delete villagers;
 
@@ -254,8 +253,7 @@ std::shared_ptr<Player> Village::getClosestBadStandingPlayer(
     std::shared_ptr<Player> closest = nullptr;
 
     // for (String player : playerStanding.keySet())
-    for (auto it = playerStanding.begin(); it != playerStanding.end();
-         ++it) {
+    for (auto it = playerStanding.begin(); it != playerStanding.end(); ++it) {
         std::wstring player = it->first;
         if (isVeryBadStanding(player)) {
             std::shared_ptr<Player> mob = level->getPlayerByName(player);
@@ -429,8 +427,7 @@ void Village::addAdditonalSaveData(CompoundTag* tag) {
 
     ListTag<CompoundTag>* playerTags = new ListTag<CompoundTag>(L"Players");
     // for (String player : playerStanding.keySet())
-    for (auto it = playerStanding.begin(); it != playerStanding.end();
-         ++it) {
+    for (auto it = playerStanding.begin(); it != playerStanding.end(); ++it) {
         std::wstring player = it->first;
         CompoundTag* playerTag = new CompoundTag(player);
         playerTag->putString(L"Name", player);
@@ -452,8 +449,7 @@ bool Village::isBreedTimerOk() {
 
 void Village::rewardAllPlayers(int amount) {
     // for (String player : playerStanding.keySet())
-    for (auto it = playerStanding.begin(); it != playerStanding.end();
-         ++it) {
+    for (auto it = playerStanding.begin(); it != playerStanding.end(); ++it) {
         modifyStanding(it->first, amount);
     }
 }

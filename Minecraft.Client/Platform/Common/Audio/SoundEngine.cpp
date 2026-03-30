@@ -794,7 +794,6 @@ void SoundEngine::init(Options* pOptions) {
     }
     app.DebugPrintf("---SoundEngine::init - driver opened\n");
 
-
     AIL_set_event_error_callback(ErrorCallback);
 
     AIL_set_3D_rolloff_factor(m_hDriver, 1.0);
@@ -853,14 +852,11 @@ void SoundEngine::init(Options* pOptions) {
     m_bSystemMusicPlaying = false;
 
     m_openStreamThread = nullptr;
-
-
 }
 
 // AP - moved to a separate function so it can be called from the mixer callback
 // on Vita
 void SoundEngine::updateMiles() {
-
     if (m_validListenerCount == 1) {
         for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
             // set the listener as the first player we find
@@ -1093,12 +1089,10 @@ static float fVal = 0.0f;
 //
 /////////////////////////////////////////////
 
-
 void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
 #if defined(__DISABLE_MILES__)
     return;
 #endif
-
 
     // update the listener positions
     int listenerCount = 0;
@@ -1175,7 +1169,6 @@ SoundEngine::SoundEngine() {
 
     memset(CurrentSoundsPlaying, 0, sizeof(int) * (eSoundType_MAX + eSFX_MAX));
     memset(m_ListenerA, 0, sizeof(AUDIO_LISTENER) * XUSER_MAX_COUNT);
-
 }
 
 void SoundEngine::destroy() {}
@@ -1389,7 +1382,7 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 //
 /////////////////////////////////////////////
 void SoundEngine::playMusicTick() {
-// AP - vita will update the music during the mixer callback
+    // AP - vita will update the music during the mixer callback
     playMusicUpdate();
 }
 
@@ -1487,7 +1480,6 @@ void SoundEngine::playMusicUpdate() {
                     }
                     strcat((char*)m_szStreamName, m_szStreamFileA[m_musicID]);
                     strcat((char*)m_szStreamName, ".binka");
-
                 }
 
                 // std::wstring name =

@@ -26,7 +26,6 @@
 #include "../Minecraft.Client/Utils/ArchiveFile.h"
 #include "../Minecraft.World/Entities/MinecartHopper.h"
 
-
 typedef struct _JoinFromInviteData {
     std::uint32_t dwUserIndex;       // dwUserIndex
     std::uint32_t dwLocalUsersMask;  // dwUserMask
@@ -57,8 +56,7 @@ class Merchant;
 
 class CMinecraftAudio;
 
-class CMinecraftApp
-{
+class CMinecraftApp {
 private:
     static int s_iHTMLFontSizesA[eHTMLSize_COUNT];
 
@@ -269,8 +267,7 @@ public:
     void SetFreezePlayers(bool bVal) { m_bFreezePlayers = bVal; }
 
     // debug -0 show safe area
-    void ShowSafeArea(bool show) {
-    }
+    void ShowSafeArea(bool show) {}
     // 4J-PB - to capture the social post screenshot
     virtual void CaptureScreenshot(int iPad) {};
     // void			GetPreviewImage(int iPad,XSOCIAL_PREVIEWIMAGE
@@ -371,7 +368,6 @@ public:
 
     static void UpsellReturnedCallback(void* pParam, eUpsellType type,
                                        eUpsellResponse result, int iUserData);
-
 
 #if defined(_DEBUG_MENUS_ENABLED)
     bool DebugSettingsOn() { return m_bDebugOptions; }
@@ -678,7 +674,8 @@ public:
     static int32_t RegisterConfigValues(wchar_t* pType, int iValue);
 
     static int32_t RegisterDLCData(wchar_t*, wchar_t*, int, uint64_t, uint64_t,
-                                   wchar_t*, unsigned int, int, wchar_t* pDataFile);
+                                   wchar_t*, unsigned int, int,
+                                   wchar_t* pDataFile);
     bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
                                     uint64_t* pullVal);
     DLC_INFO* GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial);
@@ -840,7 +837,8 @@ private:
     unsigned int m_playerGamePrivileges[MINECRAFT_NET_MAX_PLAYERS];
 
 public:
-    void UpdatePlayerInfo(std::uint8_t networkSmallId, int16_t playerColourIndex,
+    void UpdatePlayerInfo(std::uint8_t networkSmallId,
+                          int16_t playerColourIndex,
                           unsigned int playerGamePrivileges);
     short GetPlayerColour(std::uint8_t networkSmallId);
     unsigned int GetPlayerPrivileges(std::uint8_t networkSmallId);
@@ -916,9 +914,10 @@ public:
 
     // 	static int CallbackReadXuidsFileFromTMS(void* lpParam, wchar_t
     // *wchFilename, int iPad, bool bResult, int iAction); 	static int
-    // CallbackDLCFileFromTMS(void* lpParam, wchar_t *wchFilename, int iPad, bool
-    // bResult, int iAction); 	static int CallbackBannedListFileFromTMS(void*
-    // lpParam, wchar_t *wchFilename, int iPad, bool bResult, int iAction);
+    // CallbackDLCFileFromTMS(void* lpParam, wchar_t *wchFilename, int iPad,
+    // bool bResult, int iAction); 	static int
+    // CallbackBannedListFileFromTMS(void* lpParam, wchar_t *wchFilename, int
+    // iPad, bool bResult, int iAction);
 
     // Storing additional model parts per skin texture
     void SetAdditionalSkinBoxes(std::uint32_t dwSkinID, SKIN_BOX* SkinBoxA,
@@ -983,7 +982,6 @@ private:
     bool m_bResetNether;
     std::uint32_t m_dwRequiredTexturePackID;
 
-
     // 4J-PB - language and locale functions
 public:
     void LocaleAndLanguageInit();
@@ -1010,7 +1008,6 @@ public:
 #else
 
 #endif
-
 };
 
 // singleton

@@ -11,9 +11,9 @@ private:
     static const int w = MapItem::IMAGE_WIDTH;
     static const int h = MapItem::IMAGE_HEIGHT;
     static int LUT[256];  // 4J added
-    static bool genLUT;  // 4J added
-    int renderCount;     // 4J added
-    bool m_optimised;    // 4J Added
+    static bool genLUT;   // 4J added
+    int renderCount;      // 4J added
+    bool m_optimised;     // 4J Added
     intArray pixels;
     int mapTexture;
     Options* options;

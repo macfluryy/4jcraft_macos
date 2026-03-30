@@ -35,11 +35,9 @@ std::wstring AbstractTexturePack::trim(std::wstring line) {
     return line;
 }
 
-void AbstractTexturePack::loadIcon() {
-}
+void AbstractTexturePack::loadIcon() {}
 
-void AbstractTexturePack::loadComparison() {
-}
+void AbstractTexturePack::loadComparison() {}
 
 void AbstractTexturePack::loadDescription() {
     // 4J Unused currently
@@ -157,9 +155,7 @@ BufferedImage* AbstractTexturePack::getImageResource(
                              filenameHasExtension, bTitleUpdateTexture, drive);
 }
 
-void AbstractTexturePack::loadDefaultUI() {
-    ui.ReloadSkin();
-}
+void AbstractTexturePack::loadDefaultUI() { ui.ReloadSkin(); }
 
 void AbstractTexturePack::loadColourTable() {
     loadDefaultColourTable();
@@ -198,11 +194,7 @@ void AbstractTexturePack::loadDefaultHTMLColourTable() {
     }
 }
 
-
-void AbstractTexturePack::loadUI() {
-    loadColourTable();
-
-}
+void AbstractTexturePack::loadUI() { loadColourTable(); }
 
 void AbstractTexturePack::unloadUI() {
     // Do nothing

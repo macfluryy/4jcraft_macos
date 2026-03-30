@@ -38,7 +38,8 @@
 #include "../../../Minecraft.World/Level/Storage/OldChunkStorage.h"
 
 HINSTANCE hMyInst;
-LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,
+                         LPARAM lParam);
 char chGlobalText[256];
 uint16_t ui16GlobalText[256];
 
@@ -56,9 +57,7 @@ uint16_t ui16GlobalText[256];
 // #define PROFILE_VERSION 3 // new version for the interim bug fix 166 TU
 #define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
-uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {
-    0, 0, 0, 0, 0
-};
+uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {0, 0, 0, 0, 0};
 
 //-------------------------------------------------------------------------------------
 // Time             Since fAppTime is a float, we need to keep the quadword app
@@ -521,7 +520,8 @@ void SeedEditBox() {
 }
 
 //---------------------------------------------------------------------------
-LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,
+                         LPARAM lParam) {
     switch (Msg) {
         case WM_INITDIALOG:
             return true;
@@ -619,8 +619,8 @@ int32_t InitDevice() {
     descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
     descDepth.CPUAccessFlags = 0;
     descDepth.MiscFlags = 0;
-    hr =
-        g_pd3dDevice->CreateTexture2D(&descDepth, nullptr, &g_pDepthStencilBuffer);
+    hr = g_pd3dDevice->CreateTexture2D(&descDepth, nullptr,
+                                       &g_pDepthStencilBuffer);
 
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSView;
     descDSView.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -714,7 +714,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         CleanupDevice();
         return 0;
     }
-
 
     static bool bTrialTimerDisplayed = true;
 
@@ -894,7 +893,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         ui.CheckMenuDisplayed();
         // Any threading type things to deal with from the xui side?
         app.HandleXuiActions();
-
 
         // 4J-PB - Update the trial timer display if we are in the trial version
         if (!ProfileManager.IsFullVersion()) {

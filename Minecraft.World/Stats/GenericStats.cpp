@@ -64,7 +64,9 @@ Stat* GenericStats::get_blocksPlaced(int blockId) { return nullptr; }
 
 Stat* GenericStats::get_blocksMined(int blockId) { return nullptr; }
 
-Stat* GenericStats::get_itemsCollected(int itemId, int itemAux) { return nullptr; }
+Stat* GenericStats::get_itemsCollected(int itemId, int itemAux) {
+    return nullptr;
+}
 
 Stat* GenericStats::get_itemsCrafted(int itemId) { return nullptr; }
 
@@ -158,9 +160,7 @@ Stat* GenericStats::diamonds() {
     return instance->get_achievement(eAward_diamonds);
 }
 
-Stat* GenericStats::ghast() {
-    return instance->get_achievement(eAward_ghast);
-}
+Stat* GenericStats::ghast() { return instance->get_achievement(eAward_ghast); }
 
 Stat* GenericStats::blazeRod() {
     return instance->get_achievement(eAward_blazeRod);

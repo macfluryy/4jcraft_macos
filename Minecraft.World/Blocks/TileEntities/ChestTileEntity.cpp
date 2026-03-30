@@ -218,13 +218,16 @@ void ChestTileEntity::checkNeighbors() {
         n.lock()->heyImYourNeighbor(cteThis, Direction::SOUTH);
     if (s.lock() != nullptr)
         s.lock()->heyImYourNeighbor(cteThis, Direction::NORTH);
-    if (e.lock() != nullptr) e.lock()->heyImYourNeighbor(cteThis, Direction::WEST);
-    if (w.lock() != nullptr) w.lock()->heyImYourNeighbor(cteThis, Direction::EAST);
+    if (e.lock() != nullptr)
+        e.lock()->heyImYourNeighbor(cteThis, Direction::WEST);
+    if (w.lock() != nullptr)
+        w.lock()->heyImYourNeighbor(cteThis, Direction::EAST);
 }
 
 bool ChestTileEntity::isSameChest(int x, int y, int z) {
     Tile* tile = Tile::tiles[level->getTile(x, y, z)];
-    if (tile == nullptr || !(dynamic_cast<ChestTile*>(tile) != nullptr)) return false;
+    if (tile == nullptr || !(dynamic_cast<ChestTile*>(tile) != nullptr))
+        return false;
     return ((ChestTile*)tile)->type == getType();
 }
 
@@ -338,7 +341,8 @@ void ChestTileEntity::startOpen() {
 }
 
 void ChestTileEntity::stopOpen() {
-    if (getTile() == nullptr || !(dynamic_cast<ChestTile*>(getTile()) != nullptr))
+    if (getTile() == nullptr ||
+        !(dynamic_cast<ChestTile*>(getTile()) != nullptr))
         return;
     openCount--;
     level->tileEvent(x, y, z, getTile()->id, ChestTile::EVENT_SET_OPEN_COUNT,
@@ -360,7 +364,8 @@ void ChestTileEntity::setRemoved() {
 
 int ChestTileEntity::getType() {
     if (type == -1) {
-        if (level != nullptr && dynamic_cast<ChestTile*>(getTile()) != nullptr) {
+        if (level != nullptr &&
+            dynamic_cast<ChestTile*>(getTile()) != nullptr) {
             type = ((ChestTile*)getTile())->type;
         } else {
             return ChestTile::TYPE_BASIC;

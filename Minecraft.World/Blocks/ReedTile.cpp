@@ -65,7 +65,9 @@ bool ReedTile::canSurvive(Level* level, int x, int y, int z) {
     return mayPlace(level, x, y, z);
 }
 
-std::optional<AABB> ReedTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> ReedTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 int ReedTile::getResource(int data, Random* random, int playerBonusLevel) {
     return Item::reeds->id;

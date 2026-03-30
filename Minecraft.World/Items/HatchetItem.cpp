@@ -24,8 +24,8 @@ HatchetItem::HatchetItem(int id, const Tier* tier)
 float HatchetItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                    Tile* tile) {
     if (tile != nullptr && (tile->material == Material::wood ||
-                         tile->material == Material::plant ||
-                         tile->material == Material::replaceable_plant)) {
+                            tile->material == Material::plant ||
+                            tile->material == Material::replaceable_plant)) {
         return speed;
     }
     return DiggerItem::getDestroySpeed(itemInstance, tile);

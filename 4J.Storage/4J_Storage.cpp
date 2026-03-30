@@ -31,8 +31,8 @@ bool C4JStorage::SetSaveDevice(int (*Func)(void*, const bool), void* lpParam,
 }
 
 void C4JStorage::Init(unsigned int uiSaveVersion,
-                      const wchar_t* pwchDefaultSaveName,
-                      char* pszSavePackName, int iMinimumSaveSize,
+                      const wchar_t* pwchDefaultSaveName, char* pszSavePackName,
+                      int iMinimumSaveSize,
                       int (*Func)(void*, const ESavingMessage, int),
                       void* lpParam, const char* szGroupID) {}
 void C4JStorage::ResetSaveData() {}
@@ -61,8 +61,7 @@ void* C4JStorage::AllocateSaveData(unsigned int uiBytes) {
 }
 void C4JStorage::SetSaveImages(std::uint8_t* pbThumbnail,
                                unsigned int thumbnailBytes,
-                               std::uint8_t* pbImage,
-                               unsigned int imageBytes,
+                               std::uint8_t* pbImage, unsigned int imageBytes,
                                std::uint8_t* pbTextData,
                                unsigned int textDataBytes) {}
 C4JStorage::ESaveGameState C4JStorage::SaveSaveData(int (*Func)(void*,
@@ -130,7 +129,9 @@ C4JStorage::EDLCStatus C4JStorage::GetDLCOffers(
 }
 unsigned int C4JStorage::CancelGetDLCOffers() { return 0; }
 void C4JStorage::ClearDLCOffers() {}
-XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) { return s_dummyOffer; }
+XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) {
+    return s_dummyOffer;
+}
 int C4JStorage::GetOfferCount() { return 0; }
 unsigned int C4JStorage::InstallOffer(int iOfferIDC, std::uint64_t* ullOfferIDA,
                                       int (*Func)(void*, int, int),
@@ -146,7 +147,9 @@ C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(int iPad,
     }
     return EDLC_NoInstalledDLC;
 }
-XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) { return s_dummyContentData; }
+XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) {
+    return s_dummyContentData;
+}
 std::uint32_t C4JStorage::MountInstalledDLC(
     int iPad, std::uint32_t dwDLC,
     int (*Func)(void*, int, std::uint32_t, std::uint32_t), void* lpParam,
@@ -165,8 +168,7 @@ C4JStorage::ETMSStatus C4JStorage::ReadTMSFile(
     int iQuadrant, eGlobalStorage eStorageFacility,
     C4JStorage::eTMS_FileType eFileType, wchar_t* pwchFilename,
     std::uint8_t** ppBuffer, unsigned int* pBufferSize,
-    int (*Func)(void*, wchar_t*, int, bool, int), void* lpParam,
-    int iAction) {
+    int (*Func)(void*, wchar_t*, int, bool, int), void* lpParam, int iAction) {
     return ETMSStatus_Fail;
 }
 bool C4JStorage::WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,

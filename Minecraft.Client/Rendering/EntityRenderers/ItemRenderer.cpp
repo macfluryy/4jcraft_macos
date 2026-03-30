@@ -12,7 +12,6 @@
 #include "../../GameState/Options.h"
 #include "../../Textures/TextureAtlas.h"
 
-
 ItemRenderer::ItemRenderer() : EntityRenderer() {
     random = new Random();
     setColor = true;

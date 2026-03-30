@@ -117,7 +117,8 @@ void ControlledByPlayerGoal::tick() {
         mob->getRandom()->nextFloat() < 0.006f && !boosting) {
         std::shared_ptr<ItemInstance> carriedItem = player->getCarriedItem();
 
-        if (carriedItem != nullptr && carriedItem->id == Item::carrotOnAStick_Id) {
+        if (carriedItem != nullptr &&
+            carriedItem->id == Item::carrotOnAStick_Id) {
             carriedItem->hurtAndBreak(1, player);
 
             if (carriedItem->count == 0) {

@@ -205,7 +205,6 @@ UIScene_LaunchMoreOptionsMenu::UIScene_LaunchMoreOptionsMenu(
 
     addTimer(GAME_CREATE_ONLINE_TIMER_ID, GAME_CREATE_ONLINE_TIMER_TIME);
 
-
     m_bIgnoreInput = false;
 }
 
@@ -273,7 +272,6 @@ void UIScene_LaunchMoreOptionsMenu::tick() {
 }
 
 void UIScene_LaunchMoreOptionsMenu::handleDestroy() {
-
     // so shut down the keyboard if it is displayed
 }
 
@@ -322,7 +320,6 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
             break;
     }
 }
-
 
 void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId,
                                                           bool selected) {

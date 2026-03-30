@@ -18,7 +18,6 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
     std::shared_ptr<EnchantmentTableEntity> table =
         std::dynamic_pointer_cast<EnchantmentTableEntity>(_table);
 
-
     glPushMatrix();
     glTranslatef((float)x + 0.5f, (float)y + 12 / 16.0f, (float)z + 0.5f);
 

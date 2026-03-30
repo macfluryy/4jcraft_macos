@@ -38,7 +38,6 @@ void ProgressRenderer::_progressStart(int title) {
         lastPercent = 0;
         this->title = title;
     }
-
 }
 
 void ProgressRenderer::progressStage(int status) {
@@ -64,7 +63,6 @@ void ProgressRenderer::progressStagePercentage(int i) {
         std::lock_guard<std::mutex> lock(ProgressRenderer::s_progress);
         lastPercent = i;
     }
-
 }
 
 int ProgressRenderer::getCurrentPercent() {

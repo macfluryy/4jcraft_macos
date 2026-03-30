@@ -41,4 +41,3 @@ public:
     IntBuffer* asIntBuffer();
     FloatBuffer* asFloatBuffer();
 };
-

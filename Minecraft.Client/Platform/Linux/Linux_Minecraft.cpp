@@ -87,9 +87,7 @@ static void sigsegv_handler(int sig) {
 // #define PROFILE_VERSION 3 // new version for the interim bug fix 166 TU
 #define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
-uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {
-    0, 0, 0, 0, 0
-};
+uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {0, 0, 0, 0, 0};
 
 //-------------------------------------------------------------------------------------
 // Time             Since fAppTime is a float, we need to keep the quadword app
@@ -601,8 +599,8 @@ int32_t InitDevice() {
     descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
     descDepth.CPUAccessFlags = 0;
     descDepth.MiscFlags = 0;
-    hr =
-        g_pd3dDevice->CreateTexture2D(&descDepth, nullptr, &g_pDepthStencilBuffer);
+    hr = g_pd3dDevice->CreateTexture2D(&descDepth, nullptr,
+                                       &g_pDepthStencilBuffer);
 
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSView;
     descDSView.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -692,7 +690,6 @@ int main(int argc, const char* argv[]) {
         if (fs) RenderManager.SetFullscreen(true);
     }
 
-
     static bool bTrialTimerDisplayed = true;
 
 #if defined(MEMORY_TRACKING)
@@ -702,7 +699,6 @@ int main(int argc, const char* argv[]) {
     printf("RESETMEM start: Avail. phys %d\n",
            memStat.dwAvailPhys / (1024 * 1024));
 #endif
-
 
     RenderManager.Initialise();
 

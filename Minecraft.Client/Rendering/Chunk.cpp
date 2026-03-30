@@ -11,7 +11,6 @@
 #include <unordered_set>
 #include <mutex>
 
-
 int Chunk::updates = 0;
 
 #if defined(_LARGE_WORLDS)
@@ -39,7 +38,8 @@ void Chunk::reconcileRenderableTileEntities(
         std::unordered_set<TileEntity*> currentRenderableTileEntitySet;
         currentRenderableTileEntitySet.reserve(renderableTileEntities.size());
         for (size_t i = 0; i < renderableTileEntities.size(); i++) {
-            currentRenderableTileEntitySet.insert(renderableTileEntities[i].get());
+            currentRenderableTileEntitySet.insert(
+                renderableTileEntities[i].get());
         }
 
         if (it != globalRenderableTileEntities->end()) {
@@ -64,7 +64,8 @@ void Chunk::reconcileRenderableTileEntities(
             for (size_t i = 0; i < renderableTileEntities.size(); i++) {
                 renderableTileEntities[i]->setRenderRemoveStage(
                     TileEntity::e_RenderRemoveStageKeep);
-                if (existingBucket.indexByTile.find(renderableTileEntities[i].get()) ==
+                if (existingBucket.indexByTile.find(
+                        renderableTileEntities[i].get()) ==
                     existingBucket.indexByTile.end()) {
                     levelRenderer->addRenderableTileEntity_Locked(
                         key, renderableTileEntities[i]);
@@ -79,13 +80,12 @@ void Chunk::reconcileRenderableTileEntities(
             }
         }
     } else if (it != globalRenderableTileEntities->end()) {
-        for (auto it2 = it->second.tiles.begin();
-             it2 != it->second.tiles.end();
+        for (auto it2 = it->second.tiles.begin(); it2 != it->second.tiles.end();
              it2++) {
             (*it2)->setRenderRemoveStage(
                 TileEntity::e_RenderRemoveStageFlaggedAtChunk);
-            levelRenderer->queueRenderableTileEntityForRemoval_Locked(key,
-                                                                      (*it2).get());
+            levelRenderer->queueRenderableTileEntityForRemoval_Locked(
+                key, (*it2).get());
         }
     }
 }
@@ -291,8 +291,8 @@ void Chunk::rebuild() {
         for (int yy = y0; yy < y1; yy++) {
             for (int zz = 0; zz < 16; zz++) {
                 for (int xx = 0; xx < 16; xx++) {
-                    // 4J Stu - tile data is ordered in 128 blocks of full width,
-                    // lower 128 then upper 128
+                    // 4J Stu - tile data is ordered in 128 blocks of full
+                    // width, lower 128 then upper 128
                     int indexY = yy;
                     int offset = 0;
                     if (indexY >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
@@ -305,43 +305,50 @@ void Chunk::rebuild() {
                                           (indexY + 0))];
                     if (tileId > 0) empty = false;
 
-                    // Don't bother trying to work out neighbours for this tile if
-                    // we are at the edge of the chunk - apart from the very bottom
-                    // of the world where we shouldn't ever be able to see
+                    // Don't bother trying to work out neighbours for this tile
+                    // if we are at the edge of the chunk - apart from the very
+                    // bottom of the world where we shouldn't ever be able to
+                    // see
                     if (yy == (Level::maxBuildHeight - 1)) continue;
                     if ((xx == 0) || (xx == 15)) continue;
                     if ((zz == 0) || (zz == 15)) continue;
 
-                    // Establish whether this tile and its neighbours are all made
-                    // of rock, dirt, unbreakable tiles, or have already been
-                    // determined to meet this criteria themselves and have a tile
-                    // of 255 set.
-                    if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
+                    // Establish whether this tile and its neighbours are all
+                    // made of rock, dirt, unbreakable tiles, or have already
+                    // been determined to meet this criteria themselves and have
+                    // a tile of 255 set.
+                    if (!((tileId == Tile::stone_Id) ||
+                          (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
-                    tileId = tileIds[offset + (((xx - 1) << 11) | ((zz + 0) << 7) |
-                                               (indexY + 0))];
-                    if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
+                    tileId = tileIds[offset + (((xx - 1) << 11) |
+                                               ((zz + 0) << 7) | (indexY + 0))];
+                    if (!((tileId == Tile::stone_Id) ||
+                          (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
-                    tileId = tileIds[offset + (((xx + 1) << 11) | ((zz + 0) << 7) |
-                                               (indexY + 0))];
-                    if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
+                    tileId = tileIds[offset + (((xx + 1) << 11) |
+                                               ((zz + 0) << 7) | (indexY + 0))];
+                    if (!((tileId == Tile::stone_Id) ||
+                          (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
-                    tileId = tileIds[offset + (((xx + 0) << 11) | ((zz - 1) << 7) |
-                                               (indexY + 0))];
-                    if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
+                    tileId = tileIds[offset + (((xx + 0) << 11) |
+                                               ((zz - 1) << 7) | (indexY + 0))];
+                    if (!((tileId == Tile::stone_Id) ||
+                          (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
-                    tileId = tileIds[offset + (((xx + 0) << 11) | ((zz + 1) << 7) |
-                                               (indexY + 0))];
-                    if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
+                    tileId = tileIds[offset + (((xx + 0) << 11) |
+                                               ((zz + 1) << 7) | (indexY + 0))];
+                    if (!((tileId == Tile::stone_Id) ||
+                          (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
-                    // Treat the bottom of the world differently - we shouldn't ever
-                    // be able to look up at this, so consider tiles as invisible if
-                    // they are surrounded on sides other than the bottom
+                    // Treat the bottom of the world differently - we shouldn't
+                    // ever be able to look up at this, so consider tiles as
+                    // invisible if they are surrounded on sides other than the
+                    // bottom
                     if (yy > 0) {
                         int indexYMinusOne = yy - 1;
                         int yMinusOneOffset = 0;
@@ -349,26 +356,30 @@ void Chunk::rebuild() {
                             Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
                             indexYMinusOne -=
                                 Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
-                            yMinusOneOffset = Level::COMPRESSED_CHUNK_SECTION_TILES;
+                            yMinusOneOffset =
+                                Level::COMPRESSED_CHUNK_SECTION_TILES;
                         }
                         tileId = tileIds[yMinusOneOffset + (((xx + 0) << 11) |
                                                             ((zz + 0) << 7) |
                                                             indexYMinusOne)];
                         if (!((tileId == Tile::stone_Id) ||
                               (tileId == Tile::dirt_Id) ||
-                              (tileId == Tile::unbreakable_Id) || (tileId == 255)))
+                              (tileId == Tile::unbreakable_Id) ||
+                              (tileId == 255)))
                             continue;
                     }
                     int indexYPlusOne = yy + 1;
                     int yPlusOneOffset = 0;
-                    if (indexYPlusOne >= Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
+                    if (indexYPlusOne >=
+                        Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
                         indexYPlusOne -= Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
                         yPlusOneOffset = Level::COMPRESSED_CHUNK_SECTION_TILES;
                     }
-                    tileId =
-                        tileIds[yPlusOneOffset + (((xx + 0) << 11) |
-                                                  ((zz + 0) << 7) | indexYPlusOne)];
-                    if (!((tileId == Tile::stone_Id) || (tileId == Tile::dirt_Id) ||
+                    tileId = tileIds[yPlusOneOffset + (((xx + 0) << 11) |
+                                                       ((zz + 0) << 7) |
+                                                       indexYPlusOne)];
+                    if (!((tileId == Tile::stone_Id) ||
+                          (tileId == Tile::dirt_Id) ||
                           (tileId == Tile::unbreakable_Id) || (tileId == 255)))
                         continue;
 
@@ -482,7 +493,6 @@ void Chunk::rebuild() {
             }
         }
 
-
         if (started) {
             t->end();
             bounds.addBounds(t->bounds);  // 4J MGH - added
@@ -555,7 +565,6 @@ void Chunk::rebuild() {
     PIXEndNamedEvent();
     return;
 }
-
 
 float Chunk::distanceToSqr(std::shared_ptr<Entity> player) const {
     float xd = (float)(player->x - xm);

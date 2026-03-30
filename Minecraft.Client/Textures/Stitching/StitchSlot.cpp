@@ -30,7 +30,8 @@ bool StitchSlot::add(TextureHolder* textureHolder) {
     }
 
     // Exact fit! best-case-solution
-    if (textureWidth == width && textureHeight == height && subSlots == nullptr) {
+    if (textureWidth == width && textureHeight == height &&
+        subSlots == nullptr) {
         // Store somehow
         this->textureHolder = textureHolder;
         return true;

@@ -73,7 +73,6 @@ private:
     unsigned int m_t2[4];
     void packCompactQuad();
 
-
 public:
     // 4J MGH - added, to calculate tight bounds
     class Bounds {

@@ -183,7 +183,6 @@ protected:
 
     std::vector<FileEntry*>* getValidPlayerDatFiles();
 
-
     void setSaveVersion(int version) { m_saveVersion = version; }
     int getSaveVersion() { return m_saveVersion; }
     void setOriginalSaveVersion(int version) {

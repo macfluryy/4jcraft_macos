@@ -627,7 +627,6 @@ void GameRuleManager::processSchematicsLighting(LevelChunk* levelChunk) {
 }
 
 void GameRuleManager::loadDefaultGameRules() {
-
 #if !defined(__linux__)
 #if defined(_WINDOWS64)
     File packedTutorialFile(L"Windows64Media\\Tutorial\\Tutorial.pck");
@@ -644,19 +643,20 @@ void GameRuleManager::loadDefaultGameRules() {
             app.GetString(IDS_TUTORIALSAVENAME));
     }
 #else
-	std::wstring fpTutorial = L"Tutorial.pck";
-	if(app.getArchiveFileSize(fpTutorial) >= 0)
-	{
-		DLCPack *pack = new DLCPack(L"",0xffffffff);
-		uint32_t dwFilesProcessed = 0;
-		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
-		{
-			app.m_dlcManager.addPack(pack);
-			m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(app.GetString(IDS_PLAY_TUTORIAL));
-			m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(app.GetString(IDS_TUTORIALSAVENAME));
-		}
-		else delete pack;
-	}
+    std::wstring fpTutorial = L"Tutorial.pck";
+    if (app.getArchiveFileSize(fpTutorial) >= 0) {
+        DLCPack* pack = new DLCPack(L"", 0xffffffff);
+        uint32_t dwFilesProcessed = 0;
+        if (app.m_dlcManager.readDLCDataFile(dwFilesProcessed, fpTutorial, pack,
+                                             true)) {
+            app.m_dlcManager.addPack(pack);
+            m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(
+                app.GetString(IDS_PLAY_TUTORIAL));
+            m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(
+                app.GetString(IDS_TUTORIALSAVENAME));
+        } else
+            delete pack;
+    }
 #endif
 }
 

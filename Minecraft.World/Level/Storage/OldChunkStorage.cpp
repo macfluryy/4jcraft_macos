@@ -556,7 +556,6 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
         }
     }
 
-
     // 4J removed - we shouldn't need this any more
 
 #if !defined(_CONTENT_PACKAGE)

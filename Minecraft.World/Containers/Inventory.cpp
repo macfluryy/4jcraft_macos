@@ -602,10 +602,12 @@ bool Inventory::stillValid(std::shared_ptr<Player> player) {
 
 bool Inventory::contains(std::shared_ptr<ItemInstance> itemInstance) {
     for (unsigned int i = 0; i < armor.length; i++) {
-        if (armor[i] != nullptr && armor[i]->sameItem(itemInstance)) return true;
+        if (armor[i] != nullptr && armor[i]->sameItem(itemInstance))
+            return true;
     }
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != nullptr && items[i]->sameItem(itemInstance)) return true;
+        if (items[i] != nullptr && items[i]->sameItem(itemInstance))
+            return true;
     }
     return false;
 }
