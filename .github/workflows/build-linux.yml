@@ -40,23 +40,42 @@ jobs:
       - name: Install meson from pip
         run: |
           python -m pip install meson
+          ccache -M 5G || true
 
       - name: Restore ccache
         uses: actions/cache@v4
         with:
-          path: ${{ runner.temp }}/ccache
+          path: ~/.ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
-          restore-keys: |
-            ${{ runner.os }}-ccache-
 
-      - name: Configure ccache
-        run: ccache -M 5G
+      - name: Restore meson cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/meson
+          key: ${{ runner.os }}-meson-${{ hashFiles('**/meson.build') }}
 
       - name: Configure Meson
-        run: meson setup build --wipe --native-file=./scripts/llvm_native.txt
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
+          mkdir -p "$CCACHE_DIR"
+          export CCACHE_DIR="$CCACHE_DIR"
+          meson setup build --wipe --native-file=./scripts/llvm_native.txt
 
-      - name: Build
-        run: meson compile -C build -j $(nproc) -v Minecraft.Client
+      - name: Build with Meson
+        env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
+          export CCACHE_DIR="${{ runner.temp }}/ccache"
+          # Use all available cores for faster parallel builds
+          meson compile -C build -j $(nproc) -v Minecraft.Client
+
+      - name: Install patchelf
+        run: sudo apt-get install -y patchelf
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
