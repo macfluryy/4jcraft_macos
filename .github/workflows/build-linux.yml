@@ -14,7 +14,19 @@ on:
       - '**.inl'
       - "**.meson.build"
       - '.github/workflows/build-linux.yml*'
-
+  pull_request:
+    paths:
+      - '**.cpp'
+      - '**.h'
+      - '**.c'
+      - '**.cc'
+      - '**.cxx'
+      - '**.hh'
+      - '**.hpp'
+      - '**.hxx'
+      - '**.inl'
+      - "**.meson.build"
+      - '.github/workflows/build-linux.yml*'
 
 jobs:
   build-linux:
