@@ -2,9 +2,9 @@
 #include <cstddef>
 #include "GuiComponent.h"
 #include "GuiMessage.h"
+#include "../../../Minecraft.Client/Rendering/EntityRenderers/ItemRenderer.h"
 class Random;
 class Minecraft;
-class ItemRenderer;
 
 class Gui : public GuiComponent {
 private:
@@ -33,6 +33,10 @@ private:
     // 4J Added
     float lastTickA;
     float fAlphaIncrementPerCent;
+
+    // 4jcraft: backported item switch tooltip display from 1.6.4
+    int remainingHighlightTicks;
+    std::shared_ptr<ItemInstance> highlightingItemStack;
 
 public:
     static float currentGuiBlendFactor;  // 4J added

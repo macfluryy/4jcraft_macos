@@ -2010,7 +2010,7 @@ AABB Tile::getTileAABB(Level* level, int x, int y, int z) {
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
     return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
-                         y + tls->yy1, z + tls->zz1);
+                y + tls->yy1, z + tls->zz1);
 }
 
 void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
@@ -2119,52 +2119,51 @@ float Tile::getExplosionResistance(std::shared_ptr<Entity> source) {
     return explosionResistance / 5.0f;
 }
 
-HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
+HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a_,
+                      Vec3* b_) {
     updateShape(level, xt, yt, zt);
 
-    *a = a->add(-xt, -yt, -zt);
-    *b = b->add(-xt, -yt, -zt);
+    Vec3 a = a_->add(-xt, -yt, -zt);
+    Vec3 b = b_->add(-xt, -yt, -zt);
 
     ThreadStorage* tls = m_tlsShape;
-    auto xh0 = a->clipX(*b, tls->xx0);
-    auto xh1 = a->clipX(*b, tls->xx1);
 
-    auto yh0 = a->clipY(*b, tls->yy0);
-    auto yh1 = a->clipY(*b, tls->yy1);
+    auto xh0 = a.clipX(b, tls->xx0);
+    auto xh1 = a.clipX(b, tls->xx1);
 
-    auto zh0 = a->clipZ(*b, tls->zz0);
-    auto zh1 = a->clipZ(*b, tls->zz1);
+    auto yh0 = a.clipY(b, tls->yy0);
+    auto yh1 = a.clipY(b, tls->yy1);
+
+    auto zh0 = a.clipZ(b, tls->zz0);
+    auto zh1 = a.clipZ(b, tls->zz1);
 
     std::optional<Vec3> closest = std::nullopt;
 
-    if (xh0.has_value() and containsX(&*xh0) and
-        (!closest.has_value() or
-         a->distanceToSqr(*xh0) < a->distanceToSqr(*closest)))
+    // 4jcraft NOTE: containsX does a nullopt check and will short circuit so
+    // dereffing in distanceToSqr is fine.
+
+    if (containsX(xh0) && (!closest.has_value() ||
+                           a.distanceToSqr(*xh0) < a.distanceToSqr(*closest)))
         closest = xh0;
 
-    if (xh1.has_value() and containsX(&*xh1) and
-        (!closest.has_value() or
-         a->distanceToSqr(*xh1) < a->distanceToSqr(*closest)))
+    if (containsX(xh1) && (!closest.has_value() ||
+                           a.distanceToSqr(*xh1) < a.distanceToSqr(*closest)))
         closest = xh1;
 
-    if (yh0.has_value() and containsY(&*yh0) and
-        (!closest.has_value() or
-         a->distanceToSqr(*yh0) < a->distanceToSqr(*closest)))
+    if (containsY(yh0) && (!closest.has_value() ||
+                           a.distanceToSqr(*yh0) < a.distanceToSqr(*closest)))
         closest = yh0;
 
-    if (yh1.has_value() and containsY(&*yh1) and
-        (!closest.has_value() or
-         a->distanceToSqr(*yh1) < a->distanceToSqr(*closest)))
+    if (containsY(yh1) && (!closest.has_value() ||
+                           a.distanceToSqr(*yh1) < a.distanceToSqr(*closest)))
         closest = yh1;
 
-    if (zh0.has_value() and containsZ(&*zh0) and
-        (!closest.has_value() or
-         a->distanceToSqr(*zh0) < a->distanceToSqr(*closest)))
+    if (containsZ(zh0) && (!closest.has_value() ||
+                           a.distanceToSqr(*zh0) < a.distanceToSqr(*closest)))
         closest = zh0;
 
-    if (zh1.has_value() and containsZ(&*zh1) and
-        (!closest.has_value() or
-         a->distanceToSqr(*zh1) < a->distanceToSqr(*closest)))
+    if (containsZ(zh1) && (!closest.has_value() ||
+                           a.distanceToSqr(*zh1) < a.distanceToSqr(*closest)))
         closest = zh1;
 
     if (!closest.has_value()) return nullptr;
@@ -2178,12 +2177,11 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
     if (closest == zh0) face = Facing::NORTH;
     if (closest == zh1) face = Facing::SOUTH;
 
-    Vec3 res = closest->add(xt, yt, zt);
-    return new HitResult(xt, yt, zt, face, res);
+    return new HitResult(xt, yt, zt, face, closest->add(xt, yt, zt));
 }
 
-bool Tile::containsX(Vec3* v) {
-    if (v == NULL) return false;
+bool Tile::containsX(const std::optional<Vec3>& v) {
+    if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
@@ -2192,8 +2190,8 @@ bool Tile::containsX(Vec3* v) {
            v->z <= tls->zz1;
 }
 
-bool Tile::containsY(Vec3* v) {
-    if (v == NULL) return false;
+bool Tile::containsY(const std::optional<Vec3>& v) {
+    if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
@@ -2202,8 +2200,8 @@ bool Tile::containsY(Vec3* v) {
            v->z <= tls->zz1;
 }
 
-bool Tile::containsZ(Vec3* v) {
-    if (v == NULL) return false;
+bool Tile::containsZ(const std::optional<Vec3>& v) {
+    if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile

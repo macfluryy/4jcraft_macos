@@ -127,7 +127,9 @@ void SelectWorldScreen::buttonClicked(Button* button) {
         minecraft->setScreen(
             new RenameWorldScreen(this, getWorldId(selectedWorld)));
     } else if (button->id == BUTTON_CANCEL_ID) {
-        app.DebugPrintf("SelectWorldScreen::buttonClicked 'Cancel' minecraft->setScreen(lastScreen)\n");
+        app.DebugPrintf(
+            "SelectWorldScreen::buttonClicked 'Cancel' "
+            "minecraft->setScreen(lastScreen)\n");
         minecraft->setScreen(lastScreen);
     } else {
         worldSelectionList->buttonClicked(button);
@@ -181,9 +183,9 @@ void SelectWorldScreen::render(int xm, int ym, float a) {
         static bool forceCreateLevel = false;
         if (count++ >= 100) {
             if (!forceCreateLevel && levelList->size() > 0) {
-                // 4J Stu - For some obscures reason the "delete" button is called
-                // "renameButton" and vice versa.
-                // if( levelList->size() > 2 && deleteButton->active )
+                // 4J Stu - For some obscures reason the "delete" button is
+                // called "renameButton" and vice versa. if( levelList->size() >
+                // 2 && deleteButton->active )
                 //{
                 //	this->selectedWorld = 2;
                 //	count = 0;
@@ -205,7 +207,9 @@ void SelectWorldScreen::render(int xm, int ym, float a) {
                     count = 0;
                 }
             } else {
-                app.DebugPrintf("SelectWorldScreen::render minecraft->setScreen(new CreateWorldScreen(this))\n");
+                app.DebugPrintf(
+                    "SelectWorldScreen::render minecraft->setScreen(new "
+                    "CreateWorldScreen(this))\n");
                 minecraft->setScreen(new CreateWorldScreen(this));
             }
         }

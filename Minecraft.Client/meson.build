@@ -75,6 +75,10 @@ if get_option('enable_vsync')
     global_cpp_defs += '-DENABLE_VSYNC'
 endif
 
+if get_option('classic_panorama')
+    global_cpp_defs += '-DCLASSIC_PANORAMA'
+endif
+
 if get_option('ui_backend') == 'shiggy'
     shiggy_dep = dependency(
       'shiggy',

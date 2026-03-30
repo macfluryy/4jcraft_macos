@@ -5,15 +5,6 @@
 
 #include "AABB.h"
 
-Vec3::Vec3(double x, double y, double z) {
-    if (x == -0.0) x = 0.0;
-    if (y == -0.0) y = 0.0;
-    if (z == -0.0) z = 0.0;
-    this->x = x;
-    this->y = y;
-    this->z = z;
-}
-
 Vec3 Vec3::vectorTo(const Vec3& p) const { return {p.x - x, p.y - y, p.z - z}; }
 
 Vec3 Vec3::normalize() const {

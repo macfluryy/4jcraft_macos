@@ -134,4 +134,6 @@ public:
                                        int amplifier);
     virtual double getAttributeModifierValue(int amplifier,
                                              AttributeModifier* original);
+    static int javaId(
+        int id);  // 4jcraft: helper for inventoryscreen and beaconscreen
 };

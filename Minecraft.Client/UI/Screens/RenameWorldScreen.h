@@ -11,15 +11,15 @@ private:
 
 public:
     RenameWorldScreen(Screen* lastScreen, const std::wstring& levelId);
-    virtual void tick();
-    virtual void init();
-    virtual void removed();
+    virtual void tick() override;
+    virtual void init() override;
+    virtual void removed() override;
 
 protected:
-    virtual void buttonClicked(Button* button);
-    virtual void keyPressed(wchar_t ch, int eventKey);
-    virtual void mouseClicked(int x, int y, int buttonNum);
+    virtual void buttonClicked(Button* button) override;
+    virtual void keyPressed(wchar_t ch, int eventKey) override;
+    virtual void mouseClicked(int x, int y, int buttonNum) override;
 
 public:
-    virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a) override;
 };

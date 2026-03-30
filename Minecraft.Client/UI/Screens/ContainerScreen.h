@@ -14,6 +14,6 @@ public:
                     std::shared_ptr<Container> container);
 
 protected:
-    virtual void renderLabels();
-    virtual void renderBg(float a);
+    virtual void renderLabels() override;
+    virtual void renderBg(float a) override;
 };
