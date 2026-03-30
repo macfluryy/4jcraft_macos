@@ -109,7 +109,7 @@ bool IsEqualXUID(PlayerUID a, PlayerUID b)
 void XMemCpy(void *a, const void *b, size_t s) { memcpy(a, b, s); }
 void XMemSet(void *a, int t, size_t s) { memset(a, t, s); }
 void XMemSet128(void *a, int t, size_t s) { memset(a, t, s); }
-void *XPhysicalAlloc(SIZE_T a, ULONG_PTR  b, ULONG_PTR c, DWORD d) { return malloc(a); }
+void *XPhysicalAlloc(size_t a, ULONG_PTR  b, ULONG_PTR c, DWORD d) { return malloc(a); }
 void XPhysicalFree(void *a) { free(a); }
 
 D3DXVECTOR3::D3DXVECTOR3() {}
@@ -187,9 +187,9 @@ DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCo
 HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
          void *pDestination,
-         SIZE_T *pDestSize,
+         size_t *pDestSize,
          void *pSource,
-         SIZE_T SrcSize
+         size_t SrcSize
 )
 {
 	memcpy(pDestination, pSource, SrcSize);
@@ -218,9 +218,9 @@ HRESULT XMemDecompress(
 HRESULT XMemCompress(
          XMEMCOMPRESSION_CONTEXT Context,
          void *pDestination,
-         SIZE_T *pDestSize,
+         size_t *pDestSize,
          void *pSource,
-         SIZE_T SrcSize
+         size_t SrcSize
 )
 {
 	memcpy(pDestination, pSource, SrcSize);

@@ -247,13 +247,13 @@ HRESULT Compression::Compress(void* pDestination, unsigned int* pDestSize,
     // Using zlib for x64 compression - 360 is using native 360 compression and
     // PS3 a stubbed non-compressing version of this
 #if defined(_WIN64) || defined(__linux__)
-    SIZE_T destSize = (SIZE_T)(*pDestSize);
+    size_t destSize = (size_t)(*pDestSize);
     int res = ::compress((Bytef*)pDestination, (uLongf*)&destSize,
                          (Bytef*)pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return ((res == Z_OK) ? S_OK : -1);
 #else
-    SIZE_T destSize = (SIZE_T)(*pDestSize);
+    size_t destSize = (size_t)(*pDestSize);
     HRESULT res = XMemCompress(compressionContext, pDestination, &destSize,
                                pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
@@ -275,15 +275,15 @@ HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
     // Using zlib for x64 compression - 360 is using native 360 compression and
     // PS3 a stubbed non-compressing version of this
 #if defined(_WIN64) || defined(__linux__)
-    SIZE_T destSize = (SIZE_T)(*pDestSize);
+    size_t destSize = (size_t)(*pDestSize);
     int res = ::uncompress((Bytef*)pDestination, (uLongf*)&destSize,
                            (Bytef*)pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return ((res == Z_OK) ? S_OK : -1);
 #else
-    SIZE_T destSize = (SIZE_T)(*pDestSize);
+    size_t destSize = (size_t)(*pDestSize);
     HRESULT res = XMemDecompress(decompressionContext, pDestination,
-                                 (SIZE_T*)&destSize, pSource, SrcSize);
+                                 (size_t*)&destSize, pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return res;
 #endif
@@ -293,7 +293,7 @@ HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
 // platforms (so no virtual mem stuff)
 void Compression::VitaVirtualDecompress(
     void* pDestination, unsigned int* pDestSize, void* pSource,
-    unsigned int SrcSize)  // (void* buf, SIZE_T dwSize, void* dst)
+    unsigned int SrcSize)  // (void* buf, size_t dwSize, void* dst)
 {
     std::uint8_t* pSrc = (std::uint8_t*)pSource;
     int Offset = 0;
@@ -333,9 +333,9 @@ HRESULT Compression::DecompressWithType(void* pDestination,
             return S_OK;
         case eCompressionType_LZXRLE: {
 #if defined(_WIN64)
-            SIZE_T destSize = (SIZE_T)(*pDestSize);
+            size_t destSize = (size_t)(*pDestSize);
             HRESULT res = XMemDecompress(decompressionContext, pDestination,
-                                         (SIZE_T*)&destSize, pSource, SrcSize);
+                                         (size_t*)&destSize, pSource, SrcSize);
             *pDestSize = (unsigned int)destSize;
             return res;
 #else

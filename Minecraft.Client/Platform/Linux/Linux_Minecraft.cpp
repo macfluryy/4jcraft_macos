@@ -1049,7 +1049,7 @@ volatile int sectCheck = 48;
 CRITICAL_SECTION memCS;
 DWORD tlsIdx;
 
-void* XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
+void* XMemAlloc(size_t dwSize, DWORD dwAllocAttributes) {
     if (!trackStarted) {
         void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
         size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
@@ -1132,7 +1132,7 @@ void WINAPI XMemFree(void* pAddress, DWORD dwAllocAttributes) {
     LeaveCriticalSection(&memCS);
 }
 
-SIZE_T WINAPI XMemSize(void* pAddress, DWORD dwAllocAttributes) {
+size_t WINAPI XMemSize(void* pAddress, DWORD dwAllocAttributes) {
     if (trackStarted) {
         return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
     } else {

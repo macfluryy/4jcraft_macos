@@ -28,7 +28,7 @@ typedef unsigned int* LPDWORD;
 typedef char CHAR;
 typedef uintptr_t ULONG_PTR;
 typedef long LONG;
-typedef uint64_t PlayerUID;
+typedef unsigned long long PlayerUID;
 typedef DWORD WORD;
 typedef DWORD* PDWORD;
 
@@ -45,7 +45,6 @@ typedef struct {
 } ULARGE_INTEGER;
 
 typedef long long LONGLONG;
-typedef size_t SIZE_T;
 typedef wchar_t *LPWSTR, *PWSTR;
 typedef unsigned char boolean;  // java brainrot
 #define __debugbreak()
@@ -167,12 +166,12 @@ typedef struct _FILETIME {
 typedef struct _MEMORYSTATUS {
     DWORD dwLength;
     DWORD dwMemoryLoad;
-    SIZE_T dwTotalPhys;
-    SIZE_T dwAvailPhys;
-    SIZE_T dwTotalPageFile;
-    SIZE_T dwAvailPageFile;
-    SIZE_T dwTotalVirtual;
-    SIZE_T dwAvailVirtual;
+    size_t dwTotalPhys;
+    size_t dwAvailPhys;
+    size_t dwTotalPageFile;
+    size_t dwAvailPageFile;
+    size_t dwTotalVirtual;
+    size_t dwAvailVirtual;
 } MEMORYSTATUS, *LPMEMORYSTATUS;
 
 typedef struct _WIN32_FIND_DATAA {
@@ -957,7 +956,7 @@ static inline DWORD _WaitForThread(struct LinuxThread* lt,
 
 static DWORD g_nextThreadId = 1000;
 
-static inline HANDLE CreateThread(void*, SIZE_T stackSize,
+static inline HANDLE CreateThread(void*, size_t stackSize,
                                   LPTHREAD_START_ROUTINE lpStartAddress,
                                   void* lpParameter, DWORD dwCreationFlags,
                                   DWORD* lpThreadId) {
@@ -1049,7 +1048,7 @@ static inline int swprintf_s(wchar_t* buf, size_t sz, const wchar_t* fmt, ...) {
 
 static inline HMODULE GetModuleHandle(const char* lpModuleName) { return 0; }
 
-static inline void* VirtualAlloc(void* lpAddress, SIZE_T dwSize,
+static inline void* VirtualAlloc(void* lpAddress, size_t dwSize,
                                   DWORD flAllocationType, DWORD flProtect) {
     // MEM_COMMIT | MEM_RESERVE → mmap anonymous
     int prot = 0;
@@ -1070,7 +1069,7 @@ static inline void* VirtualAlloc(void* lpAddress, SIZE_T dwSize,
     return p;
 }
 
-static inline bool VirtualFree(void* lpAddress, SIZE_T dwSize,
+static inline bool VirtualFree(void* lpAddress, size_t dwSize,
                                DWORD dwFreeType) {
     if (lpAddress == nullptr) return FALSE;
     // MEM_RELEASE (0x8000) frees the whole region

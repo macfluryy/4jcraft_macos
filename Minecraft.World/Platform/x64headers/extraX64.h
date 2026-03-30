@@ -14,7 +14,6 @@
 
 #define MULTITHREAD_ENABLE
 
-typedef unsigned char byte;
 constexpr int MINECRAFT_NET_MAX_PLAYERS = 8;
 
 static_assert(
@@ -60,7 +59,7 @@ public:
 void XMemCpy(void* a, const void* b, size_t s);
 void XMemSet(void* a, int t, size_t s);
 void XMemSet128(void* a, int t, size_t s);
-void* XPhysicalAlloc(SIZE_T a, ULONG_PTR b, ULONG_PTR c, DWORD d);
+void* XPhysicalAlloc(size_t a, ULONG_PTR b, ULONG_PTR c, DWORD d);
 void XPhysicalFree(void* a);
 
 class DLCManager;
@@ -280,10 +279,10 @@ typedef enum _XMEMCODEC_TYPE {
 } XMEMCODEC_TYPE;
 
 HRESULT XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
-                       SIZE_T* pDestSize, void* pSource, SIZE_T SrcSize);
+                       size_t* pDestSize, void* pSource, size_t SrcSize);
 
 HRESULT XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
-                     SIZE_T* pDestSize, void* pSource, SIZE_T SrcSize);
+                     size_t* pDestSize, void* pSource, size_t SrcSize);
 
 HRESULT XMemCreateCompressionContext(XMEMCODEC_TYPE CodecType,
                                      const void* pCodecParams, DWORD Flags,
