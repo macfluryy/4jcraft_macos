@@ -310,8 +310,8 @@ bool ServerPlayerGameMode::useItem(std::shared_ptr<Player> player, Level* level,
     std::shared_ptr<ItemInstance> itemInstance = item->use(level, player);
     if (itemInstance != item ||
         (itemInstance != nullptr && (itemInstance->count != oldCount ||
-                                  itemInstance->getUseDuration() > 0 ||
-                                  itemInstance->getAuxValue() != oldAux))) {
+                                     itemInstance->getUseDuration() > 0 ||
+                                     itemInstance->getAuxValue() != oldAux))) {
         player->inventory->items[player->inventory->selected] = itemInstance;
         if (isCreative()) {
             itemInstance->count = oldCount;
@@ -345,7 +345,8 @@ bool ServerPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
             } else {
                 if (Tile::tiles[t]->use(level, x, y, z, player, face, clickX,
                                         clickY, clickZ)) {
-                    if (m_gameRules != nullptr) m_gameRules->onUseTile(t, x, y, z);
+                    if (m_gameRules != nullptr)
+                        m_gameRules->onUseTile(t, x, y, z);
                     return true;
                 }
             }

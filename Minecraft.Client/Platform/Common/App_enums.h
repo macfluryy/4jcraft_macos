@@ -658,8 +658,6 @@ enum EControllerActions {
     ACTION_MENU_OTHER_STICK_RIGHT,
     ACTION_MENU_PAUSEMENU,
 
-
-
     ACTION_MENU_OK,
     ACTION_MENU_CANCEL,
     // 4jcraft added, off by one

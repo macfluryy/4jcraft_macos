@@ -9,7 +9,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
-
 UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {
@@ -54,7 +53,6 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
 
     m_curTab = eCreativeInventoryTab_COUNT;
     switchTab(eCreativeInventoryTab_BuildingBlocks);
-
 }
 
 std::wstring UIScene_CreativeMenu::getMoviePath() {
@@ -64,7 +62,6 @@ std::wstring UIScene_CreativeMenu::getMoviePath() {
         return L"CreativeMenu";
     }
 }
-
 
 void UIScene_CreativeMenu::handleOtherClicked(int iPad, ESceneSection eSection,
                                               int buttonNum, bool quickKey) {

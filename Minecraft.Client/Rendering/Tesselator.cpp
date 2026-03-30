@@ -72,7 +72,6 @@ Tesselator::Tesselator(int size) {
         vboIds = MemoryTracker::createIntBuffer(vboCounts);
         ARBVertexBufferObject::glGenBuffersARB(vboIds);
     }
-
 }
 
 Tesselator* Tesselator::getUniqueInstance(int size) {
@@ -83,8 +82,7 @@ void Tesselator::end() {
     //    if (!tesselating) throw new IllegalStateException("Not tesselating!");
     //    // 4J - removed
     tesselating = false;
-    if (vertices > 0)
-    {
+    if (vertices > 0) {
         // 4J - a lot of stuff taken out here for fiddling round with enable
         // client states etc. that don't matter for our renderer
         if (!hasColor) {
@@ -111,13 +109,14 @@ void Tesselator::end() {
                     ? C4JRender::PIXEL_SHADER_TYPE_PROJECTION
                     : C4JRender::PIXEL_SHADER_TYPE_STANDARD);
         } else {
-//            glDrawArrays(mode, 0, vertices);	// 4J - changed for xbox
-// For compact vertices, the vertexCount has to be calculated from the amount of
-// data written, as we insert extra fake vertices to encode supplementary data
-// for more awkward quads that have non axis aligned UVs (eg flowing lava/water)
+            //            glDrawArrays(mode, 0, vertices);	// 4J - changed
+            //            for xbox
+            // For compact vertices, the vertexCount has to be calculated from
+            // the amount of data written, as we insert extra fake vertices to
+            // encode supplementary data for more awkward quads that have non
+            // axis aligned UVs (eg flowing lava/water)
             int vertexCount = vertices;
             if (useCompactFormat360) {
-
                 RenderManager.DrawVertices(
                     (C4JRender::ePrimitiveType)mode, vertexCount, _array->data,
                     C4JRender::VERTEX_TYPE_COMPRESSED,
@@ -157,7 +156,6 @@ void Tesselator::clear() {
 
     p = 0;
     count = 0;
-
 }
 
 void Tesselator::begin() {
@@ -180,7 +178,6 @@ bool Tesselator::setMipmapEnable(bool enable) {
     mipmapEnable = enable;
     return prev;
 }
-
 
 void Tesselator::begin(int mode) {
     /*	// 4J - removed
@@ -406,7 +403,6 @@ void Tesselator::packCompactQuad() {
     }
 }
 
-
 typedef unsigned short hfloat;
 extern hfloat convertFloatToHFloat(float f);
 extern float convertHFloatToFloat(hfloat hf);
@@ -460,7 +456,6 @@ void Tesselator::vertex(float x, float y, float z) {
 
         std::int16_t* pShortData = (std::int16_t*)&_array->data[p];
 
-
         pShortData[0] = (((int)((x + xo) * 1024.0f)) & 0xffff);
         pShortData[1] = (((int)((y + yo) * 1024.0f)) & 0xffff);
         pShortData[2] = (((int)((z + zo) * 1024.0f)) & 0xffff);
@@ -478,12 +473,7 @@ void Tesselator::vertex(float x, float y, float z) {
 
         p += 4;
 
-
-
-
         vertices++;
-
-
 
         if (vertices % 4 == 0 &&
             ((p >= size - 4 * 4) ||
@@ -577,7 +567,6 @@ void Tesselator::color(int c, int alpha) {
 
 void Tesselator::noColor() { _noColor = true; }
 
-
 void Tesselator::normal(float x, float y, float z) {
     hasNormal = true;
 
@@ -605,6 +594,4 @@ void Tesselator::addOffset(float x, float y, float z) {
     zo += z;
 }
 
-bool Tesselator::hasMaxVertices() {
-    return false;
-}
+bool Tesselator::hasMaxVertices() { return false; }

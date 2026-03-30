@@ -88,8 +88,8 @@ bool PoweredRailTile::findPoweredRailSignal(Level* level, int x, int y, int z,
     if (isSameRailWithPower(level, x, y, z, forward, searchDepth, dir)) {
         return true;
     }
-    if (checkBelow && isSameRailWithPower(level, x, y - 1, z, forward,
-                                          searchDepth, dir)) {
+    if (checkBelow &&
+        isSameRailWithPower(level, x, y - 1, z, forward, searchDepth, dir)) {
         return true;
     }
     return false;
@@ -117,8 +117,8 @@ bool PoweredRailTile::isSameRailWithPower(Level* level, int x, int y, int z,
             if (level->hasNeighborSignal(x, y, z)) {
                 return true;
             } else {
-                return findPoweredRailSignal(level, x, y, z, tileData,
-                                             forward, searchDepth + 1);
+                return findPoweredRailSignal(level, x, y, z, tileData, forward,
+                                             searchDepth + 1);
             }
         }
     }

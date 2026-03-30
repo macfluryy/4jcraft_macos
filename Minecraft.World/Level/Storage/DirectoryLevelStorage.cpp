@@ -108,12 +108,12 @@ bool DirectoryLevelStorage::PlayerMappings::getMapping(int& id, int centreX,
                                                        int centreZ,
                                                        int dimension,
                                                        int scale) {
-    //int64_t zMasked = centreZ & 0x1FFFFFFF;
-    //int64_t xMasked = centreX & 0x1FFFFFFF;
-    //int64_t zShifted = zMasked << 34;
-    //int64_t xShifted = xMasked << 5;
-    // app.DebugPrintf("xShifted = %d (0x%016x), zShifted = %I64d
-    // (0x%016llx)\n", xShifted, xShifted, zShifted, zShifted);
+    // int64_t zMasked = centreZ & 0x1FFFFFFF;
+    // int64_t xMasked = centreX & 0x1FFFFFFF;
+    // int64_t zShifted = zMasked << 34;
+    // int64_t xShifted = xMasked << 5;
+    //  app.DebugPrintf("xShifted = %d (0x%016x), zShifted = %I64d
+    //  (0x%016llx)\n", xShifted, xShifted, zShifted, zShifted);
     int64_t index = (((int64_t)(centreZ & 0x1FFFFFFF)) << 34) |
                     (((int64_t)(centreX & 0x1FFFFFFF)) << 5) |
                     ((scale & 0x7) << 2) | (dimension & 0x3);
@@ -359,8 +359,7 @@ void DirectoryLevelStorage::saveLevelData(LevelData* levelData) {
 void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
     // 4J Jev, removed try/catch.
     PlayerUID playerXuid = player->getXuid();
-    if (playerXuid != INVALID_XUID && !player->isGuest())
-    {
+    if (playerXuid != INVALID_XUID && !player->isGuest()) {
         CompoundTag* tag = new CompoundTag();
         player->saveWithoutId(tag);
         ConsoleSavePath realFile = ConsoleSavePath(
@@ -580,8 +579,8 @@ int DirectoryLevelStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
         ConsoleSavePath file = getDataFile(id);
 
         if (m_saveFile->doesFileExist(file)) {
-            auto it = find(m_mapFilesToDelete.begin(),
-                              m_mapFilesToDelete.end(), mapId);
+            auto it = find(m_mapFilesToDelete.begin(), m_mapFilesToDelete.end(),
+                           mapId);
             if (it != m_mapFilesToDelete.end()) m_mapFilesToDelete.erase(it);
 
             m_saveFile->deleteFile(m_saveFile->createFile(file));
@@ -610,8 +609,8 @@ void DirectoryLevelStorage::saveMapIdLookup() {
         DataOutputStream dos(&baos);
         dos.writeInt(m_playerMappings.size());
         app.DebugPrintf("Saving %d mappings\n", m_playerMappings.size());
-        for (auto it = m_playerMappings.begin();
-             it != m_playerMappings.end(); ++it) {
+        for (auto it = m_playerMappings.begin(); it != m_playerMappings.end();
+             ++it) {
 #if defined(_WINDOWS64) || defined(__linux__)
             app.DebugPrintf("  -- %d\n", it->first);
 #else
@@ -737,8 +736,8 @@ void DirectoryLevelStorage::saveAllCachedData() {
     }
     m_cachedSaveData.clear();
 
-    for (auto it = m_mapFilesToDelete.begin();
-         it != m_mapFilesToDelete.end(); ++it) {
+    for (auto it = m_mapFilesToDelete.begin(); it != m_mapFilesToDelete.end();
+         ++it) {
         std::wstring id = std::wstring(L"map_") + _toString(*it);
         ConsoleSavePath file = getDataFile(id);
         if (m_saveFile->doesFileExist(file)) {

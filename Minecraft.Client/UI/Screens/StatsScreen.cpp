@@ -126,7 +126,7 @@ void StatsScreen::GeneralStatisticsList::renderItem(int i, int x, int y, int h,
 }
 
 void StatsScreen::blitSlot(int x, int y, int item) {
-// 4J Unused
+    // 4J Unused
 }
 
 void StatsScreen::blitSlotBg(int x, int y) { blitSlotIcon(x, y, 0, 0); }

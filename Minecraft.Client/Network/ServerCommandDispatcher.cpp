@@ -57,8 +57,8 @@ void ServerCommandDispatcher::logAdminCommand(
     int customData, const std::wstring& additionalMessage) {
     PlayerList* playerList = MinecraftServer::getInstance()->getPlayers();
     // for (Player player : MinecraftServer.getInstance().getPlayers().players)
-    for (auto it = playerList->players.begin();
-         it != playerList->players.end(); ++it) {
+    for (auto it = playerList->players.begin(); it != playerList->players.end();
+         ++it) {
         std::shared_ptr<ServerPlayer> player = *it;
         if (player != source && playerList->isOp(player)) {
             // TODO: Change chat packet to be able to send more bits of data

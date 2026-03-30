@@ -9,27 +9,33 @@ RADDEFSTART
 
 #ifndef __RAD_HIGGYEXP_
 #define __RAD_HIGGYEXP_
-typedef void * HIGGYEXP;
+typedef void* HIGGYEXP;
 #endif
 
-//idoc(parent,IggyExpRuntime_API)
+// idoc(parent,IggyExpRuntime_API)
 
-#define IGGYEXP_MIN_STORAGE  1024   IDOC
+#define IGGYEXP_MIN_STORAGE 1024 IDOC
 /* The minimum-sized block you must provide to $IggyExpCreate */
 
-IDOC RADEXPFUNC HIGGYEXP RADEXPLINK IggyExpCreate(char *ip_address, S32 port, void *storage, S32 storage_size_in_bytes);
-/* Opens a connection to $IggyExplorer and returns an $HIGGYEXP wrapping the connection.
+IDOC RADEXPFUNC HIGGYEXP RADEXPLINK IggyExpCreate(char* ip_address, S32 port,
+                                                  void* storage,
+                                                  S32 storage_size_in_bytes);
+/* Opens a connection to $IggyExplorer and returns an $HIGGYEXP wrapping the
+connection.
 
-   $:ip_address The address of the machine running Iggy Explorer (can be numeric with dots, or textual, including "localhost")
-   $:port The port number on which Iggy Explorer is listening for a network connection (the default is 9190)
-   $:storage A small block of storage that needed to store the $HIGGYEXP, must be at least $IGGYEXP_MIN_STORAGE
+   $:ip_address The address of the machine running Iggy Explorer (can be numeric
+with dots, or textual, including "localhost")
+   $:port The port number on which Iggy Explorer is listening for a network
+connection (the default is 9190)
+   $:storage A small block of storage that needed to store the $HIGGYEXP, must
+be at least $IGGYEXP_MIN_STORAGE
    $:storage_size_in_bytes The size of the block pointer to by <tt>storage</tt>
 
-Returns a NULL HIGGYEXP if the IP address/hostname can't be resolved, or no Iggy Explorer
-can be contacted at the specified address/port. Otherwise returns a non-NULL $HIGGYEXP
-which you can pass to $IggyUseExplorer. */
+Returns a NULL HIGGYEXP if the IP address/hostname can't be resolved, or no Iggy
+Explorer can be contacted at the specified address/port. Otherwise returns a
+non-NULL $HIGGYEXP which you can pass to $IggyUseExplorer. */
 
-IDOC RADEXPFUNC void  RADEXPLINK IggyExpDestroy(HIGGYEXP p);
+IDOC RADEXPFUNC void RADEXPLINK IggyExpDestroy(HIGGYEXP p);
 /* Closes and destroys a connection to $IggyExplorer */
 
 IDOC RADEXPFUNC rrbool RADEXPLINK IggyExpCheckValidity(HIGGYEXP p);
@@ -46,4 +52,4 @@ An invalid $HIGGYEXP must still be shutdown with $IggyExpDestroy. */
 
 RADDEFEND
 
-#endif//__RAD_INCLUDE_IGGYEXPRUNTIME_H__
+#endif  //__RAD_INCLUDE_IGGYEXPRUNTIME_H__

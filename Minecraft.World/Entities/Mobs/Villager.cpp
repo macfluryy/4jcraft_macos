@@ -127,8 +127,7 @@ void Villager::serverAiMobStep() {
                 // improve max uses for all obsolete recipes
                 if (offers->size() > 0) {
                     // for (MerchantRecipe recipe : offers)
-                    for (auto it = offers->begin(); it != offers->end();
-                         ++it) {
+                    for (auto it = offers->begin(); it != offers->end(); ++it) {
                         MerchantRecipe* recipe = *it;
                         if (recipe->isDeprecated()) {
                             recipe->increaseMaxUses(random->nextInt(6) +
@@ -234,7 +233,7 @@ void Villager::setLastHurtByMob(std::shared_ptr<LivingEntity> mob) {
     if (_village != nullptr && mob != nullptr) {
         _village->addAggressor(mob);
 
-        if (mob->instanceof (eTYPE_PLAYER)) {
+        if (mob->instanceof(eTYPE_PLAYER)) {
             int amount = -1;
             if (isBaby()) {
                 amount = -3;
@@ -254,11 +253,11 @@ void Villager::die(DamageSource* source) {
     if (_village != nullptr) {
         std::shared_ptr<Entity> sourceEntity = source->getEntity();
         if (sourceEntity != nullptr) {
-            if (sourceEntity->instanceof (eTYPE_PLAYER)) {
+            if (sourceEntity->instanceof(eTYPE_PLAYER)) {
                 _village->modifyStanding(
                     std::dynamic_pointer_cast<Player>(sourceEntity)->getName(),
                     -2);
-            } else if (sourceEntity->instanceof (eTYPE_ENEMY)) {
+            } else if (sourceEntity->instanceof(eTYPE_ENEMY)) {
                 _village->resetNoBreedTimer();
             }
         } else if (sourceEntity == nullptr) {

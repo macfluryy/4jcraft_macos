@@ -165,8 +165,7 @@ StrongholdPieces::StrongholdPiece* StrongholdPieces::generatePieceFromSmallDoor(
         numAttempts++;
 
         int weightSelection = random->nextInt(totalWeight);
-        for (auto it = currentPieces.begin(); it != currentPieces.end();
-             it++) {
+        for (auto it = currentPieces.begin(); it != currentPieces.end(); it++) {
             PieceWeight* piece = *it;
             weightSelection -= piece->weight;
             if (weightSelection < 0) {
@@ -461,8 +460,9 @@ bool StrongholdPieces::StrongholdPiece::isOkBox(BoundingBox* box,
     if (box != nullptr) {
         if (box->y0 > LOWEST_Y_POSITION) bIsOk = true;
 
-        if (startRoom != nullptr && startRoom->m_level->getOriginalSaveVersion() >=
-                                     SAVE_FILE_VERSION_MOVED_STRONGHOLD) {
+        if (startRoom != nullptr &&
+            startRoom->m_level->getOriginalSaveVersion() >=
+                SAVE_FILE_VERSION_MOVED_STRONGHOLD) {
             int xzSize = startRoom->m_level->getLevelData()->getXZSize();
             int blockMin = -((xzSize << 4) / 2) + 1;
             int blockMax = ((xzSize << 4) / 2) - 1;

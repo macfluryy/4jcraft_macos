@@ -68,8 +68,8 @@ private:
                                          void* userCallbackData);
     static void GetDataCompletedCallback(int32_t taskResult,
                                          void* userCallbackData);
-};#pragma once
-
+};
+#pragma once
 // 4J Stu - This file defines the id's for the dynamic configurations that we
 // are currently using as well as the format of the data in them
 

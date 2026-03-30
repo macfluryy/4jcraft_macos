@@ -42,8 +42,8 @@ void AbstractContainerMenu::addSlotListener(ContainerListener* listener) {
 }
 
 void AbstractContainerMenu::removeSlotListener(ContainerListener* listener) {
-    auto it = find(containerListeners.begin(), containerListeners.end(),
-                      listener);
+    auto it =
+        find(containerListeners.begin(), containerListeners.end(), listener);
     if (it != containerListeners.end()) containerListeners.erase(it);
 }
 
@@ -367,8 +367,9 @@ std::shared_ptr<ItemInstance> AbstractContainerMenu::clicked(
         if (slot->mayPickup(player)) {
             std::shared_ptr<ItemInstance> current =
                 inventory->getItem(buttonNum);
-            bool canMove = current == nullptr || (slot->container == inventory &&
-                                               slot->mayPlace(current));
+            bool canMove =
+                current == nullptr ||
+                (slot->container == inventory && slot->mayPlace(current));
             int freeSlot = -1;
 
             if (!canMove) {

@@ -12,7 +12,6 @@ private:
     // 4J Stu - How many to show on each side of the main control
     static const int sidePreviewControls = 4;
 
-
     enum ESkinSelectNavigation {
         eSkinNavigation_Pack,
         eSkinNavigation_Skin,
@@ -152,7 +151,4 @@ private:
 
     void InputActionOK(unsigned int iPad);
     virtual void handleReload();
-
-
-
 };

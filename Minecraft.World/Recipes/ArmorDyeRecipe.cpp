@@ -144,7 +144,6 @@ void ArmorDyeRecipe::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     memset(TempIngReq.iIngAuxValA, Recipes::ANY_AUX_VALUE, sizeof(int) * 9);
     ZeroMemory(TempIngReq.uiGridA, sizeof(unsigned int) * 9);
 
-
     pIngReq->iIngIDA = new int[TempIngReq.iIngC];
     pIngReq->iIngValA = new int[TempIngReq.iIngC];
     pIngReq->iIngAuxValA = new int[TempIngReq.iIngC];

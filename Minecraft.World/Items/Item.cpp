@@ -1519,7 +1519,9 @@ bool Item::shouldOverrideMultiplayerNBT() { return true; }
 
 Item* Item::getCraftingRemainingItem() { return craftingRemainingItem; }
 
-bool Item::hasCraftingRemainingItem() { return craftingRemainingItem != nullptr; }
+bool Item::hasCraftingRemainingItem() {
+    return craftingRemainingItem != nullptr;
+}
 
 std::wstring Item::getName() {
     return L"";  // I18n::get(getDescriptionId() + L".name");
@@ -1647,8 +1649,7 @@ attrAttrModMap* Item::getDefaultAttributeModifiers() {
         4J: These are necesary on the PS3.
                 (and 4 and Vita).
 */
-#if (0 || 0 || 0 || \
-     defined __linux__)
+#if (0 || 0 || 0 || defined __linux__)
 const int Item::shovel_iron_Id;
 const int Item::pickAxe_iron_Id;
 const int Item::hatchet_iron_Id;

@@ -124,18 +124,14 @@ void LevelGenerationOptions::getChildren(
     GameRuleDefinition::getChildren(children);
 
     std::vector<ApplySchematicRuleDefinition*> used_schematics;
-    for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         it++)
+    for (auto it = m_schematicRules.begin(); it != m_schematicRules.end(); it++)
         if (!(*it)->isComplete()) used_schematics.push_back(*it);
 
-    for (auto it = m_structureRules.begin(); it != m_structureRules.end();
-         it++)
+    for (auto it = m_structureRules.begin(); it != m_structureRules.end(); it++)
         children->push_back(*it);
-    for (auto it = used_schematics.begin(); it != used_schematics.end();
-         it++)
+    for (auto it = used_schematics.begin(); it != used_schematics.end(); it++)
         children->push_back(*it);
-    for (auto it = m_biomeOverrides.begin(); it != m_biomeOverrides.end();
-         ++it)
+    for (auto it = m_biomeOverrides.begin(); it != m_biomeOverrides.end(); ++it)
         children->push_back(*it);
     for (auto it = m_features.begin(); it != m_features.end(); ++it)
         children->push_back(*it);
@@ -300,15 +296,15 @@ bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
     // ground/sea level and b) tutorial world additions generally being above
     // ground/sea level
     if (!m_bHaveMinY) {
-        for (auto it = m_schematicRules.begin();
-             it != m_schematicRules.end(); ++it) {
+        for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
+             ++it) {
             ApplySchematicRuleDefinition* rule = *it;
             int minY = rule->getMinY();
             if (minY < m_minY) m_minY = minY;
         }
 
-        for (auto it = m_structureRules.begin();
-             it != m_structureRules.end(); it++) {
+        for (auto it = m_structureRules.begin(); it != m_structureRules.end();
+             it++) {
             ConsoleGenerateStructure* structureStart = *it;
             int minY = structureStart->getMinY();
             if (minY < m_minY) m_minY = minY;
@@ -330,8 +326,8 @@ bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
     }
 
     if (!intersects) {
-        for (auto it = m_structureRules.begin();
-             it != m_structureRules.end(); it++) {
+        for (auto it = m_structureRules.begin(); it != m_structureRules.end();
+             it++) {
             ConsoleGenerateStructure* structureStart = *it;
             intersects =
                 structureStart->checkIntersects(x0, y0, z0, x1, y1, z1);
@@ -446,8 +442,7 @@ LevelGenerationOptions::getUnfinishedSchematicFiles() {
     // Clean schematic rules.
     std::unordered_set<std::wstring> usedFiles =
         std::unordered_set<std::wstring>();
-    for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         it++)
+    for (auto it = m_schematicRules.begin(); it != m_schematicRules.end(); it++)
         if (!(*it)->isComplete()) usedFiles.insert((*it)->getSchematicName());
 
     // Clean schematic files.
@@ -469,8 +464,7 @@ void LevelGenerationOptions::loadBaseSaveData() {
         if (StorageManager.MountInstalledDLC(
                 ProfileManager.GetPrimaryPad(), mountIndex,
                 &LevelGenerationOptions::packMounted, this,
-                "WPACK") != ERROR_IO_PENDING)
-        {
+                "WPACK") != ERROR_IO_PENDING) {
             // corrupt DLC
             setLoadedData();
             app.DebugPrintf("Failed to mount LGO DLC %d for pad %d\n",
@@ -518,12 +512,12 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                         GENERIC_READ,  // access mode
                         0,  // share mode // TODO 4J Stu - Will we need to share
                             // file? Probably not but...
-                        nullptr,           // Unused
+                        nullptr,        // Unused
                         OPEN_EXISTING,  // how to create // TODO 4J Stu -
                                         // Assuming that the file already exists
                                         // if we are opening to read from it
                         FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                        nullptr                        // Unsupported
+                        nullptr                     // Unsupported
                     );
 #else
                     const char* pchFilename = wstringtofilename(grf.getPath());
@@ -532,19 +526,19 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                         GENERIC_READ,  // access mode
                         0,  // share mode // TODO 4J Stu - Will we need to share
                             // file? Probably not but...
-                        nullptr,           // Unused
+                        nullptr,        // Unused
                         OPEN_EXISTING,  // how to create // TODO 4J Stu -
                                         // Assuming that the file already exists
                                         // if we are opening to read from it
                         FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                        nullptr                        // Unsupported
+                        nullptr                     // Unsupported
                     );
 #endif
 
                     if (fileHandle != INVALID_HANDLE_VALUE) {
                         uint32_t dwFileSize = grf.length();
                         uint32_t bytesRead;
-                        uint8_t* pbData = (uint8_t*) new uint8_t[dwFileSize];
+                        uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
                         bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
                                                  &bytesRead, nullptr);
                         if (bSuccess == false) {
@@ -574,34 +568,35 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                 void* fileHandle = CreateFile(
                     pchFilename,   // file name
                     GENERIC_READ,  // access mode
-                    0,     // share mode // TODO 4J Stu - Will we need to share
-                           // file? Probably not but...
-                    nullptr,  // Unused
+                    0,  // share mode // TODO 4J Stu - Will we need to share
+                        // file? Probably not but...
+                    nullptr,        // Unused
                     OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
                                     // that the file already exists if we are
                                     // opening to read from it
                     FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                    nullptr                        // Unsupported
+                    nullptr                     // Unsupported
                 );
 #else
                 const char* pchFilename = wstringtofilename(save.getPath());
                 void* fileHandle = CreateFile(
                     pchFilename,   // file name
                     GENERIC_READ,  // access mode
-                    0,     // share mode // TODO 4J Stu - Will we need to share
-                           // file? Probably not but...
-                    nullptr,  // Unused
+                    0,  // share mode // TODO 4J Stu - Will we need to share
+                        // file? Probably not but...
+                    nullptr,        // Unused
                     OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
                                     // that the file already exists if we are
                                     // opening to read from it
                     FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                    nullptr                        // Unsupported
+                    nullptr                     // Unsupported
                 );
 #endif
 
                 if (fileHandle != INVALID_HANDLE_VALUE) {
-                    uint32_t bytesRead, dwFileSize = GetFileSize(fileHandle, nullptr);
-                    uint8_t* pbData = (uint8_t*) new uint8_t[dwFileSize];
+                    uint32_t bytesRead,
+                        dwFileSize = GetFileSize(fileHandle, nullptr);
+                    uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
                     bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
                                              &bytesRead, nullptr);
                     if (bSuccess == false) {

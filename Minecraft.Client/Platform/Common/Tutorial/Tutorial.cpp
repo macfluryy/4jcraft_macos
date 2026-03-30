@@ -1683,8 +1683,8 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         if (isFullTutorial)
             addTask(e_Tutorial_State_Horse,
                     new RideEntityTask(eTYPE_HORSE, this,
-                                       IDS_TUTORIAL_TASK_HORSE_RIDE, true, nullptr,
-                                       false, false, false));
+                                       IDS_TUTORIAL_TASK_HORSE_RIDE, true,
+                                       nullptr, false, false, false));
         else
             addTask(e_Tutorial_State_Horse,
                     new InfoTask(this, IDS_TUTORIAL_TASK_HORSE_RIDE,
@@ -1929,8 +1929,8 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
 }
 
 Tutorial::~Tutorial() {
-    for (auto it = m_globalConstraints.begin();
-         it != m_globalConstraints.end(); ++it) {
+    for (auto it = m_globalConstraints.begin(); it != m_globalConstraints.end();
+         ++it) {
         delete (*it);
     }
     for (std::unordered_map<int, TutorialMessage*>::iterator it =
@@ -1968,8 +1968,8 @@ void Tutorial::setCompleted(int completableId) {
     // }
 
     int completableIndex = -1;
-    for (auto it = s_completableTasks.begin();
-         it < s_completableTasks.end(); ++it) {
+    for (auto it = s_completableTasks.begin(); it < s_completableTasks.end();
+         ++it) {
         ++completableIndex;
         if (*it == completableId) {
             break;
@@ -1996,8 +1996,8 @@ bool Tutorial::getCompleted(int completableId) {
     // }
 
     int completableIndex = -1;
-    for (auto it = s_completableTasks.begin();
-         it < s_completableTasks.end(); ++it) {
+    for (auto it = s_completableTasks.begin(); it < s_completableTasks.end();
+         ++it) {
         ++completableIndex;
         if (*it == completableId) {
             break;
@@ -2152,8 +2152,8 @@ void Tutorial::tick() {
     }
 
     // Check constraints
-    for (auto it = m_globalConstraints.begin();
-         it < m_globalConstraints.end(); ++it) {
+    for (auto it = m_globalConstraints.begin(); it < m_globalConstraints.end();
+         ++it) {
         TutorialConstraint* constraint = *it;
         constraint->tick(m_iPad);
     }
@@ -2234,8 +2234,7 @@ void Tutorial::tick() {
                                 // gameplay state so that they are in effect for
                                 // a bit longer
                                 auto itCon =
-                                         constraintsToRemove[m_CurrentState]
-                                             .begin();
+                                    constraintsToRemove[m_CurrentState].begin();
                                 while (
                                     itCon !=
                                     constraintsToRemove[m_CurrentState].end()) {
@@ -2259,8 +2258,7 @@ void Tutorial::tick() {
                             }
                                 // Fall through the the normal complete state
                             case e_Tutorial_Completion_Complete_State:
-                                for (auto
-                                         itRem =
+                                for (auto itRem =
                                          activeTasks[m_CurrentState].begin();
                                      itRem < activeTasks[m_CurrentState].end();
                                      ++itRem) {
@@ -2273,8 +2271,7 @@ void Tutorial::tick() {
                                     activeTasks[m_CurrentState].at(
                                         activeTasks[m_CurrentState].size() - 1);
                                 activeTasks[m_CurrentState].pop_back();
-                                for (auto
-                                         itRem =
+                                for (auto itRem =
                                          activeTasks[m_CurrentState].begin();
                                      itRem < activeTasks[m_CurrentState].end();
                                      ++itRem) {
@@ -2773,8 +2770,8 @@ void Tutorial::onLookAtEntity(std::shared_ptr<Entity> entity) {
         }
     }
 
-    if ((m_CurrentState == e_Tutorial_State_Gameplay) && entity->instanceof
-        (eTYPE_HORSE)) {
+    if ((m_CurrentState == e_Tutorial_State_Gameplay) &&
+        entity->instanceof(eTYPE_HORSE)) {
         changeTutorialState(e_Tutorial_State_Horse);
     }
 
@@ -2898,7 +2895,7 @@ void Tutorial::RemoveConstraint(TutorialConstraint* c,
         }
 
         auto it = find(constraints[m_CurrentState].begin(),
-                          constraints[m_CurrentState].end(), c);
+                       constraints[m_CurrentState].end(), c);
         if (it != constraints[m_CurrentState].end())
             constraints[m_CurrentState].erase(
                 find(constraints[m_CurrentState].begin(),
@@ -2934,8 +2931,7 @@ void Tutorial::addMessage(
 }
 
 void Tutorial::changeTutorialState(eTutorial_State newState,
-                                   UIScene* scene /*= nullptr*/)
-{
+                                   UIScene* scene /*= nullptr*/) {
     if (newState == m_CurrentState) {
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed

@@ -114,7 +114,8 @@ void FallingTile::tick() {
                     if (hv) {
                         hv->onLand(level, xt, yt, zt, data);
                     }
-                    if (tileData != nullptr && Tile::tiles[tile]->isEntityTile()) {
+                    if (tileData != nullptr &&
+                        Tile::tiles[tile]->isEntityTile()) {
                         std::shared_ptr<TileEntity> tileEntity =
                             level->getTileEntity(xt, yt, zt);
 

@@ -96,8 +96,8 @@ void ItemEntity::tick() {
     float friction = 0.98f;
     if (onGround) {
         friction = 0.6f * 0.98f;
-        int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
-                               Mth::floor(z));
+        int t =
+            level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1, Mth::floor(z));
         if (t > 0) {
             friction = Tile::tiles[t]->friction * 0.98f;
         }

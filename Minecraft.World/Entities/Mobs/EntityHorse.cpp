@@ -538,7 +538,8 @@ void EntityHorse::playStepSound(int xt, int yt, int zt, int t) {
     }
     if (!Tile::tiles[t]->material->isLiquid()) {
         int type = getType();
-        if (rider.lock() != nullptr && type != TYPE_DONKEY && type != TYPE_MULE) {
+        if (rider.lock() != nullptr && type != TYPE_DONKEY &&
+            type != TYPE_MULE) {
             gallopSoundCounter++;
             if (gallopSoundCounter > 5 && gallopSoundCounter % 3 == 0) {
                 playSound(eSoundType_MOB_HORSE_GALLOP,
@@ -904,7 +905,8 @@ void EntityHorse::aiStep() {
             heal(1);
         }
 
-        if (!isEating() && rider.lock() == nullptr && random->nextInt(300) == 0) {
+        if (!isEating() && rider.lock() == nullptr &&
+            random->nextInt(300) == 0) {
             if (level->getTile(Mth::floor(x), Mth::floor(y) - 1,
                                Mth::floor(z)) == Tile::grass_Id) {
                 setEating(true);
@@ -1012,8 +1014,8 @@ void EntityHorse::openMouth() {
 }
 
 bool EntityHorse::isReadyForParenting() {
-    return rider.lock() == nullptr && riding == nullptr && isTamed() && isAdult() &&
-           !isSterile() && getHealth() >= getMaxHealth();
+    return rider.lock() == nullptr && riding == nullptr && isTamed() &&
+           isAdult() && !isSterile() && getHealth() >= getMaxHealth();
 }
 
 bool EntityHorse::renderName() {

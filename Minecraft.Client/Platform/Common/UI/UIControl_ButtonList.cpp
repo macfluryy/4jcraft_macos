@@ -34,7 +34,6 @@ void UIControl_ButtonList::init(int id) {
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 1, value);
-
 }
 
 void UIControl_ButtonList::ReInit() {
@@ -150,7 +149,6 @@ void UIControl_ButtonList::setButtonLabel(int iButtonId,
                                             getIggyValuePath(),
                                             m_funcSetButtonLabel, 2, value);
 }
-
 
 void UIControl_DynamicButtonList::tick() {
     UIControl_ButtonList::tick();

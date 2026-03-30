@@ -219,7 +219,8 @@ bool HopperTileEntity::tryTakeInItemFromSlot(Hopper* hopper,
                                              int face) {
     std::shared_ptr<ItemInstance> item = container->getItem(slot);
 
-    if (item != nullptr && canTakeItemFromContainer(container, item, slot, face)) {
+    if (item != nullptr &&
+        canTakeItemFromContainer(container, item, slot, face)) {
         std::shared_ptr<ItemInstance> original = item->copy();
         std::shared_ptr<ItemInstance> result =
             addItem(hopper, container->removeItem(slot, 1), -1);

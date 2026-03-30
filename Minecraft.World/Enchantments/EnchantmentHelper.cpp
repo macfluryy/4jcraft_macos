@@ -377,8 +377,8 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
                     int nextEnchantment = it->first;  // mapIter.next();
                     bool valid = true;
                     // for (EnchantmentInstance *current : results)
-                    for (auto resIt = results->begin();
-                         resIt != results->end(); ++resIt) {
+                    for (auto resIt = results->begin(); resIt != results->end();
+                         ++resIt) {
                         EnchantmentInstance* current = *resIt;
                         if (!current->enchantment->isCompatibleWith(
                                 Enchantment::enchantments[nextEnchantment])) {

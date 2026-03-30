@@ -448,7 +448,6 @@ void MultiplayerLocalPlayer::StressTestMove(double* tempX, double* tempY,
     static float dx = cos(30.0);
     static float dz = sin(30.0);
 
-
     float nx = x + (dx * 1.2);
     float nz = z + (dz * 1.2);
     float ny = y;

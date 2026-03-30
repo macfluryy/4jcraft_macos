@@ -38,7 +38,6 @@ UIScene_Intro::UIScene_Intro(int iPad, void* initData, UILayer* parentLayer)
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcSetIntroPlatform, 3, value);
-
 }
 
 std::wstring UIScene_Intro::getMoviePath() { return L"Intro"; }
@@ -57,7 +56,6 @@ void UIScene_Intro::handleInput(int iPad, int key, bool repeat, bool pressed,
             break;
     }
 }
-
 
 void UIScene_Intro::handleAnimationEnd() {
     if (!m_bIgnoreNavigate) {

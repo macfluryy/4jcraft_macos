@@ -2,5 +2,4 @@
 
 #include "Packet.h"
 
-class SharedKeyPacket : public Packet {
-};
+class SharedKeyPacket : public Packet {};

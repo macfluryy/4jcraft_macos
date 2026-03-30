@@ -74,7 +74,7 @@ public:
     virtual bool shouldSave() = 0;
 
     virtual LevelChunk** getCache() { return nullptr; }  // 4J added
-    virtual void dataReceived(int x, int z) {}        // 4J added
+    virtual void dataReceived(int x, int z) {}           // 4J added
 
     /**
      * Returns some stats that are rendered when the user holds F3.

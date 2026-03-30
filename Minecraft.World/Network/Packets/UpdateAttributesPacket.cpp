@@ -70,8 +70,7 @@ void UpdateAttributesPacket::write(DataOutputStream* dos) {
         dos->writeDouble(attribute->getBase());
         dos->writeShort(modifiers->size());
 
-        for (auto it2 = modifiers->begin(); it2 != modifiers->end();
-             ++it2) {
+        for (auto it2 = modifiers->begin(); it2 != modifiers->end(); ++it2) {
             AttributeModifier* modifier = (*it2);
             dos->writeInt(modifier->getId());
             dos->writeDouble(modifier->getAmount());

@@ -8,7 +8,6 @@ public:
     static const int IS_GRASS_SIDE = 1;
     static const int IS_GRASS_TOP = 2;
 
-
     virtual ~Icon() {}  // added by 4jcraft, needed for abstract class
 
     virtual int getX() const = 0;

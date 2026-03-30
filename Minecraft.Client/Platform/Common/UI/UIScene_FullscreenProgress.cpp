@@ -69,8 +69,6 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
     m_threadCompleted = false;
     thread->Run();
     threadStarted = true;
-
-
 }
 
 UIScene_FullscreenProgress::~UIScene_FullscreenProgress() {
@@ -99,7 +97,8 @@ void UIScene_FullscreenProgress::handleDestroy() {
 
     // If we're active, have a cancel func, and haven't already cancelled, call
     // cancel func
-    if (exitcode == STILL_ACTIVE && m_cancelFunc != nullptr && !m_bWasCancelled) {
+    if (exitcode == STILL_ACTIVE && m_cancelFunc != nullptr &&
+        !m_bWasCancelled) {
         m_bWasCancelled = true;
         m_cancelFunc(m_cancelFuncParam);
     }

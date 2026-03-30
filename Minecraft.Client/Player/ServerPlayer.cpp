@@ -331,8 +331,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
         // the spiral of chunks that that method creates, long before
         // transmission of them is complete.
         double dist = DBL_MAX;
-        for (auto it = chunksToSend.begin(); it != chunksToSend.end();
-             it++) {
+        for (auto it = chunksToSend.begin(); it != chunksToSend.end(); it++) {
             ChunkPos chunk = *it;
             if (level->isChunkFinalised(chunk.x, chunk.z)) {
                 double newDist = chunk.distanceToSqr(x, z);
@@ -344,8 +343,8 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
             }
         }
 
-        //        if (nearest != nullptr)		// 4J - removed as we don't have
-        //        references here
+        //        if (nearest != nullptr)		// 4J - removed as we
+        //        don't have references here
         if (nearestValid) {
             bool okToSend = false;
 
@@ -572,8 +571,7 @@ void ServerPlayer::doTickB() {
             players.push_back(
                 std::dynamic_pointer_cast<Player>(shared_from_this()));
 
-            for (auto it = objectives->begin(); it != objectives->end();
-                 ++it) {
+            for (auto it = objectives->begin(); it != objectives->end(); ++it) {
                 Objective* objective = *it;
                 getScoreboard()
                     ->getPlayerScore(getAName(), objective)
@@ -619,7 +617,8 @@ void ServerPlayer::die(DamageSource* source) {
     }
 
     std::shared_ptr<LivingEntity> killer = getKillCredit();
-    if (killer != nullptr) killer->awardKillScore(shared_from_this(), deathScore);
+    if (killer != nullptr)
+        killer->awardKillScore(shared_from_this(), deathScore);
     // awardStat(Stats::deaths, 1);
 }
 
@@ -643,20 +642,19 @@ bool ServerPlayer::hurt(DamageSource* dmgSource, float dmg) {
         // sometimes nullptr.
         std::shared_ptr<Entity> source = dmgSource->getDirectEntity();
 
-        if (source->instanceof
-            (eTYPE_PLAYER) &&
-                !std::dynamic_pointer_cast<Player>(source)->canHarmPlayer(
-                    std::dynamic_pointer_cast<Player>(shared_from_this()))) {
+        if (source->instanceof(eTYPE_PLAYER) &&
+            !std::dynamic_pointer_cast<Player>(source)->canHarmPlayer(
+                std::dynamic_pointer_cast<Player>(shared_from_this()))) {
             return false;
         }
 
-        if ((source != nullptr) && source->instanceof (eTYPE_ARROW)) {
+        if ((source != nullptr) && source->instanceof(eTYPE_ARROW)) {
             std::shared_ptr<Arrow> arrow =
                 std::dynamic_pointer_cast<Arrow>(source);
-            if ((arrow->owner != nullptr) && arrow->owner->instanceof
-                (eTYPE_PLAYER) &&
-                    !canHarmPlayer(
-                        std::dynamic_pointer_cast<Player>(arrow->owner))) {
+            if ((arrow->owner != nullptr) &&
+                arrow->owner->instanceof(eTYPE_PLAYER) &&
+                !canHarmPlayer(
+                    std::dynamic_pointer_cast<Player>(arrow->owner))) {
                 return false;
             }
         }
@@ -807,8 +805,8 @@ void ServerPlayer::changeDimension(int i) {
         }
         if (thisPlayer != nullptr) {
             for (auto it = MinecraftServer::getInstance()
-                                  ->getPlayers()
-                                  ->players.begin();
+                               ->getPlayers()
+                               ->players.begin();
                  it !=
                  MinecraftServer::getInstance()->getPlayers()->players.end();
                  ++it) {

@@ -3,7 +3,6 @@
 #include "UIScene_DLCOffersMenu.h"
 #include "../../../../Minecraft.World/Util/StringHelpers.h"
 
-
 #define PLAYER_ONLINE_TIMER_ID 0
 #define PLAYER_ONLINE_TIMER_TIME 100
 
@@ -36,10 +35,6 @@ UIScene_DLCOffersMenu::UIScene_DLCOffersMenu(int iPad, void* initData,
     if (m_loadedResolution == eSceneResolution_1080) {
         m_labelXboxStore.init(L"");
     }
-
-
-
-
 }
 
 UIScene_DLCOffersMenu::~UIScene_DLCOffersMenu() {
@@ -48,8 +43,7 @@ UIScene_DLCOffersMenu::~UIScene_DLCOffersMenu() {
     app.SetLiveLinkRequired(false);
 }
 
-void UIScene_DLCOffersMenu::handleTimerComplete(int id) {
-}
+void UIScene_DLCOffersMenu::handleTimerComplete(int id) {}
 
 int UIScene_DLCOffersMenu::ExitDLCOffersMenu(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
@@ -190,15 +184,6 @@ void UIScene_DLCOffersMenu::handleSelectionChanged(F64 selectedId) {}
 
 void UIScene_DLCOffersMenu::handleFocusChange(F64 controlId, F64 childId) {
     app.DebugPrintf("UIScene_DLCOffersMenu::handleFocusChange\n");
-
-
-
 }
 
-void UIScene_DLCOffersMenu::tick() {
-    UIScene::tick();
-
-}
-
-
-
+void UIScene_DLCOffersMenu::tick() { UIScene::tick(); }

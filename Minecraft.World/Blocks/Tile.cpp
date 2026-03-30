@@ -1713,7 +1713,8 @@ void Tile::staticCtor() {
             bool propagate = false;
             if (i > 0 && Tile::tiles[i]->getRenderShape() == Tile::SHAPE_STAIRS)
                 propagate = true;
-            if (i > 0 && dynamic_cast<HalfSlabTile*>(Tile::tiles[i]) != nullptr) {
+            if (i > 0 &&
+                dynamic_cast<HalfSlabTile*>(Tile::tiles[i]) != nullptr) {
                 propagate = true;
             }
             if (i == Tile::farmland_Id) propagate = true;
@@ -2602,8 +2603,7 @@ int Tile::SoundType::getPlaceSound() const { return iPlaceSound; }
 4J: These are necessary on the PS3.
 (and 4 and Vita).
 */
-#if (0 || 0 || 0 || \
-     defined __linux__)
+#if (0 || 0 || 0 || defined __linux__)
 const int Tile::stone_Id;
 const int Tile::grass_Id;
 const int Tile::dirt_Id;

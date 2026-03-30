@@ -79,13 +79,14 @@ void PathfinderMob::serverAiStep() {
     // had their flag set through the considerForExtraWandering method so that
     // these can keep doing random strolling.
 
-    if (!holdGround &&
-        (attackTarget != nullptr && (path == nullptr || random->nextInt(20) == 0))) {
+    if (!holdGround && (attackTarget != nullptr &&
+                        (path == nullptr || random->nextInt(20) == 0))) {
         setPath(level->findPath(shared_from_this(), attackTarget, maxDist, true,
                                 false, false,
                                 true));  // 4J - changed to setPath from path =
     } else if (!holdGround &&
-               ((path == nullptr && (random->nextInt(180) == 0) || fleeTime > 0) ||
+               ((path == nullptr && (random->nextInt(180) == 0) ||
+                 fleeTime > 0) ||
                 (random->nextInt(120) == 0 || fleeTime > 0))) {
         if (noActionTime < SharedConstants::TICKS_PER_SECOND * 5) {
             findRandomStrollLocation();

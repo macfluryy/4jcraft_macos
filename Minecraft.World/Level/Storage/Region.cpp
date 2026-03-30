@@ -72,7 +72,6 @@ int Region::getTile(int x, int y, int z) {
     int xc = (x >> 4);
     int zc = (z >> 4);
 
-
     xc -= xc1;
     zc -= zc1;
 

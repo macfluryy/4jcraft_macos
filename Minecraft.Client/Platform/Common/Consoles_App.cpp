@@ -71,8 +71,7 @@ const float CMinecraftApp::fSafeZoneY = 36.0f;  // 5% of 720
 
 int CMinecraftApp::s_iHTMLFontSizesA[eHTMLSize_COUNT] = {
     // 20,15,20,24
-    20, 13, 20, 26
-};
+    20, 13, 20, 26};
 
 CMinecraftApp::CMinecraftApp() {
     if (GAME_SETTINGS_PROFILE_DATA_BYTES != sizeof(GAME_SETTINGS)) {
@@ -195,20 +194,17 @@ CMinecraftApp::CMinecraftApp() {
 
     m_bResetNether = false;
 
-
 #if defined(_CONTENT_PACAKGE)
     m_bUseDPadForDebug = false;
 #else
     m_bUseDPadForDebug = true;
 #endif
 
-
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         m_vBannedListA[i] = new std::vector<PBANNEDLISTDATA>;
     }
 
     LocaleAndLanguageInit();
-
 }
 
 void CMinecraftApp::DebugPrintf(const char* szFormat, ...) {
@@ -267,9 +263,7 @@ void CMinecraftApp::SetAction(int iPad, eXuiAction action, void* param) {
     }
 }
 
-bool CMinecraftApp::IsAppPaused() {
-    return m_bIsAppPaused;
-}
+bool CMinecraftApp::IsAppPaused() { return m_bIsAppPaused; }
 
 void CMinecraftApp::SetAppPaused(bool val) { m_bIsAppPaused = val; }
 
@@ -701,8 +695,7 @@ void CMinecraftApp::InitGameSettings() {
 }
 
 int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
-                                     const int iPad)
-{
+                                     const int iPad) {
     SetGameSettings(iPad, eGameSetting_MusicVolume, DEFAULT_VOLUME_LEVEL);
     SetGameSettings(iPad, eGameSetting_SoundFXVolume, DEFAULT_VOLUME_LEVEL);
     SetGameSettings(iPad, eGameSetting_Gamma, 50);
@@ -796,13 +789,11 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
 
     // #endif
 
-
     return 0;
 }
 
 int CMinecraftApp::DefaultOptionsCallback(
-    void* pParam, C_4JProfile::PROFILESETTINGS* pSettings, const int iPad)
-{
+    void* pParam, C_4JProfile::PROFILESETTINGS* pSettings, const int iPad) {
     CMinecraftApp* pApp = (CMinecraftApp*)pParam;
 
     // flag the default options to be set
@@ -818,7 +809,6 @@ int CMinecraftApp::DefaultOptionsCallback(
 
     return 0;
 }
-
 
 int CMinecraftApp::OldProfileVersionCallback(void* pParam,
                                              unsigned char* pucData,
@@ -2452,7 +2442,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                             ProfileManager.GetPrimaryPad());
                         pMinecraft->removeLocalPlayerIdx(i);
 
-
                         // Wipe out the tooltips
                         ui.SetTooltips(i, -1);
 
@@ -2500,7 +2489,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                             }
                         }
 
-
                         SetAction(i, eAppAction_Idle);
                     }
                     break;
@@ -2518,7 +2506,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     pMinecraft->setLocalPlayerIdx(
                         ProfileManager.GetPrimaryPad());
                     pMinecraft->removeLocalPlayerIdx(i);
-
 
                     // Wipe out the tooltips
                     ui.SetTooltips(i, -1);
@@ -2565,7 +2552,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     }
                     SetAction(i, eAppAction_Idle);
                 } break;
-
 
                 case eAppAction_ExitWorld:
                     pMinecraft->exitingWorldRightNow = true;
@@ -2679,7 +2665,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // 4J Stu - Fix for #12368 - Crash: Game crashes when saving
                     // then exiting and selecting to save
                     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-
                         // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
                         // crashed after exiting the tutorial It doesn't matter
                         // if they were in the tutorial already
@@ -2700,7 +2685,8 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // action, use a dialog instead
                     completionData->bRequiresUserAction =
                         false;  //(param != nullptr) ? true : false;
-                    completionData->bShowTips = (param != nullptr) ? false : true;
+                    completionData->bShowTips =
+                        (param != nullptr) ? false : true;
                     completionData->bShowBackground = true;
                     completionData->bShowLogo = true;
                     completionData->type =
@@ -2729,7 +2715,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // 4J Stu - Fix for #12368 - Crash: Game crashes when saving
                     // then exiting and selecting to save
                     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-
                         // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
                         // crashed after exiting the tutorial It doesn't matter
                         // if they were in the tutorial already
@@ -3034,7 +3019,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                         // saving then exiting and selecting to save
                         for (unsigned int idx = 0; idx < XUSER_MAX_COUNT;
                              ++idx) {
-
                             // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
                             // crashed after exiting the tutorial It doesn't
                             // matter if they were in the tutorial already
@@ -3131,8 +3115,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                             &CMinecraftApp::
                                 ExitAndJoinFromInviteSaveDialogReturned,
                             this);
-                    } else
-                    {
+                    } else {
                         if (!ProfileManager.IsFullVersion()) {
                             TelemetryManager->RecordUpsellPresented(
                                 i, eSen_UpsellID_Full_Version_Of_Game,
@@ -3172,7 +3155,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // 4J Stu - Fix for #12368 - Crash: Game crashes when saving
                     // then exiting and selecting to save
                     for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-
                         // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title
                         // crashed after exiting the tutorial It doesn't matter
                         // if they were in the tutorial already
@@ -3213,7 +3195,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                             StorageManager.UnmountInstalledDLC("TPACK");
                         app.DebugPrintf("Unmount result is %d\n", result);
                     }
-
 
                     LoadingInputParams* loadingParams =
                         new LoadingInputParams();
@@ -3258,7 +3239,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                         inviteData->dwUserIndex);
                     ProfileManager.SetLockedProfile(inviteData->dwUserIndex);
                     ProfileManager.SetPrimaryPad(inviteData->dwUserIndex);
-
 
                     // change the minecraft player name
                     Minecraft::GetInstance()->user->name =
@@ -3706,7 +3686,6 @@ void CMinecraftApp::loadMediaArchive() {
 }
 
 void CMinecraftApp::loadStringTable() {
-
     if (m_stringTable != nullptr) {
         // we need to unload the current std::string table, this is a reload
         delete m_stringTable;
@@ -4008,7 +3987,6 @@ void CMinecraftApp::ClearSignInChangeUsersMask() {
 void CMinecraftApp::SignInChangeCallback(void* pParam,
                                          bool bPrimaryPlayerChanged,
                                          unsigned int uiSignInData) {
-
     CMinecraftApp* pApp = (CMinecraftApp*)pParam;
     // check if the primary player signed out
     int iPrimaryPlayer = ProfileManager.GetPrimaryPad();
@@ -4083,7 +4061,8 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
                     // invalidates all the guest players we have in the game
                     if (hasGuestIdChanged &&
                         pApp->m_currentSigninInfo[i].dwGuestNumber != 0 &&
-                        g_NetworkManager.GetLocalPlayerByUserIndex(i) != nullptr) {
+                        g_NetworkManager.GetLocalPlayerByUserIndex(i) !=
+                            nullptr) {
                         pApp->DebugPrintf(
                             "Recommending removal of player at index %d "
                             "because their guest id changed\n",
@@ -4153,7 +4132,6 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
                                     eAppAction_EthernetDisconnected);
                 }
             }
-
         }
         m_uiLastSignInData = uiSignInData;
     } else if (iPrimaryPlayer != -1) {
@@ -4392,7 +4370,6 @@ void CMinecraftApp::MountNextDLC(int iPad) {
         m_bDLCInstallProcessCompleted = true;
 
         ui.HandleDLCMountingComplete();
-
     }
 }
 
@@ -4565,7 +4542,7 @@ bool CMinecraftApp::isXuidNotch(PlayerUID xuid) {
 
 bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid) {
     auto it = MojangData.find(xuid);  // 4J Stu - The .at and [] accessors
-                                          // insert elements if they don't exist
+                                      // insert elements if they don't exist
     if (it != MojangData.end()) {
         MOJANG_DATA* pMojangData = MojangData[xuid];
         if (pMojangData && pMojangData->eXuid == eXUID_Deadmau5) {
@@ -4815,7 +4792,6 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
                     // upsell
                     // get the dlc texture pack
 
-
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_OK;
                     uiIDA[1] = IDS_CONFIRM_CANCEL;
@@ -4847,8 +4823,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
                     &CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned,
                     pClass);
                 return 0;
-            } else
-            {
+            } else {
                 MinecraftServer::getInstance()->setSaveOnExit(true);
             }
         } else {
@@ -4897,7 +4872,6 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(
                                             L"")) {
                 // upsell
                 // get the dlc texture pack
-
 
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_OK;
@@ -5250,7 +5224,6 @@ std::wstring CMinecraftApp::FormatHTMLString(
                       GetActionReplacement(iPad, MINECRAFT_ACTION_DPAD_RIGHT));
     text = replaceAll(text, L"{*CONTROLLER_ACTION_DPAD_LEFT*}",
                       GetActionReplacement(iPad, MINECRAFT_ACTION_DPAD_LEFT));
-
 
     // Fix for #8903 - UI: Localization: KOR/JPN/CHT: Button Icons are rendered
     // with padding space, which looks no good
@@ -5655,8 +5628,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoTrialOffer(int iIndex) {
     return it->second;
 }
 DLC_INFO* CMinecraftApp::GetDLCInfoFullOffer(int iIndex) {
-    std::unordered_map<uint64_t, DLC_INFO*>::iterator it =
-        DLCInfo_Full.begin();
+    std::unordered_map<uint64_t, DLC_INFO*>::iterator it = DLCInfo_Full.begin();
 
     for (int i = 0; i < iIndex; i++) {
         ++it;
@@ -5665,8 +5637,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoFullOffer(int iIndex) {
     return it->second;
 }
 uint64_t CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
-    std::unordered_map<int, uint64_t>::iterator it =
-        DLCTextures_PackID.begin();
+    std::unordered_map<int, uint64_t>::iterator it = DLCTextures_PackID.begin();
 
     for (int i = 0; i < iIndex; i++) {
         ++it;
@@ -5674,7 +5645,6 @@ uint64_t CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
 
     return it->second;
 }
-
 
 DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
     if (DLCInfo_Full.size() > 0) {
@@ -5802,8 +5772,7 @@ int CMinecraftApp::ExitGameFromRemoteSaveDialogReturned(
         UIScene_FullscreenProgress* pScene =
             (UIScene_FullscreenProgress*)ui.FindScene(
                 eUIScene_FullscreenProgress);
-        if (pScene != nullptr)
-        {
+        if (pScene != nullptr) {
             pScene->SetWasCancelled(false);
         }
     }
@@ -5836,7 +5805,6 @@ void CMinecraftApp::InvalidateBannedList(int iPad) {
         }
     }
 }
-
 
 void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
                                               char* pszLevelName,
@@ -5880,8 +5848,7 @@ bool CMinecraftApp::IsInBannedLevelList(int iPad, PlayerUID xuid,
          it != m_vBannedListA[iPad]->end(); ++it) {
         PBANNEDLISTDATA pData = *it;
         if (IsEqualXUID(pData->xuid, xuid) &&
-            (strcmp(pData->pszLevelName, pszLevelName) == 0))
-        {
+            (strcmp(pData->pszLevelName, pszLevelName) == 0)) {
             return true;
         }
     }
@@ -5902,8 +5869,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
 
         if (pBannedListData != nullptr) {
             if (IsEqualXUID(pBannedListData->xuid, xuid) &&
-                (strcmp(pBannedListData->pszLevelName, pszLevelName) == 0))
-            {
+                (strcmp(pBannedListData->pszLevelName, pszLevelName) == 0)) {
                 TelemetryManager->RecordUnBanLevel(iPad);
 
                 // match found, so remove this entry
@@ -6507,8 +6473,8 @@ unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t* textMetadata,
 void CMinecraftApp::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
                                               int x, int z) {
     // check we don't already have this in
-    for (auto it = m_vTerrainFeatures.begin();
-         it < m_vTerrainFeatures.end(); ++it) {
+    for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
+         ++it) {
         FEATURE_DATA* pFeatureData = *it;
 
         if ((pFeatureData->eTerrainFeature == eFeatureType) &&
@@ -6525,8 +6491,8 @@ void CMinecraftApp::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
 }
 
 _eTerrainFeatureType CMinecraftApp::IsTerrainFeature(int x, int z) {
-    for (auto it = m_vTerrainFeatures.begin();
-         it < m_vTerrainFeatures.end(); ++it) {
+    for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
+         ++it) {
         FEATURE_DATA* pFeatureData = *it;
 
         if ((pFeatureData->x == x) && (pFeatureData->z == z))
@@ -6538,8 +6504,8 @@ _eTerrainFeatureType CMinecraftApp::IsTerrainFeature(int x, int z) {
 
 bool CMinecraftApp::GetTerrainFeaturePosition(_eTerrainFeatureType eType,
                                               int* pX, int* pZ) {
-    for (auto it = m_vTerrainFeatures.begin();
-         it < m_vTerrainFeatures.end(); ++it) {
+    for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
+         ++it) {
         FEATURE_DATA* pFeatureData = *it;
 
         if (pFeatureData->eTerrainFeature == eType) {
@@ -6654,7 +6620,7 @@ std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type) {
 std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] = {
     XMARKETPLACE_OFFERING_TYPE_CONTENT,  // e_DLC_SkinPack, e_DLC_TexturePacks,
                                          // e_DLC_MashupPacks
-    XMARKETPLACE_OFFERING_TYPE_THEME,       // e_DLC_Themes
+    XMARKETPLACE_OFFERING_TYPE_THEME,    // e_DLC_Themes
     XMARKETPLACE_OFFERING_TYPE_AVATARITEM,  // e_DLC_AvatarItems
     XMARKETPLACE_OFFERING_TYPE_TILE,        // e_DLC_Gamerpics
 };
@@ -6666,8 +6632,8 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
 
     // If it's already in there, promote it to the top of the list
     int iPosition = 0;
-    for (auto it = m_DLCDownloadQueue.begin();
-         it != m_DLCDownloadQueue.end(); ++it) {
+    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
+         ++it) {
         DLCRequest* pCurrent = *it;
 
         if (pCurrent->dwType == m_dwContentTypeA[eType]) {
@@ -6921,8 +6887,8 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
     }
 
     EnterCriticalSection(&csDLCDownloadQueue);
-    for (auto it = m_DLCDownloadQueue.begin();
-         it != m_DLCDownloadQueue.end(); ++it) {
+    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
+         ++it) {
         DLCRequest* pCurrent = *it;
 
         if (pCurrent->eState == e_DLC_ContentState_Retrieving) {
@@ -6932,8 +6898,8 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
     }
 
     // Now look for the next retrieval
-    for (auto it = m_DLCDownloadQueue.begin();
-         it != m_DLCDownloadQueue.end(); ++it) {
+    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
+         ++it) {
         DLCRequest* pCurrent = *it;
 
         if (pCurrent->eState == e_DLC_ContentState_Idle) {
@@ -6965,7 +6931,6 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
 int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                                      C4JStorage::PTMSPP_FILEDATA pFileData,
                                      const char* szFilename) {
-
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
     // find the right one in the vector
@@ -7013,9 +6978,7 @@ int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
     return 0;
 }
 
-bool CMinecraftApp::RetrieveNextTMSPPContent() {
-    return false;
-}
+bool CMinecraftApp::RetrieveNextTMSPPContent() { return false; }
 
 void CMinecraftApp::TickDLCOffersRetrieved() {
     if (!m_bAllDLCContentRetrieved) {
@@ -7030,8 +6993,8 @@ void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
 
     int iPosition = 0;
     EnterCriticalSection(&csTMSPPDownloadQueue);
-    for (auto it = m_DLCDownloadQueue.begin();
-         it != m_DLCDownloadQueue.end(); ++it) {
+    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
+         ++it) {
         DLCRequest* pCurrent = *it;
 
         delete pCurrent;
@@ -7102,8 +7065,8 @@ bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType) {
     // If there's already a retrieve in progress, quit
     // we may have re-ordered the list, so need to check every item
     EnterCriticalSection(&csDLCDownloadQueue);
-    for (auto it = m_DLCDownloadQueue.begin();
-         it != m_DLCDownloadQueue.end(); ++it) {
+    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
+         ++it) {
         DLCRequest* pCurrent = *it;
 
         if ((pCurrent->dwType == m_dwContentTypeA[eType]) &&
@@ -7300,7 +7263,6 @@ std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId) {
 
 int CMinecraftApp::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-
     return 0;
 }
 
@@ -7387,7 +7349,6 @@ bool CMinecraftApp::IsLocalMultiplayerAvailable() {
     }
 
     bool available = RenderManager.IsHiDef() && connectedControllers > 1;
-
 
     return available;
 
@@ -7561,7 +7522,6 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
             locales.push_back(eMCLang_csCS);
             locales.push_back(eMCLang_zhCN);
             break;
-
     }
 
     locales.push_back(eMCLang_enUS);
@@ -7824,7 +7784,6 @@ std::wstring titleUpdateTexturePackRoot = L"Windows64\\DLC\\";
 std::wstring titleUpdateTexturePackRoot = L"CU\\DLC\\";
 #endif
 
-
 std::wstring CMinecraftApp::getRootPath(std::uint32_t packId,
                                         bool allowOverride, bool bAddDataFolder,
                                         std::wstring mountPoint) {
@@ -7847,4 +7806,3 @@ std::wstring CMinecraftApp::getRootPath(std::uint32_t packId,
         return path + L"\\";
     }
 }
-

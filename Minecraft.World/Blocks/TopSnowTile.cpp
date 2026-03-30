@@ -26,7 +26,7 @@ std::optional<AABB> TopSnowTile::getAABB(Level* level, int x, int y, int z) {
     float offset = 2.0f / SharedConstants::WORLD_RESOLUTION;
     ThreadStorage* tls = m_tlsShape;
     return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
-                         y + (height * offset), z + tls->zz1);
+                y + (height * offset), z + tls->zz1);
 }
 
 float TopSnowTile::getHeight(Level* level, int x, int y, int z) {

@@ -13,7 +13,9 @@ void WebTile::entityInside(Level* level, int x, int y, int z,
 
 bool WebTile::isSolidRender(bool isServerLevel) { return false; }
 
-std::optional<AABB> WebTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> WebTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 int WebTile::getRenderShape() { return Tile::SHAPE_CROSS_TEXTURE; }
 

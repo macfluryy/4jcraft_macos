@@ -19,7 +19,8 @@ LevelType* LevelType::lvl_flat = nullptr;  // = new LevelType(1, "flat");
 LevelType* LevelType::lvl_largeBiomes =
     nullptr;  // = new LevelType(2, "largeBiomes");
 LevelType* LevelType::lvl_normal_1_1 =
-    nullptr;  // = new LevelType(8, "default_1_1", 0).setSelectableByUser(false);
+    nullptr;  // = new LevelType(8, "default_1_1",
+              // 0).setSelectableByUser(false);
 
 void LevelType::staticCtor() {
     for (int i = 0; i < 16; i++) levelTypes[i] = nullptr;

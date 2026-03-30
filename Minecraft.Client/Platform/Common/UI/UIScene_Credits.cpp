@@ -86,7 +86,6 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Thomas Kronberg", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
 
-
     {L"%ls", IDS_CREDITS_ART, NO_TRANSLATED_STRING, eLargeText},
     {L"David Keningale", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,
      eSmallText},
@@ -215,8 +214,8 @@ void UIScene_Credits::tick() {
         }
 
         // Set up the new text element.
-        if (pDef->m_Text != nullptr)  // 4J-PB - think the RAD logo ones aren't set
-                                   // up yet and are coming is as null
+        if (pDef->m_Text != nullptr)  // 4J-PB - think the RAD logo ones aren't
+                                      // set up yet and are coming is as null
         {
             if (pDef->m_iStringID[0] == CREDIT_ICON) {
                 addImage((ECreditIcons)pDef->m_iStringID[1]);

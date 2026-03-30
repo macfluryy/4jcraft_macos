@@ -10,8 +10,7 @@ FileTexturePack::FileTexturePack(std::uint32_t id, File* file,
     loadDescription();
 }
 
-void FileTexturePack::unload(Textures* textures) {
-}
+void FileTexturePack::unload(Textures* textures) {}
 
 InputStream* FileTexturePack::getResourceImplementation(
     const std::wstring& name)  // throws IOException
@@ -19,14 +18,9 @@ InputStream* FileTexturePack::getResourceImplementation(
     return nullptr;
 }
 
-bool FileTexturePack::hasFile(const std::wstring& name) {
-    return false;
-}
+bool FileTexturePack::hasFile(const std::wstring& name) { return false; }
 
 void FileTexturePack::loadZipFile()  // throws IOException
-{
-}
+{}
 
-bool FileTexturePack::isTerrainUpdateCompatible() {
-    return false;
-}
+bool FileTexturePack::isTerrainUpdateCompatible() { return false; }

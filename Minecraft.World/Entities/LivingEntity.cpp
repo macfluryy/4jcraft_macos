@@ -378,8 +378,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
     if (!activeEffects.empty()) {
         ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
-        for (auto it = activeEffects.begin(); it != activeEffects.end();
-             ++it) {
+        for (auto it = activeEffects.begin(); it != activeEffects.end(); ++it) {
             MobEffectInstance* effect = it->second;
             listTag->add(effect->save(new CompoundTag()));
         }
@@ -390,7 +389,8 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
 void LivingEntity::readAdditionalSaveData(CompoundTag* tag) {
     setAbsorptionAmount(tag->getFloat(L"AbsorptionAmount"));
 
-    if (tag->contains(L"Attributes") && level != nullptr && !level->isClientSide) {
+    if (tag->contains(L"Attributes") && level != nullptr &&
+        !level->isClientSide) {
         SharedMonsterAttributes::loadAttributes(
             getAttributes(),
             (ListTag<CompoundTag>*)tag->getList(L"Attributes"));
@@ -460,8 +460,8 @@ void LivingEntity::tickEffects() {
                 setWeakened(false);
             } else {
                 std::vector<MobEffectInstance*> values;
-                for (auto it = activeEffects.begin();
-                     it != activeEffects.end(); ++it) {
+                for (auto it = activeEffects.begin(); it != activeEffects.end();
+                     ++it) {
                     values.push_back(it->second);
                 }
                 int colorValue = PotionBrewing::getColorValue(&values);
@@ -684,7 +684,8 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
     // Stu - Change to the fix to only show damage when attacked, rather than
     // collision damage Fix for #10299 - When in corners, passive mobs may show
     // that they are taking damage. 4J Stu - Change to the fix for TU6, as
-    // source is never nullptr due to changes in 1.8.2 to what source actually is
+    // source is never nullptr due to changes in 1.8.2 to what source actually
+    // is
     if (level->isClientSide &&
         dynamic_cast<EntityDamageSource*>(source) == nullptr)
         return false;
@@ -824,7 +825,8 @@ void LivingEntity::die(DamageSource* source) {
         int playerBonus = 0;
 
         std::shared_ptr<Player> player = nullptr;
-        if ((sourceEntity != nullptr) && sourceEntity->instanceof(eTYPE_PLAYER)) {
+        if ((sourceEntity != nullptr) &&
+            sourceEntity->instanceof(eTYPE_PLAYER)) {
             player = std::dynamic_pointer_cast<Player>(sourceEntity);
             playerBonus = EnchantmentHelper::getKillingLootBonus(
                 std::dynamic_pointer_cast<LivingEntity>(player));
@@ -952,7 +954,8 @@ int LivingEntity::getArmorValue() {
     ItemInstanceArray items = getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
-        if (item != nullptr && dynamic_cast<ArmorItem*>(item->getItem()) != nullptr) {
+        if (item != nullptr &&
+            dynamic_cast<ArmorItem*>(item->getItem()) != nullptr) {
             int baseProtection = ((ArmorItem*)item->getItem())->defense;
             val += baseProtection;
         }
@@ -1023,7 +1026,8 @@ void LivingEntity::actuallyHurt(DamageSource* source, float dmg) {
 CombatTracker* LivingEntity::getCombatTracker() { return combatTracker; }
 
 std::shared_ptr<LivingEntity> LivingEntity::getKillCredit() {
-    if (combatTracker->getKiller() != nullptr) return combatTracker->getKiller();
+    if (combatTracker->getKiller() != nullptr)
+        return combatTracker->getKiller();
     if (lastHurtByPlayer != nullptr) return lastHurtByPlayer;
     if (lastHurtByMob != nullptr) return lastHurtByMob;
     return nullptr;
@@ -1411,9 +1415,11 @@ void LivingEntity::tick() {
                         shared_from_this(),
                         std::shared_ptr<SetEquippedItemPacket>(
                             new SetEquippedItemPacket(entityId, i, current)));
-                if (previous != nullptr) attributes->removeItemModifiers(previous);
+                if (previous != nullptr)
+                    attributes->removeItemModifiers(previous);
                 if (current != nullptr) attributes->addItemModifiers(current);
-                lastEquipment[i] = current == nullptr ? nullptr : current->copy();
+                lastEquipment[i] =
+                    current == nullptr ? nullptr : current->copy();
             }
         }
     }

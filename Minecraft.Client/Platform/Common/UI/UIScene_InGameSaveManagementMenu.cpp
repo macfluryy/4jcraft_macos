@@ -2,7 +2,6 @@
 #include "UI.h"
 #include "UIScene_InGameSaveManagementMenu.h"
 
-
 namespace {
 int InGameSaveManagementThumbnailReturnedThunk(void* lpParam,
                                                std::uint8_t* thumbnailData,
@@ -67,7 +66,6 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     m_saveDetails = nullptr;
     m_iSaveDetailsCount = 0;
 
-
     // block input if we're waiting for DLC to install, and wipe the saves list.
     // The end of dlc mounting custom message will fill the list again
     if (app.StartInstallDLCProcess(m_iPad) == true || app.DLCInstallPending()) {
@@ -77,7 +75,6 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     } else {
         Initialise();
     }
-
 
     // If we're not ignoring input, then we aren't still waiting for the DLC to
     // mount, and can now check for corrupt dlc. Otherwise this will happen when

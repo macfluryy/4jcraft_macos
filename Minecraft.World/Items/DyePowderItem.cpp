@@ -247,7 +247,8 @@ void DyePowderItem::addGrowthParticles(Level* level, int x, int y, int z,
                                        int count) {
     int id = level->getTile(x, y, z);
     if (count == 0) count = 15;
-    Tile* tile = id > 0 && id < Tile::TILE_NUM_COUNT ? Tile::tiles[id] : nullptr;
+    Tile* tile =
+        id > 0 && id < Tile::TILE_NUM_COUNT ? Tile::tiles[id] : nullptr;
 
     if (tile == nullptr) return;
     tile->updateShape(level, x, y, z);

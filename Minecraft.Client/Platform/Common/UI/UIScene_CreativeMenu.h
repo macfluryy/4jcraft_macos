@@ -72,7 +72,6 @@ public:
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
 
-
 private:
     // IUIScene_CreativeMenu
     void updateTabHighlightAndText(ECreativeInventoryTabs tab);

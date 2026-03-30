@@ -9,9 +9,7 @@ void Bush::_init() {
     updateDefaultShape();
 }
 
-Bush::Bush(int id, Material* material) : Tile(id, material, false) {
-    _init();
-}
+Bush::Bush(int id, Material* material) : Tile(id, material, false) { _init(); }
 
 Bush::Bush(int id) : Tile(id, Material::plant, false) { _init(); }
 
@@ -53,7 +51,9 @@ bool Bush::canSurvive(Level* level, int x, int y, int z) {
            mayPlaceOn(level->getTile(x, y - 1, z));
 }
 
-std::optional<AABB> Bush::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> Bush::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 bool Bush::blocksLight() { return false; }
 

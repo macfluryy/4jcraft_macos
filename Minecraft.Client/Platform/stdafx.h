@@ -36,7 +36,6 @@ using namespace DirectX;
 #define HRESULT_SUCCEEDED(hr) (((int32_t)(hr)) >= 0)
 #endif
 
-
 #include "../../Minecraft.World/Platform/x64headers/extraX64.h"
 
 #include <memory>

@@ -8,7 +8,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.material.h"
 
-int Minimap::LUT[256];  // 4J added
+int Minimap::LUT[256];        // 4J added
 bool Minimap::genLUT = true;  // 4J added
 
 Minimap::Minimap(Font* font, Options* options, Textures* textures,
@@ -148,8 +148,8 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
         }
 #endif
 
-        // 4J Stu - For item frame renders, the player is nullptr. We do not want
-        // to show player icons on the frames.
+        // 4J Stu - For item frame renders, the player is nullptr. We do not
+        // want to show player icons on the frames.
         if (player == nullptr && (imgIndex != 12))
             continue;
         else if (player != nullptr && imgIndex == 12)
@@ -194,8 +194,8 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
         char imgIndex = dec->img;
         imgIndex -= 16;
 
-        // 4J Stu - For item frame renders, the player is nullptr. We do not want
-        // to show player icons on the frames.
+        // 4J Stu - For item frame renders, the player is nullptr. We do not
+        // want to show player icons on the frames.
         if (player == nullptr && (imgIndex != 12))
             continue;
         else if (player != nullptr && imgIndex == 12)

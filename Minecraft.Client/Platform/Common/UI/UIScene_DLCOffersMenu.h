@@ -53,9 +53,7 @@ public:
     virtual void handleFocusChange(F64 controlId, F64 childId);
     virtual void handleTimerComplete(int id);
 
-
 private:
-
     bool m_bProductInfoShown;
     int m_iProductInfoIndex;
     int m_iCurrentDLC;

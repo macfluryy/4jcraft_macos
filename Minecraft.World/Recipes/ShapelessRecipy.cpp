@@ -33,15 +33,14 @@ bool ShapelessRecipy::matches(std::shared_ptr<CraftingContainer> craftSlots,
                 bool found = false;
 
                 auto citEnd = ingredients->end();
-                for (auto cit = ingredients->begin(); cit != citEnd;
-                     ++cit) {
+                for (auto cit = ingredients->begin(); cit != citEnd; ++cit) {
                     ItemInstance* ingredient = *cit;
                     if (item->id == ingredient->id &&
                         (ingredient->getAuxValue() == Recipes::ANY_AUX_VALUE ||
                          item->getAuxValue() == ingredient->getAuxValue())) {
                         found = true;
-                        auto it = find(tempList.begin(), tempList.end(),
-                                          ingredient);
+                        auto it =
+                            find(tempList.begin(), tempList.end(), ingredient);
                         if (it != tempList.end()) tempList.erase(it);
                         break;
                     }

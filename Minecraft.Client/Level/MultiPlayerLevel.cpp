@@ -626,8 +626,8 @@ void MultiPlayerLevel::disconnect(bool sendDisconnect /*= true*/) {
 
 Tickable* MultiPlayerLevel::makeSoundUpdater(
     std::shared_ptr<Minecart> minecart) {
-    return nullptr;  // new MinecartSoundUpdater(minecraft->soundEngine, minecart,
-                  // minecraft->player);
+    return nullptr;  // new MinecartSoundUpdater(minecraft->soundEngine,
+                     // minecart, minecraft->player);
 }
 
 void MultiPlayerLevel::tickWeather() {
@@ -811,8 +811,8 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     EnterCriticalSection(&m_entitiesCS);
     for (auto it = entities.begin(); it != entities.end();) {
         bool found = false;
-        for (auto it2 = entitiesToRemove.begin();
-             it2 != entitiesToRemove.end(); it2++) {
+        for (auto it2 = entitiesToRemove.begin(); it2 != entitiesToRemove.end();
+             it2++) {
             if ((*it) == (*it2)) {
                 found = true;
                 break;

@@ -91,7 +91,6 @@ int Minecraft::frameTimePos = 0;
 int64_t Minecraft::warezTime = 0;
 File Minecraft::workDir = File(L"");
 
-
 ResourceLocation Minecraft::DEFAULT_FONT_LOCATION =
     ResourceLocation(TN_DEFAULT_FONT);
 ResourceLocation Minecraft::ALT_FONT_LOCATION = ResourceLocation(TN_ALT_FONT);
@@ -198,8 +197,8 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
         localgameModes[i] = nullptr;
     }
 
-    animateTickLevel = nullptr;   // 4J added
-    m_inFullTutorialBits = 0;  // 4J Added
+    animateTickLevel = nullptr;  // 4J added
+    m_inFullTutorialBits = 0;    // 4J Added
     reloadTextures = false;
 
     // initialise the audio before any textures are loaded - to avoid the
@@ -233,7 +232,6 @@ void Minecraft::connectTo(const std::wstring& server, int port) {
 }
 
 void Minecraft::init() {
-
     // glClearColor(0.2f, 0.2f, 0.2f, 1);
 
     workingDirectory = getWorkingDirectory();
@@ -468,7 +466,8 @@ void Minecraft::setScreen(Screen* screen) {
     this->screen = screen;
     if (screen == nullptr && level == nullptr) {
         screen = new TitleScreen();
-    } else if (player != nullptr && !ui.GetMenuDisplayed(player->GetXboxPad()) &&
+    } else if (player != nullptr &&
+               !ui.GetMenuDisplayed(player->GetXboxPad()) &&
                player->getHealth() <= 0) {
 #if defined(ENABLE_JAVA_GUIS)
         screen = new DeathScreen();
@@ -480,7 +479,8 @@ void Minecraft::setScreen(Screen* screen) {
         if (ticks == 0) {
             player->respawn();
         } else {
-            ui.NavigateToScene(player->GetXboxPad(), eUIScene_DeathMenu, nullptr);
+            ui.NavigateToScene(player->GetXboxPad(), eUIScene_DeathMenu,
+                               nullptr);
         }
 #endif
     }
@@ -541,7 +541,8 @@ void Minecraft::destroy() {
 
     if (screen == nullptr && level == nullptr) {
         screen = new TitleScreen();
-    } else if (player != nullptr && !ui.GetMenuDisplayed(player->GetXboxPad()) &&
+    } else if (player != nullptr &&
+               !ui.GetMenuDisplayed(player->GetXboxPad()) &&
                player->getHealth() <= 0) {
 #if defined(ENABLE_JAVA_GUIS)
         screen = new DeathScreen();
@@ -553,7 +554,8 @@ void Minecraft::destroy() {
         if (ticks == 0) {
             player->respawn();
         } else {
-            ui.NavigateToScene(player->GetXboxPad(), eUIScene_DeathMenu, nullptr);
+            ui.NavigateToScene(player->GetXboxPad(), eUIScene_DeathMenu,
+                               nullptr);
         }
 #endif
     }
@@ -605,7 +607,6 @@ void Minecraft::destroy() {
 // 4J-PB - splitting this function into 3 parts, so we can call the middle part
 // from our xbox game loop
 
-
 void Minecraft::run() {
     running = true;
     //    try {	// 4J - removed try/catch
@@ -624,7 +625,8 @@ bool Minecraft::setLocalPlayerIdx(int idx) {
     localPlayerIdx = idx;
     // If the player is not null, but the game mode is then this is just a temp
     // player whose only real purpose is to hold the viewport position
-    if (localplayers[idx] == nullptr || localgameModes[idx] == nullptr) return false;
+    if (localplayers[idx] == nullptr || localgameModes[idx] == nullptr)
+        return false;
 
     gameMode = localgameModes[idx];
     player = localplayers[idx];
@@ -854,7 +856,8 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(
 
         localplayers[idx]->SetXboxPad(iPad);
 
-        if (localplayers[idx]->input != nullptr) delete localplayers[idx]->input;
+        if (localplayers[idx]->input != nullptr)
+            delete localplayers[idx]->input;
         localplayers[idx]->input = new Input();
 
         localplayers[idx]->resetPos();
@@ -906,7 +909,6 @@ void Minecraft::removeLocalPlayerIdx(int idx) {
             g_NetworkManager.RemoveLocalPlayerByUserIndex(idx);
         }
         getLevel(localplayers[idx]->dimension)->removeEntity(localplayers[idx]);
-
 
         // 4J Stu - Fix for #13257 - CRASH: Gameplay: Title crashed after
         // exiting the tutorial It doesn't matter if they were in the tutorial
@@ -1322,8 +1324,7 @@ void Minecraft::run_middle() {
                             // did we just get input from a player who doesn't
                             // exist? They'll be wanting to join the game then
                             if (InputManager.ButtonPressed(
-                                    i, MINECRAFT_ACTION_PAUSEMENU))
-                            {
+                                    i, MINECRAFT_ACTION_PAUSEMENU)) {
                                 // Let them join
 
                                 // are they signed in?
@@ -1429,7 +1430,6 @@ void Minecraft::run_middle() {
                     }
                 }
             }
-
 
             if (pause && level != nullptr) {
                 float lastA = timer->a;
@@ -2349,8 +2349,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 
                             case Tile::chest_Id:
                                 *piAction = IDS_TOOLTIPS_MINE;
-                                *piUse = (Tile::chest->getContainer(level, x, y,
-                                                                    z) != nullptr)
+                                *piUse = (Tile::chest->getContainer(
+                                              level, x, y, z) != nullptr)
                                              ? IDS_TOOLTIPS_OPEN
                                              : -1;
                                 break;
@@ -3402,14 +3402,14 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 #endif
         }
 
-        if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_PAUSEMENU))
-        ) {
+        if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_PAUSEMENU))) {
             app.DebugPrintf(
                 "PAUSE PRESS PROCESSING - ipad = %d, NavigateToScene\n",
                 player->GetXboxPad());
             ui.PlayUISFX(eSFX_Press);
 #if !defined(ENABLE_JAVA_GUIS)
-            ui.NavigateToScene(iPad, eUIScene_PauseMenu, nullptr, eUILayer_Scene);
+            ui.NavigateToScene(iPad, eUIScene_PauseMenu, nullptr,
+                               eUILayer_Scene);
 #endif
         }
 
@@ -3439,8 +3439,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 
             if (selectedItem != nullptr) iCount = selectedItem->GetCount();
             if (selectedItem != nullptr && !((player->ullButtonsPressed &
-                                           (1LL << MINECRAFT_ACTION_DROP)) &&
-                                          selectedItem->GetCount() == 1)) {
+                                              (1LL << MINECRAFT_ACTION_DROP)) &&
+                                             selectedItem->GetCount() == 1)) {
                 itemName = selectedItem->getHoverName();
             }
             if (!(player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_DROP)) ||
@@ -3472,7 +3472,6 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     // 		}
     // 	}
     // #endif
-
 
     if (level != nullptr) {
         if (player != nullptr) {
@@ -3598,7 +3597,9 @@ void Minecraft::reloadSound() {
     bgLoader->forceReload();
 }
 
-bool Minecraft::isClientSide() { return level != nullptr && level->isClientSide; }
+bool Minecraft::isClientSide() {
+    return level != nullptr && level->isClientSide;
+}
 
 void Minecraft::selectLevel(ConsoleSaveFile* saveFile,
                             const std::wstring& levelId,
@@ -3698,9 +3699,9 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
                 forceStatsSave(player->GetXboxPad());
 
             // 4J Stu - Added these for the case when we exit a level so we are
-            // setting the level to nullptr The level renderer needs to have it's
-            // stored level set to nullptr so that it doesn't break next time we
-            // set one
+            // setting the level to nullptr The level renderer needs to have
+            // it's stored level set to nullptr so that it doesn't break next
+            // time we set one
             if (levelRenderer != nullptr) {
                 for (unsigned int p = 0; p < XUSER_MAX_COUNT; ++p) {
                     levelRenderer->setLevel(p, nullptr);
@@ -3709,8 +3710,8 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
             if (particleEngine != nullptr) particleEngine->setLevel(nullptr);
         }
     }
-    // 4J If we are setting the level to nullptr then we are exiting, so delete the
-    // levels
+    // 4J If we are setting the level to nullptr then we are exiting, so delete
+    // the levels
     if (level == nullptr) {
         if (levels[0] != nullptr) {
             delete levels[0];
@@ -3862,7 +3863,6 @@ void Minecraft::prepareLevel(int title) {
         spawnPos->x = (int)player->x;
         spawnPos->z = (int)player->z;
     }
-
 
     for (int x = -r; x <= r; x += 16) {
         for (int z = -r; z <= r; z += 16) {
@@ -4078,8 +4078,8 @@ void Minecraft::startAndConnectTo(const std::wstring& name,
     // if (ProfileManager.IsFullVersion())
     {
         if (userName != L"" &&
-            sid != L"")  // 4J - username & side were compared with nullptr rather
-                         // than empty strings
+            sid != L"")  // 4J - username & side were compared with nullptr
+                         // rather than empty strings
         {
             minecraft->user = new User(userName, sid);
         } else {
@@ -4226,8 +4226,8 @@ if (gameMode->instaBuild) return;
 if (!down) missTime = 0;
 if (button == 0 && missTime > 0) return;
 
-if (down && hitResult != nullptr && hitResult->type == HitResult::TILE && button ==
-0)
+if (down && hitResult != nullptr && hitResult->type == HitResult::TILE && button
+== 0)
 {
 int x = hitResult->x;
 int y = hitResult->y;
@@ -4260,7 +4260,8 @@ bool mayUse = true;
 // 4J-PB - Adding a special case in here for sleeping in a bed in a multiplayer
 game - we need to wake up, and we don't have the inbedchatscreen with a button
 
-if(button==1 && (player->isSleeping() && level != nullptr && level->isClientSide))
+if(button==1 && (player->isSleeping() && level != nullptr &&
+level->isClientSide))
 {
 shared_ptr<MultiplayerLocalPlayer> mplp =
 std::dynamic_pointer_cast<MultiplayerLocalPlayer>( player );
@@ -4279,8 +4280,8 @@ PlayerCommandPacket.STOP_SLEEPING));
 
 if (hitResult == nullptr)
 {
-if (button == 0 && !(dynamic_cast<CreativeMode *>(gameMode) != nullptr)) missTime =
-10;
+if (button == 0 && !(dynamic_cast<CreativeMode *>(gameMode) != nullptr))
+missTime = 10;
 }
 else if (hitResult->type == HitResult::ENTITY)
 {
@@ -4402,9 +4403,7 @@ void Minecraft::playerLeftTutorial(int iPad) {
     }
 }
 
-
-int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
-{
+int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad) {
     Minecraft* pMinecraftClass = (Minecraft*)pParam;
 
     if (g_NetworkManager.IsInSession()) {
@@ -4424,7 +4423,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
         // It's possible that the player has not signed in - they can back out
         // or choose no for the converttoguest
         if (ProfileManager.IsSignedIn(iPad)) {
-                if (!g_NetworkManager.SessionHasSpace()) {
+            if (!g_NetworkManager.SessionHasSpace()) {
                 unsigned int uiIDA[1];
                 uiIDA[0] = IDS_OK;
                 ui.RequestErrorMessage(IDS_MULTIPLAYER_FULL_TITLE,
@@ -4485,7 +4484,7 @@ void Minecraft::tickAllConnections() {
 bool Minecraft::addPendingClientTextureRequest(
     const std::wstring& textureName) {
     auto it = find(m_pendingTextureRequests.begin(),
-                      m_pendingTextureRequests.end(), textureName);
+                   m_pendingTextureRequests.end(), textureName);
     if (it == m_pendingTextureRequests.end()) {
         m_pendingTextureRequests.push_back(textureName);
         return true;
@@ -4495,7 +4494,7 @@ bool Minecraft::addPendingClientTextureRequest(
 
 void Minecraft::handleClientTextureReceived(const std::wstring& textureName) {
     auto it = find(m_pendingTextureRequests.begin(),
-                      m_pendingTextureRequests.end(), textureName);
+                   m_pendingTextureRequests.end(), textureName);
     if (it != m_pendingTextureRequests.end()) {
         m_pendingTextureRequests.erase(it);
     }
@@ -4516,4 +4515,3 @@ ColourTable* Minecraft::getColourTable() {
 
     return colours;
 }
-

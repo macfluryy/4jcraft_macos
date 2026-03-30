@@ -80,7 +80,6 @@ public:
     void handleInput(int iPad, int key, bool repeat, bool pressed,
                      bool released, bool& handled);
 
-
     // FOCUS
     bool getFocusState();
 

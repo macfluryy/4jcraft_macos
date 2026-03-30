@@ -66,8 +66,8 @@ void CompoundGameRuleDefinition::populateGameRule(
 bool CompoundGameRuleDefinition::onUseTile(GameRule* rule, int tileId, int x,
                                            int y, int z) {
     bool statusChanged = false;
-    for (auto it = rule->m_parameters.begin();
-         it != rule->m_parameters.end(); ++it) {
+    for (auto it = rule->m_parameters.begin(); it != rule->m_parameters.end();
+         ++it) {
         if (it->second.isPointer) {
             bool changed = it->second.gr->getGameRuleDefinition()->onUseTile(
                 it->second.gr, tileId, x, y, z);
@@ -84,8 +84,8 @@ bool CompoundGameRuleDefinition::onUseTile(GameRule* rule, int tileId, int x,
 bool CompoundGameRuleDefinition::onCollectItem(
     GameRule* rule, std::shared_ptr<ItemInstance> item) {
     bool statusChanged = false;
-    for (auto it = rule->m_parameters.begin();
-         it != rule->m_parameters.end(); ++it) {
+    for (auto it = rule->m_parameters.begin(); it != rule->m_parameters.end();
+         ++it) {
         if (it->second.isPointer) {
             bool changed =
                 it->second.gr->getGameRuleDefinition()->onCollectItem(

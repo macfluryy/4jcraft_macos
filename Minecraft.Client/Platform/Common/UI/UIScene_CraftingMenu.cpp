@@ -5,7 +5,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "UIScene_CraftingMenu.h"
 
-
 UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
@@ -170,7 +169,6 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     // 4J-PB - Must be after the CanBeMade list has been set up with
     // CheckRecipesAvailable
     UpdateTooltips();
-
 }
 
 void UIScene_CraftingMenu::handleDestroy() {
@@ -228,7 +226,6 @@ std::wstring UIScene_CraftingMenu::getMoviePath() {
         }
     }
 }
-
 
 void UIScene_CraftingMenu::handleReload() {
     m_slotListInventory.addSlots(

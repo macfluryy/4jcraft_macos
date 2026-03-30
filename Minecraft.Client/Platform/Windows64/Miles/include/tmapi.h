@@ -14,7 +14,7 @@
 #define tmSetMutexState(...)
 #define tmAlloc(...)
 #define tmRealloc(...)
-#define tmFree(...) 
+#define tmFree(...)
 #define tmPlot(...)
 #define tmBlob(...) TMERR_DISABLED
 #define tmBlobEx(...) TMERR_DISABLED
@@ -22,7 +22,7 @@
 #define tmEmitAccumulationZones(...) TMERR_DISABLED
 #define tmEnterAccumulationZone(...) TMERR_DISABLED
 #define tmLeaveAccumulationZone(...) TMERR_DISABLED
-#define tmZone(...) 
+#define tmZone(...)
 #define tmSetLockState(...)
 #define tmLockName(...)
 #define tmSendCallStack(...)
@@ -33,5 +33,4 @@
 #define TM_CONTEXT_LITE(val) ((char*)(val))
 #define TM_CONTEXT_FULL(val) ((char*)(val))
 
-typedef char *HTELEMETRY;
-
+typedef char* HTELEMETRY;

@@ -56,14 +56,15 @@ public:
     bool IsSignedInLive(int iProf);
     bool IsGuest(int iQuadrant);
     unsigned int RequestSignInUI(bool bFromInvite, bool bLocalGame,
-                                 bool bNoGuestsAllowed,
-                                 bool bMultiplayerSignIn, bool bAddUser,
+                                 bool bNoGuestsAllowed, bool bMultiplayerSignIn,
+                                 bool bAddUser,
                                  int (*Func)(void*, const bool, const int iPad),
                                  void* lpParam,
                                  int iQuadrant = XUSER_INDEX_ANY);
-    unsigned int DisplayOfflineProfile(
-        int (*Func)(void*, const bool, const int iPad), void* lpParam,
-        int iQuadrant = XUSER_INDEX_ANY);
+    unsigned int DisplayOfflineProfile(int (*Func)(void*, const bool,
+                                                   const int iPad),
+                                       void* lpParam,
+                                       int iQuadrant = XUSER_INDEX_ANY);
     unsigned int RequestConvertOfflineToGuestUI(
         int (*Func)(void*, const bool, const int iPad), void* lpParam,
         int iQuadrant = XUSER_INDEX_ANY);
@@ -80,8 +81,7 @@ public:
     void AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
                                      bool* allAllowed, bool* friendsAllowed);
     bool CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
-                                     PlayerUID* pXuids,
-                                     unsigned int xuidCount);
+                                     PlayerUID* pXuids, unsigned int xuidCount);
     void ShowProfileCard(int iPad, PlayerUID targetUid);
     bool GetProfileAvatar(int iPad,
                           int (*Func)(void* lpParam,
@@ -129,9 +129,8 @@ public:
     void RegisterAward(int iAwardNumber, int iGamerconfigID, eAwardType eType,
                        bool bLeaderboardAffected = false,
                        CXuiStringTable* pStringTable = nullptr,
-                       int iTitleStr = -1,
-                       int iTextStr = -1, int iAcceptStr = -1,
-                       char* pszThemeName = nullptr,
+                       int iTitleStr = -1, int iTextStr = -1,
+                       int iAcceptStr = -1, char* pszThemeName = nullptr,
                        unsigned int uiThemeSize = 0L);
     int GetAwardId(int iAwardNumber);
     eAwardType GetAwardType(int iAwardNumber);

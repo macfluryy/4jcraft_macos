@@ -11,8 +11,7 @@
 const std::wstring HopperTile::TEXTURE_OUTSIDE = L"hopper_outside";
 const std::wstring HopperTile::TEXTURE_INSIDE = L"hopper_inside";
 
-HopperTile::HopperTile(int id)
-    : BaseEntityTile(id, Material::metal, false) {
+HopperTile::HopperTile(int id) : BaseEntityTile(id, Material::metal, false) {
     setShape(0, 0, 0, 1, 1, 1);
 }
 

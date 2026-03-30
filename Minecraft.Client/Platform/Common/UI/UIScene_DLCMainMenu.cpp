@@ -16,23 +16,17 @@ UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
     m_labelOffers.init(IDS_DOWNLOADABLE_CONTENT_OFFERS);
     m_buttonListOffers.init(eControl_OffersList);
 
-
-
     if (m_loadedResolution == eSceneResolution_1080) {
         m_labelXboxStore.init(L"");
     }
 
-
     TelemetryManager->RecordMenuShown(iPad, eUIScene_DLCMainMenu, 0);
-
-
 }
 
 UIScene_DLCMainMenu::~UIScene_DLCMainMenu() {
     // Alert the app the we no longer want to be informed of ethernet
     // connections
     app.SetLiveLinkRequired(false);
-
 }
 
 std::wstring UIScene_DLCMainMenu::getMoviePath() { return L"DLCMainMenu"; }
@@ -89,8 +83,7 @@ void UIScene_DLCMainMenu::handlePress(F64 controlId, F64 childId) {
     };
 }
 
-void UIScene_DLCMainMenu::handleTimerComplete(int id) {
-}
+void UIScene_DLCMainMenu::handleTimerComplete(int id) {}
 
 int UIScene_DLCMainMenu::ExitDLCMainMenu(void* pParam, int iPad,
                                          C4JStorage::EMessageResult result) {
@@ -111,7 +104,4 @@ void UIScene_DLCMainMenu::handleGainFocus(bool navBack) {
     }
 }
 
-void UIScene_DLCMainMenu::tick() {
-    UIScene::tick();
-
-}
+void UIScene_DLCMainMenu::tick() { UIScene::tick(); }

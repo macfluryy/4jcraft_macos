@@ -33,16 +33,20 @@ public:
                           ESen_CompeteOrCoop competeOrCoop, int difficulty,
                           uint32_t numberOfLocalPlayers,
                           uint32_t numberOfOnlinePlayers);
-    bool RecordLevelExit(uint32_t dwUserId, ESen_LevelExitStatus levelExitStatus);
-    bool RecordLevelSaveOrCheckpoint(uint32_t dwUserId, int32_t saveOrCheckPointID,
+    bool RecordLevelExit(uint32_t dwUserId,
+                         ESen_LevelExitStatus levelExitStatus);
+    bool RecordLevelSaveOrCheckpoint(uint32_t dwUserId,
+                                     int32_t saveOrCheckPointID,
                                      int32_t saveSizeInBytes);
     bool RecordLevelResume(uint32_t dwUserId, ESen_FriendOrMatch friendsOrMatch,
                            ESen_CompeteOrCoop competeOrCoop, int difficulty,
                            uint32_t numberOfLocalPlayers,
-                           uint32_t numberOfOnlinePlayers, int32_t saveOrCheckPointID);
+                           uint32_t numberOfOnlinePlayers,
+                           int32_t saveOrCheckPointID);
     bool RecordPauseOrInactive(uint32_t dwUserId);
     bool RecordUnpauseOrActive(uint32_t dwUserId);
-    bool RecordMenuShown(uint32_t dwUserId, int32_t menuID, int32_t optionalMenuSubID);
+    bool RecordMenuShown(uint32_t dwUserId, int32_t menuID,
+                         int32_t optionalMenuSubID);
     bool RecordAchievementUnlocked(uint32_t dwUserId, int32_t achievementID,
                                    int32_t achievementGamerscore);
     bool RecordMediaShareUpload(uint32_t dwUserId,
@@ -54,12 +58,14 @@ public:
                                int32_t marketplaceOfferID,
                                ESen_UpsellOutcome upsellOutcome);
     bool RecordPlayerDiedOrFailed(uint32_t dwUserId, int32_t lowResMapX,
-                                  int32_t lowResMapY, int32_t lowResMapZ, int32_t mapID,
-                                  int32_t playerWeaponID, int32_t enemyWeaponID,
+                                  int32_t lowResMapY, int32_t lowResMapZ,
+                                  int32_t mapID, int32_t playerWeaponID,
+                                  int32_t enemyWeaponID,
                                   ETelemetryChallenges enemyTypeID);
     bool RecordEnemyKilledOrOvercome(uint32_t dwUserId, int32_t lowResMapX,
-                                     int32_t lowResMapY, int32_t lowResMapZ, int32_t mapID,
-                                     int32_t playerWeaponID, int32_t enemyWeaponID,
+                                     int32_t lowResMapY, int32_t lowResMapZ,
+                                     int32_t mapID, int32_t playerWeaponID,
+                                     int32_t enemyWeaponID,
                                      ETelemetryChallenges enemyTypeID);
 
     bool RecordSkinChanged(uint32_t dwUserId, uint32_t dwSkinId);

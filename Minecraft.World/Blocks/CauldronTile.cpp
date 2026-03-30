@@ -11,8 +11,7 @@
 const std::wstring CauldronTile::TEXTURE_INSIDE = L"cauldron_inner";
 const std::wstring CauldronTile::TEXTURE_BOTTOM = L"cauldron_bottom";
 
-CauldronTile::CauldronTile(int id)
-    : Tile(id, Material::metal, false) {
+CauldronTile::CauldronTile(int id) : Tile(id, Material::metal, false) {
     iconInner = nullptr;
     iconTop = nullptr;
     iconBottom = nullptr;

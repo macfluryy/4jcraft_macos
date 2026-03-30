@@ -125,7 +125,9 @@ public:
     void Run();
 
     [[nodiscard]] bool isRunning() const noexcept { return m_isRunning.load(); }
-    [[nodiscard]] bool hasStarted() const noexcept { return m_hasStarted.load(); }
+    [[nodiscard]] bool hasStarted() const noexcept {
+        return m_hasStarted.load();
+    }
 
     void SetProcessor(int proc);
     void SetPriority(int priority);

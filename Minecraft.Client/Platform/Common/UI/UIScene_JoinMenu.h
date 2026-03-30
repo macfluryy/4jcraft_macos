@@ -84,7 +84,6 @@ protected:
 
     void StartSharedLaunchFlow();
 
-
     static int StartGame_SignInReturned(void* pParam, bool, int);
     static void JoinGame(UIScene_JoinMenu* pClass);
 };

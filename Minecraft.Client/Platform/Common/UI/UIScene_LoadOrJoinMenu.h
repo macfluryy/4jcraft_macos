@@ -4,7 +4,6 @@
 
 class LevelGenerationOptions;
 
-
 class UIScene_LoadOrJoinMenu : public UIScene {
 private:
     enum EControls {
@@ -138,13 +137,12 @@ protected:
     void LoadLevelGen(LevelGenerationOptions* levelGen);
     void LoadSaveFromDisk(
         File* saveFile, ESavePlatform savePlatform = SAVE_FILE_PLATFORM_LOCAL);
+
 public:
     virtual void HandleDLCMountingComplete();
 
-
 private:
     void CheckAndJoinGame(int gameIndex);
-
 
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
     enum eSaveTransferState {
@@ -230,5 +228,4 @@ private:
     static int CrossSaveUploadFinishedCallback(
         void* pParam, int iPad, C4JStorage::EMessageResult result);
 #endif
-
 };

@@ -199,7 +199,7 @@ struct BoundingOrientedBox {
     XMFLOAT3 Center;   // Center of the box.
     XMFLOAT3 Extents;  // Distance from the center to each side.
     XMFLOAT4
-        Orientation;  // Unit quaternion representing rotation (box -> world).
+    Orientation;  // Unit quaternion representing rotation (box -> world).
 
     // Creators
     BoundingOrientedBox() noexcept

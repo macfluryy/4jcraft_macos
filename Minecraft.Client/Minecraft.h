@@ -277,7 +277,7 @@ public:
     // bool isRaining ;
 
     // 4J - Moved to per player
-    //int64_t lastTickTime;
+    // int64_t lastTickTime;
 
 private:
     // 4J- per player?
@@ -386,5 +386,4 @@ public:
 
     unsigned int getCurrentTexturePackId();
     ColourTable* getColourTable();
-
 };

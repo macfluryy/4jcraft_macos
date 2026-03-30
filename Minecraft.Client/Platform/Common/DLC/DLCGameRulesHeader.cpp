@@ -25,7 +25,6 @@ void DLCGameRulesHeader::addData(std::uint8_t* pbData,
                                  std::uint32_t dataBytes) {
     m_pbData = pbData;
     m_dataBytes = dataBytes;
-
 }
 
 std::uint8_t* DLCGameRulesHeader::getData(std::uint32_t& dataBytes) {

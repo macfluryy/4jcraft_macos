@@ -171,7 +171,8 @@ void EntityTracker::tick() {
 
             if (sp->connection == nullptr) continue;
             INetworkPlayer* otherPlayer = sp->connection->getNetworkPlayer();
-            if (otherPlayer != nullptr && thisPlayer->IsSameSystem(otherPlayer)) {
+            if (otherPlayer != nullptr &&
+                thisPlayer->IsSameSystem(otherPlayer)) {
                 addPlayer = true;
                 break;
             }
@@ -191,8 +192,7 @@ void EntityTracker::tick() {
     }
 
     // 4J Stu - We want to do this for dead players as they don't tick normally
-    for (auto it = level->players.begin(); it != level->players.end();
-         ++it) {
+    for (auto it = level->players.begin(); it != level->players.end(); ++it) {
         std::shared_ptr<ServerPlayer> player =
             std::dynamic_pointer_cast<ServerPlayer>(*it);
         if (!player->isAlive()) {

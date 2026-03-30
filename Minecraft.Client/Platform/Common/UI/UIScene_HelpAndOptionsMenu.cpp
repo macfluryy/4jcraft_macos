@@ -33,7 +33,6 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void* initData,
         removeControl(&m_buttons[BUTTON_HAO_DEBUG], false);
 #endif
 
-
     // 4J-PB - do not need a storage device to see this menu - just need one
     // when you choose to re-install them
     bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);

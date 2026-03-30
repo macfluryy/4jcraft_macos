@@ -1,8 +1,9 @@
 #include "../../Platform/stdafx.h"
 #include "TexturePack.h"
 
-std::wstring TexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
-                                  const char* pchBDPatchFileName /*= nullptr*/) {
+std::wstring TexturePack::getPath(
+    bool bTitleUpdateTexture /*= false*/,
+    const char* pchBDPatchFileName /*= nullptr*/) {
     std::wstring wDrive;
 
     if (bTitleUpdateTexture) {

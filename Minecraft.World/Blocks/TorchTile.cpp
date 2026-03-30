@@ -10,7 +10,9 @@ TorchTile::TorchTile(int id) : Tile(id, Material::decoration, false) {
     this->setTicking(true);
 }
 
-std::optional<AABB> TorchTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> TorchTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 AABB TorchTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);

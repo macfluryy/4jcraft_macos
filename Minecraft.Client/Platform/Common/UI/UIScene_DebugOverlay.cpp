@@ -209,7 +209,8 @@ void UIScene_DebugOverlay::handlePress(F64 controlId, F64 childId) {
         case eControl_SetCamera: {
 #ifndef _CONTENT_PACKAGE
             ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
-                               eUIScene_DebugSetCamera, nullptr, eUILayer_Debug);
+                               eUIScene_DebugSetCamera, nullptr,
+                               eUILayer_Debug);
 #endif
         } break;
         case eControl_Rain: {

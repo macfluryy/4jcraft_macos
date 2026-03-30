@@ -17,7 +17,9 @@ int TripWireTile::getTickDelay(Level* level) {
     return 20;  // 10;
 }
 
-std::optional<AABB> TripWireTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> TripWireTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 bool TripWireTile::blocksLight() { return false; }
 

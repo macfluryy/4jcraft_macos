@@ -63,7 +63,6 @@ public:
 
     virtual void customDraw(IggyCustomDrawCallbackRegion* region);
 
-
 protected:
     UIControl m_controlMainPanel;
     UIControl m_control1Selector, m_control2Selector, m_control3Selector;
@@ -80,7 +79,6 @@ protected:
 
     IggyName m_funcMoveSelector, m_funcSelectVerticalItem, m_funcSetActiveTab;
     IggyName m_funcShowPanelDisplay, m_funcShowIngredientSlot;
-
 
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
     UI_MAP_ELEMENT(m_controlMainPanel, "MainPanel")
@@ -134,7 +132,6 @@ protected:
     UI_MAP_NAME(m_funcSetActiveTab, L"SetActiveTab")
     UI_MAP_NAME(m_funcShowPanelDisplay, L"showPanelDisplay")
     UI_MAP_NAME(m_funcShowIngredientSlot, L"ShowIngredient")
-
 
     UI_END_MAP_CHILD_ELEMENTS()
     UI_END_MAP_ELEMENTS_AND_NAMES()

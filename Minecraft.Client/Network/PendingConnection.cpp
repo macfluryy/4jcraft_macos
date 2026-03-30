@@ -93,8 +93,8 @@ void PendingConnection::sendPreLoginResponse() {
     StorageManager.GetSaveUniqueFilename(szUniqueMapName);
 
     PlayerList* playerList = MinecraftServer::getInstance()->getPlayers();
-    for (auto it = playerList->players.begin();
-         it != playerList->players.end(); ++it) {
+    for (auto it = playerList->players.begin(); it != playerList->players.end();
+         ++it) {
         std::shared_ptr<ServerPlayer> player = *it;
         // If the offline Xuid is invalid but the online one is not then that's
         // guest which we should ignore If the online Xuid is invalid but the
@@ -180,9 +180,9 @@ void PendingConnection::handleAcceptedLogin(
                                                 packet->m_onlineXuid);
     if (playerEntity != nullptr) {
         server->getPlayers()->placeNewPlayer(connection, playerEntity, packet);
-        connection = nullptr;  // We've moved responsibility for this over to the
-                            // new PlayerConnection, nullptr so we don't delete our
-                            // reference to it here in our dtor
+        connection = nullptr;  // We've moved responsibility for this over to
+                               // the new PlayerConnection, nullptr so we don't
+                               // delete our reference to it here in our dtor
     }
     done = true;
 }

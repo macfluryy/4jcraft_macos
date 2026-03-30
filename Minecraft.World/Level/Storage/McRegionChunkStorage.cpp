@@ -330,7 +330,8 @@ void McRegionChunkStorage::staticCtor() {
 
         // saveThreads[j] =
         // CreateThread(nullptr,0,runSaveThreadProc,&threadData[j],CREATE_SUSPENDED,&threadId[j]);
-        s_saveThreads[i] = new C4JThread(runSaveThreadProc, nullptr, threadName);
+        s_saveThreads[i] =
+            new C4JThread(runSaveThreadProc, nullptr, threadName);
 
         // app.DebugPrintf("Created new thread: %s\n",threadName);
 
@@ -448,4 +449,3 @@ void McRegionChunkStorage::WaitForSaves() {
         }
     }
 }
-

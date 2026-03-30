@@ -155,5 +155,5 @@ int JukeboxTile::getAnalogOutputSignal(Level* level, int x, int y, int z,
             level->getTileEntity(x, y, z))
             ->getRecord();
     return record == nullptr ? Redstone::SIGNAL_NONE
-                          : record->id + 1 - Item::record_01_Id;
+                             : record->id + 1 - Item::record_01_Id;
 }

@@ -135,7 +135,6 @@ BiomeArray BiomeSource::getRawBiomeBlock(int x, int z, int w, int h) const {
 // 4J added
 void BiomeSource::getRawBiomeIndices(intArray& biomes, int x, int z, int w,
                                      int h) const {
-
     intArray result = layer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         biomes[i] = result[i];
@@ -351,9 +350,7 @@ void BiomeSource::update() { cache->update(); }
 // #define DEBUG_SEEDS 50
 
 // 4J added - find a seed for this biomesource that matches certain criteria
-int64_t BiomeSource::findSeed(LevelType* generator)
-{
-
+int64_t BiomeSource::findSeed(LevelType* generator) {
     int64_t bestSeed = 0;
 
     ProgressRenderer* mcprogress = Minecraft::GetInstance()->progressRenderer;

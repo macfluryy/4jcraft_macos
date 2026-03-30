@@ -24,8 +24,8 @@ BaseMobSpawner::BaseMobSpawner() {
 
 BaseMobSpawner::~BaseMobSpawner() {
     if (spawnPotentials) {
-        for (auto it = spawnPotentials->begin();
-             it != spawnPotentials->end(); ++it) {
+        for (auto it = spawnPotentials->begin(); it != spawnPotentials->end();
+             ++it) {
             delete *it;
         }
         delete spawnPotentials;

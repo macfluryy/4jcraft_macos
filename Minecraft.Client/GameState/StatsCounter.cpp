@@ -254,7 +254,6 @@ void StatsCounter::save(int player, bool force) {
     saveCounter = SAVE_DELAY;
 }
 
-
 void StatsCounter::flushLeaderboards() {
     if (LeaderboardManager::Instance()->OpenSession()) {
         writeStats();
@@ -301,7 +300,6 @@ void StatsCounter::writeStats() {
 
     int viewCount = 0;
     int iPad = ProfileManager.GetLockedProfile();
-
 }
 
 void StatsCounter::setupStatBoards() {
@@ -390,6 +388,5 @@ void StatsCounter::dumpStatsToTTY() {
 #define DEBUG_CLEAR_LEADERBOARDS (0xFFFFFFFF)
 #define DEBUG_ENABLE_CLEAR_LEADERBOARDS
 
-void StatsCounter::WipeLeaderboards() {
-}
+void StatsCounter::WipeLeaderboards() {}
 #endif

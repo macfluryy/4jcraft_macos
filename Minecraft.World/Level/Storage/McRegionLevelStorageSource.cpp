@@ -11,7 +11,6 @@
 
 #include "../../IO/Files/ConsoleSaveFileIO.h"
 
-
 McRegionLevelStorageSource::McRegionLevelStorageSource(File dir)
     : DirectoryLevelStorageSource(dir) {}
 
@@ -72,7 +71,6 @@ bool McRegionLevelStorageSource::convertLevel(ConsoleSaveFile* saveFile,
     return true;
 }
 
-
 void McRegionLevelStorageSource::convertRegions(
     File& baseFolder, std::vector<ChunkFile*>* chunkFiles, int currentCount,
     int totalCount, ProgressListener* progress) {
@@ -99,4 +97,3 @@ void McRegionLevelStorageSource::eraseFolders(std::vector<File*>* folders,
         progress->progressStagePercentage(percent);
     }
 }
-

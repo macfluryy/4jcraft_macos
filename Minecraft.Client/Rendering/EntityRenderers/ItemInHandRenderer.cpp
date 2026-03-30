@@ -946,8 +946,8 @@ void ItemInHandRenderer::tick() {
     if (selectedItem == nullptr && nextTile == nullptr) {
         matches = true;
     }
-    if (nextTile != nullptr && selectedItem != nullptr && nextTile != selectedItem &&
-        nextTile->id == selectedItem->id &&
+    if (nextTile != nullptr && selectedItem != nullptr &&
+        nextTile != selectedItem && nextTile->id == selectedItem->id &&
         nextTile->getAuxValue() == selectedItem->getAuxValue()) {
         selectedItem = nextTile;
         matches = true;

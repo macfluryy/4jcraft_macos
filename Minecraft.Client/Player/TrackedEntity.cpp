@@ -635,8 +635,8 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
                 std::dynamic_pointer_cast<LivingEntity>(e);
             std::vector<MobEffectInstance*>* activeEffects =
                 mob->getActiveEffects();
-            for (auto it = activeEffects->begin();
-                 it != activeEffects->end(); ++it) {
+            for (auto it = activeEffects->begin(); it != activeEffects->end();
+                 ++it) {
                 MobEffectInstance* effect = *it;
 
                 sp->connection->send(std::shared_ptr<UpdateMobEffectPacket>(
@@ -724,17 +724,17 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
     } else if (e->instanceof(eTYPE_FISHINGHOOK)) {
         std::shared_ptr<Entity> owner =
             std::dynamic_pointer_cast<FishingHook>(e)->owner;
-        return std::shared_ptr<AddEntityPacket>(
-            new AddEntityPacket(e, AddEntityPacket::FISH_HOOK,
-                                owner != nullptr ? owner->entityId : e->entityId,
-                                yRotp, xRotp, xp, yp, zp));
+        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
+            e, AddEntityPacket::FISH_HOOK,
+            owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp,
+            yp, zp));
     } else if (e->instanceof(eTYPE_ARROW)) {
         std::shared_ptr<Entity> owner =
             (std::dynamic_pointer_cast<Arrow>(e))->owner;
-        return std::shared_ptr<AddEntityPacket>(
-            new AddEntityPacket(e, AddEntityPacket::ARROW,
-                                owner != nullptr ? owner->entityId : e->entityId,
-                                yRotp, xRotp, xp, yp, zp));
+        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
+            e, AddEntityPacket::ARROW,
+            owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp,
+            yp, zp));
     } else if (e->instanceof(eTYPE_SNOWBALL)) {
         return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
             e, AddEntityPacket::SNOWBALL, yRotp, xRotp, xp, yp, zp));

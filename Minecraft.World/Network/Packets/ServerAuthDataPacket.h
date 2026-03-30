@@ -2,5 +2,4 @@
 
 #include "Packet.h"
 
-class ServerAuthDataPacket : public Packet {
-};
+class ServerAuthDataPacket : public Packet {};

@@ -38,7 +38,6 @@ public:
     void updateChildFocus(int iChild);
 
     void setButtonLabel(int iButtonId, const std::wstring& label);
-
 };
 
 class UIControl_DynamicButtonList : public UIControl_ButtonList {

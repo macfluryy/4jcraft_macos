@@ -116,7 +116,7 @@ void SelectWorldScreen::buttonClicked(Button* button) {
             minecraft->setScreen(nullptr);
             if (done) return;
             done = true;
-// 4J Stu - Not used, so commenting to stop the build failing
+            // 4J Stu - Not used, so commenting to stop the build failing
         }
     } else if (button->id == BUTTON_RENAME_ID) {
         minecraft->setScreen(
@@ -142,7 +142,7 @@ void SelectWorldScreen::worldSelected(int id) {
     {
         worldFolderName = L"World" + _toString<int>(id);
     }
-// 4J Stu - Not used, so commenting to stop the build failing
+    // 4J Stu - Not used, so commenting to stop the build failing
 }
 
 void SelectWorldScreen::confirmResult(bool result, int id) {

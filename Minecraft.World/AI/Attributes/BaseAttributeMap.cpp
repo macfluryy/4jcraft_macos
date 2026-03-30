@@ -3,8 +3,7 @@
 #include "BaseAttributeMap.h"
 
 BaseAttributeMap::~BaseAttributeMap() {
-    for (auto it = attributesById.begin(); it != attributesById.end();
-         ++it) {
+    for (auto it = attributesById.begin(); it != attributesById.end(); ++it) {
         delete it->second;
     }
 }
@@ -23,8 +22,7 @@ AttributeInstance* BaseAttributeMap::getInstance(eATTRIBUTE_ID id) {
 }
 
 void BaseAttributeMap::getAttributes(std::vector<AttributeInstance*>& atts) {
-    for (auto it = attributesById.begin(); it != attributesById.end();
-         ++it) {
+    for (auto it = attributesById.begin(); it != attributesById.end(); ++it) {
         atts.push_back(it->second);
     }
 }

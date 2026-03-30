@@ -35,7 +35,6 @@ UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
     }
 
     m_bIgnoreInput = false;
-
 }
 
 UIScene_NewUpdateMessage::~UIScene_NewUpdateMessage() {
@@ -53,7 +52,6 @@ void UIScene_NewUpdateMessage::handleInput(int iPad, int key, bool repeat,
                                            bool pressed, bool released,
                                            bool& handled) {
     if (m_bIgnoreInput) return;
-
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 

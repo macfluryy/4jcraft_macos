@@ -356,7 +356,6 @@ void UIScene_AnvilMenu::showCross(bool show) {
 }
 
 void UIScene_AnvilMenu::handleDestroy() {
-
     // another player destroyed the anvil, so shut down the keyboard if it is
     // displayed
     UIScene_AbstractContainerMenu::handleDestroy();

@@ -10,7 +10,6 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "RandomLevelSource.h"
 
-
 const double RandomLevelSource::SNOW_SCALE = 0.3;
 const double RandomLevelSource::SNOW_CUTOFF = 0.5;
 
@@ -564,7 +563,6 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
     ar = lperlinNoise1->getRegion(ar, x, y, z, xSize, ySize, zSize, s, hs, s);
     br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
 
-
     x = z = 0;
 
     int p = 0;
@@ -861,7 +859,8 @@ std::vector<Biome::MobSpawnerData*>* RandomLevelSource::getMobsAt(
 
 TilePos* RandomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
-    if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != nullptr) {
+    if (LargeFeature::STRONGHOLD == featureName &&
+        strongholdFeature != nullptr) {
         return strongholdFeature->getNearestGeneratedFeature(level, x, y, z);
     }
     return nullptr;

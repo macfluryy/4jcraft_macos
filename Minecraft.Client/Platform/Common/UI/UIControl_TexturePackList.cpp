@@ -42,7 +42,6 @@ void UIControl_TexturePackList::init(const std::wstring& label, int id) {
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 2, value);
-
 }
 
 void UIControl_TexturePackList::addPack(int id,
@@ -77,9 +76,9 @@ void UIControl_TexturePackList::selectSlot(int id) {
 
 void UIControl_TexturePackList::clearSlots() {
     IggyDataValue result;
-    IggyResult out =
-        IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_clearSlotsFunc, 0, nullptr);
+    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
+                                            getIggyValuePath(),
+                                            m_clearSlotsFunc, 0, nullptr);
 }
 
 void UIControl_TexturePackList::setEnabled(bool enable) {

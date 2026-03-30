@@ -87,12 +87,10 @@ const std::thread::id g_processMainThreadId = std::this_thread::get_id();
 
 template <typename Predicate>
 bool WaitForCondition(std::condition_variable& condition,
-                      std::unique_lock<std::mutex>& lock,
-                      int timeoutMs,
+                      std::unique_lock<std::mutex>& lock, int timeoutMs,
                       Predicate predicate) {
-    if (timeoutMs < 0 ||
-        static_cast<std::uint32_t>(timeoutMs) ==
-            static_cast<std::uint32_t>(INFINITE)) {
+    if (timeoutMs < 0 || static_cast<std::uint32_t>(timeoutMs) ==
+                             static_cast<std::uint32_t>(INFINITE)) {
         condition.wait(lock, predicate);
         return true;
     }
@@ -117,8 +115,9 @@ std::uint32_t BuildMaskForSize(int size) {
 }
 
 void FormatThreadName(std::string& outThreadName, const char* threadName) {
-    const char* safeName =
-        (threadName != nullptr && threadName[0] != '\0') ? threadName : "Unnamed";
+    const char* safeName = (threadName != nullptr && threadName[0] != '\0')
+                               ? threadName
+                               : "Unnamed";
 
     char buffer[64];
     std::snprintf(buffer, sizeof(buffer), "(4J) %s", safeName);
@@ -151,22 +150,22 @@ std::int64_t GetLinuxThreadId() {
 
 int MapPriorityToNice(int priority) {
     switch (priority) {
-    case THREAD_PRIORITY_TIME_CRITICAL:
-        return -15;
-    case THREAD_PRIORITY_HIGHEST:
-        return -10;
-    case THREAD_PRIORITY_ABOVE_NORMAL:
-        return -5;
-    case THREAD_PRIORITY_NORMAL:
-        return 0;
-    case THREAD_PRIORITY_BELOW_NORMAL:
-        return 5;
-    case THREAD_PRIORITY_LOWEST:
-        return 10;
-    case THREAD_PRIORITY_IDLE:
-        return 19;
-    default:
-        return 0;
+        case THREAD_PRIORITY_TIME_CRITICAL:
+            return -15;
+        case THREAD_PRIORITY_HIGHEST:
+            return -10;
+        case THREAD_PRIORITY_ABOVE_NORMAL:
+            return -5;
+        case THREAD_PRIORITY_NORMAL:
+            return 0;
+        case THREAD_PRIORITY_BELOW_NORMAL:
+            return 5;
+        case THREAD_PRIORITY_LOWEST:
+            return 10;
+        case THREAD_PRIORITY_IDLE:
+            return 19;
+        default:
+            return 0;
     }
 }
 #endif
@@ -268,10 +267,9 @@ void C4JThread::entryPoint(C4JThread* pThread) {
 
     int exitCode = 0;
     try {
-        exitCode =
-            (pThread->m_startFunc != nullptr)
-                ? (*pThread->m_startFunc)(pThread->m_threadParam)
-                : 0;
+        exitCode = (pThread->m_startFunc != nullptr)
+                       ? (*pThread->m_startFunc)(pThread->m_threadParam)
+                       : 0;
     } catch (...) {
         exitCode = -1;
     }
@@ -561,9 +559,8 @@ void C4JThread::Event::Clear() {
 
 std::uint32_t C4JThread::Event::WaitForSignal(int timeoutMs) {
     std::unique_lock<std::mutex> lock(m_mutex);
-    const bool signaled =
-        WaitForCondition(m_condition, lock, timeoutMs,
-                         [this] { return m_signaled; });
+    const bool signaled = WaitForCondition(m_condition, lock, timeoutMs,
+                                           [this] { return m_signaled; });
 
     if (!signaled) {
         return WAIT_TIMEOUT;
@@ -577,11 +574,7 @@ std::uint32_t C4JThread::Event::WaitForSignal(int timeoutMs) {
 }
 
 C4JThread::EventArray::EventArray(int size, EMode mode)
-    : m_size(size),
-      m_mode(mode),
-      m_mutex(),
-      m_condition(),
-      m_signaledMask(0U) {
+    : m_size(size), m_mode(mode), m_mutex(), m_condition(), m_signaledMask(0U) {
     assert(m_size > 0);
     assert(m_size <= 32);
 }
@@ -627,11 +620,9 @@ std::uint32_t C4JThread::EventArray::WaitForSingle(int index, int timeoutMs) {
     const std::uint32_t bitMask = 1U << static_cast<std::uint32_t>(index);
     std::unique_lock<std::mutex> lock(m_mutex);
 
-    const bool signaled =
-        WaitForCondition(m_condition, lock, timeoutMs,
-                         [this, bitMask] {
-                             return (m_signaledMask & bitMask) != 0U;
-                         });
+    const bool signaled = WaitForCondition(
+        m_condition, lock, timeoutMs,
+        [this, bitMask] { return (m_signaledMask & bitMask) != 0U; });
 
     if (!signaled) {
         return WAIT_TIMEOUT;
@@ -648,11 +639,9 @@ std::uint32_t C4JThread::EventArray::WaitForAll(int timeoutMs) {
     const std::uint32_t bitMask = BuildMaskForSize(m_size);
     std::unique_lock<std::mutex> lock(m_mutex);
 
-    const bool signaled =
-        WaitForCondition(m_condition, lock, timeoutMs,
-                         [this, bitMask] {
-                             return (m_signaledMask & bitMask) == bitMask;
-                         });
+    const bool signaled = WaitForCondition(
+        m_condition, lock, timeoutMs,
+        [this, bitMask] { return (m_signaledMask & bitMask) == bitMask; });
 
     if (!signaled) {
         return WAIT_TIMEOUT;
@@ -669,11 +658,9 @@ std::uint32_t C4JThread::EventArray::WaitForAny(int timeoutMs) {
     const std::uint32_t bitMask = BuildMaskForSize(m_size);
     std::unique_lock<std::mutex> lock(m_mutex);
 
-    const bool signaled =
-        WaitForCondition(m_condition, lock, timeoutMs,
-                         [this, bitMask] {
-                             return (m_signaledMask & bitMask) != 0U;
-                         });
+    const bool signaled = WaitForCondition(
+        m_condition, lock, timeoutMs,
+        [this, bitMask] { return (m_signaledMask & bitMask) != 0U; });
 
     if (!signaled) {
         return WAIT_TIMEOUT;
@@ -733,8 +720,8 @@ void C4JThread::EventQueue::setPriority(int priority) {
 
 void C4JThread::EventQueue::init() {
     std::call_once(m_initOnce, [this]() {
-        m_thread = std::make_unique<C4JThread>(threadFunc, this,
-                                               m_threadName.c_str());
+        m_thread =
+            std::make_unique<C4JThread>(threadFunc, this, m_threadName.c_str());
 
         if (m_processor >= 0) {
             m_thread->SetProcessor(m_processor);
@@ -767,9 +754,8 @@ void C4JThread::EventQueue::waitForFinish() {
     init();
 
     std::unique_lock<std::mutex> lock(m_mutex);
-    m_drainedCondition.wait(lock, [this] {
-        return m_queue.empty() && !m_busy;
-    });
+    m_drainedCondition.wait(lock,
+                            [this] { return m_queue.empty() && !m_busy; });
 }
 
 int C4JThread::EventQueue::threadFunc(void* lpParam) {
@@ -794,14 +780,12 @@ void C4JThread::EventQueue::threadPoll() {
 
         {
             std::unique_lock<std::mutex> lock(m_mutex);
-            m_queueCondition.wait_for(lock,
-                                      std::chrono::milliseconds(
-                                          kEventQueueShutdownPollMs),
-                                      [this] {
-                                          return m_stopRequested.load(
-                                                     std::memory_order_acquire) ||
-                                                 !m_queue.empty();
-                                      });
+            m_queueCondition.wait_for(
+                lock, std::chrono::milliseconds(kEventQueueShutdownPollMs),
+                [this] {
+                    return m_stopRequested.load(std::memory_order_acquire) ||
+                           !m_queue.empty();
+                });
 
             if (m_stopRequested.load(std::memory_order_acquire)) {
                 break;
@@ -847,8 +831,7 @@ void C4JThread::PushAffinityAllCores() {
     DWORD_PTR processAffinityMask = 0;
     DWORD_PTR systemAffinityMask = 0;
 
-    if (!::GetProcessAffinityMask(::GetCurrentProcess(),
-                                  &processAffinityMask,
+    if (!::GetProcessAffinityMask(::GetCurrentProcess(), &processAffinityMask,
                                   &systemAffinityMask) ||
         processAffinityMask == 0) {
         return;

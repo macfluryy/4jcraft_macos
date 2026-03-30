@@ -22,7 +22,6 @@ class CommandDispatcher;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 
-
 typedef struct _LoadSaveDataThreadParam {
     void* data;
     int64_t fileSize;

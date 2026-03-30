@@ -59,8 +59,7 @@ void TextureMap::stitch() {
 
     Stitcher* stitcher = TextureManager::getInstance()->createStitcher(name);
 
-    for (auto it = texturesByName.begin(); it != texturesByName.end();
-         ++it) {
+    for (auto it = texturesByName.begin(); it != texturesByName.end(); ++it) {
         delete it->second;
     }
     texturesByName.clear();
@@ -83,8 +82,8 @@ void TextureMap::stitch() {
 
     // Extract frames from textures and add them to the stitchers
     // for (final String name : texturesToRegister.keySet())
-    for (auto it = texturesToRegister.begin();
-         it != texturesToRegister.end(); ++it) {
+    for (auto it = texturesToRegister.begin(); it != texturesToRegister.end();
+         ++it) {
         std::wstring name = it->first;
 
         std::wstring filename = path + name + extension;
@@ -194,8 +193,8 @@ void TextureMap::stitch() {
     missingPosition = texturesByName.find(NAME_MISSING_TEXTURE)->second;
 
     // for (StitchedTexture texture : texturesToRegister.values())
-    for (auto it = texturesToRegister.begin();
-         it != texturesToRegister.end(); ++it) {
+    for (auto it = texturesToRegister.begin(); it != texturesToRegister.end();
+         ++it) {
         StitchedTexture* texture = it->second;
         texture->replaceWith(missingPosition);
     }

@@ -50,7 +50,6 @@
 #include "../Platform/Common/UI/UI.h"
 #include "../Textures/Packs/DLCTexturePack.h"
 
-
 ClientConnection::ClientConnection(Minecraft* minecraft, const std::wstring& ip,
                                    int port) {
     // 4J Stu - No longer used as we use the socket version below.
@@ -1256,7 +1255,8 @@ void ClientConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
         uiIDA[0] = IDS_CONFIRM_OK;
         ui.RequestErrorMessage(IDS_EXITING_GAME, IDS_GENERIC_ERROR, uiIDA, 1,
                                ProfileManager.GetPrimaryPad(),
-                               &ClientConnection::HostDisconnectReturned, nullptr);
+                               &ClientConnection::HostDisconnectReturned,
+                               nullptr);
     } else {
         app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)true);
     }
@@ -1839,9 +1839,6 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
     isAtLeastOneFriend = true;
     cantPlayContentRestricted = false;
 
-
-
-
     if (!canPlay || !canPlayLocal || !isAtLeastOneFriend ||
         cantPlayContentRestricted) {
         DisconnectPacket::eDisconnectReason reason =
@@ -1943,8 +1940,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
 
         // On PS3, all non-signed in players (even guests) can get a useful
         // offlineXUID
-        if (!ProfileManager.IsGuest(m_userIndex))
-        {
+        if (!ProfileManager.IsGuest(m_userIndex)) {
             // All other players we use their offline XUID so that they can play
             // the game offline
             ProfileManager.GetXUID(m_userIndex, &offlineXUID, false);
@@ -2003,8 +1999,7 @@ void ClientConnection::handleAddMob(std::shared_ptr<AddMobPacket> packet) {
     if (subEntities != nullptr) {
         int offs = packet->id - mob->entityId;
         // for (int i = 0; i < subEntities.length; i++)
-        for (auto it = subEntities->begin(); it != subEntities->end();
-             ++it) {
+        for (auto it = subEntities->begin(); it != subEntities->end(); ++it) {
             // subEntities[i].entityId += offs;
             (*it)->entityId += offs;
         }
@@ -2078,7 +2073,8 @@ void ClientConnection::handleEntityLinkPacket(
 
             displayMountMessage =
                 (sourceEntity->riding == nullptr && destEntity != nullptr);
-        } else if (destEntity != nullptr && destEntity->instanceof(eTYPE_BOAT)) {
+        } else if (destEntity != nullptr &&
+                   destEntity->instanceof(eTYPE_BOAT)) {
             (std::dynamic_pointer_cast<Boat>(destEntity))->setDoLerp(true);
         }
 
@@ -2415,7 +2411,6 @@ void ClientConnection::handleRespawn(std::shared_ptr<RespawnPacket> packet) {
         minecraft->localplayers[m_userIndex]->dimension = packet->dimension;
         minecraft->setScreen(new ReceivingLevelScreen(this));
         //		minecraft->addPendingLocalConnection(m_userIndex, this);
-
 
         if (minecraft->localgameModes[m_userIndex] != nullptr) {
             TutorialMode* gameMode =
@@ -2816,7 +2811,8 @@ void ClientConnection::handleTileEntityData(
 
         if (te != nullptr) {
             if (packet->type == TileEntityDataPacket::TYPE_MOB_SPAWNER &&
-                std::dynamic_pointer_cast<MobSpawnerTileEntity>(te) != nullptr) {
+                std::dynamic_pointer_cast<MobSpawnerTileEntity>(te) !=
+                    nullptr) {
                 std::dynamic_pointer_cast<MobSpawnerTileEntity>(te)->load(
                     packet->tag);
             } else if (packet->type == TileEntityDataPacket::TYPE_ADV_COMMAND &&
@@ -2830,7 +2826,8 @@ void ClientConnection::handleTileEntityData(
                 std::dynamic_pointer_cast<BeaconTileEntity>(te)->load(
                     packet->tag);
             } else if (packet->type == TileEntityDataPacket::TYPE_SKULL &&
-                       std::dynamic_pointer_cast<SkullTileEntity>(te) != nullptr) {
+                       std::dynamic_pointer_cast<SkullTileEntity>(te) !=
+                           nullptr) {
                 std::dynamic_pointer_cast<SkullTileEntity>(te)->load(
                     packet->tag);
             }
@@ -2912,7 +2909,8 @@ void ClientConnection::handleGameEvent(
         app.DebugPrintf("handleGameEvent packet for WIN_GAME - %d\n",
                         m_userIndex);
         // This just allows it to be shown
-        if (minecraft->localgameModes[ProfileManager.GetPrimaryPad()] != nullptr)
+        if (minecraft->localgameModes[ProfileManager.GetPrimaryPad()] !=
+            nullptr)
             minecraft->localgameModes[ProfileManager.GetPrimaryPad()]
                 ->getTutorial()
                 ->showTutorialPopup(false);
@@ -3362,8 +3360,7 @@ int ClientConnection::HostDisconnectReturned(
                                uiIDA, 2, ProfileManager.GetPrimaryPad(),
                                &ClientConnection::ExitGameAndSaveReturned,
                                nullptr);
-    } else
-    {
+    } else {
         MinecraftServer::getInstance()->setSaveOnExit(true);
         // flag a app action of exit game
         app.SetAction(iPad, eAppAction_ExitWorld);
@@ -3396,19 +3393,15 @@ std::wstring ClientConnection::GetDisplayNameByGamertag(std::wstring gamertag) {
 }
 
 void ClientConnection::handleAddObjective(
-    std::shared_ptr<SetObjectivePacket> packet) {
-}
+    std::shared_ptr<SetObjectivePacket> packet) {}
 
-void ClientConnection::handleSetScore(std::shared_ptr<SetScorePacket> packet) {
-}
+void ClientConnection::handleSetScore(std::shared_ptr<SetScorePacket> packet) {}
 
 void ClientConnection::handleSetDisplayObjective(
-    std::shared_ptr<SetDisplayObjectivePacket> packet) {
-}
+    std::shared_ptr<SetDisplayObjectivePacket> packet) {}
 
 void ClientConnection::handleSetPlayerTeamPacket(
-    std::shared_ptr<SetPlayerTeamPacket> packet) {
-}
+    std::shared_ptr<SetPlayerTeamPacket> packet) {}
 
 void ClientConnection::handleParticleEvent(
     std::shared_ptr<LevelParticlesPacket> packet) {
@@ -3444,8 +3437,8 @@ void ClientConnection::handleUpdateAttributes(
         (std::dynamic_pointer_cast<LivingEntity>(entity))->getAttributes();
     std::unordered_set<UpdateAttributesPacket::AttributeSnapshot*>
         attributeSnapshots = packet->getValues();
-    for (auto it = attributeSnapshots.begin();
-         it != attributeSnapshots.end(); ++it) {
+    for (auto it = attributeSnapshots.begin(); it != attributeSnapshots.end();
+         ++it) {
         UpdateAttributesPacket::AttributeSnapshot* attribute = *it;
         AttributeInstance* instance =
             attributes->getInstance(attribute->getId());
@@ -3465,8 +3458,7 @@ void ClientConnection::handleUpdateAttributes(
         std::unordered_set<AttributeModifier*>* modifiers =
             attribute->getModifiers();
 
-        for (auto it2 = modifiers->begin(); it2 != modifiers->end();
-             ++it2) {
+        for (auto it2 = modifiers->begin(); it2 != modifiers->end(); ++it2) {
             AttributeModifier* modifier = *it2;
             instance->addModifier(
                 new AttributeModifier(modifier->getId(), modifier->getAmount(),

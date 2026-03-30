@@ -3,64 +3,64 @@
 #include "Consoles_SoundEngine.h"
 
 const wchar_t* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
-    L"mob/chicken/chicken",              //	eSoundType_MOB_CHICKEN_AMBIENT
-    L"mob/chicken/chickenhurt",          //	eSoundType_MOB_CHICKEN_HURT
-    L"mob/chicken/chickenplop",          //	eSoundType_MOB_CHICKENPLOP
-    L"mob/cow/say",                  //	eSoundType_MOB_COW_AMBIENT
-    L"mob/cow/hurt",              //	eSoundType_MOB_COW_HURT
-    L"mob/pig/pig",                  //	eSoundType_MOB_PIG_AMBIENT
-    L"mob/pig/pigdeath",             //	eSoundType_MOB_PIG_DEATH
-    L"mob/sheep/sheep",                //	eSoundType_MOB_SHEEP_AMBIENT
-    L"mob/wolf/growl",           //	eSoundType_MOB_WOLF_GROWL
-    L"mob/wolf/whine",           //	eSoundType_MOB_WOLF_WHINE
-    L"mob/wolf/panting",         //	eSoundType_MOB_WOLF_PANTING
-    L"mob/wolf/bark",            //	eSoundType_MOB_WOLF_BARK
-    L"mob/wolf/hurt",            //	eSoundType_MOB_WOLF_HURT
-    L"mob/wolf/death",           //	eSoundType_MOB_WOLF_DEATH
-    L"mob/wolf/shake",           //	eSoundType_MOB_WOLF_SHAKE
-    L"mob/blaze/breathe",        //	eSoundType_MOB_BLAZE_BREATHE
-    L"mob/blaze/hit",            //	eSoundType_MOB_BLAZE_HURT
-    L"mob/blaze/death",          //	eSoundType_MOB_BLAZE_DEATH
-    L"mob/ghast/moan",           //	eSoundType_MOB_GHAST_MOAN
-    L"mob/ghast/scream",         //	eSoundType_MOB_GHAST_SCREAM
-    L"mob/ghast/death",          //	eSoundType_MOB_GHAST_DEATH
-    L"mob/ghast/fireball",       //	eSoundType_MOB_GHAST_FIREBALL
-    L"mob/ghast/charge",         //	eSoundType_MOB_GHAST_CHARGE
-    L"mob/endermen/idle",        //	eSoundType_MOB_ENDERMEN_IDLE
-    L"mob/endermen/hit",         //	eSoundType_MOB_ENDERMEN_HIT
-    L"mob/endermen/death",       //	eSoundType_MOB_ENDERMEN_DEATH
-    L"mob/endermen/portal",      //	eSoundType_MOB_ENDERMEN_PORTAL
-    L"mob/zombiepig/zpig",       //	eSoundType_MOB_ZOMBIEPIG_AMBIENT
-    L"mob/zombiepig/zpighurt",   //	eSoundType_MOB_ZOMBIEPIG_HURT
-    L"mob/zombiepig/zpigdeath",  //	eSoundType_MOB_ZOMBIEPIG_DEATH
-    L"mob/zombiepig/zpigangry",  //	eSoundType_MOB_ZOMBIEPIG_ZPIGANGRY
-    L"mob/silverfish/say",       //	eSoundType_MOB_SILVERFISH_AMBIENT,
-    L"mob/silverfish/hit",       //	eSoundType_MOB_SILVERFISH_HURT
-    L"mob/silverfish/kill",      //	eSoundType_MOB_SILVERFISH_DEATH,
-    L"mob/silverfish/step",      //	eSoundType_MOB_SILVERFISH_STEP,
-    L"mob/skeleton/skeleton",             //	eSoundType_MOB_SKELETON_AMBIENT,
-    L"mob/skeleton/skeletonhurt",         //	eSoundType_MOB_SKELETON_HURT,
-    L"mob/spider/spider",               //	eSoundType_MOB_SPIDER_AMBIENT,
-    L"mob/spider/spiderdeath",          //	eSoundType_MOB_SPIDER_DEATH,
-    L"mob/slime/slime",                //	eSoundType_MOB_SLIME,
-    L"mob/slime/slimeattack",          //	eSoundType_MOB_SLIME_ATTACK,
-    L"mob/creeper/creeper",              //	eSoundType_MOB_CREEPER_HURT,
-    L"mob/creeper/creeperdeath",         //	eSoundType_MOB_CREEPER_DEATH,
-    L"mob/zombie/zombie",               //	eSoundType_MOB_ZOMBIE_AMBIENT,
-    L"mob/zombie/zombiehurt",           //	eSoundType_MOB_ZOMBIE_HURT,
-    L"mob/zombie/zombiedeath",          //	eSoundType_MOB_ZOMBIE_DEATH,
-    L"mob/zombie/wood",          //	eSoundType_MOB_ZOMBIE_WOOD,
-    L"mob/zombie/woodbreak",     //	eSoundType_MOB_ZOMBIE_WOOD_BREAK,
-    L"mob/zombie/metal",         //	eSoundType_MOB_ZOMBIE_METAL,
-    L"mob/magmacube/big",        //	eSoundType_MOB_MAGMACUBE_BIG,
-    L"mob/magmacube/small",      //	eSoundType_MOB_MAGMACUBE_SMALL,
-    L"mob/cat/purr",             //  eSoundType_MOB_CAT_PURR
-    L"mob/cat/purreow",          //  eSoundType_MOB_CAT_PURREOW
-    L"mob/cat/meow",             //  eSoundType_MOB_CAT_MEOW
+    L"mob/chicken/chicken",        //	eSoundType_MOB_CHICKEN_AMBIENT
+    L"mob/chicken/chickenhurt",    //	eSoundType_MOB_CHICKEN_HURT
+    L"mob/chicken/chickenplop",    //	eSoundType_MOB_CHICKENPLOP
+    L"mob/cow/say",                //	eSoundType_MOB_COW_AMBIENT
+    L"mob/cow/hurt",               //	eSoundType_MOB_COW_HURT
+    L"mob/pig/pig",                //	eSoundType_MOB_PIG_AMBIENT
+    L"mob/pig/pigdeath",           //	eSoundType_MOB_PIG_DEATH
+    L"mob/sheep/sheep",            //	eSoundType_MOB_SHEEP_AMBIENT
+    L"mob/wolf/growl",             //	eSoundType_MOB_WOLF_GROWL
+    L"mob/wolf/whine",             //	eSoundType_MOB_WOLF_WHINE
+    L"mob/wolf/panting",           //	eSoundType_MOB_WOLF_PANTING
+    L"mob/wolf/bark",              //	eSoundType_MOB_WOLF_BARK
+    L"mob/wolf/hurt",              //	eSoundType_MOB_WOLF_HURT
+    L"mob/wolf/death",             //	eSoundType_MOB_WOLF_DEATH
+    L"mob/wolf/shake",             //	eSoundType_MOB_WOLF_SHAKE
+    L"mob/blaze/breathe",          //	eSoundType_MOB_BLAZE_BREATHE
+    L"mob/blaze/hit",              //	eSoundType_MOB_BLAZE_HURT
+    L"mob/blaze/death",            //	eSoundType_MOB_BLAZE_DEATH
+    L"mob/ghast/moan",             //	eSoundType_MOB_GHAST_MOAN
+    L"mob/ghast/scream",           //	eSoundType_MOB_GHAST_SCREAM
+    L"mob/ghast/death",            //	eSoundType_MOB_GHAST_DEATH
+    L"mob/ghast/fireball",         //	eSoundType_MOB_GHAST_FIREBALL
+    L"mob/ghast/charge",           //	eSoundType_MOB_GHAST_CHARGE
+    L"mob/endermen/idle",          //	eSoundType_MOB_ENDERMEN_IDLE
+    L"mob/endermen/hit",           //	eSoundType_MOB_ENDERMEN_HIT
+    L"mob/endermen/death",         //	eSoundType_MOB_ENDERMEN_DEATH
+    L"mob/endermen/portal",        //	eSoundType_MOB_ENDERMEN_PORTAL
+    L"mob/zombiepig/zpig",         //	eSoundType_MOB_ZOMBIEPIG_AMBIENT
+    L"mob/zombiepig/zpighurt",     //	eSoundType_MOB_ZOMBIEPIG_HURT
+    L"mob/zombiepig/zpigdeath",    //	eSoundType_MOB_ZOMBIEPIG_DEATH
+    L"mob/zombiepig/zpigangry",    //	eSoundType_MOB_ZOMBIEPIG_ZPIGANGRY
+    L"mob/silverfish/say",         //	eSoundType_MOB_SILVERFISH_AMBIENT,
+    L"mob/silverfish/hit",         //	eSoundType_MOB_SILVERFISH_HURT
+    L"mob/silverfish/kill",        //	eSoundType_MOB_SILVERFISH_DEATH,
+    L"mob/silverfish/step",        //	eSoundType_MOB_SILVERFISH_STEP,
+    L"mob/skeleton/skeleton",      //	eSoundType_MOB_SKELETON_AMBIENT,
+    L"mob/skeleton/skeletonhurt",  //	eSoundType_MOB_SKELETON_HURT,
+    L"mob/spider/spider",          //	eSoundType_MOB_SPIDER_AMBIENT,
+    L"mob/spider/spiderdeath",     //	eSoundType_MOB_SPIDER_DEATH,
+    L"mob/slime/slime",            //	eSoundType_MOB_SLIME,
+    L"mob/slime/slimeattack",      //	eSoundType_MOB_SLIME_ATTACK,
+    L"mob/creeper/creeper",        //	eSoundType_MOB_CREEPER_HURT,
+    L"mob/creeper/creeperdeath",   //	eSoundType_MOB_CREEPER_DEATH,
+    L"mob/zombie/zombie",          //	eSoundType_MOB_ZOMBIE_AMBIENT,
+    L"mob/zombie/zombiehurt",      //	eSoundType_MOB_ZOMBIE_HURT,
+    L"mob/zombie/zombiedeath",     //	eSoundType_MOB_ZOMBIE_DEATH,
+    L"mob/zombie/wood",            //	eSoundType_MOB_ZOMBIE_WOOD,
+    L"mob/zombie/woodbreak",       //	eSoundType_MOB_ZOMBIE_WOOD_BREAK,
+    L"mob/zombie/metal",           //	eSoundType_MOB_ZOMBIE_METAL,
+    L"mob/magmacube/big",          //	eSoundType_MOB_MAGMACUBE_BIG,
+    L"mob/magmacube/small",        //	eSoundType_MOB_MAGMACUBE_SMALL,
+    L"mob/cat/purr",               //  eSoundType_MOB_CAT_PURR
+    L"mob/cat/purreow",            //  eSoundType_MOB_CAT_PURREOW
+    L"mob/cat/meow",               //  eSoundType_MOB_CAT_MEOW
     // 4J-PB - correct the name of the event for hitting ocelots
     L"mob/cat/hitt",  //  eSoundType_MOB_CAT_HITT
-                     //	L"mob.irongolem.throw",				//
-    //eSoundType_MOB_IRONGOLEM_THROW 	L"mob.irongolem.hit",
+                      //	L"mob.irongolem.throw", //
+    // eSoundType_MOB_IRONGOLEM_THROW 	L"mob.irongolem.hit",
     ////  eSoundType_MOB_IRONGOLEM_HIT 	L"mob.irongolem.death",
     ////  eSoundType_MOB_IRONGOLEM_DEATH 	L"mob.irongolem.walk",
     ////  eSoundType_MOB_IRONGOLEM_WALK
@@ -85,14 +85,14 @@ const wchar_t* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"ambient/weather/rain",     //	eSoundType_AMBIENT_WEATHER_RAIN,
     L"ambient/weather/thunder",  //	eSoundType_AMBIENT_WEATHER_THUNDER,
     L"ambient/cave/cave",  //	eSoundType_CAVE_CAVE, DON'T USE FOR XBOX 360!!!
-    L"portal/portal",  //	eSoundType_PORTAL_PORTAL,
+    L"portal/portal",      //	eSoundType_PORTAL_PORTAL,
     // 4J-PB - added a couple that were still using std::wstring
     L"portal/trigger",  //	eSoundType_PORTAL_TRIGGER
     L"portal/travel",   //	eSoundType_PORTAL_TRAVEL
 
     L"fire/ignite",       //	eSoundType_FIRE_IGNITE,
     L"fire/fire",         //	eSoundType_FIRE_FIRE,
-    L"damage/hit",  //	eSoundType_DAMAGE_HURT,
+    L"damage/hit",        //	eSoundType_DAMAGE_HURT,
     L"damage/fallsmall",  //	eSoundType_DAMAGE_FALL_SMALL,
     L"damage/fallbig",    //	eSoundType_DAMAGE_FALL_BIG,
     L"note/harp",         //	eSoundType_NOTE_HARP,

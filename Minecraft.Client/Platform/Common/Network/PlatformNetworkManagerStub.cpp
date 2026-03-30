@@ -292,8 +292,8 @@ void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(
     // 			INetworkPlayer *pNetworkPlayer = GetPlayerByIndex(i);
     //
     // 			// We can call this from NotifyPlayerLeaving but at that
-    // point the player is still considered in the session 			if( pNetworkPlayer !=
-    // pNetworkPlayerLeaving )
+    // point the player is still considered in the session
+    // if( pNetworkPlayer != pNetworkPlayerLeaving )
     // 			{
     // 				m_hostGameSessionData.players[i] =
     // ((NetworkPlayerXbox *)pNetworkPlayer)->GetUID();

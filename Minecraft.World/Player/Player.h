@@ -586,7 +586,6 @@ private:
     std::vector<ModelPart*>* m_ppAdditionalModelParts;
     bool m_bCheckedForModelParts;
     bool m_bCheckedDLCForModelParts;
-
 };
 
 struct PlayerKeyHash {

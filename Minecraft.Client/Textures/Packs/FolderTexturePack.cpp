@@ -15,13 +15,13 @@ FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring& name,
 InputStream* FolderTexturePack::getResourceImplementation(
     const std::wstring& name)  // throws IOException
 {
-
     std::wstring wDrive = L"";
     // Make the content package point to to the UPDATE: drive is needed
     wDrive = L"Common\\DummyTexturePack\\res";
     InputStream* resource = InputStream::getResourceAsStream(wDrive + name);
     // InputStream *stream =
-    // DefaultTexturePack::class->getResourceAsStream(name); if (stream == nullptr)
+    // DefaultTexturePack::class->getResourceAsStream(name); if (stream ==
+    // nullptr)
     //{
     //	throw new FileNotFoundException(name);
     // }
@@ -36,9 +36,7 @@ bool FolderTexturePack::hasFile(const std::wstring& name) {
     // return true;
 }
 
-bool FolderTexturePack::isTerrainUpdateCompatible() {
-    return true;
-}
+bool FolderTexturePack::isTerrainUpdateCompatible() { return true; }
 
 std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
                                         const char* pchBDPatchFilename) {
@@ -47,8 +45,6 @@ std::wstring FolderTexturePack::getPath(bool bTitleUpdateTexture /*= false*/,
     return wDrive;
 }
 
-void FolderTexturePack::loadUI() {
-}
+void FolderTexturePack::loadUI() {}
 
-void FolderTexturePack::unloadUI() {
-}
+void FolderTexturePack::unloadUI() {}

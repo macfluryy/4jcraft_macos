@@ -428,4 +428,3 @@ FloatBuffer* ByteBuffer::asFloatBuffer() {
     return new FloatBuffer((m_limit - m_position) / 4,
                            (float*)(buffer + m_position));
 }
-

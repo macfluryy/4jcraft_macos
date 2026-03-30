@@ -195,8 +195,7 @@ void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     delete[] TempIngReq.uiGridA;
 }
 
-ShapedRecipy*
-ShapedRecipy::keepTag() {
+ShapedRecipy* ShapedRecipy::keepTag() {
     _keepTag = true;
     return this;
 }

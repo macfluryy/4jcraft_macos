@@ -264,7 +264,6 @@ static void utf8_pop_back(std::string& str) {
     str.erase(i);
 }
 
-
 // Each tick we update the input state by polling SDL, this is where we get the
 // kbd and mouse state.
 void C_4JInput::Tick() {
@@ -650,9 +649,7 @@ bool C_4JInput::GetMenuDisplayed(int iPad) {
     if (iPad >= 0 && iPad < 4) return s_menuDisplayed[iPad];
     return false;
 }
-const char* C_4JInput::GetText() {
-    return s_textInputBuf.c_str();
-}
+const char* C_4JInput::GetText() { return s_textInputBuf.c_str(); }
 bool C_4JInput::VerifyStrings(wchar_t**, int,
                               int (*)(void*, STRING_VERIFY_RESPONSE*), void*) {
     return true;

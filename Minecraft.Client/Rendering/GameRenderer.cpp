@@ -990,7 +990,6 @@ void GameRenderer::render(float a, bool bFirst) {
         }
     }
 
-
     if (mc->noRender) return;
     GameRenderer::anaglyph3d = mc->options->anaglyph3d;
 

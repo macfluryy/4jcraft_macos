@@ -9,8 +9,7 @@
 
 int BedTile::HEAD_DIRECTION_OFFSETS[4][2] = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};
 
-BedTile::BedTile(int id)
-    : DirectionalTile(id, Material::cloth, false) {
+BedTile::BedTile(int id) : DirectionalTile(id, Material::cloth, false) {
     setShape();
 
     iconEnd = nullptr;

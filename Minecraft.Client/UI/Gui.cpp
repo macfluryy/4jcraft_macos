@@ -743,7 +743,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 int xo = iSafezoneXHalf + 10;
                 int yo = iSafezoneTopYHalf + 10;
 
-
                 glPushMatrix();
                 glTranslatef((float)xo, (float)yo, 50);
                 float ss = 12;

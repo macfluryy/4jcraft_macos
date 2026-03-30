@@ -578,9 +578,9 @@ void UIScene_HUD::SetSelectedLabel(const std::wstring& label) {
 
 void UIScene_HUD::HideSelectedLabel() {
     IggyDataValue result;
-    IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
-                                            IggyPlayerRootPath(getMovie()),
-                                            m_funcHideSelectedLabel, 0, nullptr);
+    IggyResult out = IggyPlayerCallMethodRS(
+        getMovie(), &result, IggyPlayerRootPath(getMovie()),
+        m_funcHideSelectedLabel, 0, nullptr);
 }
 
 void UIScene_HUD::SetRidingHorse(bool ridingHorse, bool bIsJumpable,

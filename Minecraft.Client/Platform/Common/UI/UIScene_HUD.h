@@ -178,7 +178,6 @@ public:
 protected:
     void handleTimerComplete(int id);
 
-
 private:
     void repositionHud();
 };
