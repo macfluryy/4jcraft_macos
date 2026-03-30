@@ -898,7 +898,7 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
         bool pccFriendsAllowed = true;
         bool bContentRestricted = false;
 
-        GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+        ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),
                                             false, &pccAllowed,
                                             &pccFriendsAllowed);
 #if defined(__PS3__) || defined(__PSVITA__)
@@ -1343,7 +1343,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             bool pccAllowed = true;
             bool pccFriendsAllowed = true;
 
-            GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+            ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),
                                                 false, &pccAllowed,
                                                 &pccFriendsAllowed);
             if (!pccAllowed && !pccFriendsAllowed) noUGC = true;

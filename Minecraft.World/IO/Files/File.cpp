@@ -2,7 +2,7 @@
 #include "FileFilter.h"
 #include "../../Level/Storage/McRegionLevelStorageSource.h"
 #include "File.h"
-#include "PathHelper.h"
+#include "../../../Minecraft.World/Util/PathHelper.h"
 #if !defined(__PS3__) && !defined(__ORBIS__) && !defined(__PSVITA__)
 #include <chrono>
 #include <filesystem>
