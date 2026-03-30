@@ -28,7 +28,6 @@
 
 #include "../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include <mutex>
-#include <xuiapp.h>
 #include "../../Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "../../Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
 #include "../../../../Header Files/SoundTypes.h"

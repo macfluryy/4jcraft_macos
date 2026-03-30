@@ -10,7 +10,7 @@ exclude_sources = [
   '! -name NbtSlotFile.cpp',
   '! -name ZonedChunkStorage.cpp',
   '! -name ZoneFile.cpp',
-  '! -name ZoneIO.cpp',
+  '! -name ZoneIo.cpp',
   '! -name LevelConflictException.cpp',
 ]
 
@@ -32,7 +32,6 @@ simdutf_dep = dependency('simdutf',
 
 lib_world = static_library('Minecraft.World',
   world_sources,
-  include_directories : include_directories('Platform', 'Platform/x64headers'),
   dependencies : [
     assets_localisation_dep,
     render_dep,
@@ -41,8 +40,9 @@ lib_world = static_library('Minecraft.World',
     storage_dep,
     simdutf_dep,
   ],
+  include_directories : include_directories('Header Files'),
   cpp_args : global_cpp_args + global_cpp_defs + [
-    '-include', 'Platform/stdafx.h',
+    '-include', 'Header Files/stdafx.h',
   ],
 )
 
@@ -52,5 +52,5 @@ crypto_dep = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
 world_dep = declare_dependency(
   link_with : lib_world,
   dependencies : [crypto_dep, zlib_dep],
-  include_directories : include_directories('Platform/x64headers'),
+  include_directories : include_directories('x64headers'),
 )

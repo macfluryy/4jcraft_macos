@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../Windows64/Source Files/Sentient/MinecraftTelemetry.h"
+#include "MinecraftTelemetry.h"
 
 class CSentientManager {
 public:

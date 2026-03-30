@@ -11,7 +11,7 @@
 // via #pragma once. Pull in SentientManager for CSentientManager class
 // declaration and StatsCounter; CSocialManager is provided as inline stubs via
 // Linux/Social/SocialManager.h.
-#include "../Windows64/Source Files/Sentient/SentientManager.h"
+#include "../Linux/Sentient/SentientManager.h"
 #include "../net/minecraft/stats/StatsCounter.h"
 #else
 #include "../net/minecraft/stats/StatsCounter.h"

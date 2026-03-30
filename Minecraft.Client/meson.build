@@ -1,5 +1,7 @@
 exclude_sources = [
-  ' ! -path "*/Platform/*"', # added by platform_sources
+  ' ! -path "*/Common/*"', # added by platform_sources
+  ' ! -path "*/Linux/*"', # added by platform_sources
+  ' ! -path "*/Windows64/*"', # added by platform_sources
   ' ! -name "SurvivalMode.cpp"',
   ' ! -name "CreativeMode.cpp"',
   ' ! -name "GameMode.cpp"',
@@ -16,28 +18,17 @@ client_sources = run_command(
   check: true,
 ).stdout().strip().split('\n')
 
-# all sources in ./Platform (top-level files only)
-platform_sources = run_command(
-  'sh',
-  '-c', 'find "'
-  + meson.current_source_dir() / 'Platform'
-  + '" -maxdepth 1 \\( -name "*.cpp" -o -name "*.c" \\)',
-  check: true,
-).stdout().strip().split('\n')
-
 # some platform-specific sources that are for some stupid reason in Common
 exclude_platform_common_sources = [
-  ' ! -path "*/Network/Sony/*"',
-  ' ! -path "*/XUI/*"',
   ' ! -name "SonyLeaderboardManager.cpp"',
   ' ! -name "UIScene_InGameSaveManagementMenu.cpp"',
 ]
 
 # all sources in in ./Platform/Common
-platform_sources += run_command(
+platform_sources = run_command(
   'sh',
   '-c', 'find "'
-  + meson.current_source_dir() / 'Platform/Common'
+  + meson.current_source_dir() / 'Common'
   + '" \\( -name "*.cpp" -o -name "*.c" \\)'
   + ' '.join(exclude_platform_common_sources),
   check: true,
@@ -48,7 +39,7 @@ if host_machine.system() == 'linux'
   platform_sources += run_command(
     'sh',
     '-c', 'find "'
-    + meson.current_source_dir() / 'Platform/Linux'
+    + meson.current_source_dir() / 'Linux'
     + '" \\( -name "*.cpp" -o -name "*.c" \\) ',
     check: true,
   ).stdout().strip().split('\n')
@@ -106,17 +97,18 @@ elif occlusion_mode == 'bfs'
 elif occlusion_mode == 'hardware'
   global_cpp_defs += ['-DOCCLUSION_MODE_HARDWARE', '-DUSE_OCCLUSION_CULLING']
 endif
+
 client = executable(
   'Minecraft.Client',
   client_sources + platform_sources + localisation[1],
-  include_directories: include_directories('Platform', 'Platform/Linux/Iggy/include'),
+  include_directories: include_directories('Header Files'),
   dependencies: client_dependencies,
   cpp_args: global_cpp_args
   + global_cpp_defs
   + [
     '-DUNICODE',
     '-D_UNICODE',
-    '-include', meson.current_source_dir() / 'Platform/stdafx.h',
+    '-include', meson.current_source_dir() / 'Header Files/stdafx.h',
   ],
   c_args: global_cpp_defs + ['-DUNICODE', '-D_UNICODE'],
   install: true,

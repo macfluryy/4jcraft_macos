@@ -52,7 +52,7 @@
 #include "../ConsoleJavaLibs/Random.h"
 #include "../net/minecraft/world/level/TilePos.h"
 #include "../net/minecraft/world/level/ChunkPos.h"
-#include "compression.h"
+#include "../Header Files/compression.h"
 #include "../ConsoleHelpers/PerformanceTimer.h"
 
 #ifdef _FINAL_BUILD
@@ -102,9 +102,8 @@ void MemSect(int sect);
 #else
 // Use the Linux runtime path with supported metadata/config headers only.
 #include "../../Minecraft.Client/Linux/Linux_App.h"
-#include "../../Minecraft.Client/Windows64/Source Files/Sentient/SentientTelemetryCommon.h"
-#include "../../Minecraft.Client/Windows64/Source Files/Sentient/DynamicConfigurations.h"
-#include "../../Minecraft.Client/Header Files/Minecraft.spa.h"
+#include "../../Minecraft.Client/Linux/Sentient/SentientTelemetryCommon.h"
+#include "../../Minecraft.Client/Linux/Sentient/DynamicConfigurations.h"
 #endif
 
 #include "../../Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"

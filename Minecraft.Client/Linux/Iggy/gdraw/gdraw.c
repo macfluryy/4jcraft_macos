@@ -1,8 +1,8 @@
 #define GDRAW_ASSERTS
 
-#include "../../../../Windows64/Iggy/include/iggy.h"
-#include "../../../../Windows64/Iggy/include/gdraw.h"
-#include "../../../../Windows64/Iggy/include/gdraw.h"
+#include "gdraw.h"
+#include "../../../Windows64/Iggy/include/gdraw.h"
+#include "../../../Windows64/Iggy/include/gdraw.h"
 
 #include <GL/gl.h>
 #include <GL/glext.h>
@@ -684,7 +684,7 @@ static void gdraw_FramebufferRenderbufferSafe(GLenum target, GLenum attachment,
 #define glFramebufferRenderbuffer_SAFE gdraw_FramebufferRenderbufferSafe
 #define glFramebufferRenderbuffer glFramebufferRenderbuffer_SAFE
 
-#include "../../../../Windows64/Iggy/gdraw/gdraw_gl_shared.inl"
+#include "../../../Windows64/Iggy/gdraw/gdraw_gl_shared.inl"
 #undef glVertexAttribPointer
 #define glVertexAttribPointer gdraw_real_vtxattrib
 

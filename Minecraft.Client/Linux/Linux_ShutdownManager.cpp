@@ -1,7 +1,7 @@
 // Linux stub implementations for ShutdownManager
 // The PS3/PSVita versions have full implementations; on Linux these are no-ops.
 #include "../../../Minecraft.World/Header Files/stdafx.h"
-#include "../../Common/ShutdownManager.h"
+#include "../Common/ShutdownManager.h"
 
 void ShutdownManager::Initialise() {}
 void ShutdownManager::StartShutdown() {}

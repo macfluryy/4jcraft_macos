@@ -12,10 +12,6 @@
 #include "TileItem.h"
 #include "../../Facing.h"
 
-// 4J-PB - for the debug option of not removing items
-#include <xuiresource.h>
-#include <xuiapp.h>
-
 TileItem::TileItem(int id) : Item(id) {
     this->tileId = id + 256;
     itemIcon = nullptr;

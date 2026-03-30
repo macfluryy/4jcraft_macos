@@ -8,7 +8,7 @@
 #define IggyVersion "1.2.30"
 #define IggyFlashVersion "9,1,2,30"
 
-#include "../../../../Windows64/Miles Sound System/Include/rrcore.h"  // base data types, macros
+#include "rrCore.h"  // base data types, macros
 
 RADDEFSTART
 

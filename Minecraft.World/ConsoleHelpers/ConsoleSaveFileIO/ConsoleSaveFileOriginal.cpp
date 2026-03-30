@@ -8,7 +8,6 @@
 #include "../../ConsoleJavaLibs/File.h"
 #include <chrono>
 #include <thread>
-#include <xuiapp.h>
 #include "../../Header Files/compression.h"
 #include "../../../Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "../../../Minecraft.Client/net/minecraft/server/MinecraftServer.h"

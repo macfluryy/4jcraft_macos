@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Common/Source Files/UI/UIController.h"
+#include "../Common/Source Files/UI/UIController.h"
 
 class ConsoleUIController : public UIController {
 public:

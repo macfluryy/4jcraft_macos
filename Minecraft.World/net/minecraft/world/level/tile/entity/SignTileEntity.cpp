@@ -8,7 +8,6 @@
 #include "../../../phys/net.minecraft.world.phys.h"
 #include "../../../../network/packet/net.minecraft.network.packet.h"
 #include "SignTileEntity.h"
-#include <xuiapp.h>
 #include "../../../Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "../../../Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "../../../Minecraft.Client/net/minecraft/server/level/ServerLevel.h"

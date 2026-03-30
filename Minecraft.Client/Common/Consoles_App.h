@@ -6,17 +6,11 @@
 // using namespace std;
 
 #include "Source Files/Audio/Consoles_SoundEngine.h"
-#if !defined(__linux__)
-#include <xuiapp.h>
-#endif
 #include "Source Files/Tutorial/TutorialEnum.h"
 
 #include "Source Files/UI/All Platforms/UIStructs.h"
 
 #include "../../Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
-#if !defined(__linux__)
-#include <xsocialpost.h>
-#endif
 
 #include "Source Files/Localisation/StringTable.h"
 #include "Source Files/DLC/DLCManager.h"

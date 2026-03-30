@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "../../../Windows64/Iggy/include/iggy.h"
+#include "../Iggy/include/iggy.h"
 
 #define STUBBED \
     {           \

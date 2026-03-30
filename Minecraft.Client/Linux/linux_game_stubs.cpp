@@ -6,7 +6,7 @@
 #include <pthread.h>
 
 #include "Stubs/LinuxStubs.h"
-#include "../../Common/Consoles_App.h"
+#include "../Common/Consoles_App.h"
 
 void Display::update() {}
 

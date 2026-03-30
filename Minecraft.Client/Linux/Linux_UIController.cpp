@@ -1,8 +1,8 @@
 #include "../../../Minecraft.World/Header Files/stdafx.h"
+// GDraw GL backend for Linux
+#include "Iggy/gdraw/gdraw.h"
 #include "Linux_UIController.h"
 
-// GDraw GL backend for Linux
-#include "../../Windows64/Iggy/include/gdraw.h"
 
 ConsoleUIController ui;
 

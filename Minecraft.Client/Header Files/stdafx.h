@@ -112,16 +112,14 @@ using namespace DirectX;
 #include "../Windows64/Iggy/gdraw/gdraw_d3d11.h"
 #include "../Windows64/Windows64_UIController.h"
 #else
-// Linux build: keep the Linux runtime/controller path and use the supported
-// Linux/Windows64 metadata headers only.
 #include "../Linux/Linux_App.h"
-#include "../Windows64/Iggy/include/iggy.h"
-#include "../Windows64/Source Files/Sentient/SentientTelemetryCommon.h"
-#include "../Windows64/Source Files/Sentient/DynamicConfigurations.h"
+#include "../Linux/Iggy/include/iggy.h"
+#include "../Linux/Sentient/SentientTelemetryCommon.h"
+#include "../Linux/Sentient/DynamicConfigurations.h"
 #include "Minecraft.spa.h"
 #include "../Common/Source Files/Audio/SoundEngine.h"
 #include "../Linux/Linux_UIController.h"
-#include "../Windows64/Source Files/Social/SocialManager.h"
+#include "../Linux/Social/SocialManager.h"
 #endif
 
 #include "../Common/Source Files/ConsoleGameMode.h"

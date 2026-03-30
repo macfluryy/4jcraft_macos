@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Common/Source Files/Leaderboards/LeaderboardManager.h"
+#include "../../Common/Source Files/Leaderboards/LeaderboardManager.h"
 
 class LinuxLeaderboardManager : public LeaderboardManager {
 public:

@@ -1,8 +1,8 @@
 #ifndef __LINUX_IGGY_GDRAW_H__
 #define __LINUX_IGGY_GDRAW_H__
 
-#include "../../../../Windows64/Iggy/include/gdraw.h"
-#include "../../../../Windows64/Iggy/include/iggy.h"
+#include "../../../Windows64/Iggy/include/gdraw.h"
+#include "../../../Windows64/Iggy/include/iggy.h"
 
 #ifdef __cplusplus
 extern "C" {
