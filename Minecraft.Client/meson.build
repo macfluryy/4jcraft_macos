@@ -29,8 +29,6 @@ platform_sources = run_command(
 exclude_platform_common_sources = [
   ' ! -path "*/Network/Sony/*"',
   ' ! -path "*/XUI/*"',
-  # we use system zlib instead, since this one is old as hell and isn't configured for linux correctly
-  ' ! -path "*/zlib/*"',
   ' ! -name "SonyLeaderboardManager.cpp"',
   ' ! -name "UIScene_InGameSaveManagementMenu.cpp"',
 ]
