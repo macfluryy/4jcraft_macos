@@ -353,8 +353,9 @@ void C_4JProfile::Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
             GAMESETTING_CLOUDS;  // eGameSetting_Clouds - on
         pGameSettings->uiBitmaskValues |=
             GAMESETTING_ONLINE;  // eGameSetting_GameSetting_Online - on
-        pGameSettings->uiBitmaskValues |= GAMESETTING_FRIENDSOFFRIENDS;  // eGameSetting_GameSetting_FriendsOfFriends
-                                                                         // - on
+        pGameSettings->uiBitmaskValues |=
+            GAMESETTING_FRIENDSOFFRIENDS;  // eGameSetting_GameSetting_FriendsOfFriends
+                                           // - on
         pGameSettings->uiBitmaskValues |=
             GAMESETTING_DISPLAYUPDATEMSG;  // eGameSetting_DisplayUpdateMessage
                                            // (counter)

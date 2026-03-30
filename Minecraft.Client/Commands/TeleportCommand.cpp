@@ -81,7 +81,7 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
     //		victim.connection.teleport(destination.x, destination.y,
     // destination.z, destination.yRot, destination.xRot);
     // logAdminAction(source, "commands.tp.success", victim.getAName(),
-    //destination.getAName());
+    // destination.getAName());
     //	}
     //}
 }

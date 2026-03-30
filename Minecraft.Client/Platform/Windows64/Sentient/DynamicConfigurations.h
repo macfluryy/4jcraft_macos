@@ -84,7 +84,7 @@ private:
 #define DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME \
     2400  // 40 mins 1200 // 20 mins //300; // 5 minutes
 
-    class MinecraftDynamicConfigurations {
+class MinecraftDynamicConfigurations {
 private:
     enum EDynamic_Configs {
         eDynamic_Config_Trial,

@@ -424,8 +424,8 @@ IDOC typedef enum gdraw_texture_format {
                                   // $gdraw_make_texture_begin as
                                   // $gdraw_texture_type)
     GDRAW_TEXTURE_FORMAT_font,    // Alpha-only data with at least 4 bits/pixel.
-                                // Data is submitted as 8 bits/pixel, conversion
-                                // (if necessary) done by GDraw.
+    // Data is submitted as 8 bits/pixel, conversion
+    // (if necessary) done by GDraw.
 
     // First platform-specific format index (for reference)
     GDRAW_TEXTURE_FORMAT__platform = 16,

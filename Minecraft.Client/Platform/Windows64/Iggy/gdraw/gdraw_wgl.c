@@ -23,7 +23,7 @@
 //
 
 #define GDRAW_GL_EXTENSION_LIST                                                \
-    /*  identifier                      import procname */                                                                   \
+    /*  identifier                      import procname */                     \
     /* GL_ARB_multitexture */                                                  \
     GLE(ActiveTexture, "ActiveTextureARB", ACTIVETEXTUREARB)                   \
     /* GL_ARB_texture_compression */                                           \

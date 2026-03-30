@@ -157,7 +157,7 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
         emptyChunks = 0;
     for (int i = 0; i < 4; i++) {
         //		sortedChunks[i] = nullptr;	// 4J - removed - not
-        //sorting
+        // sorting
         // our chunks anymore
         chunks[i] = ClipChunkArray();
         lastPlayerCount[i] = 0;
