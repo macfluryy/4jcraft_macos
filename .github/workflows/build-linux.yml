@@ -23,11 +23,6 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
 
-    env:
-      CC: ccache clang
-      CXX: ccache clang++
-      CCACHE_DIR: ${{ runner.temp }}/ccache
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
