@@ -1,7 +1,6 @@
 #pragma once
 #include "CompoundTag.h"
 #include "Tag.h"
-#include "CompoundTag.h"
 
 class InputStream;
 
