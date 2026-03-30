@@ -55,7 +55,7 @@ private:
     bool running;
 
     std::queue<std::shared_ptr<Packet> >
-        incoming;                  // 4J - was using synchronizedList...
+        incoming;            // 4J - was using synchronizedList...
     std::mutex incoming_cs;  // ... now has this mutex
     std::queue<std::shared_ptr<Packet> >
         outgoing;  // 4J - was using synchronizedList - but don't think it is

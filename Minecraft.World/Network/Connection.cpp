@@ -462,7 +462,8 @@ void Connection::tick() {
     {
         std::lock_guard<std::mutex> lock(incoming_cs);
         while (!disconnected && !g_NetworkManager.IsLeavingGame() &&
-               g_NetworkManager.IsInSession() && !incoming.empty() && max-- >= 0) {
+               g_NetworkManager.IsInSession() && !incoming.empty() &&
+               max-- >= 0) {
             std::shared_ptr<Packet> packet = incoming.front();
             packetsToHandle.push_back(packet);
             incoming.pop();

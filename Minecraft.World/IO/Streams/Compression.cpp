@@ -92,44 +92,46 @@ int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
 int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
                                  void* pSource, unsigned int SrcSize) {
     unsigned int rleSize;
-    { std::lock_guard<std::mutex> lock(rleCompressLock);
-    // static unsigned char rleBuf[1024*100];
+    {
+        std::lock_guard<std::mutex> lock(rleCompressLock);
+        // static unsigned char rleBuf[1024*100];
 
-    unsigned char* pucIn = (unsigned char*)pSource;
-    unsigned char* pucEnd = pucIn + SrcSize;
-    unsigned char* pucOut = (unsigned char*)rleCompressBuf;
+        unsigned char* pucIn = (unsigned char*)pSource;
+        unsigned char* pucEnd = pucIn + SrcSize;
+        unsigned char* pucOut = (unsigned char*)rleCompressBuf;
 
-    // Compress with RLE first:
-    // 0 - 254 - encodes a single byte
-    // 255 followed by 0, 1, 2 - encodes a 1, 2, or 3 255s
-    // 255 followed by 3-255, followed by a byte - encodes a run of n + 1 bytes
-    PIXBeginNamedEvent(0, "RLE compression");
-    do {
-        unsigned char thisOne = *pucIn++;
+        // Compress with RLE first:
+        // 0 - 254 - encodes a single byte
+        // 255 followed by 0, 1, 2 - encodes a 1, 2, or 3 255s
+        // 255 followed by 3-255, followed by a byte - encodes a run of n + 1
+        // bytes
+        PIXBeginNamedEvent(0, "RLE compression");
+        do {
+            unsigned char thisOne = *pucIn++;
 
-        unsigned int count = 1;
-        while ((pucIn != pucEnd) && (*pucIn == thisOne) && (count < 256)) {
-            pucIn++;
-            count++;
-        }
+            unsigned int count = 1;
+            while ((pucIn != pucEnd) && (*pucIn == thisOne) && (count < 256)) {
+                pucIn++;
+                count++;
+            }
 
-        if (count <= 3) {
-            if (thisOne == 255) {
+            if (count <= 3) {
+                if (thisOne == 255) {
+                    *pucOut++ = 255;
+                    *pucOut++ = count - 1;
+                } else {
+                    for (unsigned int i = 0; i < count; i++) {
+                        *pucOut++ = thisOne;
+                    }
+                }
+            } else {
                 *pucOut++ = 255;
                 *pucOut++ = count - 1;
-            } else {
-                for (unsigned int i = 0; i < count; i++) {
-                    *pucOut++ = thisOne;
-                }
+                *pucOut++ = thisOne;
             }
-        } else {
-            *pucOut++ = 255;
-            *pucOut++ = count - 1;
-            *pucOut++ = thisOne;
-        }
-    } while (pucIn != pucEnd);
-    rleSize = (unsigned int)(pucOut - rleCompressBuf);
-    PIXEndNamedEvent();
+        } while (pucIn != pucEnd);
+        rleSize = (unsigned int)(pucOut - rleCompressBuf);
+        PIXEndNamedEvent();
     }
 
     // Return

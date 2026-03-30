@@ -4613,9 +4613,10 @@ bool CMinecraftApp::DefaultCapeExists() {
     std::wstring wTex = L"Special_Cape.png";
     bool val = false;
 
-    { std::lock_guard<std::mutex> lock(csMemFilesLock);
-    auto it = m_MEM_Files.find(wTex);
-    if (it != m_MEM_Files.end()) val = true;
+    {
+        std::lock_guard<std::mutex> lock(csMemFilesLock);
+        auto it = m_MEM_Files.find(wTex);
+        if (it != m_MEM_Files.end()) val = true;
     }
 
     return val;
@@ -4624,9 +4625,10 @@ bool CMinecraftApp::DefaultCapeExists() {
 bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring& wName) {
     bool val = false;
 
-    { std::lock_guard<std::mutex> lock(csMemFilesLock);
-    auto it = m_MEM_Files.find(wName);
-    if (it != m_MEM_Files.end()) val = true;
+    {
+        std::lock_guard<std::mutex> lock(csMemFilesLock);
+        auto it = m_MEM_Files.find(wName);
+        if (it != m_MEM_Files.end()) val = true;
     }
 
     return val;
@@ -4678,9 +4680,10 @@ int CMinecraftApp::GetTPConfigVal(wchar_t* pwchDataFile) { return -1; }
 bool CMinecraftApp::IsFileInTPD(int iConfig) {
     bool val = false;
 
-    { std::lock_guard<std::mutex> lock(csMemTPDLock);
-    auto it = m_MEM_TPD.find(iConfig);
-    if (it != m_MEM_TPD.end()) val = true;
+    {
+        std::lock_guard<std::mutex> lock(csMemTPDLock);
+        auto it = m_MEM_TPD.find(iConfig);
+        if (it != m_MEM_TPD.end()) val = true;
     }
 
     return val;
@@ -6607,41 +6610,42 @@ std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] = {
 unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
                                           bool bPromote) {
     // lock access
-    { std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
+    {
+        std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
 
-    // If it's already in there, promote it to the top of the list
-    int iPosition = 0;
-    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
-         ++it) {
-        DLCRequest* pCurrent = *it;
+        // If it's already in there, promote it to the top of the list
+        int iPosition = 0;
+        for (auto it = m_DLCDownloadQueue.begin();
+             it != m_DLCDownloadQueue.end(); ++it) {
+            DLCRequest* pCurrent = *it;
 
-        if (pCurrent->dwType == m_dwContentTypeA[eType]) {
-            // already got this in the list
-            if (pCurrent->eState == e_DLC_ContentState_Retrieving ||
-                pCurrent->eState == e_DLC_ContentState_Retrieved) {
-                // already retrieved this
-                return 0;
-            } else {
-                // promote
-                if (bPromote) {
-                    m_DLCDownloadQueue.erase(m_DLCDownloadQueue.begin() +
-                                             iPosition);
-                    m_DLCDownloadQueue.insert(m_DLCDownloadQueue.begin(),
-                                              pCurrent);
+            if (pCurrent->dwType == m_dwContentTypeA[eType]) {
+                // already got this in the list
+                if (pCurrent->eState == e_DLC_ContentState_Retrieving ||
+                    pCurrent->eState == e_DLC_ContentState_Retrieved) {
+                    // already retrieved this
+                    return 0;
+                } else {
+                    // promote
+                    if (bPromote) {
+                        m_DLCDownloadQueue.erase(m_DLCDownloadQueue.begin() +
+                                                 iPosition);
+                        m_DLCDownloadQueue.insert(m_DLCDownloadQueue.begin(),
+                                                  pCurrent);
+                    }
+                    return 0;
                 }
-                return 0;
             }
+            iPosition++;
         }
-        iPosition++;
-    }
 
-    DLCRequest* pDLCreq = new DLCRequest;
-    pDLCreq->dwType = m_dwContentTypeA[eType];
-    pDLCreq->eState = e_DLC_ContentState_Idle;
+        DLCRequest* pDLCreq = new DLCRequest;
+        pDLCreq->dwType = m_dwContentTypeA[eType];
+        pDLCreq->eState = e_DLC_ContentState_Idle;
 
-    m_DLCDownloadQueue.push_back(pDLCreq);
+        m_DLCDownloadQueue.push_back(pDLCreq);
 
-    m_bAllDLCContentRetrieved = false;
+        m_bAllDLCContentRetrieved = false;
     }
 
     app.DebugPrintf("[Consoles_App] Added DLC request.\n");
@@ -6859,40 +6863,41 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
                       // online.
     }
 
-    { std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
-    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
-         ++it) {
-        DLCRequest* pCurrent = *it;
+    {
+        std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
+        for (auto it = m_DLCDownloadQueue.begin();
+             it != m_DLCDownloadQueue.end(); ++it) {
+            DLCRequest* pCurrent = *it;
 
-        if (pCurrent->eState == e_DLC_ContentState_Retrieving) {
-            return true;
+            if (pCurrent->eState == e_DLC_ContentState_Retrieving) {
+                return true;
+            }
         }
-    }
 
-    // Now look for the next retrieval
-    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
-         ++it) {
-        DLCRequest* pCurrent = *it;
+        // Now look for the next retrieval
+        for (auto it = m_DLCDownloadQueue.begin();
+             it != m_DLCDownloadQueue.end(); ++it) {
+            DLCRequest* pCurrent = *it;
 
-        if (pCurrent->eState == e_DLC_ContentState_Idle) {
+            if (pCurrent->eState == e_DLC_ContentState_Idle) {
 #if defined(_DEBUG)
-            app.DebugPrintf("RetrieveNextDLCContent - type = %d\n",
-                            pCurrent->dwType);
+                app.DebugPrintf("RetrieveNextDLCContent - type = %d\n",
+                                pCurrent->dwType);
 #endif
 
-            C4JStorage::EDLCStatus status = StorageManager.GetDLCOffers(
-                ProfileManager.GetPrimaryPad(),
-                &CMinecraftApp::DLCOffersReturned, this, pCurrent->dwType);
-            if (status == C4JStorage::EDLC_Pending) {
-                pCurrent->eState = e_DLC_ContentState_Retrieving;
-            } else {
-                // no content of this type, or some other problem
-                app.DebugPrintf("RetrieveNextDLCContent - PROBLEM\n");
-                pCurrent->eState = e_DLC_ContentState_Retrieved;
+                C4JStorage::EDLCStatus status = StorageManager.GetDLCOffers(
+                    ProfileManager.GetPrimaryPad(),
+                    &CMinecraftApp::DLCOffersReturned, this, pCurrent->dwType);
+                if (status == C4JStorage::EDLC_Pending) {
+                    pCurrent->eState = e_DLC_ContentState_Retrieving;
+                } else {
+                    // no content of this type, or some other problem
+                    app.DebugPrintf("RetrieveNextDLCContent - PROBLEM\n");
+                    pCurrent->eState = e_DLC_ContentState_Retrieved;
+                }
+                return true;
             }
-            return true;
         }
-    }
     }
 
     app.DebugPrintf("[Consoles_App] Finished downloading dlc content.\n");
@@ -6905,45 +6910,47 @@ int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
     // find the right one in the vector
-    { std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
-    for (auto it = pClass->m_TMSPPDownloadQueue.begin();
-         it != pClass->m_TMSPPDownloadQueue.end(); ++it) {
-        TMSPPRequest* pCurrent = *it;
+    {
+        std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
+        for (auto it = pClass->m_TMSPPDownloadQueue.begin();
+             it != pClass->m_TMSPPDownloadQueue.end(); ++it) {
+            TMSPPRequest* pCurrent = *it;
 #if defined(_WINDOWS64)
-        char szFile[MAX_TMSFILENAME_SIZE];
-        wcstombs(szFile, pCurrent->wchFilename, MAX_TMSFILENAME_SIZE);
+            char szFile[MAX_TMSFILENAME_SIZE];
+            wcstombs(szFile, pCurrent->wchFilename, MAX_TMSFILENAME_SIZE);
 
-        if (strcmp(szFilename, szFile) == 0)
+            if (strcmp(szFilename, szFile) == 0)
 #endif
-        {
-            // set this to retrieved whether it found it or not
-            pCurrent->eState = e_TMS_ContentState_Retrieved;
+            {
+                // set this to retrieved whether it found it or not
+                pCurrent->eState = e_TMS_ContentState_Retrieved;
 
-            if (pFileData != nullptr) {
-                switch (pCurrent->eType) {
-                    case e_DLC_TexturePackData: {
-                        app.DebugPrintf("--- Got texturepack data %ls\n",
-                                        pCurrent->wchFilename);
-                        // get the config value for the texture pack
-                        int iConfig = app.GetTPConfigVal(pCurrent->wchFilename);
-                        app.AddMemoryTPDFile(iConfig, pFileData->pbData,
-                                             pFileData->size);
-                    } break;
-                    default:
-                        app.DebugPrintf("--- Got image data - %ls\n",
-                                        pCurrent->wchFilename);
-                        app.AddMemoryTextureFile(pCurrent->wchFilename,
-                                                 pFileData->pbData,
+                if (pFileData != nullptr) {
+                    switch (pCurrent->eType) {
+                        case e_DLC_TexturePackData: {
+                            app.DebugPrintf("--- Got texturepack data %ls\n",
+                                            pCurrent->wchFilename);
+                            // get the config value for the texture pack
+                            int iConfig =
+                                app.GetTPConfigVal(pCurrent->wchFilename);
+                            app.AddMemoryTPDFile(iConfig, pFileData->pbData,
                                                  pFileData->size);
-                        break;
+                        } break;
+                        default:
+                            app.DebugPrintf("--- Got image data - %ls\n",
+                                            pCurrent->wchFilename);
+                            app.AddMemoryTextureFile(pCurrent->wchFilename,
+                                                     pFileData->pbData,
+                                                     pFileData->size);
+                            break;
+                    }
+                } else {
+                    app.DebugPrintf("TMSImageReturned failed (%s)...\n",
+                                    szFilename);
                 }
-            } else {
-                app.DebugPrintf("TMSImageReturned failed (%s)...\n",
-                                szFilename);
+                break;
             }
-            break;
         }
-    }
     }
 
     return 0;
@@ -6963,16 +6970,17 @@ void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
     app.DebugPrintf("[Consoles_App] Clear and reset download queue.\n");
 
     int iPosition = 0;
-    { std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
-    for (auto it = m_DLCDownloadQueue.begin(); it != m_DLCDownloadQueue.end();
-         ++it) {
-        DLCRequest* pCurrent = *it;
+    {
+        std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
+        for (auto it = m_DLCDownloadQueue.begin();
+             it != m_DLCDownloadQueue.end(); ++it) {
+            DLCRequest* pCurrent = *it;
 
-        delete pCurrent;
-        iPosition++;
-    }
-    m_DLCDownloadQueue.clear();
-    m_bAllDLCContentRetrieved = true;
+            delete pCurrent;
+            iPosition++;
+        }
+        m_DLCDownloadQueue.clear();
+        m_bAllDLCContentRetrieved = true;
     }
 }
 
@@ -6985,16 +6993,17 @@ void CMinecraftApp::TickTMSPPFilesRetrieved() {
 }
 void CMinecraftApp::ClearTMSPPFilesRetrieved() {
     int iPosition = 0;
-    { std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
-    for (auto it = m_TMSPPDownloadQueue.begin();
-         it != m_TMSPPDownloadQueue.end(); ++it) {
-        TMSPPRequest* pCurrent = *it;
+    {
+        std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
+        for (auto it = m_TMSPPDownloadQueue.begin();
+             it != m_TMSPPDownloadQueue.end(); ++it) {
+            TMSPPRequest* pCurrent = *it;
 
-        delete pCurrent;
-        iPosition++;
-    }
-    m_TMSPPDownloadQueue.clear();
-    m_bAllTMSContentRetrieved = true;
+            delete pCurrent;
+            iPosition++;
+        }
+        m_TMSPPDownloadQueue.clear();
+        m_bAllTMSContentRetrieved = true;
     }
 }
 
@@ -7003,23 +7012,24 @@ int CMinecraftApp::DLCOffersReturned(void* pParam, int iOfferC,
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
     // find the right one in the vector
-    { std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
-    for (auto it = pClass->m_DLCDownloadQueue.begin();
-         it != pClass->m_DLCDownloadQueue.end(); ++it) {
-        DLCRequest* pCurrent = *it;
+    {
+        std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
+        for (auto it = pClass->m_DLCDownloadQueue.begin();
+             it != pClass->m_DLCDownloadQueue.end(); ++it) {
+            DLCRequest* pCurrent = *it;
 
-        // avatar items are coming back as type Content, so we can't trust the
-        // type setting
-        if (pCurrent->dwType == static_cast<std::uint32_t>(dwType)) {
-            pClass->m_iDLCOfferC = iOfferC;
-            app.DebugPrintf(
-                "DLCOffersReturned - type %u, count %d - setting to "
-                "retrieved\n",
-                dwType, iOfferC);
-            pCurrent->eState = e_DLC_ContentState_Retrieved;
-            break;
+            // avatar items are coming back as type Content, so we can't trust
+            // the type setting
+            if (pCurrent->dwType == static_cast<std::uint32_t>(dwType)) {
+                pClass->m_iDLCOfferC = iOfferC;
+                app.DebugPrintf(
+                    "DLCOffersReturned - type %u, count %d - setting to "
+                    "retrieved\n",
+                    dwType, iOfferC);
+                pCurrent->eState = e_DLC_ContentState_Retrieved;
+                break;
+            }
         }
-    }
     }
     return 0;
 }
@@ -7057,29 +7067,32 @@ void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
     std::vector<ModelPart*>* pvModelPart = new std::vector<ModelPart*>;
     std::vector<SKIN_BOX*>* pvSkinBoxes = new std::vector<SKIN_BOX*>;
 
-    { std::lock_guard<std::mutex> lock_mp(csAdditionalModelParts);
-    std::lock_guard<std::mutex> lock_sb(csAdditionalSkinBoxes);
+    {
+        std::lock_guard<std::mutex> lock_mp(csAdditionalModelParts);
+        std::lock_guard<std::mutex> lock_sb(csAdditionalSkinBoxes);
 
-    app.DebugPrintf(
-        "*** SetAdditionalSkinBoxes - Inserting model parts for skin %d from "
-        "array of Skin Boxes\n",
-        dwSkinID & 0x0FFFFFFF);
+        app.DebugPrintf(
+            "*** SetAdditionalSkinBoxes - Inserting model parts for skin %d "
+            "from "
+            "array of Skin Boxes\n",
+            dwSkinID & 0x0FFFFFFF);
 
-    // convert the skin boxes into model parts, and add to the humanoid model
-    for (unsigned int i = 0; i < dwSkinBoxC; i++) {
-        if (pModel) {
-            ModelPart* pModelPart = pModel->AddOrRetrievePart(&SkinBoxA[i]);
-            pvModelPart->push_back(pModelPart);
-            pvSkinBoxes->push_back(&SkinBoxA[i]);
+        // convert the skin boxes into model parts, and add to the humanoid
+        // model
+        for (unsigned int i = 0; i < dwSkinBoxC; i++) {
+            if (pModel) {
+                ModelPart* pModelPart = pModel->AddOrRetrievePart(&SkinBoxA[i]);
+                pvModelPart->push_back(pModelPart);
+                pvSkinBoxes->push_back(&SkinBoxA[i]);
+            }
         }
-    }
 
-    m_AdditionalModelParts.insert(
-        std::pair<std::uint32_t, std::vector<ModelPart*>*>(dwSkinID,
-                                                           pvModelPart));
-    m_AdditionalSkinBoxes.insert(
-        std::pair<std::uint32_t, std::vector<SKIN_BOX*>*>(dwSkinID,
-                                                          pvSkinBoxes));
+        m_AdditionalModelParts.insert(
+            std::pair<std::uint32_t, std::vector<ModelPart*>*>(dwSkinID,
+                                                               pvModelPart));
+        m_AdditionalSkinBoxes.insert(
+            std::pair<std::uint32_t, std::vector<SKIN_BOX*>*>(dwSkinID,
+                                                              pvSkinBoxes));
     }
 }
 
@@ -7090,27 +7103,30 @@ std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
     Model* pModel = renderer->getModel();
     std::vector<ModelPart*>* pvModelPart = new std::vector<ModelPart*>;
 
-    { std::lock_guard<std::mutex> lock_mp(csAdditionalModelParts);
-    std::lock_guard<std::mutex> lock_sb(csAdditionalSkinBoxes);
-    app.DebugPrintf(
-        "*** SetAdditionalSkinBoxes - Inserting model parts for skin %d from "
-        "array of Skin Boxes\n",
-        dwSkinID & 0x0FFFFFFF);
+    {
+        std::lock_guard<std::mutex> lock_mp(csAdditionalModelParts);
+        std::lock_guard<std::mutex> lock_sb(csAdditionalSkinBoxes);
+        app.DebugPrintf(
+            "*** SetAdditionalSkinBoxes - Inserting model parts for skin %d "
+            "from "
+            "array of Skin Boxes\n",
+            dwSkinID & 0x0FFFFFFF);
 
-    // convert the skin boxes into model parts, and add to the humanoid model
-    for (auto it = pvSkinBoxA->begin(); it != pvSkinBoxA->end(); ++it) {
-        if (pModel) {
-            ModelPart* pModelPart = pModel->AddOrRetrievePart(*it);
-            pvModelPart->push_back(pModelPart);
+        // convert the skin boxes into model parts, and add to the humanoid
+        // model
+        for (auto it = pvSkinBoxA->begin(); it != pvSkinBoxA->end(); ++it) {
+            if (pModel) {
+                ModelPart* pModelPart = pModel->AddOrRetrievePart(*it);
+                pvModelPart->push_back(pModelPart);
+            }
         }
-    }
 
-    m_AdditionalModelParts.insert(
-        std::pair<std::uint32_t, std::vector<ModelPart*>*>(dwSkinID,
-                                                           pvModelPart));
-    m_AdditionalSkinBoxes.insert(
-        std::pair<std::uint32_t, std::vector<SKIN_BOX*>*>(dwSkinID,
-                                                          pvSkinBoxA));
+        m_AdditionalModelParts.insert(
+            std::pair<std::uint32_t, std::vector<ModelPart*>*>(dwSkinID,
+                                                               pvModelPart));
+        m_AdditionalSkinBoxes.insert(
+            std::pair<std::uint32_t, std::vector<SKIN_BOX*>*>(dwSkinID,
+                                                              pvSkinBoxA));
     }
     return pvModelPart;
 }

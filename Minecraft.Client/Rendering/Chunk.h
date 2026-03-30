@@ -61,8 +61,8 @@ private:
 
 public:
     Chunk(Level* level, LevelRenderer::rteMap& globalRenderableTileEntities,
-          std::mutex& globalRenderableTileEntities_cs, int x, int y,
-          int z, ClipChunk* clipChunk);
+          std::mutex& globalRenderableTileEntities_cs, int x, int y, int z,
+          ClipChunk* clipChunk);
     Chunk();
 
     void setPos(int x, int y, int z);

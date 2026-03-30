@@ -47,7 +47,8 @@ void Socket::Initialise(ServerConnection* serverConnection) {
         // Streams already exist – just reset queue state and re-open streams.
         for (int i = 0; i < 2; i++) {
             {
-                std::unique_lock<std::mutex> lock(s_hostQueueLock[i], std::try_to_lock);
+                std::unique_lock<std::mutex> lock(s_hostQueueLock[i],
+                                                  std::try_to_lock);
                 if (lock.owns_lock()) {
                     // Clear the queue
                     std::queue<std::uint8_t> empty;
@@ -246,7 +247,8 @@ int Socket::SocketInputStreamLocal::read() {
     while (m_streamOpen && ShutdownManager::ShouldRun(
                                ShutdownManager::eConnectionReadThreads)) {
         {
-            std::unique_lock<std::mutex> lock(s_hostQueueLock[m_queueIdx], std::try_to_lock);
+            std::unique_lock<std::mutex> lock(s_hostQueueLock[m_queueIdx],
+                                              std::try_to_lock);
             if (lock.owns_lock()) {
                 if (s_hostQueue[m_queueIdx].size()) {
                     std::uint8_t retval = s_hostQueue[m_queueIdx].front();
@@ -272,7 +274,8 @@ int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset,
                                          unsigned int length) {
     while (m_streamOpen) {
         {
-            std::unique_lock<std::mutex> lock(s_hostQueueLock[m_queueIdx], std::try_to_lock);
+            std::unique_lock<std::mutex> lock(s_hostQueueLock[m_queueIdx],
+                                              std::try_to_lock);
             if (lock.owns_lock()) {
                 if (s_hostQueue[m_queueIdx].size() >= length) {
                     for (unsigned int i = 0; i < length; i++) {
@@ -356,7 +359,8 @@ int Socket::SocketInputStreamNetwork::read() {
     while (m_streamOpen && ShutdownManager::ShouldRun(
                                ShutdownManager::eConnectionReadThreads)) {
         {
-            std::unique_lock<std::mutex> lock(m_socket->m_queueLockNetwork[m_queueIdx], std::try_to_lock);
+            std::unique_lock<std::mutex> lock(
+                m_socket->m_queueLockNetwork[m_queueIdx], std::try_to_lock);
             if (lock.owns_lock()) {
                 if (m_socket->m_queueNetwork[m_queueIdx].size()) {
                     std::uint8_t retval =
@@ -383,7 +387,8 @@ int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset,
                                            unsigned int length) {
     while (m_streamOpen) {
         {
-            std::unique_lock<std::mutex> lock(m_socket->m_queueLockNetwork[m_queueIdx], std::try_to_lock);
+            std::unique_lock<std::mutex> lock(
+                m_socket->m_queueLockNetwork[m_queueIdx], std::try_to_lock);
             if (lock.owns_lock()) {
                 if (m_socket->m_queueNetwork[m_queueIdx].size() >= length) {
                     for (unsigned int i = 0; i < length; i++) {
@@ -449,7 +454,8 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             queueIdx = SOCKET_CLIENT_END;
 
         {
-            std::lock_guard<std::mutex> lock(m_socket->m_queueLockNetwork[queueIdx]);
+            std::lock_guard<std::mutex> lock(
+                m_socket->m_queueLockNetwork[queueIdx]);
             for (unsigned int i = 0; i < length; i++) {
                 m_socket->m_queueNetwork[queueIdx].push(b[offset + i]);
             }

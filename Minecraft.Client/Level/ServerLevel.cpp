@@ -192,15 +192,21 @@ ServerLevel::~ServerLevel() {
         }
         m_queuedSendTileUpdates.clear();
 
-        delete this->tracker;  // MGH - added, we were losing about 500K going in
-                               // and out the menus
+        delete this->tracker;  // MGH - added, we were losing about 500K going
+                               // in and out the menus
         delete this->chunkMap;
     }
 
     // Make sure that the update thread isn't actually doing any updating
-    { std::lock_guard<std::recursive_mutex> lock(m_updateCS[0]); }
-    { std::lock_guard<std::recursive_mutex> lock(m_updateCS[1]); }
-    { std::lock_guard<std::recursive_mutex> lock(m_updateCS[2]); }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_updateCS[0]);
+    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_updateCS[1]);
+    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_updateCS[2]);
+    }
     m_updateTrigger->clearAll();
 }
 
@@ -441,8 +447,9 @@ void ServerLevel::tickTiles() {
 
     {
         std::lock_guard<std::recursive_mutex> lock(m_updateCS[iLev]);
-        // This section processes the tiles that need to be ticked, which we worked
-        // out in the previous tick (or haven't yet, if this is the first frame)
+        // This section processes the tiles that need to be ticked, which we
+        // worked out in the previous tick (or haven't yet, if this is the first
+        // frame)
         /*int grassTicks = 0;
         int lavaTicks = 0;
         int otherTicks = 0;*/
@@ -452,7 +459,8 @@ void ServerLevel::tickTiles() {
             int z = m_updateTileZ[iLev][i];
             if (hasChunkAt(x, y, z)) {
                 int id = getTile(x, y, z);
-                if (Tile::tiles[id] != nullptr && Tile::tiles[id]->isTicking()) {
+                if (Tile::tiles[id] != nullptr &&
+                    Tile::tiles[id]->isTicking()) {
                     /*if(id == 2) ++grassTicks;
                     else if(id == 11) ++lavaTicks;
                     else ++otherTicks;*/
@@ -461,7 +469,8 @@ void ServerLevel::tickTiles() {
             }
         }
         // printf("Total ticks - Grass: %d, Lava: %d, Other: %d, Total: %d\n",
-        // grassTicks, lavaTicks, otherTicks, grassTicks + lavaTicks + otherTicks);
+        // grassTicks, lavaTicks, otherTicks, grassTicks + lavaTicks +
+        // otherTicks);
         m_updateTileCount[iLev] = 0;
         m_updateChunkCount[iLev] = 0;
     }

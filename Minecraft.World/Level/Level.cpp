@@ -1615,10 +1615,11 @@ bool Level::addEntity(std::shared_ptr<Entity> e) {
         MemSect(42);
         getChunk(xc, zc)->addEntity(e);
         MemSect(0);
-        { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-        MemSect(43);
-        entities.push_back(e);
-        MemSect(0);
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+            MemSect(43);
+            entities.push_back(e);
+            MemSect(0);
         }
         MemSect(44);
         entityAdded(e);
@@ -1700,14 +1701,15 @@ void Level::removeEntityImmediately(std::shared_ptr<Entity> e) {
         getChunk(xc, zc)->removeEntity(e);
     }
 
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-    std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
-    std::vector<std::shared_ptr<Entity> >::iterator endIt = entities.end();
-    while (it != endIt && *it != e) it++;
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
+        std::vector<std::shared_ptr<Entity> >::iterator endIt = entities.end();
+        while (it != endIt && *it != e) it++;
 
-    if (it != endIt) {
-        entities.erase(it);
-    }
+        if (it != endIt) {
+            entities.erase(it);
+        }
     }
     entityRemoved(e);
 }
@@ -2076,23 +2078,24 @@ void Level::tickEntities() {
         }
     }
 
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
 
-    for (auto it = entities.begin(); it != entities.end();) {
-        bool found = false;
-        for (auto it2 = entitiesToRemove.begin(); it2 != entitiesToRemove.end();
-             it2++) {
-            if ((*it) == (*it2)) {
-                found = true;
-                break;
+        for (auto it = entities.begin(); it != entities.end();) {
+            bool found = false;
+            for (auto it2 = entitiesToRemove.begin();
+                 it2 != entitiesToRemove.end(); it2++) {
+                if ((*it) == (*it2)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                it = entities.erase(it);
+            } else {
+                it++;
             }
         }
-        if (found) {
-            it = entities.erase(it);
-        } else {
-            it++;
-        }
-    }
     }
 
     auto itETREnd = entitiesToRemove.end();
@@ -2117,138 +2120,144 @@ void Level::tickEntities() {
     /* 4J Jev, using an iterator causes problems here as
      * the vector is modified from inside this loop.
      */
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
 
-    for (unsigned int i = 0; i < entities.size();) {
-        std::shared_ptr<Entity> e = entities.at(i);
+        for (unsigned int i = 0; i < entities.size();) {
+            std::shared_ptr<Entity> e = entities.at(i);
 
-        if (e->riding != nullptr) {
-            if (e->riding->removed || e->riding->rider.lock() != e) {
-                e->riding->rider = std::weak_ptr<Entity>();
-                e->riding = nullptr;
-            } else {
-                i++;
-                continue;
+            if (e->riding != nullptr) {
+                if (e->riding->removed || e->riding->rider.lock() != e) {
+                    e->riding->rider = std::weak_ptr<Entity>();
+                    e->riding = nullptr;
+                } else {
+                    i++;
+                    continue;
+                }
             }
-        }
 
-        if (!e->removed) {
+            if (!e->removed) {
 #if !defined(_FINAL_BUILD)
-            if (!(app.DebugSettingsOn() && app.GetMobsDontTickEnabled() &&
-                  e->instanceof(eTYPE_MOB) && !e->instanceof(eTYPE_PLAYER)))
-#endif
-            {
-                tick(e);
-            }
-        }
-
-        if (e->removed) {
-            int xc = e->xChunk;
-            int zc = e->zChunk;
-            if (e->inChunk && hasChunk(xc, zc)) {
-                getChunk(xc, zc)->removeEntity(e);
-            }
-            // entities.remove(i--);
-            // itE = entities.erase( itE );
-
-            // 4J Find the entity again before deleting, as things might have
-            // moved in the entity array eg from the explosion created by tnt
-            auto it = find(entities.begin(), entities.end(), e);
-            if (it != entities.end()) {
-                entities.erase(it);
-            }
-
-            entityRemoved(e);
-        } else {
-            i++;
-        }
-    }
-    }
-
-    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-
-    updatingTileEntities = true;
-    for (auto it = tileEntityList.begin(); it != tileEntityList.end();) {
-        std::shared_ptr<TileEntity> te =
-            *it;  // tilevector<shared_ptr<Entity> >.at(i);
-        if (!te->isRemoved() && te->hasLevel()) {
-            if (hasChunkAt(te->x, te->y, te->z)) {
-#if defined(_LARGE_WORLDS)
-                LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
-                if (!isClientSide || !lc->isUnloaded())
+                if (!(app.DebugSettingsOn() && app.GetMobsDontTickEnabled() &&
+                      e->instanceof(eTYPE_MOB) && !e->instanceof(eTYPE_PLAYER)))
 #endif
                 {
-                    te->tick();
+                    tick(e);
                 }
             }
-        }
 
-        if (te->isRemoved()) {
-            it = tileEntityList.erase(it);
-            if (hasChunk(te->x >> 4, te->z >> 4)) {
-                LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
-                if (lc != nullptr)
-                    lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
+            if (e->removed) {
+                int xc = e->xChunk;
+                int zc = e->zChunk;
+                if (e->inChunk && hasChunk(xc, zc)) {
+                    getChunk(xc, zc)->removeEntity(e);
+                }
+                // entities.remove(i--);
+                // itE = entities.erase( itE );
+
+                // 4J Find the entity again before deleting, as things might
+                // have moved in the entity array eg from the explosion created
+                // by tnt
+                auto it = find(entities.begin(), entities.end(), e);
+                if (it != entities.end()) {
+                    entities.erase(it);
+                }
+
+                entityRemoved(e);
+            } else {
+                i++;
             }
-        } else {
-            it++;
         }
     }
-    updatingTileEntities = false;
 
-    // 4J-PB - Stuart  - check this is correct here
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
 
-    if (!tileEntitiesToUnload.empty()) {
-        FRAME_PROFILE_SCOPE(TileEntityUnloadCleanup);
-
+        updatingTileEntities = true;
         for (auto it = tileEntityList.begin(); it != tileEntityList.end();) {
-            if (tileEntitiesToUnload.find(*it) != tileEntitiesToUnload.end()) {
-                if (isClientSide) {
-                    __debugbreak();
+            std::shared_ptr<TileEntity> te =
+                *it;  // tilevector<shared_ptr<Entity> >.at(i);
+            if (!te->isRemoved() && te->hasLevel()) {
+                if (hasChunkAt(te->x, te->y, te->z)) {
+#if defined(_LARGE_WORLDS)
+                    LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
+                    if (!isClientSide || !lc->isUnloaded())
+#endif
+                    {
+                        te->tick();
+                    }
                 }
+            }
+
+            if (te->isRemoved()) {
                 it = tileEntityList.erase(it);
+                if (hasChunk(te->x >> 4, te->z >> 4)) {
+                    LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
+                    if (lc != nullptr)
+                        lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
+                }
             } else {
                 it++;
             }
         }
-        tileEntitiesToUnload.clear();
-    }
+        updatingTileEntities = false;
 
-    if (!pendingTileEntities.empty()) {
-        for (auto it = pendingTileEntities.begin();
-             it != pendingTileEntities.end(); it++) {
-            std::shared_ptr<TileEntity> e = *it;
-            if (!e->isRemoved()) {
-                if (find(tileEntityList.begin(), tileEntityList.end(), e) ==
-                    tileEntityList.end()) {
-                    tileEntityList.push_back(e);
-                }
-                if (hasChunk(e->x >> 4, e->z >> 4)) {
-                    LevelChunk* lc = getChunk(e->x >> 4, e->z >> 4);
-                    if (lc != nullptr)
-                        lc->setTileEntity(e->x & 15, e->y, e->z & 15, e);
-                }
+        // 4J-PB - Stuart  - check this is correct here
 
-                sendTileUpdated(e->x, e->y, e->z);
+        if (!tileEntitiesToUnload.empty()) {
+            FRAME_PROFILE_SCOPE(TileEntityUnloadCleanup);
+
+            for (auto it = tileEntityList.begin();
+                 it != tileEntityList.end();) {
+                if (tileEntitiesToUnload.find(*it) !=
+                    tileEntitiesToUnload.end()) {
+                    if (isClientSide) {
+                        __debugbreak();
+                    }
+                    it = tileEntityList.erase(it);
+                } else {
+                    it++;
+                }
             }
+            tileEntitiesToUnload.clear();
         }
-        pendingTileEntities.clear();
-    }
+
+        if (!pendingTileEntities.empty()) {
+            for (auto it = pendingTileEntities.begin();
+                 it != pendingTileEntities.end(); it++) {
+                std::shared_ptr<TileEntity> e = *it;
+                if (!e->isRemoved()) {
+                    if (find(tileEntityList.begin(), tileEntityList.end(), e) ==
+                        tileEntityList.end()) {
+                        tileEntityList.push_back(e);
+                    }
+                    if (hasChunk(e->x >> 4, e->z >> 4)) {
+                        LevelChunk* lc = getChunk(e->x >> 4, e->z >> 4);
+                        if (lc != nullptr)
+                            lc->setTileEntity(e->x & 15, e->y, e->z & 15, e);
+                    }
+
+                    sendTileUpdated(e->x, e->y, e->z);
+                }
+            }
+            pendingTileEntities.clear();
+        }
     }
 }
 
 void Level::addAllPendingTileEntities(
     std::vector<std::shared_ptr<TileEntity> >& entities) {
-    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-    if (updatingTileEntities) {
-        for (auto it = entities.begin(); it != entities.end(); it++) {
-            pendingTileEntities.push_back(*it);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
+        if (updatingTileEntities) {
+            for (auto it = entities.begin(); it != entities.end(); it++) {
+                pendingTileEntities.push_back(*it);
+            }
+        } else {
+            for (auto it = entities.begin(); it != entities.end(); it++) {
+                tileEntityList.push_back(*it);
+            }
         }
-    } else {
-        for (auto it = entities.begin(); it != entities.end(); it++) {
-            tileEntityList.push_back(*it);
-        }
-    }
     }
 }
 
@@ -2587,8 +2596,9 @@ return shared_ptr<Entity>();
 
 std::wstring Level::gatherStats() {
     wchar_t buf[64];
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-    swprintf(buf, 64, L"All:%d", entities.size());
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        swprintf(buf, 64, L"All:%d", entities.size());
     }
     return std::wstring(buf);
 }
@@ -2604,14 +2614,15 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
     std::shared_ptr<TileEntity> tileEntity = nullptr;
 
     if (updatingTileEntities) {
-        { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-        for (int i = 0; i < pendingTileEntities.size(); i++) {
-            std::shared_ptr<TileEntity> e = pendingTileEntities.at(i);
-            if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
-                tileEntity = e;
-                break;
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
+            for (int i = 0; i < pendingTileEntities.size(); i++) {
+                std::shared_ptr<TileEntity> e = pendingTileEntities.at(i);
+                if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
+                    tileEntity = e;
+                    break;
+                }
             }
-        }
         }
     }
 
@@ -2623,16 +2634,17 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
     }
 
     if (tileEntity == nullptr) {
-        { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-        for (auto it = pendingTileEntities.begin();
-             it != pendingTileEntities.end(); it++) {
-            std::shared_ptr<TileEntity> e = *it;
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
+            for (auto it = pendingTileEntities.begin();
+                 it != pendingTileEntities.end(); it++) {
+                std::shared_ptr<TileEntity> e = *it;
 
-            if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
-                tileEntity = e;
-                break;
+                if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
+                    tileEntity = e;
+                    break;
+                }
             }
-        }
         }
     }
     return tileEntity;
@@ -2641,66 +2653,71 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
 void Level::setTileEntity(int x, int y, int z,
                           std::shared_ptr<TileEntity> tileEntity) {
     if (tileEntity != nullptr && !tileEntity->isRemoved()) {
-        { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-        if (updatingTileEntities) {
-            tileEntity->x = x;
-            tileEntity->y = y;
-            tileEntity->z = z;
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
+            if (updatingTileEntities) {
+                tileEntity->x = x;
+                tileEntity->y = y;
+                tileEntity->z = z;
 
-            // avoid adding duplicates
-            for (auto it = pendingTileEntities.begin();
-                 it != pendingTileEntities.end();) {
-                std::shared_ptr<TileEntity> next = *it;
-                if (next->x == x && next->y == y && next->z == z) {
-                    next->setRemoved();
-                    it = pendingTileEntities.erase(it);
-                } else {
-                    ++it;
+                // avoid adding duplicates
+                for (auto it = pendingTileEntities.begin();
+                     it != pendingTileEntities.end();) {
+                    std::shared_ptr<TileEntity> next = *it;
+                    if (next->x == x && next->y == y && next->z == z) {
+                        next->setRemoved();
+                        it = pendingTileEntities.erase(it);
+                    } else {
+                        ++it;
+                    }
                 }
+
+                pendingTileEntities.push_back(tileEntity);
+            } else {
+                tileEntityList.push_back(tileEntity);
+
+                LevelChunk* lc = getChunk(x >> 4, z >> 4);
+                if (lc != nullptr)
+                    lc->setTileEntity(x & 15, y, z & 15, tileEntity);
             }
-
-            pendingTileEntities.push_back(tileEntity);
-        } else {
-            tileEntityList.push_back(tileEntity);
-
-            LevelChunk* lc = getChunk(x >> 4, z >> 4);
-            if (lc != nullptr) lc->setTileEntity(x & 15, y, z & 15, tileEntity);
-        }
         }
     }
 }
 
 void Level::removeTileEntity(int x, int y, int z) {
-    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-    std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
-    if (te != nullptr && updatingTileEntities) {
-        te->setRemoved();
-        auto it =
-            find(pendingTileEntities.begin(), pendingTileEntities.end(), te);
-        if (it != pendingTileEntities.end()) {
-            pendingTileEntities.erase(it);
-        }
-    } else {
-        if (te != nullptr) {
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
+        std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
+        if (te != nullptr && updatingTileEntities) {
+            te->setRemoved();
             auto it = find(pendingTileEntities.begin(),
                            pendingTileEntities.end(), te);
             if (it != pendingTileEntities.end()) {
                 pendingTileEntities.erase(it);
             }
-            auto it2 = find(tileEntityList.begin(), tileEntityList.end(), te);
-            if (it2 != tileEntityList.end()) {
-                tileEntityList.erase(it2);
+        } else {
+            if (te != nullptr) {
+                auto it = find(pendingTileEntities.begin(),
+                               pendingTileEntities.end(), te);
+                if (it != pendingTileEntities.end()) {
+                    pendingTileEntities.erase(it);
+                }
+                auto it2 =
+                    find(tileEntityList.begin(), tileEntityList.end(), te);
+                if (it2 != tileEntityList.end()) {
+                    tileEntityList.erase(it2);
+                }
             }
+            LevelChunk* lc = getChunk(x >> 4, z >> 4);
+            if (lc != nullptr) lc->removeTileEntity(x & 15, y, z & 15);
         }
-        LevelChunk* lc = getChunk(x >> 4, z >> 4);
-        if (lc != nullptr) lc->removeTileEntity(x & 15, y, z & 15);
-    }
     }
 }
 
 void Level::markForRemoval(std::shared_ptr<TileEntity> entity) {
-    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
-    tileEntitiesToUnload.insert(entity);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
+        tileEntitiesToUnload.insert(entity);
     }
 }
 
@@ -3097,234 +3114,248 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
         if (!hasChunksAt(xc, yc, zc, 17)) return;
     }
 
-    { std::lock_guard<std::recursive_mutex> lock(m_checkLightCS);
-
-    initCachePartial(cache, xc, yc, zc);
-
-    // If we're in cached mode, then use memory allocated after the cached data
-    // itself for the toCheck array, in an attempt to make both that & the other
-    // cached data sit on the CPU L2 cache better.
-
-    int* toCheck;
-    if (cache == nullptr) {
-        toCheck = toCheckLevel;
-    } else {
-        toCheck = (int*)(cache + (16 * 16 * 16));
-    }
-
-    int checkedPosition = 0;
-    int toCheckCount = 0;
-    // int darktcc = 0;
-
-    // 4J - added
-    int minXZ = -(dimension->getXZSize() * 16) / 2;
-    int maxXZ = (dimension->getXZSize() * 16) / 2 - 1;
-    if ((xc > maxXZ) || (xc < minXZ) || (zc > maxXZ) || (zc < minXZ)) {
-        return;
-    }
-
-    // Lock 128K of cache (containing all the lighting cache + first 112K of
-    // toCheck array) on L2 to try and stop any cached data getting knocked out
-    // of L2 by other non-cached reads (or vice-versa)
-    //	if( cache ) XLockL2(XLOCKL2_INDEX_TITLE, cache, 128 * 1024,
-    // XLOCKL2_LOCK_SIZE_1_WAY, 0 );
-
     {
-        int centerCurrent = getBrightnessCached(cache, layer, xc, yc, zc);
-        int centerExpected = getExpectedLight(cache, xc, yc, zc, layer, false);
+        std::lock_guard<std::recursive_mutex> lock(m_checkLightCS);
 
-        if (centerExpected != centerCurrent && cache) {
-            initCacheComplete(cache, xc, yc, zc);
+        initCachePartial(cache, xc, yc, zc);
+
+        // If we're in cached mode, then use memory allocated after the cached
+        // data itself for the toCheck array, in an attempt to make both that &
+        // the other cached data sit on the CPU L2 cache better.
+
+        int* toCheck;
+        if (cache == nullptr) {
+            toCheck = toCheckLevel;
+        } else {
+            toCheck = (int*)(cache + (16 * 16 * 16));
         }
 
-        if (centerExpected > centerCurrent) {
-            toCheck[toCheckCount++] = 32 | (32 << 6) | (32 << 12);
-        } else if (centerExpected < centerCurrent) {
-            // 4J - added tcn. This is the code that is run when checkLight has
-            // been called for a light source that has got darker / turned off.
-            // In the original version, after zeroing tiles brightnesses that
-            // are deemed to come from this light source, all the zeroed tiles
-            // are then passed to the next stage of the function to potentially
-            // have their brightnesses put back up again. We shouldn't need to
-            // consider All these tiles as starting points for this process, now
-            // just considering the edge tiles (defined as a tile where we have
-            // a neighbour that is brightner than can be explained by the
-            // original light source we are turning off)
-            int tcn = 0;
-            if (layer == LightLayer::Block || true) {
-                toCheck[toCheckCount++] =
-                    32 | (32 << 6) | (32 << 12) | (centerCurrent << 18);
-                while (checkedPosition < toCheckCount) {
-                    int p = toCheck[checkedPosition++];
-                    int x = ((p) & 63) - 32 + xc;
-                    int y = ((p >> 6) & 63) - 32 + yc;
-                    int z = ((p >> 12) & 63) - 32 + zc;
-                    int expected = ((p >> 18) & 15);
-                    int current = getBrightnessCached(cache, layer, x, y, z);
-                    if (current == expected) {
-                        setBrightnessCached(cache, &cacheUse, layer, x, y, z,
-                                            0);
-                        // cexp--;		// 4J - removed, change
-                        // from 1.2.3
-                        if (expected > 0) {
-                            int xd = Mth::abs(x - xc);
-                            int yd = Mth::abs(y - yc);
-                            int zd = Mth::abs(z - zc);
-                            if (xd + yd + zd < 17) {
-                                bool edge = false;
-                                for (int face = 0; face < 6; face++) {
-                                    int xx = x + Facing::STEP_X[face];
-                                    int yy = y + Facing::STEP_Y[face];
-                                    int zz = z + Facing::STEP_Z[face];
+        int checkedPosition = 0;
+        int toCheckCount = 0;
+        // int darktcc = 0;
 
-                                    // 4J - added - don't let this lighting
-                                    // creep out of the normal fixed world and
-                                    // into the infinite water chunks beyond
-                                    if ((xx > maxXZ) || (xx < minXZ) ||
-                                        (zz > maxXZ) || (zz < minXZ))
-                                        continue;
-                                    if ((yy < 0) || (yy >= maxBuildHeight))
-                                        continue;
+        // 4J - added
+        int minXZ = -(dimension->getXZSize() * 16) / 2;
+        int maxXZ = (dimension->getXZSize() * 16) / 2 - 1;
+        if ((xc > maxXZ) || (xc < minXZ) || (zc > maxXZ) || (zc < minXZ)) {
+            return;
+        }
 
-                                    // 4J - some changes here brought forward
-                                    // from 1.2.3
-                                    int block = std::max(
-                                        1,
-                                        getBlockingCached(cache, layer, nullptr,
-                                                          xx, yy, zz));
-                                    current = getBrightnessCached(cache, layer,
-                                                                  xx, yy, zz);
-                                    if ((current == expected - block) &&
-                                        (toCheckCount <
-                                         (32 * 32 * 32)))  // 4J - 32 * 32 * 32
-                                                           // was toCheck.length
-                                    {
-                                        toCheck[toCheckCount++] =
-                                            (xx - xc + 32) |
-                                            ((yy - yc + 32) << 6) |
-                                            ((zz - zc + 32) << 12) |
-                                            ((expected - block) << 18);
-                                    } else {
-                                        // 4J - added - keep track of which
-                                        // tiles form the edge of the region we
-                                        // are zeroing
-                                        if (current > (expected - block)) {
-                                            edge = true;
+        // Lock 128K of cache (containing all the lighting cache + first 112K of
+        // toCheck array) on L2 to try and stop any cached data getting knocked
+        // out of L2 by other non-cached reads (or vice-versa)
+        //	if( cache ) XLockL2(XLOCKL2_INDEX_TITLE, cache, 128 * 1024,
+        // XLOCKL2_LOCK_SIZE_1_WAY, 0 );
+
+        {
+            int centerCurrent = getBrightnessCached(cache, layer, xc, yc, zc);
+            int centerExpected =
+                getExpectedLight(cache, xc, yc, zc, layer, false);
+
+            if (centerExpected != centerCurrent && cache) {
+                initCacheComplete(cache, xc, yc, zc);
+            }
+
+            if (centerExpected > centerCurrent) {
+                toCheck[toCheckCount++] = 32 | (32 << 6) | (32 << 12);
+            } else if (centerExpected < centerCurrent) {
+                // 4J - added tcn. This is the code that is run when checkLight
+                // has been called for a light source that has got darker /
+                // turned off. In the original version, after zeroing tiles
+                // brightnesses that are deemed to come from this light source,
+                // all the zeroed tiles are then passed to the next stage of the
+                // function to potentially have their brightnesses put back up
+                // again. We shouldn't need to consider All these tiles as
+                // starting points for this process, now just considering the
+                // edge tiles (defined as a tile where we have a neighbour that
+                // is brightner than can be explained by the original light
+                // source we are turning off)
+                int tcn = 0;
+                if (layer == LightLayer::Block || true) {
+                    toCheck[toCheckCount++] =
+                        32 | (32 << 6) | (32 << 12) | (centerCurrent << 18);
+                    while (checkedPosition < toCheckCount) {
+                        int p = toCheck[checkedPosition++];
+                        int x = ((p) & 63) - 32 + xc;
+                        int y = ((p >> 6) & 63) - 32 + yc;
+                        int z = ((p >> 12) & 63) - 32 + zc;
+                        int expected = ((p >> 18) & 15);
+                        int current =
+                            getBrightnessCached(cache, layer, x, y, z);
+                        if (current == expected) {
+                            setBrightnessCached(cache, &cacheUse, layer, x, y,
+                                                z, 0);
+                            // cexp--;		// 4J - removed, change
+                            // from 1.2.3
+                            if (expected > 0) {
+                                int xd = Mth::abs(x - xc);
+                                int yd = Mth::abs(y - yc);
+                                int zd = Mth::abs(z - zc);
+                                if (xd + yd + zd < 17) {
+                                    bool edge = false;
+                                    for (int face = 0; face < 6; face++) {
+                                        int xx = x + Facing::STEP_X[face];
+                                        int yy = y + Facing::STEP_Y[face];
+                                        int zz = z + Facing::STEP_Z[face];
+
+                                        // 4J - added - don't let this lighting
+                                        // creep out of the normal fixed world
+                                        // and into the infinite water chunks
+                                        // beyond
+                                        if ((xx > maxXZ) || (xx < minXZ) ||
+                                            (zz > maxXZ) || (zz < minXZ))
+                                            continue;
+                                        if ((yy < 0) || (yy >= maxBuildHeight))
+                                            continue;
+
+                                        // 4J - some changes here brought
+                                        // forward from 1.2.3
+                                        int block = std::max(
+                                            1, getBlockingCached(cache, layer,
+                                                                 nullptr, xx,
+                                                                 yy, zz));
+                                        current = getBrightnessCached(
+                                            cache, layer, xx, yy, zz);
+                                        if ((current == expected - block) &&
+                                            (toCheckCount <
+                                             (32 * 32 *
+                                              32)))  // 4J - 32 * 32 * 32
+                                                     // was toCheck.length
+                                        {
+                                            toCheck[toCheckCount++] =
+                                                (xx - xc + 32) |
+                                                ((yy - yc + 32) << 6) |
+                                                ((zz - zc + 32) << 12) |
+                                                ((expected - block) << 18);
+                                        } else {
+                                            // 4J - added - keep track of which
+                                            // tiles form the edge of the region
+                                            // we are zeroing
+                                            if (current > (expected - block)) {
+                                                edge = true;
+                                            }
                                         }
                                     }
-                                }
-                                // 4J - added - keep track of which tiles form
-                                // the edge of the region we are zeroing - can
-                                // store over the original elements in the array
-                                // because tcn must be <= tcp
-                                if (edge == true) {
-                                    toCheck[tcn++] = p;
+                                    // 4J - added - keep track of which tiles
+                                    // form the edge of the region we are
+                                    // zeroing - can store over the original
+                                    // elements in the array because tcn must be
+                                    // <= tcp
+                                    if (edge == true) {
+                                        toCheck[tcn++] = p;
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-            checkedPosition = 0;
-            //			darktcc = tcc;
-            /////////////////////////////////////////////////////
-            toCheckCount = tcn;  // 4J added - we've moved all the edge tiles to
-                                 // the start of the array, so only need to
-                                 // process these now. The original processes
-                                 // all tcc tiles again in the next section
-        }
-    }
-
-    while (checkedPosition < toCheckCount) {
-        int p = toCheck[checkedPosition++];
-        int x = ((p) & 63) - 32 + xc;
-        int y = ((p >> 6) & 63) - 32 + yc;
-        int z = ((p >> 12) & 63) - 32 + zc;
-
-        // If force is set, then this is being used to in a special mode to try
-        // and light lava tiles as chunks are being loaded in. In this case, we
-        // don't want a lighting update to drag in any neighbouring chunks that
-        // aren't loaded yet.
-        if (force) {
-            if (!hasChunkAt(x, y, z)) {
-                continue;
+                checkedPosition = 0;
+                //			darktcc = tcc;
+                /////////////////////////////////////////////////////
+                toCheckCount =
+                    tcn;  // 4J added - we've moved all the edge tiles to
+                          // the start of the array, so only need to
+                          // process these now. The original processes
+                          // all tcc tiles again in the next section
             }
         }
-        int current = getBrightnessCached(cache, layer, x, y, z);
 
-        // If rootOnlyEmissive flag is set, then only consider the starting tile
-        // to be possibly emissive.
-        bool propagatedOnly = false;
-        if (layer == LightLayer::Block) {
-            if (rootOnlyEmissive) {
-                propagatedOnly = (x != xc) || (y != yc) || (z != zc);
+        while (checkedPosition < toCheckCount) {
+            int p = toCheck[checkedPosition++];
+            int x = ((p) & 63) - 32 + xc;
+            int y = ((p >> 6) & 63) - 32 + yc;
+            int z = ((p >> 12) & 63) - 32 + zc;
+
+            // If force is set, then this is being used to in a special mode to
+            // try and light lava tiles as chunks are being loaded in. In this
+            // case, we don't want a lighting update to drag in any neighbouring
+            // chunks that aren't loaded yet.
+            if (force) {
+                if (!hasChunkAt(x, y, z)) {
+                    continue;
+                }
             }
-        }
-        int expected = getExpectedLight(cache, x, y, z, layer, propagatedOnly);
+            int current = getBrightnessCached(cache, layer, x, y, z);
 
-        if (expected != current) {
-            setBrightnessCached(cache, &cacheUse, layer, x, y, z, expected);
+            // If rootOnlyEmissive flag is set, then only consider the starting
+            // tile to be possibly emissive.
+            bool propagatedOnly = false;
+            if (layer == LightLayer::Block) {
+                if (rootOnlyEmissive) {
+                    propagatedOnly = (x != xc) || (y != yc) || (z != zc);
+                }
+            }
+            int expected =
+                getExpectedLight(cache, x, y, z, layer, propagatedOnly);
 
-            if (expected > current) {
-                int xd = abs(x - xc);
-                int yd = abs(y - yc);
-                int zd = abs(z - zc);
-                bool withinBounds =
-                    toCheckCount <
-                    (32 * 32 * 32) - 6;  // 4J - 32 * 32 * 32 was toCheck.length
-                if (xd + yd + zd < 17 && withinBounds) {
-                    // 4J - added extra checks here to stop lighting updates
-                    // moving out of the actual fixed world and into the
-                    // infinite water chunks
-                    if ((x - 1) >= minXZ) {
-                        if (getBrightnessCached(cache, layer, x - 1, y, z) <
-                            expected)
-                            toCheck[toCheckCount++] = (((x - 1 - xc) + 32)) +
-                                                      (((y - yc) + 32) << 6) +
-                                                      (((z - zc) + 32) << 12);
-                    }
-                    if ((x + 1) <= maxXZ) {
-                        if (getBrightnessCached(cache, layer, x + 1, y, z) <
-                            expected)
-                            toCheck[toCheckCount++] = (((x + 1 - xc) + 32)) +
-                                                      (((y - yc) + 32) << 6) +
-                                                      (((z - zc) + 32) << 12);
-                    }
-                    if ((y - 1) >= 0) {
-                        if (getBrightnessCached(cache, layer, x, y - 1, z) <
-                            expected)
-                            toCheck[toCheckCount++] =
-                                (((x - xc) + 32)) + (((y - 1 - yc) + 32) << 6) +
-                                (((z - zc) + 32) << 12);
-                    }
-                    if ((y + 1) < maxBuildHeight) {
-                        if (getBrightnessCached(cache, layer, x, y + 1, z) <
-                            expected)
-                            toCheck[toCheckCount++] =
-                                (((x - xc) + 32)) + (((y + 1 - yc) + 32) << 6) +
-                                (((z - zc) + 32) << 12);
-                    }
-                    if ((z - 1) >= minXZ) {
-                        if (getBrightnessCached(cache, layer, x, y, z - 1) <
-                            expected)
-                            toCheck[toCheckCount++] =
-                                (((x - xc) + 32)) + (((y - yc) + 32) << 6) +
-                                (((z - 1 - zc) + 32) << 12);
-                    }
-                    if ((z + 1) <= maxXZ) {
-                        if (getBrightnessCached(cache, layer, x, y, z + 1) <
-                            expected)
-                            toCheck[toCheckCount++] =
-                                (((x - xc) + 32)) + (((y - yc) + 32) << 6) +
-                                (((z + 1 - zc) + 32) << 12);
+            if (expected != current) {
+                setBrightnessCached(cache, &cacheUse, layer, x, y, z, expected);
+
+                if (expected > current) {
+                    int xd = abs(x - xc);
+                    int yd = abs(y - yc);
+                    int zd = abs(z - zc);
+                    bool withinBounds =
+                        toCheckCount <
+                        (32 * 32 * 32) -
+                            6;  // 4J - 32 * 32 * 32 was toCheck.length
+                    if (xd + yd + zd < 17 && withinBounds) {
+                        // 4J - added extra checks here to stop lighting updates
+                        // moving out of the actual fixed world and into the
+                        // infinite water chunks
+                        if ((x - 1) >= minXZ) {
+                            if (getBrightnessCached(cache, layer, x - 1, y, z) <
+                                expected)
+                                toCheck[toCheckCount++] =
+                                    (((x - 1 - xc) + 32)) +
+                                    (((y - yc) + 32) << 6) +
+                                    (((z - zc) + 32) << 12);
+                        }
+                        if ((x + 1) <= maxXZ) {
+                            if (getBrightnessCached(cache, layer, x + 1, y, z) <
+                                expected)
+                                toCheck[toCheckCount++] =
+                                    (((x + 1 - xc) + 32)) +
+                                    (((y - yc) + 32) << 6) +
+                                    (((z - zc) + 32) << 12);
+                        }
+                        if ((y - 1) >= 0) {
+                            if (getBrightnessCached(cache, layer, x, y - 1, z) <
+                                expected)
+                                toCheck[toCheckCount++] =
+                                    (((x - xc) + 32)) +
+                                    (((y - 1 - yc) + 32) << 6) +
+                                    (((z - zc) + 32) << 12);
+                        }
+                        if ((y + 1) < maxBuildHeight) {
+                            if (getBrightnessCached(cache, layer, x, y + 1, z) <
+                                expected)
+                                toCheck[toCheckCount++] =
+                                    (((x - xc) + 32)) +
+                                    (((y + 1 - yc) + 32) << 6) +
+                                    (((z - zc) + 32) << 12);
+                        }
+                        if ((z - 1) >= minXZ) {
+                            if (getBrightnessCached(cache, layer, x, y, z - 1) <
+                                expected)
+                                toCheck[toCheckCount++] =
+                                    (((x - xc) + 32)) + (((y - yc) + 32) << 6) +
+                                    (((z - 1 - zc) + 32) << 12);
+                        }
+                        if ((z + 1) <= maxXZ) {
+                            if (getBrightnessCached(cache, layer, x, y, z + 1) <
+                                expected)
+                                toCheck[toCheckCount++] =
+                                    (((x - xc) + 32)) + (((y - yc) + 32) << 6) +
+                                    (((z + 1 - zc) + 32) << 12);
+                        }
                     }
                 }
             }
         }
-    }
-    //	if( cache ) XUnlockL2(XLOCKL2_INDEX_TITLE);
+        //	if( cache ) XUnlockL2(XLOCKL2_INDEX_TITLE);
 
-    flushCache(cache, cacheUse, layer);
+        flushCache(cache, cacheUse, layer);
     }
 }
 
@@ -3429,26 +3460,27 @@ unsigned int Level::countInstanceOf(
     unsigned int count = 0;
     if (protectedCount) *protectedCount = 0;
     if (couldWanderCount) *couldWanderCount = 0;
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-    auto itEnd = entities.end();
-    for (auto it = entities.begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // entities.at(i);
-        if (singleType) {
-            if (e->GetType() == clas) {
-                if (protectedCount && e->isDespawnProtected()) {
-                    (*protectedCount)++;
-                }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        auto itEnd = entities.end();
+        for (auto it = entities.begin(); it != itEnd; it++) {
+            std::shared_ptr<Entity> e = *it;  // entities.at(i);
+            if (singleType) {
+                if (e->GetType() == clas) {
+                    if (protectedCount && e->isDespawnProtected()) {
+                        (*protectedCount)++;
+                    }
 
-                if (couldWanderCount && e->couldWander()) {
-                    (*couldWanderCount)++;
-                }
+                    if (couldWanderCount && e->couldWander()) {
+                        (*couldWanderCount)++;
+                    }
 
-                count++;
+                    count++;
+                }
+            } else {
+                if (e->instanceof(clas)) count++;
             }
-        } else {
-            if (e->instanceof(clas)) count++;
         }
-    }
     }
 
     return count;
@@ -3457,24 +3489,25 @@ unsigned int Level::countInstanceOf(
 unsigned int Level::countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
                                            int range, int x, int y, int z) {
     unsigned int count = 0;
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-    auto itEnd = entities.end();
-    for (auto it = entities.begin(); it != itEnd; it++) {
-        std::shared_ptr<Entity> e = *it;  // entities.at(i);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        auto itEnd = entities.end();
+        for (auto it = entities.begin(); it != itEnd; it++) {
+            std::shared_ptr<Entity> e = *it;  // entities.at(i);
 
-        float sd = e->distanceTo(x, y, z);
-        if (sd * sd > range * range) {
-            continue;
-        }
-
-        if (singleType) {
-            if (e->GetType() == clas) {
-                count++;
+            float sd = e->distanceTo(x, y, z);
+            if (sd * sd > range * range) {
+                continue;
             }
-        } else {
-            if (e->instanceof(clas)) count++;
+
+            if (singleType) {
+                if (e->GetType() == clas) {
+                    count++;
+                }
+            } else {
+                if (e->instanceof(clas)) count++;
+            }
         }
-    }
     }
 
     return count;
@@ -3482,34 +3515,35 @@ unsigned int Level::countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
 
 void Level::addEntities(std::vector<std::shared_ptr<Entity> >* list) {
     // entities.addAll(list);
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-    entities.insert(entities.end(), list->begin(), list->end());
-    auto itEnd = list->end();
-    bool deleteDragons = false;
-    for (auto it = list->begin(); it != itEnd; it++) {
-        entityAdded(*it);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        entities.insert(entities.end(), list->begin(), list->end());
+        auto itEnd = list->end();
+        bool deleteDragons = false;
+        for (auto it = list->begin(); it != itEnd; it++) {
+            entityAdded(*it);
 
-        // 4J Stu - Special change to remove duplicate enderdragons that a
-        // previous bug might have produced
-        if ((*it)->GetType() == eTYPE_ENDERDRAGON) {
-            deleteDragons = true;
-        }
-    }
-
-    if (deleteDragons) {
-        deleteDragons = false;
-        for (auto it = entities.begin(); it != entities.end(); ++it) {
             // 4J Stu - Special change to remove duplicate enderdragons that a
             // previous bug might have produced
             if ((*it)->GetType() == eTYPE_ENDERDRAGON) {
-                if (deleteDragons) {
-                    (*it)->remove();
-                } else {
-                    deleteDragons = true;
+                deleteDragons = true;
+            }
+        }
+
+        if (deleteDragons) {
+            deleteDragons = false;
+            for (auto it = entities.begin(); it != entities.end(); ++it) {
+                // 4J Stu - Special change to remove duplicate enderdragons that
+                // a previous bug might have produced
+                if ((*it)->GetType() == eTYPE_ENDERDRAGON) {
+                    if (deleteDragons) {
+                        (*it)->remove();
+                    } else {
+                        deleteDragons = true;
+                    }
                 }
             }
         }
-    }
     }
 }
 
@@ -3925,10 +3959,11 @@ void Level::ensureAdded(std::shared_ptr<Entity> entity) {
     }
 
     // if (!entities.contains(entity))
-    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-    if (find(entities.begin(), entities.end(), entity) == entities.end()) {
-        entities.push_back(entity);
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        if (find(entities.begin(), entities.end(), entity) == entities.end()) {
+            entities.push_back(entity);
+        }
     }
 }
 

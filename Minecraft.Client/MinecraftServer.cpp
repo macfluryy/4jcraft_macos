@@ -265,8 +265,9 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
     {
         std::unique_lock<std::mutex> lock(server->m_postProcessCS);
         int maxRequests = server->m_postProcessRequests.size();
-        while (server->m_postProcessRequests.size() &&
-               ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread)) {
+        while (
+            server->m_postProcessRequests.size() &&
+            ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread)) {
             MinecraftServer::postProcessRequest request =
                 server->m_postProcessRequests.back();
             server->m_postProcessRequests.pop_back();
@@ -287,9 +288,10 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
 
 void MinecraftServer::addPostProcessRequest(ChunkSource* chunkSource, int x,
                                             int z) {
-    { std::lock_guard<std::mutex> lock(m_postProcessCS);
-    m_postProcessRequests.push_back(
-        MinecraftServer::postProcessRequest(x, z, chunkSource));
+    {
+        std::lock_guard<std::mutex> lock(m_postProcessCS);
+        m_postProcessRequests.push_back(
+            MinecraftServer::postProcessRequest(x, z, chunkSource));
     }
 }
 
@@ -298,16 +300,17 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
     size_t postProcessItemCount = 0;
     size_t postProcessItemRemaining = 0;
 
-    { std::lock_guard<std::mutex> lock(server->m_postProcessCS);
-    postProcessItemCount = server->m_postProcessRequests.size();
+    {
+        std::lock_guard<std::mutex> lock(server->m_postProcessCS);
+        postProcessItemCount = server->m_postProcessRequests.size();
     }
 
     do {
         status = m_postUpdateThread->waitForCompletion(50);
         if (status == C4JThread::WaitResult::Timeout) {
-            { std::lock_guard<std::mutex> lock(server->m_postProcessCS);
-            postProcessItemRemaining =
-                server->m_postProcessRequests.size();
+            {
+                std::lock_guard<std::mutex> lock(server->m_postProcessCS);
+                postProcessItemRemaining = server->m_postProcessRequests.size();
             }
 
             if (postProcessItemCount) {

@@ -33,16 +33,17 @@ CompressedTileStorage::CompressedTileStorage() {
 }
 
 CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
-    { std::lock_guard<std::recursive_mutex> lock(cs_write);
-    allocatedSize = copyFrom->allocatedSize;
-    if (allocatedSize > 0) {
-        indicesAndData = (unsigned char*)XPhysicalAlloc(
-            allocatedSize, MAXULONG_PTR, 4096,
-            PAGE_READWRITE);  //(unsigned char *)malloc(allocatedSize);
-        XMemCpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
-    } else {
-        indicesAndData = nullptr;
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(cs_write);
+        allocatedSize = copyFrom->allocatedSize;
+        if (allocatedSize > 0) {
+            indicesAndData = (unsigned char*)XPhysicalAlloc(
+                allocatedSize, MAXULONG_PTR, 4096,
+                PAGE_READWRITE);  //(unsigned char *)malloc(allocatedSize);
+            XMemCpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
+        } else {
+            indicesAndData = nullptr;
+        }
     }
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)

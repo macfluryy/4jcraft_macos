@@ -396,7 +396,6 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile* sourceSave,
 
 void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
                                  unsigned int fileSize, ESavePlatform plat) {
-
     m_lastTickTime = 0;
 
     // One time initialise of static stuff required for our storage
@@ -1504,9 +1503,7 @@ int ConsoleSaveFileSplit::getOriginalSaveVersion() {
 
 void ConsoleSaveFileSplit::LockSaveAccess() { m_lock.lock(); }
 
-void ConsoleSaveFileSplit::ReleaseSaveAccess() {
-    m_lock.unlock();
-}
+void ConsoleSaveFileSplit::ReleaseSaveAccess() { m_lock.unlock(); }
 
 ESavePlatform ConsoleSaveFileSplit::getSavePlatform() {
     return header.getSavePlatform();

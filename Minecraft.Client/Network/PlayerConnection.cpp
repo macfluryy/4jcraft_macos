@@ -69,9 +69,7 @@ PlayerConnection::PlayerConnection(MinecraftServer* server,
         app.GetGameHostOption(eGameHostOption_Gamertags) != 0 ? true : false);
 }
 
-PlayerConnection::~PlayerConnection() {
-    delete connection;
-}
+PlayerConnection::~PlayerConnection() { delete connection; }
 
 void PlayerConnection::tick() {
     if (done) return;

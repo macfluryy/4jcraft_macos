@@ -109,8 +109,8 @@ protected:
     std::vector<std::shared_ptr<Entity> > entitiesToRemove;
 
 public:
-    bool hasEntitiesToRemove();           // 4J added
-    bool m_bDisableAddNewTileEntities;    // 4J Added
+    bool hasEntitiesToRemove();               // 4J added
+    bool m_bDisableAddNewTileEntities;        // 4J Added
     std::recursive_mutex m_tileEntityListCS;  // 4J added
     std::vector<std::shared_ptr<TileEntity> > tileEntityList;
 

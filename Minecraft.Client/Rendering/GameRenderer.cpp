@@ -1062,9 +1062,7 @@ void GameRenderer::AddForDelete(SparseDataStorage* deleteThis) {
     m_deleteStackSparseDataStorage.push_back(deleteThis);
 }
 
-void GameRenderer::FinishedReassigning() {
-    m_csDeleteStack.unlock();
-}
+void GameRenderer::FinishedReassigning() { m_csDeleteStack.unlock(); }
 
 int GameRenderer::runUpdate(void* lpParam) {
     Minecraft* minecraft = Minecraft::GetInstance();
@@ -1135,8 +1133,8 @@ int GameRenderer::runUpdate(void* lpParam) {
                  i < m_deleteStackCompressedTileStorage.size(); i++)
                 delete m_deleteStackCompressedTileStorage[i];
             m_deleteStackCompressedTileStorage.clear();
-            for (unsigned int i = 0;
-                 i < m_deleteStackSparseDataStorage.size(); i++)
+            for (unsigned int i = 0; i < m_deleteStackSparseDataStorage.size();
+                 i++)
                 delete m_deleteStackSparseDataStorage[i];
             m_deleteStackSparseDataStorage.clear();
         }
@@ -1175,7 +1173,8 @@ void GameRenderer::DisableUpdateThread() {
         "------------------DisableUpdateThread--------------------\n");
     updateRunning = false;
     m_updateEvents->clear(eUpdateCanRun);
-    m_updateEvents->waitForSingle(eUpdateEventIsFinished, C4JThread::kInfiniteTimeout);
+    m_updateEvents->waitForSingle(eUpdateEventIsFinished,
+                                  C4JThread::kInfiniteTimeout);
 #endif
 }
 

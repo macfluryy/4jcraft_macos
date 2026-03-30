@@ -929,8 +929,8 @@ void MultiPlayerLevel::removeUnusedTileEntitiesInRegion(int x0, int y0, int z0,
                         tileEntityList[i] = tileEntityList.back();
                         tileEntityList.pop_back();
 
-                        // 4J Stu - Chests can create new tile entities when being
-                        // removed, so disable this
+                        // 4J Stu - Chests can create new tile entities when
+                        // being removed, so disable this
                         m_bDisableAddNewTileEntities = true;
                         lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
                         m_bDisableAddNewTileEntities = false;

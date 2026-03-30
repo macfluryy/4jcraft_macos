@@ -33,7 +33,6 @@ SonyLeaderboardManager::SonyLeaderboardManager() {
 
     m_openSessions = 0;
 
-
     m_running = false;
     m_threadScoreboard = nullptr;
 }
@@ -49,7 +48,6 @@ SonyLeaderboardManager::~SonyLeaderboardManager() {
     }
 
     delete m_threadScoreboard;
-
 }
 
 int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
@@ -66,8 +64,9 @@ int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
             self->scoreboardThreadInternal();
         }
 
-        { std::lock_guard<std::mutex> lock(self->m_csViewsLock);
-        needsWriting = self->m_views.size() > 0;
+        {
+            std::lock_guard<std::mutex> lock(self->m_csViewsLock);
+            needsWriting = self->m_views.size() > 0;
         }
 
         // 4J Stu - We can't write while we aren't signed in to live
@@ -165,8 +164,9 @@ void SonyLeaderboardManager::scoreboardThreadInternal() {
             // we'll manage the write queue seperately.
 
             bool hasWork;
-            { std::lock_guard<std::mutex> lock(m_csViewsLock);
-            hasWork = !m_views.empty();
+            {
+                std::lock_guard<std::mutex> lock(m_csViewsLock);
+                hasWork = !m_views.empty();
             }
 
             if (hasWork) {
@@ -493,9 +493,10 @@ bool SonyLeaderboardManager::setScore() {
     // Get next job.
 
     RegisterScore rscore;
-    { std::lock_guard<std::mutex> lock(m_csViewsLock);
-    rscore = m_views.front();
-    m_views.pop();
+    {
+        std::lock_guard<std::mutex> lock(m_csViewsLock);
+        rscore = m_views.front();
+        m_views.pop();
     }
 
     if (ProfileManager.IsGuest(rscore.m_iPad)) {
@@ -641,7 +642,8 @@ bool SonyLeaderboardManager::OpenSession() {
             m_threadScoreboard =
                 new C4JThread(&scoreboardThreadEntry, this, "4JScoreboard");
             m_threadScoreboard->setProcessor(CPU_CORE_LEADERBOARDS);
-            m_threadScoreboard->setPriority(C4JThread::ThreadPriority::BelowNormal);
+            m_threadScoreboard->setPriority(
+                C4JThread::ThreadPriority::BelowNormal);
             m_threadScoreboard->run();
         }
 
@@ -682,16 +684,18 @@ bool SonyLeaderboardManager::WriteStats(unsigned int viewCount, ViewIn views) {
     // Write relevant parameters.
     // RegisterScore *regScore = reinterpret_cast<RegisterScore *>(views);
 
-    { std::lock_guard<std::mutex> lock(m_csViewsLock);
-    for (int i = 0; i < viewCount; i++) {
-        app.DebugPrintf(
-            "[SonyLeaderboardManager] WriteStats(), starting. difficulty=%i, "
-            "statsType=%i, score=%i\n",
-            views[i].m_difficulty, views[i].m_commentData.m_statsType,
-            views[i].m_score);
+    {
+        std::lock_guard<std::mutex> lock(m_csViewsLock);
+        for (int i = 0; i < viewCount; i++) {
+            app.DebugPrintf(
+                "[SonyLeaderboardManager] WriteStats(), starting. "
+                "difficulty=%i, "
+                "statsType=%i, score=%i\n",
+                views[i].m_difficulty, views[i].m_commentData.m_statsType,
+                views[i].m_score);
 
-        m_views.push(views[i]);
-    }
+            m_views.push(views[i]);
+        }
     }
 
     delete[] views;  //*regScore;

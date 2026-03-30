@@ -155,47 +155,51 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
     LevelChunk* lastChunk = chunk;
 
     if (chunk == nullptr) {
-        { std::unique_lock<std::mutex> lock(m_csLoadCreate);
-
-        // LevelChunk *chunk;
-        if (g_NetworkManager.IsHost())  // force here to disable sharing of data
         {
-            // 4J-JEV: We are about to use shared data, abort if the server is
-            // stopped and the data is deleted.
-            if (MinecraftServer::getInstance()->serverHalted()) return nullptr;
+            std::unique_lock<std::mutex> lock(m_csLoadCreate);
 
-            // If we're the host, then don't create the chunk, share data from
-            // the server's copy
+            // LevelChunk *chunk;
+            if (g_NetworkManager
+                    .IsHost())  // force here to disable sharing of data
+            {
+                // 4J-JEV: We are about to use shared data, abort if the server
+                // is stopped and the data is deleted.
+                if (MinecraftServer::getInstance()->serverHalted())
+                    return nullptr;
+
+                // If we're the host, then don't create the chunk, share data
+                // from the server's copy
 #ifdef _LARGE_WORLDS
-            LevelChunk* serverChunk =
-                MinecraftServer::getInstance()
-                    ->getLevel(level->dimension->id)
-                    ->cache->getChunkLoadedOrUnloaded(x, z);
+                LevelChunk* serverChunk =
+                    MinecraftServer::getInstance()
+                        ->getLevel(level->dimension->id)
+                        ->cache->getChunkLoadedOrUnloaded(x, z);
 #else
-            LevelChunk* serverChunk = MinecraftServer::getInstance()
-                                          ->getLevel(level->dimension->id)
-                                          ->cache->getChunk(x, z);
+                LevelChunk* serverChunk = MinecraftServer::getInstance()
+                                              ->getLevel(level->dimension->id)
+                                              ->cache->getChunk(x, z);
 #endif
-            chunk = new LevelChunk(level, x, z, serverChunk);
-            // Let renderer know that this chunk has been created - it might
-            // have made render data from the EmptyChunk if it got to a chunk
-            // before the server sent it
-            level->setTilesDirty(x * 16, 0, z * 16, x * 16 + 15, 127,
-                                 z * 16 + 15);
-            hasData[idx] = true;
-        } else {
-            // Passing an empty array into the LevelChunk ctor, which it now
-            // detects and sets up the chunk as compressed & empty
-            byteArray bytes;
+                chunk = new LevelChunk(level, x, z, serverChunk);
+                // Let renderer know that this chunk has been created - it might
+                // have made render data from the EmptyChunk if it got to a
+                // chunk before the server sent it
+                level->setTilesDirty(x * 16, 0, z * 16, x * 16 + 15, 127,
+                                     z * 16 + 15);
+                hasData[idx] = true;
+            } else {
+                // Passing an empty array into the LevelChunk ctor, which it now
+                // detects and sets up the chunk as compressed & empty
+                byteArray bytes;
 
-            chunk = new LevelChunk(level, bytes, x, z);
+                chunk = new LevelChunk(level, bytes, x, z);
 
-            // 4J - changed to use new methods for lighting
-            chunk->setSkyLightDataAllBright();
-            //			Arrays::fill(chunk->skyLight->data, (byte) 255);
-        }
+                // 4J - changed to use new methods for lighting
+                chunk->setSkyLightDataAllBright();
+                //			Arrays::fill(chunk->skyLight->data,
+                //(byte) 255);
+            }
 
-        chunk->loaded = true;
+            chunk->loaded = true;
         }
 
 #if (defined _WIN64 || defined __LP64__)
@@ -216,8 +220,9 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
             }
 
             // Successfully updated the cache
-            { std::lock_guard<std::mutex> lock(m_csLoadCreate);
-            loadedChunkList.push_back(chunk);
+            {
+                std::lock_guard<std::mutex> lock(m_csLoadCreate);
+                loadedChunkList.push_back(chunk);
             }
         } else {
             // Something else must have updated the cache. Return that chunk and
@@ -278,8 +283,9 @@ void MultiPlayerChunkCache::recreateLogicStructuresForChunk(int chunkX,
 
 std::wstring MultiPlayerChunkCache::gatherStats() {
     int size;
-    { std::lock_guard<std::mutex> lock(m_csLoadCreate);
-    size = (int)loadedChunkList.size();
+    {
+        std::lock_guard<std::mutex> lock(m_csLoadCreate);
+        size = (int)loadedChunkList.size();
     }
     return L"MultiplayerChunkCache: " + _toString<int>(size);
 }

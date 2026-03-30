@@ -215,14 +215,30 @@ void setPriorityPlatform(std::thread& threadHandle, bool isSelf,
     using enum C4JThread::ThreadPriority;
     int niceValue = 0;
     switch (priority) {
-        case TimeCritical: niceValue = -15; break;
-        case Highest:      niceValue = -10; break;
-        case AboveNormal:  niceValue = -5;  break;
-        case Normal:       niceValue = 0;   break;
-        case BelowNormal:  niceValue = 5;   break;
-        case Lowest:       niceValue = 10;  break;
-        case Idle:         niceValue = 19;  break;
-        default:           niceValue = 0;   break;
+        case TimeCritical:
+            niceValue = -15;
+            break;
+        case Highest:
+            niceValue = -10;
+            break;
+        case AboveNormal:
+            niceValue = -5;
+            break;
+        case Normal:
+            niceValue = 0;
+            break;
+        case BelowNormal:
+            niceValue = 5;
+            break;
+        case Lowest:
+            niceValue = 10;
+            break;
+        case Idle:
+            niceValue = 19;
+            break;
+        default:
+            niceValue = 0;
+            break;
     }
 
     errno = 0;
@@ -401,8 +417,8 @@ bool C4JThread::isMainThread() noexcept {
 }
 
 void C4JThread::setThreadName(std::uint32_t threadId, const char* threadName) {
-    const char* safe = (threadName && threadName[0] != '\0') ? threadName
-                                                             : "(4J) Unnamed";
+    const char* safe =
+        (threadName && threadName[0] != '\0') ? threadName : "(4J) Unnamed";
     setThreadNamePlatform(threadId, safe);
 }
 
@@ -477,10 +493,9 @@ std::uint32_t C4JThread::EventArray::waitForSingle(int index, int timeoutMs) {
     const std::uint32_t bitMask = 1U << static_cast<std::uint32_t>(index);
     std::unique_lock lock(m_mutex);
 
-    if (!waitForCondition(m_condition, lock, timeoutMs,
-                          [this, bitMask] {
-                              return (m_signaledMask & bitMask) != 0U;
-                          })) {
+    if (!waitForCondition(m_condition, lock, timeoutMs, [this, bitMask] {
+            return (m_signaledMask & bitMask) != 0U;
+        })) {
         return WaitResult::Timeout;
     }
     if (m_mode == Mode::AutoClear) m_signaledMask &= ~bitMask;
@@ -491,10 +506,9 @@ std::uint32_t C4JThread::EventArray::waitForAll(int timeoutMs) {
     const std::uint32_t bitMask = buildMaskForSize(m_size);
     std::unique_lock lock(m_mutex);
 
-    if (!waitForCondition(m_condition, lock, timeoutMs,
-                          [this, bitMask] {
-                              return (m_signaledMask & bitMask) == bitMask;
-                          })) {
+    if (!waitForCondition(m_condition, lock, timeoutMs, [this, bitMask] {
+            return (m_signaledMask & bitMask) == bitMask;
+        })) {
         return WaitResult::Timeout;
     }
     if (m_mode == Mode::AutoClear) m_signaledMask &= ~bitMask;
@@ -505,15 +519,13 @@ std::uint32_t C4JThread::EventArray::waitForAny(int timeoutMs) {
     const std::uint32_t bitMask = buildMaskForSize(m_size);
     std::unique_lock lock(m_mutex);
 
-    if (!waitForCondition(m_condition, lock, timeoutMs,
-                          [this, bitMask] {
-                              return (m_signaledMask & bitMask) != 0U;
-                          })) {
+    if (!waitForCondition(m_condition, lock, timeoutMs, [this, bitMask] {
+            return (m_signaledMask & bitMask) != 0U;
+        })) {
         return WaitResult::Timeout;
     }
 
-    const std::uint32_t readyIndex =
-        firstSetBitIndex(m_signaledMask & bitMask);
+    const std::uint32_t readyIndex = firstSetBitIndex(m_signaledMask & bitMask);
     if (m_mode == Mode::AutoClear) m_signaledMask &= ~(1U << readyIndex);
     return WaitResult::Signaled + readyIndex;
 }

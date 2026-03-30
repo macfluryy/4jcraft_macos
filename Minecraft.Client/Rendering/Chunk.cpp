@@ -93,8 +93,8 @@ void Chunk::reconcileRenderableTileEntities(
 // TODO - 4J see how input entity vector is set up and decide what way is best
 // to pass this to the function
 Chunk::Chunk(Level* level, LevelRenderer::rteMap& globalRenderableTileEntities,
-             std::mutex& globalRenderableTileEntities_cs, int x, int y,
-             int z, ClipChunk* clipChunk)
+             std::mutex& globalRenderableTileEntities_cs, int x, int y, int z,
+             ClipChunk* clipChunk)
     : globalRenderableTileEntities(&globalRenderableTileEntities),
       globalRenderableTileEntities_cs(&globalRenderableTileEntities_cs) {
     clipChunk->visible = false;
@@ -151,25 +151,27 @@ void Chunk::setPos(int x, int y, int z) {
     assigned = true;
 
     {
-        std::lock_guard<std::recursive_mutex> lock(levelRenderer->m_csDirtyChunks);
+        std::lock_guard<std::recursive_mutex> lock(
+            levelRenderer->m_csDirtyChunks);
         unsigned char refCount =
             levelRenderer->incGlobalChunkRefCount(x, y, z, level);
         //	printf("\t\t [inc] refcount %d at %d, %d, %d\n",refCount,x,y,z);
 
         //	int idx = levelRenderer->getGlobalIndexForChunk(x, y, z, level);
 
-        // If we're the first thing to be referencing this, mark it up as dirty to
-        // get rebuilt
+        // If we're the first thing to be referencing this, mark it up as dirty
+        // to get rebuilt
         if (refCount == 1) {
             //		printf("Setting %d %d %d dirty [%d]\n",x,y,z, idx);
-            // Chunks being made dirty in this way can be very numerous (eg the full
-            // visible area of the world at start up, or a whole edge of the world
-            // when moving). On account of this, don't want to stick them into our
-            // lock free queue that we would normally use for letting the render
-            // update thread know about this chunk. Instead, just set the flag to
-            // say this is dirty, and then pass a special value of 1 through to the
-            // lock free stack which lets that thread know that at least one chunk
-            // other than the ones in the stack itself have been made dirty.
+            // Chunks being made dirty in this way can be very numerous (eg the
+            // full visible area of the world at start up, or a whole edge of
+            // the world when moving). On account of this, don't want to stick
+            // them into our lock free queue that we would normally use for
+            // letting the render update thread know about this chunk. Instead,
+            // just set the flag to say this is dirty, and then pass a special
+            // value of 1 through to the lock free stack which lets that thread
+            // know that at least one chunk other than the ones in the stack
+            // itself have been made dirty.
             levelRenderer->setGlobalChunkFlag(x, y, z, level,
                                               LevelRenderer::CHUNK_FLAG_DIRTY);
             PIXSetMarkerDeprecated(0, "Non-stack event pushed");
@@ -722,7 +724,8 @@ void Chunk::reset() {
         bool retireRenderableTileEntities = false;
 
         {
-            std::lock_guard<std::recursive_mutex> lock(levelRenderer->m_csDirtyChunks);
+            std::lock_guard<std::recursive_mutex> lock(
+                levelRenderer->m_csDirtyChunks);
             oldKey = levelRenderer->getGlobalIndexForChunk(x, y, z, level);
             unsigned char refCount =
                 levelRenderer->decGlobalChunkRefCount(x, y, z, level);
@@ -735,8 +738,8 @@ void Chunk::reset() {
                 if (lists >= 0) {
                     lists += levelRenderer->chunkLists;
                     for (int i = 0; i < 2; i++) {
-                        // 4J - added - clear any renderer data associated with this
-                        // unused list
+                        // 4J - added - clear any renderer data associated with
+                        // this unused list
                         RenderManager.CBuffClear(lists + i);
                     }
                     levelRenderer->setGlobalChunkFlags(x, y, z, level, 0);

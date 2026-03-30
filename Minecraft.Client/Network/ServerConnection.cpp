@@ -34,17 +34,19 @@ void ServerConnection::addPlayerConnection(
 }
 
 void ServerConnection::handleConnection(std::shared_ptr<PendingConnection> uc) {
-    { std::lock_guard<std::mutex> lock(pending_cs);
-    pending.push_back(uc);
+    {
+        std::lock_guard<std::mutex> lock(pending_cs);
+        pending.push_back(uc);
     }
 }
 
 void ServerConnection::stop() {
-    { std::lock_guard<std::mutex> lock(pending_cs);
-    for (unsigned int i = 0; i < pending.size(); i++) {
-        std::shared_ptr<PendingConnection> uc = pending[i];
-        uc->connection->close(DisconnectPacket::eDisconnect_Closed);
-    }
+    {
+        std::lock_guard<std::mutex> lock(pending_cs);
+        for (unsigned int i = 0; i < pending.size(); i++) {
+            std::shared_ptr<PendingConnection> uc = pending[i];
+            uc->connection->close(DisconnectPacket::eDisconnect_Closed);
+        }
     }
 
     for (unsigned int i = 0; i < players.size(); i++) {
@@ -58,8 +60,9 @@ void ServerConnection::tick() {
         // MGH - changed this so that the the CS lock doesn't cover the tick
         // (was causing a lockup when 2 players tried to join)
         std::vector<std::shared_ptr<PendingConnection> > tempPending;
-        { std::lock_guard<std::mutex> lock(pending_cs);
-        tempPending = pending;
+        {
+            std::lock_guard<std::mutex> lock(pending_cs);
+            tempPending = pending;
         }
 
         for (unsigned int i = 0; i < tempPending.size(); i++) {
@@ -76,12 +79,13 @@ void ServerConnection::tick() {
     }
 
     // now remove from the pending list
-    { std::lock_guard<std::mutex> lock(pending_cs);
-    for (unsigned int i = 0; i < pending.size(); i++)
-        if (pending[i]->done) {
-            pending.erase(pending.begin() + i);
-            i--;
-        }
+    {
+        std::lock_guard<std::mutex> lock(pending_cs);
+        for (unsigned int i = 0; i < pending.size(); i++)
+            if (pending[i]->done) {
+                pending.erase(pending.begin() + i);
+                i--;
+            }
     }
 
     for (unsigned int i = 0; i < players.size(); i++) {

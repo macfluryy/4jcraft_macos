@@ -34,7 +34,8 @@ void ProgressRenderer::_progressStart(int title) {
     }
 
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         lastPercent = 0;
         this->title = title;
     }
@@ -48,7 +49,8 @@ void ProgressRenderer::progressStage(int status) {
 
     lastTime = 0;
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         m_eType = eProgressStringType_ID;
         this->status = status;
     }
@@ -60,7 +62,8 @@ void ProgressRenderer::progressStagePercentage(int i) {
     // 4J Stu - Removing all progressRenderer rendering. This will be replaced
     // on the xbox
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         lastPercent = i;
     }
 }
@@ -68,7 +71,8 @@ void ProgressRenderer::progressStagePercentage(int i) {
 int ProgressRenderer::getCurrentPercent() {
     int returnValue = 0;
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         returnValue = lastPercent;
     }
     return returnValue;
@@ -77,7 +81,8 @@ int ProgressRenderer::getCurrentPercent() {
 int ProgressRenderer::getCurrentTitle() {
     int returnValue;
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         returnValue = title;
     }
     return returnValue;
@@ -86,7 +91,8 @@ int ProgressRenderer::getCurrentTitle() {
 int ProgressRenderer::getCurrentStatus() {
     int returnValue;
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         returnValue = status;
     }
     return returnValue;
@@ -95,7 +101,8 @@ int ProgressRenderer::getCurrentStatus() {
 ProgressRenderer::eProgressStringType ProgressRenderer::getType() {
     eProgressStringType returnValue;
     {
-        std::lock_guard<std::recursive_mutex> lock(ProgressRenderer::s_progress);
+        std::lock_guard<std::recursive_mutex> lock(
+            ProgressRenderer::s_progress);
         returnValue = m_eType;
     }
     return returnValue;

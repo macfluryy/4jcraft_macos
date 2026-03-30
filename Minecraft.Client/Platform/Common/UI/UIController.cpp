@@ -616,8 +616,9 @@ void UIController::StartReloadSkinThread() {
 
 int UIController::reloadSkinThreadProc(void* lpParam) {
     {
-        std::lock_guard<std::mutex> lock(ms_reloadSkinCS);  // MGH - added to prevent crash loading Iggy movies
-                                                            // while the skins were being reloaded
+        std::lock_guard<std::mutex> lock(
+            ms_reloadSkinCS);  // MGH - added to prevent crash loading Iggy
+                               // movies while the skins were being reloaded
         UIController* controller = (UIController*)lpParam;
         // Load new skin
         controller->loadSkins();
@@ -1400,9 +1401,7 @@ UIScene* UIController::GetSceneFromCallbackId(size_t id) {
     return scene;
 }
 
-void UIController::lockCallbackScenes() {
-    m_registeredCallbackScenesCS.lock();
-}
+void UIController::lockCallbackScenes() { m_registeredCallbackScenesCS.lock(); }
 
 void UIController::unlockCallbackScenes() {
     m_registeredCallbackScenesCS.unlock();

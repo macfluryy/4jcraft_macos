@@ -247,8 +247,8 @@ bool UIScene::mapElementsAndNames() {
 extern std::mutex s_loadSkinCS;
 void UIScene::loadMovie() {
     UIController::ms_reloadSkinCS.lock();  // MGH - added to prevent crash
-                                           // loading Iggy movies while the skins
-                                           // were being reloaded
+                                           // loading Iggy movies while the
+                                           // skins were being reloaded
     std::wstring moviePath = getMoviePath();
 
 #if defined(_WINDOWS64)

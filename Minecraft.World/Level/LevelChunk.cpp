@@ -28,17 +28,17 @@ std::recursive_mutex LevelChunk::m_csEntities;
 std::recursive_mutex LevelChunk::m_csTileEntities;
 bool LevelChunk::touchedSky = false;
 
-void LevelChunk::staticCtor() {
-}
+void LevelChunk::staticCtor() {}
 
 void LevelChunk::init(Level* level, int x, int z) {
     biomes = byteArray(16 * 16);
     for (int i = 0; i < 16 * 16; i++) {
         biomes[i] = 0xff;
     }
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    entityBlocks =
-        new std::vector<std::shared_ptr<Entity> >*[ENTITY_BLOCKS_LENGTH];
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        entityBlocks =
+            new std::vector<std::shared_ptr<Entity> >*[ENTITY_BLOCKS_LENGTH];
     }
 
     terrainPopulated = 0;
@@ -59,10 +59,11 @@ void LevelChunk::init(Level* level, int x, int z) {
     this->z = z;
     MemSect(1);
     heightmap = byteArray(16 * 16);
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
-        entityBlocks[i] = new std::vector<std::shared_ptr<Entity> >();
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
+            entityBlocks[i] = new std::vector<std::shared_ptr<Entity> >();
+        }
     }
 
     MemSect(0);
@@ -224,61 +225,63 @@ void LevelChunk::setUnsaved(bool unsaved) {
 
 void LevelChunk::stopSharingTilesAndData() {
 #if defined(SHARING_ENABLED)
-    { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
-    lastUnsharedTime = System::currentTimeMillis();
-    if (!sharingTilesAndData) {
-        return;
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csSharing);
+        lastUnsharedTime = System::currentTimeMillis();
+        if (!sharingTilesAndData) {
+            return;
+        }
 
-    // If we've got a reference to a server chunk's terrainPopulated flag that
-    // this LevelChunk is sharing with, then don't consider unsharing if it
-    // hasn't been set. This is because post-processing things that update the
-    // server chunks won't actually cause the server to send any updates to the
-    // tiles that they alter, so they completely depend on the data not being
-    // shared for it to get from the server to here
-    if ((serverTerrainPopulated) &&
-        (((*serverTerrainPopulated) & sTerrainPopulatedAllAffecting) !=
-         sTerrainPopulatedAllAffecting)) {
-        return;
-    }
+        // If we've got a reference to a server chunk's terrainPopulated flag
+        // that this LevelChunk is sharing with, then don't consider unsharing
+        // if it hasn't been set. This is because post-processing things that
+        // update the server chunks won't actually cause the server to send any
+        // updates to the tiles that they alter, so they completely depend on
+        // the data not being shared for it to get from the server to here
+        if ((serverTerrainPopulated) &&
+            (((*serverTerrainPopulated) & sTerrainPopulatedAllAffecting) !=
+             sTerrainPopulatedAllAffecting)) {
+            return;
+        }
 
-    // If this is the empty chunk, then it will have a x & z of 0,0 - if we
-    // don't drop out here we'll end up unsharing the chunk at this location for
-    // no reason
-    if (isEmpty()) {
-        return;
-    }
+        // If this is the empty chunk, then it will have a x & z of 0,0 - if we
+        // don't drop out here we'll end up unsharing the chunk at this location
+        // for no reason
+        if (isEmpty()) {
+            return;
+        }
 
-    MemSect(47);
+        MemSect(47);
 
-    // Changed to used compressed storage - these CTORs make deep copies of the
-    // storage passed as a parameter
-    lowerBlocks = new CompressedTileStorage(lowerBlocks);
+        // Changed to used compressed storage - these CTORs make deep copies of
+        // the storage passed as a parameter
+        lowerBlocks = new CompressedTileStorage(lowerBlocks);
 
-    // Changed to use new sparse data storage - this CTOR makes a deep copy of
-    // the storage passed as a parameter
-    lowerData = new SparseDataStorage(lowerData);
+        // Changed to use new sparse data storage - this CTOR makes a deep copy
+        // of the storage passed as a parameter
+        lowerData = new SparseDataStorage(lowerData);
 
-    if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
-        upperBlocks = new CompressedTileStorage(upperBlocks);
-        upperData = new SparseDataStorage(upperData);
-    } else {
-        upperBlocks = nullptr;
-        upperData = nullptr;
-    }
+        if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
+            upperBlocks = new CompressedTileStorage(upperBlocks);
+            upperData = new SparseDataStorage(upperData);
+        } else {
+            upperBlocks = nullptr;
+            upperData = nullptr;
+        }
 
-    /*
-    newDataLayer = new DataLayer(skyLight->data.length*2, level->depthBits);
-    XMemCpy(newDataLayer->data.data, skyLight->data.data,
-    skyLight->data.length); skyLight = newDataLayer;
+        /*
+        newDataLayer = new DataLayer(skyLight->data.length*2, level->depthBits);
+        XMemCpy(newDataLayer->data.data, skyLight->data.data,
+        skyLight->data.length); skyLight = newDataLayer;
 
-    newDataLayer = new DataLayer(blockLight->data.length*2, level->depthBits);
-    XMemCpy(newDataLayer->data.data, blockLight->data.data,
-    blockLight->data.length); blockLight = newDataLayer;
-    */
+        newDataLayer = new DataLayer(blockLight->data.length*2,
+        level->depthBits); XMemCpy(newDataLayer->data.data,
+        blockLight->data.data, blockLight->data.length); blockLight =
+        newDataLayer;
+        */
 
-    sharingTilesAndData = false;
-    MemSect(0);
+        sharingTilesAndData = false;
+        MemSect(0);
     }
 #endif
 }
@@ -290,108 +293,110 @@ void LevelChunk::stopSharingTilesAndData() {
 // not sharing
 void LevelChunk::reSyncLighting() {
 #if defined(SHARING_ENABLED)
-    { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csSharing);
 
-    if (isEmpty()) {
-        return;
-    }
+        if (isEmpty()) {
+            return;
+        }
 
 #if defined(_LARGE_WORLDS)
-    LevelChunk* lc = MinecraftServer::getInstance()
-                         ->getLevel(level->dimension->id)
-                         ->cache->getChunkLoadedOrUnloaded(x, z);
+        LevelChunk* lc = MinecraftServer::getInstance()
+                             ->getLevel(level->dimension->id)
+                             ->cache->getChunkLoadedOrUnloaded(x, z);
 #else
-    LevelChunk* lc = MinecraftServer::getInstance()
-                         ->getLevel(level->dimension->id)
-                         ->cache->getChunk(x, z);
+        LevelChunk* lc = MinecraftServer::getInstance()
+                             ->getLevel(level->dimension->id)
+                             ->cache->getChunk(x, z);
 #endif
 
-    GameRenderer::AddForDelete(lowerSkyLight);
-    lowerSkyLight = new SparseLightStorage(lc->lowerSkyLight);
-    GameRenderer::FinishedReassigning();
-    GameRenderer::AddForDelete(lowerBlockLight);
-    lowerBlockLight = new SparseLightStorage(lc->lowerBlockLight);
-    GameRenderer::FinishedReassigning();
+        GameRenderer::AddForDelete(lowerSkyLight);
+        lowerSkyLight = new SparseLightStorage(lc->lowerSkyLight);
+        GameRenderer::FinishedReassigning();
+        GameRenderer::AddForDelete(lowerBlockLight);
+        lowerBlockLight = new SparseLightStorage(lc->lowerBlockLight);
+        GameRenderer::FinishedReassigning();
 
-    if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
-        GameRenderer::AddForDelete(upperSkyLight);
-        upperSkyLight = new SparseLightStorage(lc->upperSkyLight);
-        GameRenderer::FinishedReassigning();
-        GameRenderer::AddForDelete(upperBlockLight);
-        upperBlockLight = new SparseLightStorage(lc->upperBlockLight);
-        GameRenderer::FinishedReassigning();
-    }
+        if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
+            GameRenderer::AddForDelete(upperSkyLight);
+            upperSkyLight = new SparseLightStorage(lc->upperSkyLight);
+            GameRenderer::FinishedReassigning();
+            GameRenderer::AddForDelete(upperBlockLight);
+            upperBlockLight = new SparseLightStorage(lc->upperBlockLight);
+            GameRenderer::FinishedReassigning();
+        }
     }
 #endif
 }
 
 void LevelChunk::startSharingTilesAndData(int forceMs) {
 #if defined(SHARING_ENABLED)
-    { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
-    if (sharingTilesAndData) {
-        return;
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csSharing);
+        if (sharingTilesAndData) {
+            return;
+        }
 
-    // If this is the empty chunk, then it will have a x & z of 0,0 - we'll end
-    // up potentially loading the 0,0 block if we proceed. And it obviously
-    // doesn't make sense to go resharing the 0,0 block on behalf of an empty
-    // chunk either
-    if (isEmpty()) {
-        return;
-    }
+        // If this is the empty chunk, then it will have a x & z of 0,0 - we'll
+        // end up potentially loading the 0,0 block if we proceed. And it
+        // obviously doesn't make sense to go resharing the 0,0 block on behalf
+        // of an empty chunk either
+        if (isEmpty()) {
+            return;
+        }
 
 #if defined(_LARGE_WORLDS)
-    LevelChunk* lc = MinecraftServer::getInstance()
-                         ->getLevel(level->dimension->id)
-                         ->cache->getChunkLoadedOrUnloaded(x, z);
+        LevelChunk* lc = MinecraftServer::getInstance()
+                             ->getLevel(level->dimension->id)
+                             ->cache->getChunkLoadedOrUnloaded(x, z);
 #else
-    LevelChunk* lc = MinecraftServer::getInstance()
-                         ->getLevel(level->dimension->id)
-                         ->cache->getChunk(x, z);
+        LevelChunk* lc = MinecraftServer::getInstance()
+                             ->getLevel(level->dimension->id)
+                             ->cache->getChunk(x, z);
 #endif
 
-    // In normal usage, chunks should only reshare if their local data matched
-    // that on the server. The forceMs parameter though can be used to force a
-    // share if resharing hasn't happened after a period of time
-    if (forceMs == 0) {
-        // Normal behaviour - just check that the data matches, and don't start
-        // sharing data if it doesn't (yet)
-        if (!lowerBlocks->isSameAs(lc->lowerBlocks) ||
-            (upperBlocks && lc->upperBlocks &&
-             !upperBlocks->isSameAs(lc->upperBlocks))) {
-            return;
+        // In normal usage, chunks should only reshare if their local data
+        // matched that on the server. The forceMs parameter though can be used
+        // to force a share if resharing hasn't happened after a period of time
+        if (forceMs == 0) {
+            // Normal behaviour - just check that the data matches, and don't
+            // start sharing data if it doesn't (yet)
+            if (!lowerBlocks->isSameAs(lc->lowerBlocks) ||
+                (upperBlocks && lc->upperBlocks &&
+                 !upperBlocks->isSameAs(lc->upperBlocks))) {
+                return;
+            }
+        } else {
+            // Only force if it has been more than forceMs milliseconds since we
+            // last wanted to unshare this chunk
+            int64_t timenow = System::currentTimeMillis();
+            if ((timenow - lastUnsharedTime) < forceMs) {
+                return;
+            }
         }
-    } else {
-        // Only force if it has been more than forceMs milliseconds since we
-        // last wanted to unshare this chunk
-        int64_t timenow = System::currentTimeMillis();
-        if ((timenow - lastUnsharedTime) < forceMs) {
-            return;
-        }
-    }
 
-    // Note - data that was shared isn't directly deleted here, as it might
-    // still be in use in the game render update thread. Let that thread delete
-    // it when it is safe to do so instead.
-    GameRenderer::AddForDelete(lowerBlocks);
-    lowerBlocks = lc->lowerBlocks;
-    GameRenderer::FinishedReassigning();
-
-    GameRenderer::AddForDelete(lowerData);
-    lowerData = lc->lowerData;
-    GameRenderer::FinishedReassigning();
-
-    if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
-        GameRenderer::AddForDelete(upperBlocks);
-        upperBlocks = lc->upperBlocks;
+        // Note - data that was shared isn't directly deleted here, as it might
+        // still be in use in the game render update thread. Let that thread
+        // delete it when it is safe to do so instead.
+        GameRenderer::AddForDelete(lowerBlocks);
+        lowerBlocks = lc->lowerBlocks;
         GameRenderer::FinishedReassigning();
 
-        GameRenderer::AddForDelete(upperData);
-        upperData = lc->upperData;
+        GameRenderer::AddForDelete(lowerData);
+        lowerData = lc->lowerData;
         GameRenderer::FinishedReassigning();
-    }
 
-    sharingTilesAndData = true;
+        if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
+            GameRenderer::AddForDelete(upperBlocks);
+            upperBlocks = lc->upperBlocks;
+            GameRenderer::FinishedReassigning();
+
+            GameRenderer::AddForDelete(upperData);
+            upperData = lc->upperData;
+            GameRenderer::FinishedReassigning();
+        }
+
+        sharingTilesAndData = true;
     }
 #endif
 }
@@ -1150,8 +1155,9 @@ void LevelChunk::addEntity(std::shared_ptr<Entity> e) {
     e->yChunk = yc;
     e->zChunk = z;
 
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    entityBlocks[yc]->push_back(e);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        entityBlocks[yc]->push_back(e);
     }
 }
 
@@ -1163,19 +1169,19 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
     if (yc < 0) yc = 0;
     if (yc >= ENTITY_BLOCKS_LENGTH) yc = ENTITY_BLOCKS_LENGTH - 1;
 
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 
-    // 4J - was entityBlocks[yc]->remove(e);
-    auto it = find(entityBlocks[yc]->begin(), entityBlocks[yc]->end(), e);
-    if (it != entityBlocks[yc]->end()) {
-        entityBlocks[yc]->erase(it);
-        // 4J - we don't want storage creeping up here as thinkgs move round the
-        // world accumulating up spare space
-        MemSect(31);
-        entityBlocks[yc]->shrink_to_fit();
-        MemSect(0);
-    }
-
+        // 4J - was entityBlocks[yc]->remove(e);
+        auto it = find(entityBlocks[yc]->begin(), entityBlocks[yc]->end(), e);
+        if (it != entityBlocks[yc]->end()) {
+            entityBlocks[yc]->erase(it);
+            // 4J - we don't want storage creeping up here as thinkgs move round
+            // the world accumulating up spare space
+            MemSect(31);
+            entityBlocks[yc]->shrink_to_fit();
+            MemSect(0);
+        }
     }
 }
 
@@ -1201,50 +1207,56 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
     // insert when we don't want one)
     // shared_ptr<TileEntity> tileEntity = tileEntities[pos];
     std::shared_ptr<TileEntity> tileEntity = nullptr;
-    { std::unique_lock<std::recursive_mutex> lock(m_csTileEntities);
-    auto it = tileEntities.find(pos);
+    {
+        std::unique_lock<std::recursive_mutex> lock(m_csTileEntities);
+        auto it = tileEntities.find(pos);
 
-    if (it == tileEntities.end()) {
-        lock.unlock();  // Note: don't assume iterator is valid for
-                        // tileEntities after this point
+        if (it == tileEntities.end()) {
+            lock.unlock();  // Note: don't assume iterator is valid for
+                            // tileEntities after this point
 
-        // Fix for #48450 - All: Code Defect: Hang: Game hangs in tutorial, when
-        // player arrive at the particular coordinate 4J Stu - Chests try to get
-        // their neighbours when being destroyed, which then causes new tile
-        // entities to be created if the neighbour has already been destroyed
-        if (level->m_bDisableAddNewTileEntities) return nullptr;
+            // Fix for #48450 - All: Code Defect: Hang: Game hangs in tutorial,
+            // when player arrive at the particular coordinate 4J Stu - Chests
+            // try to get their neighbours when being destroyed, which then
+            // causes new tile entities to be created if the neighbour has
+            // already been destroyed
+            if (level->m_bDisableAddNewTileEntities) return nullptr;
 
-        int t = getTile(x, y, z);
-        if (t <= 0 || !Tile::tiles[t]->isEntityTile()) return nullptr;
+            int t = getTile(x, y, z);
+            if (t <= 0 || !Tile::tiles[t]->isEntityTile()) return nullptr;
 
-        // 4J-PB changed from this in 1.7.3
-        // EntityTile *et = (EntityTile *) Tile::tiles[t];
-        // et->onPlace(level, this->x * 16 + x, y, this->z * 16 + z);
+            // 4J-PB changed from this in 1.7.3
+            // EntityTile *et = (EntityTile *) Tile::tiles[t];
+            // et->onPlace(level, this->x * 16 + x, y, this->z * 16 + z);
 
-        // if (tileEntity == nullptr)
-        //{
-        tileEntity =
-            dynamic_cast<EntityTile*>(Tile::tiles[t])->newTileEntity(level);
-        level->setTileEntity(this->x * 16 + x, y, this->z * 16 + z, tileEntity);
-        //}
+            // if (tileEntity == nullptr)
+            //{
+            tileEntity =
+                dynamic_cast<EntityTile*>(Tile::tiles[t])->newTileEntity(level);
+            level->setTileEntity(this->x * 16 + x, y, this->z * 16 + z,
+                                 tileEntity);
+            //}
 
-        // tileEntity = tileEntities[pos];		// 4J - TODO - this
-        // doesn't seem right - assignment wrong way? Check
+            // tileEntity = tileEntities[pos];		// 4J - TODO - this
+            // doesn't seem right - assignment wrong way? Check
 
-        // 4J Stu - It should have been inserted by now, but check to be sure
-        { std::lock_guard<std::recursive_mutex> lock2(m_csTileEntities);
-        auto newIt = tileEntities.find(pos);
-        if (newIt != tileEntities.end()) {
-            tileEntity = newIt->second;
+            // 4J Stu - It should have been inserted by now, but check to be
+            // sure
+            {
+                std::lock_guard<std::recursive_mutex> lock2(m_csTileEntities);
+                auto newIt = tileEntities.find(pos);
+                if (newIt != tileEntities.end()) {
+                    tileEntity = newIt->second;
+                }
+            }
+        } else {
+            tileEntity = it->second;
         }
-        }
-    } else {
-        tileEntity = it->second;
-    }
     }
     if (tileEntity != nullptr && tileEntity->isRemoved()) {
-        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
-        tileEntities.erase(pos);
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
+            tileEntities.erase(pos);
         }
         return nullptr;
     }
@@ -1259,7 +1271,8 @@ void LevelChunk::addTileEntity(std::shared_ptr<TileEntity> te) {
     setTileEntity(xx, yy, zz, te);
     if (loaded) {
         {
-            std::lock_guard<std::recursive_mutex> lock(level->m_tileEntityListCS);
+            std::lock_guard<std::recursive_mutex> lock(
+                level->m_tileEntityListCS);
             level->tileEntityList.push_back(te);
         }
     }
@@ -1289,8 +1302,9 @@ void LevelChunk::setTileEntity(int x, int y, int z,
 
     tileEntity->clearRemoved();
 
-    { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
-    tileEntities[pos] = tileEntity;
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
+        tileEntities[pos] = tileEntity;
     }
 }
 
@@ -1303,19 +1317,20 @@ void LevelChunk::removeTileEntity(int x, int y, int z) {
         //   if (removeThis != null) {
         //       removeThis.setRemoved();
         //   }
-        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
-        auto it = tileEntities.find(pos);
-        if (it != tileEntities.end()) {
-            std::shared_ptr<TileEntity> te = tileEntities[pos];
-            tileEntities.erase(pos);
-            if (te != nullptr) {
-                if (level->isClientSide) {
-                    app.DebugPrintf("Removing tile entity of type %d\n",
-                                    te->GetType());
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
+            auto it = tileEntities.find(pos);
+            if (it != tileEntities.end()) {
+                std::shared_ptr<TileEntity> te = tileEntities[pos];
+                tileEntities.erase(pos);
+                if (te != nullptr) {
+                    if (level->isClientSide) {
+                        app.DebugPrintf("Removing tile entity of type %d\n",
+                                        te->GetType());
+                    }
+                    te->setRemoved();
                 }
-                te->setRemoved();
             }
-        }
         }
     }
 }
@@ -1361,17 +1376,20 @@ void LevelChunk::load() {
 #endif
 
         std::vector<std::shared_ptr<TileEntity> > values;
-        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
-        for (auto it = tileEntities.begin(); it != tileEntities.end(); it++) {
-            values.push_back(it->second);
-        }
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
+            for (auto it = tileEntities.begin(); it != tileEntities.end();
+                 it++) {
+                values.push_back(it->second);
+            }
         }
         level->addAllPendingTileEntities(values);
 
-        { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-        for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
-            level->addEntities(entityBlocks[i]);
-        }
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+            for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
+                level->addEntities(entityBlocks[i]);
+            }
         }
     } else {
 #if defined(_LARGE_WORLDS)
@@ -1385,10 +1403,12 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
     loaded = false;
     if (unloadTileEntities) {
         std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
-        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
-        for (auto it = tileEntities.begin(); it != tileEntities.end(); it++) {
-            tileEntitiesToRemove.push_back(it->second);
-        }
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
+            for (auto it = tileEntities.begin(); it != tileEntities.end();
+                 it++) {
+                tileEntitiesToRemove.push_back(it->second);
+            }
         }
 
         auto itEnd = tileEntitiesToRemove.end();
@@ -1398,10 +1418,11 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
         }
     }
 
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
-        level->removeEntities(entityBlocks[i]);
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
+            level->removeEntities(entityBlocks[i]);
+        }
     }
     // app.DebugPrintf("Unloaded chunk %d, %d\n", x, z);
 
@@ -1418,22 +1439,23 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             PIXBeginNamedEvent(0, "Saving entities");
             ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
-            { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-            for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
-                auto itEnd = entityBlocks[i]->end();
-                for (std::vector<std::shared_ptr<Entity> >::iterator it =
-                         entityBlocks[i]->begin();
-                     it != itEnd; it++) {
-                    std::shared_ptr<Entity> e = *it;
-                    CompoundTag* teTag = new CompoundTag();
-                    if (e->save(teTag)) {
-                        entityTags->add(teTag);
+            {
+                std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+                for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
+                    auto itEnd = entityBlocks[i]->end();
+                    for (std::vector<std::shared_ptr<Entity> >::iterator it =
+                             entityBlocks[i]->begin();
+                         it != itEnd; it++) {
+                        std::shared_ptr<Entity> e = *it;
+                        CompoundTag* teTag = new CompoundTag();
+                        if (e->save(teTag)) {
+                            entityTags->add(teTag);
+                        }
                     }
-                }
 
-                // Clear out this list
-                entityBlocks[i]->clear();
-            }
+                    // Clear out this list
+                    entityBlocks[i]->clear();
+                }
             }
 
             m_unloadedEntitiesTag->put(L"Entities", entityTags);
@@ -1463,15 +1485,16 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 }
 
 bool LevelChunk::containsPlayer() {
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
-        std::vector<std::shared_ptr<Entity> >* vecEntity = entityBlocks[i];
-        for (int j = 0; j < vecEntity->size(); j++) {
-            if (vecEntity->at(j)->GetType() == eTYPE_SERVERPLAYER) {
-                return true;
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
+            std::vector<std::shared_ptr<Entity> >* vecEntity = entityBlocks[i];
+            for (int j = 0; j < vecEntity->size(); j++) {
+                if (vecEntity->at(j)->GetType() == eTYPE_SERVERPLAYER) {
+                    return true;
+                }
             }
         }
-    }
     }
     return false;
 }
@@ -1492,30 +1515,31 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
 
     // AP - locking is expensive so enter once in
     // Level::getEntities
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    for (int yc = yc0; yc <= yc1; yc++) {
-        std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        for (int yc = yc0; yc <= yc1; yc++) {
+            std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
-        auto itEnd = entities->end();
-        for (auto it = entities->begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;  // entities->at(i);
-            if (e != except && e->bb.intersects(*bb) &&
-                (selector == nullptr || selector->matches(e))) {
-                es.push_back(e);
-                std::vector<std::shared_ptr<Entity> >* subs =
-                    e->getSubEntities();
-                if (subs != nullptr) {
-                    for (int j = 0; j < subs->size(); j++) {
-                        e = subs->at(j);
-                        if (e != except && e->bb.intersects(*bb) &&
-                            (selector == nullptr || selector->matches(e))) {
-                            es.push_back(e);
+            auto itEnd = entities->end();
+            for (auto it = entities->begin(); it != itEnd; it++) {
+                std::shared_ptr<Entity> e = *it;  // entities->at(i);
+                if (e != except && e->bb.intersects(*bb) &&
+                    (selector == nullptr || selector->matches(e))) {
+                    es.push_back(e);
+                    std::vector<std::shared_ptr<Entity> >* subs =
+                        e->getSubEntities();
+                    if (subs != nullptr) {
+                        for (int j = 0; j < subs->size(); j++) {
+                            e = subs->at(j);
+                            if (e != except && e->bb.intersects(*bb) &&
+                                (selector == nullptr || selector->matches(e))) {
+                                es.push_back(e);
+                            }
                         }
                     }
                 }
             }
         }
-    }
     }
 }
 
@@ -1538,55 +1562,57 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
 
     // AP - locking is expensive so enter once in
     // Level::getEntitiesOfClass
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    for (int yc = yc0; yc <= yc1; yc++) {
-        std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        for (int yc = yc0; yc <= yc1; yc++) {
+            std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
-        auto itEnd = entities->end();
-        for (auto it = entities->begin(); it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;  // entities->at(i);
+            auto itEnd = entities->end();
+            for (auto it = entities->begin(); it != itEnd; it++) {
+                std::shared_ptr<Entity> e = *it;  // entities->at(i);
 
-            bool isAssignableFrom = false;
-            // Some special cases where the base class is a general type that
-            // our class may be derived from, otherwise do a direct comparison
-            // of type_info
-            if (ec == typeid(Player))
-                isAssignableFrom = e->instanceof(eTYPE_PLAYER);
-            else if (ec == typeid(Entity))
-                isAssignableFrom = e->instanceof(eTYPE_ENTITY);
-            else if (ec == typeid(Mob))
-                isAssignableFrom = e->instanceof(eTYPE_MOB);
-            else if (ec == typeid(LivingEntity))
-                isAssignableFrom = e->instanceof(eTYPE_LIVINGENTITY);
-            else if (ec == typeid(ItemEntity))
-                isAssignableFrom = e->instanceof(eTYPE_ITEMENTITY);
-            else if (ec == typeid(Minecart))
-                isAssignableFrom = e->instanceof(eTYPE_MINECART);
-            else if (ec == typeid(Monster))
-                isAssignableFrom = e->instanceof(eTYPE_MONSTER);
-            else if (ec == typeid(Zombie))
-                isAssignableFrom = e->instanceof(eTYPE_ZOMBIE);
-            else if (Entity* entity = e.get();
-                     entity != nullptr && ec == typeid(*entity))
-                isAssignableFrom = true;
-            if (isAssignableFrom && e->bb.intersects(*bb)) {
-                if (selector == nullptr || selector->matches(e)) {
-                    es.push_back(e);
+                bool isAssignableFrom = false;
+                // Some special cases where the base class is a general type
+                // that our class may be derived from, otherwise do a direct
+                // comparison of type_info
+                if (ec == typeid(Player))
+                    isAssignableFrom = e->instanceof(eTYPE_PLAYER);
+                else if (ec == typeid(Entity))
+                    isAssignableFrom = e->instanceof(eTYPE_ENTITY);
+                else if (ec == typeid(Mob))
+                    isAssignableFrom = e->instanceof(eTYPE_MOB);
+                else if (ec == typeid(LivingEntity))
+                    isAssignableFrom = e->instanceof(eTYPE_LIVINGENTITY);
+                else if (ec == typeid(ItemEntity))
+                    isAssignableFrom = e->instanceof(eTYPE_ITEMENTITY);
+                else if (ec == typeid(Minecart))
+                    isAssignableFrom = e->instanceof(eTYPE_MINECART);
+                else if (ec == typeid(Monster))
+                    isAssignableFrom = e->instanceof(eTYPE_MONSTER);
+                else if (ec == typeid(Zombie))
+                    isAssignableFrom = e->instanceof(eTYPE_ZOMBIE);
+                else if (Entity* entity = e.get();
+                         entity != nullptr && ec == typeid(*entity))
+                    isAssignableFrom = true;
+                if (isAssignableFrom && e->bb.intersects(*bb)) {
+                    if (selector == nullptr || selector->matches(e)) {
+                        es.push_back(e);
+                    }
                 }
+                // 4J - note needs to be equivalent to
+                // baseClass.isAssignableFrom(e.getClass())
             }
-            // 4J - note needs to be equivalent to
-            // baseClass.isAssignableFrom(e.getClass())
         }
-    }
     }
 }
 
 int LevelChunk::countEntities() {
     int entityCount = 0;
-    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-    for (int yc = 0; yc < ENTITY_BLOCKS_LENGTH; yc++) {
-        entityCount += (int)entityBlocks[yc]->size();
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csEntities);
+        for (int yc = 0; yc < ENTITY_BLOCKS_LENGTH; yc++) {
+            entityCount += (int)entityBlocks[yc]->size();
+        }
     }
     return entityCount;
 }
@@ -2131,11 +2157,12 @@ void LevelChunk::compressBlocks() {
         // Note - only the extraction of the pointers needs to be done in the
         // lock, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
-        { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
-        if (sharingTilesAndData) {
-            blocksToCompressLower = lowerBlocks;
-            blocksToCompressUpper = upperBlocks;
-        }
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csSharing);
+            if (sharingTilesAndData) {
+                blocksToCompressLower = lowerBlocks;
+                blocksToCompressUpper = upperBlocks;
+            }
         }
     } else {
         // Not the host, simple case
@@ -2230,11 +2257,12 @@ void LevelChunk::compressData() {
         // Note - only the extraction of the pointers needs to be done in the
         // lock, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
-        { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
-        if (sharingTilesAndData) {
-            dataToCompressLower = lowerData;
-            dataToCompressUpper = upperData;
-        }
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csSharing);
+            if (sharingTilesAndData) {
+                dataToCompressLower = lowerData;
+                dataToCompressUpper = upperData;
+            }
         }
     } else {
         // Not the host, simple case

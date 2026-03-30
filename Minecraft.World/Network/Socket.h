@@ -115,7 +115,7 @@ private:
 
     // For network connections
     std::queue<std::uint8_t> m_queueNetwork[2];  // For input data
-    std::mutex m_queueLockNetwork[2];             // For input data
+    std::mutex m_queueLockNetwork[2];            // For input data
     SocketInputStreamNetwork* m_inputStream[2];
     SocketOutputStreamNetwork* m_outputStream[2];
     bool m_endClosed[2];

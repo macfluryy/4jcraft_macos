@@ -513,7 +513,6 @@ void LevelRenderer::allChanged(int playerIndex) {
     noEntityRenderFrames = 2;
 
     Minecraft::GetInstance()->gameRenderer->EnableUpdateThread();
-
 }
 
 void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
@@ -620,7 +619,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
              it != renderableTileEntities.end(); it++) {
             int idx = it->first;
             // Don't render if it isn't in the same dimension as this player
-            if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
+            if (!isGlobalIndexInSameDimension(idx, level[playerIndex]))
+                continue;
 
             for (auto it2 = it->second.tiles.begin();
                  it2 != it->second.tiles.end(); it2++) {
@@ -3973,7 +3973,6 @@ void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
             }
         }
     }
-
 }
 
 void LevelRenderer::DestroyedTileManager::tick() {

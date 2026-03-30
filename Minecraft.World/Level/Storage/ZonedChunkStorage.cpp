@@ -218,7 +218,8 @@ void ZonedChunkStorage::saveEntities(Level* level, LevelChunk* lc) {
     {
         std::lock_guard<std::mutex> lock(lc->m_csEntities);
         for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++) {
-            std::vector<std::shared_ptr<Entity> >* entities = lc->entityBlocks[i];
+            std::vector<std::shared_ptr<Entity> >* entities =
+                lc->entityBlocks[i];
 
             auto itEndTags = entities->end();
             for (auto it = entities->begin(); it != itEndTags; it++) {

@@ -38,7 +38,6 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
     m_unloadedCache = new LevelChunk*[XZSIZE * XZSIZE];
     memset(m_unloadedCache, 0, XZSIZE * XZSIZE * sizeof(LevelChunk*));
 #endif
-
 }
 
 // 4J-PB added
@@ -144,18 +143,19 @@ LevelChunk* ServerChunkCache::create(
     LevelChunk* lastChunk = chunk;
 
     if ((chunk == nullptr) || (chunk->x != x) || (chunk->z != z)) {
-        { std::lock_guard<std::recursive_mutex> lock(m_csLoadCreate);
-        chunk = load(x, z);
-        if (chunk == nullptr) {
-            if (source == nullptr) {
-                chunk = emptyChunk;
-            } else {
-                chunk = source->getChunk(x, z);
+        {
+            std::lock_guard<std::recursive_mutex> lock(m_csLoadCreate);
+            chunk = load(x, z);
+            if (chunk == nullptr) {
+                if (source == nullptr) {
+                    chunk = emptyChunk;
+                } else {
+                    chunk = source->getChunk(x, z);
+                }
             }
-        }
-        if (chunk != nullptr) {
-            chunk->load();
-        }
+            if (chunk != nullptr) {
+                chunk->load();
+            }
         }
 
 #if defined(_WIN64) || defined(__LP64__)
@@ -649,11 +649,12 @@ bool ServerChunkCache::saveAllEntities() {
     PIXBeginNamedEvent(0, "Save all entities");
 
     PIXBeginNamedEvent(0, "saving to NBT");
-    { std::lock_guard<std::recursive_mutex> lock(m_csLoadCreate);
-    for (auto it = m_loadedChunkList.begin(); it != m_loadedChunkList.end();
-         ++it) {
-        storage->saveEntities(level, *it);
-    }
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_csLoadCreate);
+        for (auto it = m_loadedChunkList.begin(); it != m_loadedChunkList.end();
+             ++it) {
+            storage->saveEntities(level, *it);
+        }
     }
     PIXEndNamedEvent();
 
@@ -860,7 +861,8 @@ int ServerChunkCache::runSaveThreadProc(void* lpParam) {
 
     // Wait for the producer thread to tell us to start
     params->wakeEvent->waitForSignal(
-        C4JThread::kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
+        C4JThread::
+            kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
 
     // app.DebugPrintf("Save thread has started\n");
 
@@ -887,7 +889,8 @@ int ServerChunkCache::runSaveThreadProc(void* lpParam) {
 
         // Wait for the producer thread to tell us to go again
         params->wakeEvent->waitForSignal(
-            C4JThread::kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
+            C4JThread::
+                kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
         PIXEndNamedEvent();
     }
 
