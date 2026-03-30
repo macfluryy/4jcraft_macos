@@ -36,8 +36,9 @@ jobs:
       - name: Restore ccache
         uses: actions/cache@v4
         with:
-          path: ~/.ccache
+          path: ${{ runner.temp }}/ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
+          restore-keys: ${{ runner.os }}-ccache-
 
       - name: Restore meson cache
         uses: actions/cache@v4
