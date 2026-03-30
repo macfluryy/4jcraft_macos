@@ -13,7 +13,9 @@ on: [push, pull_request]
     - '**.inl'
     - "**meson.build"
     - "flake.nix"
+    - ".clang-format"
     - '.github/workflows/build-linux.yml'
+    - ".github/scripts/check-clang-format.sh"
 
 jobs:
   formatting-check:
