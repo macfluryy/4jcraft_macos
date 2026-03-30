@@ -103,7 +103,7 @@ public:
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
                              bool released, bool& handled);
     // 4jcraft: made public for thumbnail thunk
-    static int AvatarReturned(LPVOID lpParam, PBYTE pbThumbnail,
+    static int AvatarReturned(void* lpParam, PBYTE pbThumbnail,
                               DWORD dwThumbnailBytes);
 
 private:

@@ -6964,7 +6964,7 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
 
 int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                                      C4JStorage::PTMSPP_FILEDATA pFileData,
-                                     LPCSTR szFilename) {
+                                     const char* szFilename) {
 
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 

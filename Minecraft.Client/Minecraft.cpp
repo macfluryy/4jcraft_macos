@@ -3467,7 +3467,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     // 			// see if we can react to this
     // 			if(app.GetXuiAction(iPad)==eAppAction_Idle)
     // 			{
-    // 				app.SetAction(iPad,eAppAction_DebugText,(LPVOID)wchInput);
+    // 				app.SetAction(iPad,eAppAction_DebugText,(void*)wchInput);
     // 			}
     // 		}
     // 	}

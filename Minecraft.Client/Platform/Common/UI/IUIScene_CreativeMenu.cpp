@@ -1195,7 +1195,7 @@ bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum,
 }
 
 void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum,
-                                                 BOOL quickKeyHeld) {
+                                                 bool quickKeyHeld) {
     // Drop items.
     Minecraft* pMinecraft = Minecraft::GetInstance();
 

@@ -487,7 +487,7 @@ void LevelGenerationOptions::loadBaseSaveData() {
     }
 }
 
-int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
+int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                                         DWORD dwLicenceMask) {
     LevelGenerationOptions* lgo = (LevelGenerationOptions*)pParam;
     lgo->m_bLoadingData = false;
@@ -545,7 +545,7 @@ int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
                         DWORD dwFileSize = grf.length();
                         DWORD bytesRead;
                         PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
-                        BOOL bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
+                        bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
                                                  &bytesRead, NULL);
                         if (bSuccess == FALSE) {
                             app.FatalLoadError();
@@ -602,7 +602,7 @@ int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
                 if (fileHandle != INVALID_HANDLE_VALUE) {
                     DWORD bytesRead, dwFileSize = GetFileSize(fileHandle, NULL);
                     PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
-                    BOOL bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
+                    bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
                                              &bytesRead, NULL);
                     if (bSuccess == FALSE) {
                         app.FatalLoadError();

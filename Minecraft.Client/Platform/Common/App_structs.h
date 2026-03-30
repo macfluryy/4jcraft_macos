@@ -176,7 +176,7 @@ typedef struct _TMSPPRequest {
     C4JStorage::eTMS_FILETYPEVAL eFileTypeVal;
     // char szFilename[MAX_TMSFILENAME_SIZE];
     int (*CallbackFunc)(void*, int, int, C4JStorage::PTMSPP_FILEDATA,
-                        LPCSTR szFilename);
+                        const char* szFilename);
     WCHAR wchFilename[MAX_TMSFILENAME_SIZE];
 
     void* lpCallbackParam;

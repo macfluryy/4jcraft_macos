@@ -54,21 +54,21 @@ public:
 	bool				IsSignedIn(int iQuadrant);
 	bool				IsSignedInLive(int iProf);
 	bool				IsGuest(int iQuadrant);
-	UINT				RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant=XUSER_INDEX_ANY);
-	UINT				DisplayOfflineProfile(int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant=XUSER_INDEX_ANY);
-	UINT				RequestConvertOfflineToGuestUI(int( *Func)(LPVOID,const bool, const int iPad),LPVOID lpParam,int iQuadrant=XUSER_INDEX_ANY);
+	UINT				RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
+	UINT				DisplayOfflineProfile(int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
+	UINT				RequestConvertOfflineToGuestUI(int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
 	void				SetPrimaryPlayerChanged(bool bVal);								
 	bool				QuerySigninStatus(void);
 	void				GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid);
-	BOOL				AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2);
-	BOOL				XUIDIsGuest(PlayerUID xuid);
+	bool				AreXUIDSEqual(PlayerUID xuid1,PlayerUID xuid2);
+	bool				XUIDIsGuest(PlayerUID xuid);
 	bool				AllowedToPlayMultiplayer(int iProf);
 	bool				GetChatAndContentRestrictions(int iPad,bool *pbChatRestricted,bool *pbContentRestricted,int *piAge);
 	void				StartTrialGame(); // disables saves and leaderboard, and change state to readyforgame from pregame
-	void				AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, BOOL *allAllowed, BOOL *friendsAllowed);
-	BOOL				CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, DWORD dwXuidCount );
+	void				AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, bool *allAllowed, bool *friendsAllowed);
+	bool				CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, DWORD dwXuidCount );
 	void				ShowProfileCard(int iPad, PlayerUID targetUid);
-	bool				GetProfileAvatar(int iPad,int( *Func)(LPVOID lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), LPVOID lpParam);
+	bool				GetProfileAvatar(int iPad,int( *Func)(void* lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), void* lpParam);
 	void				CancelProfileAvatarRequest();
 
 				
@@ -78,18 +78,18 @@ public:
 	char*				GetGamertag(int iPad);
 	std::wstring				GetDisplayName(int iPad);
 	bool				IsFullVersion();
-	void				SetSignInChangeCallback(void ( *Func)(LPVOID, bool, unsigned int),LPVOID lpParam);
-	void				SetNotificationsCallback(void ( *Func)(LPVOID, DWORD, unsigned int),LPVOID lpParam);
+	void				SetSignInChangeCallback(void ( *Func)(void*, bool, unsigned int),void* lpParam);
+	void				SetNotificationsCallback(void ( *Func)(void*, DWORD, unsigned int),void* lpParam);
 	bool				RegionIsNorthAmerica(void);
 	bool				LocaleIsUSorCanada(void);
 	HRESULT				GetLiveConnectionStatus();
 	bool				IsSystemUIDisplayed();
-	void				SetProfileReadErrorCallback(void ( *Func)(LPVOID), LPVOID lpParam);
+	void				SetProfileReadErrorCallback(void ( *Func)(void*), void* lpParam);
 
 
 	// PROFILE DATA
-	int					SetDefaultOptionsCallback(int( *Func)(LPVOID,PROFILESETTINGS *, const int iPad),LPVOID lpParam);
-	int					SetOldProfileVersionCallback(int( *Func)(LPVOID,unsigned char *, const unsigned short,const int),LPVOID lpParam);
+	int					SetDefaultOptionsCallback(int( *Func)(void*,PROFILESETTINGS *, const int iPad),void* lpParam);
+	int					SetOldProfileVersionCallback(int( *Func)(void*,unsigned char *, const unsigned short,const int),void* lpParam);
 	PROFILESETTINGS *	GetDashboardProfileSettings(int iPad);
 	void				WriteToProfile(int iQuadrant, bool bGameDefinedDataChanged=false, bool bOverride5MinuteLimitOnProfileWrites=false);
 	void				ForceQueuedProfileWrites(int iPad=XUSER_INDEX_ANY);
@@ -116,7 +116,7 @@ public:
 
 	// PURCHASE
 	void				DisplayFullVersionPurchase(bool bRequired, int iQuadrant, int iUpsellParam = -1);
-	void				SetUpsellCallback(void ( *Func)(LPVOID lpParam, eUpsellType type, eUpsellResponse response, int iUserData),LPVOID lpParam);
+	void				SetUpsellCallback(void ( *Func)(void* lpParam, eUpsellType type, eUpsellResponse response, int iUserData),void* lpParam);
 
 	// Debug 
 	void				SetDebugFullOverride(bool bVal); // To override the license version (trail/full). Only in debug/release, not ContentPackage

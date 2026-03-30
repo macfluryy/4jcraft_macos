@@ -186,7 +186,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                                 DWORD bytesRead,
                                     dwFileSize = GetFileSize(fileHandle, NULL);
                                 PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
-                                BOOL bSuccess =
+                                bool bSuccess =
                                     ReadFile(fileHandle, pbData, dwFileSize,
                                              &bytesRead, NULL);
                                 if (bSuccess == FALSE) {

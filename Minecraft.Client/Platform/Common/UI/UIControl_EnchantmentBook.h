@@ -15,7 +15,7 @@ private:
     float flip, oFlip, flipT, flipA;
     float open, oOpen;
 
-    // BOOL m_bDirty;
+    // bool m_bDirty;
     // float m_fScale,m_fAlpha;
     // int	m_iPad;
     std::shared_ptr<ItemInstance> last;

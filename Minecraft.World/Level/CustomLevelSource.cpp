@@ -43,7 +43,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
         }
-        BOOL bSuccess = ReadFile(file, m_heightmapOverride.data, dwFileSize,
+        bool bSuccess = ReadFile(file, m_heightmapOverride.data, dwFileSize,
                                  &bytesRead, NULL);
 
         if (bSuccess == FALSE) {
@@ -77,7 +77,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
         }
-        BOOL bSuccess = ReadFile(file, m_waterheightOverride.data, dwFileSize,
+        bool bSuccess = ReadFile(file, m_waterheightOverride.data, dwFileSize,
                                  &bytesRead, NULL);
 
         if (bSuccess == FALSE) {

@@ -78,7 +78,7 @@ protected:
     virtual void setOfferDescription(std::vector<HtmlString>* description);
 
     virtual void HandleMessage(EUIMessage message, void* data);
-    void handleInventoryUpdated(LPVOID data);
+    void handleInventoryUpdated(void* data);
 
     int getPad() { return m_iPad; }
 };

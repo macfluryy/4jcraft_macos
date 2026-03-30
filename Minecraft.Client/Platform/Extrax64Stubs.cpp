@@ -164,7 +164,7 @@ DWORD MinecraftDynamicConfigurations::GetTrialTime() { return DYNAMIC_CONFIG_DEF
 
 void XSetThreadProcessor(HANDLE a, int b) {}
 // #if !(0) && !(0)
-// BOOL XCloseHandle(HANDLE a) { return CloseHandle(a); }
+// bool XCloseHandle(HANDLE a) { return CloseHandle(a); }
 // #endif // 0
 
 DWORD XUserGetSigninInfo(
@@ -181,7 +181,7 @@ LPCWSTR CXuiStringTable::Lookup(UINT nIndex) { return L"String"; }
 void CXuiStringTable::Clear() {}
 HRESULT CXuiStringTable::Load(LPCWSTR szId) { return S_OK; }
 
-DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCount, PBOOL pfResult, void *pOverlapped) { return 0; }
+DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCount, bool* pfResult, void *pOverlapped) { return 0; }
 
 HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
@@ -302,7 +302,7 @@ void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context)
 //#if 1
 DWORD XGetLanguage() { return 1; }
 DWORD XGetLocale() { return 0; }
-DWORD XEnableGuestSignin(BOOL fEnable) { return 0; }
+DWORD XEnableGuestSignin(bool fEnable) { return 0; }
 
 
 
@@ -458,10 +458,10 @@ void				C_4JProfile::ShowProfileCard(int iPad, PlayerUID targetUid) {}
 #if defined(__linux__)
 C4JStorage::C4JStorage() {}
 void								C4JStorage::Tick() {}
-C4JStorage::EMessageResult			C4JStorage::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA,unsigned int uiOptionC, unsigned int pad, int( *Func)(LPVOID,int,const C4JStorage::EMessageResult),LPVOID lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,unsigned int focusButton) { return C4JStorage::EMessage_Undefined; }
+C4JStorage::EMessageResult			C4JStorage::RequestMessageBox(unsigned int uiTitle, unsigned int uiText, unsigned int *uiOptionA,unsigned int uiOptionC, unsigned int pad, int( *Func)(void*,int,const C4JStorage::EMessageResult),void* lpParam, C4JStringTable *pStringTable, WCHAR *pwchFormatString,unsigned int focusButton) { return C4JStorage::EMessage_Undefined; }
 C4JStorage::EMessageResult			C4JStorage::GetMessageBoxResult()  { return C4JStorage::EMessage_Undefined; }
-bool								C4JStorage::SetSaveDevice(int( *Func)(LPVOID,const bool),LPVOID lpParam, bool bForceResetOfSaveDevice) { return true; }
-void								C4JStorage::Init(LPCWSTR pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize, int( *Func)(LPVOID, const ESavingMessage, int),LPVOID lpParam) {}
+bool								C4JStorage::SetSaveDevice(int( *Func)(void*,const bool),void* lpParam, bool bForceResetOfSaveDevice) { return true; }
+void								C4JStorage::Init(LPCWSTR pwchDefaultSaveName,char *pszSavePackName,int iMinimumSaveSize, int( *Func)(void*, const ESavingMessage, int),void* lpParam) {}
 void								C4JStorage::ResetSaveData() {}
 void								C4JStorage::SetDefaultSaveNameForKeyboardDisplay(LPCWSTR pwchDefaultSaveName) {}
 void								C4JStorage::SetSaveTitle(LPCWSTR pwchDefaultSaveName) {}
@@ -469,49 +469,49 @@ LPCWSTR								C4JStorage::GetSaveTitle() { return L""; }
 bool								C4JStorage::GetSaveUniqueNumber(INT *piVal) { return true; }
 bool								C4JStorage::GetSaveUniqueFilename(char *pszName) { return true; }
 void								C4JStorage::SetSaveUniqueFilename(char *szFilename) { }
-void								C4JStorage::SetState(ESaveGameControlState eControlState,int( *Func)(LPVOID,const bool),LPVOID lpParam) {}
+void								C4JStorage::SetState(ESaveGameControlState eControlState,int( *Func)(void*,const bool),void* lpParam) {}
 void								C4JStorage::SetSaveDisabled(bool bDisable) {}
 bool								C4JStorage::GetSaveDisabled(void) { return false; }
 unsigned int						C4JStorage::GetSaveSize() { return 0; }
 void								C4JStorage::GetSaveData(void *pvData,unsigned int *pulBytes) {}
 PVOID								C4JStorage::AllocateSaveData(unsigned int ulBytes) { return new char[ulBytes]; }
 void								C4JStorage::SaveSaveData(unsigned int ulBytes,PBYTE pbThumbnail,DWORD cbThumbnail,PBYTE pbTextData, DWORD dwTextLen) {}
-void								C4JStorage::CopySaveDataToNewSave(std::uint8_t *pbThumbnail,unsigned int cbThumbnail,WCHAR *wchNewName,int ( *Func)(LPVOID lpParam, bool), LPVOID lpParam) {}
+void								C4JStorage::CopySaveDataToNewSave(std::uint8_t *pbThumbnail,unsigned int cbThumbnail,WCHAR *wchNewName,int ( *Func)(void* lpParam, bool), void* lpParam) {}
 void								C4JStorage::SetSaveDeviceSelected(unsigned int uiPad,bool bSelected) {}
 bool								C4JStorage::GetSaveDeviceSelected(unsigned int iPad) { return true; }
 C4JStorage::ELoadGameStatus			C4JStorage::DoesSaveExist(bool *pbExists) { return C4JStorage::ELoadGame_Idle; }
 bool								C4JStorage::EnoughSpaceForAMinSaveGame() { return true; }
 void								C4JStorage::SetSaveMessageVPosition(float fY) {}
-//C4JStorage::ESGIStatus				C4JStorage::GetSavesInfo(int iPad,bool ( *Func)(LPVOID, int, CACHEINFOSTRUCT *, int, HRESULT),LPVOID lpParam,char *pszSavePackName) { return C4JStorage::ESGIStatus_Idle; }
-C4JStorage::ESaveGameState			C4JStorage::GetSavesInfo(int iPad,int ( *Func)(LPVOID lpParam,SAVE_DETAILS *pSaveDetails,const bool),LPVOID lpParam,char *pszSavePackName) { return C4JStorage::ESaveGame_Idle; }
+//C4JStorage::ESGIStatus				C4JStorage::GetSavesInfo(int iPad,bool ( *Func)(void*, int, CACHEINFOSTRUCT *, int, HRESULT),void* lpParam,char *pszSavePackName) { return C4JStorage::ESGIStatus_Idle; }
+C4JStorage::ESaveGameState			C4JStorage::GetSavesInfo(int iPad,int ( *Func)(void* lpParam,SAVE_DETAILS *pSaveDetails,const bool),void* lpParam,char *pszSavePackName) { return C4JStorage::ESaveGame_Idle; }
 
 void								C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,XCONTENT_DATA &xContentData) {}
 void								C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,	std::uint8_t * *ppbImageData, unsigned int *pImageBytes) {}
-C4JStorage::ESaveGameState			C4JStorage::LoadSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool, const bool), LPVOID lpParam) {return C4JStorage::ESaveGame_Idle;}
-C4JStorage::EDeleteGameStatus		C4JStorage::DeleteSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool), LPVOID lpParam) { return C4JStorage::EDeleteGame_Idle; }
+C4JStorage::ESaveGameState			C4JStorage::LoadSaveData(PSAVE_INFO pSaveInfo,int( *Func)(void* lpParam,const bool, const bool), void* lpParam) {return C4JStorage::ESaveGame_Idle;}
+C4JStorage::EDeleteGameStatus		C4JStorage::DeleteSaveData(PSAVE_INFO pSaveInfo,int( *Func)(void* lpParam,const bool), void* lpParam) { return C4JStorage::EDeleteGame_Idle; }
 PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return NULL;}
 
-void								C4JStorage::RegisterMarketplaceCountsCallback(int ( *Func)(LPVOID lpParam, C4JStorage::DLC_TMS_DETAILS *, int), LPVOID lpParam ) {}
+void								C4JStorage::RegisterMarketplaceCountsCallback(int ( *Func)(void* lpParam, C4JStorage::DLC_TMS_DETAILS *, int), void* lpParam ) {}
 void								C4JStorage::SetDLCPackageRoot(char *pszDLCRoot) {}
 C4JStorage::EDLCStatus				C4JStorage::GetDLCOffers(int iPad,int( *Func)(void *, int, std::uint32_t, int),void *lpParam, std::uint32_t dwOfferTypesBitmaskT) { return C4JStorage::EDLC_Idle; }
 unsigned int						C4JStorage::CancelGetDLCOffers() { return 0; }
 void								C4JStorage::ClearDLCOffers() {}
 XMARKETPLACE_CONTENTOFFER_INFO&		C4JStorage::GetOffer(unsigned int dw) { static XMARKETPLACE_CONTENTOFFER_INFO retval = {0}; return retval; }
 int									C4JStorage::GetOfferCount() { return 0; }
-unsigned int						C4JStorage::InstallOffer(int iOfferIDC,ULONGLONG *ullOfferIDA,int( *Func)(LPVOID, int, int),LPVOID lpParam, bool bTrial) { return 0; }
+unsigned int						C4JStorage::InstallOffer(int iOfferIDC,ULONGLONG *ullOfferIDA,int( *Func)(void*, int, int),void* lpParam, bool bTrial) { return 0; }
 unsigned int						C4JStorage::GetAvailableDLCCount( int iPad) { return 0; }
 XCONTENT_DATA&						C4JStorage::GetDLC(unsigned int dw) { static XCONTENT_DATA retval = {0}; return retval; }
-C4JStorage::EDLCStatus				C4JStorage::GetInstalledDLC(int iPad,int( *Func)(LPVOID, int, int),LPVOID lpParam) { return C4JStorage::EDLC_Idle; }
-std::uint32_t						C4JStorage::MountInstalledDLC(int iPad,std::uint32_t dwDLC,int( *Func)(void *, int, std::uint32_t, std::uint32_t),void *lpParam,LPCSTR szMountDrive) { return 0; }
-unsigned int						C4JStorage::UnmountInstalledDLC(LPCSTR szMountDrive) { return 0; }
-C4JStorage::ETMSStatus				C4JStorage::ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType, WCHAR *pwchFilename,std::uint8_t **ppBuffer,unsigned int *pBufferSize,int( *Func)(LPVOID, WCHAR *,int, bool, int),LPVOID lpParam, int iAction) { return C4JStorage::ETMSStatus_Idle; }
+C4JStorage::EDLCStatus				C4JStorage::GetInstalledDLC(int iPad,int( *Func)(void*, int, int),void* lpParam) { return C4JStorage::EDLC_Idle; }
+std::uint32_t						C4JStorage::MountInstalledDLC(int iPad,std::uint32_t dwDLC,int( *Func)(void *, int, std::uint32_t, std::uint32_t),void *lpParam,const char* szMountDrive) { return 0; }
+unsigned int						C4JStorage::UnmountInstalledDLC(const char* szMountDrive) { return 0; }
+C4JStorage::ETMSStatus				C4JStorage::ReadTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType, WCHAR *pwchFilename,std::uint8_t **ppBuffer,unsigned int *pBufferSize,int( *Func)(void*, WCHAR *,int, bool, int),void* lpParam, int iAction) { return C4JStorage::ETMSStatus_Idle; }
 bool								C4JStorage::WriteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename,std::uint8_t *pBuffer,unsigned int bufferSize) { return true; }
 bool								C4JStorage::DeleteTMSFile(int iQuadrant,eGlobalStorage eStorageFacility,WCHAR *pwchFilename) { return true; }
 void								C4JStorage::StoreTMSPathName(WCHAR *pwchName) {}
 unsigned int						C4JStorage::CRC(unsigned char *buf, int len) { return 0; }
 
 struct PTMSPP_FILEDATA;
-C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)/*=NULL*/,LPVOID lpParam/*=NULL*/, int iUserData/*=0*/) {return C4JStorage::ETMSStatus_Idle;}
+C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,const char* szFilename,int( *Func)(void*,int,int,PTMSPP_FILEDATA, const char*)/*=NULL*/,void* lpParam/*=NULL*/, int iUserData/*=0*/) {return C4JStorage::ETMSStatus_Idle;}
 #endif
 
 #endif
@@ -521,25 +521,25 @@ C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGloba
 HRESULT CSentientManager::Init() { return S_OK; }
 HRESULT CSentientManager::Tick() { return S_OK; }
 HRESULT CSentientManager::Flush() { return S_OK; }
-BOOL CSentientManager::RecordPlayerSessionStart(DWORD dwUserId) { return true; }
-BOOL CSentientManager::RecordPlayerSessionExit(DWORD dwUserId, int exitStatus) { return true; }
-BOOL CSentientManager::RecordHeartBeat(DWORD dwUserId) { return true; }
-BOOL CSentientManager::RecordLevelStart(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, DWORD numberOfLocalPlayers, DWORD numberOfOnlinePlayers) { return true; }
-BOOL CSentientManager::RecordLevelExit(DWORD dwUserId, ESen_LevelExitStatus levelExitStatus) { return true; }
-BOOL CSentientManager::RecordLevelSaveOrCheckpoint(DWORD dwUserId, INT saveOrCheckPointID, INT saveSizeInBytes) { return true; }
-BOOL CSentientManager::RecordLevelResume(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, DWORD numberOfLocalPlayers, DWORD numberOfOnlinePlayers, INT saveOrCheckPointID)  { return true; }
-BOOL CSentientManager::RecordPauseOrInactive(DWORD dwUserId)  { return true; }
-BOOL CSentientManager::RecordUnpauseOrActive(DWORD dwUserId) { return true; }
-BOOL CSentientManager::RecordMenuShown(DWORD dwUserId, INT menuID, INT optionalMenuSubID) { return true; }
-BOOL CSentientManager::RecordAchievementUnlocked(DWORD dwUserId, INT achievementID, INT achievementGamerscore) { return true; }
-BOOL CSentientManager::RecordMediaShareUpload(DWORD dwUserId, ESen_MediaDestination mediaDestination, ESen_MediaType mediaType) { return true; }
-BOOL CSentientManager::RecordUpsellPresented(DWORD dwUserId, ESen_UpsellID upsellId, INT marketplaceOfferID) { return true; }
-BOOL CSentientManager::RecordUpsellResponded(DWORD dwUserId, ESen_UpsellID upsellId, INT marketplaceOfferID, ESen_UpsellOutcome upsellOutcome) { return true; }
-BOOL CSentientManager::RecordPlayerDiedOrFailed(DWORD dwUserId, INT lowResMapX, INT lowResMapY, INT lowResMapZ, INT mapID, INT playerWeaponID, INT enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
-BOOL CSentientManager::RecordEnemyKilledOrOvercome(DWORD dwUserId, INT lowResMapX, INT lowResMapY, INT lowResMapZ, INT mapID, INT playerWeaponID, INT enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
-BOOL CSentientManager::RecordSkinChanged(DWORD dwUserId, DWORD dwSkinId) { return true; }
-BOOL CSentientManager::RecordBanLevel(DWORD dwUserId) { return true; }
-BOOL CSentientManager::RecordUnBanLevel(DWORD dwUserId) { return true; }
+bool CSentientManager::RecordPlayerSessionStart(DWORD dwUserId) { return true; }
+bool CSentientManager::RecordPlayerSessionExit(DWORD dwUserId, int exitStatus) { return true; }
+bool CSentientManager::RecordHeartBeat(DWORD dwUserId) { return true; }
+bool CSentientManager::RecordLevelStart(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, DWORD numberOfLocalPlayers, DWORD numberOfOnlinePlayers) { return true; }
+bool CSentientManager::RecordLevelExit(DWORD dwUserId, ESen_LevelExitStatus levelExitStatus) { return true; }
+bool CSentientManager::RecordLevelSaveOrCheckpoint(DWORD dwUserId, INT saveOrCheckPointID, INT saveSizeInBytes) { return true; }
+bool CSentientManager::RecordLevelResume(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, DWORD numberOfLocalPlayers, DWORD numberOfOnlinePlayers, INT saveOrCheckPointID)  { return true; }
+bool CSentientManager::RecordPauseOrInactive(DWORD dwUserId)  { return true; }
+bool CSentientManager::RecordUnpauseOrActive(DWORD dwUserId) { return true; }
+bool CSentientManager::RecordMenuShown(DWORD dwUserId, INT menuID, INT optionalMenuSubID) { return true; }
+bool CSentientManager::RecordAchievementUnlocked(DWORD dwUserId, INT achievementID, INT achievementGamerscore) { return true; }
+bool CSentientManager::RecordMediaShareUpload(DWORD dwUserId, ESen_MediaDestination mediaDestination, ESen_MediaType mediaType) { return true; }
+bool CSentientManager::RecordUpsellPresented(DWORD dwUserId, ESen_UpsellID upsellId, INT marketplaceOfferID) { return true; }
+bool CSentientManager::RecordUpsellResponded(DWORD dwUserId, ESen_UpsellID upsellId, INT marketplaceOfferID, ESen_UpsellOutcome upsellOutcome) { return true; }
+bool CSentientManager::RecordPlayerDiedOrFailed(DWORD dwUserId, INT lowResMapX, INT lowResMapY, INT lowResMapZ, INT mapID, INT playerWeaponID, INT enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
+bool CSentientManager::RecordEnemyKilledOrOvercome(DWORD dwUserId, INT lowResMapX, INT lowResMapY, INT lowResMapZ, INT mapID, INT playerWeaponID, INT enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
+bool CSentientManager::RecordSkinChanged(DWORD dwUserId, DWORD dwSkinId) { return true; }
+bool CSentientManager::RecordBanLevel(DWORD dwUserId) { return true; }
+bool CSentientManager::RecordUnBanLevel(DWORD dwUserId) { return true; }
 INT CSentientManager::GetMultiplayerInstanceID() { return 0; }
 INT CSentientManager::GenerateMultiplayerInstanceId() { return 0; }
 void CSentientManager::SetMultiplayerInstanceId(INT value) {}

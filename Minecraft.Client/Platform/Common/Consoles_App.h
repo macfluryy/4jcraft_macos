@@ -869,7 +869,7 @@ public:
 
     static int TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                                  C4JStorage::PTMSPP_FILEDATA pFileData,
-                                 LPCSTR szFilename);
+                                 const char* szFilename);
     DLC_INFO* GetDLCInfoTrialOffer(int iIndex);
     DLC_INFO* GetDLCInfoFullOffer(int iIndex);
 

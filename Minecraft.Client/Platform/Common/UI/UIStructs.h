@@ -392,8 +392,8 @@ typedef struct _MessageBoxInfo {
     UINT* uiOptionA;
     UINT uiOptionC;
     DWORD dwPad;
-    int (*Func)(LPVOID, int, const C4JStorage::EMessageResult);
-    LPVOID lpParam;
+    int (*Func)(void*, int, const C4JStorage::EMessageResult);
+    void* lpParam;
     // C4JStringTable *pStringTable; // 4J Stu - We don't need this for our
     // internal message boxes
     wchar_t* pwchFormatString;

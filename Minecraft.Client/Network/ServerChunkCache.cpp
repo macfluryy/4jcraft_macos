@@ -855,7 +855,7 @@ TilePos* ServerChunkCache::findNearestMapFeature(
 void ServerChunkCache::recreateLogicStructuresForChunk(int chunkX, int chunkZ) {
 }
 
-int ServerChunkCache::runSaveThreadProc(LPVOID lpParam) {
+int ServerChunkCache::runSaveThreadProc(void* lpParam) {
     SaveThreadData* params = (SaveThreadData*)lpParam;
 
     if (params->useSharedThreadStorage) {

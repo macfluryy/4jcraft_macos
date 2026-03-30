@@ -102,7 +102,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
                             uiIDA, 2, m_iPad,
                             &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (LPVOID)GetCallbackUniqueId());
+                            (void*)GetCallbackUniqueId());
                     } else {
                         if (g_NetworkManager.IsHost()) {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -113,7 +113,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                                 IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
                                 m_iPad,
                                 &IUIScene_PauseMenu::ExitGameSaveDialogReturned,
-                                (LPVOID)GetCallbackUniqueId());
+                                (void*)GetCallbackUniqueId());
                         } else {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
                             uiIDA[1] = IDS_CONFIRM_OK;
@@ -122,7 +122,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                                 IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
                                 m_iPad,
                                 &IUIScene_PauseMenu::ExitGameDialogReturned,
-                                (LPVOID)GetCallbackUniqueId());
+                                (void*)GetCallbackUniqueId());
                         }
                     }
                 } else {
@@ -149,7 +149,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                         IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
                         uiIDA, 2, m_iPad,
                         &IUIScene_PauseMenu::ExitGameDialogReturned,
-                        (LPVOID)GetCallbackUniqueId());
+                        (void*)GetCallbackUniqueId());
                 } else {
                     TelemetryManager->RecordLevelExit(
                         m_iPad, eSen_LevelExitStatus_Failed);
