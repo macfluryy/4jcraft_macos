@@ -644,7 +644,6 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
                 0, 60,
                 &UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,
                 this, C_4JInput::EKeyboardMode_Default);
-            KeyboardCompleteSeedCallback(this, true);
 #endif
         } break;
     }
