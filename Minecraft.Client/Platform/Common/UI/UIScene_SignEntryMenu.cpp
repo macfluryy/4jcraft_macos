@@ -143,10 +143,7 @@ int UIScene_SignEntryMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     UIScene_SignEntryMenu* pClass = (UIScene_SignEntryMenu*)lpParam;
     pClass->m_bIgnoreInput = false;
     if (bRes && pClass->m_iEditingLine >= 0 && pClass->m_iEditingLine < 4) {
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-        InputManager.GetText(pchText);
-        std::wstring str = uint16_to_wstring(pchText);
+        std::wstring str = convStringToWstring(InputManager.GetText());
         if (str.size() > 15) str.resize(15);
         pClass->m_textInputLines[pClass->m_iEditingLine].setLabel(str);
     }

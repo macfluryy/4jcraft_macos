@@ -592,17 +592,9 @@ int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
         (UIScene_LaunchMoreOptionsMenu*)lpParam;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
-#ifdef __PSVITA__
-        // CD - Changed to 2048 [SCE_IME_MAX_TEXT_LENGTH]
-        uint16_t pchText[2048];
-        ZeroMemory(pchText, 2048 * sizeof(uint16_t));
-#else
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-#endif
-        InputManager.GetText(pchText);
-        pClass->m_editSeed.setLabel(uint16_to_wstring(pchText));
-        pClass->m_params->seed = uint16_to_wstring(pchText);
+        std::wstring str = convStringToWstring(InputManager.GetText());
+        pClass->m_editSeed.setLabel(str);
+        pClass->m_params->seed = std::move(str);
     }
     pClass->m_bIgnoreInput = false;
     return 0;

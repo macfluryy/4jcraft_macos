@@ -119,12 +119,9 @@ void UIScene_DebugSetCamera::handleCheckboxToggled(F64 controlId,
 
 int UIScene_DebugSetCamera::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     UIScene_DebugSetCamera* pClass = (UIScene_DebugSetCamera*)lpParam;
-    uint16_t pchText[2048];  //[128];
-    ZeroMemory(pchText, 2048 /*128*/ * sizeof(uint16_t));
-    InputManager.GetText(pchText);
-
-    if (pchText[0] != 0) {
-        std::wstring value = uint16_to_wstring(pchText);
+    const char* text = InputManager.GetText();
+    if (text[0] != '\0') {
+        std::wstring value = convStringToWstring(text);
         double val = 0;
         if (!value.empty()) val = _fromString<double>(value);
         switch (pClass->m_keyboardCallbackControl) {

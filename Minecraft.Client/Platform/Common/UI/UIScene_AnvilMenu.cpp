@@ -298,11 +298,9 @@ int UIScene_AnvilMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     pClass->setIgnoreInput(false);
 
     if (bRes) {
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-        InputManager.GetText(pchText);
-        pClass->setEditNameValue(uint16_to_wstring(pchText));
-        pClass->m_itemName = uint16_to_wstring(pchText);
+        std::wstring str = convStringToWstring(InputManager.GetText());
+        pClass->setEditNameValue(str);
+        pClass->m_itemName = std::move(str);
         pClass->updateItemName();
     }
     return 0;

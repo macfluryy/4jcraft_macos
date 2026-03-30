@@ -718,13 +718,10 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
     pClass->m_bIgnoreInput = false;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-        InputManager.GetText(pchText);
-
-        if (pchText[0] != 0) {
-            pClass->m_editWorldName.setLabel(uint16_to_wstring(pchText));
-            pClass->m_worldName = uint16_to_wstring(pchText);
+        std::wstring str = convStringToWstring(InputManager.GetText());
+        if (!str.empty()) {
+            pClass->m_editWorldName.setLabel(str);
+            pClass->m_worldName = std::move(str);
         }
 
         pClass->m_buttonCreateWorld.setEnable(!pClass->m_worldName.empty());

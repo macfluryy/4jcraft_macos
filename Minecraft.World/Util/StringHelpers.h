@@ -29,9 +29,6 @@ T _fromHEXString(const std::wstring& s) {
     return t;
 }
 
-size_t uint16_len(const uint16_t* str);
-std::u16string uint16_to_u16string(const uint16_t* str);
-std::wstring uint16_to_wstring(const uint16_t* str);
 
 std::wstring convStringToWstring(const std::string& converting);
 std::wstring u16string_to_wstring(const std::u16string& converting);

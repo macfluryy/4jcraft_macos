@@ -1177,12 +1177,9 @@ int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
     pClass->m_bIgnoreInput = false;
     if (bRes) {
-        std::uint16_t ui16Text[128];
-        ZeroMemory(ui16Text, 128 * sizeof(std::uint16_t));
-        InputManager.GetText(ui16Text);
-
+        const char* text = InputManager.GetText();
         // check the name is valid
-        if (ui16Text[0] != 0) {
+        if (text[0] != '\0') {
 #if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
      defined(__PSVITA__))
             // open the save and overwrite the metadata

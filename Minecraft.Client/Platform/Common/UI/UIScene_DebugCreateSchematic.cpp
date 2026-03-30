@@ -141,12 +141,9 @@ int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void* lpParam,
     UIScene_DebugCreateSchematic* pClass =
         (UIScene_DebugCreateSchematic*)lpParam;
 
-    uint16_t pchText[128];
-    ZeroMemory(pchText, 128 * sizeof(uint16_t));
-    InputManager.GetText(pchText);
-
-    if (pchText[0] != 0) {
-        std::wstring value = uint16_to_wstring(pchText);
+    const char* text = InputManager.GetText();
+    if (text[0] != '\0') {
+        std::wstring value = convStringToWstring(text);
         int iVal = 0;
         if (!value.empty()) iVal = _fromString<int>(value);
         switch (pClass->m_keyboardCallbackControl) {
