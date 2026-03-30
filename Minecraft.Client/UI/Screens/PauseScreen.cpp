@@ -26,7 +26,7 @@ void PauseScreen::init() {
     if (g_NetworkManager.IsLocalGame() &&
         g_NetworkManager.GetPlayerCount() == 1)
         app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                               eXuiServerAction_PauseServer, (void*)TRUE);
+                               eXuiServerAction_PauseServer, (void*)true);
     buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + yo,
                                  I18n::get(L"menu.returnToMenu")));
     if (!g_NetworkManager.IsHost()) {
@@ -84,7 +84,7 @@ void PauseScreen::buttonClicked(Button* button) {
     }
     if (button->id == 4) {
         app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                               eXuiServerAction_PauseServer, (void*)FALSE);
+                               eXuiServerAction_PauseServer, (void*)false);
         minecraft->setScreen(nullptr);
         //       minecraft->grabMouse();		// 4J - removed
     }

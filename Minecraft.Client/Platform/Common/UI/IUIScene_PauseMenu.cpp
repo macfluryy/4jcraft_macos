@@ -114,7 +114,7 @@ int IUIScene_PauseMenu::ExitGameAndSaveReturned(
 
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
-        // INT saveOrCheckpointId = 0;
+        // int32_t saveOrCheckpointId = 0;
         // bool validSave =
         // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
         // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
@@ -230,7 +230,7 @@ int IUIScene_PauseMenu::SaveWorldThreadProc(void* lpParameter) {
 
     }
 
-    HRESULT hr = S_OK;
+    int32_t hr = S_OK;
     if (app.GetChangingSessionType()) {
         // 4J Stu - This causes the fullscreenprogress scene to ignore the
         // action it was given
@@ -364,7 +364,7 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
         saveStats = false;
 
         // 4J Stu - Leave the session once the disconnect packet has been sent
-        g_NetworkManager.LeaveGame(FALSE);
+        g_NetworkManager.LeaveGame(false);
     } else {
         if (lpParameter != nullptr &&
             ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {

@@ -136,8 +136,8 @@ void UIScene_HelpAndOptionsMenu::handleReload() {
     if (!ProfileManager.IsFullVersion())  //|| ProfileManager.IsGuest(m_iPad))
     {
 #if TO_BE_IMPLEMENTED
-        m_Buttons[BUTTON_HAO_CHANGESKIN].SetEnable(FALSE);
-        m_Buttons[BUTTON_HAO_CHANGESKIN].EnableInput(FALSE);
+        m_Buttons[BUTTON_HAO_CHANGESKIN].SetEnable(false);
+        m_Buttons[BUTTON_HAO_CHANGESKIN].EnableInput(false);
         // set the focus to the second button
 
         XuiElementSetUserFocus(m_Buttons[BUTTON_HAO_HOWTOPLAY].m_hObj, m_iPad);
@@ -156,8 +156,8 @@ void UIScene_HelpAndOptionsMenu::handleInput(int iPad, int key, bool repeat,
                                              bool pressed, bool released,
                                              bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 

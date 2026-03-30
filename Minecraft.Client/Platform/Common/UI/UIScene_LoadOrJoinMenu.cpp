@@ -465,7 +465,7 @@ void UIScene_LoadOrJoinMenu::tick() {
                         .UTF8SaveFilename,    // source UTF-8 string
                     MAX_SAVEFILENAME_LENGTH,  // total length of source UTF-8
                                               // string,
-                    // in CHAR's (= bytes), including end-of-string \0
+                    // in char's (= bytes), including end-of-string \0
                     (wchar_t*)u16Message,    // destination buffer
                     MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
                                              // wchar_t's
@@ -623,7 +623,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         if (eSGIStatus == C4JStorage::ESGIStatus_NoSaves) {
             uiSaveC = 0;
             m_controlSavesTimer.setVisible(false);
-            m_SavesList.SetEnable(TRUE);
+            m_SavesList.SetEnable(true);
         }
 #endif
     }
@@ -1082,8 +1082,8 @@ void UIScene_LoadOrJoinMenu::LoadLevelGen(LevelGenerationOptions* levelGen) {
 
     UIFullscreenProgressCompletionData* completionData =
         new UIFullscreenProgressCompletionData();
-    completionData->bShowBackground = TRUE;
-    completionData->bShowLogo = TRUE;
+    completionData->bShowBackground = true;
+    completionData->bShowLogo = true;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;
@@ -1150,7 +1150,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
     if (filteredListSize > 0) {
 #if TO_BE_IMPLEMENTED
         if (!m_pGamesList->IsEnabled()) {
-            m_pGamesList->SetEnable(TRUE);
+            m_pGamesList->SetEnable(true);
             m_pGamesList->SetCurSel(0);
         }
 #endif
@@ -1158,7 +1158,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
         m_controlJoinTimer.setVisible(false);
     } else {
 #if TO_BE_IMPLEMENTED
-        m_pGamesList->SetEnable(FALSE);
+        m_pGamesList->SetEnable(false);
 #endif
         m_controlJoinTimer.setVisible(false);
         m_labelNoGames.setVisible(true);
@@ -1188,7 +1188,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
                 Minecraft* pMinecraft = Minecraft::GetInstance();
                 TexturePack* tp = pMinecraft->skins->getTexturePackById(
                     sessionInfo->data.texturePackParentId);
-                HRESULT hr;
+                int32_t hr;
 
                 std::uint32_t imageBytes = 0;
                 std::uint8_t* imageData = nullptr;
@@ -1289,8 +1289,8 @@ void UIScene_LoadOrJoinMenu::handleTimerComplete(int id) {
                 ProfileManager.AllowedToPlayMultiplayer(m_iPad);
             if (bMultiplayerAllowed != m_bMultiplayerAllowed) {
                 if (bMultiplayerAllowed) {
-                    // 					m_CheckboxOnline.SetEnable(TRUE);
-                    // 					m_CheckboxPrivate.SetEnable(TRUE);
+                    // 					m_CheckboxOnline.SetEnable(true);
+                    // 					m_CheckboxPrivate.SetEnable(true);
                 } else {
                     m_bInParty = false;
                     m_buttonListGames.clearList();
@@ -1351,8 +1351,8 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(
 
     UIFullscreenProgressCompletionData* completionData =
         new UIFullscreenProgressCompletionData();
-    completionData->bShowBackground = TRUE;
-    completionData->bShowLogo = TRUE;
+    completionData->bShowBackground = true;
+    completionData->bShowLogo = true;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;
@@ -1416,8 +1416,8 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud() {
 
     UIFullscreenProgressCompletionData* completionData =
         new UIFullscreenProgressCompletionData();
-    completionData->bShowBackground = TRUE;
-    completionData->bShowLogo = TRUE;
+    completionData->bShowBackground = true;
+    completionData->bShowLogo = true;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;
@@ -1510,7 +1510,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
                                     pClass->m_iDefaultButtonsC]
                     .UTF8SaveName,
                 strlen(pClass->m_saveDetails->UTF8SaveName) + 1);  // plus null
-            LPWSTR ptr = wSaveName;
+            wchar_t* ptr = wSaveName;
             InputManager.RequestKeyboard(
                 app.GetString(IDS_RENAME_WORLD_TITLE), wSaveName, 0, 25,
                 &UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,
@@ -1580,8 +1580,8 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer() {
 
     UIFullscreenProgressCompletionData* completionData =
         new UIFullscreenProgressCompletionData();
-    completionData->bShowBackground = TRUE;
-    completionData->bShowLogo = TRUE;
+    completionData->bShowBackground = true;
+    completionData->bShowLogo = true;
     completionData->type = e_ProgressCompletion_NavigateBackToScene;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;
@@ -2089,7 +2089,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 } else {
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
-                    UINT errorMessage = IDS_SAVE_TRANSFER_DOWNLOADFAILED;
+                    uint32_t errorMessage = IDS_SAVE_TRANSFER_DOWNLOADFAILED;
                     if (!ProfileManager.IsSignedInLive(
                             ProfileManager.GetPrimaryPad())) {
                         errorMessage =

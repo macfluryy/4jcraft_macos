@@ -216,7 +216,7 @@ UIControl* UIScene_FireworksMenu::getSection(ESceneSection eSection) {
 
 // bShow == true removes the 2x2 crafting grid and bShow == false removes the
 // 3x3 crafting grid
-void UIScene_FireworksMenu::ShowLargeCraftingGrid(boolean bShow) {
+void UIScene_FireworksMenu::ShowLargeCraftingGrid(bool bShow) {
     app.DebugPrintf("ShowLargeCraftingGrid to %d\n", bShow);
 
     IggyDataValue result;

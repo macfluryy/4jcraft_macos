@@ -477,7 +477,7 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             hostPlayer->SendData(socketPlayer, buffer.pbyData,
                                  buffer.dwDataSize, lowPriority, requireAck);
 
-            // 		DWORD queueSize = hostPlayer->GetSendQueueSize( nullptr,
+            // 		uint32_t queueSize = hostPlayer->GetSendQueueSize( nullptr,
             // QNET_GETSENDQUEUESIZE_BYTES  ); 		if( queueSize > 24000 )
             // 		{
             // 			//printf("Queue size is: %d, forcing

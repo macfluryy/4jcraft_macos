@@ -392,7 +392,7 @@ void UIScene_HUD::SetArmour(int iArmour) {
 
 void UIScene_HUD::ShowHealth(bool show) {
     if (show != m_showHealth) {
-        app.DebugPrintf("ShowHealth to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowHealth to %s\n", show ? "true" : "false");
         m_showHealth = show;
 
         IggyDataValue result;
@@ -407,7 +407,7 @@ void UIScene_HUD::ShowHealth(bool show) {
 
 void UIScene_HUD::ShowHorseHealth(bool show) {
     if (show != m_showHorseHealth) {
-        app.DebugPrintf("ShowHorseHealth to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowHorseHealth to %s\n", show ? "true" : "false");
         m_showHorseHealth = show;
 
         IggyDataValue result;
@@ -422,7 +422,7 @@ void UIScene_HUD::ShowHorseHealth(bool show) {
 
 void UIScene_HUD::ShowFood(bool show) {
     if (show != m_showFood) {
-        app.DebugPrintf("ShowFood to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowFood to %s\n", show ? "true" : "false");
         m_showFood = show;
 
         IggyDataValue result;
@@ -437,7 +437,7 @@ void UIScene_HUD::ShowFood(bool show) {
 
 void UIScene_HUD::ShowAir(bool show) {
     if (show != m_showAir) {
-        app.DebugPrintf("ShowAir to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowAir to %s\n", show ? "true" : "false");
         m_showAir = show;
 
         IggyDataValue result;
@@ -452,7 +452,7 @@ void UIScene_HUD::ShowAir(bool show) {
 
 void UIScene_HUD::ShowArmour(bool show) {
     if (show != m_showArmour) {
-        app.DebugPrintf("ShowArmour to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowArmour to %s\n", show ? "true" : "false");
         m_showArmour = show;
 
         IggyDataValue result;
@@ -467,7 +467,7 @@ void UIScene_HUD::ShowArmour(bool show) {
 
 void UIScene_HUD::ShowExpBar(bool show) {
     if (show != m_showExpBar) {
-        app.DebugPrintf("ShowExpBar to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowExpBar to %s\n", show ? "true" : "false");
         m_showExpBar = show;
 
         IggyDataValue result;
@@ -483,7 +483,7 @@ void UIScene_HUD::ShowExpBar(bool show) {
 void UIScene_HUD::SetRegenerationEffect(bool bEnabled) {
     if (bEnabled != m_bRegenEffectEnabled) {
         app.DebugPrintf("SetRegenerationEffect to %s\n",
-                        bEnabled ? "TRUE" : "FALSE");
+                        bEnabled ? "true" : "false");
         m_bRegenEffectEnabled = bEnabled;
 
         IggyDataValue result;
@@ -542,7 +542,7 @@ void UIScene_HUD::SetDragonLabel(const std::wstring& label) {
 
 void UIScene_HUD::ShowDragonHealth(bool show) {
     if (show != m_showDragonHealth) {
-        app.DebugPrintf("ShowDragonHealth to %s\n", show ? "TRUE" : "FALSE");
+        app.DebugPrintf("ShowDragonHealth to %s\n", show ? "true" : "false");
         m_showDragonHealth = show;
 
         IggyDataValue result;
@@ -587,7 +587,7 @@ void UIScene_HUD::SetRidingHorse(bool ridingHorse, bool bIsJumpable,
                                  int maxHorseHealth) {
     if (m_bRidingHorse != ridingHorse || maxHorseHealth != m_iHorseMaxHealth) {
         app.DebugPrintf("SetRidingHorse to %s\n",
-                        ridingHorse ? "TRUE" : "FALSE");
+                        ridingHorse ? "true" : "false");
         m_bRidingHorse = ridingHorse;
         m_bIsJumpable = bIsJumpable;
         m_iHorseMaxHealth = maxHorseHealth;
@@ -726,7 +726,7 @@ void UIScene_HUD::handleTimerComplete(int id) {
     bool anyVisible = false;
     if (pMinecraft->localplayers[m_iPad] != nullptr) {
         Gui* pGui = pMinecraft->gui;
-        // DWORD messagesToDisplay = std::min( CHAT_LINES_COUNT,
+        // uint32_t messagesToDisplay = std::min( CHAT_LINES_COUNT,
         // pGui->getMessagesCount(m_iPad) );
         for (unsigned int i = 0; i < CHAT_LINES_COUNT; ++i) {
             float opacity = pGui->getOpacity(m_iPad, i);

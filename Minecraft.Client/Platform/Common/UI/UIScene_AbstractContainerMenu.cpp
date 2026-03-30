@@ -234,8 +234,8 @@ void UIScene_AbstractContainerMenu::handleInput(int iPad, int key, bool repeat,
     if (m_bIgnoreInput) return;
 
     // app.DebugPrintf("UIScene_InventoryMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     if (pressed) {

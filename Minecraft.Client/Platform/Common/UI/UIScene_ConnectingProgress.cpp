@@ -154,7 +154,7 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
 
             // app.NavigateToHomeMenu();
             app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
-                          (void*)TRUE);
+                          (void*)true);
         }
     }
 }
@@ -163,8 +163,8 @@ void UIScene_ConnectingProgress::handleInput(int iPad, int key, bool repeat,
                                              bool pressed, bool released,
                                              bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
 
     if (m_showTooltips) {
         ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);

@@ -84,7 +84,7 @@ bool StoneSlabTileItem::mayPlace(Level* level, int x, int y, int z, int face,
     int currentTile = level->getTile(x, y, z);
     int currentData = level->getData(x, y, z);
     int slabType = currentData & HalfSlabTile::TYPE_MASK;
-    boolean isUpper = (currentData & HalfSlabTile::TOP_SLOT_BIT) != 0;
+    bool isUpper = (currentData & HalfSlabTile::TOP_SLOT_BIT) != 0;
 
     if (((face == Facing::UP && !isUpper) ||
          (face == Facing::DOWN && isUpper)) &&

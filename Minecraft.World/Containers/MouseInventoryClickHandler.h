@@ -4,7 +4,7 @@
 // completeness
 
 class MouseInventoryClickHandler {
-    /*	public static void handle(int buttonNum, boolean clickedOutside, int
+    /*	public static void handle(int buttonNum, bool clickedOutside, int
        slotId, Player player) { Inventory inventory = player.inventory; Slot
        slot = player.getInventorySlot(slotId); if (slot != null) { ItemInstance
        clicked = slot.getItem(); if (clicked == null && inventory.carried ==

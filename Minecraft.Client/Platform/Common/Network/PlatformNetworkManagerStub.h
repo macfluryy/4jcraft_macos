@@ -79,7 +79,7 @@ private:
 
     IQNet* m_pIQNet;  // pointer to QNet interface
 
-    HANDLE m_notificationListener;
+    void* m_notificationListener;
 
     std::vector<IQNetPlayer*>
         m_machineQNetPrimaryPlayers;  // collection of players that we deem to
@@ -174,7 +174,7 @@ private:
 
     virtual void SetSessionTexturePackParentId(int id);
     virtual void SetSessionSubTexturePackId(int id);
-    virtual void Notify(int ID, ULONG_PTR Param);
+    virtual void Notify(int ID, uintptr_t Param);
 
 public:
     virtual std::vector<FriendSessionInfo*>* GetSessionList(int iPad,

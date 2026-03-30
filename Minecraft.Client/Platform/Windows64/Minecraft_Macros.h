@@ -35,7 +35,7 @@
 #define MAKE_SKIN_BITMASK(bDlcSkin, dwSkinId) ( (bDlcSkin?0x80000000:0) | (dwSkinId & 0x7FFFFFFF) )
 #define IS_SKIN_ID_IN_RANGE(dwSkinId) (dwSkinId <= 0x7FFFFFFF)
 
-#define GET_DLC_SKIN_ID_FROM_BITMASK(uiBitmask)		(((DWORD)uiBitmask)&0x7FFFFFFF)
-#define GET_UGC_SKIN_ID_FROM_BITMASK(uiBitmask)		(((DWORD)uiBitmask)&0x7FFFFFE0)
-#define GET_DEFAULT_SKIN_ID_FROM_BITMASK(uiBitmask)		(((DWORD)uiBitmask)&0x0000001F)
-#define GET_IS_DLC_SKIN_FROM_BITMASK(uiBitmask) ((((DWORD)uiBitmask)&0x80000000)?true:false)
+#define GET_DLC_SKIN_ID_FROM_BITMASK(uiBitmask)		(((uint32_t)uiBitmask)&0x7FFFFFFF)
+#define GET_UGC_SKIN_ID_FROM_BITMASK(uiBitmask)		(((uint32_t)uiBitmask)&0x7FFFFFE0)
+#define GET_DEFAULT_SKIN_ID_FROM_BITMASK(uiBitmask)		(((uint32_t)uiBitmask)&0x0000001F)
+#define GET_IS_DLC_SKIN_FROM_BITMASK(uiBitmask) ((((uint32_t)uiBitmask)&0x80000000)?true:false)

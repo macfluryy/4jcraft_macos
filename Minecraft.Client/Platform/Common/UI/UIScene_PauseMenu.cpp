@@ -52,7 +52,7 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
     if (/*g_NetworkManager.IsLocalGame() &&*/ g_NetworkManager
             .GetPlayerCount() == 1) {
         app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                               eXuiServerAction_PauseServer, (void*)TRUE);
+                               eXuiServerAction_PauseServer, (void*)true);
     }
 
     TelemetryManager->RecordMenuShown(m_iPad, eUIScene_PauseMenu, 0);
@@ -195,8 +195,8 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
     }
 
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
 
 
@@ -211,7 +211,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
                             .GetPlayerCount() == 1) {
                     app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                            eXuiServerAction_PauseServer,
-                                           (void*)FALSE);
+                                           (void*)false);
                 }
 
                 ui.PlayUISFX(eSFX_Back);
@@ -244,7 +244,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
                 StorageManager.SetSaveDevice(
                     &UIScene_PauseMenu::DeviceSelectReturned, this, true);
             }
-            rfHandled = TRUE;
+            rfHandled = true;
             break;
 #endif
 
@@ -264,7 +264,7 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
                 if (bCanScreenshot)
                     app.SetAction(pInputData->UserIndex, eAppAction_SocialPost);
             }
-            rfHandled = TRUE;
+            rfHandled = true;
 #endif
         } break;
     }
@@ -283,7 +283,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                         .GetPlayerCount() == 1) {
                 app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                        eXuiServerAction_PauseServer,
-                                       (void*)FALSE);
+                                       (void*)false);
             }
             navigateBack();
             break;

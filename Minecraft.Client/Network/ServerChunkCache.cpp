@@ -166,9 +166,9 @@ LevelChunk* ServerChunkCache::create(
                 (int64_t*)&cache[idx], (int64_t)chunk, (int64_t)lastChunk) ==
             (int64_t)lastChunk)
 #else
-        if (InterlockedCompareExchangeRelease((LONG*)&cache[idx], (LONG)chunk,
-                                              (LONG)lastChunk) ==
-            (LONG)lastChunk)
+        if (InterlockedCompareExchangeRelease((int32_t*)&cache[idx], (int32_t)chunk,
+                                              (int32_t)lastChunk) ==
+            (int32_t)lastChunk)
 #endif
         {
             // Successfully updated the cache

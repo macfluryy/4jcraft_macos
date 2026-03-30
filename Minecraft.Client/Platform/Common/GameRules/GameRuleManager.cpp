@@ -648,7 +648,7 @@ void GameRuleManager::loadDefaultGameRules() {
 	if(app.getArchiveFileSize(fpTutorial) >= 0)
 	{
 		DLCPack *pack = new DLCPack(L"",0xffffffff);
-		DWORD dwFilesProcessed = 0;
+		uint32_t dwFilesProcessed = 0;
 		if ( app.m_dlcManager.readDLCDataFile(dwFilesProcessed,fpTutorial,pack,true) )
 		{
 			app.m_dlcManager.addPack(pack);

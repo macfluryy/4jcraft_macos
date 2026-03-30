@@ -58,7 +58,7 @@ void UIScene_DebugOptionsMenu::handleInput(int iPad, int key, bool repeat,
                                            bool& handled) {
     // app.DebugPrintf("UIScene_DebugOptionsMenu handling input for pad %d, key
     // %d, repeat- %s, pressed- %s, released- %s\n", iPad, key,
-    // repeat?"TRUE":"FALSE", pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // repeat?"true":"false", pressed?"true":"false", released?"true":"false");
 
     switch (key) {
         case ACTION_MENU_CANCEL:

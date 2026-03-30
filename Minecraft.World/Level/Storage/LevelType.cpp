@@ -9,8 +9,8 @@
 //
 // 	private final String generatorName;
 // 	private final int version;
-// 	private boolean selectable;
-// 	private boolean replacement;
+// 	private bool selectable;
+// 	private bool replacement;
 
 LevelType* LevelType::levelTypes[16];  // = new LevelType[16];
 LevelType* LevelType::lvl_normal =

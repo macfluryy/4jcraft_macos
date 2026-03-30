@@ -71,7 +71,7 @@ void FileHeader::WriteHeader(void* saveMem) {
     // size in bytes
     unsigned int headerSize = (int)(fileTable.size());
 
-    // DWORD numberOfBytesWritten = 0;
+    // uint32_t numberOfBytesWritten = 0;
 
     // Write the offset of the header
     // assert(numberOfBytesWritten == 4);

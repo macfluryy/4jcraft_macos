@@ -39,12 +39,12 @@ public:
 
 
 	// 4 players have game defined data, puiGameDefinedDataChangedBitmask needs to be checked by the game side to see if there's an update needed - it'll have the bits set for players to be updated
-	void				Initialise( DWORD dwTitleID,
-									DWORD dwOfferID,
+	void				Initialise( uint32_t dwTitleID,
+									uint32_t dwOfferID,
 									unsigned short usProfileVersion,
-									UINT uiProfileValuesC,
-									UINT uiProfileSettingsC,
-									DWORD *pdwProfileSettingsA, 
+									uint32_t uiProfileValuesC,
+									uint32_t uiProfileSettingsC,
+									uint32_t *pdwProfileSettingsA, 
 									int iGameDefinedDataSizeX4,
 									unsigned int *puiGameDefinedDataChangedBitmask); 
 	void				SetTrialTextStringTable(CXuiStringTable *pStringTable,int iAccept,int iReject);
@@ -54,9 +54,9 @@ public:
 	bool				IsSignedIn(int iQuadrant);
 	bool				IsSignedInLive(int iProf);
 	bool				IsGuest(int iQuadrant);
-	UINT				RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
-	UINT				DisplayOfflineProfile(int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
-	UINT				RequestConvertOfflineToGuestUI(int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
+	uint32_t				RequestSignInUI(bool bFromInvite,bool bLocalGame,bool bNoGuestsAllowed,bool bMultiplayerSignIn,bool bAddUser, int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
+	uint32_t				DisplayOfflineProfile(int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
+	uint32_t				RequestConvertOfflineToGuestUI(int( *Func)(void*,const bool, const int iPad),void* lpParam,int iQuadrant=XUSER_INDEX_ANY);
 	void				SetPrimaryPlayerChanged(bool bVal);								
 	bool				QuerySigninStatus(void);
 	void				GetXUID(int iPad, PlayerUID *pXuid,bool bOnlineXuid);
@@ -66,9 +66,9 @@ public:
 	bool				GetChatAndContentRestrictions(int iPad,bool *pbChatRestricted,bool *pbContentRestricted,int *piAge);
 	void				StartTrialGame(); // disables saves and leaderboard, and change state to readyforgame from pregame
 	void				AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly, bool *allAllowed, bool *friendsAllowed);
-	bool				CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, DWORD dwXuidCount );
+	bool				CanViewPlayerCreatedContent(int iPad, bool thisQuadrantOnly, PPlayerUID pXuids, uint32_t dwXuidCount );
 	void				ShowProfileCard(int iPad, PlayerUID targetUid);
-	bool				GetProfileAvatar(int iPad,int( *Func)(void* lpParam,PBYTE pbThumbnail,DWORD dwThumbnailBytes), void* lpParam);
+	bool				GetProfileAvatar(int iPad,int( *Func)(void* lpParam,uint8_t* pbThumbnail,uint32_t dwThumbnailBytes), void* lpParam);
 	void				CancelProfileAvatarRequest();
 
 				
@@ -79,10 +79,10 @@ public:
 	std::wstring				GetDisplayName(int iPad);
 	bool				IsFullVersion();
 	void				SetSignInChangeCallback(void ( *Func)(void*, bool, unsigned int),void* lpParam);
-	void				SetNotificationsCallback(void ( *Func)(void*, DWORD, unsigned int),void* lpParam);
+	void				SetNotificationsCallback(void ( *Func)(void*, uint32_t, unsigned int),void* lpParam);
 	bool				RegionIsNorthAmerica(void);
 	bool				LocaleIsUSorCanada(void);
-	HRESULT				GetLiveConnectionStatus();
+	int32_t				GetLiveConnectionStatus();
 	bool				IsSystemUIDisplayed();
 	void				SetProfileReadErrorCallback(void ( *Func)(void*), void* lpParam);
 

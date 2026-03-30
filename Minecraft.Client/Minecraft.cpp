@@ -123,7 +123,7 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
     // 4J Stu Added
     InitializeCriticalSection(&ProgressRenderer::s_progress);
     InitializeCriticalSection(&m_setLevelCS);
-    // m_hPlayerRespawned = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+    // m_hPlayerRespawned = CreateEvent(nullptr, false, false, nullptr);
 
     progressRenderer = nullptr;
     gameRenderer = nullptr;
@@ -1129,7 +1129,7 @@ void Minecraft::run_middle() {
                             // give them the option to remove from the ban list
                             // or exit the level
                             app.SetAction(i, eAppAction_LevelInBanLevelList,
-                                          (void*)TRUE);
+                                          (void*)true);
                         }
                     }
                 }
@@ -1391,7 +1391,7 @@ void Minecraft::run_middle() {
 
                                             ui.HidePressStart();
                                             {
-                                                UINT uiIDA[1];
+                                                uint32_t uiIDA[1];
                                                 uiIDA[0] = IDS_CONFIRM_OK;
                                                 ui.RequestErrorMessage(
                                                     IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
@@ -4414,7 +4414,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad)
         // BAS Game Stability: TU8: The game crashes when second Guest signs-in
         // on console which takes part in Xbox LIVE multiplayer session.
         app.DebugPrintf("Disabling Guest Signin\n");
-        XEnableGuestSignin(FALSE);
+        XEnableGuestSignin(false);
     }
 
     // If sign in succeded, we're in game and this player isn't already playing,

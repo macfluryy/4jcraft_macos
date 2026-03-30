@@ -39,7 +39,7 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void* initData,
     INetworkPlayer* thisPlayer =
         g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
     m_isHostPlayer = false;
-    if (thisPlayer != nullptr) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
+    if (thisPlayer != nullptr) m_isHostPlayer = thisPlayer->IsHost() == true;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     std::shared_ptr<MultiplayerLocalPlayer> localPlayer =
@@ -113,9 +113,9 @@ void UIScene_InGameInfoMenu::updateTooltips() {
 #endif
             ) {
                 keyA = IDS_TOOLTIPS_PRIVILEGES;
-            } else if (selectedPlayer->IsLocal() != TRUE &&
+            } else if (selectedPlayer->IsLocal() != true &&
                        selectedPlayer->IsSameSystem(
-                           g_NetworkManager.GetHostPlayer()) != TRUE) {
+                           g_NetworkManager.GetHostPlayer()) != true) {
                 // Only ops will hit this, can kick anyone not local and not
                 // local to the host
                 keyA = IDS_TOOLTIPS_KICK;
@@ -158,7 +158,7 @@ void UIScene_InGameInfoMenu::handleReload() {
     }
     m_players.clear();
 
-    for (DWORD i = 0; i < playerCount; ++i) {
+    for (uint32_t i = 0; i < playerCount; ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
         if (player != nullptr) {
@@ -173,7 +173,7 @@ void UIScene_InGameInfoMenu::handleReload() {
     INetworkPlayer* thisPlayer =
         g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
     m_isHostPlayer = false;
-    if (thisPlayer != nullptr) m_isHostPlayer = thisPlayer->IsHost() == TRUE;
+    if (thisPlayer != nullptr) m_isHostPlayer = thisPlayer->IsHost() == true;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     std::shared_ptr<MultiplayerLocalPlayer> localPlayer =
@@ -193,7 +193,7 @@ void UIScene_InGameInfoMenu::tick() {
     UIScene::tick();
 
     // Update players by index
-    for (DWORD i = 0; i < m_players.size(); ++i) {
+    for (uint32_t i = 0; i < m_players.size(); ++i) {
         INetworkPlayer* player = g_NetworkManager.GetPlayerByIndex(i);
 
         if (player != nullptr) {
@@ -225,8 +225,8 @@ void UIScene_InGameInfoMenu::handleInput(int iPad, int key, bool repeat,
                                          bool pressed, bool released,
                                          bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -309,9 +309,9 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
                         m_players[currentSelection]->m_smallId);
                     ui.NavigateToScene(m_iPad, eUIScene_InGamePlayerOptionsMenu,
                                        pInitData);
-                } else if (selectedPlayer->IsLocal() != TRUE &&
+                } else if (selectedPlayer->IsLocal() != true &&
                            selectedPlayer->IsSameSystem(
-                               g_NetworkManager.GetHostPlayer()) != TRUE) {
+                               g_NetworkManager.GetHostPlayer()) != true) {
                     // Only ops will hit this, can kick anyone not local and not
                     // local to the host
                     std::uint8_t* smallId = new std::uint8_t();

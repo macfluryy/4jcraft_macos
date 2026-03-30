@@ -34,7 +34,7 @@ void Screen::keyPressed(wchar_t eventCharacter, int eventKey) {
         if (g_NetworkManager.IsLocalGame() &&
             g_NetworkManager.GetPlayerCount() == 1)
             app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                                   eXuiServerAction_PauseServer, (void*)FALSE);
+                                   eXuiServerAction_PauseServer, (void*)false);
     }
 }
 

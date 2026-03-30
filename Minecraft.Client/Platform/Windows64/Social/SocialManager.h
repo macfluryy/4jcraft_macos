@@ -35,18 +35,18 @@ private:
 	static CSocialManager* m_pInstance;
 
 	// Bitset of title posting capability flags ( XSOCIAL_CAPABILITY_POSTIMAGE, XSOCIAL_CAPABILITY_POSTLINK ).
-	DWORD		m_dwSocialPostingCapability;
+	uint32_t		m_dwSocialPostingCapability;
 
 	// Index of user who made current active request.
-	DWORD		m_dwCurrRequestUser;
+	uint32_t		m_dwCurrRequestUser;
 
 	// WESTY : Not sure if we even need to get social access key!
 /*
 	// Size of the social network access key text buffer.
-	DWORD		m_dwAccessKeyTextSize;
+	uint32_t		m_dwAccessKeyTextSize;
 
 	// Pointer to the social network access key text buffer.
-	LPWSTR		m_pAccessKeyText;
+	wchar_t*		m_pAccessKeyText;
 	*/
 
 	// The various states of the manager.
@@ -65,7 +65,7 @@ private:
 
 	// For xsocial asyncronous operations.
 	XOVERLAPPED				m_Overlapped;
-	DWORD					m_dwOverlappedResultCode;
+	uint32_t					m_dwOverlappedResultCode;
 
 	// Social post preview image struct.
 	XSOCIAL_PREVIEWIMAGE	m_PostPreviewImage;
@@ -73,14 +73,14 @@ private:
 
 	// Image details for posting an image to social network.
 	unsigned char*			m_pMainImageBuffer;
-	DWORD					m_dwMainImageBufferSize;
+	uint32_t					m_dwMainImageBufferSize;
 
 	void	DestroyMainPostImage();
 	void    DestroyPreviewPostImage();
 
 	// WESTY : Not sure if we even need to get social access key!
 /*
-	bool	GetSocialNetworkAccessKey( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect, DWORD dwUserTrackingIndex, bool bShowNetworkSignin );
+	bool	GetSocialNetworkAccessKey( ESocialNetwork eSocialNetwork, uint32_t dwUserIndex, bool bUsingKinect, uint32_t dwUserTrackingIndex, bool bShowNetworkSignin );
 */
 
 public:
@@ -109,17 +109,17 @@ public:
 	bool	AreAllUsersAllowedToPostImages();
 
 	// Post a test link to social network.
-	bool	PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect );
+	bool	PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, uint32_t dwUserIndex, bool bUsingKinect );
 
 	// Post a test image to social network.
-	bool	PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect );
+	bool	PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, uint32_t dwUserIndex, bool bUsingKinect );
 
 	void	SetSocialPostText(const wchar_t* Title, const wchar_t* Caption, const wchar_t* Desc);
 
 	// WESTY : Not sure if we even need to get social access key!
 /*
 	// We do not currently know what this is used for. We may not even need it?
-	bool	ObtainSocialNetworkAccessKey( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect );
+	bool	ObtainSocialNetworkAccessKey( ESocialNetwork eSocialNetwork, uint32_t dwUserIndex, bool bUsingKinect );
 	*/
 
 private:

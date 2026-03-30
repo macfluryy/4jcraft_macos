@@ -33,7 +33,7 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
-#define HRESULT_SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
+#define HRESULT_SUCCEEDED(hr) (((int32_t)(hr)) >= 0)
 #endif
 
 

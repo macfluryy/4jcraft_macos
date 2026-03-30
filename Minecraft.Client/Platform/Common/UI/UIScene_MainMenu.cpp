@@ -143,7 +143,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
     // Fix for #45154 - Frontend: DLC: Content can only be downloaded from the
     // frontend if you have not joined/exited multiplayer
     XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
-    m_Timer.SetShow(FALSE);
+    m_Timer.SetShow(false);
 #endif
     m_controlTimer.setVisible(false);
 
@@ -183,8 +183,8 @@ void UIScene_MainMenu::handleReload() {
 void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
                                    bool released, bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
 
     if (m_bIgnorePress || (eNavigateWhenReady >= 0)) return;
 
@@ -458,12 +458,12 @@ int UIScene_MainMenu::HelpAndOptions_SignInReturned(void* pParam,
             // We want to hide everything in this scene and display a timer
             // until we get a completion for the TMS files
             for (int i = 0; i < BUTTONS_MAX; i++) {
-                pClass->m_Buttons[i].SetShow(FALSE);
+                pClass->m_Buttons[i].SetShow(false);
             }
 
             pClass->updateTooltips();
 
-            pClass->m_Timer.SetShow(TRUE);
+            pClass->m_Timer.SetShow(true);
         }
 #endif
     } else {
@@ -538,7 +538,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                                     ProfileManager.GetPrimaryPad());
                                 // check for DLC
                                 // start timer to track DLC check finished
-                                pClass->m_Timer.SetShow(TRUE);
+                                pClass->m_Timer.SetShow(true);
                                 XuiSetTimer(pClass->m_hObj,
                                             DLC_INSTALLED_TIMER_ID,
                                             DLC_INSTALLED_TIMER_TIME);
@@ -556,12 +556,12 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                             // display a timer until we get a completion for the
                             // TMS files
                             for (int i = 0; i < BUTTONS_MAX; i++) {
-                                pClass->m_Buttons[i].SetShow(FALSE);
+                                pClass->m_Buttons[i].SetShow(false);
                             }
 
                             updateTooltips();
 
-                            pClass->m_Timer.SetShow(TRUE);
+                            pClass->m_Timer.SetShow(true);
                         }
 #else
                         Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -803,7 +803,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                         app.ApplyGameSettingsChanged(iPad);
                         // check for DLC
                         // start timer to track DLC check finished
-                        m_Timer.SetShow(TRUE);
+                        m_Timer.SetShow(true);
                         XuiSetTimer(m_hObj, DLC_INSTALLED_TIMER_ID,
                                     DLC_INSTALLED_TIMER_TIME);
                         // app.NavigateToScene(iPad,eUIScene_MultiGameJoinLoad);
@@ -818,12 +818,12 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                     // We want to hide everything in this scene and display a
                     // timer until we get a completion for the TMS files
                     for (int i = 0; i < BUTTONS_MAX; i++) {
-                        m_Buttons[i].SetShow(FALSE);
+                        m_Buttons[i].SetShow(false);
                     }
 
                     updateTooltips();
 
-                    m_Timer.SetShow(TRUE);
+                    m_Timer.SetShow(true);
                 }
 #else
                 pMinecraft->user->name = convStringToWstring(
@@ -1067,12 +1067,12 @@ void UIScene_MainMenu::RunHelpAndOptions(int iPad) {
             // We want to hide everything in this scene and display a timer
             // until we get a completion for the TMS files
             for (int i = 0; i < BUTTONS_MAX; i++) {
-                m_Buttons[i].SetShow(FALSE);
+                m_Buttons[i].SetShow(false);
             }
 
             updateTooltips();
 
-            m_Timer.SetShow(TRUE);
+            m_Timer.SetShow(true);
         }
 #endif
     }
@@ -1122,8 +1122,8 @@ void UIScene_MainMenu::LoadTrial(void) {
 
     UIFullscreenProgressCompletionData* completionData =
         new UIFullscreenProgressCompletionData();
-    completionData->bShowBackground = TRUE;
-    completionData->bShowLogo = TRUE;
+    completionData->bShowBackground = true;
+    completionData->bShowLogo = true;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = ProfileManager.GetPrimaryPad();
     loadingParams->completionData = completionData;

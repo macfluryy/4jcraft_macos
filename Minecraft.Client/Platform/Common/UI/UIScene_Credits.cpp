@@ -158,7 +158,7 @@ UIScene_Credits::UIScene_Credits(int iPad, void* initData, UILayer* parentLayer)
             setNextLabel(gs_aCreditDefs[i].m_Text, gs_aCreditDefs[i].m_eType);
         } else  // using additional translated string.
         {
-            LPWSTR creditsString = new wchar_t[128];
+            wchar_t* creditsString = new wchar_t[128];
             if (gs_aCreditDefs[i].m_iStringID[1] != NO_TRANSLATED_STRING) {
                 swprintf(creditsString, 128, gs_aCreditDefs[i].m_Text,
                          app.GetString(gs_aCreditDefs[i].m_iStringID[0]),
@@ -235,7 +235,7 @@ void UIScene_Credits::tick() {
                         replaceAll(sanitisedString, L"\u2013", L"-");
                 }
 
-                LPWSTR creditsString = new wchar_t[128];
+                wchar_t* creditsString = new wchar_t[128];
                 if (pDef->m_iStringID[0] == NO_TRANSLATED_STRING) {
                     ZeroMemory(creditsString, 128);
                     memcpy(creditsString, sanitisedString.c_str(),
@@ -260,7 +260,7 @@ void UIScene_Credits::handleInput(int iPad, int key, bool repeat, bool pressed,
                                   bool released, bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
     // down- %ls, pressed- %ls, released- %ls\n", iPad, key,
-    // down?"TRUE":"FALSE", pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down?"true":"false", pressed?"true":"false", released?"true":"false");
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 

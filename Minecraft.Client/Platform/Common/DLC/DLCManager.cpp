@@ -215,7 +215,7 @@ void DLCManager::LanguageChanged(void) {
 
 DLCPack* DLCManager::getPack(const std::wstring& name) {
     DLCPack* pack = nullptr;
-    // DWORD currentIndex = 0;
+    // uint32_t currentIndex = 0;
     DLCPack* currentPack = nullptr;
     for (auto it = m_packs.begin(); it != m_packs.end(); ++it) {
         currentPack = *it;
@@ -474,7 +474,7 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
 
     C4JStorage::DLC_FILE_PARAM parBuf;
     DLC_READ_PARAM(&parBuf, pbData, uiCurrentByte);
-    // DWORD dwwchCount=0;
+    // uint32_t dwwchCount=0;
     for (unsigned int i = 0; i < uiParameterCount; i++) {
         // Map DLC strings to application strings, then store the DLC index
         // mapping to application index

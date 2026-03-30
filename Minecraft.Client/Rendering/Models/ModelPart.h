@@ -24,7 +24,7 @@ public:
 private:
     std::wstring id;
     int xTexOffs, yTexOffs;
-    boolean compiled;
+    bool compiled;
     int list;
     Model* model;
 

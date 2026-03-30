@@ -142,7 +142,7 @@ void UIScene_FullscreenProgress::tick() {
     }
 
     int code = thread->GetExitCode();
-    DWORD exitcode = *((DWORD*)&code);
+    uint32_t exitcode = *((uint32_t*)&code);
 
     // app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
 
@@ -158,7 +158,7 @@ void UIScene_FullscreenProgress::tick() {
                 // will cause another action
             } else {
                 /*m_threadCompleted = true;
-                m_buttonConfirm.SetShow( TRUE );
+                m_buttonConfirm.SetShow( true );
                 m_buttonConfirm.SetFocus( m_CompletionData->iPad );
                 m_CompletionData->type =
                 e_ProgressCompletion_NavigateToHomeMenu;
@@ -186,7 +186,7 @@ void UIScene_FullscreenProgress::tick() {
                 ui.UpdatePlayerBasePositions();
             }
         } else {
-            if ((m_CompletionData->bRequiresUserAction == TRUE) &&
+            if ((m_CompletionData->bRequiresUserAction == true) &&
                 (!m_bWasCancelled)) {
                 m_threadCompleted = true;
                 m_buttonConfirm.setVisible(true);

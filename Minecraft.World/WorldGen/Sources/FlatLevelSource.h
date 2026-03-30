@@ -19,7 +19,7 @@ private:
     Random* random;
     Random* pprandom;
 
-    boolean generateStructures;
+    bool generateStructures;
     VillageFeature* villageFeature;  // = new VillageFeature(1);
 
 public:

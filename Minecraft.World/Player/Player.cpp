@@ -679,7 +679,7 @@ std::uint32_t Player::getCapeIdFromPath(const std::wstring& cape) {
 }
 
 std::wstring Player::getCapePathFromId(std::uint32_t capeId) {
-    // 4J Stu - This function maps the encoded DWORD we store in the player
+    // 4J Stu - This function maps the encoded uint32_t we store in the player
     // profile to a filename that is stored as a memory texture and shared
     // between systems in game
     wchar_t chars[256];

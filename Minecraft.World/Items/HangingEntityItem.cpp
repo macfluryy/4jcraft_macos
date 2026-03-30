@@ -38,7 +38,7 @@ bool HangingEntityItem::useOn(std::shared_ptr<ItemInstance> instance,
 
     if (entity != nullptr && entity->survives()) {
         if (!level->isClientSide) {
-            if (level->addEntity(entity) == TRUE) {
+            if (level->addEntity(entity) == true) {
                 // 4J-JEV: Hook for durango 'BlockPlaced' event.
                 if (eType == eTYPE_PAINTING)
                     player->awardStat(

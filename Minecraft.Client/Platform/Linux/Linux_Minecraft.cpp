@@ -86,7 +86,7 @@ static void sigsegv_handler(int sig) {
 // #define PROFILE_VERSION 3 // new version for the interim bug fix 166 TU
 #define NUM_PROFILE_VALUES 5
 #define NUM_PROFILE_SETTINGS 4
-DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = {
+uint32_t dwProfileSettingsA[NUM_PROFILE_VALUES] = {
     0, 0, 0, 0, 0
 };
 
@@ -101,7 +101,7 @@ DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = {
 uint8_t* AddRichPresenceString(int iID);
 void FreeRichPresenceStrings();
 
-bool g_bWidescreen = TRUE;
+bool g_bWidescreen = true;
 
 void DefineActions(void) {
     // The app needs to define the actions required, and the possible mappings
@@ -431,7 +431,7 @@ ID3D11DepthStencilView* g_pDepthStencilView = nullptr;
 ID3D11Texture2D* g_pDepthStencilBuffer = nullptr;
 
 //
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
+//  FUNCTION: WndProc(HWND, uint32_t, WPARAM, LPARAM)
 //
 //  PURPOSE:  Processes messages for the main window.
 //
@@ -440,7 +440,7 @@ ID3D11Texture2D* g_pDepthStencilBuffer = nullptr;
 //  WM_DESTROY	- post a quit message and return
 //
 //
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam,
+LRESULT CALLBACK WndProc(HWND hWnd, uint32_t message, WPARAM wParam,
                          LPARAM lParam) {
     int wmId, wmEvent;
     PAINTSTRUCT ps;
@@ -516,27 +516,27 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
                           hInstance, nullptr);
 
     if (!g_hWnd) {
-        return FALSE;
+        return false;
     }
 
     ShowWindow(g_hWnd, nCmdShow);
     UpdateWindow(g_hWnd);
 
-    return TRUE;
+    return true;
 }
 
 //--------------------------------------------------------------------------------------
 // Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
-HRESULT InitDevice() {
-    HRESULT hr = S_OK;
+int32_t InitDevice() {
+    int32_t hr = S_OK;
 
     RECT rc;
     GetClientRect(g_hWnd, &rc);
-    UINT width = rc.right - rc.left;
-    UINT height = rc.bottom - rc.top;
+    uint32_t width = rc.right - rc.left;
+    uint32_t height = rc.bottom - rc.top;
 
-    UINT createDeviceFlags = 0;
+    uint32_t createDeviceFlags = 0;
 #if defined(_DEBUG)
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
@@ -546,14 +546,14 @@ HRESULT InitDevice() {
         D3D_DRIVER_TYPE_WARP,
         D3D_DRIVER_TYPE_REFERENCE,
     };
-    UINT numDriverTypes = ARRAYSIZE(driverTypes);
+    uint32_t numDriverTypes = ARRAYSIZE(driverTypes);
 
     D3D_FEATURE_LEVEL featureLevels[] = {
         D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0,
     };
-    UINT numFeatureLevels = ARRAYSIZE(featureLevels);
+    uint32_t numFeatureLevels = ARRAYSIZE(featureLevels);
 
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory(&sd, sizeof(sd));
@@ -567,9 +567,9 @@ HRESULT InitDevice() {
     sd.OutputWindow = g_hWnd;
     sd.SampleDesc.Count = 1;
     sd.SampleDesc.Quality = 0;
-    sd.Windowed = TRUE;
+    sd.Windowed = true;
 
-    for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes;
+    for (uint32_t driverTypeIndex = 0; driverTypeIndex < numDriverTypes;
          driverTypeIndex++) {
         g_driverType = driverTypes[driverTypeIndex];
         hr = D3D11CreateDeviceAndSwapChain(
@@ -621,8 +621,8 @@ HRESULT InitDevice() {
 
     // Setup the viewport
     D3D11_VIEWPORT vp;
-    vp.Width = (FLOAT)width;
-    vp.Height = (FLOAT)height;
+    vp.Width = (float)width;
+    vp.Height = (float)height;
     vp.MinDepth = 0.0f;
     vp.MaxDepth = 1.0f;
     vp.TopLeftX = 0;
@@ -1047,9 +1047,9 @@ volatile size_t sizeCheckMin = 1160;
 volatile size_t sizeCheckMax = 1160;
 volatile int sectCheck = 48;
 CRITICAL_SECTION memCS;
-DWORD tlsIdx;
+uint32_t tlsIdx;
 
-void* XMemAlloc(size_t dwSize, DWORD dwAllocAttributes) {
+void* XMemAlloc(size_t dwSize, uint32_t dwAllocAttributes) {
     if (!trackStarted) {
         void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
         size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
@@ -1090,22 +1090,22 @@ void* XMemAlloc(size_t dwSize, DWORD dwAllocAttributes) {
 void* operator new(size_t size) {
     return (unsigned char*)XMemAlloc(
         size, MAKE_XALLOC_ATTRIBUTES(
-                  0, FALSE, TRUE, FALSE, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
-                  XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP));
+                  0, false, true, false, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
+                  XALLOC_MEMPROTECT_READWRITE, false, XALLOC_MEMTYPE_HEAP));
 }
 
 void operator delete(void* p) {
     XMemFree(p, MAKE_XALLOC_ATTRIBUTES(
-                    0, FALSE, TRUE, FALSE, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
-                    XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP));
+                    0, false, true, false, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
+                    XALLOC_MEMPROTECT_READWRITE, false, XALLOC_MEMTYPE_HEAP));
 }
 
-void WINAPI XMemFree(void* pAddress, DWORD dwAllocAttributes) {
+void WINAPI XMemFree(void* pAddress, uint32_t dwAllocAttributes) {
     bool special = false;
     if (dwAllocAttributes == 0) {
         dwAllocAttributes = MAKE_XALLOC_ATTRIBUTES(
-            0, FALSE, TRUE, FALSE, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
-            XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP);
+            0, false, true, false, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
+            XALLOC_MEMPROTECT_READWRITE, false, XALLOC_MEMTYPE_HEAP);
         special = true;
     }
     if (!trackStarted) {
@@ -1132,7 +1132,7 @@ void WINAPI XMemFree(void* pAddress, DWORD dwAllocAttributes) {
     LeaveCriticalSection(&memCS);
 }
 
-size_t WINAPI XMemSize(void* pAddress, DWORD dwAllocAttributes) {
+size_t WINAPI XMemSize(void* pAddress, uint32_t dwAllocAttributes) {
     if (trackStarted) {
         return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
     } else {

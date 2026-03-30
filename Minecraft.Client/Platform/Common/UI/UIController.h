@@ -388,21 +388,21 @@ public:
     void ClearPressStart();
 
     virtual C4JStorage::EMessageResult RequestAlertMessage(
-        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
-        DWORD dwPad = XUSER_INDEX_ANY,
+        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA, uint32_t uiOptionC,
+        uint32_t dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
         void* lpParam = nullptr, wchar_t* pwchFormatString = nullptr);
     virtual C4JStorage::EMessageResult RequestErrorMessage(
-        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
-        DWORD dwPad = XUSER_INDEX_ANY,
+        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA, uint32_t uiOptionC,
+        uint32_t dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
         void* lpParam = nullptr, wchar_t* pwchFormatString = nullptr);
 
 private:
     virtual C4JStorage::EMessageResult RequestMessageBox(
-        UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
+        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA, uint32_t uiOptionC, uint32_t dwPad,
         int (*Func)(void*, int, const C4JStorage::EMessageResult),
-        void* lpParam, wchar_t* pwchFormatString, DWORD dwFocusButton,
+        void* lpParam, wchar_t* pwchFormatString, uint32_t dwFocusButton,
         bool bIsError);
 
 public:

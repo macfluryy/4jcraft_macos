@@ -145,7 +145,7 @@ MobEffectInstance* MobEffectInstance::load(CompoundTag* tag) {
     int id = tag->getByte(L"Id");
     int amplifier = tag->getByte(L"Amplifier");
     int duration = tag->getInt(L"Duration");
-    boolean ambient = tag->getBoolean(L"Ambient");
+    bool ambient = tag->getBoolean(L"Ambient");
     return new MobEffectInstance(id, duration, amplifier, ambient);
 }
 

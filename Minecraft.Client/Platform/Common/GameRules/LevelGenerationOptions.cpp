@@ -195,7 +195,7 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
         if (attributeValue.compare(L"true") == 0) m_useFlatWorld = true;
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter flatworld=%s\n",
-            m_useFlatWorld ? "TRUE" : "FALSE");
+            m_useFlatWorld ? "true" : "false");
     } else if (attributeName.compare(L"saveName") == 0) {
         std::wstring string(getString(attributeValue));
         if (!string.empty())
@@ -233,7 +233,7 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
         if (attributeValue.compare(L"true") == 0) setSrc(eSrc_tutorial);
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter isTutorial=%s\n",
-            isTutorial() ? "TRUE" : "FALSE");
+            isTutorial() ? "true" : "false");
     } else if (attributeName.compare(L"baseSaveName") == 0) {
         setBaseSavePath(attributeValue);
         app.DebugPrintf(
@@ -487,8 +487,8 @@ void LevelGenerationOptions::loadBaseSaveData() {
     }
 }
 
-int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
-                                        DWORD dwLicenceMask) {
+int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
+                                        uint32_t dwLicenceMask) {
     LevelGenerationOptions* lgo = (LevelGenerationOptions*)pParam;
     lgo->m_bLoadingData = false;
     if (dwErr != ERROR_SUCCESS) {
@@ -497,7 +497,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                         dwErr);
     } else {
         app.DebugPrintf("Mounted DLC for LGO, attempting to load data\n");
-        DWORD dwFilesProcessed = 0;
+        uint32_t dwFilesProcessed = 0;
         int gameRulesCount = lgo->m_parentDLCPack->getDLCItemsCount(
             DLCManager::e_DLCType_GameRulesHeader);
         for (int i = 0; i < gameRulesCount; ++i) {
@@ -513,7 +513,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
 #if defined(_UNICODE)
                     std::wstring path = grf.getPath();
                     const wchar_t* pchFilename = path.c_str();
-                    HANDLE fileHandle = CreateFile(
+                    void* fileHandle = CreateFile(
                         pchFilename,   // file name
                         GENERIC_READ,  // access mode
                         0,  // share mode // TODO 4J Stu - Will we need to share
@@ -527,7 +527,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                     );
 #else
                     const char* pchFilename = wstringtofilename(grf.getPath());
-                    HANDLE fileHandle = CreateFile(
+                    void* fileHandle = CreateFile(
                         pchFilename,   // file name
                         GENERIC_READ,  // access mode
                         0,  // share mode // TODO 4J Stu - Will we need to share
@@ -542,12 +542,12 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
 #endif
 
                     if (fileHandle != INVALID_HANDLE_VALUE) {
-                        DWORD dwFileSize = grf.length();
-                        DWORD bytesRead;
-                        PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
+                        uint32_t dwFileSize = grf.length();
+                        uint32_t bytesRead;
+                        uint8_t* pbData = (uint8_t*) new uint8_t[dwFileSize];
                         bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
                                                  &bytesRead, nullptr);
-                        if (bSuccess == FALSE) {
+                        if (bSuccess == false) {
                             app.FatalLoadError();
                         }
                         CloseHandle(fileHandle);
@@ -571,7 +571,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
 #if defined(_UNICODE)
                 std::wstring path = save.getPath();
                 const wchar_t* pchFilename = path.c_str();
-                HANDLE fileHandle = CreateFile(
+                void* fileHandle = CreateFile(
                     pchFilename,   // file name
                     GENERIC_READ,  // access mode
                     0,     // share mode // TODO 4J Stu - Will we need to share
@@ -585,7 +585,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                 );
 #else
                 const char* pchFilename = wstringtofilename(save.getPath());
-                HANDLE fileHandle = CreateFile(
+                void* fileHandle = CreateFile(
                     pchFilename,   // file name
                     GENERIC_READ,  // access mode
                     0,     // share mode // TODO 4J Stu - Will we need to share
@@ -600,11 +600,11 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
 #endif
 
                 if (fileHandle != INVALID_HANDLE_VALUE) {
-                    DWORD bytesRead, dwFileSize = GetFileSize(fileHandle, nullptr);
-                    PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
+                    uint32_t bytesRead, dwFileSize = GetFileSize(fileHandle, nullptr);
+                    uint8_t* pbData = (uint8_t*) new uint8_t[dwFileSize];
                     bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
                                              &bytesRead, nullptr);
-                    if (bSuccess == FALSE) {
+                    if (bSuccess == false) {
                         app.FatalLoadError();
                     }
                     CloseHandle(fileHandle);
@@ -615,7 +615,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, DWORD dwErr,
                 }
             }
         }
-        DWORD result = StorageManager.UnmountInstalledDLC("WPACK");
+        uint32_t result = StorageManager.UnmountInstalledDLC("WPACK");
     }
 
     lgo->setLoadedData();

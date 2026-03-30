@@ -44,7 +44,7 @@ UsageException("commands.spreadplayers.usage"); int index = 0; double x =
 convertArgToCoordinate(source, Double.NaN, args[index++]); double z =
 convertArgToCoordinate(source, Double.NaN, args[index++]); double minDist =
 convertArgToDouble(source, args[index++], 0); double maxDist =
-convertArgToDouble(source, args[index++], minDist + 1); boolean respectTeams =
+convertArgToDouble(source, args[index++], minDist + 1); bool respectTeams =
 convertArgToBoolean(source, args[index++]);
 
         List<LivingEntity> players = Lists.newArrayList();
@@ -86,7 +86,7 @@ players.get(0).level, respectTeams);
 
     private void spreadPlayers(CommandSender source, List<LivingEntity> players,
 Position center, double spreadDist, double maxDistFromCenter, Level level,
-boolean respectTeams) { Random random = new Random(); double minX = center.x -
+bool respectTeams) { Random random = new Random(); double minX = center.x -
 maxDistFromCenter; double minZ = center.z - maxDistFromCenter; double maxX =
 center.x + maxDistFromCenter; double maxZ = center.z + maxDistFromCenter;
 
@@ -120,7 +120,7 @@ source.sendMessage(ChatMessageComponent.forTranslation("commands.spreadplayers.i
 
     private int spreadPositions(Position center, double spreadDist, Level level,
 Random random, double minX, double minZ, double maxX, double maxZ, Position[]
-positions, boolean respectTeams) { boolean hasCollisions = true; int iteration;
+positions, bool respectTeams) { bool hasCollisions = true; int iteration;
         double minDistance = Float.MAX_VALUE;
 
         for (iteration = 0; iteration < MAX_ITERATION_COUNT && hasCollisions;
@@ -185,7 +185,7 @@ String.format("%.2f", minDistance));
     }
 
     private double setPlayerPositions(List<LivingEntity> players, Level level,
-Position[] positions, boolean respectTeams) { double avgDistance = 0; int
+Position[] positions, bool respectTeams) { double avgDistance = 0; int
 positionIndex = 0; Map<Team, Position> teamPositions = Maps.newHashMap();
 
         for (int i = 0; i < players.size(); i++) {
@@ -276,8 +276,8 @@ Position[count];
             z -= pos.z;
         }
 
-        public boolean clamp(double minX, double minZ, double maxX, double maxZ)
-{ boolean changed = false;
+        public bool clamp(double minX, double minZ, double maxX, double maxZ)
+{ bool changed = false;
 
             if (x < minX) {
                 x = minX;
@@ -313,7 +313,7 @@ Position[count];
             return Level.maxBuildHeight + 1;
         }
 
-        public boolean isSafe(Level level) {
+        public bool isSafe(Level level) {
             int xt = Mth.floor(x);
             int zt = Mth.floor(z);
 

@@ -118,17 +118,17 @@ protected:
     // 4J-JEV: Interface differences:
 
     // Sce NP score library function redirects.
-    virtual HRESULT initialiseScoreUtility() { return ERROR_SUCCESS; }
-    virtual bool scoreUtilityAlreadyInitialised(HRESULT hr) { return false; }
+    virtual int32_t initialiseScoreUtility() { return ERROR_SUCCESS; }
+    virtual bool scoreUtilityAlreadyInitialised(int32_t hr) { return false; }
 
-    virtual HRESULT createTitleContext(const SceNpId& npId) = 0;
-    virtual HRESULT destroyTitleContext(int titleContext) = 0;
+    virtual int32_t createTitleContext(const SceNpId& npId) = 0;
+    virtual int32_t destroyTitleContext(int titleContext) = 0;
 
-    virtual HRESULT createTransactionContext(int titleContext) = 0;
-    virtual HRESULT abortTransactionContext(int transactionContext) = 0;
-    virtual HRESULT destroyTransactionContext(int transactionContext) = 0;
+    virtual int32_t createTransactionContext(int titleContext) = 0;
+    virtual int32_t abortTransactionContext(int transactionContext) = 0;
+    virtual int32_t destroyTransactionContext(int transactionContext) = 0;
 
-    virtual HRESULT fillByIdsQuery(const SceNpId& myNpId, SceNpId*& npIds,
+    virtual int32_t fillByIdsQuery(const SceNpId& myNpId, SceNpId*& npIds,
                                    uint32_t& len);
 
 

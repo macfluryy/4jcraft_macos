@@ -16,7 +16,7 @@ UpdateMobEffectPacket::UpdateMobEffectPacket() {
 UpdateMobEffectPacket::UpdateMobEffectPacket(int entityId,
                                              MobEffectInstance* effect) {
     this->entityId = entityId;
-    effectId = (BYTE)(effect->getId() & 0xff);
+    effectId = (uint8_t)(effect->getId() & 0xff);
     effectAmplifier = (char)(effect->getAmplifier() & 0xff);
 
     if (effect->getDuration() > std::numeric_limits<short>::max()) {

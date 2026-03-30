@@ -302,9 +302,9 @@ void PlayerRenderer::additionalRendering(std::shared_ptr<LivingEntity> _mob,
     }
 
     // 4J: removed
-    /*boolean loaded = mob->getCloakTexture()->isLoaded();
-boolean b1 = !mob->isInvisible();
-boolean b2 = !mob->isCapeHidden();*/
+    /*bool loaded = mob->getCloakTexture()->isLoaded();
+bool b1 = !mob->isInvisible();
+bool b2 = !mob->isCapeHidden();*/
     if (bindTexture(mob->customTextureUrl2, L"") && !mob->isInvisible()) {
         glPushMatrix();
         glTranslatef(0, 0, 2 / 16.0f);

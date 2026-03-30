@@ -64,7 +64,7 @@ ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
 
         if (!file.exists()) {
             if (!create) return nullptr;
-            HANDLE ch = CreateFile(wstringtofilename(file.getPath()),
+            void* ch = CreateFile(wstringtofilename(file.getPath()),
                                    GENERIC_READ | GENERIC_WRITE, 0, nullptr,
                                    OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
             CloseHandle(ch);

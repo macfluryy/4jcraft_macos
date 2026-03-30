@@ -339,7 +339,7 @@ void UIController::SetupFont() {
     if ((m_eCurrentFont != m_eTargetFont) || !UIString::setCurrentLanguage())
         return;
 
-    DWORD nextLanguage = UIString::getCurrentLanguage();
+    uint32_t nextLanguage = UIString::getCurrentLanguage();
     m_eTargetFont = getFontForLanguage(nextLanguage);
 
     // flag a language change to reload the string tables in the DLC
@@ -983,7 +983,7 @@ void UIController::setupCustomDrawMatrices(UIScene* scene,
     float sceneWidth = (float)scene->getRenderWidth();
     float sceneHeight = (float)scene->getRenderHeight();
 
-    LONG left, right, top, bottom;
+    int32_t left, right, top, bottom;
     {
         left =
             m_tileOriginX +
@@ -998,14 +998,14 @@ void UIController::setupCustomDrawMatrices(UIScene* scene,
                        customDrawRegion->y1;
 
     m_customRenderingClearRect.left =
-        std::min(m_customRenderingClearRect.left, left);
+        std::min<long>(m_customRenderingClearRect.left, left);
     m_customRenderingClearRect.right =
-        std::max(m_customRenderingClearRect.right, right);
+        std::max<long>(m_customRenderingClearRect.right, right);
     ;
     m_customRenderingClearRect.top =
-        std::min(m_customRenderingClearRect.top, top);
+        std::min<long>(m_customRenderingClearRect.top, top);
     m_customRenderingClearRect.bottom =
-        std::max(m_customRenderingClearRect.bottom, bottom);
+        std::max<long>(m_customRenderingClearRect.bottom, bottom);
 
     if (!m_bScreenWidthSetup) {
         Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -1137,7 +1137,7 @@ void RADLINK UIController::TextureSubstitutionDestroyCallback(
     void* user_callback_data, void* destroy_callback_data,
     GDrawTexture* handle) {
     // Orbis complains about casting a pointer to an int
-    LONGLONG llVal = (LONGLONG)destroy_callback_data;
+    int64_t llVal = (int64_t)destroy_callback_data;
     int id = (int)llVal;
     app.DebugPrintf("Destroying iggy texture %d\n", id);
 

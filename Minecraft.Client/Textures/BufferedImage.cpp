@@ -36,7 +36,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
                              bool filenameHasExtension,
                              bool bTitleUpdateTexture,
                              const std::wstring& drive) {
-    HRESULT hr = -1;
+    int32_t hr = -1;
     std::wstring filePath = File;
 
     for (size_t i = 0; i < filePath.length(); ++i) {
@@ -118,7 +118,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
 }
 BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
                              bool filenameHasExtension) {
-    HRESULT hr;
+    int32_t hr;
     std::wstring filePath = File;
     std::uint8_t* pbData = nullptr;
     std::uint32_t dataBytes = 0;
@@ -162,7 +162,7 @@ BufferedImage::BufferedImage(std::uint8_t* pbData, std::uint32_t dataBytes) {
 
     D3DXIMAGE_INFO ImageInfo;
     ZeroMemory(&ImageInfo, sizeof(D3DXIMAGE_INFO));
-    HRESULT hr =
+    int32_t hr =
         RenderManager.LoadTextureData(pbData, dataBytes, &ImageInfo, &data[0]);
 
     if (hr == ERROR_SUCCESS) {

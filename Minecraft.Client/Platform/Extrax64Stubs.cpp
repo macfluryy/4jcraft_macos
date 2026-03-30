@@ -29,7 +29,7 @@ CXuiStringTable StringTable;
 #if !defined(__linux__)
 ATG::XMLParser::XMLParser() {}
 ATG::XMLParser::~XMLParser() {}
-HRESULT    ATG::XMLParser::ParseXMLBuffer( CONST CHAR* strBuffer, UINT uBufferSize ) { return S_OK; }   
+int32_t    ATG::XMLParser::ParseXMLBuffer( const char* strBuffer, uint32_t uBufferSize ) { return S_OK; }   
 void ATG::XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback ) {}
 #endif
 
@@ -38,19 +38,19 @@ bool	CSocialManager::IsTitleAllowedToPostAnything() { return false; }
 bool	CSocialManager::AreAllUsersAllowedToPostImages() { return false; }
 bool	CSocialManager::IsTitleAllowedToPostImages() { return false; }
 
-bool	CSocialManager::PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect ) { return false; }
-bool	CSocialManager::PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect ) { return false; }
+bool	CSocialManager::PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, uint32_t dwUserIndex, bool bUsingKinect ) { return false; }
+bool	CSocialManager::PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, uint32_t dwUserIndex, bool bUsingKinect ) { return false; }
 
 CSocialManager *CSocialManager::Instance() { return nullptr; }
 void CSocialManager::SetSocialPostText(const wchar_t* Title, const wchar_t* Caption, const wchar_t* Desc) {};
 #endif
 
-DWORD XShowPartyUI(DWORD dwUserIndex) { return 0; }
-DWORD XShowFriendsUI(DWORD dwUserIndex) { return 0; }
-HRESULT XPartyGetUserList(XPARTY_USER_LIST *pUserList) { return S_OK; }
-DWORD XContentGetThumbnail(DWORD dwUserIndex, const XCONTENT_DATA *pContentData,  PBYTE pbThumbnail,  PDWORD pcbThumbnail,  PXOVERLAPPED *pOverlapped) { return 0; }
+uint32_t XShowPartyUI(uint32_t dwUserIndex) { return 0; }
+uint32_t XShowFriendsUI(uint32_t dwUserIndex) { return 0; }
+int32_t XPartyGetUserList(XPARTY_USER_LIST *pUserList) { return S_OK; }
+uint32_t XContentGetThumbnail(uint32_t dwUserIndex, const XCONTENT_DATA *pContentData,  uint8_t* pbThumbnail,  uint32_t* pcbThumbnail,  PXOVERLAPPED *pOverlapped) { return 0; }
 void XShowAchievementsUI(int i) {}
-DWORD XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE Mode) { return 0; }
+uint32_t XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE Mode) { return 0; }
 
 void PIXAddNamedCounter(int a, const char *b, ...) {}
 //#define PS3_USE_PIX_EVENTS 
@@ -109,23 +109,23 @@ bool IsEqualXUID(PlayerUID a, PlayerUID b)
 void XMemCpy(void *a, const void *b, size_t s) { memcpy(a, b, s); }
 void XMemSet(void *a, int t, size_t s) { memset(a, t, s); }
 void XMemSet128(void *a, int t, size_t s) { memset(a, t, s); }
-void *XPhysicalAlloc(size_t a, ULONG_PTR  b, ULONG_PTR c, DWORD d) { return malloc(a); }
+void *XPhysicalAlloc(size_t a, uintptr_t  b, uintptr_t c, uint32_t d) { return malloc(a); }
 void XPhysicalFree(void *a) { free(a); }
 
 D3DXVECTOR3::D3DXVECTOR3() {}
 D3DXVECTOR3::D3DXVECTOR3(float x,float y,float z) : x(x), y(y), z(z) {}
-D3DXVECTOR3& D3DXVECTOR3::operator += ( CONST D3DXVECTOR3& add ) { x += add.x; y += add.y; z += add.z; return *this; }
+D3DXVECTOR3& D3DXVECTOR3::operator += ( const D3DXVECTOR3& add ) { x += add.x; y += add.y; z += add.z; return *this; }
 
-BYTE IQNetPlayer::GetSmallId() { return 0; }
-void IQNetPlayer::SendData(IQNetPlayer *player, const void *pvData, DWORD dwDataSize, DWORD dwFlags)
+uint8_t IQNetPlayer::GetSmallId() { return 0; }
+void IQNetPlayer::SendData(IQNetPlayer *player, const void *pvData, uint32_t dwDataSize, uint32_t dwFlags)
 {
 #if !defined(__linux__)
 	app.DebugPrintf("Sending from 0x%x to 0x%x %d bytes\n",this,player,dwDataSize);
 #endif
 }
 bool IQNetPlayer::IsSameSystem(IQNetPlayer *player) { return true; }
-DWORD IQNetPlayer::GetSendQueueSize( IQNetPlayer *player, DWORD dwFlags ) { return 0; }
-DWORD IQNetPlayer::GetCurrentRtt() { return 0; }
+uint32_t IQNetPlayer::GetSendQueueSize( IQNetPlayer *player, uint32_t dwFlags ) { return 0; }
+uint32_t IQNetPlayer::GetCurrentRtt() { return 0; }
 bool IQNetPlayer::IsHost() { return this == &IQNet::m_player[0]; }
 bool IQNetPlayer::IsGuest() { return false; }
 bool IQNetPlayer::IsLocal() { return true; }
@@ -133,14 +133,14 @@ PlayerUID IQNetPlayer::GetXuid() { return INVALID_XUID; }
 const wchar_t* IQNetPlayer::GetGamertag() { static const wchar_t *test = L"stub"; return test; }
 int IQNetPlayer::GetSessionIndex() { return 0; }
 bool IQNetPlayer::IsTalking() { return false; }
-bool IQNetPlayer::IsMutedByLocalUser(DWORD dwUserIndex) { return false; }
+bool IQNetPlayer::IsMutedByLocalUser(uint32_t dwUserIndex) { return false; }
 bool IQNetPlayer::HasVoice() { return false; }
 bool IQNetPlayer::HasCamera() { return false; }
 int IQNetPlayer::GetUserIndex() { return this - &IQNet::m_player[0]; }
-void IQNetPlayer::SetCustomDataValue(ULONG_PTR ulpCustomDataValue) {
+void IQNetPlayer::SetCustomDataValue(uintptr_t ulpCustomDataValue) {
 	m_customData = ulpCustomDataValue;
 }
-ULONG_PTR IQNetPlayer::GetCustomDataValue() {
+uintptr_t IQNetPlayer::GetCustomDataValue() {
 	return m_customData;
 }
 
@@ -148,29 +148,29 @@ IQNetPlayer IQNet::m_player[4];
 
 bool _bQNetStubGameRunning = false;
 
-HRESULT IQNet::AddLocalPlayerByUserIndex(DWORD dwUserIndex){ return S_OK; }
+int32_t IQNet::AddLocalPlayerByUserIndex(uint32_t dwUserIndex){ return S_OK; }
 IQNetPlayer *IQNet::GetHostPlayer() { return &m_player[0]; }
-IQNetPlayer *IQNet::GetLocalPlayerByUserIndex(DWORD dwUserIndex) { return &m_player[dwUserIndex]; } 
-IQNetPlayer *IQNet::GetPlayerByIndex(DWORD dwPlayerIndex) { return &m_player[0]; }
-IQNetPlayer *IQNet::GetPlayerBySmallId(BYTE SmallId){ return &m_player[0]; }
+IQNetPlayer *IQNet::GetLocalPlayerByUserIndex(uint32_t dwUserIndex) { return &m_player[dwUserIndex]; } 
+IQNetPlayer *IQNet::GetPlayerByIndex(uint32_t dwPlayerIndex) { return &m_player[0]; }
+IQNetPlayer *IQNet::GetPlayerBySmallId(uint8_t SmallId){ return &m_player[0]; }
 IQNetPlayer *IQNet::GetPlayerByXuid(PlayerUID xuid){ return &m_player[0]; }
-DWORD IQNet::GetPlayerCount() { return 1; }
+uint32_t IQNet::GetPlayerCount() { return 1; }
 QNET_STATE IQNet::GetState() { return _bQNetStubGameRunning ? QNET_STATE_GAME_PLAY : QNET_STATE_IDLE; }
 bool IQNet::IsHost() { return true; }
-HRESULT IQNet::JoinGameFromInviteInfo(DWORD dwUserIndex, DWORD dwUserMask, const INVITE_INFO *pInviteInfo) { return S_OK; }
+int32_t IQNet::JoinGameFromInviteInfo(uint32_t dwUserIndex, uint32_t dwUserMask, const INVITE_INFO *pInviteInfo) { return S_OK; }
 void IQNet::HostGame() { _bQNetStubGameRunning = true; }
 void IQNet::EndGame() { _bQNetStubGameRunning = false; }
 
-DWORD MinecraftDynamicConfigurations::GetTrialTime() { return DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME; }
+uint32_t MinecraftDynamicConfigurations::GetTrialTime() { return DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME; }
 
-void XSetThreadProcessor(HANDLE a, int b) {}
+void XSetThreadProcessor(void* a, int b) {}
 // #if !(0) && !(0)
-// bool XCloseHandle(HANDLE a) { return CloseHandle(a); }
+// bool XCloseHandle(void* a) { return CloseHandle(a); }
 // #endif // 0
 
-DWORD XUserGetSigninInfo(
-         DWORD dwUserIndex,
-         DWORD dwFlags,
+uint32_t XUserGetSigninInfo(
+         uint32_t dwUserIndex,
+         uint32_t dwFlags,
          PXUSER_SIGNIN_INFO pSigninInfo
 )
 {
@@ -178,13 +178,13 @@ DWORD XUserGetSigninInfo(
 }
 
 const wchar_t* CXuiStringTable::Lookup(const wchar_t* szId) { return szId; }
-const wchar_t* CXuiStringTable::Lookup(UINT nIndex) { return L"String"; }
+const wchar_t* CXuiStringTable::Lookup(uint32_t nIndex) { return L"String"; }
 void CXuiStringTable::Clear() {}
-HRESULT CXuiStringTable::Load(const wchar_t* szId) { return S_OK; }
+int32_t CXuiStringTable::Load(const wchar_t* szId) { return S_OK; }
 
-DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCount, bool* pfResult, void *pOverlapped) { return 0; }
+uint32_t XUserAreUsersFriends( uint32_t dwUserIndex, PPlayerUID pXuids, uint32_t dwXuidCount, bool* pfResult, void *pOverlapped) { return 0; }
 
-HRESULT XMemDecompress(
+int32_t XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
          void *pDestination,
          size_t *pDestSize,
@@ -215,7 +215,7 @@ HRESULT XMemDecompress(
 	}
 }
 
-HRESULT XMemCompress(
+int32_t XMemCompress(
          XMEMCOMPRESSION_CONTEXT Context,
          void *pDestination,
          size_t *pDestSize,
@@ -246,17 +246,17 @@ HRESULT XMemCompress(
 	}
 }
 
-HRESULT XMemCreateCompressionContext(
+int32_t XMemCreateCompressionContext(
          XMEMCODEC_TYPE CodecType,
-         CONST void *pCodecParams,
-         DWORD Flags,
+         const void *pCodecParams,
+         uint32_t Flags,
          XMEMCOMPRESSION_CONTEXT *pContext
 )
 {
 	/*
 	COMPRESSOR_HANDLE Compressor    = nullptr;
 
-	HRESULT hr = CreateCompressor(
+	int32_t hr = CreateCompressor(
 		COMPRESS_ALGORITHM_XPRESS_HUFF, //  Compression Algorithm
 		nullptr,                           //  Optional allocation routine
 		&Compressor);                   //  Handle
@@ -267,17 +267,17 @@ HRESULT XMemCreateCompressionContext(
 	return 0;
 }
 
-HRESULT XMemCreateDecompressionContext(
+int32_t XMemCreateDecompressionContext(
          XMEMCODEC_TYPE CodecType,
-         CONST void *pCodecParams,
-         DWORD Flags,
+         const void *pCodecParams,
+         uint32_t Flags,
          XMEMDECOMPRESSION_CONTEXT *pContext
 )
 {
 	/*
 	DECOMPRESSOR_HANDLE  Decompressor    = nullptr;
 
-	HRESULT hr = CreateDecompressor(
+	int32_t hr = CreateDecompressor(
 		COMPRESS_ALGORITHM_XPRESS_HUFF, //  Compression Algorithm
 		nullptr,                           //  Optional allocation routine
 		&Decompressor);                   //  Handle
@@ -301,9 +301,9 @@ void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context)
 }
 
 //#if 1
-DWORD XGetLanguage() { return 1; }
-DWORD XGetLocale() { return 0; }
-DWORD XEnableGuestSignin(bool fEnable) { return 0; }
+uint32_t XGetLanguage() { return 1; }
+uint32_t XGetLocale() { return 0; }
+uint32_t XEnableGuestSignin(bool fEnable) { return 0; }
 
 
 
@@ -408,7 +408,7 @@ void				C_4JProfile::SetSignInChangeCallback(void ( *Func)(void *, bool, unsigne
 void				C_4JProfile::SetNotificationsCallback(void ( *Func)(void *, std::uint32_t, unsigned int),void *lpParam) {}
 bool				C_4JProfile::RegionIsNorthAmerica(void) { return false; }
 bool				C_4JProfile::LocaleIsUSorCanada(void) { return false; }
-HRESULT				C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
+int32_t				C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
 bool				C_4JProfile::IsSystemUIDisplayed() { return false; }
 void				C_4JProfile::SetProfileReadErrorCallback(void ( *Func)(void *), void *lpParam) {}
 int( *defaultOptionsCallback)(void *,C_4JProfile::PROFILESETTINGS *, const int iPad) = nullptr;
@@ -467,7 +467,7 @@ void								C4JStorage::ResetSaveData() {}
 void								C4JStorage::SetDefaultSaveNameForKeyboardDisplay(const wchar_t* pwchDefaultSaveName) {}
 void								C4JStorage::SetSaveTitle(const wchar_t* pwchDefaultSaveName) {}
 const wchar_t*								C4JStorage::GetSaveTitle() { return L""; }
-bool								C4JStorage::GetSaveUniqueNumber(INT *piVal) { return true; }
+bool								C4JStorage::GetSaveUniqueNumber(int32_t *piVal) { return true; }
 bool								C4JStorage::GetSaveUniqueFilename(char *pszName) { return true; }
 void								C4JStorage::SetSaveUniqueFilename(char *szFilename) { }
 void								C4JStorage::SetState(ESaveGameControlState eControlState,int( *Func)(void*,const bool),void* lpParam) {}
@@ -476,14 +476,14 @@ bool								C4JStorage::GetSaveDisabled(void) { return false; }
 unsigned int						C4JStorage::GetSaveSize() { return 0; }
 void								C4JStorage::GetSaveData(void *pvData,unsigned int *pulBytes) {}
 void*								C4JStorage::AllocateSaveData(unsigned int ulBytes) { return new char[ulBytes]; }
-void								C4JStorage::SaveSaveData(unsigned int ulBytes,PBYTE pbThumbnail,DWORD cbThumbnail,PBYTE pbTextData, DWORD dwTextLen) {}
+void								C4JStorage::SaveSaveData(unsigned int ulBytes,uint8_t* pbThumbnail,uint32_t cbThumbnail,uint8_t* pbTextData, uint32_t dwTextLen) {}
 void								C4JStorage::CopySaveDataToNewSave(std::uint8_t *pbThumbnail,unsigned int cbThumbnail,wchar_t *wchNewName,int ( *Func)(void* lpParam, bool), void* lpParam) {}
 void								C4JStorage::SetSaveDeviceSelected(unsigned int uiPad,bool bSelected) {}
 bool								C4JStorage::GetSaveDeviceSelected(unsigned int iPad) { return true; }
 C4JStorage::ELoadGameStatus			C4JStorage::DoesSaveExist(bool *pbExists) { return C4JStorage::ELoadGame_Idle; }
 bool								C4JStorage::EnoughSpaceForAMinSaveGame() { return true; }
 void								C4JStorage::SetSaveMessageVPosition(float fY) {}
-//C4JStorage::ESGIStatus				C4JStorage::GetSavesInfo(int iPad,bool ( *Func)(void*, int, CACHEINFOSTRUCT *, int, HRESULT),void* lpParam,char *pszSavePackName) { return C4JStorage::ESGIStatus_Idle; }
+//C4JStorage::ESGIStatus				C4JStorage::GetSavesInfo(int iPad,bool ( *Func)(void*, int, CACHEINFOSTRUCT *, int, int32_t),void* lpParam,char *pszSavePackName) { return C4JStorage::ESGIStatus_Idle; }
 C4JStorage::ESaveGameState			C4JStorage::GetSavesInfo(int iPad,int ( *Func)(void* lpParam,SAVE_DETAILS *pSaveDetails,const bool),void* lpParam,char *pszSavePackName) { return C4JStorage::ESaveGame_Idle; }
 
 void								C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,XCONTENT_DATA &xContentData) {}
@@ -519,31 +519,31 @@ C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGloba
 
 /////////////////////////////////////////////////////// Sentient manager
 
-HRESULT CSentientManager::Init() { return S_OK; }
-HRESULT CSentientManager::Tick() { return S_OK; }
-HRESULT CSentientManager::Flush() { return S_OK; }
-bool CSentientManager::RecordPlayerSessionStart(DWORD dwUserId) { return true; }
-bool CSentientManager::RecordPlayerSessionExit(DWORD dwUserId, int exitStatus) { return true; }
-bool CSentientManager::RecordHeartBeat(DWORD dwUserId) { return true; }
-bool CSentientManager::RecordLevelStart(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, DWORD numberOfLocalPlayers, DWORD numberOfOnlinePlayers) { return true; }
-bool CSentientManager::RecordLevelExit(DWORD dwUserId, ESen_LevelExitStatus levelExitStatus) { return true; }
-bool CSentientManager::RecordLevelSaveOrCheckpoint(DWORD dwUserId, INT saveOrCheckPointID, INT saveSizeInBytes) { return true; }
-bool CSentientManager::RecordLevelResume(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, DWORD numberOfLocalPlayers, DWORD numberOfOnlinePlayers, INT saveOrCheckPointID)  { return true; }
-bool CSentientManager::RecordPauseOrInactive(DWORD dwUserId)  { return true; }
-bool CSentientManager::RecordUnpauseOrActive(DWORD dwUserId) { return true; }
-bool CSentientManager::RecordMenuShown(DWORD dwUserId, INT menuID, INT optionalMenuSubID) { return true; }
-bool CSentientManager::RecordAchievementUnlocked(DWORD dwUserId, INT achievementID, INT achievementGamerscore) { return true; }
-bool CSentientManager::RecordMediaShareUpload(DWORD dwUserId, ESen_MediaDestination mediaDestination, ESen_MediaType mediaType) { return true; }
-bool CSentientManager::RecordUpsellPresented(DWORD dwUserId, ESen_UpsellID upsellId, INT marketplaceOfferID) { return true; }
-bool CSentientManager::RecordUpsellResponded(DWORD dwUserId, ESen_UpsellID upsellId, INT marketplaceOfferID, ESen_UpsellOutcome upsellOutcome) { return true; }
-bool CSentientManager::RecordPlayerDiedOrFailed(DWORD dwUserId, INT lowResMapX, INT lowResMapY, INT lowResMapZ, INT mapID, INT playerWeaponID, INT enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
-bool CSentientManager::RecordEnemyKilledOrOvercome(DWORD dwUserId, INT lowResMapX, INT lowResMapY, INT lowResMapZ, INT mapID, INT playerWeaponID, INT enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
-bool CSentientManager::RecordSkinChanged(DWORD dwUserId, DWORD dwSkinId) { return true; }
-bool CSentientManager::RecordBanLevel(DWORD dwUserId) { return true; }
-bool CSentientManager::RecordUnBanLevel(DWORD dwUserId) { return true; }
-INT CSentientManager::GetMultiplayerInstanceID() { return 0; }
-INT CSentientManager::GenerateMultiplayerInstanceId() { return 0; }
-void CSentientManager::SetMultiplayerInstanceId(INT value) {}
+int32_t CSentientManager::Init() { return S_OK; }
+int32_t CSentientManager::Tick() { return S_OK; }
+int32_t CSentientManager::Flush() { return S_OK; }
+bool CSentientManager::RecordPlayerSessionStart(uint32_t dwUserId) { return true; }
+bool CSentientManager::RecordPlayerSessionExit(uint32_t dwUserId, int exitStatus) { return true; }
+bool CSentientManager::RecordHeartBeat(uint32_t dwUserId) { return true; }
+bool CSentientManager::RecordLevelStart(uint32_t dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, uint32_t numberOfLocalPlayers, uint32_t numberOfOnlinePlayers) { return true; }
+bool CSentientManager::RecordLevelExit(uint32_t dwUserId, ESen_LevelExitStatus levelExitStatus) { return true; }
+bool CSentientManager::RecordLevelSaveOrCheckpoint(uint32_t dwUserId, int32_t saveOrCheckPointID, int32_t saveSizeInBytes) { return true; }
+bool CSentientManager::RecordLevelResume(uint32_t dwUserId, ESen_FriendOrMatch friendsOrMatch, ESen_CompeteOrCoop competeOrCoop, int difficulty, uint32_t numberOfLocalPlayers, uint32_t numberOfOnlinePlayers, int32_t saveOrCheckPointID)  { return true; }
+bool CSentientManager::RecordPauseOrInactive(uint32_t dwUserId)  { return true; }
+bool CSentientManager::RecordUnpauseOrActive(uint32_t dwUserId) { return true; }
+bool CSentientManager::RecordMenuShown(uint32_t dwUserId, int32_t menuID, int32_t optionalMenuSubID) { return true; }
+bool CSentientManager::RecordAchievementUnlocked(uint32_t dwUserId, int32_t achievementID, int32_t achievementGamerscore) { return true; }
+bool CSentientManager::RecordMediaShareUpload(uint32_t dwUserId, ESen_MediaDestination mediaDestination, ESen_MediaType mediaType) { return true; }
+bool CSentientManager::RecordUpsellPresented(uint32_t dwUserId, ESen_UpsellID upsellId, int32_t marketplaceOfferID) { return true; }
+bool CSentientManager::RecordUpsellResponded(uint32_t dwUserId, ESen_UpsellID upsellId, int32_t marketplaceOfferID, ESen_UpsellOutcome upsellOutcome) { return true; }
+bool CSentientManager::RecordPlayerDiedOrFailed(uint32_t dwUserId, int32_t lowResMapX, int32_t lowResMapY, int32_t lowResMapZ, int32_t mapID, int32_t playerWeaponID, int32_t enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
+bool CSentientManager::RecordEnemyKilledOrOvercome(uint32_t dwUserId, int32_t lowResMapX, int32_t lowResMapY, int32_t lowResMapZ, int32_t mapID, int32_t playerWeaponID, int32_t enemyWeaponID, ETelemetryChallenges enemyTypeID) { return true; }
+bool CSentientManager::RecordSkinChanged(uint32_t dwUserId, uint32_t dwSkinId) { return true; }
+bool CSentientManager::RecordBanLevel(uint32_t dwUserId) { return true; }
+bool CSentientManager::RecordUnBanLevel(uint32_t dwUserId) { return true; }
+int32_t CSentientManager::GetMultiplayerInstanceID() { return 0; }
+int32_t CSentientManager::GenerateMultiplayerInstanceId() { return 0; }
+void CSentientManager::SetMultiplayerInstanceId(int32_t value) {}
 
 ////////////////////////////////////////////////////////  Stats counter
 

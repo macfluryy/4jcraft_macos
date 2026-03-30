@@ -29,12 +29,12 @@ private:
      ************************/
 
     // 4J Stu - The first 4 bytes define a version number, that defines the
-    // structure of the data After reading those bytes into a DWORD, the
+    // structure of the data After reading those bytes into a uint32_t, the
     // remainder of the data should be the size of the relevant struct and can
     // be cast to the struct
     struct _dynamic_config_trial_data_version1 {
         // The time in seconds that the player can play the trial for
-        DWORD trialTimeSeconds;
+        uint32_t trialTimeSeconds;
 
         _dynamic_config_trial_data_version1() {
             trialTimeSeconds = DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
@@ -57,15 +57,15 @@ private:
 public:
     static void Tick();
 
-    static DWORD GetTrialTime();
+    static uint32_t GetTrialTime();
 
 private:
     static void UpdateAllConfigurations();
     static void UpdateNextConfiguration();
     static void UpdateConfiguration(EDynamic_Configs id);
 
-    static void GetSizeCompletedCallback(HRESULT taskResult,
+    static void GetSizeCompletedCallback(int32_t taskResult,
                                          void* userCallbackData);
-    static void GetDataCompletedCallback(HRESULT taskResult,
+    static void GetDataCompletedCallback(int32_t taskResult,
                                          void* userCallbackData);
 };

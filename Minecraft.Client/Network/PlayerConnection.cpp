@@ -1847,7 +1847,7 @@ bool PlayerConnection::isGuest() {
         INetworkPlayer* networkPlayer = connection->getSocket()->getPlayer();
         bool isGuest = false;
         if (networkPlayer != nullptr) {
-            isGuest = networkPlayer->IsGuest() == TRUE;
+            isGuest = networkPlayer->IsGuest() == true;
         }
         return isGuest;
     }

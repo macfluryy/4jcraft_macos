@@ -26,7 +26,7 @@ constexpr std::uint64_t kNsPerMs = 1000ULL * 1000ULL;
 constexpr std::uint64_t kReportIntervalNs = 1000ULL * 1000ULL * 1000ULL;
 constexpr std::size_t kBucketCount = FrameProfiler::BucketCount();
 constexpr auto kFalseTokens = std::to_array<std::string_view>({
-    "0", "false", "False", "FALSE", "no", "No", "NO", "off", "Off", "OFF",
+    "0", "false", "False", "false", "no", "No", "NO", "off", "Off", "OFF",
 });
 constexpr std::array<FrameProfiler::BucketDescriptor, kBucketCount>
     kBucketDescriptors = {{

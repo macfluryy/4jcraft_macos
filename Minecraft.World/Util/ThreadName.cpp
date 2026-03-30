@@ -21,7 +21,7 @@ void SetThreadName(std::uint32_t threadId, const char* threadName) {
 #if (defined _WINDOWS64 | 0)
     __try {
         RaiseException(0x406D1388, 0, sizeof(info) / sizeof(std::uint32_t),
-                       reinterpret_cast<ULONG_PTR*>(&info));
+                       reinterpret_cast<uintptr_t*>(&info));
     } __except (GetExceptionCode() == 0x406D1388 ? EXCEPTION_CONTINUE_EXECUTION
                                                  : EXCEPTION_EXECUTE_HANDLER) {
     }

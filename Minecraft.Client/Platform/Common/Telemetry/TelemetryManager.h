@@ -13,9 +13,9 @@
 class CTelemetryManager
 {
 public:
-	virtual HRESULT Init();
-	virtual HRESULT Tick();
-	virtual HRESULT Flush();
+	virtual int32_t Init();
+	virtual int32_t Tick();
+	virtual int32_t Flush();
 
 	virtual bool RecordPlayerSessionStart(int iPad);
 	virtual bool RecordPlayerSessionExit(int iPad, int exitStatus);

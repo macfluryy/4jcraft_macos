@@ -18,7 +18,7 @@ public:
     Pos(Pos* position);
 
     //@Override
-    // public boolean equals(Object other)
+    // public bool equals(Object other)
     bool equals(void* other);
 
     int hashCode();

@@ -228,7 +228,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         level->getSeed(), player->gameMode->getGameModeForPlayer()->getId(),
         (uint8_t)level->dimension->id, (uint8_t)level->getMaxBuildHeight(),
         (uint8_t)getMaxPlayers(), level->difficulty,
-        TelemetryManager->GetMultiplayerInstanceID(), (BYTE)playerIndex,
+        TelemetryManager->GetMultiplayerInstanceID(), (uint8_t)playerIndex,
         level->useNewSeaLevel(), player->getAllPlayerGamePrivileges(),
         level->getLevelData()->getXZSize(),
         level->getLevelData()->getHellScale())));
@@ -1032,7 +1032,7 @@ void PlayerList::tick() {
         INetworkPlayer* selectedPlayer =
             g_NetworkManager.GetPlayerBySmallId(smallId);
         if (selectedPlayer != nullptr) {
-            if (selectedPlayer->IsLocal() != TRUE) {
+            if (selectedPlayer->IsLocal() != true) {
                 // #if 0
                 PlayerUID xuid = selectedPlayer->GetUID();
                 // Kick this player from the game
@@ -1256,7 +1256,7 @@ bool PlayerList::meetsScoreRequirements(
 
     // for (Map.Entry<String, Integer> requirement :
     // scoreRequirements.entrySet()) { 	String name = requirement.getKey();
-    //	boolean min = false;
+    //	bool min = false;
 
     //	if (name.endsWith("_min") && name.length() > 4) {
     //		min = true;

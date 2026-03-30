@@ -317,7 +317,7 @@ void C4JThread::SetProcessor(int proc) {
     }
 
 #if defined(_WIN32)
-    HANDLE threadHandle = nullptr;
+    void* threadHandle = nullptr;
 
     if (m_threadHandle.joinable()) {
         threadHandle = m_threadHandle.native_handle();
@@ -386,7 +386,7 @@ void C4JThread::SetPriority(int priority) {
     m_requestedPriority.store(priority, std::memory_order_release);
 
 #if defined(_WIN32)
-    HANDLE threadHandle = nullptr;
+    void* threadHandle = nullptr;
 
     if (m_threadHandle.joinable()) {
         threadHandle = m_threadHandle.native_handle();
@@ -475,7 +475,7 @@ void C4JThread::SetThreadName(std::uint32_t threadId, const char* threadName) {
 #if defined(_WIN32)
     if (threadId == static_cast<std::uint32_t>(-1) ||
         threadId == ::GetCurrentThreadId()) {
-        using SetThreadDescriptionFn = HRESULT(WINAPI*)(HANDLE, PCWSTR);
+        using SetThreadDescriptionFn = int32_t(WINAPI*)(void*, PCWSTR);
 
         const HMODULE kernelModule = ::GetModuleHandleW(L"Kernel32.dll");
         if (kernelModule != nullptr) {
@@ -514,8 +514,8 @@ void C4JThread::SetThreadName(std::uint32_t threadId, const char* threadName) {
     info.dwFlags = 0;
 
     __try {
-        ::RaiseException(0x406D1388, 0, sizeof(info) / sizeof(ULONG_PTR),
-                         reinterpret_cast<ULONG_PTR*>(&info));
+        ::RaiseException(0x406D1388, 0, sizeof(info) / sizeof(uintptr_t),
+                         reinterpret_cast<uintptr_t*>(&info));
     } __except (EXCEPTION_EXECUTE_HANDLER) {
     }
 
@@ -843,7 +843,7 @@ void C4JThread::EventQueue::threadPoll() {
 
 void C4JThread::PushAffinityAllCores() {
 #if defined(_WIN32)
-    const HANDLE currentThread = ::GetCurrentThread();
+    const void* currentThread = ::GetCurrentThread();
     DWORD_PTR processAffinityMask = 0;
     DWORD_PTR systemAffinityMask = 0;
 

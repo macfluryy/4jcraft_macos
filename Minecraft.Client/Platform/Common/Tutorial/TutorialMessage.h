@@ -9,7 +9,7 @@ private:
     bool limitRepeats;
     unsigned char numRepeats;
     unsigned char timesShown;
-    DWORD lastDisplayed;
+    uint32_t lastDisplayed;
 
 public:
     TutorialMessage(int messageId, bool limitRepeats = false,

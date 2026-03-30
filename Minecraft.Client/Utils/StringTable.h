@@ -63,6 +63,6 @@ public:
     // static const wchar_t* m_wchLocaleCode[LOCALE_COUNT];
 
 private:
-    // std::wstring getLangId(DWORD dwLanguage=0);
+    // std::wstring getLangId(uint32_t dwLanguage=0);
     void ProcessStringTableData(void);
 };

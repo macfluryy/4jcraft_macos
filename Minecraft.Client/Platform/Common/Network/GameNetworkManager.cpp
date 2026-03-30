@@ -91,7 +91,7 @@ bool CGameNetworkManager::_RunNetworkGame(void* lpParameter) {
         success = s_pPlatformNetworkManager->_RunNetworkGame();
         if (!success) {
             app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
-                          (void*)TRUE);
+                          (void*)true);
             return true;
         }
     }
@@ -151,7 +151,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
 #if defined(_UNICODE)
                             std::wstring path = grf.getPath();
                             const wchar_t* pchFilename = path.c_str();
-                            HANDLE fileHandle = CreateFile(
+                            void* fileHandle = CreateFile(
                                 pchFilename,   // file name
                                 GENERIC_READ,  // access mode
                                 0,  // share mode // TODO 4J Stu - Will we need
@@ -167,7 +167,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
 #else
                             const char* pchFilename =
                                 wstringtofilename(grf.getPath());
-                            HANDLE fileHandle = CreateFile(
+                            void* fileHandle = CreateFile(
                                 pchFilename,   // file name
                                 GENERIC_READ,  // access mode
                                 0,  // share mode // TODO 4J Stu - Will we need
@@ -183,13 +183,13 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
 #endif
 
                             if (fileHandle != INVALID_HANDLE_VALUE) {
-                                DWORD bytesRead,
+                                uint32_t bytesRead,
                                     dwFileSize = GetFileSize(fileHandle, nullptr);
-                                PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
+                                uint8_t* pbData = (uint8_t*) new uint8_t[dwFileSize];
                                 bool bSuccess =
                                     ReadFile(fileHandle, pbData, dwFileSize,
                                              &bytesRead, nullptr);
-                                if (bSuccess == FALSE) {
+                                if (bSuccess == false) {
                                     app.FatalLoadError();
                                 }
                                 CloseHandle(fileHandle);
@@ -626,7 +626,7 @@ void CGameNetworkManager::HostGame(int localUsersMask, bool bOnlineGame,
 }
 
 bool CGameNetworkManager::IsHost() {
-    return (s_pPlatformNetworkManager->IsHost() == TRUE);
+    return (s_pPlatformNetworkManager->IsHost() == true);
 }
 
 bool CGameNetworkManager::IsInStatsEnabledSession() {
@@ -923,7 +923,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                           eXuiServerAction_PauseServer, (void*)TRUE);
+                           eXuiServerAction_PauseServer, (void*)true);
 
     // wait for the server to be in a non-ticking state
     pServer->m_serverPausedEvent->WaitForSignal(INFINITE);
@@ -1052,7 +1052,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // Start the game again
     app.SetGameStarted(true);
     app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
-                           eXuiServerAction_PauseServer, (void*)FALSE);
+                           eXuiServerAction_PauseServer, (void*)false);
     app.SetChangingSessionType(false);
     app.SetReallyChangingSessionType(false);
 
@@ -1082,13 +1082,13 @@ std::wstring CGameNetworkManager::GatherRTTStats() {
 
 void CGameNetworkManager::StateChange_AnyToHosting() {
     app.DebugPrintf("Disabling Guest Signin\n");
-    XEnableGuestSignin(FALSE);
+    XEnableGuestSignin(false);
     Minecraft::GetInstance()->clearPendingClientTextureRequests();
 }
 
 void CGameNetworkManager::StateChange_AnyToJoining() {
     app.DebugPrintf("Disabling Guest Signin\n");
-    XEnableGuestSignin(FALSE);
+    XEnableGuestSignin(false);
     Minecraft::GetInstance()->clearPendingClientTextureRequests();
 
     ConnectionProgressParams* param = new ConnectionProgressParams();
@@ -1133,8 +1133,8 @@ void CGameNetworkManager::StateChange_AnyToStarting() {
 
         UIFullscreenProgressCompletionData* completionData =
             new UIFullscreenProgressCompletionData();
-        completionData->bShowBackground = TRUE;
-        completionData->bShowLogo = TRUE;
+        completionData->bShowBackground = true;
+        completionData->bShowLogo = true;
         completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
         completionData->iPad = ProfileManager.GetPrimaryPad();
         loadingParams->completionData = completionData;
@@ -1173,13 +1173,13 @@ void CGameNetworkManager::StateChange_AnyToEnding(bool bStateWasPlaying) {
         if (app.GetDisconnectReason() == DisconnectPacket::eDisconnect_None)
             app.SetDisconnectReason(DisconnectPacket::eDisconnect_Quitting);
         app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
-                      (void*)TRUE);
+                      (void*)true);
     }
 }
 
 void CGameNetworkManager::StateChange_AnyToIdle() {
     app.DebugPrintf("Enabling Guest Signin\n");
-    XEnableGuestSignin(TRUE);
+    XEnableGuestSignin(true);
     // Reset this here so that we can search for games again
     // 4J Stu - If we are changing session type there is a race between that
     // thread setting the game to local, and this setting it to not local
@@ -1301,7 +1301,7 @@ void CGameNetworkManager::PlayerLeaving(INetworkPlayer* pNetworkPlayer) {
 void CGameNetworkManager::HostChanged() {
     // Disable host migration
     app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
-                  (void*)TRUE);
+                  (void*)true);
 }
 
 void CGameNetworkManager::WriteStats(INetworkPlayer* pNetworkPlayer) {

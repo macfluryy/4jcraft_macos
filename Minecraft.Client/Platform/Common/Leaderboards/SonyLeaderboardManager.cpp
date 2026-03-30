@@ -178,9 +178,9 @@ void SonyLeaderboardManager::scoreboardThreadInternal() {
     }
 }
 
-HRESULT SonyLeaderboardManager::fillByIdsQuery(const SceNpId& myNpId,
+int32_t SonyLeaderboardManager::fillByIdsQuery(const SceNpId& myNpId,
                                                SceNpId*& npIds, uint32_t& len) {
-    HRESULT ret;
+    int32_t ret;
 
     // Get queried users.
     switch (m_eFilterMode) {
@@ -861,7 +861,7 @@ void SonyLeaderboardManager::fromBinary(SceNpScoreComment** out, void* in) {
 
 void SonyLeaderboardManager::toBase32(SceNpScoreComment* out, void* in) {
     ZeroMemory(out, sizeof(SceNpScoreComment));
-    PBYTE bytes = (PBYTE)in;
+    uint8_t* bytes = (uint8_t*)in;
     char* chars = getComment(out);
 
     for (int i = 0; i < SCE_NP_SCORE_COMMENT_MAXLEN; i++) {
@@ -890,7 +890,7 @@ void SonyLeaderboardManager::toBase32(SceNpScoreComment* out, void* in) {
 }
 
 void SonyLeaderboardManager::fromBase32(void* out, SceNpScoreComment* in) {
-    PBYTE bytes = (PBYTE)out;
+    uint8_t* bytes = (uint8_t*)out;
     ZeroMemory(bytes, RECORD_SIZE);
 
     fromSymbols(getComment(in));

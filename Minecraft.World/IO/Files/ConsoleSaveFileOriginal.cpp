@@ -656,7 +656,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
             app.GetGameHostOption(eGameHostOption_All),
             Minecraft::GetInstance()->getCurrentTexturePackId());
 
-        INT saveOrCheckpointId = 0;
+        int32_t saveOrCheckpointId = 0;
         bool validSave =
             StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
         TelemetryManager->RecordLevelSaveOrCheckpoint(

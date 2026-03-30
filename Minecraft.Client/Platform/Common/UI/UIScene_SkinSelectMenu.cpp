@@ -178,8 +178,8 @@ void UIScene_SkinSelectMenu::handleInput(int iPad, int key, bool repeat,
                                          bool& handled) {
     if (m_bIgnoreInput) return;
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
 
     switch (key) {
         case ACTION_MENU_CANCEL:

@@ -82,7 +82,7 @@ void XboxStructureActionGenerateBox::addAttribute(
         if (attributeValue.compare(L"true") == 0) m_skipAir = true;
         app.DebugPrintf(
             "XboxStructureActionGenerateBox: Adding parameter skipAir=%s\n",
-            m_skipAir ? "TRUE" : "FALSE");
+            m_skipAir ? "true" : "false");
     } else {
         GameRuleDefinition::addAttribute(attributeName, attributeValue);
     }

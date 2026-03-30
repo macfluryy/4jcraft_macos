@@ -15,7 +15,7 @@ class WrittenBookItem extends Item {
                 setMaxStackSize(1);
         }
 
-        public static boolean makeSureTagIsValid(CompoundTag bookTag) {
+        public static bool makeSureTagIsValid(CompoundTag bookTag) {
 
                 if (!WritingBookItem.makeSureTagIsValid(bookTag)) {
                         return false;
@@ -50,7 +50,7 @@ itemTag.get(TAG_TITLE); if (titleTag != null) { return titleTag.toString();
 
         @Override
                 public void appendHoverText(ItemInstance itemInstance, Player
-player, List<String> lines, boolean advanced) {
+player, List<String> lines, bool advanced) {
 
                         if (itemInstance.hasTag()) {
                                 CompoundTag itemTag = itemInstance.getTag();
@@ -68,12 +68,12 @@ Player player) { player.openItemInstanceGui(itemInstance); return itemInstance;
         }
 
         @Override
-                public boolean shouldOverrideMultiplayerNBT() {
+                public bool shouldOverrideMultiplayerNBT() {
                         return true;
         }
 
         @Override
-                public boolean isFoil(ItemInstance itemInstance) {
+                public bool isFoil(ItemInstance itemInstance) {
                         return true;
         }
 

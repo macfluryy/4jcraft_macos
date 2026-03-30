@@ -1243,7 +1243,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                         player->level->addEntity(mob);
                     } break;
                     case eXuiServerAction_PauseServer:
-                        m_isServerPaused = ((size_t)param == TRUE);
+                        m_isServerPaused = ((size_t)param == true);
                         if (m_isServerPaused) {
                             m_serverPausedEvent->Set();
                         }

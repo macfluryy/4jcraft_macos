@@ -12,7 +12,7 @@ unsigned char NetworkPlayerQNet::GetSmallId() {
 
 void NetworkPlayerQNet::SendData(INetworkPlayer* player, const void* pvData,
                                  int dataSize, bool lowPriority, bool ack) {
-    DWORD flags;
+    uint32_t flags;
     flags = QNET_SENDDATA_RELIABLE | QNET_SENDDATA_SEQUENTIAL;
     if (lowPriority)
         flags |= QNET_SENDDATA_LOW_PRIORITY | QNET_SENDDATA_SECONDARY;
@@ -25,12 +25,12 @@ int NetworkPlayerQNet::GetOutstandingAckCount() { return 0; }
 
 bool NetworkPlayerQNet::IsSameSystem(INetworkPlayer* player) {
     return (m_qnetPlayer->IsSameSystem(
-                static_cast<NetworkPlayerQNet*>(player)->m_qnetPlayer) == TRUE);
+                static_cast<NetworkPlayerQNet*>(player)->m_qnetPlayer) == true);
 }
 
 int NetworkPlayerQNet::GetSendQueueSizeBytes(INetworkPlayer* player,
                                              bool lowPriority) {
-    DWORD flags = QNET_GETSENDQUEUESIZE_BYTES;
+    uint32_t flags = QNET_GETSENDQUEUESIZE_BYTES;
     if (lowPriority) flags |= QNET_GETSENDQUEUESIZE_SECONDARY_TYPE;
     return m_qnetPlayer->GetSendQueueSize(
         player ? static_cast<NetworkPlayerQNet*>(player)->m_qnetPlayer
@@ -40,7 +40,7 @@ int NetworkPlayerQNet::GetSendQueueSizeBytes(INetworkPlayer* player,
 
 int NetworkPlayerQNet::GetSendQueueSizeMessages(INetworkPlayer* player,
                                                 bool lowPriority) {
-    DWORD flags = QNET_GETSENDQUEUESIZE_MESSAGES;
+    uint32_t flags = QNET_GETSENDQUEUESIZE_MESSAGES;
     if (lowPriority) flags |= QNET_GETSENDQUEUESIZE_SECONDARY_TYPE;
     return m_qnetPlayer->GetSendQueueSize(
         player ? static_cast<NetworkPlayerQNet*>(player)->m_qnetPlayer
@@ -50,30 +50,30 @@ int NetworkPlayerQNet::GetSendQueueSizeMessages(INetworkPlayer* player,
 
 int NetworkPlayerQNet::GetCurrentRtt() { return m_qnetPlayer->GetCurrentRtt(); }
 
-bool NetworkPlayerQNet::IsHost() { return (m_qnetPlayer->IsHost() == TRUE); }
+bool NetworkPlayerQNet::IsHost() { return (m_qnetPlayer->IsHost() == true); }
 
-bool NetworkPlayerQNet::IsGuest() { return (m_qnetPlayer->IsGuest() == TRUE); }
+bool NetworkPlayerQNet::IsGuest() { return (m_qnetPlayer->IsGuest() == true); }
 
-bool NetworkPlayerQNet::IsLocal() { return (m_qnetPlayer->IsLocal() == TRUE); }
+bool NetworkPlayerQNet::IsLocal() { return (m_qnetPlayer->IsLocal() == true); }
 
 int NetworkPlayerQNet::GetSessionIndex() {
     return m_qnetPlayer->GetSessionIndex();
 }
 
 bool NetworkPlayerQNet::IsTalking() {
-    return (m_qnetPlayer->IsTalking() == TRUE);
+    return (m_qnetPlayer->IsTalking() == true);
 }
 
 bool NetworkPlayerQNet::IsMutedByLocalUser(int userIndex) {
-    return (m_qnetPlayer->IsMutedByLocalUser(userIndex) == TRUE);
+    return (m_qnetPlayer->IsMutedByLocalUser(userIndex) == true);
 }
 
 bool NetworkPlayerQNet::HasVoice() {
-    return (m_qnetPlayer->HasVoice() == TRUE);
+    return (m_qnetPlayer->HasVoice() == true);
 }
 
 bool NetworkPlayerQNet::HasCamera() {
-    return (m_qnetPlayer->HasCamera() == TRUE);
+    return (m_qnetPlayer->HasCamera() == true);
 }
 
 int NetworkPlayerQNet::GetUserIndex() { return m_qnetPlayer->GetUserIndex(); }
