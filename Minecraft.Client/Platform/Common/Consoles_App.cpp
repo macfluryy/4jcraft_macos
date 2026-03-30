@@ -51,6 +51,10 @@
 #include "../Minecraft.Client/Utils/ArchiveFile.h"
 #endif
 #include "../Minecraft.Client/Minecraft.h"
+#if defined(__linux__)
+#include <unistd.h>
+#include <climits>
+#endif
 #ifdef _XBOX
 #include "../Minecraft.Client/Platform/Xbox/GameConfig/Minecraft.spa.h"
 #include "../Minecraft.Client/Platform/Xbox/Network/NetworkPlayerXbox.h"
@@ -4583,7 +4587,6 @@ int CMinecraftApp::BannedLevelDialogReturned(
 
     return 0;
 }
-
 void CMinecraftApp::loadMediaArchive() {
     std::wstring mediapath = L"";
 
@@ -4602,8 +4605,20 @@ void CMinecraftApp::loadMediaArchive() {
 #endif
 
     if (!mediapath.empty()) {
+        // boom headshot
+#if defined(__linux__)
+        std::wstring exeDirW = PathHelper::GetExecutableDirW();
+        std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
+        if (File(candidate).exists()) {
+            m_mediaArchive = new ArchiveFile(File(candidate));
+        } else {
+            m_mediaArchive = new ArchiveFile(File(mediapath));
+        }
+#else
         m_mediaArchive = new ArchiveFile(File(mediapath));
+#endif
     }
+}
 #if 0
 	std::string path = "Common\\media.arc";
 	HANDLE hFile = CreateFile(	path.c_str(),
