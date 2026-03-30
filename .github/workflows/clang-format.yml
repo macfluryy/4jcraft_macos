@@ -1,4 +1,4 @@
-name: Format Check (Linux, x86-64)
+name: Format
 
 on: [push, pull_request]
   paths:
@@ -11,23 +11,42 @@ on: [push, pull_request]
     - '**.hpp'
     - '**.hxx'
     - '**.inl'
-    - "**meson.build"
-    - "flake.nix"
-    - ".clang-format"
-    - '.github/workflows/build-linux.yml'
-    - ".github/scripts/check-clang-format.sh"
+    - '.clang-format'
+    - '.github/workflows/clang-format.yml'
+    - '.github/scripts/check-clang-format.sh'
 
 jobs:
-  formatting-check:
+  clang-format:
     runs-on: ubuntu-latest
+    concurrency:
+      group: clang-format-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v4
 
-      - name: Run clang-format style check
-        uses: jidicula/clang-format-action@v4.18.0
-        with:
-          # keep this in line with the flake
-          clang-format-version: "21"
+      - name: Install clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format-21
+
+      - name: Check changed files
+        env:
+          CLANG_FORMAT_BIN: clang-format
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+          CURRENT_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          BASE_SHA=""
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git fetch --no-tags origin "$PR_BASE_REF"
+            BASE_SHA="$(git merge-base "origin/$PR_BASE_REF" "$CURRENT_SHA")"
+          elif [ -n "$BEFORE_SHA" ] && [ "$BEFORE_SHA" != "0000000000000000000000000000000000000000" ]; then
+            BASE_SHA="$BEFORE_SHA"
+          fi
+
+          bash ./.github/scripts/check-clang-format.sh "$BASE_SHA" "$CURRENT_SHA"
