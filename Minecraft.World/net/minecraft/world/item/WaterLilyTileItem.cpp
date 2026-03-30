@@ -1,0 +1,77 @@
+#include "../../../../Header Files/stdafx.h"
+#include "../phys/net.minecraft.world.phys.h"
+#include "../level/net.minecraft.world.level.h"
+#include "../level/tile/net.minecraft.world.level.tile.h"
+#include "../level/material/net.minecraft.world.level.material.h"
+#include "../entity/player/net.minecraft.world.entity.player.h"
+#include "WaterLilyTileItem.h"
+
+WaterLilyTileItem::WaterLilyTileItem(int id) : ColoredTileItem(id, false) {}
+
+bool WaterLilyTileItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
+                                Level* level, std::shared_ptr<Player> player) {
+    HitResult* hr = getPlayerPOVHitResult(level, player, true);
+    if (hr == nullptr) return false;
+
+    if (hr->type == HitResult::TILE) {
+        int xt = hr->x;
+        int yt = hr->y;
+        int zt = hr->z;
+        if (!level->mayInteract(player, xt, yt, zt, 0)) {
+            delete hr;
+            return false;
+        }
+        if (!player->mayUseItemAt(xt, yt, zt, hr->f, itemInstance)) {
+            delete hr;
+            return false;
+        }
+
+        delete hr;
+        if (level->getMaterial(xt, yt, zt) == Material::water &&
+            level->getData(xt, yt, zt) == 0 &&
+            level->isEmptyTile(xt, yt + 1, zt)) {
+            return true;
+        }
+    } else {
+        delete hr;
+    }
+    return false;
+}
+
+std::shared_ptr<ItemInstance> WaterLilyTileItem::use(
+    std::shared_ptr<ItemInstance> itemInstance, Level* level,
+    std::shared_ptr<Player> player) {
+    HitResult* hr = getPlayerPOVHitResult(level, player, true);
+    if (hr == nullptr) return itemInstance;
+
+    if (hr->type == HitResult::TILE) {
+        int xt = hr->x;
+        int yt = hr->y;
+        int zt = hr->z;
+        if (!level->mayInteract(player, xt, yt, zt, 0)) {
+            delete hr;
+            return itemInstance;
+        }
+        if (!player->mayUseItemAt(xt, yt, zt, hr->f, itemInstance)) {
+            delete hr;
+            return itemInstance;
+        }
+
+        delete hr;
+        if (level->getMaterial(xt, yt, zt) == Material::water &&
+            level->getData(xt, yt, zt) == 0 &&
+            level->isEmptyTile(xt, yt + 1, zt)) {
+            level->setTileAndUpdate(xt, yt + 1, zt, Tile::waterLily->id);
+            if (!player->abilities.instabuild) {
+                itemInstance->count--;
+            }
+        }
+    } else {
+        delete hr;
+    }
+    return itemInstance;
+}
+
+int WaterLilyTileItem::getColor(int data, int spriteLayer) {
+    return Tile::waterLily->getColor(data);
+}

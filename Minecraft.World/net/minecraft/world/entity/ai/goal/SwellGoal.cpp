@@ -1,0 +1,45 @@
+#include "../../../../../../Header Files/stdafx.h"
+#include "../control/net.minecraft.world.entity.ai.control.h"
+#include "../sensing/net.minecraft.world.entity.ai.sensing.h"
+#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
+#include "../../monster/net.minecraft.world.entity.monster.h"
+#include "SwellGoal.h"
+
+SwellGoal::SwellGoal(Creeper* creeper) {
+    target = std::weak_ptr<LivingEntity>();
+
+    this->creeper = creeper;
+    setRequiredControlFlags(Control::MoveControlFlag);
+}
+
+bool SwellGoal::canUse() {
+    std::shared_ptr<LivingEntity> target = creeper->getTarget();
+    return creeper->getSwellDir() > 0 ||
+           (target != nullptr && (creeper->distanceToSqr(target) < 3 * 3));
+}
+
+void SwellGoal::start() {
+    creeper->getNavigation()->stop();
+    target = std::weak_ptr<LivingEntity>(creeper->getTarget());
+}
+
+void SwellGoal::stop() { target = std::weak_ptr<LivingEntity>(); }
+
+void SwellGoal::tick() {
+    if (target.lock() == nullptr) {
+        creeper->setSwellDir(-1);
+        return;
+    }
+
+    if (creeper->distanceToSqr(target.lock()) > 7 * 7) {
+        creeper->setSwellDir(-1);
+        return;
+    }
+
+    if (!creeper->getSensing()->canSee(target.lock())) {
+        creeper->setSwellDir(-1);
+        return;
+    }
+
+    creeper->setSwellDir(1);
+}

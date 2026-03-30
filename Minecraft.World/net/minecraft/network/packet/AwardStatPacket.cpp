@@ -1,0 +1,69 @@
+#include "../../../../Header Files/stdafx.h"
+#include <iostream>
+#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "PacketListener.h"
+#include "AwardStatPacket.h"
+
+AwardStatPacket::AwardStatPacket() {
+    this->m_paramData.data = nullptr;
+    this->m_paramData.length = 0;
+}
+
+AwardStatPacket::AwardStatPacket(int statId, int count) {
+    this->statId = statId;
+
+    // 4jcraft, changed from (uint8_t*) new int(count); to:
+    //			 new uint8_t[sizeof(int)];
+    // and memcpy of the integer into the array
+    // reason: operator missmatch, array is deleted with delete[]
+    // and typesafety
+    this->m_paramData.data = new uint8_t[sizeof(int)];
+    memcpy(this->m_paramData.data, &count, sizeof(int));
+    this->m_paramData.length = sizeof(int);
+}
+
+AwardStatPacket::AwardStatPacket(int statId, byteArray paramData) {
+    this->statId = statId;
+    this->m_paramData = paramData;
+}
+
+AwardStatPacket::~AwardStatPacket() {
+    if (m_paramData.data != nullptr) {
+        delete[] m_paramData.data;
+        m_paramData.data = nullptr;
+    }
+}
+
+void AwardStatPacket::handle(PacketListener* listener) {
+    listener->handleAwardStat(shared_from_this());
+    m_paramData.data = nullptr;
+}
+
+void AwardStatPacket::read(DataInputStream* dis)  // throws IOException
+{
+    statId = dis->readInt();
+
+    // Read parameter blob.
+    int length = dis->readInt();
+    if (length > 0) {
+        m_paramData = byteArray(length);
+        dis->readFully(m_paramData);
+    }
+}
+
+void AwardStatPacket::write(DataOutputStream* dos)  // throws IOException
+{
+    dos->writeInt(statId);
+    dos->writeInt(m_paramData.length);
+    if (m_paramData.length > 0) dos->write(m_paramData);
+}
+
+int AwardStatPacket::getEstimatedSize() { return 6; }
+
+bool AwardStatPacket::isAync() { return true; }
+
+// On most platforms we only store 'count' in an AwardStatPacket.
+int AwardStatPacket::getCount() { return *((int*)this->m_paramData.data); }
+
+// On Durango we store 'Event' parameters here in a blob.
+byteArray AwardStatPacket::getParamData() { return m_paramData; }
