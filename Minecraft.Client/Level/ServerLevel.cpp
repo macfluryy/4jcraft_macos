@@ -62,8 +62,8 @@ void ServerLevel::staticCtor() {
     m_updateTrigger = new C4JThread::EventArray(3);
 
     m_updateThread = new C4JThread(runUpdate, nullptr, "Tile update");
-    m_updateThread->SetProcessor(CPU_CORE_TILE_UPDATE);
-    m_updateThread->Run();
+    m_updateThread->setProcessor(CPU_CORE_TILE_UPDATE);
+    m_updateThread->run();
 
     RANDOM_BONUS_ITEMS = WeighedTreasureArray(20);
 
@@ -201,7 +201,7 @@ ServerLevel::~ServerLevel() {
     { std::lock_guard<std::recursive_mutex> lock(m_updateCS[0]); }
     { std::lock_guard<std::recursive_mutex> lock(m_updateCS[1]); }
     { std::lock_guard<std::recursive_mutex> lock(m_updateCS[2]); }
-    m_updateTrigger->ClearAll();
+    m_updateTrigger->clearAll();
 }
 
 void ServerLevel::tick() {
@@ -553,7 +553,7 @@ void ServerLevel::tickTiles() {
     m_level[iLev] = this;
     m_randValue[iLev] = randValue;
     // We've set up everything that the udpate thread needs, so kick it off
-    m_updateTrigger->Set(iLev);
+    m_updateTrigger->set(iLev);
 }
 
 bool ServerLevel::isTileToBeTickedAt(int x, int y, int z, int tileId) {
@@ -1411,7 +1411,7 @@ int ServerLevel::runUpdate(void* lpParam) {
     ShutdownManager::HasStarted(ShutdownManager::eRunUpdateThread,
                                 m_updateTrigger);
     while (ShutdownManager::ShouldRun(ShutdownManager::eRunUpdateThread)) {
-        m_updateTrigger->WaitForAll(INFINITE);
+        m_updateTrigger->waitForAll(C4JThread::kInfiniteTimeout);
 
         if (!ShutdownManager::ShouldRun(ShutdownManager::eRunUpdateThread))
             break;

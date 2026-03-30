@@ -303,8 +303,8 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
     }
 
     do {
-        status = m_postUpdateThread->WaitForCompletion(50);
-        if (status == WAIT_TIMEOUT) {
+        status = m_postUpdateThread->waitForCompletion(50);
+        if (status == C4JThread::WaitResult::Timeout) {
             { std::lock_guard<std::mutex> lock(server->m_postProcessCS);
             postProcessItemRemaining =
                 server->m_postProcessRequests.size();
@@ -319,7 +319,7 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
             SparseLightStorage::tick();
             SparseDataStorage::tick();
         }
-    } while (status == WAIT_TIMEOUT);
+    } while (status == C4JThread::WaitResult::Timeout);
     delete m_postUpdateThread;
     m_postUpdateThread = nullptr;
 }
@@ -493,9 +493,9 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
         new C4JThread(runPostUpdate, this, "Post processing", 256 * 1024);
 
     m_postUpdateTerminate = false;
-    m_postUpdateThread->SetProcessor(CPU_CORE_POST_PROCESSING);
-    m_postUpdateThread->SetPriority(THREAD_PRIORITY_ABOVE_NORMAL);
-    m_postUpdateThread->Run();
+    m_postUpdateThread->setProcessor(CPU_CORE_POST_PROCESSING);
+    m_postUpdateThread->setPriority(C4JThread::ThreadPriority::AboveNormal);
+    m_postUpdateThread->run();
 
     int64_t startTime = System::currentTimeMillis();
 
@@ -1244,7 +1244,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                     case eXuiServerAction_PauseServer:
                         m_isServerPaused = ((size_t)param == true);
                         if (m_isServerPaused) {
-                            m_serverPausedEvent->Set();
+                            m_serverPausedEvent->set();
                         }
                         break;
                     case eXuiServerAction_ToggleRain: {

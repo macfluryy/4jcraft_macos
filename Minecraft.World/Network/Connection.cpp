@@ -46,8 +46,8 @@ Connection::~Connection() {
         dis->close();  // The input stream needs closed before the readThread,
                        // or the readThread may get stuck whilst blocking
                        // waiting on a read
-    readThread->WaitForCompletion(INFINITE);
-    writeThread->WaitForCompletion(INFINITE);
+    readThread->waitForCompletion(C4JThread::kInfiniteTimeout);
+    writeThread->waitForCompletion(C4JThread::kInfiniteTimeout);
 
     delete m_hWakeReadThread;
     delete m_hWakeWriteThread;
@@ -111,11 +111,11 @@ Connection::Connection(Socket* socket, const std::wstring& id,
         new C4JThread(runRead, (void*)this, readThreadName, READ_STACK_SIZE);
     writeThread =
         new C4JThread(runWrite, this, writeThreadName, WRITE_STACK_SIZE);
-    readThread->SetProcessor(CPU_CORE_CONNECTIONS);
-    writeThread->SetProcessor(CPU_CORE_CONNECTIONS);
+    readThread->setProcessor(CPU_CORE_CONNECTIONS);
+    writeThread->setProcessor(CPU_CORE_CONNECTIONS);
 
-    readThread->Run();
-    writeThread->Run();
+    readThread->run();
+    writeThread->run();
 
     /* 4J JEV, java:
     new Thread(wstring(id).append(L" read thread")) {
@@ -304,8 +304,8 @@ void Connection::flush() {
     // multithreaded functions a bit more
     // readThread.interrupt();
     // writeThread.interrupt();
-    m_hWakeReadThread->Set();
-    m_hWakeWriteThread->Set();
+    m_hWakeReadThread->set();
+    m_hWakeWriteThread->set();
 }
 
 bool Connection::readTick() {
@@ -388,8 +388,8 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
 
     // Make sure that the read & write threads are dead before we go and kill
     // the streams that they depend on
-    readThread->WaitForCompletion(INFINITE);
-    writeThread->WaitForCompletion(INFINITE);
+    readThread->waitForCompletion(C4JThread::kInfiniteTimeout);
+    writeThread->waitForCompletion(C4JThread::kInfiniteTimeout);
 
     delete dis;
     dis = nullptr;
@@ -558,7 +558,7 @@ int Connection::runRead(void* lpParam) {
         // std::this_thread::sleep_for(std::chrono::milliseconds(100L));
         // TODO - 4J Stu - 1.8.2 changes these sleeps to 2L, but not sure
         // whether we should do that as well
-        con->m_hWakeReadThread->WaitForSignal(100L);
+        con->m_hWakeReadThread->waitForSignal(100L);
     }
     MemSect(0);
 
@@ -598,17 +598,17 @@ int Connection::runWrite(void* lpParam) {
     // once after the event is fired Otherwise there is a race between the
     // calling thread setting the running flag and this loop checking the
     // condition
-    unsigned int waitResult = WAIT_TIMEOUT;
+    unsigned int waitResult = C4JThread::WaitResult::Timeout;
 
     while (
-        (con->running || waitResult == WAIT_OBJECT_0) &&
+        (con->running || waitResult == C4JThread::WaitResult::Signaled) &&
         ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads)) {
         while (con->writeTick());
 
         // std::this_thread::sleep_for(std::chrono::milliseconds(100L));
         //  TODO - 4J Stu - 1.8.2 changes these sleeps to 2L, but not sure
         //  whether we should do that as well
-        waitResult = con->m_hWakeWriteThread->WaitForSignal(100L);
+        waitResult = con->m_hWakeWriteThread->waitForSignal(100L);
 
         if (con->bufferedDos != nullptr) con->bufferedDos->flush();
         // if (con->byteArrayDos != nullptr) con->byteArrayDos->flush();

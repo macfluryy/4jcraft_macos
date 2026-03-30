@@ -167,12 +167,12 @@ GameRenderer::GameRenderer(Minecraft* mc) {
 
 #if defined(MULTITHREAD_ENABLE)
     m_updateEvents = new C4JThread::EventArray(
-        eUpdateEventCount, C4JThread::EventArray::e_modeAutoClear);
-    m_updateEvents->Set(eUpdateEventIsFinished);
+        eUpdateEventCount, C4JThread::EventArray::Mode::AutoClear);
+    m_updateEvents->set(eUpdateEventIsFinished);
 
     m_updateThread = new C4JThread(runUpdate, nullptr, "Chunk update");
-    m_updateThread->SetProcessor(CPU_CORE_CHUNK_UPDATE);
-    m_updateThread->Run();
+    m_updateThread->setProcessor(CPU_CORE_CHUNK_UPDATE);
+    m_updateThread->run();
 #endif
 }
 
@@ -1080,17 +1080,17 @@ int GameRenderer::runUpdate(void* lpParam) {
                                 m_updateEvents);
     while (
         ShutdownManager::ShouldRun(ShutdownManager::eRenderChunkUpdateThread)) {
-        // m_updateEvents->Clear(eUpdateEventIsFinished);
-        // m_updateEvents->WaitForSingle(eUpdateCanRun,INFINITE);
+        // m_updateEvents->clear(eUpdateEventIsFinished);
+        // m_updateEvents->waitForSingle(eUpdateCanRun,C4JThread::kInfiniteTimeout);
         //  4J Stu - We Need to have this happen atomically to avoid deadlocks
-        m_updateEvents->WaitForAll(INFINITE);
+        m_updateEvents->waitForAll(C4JThread::kInfiniteTimeout);
 
         if (!ShutdownManager::ShouldRun(
                 ShutdownManager::eRenderChunkUpdateThread)) {
             break;
         }
 
-        m_updateEvents->Set(eUpdateCanRun);
+        m_updateEvents->set(eUpdateCanRun);
 
         //		PIXBeginNamedEvent(0,"Updating dirty chunks
         //%d",(count++)&7);
@@ -1143,7 +1143,7 @@ int GameRenderer::runUpdate(void* lpParam) {
 
         //		PIXEndNamedEvent();
 
-        m_updateEvents->Set(eUpdateEventIsFinished);
+        m_updateEvents->set(eUpdateEventIsFinished);
     }
 
     ShutdownManager::HasFinished(ShutdownManager::eRenderChunkUpdateThread);
@@ -1160,8 +1160,8 @@ void GameRenderer::EnableUpdateThread() {
     app.DebugPrintf(
         "------------------EnableUpdateThread--------------------\n");
     updateRunning = true;
-    m_updateEvents->Set(eUpdateCanRun);
-    m_updateEvents->Set(eUpdateEventIsFinished);
+    m_updateEvents->set(eUpdateCanRun);
+    m_updateEvents->set(eUpdateEventIsFinished);
 #endif
 }
 
@@ -1174,8 +1174,8 @@ void GameRenderer::DisableUpdateThread() {
     app.DebugPrintf(
         "------------------DisableUpdateThread--------------------\n");
     updateRunning = false;
-    m_updateEvents->Clear(eUpdateCanRun);
-    m_updateEvents->WaitForSingle(eUpdateEventIsFinished, INFINITE);
+    m_updateEvents->clear(eUpdateCanRun);
+    m_updateEvents->waitForSingle(eUpdateEventIsFinished, C4JThread::kInfiniteTimeout);
 #endif
 }
 

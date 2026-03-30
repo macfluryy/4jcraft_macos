@@ -3,7 +3,6 @@
 #include <atomic>
 #include <condition_variable>
 #include <cstdint>
-#include <limits>
 #include <memory>
 #include <mutex>
 #include <queue>
@@ -37,19 +36,37 @@ inline constexpr int CPU_CORE_LEADERBOARDS = 5;
 
 class C4JThread {
 public:
+    struct WaitResult {
+        static constexpr std::uint32_t Signaled = 0;
+        static constexpr std::uint32_t Timeout = 258;
+    };
+
+    enum class ThreadPriority : int {
+        Idle = -15,
+        Lowest = -2,
+        BelowNormal = -1,
+        Normal = 0,
+        AboveNormal = 1,
+        Highest = 2,
+        TimeCritical = 15
+    };
+
+    static constexpr int kInfiniteTimeout = -1;
+    static constexpr int kStillActive = 259;
+
     class Event {
     public:
-        enum EMode { e_modeAutoClear, e_modeManualClear };
+        enum class Mode { AutoClear, ManualClear };
 
-        explicit Event(EMode mode = e_modeAutoClear);
+        explicit Event(Mode mode = Mode::AutoClear);
         ~Event() = default;
 
-        void Set();
-        void Clear();
-        std::uint32_t WaitForSignal(int timeoutMs);
+        void set();
+        void clear();
+        std::uint32_t waitForSignal(int timeoutMs);
 
     private:
-        EMode m_mode;
+        Mode m_mode;
         std::mutex m_mutex;
         std::condition_variable m_condition;
         bool m_signaled;
@@ -57,21 +74,21 @@ public:
 
     class EventArray {
     public:
-        enum EMode { e_modeAutoClear, e_modeManualClear };
+        enum class Mode { AutoClear, ManualClear };
 
-        explicit EventArray(int size, EMode mode = e_modeAutoClear);
+        explicit EventArray(int size, Mode mode = Mode::AutoClear);
 
-        void Set(int index);
-        void Clear(int index);
-        void SetAll();
-        void ClearAll();
-        std::uint32_t WaitForAll(int timeoutMs);
-        std::uint32_t WaitForAny(int timeoutMs);
-        std::uint32_t WaitForSingle(int index, int timeoutMs);
+        void set(int index);
+        void clear(int index);
+        void setAll();
+        void clearAll();
+        std::uint32_t waitForAll(int timeoutMs);
+        std::uint32_t waitForAny(int timeoutMs);
+        std::uint32_t waitForSingle(int index, int timeoutMs);
 
     private:
         int m_size;
-        EMode m_mode;
+        Mode m_mode;
         std::mutex m_mutex;
         std::condition_variable m_condition;
         std::uint32_t m_signaledMask;
@@ -90,7 +107,7 @@ public:
         EventQueue& operator=(const EventQueue&) = delete;
 
         void setProcessor(int proc);
-        void setPriority(int priority);
+        void setPriority(ThreadPriority priority);
         void sendEvent(Level* pLevel);
         void waitForFinish();
 
@@ -108,7 +125,7 @@ public:
         ThreadInitFunc* m_threadInitFunc;
         std::string m_threadName;
         int m_processor;
-        int m_priority;
+        ThreadPriority m_priority;
         bool m_busy;
         std::once_flag m_initOnce;
         std::atomic<bool> m_stopRequested;
@@ -122,24 +139,25 @@ public:
     C4JThread(const C4JThread&) = delete;
     C4JThread& operator=(const C4JThread&) = delete;
 
-    void Run();
+    void run();
 
-    [[nodiscard]] bool isRunning() const noexcept { return m_isRunning.load(); }
+    [[nodiscard]] bool isRunning() const noexcept {
+        return m_isRunning.load(std::memory_order_acquire);
+    }
     [[nodiscard]] bool hasStarted() const noexcept {
-        return m_hasStarted.load();
+        return m_hasStarted.load(std::memory_order_acquire);
     }
 
-    void SetProcessor(int proc);
-    void SetPriority(int priority);
+    void setProcessor(int proc);
+    void setPriority(ThreadPriority priority);
 
-    std::uint32_t WaitForCompletion(int timeoutMs);
-    [[nodiscard]] int GetExitCode() const noexcept;
+    std::uint32_t waitForCompletion(int timeoutMs);
+    [[nodiscard]] int getExitCode() const noexcept;
 
     [[nodiscard]] const char* getName() const noexcept {
         return m_threadName.c_str();
     }
 
-    static void Sleep(int millisecs);
     static C4JThread* getCurrentThread() noexcept;
     static bool isMainThread() noexcept;
 
@@ -148,11 +166,16 @@ public:
         return pThread ? pThread->getName() : "(4J) Unknown thread";
     }
 
-    static void SetThreadName(std::uint32_t threadId, const char* threadName);
-    static void SetCurrentThreadName(const char* threadName);
+    static void setThreadName(std::uint32_t threadId, const char* threadName);
+    static void setCurrentThreadName(const char* threadName);
 
-    static void PushAffinityAllCores();
-    static void PopAffinity();
+    static void pushAffinityAllCores();
+    static void popAffinity();
+
+    // TODO(C++26): When we switch to C++26, replace EventQueue with
+    // std::execution (senders/receivers) for structured concurrency.
+    // TODO(C++26): When we switch to C++26, use std::hazard_pointer / std::rcu
+    // for lock-free data structure reclamation.
 
 private:
     static void entryPoint(C4JThread* pThread);
@@ -171,7 +194,7 @@ private:
     std::unique_ptr<Event> m_completionFlag;
 
     std::atomic<int> m_requestedProcessor;
-    std::atomic<int> m_requestedPriority;
+    std::atomic<ThreadPriority> m_requestedPriority;
     std::atomic<std::int64_t> m_nativeTid;
 
     static thread_local C4JThread* ms_currentThread;

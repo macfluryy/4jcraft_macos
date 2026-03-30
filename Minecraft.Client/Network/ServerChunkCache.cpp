@@ -859,8 +859,8 @@ int ServerChunkCache::runSaveThreadProc(void* lpParam) {
     }
 
     // Wait for the producer thread to tell us to start
-    params->wakeEvent->WaitForSignal(
-        INFINITE);  // WaitForSingleObject(params->wakeEvent,INFINITE);
+    params->wakeEvent->waitForSignal(
+        C4JThread::kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
 
     // app.DebugPrintf("Save thread has started\n");
 
@@ -880,14 +880,14 @@ int ServerChunkCache::runSaveThreadProc(void* lpParam) {
 
         // Inform the producer thread that we are done with this chunk
         params->notificationEvent
-            ->Set();  // SetEvent(params->notificationEvent);
+            ->set();  // SetEvent(params->notificationEvent);
 
         // app.DebugPrintf("Save thread has alerted producer that it is
         // complete\n");
 
         // Wait for the producer thread to tell us to go again
-        params->wakeEvent->WaitForSignal(
-            INFINITE);  // WaitForSingleObject(params->wakeEvent,INFINITE);
+        params->wakeEvent->waitForSignal(
+            C4JThread::kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
         PIXEndNamedEvent();
     }
 

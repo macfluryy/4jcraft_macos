@@ -212,7 +212,7 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
         new C4JThread::EventQueue(levelTickUpdateFunc, levelTickThreadInitFunc,
                                   "LevelTick_EventQueuePoll");
     levelTickEventQueue->setProcessor(3);
-    levelTickEventQueue->setPriority(THREAD_PRIORITY_NORMAL);
+    levelTickEventQueue->setPriority(C4JThread::ThreadPriority::Normal);
 #endif
 }
 

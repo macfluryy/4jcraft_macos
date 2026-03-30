@@ -213,8 +213,8 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
             new C4JThread(&CGameNetworkManager::ServerThreadProc, lpParameter,
                           "Server", 256 * 1024);
 
-        thread->SetProcessor(CPU_CORE_SERVER);
-        thread->Run();
+        thread->setProcessor(CPU_CORE_SERVER);
+        thread->run();
 
         app.DebugPrintf("[NET] Waiting for server ready...\n");
         ServerReadyWait();
@@ -916,7 +916,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
                            eXuiServerAction_PauseServer, (void*)true);
 
     // wait for the server to be in a non-ticking state
-    pServer->m_serverPausedEvent->WaitForSignal(INFINITE);
+    pServer->m_serverPausedEvent->waitForSignal(C4JThread::kInfiniteTimeout);
 
     pMinecraft->progressRenderer->progressStartNoAbort(
         g_NetworkManager.CorrectErrorIDS(IDS_CONNECTION_LOST_LIVE_NO_EXIT));
@@ -1495,7 +1495,7 @@ void CGameNetworkManager::ServerReadyCreate(bool create) {
 
 void CGameNetworkManager::ServerReady() {
     if (m_hServerReadyEvent != nullptr) {
-        m_hServerReadyEvent->Set();
+        m_hServerReadyEvent->set();
     } else {
         app.DebugPrintf(
             "[NET] Warning: ServerReady() called but m_hServerReadyEvent is "
@@ -1505,7 +1505,7 @@ void CGameNetworkManager::ServerReady() {
 
 void CGameNetworkManager::ServerReadyWait() {
     if (m_hServerReadyEvent != nullptr) {
-        m_hServerReadyEvent->WaitForSignal(INFINITE);
+        m_hServerReadyEvent->waitForSignal(C4JThread::kInfiniteTimeout);
     } else {
         app.DebugPrintf(
             "[NET] Warning: ServerReadyWait() called but m_hServerReadyEvent "
@@ -1528,7 +1528,7 @@ void CGameNetworkManager::ServerStoppedCreate(bool create) {
 
 void CGameNetworkManager::ServerStopped() {
     if (m_hServerStoppedEvent != nullptr) {
-        m_hServerStoppedEvent->Set();
+        m_hServerStoppedEvent->set();
     } else {
         app.DebugPrintf(
             "[NET] Warning: ServerStopped() called but m_hServerStoppedEvent "
@@ -1543,10 +1543,10 @@ void CGameNetworkManager::ServerStoppedWait() {
     // it might be locked waiting for this to complete itself. Do some ticking
     // here then if this is the case.
     if (C4JThread::isMainThread()) {
-        int result = WAIT_TIMEOUT;
+        int result = C4JThread::WaitResult::Timeout;
         do {
             RenderManager.StartFrame();
-            result = m_hServerStoppedEvent->WaitForSignal(20);
+            result = m_hServerStoppedEvent->waitForSignal(20);
             // Tick some simple things
             ProfileManager.Tick();
             StorageManager.Tick();
@@ -1555,10 +1555,10 @@ void CGameNetworkManager::ServerStoppedWait() {
             ui.tick();
             ui.render();
             RenderManager.Present();
-        } while (result == WAIT_TIMEOUT);
+        } while (result == C4JThread::WaitResult::Timeout);
     } else {
         if (m_hServerStoppedEvent != nullptr) {
-            m_hServerStoppedEvent->WaitForSignal(INFINITE);
+            m_hServerStoppedEvent->waitForSignal(C4JThread::kInfiniteTimeout);
         } else {
             app.DebugPrintf(
                 "[NET] Warning: ServerStoppedWait() called but "

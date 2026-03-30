@@ -1945,7 +1945,7 @@ bool LevelRenderer::updateDirtyChunks() {
             for (int i = MAX_CHUNK_REBUILD_THREADS - 1; i >= 0; --i) {
                 // Set the events that won't run
                 if ((i + 1) > index)
-                    s_rebuildCompleteEvents->Set(i);
+                    s_rebuildCompleteEvents->set(i);
                 else
                     break;
             }
@@ -1974,7 +1974,7 @@ bool LevelRenderer::updateDirtyChunks() {
 
                 if (index != 0) {
                     FRAME_PROFILE_SCOPE(ChunkRebuildSchedule);
-                    s_rebuildCompleteEvents->Set(
+                    s_rebuildCompleteEvents->set(
                         index - 1);  // MGH - this rebuild happening on the main
                                      // thread instead, mark the thread it
                                      // should have been running on as complete
@@ -1990,14 +1990,14 @@ bool LevelRenderer::updateDirtyChunks() {
             else {
                 // Activate thread to rebuild this chunk
                 FRAME_PROFILE_SCOPE(ChunkRebuildSchedule);
-                s_activationEventA[index - 1]->Set();
+                s_activationEventA[index - 1]->set();
             }
         }
 
         // Wait for the other threads to be done as well
         {
             FRAME_PROFILE_SCOPE(ChunkRebuildSchedule);
-            s_rebuildCompleteEvents->WaitForAll(INFINITE);
+            s_rebuildCompleteEvents->waitForAll(C4JThread::kInfiniteTimeout);
         }
     }
 #else
@@ -4005,14 +4005,14 @@ void LevelRenderer::staticCtor() {
 
         // Threads 1,3 and 5 are generally idle so use them
         if ((i % 3) == 0)
-            rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_A);
+            rebuildThreads[i]->setProcessor(CPU_CORE_CHUNK_REBUILD_A);
         else if ((i % 3) == 1) {
-            rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_B);
+            rebuildThreads[i]->setProcessor(CPU_CORE_CHUNK_REBUILD_B);
         } else if ((i % 3) == 2)
-            rebuildThreads[i]->SetProcessor(CPU_CORE_CHUNK_REBUILD_C);
+            rebuildThreads[i]->setProcessor(CPU_CORE_CHUNK_REBUILD_C);
 
         // ResumeThread( saveThreads[j] );
-        rebuildThreads[i]->Run();
+        rebuildThreads[i]->run();
     }
 }
 
@@ -4025,7 +4025,7 @@ int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
     int index = (int)(uintptr_t)lpParam;
 
     while (true) {
-        s_activationEventA[index]->WaitForSignal(INFINITE);
+        s_activationEventA[index]->waitForSignal(C4JThread::kInfiniteTimeout);
 
         // app.DebugPrintf("Rebuilding permaChunk %d\n", index + 1);
         {
@@ -4034,7 +4034,7 @@ int LevelRenderer::rebuildChunkThreadProc(void* lpParam) {
         }
 
         // Inform the producer thread that we are done with this chunk
-        s_rebuildCompleteEvents->Set(index);
+        s_rebuildCompleteEvents->set(index);
     }
 
     return 0;

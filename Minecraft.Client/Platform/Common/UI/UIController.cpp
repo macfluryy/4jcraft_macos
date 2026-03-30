@@ -588,13 +588,13 @@ void UIController::ReloadSkin() {
 
     m_reloadSkinThread =
         new C4JThread(reloadSkinThreadProc, (void*)this, "Reload skin thread");
-    m_reloadSkinThread->SetProcessor(CPU_CORE_UI_SCENE);
+    m_reloadSkinThread->setProcessor(CPU_CORE_UI_SCENE);
 
     // Navigate to the timer scene so that we can display something while the
     // loading is happening
     ui.NavigateToScene(0, eUIScene_Timer, (void*)1, eUILayer_Tooltips,
                        eUIGroup_Fullscreen);
-    // m_reloadSkinThread->Run();
+    // m_reloadSkinThread->run();
 
     //// Load new skin
     // loadSkins();
@@ -611,7 +611,7 @@ void UIController::ReloadSkin() {
 }
 
 void UIController::StartReloadSkinThread() {
-    if (m_reloadSkinThread) m_reloadSkinThread->Run();
+    if (m_reloadSkinThread) m_reloadSkinThread->run();
 }
 
 int UIController::reloadSkinThreadProc(void* lpParam) {

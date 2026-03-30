@@ -336,14 +336,14 @@ void McRegionChunkStorage::staticCtor() {
 
         // Threads 1,3 and 5 are generally idle so use them
         if (i == 0)
-            s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_A);
+            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_A);
         else if (i == 1) {
-            s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_B);
+            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_B);
         } else if (i == 2)
-            s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_C);
+            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_C);
 
         // ResumeThread( saveThreads[j] );
-        s_saveThreads[i]->Run();
+        s_saveThreads[i]->run();
     }
 }
 

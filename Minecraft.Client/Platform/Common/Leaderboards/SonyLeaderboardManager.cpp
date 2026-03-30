@@ -640,9 +640,9 @@ bool SonyLeaderboardManager::OpenSession() {
         if (m_threadScoreboard == nullptr) {
             m_threadScoreboard =
                 new C4JThread(&scoreboardThreadEntry, this, "4JScoreboard");
-            m_threadScoreboard->SetProcessor(CPU_CORE_LEADERBOARDS);
-            m_threadScoreboard->SetPriority(THREAD_PRIORITY_BELOW_NORMAL);
-            m_threadScoreboard->Run();
+            m_threadScoreboard->setProcessor(CPU_CORE_LEADERBOARDS);
+            m_threadScoreboard->setPriority(C4JThread::ThreadPriority::BelowNormal);
+            m_threadScoreboard->run();
         }
 
         app.DebugPrintf(

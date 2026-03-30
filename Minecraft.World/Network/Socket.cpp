@@ -227,7 +227,7 @@ bool Socket::close(bool isServerConnection) {
         m_endClosed[m_end] = true;
     }
     if (allClosed && m_socketClosedEvent != nullptr) {
-        m_socketClosedEvent->Set();
+        m_socketClosedEvent->set();
     }
     if (allClosed) createdOk = false;
     return allClosed;

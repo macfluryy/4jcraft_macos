@@ -330,7 +330,7 @@ int CPlatformNetworkManagerStub::RemovePlayerOnSocketClosedThreadProc(
 
     if (socket != nullptr) {
         // printf("Waiting for socket closed event\n");
-        socket->m_socketClosedEvent->WaitForSignal(INFINITE);
+        socket->m_socketClosedEvent->waitForSignal(C4JThread::kInfiniteTimeout);
 
         // printf("Socket closed event has fired\n");
         //  4J Stu - Clear our reference to this socket

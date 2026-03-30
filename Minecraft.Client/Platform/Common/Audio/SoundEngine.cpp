@@ -462,7 +462,7 @@ void SoundEngine::playMusicTick() {
                     SetIsPlayingStreamingCDMusic(isCD);
                     m_openStreamThread = new C4JThread(
                         OpenStreamThreadProc, this, "OpenStreamThreadProc");
-                    m_openStreamThread->Run();
+                    m_openStreamThread->run();
                     m_StreamState = eMusicStreamState_Opening;
                 } else {
                     app.DebugPrintf(
@@ -1493,7 +1493,7 @@ void SoundEngine::playMusicUpdate() {
                 // ~300ms.
                 m_openStreamThread = new C4JThread(OpenStreamThreadProc, this,
                                                    "OpenStreamThreadProc");
-                m_openStreamThread->Run();
+                m_openStreamThread->run();
                 m_StreamState = eMusicStreamState_Opening;
             }
             break;
