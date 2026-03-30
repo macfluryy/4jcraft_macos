@@ -4,7 +4,7 @@ class AABB;
 class Recipy;
 class Object;
 
-typedef std::vector<AABB*> AABBList;
+typedef std::vector<AABB> AABBList;
 typedef std::vector<Recipy*> RecipyList;
 typedef std::vector<Object*> ObjectList;
 

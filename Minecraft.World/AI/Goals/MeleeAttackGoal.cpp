@@ -41,7 +41,7 @@ bool MeleeAttackGoal::canUse() {
     std::shared_ptr<LivingEntity> target = mob->getTarget();
     if (target == NULL) return false;
     if (!target->isAlive()) return false;
-    if (attackType != eTYPE_NOTSET && !target->instanceof (attackType))
+    if (attackType != eTYPE_NOTSET && !target->instanceof(attackType))
         return false;
     path.reset(mob->getNavigation()->createPath(target));
     return path != nullptr;
@@ -79,7 +79,7 @@ void MeleeAttackGoal::tick() {
 
     double meleeRadiusSqr =
         (mob->bbWidth * 2) * (mob->bbWidth * 2) + target->bbWidth;
-    if (mob->distanceToSqr(target->x, target->bb->y0, target->z) >
+    if (mob->distanceToSqr(target->x, target->bb.y0, target->z) >
         meleeRadiusSqr)
         return;
     if (attackTime > 0) return;

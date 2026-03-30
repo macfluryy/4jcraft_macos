@@ -59,7 +59,7 @@ private:
     int m_iGrowlTimer;
 
     double m_headYRot;
-    AABB* m_acidArea;
+    AABB m_acidArea;
 
     NodeArray* m_nodes;
     int m_nodeAdjacency[24];
@@ -188,7 +188,7 @@ public:
                               doubleArray partPos);
     double getHeadPartYRotDiff(int partIndex, doubleArray bodyPos,
                                doubleArray partPos);
-    Vec3* getHeadLookVector(float a);
+    Vec3 getHeadLookVector(float a);
 
     virtual std::wstring getAName() { return app.GetString(IDS_ENDERDRAGON); };
     virtual float getHealth() { return LivingEntity::getHealth(); };

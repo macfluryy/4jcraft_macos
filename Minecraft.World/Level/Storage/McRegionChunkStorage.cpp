@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../IO/Files/ConsoleSaveFileIO.h"
@@ -380,9 +383,10 @@ int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
         // If there was more than one thing in the queue last time we checked,
         // then we want to spin round again soon Otherwise wait a bit longer
         if ((lastQueueSize - 1) > 0)
-            Sleep(1);  // Sleep 1 to yield
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(1));  // Sleep 1 to yield
         else
-            Sleep(100);
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     Compression::ReleaseThreadStorage();
@@ -402,7 +406,7 @@ void McRegionChunkStorage::WaitForAllSaves() {
     LeaveCriticalSection(&cs_memory);
 
     while (queueSize > 0) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         EnterCriticalSection(&cs_memory);
         queueSize = s_chunkDataQueue.size();
@@ -416,7 +420,7 @@ void McRegionChunkStorage::WaitForAllSaves() {
     LeaveCriticalSection(&cs_memory);
 
     while (runningThreadCount > 0) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
         EnterCriticalSection(&cs_memory);
         runningThreadCount = s_runningThreadCount;
@@ -436,7 +440,7 @@ void McRegionChunkStorage::WaitForSaves() {
 
     if (queueSize > MAX_QUEUE_SIZE) {
         while (queueSize > DESIRED_QUEUE_SIZE) {
-            Sleep(10);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
             EnterCriticalSection(&cs_memory);
             queueSize = s_chunkDataQueue.size();

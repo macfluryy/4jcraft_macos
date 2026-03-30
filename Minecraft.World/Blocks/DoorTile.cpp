@@ -85,16 +85,14 @@ bool DoorTile::isCubeShaped() { return false; }
 
 int DoorTile::getRenderShape() { return Tile::SHAPE_DOOR; }
 
-AABB* DoorTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB DoorTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
-    AABB* retval = Tile::getTileAABB(level, x, y, z);
-    return retval;
+    return Tile::getTileAABB(level, x, y, z);
 }
 
-AABB* DoorTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> DoorTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
-    AABB* retval = Tile::getAABB(level, x, y, z);
-    return retval;
+    return Tile::getAABB(level, x, y, z);
 }
 
 void DoorTile::updateShape(

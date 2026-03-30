@@ -1,12 +1,8 @@
 #include "../../../Minecraft.World/Platform/stdafx.h"
 #include "Linux_UIController.h"
 
-// Temp
-#include "../../Minecraft.h"
-#include "../../Textures/Textures.h"
-
 // GDraw GL backend for Linux
-#include "Iggy/gdraw/gdraw_sdl.h"
+#include "Iggy/gdraw/gdraw.h"
 
 ConsoleUIController ui;
 
@@ -22,14 +18,12 @@ static void restoreFixedFunctionStateAfterIggy() {
     glClientActiveTexture(GL_TEXTURE1);
     glActiveTexture(GL_TEXTURE1);
     glDisable(GL_TEXTURE_2D);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
 
     glClientActiveTexture(GL_TEXTURE0);
     glActiveTexture(GL_TEXTURE0);
     glEnable(GL_TEXTURE_2D);
-    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glMatrixMode(GL_TEXTURE);
     glLoadIdentity();
 
@@ -54,7 +48,7 @@ void ConsoleUIController::init(S32 w, S32 h) {
     gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
                                128 * 1024 * 1024);
     gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
-                               32 * 1024 * 1024);
+                               64 * 1024 * 1024);
 
     IggySetGDraw(gdraw_funcs);
 #endif

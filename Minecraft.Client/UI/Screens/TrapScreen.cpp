@@ -6,13 +6,20 @@
 #include "../../../Minecraft.World/Blocks/TileEntities/DispenserTileEntity.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.h"
 
+#ifdef ENABLE_JAVA_GUIS
+ResourceLocation GUI_TRAP_LOCATION = ResourceLocation(TN_GUI_TRAP);
+#endif
+
 TrapScreen::TrapScreen(std::shared_ptr<Inventory> inventory,
                        std::shared_ptr<DispenserTileEntity> trap)
-    : AbstractContainerScreen(new TrapMenu(inventory, trap)) {}
+    : AbstractContainerScreen(new TrapMenu(inventory, trap)) {
+    this->trap = trap;
+    this->inventory = inventory;
+}
 
 void TrapScreen::renderLabels() {
-    font->draw(L"Dispenser", 16 + 4 + 40, 2 + 2 + 2, 0x404040);
-    font->draw(L"Inventory", 8, imageHeight - 96 + 2, 0x404040);
+    font->draw(trap->getName(), 16 + 4 + 40, 2 + 2 + 2, 0x404040);
+    font->draw(inventory->getName(), 8, imageHeight - 96 + 2, 0x404040);
 }
 
 void TrapScreen::renderBg(float a) {

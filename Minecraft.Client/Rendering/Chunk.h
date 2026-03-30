@@ -46,9 +46,9 @@ public:
     int xRenderOffs, yRenderOffs, zRenderOffs;
 
     int xm, ym, zm;
-    AABB* bb;
+    AABB bb;
     ClipChunk* clipChunk;
-
+    uint64_t computeConnectivity(const uint8_t* tileIds);
     int id;
     // public:
     //	std::vector<std::shared_ptr<TileEntity> > renderableTileEntities;
@@ -69,6 +69,8 @@ public:
 
 private:
     void translateToPos();
+    void reconcileRenderableTileEntities(
+        const std::vector<std::shared_ptr<TileEntity> >& renderableTileEntities);
 
 public:
     void makeCopyForRebuild(Chunk* source);
@@ -85,5 +87,4 @@ public:
     void setDirty();
     void clearDirty();  // 4J added
     bool emptyFlagSet(int layer);
-    ~Chunk();
 };

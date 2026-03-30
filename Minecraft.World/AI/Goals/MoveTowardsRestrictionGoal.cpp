@@ -17,11 +17,12 @@ MoveTowardsRestrictionGoal::MoveTowardsRestrictionGoal(PathfinderMob* mob,
 
 bool MoveTowardsRestrictionGoal::canUse() {
     if (mob->isWithinRestriction()) return false;
-    Pos* towards = mob->getRestrictCenter();
-    Vec3* pos = RandomPos::getPosTowards(
+    Pos* toward = mob->getRestrictCenter();
+    Vec3 towards(toward->x, toward->y, toward->z);
+    auto pos = RandomPos::getPosTowards(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
-        7, Vec3::newTemp(towards->x, towards->y, towards->z));
-    if (pos == NULL) return false;
+        7, &towards);
+    if (!pos.has_value()) return false;
     wantedX = pos->x;
     wantedY = pos->y;
     wantedZ = pos->z;

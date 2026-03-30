@@ -1449,13 +1449,19 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 {
     loaded = false;
     if (unloadTileEntities) {
+        std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
         EnterCriticalSection(&m_csTileEntities);
         for (AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end();
              it++) {
-            // 4J-PB -m 1.7.3 was it->second->setRemoved();
-            level->markForRemoval(it->second);
+            tileEntitiesToRemove.push_back(it->second);
         }
         LeaveCriticalSection(&m_csTileEntities);
+
+        AUTO_VAR(itEnd, tileEntitiesToRemove.end());
+        for (AUTO_VAR(it, tileEntitiesToRemove.begin()); it != itEnd; it++) {
+            // 4J-PB -m 1.7.3 was it->second->setRemoved();
+            level->markForRemoval(*it);
+        }
     }
 
 #if defined(_ENTITIES_RW_SECTION)
@@ -1580,7 +1586,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
-            if (e != except && e->bb->intersects(bb) &&
+            if (e != except && e->bb.intersects(*bb) &&
                 (selector == NULL || selector->matches(e))) {
                 es.push_back(e);
                 std::vector<std::shared_ptr<Entity> >* subs =
@@ -1588,7 +1594,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
                 if (subs != NULL) {
                     for (int j = 0; j < subs->size(); j++) {
                         e = subs->at(j);
-                        if (e != except && e->bb->intersects(bb) &&
+                        if (e != except && e->bb.intersects(*bb) &&
                             (selector == NULL || selector->matches(e))) {
                             es.push_back(e);
                         }
@@ -1650,7 +1656,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
             else if (Entity* entity = e.get();
                      entity != NULL && ec == typeid(*entity))
                 isAssignableFrom = true;
-            if (isAssignableFrom && e->bb->intersects(bb)) {
+            if (isAssignableFrom && e->bb.intersects(*bb)) {
                 if (selector == NULL || selector->matches(e)) {
                     es.push_back(e);
                 }

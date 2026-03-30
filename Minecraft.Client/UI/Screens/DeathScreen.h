@@ -3,13 +3,13 @@
 
 class DeathScreen : public Screen {
 public:
-    virtual void init();
+    virtual void init() override;
 
 protected:
     virtual void keyPressed(char eventCharacter, int eventKey);
-    virtual void buttonClicked(Button* button);
+    virtual void buttonClicked(Button* button) override;
 
 public:
-    virtual void render(int xm, int ym, float a);
-    virtual bool isPauseScreen();
+    virtual void render(int xm, int ym, float a) override;
+    virtual bool isPauseScreen() override;
 };

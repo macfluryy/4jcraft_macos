@@ -48,17 +48,17 @@ int Path::getIndex() { return index; }
 
 void Path::setIndex(int index) { this->index = index; }
 
-Vec3* Path::getPos(std::shared_ptr<Entity> e, int index) {
+Vec3 Path::getPos(std::shared_ptr<Entity> e, int index) {
     double x = nodes[index]->x + (int)(e->bbWidth + 1) * 0.5;
     double y = nodes[index]->y;
     double z = nodes[index]->z + (int)(e->bbWidth + 1) * 0.5;
-    return Vec3::newTemp(x, y, z);
+    return Vec3(x, y, z);
 }
 
-Vec3* Path::currentPos(std::shared_ptr<Entity> e) { return getPos(e, index); }
+Vec3 Path::currentPos(std::shared_ptr<Entity> e) { return getPos(e, index); }
 
-Vec3* Path::currentPos() {
-    return Vec3::newTemp(nodes[index]->x, nodes[index]->y, nodes[index]->z);
+Vec3 Path::currentPos() {
+    return Vec3(nodes[index]->x, nodes[index]->y, nodes[index]->z);
 }
 
 bool Path::sameAs(Path* path) {

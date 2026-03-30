@@ -19,13 +19,13 @@ UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft != NULL) {
-        Vec3* vec = pMinecraft->localplayers[playerNo]->getPos(1.0);
+        Vec3 vec = pMinecraft->localplayers[playerNo]->getPos(1.0);
 
-        currentPosition->m_camX = vec->x;
+        currentPosition->m_camX = vec.x;
         currentPosition->m_camY =
-            vec->y -
+            vec.y -
             1.62;  // pMinecraft->localplayers[playerNo]->getHeadHeight();
-        currentPosition->m_camZ = vec->z;
+        currentPosition->m_camZ = vec.z;
 
         currentPosition->m_yRot = pMinecraft->localplayers[playerNo]->yRot;
         currentPosition->m_elev = pMinecraft->localplayers[playerNo]->xRot;
@@ -119,12 +119,9 @@ void UIScene_DebugSetCamera::handleCheckboxToggled(F64 controlId,
 
 int UIScene_DebugSetCamera::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     UIScene_DebugSetCamera* pClass = (UIScene_DebugSetCamera*)lpParam;
-    uint16_t pchText[2048];  //[128];
-    ZeroMemory(pchText, 2048 /*128*/ * sizeof(uint16_t));
-    InputManager.GetText(pchText);
-
-    if (pchText[0] != 0) {
-        std::wstring value = (wchar_t*)pchText;
+    const char* text = InputManager.GetText();
+    if (text[0] != '\0') {
+        std::wstring value = convStringToWstring(text);
         double val = 0;
         if (!value.empty()) val = _fromString<double>(value);
         switch (pClass->m_keyboardCallbackControl) {

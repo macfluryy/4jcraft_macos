@@ -269,10 +269,10 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
 }
 
 void Texture::transferFromBuffer(intArray buffer) {
-    //if (depth == 1) {
-    //    return;
-    //}
-    // 4jcraft - move pos out of loops
+    // if (depth == 1) {
+    //     return;
+    // }
+    //  4jcraft - move pos out of loops
     data[0]->clear();
     // #if 0
     // 	int byteRemapRGBA[] = { 3, 0, 1, 2 };
@@ -285,7 +285,7 @@ void Texture::transferFromBuffer(intArray buffer) {
 
     int totalPixels = width * height * depth;
 
-    for (int i = 0; i < totalPixels; i++){
+    for (int i = 0; i < totalPixels; i++) {
         int pixel = buffer[i];
         int offset = i * 4;
 
@@ -299,7 +299,7 @@ void Texture::transferFromBuffer(intArray buffer) {
 
         updateOnGPU();
     }
-    
+
     /* for (int z = 0; z < depth; z++) {
         int plane = z * height * width * 4;
         for (int y = 0; y < height; y++) {

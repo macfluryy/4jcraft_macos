@@ -70,7 +70,7 @@ public:
     using Tile::getResourceCount;
 
     bool isUsesDataBit();
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual HitResult* clip(Level* level, int xt, int yt, int zt, Vec3* a,

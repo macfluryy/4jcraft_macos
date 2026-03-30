@@ -5,7 +5,9 @@
 #include "../IO/NBT/FloatTag.h"
 #include "../Util/Vec3.h"
 #include "../Util/Definitions.h"
+#include "../Util/AABB.h"
 #include <cstdint>
+#include <optional>
 
 class LivingEntity;
 class LightningBolt;
@@ -71,7 +73,7 @@ public:
     double xd, yd, zd;
     float yRot, xRot;
     float yRotO, xRotO;
-    /*const*/ AABB* bb;  // 4J Was final
+    /*const*/ AABB bb;  // 4J Was final
     bool onGround;
     bool horizontalCollision, verticalCollision;
     bool collision;
@@ -342,7 +344,7 @@ public:
     virtual void lerpTo(double x, double y, double z, float yRot, float xRot,
                         int steps);
     virtual float getPickRadius();
-    virtual Vec3* getLookAngle();
+    virtual std::optional<Vec3> getLookAngle();
     virtual void handleInsidePortal();
     virtual int getDimensionChangingDelay();
     virtual void lerpMotion(double xd, double yd, double zd);
@@ -424,6 +426,7 @@ private:
     static int extraWanderTicks;
 
     static thread_local bool m_tlsUseSmallIds;
+
 public:
     static void tickExtraWandering();
     static void countFlagsForPIX();

@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "Platform/stdafx.h"
 #include "Minecraft.h"
 #include "GameState/GameMode.h"
@@ -997,8 +1000,6 @@ void Minecraft::run_middle() {
             //        try {	// 4J - removed try/catch
             //            if (minecraftApplet != null &&
             //            !minecraftApplet.isActive()) break;	// 4J - removed
-            AABB::resetPool();
-            Vec3::resetPool();
 
             //            if (parent == NULL && Display.isCloseRequested()) {
             //            // 4J - removed
@@ -1496,11 +1497,14 @@ void Minecraft::run_middle() {
                         // clear the stored button downs since the tick for this
                         // player will now have actioned them
                         player->ullButtonsPressed = 0LL;
+                    } else if (screen != NULL) {
+                        screen->updateEvents();
+                        // 4jcraft: this fixes the title screen panorama running
+                        // faster than it should
+                        if (!idx) {
+                            screen->tick();
+                        }
                     }
-                }
-
-                if (screen != NULL) {
-                    screen->updateEvents();
                 }
 
                 ui.HandleGameTick();
@@ -1625,7 +1629,7 @@ void Minecraft::run_middle() {
             {
             this->toggleFullScreen();
             }
-            Sleep(10);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
             */
 
@@ -1654,7 +1658,10 @@ void Minecraft::run_middle() {
             achievementPopup->render();
 
             PIXBeginNamedEvent(0, "Sleeping");
-            Sleep(0);  // 4J - was Thread.yield()
+            std::this_thread::yield();  // 4jcraft added now that we have
+                                        // portable thread yield.
+            // std::this_thread::sleep_for(
+            //     std::chrono::milliseconds(0));  // 4J - was Thread.yield())
             PIXEndNamedEvent();
 
             //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
@@ -1735,8 +1742,6 @@ void Minecraft::run_end() { destroy(); }
 void Minecraft::emergencySave() {
     // 4J - lots of try/catches removed here, and garbage collector things
     levelRenderer->clear();
-    AABB::clearPool();
-    Vec3::clearPool();
     setLevel(NULL);
 }
 
@@ -1912,8 +1917,6 @@ void Minecraft::levelTickUpdateFunc(void* pParam) {
 }
 
 void Minecraft::levelTickThreadInitFunc() {
-    AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
 }
 
@@ -2247,7 +2250,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                         // 4J-PB - Call the useItemOn with the TestOnly flag set
                         bool bUseItemOn = gameMode->useItemOn(
                             player, level, itemInstance, x, y, z, face,
-                            hitResult->pos, true);
+                            &hitResult->pos, true);
 
                         /* 4J-Jev:
                          *	Moved this here so we have item tooltips to
@@ -3391,7 +3394,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                 bool usedItem = false;
                 gameMode->useItemOn(player, level, nullptr, hitResult->x,
                                     hitResult->y, hitResult->z, 0,
-                                    hitResult->pos, false, &usedItem);
+                                    &hitResult->pos, false, &usedItem);
             } else {
                 ui.PlayUISFX(eSFX_Press);
                 app.LoadCrafting2x2Menu(iPad, player);

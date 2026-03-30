@@ -15,7 +15,7 @@ void HellDimension::init() {
     id = -1;
 }
 
-Vec3* HellDimension::getFogColor(float td, float a) const {
+Vec3 HellDimension::getFogColor(float td, float a) const {
     int colour = Minecraft::GetInstance()->getColourTable()->getColor(
         eMinecraftColour_Nether_Fog_Colour);
     uint8_t redComponent = ((colour >> 16) & 0xFF);
@@ -25,7 +25,7 @@ Vec3* HellDimension::getFogColor(float td, float a) const {
     float rr = (float)redComponent / 256;    // 0.2f;
     float gg = (float)greenComponent / 256;  // 0.03f;
     float bb = (float)blueComponent / 256;   // 0.03f;
-    return Vec3::newTemp(rr, gg, bb);
+    return Vec3(rr, gg, bb);
 }
 
 void HellDimension::updateLightRamp() {

@@ -1,5 +1,12 @@
 #include "../Platform/stdafx.h"
 #include "LocalPlayer.h"
+#include "UI/Screens/BeaconScreen.h"
+#include "UI/Screens/BrewingStandScreen.h"
+#include "UI/Screens/EnchantmentScreen.h"
+#include "UI/Screens/HopperScreen.h"
+#include "UI/Screens/HorseInventoryScreen.h"
+#include "UI/Screens/MerchantScreen.h"
+#include "UI/Screens/RepairScreen.h"
 #include "User.h"
 #include "../Input/Input.h"
 #include "../GameState/StatsCounter.h"
@@ -243,10 +250,10 @@ void LocalPlayer::aiStep() {
         if (ySlideOffset < 0.2f) ySlideOffset = 0.2f;
     }
 
-    checkInTile(x - bbWidth * 0.35, bb->y0 + 0.5, z + bbWidth * 0.35);
-    checkInTile(x - bbWidth * 0.35, bb->y0 + 0.5, z - bbWidth * 0.35);
-    checkInTile(x + bbWidth * 0.35, bb->y0 + 0.5, z - bbWidth * 0.35);
-    checkInTile(x + bbWidth * 0.35, bb->y0 + 0.5, z + bbWidth * 0.35);
+    checkInTile(x - bbWidth * 0.35, bb.y0 + 0.5, z + bbWidth * 0.35);
+    checkInTile(x - bbWidth * 0.35, bb.y0 + 0.5, z - bbWidth * 0.35);
+    checkInTile(x + bbWidth * 0.35, bb.y0 + 0.5, z - bbWidth * 0.35);
+    checkInTile(x + bbWidth * 0.35, bb.y0 + 0.5, z + bbWidth * 0.35);
 
     bool enoughFoodToSprint =
         getFoodData()->getFoodLevel() >
@@ -402,25 +409,25 @@ void LocalPlayer::aiStep() {
 
     if (abilities.flying)  // minecraft->options->isFlying )
     {
-        Vec3* viewVector = getViewVector(1.0f);
+        Vec3 viewVector = getViewVector(1.0f);
 
         // 4J-PB - To let the player build easily while flying, we need to
         // change this
 
 #if defined(_DEBUG_MENUS_ENABLED)
         if (abilities.debugflying) {
-            flyX = (float)viewVector->x * input->ya;
-            flyY = (float)viewVector->y * input->ya;
-            flyZ = (float)viewVector->z * input->ya;
+            flyX = (float)viewVector.x * input->ya;
+            flyY = (float)viewVector.y * input->ya;
+            flyZ = (float)viewVector.z * input->ya;
         } else
 #endif
         {
             if (isSprinting()) {
                 // Accelrate up to full speed if we are sprinting, moving in the
                 // direction of the view vector
-                flyX = (float)viewVector->x * input->ya;
-                flyY = (float)viewVector->y * input->ya;
-                flyZ = (float)viewVector->z * input->ya;
+                flyX = (float)viewVector.x * input->ya;
+                flyY = (float)viewVector.y * input->ya;
+                flyZ = (float)viewVector.z * input->ya;
 
                 float scale = ((float)(SPRINT_DURATION - sprintTime)) / 10.0f;
                 scale = scale * scale;
@@ -548,7 +555,8 @@ void LocalPlayer::closeContainer() {
 void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
 #if defined(ENABLE_JAVA_GUIS)
     if (tileEntity->GetType() == eTYPE_SIGNTILEENTITY) {
-        minecraft->setScreen(new TextEditScreen(std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
+        minecraft->setScreen(new TextEditScreen(
+            std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
         bool success = true;
     }
 #else
@@ -581,25 +589,36 @@ bool LocalPlayer::openContainer(std::shared_ptr<Container> container) {
 }
 
 bool LocalPlayer::openHopper(std::shared_ptr<HopperTileEntity> container) {
-    // minecraft->setScreen(new HopperScreen(inventory, container));
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new HopperScreen(inventory, container));
+    bool success = true;
+#else
     bool success = app.LoadHopperMenu(GetXboxPad(), inventory, container);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     return success;
 }
 
 bool LocalPlayer::openHopper(std::shared_ptr<MinecartHopper> container) {
-    // minecraft->setScreen(new HopperScreen(inventory, container));
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new HopperScreen(inventory, container));
+    bool success = true;
+#else
     bool success = app.LoadHopperMenu(GetXboxPad(), inventory, container);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     return success;
 }
 
 bool LocalPlayer::openHorseInventory(std::shared_ptr<EntityHorse> horse,
                                      std::shared_ptr<Container> container) {
-    // minecraft->setScreen(new HorseInventoryScreen(inventory, container,
-    // horse));
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new HorseInventoryScreen(inventory, container, horse));
+    bool success = true;
+#else
     bool success = app.LoadHorseMenu(GetXboxPad(), inventory, container, horse);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     return success;
 }
 
@@ -628,17 +647,20 @@ bool LocalPlayer::openFireworks(int x, int y, int z) {
 
 bool LocalPlayer::startEnchanting(int x, int y, int z,
                                   const std::wstring& name) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new EnchantmentScreen(inventory, level, x, y, z));
+    bool success = true;
+#else
     bool success =
         app.LoadEnchantingMenu(GetXboxPad(), inventory, x, y, z, level, name);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new EnchantmentScreen(inventory, level, x, y, z));
+#endif
     return success;
 }
 
 bool LocalPlayer::startRepairing(int x, int y, int z) {
-#if defined(ENABLE_JAVA_GUIS)
-    // minecraft.setScreen(new RepairScreen(inventory, level, x, y, z));
-    // FUCK YOU 4J FIRST AND FOREMOST
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new RepairScreen(inventory, level, x, y, z));
     bool success = true;
 #else
     bool success =
@@ -661,33 +683,49 @@ bool LocalPlayer::openFurnace(std::shared_ptr<FurnaceTileEntity> furnace) {
 
 bool LocalPlayer::openBrewingStand(
     std::shared_ptr<BrewingStandTileEntity> brewingStand) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new BrewingStandScreen(inventory, brewingStand));
+    bool success = true;
+#else
     bool success =
         app.LoadBrewingStandMenu(GetXboxPad(), inventory, brewingStand);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new BrewingStandScreen(inventory, brewingStand));
+#endif
     return success;
 }
 
 bool LocalPlayer::openBeacon(std::shared_ptr<BeaconTileEntity> beacon) {
-    // minecraft->setScreen(new BeaconScreen(inventory, beacon));
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new BeaconScreen(inventory, beacon));
+    bool success = true;
+#else
     bool success = app.LoadBeaconMenu(GetXboxPad(), inventory, beacon);
     if (success) ui.PlayUISFX(eSFX_Press);
+#endif
     return success;
 }
 
 bool LocalPlayer::openTrap(std::shared_ptr<DispenserTileEntity> trap) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new TrapScreen(inventory, trap));
+    bool success = true;
+#else
     bool success = app.LoadTrapMenu(GetXboxPad(), inventory, trap);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft->setScreen(new TrapScreen(inventory, trap));
+#endif
     return success;
 }
 
 bool LocalPlayer::openTrading(std::shared_ptr<Merchant> traderTarget,
                               const std::wstring& name) {
+#ifdef ENABLE_JAVA_GUIS
+    minecraft->setScreen(new MerchantScreen(inventory, traderTarget, level));
+    bool success = true;
+#else
     bool success =
         app.LoadTradingMenu(GetXboxPad(), inventory, traderTarget, level, name);
     if (success) ui.PlayUISFX(eSFX_Press);
-    // minecraft.setScreen(new MerchantScreen(inventory, traderTarget, level));
+#endif
     return success;
 }
 
@@ -771,8 +809,7 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         // storage device, so needs a primary player, and the player may not
         // have been a primary player when they first 'got' the award so let the
         // award manager figure it out
-        if (!minecraft->stats[m_iPad]->hasTaken(ach))
-        {
+        if (!minecraft->stats[m_iPad]->hasTaken(ach)) {
             // 4J-PB - Don't display the java popup
 #if defined(ENABLE_JAVA_GUIS)
             minecraft->achievementPopup->popup(ach);
@@ -1475,7 +1512,7 @@ bool LocalPlayer::handleMouseClick(int button) {
             bool usedItem = false;
             if (minecraft->gameMode->useItemOn(
                     minecraft->localplayers[GetXboxPad()], level, item, x, y, z,
-                    face, minecraft->hitResult->pos, false, &usedItem)) {
+                    face, &minecraft->hitResult->pos, false, &usedItem)) {
                 // Presume that if we actually used the held item, then we've
                 // placed it
                 if (usedItem) {

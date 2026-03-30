@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../../Platform/stdafx.h"
 #include "../../Util/StringHelpers.h"
 #include "../../Util/PortableFileIO.h"
@@ -1256,7 +1259,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
 
         app.DebugPrintf("Flush wait\n");
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 
     finalizeWrite();

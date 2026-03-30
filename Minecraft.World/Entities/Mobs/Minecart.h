@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include "../Entity.h"
 
 class DamageSource;
@@ -77,8 +78,9 @@ protected:
     virtual void moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
                                 double slideSpeed, int tile, int data);
     virtual void applyNaturalSlowdown();
-    virtual Vec3* getPosOffs(double x, double y, double z, double offs);
-    virtual Vec3* getPos(double x, double y, double z);
+    virtual std::optional<Vec3> getPosOffs(double x, double y, double z,
+                                           double offs);
+    virtual std::optional<Vec3> getPos(double x, double y, double z);
 
 protected:
     virtual void addAdditonalSaveData(CompoundTag* base);

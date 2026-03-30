@@ -549,13 +549,10 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
     pClass->m_bIgnoreInput = false;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-        InputManager.GetText(pchText);
-
-        if (pchText[0] != 0) {
-            pClass->m_editWorldName.setLabel((wchar_t*)pchText);
-            pClass->m_worldName = (wchar_t*)pchText;
+        std::wstring str = convStringToWstring(InputManager.GetText());
+        if (!str.empty()) {
+            pClass->m_editWorldName.setLabel(str);
+            pClass->m_worldName = std::move(str);
         }
 
         pClass->m_buttonCreateWorld.setEnable(!pClass->m_worldName.empty());
@@ -628,9 +625,9 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
         bool pccFriendsAllowed = true;
         bool bContentRestricted = false;
 
-        ProfileManager.AllowedPlayerCreatedContent(
-            ProfileManager.GetPrimaryPad(), false, &pccAllowed,
-            &pccFriendsAllowed);
+        GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+                                            false, &pccAllowed,
+                                            &pccFriendsAllowed);
 
         noUGC = !pccAllowed && !pccFriendsAllowed;
 
@@ -934,9 +931,9 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             bool pccAllowed = true;
             bool pccFriendsAllowed = true;
 
-            ProfileManager.AllowedPlayerCreatedContent(
-                ProfileManager.GetPrimaryPad(), false, &pccAllowed,
-                &pccFriendsAllowed);
+            GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+                                                false, &pccAllowed,
+                                                &pccFriendsAllowed);
             if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
 
             if (isOnlineGame && (noPrivileges || noUGC)) {

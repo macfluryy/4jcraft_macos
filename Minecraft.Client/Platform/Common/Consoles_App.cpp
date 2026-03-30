@@ -50,8 +50,15 @@
 #include "../Minecraft.Client/Utils/StringTable.h"
 #include "../Minecraft.Client/Utils/ArchiveFile.h"
 #include "../Minecraft.Client/Minecraft.h"
+#if defined(__linux__)
+#include <unistd.h>
+#include <climits>
+#endif
 #include "UI/UI.h"
 #include "UI/UIScene_PauseMenu.h"
+
+#include <thread>
+#include <chrono>
 
 #include "Leaderboards/LeaderboardManager.h"
 
@@ -3672,7 +3679,6 @@ int CMinecraftApp::BannedLevelDialogReturned(
 
     return 0;
 }
-
 void CMinecraftApp::loadMediaArchive() {
     std::wstring mediapath = L"";
 
@@ -3683,7 +3689,18 @@ void CMinecraftApp::loadMediaArchive() {
 #endif
 
     if (!mediapath.empty()) {
+        // boom headshot
+#if defined(__linux__)
+        std::wstring exeDirW = PathHelper::GetExecutableDirW();
+        std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
+        if (File(candidate).exists()) {
+            m_mediaArchive = new ArchiveFile(File(candidate));
+        } else {
+            m_mediaArchive = new ArchiveFile(File(mediapath));
+        }
+#else
         m_mediaArchive = new ArchiveFile(File(mediapath));
+#endif
     }
 }
 
@@ -3744,8 +3761,6 @@ int CMinecraftApp::EthernetDisconnectReturned(
 int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);
@@ -3850,7 +3865,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     // We can't start/join a new game until the session is destroyed, so wait
     // for it to be idle again
     while (g_NetworkManager.IsInSession()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     return S_OK;
@@ -5717,8 +5732,6 @@ void CMinecraftApp::LeaveSaveNotificationSection() {
 int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
     // The game should be stopped while we are doing this, but the connections
     // ticks may try to create some AABB's or Vec3's
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // 4J-PB - Xbox 360 - 163153 - [CRASH] TU17: Code: Multiplayer: During the
@@ -5746,7 +5759,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
                eAppAction_WaitRemoteServerSaveComplete) {
         // Tick all the games connections
         pMinecraft->tickAllConnections();
-        Sleep(100);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     if (app.GetXuiAction(ProfileManager.GetPrimaryPad()) !=

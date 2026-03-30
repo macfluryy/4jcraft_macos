@@ -113,8 +113,8 @@ bool Monster::doHurtTarget(std::shared_ptr<Entity> target) {
 }
 
 void Monster::checkHurtTarget(std::shared_ptr<Entity> target, float distance) {
-    if (attackTime <= 0 && distance < 2.0f && target->bb->y1 > bb->y0 &&
-        target->bb->y0 < bb->y1) {
+    if (attackTime <= 0 && distance < 2.0f && target->bb.y1 > bb.y0 &&
+        target->bb.y0 < bb.y1) {
         attackTime = 20;
         doHurtTarget(target);
     }
@@ -126,7 +126,7 @@ float Monster::getWalkTargetValue(int x, int y, int z) {
 
 bool Monster::isDarkEnoughToSpawn() {
     int xt = Mth::floor(x);
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
     if (level->getBrightness(LightLayer::Sky, xt, yt, zt) > random->nextInt(32))
         return false;

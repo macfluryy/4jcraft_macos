@@ -1,6 +1,6 @@
 ﻿#include "../../Minecraft.World/Platform/stdafx.h"
-
 #include "SoundEngine.h"
+#include "PathHelper.h"
 #include "../Consoles_App.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
@@ -79,8 +79,8 @@ const char* SoundEngine::m_szStreamFileA[eStream_Max] = {"calm1",
                                                          "ward",
                                                          "where_are_we_now"};
 #if defined(__linux__)
-char SoundEngine::m_szSoundPath[] = {"Sound/"};
-char SoundEngine::m_szMusicPath[] = {"music/"};
+char SoundEngine::m_szSoundPath[] = {"Common/Sound/"};
+char SoundEngine::m_szMusicPath[] = {"Common/"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
 #endif
 
@@ -150,170 +150,121 @@ void SoundEngine::init(Options* pOptions) {
     m_bSystemMusicPlaying = false;
 }
 void SoundEngine::destroy() { ma_engine_uninit(&m_engine); }
+
 void SoundEngine::play(int iSound, float x, float y, float z, float volume,
                        float pitch) {
-    char szSoundName[256] = "Sound/Minecraft/";
+    if (iSound == -1) return;
+    char szId[256];
+    wcstombs(szId, wchSoundNames[iSound], 255);
+    for (int i = 0; szId[i]; i++)
+        if (szId[i] == '.') szId[i] = '/';
 
-    if (iSound == -1) {
-        app.DebugPrintf(6, "PlaySound with sound of -1 !!!!!!!!!!!!!!!\n");
-        return;
-    }
-    wcstombs(szSoundName + 16, wchSoundNames[iSound],
-             sizeof(szSoundName) - 16 - 1);
-    szSoundName[sizeof(szSoundName) - 1] = '\0';
-
-    char finalPath[256];
-    const char* extensions[] = {".ogg", ".wav", ".mp3"};
-    size_t extCount = sizeof(extensions) / sizeof(extensions[0]);
+    std::string base = PathHelper::GetExecutableDirA() + "/";
+    const char* roots[] = {"Sound/Minecraft/", "Common/Sound/Minecraft/",
+                           "Common/res/TitleUpdate/res/Sound/Minecraft/"};
+    char finalPath[512] = {0};
     bool found = false;
 
-    for (size_t extIdx = 0; extIdx < extCount; extIdx++) {
-        char basePlusExt[256];
-        sprintf_s(basePlusExt, "%s%s", szSoundName, extensions[extIdx]);
-
-        DWORD attr = GetFileAttributesA(basePlusExt);
-        if (attr != INVALID_FILE_ATTRIBUTES &&
-            !(attr & FILE_ATTRIBUTE_DIRECTORY)) {
-            sprintf_s(finalPath, "%s", basePlusExt);
-            found = true;
-            break;
-        }
-    }
-    if (!found) {
-        int count = 0;
-
-        for (size_t extIdx = 0; extIdx < extCount; extIdx++) {
-            for (size_t i = 1; i < 32; i++) {
-                char numberedPath[256];
-                sprintf_s(numberedPath, "%s%d%s", szSoundName, i,
-                          extensions[extIdx]);
-
-                DWORD attr = GetFileAttributesA(numberedPath);
-                if (attr != INVALID_FILE_ATTRIBUTES &&
-                    !(attr & FILE_ATTRIBUTE_DIRECTORY)) {
+    for (const char* root : roots) {
+        std::string fullRoot = base + root;
+        for (const char* ext : {".ogg", ".wav"}) {
+            int count = 0;
+            for (int i = 1; i <= 16; i++) {
+                char tryP[512];
+                snprintf(tryP, 512, "%s%s%d%s", fullRoot.c_str(), szId, i, ext);
+                if (access(tryP, F_OK) != -1)
                     count = i;
-                }
-            }
-        }
-
-        if (count > 0) {
-            int chosen = (rand() % count) + 1;
-            for (size_t extIdx = 0; extIdx < extCount; extIdx++) {
-                char numberedPath[256];
-                sprintf_s(numberedPath, "%s%d%s", szSoundName, chosen,
-                          extensions[extIdx]);
-
-                DWORD attr = GetFileAttributesA(numberedPath);
-                if (attr != INVALID_FILE_ATTRIBUTES &&
-                    !(attr & FILE_ATTRIBUTE_DIRECTORY)) {
-                    sprintf_s(finalPath, "%s", numberedPath);
-                    found = true;
+                else
                     break;
-                }
             }
-            if (!found) {
-                sprintf_s(finalPath, "%s%d.ogg", szSoundName, chosen);
+            if (count > 0) {
+                snprintf(finalPath, 512, "%s%s%d%s", fullRoot.c_str(), szId,
+                         (rand() % count) + 1, ext);
+                found = true;
+                break;
+            }
+            char tryP[512];
+            snprintf(tryP, 512, "%s%s%s", fullRoot.c_str(), szId, ext);
+            if (access(tryP, F_OK) != -1) {
+                strncpy(finalPath, tryP, 511);
+                found = true;
+                break;
             }
         }
+        if (found) break;
     }
+
     if (!found) return;
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
-
     s->info.x = x;
     s->info.y = y;
     s->info.z = z;
-
     s->info.volume = volume;
     s->info.pitch = pitch;
     s->info.bIs3D = true;
-    s->info.bUseSoundsPitchVal = false;
-    s->info.iSound = iSound + eSFX_MAX;
 
     if (ma_sound_init_from_file(&m_engine, finalPath, MA_SOUND_FLAG_ASYNC,
-                                nullptr, nullptr, &s->sound) != MA_SUCCESS) {
-        app.DebugPrintf("Failed to load sound ID : %i from %S\n", iSound,
-                        wchSoundNames[iSound]);
+                                nullptr, nullptr, &s->sound) == MA_SUCCESS) {
+        ma_sound_set_spatialization_enabled(&s->sound, MA_TRUE);
+        ma_sound_set_min_distance(&s->sound, 2.0f);
+        ma_sound_set_max_distance(&s->sound, 48.0f);
+        ma_sound_set_volume(&s->sound, volume * m_MasterEffectsVolume);
+        ma_sound_set_position(&s->sound, x, y, z);
+        ma_sound_start(&s->sound);
+        m_activeSounds.push_back(s);
+    } else
         delete s;
-        return;
-    }
-
-    ma_sound_set_spatialization_enabled(&s->sound, MA_TRUE);
-    ma_sound_set_min_distance(&s->sound, SFX_3D_MIN_DISTANCE);
-    ma_sound_set_max_distance(&s->sound, SFX_3D_MAX_DISTANCE);
-    ma_sound_set_rolloff(&s->sound, SFX_3D_ROLLOFF);
-
-    float finalVolume = volume * m_MasterEffectsVolume * SFX_VOLUME_MULTIPLIER;
-    if (finalVolume > SFX_MAX_GAIN) finalVolume = SFX_MAX_GAIN;
-
-    ma_sound_set_volume(&s->sound, finalVolume);
-    ma_sound_set_pitch(&s->sound, pitch);
-    ma_sound_set_position(&s->sound, x, y, z);
-
-    ma_sound_start(&s->sound);
-
-    m_activeSounds.push_back(s);
 }
 
 void SoundEngine::playUI(int iSound, float volume, float pitch) {
-    char szSoundName[256];
-    wstring name;
-
-    if (iSound >= eSFX_MAX) {
-        strcpy(szSoundName, "Sound/Minecraft/");
-        name = wchSoundNames[iSound];
-    } else {
-        strcpy(szSoundName, "Sound/Minecraft/UI/");
-        name = wchUISoundNames[iSound];
-    }
-    wcstombs(szSoundName + strlen(szSoundName), name.c_str(),
-             sizeof(szSoundName) - strlen(szSoundName) - 1);
-    char finalPath[256];
-    const char* extensions[] = {".ogg", ".wav", ".mp3"};
-    size_t extCount = sizeof(extensions) / sizeof(extensions[0]);
+    char szIdentifier[256];
+    if (iSound >= eSFX_MAX)
+        wcstombs(szIdentifier, wchSoundNames[iSound], 255);
+    else
+        wcstombs(szIdentifier, wchUISoundNames[iSound], 255);
+    for (int i = 0; szIdentifier[i]; i++)
+        if (szIdentifier[i] == '.') szIdentifier[i] = '/';
+    std::string base = PathHelper::GetExecutableDirA() + "/";
+    const char* roots[] = {
+        "Sound/Minecraft/UI/",
+        "Sound/Minecraft/",
+        "Common/Sound/Minecraft/UI/",
+        "Common/Sound/Minecraft/",
+    };
+    char finalPath[512] = {0};
     bool found = false;
 
-    for (size_t extIdx = 0; extIdx < extCount; extIdx++) {
-        char basePlusExt[256];
-        sprintf_s(basePlusExt, "%s%s", szSoundName, extensions[extIdx]);
-
-        DWORD attr = GetFileAttributesA(basePlusExt);
-        if (attr != INVALID_FILE_ATTRIBUTES &&
-            !(attr & FILE_ATTRIBUTE_DIRECTORY)) {
-            sprintf_s(finalPath, "%s", basePlusExt);
-            found = true;
-            break;
+    for (const char* root : roots) {
+        for (const char* ext : {".ogg", ".wav", ".mp3"}) {
+            char tryP[512];
+            snprintf(tryP, 512, "%s%s%s%s", base.c_str(), root, szIdentifier,
+                     ext);
+            if (access(tryP, F_OK) != -1) {
+                strncpy(finalPath, tryP, 511);
+                found = true;
+                break;
+            }
         }
+        if (found) break;
     }
+
     if (!found) return;
     MiniAudioSound* s = new MiniAudioSound();
     memset(&s->info, 0, sizeof(AUDIO_INFO));
-
     s->info.volume = volume;
     s->info.pitch = pitch;
     s->info.bIs3D = false;
-    s->info.bUseSoundsPitchVal = true;
 
     if (ma_sound_init_from_file(&m_engine, finalPath, MA_SOUND_FLAG_ASYNC,
-                                nullptr, nullptr, &s->sound) != MA_SUCCESS) {
+                                nullptr, nullptr, &s->sound) == MA_SUCCESS) {
+        ma_sound_set_spatialization_enabled(&s->sound, MA_FALSE);
+        ma_sound_set_volume(&s->sound, volume * m_MasterEffectsVolume);
+        ma_sound_set_pitch(&s->sound, pitch);
+        ma_sound_start(&s->sound);
+        m_activeSounds.push_back(s);
+    } else
         delete s;
-        app.DebugPrintf("ma_sound_init_from_file failed: %s\n", finalPath);
-        return;
-    }
-
-    ma_sound_set_spatialization_enabled(&s->sound, MA_FALSE);
-
-    float finalVolume = volume * m_MasterEffectsVolume;
-    if (finalVolume > 1.0f) finalVolume = 1.0f;
-    printf("UI Sound volume set to %f\nEffects volume: %f\n", finalVolume,
-           m_MasterEffectsVolume);
-
-    ma_sound_set_volume(&s->sound, finalVolume);
-    ma_sound_set_pitch(&s->sound, pitch);
-
-    ma_sound_start(&s->sound);
-
-    m_activeSounds.push_back(s);
 }
 
 int SoundEngine::getMusicID(int iDomain) {
@@ -330,9 +281,10 @@ int SoundEngine::getMusicID(int iDomain) {
     if (pMinecraft->skins->isUsingDefaultSkin()) {
         switch (iDomain) {
             case LevelData::DIMENSION_END:
-                // the end isn't random - it has different music depending on
-                // whether the dragon is alive or not, but we've not added the
-                // dead dragon music yet
+                // the end isn't random - it has different music depending
+                // whether the dragon is alive or not, but we've not
+                // added the dead dragon music yet
+                // haha they said wheter
                 return m_iStream_End_Min;
             case LevelData::DIMENSION_NETHER:
                 return GetRandomishTrack(m_iStream_Nether_Min,
@@ -450,7 +402,8 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 
     if (result != MA_SUCCESS) {
         app.DebugPrintf(
-            "SoundEngine::OpenStreamThreadProc - Failed to open stream: %s\n",
+            "SoundEngine::OpenStreamThreadProc - Failed to open stream: "
+            "%s\n",
             soundEngine->m_szStreamName);
         return 0;
     }
@@ -462,149 +415,63 @@ int SoundEngine::OpenStreamThreadProc(void* lpParameter) {
 
     return 0;
 }
-
 void SoundEngine::playMusicTick() {
     static float fMusicVol = 0.0f;
     fMusicVol = getMasterMusicVolume();
 
     switch (m_StreamState) {
         case eMusicStreamState_Idle:
-
-            // start a stream playing
             if (m_iMusicDelay > 0) {
                 m_iMusicDelay--;
                 return;
             }
-
-            if (m_musicStreamActive) {
-                app.DebugPrintf(
-                    "WARNING: m_musicStreamActive already true in Idle state, "
-                    "resetting to Playing\n");
-                m_StreamState = eMusicStreamState_Playing;
-                return;
-            }
-
             if (m_musicID != -1) {
-                // start playing it
+                std::string base = PathHelper::GetExecutableDirA() + "/";
+                bool isCD = (m_musicID >= m_iStream_CD_1);
+                const char* folder = isCD ? "cds/" : "music/";
+                const char* track = m_szStreamFileA[m_musicID];
+                bool found = false;
+                m_szStreamName[0] = '\0';
 
-                strcpy((char*)m_szStreamName, m_szMusicPath);
-                // are we using a mash-up pack?
-                // if(pMinecraft && !pMinecraft->skins->isUsingDefaultSkin() &&
-                // pMinecraft->skins->getSelected()->hasAudio())
-                if (Minecraft::GetInstance()
-                        ->skins->getSelected()
-                        ->hasAudio()) {
-                    // It's a mash-up - need to use the DLC path for the music
-                    TexturePack* pTexPack =
-                        Minecraft::GetInstance()->skins->getSelected();
-                    DLCTexturePack* pDLCTexPack = (DLCTexturePack*)pTexPack;
-                    DLCPack* pack = pDLCTexPack->getDLCInfoParentPack();
-                    DLCAudioFile* dlcAudioFile = (DLCAudioFile*)pack->getFile(
-                        DLCManager::e_DLCType_Audio, 0);
+                const char* roots[] = {"Common/music/", "music/", "./"};
 
-                    app.DebugPrintf("Mashup pack \n");
-
-                    // build the name
-
-                    // if the music ID is beyond the end of the texture pack
-                    // music files, then it's a CD
-                    if (m_musicID < m_iStream_CD_1) {
-                        SetIsPlayingStreamingGameMusic(true);
-                        SetIsPlayingStreamingCDMusic(false);
-                        m_MusicType = eMusicType_Game;
-                        m_StreamingAudioInfo.bIs3D = false;
-
-                        wstring& wstrSoundName =
-                            dlcAudioFile->GetSoundName(m_musicID);
-
-                        char szName[255];
-                        wcstombs(szName, wstrSoundName.c_str(), 255);
-
-                        string strFile =
-                            "TPACK:\\Data\\" + string(szName) + ".wav";
-
-                        std::string mountedPath =
-                            StorageManager.GetMountedPath(strFile);
-                        strcpy(m_szStreamName, mountedPath.c_str());
-                    } else {
-                        SetIsPlayingStreamingGameMusic(false);
-                        SetIsPlayingStreamingCDMusic(true);
-                        m_MusicType = eMusicType_CD;
-                        m_StreamingAudioInfo.bIs3D = true;
-
-                        // Need to adjust to index into the cds in the game's
-                        // m_szStreamFileA
-                        strcat((char*)m_szStreamName, "cds/");
-                        strcat((char*)m_szStreamName,
-                               m_szStreamFileA[m_musicID - m_iStream_CD_1 +
-                                               eStream_CD_1]);
-                        strcat((char*)m_szStreamName, ".wav");
-                    }
-                } else {
-                    if (m_musicID < m_iStream_CD_1) {
-                        SetIsPlayingStreamingGameMusic(true);
-                        SetIsPlayingStreamingCDMusic(false);
-                        m_MusicType = eMusicType_Game;
-                        m_StreamingAudioInfo.bIs3D = false;
-                        // build the name
-                        strcat((char*)m_szStreamName, "music/");
-                    } else {
-                        SetIsPlayingStreamingGameMusic(false);
-                        SetIsPlayingStreamingCDMusic(true);
-                        m_MusicType = eMusicType_CD;
-                        m_StreamingAudioInfo.bIs3D = true;
-                        // build the name
-                        strcat((char*)m_szStreamName, "cds/");
-                    }
-                    strcat((char*)m_szStreamName, m_szStreamFileA[m_musicID]);
-                    strcat((char*)m_szStreamName, ".wav");
-                }
-
-                FILE* pFile = nullptr;
-                pFile = fopen(reinterpret_cast<char*>(m_szStreamName), "rb");
-                if (pFile) {
-                    fclose(pFile);
-                } else {
-                    const char* extensions[] = {".ogg", ".mp3", ".wav"};
-                    size_t extCount =
-                        sizeof(extensions) / sizeof(extensions[0]);
-                    bool found = false;
-
-                    char* dotPos =
-                        strrchr(reinterpret_cast<char*>(m_szStreamName), '.');
-                    if (dotPos != nullptr &&
-                        (dotPos - reinterpret_cast<char*>(m_szStreamName)) <
-                            250) {
-                        for (size_t i = 0; i < extCount; i++) {
-                            strncpy(dotPos, extensions[i], 5);
-                            app.DebugPrintf("Checking %s\n", m_szStreamName);
-                            pFile = fopen(
-                                reinterpret_cast<char*>(m_szStreamName), "rb");
-                            if (pFile) {
-                                fclose(pFile);
-                                found = true;
-                                break;
-                            }
+                for (const char* r : roots) {
+                    for (const char* e : {".ogg", ".mp3", ".wav"}) {
+                        char c[512];
+                        // try with folder prefix (music/ or cds/)
+                        snprintf(c, 512, "%s%s%s%s%s", base.c_str(), r, folder,
+                                 track, e);
+                        if (access(c, F_OK) != -1) {
+                            strncpy(m_szStreamName, c, 511);
+                            found = true;
+                            break;
+                        }
+                        // try without folder prefix
+                        snprintf(c, 512, "%s%s%s%s", base.c_str(), r, track, e);
+                        if (access(c, F_OK) != -1) {
+                            strncpy(m_szStreamName, c, 511);
+                            found = true;
+                            break;
                         }
                     }
-
-                    if (!found) {
-                        if (dotPos != nullptr) {
-                            strncpy(dotPos, ".wav", 5);
-                        }
-                        app.DebugPrintf(
-                            "WARNING: No audio file found for music ID %d "
-                            "(tried .ogg, .mp3, .wav)\n",
-                            m_musicID);
-                        return;
-                    }
+                    if (found) break;
                 }
 
-                app.DebugPrintf("Starting streaming - %s\n", m_szStreamName);
-                m_openStreamThread = new C4JThread(OpenStreamThreadProc, this,
-                                                   "OpenStreamThreadProc");
-                m_openStreamThread->Run();
-                m_StreamState = eMusicStreamState_Opening;
+                if (found) {
+                    SetIsPlayingStreamingGameMusic(!isCD);
+                    SetIsPlayingStreamingCDMusic(isCD);
+                    m_openStreamThread = new C4JThread(
+                        OpenStreamThreadProc, this, "OpenStreamThreadProc");
+                    m_openStreamThread->Run();
+                    m_StreamState = eMusicStreamState_Opening;
+                } else {
+                    app.DebugPrintf(
+                        "[SoundEngine] oh noes couldn't find music track '%s', "
+                        "retrying "
+                        "in 1min\n",
+                        track);
+                    m_iMusicDelay = 20 * 60;
+                }
             }
             break;
 
@@ -613,64 +480,30 @@ void SoundEngine::playMusicTick() {
                 delete m_openStreamThread;
                 m_openStreamThread = nullptr;
 
-                app.DebugPrintf(
-                    "OpenStreamThreadProc finished. m_musicStreamActive=%d\n",
-                    m_musicStreamActive);
-
                 if (!m_musicStreamActive) {
-                    const char* currentExt =
-                        strrchr(reinterpret_cast<char*>(m_szStreamName), '.');
-                    if (currentExt && _stricmp(currentExt, ".wav") == 0) {
-                        const bool isCD = (m_musicID >= m_iStream_CD_1);
-                        const char* folder = isCD ? "cds/" : "music/";
-
-                        int n =
-                            sprintf_s(reinterpret_cast<char*>(m_szStreamName),
-                                      512, "%s%s%s.wav", m_szMusicPath, folder,
-                                      m_szStreamFileA[m_musicID]);
-
-                        if (n > 0) {
-                            FILE* pFile = fopen(
-                                reinterpret_cast<char*>(m_szStreamName), "rb");
-                            if (pFile) {
-                                fclose(pFile);
-
-                                m_openStreamThread =
-                                    new C4JThread(OpenStreamThreadProc, this,
-                                                  "OpenStreamThreadProc");
-                                m_openStreamThread->Run();
-                                break;
-                            }
-                        }
-                    }
-
                     m_StreamState = eMusicStreamState_Idle;
                     break;
                 }
 
+                ma_sound_set_spatialization_enabled(
+                    &m_musicStream,
+                    m_StreamingAudioInfo.bIs3D ? MA_TRUE : MA_FALSE);
                 if (m_StreamingAudioInfo.bIs3D) {
-                    ma_sound_set_spatialization_enabled(&m_musicStream,
-                                                        MA_TRUE);
                     ma_sound_set_position(
                         &m_musicStream, m_StreamingAudioInfo.x,
                         m_StreamingAudioInfo.y, m_StreamingAudioInfo.z);
-                } else {
-                    ma_sound_set_spatialization_enabled(&m_musicStream,
-                                                        MA_FALSE);
                 }
 
                 ma_sound_set_pitch(&m_musicStream, m_StreamingAudioInfo.pitch);
-
-                float finalVolume =
-                    m_StreamingAudioInfo.volume * getMasterMusicVolume();
-
-                ma_sound_set_volume(&m_musicStream, finalVolume);
-                ma_result startResult = ma_sound_start(&m_musicStream);
-                app.DebugPrintf("ma_sound_start result: %d\n", startResult);
+                ma_sound_set_volume(
+                    &m_musicStream,
+                    m_StreamingAudioInfo.volume * getMasterMusicVolume());
+                ma_sound_start(&m_musicStream);
 
                 m_StreamState = eMusicStreamState_Playing;
             }
             break;
+
         case eMusicStreamState_OpeningCancel:
             if (!m_openStreamThread->isRunning()) {
                 delete m_openStreamThread;
@@ -678,200 +511,130 @@ void SoundEngine::playMusicTick() {
                 m_StreamState = eMusicStreamState_Stop;
             }
             break;
+
         case eMusicStreamState_Stop:
             if (m_musicStreamActive) {
                 ma_sound_stop(&m_musicStream);
                 ma_sound_uninit(&m_musicStream);
                 m_musicStreamActive = false;
             }
-
             SetIsPlayingStreamingCDMusic(false);
             SetIsPlayingStreamingGameMusic(false);
-
             m_StreamState = eMusicStreamState_Idle;
             break;
-        case eMusicStreamState_Stopping:
-            break;
-        case eMusicStreamState_Play:
-            break;
-        case eMusicStreamState_Playing: {
-            static int frameCount = 0;
-            if (frameCount++ % 60 == 0) {
-                if (m_musicStreamActive) {
-                    bool isPlaying = ma_sound_is_playing(&m_musicStream);
-                    float vol = ma_sound_get_volume(&m_musicStream);
-                    bool isAtEnd = ma_sound_at_end(&m_musicStream);
-                }
-            }
-        }
+
+        case eMusicStreamState_Playing:
             if (GetIsPlayingStreamingGameMusic()) {
-                {
-                    bool playerInEnd = false;
-                    bool playerInNether = false;
-                    Minecraft* pMinecraft = Minecraft::GetInstance();
-                    for (unsigned int i = 0; i < MAX_LOCAL_PLAYERS; ++i) {
-                        if (pMinecraft->localplayers[i] != nullptr) {
-                            if (pMinecraft->localplayers[i]->dimension ==
-                                LevelData::DIMENSION_END) {
-                                playerInEnd = true;
-                            } else if (pMinecraft->localplayers[i]->dimension ==
-                                       LevelData::DIMENSION_NETHER) {
-                                playerInNether = true;
-                            }
-                        }
-                    }
+                bool playerInEnd = false, playerInNether = false;
+                Minecraft* pMinecraft = Minecraft::GetInstance();
 
-                    if (playerInEnd && !GetIsPlayingEndMusic()) {
-                        m_StreamState = eMusicStreamState_Stop;
-
-                        // Set the end track
-                        m_musicID = getMusicID(LevelData::DIMENSION_END);
-                        SetIsPlayingEndMusic(true);
-                        SetIsPlayingNetherMusic(false);
-                    } else if (!playerInEnd && GetIsPlayingEndMusic()) {
-                        if (playerInNether) {
-                            m_StreamState = eMusicStreamState_Stop;
-
-                            // Set the end track
-                            m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
-                            SetIsPlayingEndMusic(false);
-                            SetIsPlayingNetherMusic(true);
-                        } else {
-                            m_StreamState = eMusicStreamState_Stop;
-
-                            // Set the end track
-                            m_musicID =
-                                getMusicID(LevelData::DIMENSION_OVERWORLD);
-                            SetIsPlayingEndMusic(false);
-                            SetIsPlayingNetherMusic(false);
-                        }
-                    } else if (playerInNether && !GetIsPlayingNetherMusic()) {
-                        m_StreamState = eMusicStreamState_Stop;
-                        // set the Nether track
-                        m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
-                        SetIsPlayingNetherMusic(true);
-                        SetIsPlayingEndMusic(false);
-                    } else if (!playerInNether && GetIsPlayingNetherMusic()) {
-                        if (playerInEnd) {
-                            m_StreamState = eMusicStreamState_Stop;
-                            // set the Nether track
-                            m_musicID = getMusicID(LevelData::DIMENSION_END);
-                            SetIsPlayingNetherMusic(false);
-                            SetIsPlayingEndMusic(true);
-                        } else {
-                            m_StreamState = eMusicStreamState_Stop;
-                            // set the Nether track
-                            m_musicID =
-                                getMusicID(LevelData::DIMENSION_OVERWORLD);
-                            SetIsPlayingNetherMusic(false);
-                            SetIsPlayingEndMusic(false);
-                        }
-                    }
-
-                    // volume change required?
-                    if (m_musicStreamActive) {
-                        float finalVolume =
-                            m_StreamingAudioInfo.volume * fMusicVol;
-
-                        ma_sound_set_volume(&m_musicStream, finalVolume);
+                for (unsigned int i = 0; i < MAX_LOCAL_PLAYERS; ++i) {
+                    if (pMinecraft->localplayers[i]) {
+                        if (pMinecraft->localplayers[i]->dimension ==
+                            LevelData::DIMENSION_END)
+                            playerInEnd = true;
+                        else if (pMinecraft->localplayers[i]->dimension ==
+                                 LevelData::DIMENSION_NETHER)
+                            playerInNether = true;
                     }
                 }
-            } else {
-                // Music disc playing - if it's a 3D stream, then set the
-                // position - we don't have any streaming audio in the world
-                // that moves, so this isn't required unless we have more than
-                // one listener, and are setting the listening position to the
-                // origin and setting a fake position for the sound down  the z
-                // axis
-                if (m_StreamingAudioInfo.bIs3D && m_validListenerCount > 1) {
-                    int iClosestListener = 0;
-                    float fClosestDist = 1e6f;
 
-                    for (size_t i = 0; i < MAX_LOCAL_PLAYERS; i++) {
-                        if (m_ListenerA[i].bValid) {
-                            float dx = m_StreamingAudioInfo.x -
-                                       m_ListenerA[i].vPosition.x;
-                            float dy = m_StreamingAudioInfo.y -
-                                       m_ListenerA[i].vPosition.y;
-                            float dz = m_StreamingAudioInfo.z -
-                                       m_ListenerA[i].vPosition.z;
-                            float dist = sqrtf(dx * dx + dy * dy + dz * dz);
+                // Handle Dimension Switching
+                bool needsStop = false;
+                if (playerInEnd && !GetIsPlayingEndMusic()) {
+                    m_musicID = getMusicID(LevelData::DIMENSION_END);
+                    SetIsPlayingEndMusic(true);
+                    SetIsPlayingNetherMusic(false);
+                    needsStop = true;
+                } else if (!playerInEnd && GetIsPlayingEndMusic()) {
+                    m_musicID =
+                        playerInNether
+                            ? getMusicID(LevelData::DIMENSION_NETHER)
+                            : getMusicID(LevelData::DIMENSION_OVERWORLD);
+                    SetIsPlayingEndMusic(false);
+                    SetIsPlayingNetherMusic(playerInNether);
+                    needsStop = true;
+                } else if (playerInNether && !GetIsPlayingNetherMusic()) {
+                    m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
+                    SetIsPlayingNetherMusic(true);
+                    SetIsPlayingEndMusic(false);
+                    needsStop = true;
+                } else if (!playerInNether && GetIsPlayingNetherMusic()) {
+                    m_musicID =
+                        playerInEnd
+                            ? getMusicID(LevelData::DIMENSION_END)
+                            : getMusicID(LevelData::DIMENSION_OVERWORLD);
+                    SetIsPlayingNetherMusic(false);
+                    SetIsPlayingEndMusic(playerInEnd);
+                    needsStop = true;
+                }
 
-                            if (dist < fClosestDist) {
-                                fClosestDist = dist;
-                                iClosestListener = i;
-                            }
+                if (needsStop) m_StreamState = eMusicStreamState_Stop;
+
+                // volume change required?
+                if (m_musicStreamActive)
+                    ma_sound_set_volume(
+                        &m_musicStream,
+                        m_StreamingAudioInfo.volume * fMusicVol);
+
+            } else if (m_StreamingAudioInfo.bIs3D && m_validListenerCount > 1 &&
+                       m_musicStreamActive) {
+                float fClosestDist = 1e6f;
+                int iClosest = 0;
+                for (size_t i = 0; i < MAX_LOCAL_PLAYERS; i++) {
+                    if (m_ListenerA[i].bValid) {
+                        float dist = sqrtf(powf(m_StreamingAudioInfo.x -
+                                                    m_ListenerA[i].vPosition.x,
+                                                2) +
+                                           powf(m_StreamingAudioInfo.y -
+                                                    m_ListenerA[i].vPosition.y,
+                                                2) +
+                                           powf(m_StreamingAudioInfo.z -
+                                                    m_ListenerA[i].vPosition.z,
+                                                2));
+                        if (dist < fClosestDist) {
+                            fClosestDist = dist;
+                            iClosest = i;
                         }
                     }
-
-                    float relX = m_StreamingAudioInfo.x -
-                                 m_ListenerA[iClosestListener].vPosition.x;
-                    float relY = m_StreamingAudioInfo.y -
-                                 m_ListenerA[iClosestListener].vPosition.y;
-                    float relZ = m_StreamingAudioInfo.z -
-                                 m_ListenerA[iClosestListener].vPosition.z;
-
-                    if (m_musicStreamActive) {
-                        ma_sound_set_position(&m_musicStream, relX, relY, relZ);
-                    }
                 }
+                ma_sound_set_position(
+                    &m_musicStream,
+                    m_StreamingAudioInfo.x - m_ListenerA[iClosest].vPosition.x,
+                    m_StreamingAudioInfo.y - m_ListenerA[iClosest].vPosition.y,
+                    m_StreamingAudioInfo.z - m_ListenerA[iClosest].vPosition.z);
             }
-
             break;
 
-        case eMusicStreamState_Completed: {
-            // random delay of up to 3 minutes for music
-            m_iMusicDelay = random->nextInt(
-                20 * 60 * 3);  // random->nextInt(20 * 60 * 10) + 20 * 60 * 10;
-            // Check if we have a local player in The Nether or in The End, and
-            // play that music if they are
-            Minecraft* pMinecraft = Minecraft::GetInstance();
-            bool playerInEnd = false;
-            bool playerInNether = false;
-
-            for (unsigned int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
-                if (pMinecraft->localplayers[i] != nullptr) {
-                    if (pMinecraft->localplayers[i]->dimension ==
-                        LevelData::DIMENSION_END) {
-                        playerInEnd = true;
-                    } else if (pMinecraft->localplayers[i]->dimension ==
-                               LevelData::DIMENSION_NETHER) {
-                        playerInNether = true;
+        case eMusicStreamState_Completed:
+            m_iMusicDelay = random->nextInt(20 * 60 * 3);
+            {
+                int dim = LevelData::DIMENSION_OVERWORLD;
+                Minecraft* pMc = Minecraft::GetInstance();
+                for (int i = 0; i < MAX_LOCAL_PLAYERS; i++) {
+                    if (pMc->localplayers[i]) {
+                        dim = pMc->localplayers[i]->dimension;
+                        break;
                     }
                 }
+                m_musicID = getMusicID(dim);
+                SetIsPlayingEndMusic(dim == LevelData::DIMENSION_END);
+                SetIsPlayingNetherMusic(dim == LevelData::DIMENSION_NETHER);
             }
-            if (playerInEnd) {
-                m_musicID = getMusicID(LevelData::DIMENSION_END);
-                SetIsPlayingEndMusic(true);
-                SetIsPlayingNetherMusic(false);
-            } else if (playerInNether) {
-                m_musicID = getMusicID(LevelData::DIMENSION_NETHER);
-                SetIsPlayingNetherMusic(true);
-                SetIsPlayingEndMusic(false);
-            } else {
-                m_musicID = getMusicID(LevelData::DIMENSION_OVERWORLD);
-                SetIsPlayingNetherMusic(false);
-                SetIsPlayingEndMusic(false);
-            }
-
             m_StreamState = eMusicStreamState_Idle;
-        } break;
+            break;
     }
 
     // check the status of the stream - this is for when a track completes
     // rather than is stopped by the user action
 
-    if (m_musicStreamActive) {
-        if (!ma_sound_is_playing(&m_musicStream) &&
-            ma_sound_at_end(&m_musicStream)) {
-            ma_sound_uninit(&m_musicStream);
-            m_musicStreamActive = false;
-
-            SetIsPlayingStreamingCDMusic(false);
-            SetIsPlayingStreamingGameMusic(false);
-
-            m_StreamState = eMusicStreamState_Completed;
-        }
+    if (m_musicStreamActive && !ma_sound_is_playing(&m_musicStream) &&
+        ma_sound_at_end(&m_musicStream)) {
+        ma_sound_uninit(&m_musicStream);
+        m_musicStreamActive = false;
+        SetIsPlayingStreamingCDMusic(false);
+        SetIsPlayingStreamingGameMusic(false);
+        m_StreamState = eMusicStreamState_Completed;
     }
 }
 
@@ -2053,7 +1816,8 @@ F32 AILCALLBACK custom_falloff_function(HSAMPLE S, F32 distance,
 }
 #endif
 
-// Universal, these functions shouldn't need platform specific implementations
+// Universal, these functions shouldn't need platform specific
+// implementations
 void SoundEngine::updateMusicVolume(float fVal) { m_MasterMusicVolume = fVal; }
 void SoundEngine::updateSystemMusicPlaying(bool isPlaying) {
     m_bSystemMusicPlaying = isPlaying;

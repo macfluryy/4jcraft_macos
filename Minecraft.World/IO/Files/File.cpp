@@ -2,6 +2,7 @@
 #include "FileFilter.h"
 #include "../../Level/Storage/McRegionLevelStorageSource.h"
 #include "File.h"
+#include "PathHelper.h"
 
 #include <chrono>
 #include <filesystem>
@@ -41,17 +42,54 @@ File::File(const File& parent, const std::wstring& child) {
 
 // Creates a new File instance by converting the given pathname string into an
 // abstract pathname.
-File::File(const std::wstring& pathname)  //: parent( NULL )
-{
-    // #ifndef _CONTENT_PACKAGE
-    // 	char buf[256];
-    // 	wcstombs(buf, pathname.c_str(), 256);
-    // 	printf("File::File - %s\n",buf);
-    // #endif
-    if (pathname.empty())
-        m_abstractPathName = std::wstring(L"");
-    else
-        m_abstractPathName = pathname;
+
+File::File(const std::wstring& pathname) {
+    if (pathname.empty()) {
+        m_abstractPathName = L"";
+        return;
+    }
+
+    std::wstring fixedPath = pathname;
+    for (size_t i = 0; i < fixedPath.length(); ++i) {
+        if (fixedPath[i] == L'\\') fixedPath[i] = L'/';
+    }
+    size_t dpos;
+    while ((dpos = fixedPath.find(L"//")) != std::wstring::npos)
+        fixedPath.erase(dpos, 1);
+    if (fixedPath.find(L"GAME:/") == 0) fixedPath = fixedPath.substr(6);
+    m_abstractPathName = fixedPath;
+
+#if defined(__linux__)
+    std::string request = wstringtofilename(m_abstractPathName);
+    while (!request.empty() && request[0] == '/') request.erase(0, 1);
+    if (request.find("res/") == 0) request.erase(0, 4);
+
+    std::string exeDir = PathHelper::GetExecutableDirA();
+    std::string fileName = request;
+    size_t lastSlash = fileName.find_last_of('/');
+    if (lastSlash != std::string::npos)
+        fileName = fileName.substr(lastSlash + 1);
+
+    const char* bases[] = {"/",
+                           "/Common/res/TitleUpdate/res/",
+                           "/Common/Media/",
+                           "/Common/res/",
+                           "/Common/",
+                           "/Minecraft.Assets/"};
+
+    for (const char* base : bases) {
+        std::string tryFull = exeDir + base + request;
+        std::string tryFile = exeDir + base + fileName;
+        if (access(tryFull.c_str(), F_OK) != -1) {
+            m_abstractPathName = convStringToWstring(tryFull);
+            return;
+        }
+        if (access(tryFile.c_str(), F_OK) != -1) {
+            m_abstractPathName = convStringToWstring(tryFile);
+            return;
+        }
+    }
+#endif
 
 #ifdef _WINDOWS64
     std::string path = wstringtofilename(m_abstractPathName);

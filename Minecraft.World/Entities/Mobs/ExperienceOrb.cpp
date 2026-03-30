@@ -84,7 +84,7 @@ void ExperienceOrb::tick() {
         playSound(eSoundType_RANDOM_FIZZ, 0.4f,
                   2.0f + random->nextFloat() * 0.4f);
     }
-    checkInTile(x, (bb->y0 + bb->y1) / 2, z);
+    checkInTile(x, (bb.y0 + bb.y1) / 2, z);
 
     double maxDist = 8;
     // 4J - PC Comment
@@ -121,7 +121,7 @@ void ExperienceOrb::tick() {
     float friction = 0.98f;
     if (onGround) {
         friction = 0.6f * 0.98f;
-        int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1,
+        int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
                                Mth::floor(z));
         if (t > 0) {
             friction = Tile::tiles[t]->friction * 0.98f;
@@ -145,7 +145,7 @@ void ExperienceOrb::tick() {
 }
 
 bool ExperienceOrb::updateInWaterState() {
-    return level->checkAndHandleWater(bb, Material::water, shared_from_this());
+    return level->checkAndHandleWater(&bb, Material::water, shared_from_this());
 }
 
 void ExperienceOrb::burn(int dmg) { hurt(DamageSource::inFire, dmg); }

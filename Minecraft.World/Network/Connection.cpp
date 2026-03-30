@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../Platform/stdafx.h"
 #include "../IO/Streams/InputOutputStream.h"
 #include "Socket.h"
@@ -552,7 +555,7 @@ int Connection::runRead(void* lpParam) {
         while (con->readTick());
 
         // try {
-        // Sleep(100L);
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100L));
         // TODO - 4J Stu - 1.8.2 changes these sleeps to 2L, but not sure
         // whether we should do that as well
         con->m_hWakeReadThread->WaitForSignal(100L);
@@ -601,7 +604,7 @@ int Connection::runWrite(void* lpParam) {
         ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads)) {
         while (con->writeTick());
 
-        // Sleep(100L);
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100L));
         //  TODO - 4J Stu - 1.8.2 changes these sleeps to 2L, but not sure
         //  whether we should do that as well
         waitResult = con->m_hWakeWriteThread->WaitForSignal(100L);

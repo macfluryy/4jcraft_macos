@@ -32,7 +32,6 @@ void InventoryScreen::render(int xm, int ym, float a) {
 }
 
 void InventoryScreen::renderBg(float a) {
-    // 4J Unused
 #ifdef ENABLE_JAVA_GUIS
     int tex = minecraft->textures->loadTexture(TN_GUI_INVENTORY);
     glColor4f(1, 1, 1, 1);

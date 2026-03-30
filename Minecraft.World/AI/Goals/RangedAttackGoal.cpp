@@ -67,7 +67,7 @@ void RangedAttackGoal::tick() {
     if (target.lock() == NULL) return;
 
     double targetDistSqr = mob->distanceToSqr(
-        target.lock()->x, target.lock()->bb->y0, target.lock()->z);
+        target.lock()->x, target.lock()->bb.y0, target.lock()->z);
     bool canSee = mob->getSensing()->canSee(target.lock());
 
     if (canSee) {

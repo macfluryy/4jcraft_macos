@@ -4,6 +4,8 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "UIScene_EnchantingMenu.h"
+
+
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,
                                                UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {

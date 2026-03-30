@@ -19,6 +19,7 @@ UIScene::UIScene(int iPad, UILayer* parentLayer) {
     m_bVisible = true;
     m_bCanHandleInput = false;
     m_bIsReloading = false;
+    m_hasSetSafeZoneMethod = false;
 
     m_iFocusControl = -1;
     m_iFocusChild = 0;
@@ -53,6 +54,7 @@ void UIScene::destroyMovie() {
     /* Destroy the Iggy player. */
     IggyPlayerDestroy(swf);
     swf = NULL;
+    m_hasSetSafeZoneMethod = false;
 
     // Clear out the controls collection (doesn't delete the controls, and they
     // get re-setup later)
@@ -76,6 +78,7 @@ void UIScene::reloadMovie(bool force) {
         // Clear out the controls collection (doesn't delete the controls, and
         // they get re-setup later)
         m_controls.clear();
+        m_hasSetSafeZoneMethod = false;
 
         // Clear out all the fast names for the current movie
         m_fastNames.clear();
@@ -190,6 +193,8 @@ void UIScene::updateSafeZone() {
 
 void UIScene::setSafeZone(S32 safeTop, S32 safeBottom, S32 safeLeft,
                           S32 safeRight) {
+    if (!m_hasSetSafeZoneMethod) return;
+
     IggyDataValue result;
     IggyDataValue value[4];
 
@@ -230,6 +235,13 @@ bool UIScene::mapElementsAndNames() {
     m_funcSetAlpha = registerFastName(L"SetAlpha");
     m_funcSetFocus = registerFastName(L"SetFocus");
     m_funcHorizontalResizeCheck = registerFastName(L"DoHorizontalResizeCheck");
+
+    IggyDatatype safeZoneType = IGGY_DATATYPE__invalid_request;
+    IggyResult safeZoneResult = IggyValueGetTypeRS(
+        m_rootPath, m_funcSetSafeZone, NULL, &safeZoneType);
+    m_hasSetSafeZoneMethod =
+        safeZoneResult == IGGY_RESULT_SUCCESS &&
+        safeZoneType == IGGY_DATATYPE_function;
     return true;
 }
 
@@ -633,7 +645,7 @@ void UIScene::_customDrawSlotControl(CustomDrawData* region, int iPad,
     }
     glEnable(GL_RESCALE_NORMAL);
     glPushMatrix();
-    Lighting::turnOnGui();
+    Lighting::turnOn();
     glRotatef(120, 1, 0, 0);
     glPopMatrix();
 

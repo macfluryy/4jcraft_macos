@@ -56,6 +56,10 @@ Gui::Gui(Minecraft* minecraft) {
     tbr = 1.0f;
     fAlphaIncrementPerCent = 255.0f / 100.0f;
 
+    // 4jcraft: backported item switch tooltip display from 1.6.4
+    remainingHighlightTicks = 0;
+    highlightingItemStack = nullptr;
+
     this->minecraft = minecraft;
 
     lastTickA = 0.0f;
@@ -811,6 +815,31 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
     }
 
 #if RENDER_HUD
+    // 4jcraft: backported item switch tooltip display from 1.6.4
+    if (remainingHighlightTicks > 0 && highlightingItemStack != nullptr) {
+        std::wstring displayName = highlightingItemStack->getHoverName();
+        int x = (screenWidth - font->width(displayName)) / 2;
+        int y = screenHeight - 89;
+
+        if (!minecraft->gameMode->canHurtPlayer()) {
+            y += 14;
+        }
+
+        int alpha = (int)((float)remainingHighlightTicks * 256.0f / 10.0f);
+        if (alpha > 255) alpha = 255;
+        if (alpha > 0) {
+            glPushMatrix();
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            int color = 0xFFFFFF | (alpha << 24);
+            font->drawShadow(displayName, x, y, color);
+
+            glDisable(GL_BLEND);
+            glPopMatrix();
+        }
+    }
+
     // Moved so the opacity blend is applied to it
     if (bDisplayGui && minecraft->gameMode->hasExperience() &&
         minecraft->player->experienceLevel > 0) {
@@ -1260,7 +1289,8 @@ void Gui::renderSlot(int slot, int x, int y, float a) {
     }
 
     itemRenderer->renderAndDecorateItem(minecraft->font, minecraft->textures,
-                                        item, x, y);
+                                        item, x, y, 1.0f, 1.0f, 1.0f,
+                                        item->isFoil(), false);
 
     if (pop > 0) {
         glPopMatrix();
@@ -1273,6 +1303,27 @@ void Gui::renderSlot(int slot, int x, int y, float a) {
 void Gui::tick() {
     if (overlayMessageTime > 0) overlayMessageTime--;
     tickCount++;
+
+    // 4jcraft: backported item switch tooltip display from 1.6.4
+    if (minecraft->player != nullptr) {
+        std::shared_ptr<ItemInstance> currentItem =
+            minecraft->player->inventory->getSelected();
+
+        if (currentItem == nullptr) {
+            remainingHighlightTicks = 0;
+        } else if (highlightingItemStack != nullptr &&
+                   currentItem->id == highlightingItemStack->id &&
+                   currentItem->sameItemWithTags(highlightingItemStack) &&
+                   (currentItem->isDamageableItem() ||
+                    currentItem->getDamageValue() ==
+                        highlightingItemStack->getDamageValue())) {
+            if (remainingHighlightTicks > 0) --remainingHighlightTicks;
+        } else {
+            remainingHighlightTicks = 40;
+        }
+
+        highlightingItemStack = currentItem;
+    }
 
     for (int iPad = 0; iPad < XUSER_MAX_COUNT; iPad++) {
         // 4J Stu - Fix for #10929 - MP LAB: Network Disconnects: Host does not

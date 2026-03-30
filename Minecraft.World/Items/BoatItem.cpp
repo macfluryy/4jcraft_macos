@@ -5,6 +5,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "ItemInstance.h"
+#include "Util/Vec3.h"
 #include "BoatItem.h"
 
 BoatItem::BoatItem(int id) : Item(id) { maxStackSize = 1; }
@@ -24,7 +25,7 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
         player->yo + (player->y - player->yo) + 1.62 - player->heightOffset;
     double z = player->zo + (player->z - player->zo);
 
-    Vec3* from = Vec3::newTemp(x, y, z);
+    Vec3 from(x, y, z);
 
     float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
     float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
@@ -36,8 +37,9 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = from->add(xa * range, ya * range, za * range);
-    HitResult* hr = level->clip(from, to, true);
+    Vec3 to(xa * range, ya * range, za * range);
+    to = to.add(from.x, from.y, from.z);
+    HitResult* hr = level->clip(&from, &to, true);
     if (hr == NULL) return false;
 
     if (hr->type == HitResult::TILE) {
@@ -60,7 +62,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
         player->yo + (player->y - player->yo) * a + 1.62 - player->heightOffset;
     double z = player->zo + (player->z - player->zo) * a;
 
-    Vec3* from = Vec3::newTemp(x, y, z);
+    Vec3 from(x, y, z);
 
     float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
     float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
@@ -72,26 +74,27 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     float za = yCos * xCos;
 
     double range = 5;
-    Vec3* to = from->add(xa * range, ya * range, za * range);
-    HitResult* hr = level->clip(from, to, true);
+    Vec3 to(xa * range, ya * range, za * range);
+    to = to.add(from.x, from.y, from.z);
+    HitResult* hr = level->clip(&from, &to, true);
     if (hr == NULL) return itemInstance;
 
     // check entity collision
-    Vec3* b = player->getViewVector(a);
+    Vec3 b = player->getViewVector(a);
     bool hitEntity = false;
     float overlap = 1;
-    std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        player,
-        player->bb->expand(b->x * (range), b->y * (range), b->z * (range))
-            ->grow(overlap, overlap, overlap));
+    AABB grown = player->bb.expand(b.x * (range), b.y * (range), b.z * (range))
+                     .grow(overlap, overlap, overlap);
+    std::vector<std::shared_ptr<Entity> >* objects =
+        level->getEntities(player, &grown);
     // for (int i = 0; i < objects.size(); i++) {
     for (AUTO_VAR(it, objects->begin()); it != objects->end(); ++it) {
         std::shared_ptr<Entity> e = *it;  // objects.get(i);
         if (!e->isPickable()) continue;
 
         float rr = e->getPickRadius();
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        if (bb->contains(from)) {
+        AABB bb = e->bb.grow(rr, rr, rr);
+        if (bb.contains(from)) {
             hitEntity = true;
         }
     }
@@ -113,8 +116,8 @@ std::shared_ptr<ItemInstance> BoatItem::use(
             boat->yRot =
                 ((Mth::floor(player->yRot * 4.0F / 360.0F + 0.5) & 0x3) - 1) *
                 90;
-            if (!level->getCubes(boat, boat->bb->grow(-.1, -.1, -.1))
-                     ->empty()) {
+            AABB grown = boat->bb.grow(-0.1, -0.1, -0.1);
+            if (!level->getCubes(boat, &grown)->empty()) {
                 return itemInstance;
             }
             if (!level->isClientSide) {

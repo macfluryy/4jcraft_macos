@@ -20,7 +20,7 @@ float SkyIslandDimension::getTimeOfDay(int64_t time, float a) const {
 
 float* SkyIslandDimension::getSunriseColor(float td, float a) { return NULL; }
 
-Vec3* SkyIslandDimension::getFogColor(float td, float a) const {
+Vec3 SkyIslandDimension::getFogColor(float td, float a) const {
     int fogColor = 0x8080a0;
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
@@ -33,7 +33,7 @@ Vec3* SkyIslandDimension::getFogColor(float td, float a) const {
     g *= br * 0.94f + 0.06f;
     b *= br * 0.91f + 0.09f;
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
 bool SkyIslandDimension::hasGround() { return false; }

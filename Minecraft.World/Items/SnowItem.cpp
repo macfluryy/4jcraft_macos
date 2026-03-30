@@ -3,6 +3,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "SnowItem.h"
+#include "Util/AABB.h"
 
 SnowItem::SnowItem(int id, Tile* parentTile)
     : AuxDataTileItem(id, parentTile) {}
@@ -22,8 +23,9 @@ bool SnowItem::useOn(std::shared_ptr<ItemInstance> instance,
         int currentData = level->getData(x, y, z);
         int currentHeight = currentData & TopSnowTile::HEIGHT_MASK;
 
+        auto snow_bb = snowTile->getAABB(level, x, y, z);
         if (currentHeight <= TopSnowTile::MAX_HEIGHT &&
-            level->isUnobstructed(snowTile->getAABB(level, x, y, z))) {
+            level->isUnobstructed(snow_bb.has_value() ? &*snow_bb : nullptr)) {
             if (!bTestUseOnOnly) {
                 // Increase snow tile height
                 if (level->setData(

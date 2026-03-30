@@ -46,6 +46,7 @@
 #include "../ClientConstants.h"
 #include "../../Minecraft.World/Util/SoundTypes.h"
 #include "../Textures/Packs/TexturePackRepository.h"
+#include "UI/Screens/MerchantScreen.h"
 #include "../Platform/Common/UI/UI.h"
 #include "../Textures/Packs/DLCTexturePack.h"
 
@@ -945,7 +946,7 @@ void ClientConnection::handleMovePlayer(
     player->xd = player->yd = player->zd = 0;
     player->absMoveTo(x, y, z, yRot, xRot);
     packet->x = player->x;
-    packet->y = player->bb->y0;
+    packet->y = player->bb.y0;
     packet->z = player->z;
     packet->yView = player->y;
     connection->send(packet);
@@ -3235,6 +3236,17 @@ void ClientConnection::handleCustomPayload(
         ByteArrayInputStream bais(customPayloadPacket->data);
         DataInputStream input(&bais);
         int containerId = input.readInt();
+#ifdef ENABLE_JAVA_GUIS
+        // 4jcraft: use the java gui getMerchant() to get trader as we don't
+        // have iggy's screen anymore
+        if (minecraft->screen &&
+            dynamic_cast<MerchantScreen*>(minecraft->screen) &&
+            containerId == minecraft->localplayers[m_userIndex]
+                               ->containerMenu->containerId) {
+            std::shared_ptr<Merchant> trader = nullptr;
+            MerchantScreen* screen = (MerchantScreen*)minecraft->screen;
+            trader = screen->getMerchant();
+#else
         if (ui.IsSceneInStack(m_userIndex, eUIScene_TradingMenu) &&
             containerId == minecraft->localplayers[m_userIndex]
                                ->containerMenu->containerId) {
@@ -3243,7 +3255,8 @@ void ClientConnection::handleCustomPayload(
             UIScene* scene = ui.GetTopScene(m_userIndex, eUILayer_Scene);
             UIScene_TradingMenu* screen = (UIScene_TradingMenu*)scene;
             trader = screen->getMerchant();
-
+#endif
+#endif
             MerchantRecipeList* recipeList =
                 MerchantRecipeList::createFromStream(&input);
             trader->overrideOffers(recipeList);

@@ -44,10 +44,10 @@ void Boat::defineSynchedData() {
 }
 
 AABB* Boat::getCollideAgainstBox(std::shared_ptr<Entity> entity) {
-    return entity->bb;
+    return &entity->bb;
 }
 
-AABB* Boat::getCollideBox() { return bb; }
+AABB* Boat::getCollideBox() { return &bb; }
 
 bool Boat::isPushable() { return true; }
 
@@ -165,10 +165,10 @@ void Boat::tick() {
     int steps = 5;
     double waterPercentage = 0;
     for (int i = 0; i < steps; i++) {
-        double y0 = bb->y0 + (bb->y1 - bb->y0) * (i + 0) / steps - 2 / 16.0f;
-        double y1 = bb->y0 + (bb->y1 - bb->y0) * (i + 1) / steps - 2 / 16.0f;
-        AABB* bb2 = AABB::newTemp(bb->x0, y0, bb->z0, bb->x1, y1, bb->z1);
-        if (level->containsLiquid(bb2, Material::water)) {
+        double y0 = bb.y0 + (bb.y1 - bb.y0) * (i + 0) / steps - 2 / 16.0f;
+        double y1 = bb.y0 + (bb.y1 - bb.y0) * (i + 1) / steps - 2 / 16.0f;
+        AABB bb2(bb.x0, y0, bb.z0, bb.x1, y1, bb.z1);
+        if (level->containsLiquid(&bb2, Material::water)) {
             waterPercentage += 1.0 / steps;
         }
     }
@@ -313,8 +313,9 @@ void Boat::tick() {
 
     if (level->isClientSide) return;
 
+    AABB grown = bb.grow(0.2, 0, 0.2);
     std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(shared_from_this(), bb->grow(0.2f, 0, 0.2f));
+        level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {

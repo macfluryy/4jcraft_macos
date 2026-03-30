@@ -2,6 +2,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "GrassTile.h"
 #include "PlantTile.h"
+#include "Util/AABB.h"
 
 void Bush::_init() {
     setTicking(true);
@@ -52,7 +53,7 @@ bool Bush::canSurvive(Level* level, int x, int y, int z) {
            mayPlaceOn(level->getTile(x, y - 1, z));
 }
 
-AABB* Bush::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> Bush::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 bool Bush::blocksLight() { return false; }
 

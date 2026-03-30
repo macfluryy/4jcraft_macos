@@ -5,8 +5,8 @@
 
 #pragma once
 
-//#include <xtl.h>
-//#include <xboxmath.h>
+// #include <xtl.h>
+// #include <xboxmath.h>
 
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
@@ -38,6 +38,7 @@ using namespace DirectX;
 
 #define HRESULT_SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
 #endif
+
 
 #include "../../Minecraft.World/Platform/x64headers/extraX64.h"
 

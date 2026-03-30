@@ -114,14 +114,15 @@ bool EnderMan::isLookingAtMe(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> helmet = player->inventory->armor[3];
     if (helmet != NULL && helmet->id == Tile::pumpkin_Id) return false;
 
-    Vec3* look = player->getViewVector(1)->normalize();
-    Vec3* dir = Vec3::newTemp(
-        x - player->x,
-        (bb->y0 + bbHeight / 2) - (player->y + player->getHeadHeight()),
-        z - player->z);
-    double dist = dir->length();
-    dir = dir->normalize();
-    double dot = look->dot(dir);
+    Vec3 look = player->getViewVector(1).normalize();
+
+    Vec3 dir{x - player->x,
+             (bb.y0 + bbHeight / 2) - (player->y + player->getHeadHeight()),
+             z - player->z};
+
+    double dist = dir.length();
+    dir = dir.normalize();
+    double dot = look.dot(dir);
     if (dot > 1 - 0.025 / dist) {
         return player->canSee(shared_from_this());
     }
@@ -249,13 +250,13 @@ bool EnderMan::teleport() {
 }
 
 bool EnderMan::teleportTowards(std::shared_ptr<Entity> e) {
-    Vec3* dir = Vec3::newTemp(
-        x - e->x, bb->y0 + bbHeight / 2 - e->y + e->getHeadHeight(), z - e->z);
-    dir = dir->normalize();
+    Vec3 dir{x - e->x, bb.y0 + bbHeight / 2 - e->y + e->getHeadHeight(),
+             z - e->z};
+    dir = dir.normalize();
     double d = 16;
-    double xx = x + (random->nextDouble() - 0.5) * 8 - dir->x * d;
-    double yy = y + (random->nextInt(16) - 8) - dir->y * d;
-    double zz = z + (random->nextDouble() - 0.5) * 8 - dir->z * d;
+    double xx = x + (random->nextDouble() - 0.5) * 8 - dir.x * d;
+    double yy = y + (random->nextInt(16) - 8) - dir.y * d;
+    double zz = z + (random->nextDouble() - 0.5) * 8 - dir.z * d;
     return teleport(xx, yy, zz);
 }
 
@@ -285,8 +286,8 @@ bool EnderMan::teleport(double xx, double yy, double zz) {
         }
         if (landed) {
             setPos(x, y, z);
-            if (level->getCubes(shared_from_this(), bb)->empty() &&
-                !level->containsAnyLiquid(bb)) {
+            if (level->getCubes(shared_from_this(), &bb)->empty() &&
+                !level->containsAnyLiquid(&bb)) {
                 ok = true;
             }
         }

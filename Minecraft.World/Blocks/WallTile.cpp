@@ -80,7 +80,7 @@ void WallTile::updateShape(LevelSource* level, int x, int y, int z,
     setShape(west, 0, north, east, up, south);
 }
 
-AABB* WallTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> WallTile::getAABB(Level* level, int x, int y, int z) {
     // 4J-JEV: Changed to avoid race conditions associated with calling update
     // shape.
 
@@ -125,7 +125,7 @@ AABB* WallTile::getAABB(Level* level, int x, int y, int z) {
         // south = .5f + WALL_WIDTH;
     }
 
-    return AABB::newTemp(x + west, y, z + north, x + east, y + 1.5f, z + south);
+    return AABB(x + west, y, z + north, x + east, y + 1.5f, z + south);
 }
 
 bool WallTile::connectsTo(LevelSource* level, int x, int y, int z) {

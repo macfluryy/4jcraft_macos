@@ -398,7 +398,7 @@ void PlayerList::validatePlayerSpawnPosition(
                     player->y, player->z, player->dimension);
 
     ServerLevel* level = server->getLevel(player->dimension);
-    while (level->getCubes(player, player->bb)->size() != 0) {
+    while (level->getCubes(player, &player->bb)->size() != 0) {
         player->setPos(player->x, player->y + 1, player->z);
     }
     app.DebugPrintf("Final pos is %f, %f, %f in dimension %d\n", player->x,
@@ -438,7 +438,7 @@ void PlayerList::validatePlayerSpawnPosition(
             }
             delete bedPosition;
         }
-        while (level->getCubes(player, player->bb)->size() != 0) {
+        while (level->getCubes(player, &player->bb)->size() != 0) {
             player->setPos(player->x, player->y + 1, player->z);
         }
 
@@ -731,7 +731,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     // Ensure the area the player is spawning in is loaded!
     level->cache->create(((int)player->x) >> 4, ((int)player->z) >> 4);
 
-    while (!level->getCubes(player, player->bb)->empty()) {
+    while (!level->getCubes(player, &player->bb)->empty()) {
         player->setPos(player->x, player->y + 1, player->z);
     }
 

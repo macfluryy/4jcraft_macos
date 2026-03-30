@@ -16,14 +16,14 @@ void CritParticle::_init(Level* level, std::shared_ptr<Entity> entity,
 }
 
 CritParticle::CritParticle(Level* level, std::shared_ptr<Entity> entity)
-    : Particle(level, entity->x, entity->bb->y0 + entity->bbHeight / 2,
+    : Particle(level, entity->x, entity->bb.y0 + entity->bbHeight / 2,
                entity->z, entity->xd, entity->yd, entity->zd) {
     _init(level, entity, eParticleType_crit);
 }
 
 CritParticle::CritParticle(Level* level, std::shared_ptr<Entity> entity,
                            ePARTICLE_TYPE type)
-    : Particle(level, entity->x, entity->bb->y0 + entity->bbHeight / 2,
+    : Particle(level, entity->x, entity->bb.y0 + entity->bbHeight / 2,
                entity->z, entity->xd, entity->yd, entity->zd) {
     _init(level, entity, type);
 }
@@ -43,7 +43,7 @@ void CritParticle::tick() {
         if (xa * xa + ya * ya + za * za > 1) continue;
         double x = entity->x + xa * entity->bbWidth / 4;
         double y =
-            entity->bb->y0 + entity->bbHeight / 2 + ya * entity->bbHeight / 4;
+            entity->bb.y0 + entity->bbHeight / 2 + ya * entity->bbHeight / 4;
         double z = entity->z + za * entity->bbWidth / 4;
         level->addParticle(particleName, x, y, z, xa, ya + 0.2, za);
     }

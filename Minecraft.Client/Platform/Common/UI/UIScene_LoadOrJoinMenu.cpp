@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
 #include "UIScene_LoadOrJoinMenu.h"
@@ -837,12 +840,9 @@ int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
     UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
     pClass->m_bIgnoreInput = false;
     if (bRes) {
-        std::uint16_t ui16Text[128];
-        ZeroMemory(ui16Text, 128 * sizeof(std::uint16_t));
-        InputManager.GetText(ui16Text);
-
+        const char* text = InputManager.GetText();
         // check the name is valid
-        if (ui16Text[0] != 0) {
+        if (text[0] != '\0') {
         } else {
             pClass->m_bIgnoreInput = false;
             pClass->updateTooltips();
@@ -2122,7 +2122,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
             // waiting to dismiss the dialog
             break;
         }
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
     m_bSaveTransferRunning = false;
     return 0;
@@ -2271,7 +2271,7 @@ int UIScene_LoadOrJoinMenu::UploadSonyCrossSaveThreadProc(void* lpParameter) {
                 // waiting for dialog to be dismissed
                 break;
         }
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     return 0;
@@ -2322,7 +2322,3 @@ int UIScene_LoadOrJoinMenu::SaveTransferDialogReturned(
     }
     return 0;
 }
-#endif
-
-
-

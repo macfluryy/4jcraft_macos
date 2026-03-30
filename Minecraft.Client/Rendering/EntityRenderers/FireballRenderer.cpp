@@ -78,7 +78,7 @@ void FireballRenderer::renderFlame(std::shared_ptr<Entity> e, double x,
     //        float yo = 0.0f;
 
     float h = e->bbHeight / s;
-    float yo = (float)(e->y - e->bb->y0);
+    float yo = (float)(e->y - e->bb.y0);
 
     // glRotatef(-entityRenderDispatcher->playerRotY, 0, 1, 0);
 

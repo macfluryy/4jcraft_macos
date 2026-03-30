@@ -2,6 +2,7 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "../Headers/net.minecraft.world.item.h"
 #include "WebTile.h"
+#include "Util/AABB.h"
 
 WebTile::WebTile(int id) : Tile(id, Material::web) {}
 
@@ -12,7 +13,7 @@ void WebTile::entityInside(Level* level, int x, int y, int z,
 
 bool WebTile::isSolidRender(bool isServerLevel) { return false; }
 
-AABB* WebTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> WebTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 int WebTile::getRenderShape() { return Tile::SHAPE_CROSS_TEXTURE; }
 

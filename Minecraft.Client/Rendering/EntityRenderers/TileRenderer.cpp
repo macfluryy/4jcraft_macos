@@ -1,6 +1,7 @@
 #include "../../Platform/stdafx.h"
 
 #include "TileRenderer.h"
+#include <array>
 #include "../GameRenderer.h"
 #include "../../Minecraft.h"
 #include "../../Textures/Textures.h"
@@ -10,6 +11,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.h"
 #include "../Tesselator.h"
+#include "../../Utils/FrameProfiler.h"
 #include "EntityTileRenderer.h"
 #include "../../GameState/Options.h"
 
@@ -258,7 +260,12 @@ bool TileRenderer::tesselateInWorld(
 {
     Tesselator* t = Tesselator::getInstance();
     int shape = tt->getRenderShape();
-    tt->updateShape(level, x, y, z, forceData, forceEntity);
+    if (shape == Tile::SHAPE_BLOCK) {
+        FRAME_PROFILE_SCOPE(ChunkBlockShape);
+        tt->updateShape(level, x, y, z, forceData, forceEntity);
+    } else {
+        tt->updateShape(level, x, y, z, forceData, forceEntity);
+    }
     // AP - now that the culling is done earlier we don't need to call setShape
     // until later on (only for SHAPE_BLOCK)
     if (shape != Tile::SHAPE_BLOCK) {
@@ -269,6 +276,11 @@ bool TileRenderer::tesselateInWorld(
     bool retVal = false;
     switch (shape) {
         case Tile::SHAPE_BLOCK: {
+            {
+                FRAME_PROFILE_SCOPE(ChunkBlockShape);
+                setShape(tt);
+            }
+
             // 4J - added these faceFlags so we can detect whether this block is
             // going to have no visible faces and early out the original code
             // checked noCulling and shouldRenderFace directly where faceFlags
@@ -281,6 +293,7 @@ bool TileRenderer::tesselateInWorld(
             if (noCulling) {
                 faceFlags = 0x3f;
             } else {
+                FRAME_PROFILE_SCOPE(ChunkBlockFaceCull);
                 // these block types can take advantage of a faster version of
                 // shouldRenderFace there are others but this is an easy check
                 // which covers the majority Note: This now covers rock, grass,
@@ -309,9 +322,6 @@ bool TileRenderer::tesselateInWorld(
                 retVal = false;
                 break;
             }
-
-            // now we need to set the shape
-            setShape(tt);
 
             retVal = tesselateBlockInWorld(tt, x, y, z, faceFlags);
         } break;
@@ -1037,9 +1047,8 @@ bool TileRenderer::tesselateAnvilInWorld(AnvilTile* tt, int x, int y, int z,
 
 float TileRenderer::tesselateAnvilPiece(AnvilTile* tt, int x, int y, int z,
                                         int part, float bottom, float width,
-                                        float height, float length,
-                                        bool rotate, bool render,
-                                        int data) {
+                                        float height, float length, bool rotate,
+                                        bool render, int data) {
     if (rotate) {
         float swap = width;
         width = length;
@@ -1810,58 +1819,58 @@ bool TileRenderer::tesselateLeverInWorld(Tile* tt, int x, int y, int z) {
     float u1 = tex->getU1(true);
     float v1 = tex->getV1(true);
 
-    Vec3* corners[8];
+    std::array<Vec3, 8> corners;
     float xv = 1.0f / 16.0f;
     float zv = 1.0f / 16.0f;
     float yv = 10.0f / 16.0f;
-    corners[0] = Vec3::newTemp(-xv, -0, -zv);
-    corners[1] = Vec3::newTemp(+xv, -0, -zv);
-    corners[2] = Vec3::newTemp(+xv, -0, +zv);
-    corners[3] = Vec3::newTemp(-xv, -0, +zv);
-    corners[4] = Vec3::newTemp(-xv, +yv, -zv);
-    corners[5] = Vec3::newTemp(+xv, +yv, -zv);
-    corners[6] = Vec3::newTemp(+xv, +yv, +zv);
-    corners[7] = Vec3::newTemp(-xv, +yv, +zv);
+    corners[0] = Vec3(-xv, -0, -zv);
+    corners[1] = Vec3(+xv, -0, -zv);
+    corners[2] = Vec3(+xv, -0, +zv);
+    corners[3] = Vec3(-xv, -0, +zv);
+    corners[4] = Vec3(-xv, +yv, -zv);
+    corners[5] = Vec3(+xv, +yv, -zv);
+    corners[6] = Vec3(+xv, +yv, +zv);
+    corners[7] = Vec3(-xv, +yv, +zv);
 
     for (int i = 0; i < 8; i++) {
         if (flipped) {
-            corners[i]->z -= 1 / 16.0f;
-            corners[i]->xRot(40 * PI / 180);
+            corners[i].z -= 1 / 16.0f;
+            corners[i].xRot(40 * PI / 180);
         } else {
-            corners[i]->z += 1 / 16.0f;
-            corners[i]->xRot(-40 * PI / 180);
+            corners[i].z += 1 / 16.0f;
+            corners[i].xRot(-40 * PI / 180);
         }
         if (dir == 0 || dir == 7) {
-            corners[i]->zRot(180 * PI / 180);
+            corners[i].zRot(180 * PI / 180);
         }
         if (dir == 6 || dir == 0) {
-            corners[i]->yRot(90 * PI / 180);
+            corners[i].yRot(90 * PI / 180);
         }
 
         if (dir > 0 && dir < 5) {
-            corners[i]->y -= 6 / 16.0f;
-            corners[i]->xRot(90 * PI / 180);
+            corners[i].y -= 6 / 16.0f;
+            corners[i].xRot(90 * PI / 180);
 
-            if (dir == 4) corners[i]->yRot(0 * PI / 180);
-            if (dir == 3) corners[i]->yRot(180 * PI / 180);
-            if (dir == 2) corners[i]->yRot(90 * PI / 180);
-            if (dir == 1) corners[i]->yRot(-90 * PI / 180);
+            if (dir == 4) corners[i].yRot(0 * PI / 180);
+            if (dir == 3) corners[i].yRot(180 * PI / 180);
+            if (dir == 2) corners[i].yRot(90 * PI / 180);
+            if (dir == 1) corners[i].yRot(-90 * PI / 180);
 
-            corners[i]->x += x + 0.5;
-            corners[i]->y += y + 8 / 16.0f;
-            corners[i]->z += z + 0.5;
+            corners[i].x += x + 0.5;
+            corners[i].y += y + 8 / 16.0f;
+            corners[i].z += z + 0.5;
         } else if (dir == 0 || dir == 7) {
-            corners[i]->x += x + 0.5;
-            corners[i]->y += y + 14 / 16.0f;
-            corners[i]->z += z + 0.5;
+            corners[i].x += x + 0.5;
+            corners[i].y += y + 14 / 16.0f;
+            corners[i].z += z + 0.5;
         } else {
-            corners[i]->x += x + 0.5;
-            corners[i]->y += y + 2 / 16.0f;
-            corners[i]->z += z + 0.5;
+            corners[i].x += x + 0.5;
+            corners[i].y += y + 2 / 16.0f;
+            corners[i].z += z + 0.5;
         }
     }
 
-    Vec3 *c0 = NULL, *c1 = NULL, *c2 = NULL, *c3 = NULL;
+    Vec3 c0, c1, c2, c3;
     for (int i = 0; i < 6; i++) {
         if (i == 0) {
             u0 = tex->getU(7, true);
@@ -1905,13 +1914,13 @@ bool TileRenderer::tesselateLeverInWorld(Tile* tt, int x, int y, int z) {
             c2 = corners[7];
             c3 = corners[4];
         }
-        t->vertexUV((float)(c0->x), (float)(c0->y), (float)(c0->z), (float)(u0),
+        t->vertexUV((float)(c0.x), (float)(c0.y), (float)(c0.z), (float)(u0),
                     (float)(v1));
-        t->vertexUV((float)(c1->x), (float)(c1->y), (float)(c1->z), (float)(u1),
+        t->vertexUV((float)(c1.x), (float)(c1.y), (float)(c1.z), (float)(u1),
                     (float)(v1));
-        t->vertexUV((float)(c2->x), (float)(c2->y), (float)(c2->z), (float)(u1),
+        t->vertexUV((float)(c2.x), (float)(c2.y), (float)(c2.z), (float)(u1),
                     (float)(v0));
-        t->vertexUV((float)(c3->x), (float)(c3->y), (float)(c3->z), (float)(u0),
+        t->vertexUV((float)(c3.x), (float)(c3.y), (float)(c3.z), (float)(u0),
                     (float)(v0));
     }
     return true;
@@ -1969,46 +1978,46 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
     double u1 = tex->getU1();
     double v1 = tex->getV1();
 
-    Vec3* corners[8];
+    std::array<Vec3, 8> corners;
     float stickWidth = 0.75f / 16.0f;
     float stickHeight = 0.75f / 16.0f;
     float stickLength = 5 / 16.0f;
-    corners[0] = Vec3::newTemp(-stickWidth, -0, -stickHeight);
-    corners[1] = Vec3::newTemp(+stickWidth, -0, -stickHeight);
-    corners[2] = Vec3::newTemp(+stickWidth, -0, +stickHeight);
-    corners[3] = Vec3::newTemp(-stickWidth, -0, +stickHeight);
-    corners[4] = Vec3::newTemp(-stickWidth, +stickLength, -stickHeight);
-    corners[5] = Vec3::newTemp(+stickWidth, +stickLength, -stickHeight);
-    corners[6] = Vec3::newTemp(+stickWidth, +stickLength, +stickHeight);
-    corners[7] = Vec3::newTemp(-stickWidth, +stickLength, +stickHeight);
+    corners[0] = Vec3(-stickWidth, -0, -stickHeight);
+    corners[1] = Vec3(+stickWidth, -0, -stickHeight);
+    corners[2] = Vec3(+stickWidth, -0, +stickHeight);
+    corners[3] = Vec3(-stickWidth, -0, +stickHeight);
+    corners[4] = Vec3(-stickWidth, +stickLength, -stickHeight);
+    corners[5] = Vec3(+stickWidth, +stickLength, -stickHeight);
+    corners[6] = Vec3(+stickWidth, +stickLength, +stickHeight);
+    corners[7] = Vec3(-stickWidth, +stickLength, +stickHeight);
 
     for (int i = 0; i < 8; i++) {
-        corners[i]->z += 1 / 16.0f;
+        corners[i].z += 1 / 16.0f;
 
         if (powered) {
-            corners[i]->xRot(30 * PI / 180);
-            corners[i]->y -= 7 / 16.0f;
+            corners[i].xRot(30 * PI / 180);
+            corners[i].y -= 7 / 16.0f;
         } else if (attached) {
-            corners[i]->xRot(5 * PI / 180);
-            corners[i]->y -= 7 / 16.0f;
+            corners[i].xRot(5 * PI / 180);
+            corners[i].y -= 7 / 16.0f;
         } else {
-            corners[i]->xRot(-40 * PI / 180);
-            corners[i]->y -= 6 / 16.0f;
+            corners[i].xRot(-40 * PI / 180);
+            corners[i].y -= 6 / 16.0f;
         }
 
-        corners[i]->xRot(90 * PI / 180);
+        corners[i].xRot(90 * PI / 180);
 
-        if (dir == Direction::NORTH) corners[i]->yRot(0 * PI / 180);
-        if (dir == Direction::SOUTH) corners[i]->yRot(180 * PI / 180);
-        if (dir == Direction::WEST) corners[i]->yRot(90 * PI / 180);
-        if (dir == Direction::EAST) corners[i]->yRot(-90 * PI / 180);
+        if (dir == Direction::NORTH) corners[i].yRot(0 * PI / 180);
+        if (dir == Direction::SOUTH) corners[i].yRot(180 * PI / 180);
+        if (dir == Direction::WEST) corners[i].yRot(90 * PI / 180);
+        if (dir == Direction::EAST) corners[i].yRot(-90 * PI / 180);
 
-        corners[i]->x += x + 0.5;
-        corners[i]->y += y + 5 / 16.0f;
-        corners[i]->z += z + 0.5;
+        corners[i].x += x + 0.5;
+        corners[i].y += y + 5 / 16.0f;
+        corners[i].z += z + 0.5;
     }
 
-    Vec3 *c0 = NULL, *c1 = NULL, *c2 = NULL, *c3 = NULL;
+    Vec3 c0, c1, c2, c3;
     int stickX0 = 7;
     int stickX1 = 9;
     int stickY0 = 9;
@@ -2054,47 +2063,47 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
             c2 = corners[7];
             c3 = corners[4];
         }
-        t->vertexUV(c0->x, c0->y, c0->z, u0, v1);
-        t->vertexUV(c1->x, c1->y, c1->z, u1, v1);
-        t->vertexUV(c2->x, c2->y, c2->z, u1, v0);
-        t->vertexUV(c3->x, c3->y, c3->z, u0, v0);
+        t->vertexUV(c0.x, c0.y, c0.z, u0, v1);
+        t->vertexUV(c1.x, c1.y, c1.z, u1, v1);
+        t->vertexUV(c2.x, c2.y, c2.z, u1, v0);
+        t->vertexUV(c3.x, c3.y, c3.z, u0, v0);
     }
 
     float hoopWidth = 1.5f / 16.0f;
     float hoopHeight = 1.5f / 16.0f;
     float hoopLength = 0.5f / 16.0f;
-    corners[0] = Vec3::newTemp(-hoopWidth, -0, -hoopHeight);
-    corners[1] = Vec3::newTemp(+hoopWidth, -0, -hoopHeight);
-    corners[2] = Vec3::newTemp(+hoopWidth, -0, +hoopHeight);
-    corners[3] = Vec3::newTemp(-hoopWidth, -0, +hoopHeight);
-    corners[4] = Vec3::newTemp(-hoopWidth, +hoopLength, -hoopHeight);
-    corners[5] = Vec3::newTemp(+hoopWidth, +hoopLength, -hoopHeight);
-    corners[6] = Vec3::newTemp(+hoopWidth, +hoopLength, +hoopHeight);
-    corners[7] = Vec3::newTemp(-hoopWidth, +hoopLength, +hoopHeight);
+    corners[0] = Vec3(-hoopWidth, -0, -hoopHeight);
+    corners[1] = Vec3(+hoopWidth, -0, -hoopHeight);
+    corners[2] = Vec3(+hoopWidth, -0, +hoopHeight);
+    corners[3] = Vec3(-hoopWidth, -0, +hoopHeight);
+    corners[4] = Vec3(-hoopWidth, +hoopLength, -hoopHeight);
+    corners[5] = Vec3(+hoopWidth, +hoopLength, -hoopHeight);
+    corners[6] = Vec3(+hoopWidth, +hoopLength, +hoopHeight);
+    corners[7] = Vec3(-hoopWidth, +hoopLength, +hoopHeight);
 
     for (int i = 0; i < 8; i++) {
-        corners[i]->z += 3.5f / 16.0f;
+        corners[i].z += 3.5f / 16.0f;
 
         if (powered) {
-            corners[i]->y -= 1.5 / 16.0f;
-            corners[i]->z -= 2.6 / 16.0f;
-            corners[i]->xRot(0 * PI / 180);
+            corners[i].y -= 1.5 / 16.0f;
+            corners[i].z -= 2.6 / 16.0f;
+            corners[i].xRot(0 * PI / 180);
         } else if (attached) {
-            corners[i]->y += 0.25 / 16.0f;
-            corners[i]->z -= 2.75 / 16.0f;
-            corners[i]->xRot(10 * PI / 180);
+            corners[i].y += 0.25 / 16.0f;
+            corners[i].z -= 2.75 / 16.0f;
+            corners[i].xRot(10 * PI / 180);
         } else {
-            corners[i]->xRot(50 * PI / 180);
+            corners[i].xRot(50 * PI / 180);
         }
 
-        if (dir == Direction::NORTH) corners[i]->yRot(0 * PI / 180);
-        if (dir == Direction::SOUTH) corners[i]->yRot(180 * PI / 180);
-        if (dir == Direction::WEST) corners[i]->yRot(90 * PI / 180);
-        if (dir == Direction::EAST) corners[i]->yRot(-90 * PI / 180);
+        if (dir == Direction::NORTH) corners[i].yRot(0 * PI / 180);
+        if (dir == Direction::SOUTH) corners[i].yRot(180 * PI / 180);
+        if (dir == Direction::WEST) corners[i].yRot(90 * PI / 180);
+        if (dir == Direction::EAST) corners[i].yRot(-90 * PI / 180);
 
-        corners[i]->x += x + 0.5;
-        corners[i]->y += y + 5 / 16.0f;
-        corners[i]->z += z + 0.5;
+        corners[i].x += x + 0.5;
+        corners[i].y += y + 5 / 16.0f;
+        corners[i].z += z + 0.5;
     }
 
     int hoopX0 = 5;
@@ -2142,14 +2151,14 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
             c2 = corners[7];
             c3 = corners[4];
         }
-        t->vertexUV(c0->x, c0->y, c0->z, u0, v1);
-        t->vertexUV(c1->x, c1->y, c1->z, u1, v1);
-        t->vertexUV(c2->x, c2->y, c2->z, u1, v0);
-        t->vertexUV(c3->x, c3->y, c3->z, u0, v0);
+        t->vertexUV(c0.x, c0.y, c0.z, u0, v1);
+        t->vertexUV(c1.x, c1.y, c1.z, u1, v1);
+        t->vertexUV(c2.x, c2.y, c2.z, u1, v0);
+        t->vertexUV(c3.x, c3.y, c3.z, u0, v0);
     }
 
     if (attached) {
-        double hoopBottomY = corners[0]->y;
+        double hoopBottomY = corners[0].y;
         float width = 0.5f / 16.0f;
         float top = 0.5f - (width / 2);
         float bottom = top + width;
@@ -4060,9 +4069,11 @@ bool TileRenderer::tesselateCrossInWorld(Tile* tt, int x, int y, int z) {
     float zt = (float)z;
 
     if (tt == Tile::tallgrass) {
-		// 4jcraft add a bunch of casts to prevent overflow (i pray to god)
-		int64_t seed = ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
-		seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) + ((uint64_t)seed * 11ULL));
+        // 4jcraft add a bunch of casts to prevent overflow (i pray to god)
+        int64_t seed =
+            ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
+        seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) +
+                         ((uint64_t)seed * 11ULL));
 
         xt += ((((seed >> 16) & 0xf) / 15.0f) - 0.5f) * 0.5f;
         yt += ((((seed >> 20) & 0xf) / 15.0f) - 1.0f) * 0.2f;
@@ -4318,8 +4329,10 @@ bool TileRenderer::tesselateLilypadInWorld(Tile* tt, int x, int y, int z) {
     float v1 = tex->getV1(true);
 
     // 4jcraft add a bunch of casts to prevent overflow (i pray to god)
-    int64_t seed = ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
-    seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) + ((uint64_t)seed * 11ULL));
+    int64_t seed =
+        ((int64_t)x * 3129871) ^ ((int64_t)z * 116129781L) ^ ((int64_t)y);
+    seed = (int64_t)(((uint64_t)seed * (uint64_t)seed * 42317861ULL) +
+                     ((uint64_t)seed * 11ULL));
 
     int dir = (int)((seed >> 16) & 0x3);
 
@@ -4816,9 +4829,11 @@ bool TileRenderer::tesselateBlockInWorld(Tile* tt, int x, int y, int z) {
     if (Tile::lightEmission[tt->id] ==
         0)  // 4J - TODO/remove (Minecraft::useAmbientOcclusion())
     {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorldWithAmbienceOcclusionTexLighting(
             tt, x, y, z, r, g, b, 0, smoothShapeLighting);
     } else {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorld(tt, x, y, z, r, g, b);
     }
 }
@@ -4844,9 +4859,11 @@ bool TileRenderer::tesselateBlockInWorld(Tile* tt, int x, int y, int z,
     if (Tile::lightEmission[tt->id] ==
         0)  // 4J - TODO/remove (Minecraft::useAmbientOcclusion())
     {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorldWithAmbienceOcclusionTexLighting(
             tt, x, y, z, r, g, b, faceFlags, smoothShapeLighting);
     } else {
+        FRAME_PROFILE_SCOPE(ChunkBlockLighting);
         return tesselateBlockInWorld(tt, x, y, z, r, g, b);
     }
 }
@@ -7037,6 +7054,7 @@ bool TileRenderer::tesselateDoorInWorld(Tile* tt, int x, int y, int z) {
 
 void TileRenderer::renderFaceDown(Tile* tt, double x, double y, double z,
                                   Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7143,6 +7161,7 @@ void TileRenderer::renderFaceDown(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderFaceUp(Tile* tt, double x, double y, double z,
                                 Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7250,6 +7269,7 @@ void TileRenderer::renderFaceUp(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderNorth(Tile* tt, double x, double y, double z,
                                Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7362,6 +7382,7 @@ void TileRenderer::renderNorth(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderSouth(Tile* tt, double x, double y, double z,
                                Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7474,6 +7495,7 @@ void TileRenderer::renderSouth(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderWest(Tile* tt, double x, double y, double z,
                               Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;
@@ -7586,6 +7608,7 @@ void TileRenderer::renderWest(Tile* tt, double x, double y, double z,
 
 void TileRenderer::renderEast(Tile* tt, double x, double y, double z,
                               Icon* tex) {
+    FRAME_PROFILE_SCOPE(ChunkBlockEmit);
     Tesselator* t = Tesselator::getInstance();
 
     if (hasFixedTexture()) tex = fixedTexture;

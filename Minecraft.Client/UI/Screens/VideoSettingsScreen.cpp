@@ -6,6 +6,9 @@
 #include "ControlsScreen.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 
+// 4jcraft
+#define ITEM_COUNT 10
+
 VideoSettingsScreen::VideoSettingsScreen(Screen* lastScreen, Options* options) {
     this->title = L"Video Settings";  // 4J - added
     this->lastScreen = lastScreen;
@@ -16,18 +19,19 @@ void VideoSettingsScreen::init() {
     Language* language = Language::getInstance();
     this->title = language->getElement(L"options.videoTitle");
 
-    const Options::Option* items[10] = {Options::Option::GRAPHICS,
-                                        Options::Option::RENDER_DISTANCE,
-                                        Options::Option::AMBIENT_OCCLUSION,
-                                        Options::Option::FRAMERATE_LIMIT,
-                                        Options::Option::ANAGLYPH,
-                                        Options::Option::VIEW_BOBBING,
-                                        Options::Option::GUI_SCALE,
-                                        Options::Option::ADVANCED_OPENGL,
-                                        Options::Option::GAMMA,
-                                        Options::Option::FOV};
+    const Options::Option* items[ITEM_COUNT] = {
+        Options::Option::GRAPHICS,
+        Options::Option::RENDER_DISTANCE,
+        Options::Option::AMBIENT_OCCLUSION,
+        Options::Option::FRAMERATE_LIMIT,
+        Options::Option::ANAGLYPH,
+        Options::Option::VIEW_BOBBING,
+        Options::Option::GUI_SCALE,
+        Options::Option::ADVANCED_OPENGL,
+        Options::Option::GAMMA,
+        Options::Option::FOV};
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < ITEM_COUNT; i++) {
         const Options::Option* item = items[i];
         int xPos = width / 2 - 155 + (i % 2 * 160);
         int yPos = height / 6 + 24 * (i / 2);

@@ -6,7 +6,7 @@ class AABB;
 
 class AreaHint : public TutorialHint {
 private:
-    AABB* area;
+    AABB area;
     bool contains;  // If true we must stay in this area, if false must stay out
                     // of this area
 
@@ -21,7 +21,6 @@ public:
              eTutorial_State displayState, eTutorial_State completeState,
              int descriptionId, double x0, double y0, double z0, double x1,
              double y1, double z1, bool allowFade = true, bool contains = true);
-    ~AreaHint();
 
     virtual int tick();
 };

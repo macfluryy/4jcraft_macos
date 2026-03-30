@@ -38,9 +38,11 @@
 #include "../../Minecraft.Client/Platform/Common/DLC/DLCPack.h"
 #include "../../Minecraft.Client/Platform/Common/ShutdownManager.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
+#include "../../Minecraft.Client/Utils/FrameProfiler.h"
 #include <cmath>
 #include <cstdint>
 #include <limits>
+#include <optional>
 
 // 4J : WESTY : Added for time played stats.
 #include "../Headers/net.minecraft.stats.h"
@@ -1391,7 +1393,7 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
         int data = getData(xTile0, yTile0, zTile0);
         Tile* tile = Tile::tiles[t];
         if (solidOnly && tile != NULL &&
-            tile->getAABB(this, xTile0, yTile0, zTile0) == NULL) {
+            !tile->getAABB(this, xTile0, yTile0, zTile0).has_value()) {
             // No collision
 
         } else if (t > 0 && tile->mayPick(data, liquid)) {
@@ -1478,28 +1480,28 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
             a->z = zClip;
         }
 
-        Vec3* tPos = Vec3::newTemp(a->x, a->y, a->z);
-        xTile0 = (int)(tPos->x = floor(a->x));
+        Vec3 tPos(a->x, a->y, a->z);
+        xTile0 = (int)(tPos.x = floor(a->x));
         if (face == 5) {
             xTile0--;
-            tPos->x++;
+            tPos.x++;
         }
-        yTile0 = (int)(tPos->y = floor(a->y));
+        yTile0 = (int)(tPos.y = floor(a->y));
         if (face == 1) {
             yTile0--;
-            tPos->y++;
+            tPos.y++;
         }
-        zTile0 = (int)(tPos->z = floor(a->z));
+        zTile0 = (int)(tPos.z = floor(a->z));
         if (face == 3) {
             zTile0--;
-            tPos->z++;
+            tPos.z++;
         }
 
         int t = getTile(xTile0, yTile0, zTile0);
         int data = getData(xTile0, yTile0, zTile0);
         Tile* tile = Tile::tiles[t];
         if (solidOnly && tile != NULL &&
-            tile->getAABB(this, xTile0, yTile0, zTile0) == NULL) {
+            !tile->getAABB(this, xTile0, yTile0, zTile0).has_value()) {
             // No collision
 
         } else if (t > 0 && tile->mayPick(data, liquid)) {
@@ -1798,18 +1800,19 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
     if (noEntities) return &boxes;
 
     double r = 0.25;
+    AABB grown =  box->grow(r, r, r);
     std::vector<std::shared_ptr<Entity> >* ee =
-        getEntities(source, box->grow(r, r, r));
+        getEntities(source, &grown);
     std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
     for (AUTO_VAR(it, ee->begin()); it != itEnd; it++) {
         AABB* collideBox = (*it)->getCollideBox();
-        if (collideBox != NULL && collideBox->intersects(box)) {
-            boxes.push_back(collideBox);
+        if (collideBox != NULL && collideBox->intersects(*box)) {
+            boxes.push_back(*collideBox);
         }
 
         collideBox = source->getCollideAgainstBox(*it);
-        if (collideBox != NULL && collideBox->intersects(box)) {
-            boxes.push_back(collideBox);
+        if (collideBox != NULL && collideBox->intersects(*box)) {
+            boxes.push_back(*collideBox);
         }
     }
 
@@ -1884,7 +1887,7 @@ float Level::getSkyDarken(float a) {
     return br * 0.8f + 0.2f;
 }
 
-Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
+Vec3 Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
     float td = getTimeOfDay(a);
 
     float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
@@ -1932,7 +1935,7 @@ Vec3* Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
         b = b * (1 - f) + 1 * f;
     }
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
 float Level::getTimeOfDay(float a) {
@@ -1963,7 +1966,7 @@ float Level::getSunAngle(float a) {
     return td * PI * 2;
 }
 
-Vec3* Level::getCloudColor(float a) {
+Vec3 Level::getCloudColor(float a) {
     float td = getTimeOfDay(a);
 
     float br = Mth::cos(td * PI * 2) * 2.0f + 0.5f;
@@ -2001,10 +2004,10 @@ Vec3* Level::getCloudColor(float a) {
         b = b * ba + mid * (1 - ba);
     }
 
-    return Vec3::newTemp(r, g, b);
+    return Vec3(r, g, b);
 }
 
-Vec3* Level::getFogColor(float a) {
+Vec3 Level::getFogColor(float a) {
     float td = getTimeOfDay(a);
     return dimension->getFogColor(td, a);
 }
@@ -2204,19 +2207,11 @@ void Level::tickEntities() {
     // 4J-PB - Stuart  - check this is correct here
 
     if (!tileEntitiesToUnload.empty()) {
-        // tileEntityList.removeAll(tileEntitiesToUnload);
+        FRAME_PROFILE_SCOPE(TileEntityUnloadCleanup);
 
         for (AUTO_VAR(it, tileEntityList.begin());
              it != tileEntityList.end();) {
-            bool found = false;
-            for (AUTO_VAR(it2, tileEntitiesToUnload.begin());
-                 it2 != tileEntitiesToUnload.end(); it2++) {
-                if ((*it) == (*it2)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (found) {
+            if (tileEntitiesToUnload.find(*it) != tileEntitiesToUnload.end()) {
                 if (isClientSide) {
                     __debugbreak();
                 }
@@ -2460,7 +2455,7 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
     }
 
     bool ok = false;
-    Vec3* current = Vec3::newTemp(0, 0, 0);
+    Vec3 current(0, 0, 0);
     for (int x = x0; x < x1; x++) {
         for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
@@ -2470,18 +2465,18 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
                         y + 1 - LiquidTile::getHeight(getData(x, y, z));
                     if (y1 >= yt0) {
                         ok = true;
-                        tile->handleEntityInside(this, x, y, z, e, current);
+                        tile->handleEntityInside(this, x, y, z, e, &current);
                     }
                 }
             }
         }
     }
-    if (current->length() > 0 && e->isPushedByWater()) {
-        current = current->normalize();
+    if (current.length() > 0 && e->isPushedByWater()) {
+        current = current.normalize();
         double pow = 0.014;
-        e->xd += current->x * pow;
-        e->yd += current->y * pow;
-        e->zd += current->z * pow;
+        e->xd += current.x * pow;
+        e->yd += current.y * pow;
+        e->zd += current.z * pow;
     }
     return ok;
 }
@@ -2567,7 +2562,8 @@ float Level::getSeenPercent(Vec3* center, AABB* bb) {
                 double x = bb->x0 + (bb->x1 - bb->x0) * xx;
                 double y = bb->y0 + (bb->y1 - bb->y0) * yy;
                 double z = bb->z0 + (bb->z1 - bb->z0) * zz;
-                HitResult* res = clip(Vec3::newTemp(x, y, z), center);
+                Vec3 a(x, y, z);
+                HitResult* res = clip(&a, center);
                 if (res == NULL) hits++;
                 delete res;
                 count++;
@@ -2715,7 +2711,9 @@ void Level::removeTileEntity(int x, int y, int z) {
 }
 
 void Level::markForRemoval(std::shared_ptr<TileEntity> entity) {
-    tileEntitiesToUnload.push_back(entity);
+    EnterCriticalSection(&m_tileEntityListCS);
+    tileEntitiesToUnload.insert(entity);
+    LeaveCriticalSection(&m_tileEntityListCS);
 }
 
 bool Level::isSolidRenderTile(int x, int y, int z) {
@@ -2781,8 +2779,8 @@ bool Level::isFullAABBTile(int x, int y, int z) {
     if (tile == 0 || Tile::tiles[tile] == NULL) {
         return false;
     }
-    AABB* aabb = Tile::tiles[tile]->getAABB(this, x, y, z);
-    return aabb != NULL && aabb->getSize() >= 1;
+    auto aabb = Tile::tiles[tile]->getAABB(this, x, y, z);
+    return aabb.has_value() && aabb->getSize() >= 1;
 }
 
 bool Level::isTopSolidBlocking(int x, int y, int z) {
@@ -3546,9 +3544,9 @@ bool Level::mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
 
     Tile* tile = Tile::tiles[tileId];
 
-    AABB* aabb = tile->getAABB(this, x, y, z);
-    if (ignoreEntities) aabb = NULL;
-    if (aabb != NULL && !isUnobstructed(aabb, ignoreEntity)) return false;
+    auto aabb = tile->getAABB(this, x, y, z);
+    if (ignoreEntities) aabb = std::nullopt;
+    if (aabb.has_value() && !isUnobstructed(&*aabb, ignoreEntity)) return false;
     if (targetTile != NULL &&
         (targetTile == Tile::water || targetTile == Tile::calmWater ||
          targetTile == Tile::lava || targetTile == Tile::calmLava ||

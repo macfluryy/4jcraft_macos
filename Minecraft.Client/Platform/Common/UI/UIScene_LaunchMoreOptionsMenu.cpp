@@ -1,5 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "UIScene_LaunchMoreOptionsMenu.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
@@ -527,15 +528,13 @@ int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
                                                                 bool bRes) {
     UIScene_LaunchMoreOptionsMenu* pClass =
         (UIScene_LaunchMoreOptionsMenu*)lpParam;
-    pClass->m_bIgnoreInput = false;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-        InputManager.GetText(pchText);
-        pClass->m_editSeed.setLabel((wchar_t*)pchText);
-        pClass->m_params->seed = (wchar_t*)pchText;
+        std::wstring str = convStringToWstring(InputManager.GetText());
+        pClass->m_editSeed.setLabel(str);
+        pClass->m_params->seed = std::move(str);
     }
+    pClass->m_bIgnoreInput = false;
     return 0;
 }
 

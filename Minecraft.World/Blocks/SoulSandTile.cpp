@@ -5,9 +5,9 @@
 
 SoulSandTile::SoulSandTile(int id) : Tile(id, Material::sand) {}
 
-AABB* SoulSandTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> SoulSandTile::getAABB(Level* level, int x, int y, int z) {
     float r = 2 / 16.0f;
-    return AABB::newTemp(x, y, z, x + 1, y + 1 - r, z + 1);
+    return AABB(x, y, z, x + 1, y + 1 - r, z + 1);
 }
 
 void SoulSandTile::entityInside(Level* level, int x, int y, int z,

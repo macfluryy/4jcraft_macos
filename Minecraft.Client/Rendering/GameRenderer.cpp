@@ -50,6 +50,7 @@
 #include "../Textures/Packs/TexturePackRepository.h"
 #include "../Textures/Packs/TexturePack.h"
 #include "../Textures/TextureAtlas.h"
+#include "../Utils/FrameProfiler.h"
 
 bool GameRenderer::anaglyph3d = false;
 int GameRenderer::anaglyphPass = 0;
@@ -72,6 +73,9 @@ ResourceLocation GameRenderer::RAIN_LOCATION =
 ResourceLocation GameRenderer::SNOW_LOCATION =
     ResourceLocation(TN_ENVIRONMENT_SNOW);
 
+// dirty light tracking
+static bool s_lightTexDirty[XUSER_MAX_COUNT] = {true, true, true, true};
+
 GameRenderer::GameRenderer(Minecraft* mc) {
     // 4J - added this block of initialisers
     renderDistance = 0;
@@ -90,7 +94,7 @@ GameRenderer::GameRenderer(Minecraft* mc) {
     tickSmoothYO = 0;
     lastTickA = 0;
 
-    cameraPos = Vec3::newPermanent(0.0f, 0.0f, 0.0f);
+    cameraPos = Vec3(0.0f, 0.0f, 0.0f);
 
     fovOffset = 0;
     fovOffsetO = 0;
@@ -280,7 +284,7 @@ void GameRenderer::pick(float a) {
     }
 
     double dist = range;
-    Vec3* from = mc->cameraTargetPlayer->getPos(a);
+    Vec3 from = mc->cameraTargetPlayer->getPos(a);
 
     if (mc->gameMode->hasFarPickRange()) {
         dist = range = 6;
@@ -290,18 +294,20 @@ void GameRenderer::pick(float a) {
     }
 
     if (mc->hitResult != NULL) {
-        dist = mc->hitResult->pos->distanceTo(from);
+        dist = mc->hitResult->pos.distanceTo(from);
     }
 
-    Vec3* b = mc->cameraTargetPlayer->getViewVector(a);
-    Vec3* to = from->add(b->x * range, b->y * range, b->z * range);
+    Vec3 b = mc->cameraTargetPlayer->getViewVector(a);
+    Vec3 to(b.x * range, b.y * range, b.z * range);
+    to = to.add(from.x, from.y, from.z);
     hovered = nullptr;
     float overlap = 1;
-    std::vector<std::shared_ptr<Entity> >* objects = mc->level->getEntities(
-        mc->cameraTargetPlayer,
-        mc->cameraTargetPlayer->bb
-            ->expand(b->x * (range), b->y * (range), b->z * (range))
-            ->grow(overlap, overlap, overlap));
+    AABB grown = mc->cameraTargetPlayer->bb
+                     .expand(b.x * (range), b.y * (range), b.z * (range))
+                     .grow(overlap, overlap, overlap);
+
+    std::vector<std::shared_ptr<Entity> >* objects =
+        mc->level->getEntities(mc->cameraTargetPlayer, &grown);
     double nearest = dist;
 
     AUTO_VAR(itEnd, objects->end());
@@ -310,15 +316,15 @@ void GameRenderer::pick(float a) {
         if (!e->isPickable()) continue;
 
         float rr = e->getPickRadius();
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
-        if (bb->contains(from)) {
+        AABB bb = e->bb.grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
+        if (bb.contains(from)) {
             if (0 < nearest || nearest == 0) {
                 hovered = e;
                 nearest = 0;
             }
         } else if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             std::shared_ptr<Entity> ridingEntity =
                 mc->cameraTargetPlayer->riding;
             // 4jcraft: compare the mounted entity explicitly so riding the hit
@@ -512,11 +518,12 @@ void GameRenderer::moveCameraToPlayer(float a) {
 
                 // 4J - corrected bug here where zo was also added to x
                 // component
-                HitResult* hr = mc->level->clip(
-                    Vec3::newTemp(x + xo, y + yo, z + zo),
-                    Vec3::newTemp(x - xd + xo, y - yd + yo, z - zd + zo));
+                Vec3 a(x + xo, y + yo, z + zo);
+                Vec3 b(x - xd + xo, y - yd + yo, z - zd + zo);
+                HitResult* hr = mc->level->clip(&a, &b);
                 if (hr != NULL) {
-                    double dist = hr->pos->distanceTo(Vec3::newTemp(x, y, z));
+                    Vec3 p(x, y, z);
+                    double dist = hr->pos.distanceTo(p);
                     if (dist < cameraDist) cameraDist = dist;
                     delete hr;
                 }
@@ -658,6 +665,11 @@ void GameRenderer::setupCamera(float a, int eye) {
 void GameRenderer::renderItemInHand(float a, int eye) {
     if (cameraFlip > 0) return;
 
+    // 4jcraft: this function sometimes causes a segfault (was hell to catch
+    // this in gdb) because of itemInHandRenderer not being initialized so let's
+    // add a nullcheck
+    if (itemInHandRenderer == nullptr) return;
+
     // 4J-JEV: I'm fairly confident this method would crash if the cameratarget
     // isnt a local player anyway, but oh well.
     std::shared_ptr<LocalPlayer> localplayer =
@@ -754,6 +766,7 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
+    FRAME_PROFILE_SCOPE(Lightmap);
 #if defined(__linux__)
     if (SharedConstants::TEXTURE_LIGHTING) {
         LinuxLogStubLightmapProbe();
@@ -781,6 +794,7 @@ void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
 void GameRenderer::turnOnLightLayer(
     double alpha,
     bool scaleLight) {  // 4jcraft: added scaleLight for entity lighting
+    FRAME_PROFILE_SCOPE(Lightmap);
 #if defined(__linux__)
     if (!SharedConstants::TEXTURE_LIGHTING) return;
 
@@ -815,9 +829,14 @@ void GameRenderer::tickLightTexture() {
     blr += (blrt - blr) * 1;
     blg += (blgt - blg) * 1;
     _updateLightTexture = true;
+
+    // Mark all players dirty so updateLightTexture() knows when it actually
+    // needs to tick, preventz unessesary player recompute
+    for (int j = 0; j < XUSER_MAX_COUNT; j++) s_lightTexDirty[j] = true;
 }
 
 void GameRenderer::updateLightTexture(float a) {
+    FRAME_PROFILE_SCOPE(Lightmap);
     // 4J-JEV: Now doing light textures on PER PLAYER basis.
     // 4J - we *had* added separate light textures for all dimensions, and this
     // loop to update them all here
@@ -827,8 +846,10 @@ void GameRenderer::updateLightTexture(float a) {
             Minecraft::GetInstance()->localplayers[j];
         if (player == NULL) continue;
 
-        Level* level = player->level;  // 4J - was mc->level when it was just to
-                                       // update the one light texture
+        if (!s_lightTexDirty[j]) continue;
+        s_lightTexDirty[j] = false;
+
+        Level* level = player->level;
 
         float skyDarken1 = level->getSkyDarken((float)1);
         for (int i = 0; i < 256; i++) {
@@ -908,10 +929,10 @@ void GameRenderer::updateLightTexture(float a) {
             _b = _b * 0.96f + 0.03f;
 
             if (_r > 1) _r = 1;
-            if (_g > 1) _g = 1;
-            if (_b > 1) _b = 1;
             if (_r < 0) _r = 0;
+            if (_g > 1) _g = 1;
             if (_g < 0) _g = 0;
+            if (_b > 1) _b = 1;
             if (_b < 0) _b = 0;
 
             int alpha = 255;
@@ -958,6 +979,8 @@ int GameRenderer::getLightTexture(int iPad, Level* level) {
 }
 
 void GameRenderer::render(float a, bool bFirst) {
+    FRAME_PROFILE_FRAME_SCOPE();
+
     if (_updateLightTexture && bFirst) updateLightTexture(a);
     if (Display::isActive()) {
         lastActiveTime = System::currentTimeMillis();
@@ -981,7 +1004,11 @@ void GameRenderer::render(float a, bool bFirst) {
     int maxFps = getFpsCap(mc->options->framerateLimit);
 
     if (mc->level != NULL) {
-        if (mc->options->framerateLimit == 0) {
+        if (mc->options->framerateLimit == 0
+#ifndef ENABLE_VSYNC
+            || mc->options->framerateLimit == 3
+#endif
+        ) {
             renderLevel(a, 0);
         } else {
             renderLevel(a, lastNsTime + 1000000000 / maxFps);
@@ -990,6 +1017,7 @@ void GameRenderer::render(float a, bool bFirst) {
         lastNsTime = System::nanoTime();
 
         if (!mc->options->hideGui || mc->screen != NULL) {
+            FRAME_PROFILE_SCOPE(UIHud);
             mc->gui->render(a, mc->screen != NULL, xMouse, yMouse);
         }
     } else {
@@ -1004,6 +1032,7 @@ void GameRenderer::render(float a, bool bFirst) {
     }
 
     if (mc->screen != NULL) {
+        FRAME_PROFILE_SCOPE(UIHud);
         glClear(GL_DEPTH_BUFFER_BIT);
         mc->screen->render(xMouse, yMouse, a);
         if (mc->screen != NULL && mc->screen->particles != NULL)
@@ -1041,8 +1070,6 @@ void GameRenderer::FinishedReassigning() {
 
 int GameRenderer::runUpdate(void* lpParam) {
     Minecraft* minecraft = Minecraft::GetInstance();
-    Vec3::CreateNewThreadStorage();
-    AABB::CreateNewThreadStorage();
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     Compression::UseDefaultThreadStorage();
     RenderManager.InitialiseContext();
@@ -1098,31 +1125,24 @@ int GameRenderer::runUpdate(void* lpParam) {
         // We've got stacks for things that can only safely be deleted whilst
         // this thread isn't updating things - delete those things now
         EnterCriticalSection(&m_csDeleteStack);
-        for (unsigned int i = 0; i < m_deleteStackByte.size(); i++) {
+        for (unsigned int i = 0; i < m_deleteStackByte.size(); i++)
             delete m_deleteStackByte[i];
-        }
         m_deleteStackByte.clear();
         for (unsigned int i = 0; i < m_deleteStackSparseLightStorage.size();
-             i++) {
+             i++)
             delete m_deleteStackSparseLightStorage[i];
-        }
         m_deleteStackSparseLightStorage.clear();
         for (unsigned int i = 0; i < m_deleteStackCompressedTileStorage.size();
-             i++) {
+             i++)
             delete m_deleteStackCompressedTileStorage[i];
-        }
         m_deleteStackCompressedTileStorage.clear();
-        for (unsigned int i = 0; i < m_deleteStackSparseDataStorage.size();
-             i++) {
+        for (unsigned int i = 0; i < m_deleteStackSparseDataStorage.size(); i++)
             delete m_deleteStackSparseDataStorage[i];
-        }
         m_deleteStackSparseDataStorage.clear();
         LeaveCriticalSection(&m_csDeleteStack);
 
         //		PIXEndNamedEvent();
 
-        AABB::resetPool();
-        Vec3::resetPool();
         m_updateEvents->Set(eUpdateEventIsFinished);
     }
 
@@ -1160,6 +1180,8 @@ void GameRenderer::DisableUpdateThread() {
 }
 
 void GameRenderer::renderLevel(float a, int64_t until) {
+    FRAME_PROFILE_SCOPE(World);
+
     //	if (updateLightTexture) updateLightTexture();	// 4J - TODO -
     // Java 1.0.1 has this line enabled, should check why - don't want to put it
     // in now in case it breaks split-screen
@@ -1212,9 +1234,12 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         Frustum::getFrustum();
         if (mc->options->viewDistance < 2) {
             setupFog(-1, a);
-            levelRenderer->renderSky(a);
-            if (mc->skins->getSelected()->getId() == 1026)
-                levelRenderer->renderHaloRing(a);
+            {
+                FRAME_PROFILE_SCOPE(WeatherSky);
+                levelRenderer->renderSky(a);
+                if (mc->skins->getSelected()->getId() == 1026)
+                    levelRenderer->renderHaloRing(a);
+            }
         }
         // 4jcraft: needs to be enabled for proper transparent texturing on low
         // render dists this was done in renderSky() for the far and normal
@@ -1236,7 +1261,10 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         MemSect(0);
         frustum->prepare(xOff, yOff, zOff);
 
-        mc->levelRenderer->cull(frustum, a);
+        {
+            FRAME_PROFILE_SCOPE(ChunkCull);
+            mc->levelRenderer->cull(frustum, a);
+        }
         PIXEndNamedEvent();
 
 #if !defined(MULTITHREAD_ENABLE)
@@ -1263,6 +1291,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 #endif
 
         if (cameraEntity->y < Level::genDepth) {
+            FRAME_PROFILE_SCOPE(WeatherSky);
             prepareAndRenderClouds(levelRenderer, a);
         }
         Frustum::getFrustum();  // 4J added - re-calculate frustum as rendering
@@ -1297,20 +1326,29 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             // storing the camera position Fix for #77745 - TU9: Content:
             // Gameplay: Items and mobs not belonging to end world are
             // disappearing when Enderdragon is damaged.
-            Vec3* cameraPosTemp = cameraEntity->getPos(a);
-            cameraPos->x = cameraPosTemp->x;
-            cameraPos->y = cameraPosTemp->y;
-            cameraPos->z = cameraPosTemp->z;
-            levelRenderer->renderEntities(cameraPos, frustum, a);
+            Vec3 cameraPosTemp = cameraEntity->getPos(a);
+            cameraPos.x = cameraPosTemp.x;
+            cameraPos.y = cameraPosTemp.y;
+            cameraPos.z = cameraPosTemp.z;
+            {
+                FRAME_PROFILE_SCOPE(Entity);
+                levelRenderer->renderEntities(&cameraPos, frustum, a);
+            }
             PIXEndNamedEvent();
             PIXBeginNamedEvent(0, "Particle render");
             turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
-            particleEngine->renderLit(cameraEntity, a,
-                                      ParticleEngine::OPAQUE_LIST);
+            {
+                FRAME_PROFILE_SCOPE(Particle);
+                particleEngine->renderLit(cameraEntity, a,
+                                          ParticleEngine::OPAQUE_LIST);
+            }
             Lighting::turnOff();
             setupFog(0, a);
-            particleEngine->render(cameraEntity, a,
-                                   ParticleEngine::OPAQUE_LIST);
+            {
+                FRAME_PROFILE_SCOPE(Particle);
+                particleEngine->render(cameraEntity, a,
+                                       ParticleEngine::OPAQUE_LIST);
+            }
             PIXEndNamedEvent();
             turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
 
@@ -1379,12 +1417,18 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         PIXBeginNamedEvent(0, "Particle render (translucent)");
         Lighting::turnOn();
         turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
-        particleEngine->renderLit(cameraEntity, a,
-                                  ParticleEngine::TRANSLUCENT_LIST);
+        {
+            FRAME_PROFILE_SCOPE(Particle);
+            particleEngine->renderLit(cameraEntity, a,
+                                      ParticleEngine::TRANSLUCENT_LIST);
+        }
         Lighting::turnOff();
         setupFog(0, a);
-        particleEngine->render(cameraEntity, a,
-                               ParticleEngine::TRANSLUCENT_LIST);
+        {
+            FRAME_PROFILE_SCOPE(Particle);
+            particleEngine->render(cameraEntity, a,
+                                   ParticleEngine::TRANSLUCENT_LIST);
+        }
         PIXEndNamedEvent();
         turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
         ////////////////////////// End of 4J added section
@@ -1415,12 +1459,16 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-        levelRenderer->renderDestroyAnimation(
-            Tesselator::getInstance(),
-            std::dynamic_pointer_cast<Player>(cameraEntity), a);
+        {
+            FRAME_PROFILE_SCOPE(WeatherSky);
+            levelRenderer->renderDestroyAnimation(
+                Tesselator::getInstance(),
+                std::dynamic_pointer_cast<Player>(cameraEntity), a);
+        }
         glDisable(GL_BLEND);
 
         if (cameraEntity->y >= Level::genDepth) {
+            FRAME_PROFILE_SCOPE(WeatherSky);
             prepareAndRenderClouds(levelRenderer, a);
         }
 
@@ -1429,7 +1477,10 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         setupFog(0, a);
         glEnable(GL_FOG);
         PIXBeginNamedEvent(0, "Rendering snow and rain");
-        renderSnowAndRain(a);
+        {
+            FRAME_PROFILE_SCOPE(WeatherSky);
+            renderSnowAndRain(a);
+        }
         PIXEndNamedEvent();
         glDisable(GL_FOG);
 
@@ -1616,105 +1667,133 @@ void GameRenderer::renderSnowAndRain(float a) {
 
     glColor4f(1, 1, 1, 1);
 
-    for (int x = x0 - r; x <= x0 + r; x++)
+    // two snow/rain rendering
+    mc->textures->bindTexture(&RAIN_LOCATION);
+    t->begin();
+    for (int x = x0 - r; x <= x0 + r; x++) {
         for (int z = z0 - r; z <= z0 + r; z++) {
             int rainSlot = (z - z0 + 16) * 32 + (x - x0 + 16);
             float xa = rainXa[rainSlot] * 0.5f;
             float za = rainZa[rainSlot] * 0.5f;
 
-            // 4J - changes here brought forward from 1.8.2
             Biome* b = level->getBiome(x, z);
             if (!b->hasRain() && !b->hasSnow()) continue;
 
             int floor = level->getTopRainBlock(x, z);
-
             int yy0 = y0 - r;
             int yy1 = y0 + r;
-
             if (yy0 < floor) yy0 = floor;
             if (yy1 < floor) yy1 = floor;
-            float s = 1;
+            if (yy0 == yy1) continue;
 
             int yl = floor;
             if (yl < yMin) yl = yMin;
 
-            if (yy0 != yy1) {
-                random->setSeed((x * x * 3121 + x * 45238971) ^
-                                (z * z * 418711 + z * 13761));
+            float temp = b->getTemperature();
+            if (level->getBiomeSource()->scaleTemp(temp, floor) < 0.15f)
+                continue;
 
-                // 4J - changes here brought forward from 1.8.2
-                float temp = b->getTemperature();
-                if (level->getBiomeSource()->scaleTemp(temp, floor) >= 0.15f) {
-                    if (mode != 0) {
-                        if (mode >= 0) t->end();
-                        mode = 0;
-                        mc->textures->bindTexture(&RAIN_LOCATION);
-                        t->begin();
-                    }
+            random->setSeed((x * x * 3121 + x * 45238971) ^
+                            (z * z * 418711 + z * 13761));
 
-                    float ra = (((_tick + x * x * 3121 + x * 45238971 +
-                                  z * z * 418711 + z * 13761) &
-                                 31) +
-                                a) /
-                               32.0f * (3 + random->nextFloat());
+            float ra = (((_tick + x * x * 3121 + x * 45238971 + z * z * 418711 +
+                          z * 13761) &
+                         31) +
+                        a) /
+                       32.0f * (3 + random->nextFloat());
 
-                    double xd = (x + 0.5f) - player->x;
-                    double zd = (z + 0.5f) - player->z;
-                    float dd = (float)Mth::sqrt(xd * xd + zd * zd) / r;
+            double xd = (x + 0.5f) - player->x;
+            double zd = (z + 0.5f) - player->z;
+            float dd = (float)Mth::sqrt(xd * xd + zd * zd) / r;
 
-                    float br = 1;
-                    t->offset(-xo * 1, -yo * 1, -zo * 1);
-                    t->tex2(level->getLightColor(x, yl, z, 0));
-                    t->color(br, br, br,
-                             ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
-                    t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s,
-                                yy0 * s / 4.0f + ra * s);
-                    t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s,
-                                yy0 * s / 4.0f + ra * s);
-                    // 4jcraft: this color call made rain invisible
-                    // t->color(br, br, br, 0.0f);
-                    // // 4J - added to soften the top visible edge of the rain
-                    t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s,
-                                yy1 * s / 4.0f + ra * s);
-                    t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s,
-                                yy1 * s / 4.0f + ra * s);
-                    t->offset(0, 0, 0);
-                    t->end();
-                } else {
-                    if (mode != 1) {
-                        if (mode >= 0) t->end();
-                        mode = 1;
-                        mc->textures->bindTexture(&SNOW_LOCATION);
-                        t->begin();
-                    }
-                    float ra = (((_tick) & 511) + a) / 512.0f;
-                    float uo = random->nextFloat() +
-                               time * 0.01f * (float)random->nextGaussian();
-                    float vo = random->nextFloat() +
-                               time * (float)random->nextGaussian() * 0.001f;
-                    double xd = (x + 0.5f) - player->x;
-                    double zd = (z + 0.5f) - player->z;
-                    float dd = (float)sqrt(xd * xd + zd * zd) / r;
-                    float br = 1;
-                    t->offset(-xo * 1, -yo * 1, -zo * 1);
-                    t->tex2((level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) /
-                            4);
-                    t->color(br, br, br,
-                             ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel);
-                    t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
-                                yy0 * s / 4.0f + ra * s + vo);
-                    t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s + uo,
-                                yy0 * s / 4.0f + ra * s + vo);
-                    t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s + uo,
-                                yy1 * s / 4.0f + ra * s + vo);
-                    t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s + uo,
-                                yy1 * s / 4.0f + ra * s + vo);
-                    t->offset(0, 0, 0);
-                }
-            }
+            float br = 1.0f;
+            float s = 1.0f;
+            t->offset(-xo, -yo, -zo);
+            t->tex2(level->getLightColor(x, yl, z, 0));
+            t->color(br, br, br, ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
+            t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s,
+                        yy0 * s / 4.0f + ra * s);
+            t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s,
+                        yy0 * s / 4.0f + ra * s);
+            t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s,
+                        yy1 * s / 4.0f + ra * s);
+            t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s,
+                        yy1 * s / 4.0f + ra * s);
+            t->offset(0, 0, 0);
         }
+    }
+    t->end();  // single submit for all rain geometry
+    // sno time
+    mc->textures->bindTexture(&SNOW_LOCATION);
+    t->begin();
+    for (int x = x0 - r; x <= x0 + r; x++) {
+        for (int z = z0 - r; z <= z0 + r; z++) {
+            int rainSlot = (z - z0 + 16) * 32 + (x - x0 + 16);
+            float xa = rainXa[rainSlot] * 0.5f;
+            float za = rainZa[rainSlot] * 0.5f;
 
-    if (mode >= 0) t->end();
+            Biome* b = level->getBiome(x, z);
+            if (!b->hasRain() && !b->hasSnow()) continue;
+
+            int floor = level->getTopRainBlock(x, z);
+            int yy0 = y0 - r;
+            int yy1 = y0 + r;
+            if (yy0 < floor) yy0 = floor;
+            if (yy1 < floor) yy1 = floor;
+            if (yy0 == yy1) continue;
+
+            int yl = floor;
+            if (yl < yMin) yl = yMin;
+
+            float temp = b->getTemperature();
+            // only draw snow (not rain) in this pass
+            if (level->getBiomeSource()->scaleTemp(temp, floor) >= 0.15f)
+                continue;
+
+            random->setSeed((x * x * 3121 + x * 45238971) ^
+                            (z * z * 418711 + z * 13761));
+
+            float ra = (((_tick) & 511) + a) / 512.0f;
+            float uo = random->nextFloat() +
+                       time * 0.01f * (float)random->nextGaussian();
+            float vo = random->nextFloat() +
+                       time * (float)random->nextGaussian() * 0.001f;
+
+            double xd = (x + 0.5f) - player->x;
+            double zd = (z + 0.5f) - player->z;
+            float dd = (float)sqrt(xd * xd + zd * zd) / r;
+
+            float br = 1.0f;
+            float s = 1.0f;
+            t->offset(-xo, -yo, -zo);
+#ifdef __PSVITA__
+            float Alpha = ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel;
+            int tex2 = (level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4;
+            t->tileRainQuad(
+                x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
+                yy0 * s / 4.0f + ra * s + vo, x + xa + 0.5, yy0, z + za + 0.5,
+                1 * s + uo, yy0 * s / 4.0f + ra * s + vo, x + xa + 0.5, yy1,
+                z + za + 0.5, 1 * s + uo, yy1 * s / 4.0f + ra * s + vo,
+                x - xa + 0.5, yy1, z - za + 0.5, 0 * s + uo,
+                yy1 * s / 4.0f + ra * s + vo, br, br, br, Alpha, br, br, br,
+                Alpha, tex2);
+#else
+            t->tex2((level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4);
+            t->color(br, br, br, ((1 - dd * dd) * 0.3f + 0.5f) * rainLevel);
+            t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s + uo,
+                        yy0 * s / 4.0f + ra * s + vo);
+            t->vertexUV(x + xa + 0.5, yy0, z + za + 0.5, 1 * s + uo,
+                        yy0 * s / 4.0f + ra * s + vo);
+            t->vertexUV(x + xa + 0.5, yy1, z + za + 0.5, 1 * s + uo,
+                        yy1 * s / 4.0f + ra * s + vo);
+            t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s + uo,
+                        yy1 * s / 4.0f + ra * s + vo);
+#endif
+            t->offset(0, 0, 0);
+        }
+    }
+    t->end();  // single submit for all snow geometry
+
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     glAlphaFunc(GL_GREATER, 0.1f);
@@ -1731,6 +1810,35 @@ void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     // 4jcraft: use actual framebuffer dimensions instead of mc->width/height
     // to ensure GUI scales correctly after a window resize.
     ScreenSizeCalculator ssc(mc->options, fbw, fbh, forceScale);
+
+    // 4jcraft: Java GUI screens still assume a clean 2D fixed-function style
+    // state.
+    RenderManager.StateSetFaceCull(false);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_FOG);
+    glColor4f(1, 1, 1, 1);
+    glEnable(GL_ALPHA_TEST);
+    glAlphaFunc(GL_GREATER, 0.1f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(true);
+
+    RenderManager.TextureBindVertex(-1);
+
+    glClientActiveTexture(GL_TEXTURE1);
+    glActiveTexture(GL_TEXTURE1);
+    glDisable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glMatrixMode(GL_TEXTURE);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+
     glClear(GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -1747,21 +1855,20 @@ void GameRenderer::setupClearColor(float a) {
     float whiteness = 1.0f / (4 - mc->options->viewDistance);
     whiteness = 1 - (float)pow((double)whiteness, 0.25);
 
-    Vec3* skyColor = level->getSkyColor(mc->cameraTargetPlayer, a);
-    float sr = (float)skyColor->x;
-    float sg = (float)skyColor->y;
-    float sb = (float)skyColor->z;
+    Vec3 skyColor = level->getSkyColor(mc->cameraTargetPlayer, a);
+    float sr = (float)skyColor.x;
+    float sg = (float)skyColor.y;
+    float sb = (float)skyColor.z;
 
-    Vec3* fogColor = level->getFogColor(a);
-    fr = (float)fogColor->x;
-    fg = (float)fogColor->y;
-    fb = (float)fogColor->z;
+    Vec3 fogColor = level->getFogColor(a);
+    fr = (float)fogColor.x;
+    fg = (float)fogColor.y;
+    fb = (float)fogColor.z;
 
     if (mc->options->viewDistance < 2) {
-        Vec3* sunAngle = Mth::sin(level->getSunAngle(a)) > 0
-                             ? Vec3::newTemp(-1, 0, 0)
-                             : Vec3::newTemp(1, 0, 0);
-        float d = (float)player->getViewVector(a)->dot(sunAngle);
+        Vec3 sunAngle = Mth::sin(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0)
+                                                            : Vec3(1, 0, 0);
+        float d = (float)player->getViewVector(a).dot(sunAngle);
         if (d < 0) d = 0;
         if (d > 0) {
             float* c =
@@ -1797,10 +1904,10 @@ void GameRenderer::setupClearColor(float a) {
 
     int t = Camera::getBlockAt(mc->level, player, a);
     if (isInClouds) {
-        Vec3* cc = level->getCloudColor(a);
-        fr = (float)cc->x;
-        fg = (float)cc->y;
-        fb = (float)cc->z;
+        Vec3 cc = level->getCloudColor(a);
+        fr = (float)cc.x;
+        fg = (float)cc.y;
+        fb = (float)cc.z;
     } else if (t != 0 && Tile::tiles[t]->material == Material::water) {
         float clearness = EnchantmentHelper::getOxygenBonus(player) * 0.2f;
 
@@ -2024,6 +2131,9 @@ int GameRenderer::getFpsCap(int option) {
     int maxFps = 200;
     if (option == 1) maxFps = 120;
     if (option == 2) maxFps = 35;
+#ifndef ENABLE_VSYNC
+    if (option == 3) maxFps = std::numeric_limits<int>::max();
+#endif
     return maxFps;
 }
 

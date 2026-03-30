@@ -16,7 +16,7 @@ ChangeStateConstraint::ChangeStateConstraint(
     bool contains /*= true*/, bool changeGameMode /*= false*/,
     GameType* targetGameMode /*= 0*/)
     : TutorialConstraint(-1) {
-    movementArea = AABB::newPermanent(x0, y0, z0, x1, y1, z1);
+    movementArea = AABB(x0, y0, z0, x1, y1, z1);
 
     this->contains = contains;
 
@@ -40,7 +40,6 @@ ChangeStateConstraint::ChangeStateConstraint(
 }
 
 ChangeStateConstraint::~ChangeStateConstraint() {
-    delete movementArea;
     if (m_sourceStatesCount > 0) delete[] m_sourceStates;
 }
 
@@ -85,9 +84,11 @@ void ChangeStateConstraint::tick(int iPad) {
             break;
         }
     }
+
+    // TODO: check if this can be elided
+    Vec3 ipad_player = minecraft->localplayers[iPad]->getPos(1);
     if (!m_bHasChanged && inASourceState &&
-        movementArea->contains(minecraft->localplayers[iPad]->getPos(1)) ==
-            contains) {
+        movementArea.contains(ipad_player) == contains) {
         m_bHasChanged = true;
         m_changedFromState = m_tutorial->getCurrentState();
         m_tutorial->changeTutorialState(m_targetState);
@@ -125,8 +126,7 @@ void ChangeStateConstraint::tick(int iPad) {
             }
         }
     } else if (m_bHasChanged &&
-               movementArea->contains(
-                   minecraft->localplayers[iPad]->getPos(1)) != contains) {
+               movementArea.contains(ipad_player) != contains) {
         m_bHasChanged = false;
         m_tutorial->changeTutorialState(m_changedFromState);
 

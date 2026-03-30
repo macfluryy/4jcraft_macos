@@ -252,9 +252,9 @@ void WitherBoss::newServerAiStep() {
                     idleHeadUpdates[i - 1] = 0;
                 }
             } else {
+                AABB grown = bb.grow(20, 8, 20);
                 std::vector<std::shared_ptr<Entity> >* entities =
-                    level->getEntitiesOfClass(typeid(LivingEntity),
-                                              bb->grow(20, 8, 20),
+                    level->getEntitiesOfClass(typeid(LivingEntity), &grown,
                                               livingEntitySelector);
                 // randomly try to find a target 10 times
                 for (int attempt = 0; attempt < 10 && !entities->empty();

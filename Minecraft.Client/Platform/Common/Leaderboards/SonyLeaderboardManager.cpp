@@ -1,5 +1,7 @@
 #include "../../stdafx.h"
 
+#include <thread>
+#include <chrono>
 #include <cstdlib>
 #include <np.h>
 // #include <sys/ppu_thread.h>
@@ -43,7 +45,7 @@ SonyLeaderboardManager::~SonyLeaderboardManager() {
     // 4J-JEV: Wait for thread to stop and hope it doesn't take too long.
     long long startShutdown = System::currentTimeMillis();
     while (m_threadScoreboard->isRunning()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         assert((System::currentTimeMillis() - startShutdown) < 16);
     }
 
@@ -76,7 +78,8 @@ int SonyLeaderboardManager::scoreboardThreadEntry(LPVOID lpParam) {
         }
 
         if ((!needsWriting) && (self->m_eStatsState != eStatsState_Getting)) {
-            Sleep(50);  // 4J-JEV: When we're not reading or writing.
+            std::this_thread::sleep_for(std::chrono::milliseconds(
+                50));  // 4J-JEV: When we're not reading or writing.
         }
 
     } while ((self->m_running || self->m_eStatsState == eStatsState_Getting ||

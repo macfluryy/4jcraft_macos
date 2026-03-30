@@ -10,7 +10,12 @@ UIControl::UIControl() {
     m_controlName = "";
     m_isVisible = true;
     m_bHidden = false;
+    m_isValid = false;
     m_eControlType = eNoControl;
+    m_x = 0;
+    m_y = 0;
+    m_width = 0;
+    m_height = 0;
 }
 
 bool UIControl::setupControl(UIScene* scene, IggyValuePath* parent,
@@ -20,6 +25,7 @@ bool UIControl::setupControl(UIScene* scene, IggyValuePath* parent,
 
     rrbool res =
         IggyValuePathMakeNameRef(&m_iggyPath, parent, controlName.c_str());
+    m_isValid = res ? true : false;
 
     m_nameXPos = registerFastName(L"x");
     m_nameYPos = registerFastName(L"y");
@@ -28,22 +34,40 @@ bool UIControl::setupControl(UIScene* scene, IggyValuePath* parent,
     m_funcSetAlpha = registerFastName(L"SetControlAlpha");
     m_nameVisible = registerFastName(L"visible");
 
-    F64 fx, fy, fwidth, fheight;
-    IggyValueGetF64RS(getIggyValuePath(), m_nameXPos, NULL, &fx);
-    IggyValueGetF64RS(getIggyValuePath(), m_nameYPos, NULL, &fy);
-    IggyValueGetF64RS(getIggyValuePath(), m_nameWidth, NULL, &fwidth);
-    IggyValueGetF64RS(getIggyValuePath(), m_nameHeight, NULL, &fheight);
+    if (m_isValid) {
+        IggyDatatype controlType = IGGY_DATATYPE__invalid_request;
+        IggyResult typeResult =
+            IggyValueGetTypeRS(getIggyValuePath(), 0, NULL, &controlType);
+        m_isValid = typeResult == IGGY_RESULT_SUCCESS &&
+                    controlType != IGGY_DATATYPE__invalid_request &&
+                    controlType != IGGY_DATATYPE_undefined;
+    }
 
-    m_x = (S32)fx;
-    m_y = (S32)fy;
-    m_width = (S32)Math::round(fwidth);
-    m_height = (S32)Math::round(fheight);
+    if (m_isValid) {
+        F64 fx, fy, fwidth, fheight;
+        IggyValueGetF64RS(getIggyValuePath(), m_nameXPos, NULL, &fx);
+        IggyValueGetF64RS(getIggyValuePath(), m_nameYPos, NULL, &fy);
+        IggyValueGetF64RS(getIggyValuePath(), m_nameWidth, NULL, &fwidth);
+        IggyValueGetF64RS(getIggyValuePath(), m_nameHeight, NULL, &fheight);
+
+        m_x = (S32)fx;
+        m_y = (S32)fy;
+        m_width = (S32)Math::round(fwidth);
+        m_height = (S32)Math::round(fheight);
+    } else {
+        m_x = 0;
+        m_y = 0;
+        m_width = 0;
+        m_height = 0;
+    }
 
     return res;
 }
 
 
 void UIControl::ReInit() {
+    if (!m_isValid) return;
+
     if (m_lastOpacity != 1.0f) {
         IggyDataValue result;
         IggyDataValue value[2];
@@ -78,6 +102,7 @@ S32 UIControl::getHeight() { return m_height; }
 void UIControl::setOpacity(float percent) {
     if (percent != m_lastOpacity) {
         m_lastOpacity = percent;
+        if (!m_isValid) return;
 
         IggyDataValue result;
         IggyDataValue value[2];
@@ -99,6 +124,11 @@ void UIControl::setOpacity(float percent) {
 
 void UIControl::setVisible(bool visible) {
     if (visible != m_isVisible) {
+        if (!m_isValid) {
+            m_isVisible = visible;
+            return;
+        }
+
         rrbool succ = IggyValueSetBooleanRS(getIggyValuePath(), m_nameVisible,
                                             NULL, visible);
         if (succ)
@@ -109,6 +139,8 @@ void UIControl::setVisible(bool visible) {
 }
 
 bool UIControl::getVisible() {
+    if (!m_isValid) return m_isVisible;
+
     rrbool bVisible = false;
 
     IggyResult result = IggyValueGetBooleanRS(getIggyValuePath(), m_nameVisible,

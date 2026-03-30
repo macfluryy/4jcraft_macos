@@ -33,24 +33,12 @@ C4JRender::eTextureFormat Textures::TEXTURE_FORMAT =
 int Textures::preLoadedIdx[TN_COUNT];
 const wchar_t* Textures::preLoaded[TN_COUNT] = {
     L"%blur%misc/pumpkinblur",
-    L"%blur%/misc/vignette",  // Not currently used
     L"%clamp%misc/shadow",
-    L"/achievement/bg",  // Not currently used
     L"art/kz",
     L"environment/clouds",
     L"environment/rain",
     L"environment/snow",
     L"gui/gui",
-    L"gui/background",
-    L"gui/inventory",
-    L"gui/container",
-    L"gui/crafting",
-    L"gui/furnace",
-    L"gui/creative_inventory/tabs",
-    L"gui/creative_inventory/tab_items",
-    L"gui/creative_inventory/tab_inventory",
-    L"gui/creative_inventory/tab_item_search",
-    L"title/mclogo",
     L"gui/icons",
     L"item/arrows",
     L"item/boat",
@@ -174,6 +162,37 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
 
     L"item/trapped",
     L"item/trapped_double",
+
+// 4jcraft: java UI specific
+#ifdef ENABLE_JAVA_GUIS
+    L"%blur%/misc/vignette",
+    L"/achievement/bg",
+    L"gui/background",
+    L"gui/inventory",
+    L"gui/container",
+    L"gui/crafting",
+    L"gui/furnace",
+    L"gui/creative_inventory/tabs",
+    L"gui/creative_inventory/tab_items",
+    L"gui/creative_inventory/tab_inventory",
+    L"gui/creative_inventory/tab_item_search",
+    L"title/mclogo",
+    L"gui/horse",
+    L"gui/anvil",
+    L"gui/trap",
+    L"gui/beacon",
+    L"gui/hopper",
+    L"gui/enchant",
+    L"gui/villager",
+    L"gui/brewing_stand",
+    L"title/bg/panorama",
+    L"title/bg/panorama0",
+    L"title/bg/panorama1",
+    L"title/bg/panorama2",
+    L"title/bg/panorama3",
+    L"title/bg/panorama4",
+    L"title/bg/panorama5",
+#endif
 // L"item/christmas",
 // L"item/christmas_double",
 
@@ -509,11 +528,16 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 }
 
 void Textures::bind(int id) {
+    // 4jcraft: Classic GUI code still performs some raw glBindTexture calls, so
+    // this path must always rebind rather than trusting lastBoundId to be in sync.
+    // TODO(4jcraft): Long term, route all texture binds through one synchronized
+    // path or invalidate lastBoundId at every raw glBindTexture call so this can
+    // safely use cached binds again without breaking font/UI rendering.
     // if (id != lastBoundId)
     {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
-        //	lastBoundId = id;
+        // lastBoundId = id;
     }
 }
 
@@ -664,8 +688,8 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     }
 
     if (clamp) {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     } else {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

@@ -351,18 +351,19 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         glPushMatrix();
         // 4J - original code left here for reference
         // 4jcraft: original code reused for proper lighting
-		glTranslatef((float)(x), (float)(y), 0.0f);
-		glScalef(fScaleX, fScaleY, 1.0f);
-		glTranslatef(-2.0f,3.0f, -3.0f + blitOffset);
-		glScalef(10.0f, 10.0f, 10.0f);
+        glTranslatef((float)(x), (float)(y), 0.0f);
+        glScalef(fScaleX, fScaleY, 1.0f);
+        glTranslatef(-2.0f, 3.0f, -3.0f + blitOffset);
+        glScalef(10.0f, 10.0f, 10.0f);
         glTranslatef(1.0f, 0.5f, 8.0f);
         glScalef(1.0f, 1.0f, -1.0f);
         glRotatef(180.0f + 30.0f, 1.0f, 0.0f, 0.0f);
         glRotatef(45.0f, 0.0f, 1.0f, 0.0f);
-                          // 4J-PB - pass the alpha value in - the grass block
-                          // render has the top surface coloured differently to
-                          // the rest of the block
+        // 4J-PB - pass the alpha value in - the grass block
+        // render has the top surface coloured differently to
+        // the rest of the block
         glRotatef(-90.0f, 0.0f, 1.0f, 0.0f);
+
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
 
         glPopMatrix();

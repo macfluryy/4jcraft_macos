@@ -183,8 +183,9 @@ void Arrow::tick() {
         int t = level->getTile(xTile, yTile, zTile);
         if (t > 0) {
             Tile::tiles[t]->updateShape(level, xTile, yTile, zTile);
-            AABB* aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
-            if (aabb != NULL && aabb->contains(Vec3::newTemp(x, y, z))) {
+            auto aabb = Tile::tiles[t]->getAABB(level, xTile, yTile, zTile);
+            Vec3 pos{x, y, z};
+            if (aabb.has_value() && aabb->contains(pos)) {
                 inGround = true;
             }
         }
@@ -217,18 +218,21 @@ void Arrow::tick() {
         flightTime++;
     }
 
-    Vec3* from = Vec3::newTemp(x, y, z);
-    Vec3* to = Vec3::newTemp(x + xd, y + yd, z + zd);
-    HitResult* res = level->clip(from, to, false, true);
+    Vec3 from{x, y, z};
+    Vec3 to{x + xd, y + yd, z + zd};
+    HitResult* res = level->clip(&from, &to, false, true);
 
-    from = Vec3::newTemp(x, y, z);
-    to = Vec3::newTemp(x + xd, y + yd, z + zd);
+    from = Vec3{x, y, z};
+    to = Vec3{x + xd, y + yd, z + zd};
+
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
+        to = Vec3{res->pos.x, res->pos.y, res->pos.z};
     }
+
     std::shared_ptr<Entity> hitEntity = nullptr;
-    std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        shared_from_this(), this->bb->expand(xd, yd, zd)->grow(1, 1, 1));
+    AABB grown = bb.expand(xd, yd, zd).grow(1, 1, 1);
+    std::vector<std::shared_ptr<Entity> >* objects =
+        level->getEntities(shared_from_this(), &grown);
     double nearest = 0;
     AUTO_VAR(itEnd, objects->end());
     for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
@@ -236,10 +240,10 @@ void Arrow::tick() {
         if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
         float rr = 0.3f;
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
+        AABB bb = e->bb.grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
         if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {
                 hitEntity = e;
                 nearest = dd;
@@ -359,9 +363,9 @@ void Arrow::tick() {
             zTile = res->z;
             lastTile = level->getTile(xTile, yTile, zTile);
             lastData = level->getData(xTile, yTile, zTile);
-            xd = (float)(res->pos->x - x);
-            yd = (float)(res->pos->y - y);
-            zd = (float)(res->pos->z - z);
+            xd = (float)(res->pos.x - x);
+            yd = (float)(res->pos.y - y);
+            zd = (float)(res->pos.z - z);
             float dd = (float)sqrt(xd * xd + yd * yd + zd * zd);
             // 4J added check - zero dd here was creating NaNs
             if (dd > 0.0001f) {

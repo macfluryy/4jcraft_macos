@@ -7,6 +7,7 @@
 #if !defined(__linux__)
 #include <xmcore.h>
 #endif
+#include <unordered_set>
 class MultiPlayerLevel;
 class Textures;
 class Chunk;
@@ -141,8 +142,13 @@ public:
     void destroyTileProgress(int id, int x, int y, int z, int progress);
     void registerTextures(IconRegister* iconRegister);
 
-    typedef std::unordered_map<int, std::vector<std::shared_ptr<TileEntity> >,
-                               IntKeyHash, IntKeyEq>
+    struct RenderableTileEntityBucket {
+        std::vector<std::shared_ptr<TileEntity> > tiles;
+        std::unordered_map<TileEntity*, size_t> indexByTile;
+    };
+
+    typedef std::unordered_map<int, RenderableTileEntityBucket, IntKeyHash,
+                               IntKeyEq>
         rteMap;
 
 private:
@@ -154,6 +160,10 @@ private:
     rteMap renderableTileEntities;  // 4J - changed - was
                                     // std::vector<std::shared_ptr<TileEntity>,
                                     // now hashed by chunk so we can find them
+    typedef std::unordered_set<TileEntity*> rtePendingRemovalSet;
+    typedef std::unordered_map<int, rtePendingRemovalSet, IntKeyHash, IntKeyEq>
+        rtePendingRemovalMap;
+    rtePendingRemovalMap m_renderableTileEntitiesPendingRemoval;
     CRITICAL_SECTION m_csRenderableTileEntities;
     MultiPlayerLevel* level[4];  // 4J - now one per player
     Textures* textures;
@@ -187,9 +197,20 @@ private:
         emptyChunks;
     static const int RENDERLISTS_LENGTH = 4;  // 4J - added
     OffsettedRenderList renderLists[RENDERLISTS_LENGTH];
-
+    void setGlobalChunkConnectivity(int index, uint64_t conn);
+    uint64_t getGlobalChunkConnectivity(int index);
+    std::vector<ClipChunk*> m_bfsGrid;
+    std::vector<uint8_t> m_bfsVisitedFaces[4];
     std::unordered_map<int, BlockDestructionProgress*> destroyingBlocks;
     Icon** breakingTextures;
+
+    void addRenderableTileEntity_Locked(
+        int key, const std::shared_ptr<TileEntity>& tileEntity);
+    void eraseRenderableTileEntity_Locked(RenderableTileEntityBucket& bucket,
+                                          TileEntity* tileEntity);
+    void queueRenderableTileEntityForRemoval_Locked(int key,
+                                                    TileEntity* tileEntity);
+    void retireRenderableTileEntitiesForChunkKey(int key);
 
 public:
     void fullyFlagRenderableTileEntitiesToBeRemoved();  // 4J added
@@ -212,7 +233,7 @@ public:
             int timeout_ticks;
             bool rebuilt;
             RecentTile(int x, int y, int z, Level* level);
-            ~RecentTile();
+            ~RecentTile() = default;
         };
         CRITICAL_SECTION m_csDestroyedTiles;
         std::vector<RecentTile*> m_destroyedTiles;
@@ -273,6 +294,8 @@ public:
                             unsigned char shift = 0);
     void clearGlobalChunkFlag(int x, int y, int z, Level* level,
                               unsigned char flag, unsigned char shift = 0);
+
+    static uint64_t* globalChunkConnectivity;
 
     // Get/set whole byte of flags
     unsigned char getGlobalChunkFlags(int x, int y, int z, Level* level);
