@@ -25,7 +25,7 @@ java_sources = files(
 lib_java = static_library('java',
   java_sources,
   # TODO: remove the .. path once arrayWithLength are evaporated
-  include_directories: include_directories('include/java'),
+  include_directories: include_directories('include'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )
 
