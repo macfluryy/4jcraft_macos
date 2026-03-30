@@ -219,8 +219,8 @@ public:
     getUnfinishedSchematicFiles();
 
     void loadBaseSaveData();
-    static int packMounted(void* pParam, int iPad, DWORD dwErr,
-                           DWORD dwLicenceMask);
+    static int packMounted(void* pParam, int iPad, uint32_t dwErr,
+                           uint32_t dwLicenceMask);
 
     // 4J-JEV:
     // ApplySchematicRules contain limited state

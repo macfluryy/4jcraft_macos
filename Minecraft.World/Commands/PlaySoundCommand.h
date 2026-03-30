@@ -84,7 +84,7 @@ player.getAName());
     }
 
     @Override
-    public boolean isValidWildcardPlayerArgument(String[] args, int
+    public bool isValidWildcardPlayerArgument(String[] args, int
 argumentIndex) { return argumentIndex == 1;
     }
 }

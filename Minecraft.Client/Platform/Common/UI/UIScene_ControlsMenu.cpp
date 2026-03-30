@@ -23,7 +23,7 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
     bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
 
     if (bNotInGame) {
-        LPWSTR layoutString = new wchar_t[128];
+        wchar_t* layoutString = new wchar_t[128];
         swprintf(layoutString, 128, L"%ls", VER_PRODUCTVERSION_STR_W);
         m_labelVersion.init(layoutString);
         delete[] layoutString;
@@ -55,7 +55,7 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
 
     int iSelected = app.GetGameSettings(m_iPad, eGameSetting_ControlScheme);
 
-    LPWSTR layoutString = new wchar_t[128];
+    wchar_t* layoutString = new wchar_t[128];
     swprintf(layoutString, 128, L"%ls : %ls", app.GetString(IDS_CURRENT_LAYOUT),
              app.GetString(m_iSchemeTextA[iSelected]));
     {
@@ -105,8 +105,8 @@ void UIScene_ControlsMenu::handleInput(int iPad, int key, bool repeat,
                                        bool pressed, bool released,
                                        bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
@@ -154,7 +154,7 @@ void UIScene_ControlsMenu::handlePress(F64 controlId, F64 childId) {
         case eControl_Button2:
             app.SetGameSettings(m_iPad, eGameSetting_ControlScheme,
                                 (unsigned char)control);
-            LPWSTR layoutString = new wchar_t[128];
+            wchar_t* layoutString = new wchar_t[128];
             swprintf(layoutString, 128, L"%ls : %ls",
                      app.GetString(IDS_CURRENT_LAYOUT),
                      app.GetString(m_iSchemeTextA[control]));

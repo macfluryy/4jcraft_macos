@@ -29,10 +29,10 @@ typedef struct
 }D3DXIMAGE_INFO;
 
 typedef struct _XSOCIAL_PREVIEWIMAGE {
-    BYTE *pBytes;
-    DWORD Pitch;
-    DWORD Width;
-    DWORD Height;
+    uint8_t *pBytes;
+    uint32_t Pitch;
+    uint32_t Width;
+    uint32_t Height;
 //    D3DFORMAT Format;
 } XSOCIAL_PREVIEWIMAGE, *PXSOCIAL_PREVIEWIMAGE;
 
@@ -76,7 +76,7 @@ public:
 	// Vertex data handling
 	typedef enum
 	{
-		VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,		// Position 3 x float, texture 2 x float, colour 4 x byte, normal 4 x byte, padding 1 DWORD
+		VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,		// Position 3 x float, texture 2 x float, colour 4 x byte, normal 4 x byte, padding 1 uint32_t
 		VERTEX_TYPE_COMPRESSED,					// Compressed format - see comment at top of VS_PS3_TS2_CS1.hlsl for description of layout
 		VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1_LIT,	// as VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1 with lighting applied,
 		VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1_TEXGEN, // as VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1 with tex gen
@@ -154,10 +154,10 @@ public:
 	void TextureSetParam(int param, int value);
 	void TextureDynamicUpdateStart();
 	void TextureDynamicUpdateEnd();
-	HRESULT LoadTextureData(const char *szFilename,D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut);
-	HRESULT LoadTextureData(BYTE *pbData, DWORD dwBytes,D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut);
-	HRESULT SaveTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int *ppDataOut);
-	HRESULT SaveTextureDataToMemory(void *pOutput, int outputCapacity, int *outputLength, int width, int height, int *ppDataIn);
+	int32_t LoadTextureData(const char *szFilename,D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut);
+	int32_t LoadTextureData(uint8_t *pbData, uint32_t dwBytes,D3DXIMAGE_INFO *pSrcInfo, int **ppDataOut);
+	int32_t SaveTextureData(const char *szFilename, D3DXIMAGE_INFO *pSrcInfo, int *ppDataOut);
+	int32_t SaveTextureDataToMemory(void *pOutput, int outputCapacity, int *outputLength, int width, int height, int *ppDataIn);
 	void TextureGetStats();
 	void  *TextureGetTexture(int idx);
 

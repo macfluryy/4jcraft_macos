@@ -277,7 +277,7 @@ bool CPlatformNetworkManagerStub::_RunNetworkGame() { return true; }
 
 void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(
     INetworkPlayer* pNetworkPlayerLeaving /*= nullptr*/) {
-    // 	DWORD playerCount = m_pIQNet->GetPlayerCount();
+    // 	uint32_t playerCount = m_pIQNet->GetPlayerCount();
     //
     // 	if( this->m_bLeavingGame )
     // 		return;
@@ -504,7 +504,7 @@ void CPlatformNetworkManagerStub::ForceFriendsSessionRefresh() {
 INetworkPlayer* CPlatformNetworkManagerStub::addNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
     NetworkPlayerQNet* pNetworkPlayer = new NetworkPlayerQNet(pQNetPlayer);
-    pQNetPlayer->SetCustomDataValue((ULONG_PTR)pNetworkPlayer);
+    pQNetPlayer->SetCustomDataValue((uintptr_t)pNetworkPlayer);
     currentNetworkPlayers.push_back(pNetworkPlayer);
     return pNetworkPlayer;
 }
@@ -567,7 +567,7 @@ void CPlatformNetworkManagerStub::SetSessionSubTexturePackId(int id) {
     m_hostGameSessionData.subTexturePackId = id;
 }
 
-void CPlatformNetworkManagerStub::Notify(int ID, ULONG_PTR Param) {}
+void CPlatformNetworkManagerStub::Notify(int ID, uintptr_t Param) {}
 
 bool CPlatformNetworkManagerStub::IsInSession() {
     return m_pIQNet->GetState() != QNET_STATE_IDLE;

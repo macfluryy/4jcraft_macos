@@ -1095,9 +1095,9 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
     ui.AnimateKeyPress(iPad, iAction, bRepeat, true, false);
 
     int buttonNum = 0;          // 0 = LeftMouse, 1 = RightMouse
-    bool quickKeyHeld = FALSE;  // Represents shift key on PC
+    bool quickKeyHeld = false;  // Represents shift key on PC
 
-    bool validKeyPress = FALSE;
+    bool validKeyPress = false;
     bool itemEditorKeyPress = false;
 
     // Ignore input from other players
@@ -1106,7 +1106,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
     switch (iAction) {
 #if defined(_DEBUG_MENUS_ENABLED)
         case ACTION_MENU_OTHER_STICK_PRESS:
-            itemEditorKeyPress = TRUE;
+            itemEditorKeyPress = true;
             break;
 #endif
         case ACTION_MENU_A:
@@ -1256,14 +1256,14 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
                     // over empty space or something else???
                     handleOtherClicked(iPad, m_eCurrSection, buttonNum,
                                        quickKeyHeld ? true : false);
-                    // assert( FALSE );
+                    // assert( false );
                 }
             }
         }
         bHandled = true;
     }
 #if defined(_DEBUG_MENUS_ENABLED)
-    else if (itemEditorKeyPress == TRUE) {
+    else if (itemEditorKeyPress == true) {
         if (IsSectionSlotList(m_eCurrSection)) {
             ItemEditorInput* initData = new ItemEditorInput();
             initData->iPad = getPad();

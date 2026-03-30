@@ -957,7 +957,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
             memToAlloc, MAXULONG_PTR, 4096,
             PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
         if (newIndicesAndData == nullptr) {
-            DWORD lastError = GetLastError();
+            uint32_t lastError = GetLastError();
             MEMORYSTATUS memStatus;
             GlobalMemoryStatus(&memStatus);
             __debugbreak();

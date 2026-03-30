@@ -2108,9 +2108,9 @@ void CMinecraftApp::ActionDebugMask(int iPad, bool bSetAllClear) {
                 break;
             case eDebugSetting_Safearea:
                 if (ulBitmask & (1 << i)) {
-                    app.ShowSafeArea(TRUE);
+                    app.ShowSafeArea(true);
                 } else {
-                    app.ShowSafeArea(FALSE);
+                    app.ShowSafeArea(false);
                 }
                 break;
 
@@ -2344,8 +2344,8 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                         UIFullscreenProgressCompletionData* completionData =
                             new UIFullscreenProgressCompletionData();
-                        completionData->bShowBackground = TRUE;
-                        completionData->bShowLogo = TRUE;
+                        completionData->bShowBackground = true;
+                        completionData->bShowLogo = true;
                         completionData->type =
                             e_ProgressCompletion_NavigateBackToScene;
                         completionData->iPad = ProfileManager.GetPrimaryPad();
@@ -2406,8 +2406,8 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
-                    completionData->bShowBackground = TRUE;
-                    completionData->bShowLogo = TRUE;
+                    completionData->bShowBackground = true;
+                    completionData->bShowLogo = true;
                     completionData->type =
                         e_ProgressCompletion_AutosaveNavigateBack;
                     completionData->iPad = ProfileManager.GetPrimaryPad();
@@ -2699,10 +2699,10 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // Changed - Don't use the FullScreenProgressScreen for
                     // action, use a dialog instead
                     completionData->bRequiresUserAction =
-                        FALSE;  //(param != nullptr) ? TRUE : FALSE;
-                    completionData->bShowTips = (param != nullptr) ? FALSE : TRUE;
-                    completionData->bShowBackground = TRUE;
-                    completionData->bShowLogo = TRUE;
+                        false;  //(param != nullptr) ? true : false;
+                    completionData->bShowTips = (param != nullptr) ? false : true;
+                    completionData->bShowBackground = true;
+                    completionData->bShowLogo = true;
                     completionData->type =
                         e_ProgressCompletion_NavigateToHomeMenu;
                     completionData->iPad = DEFAULT_XUI_MENU_USER;
@@ -2744,8 +2744,8 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
-                    completionData->bShowBackground = TRUE;
-                    completionData->bShowLogo = TRUE;
+                    completionData->bShowBackground = true;
+                    completionData->bShowLogo = true;
                     completionData->type =
                         e_ProgressCompletion_NavigateToHomeMenu;
                     completionData->iPad = DEFAULT_XUI_MENU_USER;
@@ -2810,8 +2810,8 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                         // UIFullscreenProgressCompletionData *completionData =
                         // new UIFullscreenProgressCompletionData();
-                        // completionData->bShowBackground=TRUE;
-                        // completionData->bShowLogo=TRUE;
+                        // completionData->bShowBackground=true;
+                        // completionData->bShowLogo=true;
                         // completionData->type =
                         // e_ProgressCompletion_CloseUIScenes;
                         // completionData->iPad = i;
@@ -2946,7 +2946,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                                     // and then opts to play the tutorial once
                                     // they have been returned to the Main Menu.
                                     // 4J Stu - Leave the session
-                                    g_NetworkManager.LeaveGame(FALSE);
+                                    g_NetworkManager.LeaveGame(false);
 
                                     // need to clear the player stats - can't
                                     // assume it'll be done in setlevel - we may
@@ -3048,8 +3048,8 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                         UIFullscreenProgressCompletionData* completionData =
                             new UIFullscreenProgressCompletionData();
-                        completionData->bShowBackground = TRUE;
-                        completionData->bShowLogo = TRUE;
+                        completionData->bShowBackground = true;
+                        completionData->bShowLogo = true;
                         completionData->iPad = DEFAULT_XUI_MENU_USER;
                         completionData->type =
                             e_ProgressCompletion_NavigateToHomeMenu;
@@ -3223,8 +3223,8 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
-                    completionData->bShowBackground = TRUE;
-                    completionData->bShowLogo = TRUE;
+                    completionData->bShowBackground = true;
+                    completionData->bShowLogo = true;
                     completionData->iPad = DEFAULT_XUI_MENU_USER;
                     completionData->type = e_ProgressCompletion_NoAction;
                     loadingParams->completionData = completionData;
@@ -3332,9 +3332,9 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                             UIFullscreenProgressCompletionData* completionData =
                                 new UIFullscreenProgressCompletionData();
-                            completionData->bRequiresUserAction = TRUE;
-                            completionData->bShowBackground = TRUE;
-                            completionData->bShowLogo = TRUE;
+                            completionData->bRequiresUserAction = true;
+                            completionData->bShowBackground = true;
+                            completionData->bShowLogo = true;
                             completionData->iPad = DEFAULT_XUI_MENU_USER;
                             if (ui.IsSceneInStack(
                                     ProfileManager.GetPrimaryPad(),
@@ -3395,9 +3395,9 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     UIFullscreenProgressCompletionData* completionData =
                         new UIFullscreenProgressCompletionData();
-                    completionData->bRequiresUserAction = FALSE;
-                    completionData->bShowBackground = TRUE;
-                    completionData->bShowLogo = TRUE;
+                    completionData->bRequiresUserAction = false;
+                    completionData->bShowBackground = true;
+                    completionData->bShowLogo = true;
                     completionData->iPad = DEFAULT_XUI_MENU_USER;
                     if (ui.IsSceneInStack(ProfileManager.GetPrimaryPad(),
                                           eUIScene_EndPoem)) {
@@ -3826,7 +3826,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
         saveStats = false;
 
         // 4J Stu - Leave the session once the disconnect packet has been sent
-        g_NetworkManager.LeaveGame(FALSE);
+        g_NetworkManager.LeaveGame(false);
     } else {
         if (lpParameter != nullptr) {
             switch (app.GetDisconnectReason()) {
@@ -5434,9 +5434,9 @@ std::unordered_map<uint64_t, DLC_INFO*> CMinecraftApp::DLCInfo_Trial;
 std::unordered_map<uint64_t, DLC_INFO*> CMinecraftApp::DLCInfo_Full;
 std::unordered_map<std::wstring, uint64_t> CMinecraftApp::DLCInfo_SkinName;
 
-HRESULT CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
+int32_t CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
                                           wchar_t* pSkin, wchar_t* pCape) {
-    HRESULT hr = S_OK;
+    int32_t hr = S_OK;
     eXUID eTempXuid = eXUID_Undefined;
     MOJANG_DATA* pMojangData = nullptr;
 
@@ -5469,8 +5469,8 @@ MOJANG_DATA* CMinecraftApp::GetMojangDataForXuid(PlayerUID xuid) {
     return MojangData[xuid];
 }
 
-HRESULT CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
-    HRESULT hr = S_OK;
+int32_t CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
+    int32_t hr = S_OK;
 
     // #ifdef 0
     // 	if(pType!=nullptr)
@@ -5498,13 +5498,13 @@ HRESULT CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
 }
 
 #if defined(_WINDOWS64)
-HRESULT CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
+int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
                                        wchar_t* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
                                        wchar_t* pDataFile) {
-    HRESULT hr = S_OK;
+    int32_t hr = S_OK;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
     pDLCData->ullOfferID_Full = ullOfferID_Full;
@@ -5548,7 +5548,7 @@ HRESULT CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
     return hr;
 }
 #elif defined(__linux__)
-HRESULT CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
+int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
                                        wchar_t* pFirstSkin,
@@ -5561,12 +5561,12 @@ HRESULT CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
 }
 #else
 
-HRESULT CMinecraftApp::RegisterDLCData(char* pchDLCName,
+int32_t CMinecraftApp::RegisterDLCData(char* pchDLCName,
                                        unsigned int uiSortIndex,
                                        char* pchImageURL) {
     // on PS3 we get all the required info from the name
     char chDLCType[3];
-    HRESULT hr = S_OK;
+    int32_t hr = S_OK;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
 
@@ -5703,7 +5703,7 @@ void CMinecraftApp::EnterSaveNotificationSection() {
                 g_NetworkManager.GetPlayerCount() == 1) {
                 app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                        eXuiServerAction_PauseServer,
-                                       (void*)TRUE);
+                                       (void*)true);
             }
         }
     }
@@ -5723,7 +5723,7 @@ void CMinecraftApp::LeaveSaveNotificationSection() {
                 g_NetworkManager.GetPlayerCount() == 1) {
                 app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                        eXuiServerAction_PauseServer,
-                                       (void*)FALSE);
+                                       (void*)false);
             }
         }
     }
@@ -6562,7 +6562,7 @@ void CMinecraftApp::ClearTerrainFeaturePosition() {
 }
 
 void CMinecraftApp::UpdatePlayerInfo(std::uint8_t networkSmallId,
-                                     SHORT playerColourIndex,
+                                     int16_t playerColourIndex,
                                      unsigned int playerGamePrivileges) {
     for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
         if (m_playerColours[i] == networkSmallId) {
@@ -7275,7 +7275,7 @@ std::uint32_t CMinecraftApp::getSkinIdFromPath(const std::wstring& skin) {
 }
 
 std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId) {
-    // 4J Stu - This function maps the encoded DWORD we store in the player
+    // 4J Stu - This function maps the encoded uint32_t we store in the player
     // profile to a filename that is stored as a memory texture and shared
     // between systems in game
     wchar_t chars[256];

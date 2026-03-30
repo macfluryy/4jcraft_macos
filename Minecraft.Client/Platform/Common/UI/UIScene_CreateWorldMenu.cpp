@@ -593,7 +593,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
 
     unsigned int uiIDA[2];
     if (m_bGameModeCreative == true ||
-        m_MoreOptionsParams.bHostPrivileges == TRUE) {
+        m_MoreOptionsParams.bHostPrivileges == true) {
         uiIDA[0] = IDS_CONFIRM_OK;
         uiIDA[1] = IDS_CONFIRM_CANCEL;
         if (m_bGameModeCreative == true) {
@@ -866,8 +866,8 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
 
     UIFullscreenProgressCompletionData* completionData =
         new UIFullscreenProgressCompletionData();
-    completionData->bShowBackground = TRUE;
-    completionData->bShowLogo = TRUE;
+    completionData->bShowBackground = true;
+    completionData->bShowLogo = true;
     completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
     completionData->iPad = DEFAULT_XUI_MENU_USER;
     loadingParams->completionData = completionData;

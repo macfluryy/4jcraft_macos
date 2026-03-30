@@ -794,7 +794,7 @@ int UIScene_LeaderboardsMenu::SetLeaderboardTitleIcons() {
 
     for (int i = 0; i < 7; i++) {
         if (TitleIcons[m_currentLeaderboard][i] == 0) {
-            // m_pHTitleIconSlots[i]->SetShow(FALSE);
+            // m_pHTitleIconSlots[i]->SetShow(false);
         } else {
             iValidIcons++;
             m_listEntries.setColumnIcon(i, TitleIcons[m_currentLeaderboard][i]);

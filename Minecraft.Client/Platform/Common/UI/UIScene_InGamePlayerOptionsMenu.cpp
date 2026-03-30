@@ -246,9 +246,9 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
         }
 
         // Can only kick people if they are not local, and not local to the host
-        if (editingPlayer->IsLocal() != TRUE &&
+        if (editingPlayer->IsLocal() != true &&
             editingPlayer->IsSameSystem(g_NetworkManager.GetHostPlayer()) !=
-                TRUE) {
+                true) {
             m_buttonKick.init(app.GetString(IDS_KICK_PLAYER), eControl_Kick);
         } else {
             removeControl(&m_buttonKick, true);
@@ -358,9 +358,9 @@ void UIScene_InGamePlayerOptionsMenu::handleReload() {
         }
 
         // Can only kick people if they are not local, and not local to the host
-        if (editingPlayer->IsLocal() == TRUE ||
+        if (editingPlayer->IsLocal() == true ||
             editingPlayer->IsSameSystem(g_NetworkManager.GetHostPlayer()) ==
-                TRUE) {
+                true) {
             removeControl(&m_buttonKick, true);
         }
     }
@@ -394,8 +394,8 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
                                                   bool released,
                                                   bool& handled) {
     // app.DebugPrintf("UIScene_DebugOverlay handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
 
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
     switch (key) {

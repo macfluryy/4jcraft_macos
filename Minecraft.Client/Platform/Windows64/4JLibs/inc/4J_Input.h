@@ -55,8 +55,8 @@ enum EKeyboardResult
 
 typedef struct _STRING_VERIFY_RESPONSE
 {
-	WORD wNumStrings;
-	HRESULT *pStringResult;
+	uint16_t wNumStrings;
+	int32_t *pStringResult;
 } 
 STRING_VERIFY_RESPONSE;
 
@@ -94,7 +94,7 @@ public:
 	void				SetJoypadStickTriggerMap(int iPad,unsigned int uiFrom, unsigned int uiTo);
 	void				SetKeyRepeatRate(float fRepeatDelaySecs,float fRepeatRateSecs); 
 	void				SetDebugSequence( const char *chSequenceA,int( *Func)(void *),void *lpParam );
-	FLOAT				GetIdleSeconds(int iPad);
+	float				GetIdleSeconds(int iPad);
 	bool				IsPadConnected(int iPad);
 
 	// In-Game values which may have been remapped due to Southpaw, swap triggers, etc
@@ -107,8 +107,8 @@ public:
 
 	void				SetMenuDisplayed(int iPad, bool bVal);
 
-// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, UINT uiText, UINT uiDesc, DWORD dwPad, wchar_t *pwchResult, UINT uiResultSize,int( *Func)(void*,const bool),void* lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
-// 	EKeyboardResult		RequestKeyboard(UINT uiTitle, const wchar_t* pwchDefault, UINT uiDesc, DWORD dwPad, wchar_t *pwchResult, UINT uiResultSize,int( *Func)(void*,const bool),void* lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
+// 	EKeyboardResult		RequestKeyboard(uint32_t uiTitle, uint32_t uiText, uint32_t uiDesc, uint32_t dwPad, wchar_t *pwchResult, uint32_t uiResultSize,int( *Func)(void*,const bool),void* lpParam,EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
+// 	EKeyboardResult		RequestKeyboard(uint32_t uiTitle, const wchar_t* pwchDefault, uint32_t uiDesc, uint32_t dwPad, wchar_t *pwchResult, uint32_t uiResultSize,int( *Func)(void*,const bool),void* lpParam, EKeyboardMode eMode,C4JStringTable *pStringTable=nullptr);
 	EKeyboardResult		RequestKeyboard(const wchar_t *Title, const wchar_t *Text, int iPad, unsigned int uiMaxChars, int( *Func)(void *,const bool), void *lpParam, C_4JInput::EKeyboardMode eMode);
 	void GetText(uint16_t *UTF16String);
 
@@ -130,7 +130,7 @@ public:
 	void CancelQueuedVerifyStrings(int( *Func)(void *,STRING_VERIFY_RESPONSE *),void *lpParam);
 	void CancelAllVerifyInProgress(void);
 
-	//bool InputDetected(DWORD dwUserIndex,wchar_t *pwchInput);
+	//bool InputDetected(uint32_t dwUserIndex,wchar_t *pwchInput);
 };
 
 // Singleton

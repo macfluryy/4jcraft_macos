@@ -31,14 +31,14 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     std::string path = "GAME:\\GameRules\\heightmap.bin";
 #endif
 #endif
-    HANDLE file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING,
+    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING,
                              FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE) {
         app.FatalLoadError();
-        DWORD error = GetLastError();
+        uint32_t error = GetLastError();
         assert(false);
     } else {
-        DWORD bytesRead, dwFileSize = GetFileSize(file, nullptr);
+        uint32_t bytesRead, dwFileSize = GetFileSize(file, nullptr);
         if (dwFileSize > m_heightmapOverride.length) {
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
@@ -46,7 +46,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         bool bSuccess = ReadFile(file, m_heightmapOverride.data, dwFileSize,
                                  &bytesRead, nullptr);
 
-        if (bSuccess == FALSE) {
+        if (bSuccess == false) {
             app.FatalLoadError();
         }
         CloseHandle(file);
@@ -67,12 +67,12 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     file = CreateFile(waterHeightPath.c_str(), GENERIC_READ, 0, nullptr,
                       OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE) {
-        DWORD error = GetLastError();
+        uint32_t error = GetLastError();
         // assert(false);
         memset(m_waterheightOverride.data, level->seaLevel,
                m_waterheightOverride.length);
     } else {
-        DWORD bytesRead, dwFileSize = GetFileSize(file, nullptr);
+        uint32_t bytesRead, dwFileSize = GetFileSize(file, nullptr);
         if (dwFileSize > m_waterheightOverride.length) {
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
@@ -80,7 +80,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         bool bSuccess = ReadFile(file, m_waterheightOverride.data, dwFileSize,
                                  &bytesRead, nullptr);
 
-        if (bSuccess == FALSE) {
+        if (bSuccess == false) {
             app.FatalLoadError();
         }
         CloseHandle(file);

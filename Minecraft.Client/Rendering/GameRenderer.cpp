@@ -328,7 +328,7 @@ void GameRenderer::pick(float a) {
             std::shared_ptr<Entity> ridingEntity =
                 mc->cameraTargetPlayer->riding;
             // 4jcraft: compare the mounted entity explicitly so riding the hit
-            // target does not get collapsed into a boolean/null comparison.
+            // target does not get collapsed into a bool/null comparison.
             if (ridingEntity != nullptr && e == ridingEntity) {
                 if (nearest == 0) {
                     hovered = e;

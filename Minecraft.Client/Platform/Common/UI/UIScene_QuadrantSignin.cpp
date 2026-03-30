@@ -58,8 +58,8 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
     app.DebugPrintf(
         "UIScene_QuadrantSignin handling input for pad %d, key %d, repeat- %s, "
         "pressed- %s, released- %s\n",
-        iPad, key, repeat ? "TRUE" : "FALSE", pressed ? "TRUE" : "FALSE",
-        released ? "TRUE" : "FALSE");
+        iPad, key, repeat ? "true" : "false", pressed ? "true" : "false",
+        released ? "true" : "false");
 
     if (!m_bIgnoreInput) {
         ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);

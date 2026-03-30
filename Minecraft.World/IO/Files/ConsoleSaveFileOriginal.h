@@ -10,7 +10,7 @@ private:
 
     std::wstring m_fileName;
 
-    //	HANDLE hHeap;
+    //	void* hHeap;
     static void* pvHeap;
     static unsigned int pagesCommitted;
 #if defined(_LARGE_WORLDS)

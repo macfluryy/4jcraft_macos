@@ -89,7 +89,7 @@ bool HalfSlabTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
     oy += Facing::STEP_Y[Facing::OPPOSITE_FACING[face]];
     oz += Facing::STEP_Z[Facing::OPPOSITE_FACING[face]];
 
-    boolean isUpper = (level->getData(ox, oy, oz) & TOP_SLOT_BIT) != 0;
+    bool isUpper = (level->getData(ox, oy, oz) & TOP_SLOT_BIT) != 0;
     if (isUpper) {
         if (face == Facing::DOWN) return true;
         if (face == Facing::UP && Tile::shouldRenderFace(level, x, y, z, face))

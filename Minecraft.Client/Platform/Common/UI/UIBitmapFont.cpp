@@ -212,7 +212,7 @@ IggyGlyphMetrics* UIBitmapFont::GetGlyphMetrics(S32 glyph,
 rrbool UIBitmapFont::IsGlyphEmpty(S32 glyph) {
     if (m_cFontData->glyphIsWhitespace(glyph)) return true;
     return false;  // app.DebugPrintf("Is glyph %d empty?
-                   // %s\n",glyph,isEmpty?"TRUE":"FALSE");
+                   // %s\n",glyph,isEmpty?"true":"false");
 }
 
 // Callback function type for returning the kerning amount for a given pair of
@@ -231,7 +231,7 @@ F32 UIBitmapFont::GetKerningForGlyphPair(S32 first_glyph, S32 second_glyph) {
 // glyph at the given scale
 rrbool UIBitmapFont::CanProvideBitmap(S32 glyph, F32 pixel_scale) {
     // app.DebugPrintf("Can provide bitmap for glyph %d at scale %f?
-    // %s\n",glyph,pixel_scale,canProvideBitmap?"TRUE":"FALSE");
+    // %s\n",glyph,pixel_scale,canProvideBitmap?"true":"false");
     return true;
 }
 

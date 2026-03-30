@@ -1268,7 +1268,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e) {
             // 4J-PB - refuse to add the entity, since we'll be removing one
             // already there, and it may be an item frame with something in it.
             LeaveCriticalSection(&m_limiterCS);
-            return FALSE;
+            return false;
 
             // removeEntityImmediately(m_hangingEntities.front());
         }

@@ -172,7 +172,7 @@ void AbstractTexturePack::loadDefaultColourTable() {
         AbstractTexturePack::getPath(true).append(L"res/colours.col"));
 
     if (coloursFile.exists()) {
-        DWORD dataLength = coloursFile.length();
+        uint32_t dataLength = coloursFile.length();
         byteArray data(dataLength);
 
         FileInputStream fis(coloursFile);
@@ -209,7 +209,7 @@ void AbstractTexturePack::unloadUI() {
 }
 
 std::wstring AbstractTexturePack::getXuiRootPath() {
-    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(nullptr);
+    const uintptr_t c_ModuleHandle = (uintptr_t)GetModuleHandle(nullptr);
 
     // Load new skin
     constexpr int LOCATOR_SIZE =

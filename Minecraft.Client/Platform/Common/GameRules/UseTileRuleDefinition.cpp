@@ -35,7 +35,7 @@ void UseTileRuleDefinition::addAttribute(const std::wstring& attributeName,
     } else if (attributeName.compare(L"useCoords") == 0) {
         m_useCoords = _fromString<bool>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter useCoords=%s\n",
-                        m_useCoords ? "TRUE" : "FALSE");
+                        m_useCoords ? "true" : "false");
     } else if (attributeName.compare(L"x") == 0) {
         m_coordinates.x = _fromString<int>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter x=%d\n",
@@ -65,7 +65,7 @@ bool UseTileRuleDefinition::onUseTile(GameRule* rule, int tileId, int x, int y,
                 app.DebugPrintf(
                     "Completed UseTileRule with info - t:%d, coords:%s, x:%d, "
                     "y:%d, z:%d\n",
-                    m_tileId, m_useCoords ? "TRUE" : "FALSE", m_coordinates.x,
+                    m_tileId, m_useCoords ? "true" : "false", m_coordinates.x,
                     m_coordinates.y, m_coordinates.z);
 
                 // Send a packet or some other announcement here

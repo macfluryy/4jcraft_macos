@@ -672,11 +672,11 @@ public:
                                    int* pZ);
     std::vector<FEATURE_DATA*> m_vTerrainFeatures;
 
-    static HRESULT RegisterMojangData(wchar_t*, PlayerUID, wchar_t*, wchar_t*);
+    static int32_t RegisterMojangData(wchar_t*, PlayerUID, wchar_t*, wchar_t*);
     MOJANG_DATA* GetMojangDataForXuid(PlayerUID xuid);
-    static HRESULT RegisterConfigValues(wchar_t* pType, int iValue);
+    static int32_t RegisterConfigValues(wchar_t* pType, int iValue);
 
-    static HRESULT RegisterDLCData(wchar_t*, wchar_t*, int, uint64_t, uint64_t,
+    static int32_t RegisterDLCData(wchar_t*, wchar_t*, int, uint64_t, uint64_t,
                                    wchar_t*, unsigned int, int, wchar_t* pDataFile);
     bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
                                     uint64_t* pullVal);
@@ -839,7 +839,7 @@ private:
     unsigned int m_playerGamePrivileges[MINECRAFT_NET_MAX_PLAYERS];
 
 public:
-    void UpdatePlayerInfo(std::uint8_t networkSmallId, SHORT playerColourIndex,
+    void UpdatePlayerInfo(std::uint8_t networkSmallId, int16_t playerColourIndex,
                           unsigned int playerGamePrivileges);
     short GetPlayerColour(std::uint8_t networkSmallId);
     unsigned int GetPlayerPrivileges(std::uint8_t networkSmallId);

@@ -112,7 +112,7 @@ void DataInputStream::close() {
 
 // Reads one input byte and returns true if that byte is nonzero, false if that
 // byte is zero. This method is suitable for reading the byte written by the
-// writeBoolean method of interface DataOutput. Returns: the boolean value read.
+// writeBoolean method of interface DataOutput. Returns: the bool value read.
 bool DataInputStream::readBoolean() {
     if (stream == nullptr) {
         app.DebugPrintf(

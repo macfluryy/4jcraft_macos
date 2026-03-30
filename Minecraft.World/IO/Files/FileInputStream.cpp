@@ -147,7 +147,7 @@ int FileInputStream::read(byteArray b, unsigned int offset,
 void FileInputStream::close() {
     if (m_fileHandle == nullptr) {
         // printf("\n\nFileInputStream::close - TRYING TO CLOSE AN INVALID FILE
-        // HANDLE\n\n");
+        // void*\n\n");
         return;
     }
 

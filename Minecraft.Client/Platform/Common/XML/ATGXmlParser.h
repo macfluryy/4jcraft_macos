@@ -28,10 +28,10 @@ namespace ATG
 #define E_INVALID_XML_SYNTAX    MAKE_HRESULT(1, _ATGFAC, 0x0002 )
 
 
-CONST UINT XML_MAX_ATTRIBUTES_PER_ELEMENT  =   32;
-CONST UINT XML_MAX_NAME_LENGTH             =   128;
-CONST UINT XML_READ_BUFFER_SIZE            =   2048;
-CONST UINT XML_WRITE_BUFFER_SIZE           =   2048;   
+const uint32_t XML_MAX_ATTRIBUTES_PER_ELEMENT  =   32;
+const uint32_t XML_MAX_NAME_LENGTH             =   128;
+const uint32_t XML_READ_BUFFER_SIZE            =   2048;
+const uint32_t XML_WRITE_BUFFER_SIZE           =   2048;   
 
 // No tag can be longer than XML_WRITE_BUFFER_SIZE - an error will be returned if 
 // it is
@@ -40,9 +40,9 @@ CONST UINT XML_WRITE_BUFFER_SIZE           =   2048;
 struct XMLAttribute
 {
     wchar_t*  strName;
-    UINT    NameLen;
+    uint32_t    NameLen;
     wchar_t*  strValue;
-    UINT    ValueLen;       
+    uint32_t    ValueLen;       
 };
 
 //-------------------------------------------------------------------------------------
@@ -53,30 +53,30 @@ public:
     ISAXCallback() {};
     virtual ~ISAXCallback() {};
 
-    virtual HRESULT  StartDocument() = 0;
-    virtual HRESULT  EndDocument() = 0;
+    virtual int32_t  StartDocument() = 0;
+    virtual int32_t  EndDocument() = 0;
 
-    virtual HRESULT  ElementBegin( CONST wchar_t* strName, UINT NameLen, 
-                                   CONST XMLAttribute *pAttributes, UINT NumAttributes ) = 0;
-    virtual HRESULT  ElementContent( CONST wchar_t *strData, UINT DataLen, bool More ) = 0;
-    virtual HRESULT  ElementEnd( CONST wchar_t *strName, UINT NameLen ) = 0;
+    virtual int32_t  ElementBegin( const wchar_t* strName, uint32_t NameLen, 
+                                   const XMLAttribute *pAttributes, uint32_t NumAttributes ) = 0;
+    virtual int32_t  ElementContent( const wchar_t *strData, uint32_t DataLen, bool More ) = 0;
+    virtual int32_t  ElementEnd( const wchar_t *strName, uint32_t NameLen ) = 0;
 
-    virtual HRESULT  CDATABegin( ) = 0;
-    virtual HRESULT  CDATAData( CONST wchar_t *strCDATA, UINT CDATALen, bool bMore ) = 0;
-    virtual HRESULT  CDATAEnd( ) = 0;
+    virtual int32_t  CDATABegin( ) = 0;
+    virtual int32_t  CDATAData( const wchar_t *strCDATA, uint32_t CDATALen, bool bMore ) = 0;
+    virtual int32_t  CDATAEnd( ) = 0;
 
-    virtual void     Error( HRESULT hError, CONST CHAR *strMessage ) = 0;
+    virtual void     Error( int32_t hError, const char *strMessage ) = 0;
 
-    virtual void     SetParseProgress( DWORD dwProgress ) { }
+    virtual void     SetParseProgress( uint32_t dwProgress ) { }
 
-    const CHAR*      GetFilename() { return m_strFilename; }
-    UINT             GetLineNumber() { return m_LineNum; }
-    UINT             GetLinePosition() { return m_LinePos; }
+    const char*      GetFilename() { return m_strFilename; }
+    uint32_t             GetLineNumber() { return m_LineNum; }
+    uint32_t             GetLinePosition() { return m_LinePos; }
 
 private:
-    CONST CHAR *m_strFilename;
-    UINT        m_LineNum;
-    UINT        m_LinePos;
+    const char *m_strFilename;
+    uint32_t        m_LineNum;
+    uint32_t        m_LinePos;
 };
 
 
@@ -100,52 +100,52 @@ public:
     //         E_ABORT - callback returned a fail code
     //         S_OK - file parsed and completed   
 
-    HRESULT    ParseXMLFile( CONST CHAR *strFilename );                              
+    int32_t    ParseXMLFile( const char *strFilename );                              
     
     //      Parses from a buffer- if you pass a wchar_t buffer (and cast it), it will 
     //         correctly detect it and use unicode instead.  Return codes are the
     //         same as for ParseXMLFile
 
-    HRESULT    ParseXMLBuffer( CONST CHAR* strBuffer, UINT uBufferSize );    
+    int32_t    ParseXMLBuffer( const char* strBuffer, uint32_t uBufferSize );    
 
 private:      
-    HRESULT    MainParseLoop();
+    int32_t    MainParseLoop();
 
-    HRESULT    AdvanceCharacter( bool bOkToFail = FALSE ); 
+    int32_t    AdvanceCharacter( bool bOkToFail = false ); 
     void       SkipNextAdvance();           
 
-    HRESULT    ConsumeSpace();            
-    HRESULT    ConvertEscape();           
-    HRESULT    AdvanceElement();           
-    HRESULT    AdvanceName();            
-    HRESULT    AdvanceAttrVal();           
-    HRESULT    AdvanceCDATA();           
-    HRESULT    AdvanceComment();          
+    int32_t    ConsumeSpace();            
+    int32_t    ConvertEscape();           
+    int32_t    AdvanceElement();           
+    int32_t    AdvanceName();            
+    int32_t    AdvanceAttrVal();           
+    int32_t    AdvanceCDATA();           
+    int32_t    AdvanceComment();          
 
     void    FillBuffer();
     
 #ifdef  _Printf_format_string_  // VC++ 2008 and later support this annotation
-    void    Error( HRESULT hRet, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... );
+    void    Error( int32_t hRet, _In_z_ _Printf_format_string_ const char* strFormat, ... );
 #else
-    void    Error( HRESULT hRet, CONST CHAR* strFormat, ... );
+    void    Error( int32_t hRet, const char* strFormat, ... );
 #endif
 
     ISAXCallback*   m_pISAXCallback;    
 
-    HANDLE          m_hFile;    
-    CONST CHAR*     m_pInXMLBuffer; 
-    UINT            m_uInXMLBufferCharsLeft;
-    DWORD           m_dwCharsTotal;
-    DWORD           m_dwCharsConsumed;
+    void*          m_hFile;    
+    const char*     m_pInXMLBuffer; 
+    uint32_t            m_uInXMLBufferCharsLeft;
+    uint32_t           m_dwCharsTotal;
+    uint32_t           m_dwCharsConsumed;
 
-    BYTE            m_pReadBuf[ XML_READ_BUFFER_SIZE + 2 ]; // room for a trailing NULL
+    uint8_t            m_pReadBuf[ XML_READ_BUFFER_SIZE + 2 ]; // room for a trailing NULL
     wchar_t           m_pWriteBuf[ XML_WRITE_BUFFER_SIZE ];    
 
-    BYTE*           m_pReadPtr;
+    uint8_t*           m_pReadPtr;
     wchar_t*          m_pWritePtr;        // write pointer within m_pBuf      
 
-    bool            m_bUnicode;         // TRUE = 16-bits, FALSE = 8-bits
-    bool            m_bReverseBytes;    // TRUE = reverse bytes, FALSE = don't reverse
+    bool            m_bUnicode;         // true = 16-bits, false = 8-bits
+    bool            m_bReverseBytes;    // true = reverse bytes, false = don't reverse
     
     bool            m_bSkipNextAdvance;
     wchar_t           m_Ch;               // Current character being parsed

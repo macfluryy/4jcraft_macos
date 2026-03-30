@@ -164,19 +164,19 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         // these r just the defaults from the createworldmenu UIscene
         // i had higher ambitions for what id do with these but its not worth it
         // for a temp ui
-        moreOptionsParams->bGenerateOptions = TRUE;
+        moreOptionsParams->bGenerateOptions = true;
         moreOptionsParams->bStructures = generateStructures;
         moreOptionsParams->bFlatWorld = flatWorld;
         moreOptionsParams->bBonusChest = bonusChest;
-        moreOptionsParams->bPVP = TRUE;
-        moreOptionsParams->bTrust = TRUE;
-        moreOptionsParams->bFireSpreads = TRUE;
-        moreOptionsParams->bTNT = TRUE;
-        moreOptionsParams->bHostPrivileges = FALSE;
-        moreOptionsParams->bOnlineGame = FALSE;
-        moreOptionsParams->bInviteOnly = FALSE;
-        moreOptionsParams->bAllowFriendsOfFriends = FALSE;
-        moreOptionsParams->bOnlineSettingChangedBySystem = FALSE;
+        moreOptionsParams->bPVP = true;
+        moreOptionsParams->bTrust = true;
+        moreOptionsParams->bFireSpreads = true;
+        moreOptionsParams->bTNT = true;
+        moreOptionsParams->bHostPrivileges = false;
+        moreOptionsParams->bOnlineGame = false;
+        moreOptionsParams->bInviteOnly = false;
+        moreOptionsParams->bAllowFriendsOfFriends = false;
+        moreOptionsParams->bOnlineSettingChangedBySystem = false;
         moreOptionsParams->bCheatsEnabled = cheatsEnabled;
         moreOptionsParams->iPad = 0;
 
@@ -284,8 +284,8 @@ void CreateWorldScreen::buttonClicked(Button* button) {
 
         UIFullscreenProgressCompletionData* completionData =
             new UIFullscreenProgressCompletionData();
-        completionData->bShowBackground = TRUE;
-        completionData->bShowLogo = TRUE;
+        completionData->bShowBackground = true;
+        completionData->bShowLogo = true;
         completionData->type = e_ProgressCompletion_CloseAllPlayersUIScenes;
         completionData->iPad = 0;
         loadingParams->completionData = completionData;

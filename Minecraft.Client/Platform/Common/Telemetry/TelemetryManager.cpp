@@ -12,17 +12,17 @@
 CTelemetryManager *TelemetryManager = new CTelemetryManager();
 
 
-HRESULT CTelemetryManager::Init()
+int32_t CTelemetryManager::Init()
 {
 	return 0;
 }
 
-HRESULT CTelemetryManager::Tick()
+int32_t CTelemetryManager::Tick()
 {
 	return 0;
 }
 
-HRESULT CTelemetryManager::Flush()
+int32_t CTelemetryManager::Flush()
 {
 	return 0;
 }

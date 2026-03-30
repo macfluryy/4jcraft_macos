@@ -279,10 +279,10 @@ void UIScene_LoadMenu::tick() {
 
         // #ifdef _DEBUG
         // 			// dump out the thumbnail
-        // 			HANDLE hThumbnail =
+        // 			void* hThumbnail =
         // CreateFile("GAME:\\thumbnail.png", GENERIC_WRITE, 0, nullptr,
         // OPEN_ALWAYS, FILE_FLAG_RANDOM_ACCESS, nullptr);
-        // DWORD dwBytes;
+        // uint32_t dwBytes;
         // 			WriteFile(hThumbnail,pbImageData,dwImageBytes,&dwBytes,nullptr);
         // 			XCloseHandle(hThumbnail);
         // #endif
@@ -1059,7 +1059,7 @@ int UIScene_LoadMenu::DeleteSaveDataReturned(void* pParam, bool bSuccess) {
 void UIScene_LoadMenu::StartGameFromSave(UIScene_LoadMenu* pClass,
                                          int localUsersMask) {
     if (pClass->m_levelGen == nullptr) {
-        INT saveOrCheckpointId = 0;
+        int32_t saveOrCheckpointId = 0;
         bool validSave =
             StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
         TelemetryManager->RecordLevelResume(

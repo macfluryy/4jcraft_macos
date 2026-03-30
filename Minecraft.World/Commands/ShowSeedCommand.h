@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 public class ShowSeedCommand extends BaseCommand {
     @Override
-    public boolean canExecute(CommandSender source) {
+    public bool canExecute(CommandSender source) {
         return MinecraftServer.getInstance().isSingleplayer() ||
 super.canExecute(source);
     }

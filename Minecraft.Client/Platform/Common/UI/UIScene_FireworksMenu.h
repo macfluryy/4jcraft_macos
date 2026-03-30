@@ -42,5 +42,5 @@ protected:
 
     virtual UIControl* getSection(ESceneSection eSection);
 
-    void ShowLargeCraftingGrid(boolean bShow);
+    void ShowLargeCraftingGrid(bool bShow);
 };

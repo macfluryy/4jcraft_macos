@@ -54,7 +54,7 @@
 ClientConnection::ClientConnection(Minecraft* minecraft, const std::wstring& ip,
                                    int port) {
     // 4J Stu - No longer used as we use the socket version below.
-    assert(FALSE);
+    assert(false);
 }
 
 ClientConnection::ClientConnection(Minecraft* minecraft, Socket* socket,
@@ -368,7 +368,7 @@ void ClientConnection::handleAddEntity(
     double y = packet->y / 32.0;
     double z = packet->z / 32.0;
     std::shared_ptr<Entity> e;
-    boolean setRot = true;
+    bool setRot = true;
 
     // 4J-PB - replacing this massive if nest with switch
     switch (packet->type) {
@@ -1229,7 +1229,7 @@ void ClientConnection::handleDisconnect(
     pMinecraft->connectionDisconnected(m_userIndex, packet->reason);
     app.SetDisconnectReason(packet->reason);
 
-    app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)TRUE);
+    app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)true);
     // minecraft->setLevel(nullptr);
     // minecraft->setScreen(new DisconnectedScreen(L"disconnect.disconnected",
     // L"disconnect.genericReason", &packet->reason));
@@ -1258,7 +1258,7 @@ void ClientConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
                                ProfileManager.GetPrimaryPad(),
                                &ClientConnection::HostDisconnectReturned, nullptr);
     } else {
-        app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)TRUE);
+        app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)true);
     }
 
     // minecraft->setLevel(nullptr);
@@ -1863,7 +1863,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                 reason);
             app.SetDisconnectReason(reason);
             app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
-                          (void*)TRUE);
+                          (void*)true);
         } else {
             if (!isFriendsWithHost)
                 reason = DisconnectPacket::eDisconnect_NotFriendsWithHost;
@@ -3376,7 +3376,7 @@ int ClientConnection::ExitGameAndSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
-        // INT saveOrCheckpointId = 0;
+        // int32_t saveOrCheckpointId = 0;
         // bool validSave =
         // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
         // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),

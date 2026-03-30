@@ -132,7 +132,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
         case DLCManager::e_DLCParamType_Anim: {
             swscanf_s(value.c_str(), L"%X", &m_uiAnimOverrideBitmask,
                       sizeof(unsigned int));
-            DWORD skinId = app.getSkinIdFromPath(m_path);
+            uint32_t skinId = app.getSkinIdFromPath(m_path);
             app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
             break;
         }

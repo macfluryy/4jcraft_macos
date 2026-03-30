@@ -347,7 +347,7 @@ void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
 // 4J - Don't want
 /*
 void appendHoverText(ItemInstance itemInstance, Player player, List<String>
-lines, boolean advanced) { MapItemSavedData data = getSavedData(itemInstance,
+lines, bool advanced) { MapItemSavedData data = getSavedData(itemInstance,
 player.level);
 
         if (advanced) {

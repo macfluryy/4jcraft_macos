@@ -119,8 +119,8 @@ void UIScene_CreativeMenu::handleInput(int iPad, int key, bool repeat,
     if (repeat) return;
 
     // app.DebugPrintf("UIScene_CreativeMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     int dir = 1;

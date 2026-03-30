@@ -82,7 +82,7 @@ bool Monster::doHurtTarget(std::shared_ptr<Entity> target) {
             livingTarget);
     }
 
-    boolean wasHurt = target->hurt(
+    bool wasHurt = target->hurt(
         DamageSource::mobAttack(
             std::dynamic_pointer_cast<LivingEntity>(shared_from_this())),
         dmg);

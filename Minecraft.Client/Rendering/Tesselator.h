@@ -3,7 +3,7 @@
 class ChunkRebuildData;
 
 class Tesselator {
-    // private static boolean TRIANGLE_MODE = false;
+    // private static bool TRIANGLE_MODE = false;
     friend ChunkRebuildData;
 
 private:

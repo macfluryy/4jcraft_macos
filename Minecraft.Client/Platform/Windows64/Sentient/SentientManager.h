@@ -21,54 +21,54 @@ public:
         eTelemetry_EnemyKilledOrOvercome,
     };
 
-    HRESULT Init();
-    HRESULT Tick();
+    int32_t Init();
+    int32_t Tick();
 
-    HRESULT Flush();
+    int32_t Flush();
 
-    bool RecordPlayerSessionStart(DWORD dwUserId);
-    bool RecordPlayerSessionExit(DWORD dwUserId, int exitStatus);
-    bool RecordHeartBeat(DWORD dwUserId);
-    bool RecordLevelStart(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch,
+    bool RecordPlayerSessionStart(uint32_t dwUserId);
+    bool RecordPlayerSessionExit(uint32_t dwUserId, int exitStatus);
+    bool RecordHeartBeat(uint32_t dwUserId);
+    bool RecordLevelStart(uint32_t dwUserId, ESen_FriendOrMatch friendsOrMatch,
                           ESen_CompeteOrCoop competeOrCoop, int difficulty,
-                          DWORD numberOfLocalPlayers,
-                          DWORD numberOfOnlinePlayers);
-    bool RecordLevelExit(DWORD dwUserId, ESen_LevelExitStatus levelExitStatus);
-    bool RecordLevelSaveOrCheckpoint(DWORD dwUserId, INT saveOrCheckPointID,
-                                     INT saveSizeInBytes);
-    bool RecordLevelResume(DWORD dwUserId, ESen_FriendOrMatch friendsOrMatch,
+                          uint32_t numberOfLocalPlayers,
+                          uint32_t numberOfOnlinePlayers);
+    bool RecordLevelExit(uint32_t dwUserId, ESen_LevelExitStatus levelExitStatus);
+    bool RecordLevelSaveOrCheckpoint(uint32_t dwUserId, int32_t saveOrCheckPointID,
+                                     int32_t saveSizeInBytes);
+    bool RecordLevelResume(uint32_t dwUserId, ESen_FriendOrMatch friendsOrMatch,
                            ESen_CompeteOrCoop competeOrCoop, int difficulty,
-                           DWORD numberOfLocalPlayers,
-                           DWORD numberOfOnlinePlayers, INT saveOrCheckPointID);
-    bool RecordPauseOrInactive(DWORD dwUserId);
-    bool RecordUnpauseOrActive(DWORD dwUserId);
-    bool RecordMenuShown(DWORD dwUserId, INT menuID, INT optionalMenuSubID);
-    bool RecordAchievementUnlocked(DWORD dwUserId, INT achievementID,
-                                   INT achievementGamerscore);
-    bool RecordMediaShareUpload(DWORD dwUserId,
+                           uint32_t numberOfLocalPlayers,
+                           uint32_t numberOfOnlinePlayers, int32_t saveOrCheckPointID);
+    bool RecordPauseOrInactive(uint32_t dwUserId);
+    bool RecordUnpauseOrActive(uint32_t dwUserId);
+    bool RecordMenuShown(uint32_t dwUserId, int32_t menuID, int32_t optionalMenuSubID);
+    bool RecordAchievementUnlocked(uint32_t dwUserId, int32_t achievementID,
+                                   int32_t achievementGamerscore);
+    bool RecordMediaShareUpload(uint32_t dwUserId,
                                 ESen_MediaDestination mediaDestination,
                                 ESen_MediaType mediaType);
-    bool RecordUpsellPresented(DWORD dwUserId, ESen_UpsellID upsellId,
-                               INT marketplaceOfferID);
-    bool RecordUpsellResponded(DWORD dwUserId, ESen_UpsellID upsellId,
-                               INT marketplaceOfferID,
+    bool RecordUpsellPresented(uint32_t dwUserId, ESen_UpsellID upsellId,
+                               int32_t marketplaceOfferID);
+    bool RecordUpsellResponded(uint32_t dwUserId, ESen_UpsellID upsellId,
+                               int32_t marketplaceOfferID,
                                ESen_UpsellOutcome upsellOutcome);
-    bool RecordPlayerDiedOrFailed(DWORD dwUserId, INT lowResMapX,
-                                  INT lowResMapY, INT lowResMapZ, INT mapID,
-                                  INT playerWeaponID, INT enemyWeaponID,
+    bool RecordPlayerDiedOrFailed(uint32_t dwUserId, int32_t lowResMapX,
+                                  int32_t lowResMapY, int32_t lowResMapZ, int32_t mapID,
+                                  int32_t playerWeaponID, int32_t enemyWeaponID,
                                   ETelemetryChallenges enemyTypeID);
-    bool RecordEnemyKilledOrOvercome(DWORD dwUserId, INT lowResMapX,
-                                     INT lowResMapY, INT lowResMapZ, INT mapID,
-                                     INT playerWeaponID, INT enemyWeaponID,
+    bool RecordEnemyKilledOrOvercome(uint32_t dwUserId, int32_t lowResMapX,
+                                     int32_t lowResMapY, int32_t lowResMapZ, int32_t mapID,
+                                     int32_t playerWeaponID, int32_t enemyWeaponID,
                                      ETelemetryChallenges enemyTypeID);
 
-    bool RecordSkinChanged(DWORD dwUserId, DWORD dwSkinId);
-    bool RecordBanLevel(DWORD dwUserId);
-    bool RecordUnBanLevel(DWORD dwUserId);
+    bool RecordSkinChanged(uint32_t dwUserId, uint32_t dwSkinId);
+    bool RecordBanLevel(uint32_t dwUserId);
+    bool RecordUnBanLevel(uint32_t dwUserId);
 
-    INT GetMultiplayerInstanceID();
-    INT GenerateMultiplayerInstanceId();
-    void SetMultiplayerInstanceId(INT value);
+    int32_t GetMultiplayerInstanceID();
+    int32_t GenerateMultiplayerInstanceId();
+    void SetMultiplayerInstanceId(int32_t value);
 
 private:
     float m_initialiseTime;
@@ -77,24 +77,24 @@ private:
 
     float m_fLevelStartTime[XUSER_MAX_COUNT];
 
-    INT m_multiplayerInstanceID;
-    DWORD m_levelInstanceID;
+    int32_t m_multiplayerInstanceID;
+    uint32_t m_levelInstanceID;
 
     // Helper functions to get the various common settings
-    INT GetSecondsSinceInitialize();
-    INT GetMode(DWORD dwUserId);
-    INT GetSubMode(DWORD dwUserId);
-    INT GetLevelId(DWORD dwUserId);
-    INT GetSubLevelId(DWORD dwUserId);
-    INT GetTitleBuildId();
-    INT GetLevelInstanceID();
-    INT GetSingleOrMultiplayer();
-    INT GetDifficultyLevel(INT diff);
-    INT GetLicense();
-    INT GetDefaultGameControls();
-    INT GetAudioSettings(DWORD dwUserId);
-    INT GetLevelExitProgressStat1();
-    INT GetLevelExitProgressStat2();
+    int32_t GetSecondsSinceInitialize();
+    int32_t GetMode(uint32_t dwUserId);
+    int32_t GetSubMode(uint32_t dwUserId);
+    int32_t GetLevelId(uint32_t dwUserId);
+    int32_t GetSubLevelId(uint32_t dwUserId);
+    int32_t GetTitleBuildId();
+    int32_t GetLevelInstanceID();
+    int32_t GetSingleOrMultiplayer();
+    int32_t GetDifficultyLevel(int32_t diff);
+    int32_t GetLicense();
+    int32_t GetDefaultGameControls();
+    int32_t GetAudioSettings(uint32_t dwUserId);
+    int32_t GetLevelExitProgressStat1();
+    int32_t GetLevelExitProgressStat2();
 };
 
 extern CSentientManager SentientManager;

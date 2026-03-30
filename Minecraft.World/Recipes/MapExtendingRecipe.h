@@ -12,7 +12,7 @@ ItemInstance(Item.paper), new ItemInstance(Item.paper),
         }
 
         @Override
-                public boolean matches(CraftingContainer craftSlots, Level
+                public bool matches(CraftingContainer craftSlots, Level
 level) { if (!super.matches(craftSlots, level)) return false; ItemInstance map =
 null;
 

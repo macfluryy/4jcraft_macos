@@ -268,7 +268,7 @@ typedef struct _LaunchMoreOptionsMenuInitData {
 
     int iPad;
 
-    DWORD dwTexturePack;
+    uint32_t dwTexturePack;
 
     std::wstring seed;
     int worldSize;
@@ -387,11 +387,11 @@ typedef struct {
 
 // Message box
 typedef struct _MessageBoxInfo {
-    UINT uiTitle;
-    UINT uiText;
-    UINT* uiOptionA;
-    UINT uiOptionC;
-    DWORD dwPad;
+    uint32_t uiTitle;
+    uint32_t uiText;
+    uint32_t* uiOptionA;
+    uint32_t uiOptionC;
+    uint32_t dwPad;
     int (*Func)(void*, int, const C4JStorage::EMessageResult);
     void* lpParam;
     // C4JStringTable *pStringTable; // 4J Stu - We don't need this for our

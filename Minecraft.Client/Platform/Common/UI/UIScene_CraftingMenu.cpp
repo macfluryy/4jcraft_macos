@@ -54,8 +54,8 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
         app.AdjustSplitscreenScene(m_hObj, &m_OriginalPosition, m_iPad);
     }
 
-    XuiElementSetShow(m_hGrid, TRUE);
-    XuiElementSetShow(m_hPanel, TRUE);
+    XuiElementSetShow(m_hGrid, true);
+    XuiElementSetShow(m_hPanel, true);
 #endif
 
     if (m_iContainerType == RECIPE_TYPE_3x3) {
@@ -73,7 +73,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
 #if TO_BE_IMPLEMENTED
 
     // display the first group tab
-    m_hTabGroupA[m_iGroupIndex].SetShow(TRUE);
+    m_hTabGroupA[m_iGroupIndex].SetShow(true);
 
     // store the slot 0 position
     m_pHSlotsBrushImageControl[0]->GetPosition(&m_vSlot0Pos);
@@ -88,13 +88,13 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
 
     // get the position of the slot from the xui, and apply any offset needed
     for (int i = 0; i < m_iCraftablesMaxHSlotC; i++) {
-        m_pHSlotsBrushImageControl[i]->SetShow(FALSE);
+        m_pHSlotsBrushImageControl[i]->SetShow(false);
     }
 
-    XuiElementSetShow(m_hGridInventory, FALSE);
+    XuiElementSetShow(m_hGridInventory, false);
 
-    m_hScrollBar2.SetShow(FALSE);
-    m_hScrollBar3.SetShow(FALSE);
+    m_hScrollBar2.SetShow(false);
+    m_hScrollBar3.SetShow(false);
 
 #endif
 
@@ -383,8 +383,8 @@ void UIScene_CraftingMenu::handleInput(int iPad, int key, bool repeat,
                                        bool pressed, bool released,
                                        bool& handled) {
     // app.DebugPrintf("UIScene_InventoryMenu handling input for pad %d, key %d,
-    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"TRUE":"FALSE",
-    // pressed?"TRUE":"FALSE", released?"TRUE":"FALSE");
+    // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
+    // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {

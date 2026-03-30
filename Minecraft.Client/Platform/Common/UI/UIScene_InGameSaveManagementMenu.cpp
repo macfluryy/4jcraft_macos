@@ -242,7 +242,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                         .UTF8SaveFilename,    // source UTF-8 string
                     MAX_SAVEFILENAME_LENGTH,  // total length of source UTF-8
                                               // string,
-                    // in CHAR's (= bytes), including end-of-string \0
+                    // in char's (= bytes), including end-of-string \0
                     (wchar_t*)u16Message,    // destination buffer
                     MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
                                              // wchar_t's

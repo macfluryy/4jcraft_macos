@@ -317,7 +317,7 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     bool noPrivileges = false;
     int signedInUsers = 0;
     int localUsersMask = 0;
-    DWORD dwLocalUsersMask = 0;
+    uint32_t dwLocalUsersMask = 0;
     bool isSignedInLive = true;
     int iPadNotSignedInLive = -1;
 

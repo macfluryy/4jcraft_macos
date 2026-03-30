@@ -200,7 +200,7 @@ private:
     // 4J: Entity link packet deferred
     class DeferredEntityLinkPacket {
     public:
-        DWORD m_recievedTick;
+        uint32_t m_recievedTick;
         std::shared_ptr<SetEntityLinkPacket> m_packet;
 
         DeferredEntityLinkPacket(std::shared_ptr<SetEntityLinkPacket> packet);

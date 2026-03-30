@@ -78,7 +78,7 @@ rangeMax = getDefaultRangeMax(type); int levelMin = getDefaultLevelMin(type);
             Map<String, Integer> scores = getScores(args);
             String name = null;
             String team = null;
-            boolean requireLevel = false;
+            bool requireLevel = false;
 
             if (args.containsKey(ARGUMENT_RANGE_MIN)) {
                 rangeMin = Mth.getInt(args.get(ARGUMENT_RANGE_MIN), rangeMin);
@@ -153,7 +153,7 @@ Mth.getInt(input.get(key), 1));
         return result;
     }
 
-    public static boolean isList(String input) {
+    public static bool isList(String input) {
         Matcher matcher = PATTERN_TARGETS.matcher(input);
 
         if (matcher.matches()) {
@@ -167,7 +167,7 @@ count); return count != 1;
         return false;
     }
 
-    public static boolean isPattern(String input, String onlyType) {
+    public static bool isPattern(String input, String onlyType) {
         Matcher matcher = PATTERN_TARGETS.matcher(input);
 
         if (matcher.matches()) {
@@ -180,7 +180,7 @@ count); return count != 1;
         return false;
     }
 
-    public static boolean isPattern(String input) {
+    public static bool isPattern(String input) {
         return isPattern(input, null);
     }
 

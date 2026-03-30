@@ -3,7 +3,7 @@
 /*
 class MapCloningRecipe implements Recipy {
         @Override
-                public boolean matches(CraftingContainer craftSlots, Level
+                public bool matches(CraftingContainer craftSlots, Level
 level) { int count = 0; ItemInstance source = null;
 
                         for (int slot = 0; slot < craftSlots.getContainerSize();

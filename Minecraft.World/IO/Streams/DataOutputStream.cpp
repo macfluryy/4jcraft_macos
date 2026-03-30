@@ -182,10 +182,10 @@ void DataOutputStream::writeChars(const std::wstring& str) {
     // Incrementing handled by the writeChar function
 }
 
-// Writes a boolean to the underlying output stream as a 1-byte value.
+// Writes a bool to the underlying output stream as a 1-byte value.
 // The value true is written out as the value (uint8_t)1; the value false is
 // written out as the value (uint8_t)0. If no exception is thrown, the counter
-// written is incremented by 1. Parameters: v - a boolean value to be written.
+// written is incremented by 1. Parameters: v - a bool value to be written.
 void DataOutputStream::writeBoolean(bool b) {
     stream->write(b ? 1 : 0);
     // TODO 4J Stu - Error handling?

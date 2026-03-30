@@ -481,7 +481,7 @@ void LivingEntity::tickEffects() {
     bool ambient = entityData->getByte(DATA_EFFECT_AMBIENCE_ID) > 0;
 
     if (colorValue > 0) {
-        boolean doParticle = false;
+        bool doParticle = false;
 
         if (!isInvisible()) {
             doParticle = random->nextBoolean();

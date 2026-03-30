@@ -122,7 +122,7 @@ public:
 private:
     virtual void SetSessionTexturePackParentId(int id) = 0;
     virtual void SetSessionSubTexturePackId(int id) = 0;
-    virtual void Notify(int ID, ULONG_PTR Param) = 0;
+    virtual void Notify(int ID, uintptr_t Param) = 0;
 
 public:
     virtual std::vector<FriendSessionInfo*>* GetSessionList(int iPad,

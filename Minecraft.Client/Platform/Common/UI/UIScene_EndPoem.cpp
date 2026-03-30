@@ -81,8 +81,8 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
 
 #if TO_BE_IMPLEMENTED
     m_scrollDir = 1;
-    HRESULT hr = XuiHtmlControlSetSmoothScroll(
-        m_htmlControl.m_hObj, XUI_SMOOTHSCROLL_VERTICAL, TRUE,
+    int32_t hr = XuiHtmlControlSetSmoothScroll(
+        m_htmlControl.m_hObj, XUI_SMOOTHSCROLL_VERTICAL, true,
         AUTO_SCROLL_SPEED, 1.0f, AUTO_SCROLL_SPEED);
     XuiHtmlControlVScrollBy(m_htmlControl.m_hObj, m_scrollDir * 1000);
 

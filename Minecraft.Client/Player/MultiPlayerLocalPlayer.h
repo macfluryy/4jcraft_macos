@@ -82,7 +82,7 @@ public:
     virtual void sendOpenInventory();
 
     // 4J - send the custom skin texture data if there is one
-    // void CustomSkin(PBYTE pbData, DWORD dwBytes);
+    // void CustomSkin(uint8_t* pbData, uint32_t dwBytes);
 
     // 4J Overriding this so we can flag an event for the tutorial
     virtual void ride(std::shared_ptr<Entity> e);
@@ -91,8 +91,8 @@ public:
     virtual void StopSleeping();
 
     // 4J Added
-    virtual void setAndBroadcastCustomSkin(DWORD skinId);
-    virtual void setAndBroadcastCustomCape(DWORD capeId);
+    virtual void setAndBroadcastCustomSkin(uint32_t skinId);
+    virtual void setAndBroadcastCustomCape(uint32_t capeId);
 
     // 4J added for testing
 #ifdef STRESS_TEST_MOVE

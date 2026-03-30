@@ -45,7 +45,7 @@ void UIComponent_Chat::handleTimerComplete(int id) {
     bool anyVisible = false;
     if (pMinecraft->localplayers[m_iPad] != nullptr) {
         Gui* pGui = pMinecraft->gui;
-        // DWORD messagesToDisplay = std::min( CHAT_LINES_COUNT,
+        // uint32_t messagesToDisplay = std::min( CHAT_LINES_COUNT,
         // pGui->getMessagesCount(m_iPad) );
         for (unsigned int i = 0; i < CHAT_LINES_COUNT; ++i) {
             float opacity = pGui->getOpacity(m_iPad, i);

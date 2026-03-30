@@ -205,7 +205,7 @@ NetherBridgePieces::NetherBridgePiece::generatePiece(
     std::list<StructurePiece*>* pieces, Random* random, int footX, int footY,
     int footZ, int direction, int depth) {
     int totalWeight = updatePieceWeight(currentPieces);
-    boolean doStuff = totalWeight > 0 && depth <= MAX_DEPTH;
+    bool doStuff = totalWeight > 0 && depth <= MAX_DEPTH;
 
     int numAttempts = 0;
     while (numAttempts < 5 && doStuff) {

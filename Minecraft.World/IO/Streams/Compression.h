@@ -35,17 +35,17 @@ public:
     static Compression* getCompression();
 
 public:
-    HRESULT Compress(void* pDestination, unsigned int* pDestSize, void* pSource,
+    int32_t Compress(void* pDestination, unsigned int* pDestSize, void* pSource,
                      unsigned int SrcSize);
-    HRESULT Decompress(void* pDestination, unsigned int* pDestSize,
+    int32_t Decompress(void* pDestination, unsigned int* pDestSize,
                        void* pSource, unsigned int SrcSize);
-    HRESULT CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
+    int32_t CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
                            void* pSource, unsigned int SrcSize);
-    HRESULT DecompressLZXRLE(void* pDestination, unsigned int* pDestSize,
+    int32_t DecompressLZXRLE(void* pDestination, unsigned int* pDestSize,
                              void* pSource, unsigned int SrcSize);
-    HRESULT CompressRLE(void* pDestination, unsigned int* pDestSize,
+    int32_t CompressRLE(void* pDestination, unsigned int* pDestSize,
                         void* pSource, unsigned int SrcSize);
-    HRESULT DecompressRLE(void* pDestination, unsigned int* pDestSize,
+    int32_t DecompressRLE(void* pDestination, unsigned int* pDestSize,
                           void* pSource, unsigned int SrcSize);
     static void VitaVirtualDecompress(void* pDestination,
                                       unsigned int* pDestSize, void* pSource,
@@ -62,7 +62,7 @@ public:
     ~Compression();
 
 private:
-    HRESULT DecompressWithType(void* pDestination, unsigned int* pDestSize,
+    int32_t DecompressWithType(void* pDestination, unsigned int* pDestSize,
                                void* pSource, unsigned int SrcSize);
 
     XMEMCOMPRESSION_CONTEXT compressionContext;

@@ -39,7 +39,7 @@ Compression* Compression::getCompression() {
     return m_tlsCompression->compression;
 }
 
-HRESULT Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
+int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
                                     void* pSource, unsigned int SrcSize) {
     EnterCriticalSection(&rleCompressLock);
     // static unsigned char rleBuf[1024*100];
@@ -89,7 +89,7 @@ HRESULT Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
     return S_OK;
 }
 
-HRESULT Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
+int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
                                  void* pSource, unsigned int SrcSize) {
     EnterCriticalSection(&rleCompressLock);
     // static unsigned char rleBuf[1024*100];
@@ -144,7 +144,7 @@ HRESULT Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
     return S_OK;
 }
 
-HRESULT Compression::DecompressLZXRLE(void* pDestination,
+int32_t Compression::DecompressLZXRLE(void* pDestination,
                                       unsigned int* pDestSize, void* pSource,
                                       unsigned int SrcSize) {
     EnterCriticalSection(&rleDecompressLock);
@@ -207,7 +207,7 @@ HRESULT Compression::DecompressLZXRLE(void* pDestination,
     return S_OK;
 }
 
-HRESULT Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
+int32_t Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
                                    void* pSource, unsigned int SrcSize) {
     EnterCriticalSection(&rleDecompressLock);
 
@@ -242,7 +242,7 @@ HRESULT Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
     return S_OK;
 }
 
-HRESULT Compression::Compress(void* pDestination, unsigned int* pDestSize,
+int32_t Compression::Compress(void* pDestination, unsigned int* pDestSize,
                               void* pSource, unsigned int SrcSize) {
     // Using zlib for x64 compression - 360 is using native 360 compression and
     // PS3 a stubbed non-compressing version of this
@@ -254,14 +254,14 @@ HRESULT Compression::Compress(void* pDestination, unsigned int* pDestSize,
     return ((res == Z_OK) ? S_OK : -1);
 #else
     size_t destSize = (size_t)(*pDestSize);
-    HRESULT res = XMemCompress(compressionContext, pDestination, &destSize,
+    int32_t res = XMemCompress(compressionContext, pDestination, &destSize,
                                pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return res;
 #endif
 }
 
-HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
+int32_t Compression::Decompress(void* pDestination, unsigned int* pDestSize,
                                 void* pSource, unsigned int SrcSize) {
     if (m_decompressType !=
         m_localDecompressType)  // check if we're decompressing data from a
@@ -282,7 +282,7 @@ HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
     return ((res == Z_OK) ? S_OK : -1);
 #else
     size_t destSize = (size_t)(*pDestSize);
-    HRESULT res = XMemDecompress(decompressionContext, pDestination,
+    int32_t res = XMemDecompress(decompressionContext, pDestination,
                                  (size_t*)&destSize, pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
     return res;
@@ -321,7 +321,7 @@ void Compression::VitaVirtualDecompress(
     *pDestSize = Offset;
 }
 
-HRESULT Compression::DecompressWithType(void* pDestination,
+int32_t Compression::DecompressWithType(void* pDestination,
                                         unsigned int* pDestSize, void* pSource,
                                         unsigned int SrcSize) {
     switch (m_decompressType) {
@@ -334,7 +334,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
         case eCompressionType_LZXRLE: {
 #if defined(_WIN64)
             size_t destSize = (size_t)(*pDestSize);
-            HRESULT res = XMemDecompress(decompressionContext, pDestination,
+            int32_t res = XMemDecompress(decompressionContext, pDestination,
                                          (size_t*)&destSize, pSource, SrcSize);
             *pDestSize = (unsigned int)destSize;
             return res;

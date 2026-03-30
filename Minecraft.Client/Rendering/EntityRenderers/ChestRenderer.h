@@ -14,7 +14,7 @@ private:
 
     ChestModel* chestModel;
     ChestModel* largeChestModel;
-    boolean xmasTextures;
+    bool xmasTextures;
 
 public:
     ChestRenderer();

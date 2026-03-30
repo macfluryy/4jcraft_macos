@@ -207,9 +207,9 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
                 (int64_t*)&cache[idx], (int64_t)chunk, (int64_t)lastChunk) ==
             (int64_t)lastChunk)
 #else
-        if (InterlockedCompareExchangeRelease((LONG*)&cache[idx], (LONG)chunk,
-                                              (LONG)lastChunk) ==
-            (LONG)lastChunk)
+        if (InterlockedCompareExchangeRelease((int32_t*)&cache[idx], (int32_t)chunk,
+                                              (int32_t)lastChunk) ==
+            (int32_t)lastChunk)
 #endif  // 0
         {
             // If we're sharing with the server, we'll need to calculate our

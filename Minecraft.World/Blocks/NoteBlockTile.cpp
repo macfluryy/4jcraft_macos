@@ -14,7 +14,7 @@ void NoteBlockTile::neighborChanged(Level* level, int x, int y, int z,
         std::dynamic_pointer_cast<MusicTileEntity>(
             level->getTileEntity(x, y, z));
     app.DebugPrintf("-------- Signal is %s, tile is currently %s\n",
-                    signal ? "TRUE" : "FALSE", mte->on ? "ON" : "OFF");
+                    signal ? "true" : "false", mte->on ? "ON" : "OFF");
     if (mte != nullptr && mte->on != signal) {
         if (signal) {
             mte->playNote(level, x, y, z);

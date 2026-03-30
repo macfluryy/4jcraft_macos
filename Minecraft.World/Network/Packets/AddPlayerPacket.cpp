@@ -56,7 +56,7 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 
     this->xuid = xuid;
     this->OnlineXuid = OnlineXuid;
-    m_playerIndex = (BYTE)player->getPlayerIndex();
+    m_playerIndex = (uint8_t)player->getPlayerIndex();
     m_skinId = player->getCustomSkin();
     m_capeId = player->getCustomCape();
     m_uiGamePrivileges = player->getAllPlayerGamePrivileges();
@@ -79,11 +79,11 @@ void AddPlayerPacket::read(DataInputStream* dis)  // throws IOException
     xuid = dis->readPlayerUID();
     OnlineXuid = dis->readPlayerUID();
     m_playerIndex = dis->readByte();
-    INT skinId = dis->readInt();
-    m_skinId = *(DWORD*)&skinId;
-    INT capeId = dis->readInt();
-    m_capeId = *(DWORD*)&capeId;
-    INT privileges = dis->readInt();
+    int32_t skinId = dis->readInt();
+    m_skinId = *(uint32_t*)&skinId;
+    int32_t capeId = dis->readInt();
+    m_capeId = *(uint32_t*)&capeId;
+    int32_t privileges = dis->readInt();
     m_uiGamePrivileges = *(unsigned int*)&privileges;
     MemSect(1);
     unpack = SynchedEntityData::unpack(dis);
@@ -116,9 +116,9 @@ void AddPlayerPacket::handle(PacketListener* listener) {
 
 int AddPlayerPacket::getEstimatedSize() {
     int iSize = sizeof(int) + Player::MAX_NAME_LENGTH + sizeof(int) +
-                sizeof(int) + sizeof(int) + sizeof(BYTE) + sizeof(BYTE) +
+                sizeof(int) + sizeof(int) + sizeof(uint8_t) + sizeof(uint8_t) +
                 sizeof(short) + sizeof(PlayerUID) + sizeof(PlayerUID) +
-                sizeof(int) + sizeof(BYTE) + sizeof(unsigned int) +
+                sizeof(int) + sizeof(uint8_t) + sizeof(unsigned int) +
                 sizeof(uint8_t);
 
     if (entityData != nullptr) {

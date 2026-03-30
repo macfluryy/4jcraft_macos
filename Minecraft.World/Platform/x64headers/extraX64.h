@@ -59,7 +59,7 @@ public:
 void XMemCpy(void* a, const void* b, size_t s);
 void XMemSet(void* a, int t, size_t s);
 void XMemSet128(void* a, int t, size_t s);
-void* XPhysicalAlloc(size_t a, ULONG_PTR b, ULONG_PTR c, DWORD d);
+void* XPhysicalAlloc(size_t a, uintptr_t b, uintptr_t c, uint32_t d);
 void XPhysicalFree(void* a);
 
 class DLCManager;
@@ -117,12 +117,12 @@ const int XN_SYS_STORAGEDEVICESCHANGED = 3;
 
 class IQNetPlayer {
 public:
-    BYTE GetSmallId();
-    void SendData(IQNetPlayer* player, const void* pvData, DWORD dwDataSize,
-                  DWORD dwFlags);
+    uint8_t GetSmallId();
+    void SendData(IQNetPlayer* player, const void* pvData, uint32_t dwDataSize,
+                  uint32_t dwFlags);
     bool IsSameSystem(IQNetPlayer* player);
-    DWORD GetSendQueueSize(IQNetPlayer* player, DWORD dwFlags);
-    DWORD GetCurrentRtt();
+    uint32_t GetSendQueueSize(IQNetPlayer* player, uint32_t dwFlags);
+    uint32_t GetCurrentRtt();
     bool IsHost();
     bool IsGuest();
     bool IsLocal();
@@ -130,15 +130,15 @@ public:
     const wchar_t* GetGamertag();
     int GetSessionIndex();
     bool IsTalking();
-    bool IsMutedByLocalUser(DWORD dwUserIndex);
+    bool IsMutedByLocalUser(uint32_t dwUserIndex);
     bool HasVoice();
     bool HasCamera();
     int GetUserIndex();
-    void SetCustomDataValue(ULONG_PTR ulpCustomDataValue);
-    ULONG_PTR GetCustomDataValue();
+    void SetCustomDataValue(uintptr_t ulpCustomDataValue);
+    uintptr_t GetCustomDataValue();
 
 private:
-    ULONG_PTR m_customData;
+    uintptr_t m_customData;
 };
 
 const int QNET_GETSENDQUEUESIZE_SECONDARY_TYPE = 0;
@@ -146,21 +146,21 @@ const int QNET_GETSENDQUEUESIZE_MESSAGES = 0;
 const int QNET_GETSENDQUEUESIZE_BYTES = 0;
 
 typedef struct {
-    BYTE bFlags;
-    BYTE bReserved;
-    WORD cProbesXmit;
-    WORD cProbesRecv;
-    WORD cbData;
-    BYTE* pbData;
-    WORD wRttMinInMsecs;
-    WORD wRttMedInMsecs;
-    DWORD dwUpBitsPerSec;
-    DWORD dwDnBitsPerSec;
+    uint8_t bFlags;
+    uint8_t bReserved;
+    uint16_t cProbesXmit;
+    uint16_t cProbesRecv;
+    uint16_t cbData;
+    uint8_t* pbData;
+    uint16_t wRttMinInMsecs;
+    uint16_t wRttMedInMsecs;
+    uint32_t dwUpBitsPerSec;
+    uint32_t dwDnBitsPerSec;
 } XNQOSINFO;
 
 typedef struct {
-    UINT cxnqos;
-    UINT cxnqosPending;
+    uint32_t cxnqos;
+    uint32_t cxnqosPending;
     XNQOSINFO axnqosinfo[1];
 } XNQOS;
 
@@ -171,25 +171,25 @@ typedef struct _XSESSION_SEARCHRESULT {
 } XSESSION_SEARCHRESULT, *PXSESSION_SEARCHRESULT;
 
 typedef struct {
-    DWORD dwContextId;
-    DWORD dwValue;
+    uint32_t dwContextId;
+    uint32_t dwValue;
 } XUSER_CONTEXT, *PXUSER_CONTEXT;
 
 typedef struct _XSESSION_SEARCHRESULT_HEADER {
-    DWORD dwSearchResults;
+    uint32_t dwSearchResults;
     XSESSION_SEARCHRESULT* pResults;
 } XSESSION_SEARCHRESULT_HEADER, *PXSESSION_SEARCHRESULT_HEADER;
 
 typedef struct _XONLINE_FRIEND {
     PlayerUID xuid;
-    CHAR szGamertag[XUSER_NAME_SIZE];
-    DWORD dwFriendState;
+    char szGamertag[XUSER_NAME_SIZE];
+    uint32_t dwFriendState;
     SessionID sessionID;
-    DWORD dwTitleID;
+    uint32_t dwTitleID;
     FILETIME ftUserTime;
     SessionID xnkidInvite;
     FILETIME gameinviteTime;
-    DWORD cchRichPresence;
+    uint32_t cchRichPresence;
 } XONLINE_FRIEND, *PXONLINE_FRIEND;
 
 class IQNetCallbacks {};
@@ -211,16 +211,16 @@ typedef enum _QNET_STATE {
 
 class IQNet {
 public:
-    HRESULT AddLocalPlayerByUserIndex(DWORD dwUserIndex);
+    int32_t AddLocalPlayerByUserIndex(uint32_t dwUserIndex);
     IQNetPlayer* GetHostPlayer();
-    IQNetPlayer* GetLocalPlayerByUserIndex(DWORD dwUserIndex);
-    IQNetPlayer* GetPlayerByIndex(DWORD dwPlayerIndex);
-    IQNetPlayer* GetPlayerBySmallId(BYTE SmallId);
+    IQNetPlayer* GetLocalPlayerByUserIndex(uint32_t dwUserIndex);
+    IQNetPlayer* GetPlayerByIndex(uint32_t dwPlayerIndex);
+    IQNetPlayer* GetPlayerBySmallId(uint8_t SmallId);
     IQNetPlayer* GetPlayerByXuid(PlayerUID xuid);
-    DWORD GetPlayerCount();
+    uint32_t GetPlayerCount();
     QNET_STATE GetState();
     bool IsHost();
-    HRESULT JoinGameFromInviteInfo(DWORD dwUserIndex, DWORD dwUserMask,
+    int32_t JoinGameFromInviteInfo(uint32_t dwUserIndex, uint32_t dwUserMask,
                                    const INVITE_INFO* pInviteInfo);
     void HostGame();
     void EndGame();
@@ -233,7 +233,7 @@ void PIXBeginNamedEvent(int a, const char* b, ...);
 void PIXEndNamedEvent();
 void PIXSetMarkerDeprecated(int a, const char* b, ...);
 
-void XSetThreadProcessor(HANDLE a, int b);
+void XSetThreadProcessor(void* a, int b);
 
 const int QNET_SENDDATA_LOW_PRIORITY = 0;
 const int QNET_SENDDATA_SECONDARY = 0;
@@ -243,7 +243,7 @@ const int QNET_SENDDATA_RELIABLE = 0;
 const int QNET_SENDDATA_SEQUENTIAL = 0;
 
 struct XRNM_SEND_BUFFER {
-    DWORD dwDataSize;
+    uint32_t dwDataSize;
     uint8_t* pbyData;
 };
 
@@ -253,21 +253,21 @@ const int D3DPT_QUADLIST = 0;
 
 typedef struct _XUSER_SIGNIN_INFO {
     PlayerUID xuid;
-    DWORD dwGuestNumber;
+    uint32_t dwGuestNumber;
 } XUSER_SIGNIN_INFO, *PXUSER_SIGNIN_INFO;
 
 #define XUSER_GET_SIGNIN_INFO_ONLINE_XUID_ONLY 0x00000001
 #define XUSER_GET_SIGNIN_INFO_OFFLINE_XUID_ONLY 0x00000002
 
-DWORD XUserGetSigninInfo(DWORD dwUserIndex, DWORD dwFlags,
+uint32_t XUserGetSigninInfo(uint32_t dwUserIndex, uint32_t dwFlags,
                          PXUSER_SIGNIN_INFO pSigninInfo);
 
 class CXuiStringTable {
 public:
     const wchar_t* Lookup(const wchar_t* szId);
-    const wchar_t* Lookup(UINT nIndex);
+    const wchar_t* Lookup(uint32_t nIndex);
     void Clear();
-    HRESULT Load(const wchar_t* szId);
+    int32_t Load(const wchar_t* szId);
 };
 
 typedef void* XMEMDECOMPRESSION_CONTEXT;
@@ -278,50 +278,50 @@ typedef enum _XMEMCODEC_TYPE {
     XMEMCODEC_LZX = 1
 } XMEMCODEC_TYPE;
 
-HRESULT XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
+int32_t XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
                        size_t* pDestSize, void* pSource, size_t SrcSize);
 
-HRESULT XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
+int32_t XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
                      size_t* pDestSize, void* pSource, size_t SrcSize);
 
-HRESULT XMemCreateCompressionContext(XMEMCODEC_TYPE CodecType,
-                                     const void* pCodecParams, DWORD Flags,
+int32_t XMemCreateCompressionContext(XMEMCODEC_TYPE CodecType,
+                                     const void* pCodecParams, uint32_t Flags,
                                      XMEMCOMPRESSION_CONTEXT* pContext);
 
-HRESULT XMemCreateDecompressionContext(XMEMCODEC_TYPE CodecType,
-                                       const void* pCodecParams, DWORD Flags,
+int32_t XMemCreateDecompressionContext(XMEMCODEC_TYPE CodecType,
+                                       const void* pCodecParams, uint32_t Flags,
                                        XMEMDECOMPRESSION_CONTEXT* pContext);
 
 typedef struct _XMEMCODEC_PARAMETERS_LZX {
-    DWORD Flags;
-    DWORD WindowSize;
-    DWORD CompressionPartitionSize;
+    uint32_t Flags;
+    uint32_t WindowSize;
+    uint32_t CompressionPartitionSize;
 } XMEMCODEC_PARAMETERS_LZX;
 
 void XMemDestroyCompressionContext(XMEMCOMPRESSION_CONTEXT Context);
 void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context);
 
 typedef struct {
-    BYTE type;
+    uint8_t type;
     union {
-        LONG nData;
-        LONGLONG i64Data;
+        int32_t nData;
+        int64_t i64Data;
         double dblData;
         struct {
-            DWORD cbData;
-            LPWSTR pwszData;
+            uint32_t cbData;
+            wchar_t* pwszData;
         } string;
         float fData;
         struct {
-            DWORD cbData;
-            PBYTE pbData;
+            uint32_t cbData;
+            uint8_t* pbData;
         } binary;
         FILETIME ftData;
     };
 } XUSER_DATA, *PXUSER_DATA;
 
 typedef struct {
-    DWORD dwPropertyId;
+    uint32_t dwPropertyId;
     XUSER_DATA value;
 } XUSER_PROPERTY, *PXUSER_PROPERTY;
 
@@ -394,9 +394,9 @@ const int XC_LOCALE_ISRAEL = 42;
 const int XC_LOCALE_UNITED_ARAB_EMIRATES = 43;
 const int XC_LOCALE_LATIN_AMERICA = 240;
 
-DWORD XGetLanguage();
-DWORD XGetLocale();
-DWORD XEnableGuestSignin(bool fEnable);
+uint32_t XGetLanguage();
+uint32_t XGetLocale();
+uint32_t XEnableGuestSignin(bool fEnable);
 
 class D3DXVECTOR3 {
 public:

@@ -12,77 +12,77 @@
 
 // PlayerSessionStart
 // Player signed in or joined
-bool	SenStatPlayerSessionStart              	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT TitleBuildID, INT SkeletonDistanceInInches, INT EnrollmentType, INT NumberOfSkeletonsInView );
+bool	SenStatPlayerSessionStart              	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t TitleBuildID, int32_t SkeletonDistanceInInches, int32_t EnrollmentType, int32_t NumberOfSkeletonsInView );
 
 // PlayerSessionExit
 // Player signed out or left
-bool	SenStatPlayerSessionExit               	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID );
+bool	SenStatPlayerSessionExit               	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID );
 
 // HeartBeat
 // Sent every 60 seconds by title
-bool	SenStatHeartBeat                       	( DWORD dwUserID, INT SecondsSinceInitialize );
+bool	SenStatHeartBeat                       	( uint32_t dwUserID, int32_t SecondsSinceInitialize );
 
 // LevelStart
 // Level started
-bool	SenStatLevelStart                      	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT SingleOrMultiplayer, INT FriendsOrMatch, INT CompeteOrCoop, INT DifficultyLevel, INT NumberOfLocalPlayers, INT NumberOfOnlinePlayers, INT License, INT DefaultGameControls, INT AudioSettings, INT SkeletonDistanceInInches, INT NumberOfSkeletonsInView );
+bool	SenStatLevelStart                      	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t SingleOrMultiplayer, int32_t FriendsOrMatch, int32_t CompeteOrCoop, int32_t DifficultyLevel, int32_t NumberOfLocalPlayers, int32_t NumberOfOnlinePlayers, int32_t License, int32_t DefaultGameControls, int32_t AudioSettings, int32_t SkeletonDistanceInInches, int32_t NumberOfSkeletonsInView );
 
 // LevelExit
 // Level exited
-bool	SenStatLevelExit                       	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT LevelExitStatus, INT LevelExitProgressStat1, INT LevelExitProgressStat2, INT LevelDurationInSeconds );
+bool	SenStatLevelExit                       	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t LevelExitStatus, int32_t LevelExitProgressStat1, int32_t LevelExitProgressStat2, int32_t LevelDurationInSeconds );
 
 // LevelSaveOrCheckpoint
 // Level saved explicitly or implicitly
-bool	SenStatLevelSaveOrCheckpoint           	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT LevelExitProgressStat1, INT LevelExitProgressStat2, INT LevelDurationInSeconds, INT SaveOrCheckPointID );
+bool	SenStatLevelSaveOrCheckpoint           	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t LevelExitProgressStat1, int32_t LevelExitProgressStat2, int32_t LevelDurationInSeconds, int32_t SaveOrCheckPointID );
 
 // LevelResume
 // Level resumed from a save or restarted at a checkpoint
-bool	SenStatLevelResume                     	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT SingleOrMultiplayer, INT FriendsOrMatch, INT CompeteOrCoop, INT DifficultyLevel, INT NumberOfLocalPlayers, INT NumberOfOnlinePlayers, INT License, INT DefaultGameControls, INT SaveOrCheckPointID, INT AudioSettings, INT SkeletonDistanceInInches, INT NumberOfSkeletonsInView );
+bool	SenStatLevelResume                     	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t SingleOrMultiplayer, int32_t FriendsOrMatch, int32_t CompeteOrCoop, int32_t DifficultyLevel, int32_t NumberOfLocalPlayers, int32_t NumberOfOnlinePlayers, int32_t License, int32_t DefaultGameControls, int32_t SaveOrCheckPointID, int32_t AudioSettings, int32_t SkeletonDistanceInInches, int32_t NumberOfSkeletonsInView );
 
 // PauseOrInactive
 // Player paused game or has become inactive, level and mode are for what the player is leaving
-bool	SenStatPauseOrInactive                 	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID );
+bool	SenStatPauseOrInactive                 	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID );
 
 // UnpauseOrActive
 // Player unpaused game or has become active, level and mode are for what the player is entering into
-bool	SenStatUnpauseOrActive                 	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID );
+bool	SenStatUnpauseOrActive                 	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID );
 
 // MenuShown
 // A menu screen or major menu area has been shown
-bool	SenStatMenuShown                       	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT MenuID, INT OptionalMenuSubID, INT LevelInstanceID, INT MultiplayerInstanceID );
+bool	SenStatMenuShown                       	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t MenuID, int32_t OptionalMenuSubID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID );
 
 // AchievementUnlocked
 // An achievement was unlocked
-bool	SenStatAchievementUnlocked             	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT AchievementID, INT AchievementGamerscore );
+bool	SenStatAchievementUnlocked             	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t AchievementID, int32_t AchievementGamerscore );
 
 // MediaShareUpload
 // The user uploaded something to Kinect Share
-bool	SenStatMediaShareUpload                	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT MediaDestination, INT MediaType );
+bool	SenStatMediaShareUpload                	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t MediaDestination, int32_t MediaType );
 
 // UpsellPresented
 // The user is shown an upsell to purchase something
-bool	SenStatUpsellPresented                 	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT UpsellID, INT MarketplaceOfferID );
+bool	SenStatUpsellPresented                 	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t UpsellID, int32_t MarketplaceOfferID );
 
 // UpsellResponded
 // The user responded to the upsell
-bool	SenStatUpsellResponded                 	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT UpsellID, INT MarketplaceOfferID, INT UpsellOutcome );
+bool	SenStatUpsellResponded                 	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t UpsellID, int32_t MarketplaceOfferID, int32_t UpsellOutcome );
 
 // PlayerDiedOrFailed
 // The player died or failed a challenge - can be used for many types of failure
-bool	SenStatPlayerDiedOrFailed              	( DWORD dwUserID, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT LowResMapX, INT LowResMapY, INT LowResMapZ, INT MapID, INT PlayerWeaponID, INT EnemyWeaponID, INT EnemyTypeID, INT SecondsSinceInitialize, INT CopyOfSecondsSinceInitialize );
+bool	SenStatPlayerDiedOrFailed              	( uint32_t dwUserID, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t LowResMapX, int32_t LowResMapY, int32_t LowResMapZ, int32_t MapID, int32_t PlayerWeaponID, int32_t EnemyWeaponID, int32_t EnemyTypeID, int32_t SecondsSinceInitialize, int32_t CopyOfSecondsSinceInitialize );
 
 // EnemyKilledOrOvercome
 // The player killed an enemy or overcame or solved a major challenge
-bool	SenStatEnemyKilledOrOvercome           	( DWORD dwUserID, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT LowResMapX, INT LowResMapY, INT LowResMapZ, INT MapID, INT PlayerWeaponID, INT EnemyWeaponID, INT EnemyTypeID, INT SecondsSinceInitialize, INT CopyOfSecondsSinceInitialize );
+bool	SenStatEnemyKilledOrOvercome           	( uint32_t dwUserID, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t LowResMapX, int32_t LowResMapY, int32_t LowResMapZ, int32_t MapID, int32_t PlayerWeaponID, int32_t EnemyWeaponID, int32_t EnemyTypeID, int32_t SecondsSinceInitialize, int32_t CopyOfSecondsSinceInitialize );
 
 // SkinChanged
 // The player has changed their skin, level and mode are for what the player is currently in
-bool	SenStatSkinChanged                     	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID, INT SkinID );
+bool	SenStatSkinChanged                     	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID, int32_t SkinID );
 
 // BanLevel
 // The player has banned a level, level and mode are for what the player is currently in and banning
-bool	SenStatBanLevel                        	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID );
+bool	SenStatBanLevel                        	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID );
 
 // UnBanLevel
 // The player has ubbanned a level, level and mode are for what the player is currently in and unbanning
-bool	SenStatUnBanLevel                      	( DWORD dwUserID, INT SecondsSinceInitialize, INT ModeID, INT OptionalSubModeID, INT LevelID, INT OptionalSubLevelID, INT LevelInstanceID, INT MultiplayerInstanceID );
+bool	SenStatUnBanLevel                      	( uint32_t dwUserID, int32_t SecondsSinceInitialize, int32_t ModeID, int32_t OptionalSubModeID, int32_t LevelID, int32_t OptionalSubLevelID, int32_t LevelInstanceID, int32_t MultiplayerInstanceID );
 

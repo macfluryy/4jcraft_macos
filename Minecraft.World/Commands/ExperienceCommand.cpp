@@ -15,13 +15,13 @@ void ExperienceCommand::execute(std::shared_ptr<CommandSender> source,
     //		Player player;
     //		String inputAmount = args[0];
     //
-    //		boolean levels = inputAmount.endsWith("l") ||
+    //		bool levels = inputAmount.endsWith("l") ||
     // inputAmount.endsWith("L"); 		if (levels &&
     // inputAmount.length() > 1) inputAmount = inputAmount.substring(0,
     // inputAmount.length() - 1);
     //
     //		int amount = convertArgToInt(source, inputAmount);
-    //		boolean take = amount < 0;
+    //		bool take = amount < 0;
     //
     //		if (take) amount *= -1;
     //
