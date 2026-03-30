@@ -24,20 +24,11 @@
 #if defined(SHARING_ENABLED)
 std::recursive_mutex LevelChunk::m_csSharing;
 #endif
-#if defined(_ENTITIES_RW_SECTION)
-// AP - use a RW critical section so we can have multiple threads reading the
-// same data to avoid a clash
-CRITICAL_RW_SECTION LevelChunk::m_csEntities;
-#else
 std::recursive_mutex LevelChunk::m_csEntities;
-#endif
 std::recursive_mutex LevelChunk::m_csTileEntities;
 bool LevelChunk::touchedSky = false;
 
 void LevelChunk::staticCtor() {
-#if defined(_ENTITIES_RW_SECTION)
-    InitializeCriticalRWSection(&m_csEntities);
-#endif
 }
 
 void LevelChunk::init(Level* level, int x, int z) {
@@ -45,18 +36,10 @@ void LevelChunk::init(Level* level, int x, int z) {
     for (int i = 0; i < 16 * 16; i++) {
         biomes[i] = 0xff;
     }
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, true);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
     entityBlocks =
         new std::vector<std::shared_ptr<Entity> >*[ENTITY_BLOCKS_LENGTH];
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, true);
-#else
     }
-#endif
 
     terrainPopulated = 0;
     m_unsaved = false;
@@ -76,19 +59,11 @@ void LevelChunk::init(Level* level, int x, int z) {
     this->z = z;
     MemSect(1);
     heightmap = byteArray(16 * 16);
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, true);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         entityBlocks[i] = new std::vector<std::shared_ptr<Entity> >();
     }
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, true);
-#else
     }
-#endif
 
     MemSect(0);
 
@@ -1175,17 +1150,9 @@ void LevelChunk::addEntity(std::shared_ptr<Entity> e) {
     e->yChunk = yc;
     e->zChunk = z;
 
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, true);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
     entityBlocks[yc]->push_back(e);
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, true);
-#else
     }
-#endif
 }
 
 void LevelChunk::removeEntity(std::shared_ptr<Entity> e) {
@@ -1196,11 +1163,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
     if (yc < 0) yc = 0;
     if (yc >= ENTITY_BLOCKS_LENGTH) yc = ENTITY_BLOCKS_LENGTH - 1;
 
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, true);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
 
     // 4J - was entityBlocks[yc]->remove(e);
     auto it = find(entityBlocks[yc]->begin(), entityBlocks[yc]->end(), e);
@@ -1213,11 +1176,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
         MemSect(0);
     }
 
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, true);
-#else
     }
-#endif
 }
 
 bool LevelChunk::isSkyLit(int x, int y, int z) {
@@ -1409,19 +1368,11 @@ void LevelChunk::load() {
         }
         level->addAllPendingTileEntities(values);
 
-#if defined(_ENTITIES_RW_SECTION)
-        EnterCriticalRWSection(&m_csEntities, true);
-#else
         { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
         for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
             level->addEntities(entityBlocks[i]);
         }
-#if defined(_ENTITIES_RW_SECTION)
-        LeaveCriticalRWSection(&m_csEntities, true);
-#else
         }
-#endif
     } else {
 #if defined(_LARGE_WORLDS)
         m_bUnloaded = false;
@@ -1447,19 +1398,11 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
         }
     }
 
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, true);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         level->removeEntities(entityBlocks[i]);
     }
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, true);
-#else
     }
-#endif
     // app.DebugPrintf("Unloaded chunk %d, %d\n", x, z);
 
 #if defined(_LARGE_WORLDS)
@@ -1520,28 +1463,16 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 }
 
 bool LevelChunk::containsPlayer() {
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, true);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         std::vector<std::shared_ptr<Entity> >* vecEntity = entityBlocks[i];
         for (int j = 0; j < vecEntity->size(); j++) {
             if (vecEntity->at(j)->GetType() == eTYPE_SERVERPLAYER) {
-#if defined(_ENTITIES_RW_SECTION)
-                LeaveCriticalRWSection(&m_csEntities, true);
-#else
-#endif
                 return true;
             }
         }
     }
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, true);
-#else
     }
-#endif
     return false;
 }
 
@@ -1559,7 +1490,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
     if (yc0 < 0) yc0 = 0;
     if (yc1 >= ENTITY_BLOCKS_LENGTH) yc1 = ENTITY_BLOCKS_LENGTH - 1;
 
-    // AP - RW critical sections are expensive so enter once in
+    // AP - locking is expensive so enter once in
     // Level::getEntities
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
     for (int yc = yc0; yc <= yc1; yc++) {
@@ -1605,7 +1536,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
         yc1 = 0;
     }
 
-    // AP - RW critical sections are expensive so enter once in
+    // AP - locking is expensive so enter once in
     // Level::getEntitiesOfClass
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
     for (int yc = yc0; yc <= yc1; yc++) {
@@ -1652,19 +1583,11 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
 
 int LevelChunk::countEntities() {
     int entityCount = 0;
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&m_csEntities, false);
-#else
     { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
-#endif
     for (int yc = 0; yc < ENTITY_BLOCKS_LENGTH; yc++) {
         entityCount += (int)entityBlocks[yc]->size();
     }
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&m_csEntities, false);
-#else
     }
-#endif
     return entityCount;
 }
 
@@ -2206,7 +2129,7 @@ void LevelChunk::compressBlocks() {
     // server again.
     if (level->isClientSide && g_NetworkManager.IsHost()) {
         // Note - only the extraction of the pointers needs to be done in the
-        // critical section, since even if the data is unshared whilst we are
+        // lock, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
         { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
         if (sharingTilesAndData) {
@@ -2305,7 +2228,7 @@ void LevelChunk::compressData() {
     // server again.
     if (level->isClientSide && g_NetworkManager.IsHost()) {
         // Note - only the extraction of the pointers needs to be done in the
-        // critical section, since even if the data is unshared whilst we are
+        // lock, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
         { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
         if (sharingTilesAndData) {

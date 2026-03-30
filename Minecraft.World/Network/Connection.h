@@ -56,14 +56,13 @@ private:
 
     std::queue<std::shared_ptr<Packet> >
         incoming;                  // 4J - was using synchronizedList...
-    std::mutex incoming_cs;  // ... now has this critical section
+    std::mutex incoming_cs;  // ... now has this mutex
     std::queue<std::shared_ptr<Packet> >
         outgoing;  // 4J - was using synchronizedList - but don't think it is
-                   // required as usage is wrapped in writeLock critical section
+                   // required as usage is wrapped in writeLock
     std::queue<std::shared_ptr<Packet> >
         outgoing_slow;  // 4J - was using synchronizedList - but don't think it
-                        // is required as usage is wrapped in writeLock critical
-                        // section
+                        // is required as usage is wrapped in writeLock
 
     PacketListener* packetListener;
     bool quitting;
@@ -99,7 +98,6 @@ private:
     std::mutex writeLock;
 
 public:
-    // 4J Jev, need to delete the critical section.
     ~Connection();
     Connection(Socket* socket, const std::wstring& id,
                PacketListener* packetListener);  // throws IOException

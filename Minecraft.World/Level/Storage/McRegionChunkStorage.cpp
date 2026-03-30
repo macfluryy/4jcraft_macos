@@ -182,11 +182,10 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     // 4J - removed try/catch
     //    try {
 
-    // Note - have added use of a critical section round sections of code that
+    // Note - have added use of a mutex round sections of code that
     // do a lot of memory alloc/free operations. This is because when we are
-    // running saves on multiple threads these sections have a lot of contention
-    // and thrash the memory system's critical sections Better to let each
-    // thread have its turn at a higher level of granularity.
+    // running saves on multiple threads these sections have a lot of contention.
+    // Better to let each thread have its turn at a higher level of granularity.
     MemSect(30);
     PIXBeginNamedEvent(0, "Getting output stream\n");
     DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(

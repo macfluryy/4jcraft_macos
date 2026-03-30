@@ -1930,11 +1930,11 @@ bool LevelRenderer::updateDirtyChunks() {
                 chunk->clearDirty();
                 // Take a copy of the details that are required for chunk
                 // rebuilding, and rebuild That instead of the original chunk
-                // data. This is done within the m_csDirtyChunks critical
-                // section, which means that any chunks can't be repositioned
+                // data. This is done within the m_csDirtyChunks lock,
+                // which means that any chunks can't be repositioned
                 // whilst we are doing this copy. The copy will then be
                 // guaranteed to be consistent whilst rebuilding takes place
-                // outside of that critical section.
+                // outside of that lock.
                 permaChunk[index].makeCopyForRebuild(chunk);
                 ++index;
             }
@@ -2024,10 +2024,10 @@ bool LevelRenderer::updateDirtyChunks() {
             chunk->clearDirty();
             // Take a copy of the details that are required for chunk
             // rebuilding, and rebuild That instead of the original chunk data.
-            // This is done within the m_csDirtyChunks critical section, which
+            // This is done within the m_csDirtyChunks lock, which
             // means that any chunks can't be repositioned whilst we are doing
             // this copy. The copy will then be guaranteed to be consistent
-            // whilst rebuilding takes place outside of that critical section.
+            // whilst rebuilding takes place outside of that lock.
             permaChunk.makeCopyForRebuild(chunk);
             dirtyChunksLock.unlock();
         }

@@ -38,7 +38,6 @@ void Connection::_init() {
     tickCount = 0;
 }
 
-// 4J Jev, need to delete the critical section.
 Connection::~Connection() {
     // 4J Stu - Just to be sure, make sure the read and write threads terminate
     // themselves before the connection object is destroyed
@@ -488,7 +487,7 @@ void Connection::tick() {
     }
 
     // 4J - split the following condition (used to be disconnect &&
-    // iscoming.empty()) so we can wrap the access in a critical section
+    // iscoming.empty()) so we can wrap the access in a mutex
     if (disconnected) {
         bool empty;
         {
