@@ -1,135 +1,113 @@
 #ifdef __linux__
 
 #include "../stdafx.h"
-
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
-#include <dlfcn.h>
+#include "4J_Render.h"
 
 #include "../../Minecraft.World/IO/Streams/IntBuffer.h"
 #include "../../Minecraft.World/IO/Streams/FloatBuffer.h"
 #include "../../Minecraft.World/IO/Streams/ByteBuffer.h"
 
-void LinuxGLLogLightmapState(const char* stage, int textureId, bool scaleLight) {
-    static int logCount = 0;
-    if (logCount >= 16) return;
+extern C4JRender RenderManager;
 
-    ++logCount;
+#ifdef GLES
+extern "C" {
+extern void glClearDepthf(float depth);
+void glClearDepth(double depth) { glClearDepthf((float)depth); }
+void glTexGeni(unsigned int, unsigned int, int) {}
+void glTexGenfv(unsigned int, unsigned int, const float*) {}
+void glTexCoordPointer(int, unsigned int, int, const void*) {}
+void glNormalPointer(unsigned int, int, const void*) {}
+void glColorPointer(int, unsigned int, int, const void*) {}
+void glVertexPointer(int, unsigned int, int, const void*) {}
+void glEndList(void) {}
+void glCallLists(int, unsigned int, const void*) {}
+}
+#endif
 
-    static bool loggedSymbols = false;
-    if (!loggedSymbols) {
-        loggedSymbols = true;
-        app.DebugPrintf(
-            "[linux-lightmap] linuxgl symbols glActiveTexture=%p "
-            "glClientActiveTexture=%p glMultiTexCoord2f=%p\n",
-            reinterpret_cast<void*>(::glActiveTexture),
-            reinterpret_cast<void*>(::glClientActiveTexture),
-            reinterpret_cast<void*>(::glMultiTexCoord2f));
+inline int* getIntPtr(IntBuffer* buf) {
+    return buf ? (int*)buf->getBuffer() + buf->position() : nullptr;
+}
+inline void* getBytePtr(ByteBuffer* buf) {
+    return buf ? (char*)buf->getBuffer() + buf->position() : nullptr;
+}
+
+void glGenTextures_4J(IntBuffer* buf) {
+    if (!buf) return;
+    int n = buf->limit() - buf->position();
+    int* dst = getIntPtr(buf);
+    for (int i = 0; i < n; i++) dst[i] = RenderManager.TextureCreate();
+}
+
+void glDeleteTextures_4J(IntBuffer* buf) {
+    if (!buf) return;
+    int n = buf->limit() - buf->position();
+    int* src = getIntPtr(buf);
+    for (int i = 0; i < n; i++) RenderManager.TextureFree(src[i]);
+}
+
+void glTexImage2D_4J(int target, int level, int internalformat, int width,
+                     int height, int border, int format, int type,
+                     ByteBuffer* pixels) {
+    (void)target;
+    (void)internalformat;
+    (void)border;
+    (void)format;
+    (void)type;
+    RenderManager.TextureData(width, height, getBytePtr(pixels), level,
+                              C4JRender::TEXTURE_FORMAT_RxGyBzAw);
+}
+
+void glLight_4J(int light, int pname, FloatBuffer* params) {
+    const float* p = params->_getDataPointer();
+    int idx = (light == 0x4001) ? 1 : 0;
+    if (pname == 0x1203)
+        RenderManager.StateSetLightDirection(idx, p[0], p[1], p[2]);
+    else if (pname == 0x1201)
+        RenderManager.StateSetLightColour(idx, p[0], p[1], p[2]);
+    else if (pname == 0x1200)
+        RenderManager.StateSetLightAmbientColour(p[0], p[1], p[2]);
+}
+
+void glLightModel_4J(int pname, FloatBuffer* params) {
+    if (pname == 0x0B53) {
+        const float* p = params->_getDataPointer();
+        RenderManager.StateSetLightAmbientColour(p[0], p[1], p[2]);
     }
-
-    GLint activeTexture = 0;
-    GLint matrixMode = 0;
-    ::glGetIntegerv(GL_ACTIVE_TEXTURE, &activeTexture);
-    ::glGetIntegerv(GL_MATRIX_MODE, &matrixMode);
-
-    const GLint restoreTexture = activeTexture;
-    ::glActiveTexture(GL_TEXTURE1);
-
-    GLint unit1Binding = 0;
-    ::glGetIntegerv(GL_TEXTURE_BINDING_2D, &unit1Binding);
-    const bool unit1Enabled = (::glIsEnabled(GL_TEXTURE_2D) == GL_TRUE);
-
-    GLfloat textureMatrix[16];
-    ::glGetFloatv(GL_TEXTURE_MATRIX, textureMatrix);
-
-    ::glActiveTexture(restoreTexture);
-
-    app.DebugPrintf(
-        "[linux-lightmap] %s tex=%d scale=%d active=%#x matrixMode=%#x "
-        "unit1Bound=%d unit1Enabled=%d texMatrix=[%.4f %.4f %.4f %.4f]\n",
-        stage, textureId, scaleLight ? 1 : 0, activeTexture, matrixMode,
-        unit1Binding, unit1Enabled ? 1 : 0, textureMatrix[0], textureMatrix[5],
-        textureMatrix[12], textureMatrix[13]);
 }
 
-int glGenTextures() {
-    GLuint id = 0;
-    ::glGenTextures(1, &id);
-    return (int)id;
+void glFog_4J(int pname, FloatBuffer* params) {
+    const float* p = params->_getDataPointer();
+    if (pname == 0x0B66) RenderManager.StateSetFogColour(p[0], p[1], p[2]);
 }
 
-void glGenTextures(IntBuffer* buf) {
-    GLuint id = 0;
-    ::glGenTextures(1, &id);
-    buf->put((int)id);
-    buf->flip();
+void glGetFloat_4J(int pname, FloatBuffer* params) {
+    const float* m = RenderManager.MatrixGet(pname);
+    if (m) memcpy(params->_getDataPointer(), m, 16 * sizeof(float));
 }
 
-void glDeleteTextures(int id) {
-    GLuint uid = (GLuint)id;
-    ::glDeleteTextures(1, &uid);
-}
-
-void glDeleteTextures(IntBuffer* buf) {
-    int id = buf->get(0);
-    GLuint uid = (GLuint)id;
-    ::glDeleteTextures(1, &uid);
-}
-
-void glLight(int light, int pname, FloatBuffer* params) {
-    ::glLightfv((GLenum)light, (GLenum)pname, params->_getDataPointer());
-}
-
-void glLightModel(int pname, FloatBuffer* params) {
-    ::glLightModelfv((GLenum)pname, params->_getDataPointer());
-}
-
-void glGetFloat(int pname, FloatBuffer* params) {
-    ::glGetFloatv((GLenum)pname, params->_getDataPointer());
-}
-
-void glTexGen(int coord, int pname, FloatBuffer* params) {
-    ::glTexGenfv((GLenum)coord, (GLenum)pname, params->_getDataPointer());
-}
-
-void glFog(int pname, FloatBuffer* params) {
-    ::glFogfv((GLenum)pname, params->_getDataPointer());
-}
-
-void glTexCoordPointer(int size, int type, FloatBuffer* pointer) {
-    ::glTexCoordPointer(size, (GLenum)type, 0, pointer->_getDataPointer());
-}
-
-void glNormalPointer(int type, ByteBuffer* pointer) {
-    ::glNormalPointer((GLenum)type, 0, pointer->getBuffer());
-}
-
-void glColorPointer(int size, bool normalized, int stride,
-                    ByteBuffer* pointer) {
-    (void)normalized;
-    ::glColorPointer(size, GL_UNSIGNED_BYTE, stride, pointer->getBuffer());
-}
-
-void glVertexPointer(int size, int type, FloatBuffer* pointer) {
-    ::glVertexPointer(size, (GLenum)type, 0, pointer->_getDataPointer());
-}
-
-void glEndList(int) { ::glEndList(); }
-
-void glTexImage2D(int target, int level, int internalformat, int width,
-                  int height, int border, int format, int type,
-                  ByteBuffer* pixels) {
-    void* data = pixels ? pixels->getBuffer() : nullptr;
-    ::glTexImage2D((GLenum)target, level, internalformat, width, height, border,
-                   (GLenum)format, (GLenum)type, data);
-}
-
-void glCallLists(IntBuffer* lists) {
+void glCallLists_4J(IntBuffer* lists) {
+    if (!lists) return;
     int count = lists->limit() - lists->position();
-    ::glCallLists(count, GL_INT, lists->getBuffer());
+    int* ids = getIntPtr(lists);
+    for (int i = 0; i < count; i++) RenderManager.CBuffCall(ids[i], false);
 }
 
+void glReadPixels_4J(int x, int y, int w, int h, int f, int t, ByteBuffer* p) {
+    (void)f;
+    (void)t;
+    RenderManager.ReadPixels(x, y, w, h, getBytePtr(p));
+}
+
+// dead stubs
+void glTexCoordPointer_4J(int, int, FloatBuffer*) {}
+void glNormalPointer_4J(int, ByteBuffer*) {}
+void glColorPointer_4J(int, bool, int, ByteBuffer*) {}
+void glVertexPointer_4J(int, int, FloatBuffer*) {}
+void glEndList_4J(int) {}
+void glTexGen_4J(int, int, FloatBuffer*) {}
+
+// query objects
+#include <dlfcn.h>
 static PFNGLGENQUERIESARBPROC _glGenQueriesARB = nullptr;
 static PFNGLBEGINQUERYARBPROC _glBeginQueryARB = nullptr;
 static PFNGLENDQUERYARBPROC _glEndQueryARB = nullptr;
@@ -148,40 +126,41 @@ static void initQueryFuncs() {
         RTLD_DEFAULT, "glGetQueryObjectuivARB");
 }
 
-void glGenQueriesARB(IntBuffer* buf) {
+void glGenQueriesARB_4J(IntBuffer* buf) {
     initQueryFuncs();
-    if (_glGenQueriesARB) {
-        GLuint id = 0;
-        _glGenQueriesARB(1, &id);
-        buf->put((int)id);
-        buf->flip();
+    if (_glGenQueriesARB && buf) {
+        int n = buf->limit() - buf->position();
+        if (n > 0) _glGenQueriesARB(n, (GLuint*)getIntPtr(buf));
     }
 }
 
-void glBeginQueryARB(int target, int id) {
+void glBeginQueryARB_4J(int target, int id) {
     initQueryFuncs();
     if (_glBeginQueryARB) _glBeginQueryARB((GLenum)target, (GLuint)id);
 }
 
-void glEndQueryARB(int target) {
+void glEndQueryARB_4J(int target) {
     initQueryFuncs();
     if (_glEndQueryARB) _glEndQueryARB((GLenum)target);
 }
 
-void glGetQueryObjectuARB(int id, int pname, IntBuffer* params) {
+void glGetQueryObjectuARB_4J(int id, int pname, IntBuffer* params) {
     initQueryFuncs();
-    if (_glGetQueryObjectuivARB) {
-        GLuint val = 0;
-        _glGetQueryObjectuivARB((GLuint)id, (GLenum)pname, &val);
-        params->put((int)val);
-        params->flip();
-    }
+    if (_glGetQueryObjectuivARB && params)
+        // LWJGL does not change limits/positions during these calls, it
+        // reads/writes exactly at pointer!!
+        _glGetQueryObjectuivARB((GLuint)id, (GLenum)pname,
+                                (GLuint*)getIntPtr(params));
 }
-
-void glReadPixels(int x, int y, int width, int height, int format, int type,
-                  ByteBuffer* pixels) {
-    ::glReadPixels(x, y, width, height, (GLenum)format, (GLenum)type,
-                   pixels->getBuffer());
+void glGetFloat(int pname, FloatBuffer* params) {
+    glGetFloat_4J(pname, params);
 }
-
+void LinuxGLLogLightmapState(const char* stage, int textureId,
+                             bool scaleLight) {
+    static int logCount = 0;
+    if (logCount >= 16) return;
+    ++logCount;
+    fprintf(stderr, "[linux-lightmap] %s tex=%d scale=%d\n", stage, textureId,
+            scaleLight ? 1 : 0);
+}
 #endif
