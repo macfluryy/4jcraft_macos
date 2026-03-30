@@ -1698,6 +1698,7 @@ bool LevelRenderer::updateDirtyChunks() {
     ClipChunk* nearChunk = nullptr;  // Nearest chunk that is dirty
     int veryNearCount = 0;
     int minDistSq = 0x7fffffff;  // Distances to this chunk
+    std::unique_lock<std::mutex> dirtyChunksLock(m_csDirtyChunks);
 
     // Set a flag if we should only rebuild existing chunks, not create anything
     // new
@@ -1716,7 +1717,6 @@ bool LevelRenderer::updateDirtyChunks() {
         PIXAddNamedCounter(((float)memAlloc) / (1024.0f * 1024.0f),
                            "Command buffer allocations");
         bool onlyRebuild = (memAlloc >= MAX_COMMANDBUFFER_ALLOCATIONS);
-        std::unique_lock<std::mutex> dirtyChunksLock(m_csDirtyChunks);
 
         // Move any dirty chunks stored in the lock free stack into global flags
         int index = 0;
