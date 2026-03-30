@@ -1176,7 +1176,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                 switch (eAction) {
                     case eXuiServerAction_AutoSaveGame:
                     case eXuiServerAction_SaveGame:
-                        app.EnterSaveNotificationSection();
+                        app.lockSaveNotification();
                         if (players != nullptr) {
                             players->saveAll(
                                 Minecraft::GetInstance()->progressRenderer);
@@ -1211,7 +1211,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                                 Minecraft::GetInstance()->progressRenderer,
                                 (eAction == eXuiServerAction_AutoSaveGame));
                         }
-                        app.LeaveSaveNotificationSection();
+                        app.unlockSaveNotification();
                         break;
                     case eXuiServerAction_DropItem:
                         // Find the player, and drop the id at their feet
@@ -1292,7 +1292,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                         break;
                     case eXuiServerAction_ExportSchematic:
 #if !defined(_CONTENT_PACKAGE)
-                        app.EnterSaveNotificationSection();
+                        app.lockSaveNotification();
 
                         // players->broadcastAll(
                         // shared_ptr<UpdateProgressPacket>( new
@@ -1326,7 +1326,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
 
                             delete initData;
                         }
-                        app.LeaveSaveNotificationSection();
+                        app.unlockSaveNotification();
 #endif
                         break;
                     case eXuiServerAction_SetCameraLocation:

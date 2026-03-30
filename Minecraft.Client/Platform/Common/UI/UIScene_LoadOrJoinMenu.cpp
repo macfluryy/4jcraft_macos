@@ -1442,7 +1442,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(
 }
 
 int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(void* lpParam, bool bRes) {
-    ui.EnterCallbackIdCriticalSection();
+    ui.lockCallbackScenes();
     UIScene_LoadOrJoinMenu* pClass =
         (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
 
@@ -1455,7 +1455,7 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(void* lpParam, bool bRes) {
 
         pClass->updateTooltips();
     }
-    ui.LeaveCallbackIdCriticalSection();
+    ui.unlockCallbackScenes();
     return 0;
 }
 

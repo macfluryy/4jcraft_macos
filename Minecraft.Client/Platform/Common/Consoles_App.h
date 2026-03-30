@@ -880,11 +880,11 @@ public:
     void SetCorruptSaveDeleted(bool bVal) { m_bCorruptSaveDeleted = bVal; }
     bool GetCorruptSaveDeleted(void) { return m_bCorruptSaveDeleted; }
 
-    void EnterSaveNotificationSection();
-    void LeaveSaveNotificationSection();
+    void lockSaveNotification();
+    void unlockSaveNotification();
 
 private:
-    std::mutex m_saveNotificationCriticalSection;
+    std::mutex m_saveNotificationMutex;
     int m_saveNotificationDepth;
     // Download Status
 

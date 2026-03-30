@@ -1400,11 +1400,11 @@ UIScene* UIController::GetSceneFromCallbackId(size_t id) {
     return scene;
 }
 
-void UIController::EnterCallbackIdCriticalSection() {
+void UIController::lockCallbackScenes() {
     m_registeredCallbackScenesCS.lock();
 }
 
-void UIController::LeaveCallbackIdCriticalSection() {
+void UIController::unlockCallbackScenes() {
     m_registeredCallbackScenesCS.unlock();
 }
 

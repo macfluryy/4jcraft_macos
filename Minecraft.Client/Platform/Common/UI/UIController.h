@@ -312,8 +312,8 @@ public:
     size_t RegisterForCallbackId(UIScene* scene);
     void UnregisterCallbackId(size_t id);
     UIScene* GetSceneFromCallbackId(size_t id);
-    void EnterCallbackIdCriticalSection();
-    void LeaveCallbackIdCriticalSection();
+    void lockCallbackScenes();
+    void unlockCallbackScenes();
 
 private:
     void setFullscreenMenuDisplayed(bool displayed);

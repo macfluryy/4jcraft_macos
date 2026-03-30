@@ -5641,8 +5641,8 @@ DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
         return nullptr;
 }
 
-void CMinecraftApp::EnterSaveNotificationSection() {
-    std::lock_guard<std::mutex> lock(m_saveNotificationCriticalSection);
+void CMinecraftApp::lockSaveNotification() {
+    std::lock_guard<std::mutex> lock(m_saveNotificationMutex);
     if (m_saveNotificationDepth++ == 0) {
         if (g_NetworkManager
                 .IsInSession())  // this can be triggered from the front end if
@@ -5660,8 +5660,8 @@ void CMinecraftApp::EnterSaveNotificationSection() {
     }
 }
 
-void CMinecraftApp::LeaveSaveNotificationSection() {
-    std::lock_guard<std::mutex> lock(m_saveNotificationCriticalSection);
+void CMinecraftApp::unlockSaveNotification() {
+    std::lock_guard<std::mutex> lock(m_saveNotificationMutex);
     if (--m_saveNotificationDepth == 0) {
         if (g_NetworkManager
                 .IsInSession())  // this can be triggered from the front end if
