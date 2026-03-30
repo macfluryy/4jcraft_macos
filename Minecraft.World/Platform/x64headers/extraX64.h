@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <limits>
 #include <mutex>
-#include "4J_Compat.h"
+#include "../../../4J.Common/4J_Compat.h"
 
 #include "../../../Minecraft.Client/Rendering/Models/SkinBox.h"
 

@@ -64,26 +64,10 @@ stb_dep = declare_dependency(include_directories: stb)
 
 miniaudio_dep = dependency('miniaudio')
 
-sub_opts = ['gles=' + use_gles.to_string()]
-
-render_dep = dependency('4j-render', fallback: ['4jlibs', 'render_dep'], default_options: sub_opts)
-input_dep = dependency('4j-input', fallback: ['4jlibs', 'input_dep'], default_options: sub_opts)
-profile_dep = dependency('4j-profile', fallback: ['4jlibs', 'profile_dep'], default_options: sub_opts)
-storage_dep = dependency('4j-storage', fallback: ['4jlibs', 'storage_dep'], default_options: sub_opts)
-
-all_deps = [
-  gl_dep,
-  glu_dep,
-  sdl2_dep,
-  thread_dep,
-  dl_dep,
-  stb_dep,
-  miniaudio_dep,
-  render_dep,
-  input_dep,
-  profile_dep,
-  storage_dep,
-]
+subdir('4J.Render')
+subdir('4J.Input')
+subdir('4J.Profile')
+subdir('4J.Storage')
 
 subdir('Minecraft.Assets')
 subdir('Minecraft.World')
