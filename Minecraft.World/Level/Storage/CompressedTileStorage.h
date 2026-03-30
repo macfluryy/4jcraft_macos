@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #if !defined(__linux__)
 #include "../../Platform/x64headers/xmcore.h"
 #endif
@@ -157,7 +158,7 @@ public:
 
     static unsigned char compressBuffer[32768 + 256];
 
-    static CRITICAL_SECTION cs_write;
+    static std::mutex cs_write;
 
     int getAllocatedSize(int* count0, int* count1, int* count2, int* count4,
                          int* count8);

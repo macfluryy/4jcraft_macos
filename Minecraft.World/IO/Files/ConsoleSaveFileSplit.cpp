@@ -397,7 +397,6 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(ConsoleSaveFile* sourceSave,
 
 void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
                                  unsigned int fileSize, ESavePlatform plat) {
-    InitializeCriticalSectionAndSpinCount(&m_lock, 5120);
 
     m_lastTickTime = 0;
 
@@ -550,7 +549,6 @@ ConsoleSaveFileSplit::~ConsoleSaveFileSplit() {
     }
 
     StorageManager.ResetSubfiles();
-    DeleteCriticalSection(&m_lock);
 }
 
 // Add the file to our table of internal files if not already there
@@ -1508,10 +1506,10 @@ int ConsoleSaveFileSplit::getOriginalSaveVersion() {
     return header.getOriginalSaveVersion();
 }
 
-void ConsoleSaveFileSplit::LockSaveAccess() { EnterCriticalSection(&m_lock); }
+void ConsoleSaveFileSplit::LockSaveAccess() { m_lock.lock(); }
 
 void ConsoleSaveFileSplit::ReleaseSaveAccess() {
-    LeaveCriticalSection(&m_lock);
+    m_lock.unlock();
 }
 
 ESavePlatform ConsoleSaveFileSplit::getSavePlatform() {

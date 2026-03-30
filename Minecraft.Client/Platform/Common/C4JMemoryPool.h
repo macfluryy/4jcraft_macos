@@ -28,7 +28,6 @@ class C4JMemoryPoolFixed : public C4JMemoryPool
 	uchar* m_memStart; // Beginning of memory pool
 	uchar* m_memEnd; // End of memory pool
 	uchar* m_next; // Num of next free block
-// 	CRITICAL_SECTION m_CS;
 public:
 	C4JMemoryPoolFixed()
 	{
@@ -59,7 +58,6 @@ public:
 			m_numOfBlocks ];
 		m_memEnd = m_memStart + (m_sizeOfEachBlock * m_numOfBlocks);
 		m_next = m_memStart;
-// 		InitializeCriticalSection(&m_CS);
 	}
 
 	void DestroyPool()
@@ -82,7 +80,6 @@ public:
 	{
 		if(size > m_sizeOfEachBlock)
 			return ::malloc(size);
-// 		EnterCriticalSection(&m_CS);
 		if (m_numInitialized < m_numOfBlocks )
 		{
 			uint* p = (uint*)AddrFromIndex( m_numInitialized );
@@ -103,7 +100,6 @@ public:
 				m_next = nullptr;
 			}
 		}
-// 		LeaveCriticalSection(&m_CS);
 		return ret;
 	}
 
@@ -114,7 +110,6 @@ public:
 			::free(ptr);
 			return;
 		}
-// 		EnterCriticalSection(&m_CS);
 		if (m_next != nullptr)
 		{
 			(*(uint*)ptr) = IndexFromAddr( m_next );
@@ -126,7 +121,6 @@ public:
 			m_next = (uchar*)ptr;
 		}
 		++m_numFreeBlocks;
-// 		LeaveCriticalSection(&m_CS);
 	}
 }; // End pool class
 

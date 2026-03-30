@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <mutex>
 #include "../../IO/Files/File.h"
 #include "../../IO/Streams/ByteBuffer.h"
 #include "../../Headers/net.minecraft.world.entity.h"
@@ -214,28 +215,21 @@ void ZonedChunkStorage::saveEntities(Level* level, LevelChunk* lc) {
 
     std::vector<CompoundTag*> tags;
 
-#ifdef _ENTITIES_RW_SECTION
-    EnterCriticalRWSection(&lc->m_csEntities, true);
-#else
-    EnterCriticalSection(&lc->m_csEntities);
-#endif
-    for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++) {
-        std::vector<std::shared_ptr<Entity> >* entities = lc->entityBlocks[i];
+    {
+        std::lock_guard<std::mutex> lock(lc->m_csEntities);
+        for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++) {
+            std::vector<std::shared_ptr<Entity> >* entities = lc->entityBlocks[i];
 
-        auto itEndTags = entities->end();
-        for (auto it = entities->begin(); it != itEndTags; it++) {
-            std::shared_ptr<Entity> e = *it;  // entities->at(j);
-            CompoundTag* cp = new CompoundTag();
-            cp->putInt(L"_TYPE", 0);
-            e->save(cp);
-            tags.push_back(cp);
+            auto itEndTags = entities->end();
+            for (auto it = entities->begin(); it != itEndTags; it++) {
+                std::shared_ptr<Entity> e = *it;  // entities->at(j);
+                CompoundTag* cp = new CompoundTag();
+                cp->putInt(L"_TYPE", 0);
+                e->save(cp);
+                tags.push_back(cp);
+            }
         }
     }
-#ifdef _ENTITIES_RW_SECTION
-    LeaveCriticalRWSection(&lc->m_csEntities, true);
-#else
-    LeaveCriticalSection(&lc->m_csEntities);
-#endif
 
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
                             TilePosKeyHash, TilePosKeyEq>::iterator it =

@@ -249,46 +249,6 @@ typedef HINSTANCE HMODULE;
 #define E_ABORT _HRESULT_TYPEDEF_(0x80004004L)
 #define E_NOINTERFACE _HRESULT_TYPEDEF_(0x80004002L)
 
-typedef pthread_mutex_t RTL_CRITICAL_SECTION;
-typedef pthread_mutex_t* PRTL_CRITICAL_SECTION;
-
-typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
-typedef PRTL_CRITICAL_SECTION PCRITICAL_SECTION;
-typedef PRTL_CRITICAL_SECTION LPCRITICAL_SECTION;
-
-static inline void InitializeCriticalSection(
-    PRTL_CRITICAL_SECTION CriticalSection) {
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init(&attr);
-    pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
-    pthread_mutex_init(CriticalSection, &attr);
-    pthread_mutexattr_destroy(&attr);
-}
-
-static inline void InitializeCriticalSectionAndSpinCount(
-    PRTL_CRITICAL_SECTION CriticalSection, ULONG SpinCount) {
-    // no spin count required because we use a recursive mutex
-    InitializeCriticalSection(CriticalSection);
-}
-
-static inline void DeleteCriticalSection(
-    PRTL_CRITICAL_SECTION CriticalSection) {
-    pthread_mutex_destroy(CriticalSection);
-}
-
-static inline void EnterCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
-    pthread_mutex_lock(CriticalSection);
-}
-
-static inline void LeaveCriticalSection(PRTL_CRITICAL_SECTION CriticalSection) {
-    pthread_mutex_unlock(CriticalSection);
-}
-
-static inline ULONG TryEnterCriticalSection(
-    PRTL_CRITICAL_SECTION CriticalSection) {
-    return pthread_mutex_trylock(CriticalSection) == 0;
-}
-
 // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
 static inline void GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
     // TODO: Parse /proc/meminfo and set lpBuffer based on that. Probably will

@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 
 #include "Common/Leaderboards/LeaderboardManager.h"
 
@@ -40,7 +41,7 @@ protected:
 
     std::queue<RegisterScore> m_views;
 
-    CRITICAL_SECTION m_csViewsLock;
+    std::mutex m_csViewsLock;
 
     EStatsState m_eStatsState;  // State of the stats read
     //	EFilterMode		m_eFilterMode;

@@ -1,4 +1,5 @@
 #include "../Platform/stdafx.h"
+#include <mutex>
 #include "MultiPlayerLevel.h"
 #include "../Player/MultiPlayerLocalPlayer.h"
 #include "../Network/ClientConnection.h"
@@ -117,14 +118,15 @@ void MultiPlayerLevel::tick() {
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Entity re-entry");
-    EnterCriticalSection(&m_entitiesCS);
-    for (int i = 0; i < 10 && !reEntries.empty(); i++) {
-        std::shared_ptr<Entity> e = *(reEntries.begin());
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        for (int i = 0; i < 10 && !reEntries.empty(); i++) {
+            std::shared_ptr<Entity> e = *(reEntries.begin());
 
-        if (find(entities.begin(), entities.end(), e) == entities.end())
-            addEntity(e);
+            if (find(entities.begin(), entities.end(), e) == entities.end())
+                addEntity(e);
+        }
     }
-    LeaveCriticalSection(&m_entitiesCS);
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Connection ticking");
@@ -808,23 +810,24 @@ void MultiPlayerLevel::setDayTime(int64_t newTime) {
 void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     // entities.removeAll(entitiesToRemove);
 
-    EnterCriticalSection(&m_entitiesCS);
-    for (auto it = entities.begin(); it != entities.end();) {
-        bool found = false;
-        for (auto it2 = entitiesToRemove.begin();
-             it2 != entitiesToRemove.end(); it2++) {
-            if ((*it) == (*it2)) {
-                found = true;
-                break;
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        for (auto it = entities.begin(); it != entities.end();) {
+            bool found = false;
+            for (auto it2 = entitiesToRemove.begin();
+                 it2 != entitiesToRemove.end(); it2++) {
+                if ((*it) == (*it2)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                it = entities.erase(it);
+            } else {
+                it++;
             }
         }
-        if (found) {
-            it = entities.erase(it);
-        } else {
-            it++;
-        }
     }
-    LeaveCriticalSection(&m_entitiesCS);
 
     auto endIt = entitiesToRemove.end();
     for (auto it = entitiesToRemove.begin(); it != endIt; it++) {
@@ -845,36 +848,37 @@ void MultiPlayerLevel::removeAllPendingEntityRemovals() {
     entitiesToRemove.clear();
 
     // for (int i = 0; i < entities.size(); i++)
-    EnterCriticalSection(&m_entitiesCS);
-    std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
-    while (it != entities.end()) {
-        std::shared_ptr<Entity> e = *it;  // entities.at(i);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
+        std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
+        while (it != entities.end()) {
+            std::shared_ptr<Entity> e = *it;  // entities.at(i);
 
-        if (e->riding != nullptr) {
-            if (e->riding->removed || e->riding->rider.lock() != e) {
-                e->riding->rider = std::weak_ptr<Entity>();
-                e->riding = nullptr;
+            if (e->riding != nullptr) {
+                if (e->riding->removed || e->riding->rider.lock() != e) {
+                    e->riding->rider = std::weak_ptr<Entity>();
+                    e->riding = nullptr;
+                } else {
+                    ++it;
+                    continue;
+                }
+            }
+
+            if (e->removed) {
+                int xc = e->xChunk;
+                int zc = e->zChunk;
+                if (e->inChunk && hasChunk(xc, zc)) {
+                    getChunk(xc, zc)->removeEntity(e);
+                }
+                // entities.remove(i--);
+
+                it = entities.erase(it);
+                entityRemoved(e);
             } else {
-                ++it;
-                continue;
+                it++;
             }
-        }
-
-        if (e->removed) {
-            int xc = e->xChunk;
-            int zc = e->zChunk;
-            if (e->inChunk && hasChunk(xc, zc)) {
-                getChunk(xc, zc)->removeEntity(e);
-            }
-            // entities.remove(i--);
-
-            it = entities.erase(it);
-            entityRemoved(e);
-        } else {
-            it++;
         }
     }
-    LeaveCriticalSection(&m_entitiesCS);
 }
 
 void MultiPlayerLevel::removeClientConnection(ClientConnection* c,
@@ -907,34 +911,34 @@ void MultiPlayerLevel::dataReceivedForChunk(int x, int z) {
 void MultiPlayerLevel::removeUnusedTileEntitiesInRegion(int x0, int y0, int z0,
                                                         int x1, int y1,
                                                         int z1) {
-    EnterCriticalSection(&m_tileEntityListCS);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
 
-    for (unsigned int i = 0; i < tileEntityList.size();) {
-        bool removed = false;
-        std::shared_ptr<TileEntity> te = tileEntityList[i];
-        if (te->x >= x0 && te->y >= y0 && te->z >= z0 && te->x < x1 &&
-            te->y < y1 && te->z < z1) {
-            LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
-            if (lc != nullptr) {
-                // Only remove tile entities where this is no longer a tile
-                // entity
-                int tileId = lc->getTile(te->x & 15, te->y, te->z & 15);
-                if (Tile::tiles[tileId] == nullptr ||
-                    !Tile::tiles[tileId]->isEntityTile()) {
-                    tileEntityList[i] = tileEntityList.back();
-                    tileEntityList.pop_back();
+        for (unsigned int i = 0; i < tileEntityList.size();) {
+            bool removed = false;
+            std::shared_ptr<TileEntity> te = tileEntityList[i];
+            if (te->x >= x0 && te->y >= y0 && te->z >= z0 && te->x < x1 &&
+                te->y < y1 && te->z < z1) {
+                LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
+                if (lc != nullptr) {
+                    // Only remove tile entities where this is no longer a tile
+                    // entity
+                    int tileId = lc->getTile(te->x & 15, te->y, te->z & 15);
+                    if (Tile::tiles[tileId] == nullptr ||
+                        !Tile::tiles[tileId]->isEntityTile()) {
+                        tileEntityList[i] = tileEntityList.back();
+                        tileEntityList.pop_back();
 
-                    // 4J Stu - Chests can create new tile entities when being
-                    // removed, so disable this
-                    m_bDisableAddNewTileEntities = true;
-                    lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
-                    m_bDisableAddNewTileEntities = false;
-                    removed = true;
+                        // 4J Stu - Chests can create new tile entities when being
+                        // removed, so disable this
+                        m_bDisableAddNewTileEntities = true;
+                        lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
+                        m_bDisableAddNewTileEntities = false;
+                        removed = true;
+                    }
                 }
             }
+            if (!removed) i++;
         }
-        if (!removed) i++;
     }
-
-    LeaveCriticalSection(&m_tileEntityListCS);
 }

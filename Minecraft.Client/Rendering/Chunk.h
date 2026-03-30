@@ -56,12 +56,12 @@ public:
 
 private:
     LevelRenderer::rteMap* globalRenderableTileEntities;
-    CRITICAL_SECTION* globalRenderableTileEntities_cs;
+    std::mutex* globalRenderableTileEntities_cs;
     bool assigned;
 
 public:
     Chunk(Level* level, LevelRenderer::rteMap& globalRenderableTileEntities,
-          CRITICAL_SECTION& globalRenderableTileEntities_cs, int x, int y,
+          std::mutex& globalRenderableTileEntities_cs, int x, int y,
           int z, ClipChunk* clipChunk);
     Chunk();
 

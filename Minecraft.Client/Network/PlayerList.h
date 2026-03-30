@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <deque>
+#include <mutex>
 #include "../../Minecraft.World/Util/ArrayWithLength.h"
 
 class ServerPlayer;
@@ -31,9 +32,9 @@ private:
     // 4J Added
     std::vector<PlayerUID> m_bannedXuids;
     std::deque<std::uint8_t> m_smallIdsToKick;
-    CRITICAL_SECTION m_kickPlayersCS;
+    std::mutex m_kickPlayersCS;
     std::deque<std::uint8_t> m_smallIdsToClose;
-    CRITICAL_SECTION m_closePlayersCS;
+    std::mutex m_closePlayersCS;
     /* 4J - removed
             Set<String> bans = new HashSet<String>();
         Set<String> ipBans = new HashSet<String>();

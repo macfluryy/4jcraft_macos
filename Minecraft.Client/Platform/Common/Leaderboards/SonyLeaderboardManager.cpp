@@ -33,7 +33,6 @@ SonyLeaderboardManager::SonyLeaderboardManager() {
 
     m_openSessions = 0;
 
-    InitializeCriticalSection(&m_csViewsLock);
 
     m_running = false;
     m_threadScoreboard = nullptr;
@@ -51,7 +50,6 @@ SonyLeaderboardManager::~SonyLeaderboardManager() {
 
     delete m_threadScoreboard;
 
-    DeleteCriticalSection(&m_csViewsLock);
 }
 
 int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
@@ -68,9 +66,9 @@ int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
             self->scoreboardThreadInternal();
         }
 
-        EnterCriticalSection(&self->m_csViewsLock);
+        { std::lock_guard<std::mutex> lock(self->m_csViewsLock);
         needsWriting = self->m_views.size() > 0;
-        LeaveCriticalSection(&self->m_csViewsLock);
+        }
 
         // 4J Stu - We can't write while we aren't signed in to live
         if (!ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad())) {
@@ -166,9 +164,10 @@ void SonyLeaderboardManager::scoreboardThreadInternal() {
             // 4J-JEV: Writing no longer changes the manager state,
             // we'll manage the write queue seperately.
 
-            EnterCriticalSection(&m_csViewsLock);
-            bool hasWork = !m_views.empty();
-            LeaveCriticalSection(&m_csViewsLock);
+            bool hasWork;
+            { std::lock_guard<std::mutex> lock(m_csViewsLock);
+            hasWork = !m_views.empty();
+            }
 
             if (hasWork) {
                 setScore();
@@ -495,10 +494,11 @@ bool SonyLeaderboardManager::setScore() {
 
     // Get next job.
 
-    EnterCriticalSection(&m_csViewsLock);
-    RegisterScore rscore = m_views.front();
+    RegisterScore rscore;
+    { std::lock_guard<std::mutex> lock(m_csViewsLock);
+    rscore = m_views.front();
     m_views.pop();
-    LeaveCriticalSection(&m_csViewsLock);
+    }
 
     if (ProfileManager.IsGuest(rscore.m_iPad)) {
         app.DebugPrintf(
@@ -521,9 +521,8 @@ bool SonyLeaderboardManager::setScore() {
 
     // Start emptying queue if leaderboards has been closed.
     if (ret == SCE_NP_COMMUNITY_ERROR_NOT_INITIALIZED) {
-        EnterCriticalSection(&m_csViewsLock);
+        std::lock_guard<std::mutex> lock(m_csViewsLock);
         m_views.pop();
-        LeaveCriticalSection(&m_csViewsLock);
     }
 
     // Error handling.
@@ -685,7 +684,7 @@ bool SonyLeaderboardManager::WriteStats(unsigned int viewCount, ViewIn views) {
     // Write relevant parameters.
     // RegisterScore *regScore = reinterpret_cast<RegisterScore *>(views);
 
-    EnterCriticalSection(&m_csViewsLock);
+    { std::lock_guard<std::mutex> lock(m_csViewsLock);
     for (int i = 0; i < viewCount; i++) {
         app.DebugPrintf(
             "[SonyLeaderboardManager] WriteStats(), starting. difficulty=%i, "
@@ -695,7 +694,7 @@ bool SonyLeaderboardManager::WriteStats(unsigned int viewCount, ViewIn views) {
 
         m_views.push(views[i]);
     }
-    LeaveCriticalSection(&m_csViewsLock);
+    }
 
     delete[] views;  //*regScore;
 

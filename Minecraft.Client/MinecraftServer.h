@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <mutex>
 
 #include "Input/ConsoleInputSource.h"
 #include "../Minecraft.World/Util/ArrayWithLength.h"
@@ -247,7 +248,7 @@ private:
             : x(x), z(z), chunkSource(chunkSource) {}
     };
     std::vector<postProcessRequest> m_postProcessRequests;
-    CRITICAL_SECTION m_postProcessCS;
+    std::mutex m_postProcessCS;
 
 public:
     void addPostProcessRequest(ChunkSource* chunkSource, int x, int z);

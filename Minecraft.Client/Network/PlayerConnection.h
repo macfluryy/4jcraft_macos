@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "../Input/ConsoleInputSource.h"
 #include "../../Minecraft.World/Network/Packets/PacketListener.h"
 #include "../../Minecraft.World/Util/JavaIntHash.h"
@@ -14,7 +15,7 @@ class PlayerConnection : public PacketListener, public ConsoleInputSource {
 public:
     Connection* connection;
     bool done;
-    CRITICAL_SECTION done_cs;
+    std::mutex done_cs;
 
     // 4J Stu - Added this so that we can manage UGC privileges
     PlayerUID m_offlineXUID, m_onlineXUID;

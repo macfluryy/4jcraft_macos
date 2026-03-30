@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "../../../Minecraft.World/Util/ProgressListener.h"
 
 class ProgressRenderer : public ProgressListener {
@@ -9,7 +10,7 @@ public:
                                      // on a save transfer
     };
 
-    static CRITICAL_SECTION s_progress;
+    static std::mutex s_progress;
 
     int getCurrentPercent();
     int getCurrentTitle();

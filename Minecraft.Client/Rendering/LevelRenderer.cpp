@@ -1,6 +1,7 @@
 #include <thread>
 #include <chrono>
 #include <array>
+#include <mutex>
 
 #include "../Platform/stdafx.h"
 #include "LevelRenderer.h"
@@ -163,11 +164,7 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
         lastPlayerCount[i] = 0;
     }
 
-    InitializeCriticalSection(&m_csDirtyChunks);
-    InitializeCriticalSection(&m_csRenderableTileEntities);
-#if defined(_LARGE_WORLDS)
-    InitializeCriticalSection(&m_csChunkFlags);
-#endif
+    // std::mutex members are default-constructed
 
     dirtyChunkPresent = false;
     lastDirtyChunkFound = 0;
@@ -395,10 +392,11 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel* level) {
         // actually exiting the game, so only when the primary player sets there
         // level to nullptr
         if (playerIndex == ProfileManager.GetPrimaryPad()) {
-            EnterCriticalSection(&m_csRenderableTileEntities);
-            renderableTileEntities.clear();
-            m_renderableTileEntitiesPendingRemoval.clear();
-            LeaveCriticalSection(&m_csRenderableTileEntities);
+            {
+                std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
+                renderableTileEntities.clear();
+                m_renderableTileEntitiesPendingRemoval.clear();
+            }
         }
     }
 }
@@ -428,7 +426,6 @@ void LevelRenderer::allChanged(int playerIndex) {
     // to add it back then: If this CS is entered before DisableUpdateThread is
     // called then (on 360 at least) we can get a deadlock when starting a game
     // in splitscreen.
-    // EnterCriticalSection(&m_csDirtyChunks);
     if (level[playerIndex] == nullptr) {
         return;
     }
@@ -517,8 +514,6 @@ void LevelRenderer::allChanged(int playerIndex) {
 
     Minecraft::GetInstance()->gameRenderer->EnableUpdateThread();
 
-    // 4J Stu - Remove. See comment above.
-    // LeaveCriticalSection(&m_csDirtyChunks);
 }
 
 void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
@@ -619,20 +614,20 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
     // 4J - have restructed this so that the tile entities are stored within a
     // hashmap by chunk/dimension index. The index is calculated in the same way
     // as the global flags.
-    EnterCriticalSection(&m_csRenderableTileEntities);
-    for (auto it = renderableTileEntities.begin();
-         it != renderableTileEntities.end(); it++) {
-        int idx = it->first;
-        // Don't render if it isn't in the same dimension as this player
-        if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
+    {
+        std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
+        for (auto it = renderableTileEntities.begin();
+             it != renderableTileEntities.end(); it++) {
+            int idx = it->first;
+            // Don't render if it isn't in the same dimension as this player
+            if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
 
-        for (auto it2 = it->second.tiles.begin();
-             it2 != it->second.tiles.end(); it2++) {
-            TileEntityRenderDispatcher::instance->render(*it2, a);
+            for (auto it2 = it->second.tiles.begin();
+                 it2 != it->second.tiles.end(); it2++) {
+                TileEntityRenderDispatcher::instance->render(*it2, a);
+            }
         }
     }
-
-    LeaveCriticalSection(&m_csRenderableTileEntities);
 
     mc->gameRenderer->turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
 }
@@ -653,7 +648,7 @@ std::wstring LevelRenderer::gatherStats2() {
 }
 
 void LevelRenderer::resortChunks(int xc, int yc, int zc) {
-    EnterCriticalSection(&m_csDirtyChunks);
+    std::lock_guard<std::mutex> lock(m_csDirtyChunks);
     xc -= CHUNK_XZSIZE / 2;
     yc -= CHUNK_SIZE / 2;
     zc -= CHUNK_XZSIZE / 2;
@@ -702,7 +697,6 @@ void LevelRenderer::resortChunks(int xc, int yc, int zc) {
         }
     }
     nonStackDirtyChunksAdded();
-    LeaveCriticalSection(&m_csDirtyChunks);
 }
 
 int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
@@ -1730,7 +1724,7 @@ bool LevelRenderer::updateDirtyChunks() {
         PIXAddNamedCounter(((float)memAlloc) / (1024.0f * 1024.0f),
                            "Command buffer allocations");
         bool onlyRebuild = (memAlloc >= MAX_COMMANDBUFFER_ALLOCATIONS);
-        EnterCriticalSection(&m_csDirtyChunks);
+        std::unique_lock<std::mutex> dirtyChunksLock(m_csDirtyChunks);
 
         // Move any dirty chunks stored in the lock free stack into global flags
         int index = 0;
@@ -1952,7 +1946,7 @@ bool LevelRenderer::updateDirtyChunks() {
                 permaChunk[index].makeCopyForRebuild(chunk);
                 ++index;
             }
-            LeaveCriticalSection(&m_csDirtyChunks);
+            dirtyChunksLock.unlock();
 
             --index;  // Bring it back into 0 counted range
 
@@ -2043,7 +2037,7 @@ bool LevelRenderer::updateDirtyChunks() {
             // this copy. The copy will then be guaranteed to be consistent
             // whilst rebuilding takes place outside of that critical section.
             permaChunk.makeCopyForRebuild(chunk);
-            LeaveCriticalSection(&m_csDirtyChunks);
+            dirtyChunksLock.unlock();
         }
         //		static int64_t totalTime = 0;
         //		static int64_t countTime = 0;
@@ -2070,7 +2064,7 @@ bool LevelRenderer::updateDirtyChunks() {
         } else {
             dirtyChunkPresent = false;
         }
-        LeaveCriticalSection(&m_csDirtyChunks);
+        dirtyChunksLock.unlock();
         return false;
     }
 
@@ -2295,7 +2289,6 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
     // come from when connection is being ticked outside of normal level tick,
     // and player won't be set up
     if (level == nullptr) level = this->level[mc->player->GetXboxPad()];
-    //	EnterCriticalSection(&m_csDirtyChunks);
     int _x0 = Mth::intFloorDiv(x0, CHUNK_XZSIZE);
     int _y0 = Mth::intFloorDiv(y0, CHUNK_SIZE);
     int _z0 = Mth::intFloorDiv(z0, CHUNK_XZSIZE);
@@ -2385,7 +2378,6 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
             }
         }
     }
-    //	LeaveCriticalSection(&m_csDirtyChunks);
 }
 
 void LevelRenderer::tileChanged(int x, int y, int z) {
@@ -3687,12 +3679,9 @@ void LevelRenderer::setGlobalChunkFlags(int x, int y, int z, Level* level,
     int index = getGlobalIndexForChunk(x, y, z, level);
     if (index != -1) {
 #if defined(_LARGE_WORLDS)
-        EnterCriticalSection(&m_csChunkFlags);
+        std::lock_guard<std::mutex> lock(m_csChunkFlags);
 #endif
         globalChunkFlags[index] = flags;
-#if defined(_LARGE_WORLDS)
-        LeaveCriticalSection(&m_csChunkFlags);
-#endif
     }
 }
 
@@ -3702,12 +3691,9 @@ void LevelRenderer::setGlobalChunkFlag(int index, unsigned char flag,
 
     if (index != -1) {
 #if defined(_LARGE_WORLDS)
-        EnterCriticalSection(&m_csChunkFlags);
+        std::lock_guard<std::mutex> lock(m_csChunkFlags);
 #endif
         globalChunkFlags[index] |= sflag;
-#if defined(_LARGE_WORLDS)
-        LeaveCriticalSection(&m_csChunkFlags);
-#endif
     }
 }
 
@@ -3718,12 +3704,9 @@ void LevelRenderer::setGlobalChunkFlag(int x, int y, int z, Level* level,
     int index = getGlobalIndexForChunk(x, y, z, level);
     if (index != -1) {
 #if defined(_LARGE_WORLDS)
-        EnterCriticalSection(&m_csChunkFlags);
+        std::lock_guard<std::mutex> lock(m_csChunkFlags);
 #endif
         globalChunkFlags[index] |= sflag;
-#if defined(_LARGE_WORLDS)
-        LeaveCriticalSection(&m_csChunkFlags);
-#endif
     }
 }
 
@@ -3747,12 +3730,9 @@ void LevelRenderer::clearGlobalChunkFlag(int x, int y, int z, Level* level,
     int index = getGlobalIndexForChunk(x, y, z, level);
     if (index != -1) {
 #if defined(_LARGE_WORLDS)
-        EnterCriticalSection(&m_csChunkFlags);
+        std::lock_guard<std::mutex> lock(m_csChunkFlags);
 #endif
         globalChunkFlags[index] &= ~sflag;
-#if defined(_LARGE_WORLDS)
-        LeaveCriticalSection(&m_csChunkFlags);
-#endif
     }
 }
 
@@ -3844,19 +3824,19 @@ void LevelRenderer::eraseRenderableTileEntity_Locked(
 void LevelRenderer::retireRenderableTileEntitiesForChunkKey(int key) {
     if (key == -1) return;
 
-    EnterCriticalSection(&m_csRenderableTileEntities);
-    renderableTileEntities.erase(key);
-    m_renderableTileEntitiesPendingRemoval.erase(key);
-    LeaveCriticalSection(&m_csRenderableTileEntities);
+    {
+        std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
+        renderableTileEntities.erase(key);
+        m_renderableTileEntitiesPendingRemoval.erase(key);
+    }
 }
 
 // 4J added
 void LevelRenderer::fullyFlagRenderableTileEntitiesToBeRemoved() {
     FRAME_PROFILE_SCOPE(RenderableTileEntityCleanup);
 
-    EnterCriticalSection(&m_csRenderableTileEntities);
+    std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
     if (m_renderableTileEntitiesPendingRemoval.empty()) {
-        LeaveCriticalSection(&m_csRenderableTileEntities);
         return;
     }
 
@@ -3886,7 +3866,6 @@ void LevelRenderer::fullyFlagRenderableTileEntitiesToBeRemoved() {
         }
     }
     m_renderableTileEntitiesPendingRemoval.clear();
-    LeaveCriticalSection(&m_csRenderableTileEntities);
 }
 
 LevelRenderer::DestroyedTileManager::RecentTile::RecentTile(int x, int y, int z,
@@ -3897,11 +3876,10 @@ LevelRenderer::DestroyedTileManager::RecentTile::RecentTile(int x, int y, int z,
 }
 
 LevelRenderer::DestroyedTileManager::DestroyedTileManager() {
-    InitializeCriticalSection(&m_csDestroyedTiles);
+    // std::mutex is default-constructed
 }
 
 LevelRenderer::DestroyedTileManager::~DestroyedTileManager() {
-    DeleteCriticalSection(&m_csDestroyedTiles);
     for (unsigned int i = 0; i < m_destroyedTiles.size(); i++) {
         delete m_destroyedTiles[i];
     }
@@ -3911,7 +3889,7 @@ LevelRenderer::DestroyedTileManager::~DestroyedTileManager() {
 // be called before it actually is)
 void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
                                                            int y, int z) {
-    EnterCriticalSection(&m_csDestroyedTiles);
+    std::lock_guard<std::mutex> lock(m_csDestroyedTiles);
 
     // Store a list of AABBs that the tile to be destroyed would have made,
     // before we go and destroy it. This is made slightly more complicated as
@@ -3928,8 +3906,6 @@ void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
     }
 
     m_destroyedTiles.push_back(recentTile);
-
-    LeaveCriticalSection(&m_csDestroyedTiles);
 }
 
 // For chunk rebuilding to inform the manager that a chunk (a 16x16x16 tile
@@ -3937,7 +3913,7 @@ void LevelRenderer::DestroyedTileManager::destroyingTileAt(Level* level, int x,
 void LevelRenderer::DestroyedTileManager::updatedChunkAt(Level* level, int x,
                                                          int y, int z,
                                                          int veryNearCount) {
-    EnterCriticalSection(&m_csDestroyedTiles);
+    std::lock_guard<std::mutex> lock(m_csDestroyedTiles);
 
     // There's 2 stages to this. This function is called when a renderer chunk
     // has been rebuilt, but that chunk's render data might be grouped
@@ -3979,15 +3955,13 @@ void LevelRenderer::DestroyedTileManager::updatedChunkAt(Level* level, int x,
             }
         }
     }
-
-    LeaveCriticalSection(&m_csDestroyedTiles);
 }
 
 // For game to get any AABBs that the user should be colliding with as render
 // data has not yet been updated
 void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
                                                    AABBList* boxes) {
-    EnterCriticalSection(&m_csDestroyedTiles);
+    std::lock_guard<std::mutex> lock(m_csDestroyedTiles);
 
     for (unsigned int i = 0; i < m_destroyedTiles.size(); i++) {
         if (m_destroyedTiles[i]->level == level) {
@@ -4009,11 +3983,10 @@ void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
         }
     }
 
-    LeaveCriticalSection(&m_csDestroyedTiles);
 }
 
 void LevelRenderer::DestroyedTileManager::tick() {
-    EnterCriticalSection(&m_csDestroyedTiles);
+    std::lock_guard<std::mutex> lock(m_csDestroyedTiles);
 
     // Remove any tiles that have timed out
     for (unsigned int i = 0; i < m_destroyedTiles.size();) {
@@ -4025,8 +3998,6 @@ void LevelRenderer::DestroyedTileManager::tick() {
             i++;
         }
     }
-
-    LeaveCriticalSection(&m_csDestroyedTiles);
 }
 
 #if defined(_LARGE_WORLDS)

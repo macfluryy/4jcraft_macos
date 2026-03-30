@@ -5,6 +5,7 @@
 #include <xrnm.h>
 #include <qnet.h>
 #endif
+#include <mutex>
 #include <queue>
 #include "../IO/Streams/InputStream.h"
 #include "../IO/Streams/OutputStream.h"
@@ -107,14 +108,14 @@ private:
     int m_end;         // 0 for client side or 1 for host side
 
     // For local connections between the host player and the server
-    static CRITICAL_SECTION s_hostQueueLock[2];
+    static std::mutex s_hostQueueLock[2];
     static std::queue<std::uint8_t> s_hostQueue[2];
     static SocketOutputStreamLocal* s_hostOutStream[2];
     static SocketInputStreamLocal* s_hostInStream[2];
 
     // For network connections
     std::queue<std::uint8_t> m_queueNetwork[2];  // For input data
-    CRITICAL_SECTION m_queueLockNetwork[2];      // For input data
+    std::mutex m_queueLockNetwork[2];             // For input data
     SocketInputStreamNetwork* m_inputStream[2];
     SocketOutputStreamNetwork* m_outputStream[2];
     bool m_endClosed[2];

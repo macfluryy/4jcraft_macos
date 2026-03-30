@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 class Timer;
 class MultiPlayerLevel;
 class LevelRenderer;
@@ -347,7 +348,7 @@ public:
     // 4J Stu
     void forceStatsSave(int idx);
 
-    CRITICAL_SECTION m_setLevelCS;
+    std::mutex m_setLevelCS;
 
 private:
     // A bit field that store whether a particular quadrant is in the full

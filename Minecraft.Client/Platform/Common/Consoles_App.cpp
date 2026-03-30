@@ -178,17 +178,8 @@ CMinecraftApp::CMinecraftApp() {
 
     m_iDLCOfferC = 0;
     m_bAllDLCContentRetrieved = true;
-    InitializeCriticalSection(&csDLCDownloadQueue);
     m_bAllTMSContentRetrieved = true;
     m_bTickTMSDLCFiles = true;
-    InitializeCriticalSection(&csTMSPPDownloadQueue);
-    InitializeCriticalSection(&csAdditionalModelParts);
-    InitializeCriticalSection(&csAdditionalSkinBoxes);
-    InitializeCriticalSection(&csAnimOverrideBitmask);
-    InitializeCriticalSection(&csMemFilesLock);
-    InitializeCriticalSection(&csMemTPDLock);
-
-    InitializeCriticalSection(&m_saveNotificationCriticalSection);
     m_saveNotificationDepth = 0;
 
     m_dwRequiredTexturePackID = 0;
@@ -4579,7 +4570,7 @@ bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid) {
 void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
                                          std::uint8_t* pbData,
                                          unsigned int byteCount) {
-    EnterCriticalSection(&csMemFilesLock);
+    std::lock_guard<std::mutex> lock(csMemFilesLock);
     // check it's not already in
     PMEMDATA pData = nullptr;
     auto it = m_MEM_Files.find(wName);
@@ -4599,7 +4590,6 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
         }
 
         ++pData->ucRefCount;
-        LeaveCriticalSection(&csMemFilesLock);
         return;
     }
 
@@ -4618,12 +4608,10 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
 
     // use the xuid to access the skin data
     m_MEM_Files[wName] = pData;
-
-    LeaveCriticalSection(&csMemFilesLock);
 }
 
 void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring& wName) {
-    EnterCriticalSection(&csMemFilesLock);
+    std::lock_guard<std::mutex> lock(csMemFilesLock);
 
     auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) {
@@ -4642,17 +4630,16 @@ void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring& wName) {
             m_MEM_Files.erase(wName);
         }
     }
-    LeaveCriticalSection(&csMemFilesLock);
 }
 
 bool CMinecraftApp::DefaultCapeExists() {
     std::wstring wTex = L"Special_Cape.png";
     bool val = false;
 
-    EnterCriticalSection(&csMemFilesLock);
+    { std::lock_guard<std::mutex> lock(csMemFilesLock);
     auto it = m_MEM_Files.find(wTex);
     if (it != m_MEM_Files.end()) val = true;
-    LeaveCriticalSection(&csMemFilesLock);
+    }
 
     return val;
 }
@@ -4660,10 +4647,10 @@ bool CMinecraftApp::DefaultCapeExists() {
 bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring& wName) {
     bool val = false;
 
-    EnterCriticalSection(&csMemFilesLock);
+    { std::lock_guard<std::mutex> lock(csMemFilesLock);
     auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) val = true;
-    LeaveCriticalSection(&csMemFilesLock);
+    }
 
     return val;
 }
@@ -4671,19 +4658,18 @@ bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring& wName) {
 void CMinecraftApp::GetMemFileDetails(const std::wstring& wName,
                                       std::uint8_t** ppbData,
                                       unsigned int* pByteCount) {
-    EnterCriticalSection(&csMemFilesLock);
+    std::lock_guard<std::mutex> lock(csMemFilesLock);
     auto it = m_MEM_Files.find(wName);
     if (it != m_MEM_Files.end()) {
         PMEMDATA pData = (*it).second;
         *ppbData = pData->pbData;
         *pByteCount = pData->byteCount;
     }
-    LeaveCriticalSection(&csMemFilesLock);
 }
 
 void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
                                      unsigned int byteCount) {
-    EnterCriticalSection(&csMemTPDLock);
+    std::lock_guard<std::mutex> lock(csMemTPDLock);
     // check it's not already in
     PMEMDATA pData = nullptr;
     auto it = m_MEM_TPD.find(iConfig);
@@ -4695,12 +4681,10 @@ void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
 
         m_MEM_TPD[iConfig] = pData;
     }
-
-    LeaveCriticalSection(&csMemTPDLock);
 }
 
 void CMinecraftApp::RemoveMemoryTPDFile(int iConfig) {
-    EnterCriticalSection(&csMemTPDLock);
+    std::lock_guard<std::mutex> lock(csMemTPDLock);
     // check it's not already in
     PMEMDATA pData = nullptr;
     auto it = m_MEM_TPD.find(iConfig);
@@ -4709,8 +4693,6 @@ void CMinecraftApp::RemoveMemoryTPDFile(int iConfig) {
         delete pData;
         m_MEM_TPD.erase(iConfig);
     }
-
-    LeaveCriticalSection(&csMemTPDLock);
 }
 
 #if defined(_WINDOWS64)
@@ -4719,24 +4701,23 @@ int CMinecraftApp::GetTPConfigVal(wchar_t* pwchDataFile) { return -1; }
 bool CMinecraftApp::IsFileInTPD(int iConfig) {
     bool val = false;
 
-    EnterCriticalSection(&csMemTPDLock);
+    { std::lock_guard<std::mutex> lock(csMemTPDLock);
     auto it = m_MEM_TPD.find(iConfig);
     if (it != m_MEM_TPD.end()) val = true;
-    LeaveCriticalSection(&csMemTPDLock);
+    }
 
     return val;
 }
 
 void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
                            unsigned int* pByteCount) {
-    EnterCriticalSection(&csMemTPDLock);
+    std::lock_guard<std::mutex> lock(csMemTPDLock);
     auto it = m_MEM_TPD.find(iConfig);
     if (it != m_MEM_TPD.end()) {
         PMEMDATA pData = (*it).second;
         *ppbData = pData->pbData;
         *pByteCount = pData->byteCount;
     }
-    LeaveCriticalSection(&csMemTPDLock);
 }
 
 // bool CMinecraftApp::UploadFileToGlobalStorage(int iQuadrant,
@@ -5691,7 +5672,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
 }
 
 void CMinecraftApp::EnterSaveNotificationSection() {
-    EnterCriticalSection(&m_saveNotificationCriticalSection);
+    std::lock_guard<std::mutex> lock(m_saveNotificationCriticalSection);
     if (m_saveNotificationDepth++ == 0) {
         if (g_NetworkManager
                 .IsInSession())  // this can be triggered from the front end if
@@ -5707,11 +5688,10 @@ void CMinecraftApp::EnterSaveNotificationSection() {
             }
         }
     }
-    LeaveCriticalSection(&m_saveNotificationCriticalSection);
 }
 
 void CMinecraftApp::LeaveSaveNotificationSection() {
-    EnterCriticalSection(&m_saveNotificationCriticalSection);
+    std::lock_guard<std::mutex> lock(m_saveNotificationCriticalSection);
     if (--m_saveNotificationDepth == 0) {
         if (g_NetworkManager
                 .IsInSession())  // this can be triggered from the front end if
@@ -5727,7 +5707,6 @@ void CMinecraftApp::LeaveSaveNotificationSection() {
             }
         }
     }
-    LeaveCriticalSection(&m_saveNotificationCriticalSection);
 }
 
 int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
@@ -6662,7 +6641,7 @@ std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] = {
 unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
                                           bool bPromote) {
     // lock access
-    EnterCriticalSection(&csDLCDownloadQueue);
+    { std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
 
     // If it's already in there, promote it to the top of the list
     int iPosition = 0;
@@ -6675,7 +6654,6 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
             if (pCurrent->eState == e_DLC_ContentState_Retrieving ||
                 pCurrent->eState == e_DLC_ContentState_Retrieved) {
                 // already retrieved this
-                LeaveCriticalSection(&csDLCDownloadQueue);
                 return 0;
             } else {
                 // promote
@@ -6685,7 +6663,6 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
                     m_DLCDownloadQueue.insert(m_DLCDownloadQueue.begin(),
                                               pCurrent);
                 }
-                LeaveCriticalSection(&csDLCDownloadQueue);
                 return 0;
             }
         }
@@ -6699,7 +6676,7 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
     m_DLCDownloadQueue.push_back(pDLCreq);
 
     m_bAllDLCContentRetrieved = false;
-    LeaveCriticalSection(&csDLCDownloadQueue);
+    }
 
     app.DebugPrintf("[Consoles_App] Added DLC request.\n");
     return 1;
@@ -6708,7 +6685,7 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
 unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                                                     bool bPromote) {
     // lock access
-    EnterCriticalSection(&csTMSPPDownloadQueue);
+    std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
 
     // If it's already in there, promote it to the top of the list
     int iPosition = 0;
@@ -6742,7 +6719,6 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
     if(bPromoted)
     {
     // re-ordered the list, so leave now
-    LeaveCriticalSection(&csTMSPPDownloadQueue);
     return 0;
     }
     */
@@ -6889,22 +6865,19 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
         }
     }
 
-    LeaveCriticalSection(&csTMSPPDownloadQueue);
     return 1;
 }
 
 bool CMinecraftApp::CheckTMSDLCCanStop() {
-    EnterCriticalSection(&csTMSPPDownloadQueue);
+    std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
     for (auto it = m_TMSPPDownloadQueue.begin();
          it != m_TMSPPDownloadQueue.end(); ++it) {
         TMSPPRequest* pCurrent = *it;
 
         if (pCurrent->eState == e_TMS_ContentState_Retrieving) {
-            LeaveCriticalSection(&csTMSPPDownloadQueue);
             return false;
         }
     }
-    LeaveCriticalSection(&csTMSPPDownloadQueue);
 
     return true;
 }
@@ -6920,13 +6893,12 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
                       // online.
     }
 
-    EnterCriticalSection(&csDLCDownloadQueue);
+    { std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
     for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
         if (pCurrent->eState == e_DLC_ContentState_Retrieving) {
-            LeaveCriticalSection(&csDLCDownloadQueue);
             return true;
         }
     }
@@ -6952,11 +6924,10 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
                 app.DebugPrintf("RetrieveNextDLCContent - PROBLEM\n");
                 pCurrent->eState = e_DLC_ContentState_Retrieved;
             }
-            LeaveCriticalSection(&csDLCDownloadQueue);
             return true;
         }
     }
-    LeaveCriticalSection(&csDLCDownloadQueue);
+    }
 
     app.DebugPrintf("[Consoles_App] Finished downloading dlc content.\n");
     return false;
@@ -6969,7 +6940,7 @@ int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
     // find the right one in the vector
-    EnterCriticalSection(&pClass->csTMSPPDownloadQueue);
+    { std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
     for (auto it = pClass->m_TMSPPDownloadQueue.begin();
          it != pClass->m_TMSPPDownloadQueue.end(); ++it) {
         TMSPPRequest* pCurrent = *it;
@@ -7008,7 +6979,7 @@ int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
             break;
         }
     }
-    LeaveCriticalSection(&pClass->csTMSPPDownloadQueue);
+    }
 
     return 0;
 }
@@ -7029,7 +7000,7 @@ void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
     app.DebugPrintf("[Consoles_App] Clear and reset download queue.\n");
 
     int iPosition = 0;
-    EnterCriticalSection(&csTMSPPDownloadQueue);
+    { std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
     for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
@@ -7039,7 +7010,7 @@ void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
     }
     m_DLCDownloadQueue.clear();
     m_bAllDLCContentRetrieved = true;
-    LeaveCriticalSection(&csTMSPPDownloadQueue);
+    }
 }
 
 void CMinecraftApp::TickTMSPPFilesRetrieved() {
@@ -7051,7 +7022,7 @@ void CMinecraftApp::TickTMSPPFilesRetrieved() {
 }
 void CMinecraftApp::ClearTMSPPFilesRetrieved() {
     int iPosition = 0;
-    EnterCriticalSection(&csTMSPPDownloadQueue);
+    { std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
     for (auto it = m_TMSPPDownloadQueue.begin();
          it != m_TMSPPDownloadQueue.end(); ++it) {
         TMSPPRequest* pCurrent = *it;
@@ -7061,7 +7032,7 @@ void CMinecraftApp::ClearTMSPPFilesRetrieved() {
     }
     m_TMSPPDownloadQueue.clear();
     m_bAllTMSContentRetrieved = true;
-    LeaveCriticalSection(&csTMSPPDownloadQueue);
+    }
 }
 
 int CMinecraftApp::DLCOffersReturned(void* pParam, int iOfferC,
@@ -7069,7 +7040,7 @@ int CMinecraftApp::DLCOffersReturned(void* pParam, int iOfferC,
     CMinecraftApp* pClass = (CMinecraftApp*)pParam;
 
     // find the right one in the vector
-    EnterCriticalSection(&pClass->csTMSPPDownloadQueue);
+    { std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
     for (auto it = pClass->m_DLCDownloadQueue.begin();
          it != pClass->m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
@@ -7086,7 +7057,7 @@ int CMinecraftApp::DLCOffersReturned(void* pParam, int iOfferC,
             break;
         }
     }
-    LeaveCriticalSection(&pClass->csTMSPPDownloadQueue);
+    }
     return 0;
 }
 
@@ -7101,18 +7072,16 @@ eDLCContentType CMinecraftApp::Find_eDLCContentType(std::uint32_t dwType) {
 bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType) {
     // If there's already a retrieve in progress, quit
     // we may have re-ordered the list, so need to check every item
-    EnterCriticalSection(&csDLCDownloadQueue);
+    std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
     for (auto it = m_DLCDownloadQueue.begin();
          it != m_DLCDownloadQueue.end(); ++it) {
         DLCRequest* pCurrent = *it;
 
         if ((pCurrent->dwType == m_dwContentTypeA[eType]) &&
             (pCurrent->eState == e_DLC_ContentState_Retrieved)) {
-            LeaveCriticalSection(&csDLCDownloadQueue);
             return true;
         }
     }
-    LeaveCriticalSection(&csDLCDownloadQueue);
     return false;
 }
 
@@ -7125,8 +7094,8 @@ void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
     std::vector<ModelPart*>* pvModelPart = new std::vector<ModelPart*>;
     std::vector<SKIN_BOX*>* pvSkinBoxes = new std::vector<SKIN_BOX*>;
 
-    EnterCriticalSection(&csAdditionalModelParts);
-    EnterCriticalSection(&csAdditionalSkinBoxes);
+    { std::lock_guard<std::mutex> lock_mp(csAdditionalModelParts);
+    std::lock_guard<std::mutex> lock_sb(csAdditionalSkinBoxes);
 
     app.DebugPrintf(
         "*** SetAdditionalSkinBoxes - Inserting model parts for skin %d from "
@@ -7148,9 +7117,7 @@ void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
     m_AdditionalSkinBoxes.insert(
         std::pair<std::uint32_t, std::vector<SKIN_BOX*>*>(dwSkinID,
                                                           pvSkinBoxes));
-
-    LeaveCriticalSection(&csAdditionalSkinBoxes);
-    LeaveCriticalSection(&csAdditionalModelParts);
+    }
 }
 
 std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
@@ -7160,8 +7127,8 @@ std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
     Model* pModel = renderer->getModel();
     std::vector<ModelPart*>* pvModelPart = new std::vector<ModelPart*>;
 
-    EnterCriticalSection(&csAdditionalModelParts);
-    EnterCriticalSection(&csAdditionalSkinBoxes);
+    { std::lock_guard<std::mutex> lock_mp(csAdditionalModelParts);
+    std::lock_guard<std::mutex> lock_sb(csAdditionalSkinBoxes);
     app.DebugPrintf(
         "*** SetAdditionalSkinBoxes - Inserting model parts for skin %d from "
         "array of Skin Boxes\n",
@@ -7181,15 +7148,13 @@ std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
     m_AdditionalSkinBoxes.insert(
         std::pair<std::uint32_t, std::vector<SKIN_BOX*>*>(dwSkinID,
                                                           pvSkinBoxA));
-
-    LeaveCriticalSection(&csAdditionalSkinBoxes);
-    LeaveCriticalSection(&csAdditionalModelParts);
+    }
     return pvModelPart;
 }
 
 std::vector<ModelPart*>* CMinecraftApp::GetAdditionalModelParts(
     std::uint32_t dwSkinID) {
-    EnterCriticalSection(&csAdditionalModelParts);
+    std::lock_guard<std::mutex> lock(csAdditionalModelParts);
     std::vector<ModelPart*>* pvModelParts = nullptr;
     if (m_AdditionalModelParts.size() > 0) {
         auto it = m_AdditionalModelParts.find(dwSkinID);
@@ -7198,13 +7163,12 @@ std::vector<ModelPart*>* CMinecraftApp::GetAdditionalModelParts(
         }
     }
 
-    LeaveCriticalSection(&csAdditionalModelParts);
     return pvModelParts;
 }
 
 std::vector<SKIN_BOX*>* CMinecraftApp::GetAdditionalSkinBoxes(
     std::uint32_t dwSkinID) {
-    EnterCriticalSection(&csAdditionalSkinBoxes);
+    std::lock_guard<std::mutex> lock(csAdditionalSkinBoxes);
     std::vector<SKIN_BOX*>* pvSkinBoxes = nullptr;
     if (m_AdditionalSkinBoxes.size() > 0) {
         auto it = m_AdditionalSkinBoxes.find(dwSkinID);
@@ -7213,12 +7177,11 @@ std::vector<SKIN_BOX*>* CMinecraftApp::GetAdditionalSkinBoxes(
         }
     }
 
-    LeaveCriticalSection(&csAdditionalSkinBoxes);
     return pvSkinBoxes;
 }
 
 unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
-    EnterCriticalSection(&csAnimOverrideBitmask);
+    std::lock_guard<std::mutex> lock(csAnimOverrideBitmask);
     unsigned int uiAnimOverrideBitmask = 0L;
 
     if (m_AnimOverrides.size() > 0) {
@@ -7228,25 +7191,22 @@ unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
         }
     }
 
-    LeaveCriticalSection(&csAnimOverrideBitmask);
     return uiAnimOverrideBitmask;
 }
 
 void CMinecraftApp::SetAnimOverrideBitmask(std::uint32_t dwSkinID,
                                            unsigned int uiAnimOverrideBitmask) {
     // Make thread safe
-    EnterCriticalSection(&csAnimOverrideBitmask);
+    std::lock_guard<std::mutex> lock(csAnimOverrideBitmask);
 
     if (m_AnimOverrides.size() > 0) {
         auto it = m_AnimOverrides.find(dwSkinID);
         if (it != m_AnimOverrides.end()) {
-            LeaveCriticalSection(&csAnimOverrideBitmask);
             return;  // already in here
         }
     }
     m_AnimOverrides.insert(std::pair<std::uint32_t, unsigned int>(
         dwSkinID, uiAnimOverrideBitmask));
-    LeaveCriticalSection(&csAnimOverrideBitmask);
 }
 
 std::uint32_t CMinecraftApp::getSkinIdFromPath(const std::wstring& skin) {

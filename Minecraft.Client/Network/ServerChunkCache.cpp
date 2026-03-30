@@ -39,7 +39,6 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
     memset(m_unloadedCache, 0, XZSIZE * XZSIZE * sizeof(LevelChunk*));
 #endif
 
-    InitializeCriticalSectionAndSpinCount(&m_csLoadCreate, 4000);
 }
 
 // 4J-PB added
@@ -58,7 +57,6 @@ ServerChunkCache::~ServerChunkCache() {
 
     auto itEnd = m_loadedChunkList.end();
     for (auto it = m_loadedChunkList.begin(); it != itEnd; it++) delete *it;
-    DeleteCriticalSection(&m_csLoadCreate);
 }
 
 bool ServerChunkCache::hasChunk(int x, int z) {
@@ -146,7 +144,7 @@ LevelChunk* ServerChunkCache::create(
     LevelChunk* lastChunk = chunk;
 
     if ((chunk == nullptr) || (chunk->x != x) || (chunk->z != z)) {
-        EnterCriticalSection(&m_csLoadCreate);
+        { std::lock_guard<std::mutex> lock(m_csLoadCreate);
         chunk = load(x, z);
         if (chunk == nullptr) {
             if (source == nullptr) {
@@ -158,8 +156,7 @@ LevelChunk* ServerChunkCache::create(
         if (chunk != nullptr) {
             chunk->load();
         }
-
-        LeaveCriticalSection(&m_csLoadCreate);
+        }
 
 #if defined(_WIN64) || defined(__LP64__)
         if (InterlockedCompareExchangeRelease64(
@@ -172,7 +169,7 @@ LevelChunk* ServerChunkCache::create(
 #endif
         {
             // Successfully updated the cache
-            EnterCriticalSection(&m_csLoadCreate);
+            std::lock_guard<std::mutex> lock(m_csLoadCreate);
             // 4J - added - this will run a recalcHeightmap if source is a
             // randomlevelsource, which has been split out from source::getChunk
             // so that we are doing it after the chunk has been added to the
@@ -269,7 +266,6 @@ LevelChunk* ServerChunkCache::create(
                 hasChunk(x, z - 1) && hasChunk(x, z + 1))
                 chunk->checkChests(this, x, z);
 
-            LeaveCriticalSection(&m_csLoadCreate);
         } else {
             // Something else must have updated the cache. Return that chunk and
             // discard this one
@@ -653,12 +649,12 @@ bool ServerChunkCache::saveAllEntities() {
     PIXBeginNamedEvent(0, "Save all entities");
 
     PIXBeginNamedEvent(0, "saving to NBT");
-    EnterCriticalSection(&m_csLoadCreate);
+    { std::lock_guard<std::mutex> lock(m_csLoadCreate);
     for (auto it = m_loadedChunkList.begin(); it != m_loadedChunkList.end();
          ++it) {
         storage->saveEntities(level, *it);
     }
-    LeaveCriticalSection(&m_csLoadCreate);
+    }
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Flushing");
@@ -670,7 +666,7 @@ bool ServerChunkCache::saveAllEntities() {
 }
 
 bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
-    EnterCriticalSection(&m_csLoadCreate);
+    std::lock_guard<std::mutex> lock(m_csLoadCreate);
     int saves = 0;
 
     // 4J - added this to support progressListner
@@ -701,7 +697,6 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
                 save(chunk);
                 chunk->setUnsaved(false);
                 if (++saves == MAX_SAVES && !force) {
-                    LeaveCriticalSection(&m_csLoadCreate);
                     return false;
                 }
 
@@ -751,7 +746,6 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
                 save(chunk);
                 chunk->setUnsaved(false);
                 if (++saves == MAX_SAVES && !force) {
-                    LeaveCriticalSection(&m_csLoadCreate);
                     return false;
                 }
 
@@ -776,13 +770,11 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
 
     if (force) {
         if (storage == nullptr) {
-            LeaveCriticalSection(&m_csLoadCreate);
             return true;
         }
         storage->flush();
     }
 
-    LeaveCriticalSection(&m_csLoadCreate);
     return !maxSavesReached;
 }
 

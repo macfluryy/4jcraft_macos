@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 
 #include "FileHeader.h"
 #include "ConsoleSavePath.h"
@@ -23,7 +24,7 @@ private:
 #endif
     void* pvSaveMem;
 
-    CRITICAL_SECTION m_lock;
+    std::mutex m_lock;
 
     void PrepareForWrite(FileEntry* file, unsigned int nNumberOfBytesToWrite);
     void MoveDataBeyond(FileEntry* file, unsigned int nNumberOfBytesToWrite);

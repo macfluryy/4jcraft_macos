@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 class PendingConnection;
 class PlayerConnection;
 class MinecraftServer;
@@ -18,7 +19,7 @@ private:
     int connectionCounter;
 
 private:
-    CRITICAL_SECTION pending_cs;  // 4J added
+    std::mutex pending_cs;  // 4J added
     std::vector<std::shared_ptr<PendingConnection> > pending;
     std::vector<std::shared_ptr<PlayerConnection> > players;
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 #include "ChunkStorage.h"
 #include "../LevelChunk.h"
 #include "RegionFileCache.h"
@@ -12,7 +14,7 @@ class McRegionChunkStorage : public ChunkStorage {
 private:
     const std::wstring m_prefix;
     ConsoleSaveFile* m_saveFile;
-    static CRITICAL_SECTION cs_memory;
+    static std::mutex cs_memory;
 
     std::unordered_map<int64_t, byteArray> m_entityData;
 

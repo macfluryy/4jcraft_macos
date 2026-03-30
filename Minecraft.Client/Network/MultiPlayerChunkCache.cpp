@@ -89,7 +89,6 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
 
     this->cache = new LevelChunk*[XZSIZE * XZSIZE];
     memset(this->cache, 0, XZSIZE * XZSIZE * sizeof(LevelChunk*));
-    InitializeCriticalSectionAndSpinCount(&m_csLoadCreate, 4000);
 }
 
 MultiPlayerChunkCache::~MultiPlayerChunkCache() {
@@ -100,8 +99,6 @@ MultiPlayerChunkCache::~MultiPlayerChunkCache() {
 
     auto itEnd = loadedChunkList.end();
     for (auto it = loadedChunkList.begin(); it != itEnd; it++) delete *it;
-
-    DeleteCriticalSection(&m_csLoadCreate);
 }
 
 bool MultiPlayerChunkCache::hasChunk(int x, int z) {
@@ -158,7 +155,7 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
     LevelChunk* lastChunk = chunk;
 
     if (chunk == nullptr) {
-        EnterCriticalSection(&m_csLoadCreate);
+        { std::unique_lock<std::mutex> lock(m_csLoadCreate);
 
         // LevelChunk *chunk;
         if (g_NetworkManager.IsHost())  // force here to disable sharing of data
@@ -199,8 +196,7 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
         }
 
         chunk->loaded = true;
-
-        LeaveCriticalSection(&m_csLoadCreate);
+        }
 
 #if (defined _WIN64 || defined __LP64__)
         if (InterlockedCompareExchangeRelease64(
@@ -220,9 +216,9 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
             }
 
             // Successfully updated the cache
-            EnterCriticalSection(&m_csLoadCreate);
+            { std::lock_guard<std::mutex> lock(m_csLoadCreate);
             loadedChunkList.push_back(chunk);
-            LeaveCriticalSection(&m_csLoadCreate);
+            }
         } else {
             // Something else must have updated the cache. Return that chunk and
             // discard this one. This really shouldn't be happening in
@@ -281,9 +277,10 @@ void MultiPlayerChunkCache::recreateLogicStructuresForChunk(int chunkX,
                                                             int chunkZ) {}
 
 std::wstring MultiPlayerChunkCache::gatherStats() {
-    EnterCriticalSection(&m_csLoadCreate);
-    int size = (int)loadedChunkList.size();
-    LeaveCriticalSection(&m_csLoadCreate);
+    int size;
+    { std::lock_guard<std::mutex> lock(m_csLoadCreate);
+    size = (int)loadedChunkList.size();
+    }
     return L"MultiplayerChunkCache: " + _toString<int>(size);
 }
 

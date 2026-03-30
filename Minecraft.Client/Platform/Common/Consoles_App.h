@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <mutex>
 
 // using namespace std;
 
@@ -462,8 +463,8 @@ private:
     std::unordered_map<std::wstring, PMEMDATA> m_MEM_Files;
     // for storing texture pack data files
     std::unordered_map<int, PMEMDATA> m_MEM_TPD;
-    CRITICAL_SECTION csMemFilesLock;  // For locking access to the above map
-    CRITICAL_SECTION csMemTPDLock;    // For locking access to the above map
+    std::mutex csMemFilesLock;  // For locking access to the above map
+    std::mutex csMemTPDLock;    // For locking access to the above map
 
     VNOTIFICATIONS m_vNotifications;
 
@@ -885,7 +886,7 @@ public:
     void LeaveSaveNotificationSection();
 
 private:
-    CRITICAL_SECTION m_saveNotificationCriticalSection;
+    std::mutex m_saveNotificationCriticalSection;
     int m_saveNotificationDepth;
     // Download Status
 
@@ -897,11 +898,11 @@ private:
     bool m_bAllDLCContentRetrieved;
     bool m_bAllTMSContentRetrieved;
     bool m_bTickTMSDLCFiles;
-    CRITICAL_SECTION csDLCDownloadQueue;
-    CRITICAL_SECTION csTMSPPDownloadQueue;
-    CRITICAL_SECTION csAdditionalModelParts;
-    CRITICAL_SECTION csAdditionalSkinBoxes;
-    CRITICAL_SECTION csAnimOverrideBitmask;
+    std::mutex csDLCDownloadQueue;
+    std::mutex csTMSPPDownloadQueue;
+    std::mutex csAdditionalModelParts;
+    std::mutex csAdditionalSkinBoxes;
+    std::mutex csAnimOverrideBitmask;
     bool m_bCorruptSaveDeleted;
 
     std::uint32_t m_dwAdditionalModelParts[XUSER_MAX_COUNT];

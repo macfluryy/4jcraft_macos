@@ -41,7 +41,7 @@ Compression* Compression::getCompression() {
 
 int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
                                     void* pSource, unsigned int SrcSize) {
-    EnterCriticalSection(&rleCompressLock);
+    std::lock_guard<std::mutex> lock(rleCompressLock);
     // static unsigned char rleBuf[1024*100];
 
     unsigned char* pucIn = (unsigned char*)pSource;
@@ -83,7 +83,6 @@ int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
     PIXBeginNamedEvent(0, "Secondary compression");
     Compress(pDestination, pDestSize, rleCompressBuf, rleSize);
     PIXEndNamedEvent();
-    LeaveCriticalSection(&rleCompressLock);
     //	printf("Compressed from %d to %d to %d\n",SrcSize,rleSize,*pDestSize);
 
     return S_OK;
@@ -91,7 +90,8 @@ int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
 
 int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
                                  void* pSource, unsigned int SrcSize) {
-    EnterCriticalSection(&rleCompressLock);
+    unsigned int rleSize;
+    { std::lock_guard<std::mutex> lock(rleCompressLock);
     // static unsigned char rleBuf[1024*100];
 
     unsigned char* pucIn = (unsigned char*)pSource;
@@ -127,9 +127,9 @@ int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
             *pucOut++ = thisOne;
         }
     } while (pucIn != pucEnd);
-    unsigned int rleSize = (unsigned int)(pucOut - rleCompressBuf);
+    rleSize = (unsigned int)(pucOut - rleCompressBuf);
     PIXEndNamedEvent();
-    LeaveCriticalSection(&rleCompressLock);
+    }
 
     // Return
     if (rleSize <= *pDestSize) {
@@ -147,7 +147,7 @@ int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
 int32_t Compression::DecompressLZXRLE(void* pDestination,
                                       unsigned int* pDestSize, void* pSource,
                                       unsigned int SrcSize) {
-    EnterCriticalSection(&rleDecompressLock);
+    std::lock_guard<std::mutex> lock(rleDecompressLock);
     // 4J Stu - Fix for #13676 - Crash: Crash while attempting to load a world
     // after updating TU Some saves can have chunks that decompress into very
     // large sizes, so I have doubled the size of this buffer Ideally we should
@@ -203,13 +203,12 @@ int32_t Compression::DecompressLZXRLE(void* pDestination,
 
     if (dynamicRleBuf != nullptr) delete[] dynamicRleBuf;
 
-    LeaveCriticalSection(&rleDecompressLock);
     return S_OK;
 }
 
 int32_t Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
                                    void* pSource, unsigned int SrcSize) {
-    EnterCriticalSection(&rleDecompressLock);
+    std::lock_guard<std::mutex> lock(rleDecompressLock);
 
     // unsigned char *pucIn = (unsigned char *)rleDecompressBuf;
     unsigned char* pucIn = (unsigned char*)pSource;
@@ -238,7 +237,6 @@ int32_t Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
     }
     *pDestSize = (unsigned int)(pucOut - (unsigned char*)pDestination);
 
-    LeaveCriticalSection(&rleDecompressLock);
     return S_OK;
 }
 
@@ -439,17 +437,12 @@ Compression::Compression() {
 
     m_localDecompressType = eCompressionType_ZLIBRLE;
     m_decompressType = m_localDecompressType;
-
-    InitializeCriticalSection(&rleCompressLock);
-    InitializeCriticalSection(&rleDecompressLock);
 }
 
 Compression::~Compression() {
 
     XMemDestroyCompressionContext(compressionContext);
     XMemDestroyDecompressionContext(decompressionContext);
-    DeleteCriticalSection(&rleCompressLock);
-    DeleteCriticalSection(&rleDecompressLock);
 }
 
 void Compression::SetDecompressionType(ESavePlatform platform) {

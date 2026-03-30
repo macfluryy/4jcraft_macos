@@ -121,8 +121,6 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
     rightClickDelay = 0;
 
     // 4J Stu Added
-    InitializeCriticalSection(&ProgressRenderer::s_progress);
-    InitializeCriticalSection(&m_setLevelCS);
     // m_hPlayerRespawned = CreateEvent(nullptr, false, false, nullptr);
 
     progressRenderer = nullptr;
@@ -987,7 +985,7 @@ void Minecraft::run_middle() {
     }
 #endif
 
-    EnterCriticalSection(&m_setLevelCS);
+    { std::lock_guard<std::mutex> lock(m_setLevelCS);
 
     if (running) {
         if (reloadTextures) {
@@ -1734,7 +1732,7 @@ void Minecraft::run_middle() {
         }
         */
     }
-    LeaveCriticalSection(&m_setLevelCS);
+    } // lock_guard scope
 }
 
 void Minecraft::run_end() { destroy(); }
@@ -3670,7 +3668,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
                          std::shared_ptr<Player> forceInsertPlayer /*=nullptr*/,
                          bool doForceStatsSave /*=true*/,
                          bool bPrimaryPlayerSignedOut /*=false*/) {
-    EnterCriticalSection(&m_setLevelCS);
+    std::lock_guard<std::mutex> lock(m_setLevelCS);
     bool playerAdded = false;
     this->cameraTargetPlayer = nullptr;
 
@@ -3842,7 +3840,6 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     //    System.gc();	// 4J - removed
     // 4J removed
     // this->lastTickTime = 0;
-    LeaveCriticalSection(&m_setLevelCS);
 }
 
 void Minecraft::prepareLevel(int title) {

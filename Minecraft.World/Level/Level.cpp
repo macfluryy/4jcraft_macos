@@ -27,6 +27,7 @@
 #include "../Util/WeighedRandom.h"
 
 #include "../IO/Files/ConsoleSaveFile.h"
+#include <mutex>
 #include <xuiapp.h>
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Rendering/LevelRenderer.h"
@@ -539,17 +540,12 @@ void Level::_init() {
 
     isClientSide = false;
 
-    InitializeCriticalSection(&m_entitiesCS);
-    InitializeCriticalSection(&m_tileEntityListCS);
-
     updatingTileEntities = false;
 
     villageSiege = new VillageSiege(this);
     scoreboard = new Scoreboard();
 
     toCheckLevel = new int[32 * 32 * 32];  // 4J - brought forward from 1.8.2
-    InitializeCriticalSectionAndSpinCount(
-        &m_checkLightCS, 5120);  // 4J - added for 1.8.2 lighting
 
     // 4J Added
     m_bDisableAddNewTileEntities = false;
@@ -699,15 +695,10 @@ Level::~Level() {
         NotGateTile::removeLevelReferences(this);  // 4J added
     }
 
-    DeleteCriticalSection(&m_checkLightCS);
-
     // 4J-PB - savedDataStorage is shared between overworld and nether levels in
     // the server, so it will already have been deleted on the first level
     // delete
     if (savedDataStorage != nullptr) delete savedDataStorage;
-
-    DeleteCriticalSection(&m_entitiesCS);
-    DeleteCriticalSection(&m_tileEntityListCS);
 
     // 4J Stu - At least one of the listeners is something we cannot delete, the
     // LevelRenderer
@@ -1622,11 +1613,11 @@ bool Level::addEntity(std::shared_ptr<Entity> e) {
         MemSect(42);
         getChunk(xc, zc)->addEntity(e);
         MemSect(0);
-        EnterCriticalSection(&m_entitiesCS);
+        { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
         MemSect(43);
         entities.push_back(e);
         MemSect(0);
-        LeaveCriticalSection(&m_entitiesCS);
+        }
         MemSect(44);
         entityAdded(e);
         MemSect(0);
@@ -1707,7 +1698,7 @@ void Level::removeEntityImmediately(std::shared_ptr<Entity> e) {
         getChunk(xc, zc)->removeEntity(e);
     }
 
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     std::vector<std::shared_ptr<Entity> >::iterator it = entities.begin();
     std::vector<std::shared_ptr<Entity> >::iterator endIt = entities.end();
     while (it != endIt && *it != e) it++;
@@ -1715,7 +1706,7 @@ void Level::removeEntityImmediately(std::shared_ptr<Entity> e) {
     if (it != endIt) {
         entities.erase(it);
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
     entityRemoved(e);
 }
 
@@ -2084,7 +2075,7 @@ void Level::tickEntities() {
         }
     }
 
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
 
     for (auto it = entities.begin(); it != entities.end();) {
         bool found = false;
@@ -2101,7 +2092,7 @@ void Level::tickEntities() {
             it++;
         }
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
 
     auto itETREnd = entitiesToRemove.end();
     for (auto it = entitiesToRemove.begin(); it != itETREnd; it++) {
@@ -2125,7 +2116,7 @@ void Level::tickEntities() {
     /* 4J Jev, using an iterator causes problems here as
      * the vector is modified from inside this loop.
      */
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
 
     for (unsigned int i = 0; i < entities.size();) {
         std::shared_ptr<Entity> e = entities.at(i);
@@ -2171,9 +2162,9 @@ void Level::tickEntities() {
             i++;
         }
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
 
-    EnterCriticalSection(&m_tileEntityListCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
 
     updatingTileEntities = true;
     for (auto it = tileEntityList.begin(); it != tileEntityList.end();) {
@@ -2243,12 +2234,12 @@ void Level::tickEntities() {
         }
         pendingTileEntities.clear();
     }
-    LeaveCriticalSection(&m_tileEntityListCS);
+    }
 }
 
 void Level::addAllPendingTileEntities(
     std::vector<std::shared_ptr<TileEntity> >& entities) {
-    EnterCriticalSection(&m_tileEntityListCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
     if (updatingTileEntities) {
         for (auto it = entities.begin(); it != entities.end(); it++) {
             pendingTileEntities.push_back(*it);
@@ -2258,7 +2249,7 @@ void Level::addAllPendingTileEntities(
             tileEntityList.push_back(*it);
         }
     }
-    LeaveCriticalSection(&m_tileEntityListCS);
+    }
 }
 
 void Level::tick(std::shared_ptr<Entity> e) { tick(e, true); }
@@ -2598,9 +2589,9 @@ return shared_ptr<Entity>();
 
 std::wstring Level::gatherStats() {
     wchar_t buf[64];
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     swprintf(buf, 64, L"All:%d", entities.size());
-    LeaveCriticalSection(&m_entitiesCS);
+    }
     return std::wstring(buf);
 }
 
@@ -2615,7 +2606,7 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
     std::shared_ptr<TileEntity> tileEntity = nullptr;
 
     if (updatingTileEntities) {
-        EnterCriticalSection(&m_tileEntityListCS);
+        { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
         for (int i = 0; i < pendingTileEntities.size(); i++) {
             std::shared_ptr<TileEntity> e = pendingTileEntities.at(i);
             if (!e->isRemoved() && e->x == x && e->y == y && e->z == z) {
@@ -2623,7 +2614,7 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
                 break;
             }
         }
-        LeaveCriticalSection(&m_tileEntityListCS);
+        }
     }
 
     if (tileEntity == nullptr) {
@@ -2634,7 +2625,7 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
     }
 
     if (tileEntity == nullptr) {
-        EnterCriticalSection(&m_tileEntityListCS);
+        { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
         for (auto it = pendingTileEntities.begin();
              it != pendingTileEntities.end(); it++) {
             std::shared_ptr<TileEntity> e = *it;
@@ -2644,7 +2635,7 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
                 break;
             }
         }
-        LeaveCriticalSection(&m_tileEntityListCS);
+        }
     }
     return tileEntity;
 }
@@ -2652,7 +2643,7 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
 void Level::setTileEntity(int x, int y, int z,
                           std::shared_ptr<TileEntity> tileEntity) {
     if (tileEntity != nullptr && !tileEntity->isRemoved()) {
-        EnterCriticalSection(&m_tileEntityListCS);
+        { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
         if (updatingTileEntities) {
             tileEntity->x = x;
             tileEntity->y = y;
@@ -2677,12 +2668,12 @@ void Level::setTileEntity(int x, int y, int z,
             LevelChunk* lc = getChunk(x >> 4, z >> 4);
             if (lc != nullptr) lc->setTileEntity(x & 15, y, z & 15, tileEntity);
         }
-        LeaveCriticalSection(&m_tileEntityListCS);
+        }
     }
 }
 
 void Level::removeTileEntity(int x, int y, int z) {
-    EnterCriticalSection(&m_tileEntityListCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
     std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
     if (te != nullptr && updatingTileEntities) {
         te->setRemoved();
@@ -2707,13 +2698,13 @@ void Level::removeTileEntity(int x, int y, int z) {
         LevelChunk* lc = getChunk(x >> 4, z >> 4);
         if (lc != nullptr) lc->removeTileEntity(x & 15, y, z & 15);
     }
-    LeaveCriticalSection(&m_tileEntityListCS);
+    }
 }
 
 void Level::markForRemoval(std::shared_ptr<TileEntity> entity) {
-    EnterCriticalSection(&m_tileEntityListCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_tileEntityListCS);
     tileEntitiesToUnload.insert(entity);
-    LeaveCriticalSection(&m_tileEntityListCS);
+    }
 }
 
 bool Level::isSolidRenderTile(int x, int y, int z) {
@@ -3110,7 +3101,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
     }
 
 
-    EnterCriticalSection(&m_checkLightCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_checkLightCS);
 
     initCachePartial(cache, xc, yc, zc);
 
@@ -3133,7 +3124,6 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
     int minXZ = -(dimension->getXZSize() * 16) / 2;
     int maxXZ = (dimension->getXZSize() * 16) / 2 - 1;
     if ((xc > maxXZ) || (xc < minXZ) || (zc > maxXZ) || (zc < minXZ)) {
-        LeaveCriticalSection(&m_checkLightCS);
         return;
     }
 
@@ -3338,7 +3328,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
     //	if( cache ) XUnlockL2(XLOCKL2_INDEX_TITLE);
 
     flushCache(cache, cacheUse, layer);
-    LeaveCriticalSection(&m_checkLightCS);
+    }
 }
 
 bool Level::tickPendingTicks(bool force) { return false; }
@@ -3423,9 +3413,8 @@ std::shared_ptr<Entity> Level::getClosestEntityOfClass(
 }
 
 std::vector<std::shared_ptr<Entity> > Level::getAllEntities() {
-    EnterCriticalSection(&m_entitiesCS);
+    std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     std::vector<std::shared_ptr<Entity> > retVec = entities;
-    LeaveCriticalSection(&m_entitiesCS);
     return retVec;
 }
 
@@ -3447,7 +3436,7 @@ unsigned int Level::countInstanceOf(
     unsigned int count = 0;
     if (protectedCount) *protectedCount = 0;
     if (couldWanderCount) *couldWanderCount = 0;
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     auto itEnd = entities.end();
     for (auto it = entities.begin(); it != itEnd; it++) {
         std::shared_ptr<Entity> e = *it;  // entities.at(i);
@@ -3467,7 +3456,7 @@ unsigned int Level::countInstanceOf(
             if (e->instanceof(clas)) count++;
         }
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
 
     return count;
 }
@@ -3475,7 +3464,7 @@ unsigned int Level::countInstanceOf(
 unsigned int Level::countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
                                            int range, int x, int y, int z) {
     unsigned int count = 0;
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     auto itEnd = entities.end();
     for (auto it = entities.begin(); it != itEnd; it++) {
         std::shared_ptr<Entity> e = *it;  // entities.at(i);
@@ -3493,14 +3482,14 @@ unsigned int Level::countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
             if (e->instanceof(clas)) count++;
         }
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
 
     return count;
 }
 
 void Level::addEntities(std::vector<std::shared_ptr<Entity> >* list) {
     // entities.addAll(list);
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     entities.insert(entities.end(), list->begin(), list->end());
     auto itEnd = list->end();
     bool deleteDragons = false;
@@ -3528,7 +3517,7 @@ void Level::addEntities(std::vector<std::shared_ptr<Entity> >* list) {
             }
         }
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
 }
 
 void Level::removeEntities(std::vector<std::shared_ptr<Entity> >* list) {
@@ -3943,11 +3932,11 @@ void Level::ensureAdded(std::shared_ptr<Entity> entity) {
     }
 
     // if (!entities.contains(entity))
-    EnterCriticalSection(&m_entitiesCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
     if (find(entities.begin(), entities.end(), entity) == entities.end()) {
         entities.push_back(entity);
     }
-    LeaveCriticalSection(&m_entitiesCS);
+    }
 }
 
 bool Level::mayInteract(std::shared_ptr<Player> player, int xt, int yt, int zt,

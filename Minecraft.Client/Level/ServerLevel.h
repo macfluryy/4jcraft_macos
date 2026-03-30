@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Util/JavaIntHash.h"
 class ServerChunkCache;
@@ -16,7 +17,7 @@ private:
     EntityTracker* tracker;
     PlayerChunkMap* chunkMap;
 
-    CRITICAL_SECTION m_tickNextTickCS;  // 4J added
+    std::mutex m_tickNextTickCS;  // 4J added
     std::set<TickNextTickData, TickNextTickDataKeyCompare>
         tickNextTickList;  // 4J Was TreeSet
     std::unordered_set<TickNextTickData, TickNextTickDataKeyHash,
@@ -24,7 +25,7 @@ private:
         tickNextTickSet;  // 4J Was HashSet
 
     std::vector<Pos*> m_queuedSendTileUpdates;  // 4J added
-    CRITICAL_SECTION m_csQueueSendTileUpdates;
+    std::mutex m_csQueueSendTileUpdates;
 
 protected:
     int saveInterval;
@@ -177,7 +178,7 @@ public:
 
     int m_primedTntCount;
     int m_fallingTileCount;
-    CRITICAL_SECTION m_limiterCS;
+    std::mutex m_limiterCS;
     std::list<std::shared_ptr<Entity> > m_itemEntities;
     std::list<std::shared_ptr<Entity> > m_hangingEntities;
     std::list<std::shared_ptr<Entity> > m_arrowEntities;
@@ -211,7 +212,7 @@ public:
     static int m_randValue[3];
 
     static C4JThread::EventArray* m_updateTrigger;
-    static CRITICAL_SECTION m_updateCS[3];
+    static std::mutex m_updateCS[3];
 
     static C4JThread* m_updateThread;
     static int runUpdate(void* lpParam);

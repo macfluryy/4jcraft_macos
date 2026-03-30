@@ -66,7 +66,7 @@ std::vector<CompressedTileStorage*>
     GameRenderer::m_deleteStackCompressedTileStorage;
 std::vector<SparseDataStorage*> GameRenderer::m_deleteStackSparseDataStorage;
 #endif
-CRITICAL_SECTION GameRenderer::m_csDeleteStack;
+std::mutex GameRenderer::m_csDeleteStack;
 
 ResourceLocation GameRenderer::RAIN_LOCATION =
     ResourceLocation(TN_ENVIRONMENT_RAIN);
@@ -170,7 +170,6 @@ GameRenderer::GameRenderer(Minecraft* mc) {
         eUpdateEventCount, C4JThread::EventArray::e_modeAutoClear);
     m_updateEvents->Set(eUpdateEventIsFinished);
 
-    InitializeCriticalSection(&m_csDeleteStack);
     m_updateThread = new C4JThread(runUpdate, nullptr, "Chunk update");
     m_updateThread->SetProcessor(CPU_CORE_CHUNK_UPDATE);
     m_updateThread->Run();
@@ -1045,27 +1044,27 @@ void GameRenderer::renderLevel(float a) { renderLevel(a, 0); }
 #if defined(MULTITHREAD_ENABLE)
 // Request that an item be deleted, when it is safe to do so
 void GameRenderer::AddForDelete(uint8_t* deleteThis) {
-    EnterCriticalSection(&m_csDeleteStack);
+    m_csDeleteStack.lock();
     m_deleteStackByte.push_back(deleteThis);
 }
 
 void GameRenderer::AddForDelete(SparseLightStorage* deleteThis) {
-    EnterCriticalSection(&m_csDeleteStack);
+    m_csDeleteStack.lock();
     m_deleteStackSparseLightStorage.push_back(deleteThis);
 }
 
 void GameRenderer::AddForDelete(CompressedTileStorage* deleteThis) {
-    EnterCriticalSection(&m_csDeleteStack);
+    m_csDeleteStack.lock();
     m_deleteStackCompressedTileStorage.push_back(deleteThis);
 }
 
 void GameRenderer::AddForDelete(SparseDataStorage* deleteThis) {
-    EnterCriticalSection(&m_csDeleteStack);
+    m_csDeleteStack.lock();
     m_deleteStackSparseDataStorage.push_back(deleteThis);
 }
 
 void GameRenderer::FinishedReassigning() {
-    LeaveCriticalSection(&m_csDeleteStack);
+    m_csDeleteStack.unlock();
 }
 
 int GameRenderer::runUpdate(void* lpParam) {
@@ -1124,22 +1123,24 @@ int GameRenderer::runUpdate(void* lpParam) {
 
         // We've got stacks for things that can only safely be deleted whilst
         // this thread isn't updating things - delete those things now
-        EnterCriticalSection(&m_csDeleteStack);
-        for (unsigned int i = 0; i < m_deleteStackByte.size(); i++)
-            delete m_deleteStackByte[i];
-        m_deleteStackByte.clear();
-        for (unsigned int i = 0; i < m_deleteStackSparseLightStorage.size();
-             i++)
-            delete m_deleteStackSparseLightStorage[i];
-        m_deleteStackSparseLightStorage.clear();
-        for (unsigned int i = 0; i < m_deleteStackCompressedTileStorage.size();
-             i++)
-            delete m_deleteStackCompressedTileStorage[i];
-        m_deleteStackCompressedTileStorage.clear();
-        for (unsigned int i = 0; i < m_deleteStackSparseDataStorage.size(); i++)
-            delete m_deleteStackSparseDataStorage[i];
-        m_deleteStackSparseDataStorage.clear();
-        LeaveCriticalSection(&m_csDeleteStack);
+        {
+            std::lock_guard<std::mutex> lock(m_csDeleteStack);
+            for (unsigned int i = 0; i < m_deleteStackByte.size(); i++)
+                delete m_deleteStackByte[i];
+            m_deleteStackByte.clear();
+            for (unsigned int i = 0; i < m_deleteStackSparseLightStorage.size();
+                 i++)
+                delete m_deleteStackSparseLightStorage[i];
+            m_deleteStackSparseLightStorage.clear();
+            for (unsigned int i = 0;
+                 i < m_deleteStackCompressedTileStorage.size(); i++)
+                delete m_deleteStackCompressedTileStorage[i];
+            m_deleteStackCompressedTileStorage.clear();
+            for (unsigned int i = 0;
+                 i < m_deleteStackSparseDataStorage.size(); i++)
+                delete m_deleteStackSparseDataStorage[i];
+            m_deleteStackSparseDataStorage.clear();
+        }
 
         //		PIXEndNamedEvent();
 

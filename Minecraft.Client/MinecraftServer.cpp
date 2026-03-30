@@ -243,38 +243,39 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
 
     // Update lights for both levels until we are signalled to terminate
     do {
-        EnterCriticalSection(&server->m_postProcessCS);
-        if (server->m_postProcessRequests.size()) {
-            MinecraftServer::postProcessRequest request =
-                server->m_postProcessRequests.back();
-            server->m_postProcessRequests.pop_back();
-            LeaveCriticalSection(&server->m_postProcessCS);
-            static int count = 0;
-            PIXBeginNamedEvent(0, "Post processing %d ", (count++) % 8);
-            request.chunkSource->postProcess(request.chunkSource, request.x,
-                                             request.z);
-            PIXEndNamedEvent();
-        } else {
-            LeaveCriticalSection(&server->m_postProcessCS);
+        {
+            std::unique_lock<std::mutex> lock(server->m_postProcessCS);
+            if (server->m_postProcessRequests.size()) {
+                MinecraftServer::postProcessRequest request =
+                    server->m_postProcessRequests.back();
+                server->m_postProcessRequests.pop_back();
+                lock.unlock();
+                static int count = 0;
+                PIXBeginNamedEvent(0, "Post processing %d ", (count++) % 8);
+                request.chunkSource->postProcess(request.chunkSource, request.x,
+                                                 request.z);
+                PIXEndNamedEvent();
+            }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     } while (!server->m_postUpdateTerminate &&
              ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread));
     // #ifndef 0
     //  One final pass through updates to make sure we're done
-    EnterCriticalSection(&server->m_postProcessCS);
-    int maxRequests = server->m_postProcessRequests.size();
-    while (server->m_postProcessRequests.size() &&
-           ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread)) {
-        MinecraftServer::postProcessRequest request =
-            server->m_postProcessRequests.back();
-        server->m_postProcessRequests.pop_back();
-        LeaveCriticalSection(&server->m_postProcessCS);
-        request.chunkSource->postProcess(request.chunkSource, request.x,
-                                         request.z);
-        EnterCriticalSection(&server->m_postProcessCS);
+    {
+        std::unique_lock<std::mutex> lock(server->m_postProcessCS);
+        int maxRequests = server->m_postProcessRequests.size();
+        while (server->m_postProcessRequests.size() &&
+               ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread)) {
+            MinecraftServer::postProcessRequest request =
+                server->m_postProcessRequests.back();
+            server->m_postProcessRequests.pop_back();
+            lock.unlock();
+            request.chunkSource->postProcess(request.chunkSource, request.x,
+                                             request.z);
+            lock.lock();
+        }
     }
-    LeaveCriticalSection(&server->m_postProcessCS);
     // #endif //0
     Tile::ReleaseThreadStorage();
     Level::destroyLightingCache();
@@ -286,26 +287,28 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
 
 void MinecraftServer::addPostProcessRequest(ChunkSource* chunkSource, int x,
                                             int z) {
-    EnterCriticalSection(&m_postProcessCS);
+    { std::lock_guard<std::mutex> lock(m_postProcessCS);
     m_postProcessRequests.push_back(
         MinecraftServer::postProcessRequest(x, z, chunkSource));
-    LeaveCriticalSection(&m_postProcessCS);
+    }
 }
 
 void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
     std::uint32_t status = 0;
+    size_t postProcessItemCount = 0;
+    size_t postProcessItemRemaining = 0;
 
-    EnterCriticalSection(&server->m_postProcessCS);
-    size_t postProcessItemCount = server->m_postProcessRequests.size();
-    LeaveCriticalSection(&server->m_postProcessCS);
+    { std::lock_guard<std::mutex> lock(server->m_postProcessCS);
+    postProcessItemCount = server->m_postProcessRequests.size();
+    }
 
     do {
         status = m_postUpdateThread->WaitForCompletion(50);
         if (status == WAIT_TIMEOUT) {
-            EnterCriticalSection(&server->m_postProcessCS);
-            size_t postProcessItemRemaining =
+            { std::lock_guard<std::mutex> lock(server->m_postProcessCS);
+            postProcessItemRemaining =
                 server->m_postProcessRequests.size();
-            LeaveCriticalSection(&server->m_postProcessCS);
+            }
 
             if (postProcessItemCount) {
                 mcprogress->progressStagePercentage(
@@ -319,7 +322,6 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
     } while (status == WAIT_TIMEOUT);
     delete m_postUpdateThread;
     m_postUpdateThread = nullptr;
-    DeleteCriticalSection(&m_postProcessCS);
 }
 
 bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
@@ -481,7 +483,6 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     if (s_bServerHalted || !g_NetworkManager.IsInSession()) return false;
 
     // 4J - Make a new thread to do post processing
-    InitializeCriticalSection(&m_postProcessCS);
 
     // 4J-PB - fix for 108310 - TCR #001 BAS Game Stability: TU12: Code:
     // Compliance: Crash after creating world on "journey" seed. Stack gets very

@@ -777,11 +777,11 @@ int ConsoleSaveFileOriginal::getOriginalSaveVersion() {
 }
 
 void ConsoleSaveFileOriginal::LockSaveAccess() {
-    EnterCriticalSection(&m_lock);
+    m_lock.lock();
 }
 
 void ConsoleSaveFileOriginal::ReleaseSaveAccess() {
-    LeaveCriticalSection(&m_lock);
+    m_lock.unlock();
 }
 
 ESavePlatform ConsoleSaveFileOriginal::getSavePlatform() {

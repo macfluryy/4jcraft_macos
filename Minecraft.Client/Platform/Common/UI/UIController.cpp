@@ -34,7 +34,7 @@
 
 #endif
 
-CRITICAL_SECTION UIController::ms_reloadSkinCS;
+std::mutex UIController::ms_reloadSkinCS;
 bool UIController::ms_bReloadSkinCSInitialised = false;
 
 std::uint32_t UIController::m_dwTrialTimerLimitSecs =
@@ -125,7 +125,7 @@ static void* RADLINK AllocateFunction(void* alloc_callback_user_data,
                                       size_t size_requested,
                                       size_t* size_returned) {
     UIController* controller = (UIController*)alloc_callback_user_data;
-    EnterCriticalSection(&controller->m_Allocatorlock);
+    std::lock_guard<std::mutex> lock(controller->m_Allocatorlock);
 #if defined(EXCLUDE_IGGY_ALLOCATIONS_FROM_HEAP_INSPECTOR)
     void* alloc = __real_malloc(size_requested);
 #else
@@ -136,14 +136,13 @@ static void* RADLINK AllocateFunction(void* alloc_callback_user_data,
     allocations[alloc] = size_requested;
     app.DebugPrintf(app.USER_SR, "Allocating %d, new total: %d\n",
                     size_requested, UIController::iggyAllocCount);
-    LeaveCriticalSection(&controller->m_Allocatorlock);
     return alloc;
 }
 
 static void RADLINK DeallocateFunction(void* alloc_callback_user_data,
                                        void* ptr) {
     UIController* controller = (UIController*)alloc_callback_user_data;
-    EnterCriticalSection(&controller->m_Allocatorlock);
+    std::lock_guard<std::mutex> lock(controller->m_Allocatorlock);
     size_t size = allocations[ptr];
     UIController::iggyAllocCount -= size;
     allocations.erase(ptr);
@@ -154,7 +153,6 @@ static void RADLINK DeallocateFunction(void* alloc_callback_user_data,
 #else
     free(ptr);
 #endif
-    LeaveCriticalSection(&controller->m_Allocatorlock);
 }
 
 UIController::UIController() {
@@ -173,7 +171,7 @@ UIController::UIController() {
     m_eCurrentFont = m_eTargetFont = eFont_NotLoaded;
 
 #if defined(ENABLE_IGGY_ALLOCATOR)
-    InitializeCriticalSection(&m_Allocatorlock);
+    // std::mutex is default-constructed, no initialization needed
 #endif
 
     // 4J Stu - This is a bit of a hack until we change the Minecraft
@@ -214,15 +212,12 @@ UIController::UIController() {
     m_accumulatedTicks = 0;
     m_lastUiSfx = 0;
 
-    InitializeCriticalSection(&m_navigationLock);
-    InitializeCriticalSection(&m_registeredCallbackScenesCS);
     // m_bSysUIShowing=false;
     m_bSystemUIShowing = false;
 
     if (!ms_bReloadSkinCSInitialised) {
         // MGH - added to prevent crash loading Iggy movies while the skins were
         // being reloaded
-        InitializeCriticalSection(&ms_reloadSkinCS);
         ms_bReloadSkinCSInitialised = true;
     }
 }
@@ -620,27 +615,27 @@ void UIController::StartReloadSkinThread() {
 }
 
 int UIController::reloadSkinThreadProc(void* lpParam) {
-    EnterCriticalSection(
-        &ms_reloadSkinCS);  // MGH - added to prevent crash loading Iggy movies
-                            // while the skins were being reloaded
-    UIController* controller = (UIController*)lpParam;
-    // Load new skin
-    controller->loadSkins();
+    {
+        std::lock_guard<std::mutex> lock(ms_reloadSkinCS);  // MGH - added to prevent crash loading Iggy movies
+                                                            // while the skins were being reloaded
+        UIController* controller = (UIController*)lpParam;
+        // Load new skin
+        controller->loadSkins();
 
-    // Reload all scene swf
-    for (int i = eUIGroup_Player1; i < eUIGroup_COUNT; ++i) {
-        controller->m_groups[i]->ReloadAll();
-    }
+        // Reload all scene swf
+        for (int i = eUIGroup_Player1; i < eUIGroup_COUNT; ++i) {
+            controller->m_groups[i]->ReloadAll();
+        }
 
-    // Always reload the fullscreen group
-    controller->m_groups[eUIGroup_Fullscreen]->ReloadAll();
+        // Always reload the fullscreen group
+        controller->m_groups[eUIGroup_Fullscreen]->ReloadAll();
 
-    // 4J Stu - Don't do this on windows, as we never navigated forwards to
-    // start with
+        // 4J Stu - Don't do this on windows, as we never navigated forwards to
+        // start with
 #if !(defined(_WINDOWS64) || defined(__linux__))
-    controller->NavigateBack(0, false, eUIScene_COUNT, eUILayer_Tooltips);
+        controller->NavigateBack(0, false, eUIScene_COUNT, eUILayer_Tooltips);
 #endif
-    LeaveCriticalSection(&ms_reloadSkinCS);
+    }
 
     return 0;
 }
@@ -1256,13 +1251,15 @@ bool UIController::NavigateToScene(int iPad, EUIScene scene, void* initData,
 
     PerformanceTimer timer;
 
-    EnterCriticalSection(&m_navigationLock);
-    SetMenuDisplayed(menuDisplayedPad, true);
-    bool success =
-        m_groups[(int)group]->NavigateToScene(iPad, scene, initData, layer);
-    if (success && group == eUIGroup_Fullscreen)
-        setFullscreenMenuDisplayed(true);
-    LeaveCriticalSection(&m_navigationLock);
+    bool success;
+    {
+        std::lock_guard<std::mutex> lock(m_navigationLock);
+        SetMenuDisplayed(menuDisplayedPad, true);
+        success =
+            m_groups[(int)group]->NavigateToScene(iPad, scene, initData, layer);
+        if (success && group == eUIGroup_Fullscreen)
+            setFullscreenMenuDisplayed(true);
+    }
 
     timer.PrintElapsedTime(L"Navigate to scene");
 
@@ -1380,24 +1377,22 @@ UIScene* UIController::GetTopScene(int iPad, EUILayer layer, EUIGroup group) {
 }
 
 size_t UIController::RegisterForCallbackId(UIScene* scene) {
-    EnterCriticalSection(&m_registeredCallbackScenesCS);
+    std::lock_guard<std::mutex> lock(m_registeredCallbackScenesCS);
     size_t newId = GetTickCount();
     newId &= 0xFFFFFF;  // Chop off the top byte, we don't need any more
                         // accuracy than that
     newId |= (scene->getSceneType()
               << 24);  // Add in the scene's type to help keep this unique
     m_registeredCallbackScenes[newId] = scene;
-    LeaveCriticalSection(&m_registeredCallbackScenesCS);
     return newId;
 }
 
 void UIController::UnregisterCallbackId(size_t id) {
-    EnterCriticalSection(&m_registeredCallbackScenesCS);
+    std::lock_guard<std::mutex> lock(m_registeredCallbackScenesCS);
     auto it = m_registeredCallbackScenes.find(id);
     if (it != m_registeredCallbackScenes.end()) {
         m_registeredCallbackScenes.erase(it);
     }
-    LeaveCriticalSection(&m_registeredCallbackScenesCS);
 }
 
 UIScene* UIController::GetSceneFromCallbackId(size_t id) {
@@ -1410,11 +1405,11 @@ UIScene* UIController::GetSceneFromCallbackId(size_t id) {
 }
 
 void UIController::EnterCallbackIdCriticalSection() {
-    EnterCriticalSection(&m_registeredCallbackScenesCS);
+    m_registeredCallbackScenesCS.lock();
 }
 
 void UIController::LeaveCallbackIdCriticalSection() {
-    LeaveCriticalSection(&m_registeredCallbackScenesCS);
+    m_registeredCallbackScenesCS.unlock();
 }
 
 void UIController::CloseAllPlayersScenes() {

@@ -49,8 +49,6 @@ PlayerList::PlayerList(MinecraftServer* server) {
     maxPlayers = server->settings->getInt(L"max-players", 20);
     doWhiteList = false;
 
-    InitializeCriticalSection(&m_kickPlayersCS);
-    InitializeCriticalSection(&m_closePlayersCS);
 }
 
 PlayerList::~PlayerList() {
@@ -62,8 +60,6 @@ PlayerList::~PlayerList() {
         (*it)->gameMode = nullptr;
     }
 
-    DeleteCriticalSection(&m_kickPlayersCS);
-    DeleteCriticalSection(&m_closePlayersCS);
 }
 
 void PlayerList::placeNewPlayer(Connection* connection,
@@ -997,7 +993,7 @@ void PlayerList::tick() {
         }
     }
 
-    EnterCriticalSection(&m_closePlayersCS);
+    { std::lock_guard<std::mutex> lock(m_closePlayersCS);
     while (!m_smallIdsToClose.empty()) {
         std::uint8_t smallId = m_smallIdsToClose.front();
         m_smallIdsToClose.pop_front();
@@ -1023,9 +1019,9 @@ void PlayerList::tick() {
                 DisconnectPacket::eDisconnect_Closed);
         }
     }
-    LeaveCriticalSection(&m_closePlayersCS);
+    }
 
-    EnterCriticalSection(&m_kickPlayersCS);
+    { std::lock_guard<std::mutex> lock(m_kickPlayersCS);
     while (!m_smallIdsToKick.empty()) {
         std::uint8_t smallId = m_smallIdsToKick.front();
         m_smallIdsToKick.pop_front();
@@ -1063,7 +1059,7 @@ void PlayerList::tick() {
             }
         }
     }
-    LeaveCriticalSection(&m_kickPlayersCS);
+    }
 
     // Check our receiving players, and if they are dead see if we can replace
     // them
@@ -1628,15 +1624,15 @@ bool PlayerList::canReceiveAllPackets(std::shared_ptr<ServerPlayer> player) {
 }
 
 void PlayerList::kickPlayerByShortId(std::uint8_t networkSmallId) {
-    EnterCriticalSection(&m_kickPlayersCS);
+    { std::lock_guard<std::mutex> lock(m_kickPlayersCS);
     m_smallIdsToKick.push_back(networkSmallId);
-    LeaveCriticalSection(&m_kickPlayersCS);
+    }
 }
 
 void PlayerList::closePlayerConnectionBySmallId(std::uint8_t networkSmallId) {
-    EnterCriticalSection(&m_closePlayersCS);
+    { std::lock_guard<std::mutex> lock(m_closePlayersCS);
     m_smallIdsToClose.push_back(networkSmallId);
-    LeaveCriticalSection(&m_closePlayersCS);
+    }
 }
 
 bool PlayerList::isXuidBanned(PlayerUID xuid) {

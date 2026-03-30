@@ -12,12 +12,11 @@
 ServerConnection::ServerConnection(MinecraftServer* server) {
     // 4J - added initialiser
     connectionCounter = 0;
-    InitializeCriticalSection(&pending_cs);
 
     this->server = server;
 }
 
-ServerConnection::~ServerConnection() { DeleteCriticalSection(&pending_cs); }
+ServerConnection::~ServerConnection() {}
 
 // 4J - added to handle incoming connections, to replace thread that original
 // used to have
@@ -35,18 +34,18 @@ void ServerConnection::addPlayerConnection(
 }
 
 void ServerConnection::handleConnection(std::shared_ptr<PendingConnection> uc) {
-    EnterCriticalSection(&pending_cs);
+    { std::lock_guard<std::mutex> lock(pending_cs);
     pending.push_back(uc);
-    LeaveCriticalSection(&pending_cs);
+    }
 }
 
 void ServerConnection::stop() {
-    EnterCriticalSection(&pending_cs);
+    { std::lock_guard<std::mutex> lock(pending_cs);
     for (unsigned int i = 0; i < pending.size(); i++) {
         std::shared_ptr<PendingConnection> uc = pending[i];
         uc->connection->close(DisconnectPacket::eDisconnect_Closed);
     }
-    LeaveCriticalSection(&pending_cs);
+    }
 
     for (unsigned int i = 0; i < players.size(); i++) {
         std::shared_ptr<PlayerConnection> player = players[i];
@@ -58,9 +57,10 @@ void ServerConnection::tick() {
     {
         // MGH - changed this so that the the CS lock doesn't cover the tick
         // (was causing a lockup when 2 players tried to join)
-        EnterCriticalSection(&pending_cs);
-        std::vector<std::shared_ptr<PendingConnection> > tempPending = pending;
-        LeaveCriticalSection(&pending_cs);
+        std::vector<std::shared_ptr<PendingConnection> > tempPending;
+        { std::lock_guard<std::mutex> lock(pending_cs);
+        tempPending = pending;
+        }
 
         for (unsigned int i = 0; i < tempPending.size(); i++) {
             std::shared_ptr<PendingConnection> uc = tempPending[i];
@@ -76,13 +76,13 @@ void ServerConnection::tick() {
     }
 
     // now remove from the pending list
-    EnterCriticalSection(&pending_cs);
+    { std::lock_guard<std::mutex> lock(pending_cs);
     for (unsigned int i = 0; i < pending.size(); i++)
         if (pending[i]->done) {
             pending.erase(pending.begin() + i);
             i--;
         }
-    LeaveCriticalSection(&pending_cs);
+    }
 
     for (unsigned int i = 0; i < players.size(); i++) {
         std::shared_ptr<PlayerConnection> player = players[i];

@@ -8,7 +8,7 @@
 int CompressedTileStorage::deleteQueueIndex;
 XLockFreeStack<unsigned char> CompressedTileStorage::deleteQueue[3];
 
-CRITICAL_SECTION CompressedTileStorage::cs_write;
+std::mutex CompressedTileStorage::cs_write;
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)
 // AP - this will create a precomputed table to speed up getData
@@ -35,7 +35,7 @@ CompressedTileStorage::CompressedTileStorage() {
 }
 
 CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
-    EnterCriticalSection(&cs_write);
+    { std::lock_guard<std::mutex> lock(cs_write);
     allocatedSize = copyFrom->allocatedSize;
     if (allocatedSize > 0) {
         indicesAndData = (unsigned char*)XPhysicalAlloc(
@@ -45,7 +45,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
     } else {
         indicesAndData = nullptr;
     }
-    LeaveCriticalSection(&cs_write);
+    }
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)
     CompressedTileStorage_InitTable();
@@ -141,9 +141,8 @@ bool CompressedTileStorage::isRenderChunkEmpty(
 }
 
 bool CompressedTileStorage::isSameAs(CompressedTileStorage* other) {
-    EnterCriticalSection(&cs_write);
+    std::lock_guard<std::mutex> lock(cs_write);
     if (allocatedSize != other->allocatedSize) {
-        LeaveCriticalSection(&cs_write);
         return false;
     }
 
@@ -168,7 +167,6 @@ bool CompressedTileStorage::isSameAs(CompressedTileStorage* other) {
         d0 |= d2;
         d4 |= d6;
         if (d0 | d4) {
-            LeaveCriticalSection(&cs_write);
             return false;
         }
         pOld += 8;
@@ -180,12 +178,10 @@ bool CompressedTileStorage::isSameAs(CompressedTileStorage* other) {
     unsigned char* pucNew = (unsigned char*)pNew;
     for (int i = 0; i < allocatedSize - (quickCount * 64); i++) {
         if (*pucOld++ != *pucNew++) {
-            LeaveCriticalSection(&cs_write);
             return false;
         }
     }
 
-    LeaveCriticalSection(&cs_write);
     return true;
 }
 
@@ -244,7 +240,7 @@ inline void CompressedTileStorage::getBlock(int* block, int x, int y, int z) {
 void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
     unsigned short _blockIndices[512];
 
-    EnterCriticalSection(&cs_write);
+    std::lock_guard<std::mutex> lock(cs_write);
     unsigned char* data = dataIn.data + inOffset;
 
     // Is the destination fully uncompressed? If so just write our data in -
@@ -259,7 +255,6 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
                 *dataOut++ = data[getIndex(i, j)];
             }
         }
-        LeaveCriticalSection(&cs_write);
         return;
     }
 
@@ -406,7 +401,6 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
     }
     indicesAndData = newIndicesAndData;
     allocatedSize = memToAlloc;
-    LeaveCriticalSection(&cs_write);
 }
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)
@@ -598,7 +592,7 @@ int CompressedTileStorage::get(int x, int y, int z) {
 
 // Set an individual tile value
 void CompressedTileStorage::set(int x, int y, int z, int val) {
-    EnterCriticalSection(&cs_write);
+    std::lock_guard<std::mutex> lock(cs_write);
     assert(val != 255);
     int block, tile;
     getBlockAndTile(&block, &tile, x, y, z);
@@ -618,7 +612,6 @@ void CompressedTileStorage::set(int x, int y, int z, int val) {
                 // continue on to upgrade storage
                 if (val == ((blockIndices[block] >> INDEX_TILE_SHIFT) &
                             INDEX_TILE_MASK)) {
-                    LeaveCriticalSection(&cs_write);
                     return;
                 }
             } else {
@@ -627,7 +620,6 @@ void CompressedTileStorage::set(int x, int y, int z, int val) {
                     data + ((blockIndices[block] >> INDEX_OFFSET_SHIFT) &
                             INDEX_OFFSET_MASK);
                 packed[tile] = val;
-                LeaveCriticalSection(&cs_write);
                 return;
             }
         } else {
@@ -660,7 +652,6 @@ void CompressedTileStorage::set(int x, int y, int z, int val) {
                     int bit = (tile & indexmask_bits) * bitspertile;
                     packed[idx] &= ~(tiletypemask << bit);
                     packed[idx] |= i << bit;
-                    LeaveCriticalSection(&cs_write);
                     return;
                 }
             }
@@ -669,7 +660,6 @@ void CompressedTileStorage::set(int x, int y, int z, int val) {
             compress(block);
         }
     };
-    LeaveCriticalSection(&cs_write);
 }
 
 // Sets a region of tile values with the data at offset position in the array
@@ -743,7 +733,6 @@ int CompressedTileStorage::getDataRegion(byteArray dataInOut, int x0, int y0,
 }
 
 void CompressedTileStorage::staticCtor() {
-    InitializeCriticalSectionAndSpinCount(&cs_write, 5120);
     for (int i = 0; i < 3; i++) {
         deleteQueue[i].Initialize();
     }
@@ -793,7 +782,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
         (upgradeBlock > -1);  // If an upgrade block is specified, we'll always
                               // need to recompress - otherwise default to false
 
-    EnterCriticalSection(&cs_write);
+    std::lock_guard<std::mutex> lock(cs_write);
 
     unsigned short* blockIndices = (unsigned short*)indicesAndData;
     unsigned char* data = indicesAndData + 1024;
@@ -1131,7 +1120,6 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
         indicesAndData = newIndicesAndData;
         allocatedSize = memToAlloc;
     }
-    LeaveCriticalSection(&cs_write);
 }
 
 int CompressedTileStorage::getAllocatedSize(int* count0, int* count1,

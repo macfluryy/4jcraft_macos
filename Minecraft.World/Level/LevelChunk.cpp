@@ -19,29 +19,25 @@
 #include "../Entities/ItemEntity.h"
 #include "../Entities/Mobs/Minecart.h"
 
+#include <mutex>
+
 #if defined(SHARING_ENABLED)
-CRITICAL_SECTION LevelChunk::m_csSharing;
+std::mutex LevelChunk::m_csSharing;
 #endif
 #if defined(_ENTITIES_RW_SECTION)
 // AP - use a RW critical section so we can have multiple threads reading the
 // same data to avoid a clash
 CRITICAL_RW_SECTION LevelChunk::m_csEntities;
 #else
-CRITICAL_SECTION LevelChunk::m_csEntities;
+std::mutex LevelChunk::m_csEntities;
 #endif
-CRITICAL_SECTION LevelChunk::m_csTileEntities;
+std::mutex LevelChunk::m_csTileEntities;
 bool LevelChunk::touchedSky = false;
 
 void LevelChunk::staticCtor() {
-#if defined(SHARING_ENABLED)
-    InitializeCriticalSection(&m_csSharing);
-#endif
 #if defined(_ENTITIES_RW_SECTION)
     InitializeCriticalRWSection(&m_csEntities);
-#else
-    InitializeCriticalSection(&m_csEntities);
 #endif
-    InitializeCriticalSection(&m_csTileEntities);
 }
 
 void LevelChunk::init(Level* level, int x, int z) {
@@ -52,14 +48,14 @@ void LevelChunk::init(Level* level, int x, int z) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
     entityBlocks =
         new std::vector<std::shared_ptr<Entity> >*[ENTITY_BLOCKS_LENGTH];
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, true);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
 
     terrainPopulated = 0;
@@ -83,7 +79,7 @@ void LevelChunk::init(Level* level, int x, int z) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         entityBlocks[i] = new std::vector<std::shared_ptr<Entity> >();
@@ -91,7 +87,7 @@ void LevelChunk::init(Level* level, int x, int z) {
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, true);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
 
     MemSect(0);
@@ -253,10 +249,9 @@ void LevelChunk::setUnsaved(bool unsaved) {
 
 void LevelChunk::stopSharingTilesAndData() {
 #if defined(SHARING_ENABLED)
-    EnterCriticalSection(&m_csSharing);
+    { std::lock_guard<std::mutex> lock(m_csSharing);
     lastUnsharedTime = System::currentTimeMillis();
     if (!sharingTilesAndData) {
-        LeaveCriticalSection(&m_csSharing);
         return;
     }
 
@@ -269,7 +264,6 @@ void LevelChunk::stopSharingTilesAndData() {
     if ((serverTerrainPopulated) &&
         (((*serverTerrainPopulated) & sTerrainPopulatedAllAffecting) !=
          sTerrainPopulatedAllAffecting)) {
-        LeaveCriticalSection(&m_csSharing);
         return;
     }
 
@@ -277,7 +271,6 @@ void LevelChunk::stopSharingTilesAndData() {
     // don't drop out here we'll end up unsharing the chunk at this location for
     // no reason
     if (isEmpty()) {
-        LeaveCriticalSection(&m_csSharing);
         return;
     }
 
@@ -311,7 +304,7 @@ void LevelChunk::stopSharingTilesAndData() {
 
     sharingTilesAndData = false;
     MemSect(0);
-    LeaveCriticalSection(&m_csSharing);
+    }
 #endif
 }
 
@@ -322,10 +315,9 @@ void LevelChunk::stopSharingTilesAndData() {
 // not sharing
 void LevelChunk::reSyncLighting() {
 #if defined(SHARING_ENABLED)
-    EnterCriticalSection(&m_csSharing);
+    { std::lock_guard<std::mutex> lock(m_csSharing);
 
     if (isEmpty()) {
-        LeaveCriticalSection(&m_csSharing);
         return;
     }
 
@@ -354,15 +346,14 @@ void LevelChunk::reSyncLighting() {
         upperBlockLight = new SparseLightStorage(lc->upperBlockLight);
         GameRenderer::FinishedReassigning();
     }
-    LeaveCriticalSection(&m_csSharing);
+    }
 #endif
 }
 
 void LevelChunk::startSharingTilesAndData(int forceMs) {
 #if defined(SHARING_ENABLED)
-    EnterCriticalSection(&m_csSharing);
+    { std::lock_guard<std::mutex> lock(m_csSharing);
     if (sharingTilesAndData) {
-        LeaveCriticalSection(&m_csSharing);
         return;
     }
 
@@ -371,7 +362,6 @@ void LevelChunk::startSharingTilesAndData(int forceMs) {
     // doesn't make sense to go resharing the 0,0 block on behalf of an empty
     // chunk either
     if (isEmpty()) {
-        LeaveCriticalSection(&m_csSharing);
         return;
     }
 
@@ -394,7 +384,6 @@ void LevelChunk::startSharingTilesAndData(int forceMs) {
         if (!lowerBlocks->isSameAs(lc->lowerBlocks) ||
             (upperBlocks && lc->upperBlocks &&
              !upperBlocks->isSameAs(lc->upperBlocks))) {
-            LeaveCriticalSection(&m_csSharing);
             return;
         }
     } else {
@@ -402,7 +391,6 @@ void LevelChunk::startSharingTilesAndData(int forceMs) {
         // last wanted to unshare this chunk
         int64_t timenow = System::currentTimeMillis();
         if ((timenow - lastUnsharedTime) < forceMs) {
-            LeaveCriticalSection(&m_csSharing);
             return;
         }
     }
@@ -429,7 +417,7 @@ void LevelChunk::startSharingTilesAndData(int forceMs) {
     }
 
     sharingTilesAndData = true;
-    LeaveCriticalSection(&m_csSharing);
+    }
 #endif
 }
 
@@ -1193,13 +1181,13 @@ void LevelChunk::addEntity(std::shared_ptr<Entity> e) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
     entityBlocks[yc]->push_back(e);
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, true);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
 }
 
@@ -1214,7 +1202,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
 
     // 4J - was entityBlocks[yc]->remove(e);
@@ -1231,7 +1219,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, true);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
 }
 
@@ -1256,14 +1244,13 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
     // 4J Stu - Changed as we should not be using the [] accessor (causes an
     // insert when we don't want one)
     // shared_ptr<TileEntity> tileEntity = tileEntities[pos];
-    EnterCriticalSection(&m_csTileEntities);
     std::shared_ptr<TileEntity> tileEntity = nullptr;
+    { std::unique_lock<std::mutex> lock(m_csTileEntities);
     auto it = tileEntities.find(pos);
 
     if (it == tileEntities.end()) {
-        LeaveCriticalSection(
-            &m_csTileEntities);  // Note: don't assume iterator is valid for
-                                 // tileEntities after this point
+        lock.unlock();  // Note: don't assume iterator is valid for
+                        // tileEntities after this point
 
         // Fix for #48450 - All: Code Defect: Hang: Game hangs in tutorial, when
         // player arrive at the particular coordinate 4J Stu - Chests try to get
@@ -1289,20 +1276,20 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
         // doesn't seem right - assignment wrong way? Check
 
         // 4J Stu - It should have been inserted by now, but check to be sure
-        EnterCriticalSection(&m_csTileEntities);
+        { std::lock_guard<std::mutex> lock2(m_csTileEntities);
         auto newIt = tileEntities.find(pos);
         if (newIt != tileEntities.end()) {
             tileEntity = newIt->second;
         }
-        LeaveCriticalSection(&m_csTileEntities);
+        }
     } else {
         tileEntity = it->second;
-        LeaveCriticalSection(&m_csTileEntities);
+    }
     }
     if (tileEntity != nullptr && tileEntity->isRemoved()) {
-        EnterCriticalSection(&m_csTileEntities);
+        { std::lock_guard<std::mutex> lock(m_csTileEntities);
         tileEntities.erase(pos);
-        LeaveCriticalSection(&m_csTileEntities);
+        }
         return nullptr;
     }
 
@@ -1315,9 +1302,10 @@ void LevelChunk::addTileEntity(std::shared_ptr<TileEntity> te) {
     int zz = (int)(te->z - this->z * 16);
     setTileEntity(xx, yy, zz, te);
     if (loaded) {
-        EnterCriticalSection(&level->m_tileEntityListCS);
-        level->tileEntityList.push_back(te);
-        LeaveCriticalSection(&level->m_tileEntityListCS);
+        {
+            std::lock_guard<std::recursive_mutex> lock(level->m_tileEntityListCS);
+            level->tileEntityList.push_back(te);
+        }
     }
 }
 
@@ -1345,9 +1333,9 @@ void LevelChunk::setTileEntity(int x, int y, int z,
 
     tileEntity->clearRemoved();
 
-    EnterCriticalSection(&m_csTileEntities);
+    { std::lock_guard<std::mutex> lock(m_csTileEntities);
     tileEntities[pos] = tileEntity;
-    LeaveCriticalSection(&m_csTileEntities);
+    }
 }
 
 void LevelChunk::removeTileEntity(int x, int y, int z) {
@@ -1359,7 +1347,7 @@ void LevelChunk::removeTileEntity(int x, int y, int z) {
         //   if (removeThis != null) {
         //       removeThis.setRemoved();
         //   }
-        EnterCriticalSection(&m_csTileEntities);
+        { std::lock_guard<std::mutex> lock(m_csTileEntities);
         auto it = tileEntities.find(pos);
         if (it != tileEntities.end()) {
             std::shared_ptr<TileEntity> te = tileEntities[pos];
@@ -1372,7 +1360,7 @@ void LevelChunk::removeTileEntity(int x, int y, int z) {
                 te->setRemoved();
             }
         }
-        LeaveCriticalSection(&m_csTileEntities);
+        }
     }
 }
 
@@ -1417,18 +1405,18 @@ void LevelChunk::load() {
 #endif
 
         std::vector<std::shared_ptr<TileEntity> > values;
-        EnterCriticalSection(&m_csTileEntities);
+        { std::lock_guard<std::mutex> lock(m_csTileEntities);
         for (auto it = tileEntities.begin(); it != tileEntities.end();
              it++) {
             values.push_back(it->second);
         }
-        LeaveCriticalSection(&m_csTileEntities);
+        }
         level->addAllPendingTileEntities(values);
 
 #if defined(_ENTITIES_RW_SECTION)
         EnterCriticalRWSection(&m_csEntities, true);
 #else
-        EnterCriticalSection(&m_csEntities);
+        { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
         for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
             level->addEntities(entityBlocks[i]);
@@ -1436,7 +1424,7 @@ void LevelChunk::load() {
 #if defined(_ENTITIES_RW_SECTION)
         LeaveCriticalRWSection(&m_csEntities, true);
 #else
-        LeaveCriticalSection(&m_csEntities);
+        }
 #endif
     } else {
 #if defined(_LARGE_WORLDS)
@@ -1450,12 +1438,12 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
     loaded = false;
     if (unloadTileEntities) {
         std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
-        EnterCriticalSection(&m_csTileEntities);
+        { std::lock_guard<std::mutex> lock(m_csTileEntities);
         for (auto it = tileEntities.begin(); it != tileEntities.end();
              it++) {
             tileEntitiesToRemove.push_back(it->second);
         }
-        LeaveCriticalSection(&m_csTileEntities);
+        }
 
         auto itEnd = tileEntitiesToRemove.end();
         for (auto it = tileEntitiesToRemove.begin(); it != itEnd; it++) {
@@ -1467,7 +1455,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         level->removeEntities(entityBlocks[i]);
@@ -1475,7 +1463,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, true);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
     // app.DebugPrintf("Unloaded chunk %d, %d\n", x, z);
 
@@ -1492,7 +1480,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             PIXBeginNamedEvent(0, "Saving entities");
             ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
-            EnterCriticalSection(&m_csEntities);
+            { std::lock_guard<std::mutex> lock(m_csEntities);
             for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
                 auto itEnd = entityBlocks[i]->end();
                 for (std::vector<std::shared_ptr<Entity> >::iterator it =
@@ -1508,7 +1496,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
                 // Clear out this list
                 entityBlocks[i]->clear();
             }
-            LeaveCriticalSection(&m_csEntities);
+            }
 
             m_unloadedEntitiesTag->put(L"Entities", entityTags);
             PIXEndNamedEvent();
@@ -1540,7 +1528,7 @@ bool LevelChunk::containsPlayer() {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         std::vector<std::shared_ptr<Entity> >* vecEntity = entityBlocks[i];
@@ -1549,7 +1537,6 @@ bool LevelChunk::containsPlayer() {
 #if defined(_ENTITIES_RW_SECTION)
                 LeaveCriticalRWSection(&m_csEntities, true);
 #else
-                LeaveCriticalSection(&m_csEntities);
 #endif
                 return true;
             }
@@ -1558,7 +1545,7 @@ bool LevelChunk::containsPlayer() {
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, true);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
     return false;
 }
@@ -1579,7 +1566,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
 
     // AP - RW critical sections are expensive so enter once in
     // Level::getEntities
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
     for (int yc = yc0; yc <= yc1; yc++) {
         std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
@@ -1603,7 +1590,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
             }
         }
     }
-    LeaveCriticalSection(&m_csEntities);
+    }
 }
 
 void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
@@ -1625,7 +1612,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
 
     // AP - RW critical sections are expensive so enter once in
     // Level::getEntitiesOfClass
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
     for (int yc = yc0; yc <= yc1; yc++) {
         std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
@@ -1665,7 +1652,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
             // baseClass.isAssignableFrom(e.getClass())
         }
     }
-    LeaveCriticalSection(&m_csEntities);
+    }
 }
 
 int LevelChunk::countEntities() {
@@ -1673,7 +1660,7 @@ int LevelChunk::countEntities() {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, false);
 #else
-    EnterCriticalSection(&m_csEntities);
+    { std::lock_guard<std::mutex> lock(m_csEntities);
 #endif
     for (int yc = 0; yc < ENTITY_BLOCKS_LENGTH; yc++) {
         entityCount += (int)entityBlocks[yc]->size();
@@ -1681,7 +1668,7 @@ int LevelChunk::countEntities() {
 #if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&m_csEntities, false);
 #else
-    LeaveCriticalSection(&m_csEntities);
+    }
 #endif
     return entityCount;
 }
@@ -2226,12 +2213,12 @@ void LevelChunk::compressBlocks() {
         // Note - only the extraction of the pointers needs to be done in the
         // critical section, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
-        EnterCriticalSection(&m_csSharing);
+        { std::lock_guard<std::mutex> lock(m_csSharing);
         if (sharingTilesAndData) {
             blocksToCompressLower = lowerBlocks;
             blocksToCompressUpper = upperBlocks;
         }
-        LeaveCriticalSection(&m_csSharing);
+        }
     } else {
         // Not the host, simple case
         blocksToCompressLower = lowerBlocks;
@@ -2325,12 +2312,12 @@ void LevelChunk::compressData() {
         // Note - only the extraction of the pointers needs to be done in the
         // critical section, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
-        EnterCriticalSection(&m_csSharing);
+        { std::lock_guard<std::mutex> lock(m_csSharing);
         if (sharingTilesAndData) {
             dataToCompressLower = lowerData;
             dataToCompressUpper = upperData;
         }
-        LeaveCriticalSection(&m_csSharing);
+        }
     } else {
         // Not the host, simple case
         dataToCompressLower = lowerData;
