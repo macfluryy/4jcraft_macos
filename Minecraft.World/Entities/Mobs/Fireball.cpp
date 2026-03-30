@@ -39,7 +39,7 @@ Fireball::Fireball(Level* level) : Entity(level) {
 void Fireball::defineSynchedData() {}
 
 bool Fireball::shouldRenderAtSqrDistance(double distance) {
-    double size = bb->getSize() * 4;
+    double size = bb.getSize() * 4;
     size *= 64.0f;
     return distance < size * size;
 }
@@ -166,18 +166,19 @@ void Fireball::tick() {
     }
 
     MemSect(41);
-    Vec3* from = Vec3::newTemp(x, y, z);
-    Vec3* to = Vec3::newTemp(x + xd, y + yd, z + zd);
-    HitResult* res = level->clip(from, to);
+    Vec3 from(x, y, z);
+    Vec3 to(x + xd, y + yd, z + zd);
+    HitResult* res = level->clip(&from, &to);
 
-    from = Vec3::newTemp(x, y, z);
-    to = Vec3::newTemp(x + xd, y + yd, z + zd);
+    from = Vec3(x, y, z);
+    to = Vec3(x + xd, y + yd, z + zd);
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
+        to = Vec3{res->pos.x, res->pos.y, res->pos.z};
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
-    std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
+    AABB grown = bb.expand(xd, yd, zd).grow(1, 1, 1);
+    std::vector<std::shared_ptr<Entity> >* objects =
+        level->getEntities(shared_from_this(), &grown);
     double nearest = 0;
     AUTO_VAR(itEnd, objects->end());
     for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
@@ -187,10 +188,10 @@ void Fireball::tick() {
                        // && flightTime < 25)) continue;
 
         float rr = 0.3f;
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
+        AABB bb = e->bb.grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
         if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {
                 hitEntity = e;
                 nearest = dd;
@@ -300,8 +301,8 @@ bool Fireball::hurt(DamageSource* source, float damage) {
     markHurt();
 
     if (source->getEntity() != NULL) {
-        Vec3* lookAngle = source->getEntity()->getLookAngle();
-        if (lookAngle != NULL) {
+        auto lookAngle = source->getEntity()->getLookAngle();
+        if (lookAngle.has_value()) {
             xd = lookAngle->x;
             yd = lookAngle->y;
             zd = lookAngle->z;
@@ -309,6 +310,7 @@ bool Fireball::hurt(DamageSource* source, float damage) {
             yPower = yd * 0.1;
             zPower = zd * 0.1;
         }
+
         if (source->getEntity()->instanceof(eTYPE_LIVINGENTITY)) {
             owner =
                 std::dynamic_pointer_cast<LivingEntity>(source->getEntity());

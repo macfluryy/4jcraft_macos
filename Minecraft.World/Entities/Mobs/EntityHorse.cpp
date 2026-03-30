@@ -420,9 +420,9 @@ std::shared_ptr<EntityHorse> EntityHorse::getClosestMommy(
     double closestDistance = std::numeric_limits<double>::max();
 
     std::shared_ptr<Entity> mommy = nullptr;
-    std::vector<std::shared_ptr<Entity> >* list = level->getEntities(
-        baby, baby->bb->expand(searchRadius, searchRadius, searchRadius),
-        PARENT_HORSE_SELECTOR);
+    AABB expanded = baby->bb.expand(searchRadius, searchRadius, searchRadius);
+    std::vector<std::shared_ptr<Entity> >* list =
+        level->getEntities(baby, &expanded, PARENT_HORSE_SELECTOR);
 
     for (AUTO_VAR(it, list->begin()); it != list->end(); ++it) {
         std::shared_ptr<Entity> horse = *it;

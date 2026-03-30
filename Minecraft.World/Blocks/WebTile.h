@@ -14,7 +14,7 @@ public:
     bool isSolidRender(bool isServerLevel = false);
 
 public:
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
 
 public:
     int getRenderShape();

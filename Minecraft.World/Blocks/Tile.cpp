@@ -15,7 +15,9 @@
 #include "../Headers/net.minecraft.world.food.h"
 #include "../Headers/net.minecraft.world.h"
 #include "../Headers/net.minecraft.h"
+#include "Util/Vec3.h"
 #include "Tile.h"
+#include <optional>
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 
@@ -2003,26 +2005,26 @@ Icon* Tile::getTexture(int face, int data) { return icon; }
 
 Icon* Tile::getTexture(int face) { return getTexture(face, 0); }
 
-AABB* Tile::getTileAABB(Level* level, int x, int y, int z) {
+AABB Tile::getTileAABB(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
-    return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
-                         y + tls->yy1, z + tls->zz1);
+    return AABB(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
+                y + tls->yy1, z + tls->zz1);
 }
 
 void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
                     AABBList* boxes, std::shared_ptr<Entity> source) {
-    AABB* aabb = getAABB(level, x, y, z);
-    if (aabb != NULL && box->intersects(aabb)) boxes->push_back(aabb);
+    auto aabb = getAABB(level, x, y, z);
+    if (aabb.has_value() && box->intersects(*aabb)) boxes->push_back(*aabb);
 }
 
-AABB* Tile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> Tile::getAABB(Level* level, int x, int y, int z) {
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
     if (tls->tileId != this->id) updateDefaultShape();
-    return AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
-                         y + tls->yy1, z + tls->zz1);
+    return AABB{x + tls->xx0, y + tls->yy0, z + tls->zz0,
+                x + tls->xx1, y + tls->yy1, z + tls->zz1};
 }
 
 bool Tile::isSolidRender(bool isServerLevel) { return true; }
@@ -2117,44 +2119,54 @@ float Tile::getExplosionResistance(std::shared_ptr<Entity> source) {
     return explosionResistance / 5.0f;
 }
 
-HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
+HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a_,
+                      Vec3* b_) {
     updateShape(level, xt, yt, zt);
 
-    a = a->add(-xt, -yt, -zt);
-    b = b->add(-xt, -yt, -zt);
+    Vec3 a = a_->add(-xt, -yt, -zt);
+    Vec3 b = b_->add(-xt, -yt, -zt);
 
     ThreadStorage* tls = m_tlsShape;
-    Vec3* xh0 = a->clipX(b, tls->xx0);
-    Vec3* xh1 = a->clipX(b, tls->xx1);
 
-    Vec3* yh0 = a->clipY(b, tls->yy0);
-    Vec3* yh1 = a->clipY(b, tls->yy1);
+    auto xh0 = a.clipX(b, tls->xx0);
+    auto xh1 = a.clipX(b, tls->xx1);
 
-    Vec3* zh0 = a->clipZ(b, tls->zz0);
-    Vec3* zh1 = a->clipZ(b, tls->zz1);
+    auto yh0 = a.clipY(b, tls->yy0);
+    auto yh1 = a.clipY(b, tls->yy1);
 
-    Vec3* closest = NULL;
+    auto zh0 = a.clipZ(b, tls->zz0);
+    auto zh1 = a.clipZ(b, tls->zz1);
 
-    if (containsX(xh0) &&
-        (closest == NULL || a->distanceToSqr(xh0) < a->distanceToSqr(closest)))
+    std::optional<Vec3> closest = std::nullopt;
+
+    // 4jcraft NOTE: containsX does a nullopt check and will short circuit so
+    // dereffing in distanceToSqr is fine.
+
+    if (containsX(xh0) && (!closest.has_value() ||
+                           a.distanceToSqr(*xh0) < a.distanceToSqr(*closest)))
         closest = xh0;
-    if (containsX(xh1) &&
-        (closest == NULL || a->distanceToSqr(xh1) < a->distanceToSqr(closest)))
+
+    if (containsX(xh1) && (!closest.has_value() ||
+                           a.distanceToSqr(*xh1) < a.distanceToSqr(*closest)))
         closest = xh1;
-    if (containsY(yh0) &&
-        (closest == NULL || a->distanceToSqr(yh0) < a->distanceToSqr(closest)))
+
+    if (containsY(yh0) && (!closest.has_value() ||
+                           a.distanceToSqr(*yh0) < a.distanceToSqr(*closest)))
         closest = yh0;
-    if (containsY(yh1) &&
-        (closest == NULL || a->distanceToSqr(yh1) < a->distanceToSqr(closest)))
+
+    if (containsY(yh1) && (!closest.has_value() ||
+                           a.distanceToSqr(*yh1) < a.distanceToSqr(*closest)))
         closest = yh1;
-    if (containsZ(zh0) &&
-        (closest == NULL || a->distanceToSqr(zh0) < a->distanceToSqr(closest)))
+
+    if (containsZ(zh0) && (!closest.has_value() ||
+                           a.distanceToSqr(*zh0) < a.distanceToSqr(*closest)))
         closest = zh0;
-    if (containsZ(zh1) &&
-        (closest == NULL || a->distanceToSqr(zh1) < a->distanceToSqr(closest)))
+
+    if (containsZ(zh1) && (!closest.has_value() ||
+                           a.distanceToSqr(*zh1) < a.distanceToSqr(*closest)))
         closest = zh1;
 
-    if (closest == NULL) return NULL;
+    if (!closest.has_value()) return nullptr;
 
     int face = -1;
 
@@ -2168,8 +2180,8 @@ HitResult* Tile::clip(Level* level, int xt, int yt, int zt, Vec3* a, Vec3* b) {
     return new HitResult(xt, yt, zt, face, closest->add(xt, yt, zt));
 }
 
-bool Tile::containsX(Vec3* v) {
-    if (v == NULL) return false;
+bool Tile::containsX(const std::optional<Vec3>& v) {
+    if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
@@ -2178,8 +2190,8 @@ bool Tile::containsX(Vec3* v) {
            v->z <= tls->zz1;
 }
 
-bool Tile::containsY(Vec3* v) {
-    if (v == NULL) return false;
+bool Tile::containsY(const std::optional<Vec3>& v) {
+    if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile
@@ -2188,8 +2200,8 @@ bool Tile::containsY(Vec3* v) {
            v->z <= tls->zz1;
 }
 
-bool Tile::containsZ(Vec3* v) {
-    if (v == NULL) return false;
+bool Tile::containsZ(const std::optional<Vec3>& v) {
+    if (!v.has_value()) return false;
 
     ThreadStorage* tls = m_tlsShape;
     // 4J Stu - Added this so that the TLS shape is correct for this tile

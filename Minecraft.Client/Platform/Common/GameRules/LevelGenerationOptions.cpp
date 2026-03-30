@@ -253,13 +253,12 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
 void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
     PIXBeginNamedEvent(0, "Processing schematics for chunk (%d,%d)", chunk->x,
                        chunk->z);
-    AABB* chunkBox =
-        AABB::newTemp(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
-                      Level::maxBuildHeight, chunk->z * 16 + 16);
+    AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
+                  Level::maxBuildHeight, chunk->z * 16 + 16);
     for (AUTO_VAR(it, m_schematicRules.begin()); it != m_schematicRules.end();
          ++it) {
         ApplySchematicRuleDefinition* rule = *it;
-        rule->processSchematic(chunkBox, chunk);
+        rule->processSchematic(&chunkBox, chunk);
     }
 
     int cx = (chunk->x << 4);
@@ -282,13 +281,12 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
 void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
     PIXBeginNamedEvent(0, "Processing schematics (lighting) for chunk (%d,%d)",
                        chunk->x, chunk->z);
-    AABB* chunkBox =
-        AABB::newTemp(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
-                      Level::maxBuildHeight, chunk->z * 16 + 16);
+    AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
+                  Level::maxBuildHeight, chunk->z * 16 + 16);
     for (AUTO_VAR(it, m_schematicRules.begin()); it != m_schematicRules.end();
          ++it) {
         ApplySchematicRuleDefinition* rule = *it;
-        rule->processSchematicLighting(chunkBox, chunk);
+        rule->processSchematicLighting(&chunkBox, chunk);
     }
     PIXEndNamedEvent();
 }

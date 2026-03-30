@@ -1,16 +1,17 @@
 #include "../Platform/stdafx.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "LadderTile.h"
+#include "Util/AABB.h"
 
 LadderTile::LadderTile(int id)
     : Tile(id, Material::decoration, false) {}
 
-AABB* LadderTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> LadderTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getAABB(level, x, y, z);
 }
 
-AABB* LadderTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB LadderTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);
     return Tile::getTileAABB(level, x, y, z);
 }

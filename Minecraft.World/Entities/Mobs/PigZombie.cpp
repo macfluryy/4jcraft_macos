@@ -69,9 +69,9 @@ void PigZombie::tick() {
 
 bool PigZombie::canSpawn() {
     return level->difficulty > Difficulty::PEACEFUL &&
-           level->isUnobstructed(bb) &&
-           level->getCubes(shared_from_this(), bb)->empty() &&
-           !level->containsAnyLiquid(bb);
+           level->isUnobstructed(&bb) &&
+           level->getCubes(shared_from_this(), &bb)->empty() &&
+           !level->containsAnyLiquid(&bb);
 }
 
 void PigZombie::addAdditonalSaveData(CompoundTag* tag) {
@@ -100,8 +100,9 @@ std::shared_ptr<Entity> PigZombie::findAttackTarget() {
 bool PigZombie::hurt(DamageSource* source, float dmg) {
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
     if (sourceEntity != NULL && sourceEntity->instanceof(eTYPE_PLAYER)) {
+        AABB grown = bb.grow(32, 32, 32);
         std::vector<std::shared_ptr<Entity> >* nearby =
-            level->getEntities(shared_from_this(), bb->grow(32, 32, 32));
+            level->getEntities(shared_from_this(), &grown);
         AUTO_VAR(itEnd, nearby->end());
         for (AUTO_VAR(it, nearby->begin()); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // nearby->at(i);

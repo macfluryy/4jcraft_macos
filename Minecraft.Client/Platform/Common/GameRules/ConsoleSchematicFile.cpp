@@ -155,8 +155,8 @@ void ConsoleSchematicFile::load(DataInputStream* dis) {
                 // app.DebugPrintf(1,"Loaded entity type %d at
                 // (%f,%f,%f)\n",(int)type,x,y,z);
 #endif
-                m_entities.push_back(std::pair<Vec3*, CompoundTag*>(
-                    Vec3::newPermanent(x, y, z), (CompoundTag*)eTag->copy()));
+                m_entities.push_back(std::pair<Vec3, CompoundTag*>(
+                    Vec3(x, y, z), (CompoundTag*)eTag->copy()));
             }
         }
         delete tag;
@@ -463,7 +463,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
         schematicCoordToChunkCoord(destinationBox, te->x, te->z, rot, targetX,
                                    targetZ);
 
-        Vec3* pos = Vec3::newTemp(targetX, targetY, targetZ);
+        Vec3 pos(targetX, targetY, targetZ);
         if (chunkBox->containsIncludingLowerBound(pos)) {
             std::shared_ptr<TileEntity> teCopy = chunk->getTileEntity(
                 (int)targetX & 15, (int)targetY & 15, (int)targetZ & 15);
@@ -500,18 +500,17 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
         }
     }
     for (AUTO_VAR(it, m_entities.begin()); it != m_entities.end();) {
-        Vec3* source = it->first;
+        Vec3 source = it->first;
 
-        double targetX = source->x;
-        double targetY = source->y + destinationBox->y0;
-        double targetZ = source->z;
-        schematicCoordToChunkCoord(destinationBox, source->x, source->z, rot,
+        double targetX = source.x;
+        double targetY = source.y + destinationBox->y0;
+        double targetZ = source.z;
+        schematicCoordToChunkCoord(destinationBox, source.x, source.z, rot,
                                    targetX, targetZ);
 
         // Add 0.01 as the AABB::contains function returns false if a value is
         // <= the lower bound
-        Vec3* pos =
-            Vec3::newTemp(targetX + 0.01, targetY + 0.01, targetZ + 0.01);
+        Vec3 pos(targetX + 0.01, targetY + 0.01, targetZ + 0.01);
         if (!chunkBox->containsIncludingLowerBound(pos)) {
             ++it;
             continue;
@@ -734,9 +733,9 @@ void ConsoleSchematicFile::generateSchematicFile(
     }
     tag.put(L"TileEntities", tileEntitiesTag);
 
-    AABB* bb = AABB::newTemp(xStart, yStart, zStart, xEnd, yEnd, zEnd);
+    AABB bb(xStart, yStart, zStart, xEnd, yEnd, zEnd);
     std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(nullptr, bb);
+        level->getEntities(nullptr, &bb);
     ListTag<CompoundTag>* entitiesTag = new ListTag<CompoundTag>(L"entities");
 
     for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
@@ -800,8 +799,8 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, byteArray* data,
     // if (xs * ys * zs == LevelChunk::BLOCKS_LENGTH)
     //{
     //	byteArray blockData = byteArray(data->data + blocksP,
-    //Level::CHUNK_TILE_COUNT); 	chunk->getBlockData(blockData); 	blocksP  +=
-    //blockData.length;
+    // Level::CHUNK_TILE_COUNT); 	chunk->getBlockData(blockData);
+    // blocksP  += blockData.length;
 
     //	byteArray dataData = byteArray(data->data + dataP, 16384);
     //	chunk->getBlockLightData(dataData);

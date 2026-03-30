@@ -2,6 +2,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.level.redstone.h"
 #include "PressurePlateTile.h"
+#include "Util/AABB.h"
 
 PressurePlateTile::PressurePlateTile(int id, const std::wstring& tex,
                                      Material* material,
@@ -23,15 +24,13 @@ int PressurePlateTile::getSignalForData(int data) {
 
 int PressurePlateTile::getSignalStrength(Level* level, int x, int y, int z) {
     std::vector<std::shared_ptr<Entity> >* entities = NULL;
-
+    AABB at_bb = getSensitiveAABB(x, y, z);
     if (sensitivity == everything)
-        entities = level->getEntities(nullptr, getSensitiveAABB(x, y, z));
+        entities = level->getEntities(nullptr, &at_bb);
     else if (sensitivity == mobs)
-        entities = level->getEntitiesOfClass(typeid(LivingEntity),
-                                             getSensitiveAABB(x, y, z));
+        entities = level->getEntitiesOfClass(typeid(LivingEntity), &at_bb);
     else if (sensitivity == players)
-        entities = level->getEntitiesOfClass(typeid(Player),
-                                             getSensitiveAABB(x, y, z));
+        entities = level->getEntitiesOfClass(typeid(Player), &at_bb);
     else
         __debugbreak();  // 4J-JEV: We're going to delete something at a random
                          // location.

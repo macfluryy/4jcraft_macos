@@ -1,9 +1,12 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
+#include <assert.h>
+#include <thread>
+#include <chrono>
+
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "XUI_Death.h"
-#include <assert.h>
 #include "../../Minecraft.World/Util/AABB.h"
 #include "../../Minecraft.World/Util/Vec3.h"
 #include "../../Minecraft.World/Headers/net.minecraft.stats.h"
@@ -219,8 +222,6 @@ HRESULT CScene_Death::OnKeyDown(XUIMessageInput* pInputData, BOOL& rfHandled) {
 }
 
 int CScene_Death::RespawnThreadProc(void* lpParameter) {
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
     size_t iPad = (size_t)lpParameter;
 
@@ -235,7 +236,7 @@ int CScene_Death::RespawnThreadProc(void* lpParameter) {
     // If we are offline, this should release straight away
     // WaitForSingleObject( pMinecraft->m_hPlayerRespawned, INFINITE );
     while (pMinecraft->localplayers[iPad]->GetPlayerRespawned() == false) {
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 
     return S_OK;

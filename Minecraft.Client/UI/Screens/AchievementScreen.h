@@ -43,20 +43,20 @@ public:
     using Screen::keyPressed;
 
     AchievementScreen(StatsCounter* statsCounter);
-    virtual void init();
+    virtual void init() override;
 
 protected:
-    virtual void buttonClicked(Button* button);
+    virtual void buttonClicked(Button* button) override;
     virtual void keyPressed(char eventCharacter, int eventKey);
 
 public:
-    virtual void render(int mouseX, int mouseY, float a);
-    virtual void tick();
+    virtual void render(int mouseX, int mouseY, float a) override;
+    virtual void tick() override;
 
 protected:
     virtual void renderLabels();
     virtual void renderBg(int xm, int ym, float a);
 
 public:
-    virtual bool isPauseScreen();
+    virtual bool isPauseScreen() override;
 };

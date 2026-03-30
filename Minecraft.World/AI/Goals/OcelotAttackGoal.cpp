@@ -40,7 +40,7 @@ void OcelotAttackGoal::tick() {
     mob->getLookControl()->setLookAt(target.lock(), 30, 30);
 
     double meleeRadiusSqr = (mob->bbWidth * 2) * (mob->bbWidth * 2);
-    double distSqr = mob->distanceToSqr(target.lock()->x, target.lock()->bb->y0,
+    double distSqr = mob->distanceToSqr(target.lock()->x, target.lock()->bb.y0,
                                         target.lock()->z);
 
     double speedModifier = Ocelot::WALK_SPEED_MOD;

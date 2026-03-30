@@ -24,6 +24,7 @@
 #include "../Headers/net.minecraft.world.scores.h"
 #include "../Headers/com.mojang.nbt.h"
 #include "LivingEntity.h"
+#include <optional>
 #include "../../Minecraft.Client/Textures/Textures.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Player/EntityTracker.h"
@@ -31,6 +32,7 @@
 #include "../Util/ParticleTypes.h"
 #include "../Stats/GenericStats.h"
 #include "ItemEntity.h"
+#include "Util/Vec3.h"
 
 const double LivingEntity::MIN_MOVEMENT_DISTANCE = 0.005;
 
@@ -791,18 +793,18 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
               0.8f + level->random->nextFloat() * 0.4f);
 
     for (int i = 0; i < 5; i++) {
-        Vec3* d = Vec3::newTemp((random->nextFloat() - 0.5) * 0.1,
-                                Math::random() * 0.1 + 0.1, 0);
-        d->xRot(-xRot * PI / 180);
-        d->yRot(-yRot * PI / 180);
+        Vec3 d = Vec3((random->nextFloat() - 0.5) * 0.1,
+                      Math::random() * 0.1 + 0.1, 0);
+        d.xRot(-xRot * PI / 180);
+        d.yRot(-yRot * PI / 180);
 
-        Vec3* p = Vec3::newTemp((random->nextFloat() - 0.5) * 0.3,
-                                -random->nextFloat() * 0.6 - 0.3, 0.6);
-        p->xRot(-xRot * PI / 180);
-        p->yRot(-yRot * PI / 180);
-        p = p->add(x, y + getHeadHeight(), z);
+        Vec3 p = Vec3((random->nextFloat() - 0.5) * 0.3,
+                      -random->nextFloat() * 0.6 - 0.3, 0.6);
+        p.xRot(-xRot * PI / 180);
+        p.yRot(-yRot * PI / 180);
+        p = p.add(x, y + getHeadHeight(), z);
         level->addParticle(PARTICLE_ICONCRACK(itemInstance->getItem()->id, 0),
-                           p->x, p->y, p->z, d->x, d->y + 0.05, d->z);
+                           p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
     }
 }
 
@@ -895,7 +897,7 @@ void LivingEntity::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
 
 bool LivingEntity::onLadder() {
     int xt = Mth::floor(x);
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     int zt = Mth::floor(z);
 
     // 4J-PB - TU9 - add climbable vines
@@ -1162,9 +1164,9 @@ void LivingEntity::teleportTo(double x, double y, double z) {
 }
 
 void LivingEntity::findStandUpPosition(std::shared_ptr<Entity> vehicle) {
-    AABB* boundingBox;
+    AABB boundingBox;
     double fallbackX = vehicle->x;
-    double fallbackY = vehicle->bb->y0 + vehicle->bbHeight;
+    double fallbackY = vehicle->bb.y0 + vehicle->bbHeight;
     double fallbackZ = vehicle->z;
 
     for (double xDiff = -1.5; xDiff < 2; xDiff += 1.5) {
@@ -1175,9 +1177,9 @@ void LivingEntity::findStandUpPosition(std::shared_ptr<Entity> vehicle) {
 
             int xToInt = (int)(x + xDiff);
             int zToInt = (int)(z + zDiff);
-            boundingBox = bb->cloneMove(xDiff, 1, zDiff);
+            boundingBox = bb.move(xDiff, 1, zDiff);
 
-            if (level->getTileCubes(boundingBox, true)->empty()) {
+            if (level->getTileCubes(&boundingBox, true)->empty()) {
                 if (level->isTopSolidBlocking(xToInt, (int)y, zToInt)) {
                     teleportTo(x + xDiff, y + 1, z + zDiff);
                     return;
@@ -1257,7 +1259,7 @@ void LivingEntity::travel(float xa, float ya) {
         float friction = 0.91f;
         if (onGround) {
             friction = 0.6f * 0.91f;
-            int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1,
+            int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
                                    Mth::floor(z));
             if (t > 0) {
                 friction = Tile::tiles[t]->friction * 0.91f;
@@ -1279,7 +1281,7 @@ void LivingEntity::travel(float xa, float ya) {
         friction = 0.91f;
         if (onGround) {
             friction = 0.6f * 0.91f;
-            int t = level->getTile(Mth::floor(x), Mth::floor(bb->y0) - 1,
+            int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
                                    Mth::floor(z));
             if (t > 0) {
                 friction = Tile::tiles[t]->friction * 0.91f;
@@ -1335,13 +1337,13 @@ void LivingEntity::travel(float xa, float ya) {
 // and out of lit areas, for example when bobbing in the water.
 int LivingEntity::getLightColor(float a) {
     float accum[2] = {0, 0};
-    float totVol = (bb->x1 - bb->x0) * (bb->y1 - bb->y0) * (bb->z1 - bb->z0);
-    int xmin = Mth::floor(bb->x0);
-    int xmax = Mth::floor(bb->x1);
-    int ymin = Mth::floor(bb->y0);
-    int ymax = Mth::floor(bb->y1);
-    int zmin = Mth::floor(bb->z0);
-    int zmax = Mth::floor(bb->z1);
+    float totVol = (bb.x1 - bb.x0) * (bb.y1 - bb.y0) * (bb.z1 - bb.z0);
+    int xmin = Mth::floor(bb.x0);
+    int xmax = Mth::floor(bb.x1);
+    int ymin = Mth::floor(bb.y0);
+    int ymax = Mth::floor(bb.y1);
+    int zmin = Mth::floor(bb.z0);
+    int zmax = Mth::floor(bb.z1);
     for (int xt = xmin; xt <= xmax; xt++)
         for (int yt = ymin; yt <= ymax; yt++)
             for (int zt = zmin; zt <= zmax; zt++) {
@@ -1351,12 +1353,12 @@ int LivingEntity::getLightColor(float a) {
                 float tileymax = (float)(yt + 1);
                 float tilezmin = (float)zt;
                 float tilezmax = (float)(zt + 1);
-                if (tilexmin < bb->x0) tilexmin = bb->x0;
-                if (tilexmax > bb->x1) tilexmax = bb->x1;
-                if (tileymin < bb->y0) tileymin = bb->y0;
-                if (tileymax > bb->y1) tileymax = bb->y1;
-                if (tilezmin < bb->z0) tilezmin = bb->z0;
-                if (tilezmax > bb->z1) tilezmax = bb->z1;
+                if (tilexmin < bb.x0) tilexmin = bb.x0;
+                if (tilexmax > bb.x1) tilexmax = bb.x1;
+                if (tileymin < bb.y0) tileymin = bb.y0;
+                if (tileymax > bb.y1) tileymax = bb.y1;
+                if (tilezmin < bb.z0) tilezmin = bb.z0;
+                if (tilezmax > bb.z1) tilezmax = bb.z1;
                 float tileVol = (tilexmax - tilexmin) * (tileymax - tileymin) *
                                 (tilezmax - tilezmin);
                 float frac = tileVol / totVol;
@@ -1506,21 +1508,20 @@ void LivingEntity::aiStep() {
         // 4J - this collision is carried out to try and stop the lerping push
         // the mob through the floor, in which case gravity can then carry on
         // moving the mob because the collision just won't work anymore. BB for
-        // collision used to be calculated as: bb->shrink(1 / 32.0, 0, 1 / 32.0)
+        // collision used to be calculated as: bb.shrink(1 / 32.0, 0, 1 / 32.0)
         // now using a reduced BB to try and get rid of some issues where mobs
         // pop up the sides of walls, undersides of trees etc.
-        AABB* shrinkbb = bb->shrink(0.1, 0, 0.1);
-        shrinkbb->y1 = shrinkbb->y0 + 0.1;
-        AABBList* collisions = level->getCubes(shared_from_this(), shrinkbb);
+        AABB shrinkbb = bb.shrink(0.1, 0, 0.1);
+        shrinkbb.y1 = shrinkbb.y0 + 0.1;
+        AABBList* collisions = level->getCubes(shared_from_this(), &shrinkbb);
         if (collisions->size() > 0) {
             double yTop = 0;
             AUTO_VAR(itEnd, collisions->end());
             for (AUTO_VAR(it, collisions->begin()); it != itEnd; it++) {
-                AABB* ab = *it;  // collisions->at(i);
-                if (ab->y1 > yTop) yTop = ab->y1;
+                if (it->y1 > yTop) yTop = it->y1;
             }
 
-            yt += yTop - bb->y0;
+            yt += yTop - bb.y0;
             setPos(xt, yt, zt);
         }
     } else if (!isEffectiveAi()) {
@@ -1580,8 +1581,9 @@ void LivingEntity::aiStep() {
 void LivingEntity::newServerAiStep() {}
 
 void LivingEntity::pushEntities() {
+    AABB grown = bb.grow(0.2, 0, 0.2);
     std::vector<std::shared_ptr<Entity> >* entities =
-        level->getEntities(shared_from_this(), this->bb->grow(0.2f, 0, 0.2f));
+        level->getEntities(shared_from_this(), &grown);
     if (entities != NULL && !entities->empty()) {
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
@@ -1640,25 +1642,25 @@ void LivingEntity::take(std::shared_ptr<Entity> e, int orgCount) {
 }
 
 bool LivingEntity::canSee(std::shared_ptr<Entity> target) {
-    HitResult* hres = level->clip(
-        Vec3::newTemp(x, y + getHeadHeight(), z),
-        Vec3::newTemp(target->x, target->y + target->getHeadHeight(),
-                      target->z));
+    Vec3 a{x, y + getHeadHeight(), z};
+    Vec3 b{target->x, target->y + target->getHeadHeight(), target->z};
+
+    HitResult* hres = level->clip(&a, &b);
     bool retVal = (hres == NULL);
     delete hres;
     return retVal;
 }
 
-Vec3* LivingEntity::getLookAngle() { return getViewVector(1); }
+std::optional<Vec3> LivingEntity::getLookAngle() { return getViewVector(1); }
 
-Vec3* LivingEntity::getViewVector(float a) {
+Vec3 LivingEntity::getViewVector(float a) {
     if (a == 1) {
         float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
         float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
         float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
         float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 
-        return Vec3::newTemp(ySin * xCos, xSin, yCos * xCos);
+        return Vec3(ySin * xCos, xSin, yCos * xCos);
     }
     float xRot = xRotO + (this->xRot - xRotO) * a;
     float yRot = yRotO + (this->yRot - yRotO) * a;
@@ -1668,7 +1670,7 @@ Vec3* LivingEntity::getViewVector(float a) {
     float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
     float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 
-    return Vec3::newTemp(ySin * xCos, xSin, yCos * xCos);
+    return Vec3(ySin * xCos, xSin, yCos * xCos);
 }
 
 float LivingEntity::getAttackAnim(float a) {
@@ -1677,22 +1679,23 @@ float LivingEntity::getAttackAnim(float a) {
     return oAttackAnim + diff * a;
 }
 
-Vec3* LivingEntity::getPos(float a) {
+Vec3 LivingEntity::getPos(float a) {
     if (a == 1) {
-        return Vec3::newTemp(x, y, z);
+        return Vec3(x, y, z);
     }
     double x = xo + (this->x - xo) * a;
     double y = yo + (this->y - yo) * a;
     double z = zo + (this->z - zo) * a;
 
-    return Vec3::newTemp(x, y, z);
+    return Vec3(x, y, z);
 }
 
 HitResult* LivingEntity::pick(double range, float a) {
-    Vec3* from = getPos(a);
-    Vec3* b = getViewVector(a);
-    Vec3* to = from->add(b->x * range, b->y * range, b->z * range);
-    return level->clip(from, to);
+    Vec3 from = getPos(a);
+    Vec3 b = getViewVector(a);
+    Vec3 to{b.x * range, b.y * range, b.z * range};
+    to = to.add(from.x, from.y, from.z);
+    return level->clip(&from, &to);
 }
 
 bool LivingEntity::isEffectiveAi() { return !level->isClientSide; }

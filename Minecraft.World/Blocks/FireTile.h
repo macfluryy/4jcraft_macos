@@ -39,7 +39,7 @@ private:
     void setFlammable(int id, int flame, int burn);
 
 public:
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool blocksLight();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();

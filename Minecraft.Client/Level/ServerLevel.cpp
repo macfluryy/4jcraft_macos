@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../Platform/stdafx.h"
 #include "ServerLevel.h"
 #include "../MinecraftServer.h"
@@ -1112,13 +1115,13 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source,
         }
 
         if (player->distanceToSqr(x, y, z) < 64 * 64) {
-            Vec3* knockbackVec = explosion->getHitPlayerKnockback(player);
+            Vec3 knockbackVec = explosion->getHitPlayerKnockback(player);
             // app.DebugPrintf("Sending %s with knockback (%f,%f,%f)\n",
             // knockbackOnly?"knockbackOnly":"allExplosion",knockbackVec->x,knockbackVec->y,knockbackVec->z);
             //  If the player is not the primary on the system, then we only
             //  want to send info for the knockback
             player->connection->send(std::shared_ptr<ExplodePacket>(
-                new ExplodePacket(x, y, z, r, &explosion->toBlow, knockbackVec,
+                new ExplodePacket(x, y, z, r, &explosion->toBlow, &knockbackVec,
                                   knockbackOnly)));
             sentTo.push_back(player);
         }
@@ -1570,7 +1573,7 @@ int ServerLevel::runUpdate(void* lpParam) {
         }
         PIXEndNamedEvent();
 #ifdef __PS3__
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 #endif  //__PS3__
     }
 

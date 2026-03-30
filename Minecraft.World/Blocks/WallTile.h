@@ -25,7 +25,7 @@ public:
                      int forceData = -1,
                      std::shared_ptr<TileEntity> forceEntity =
                          std::shared_ptr<TileEntity>());
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     bool connectsTo(LevelSource* level, int x, int y, int z);
     int getSpawnResourcesAuxValue(int data);
     bool shouldRenderFace(LevelSource* level, int x, int y, int z, int face);

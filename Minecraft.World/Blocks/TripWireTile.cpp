@@ -4,6 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.phys.h"
 #include "TripWireTile.h"
+#include <optional>
 
 TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) {
     setShape(0, 0, 0, 1, 2.5f / 16.0f, 1);
@@ -16,7 +17,7 @@ int TripWireTile::getTickDelay(Level* level) {
     return 20;  // 10;
 }
 
-AABB* TripWireTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> TripWireTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 bool TripWireTile::blocksLight() { return false; }
 
@@ -132,9 +133,10 @@ void TripWireTile::checkPressed(Level* level, int x, int y, int z) {
     bool shouldBePressed = false;
 
     ThreadStorage* tls = m_tlsShape;
-    std::vector<std::shared_ptr<Entity> >* entities = level->getEntities(
-        nullptr, AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0,
-                               x + tls->xx1, y + tls->yy1, z + tls->zz1));
+    AABB offs_aabb(x + tls->xx0, y + tls->yy0, z + tls->zz0, x + tls->xx1,
+                   y + tls->yy1, z + tls->zz1);
+    std::vector<std::shared_ptr<Entity> >* entities =
+        level->getEntities(nullptr, &offs_aabb);
     if (!entities->empty()) {
         for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
             std::shared_ptr<Entity> e = *it;

@@ -5,6 +5,7 @@
 #include "../Headers/net.minecraft.world.phys.h"
 #include "../Headers/net.minecraft.h"
 #include "ButtonTile.h"
+#include <optional>
 #include "../Util/SoundTypes.h"
 
 ButtonTile::ButtonTile(int id, bool sensitive)
@@ -20,7 +21,7 @@ Icon* ButtonTile::getTexture(int face, int data) {
         return Tile::stone->getTexture(Facing::UP);
 }
 
-AABB* ButtonTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> ButtonTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 int ButtonTile::getTickDelay(Level* level) { return sensitive ? 30 : 20; }
 
@@ -261,9 +262,12 @@ void ButtonTile::checkPressed(Level* level, int x, int y, int z) {
 
     updateShape(data);
     Tile::ThreadStorage* tls = m_tlsShape;
-    std::vector<std::shared_ptr<Entity> >* entities = level->getEntitiesOfClass(
-        typeid(Arrow), AABB::newTemp(x + tls->xx0, y + tls->yy0, z + tls->zz0,
-                                     x + tls->xx1, y + tls->yy1, z + tls->zz1));
+    AABB arrow_aabb{
+        x + tls->xx0, y + tls->yy0, z + tls->zz0,
+        x + tls->xx1, y + tls->yy1, z + tls->zz1,
+    };
+    std::vector<std::shared_ptr<Entity> >* entities =
+        level->getEntitiesOfClass(typeid(Arrow), &arrow_aabb);
     shouldBePressed = !entities->empty();
     delete entities;
 

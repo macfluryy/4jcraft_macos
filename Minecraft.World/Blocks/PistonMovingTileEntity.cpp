@@ -1,5 +1,6 @@
 #include "../Platform/stdafx.h"
 #include "PistonMovingTileEntity.h"
+#include <optional>
 #include "TileEntities/PistonPieceTileEntity.h"
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.world.h"
@@ -91,10 +92,11 @@ std::shared_ptr<TileEntity> PistonMovingPiece::newMovingPieceEntity(
         new PistonPieceEntity(block, data, facing, extending, isSourcePiston));
 }
 
-AABB* PistonMovingPiece::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
+                                               int z) {
     std::shared_ptr<PistonPieceEntity> entity = getEntity(level, x, y, z);
     if (entity == NULL) {
-        return NULL;
+        return std::nullopt;
     }
 
     // move the aabb depending on the animation
@@ -136,15 +138,16 @@ void PistonMovingPiece::updateShape(
     }
 }
 
-AABB* PistonMovingPiece::getAABB(Level* level, int x, int y, int z, int tile,
-                                 float progress, int facing) {
+std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
+                                               int z, int tile, float progress,
+                                               int facing) {
     if (tile == 0 || tile == id) {
-        return NULL;
+        return std::nullopt;
     }
-    AABB* aabb = Tile::tiles[tile]->getAABB(level, x, y, z);
+    auto aabb = Tile::tiles[tile]->getAABB(level, x, y, z);
 
-    if (aabb == NULL) {
-        return NULL;
+    if (!aabb.has_value()) {
+        return std::nullopt;
     }
 
     // move the aabb depending on the animation
@@ -153,16 +156,19 @@ AABB* PistonMovingPiece::getAABB(Level* level, int x, int y, int z, int tile,
     } else {
         aabb->x1 -= Facing::STEP_X[facing] * progress;
     }
+
     if (Facing::STEP_Y[facing] < 0) {
         aabb->y0 -= Facing::STEP_Y[facing] * progress;
     } else {
         aabb->y1 -= Facing::STEP_Y[facing] * progress;
     }
+
     if (Facing::STEP_Z[facing] < 0) {
         aabb->z0 -= Facing::STEP_Z[facing] * progress;
     } else {
         aabb->z1 -= Facing::STEP_Z[facing] * progress;
     }
+
     return aabb;
 }
 

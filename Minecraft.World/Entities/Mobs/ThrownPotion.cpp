@@ -82,9 +82,9 @@ void ThrownPotion::onHit(HitResult* res) {
             Item::potion->getMobEffects(potionItem);
 
         if (mobEffects != NULL && !mobEffects->empty()) {
-            AABB* aoe = bb->grow(SPLASH_RANGE, SPLASH_RANGE / 2, SPLASH_RANGE);
+            AABB aoe = bb.grow(SPLASH_RANGE, SPLASH_RANGE / 2, SPLASH_RANGE);
             std::vector<std::shared_ptr<Entity> >* entitiesOfClass =
-                level->getEntitiesOfClass(typeid(LivingEntity), aoe);
+                level->getEntitiesOfClass(typeid(LivingEntity), &aoe);
 
             if (entitiesOfClass != NULL && !entitiesOfClass->empty()) {
                 // for (Entity e : entitiesOfClass)

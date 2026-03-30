@@ -64,9 +64,9 @@ void DetectorRailTile::checkPressed(Level* level, int x, int y, int z,
     bool shouldBePressed = false;
 
     float b = 2 / 16.0f;
-    std::vector<std::shared_ptr<Entity> >* entities = level->getEntitiesOfClass(
-        typeid(Minecart),
-        AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 1 - b, z + 1 - b));
+    AABB minecart_aabb(x + b, y, z + b, x + b - b, y + b - b, z + 1 - b);
+    std::vector<std::shared_ptr<Entity> >* entities =
+        level->getEntitiesOfClass(typeid(Minecart), &minecart_aabb);
     if (!entities->empty()) {
         shouldBePressed = true;
     }
@@ -105,10 +105,10 @@ int DetectorRailTile::getAnalogOutputSignal(Level* level, int x, int y, int z,
                                             int dir) {
     if ((level->getData(x, y, z) & RAIL_DATA_BIT) > 0) {
         float b = 2 / 16.0f;
+        AABB minecart_bb(x + b, y, z + b, x + 1 - b, y + 1 - b, z + 1 - b);
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntitiesOfClass(
-                typeid(Minecart),
-                AABB::newTemp(x + b, y, z + b, x + 1 - b, y + 1 - b, z + 1 - b),
+                typeid(Minecart), &minecart_bb,
                 EntitySelector::CONTAINER_ENTITY_SELECTOR);
 
         if (entities->size() > 0) {

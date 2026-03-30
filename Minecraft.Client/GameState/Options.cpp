@@ -89,8 +89,15 @@ const std::wstring Options::DIFFICULTY_NAMES[] = {
 const std::wstring Options::GUI_SCALE[] = {
     L"options.guiScale.auto", L"options.guiScale.small",
     L"options.guiScale.normal", L"options.guiScale.large"};
+
+#ifdef ENABLE_VSYNC
 const std::wstring Options::FRAMERATE_LIMITS[] = {
     L"performance.max", L"performance.balanced", L"performance.powersaver"};
+#else
+const std::wstring Options::FRAMERATE_LIMITS[] = {
+    L"performance.max", L"performance.balanced", L"performance.powersaver",
+    L"performance.unlimited"};
+#endif
 
 const std::wstring Options::PARTICLES[] = {L"options.particles.all",
                                            L"options.particles.decreased",
@@ -231,21 +238,24 @@ void Options::toggle(const Options::Option* option, int dir) {
     if (option == Option::PARTICLES) particles = (particles + dir) % 3;
 
     // 4J-PB - changing
-    // if (option == Option::VIEW_BOBBING) bobView = !bobView;
-    if (option == Option::VIEW_BOBBING)
-        ((dir == 0) ? bobView = false : bobView = true);
+    // 4jcraft: uncommented this so that the view bobbing option works
+    if (option == Option::VIEW_BOBBING) bobView = !bobView;
     if (option == Option::RENDER_CLOUDS) renderClouds = !renderClouds;
     if (option == Option::ADVANCED_OPENGL) {
         advancedOpengl = !advancedOpengl;
-		// 4jcraft: ensure level exists before applying
-        if(minecraft->level) minecraft->levelRenderer->allChanged();
+        // 4jcraft: ensure level exists before applying
+        if (minecraft->level) minecraft->levelRenderer->allChanged();
     }
     if (option == Option::ANAGLYPH) {
         anaglyph3d = !anaglyph3d;
         minecraft->textures->reloadAll();
     }
     if (option == Option::FRAMERATE_LIMIT)
+#ifdef ENABLE_VSYNC
         framerateLimit = (framerateLimit + dir + 3) % 3;
+#else
+        framerateLimit = (framerateLimit + dir + 4) % 4;
+#endif
 
     // 4J-PB - Change for Xbox
     // if (option ==  Option::DIFFICULTY) difficulty = (difficulty + dir) & 3;
@@ -255,13 +265,13 @@ void Options::toggle(const Options::Option* option, int dir) {
 
     if (option == Option::GRAPHICS) {
         fancyGraphics = !fancyGraphics;
-		// 4jcraft: ensure level exists before applying
-        if(minecraft->level) minecraft->levelRenderer->allChanged();
+        // 4jcraft: ensure level exists before applying
+        if (minecraft->level) minecraft->levelRenderer->allChanged();
     }
     if (option == Option::AMBIENT_OCCLUSION) {
         ambientOcclusion = !ambientOcclusion;
-		// 4jcraft: ensure level exists before applying
-        if(minecraft->level) minecraft->levelRenderer->allChanged();
+        // 4jcraft: ensure level exists before applying
+        if (minecraft->level) minecraft->levelRenderer->allChanged();
     }
 
     // 4J-PB - don't do the file save on the xbox

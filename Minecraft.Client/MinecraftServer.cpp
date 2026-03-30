@@ -2,6 +2,8 @@
 // #include "Minecraft.h"
 
 #include <ctime>
+#include <thread>
+#include <chrono>
 
 #include "Input/ConsoleInput.h"
 #include "Level/DerivedServerLevel.h"
@@ -229,7 +231,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
     // 4J-JEV: Need to wait for levelGenerationOptions to load.
     while (app.getLevelGenerationOptions() != NULL &&
            !app.getLevelGenerationOptions()->hasLoadedData())
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
     if (app.getLevelGenerationOptions() != NULL &&
         !app.getLevelGenerationOptions()->ready()) {
@@ -314,8 +316,6 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
     MinecraftServer* server = (MinecraftServer*)lpParam;
     Entity::useSmallIds();  // This thread can end up spawning entities as
                             // resources
-    AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
     Level::enableLightingCache();
     Tile::CreateNewThreadStorage();
@@ -336,7 +336,7 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
         } else {
             LeaveCriticalSection(&server->m_postProcessCS);
         }
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     } while (!server->m_postUpdateTerminate &&
              ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread));
     // #ifndef __PS3__
@@ -357,15 +357,13 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
             printf("processing request %00d\n",
                    server->m_postProcessRequests.size());
 #endif
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
 #endif
         EnterCriticalSection(&server->m_postProcessCS);
     }
     LeaveCriticalSection(&server->m_postProcessCS);
     // #endif //__PS3__
     Tile::ReleaseThreadStorage();
-    AABB::ReleaseThreadStorage();
-    Vec3::ReleaseThreadStorage();
     Level::destroyLightingCache();
 
     ShutdownManager::HasFinished(ShutdownManager::ePostProcessThread);
@@ -1080,7 +1078,7 @@ void MinecraftServer::stopServer(bool didInit) {
     // files have completed saving.
 #if defined(_DURANGO) || defined(__ORBIS__) || defined(__PSVITA__)
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 #endif
 
@@ -1582,7 +1580,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                 app.SetXuiServerAction(i, eXuiServerAction_Idle);
             }
 
-            Sleep(1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
     // else
@@ -1590,7 +1588,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
     //      while (running)
     //	{
     //         handleConsoleInputs();
-    //		Sleep(10);
+    //		std::this_thread::sleep_for(std::chrono::milliseconds(10));
     //     }
     // }
 #if 0
@@ -1649,9 +1647,6 @@ void MinecraftServer::tick() {
     for (unsigned int i = 0; i < toRemove.size(); i++) {
         ironTimers.erase(toRemove[i]);
     }
-
-    AABB::resetPool();
-    Vec3::resetPool();
 
     tickCount++;
 

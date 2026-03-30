@@ -53,9 +53,10 @@ bool AvoidPlayerGoal::canUse() {
             mob->level->getNearestPlayer(mob->shared_from_this(), maxDist));
         if (toAvoid.lock() == NULL) return false;
     } else {
+        AABB grown_bb = mob->bb.grow(maxDist, 3, maxDist);
         std::vector<std::shared_ptr<Entity> >* entities =
             mob->level->getEntitiesOfClass(
-                avoidType, mob->bb->grow(maxDist, 3, maxDist), entitySelector);
+                avoidType, &grown_bb, entitySelector);
         if (entities->empty()) {
             delete entities;
             return false;
@@ -64,18 +65,18 @@ bool AvoidPlayerGoal::canUse() {
         delete entities;
     }
 
-    Vec3* pos = RandomPos::getPosAvoid(
+    Vec3 avoid_pos(toAvoid.lock()->x, toAvoid.lock()->y, toAvoid.lock()->z);
+    auto pos = RandomPos::getPosAvoid(
         std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()), 16,
-        7,
-        Vec3::newTemp(toAvoid.lock()->x, toAvoid.lock()->y, toAvoid.lock()->z));
-    if (pos == NULL) return false;
+        7, &avoid_pos);
+    if (!pos.has_value()) return false;
     if (toAvoid.lock()->distanceToSqr(pos->x, pos->y, pos->z) <
         toAvoid.lock()->distanceToSqr(mob->shared_from_this()))
         return false;
     delete path;
     path = pathNav->createPath(pos->x, pos->y, pos->z);
     if (path == NULL) return false;
-    if (!path->endsInXZ(pos)) return false;
+    if (!path->endsInXZ(&*pos)) return false;
     return true;
 }
 

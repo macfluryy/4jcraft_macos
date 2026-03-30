@@ -57,6 +57,10 @@ static RADINLINE void break_on_err(GLint e)
 #endif
 }
 
+#ifndef GDRAW_PLATFORM_REPORT_GL_SITE
+#define GDRAW_PLATFORM_REPORT_GL_SITE(site) ((void)0)
+#endif
+
 static void report_err(GLint e)
 {
    break_on_err(e);
@@ -74,16 +78,30 @@ static void eat_gl_err(void)
    while (glGetError() != GL_NO_ERROR);
 }
 
+static void opengl_check_site(const char *site);
+
 static void opengl_check(void)
+{
+   opengl_check_site(NULL);
+}
+
+static void opengl_check_site(const char *site)
 {
 #ifdef _DEBUG
    GLint e = glGetError();
    if (e != GL_NO_ERROR) {
+      GDRAW_PLATFORM_REPORT_GL_SITE(site);
       report_err(e);
       eat_gl_err();
    }
+#else
+   (void) site;
 #endif
 }
+
+#ifndef OPENGL_CHECK_SITE
+#define OPENGL_CHECK_SITE(site) opengl_check_site(site)
+#endif
 
 static U32 is_pow2(S32 n)
 {
@@ -635,6 +653,90 @@ static void RADLINK gdraw_DescribeVertexBuffer(GDrawVertexBuffer *vbuf, GDraw_Ve
 //   Create/free (or cache) render targets
 //
 
+#ifdef __linux__
+typedef struct
+{
+   S32 free_count;
+   S32 live_count;
+   S32 locked_count;
+   S32 dead_count;
+   S32 pinned_count;
+   S32 user_owned_count;
+   S32 alloc_count;
+} GDrawHandleStateCounts;
+
+enum
+{
+   GDRAW_RT_DIAG_color_memory = 1 << 0,
+   GDRAW_RT_DIAG_color_handles = 1 << 1,
+   GDRAW_RT_DIAG_cache_bitmap = 1 << 2,
+   GDRAW_RT_DIAG_stack_depth = 1 << 3,
+   GDRAW_RT_DIAG_empty_request = 1 << 4,
+};
+
+static U32 gdraw_rt_diag_emitted = 0;
+
+static void gdraw_CountHandleStates(GDrawHandleCache *cache,
+                                    GDrawHandleStateCounts *counts)
+{
+   S32 i;
+   counts->free_count = 0;
+   counts->live_count = 0;
+   counts->locked_count = 0;
+   counts->dead_count = 0;
+   counts->pinned_count = 0;
+   counts->user_owned_count = 0;
+   counts->alloc_count = 0;
+
+   if (!cache)
+      return;
+
+   for (i = 0; i < cache->max_handles; ++i) {
+      switch (cache->handle[i].state) {
+         case GDRAW_HANDLE_STATE_free:       ++counts->free_count; break;
+         case GDRAW_HANDLE_STATE_live:       ++counts->live_count; break;
+         case GDRAW_HANDLE_STATE_locked:     ++counts->locked_count; break;
+         case GDRAW_HANDLE_STATE_dead:       ++counts->dead_count; break;
+         case GDRAW_HANDLE_STATE_pinned:     ++counts->pinned_count; break;
+         case GDRAW_HANDLE_STATE_user_owned: ++counts->user_owned_count; break;
+         case GDRAW_HANDLE_STATE_alloc:      ++counts->alloc_count; break;
+         default: break;
+      }
+   }
+}
+
+static void gdraw_ReportHandleCacheDiag(char const *label,
+                                        GDrawHandleCache *cache,
+                                        U32 once_bit,
+                                        S32 req_w,
+                                        S32 req_h)
+{
+   GDrawHandleStateCounts counts;
+
+   if (gdraw_rt_diag_emitted & once_bit)
+      return;
+   gdraw_rt_diag_emitted |= once_bit;
+
+   gdraw_CountHandleStates(cache, &counts);
+   IggyGDrawSendWarning(NULL,
+      "GDraw[%s] diag: frame=%dx%d tile=%dx%d padded=%dx%d req=%dx%d depth=%d bytes_free=%d total_bytes=%d handles free=%d live=%d locked=%d dead=%d pinned=%d user=%d alloc=%d",
+      label,
+      gdraw->frametex_width, gdraw->frametex_height,
+      gdraw->tw, gdraw->th,
+      gdraw->tpw, gdraw->tph,
+      req_w, req_h,
+      (int) (gdraw->cur - gdraw->frame),
+      cache ? cache->bytes_free : 0,
+      cache ? cache->total_bytes : 0,
+      counts.free_count, counts.live_count, counts.locked_count,
+      counts.dead_count, counts.pinned_count, counts.user_owned_count,
+      counts.alloc_count);
+}
+#else
+#define gdraw_ReportHandleCacheDiag(label, cache, once_bit, req_w, req_h) \
+   ((void) 0)
+#endif
+
 static GDrawHandle *get_rendertarget_texture(int width, int height, void *owner, GDrawStats *gstats)
 {
    S32 size;
@@ -678,13 +780,17 @@ static GDrawHandle *get_color_rendertarget(GDrawStats *gstats)
    // ran out of RTs, allocate a new one
    size = gdraw->frametex_width * gdraw->frametex_height * 4;
    if (gdraw->rendertargets.bytes_free < size) {
-      IggyGDrawSendWarning(NULL, "GDraw exceeded available rendertarget memory");
+      gdraw_ReportHandleCacheDiag("rt-color-memory", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_color_memory, gdraw->tpw, gdraw->tph);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-color] exceeded available rendertarget memory");
       return NULL;
    }
 
    t = gdraw_HandleCacheAllocateBegin(&gdraw->rendertargets);
    if (!t) {
-      IggyGDrawSendWarning(NULL, "GDraw exceeded available rendertarget handles");
+      gdraw_ReportHandleCacheDiag("rt-color-handles", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_color_handles, gdraw->tpw, gdraw->tph);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-color] exceeded available rendertarget handles");
       return t;
    }
 
@@ -992,25 +1098,31 @@ static rrbool RADLINK gdraw_TextureDrawBufferBegin(gswf_recti *region, gdraw_tex
    GDrawHandle *t;
    int k;
    if (gdraw->tw == 0 || gdraw->th == 0) {
-      IggyGDrawSendWarning(NULL, "GDraw got a request for an empty rendertarget");
+      gdraw_ReportHandleCacheDiag("rt-empty", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_empty_request, region->x1 - region->x0, region->y1 - region->y0);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-stack] got a request for an empty rendertarget");
       return false;
    }
 
    if (n >= &gdraw->frame[MAX_RENDER_STACK_DEPTH]) {
-      IggyGDrawSendWarning(NULL, "GDraw rendertarget nesting exceeded MAX_RENDER_STACK_DEPTH");
+      gdraw_ReportHandleCacheDiag("rt-stack-depth", &gdraw->rendertargets,
+         GDRAW_RT_DIAG_stack_depth, region->x1 - region->x0, region->y1 - region->y0);
+      IggyGDrawSendWarning(NULL, "GDraw[rt-stack] rendertarget nesting exceeded MAX_RENDER_STACK_DEPTH");
       return false;
    }
 
    if (owner) {
       t = get_rendertarget_texture(region->x1 - region->x0, region->y1 - region->y0, owner, gstats);
       if (!t) {
-         IggyGDrawSendWarning(NULL, "GDraw ran out of rendertargets for cacheAsBItmap");
+         gdraw_ReportHandleCacheDiag("rt-cacheAsBitmap", gdraw->texturecache,
+            GDRAW_RT_DIAG_cache_bitmap, region->x1 - region->x0, region->y1 - region->y0);
+         IggyGDrawSendWarning(NULL, "GDraw[rt-cacheAsBitmap] ran out of rendertargets");
          return false;
       }
    } else {
       t = get_color_rendertarget(gstats);
       if (!t) {
-         IggyGDrawSendWarning(NULL, "GDraw ran out of rendertargets");
+         IggyGDrawSendWarning(NULL, "GDraw[rt-color] ran out of rendertargets");
          return false;
       }
    }
@@ -1355,18 +1467,18 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
    }
 
    use_lazy_shader(prg);
-   opengl_check();
+   OPENGL_CHECK_SITE("set_render_state:use_lazy_shader");
    fvars = prg->vars[0];
    vvars = prg->vars[1];
 
    if (vformat == GDRAW_vformat_ihud1) {
       F32 wv[2][4] = { 1.0f/960,0,0,-1.0, 0,-1.0f/540,0,+1.0 };
       glUniform4fv(vvars[VAR_ihudv_worldview], 2, wv[0]);
-      opengl_check();
+      OPENGL_CHECK_SITE("set_render_state:ihud_worldview");
       glUniform4fv(vvars[VAR_ihudv_material], p->uniform_count, p->uniforms);
-      opengl_check();
+      OPENGL_CHECK_SITE("set_render_state:ihud_material");
       glUniform1f(vvars[VAR_ihudv_textmode], p->drawprim_mode ? 0.0f : 1.0f);
-      opengl_check();
+      OPENGL_CHECK_SITE("set_render_state:ihud_textmode");
    } else {
 
       // set vertex shader constants
@@ -1393,7 +1505,7 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
 
    // texture stuff
    set_texture(0, r->tex[0]);
-   opengl_check();
+   OPENGL_CHECK_SITE("set_render_state:set_texture0");
 
    if (r->tex[0] && gdraw->has_conditional_non_power_of_two && ((GDrawHandle*) r->tex[0])->handle.tex.nonpow2) {
       // only wrap mode allowed in conditional nonpow2 is clamp; this should
@@ -1490,7 +1602,7 @@ static int set_render_state(GDrawRenderState *r, S32 vformat, const int **ovvars
    else
       glDepthMask(GL_FALSE);
 
-   opengl_check();
+   OPENGL_CHECK_SITE("set_render_state:final");
    if (ovvars)
       *ovvars = vvars;
 
@@ -1611,7 +1723,7 @@ static void RADLINK gdraw_DrawIndexedTriangles(GDrawRenderState *r, GDrawPrimiti
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
    }
 
-   opengl_check();
+   OPENGL_CHECK_SITE("gdraw_DrawIndexedTriangles:final");
    tag_resources(vb, r->tex[0], r->tex[1]);
 }
 
@@ -1628,33 +1740,33 @@ static void do_screen_quad(gswf_recti *s, F32 *tc, const int *vvars, GDrawStats 
    F32 vert[4][4];
    F32 world[2*4];
 
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:begin");
 
    vert[0][0] = px0;  vert[0][1] = py0; vert[0][2] = s0; vert[0][3] = t0;
    vert[1][0] = px1;  vert[1][1] = py0; vert[1][2] = s1; vert[1][3] = t0;
    vert[2][0] = px1;  vert[2][1] = py1; vert[2][2] = s1; vert[2][3] = t1;
    vert[3][0] = px0;  vert[3][1] = py1; vert[3][2] = s0; vert[3][3] = t1;
 
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:after_vertices");
    gdraw_PixelSpace(world);
    world[2] = depth;
    set_world_projection(vvars, world);
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:after_projection");
 
    set_vertex_format(GDRAW_vformat_v2tc2, vert[0]);
    glBindBuffer(GL_ARRAY_BUFFER, 0);
    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:before_draw");
    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
    reset_vertex_format(GDRAW_vformat_v2tc2);
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:after_draw");
 
    gstats->nonzero_flags |= GDRAW_STATS_batches;
    gstats->num_batches    += 1;
    gstats->drawn_vertices += 4;
    gstats->drawn_indices  += 6;
 
-   opengl_check();
+   OPENGL_CHECK_SITE("do_screen_quad:final");
 }
 
 #ifdef GDRAW_FEWER_CLEARS
@@ -1805,7 +1917,7 @@ static void RADLINK gdraw_FilterQuad(GDrawRenderState *r, S32 x0, S32 y0, S32 x1
    glColorMask(1,1,1,1);
    glDisable(GL_BLEND);
    glDisable(GL_DEPTH_TEST);
-   opengl_check();
+   OPENGL_CHECK_SITE("gdraw_FilterQuad:pre_filter");
 
    if (r->blend_mode == GDRAW_BLEND_filter) {
       switch (r->filter) {

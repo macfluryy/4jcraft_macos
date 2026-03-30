@@ -1,4 +1,5 @@
 #pragma once
+#include <optional>
 #include "Tile.h"
 #include "../Util/Definitions.h"
 
@@ -40,13 +41,13 @@ public:
     virtual bool isSolidFace(LevelSource* level, int x, int y, int z, int face);
     virtual bool shouldRenderFace(LevelSource* level, int x, int y, int z,
                                   int face);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual int getRenderShape();
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual int getResourceCount(Random* random);
 
 private:
-    virtual Vec3* getFlow(LevelSource* level, int x, int y, int z);
+    virtual Vec3 getFlow(LevelSource* level, int x, int y, int z);
 
 public:
     virtual void handleEntityInside(Level* level, int x, int y, int z,

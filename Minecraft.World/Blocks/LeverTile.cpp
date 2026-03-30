@@ -3,11 +3,12 @@
 #include "../Headers/net.minecraft.world.level.redstone.h"
 #include "../Headers/net.minecraft.h"
 #include "LeverTile.h"
+#include "Util/AABB.h"
 
 LeverTile::LeverTile(int id)
     : Tile(id, Material::decoration, false) {}
 
-AABB* LeverTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> LeverTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 bool LeverTile::blocksLight() { return false; }
 

@@ -326,7 +326,7 @@ Icon* StairTile::getTexture(int face, int data) {
 
 int StairTile::getTickDelay(Level* level) { return base->getTickDelay(level); }
 
-AABB* StairTile::getTileAABB(Level* level, int x, int y, int z) {
+AABB StairTile::getTileAABB(Level* level, int x, int y, int z) {
     return base->getTileAABB(level, x, y, z);
 }
 
@@ -443,7 +443,7 @@ HitResult* StairTile::clip(Level* level, int xt, int yt, int zt, Vec3* a,
     for (unsigned int i = 0; i < 8; ++i) {
         HitResult* result = results[i];
         if (result != NULL) {
-            double dist = result->pos->distanceToSqr(b);
+            double dist = result->pos.distanceToSqr(*b);
 
             if (dist > closestDist) {
                 closest = result;

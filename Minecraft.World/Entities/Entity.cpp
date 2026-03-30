@@ -23,6 +23,7 @@
 #include "../../Minecraft.Client/Level/MultiPlayerLevel.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include <cstdint>
+#include <optional>
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Minecraft.Client/Network/PlayerList.h"
 
@@ -267,7 +268,7 @@ void Entity::_init(bool useSmallId, Level* level) {
     xd = yd = zd = 0.0;
     yRot = xRot = 0.0f;
     yRotO = xRotO = 0.0f;
-    bb = AABB::newPermanent(0, 0, 0, 0, 0, 0);  // 4J Was final
+    bb = AABB(0, 0, 0, 0, 0, 0);  // 4J Was final
     onGround = false;
     horizontalCollision = verticalCollision = false;
     collision = false;
@@ -375,7 +376,6 @@ Entity::Entity(Level* level,
 Entity::~Entity() {
     freeSmallId(entityId);
     delete random;
-    delete bb;
 }
 
 std::shared_ptr<SynchedEntityData> Entity::getEntityData() {
@@ -401,7 +401,7 @@ void Entity::resetPos() {
     std::shared_ptr<Entity> sharedThis = shared_from_this();
     while (true && y > 0) {
         setPos(x, y, z);
-        if (level->getCubes(sharedThis, bb)->empty()) break;
+        if (level->getCubes(sharedThis, &bb)->empty()) break;
         y += 1;
     }
 
@@ -418,9 +418,9 @@ void Entity::setSize(float w, float h) {
         bbWidth = w;
         bbHeight = h;
 
-        bb->x1 = bb->x0 + bbWidth;
-        bb->z1 = bb->z0 + bbWidth;
-        bb->y1 = bb->y0 + bbHeight;
+        bb.x1 = bb.x0 + bbWidth;
+        bb.z1 = bb.z0 + bbWidth;
+        bb.y1 = bb.y0 + bbHeight;
 
         if (bbWidth > oldW && !firstTick && !level->isClientSide) {
             move(oldW - bbWidth, 0, oldW - bbWidth);
@@ -462,8 +462,8 @@ void Entity::setPos(double x, double y, double z) {
     this->z = z;
     float w = bbWidth / 2;
     float h = bbHeight;
-    bb->set(x - w, y - heightOffset + ySlideOffset, z - w, x + w,
-            y - heightOffset + ySlideOffset + h, z + w);
+    bb = {x - w, y - heightOffset + ySlideOffset,     z - w,
+          x + w, y - heightOffset + ySlideOffset + h, z + w};
 }
 
 void Entity::turn(float xo, float yo) {
@@ -550,7 +550,7 @@ void Entity::baseTick() {
         if (t > 0) {
             level->addParticle(PARTICLE_TILECRACK(t, d),
                                x + (random->nextFloat() - 0.5) * bbWidth,
-                               bb->y0 + 0.1,
+                               bb.y0 + 0.1,
                                z + (random->nextFloat() - 0.5) * bbWidth,
                                -xd * 4, 1.5, -zd * 4);
         }
@@ -617,18 +617,18 @@ void Entity::clearFire() { onFire = 0; }
 void Entity::outOfWorld() { remove(); }
 
 bool Entity::isFree(float xa, float ya, float za, float grow) {
-    AABB* box = bb->grow(grow, grow, grow)->cloneMove(xa, ya, za);
-    AABBList* aABBs = level->getCubes(shared_from_this(), box);
+    AABB box = bb.grow(grow, grow, grow).move(xa, ya, za);
+    AABBList* aABBs = level->getCubes(shared_from_this(), &box);
     if (!aABBs->empty()) return false;
-    if (level->containsAnyLiquid(box)) return false;
+    if (level->containsAnyLiquid(&box)) return false;
     return true;
 }
 
 bool Entity::isFree(double xa, double ya, double za) {
-    AABB* box = bb->cloneMove(xa, ya, za);
-    AABBList* aABBs = level->getCubes(shared_from_this(), box);
+    AABB box = bb.move(xa, ya, za);
+    AABBList* aABBs = level->getCubes(shared_from_this(), &box);
     if (!aABBs->empty()) return false;
-    if (level->containsAnyLiquid(box)) return false;
+    if (level->containsAnyLiquid(&box)) return false;
     return true;
 }
 
@@ -636,10 +636,10 @@ void Entity::move(double xa, double ya, double za,
                   bool noEntityCubes)  // 4J - added noEntityCubes parameter
 {
     if (noPhysics) {
-        bb->move(xa, ya, za);
-        x = (bb->x0 + bb->x1) / 2.0f;
-        y = bb->y0 + heightOffset - ySlideOffset;
-        z = (bb->z0 + bb->z1) / 2.0f;
+        bb = bb.move(xa, ya, za);
+        x = (bb.x0 + bb.x1) / 2.0f;
+        y = bb.y0 + heightOffset - ySlideOffset;
+        z = (bb.z0 + bb.z1) / 2.0f;
         return;
     }
 
@@ -664,16 +664,17 @@ void Entity::move(double xa, double ya, double za,
     double yaOrg = ya;
     double zaOrg = za;
 
-    AABB* bbOrg = bb->copy();
+    AABB bbOrg = bb;
 
     bool isPlayerSneaking =
         onGround && isSneaking() && instanceof(eTYPE_PLAYER);
 
     if (isPlayerSneaking) {
         double d = 0.05;
+
+        AABB translated_bb = bb.move(xa, -1.0, 0.0);
         while (xa != 0 &&
-               level->getCubes(shared_from_this(), bb->cloneMove(xa, -1.0, 0))
-                   ->empty()) {
+               level->getCubes(shared_from_this(), &translated_bb)->empty()) {
             if (xa < d && xa >= -d)
                 xa = 0;
             else if (xa > 0)
@@ -682,9 +683,10 @@ void Entity::move(double xa, double ya, double za,
                 xa += d;
             xaOrg = xa;
         }
+
+        translated_bb = bb.move(0, -1.0, za);
         while (za != 0 &&
-               level->getCubes(shared_from_this(), bb->cloneMove(0, -1.0, za))
-                   ->empty()) {
+               level->getCubes(shared_from_this(), &translated_bb)->empty()) {
             if (za < d && za >= -d)
                 za = 0;
             else if (za > 0)
@@ -693,9 +695,10 @@ void Entity::move(double xa, double ya, double za,
                 za += d;
             zaOrg = za;
         }
+
+        translated_bb = bb.move(xa, -1.0, za);
         while (xa != 0 && za != 0 &&
-               level->getCubes(shared_from_this(), bb->cloneMove(xa, -1.0, za))
-                   ->empty()) {
+               level->getCubes(shared_from_this(), &translated_bb)->empty()) {
             if (xa < d && xa >= -d)
                 xa = 0;
             else if (xa > 0)
@@ -713,8 +716,9 @@ void Entity::move(double xa, double ya, double za,
         }
     }
 
-    AABBList* aABBs = level->getCubes(
-        shared_from_this(), bb->expand(xa, ya, za), noEntityCubes, true);
+    AABB expanded = bb.expand(xa, ya, za);
+    AABBList* aABBs =
+        level->getCubes(shared_from_this(), &expanded, noEntityCubes, true);
 
     // LAND FIRST, then x and z
     AUTO_VAR(itEndAABB, aABBs->end());
@@ -728,8 +732,8 @@ void Entity::move(double xa, double ya, double za,
         // But if we don't have the chunk data then all the collision info will
         // be incorrect as well
         for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-            ya = (*it)->clipYCollide(bb, ya);
-        bb->move(0, ya, 0);
+            ya = it->clipYCollide(bb, ya);
+        bb = bb.move(0, ya, 0);
     }
 
     if (!slide && yaOrg != ya) {
@@ -740,9 +744,9 @@ void Entity::move(double xa, double ya, double za,
 
     itEndAABB = aABBs->end();
     for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-        xa = (*it)->clipXCollide(bb, xa);
+        xa = it->clipXCollide(bb, xa);
 
-    bb->move(xa, 0, 0);
+    bb = bb.move(xa, 0, 0);
 
     if (!slide && xaOrg != xa) {
         xa = ya = za = 0;
@@ -750,8 +754,8 @@ void Entity::move(double xa, double ya, double za,
 
     itEndAABB = aABBs->end();
     for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-        za = (*it)->clipZCollide(bb, za);
-    bb->move(0, 0, za);
+        za = it->clipZCollide(bb, za);
+    bb = bb.move(0, 0, za);
 
     if (!slide && zaOrg != za) {
         xa = ya = za = 0;
@@ -767,15 +771,15 @@ void Entity::move(double xa, double ya, double za,
         ya = footSize;
         za = zaOrg;
 
-        AABB* normal = bb->copy();
-        bb->set(bbOrg);
+        AABB normal = bb;
+        bb = bbOrg;
+
         // 4J - added extra expand, as if we don't move up by footSize by
         // hitting a block above us, then overall we could be trying to move as
         // much as footSize downwards, so we'd better include cubes under our
         // feet in this list of things we might possibly collide with
-        aABBs = level->getCubes(shared_from_this(),
-                                bb->expand(xa, ya, za)->expand(0, -ya, 0),
-                                false, true);
+        AABB expanded = bb.expand(xa, ya, za).expand(0, -ya, 0);
+        aABBs = level->getCubes(shared_from_this(), &expanded, false, true);
 
         // LAND FIRST, then x and z
         itEndAABB = aABBs->end();
@@ -785,8 +789,8 @@ void Entity::move(double xa, double ya, double za,
             // all! But if we don't have the chunk data then all the collision
             // info will be incorrect as well
             for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-                ya = (*it)->clipYCollide(bb, ya);
-            bb->move(0, ya, 0);
+                ya = it->clipYCollide(bb, ya);
+            bb = bb.move(0, ya, 0);
         }
 
         if (!slide && yaOrg != ya) {
@@ -795,8 +799,8 @@ void Entity::move(double xa, double ya, double za,
 
         itEndAABB = aABBs->end();
         for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-            xa = (*it)->clipXCollide(bb, xa);
-        bb->move(xa, 0, 0);
+            xa = it->clipXCollide(bb, xa);
+        bb = bb.move(xa, 0, 0);
 
         if (!slide && xaOrg != xa) {
             xa = ya = za = 0;
@@ -804,8 +808,8 @@ void Entity::move(double xa, double ya, double za,
 
         itEndAABB = aABBs->end();
         for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-            za = (*it)->clipZCollide(bb, za);
-        bb->move(0, 0, za);
+            za = it->clipZCollide(bb, za);
+        bb = bb.move(0, 0, za);
 
         if (!slide && zaOrg != za) {
             xa = ya = za = 0;
@@ -818,21 +822,21 @@ void Entity::move(double xa, double ya, double za,
             // LAND FIRST, then x and z
             itEndAABB = aABBs->end();
             for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
-                ya = (*it)->clipYCollide(bb, ya);
-            bb->move(0, ya, 0);
+                ya = it->clipYCollide(bb, ya);
+            bb = bb.move(0, ya, 0);
         }
 
         if (xaN * xaN + zaN * zaN >= xa * xa + za * za) {
             xa = xaN;
             ya = yaN;
             za = zaN;
-            bb->set(normal);
+            bb = normal;
         }
     }
 
-    x = (bb->x0 + bb->x1) / 2.0f;
-    y = bb->y0 + heightOffset - ySlideOffset;
-    z = (bb->z0 + bb->z1) / 2.0f;
+    x = (bb.x0 + bb.x1) / 2.0f;
+    y = bb.y0 + heightOffset - ySlideOffset;
+    z = (bb.z0 + bb.z1) / 2.0f;
 
     horizontalCollision = (xaOrg != xa) || (zaOrg != za);
     verticalCollision = !m_ignoreVerticalCollisions && (yaOrg != ya);
@@ -887,7 +891,8 @@ void Entity::move(double xa, double ya, double za,
     checkInsideTiles();
 
     bool water = isInWaterOrRain();
-    if (level->containsFireTile(bb->shrink(0.001, 0.001, 0.001))) {
+    AABB shrunk = bb.shrink(0.001, 0.001, 0.001);
+    if (level->containsFireTile(&shrunk)) {
         burn(1);
         if (!water) {
             onFire++;
@@ -907,12 +912,12 @@ void Entity::move(double xa, double ya, double za,
 }
 
 void Entity::checkInsideTiles() {
-    int x0 = Mth::floor(bb->x0 + 0.001);
-    int y0 = Mth::floor(bb->y0 + 0.001);
-    int z0 = Mth::floor(bb->z0 + 0.001);
-    int x1 = Mth::floor(bb->x1 - 0.001);
-    int y1 = Mth::floor(bb->y1 - 0.001);
-    int z1 = Mth::floor(bb->z1 - 0.001);
+    int x0 = Mth::floor(bb.x0 + 0.001);
+    int y0 = Mth::floor(bb.y0 + 0.001);
+    int z0 = Mth::floor(bb.z0 + 0.001);
+    int x1 = Mth::floor(bb.x1 - 0.001);
+    int y1 = Mth::floor(bb.y1 - 0.001);
+    int z1 = Mth::floor(bb.z1 - 0.001);
 
     if (level->hasChunksAt(x0, y0, z0, x1, y1, z1)) {
         for (int x = x0; x <= x1; x++)
@@ -995,9 +1000,9 @@ bool Entity::isInWaterOrRain() {
 bool Entity::isInWater() { return wasInWater; }
 
 bool Entity::updateInWaterState() {
-    if (level->checkAndHandleWater(
-            bb->grow(0, -0.4f, 0)->shrink(0.001, 0.001, 0.001), Material::water,
-            shared_from_this())) {
+    AABB shrunk = bb.grow(0, -0.4, 0).shrink(0.001, 0.001, 0.001);
+    if (level->checkAndHandleWater(&shrunk, Material::water,
+                                   shared_from_this())) {
         if (!wasInWater && !firstTick && canCreateParticles()) {
             float speed =
                 Mth::sqrt(xd * xd * 0.2f + yd * yd + zd * zd * 0.2f) * 0.2f;
@@ -1006,7 +1011,7 @@ bool Entity::updateInWaterState() {
             playSound(eSoundType_RANDOM_SPLASH, speed,
                       1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
             MemSect(0);
-            float yt = (float)Mth::floor(bb->y0);
+            float yt = (float)Mth::floor(bb.y0);
             for (int i = 0; i < 1 + bbWidth * 20; i++) {
                 float xo = (random->nextFloat() * 2 - 1) * bbWidth;
                 float zo = (random->nextFloat() * 2 - 1) * bbWidth;
@@ -1047,8 +1052,8 @@ bool Entity::isUnderLiquid(Material* material) {
 float Entity::getHeadHeight() { return 0; }
 
 bool Entity::isInLava() {
-    return level->containsMaterial(bb->grow(-0.1f, -0.4f, -0.1f),
-                                   Material::lava);
+    AABB mat_bounds = bb.grow(-0.1, -0.4, -0.1);
+    return level->containsMaterial(&mat_bounds, Material::lava);
 }
 
 void Entity::moveRelative(float xa, float za, float speed) {
@@ -1074,7 +1079,7 @@ int Entity::getLightColor(float a) {
     int zTile = Mth::floor(z);
 
     if (level->hasChunkAt(xTile, 0, zTile)) {
-        double hh = (bb->y1 - bb->y0) * 0.66;
+        double hh = (bb.y1 - bb.y0) * 0.66;
         int yTile = Mth::floor(y - heightOffset + hh);
         return level->getLightColor(xTile, yTile, zTile, 0);
     }
@@ -1086,7 +1091,7 @@ float Entity::getBrightness(float a) {
     int xTile = Mth::floor(x);
     int zTile = Mth::floor(z);
     if (level->hasChunkAt(xTile, 0, zTile)) {
-        double hh = (bb->y1 - bb->y0) * 0.66;
+        double hh = (bb.y1 - bb.y0) * 0.66;
         int yTile = Mth::floor(y - heightOffset + hh);
         return level->getBrightness(xTile, yTile, zTile);
     }
@@ -1195,7 +1200,7 @@ bool Entity::hurt(DamageSource* source, float damage) {
 
 bool Entity::intersects(double x0, double y0, double z0, double x1, double y1,
                         double z1) {
-    return bb->intersects(x0, y0, z0, x1, y1, z1);
+    return bb.intersects(x0, y0, z0, x1, y1, z1);
 }
 
 bool Entity::isPickable() { return false; }
@@ -1215,7 +1220,7 @@ bool Entity::shouldRender(Vec3* c) {
 }
 
 bool Entity::shouldRenderAtSqrDistance(double distance) {
-    double size = bb->getSize();
+    double size = bb.getSize();
     size *= 64.0f * viewScale;
     return distance < size * size;
 }
@@ -1492,7 +1497,7 @@ void Entity::ride(std::shared_ptr<Entity> e) {
             // 4J Stu - Position should already be updated before the
             // SetEntityLinkPacket comes in
             if (!level->isClientSide)
-                moveTo(riding->x, riding->bb->y0 + riding->bbHeight, riding->z,
+                moveTo(riding->x, riding->bb.y0 + riding->bbHeight, riding->z,
                        yRot, xRot);
             riding->rider = std::weak_ptr<Entity>();
         }
@@ -1515,17 +1520,16 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
     // its definitely bad news for arrows as they are actually Meant to
     // intersect the geometry they land in slightly.
     if (GetType() != eTYPE_ARROW) {
-        AABBList* collisions = level->getCubes(
-            shared_from_this(), bb->shrink(1 / 32.0, 0, 1 / 32.0));
+        AABB shrunk = bb.shrink(1 / 32.0, 0.0, 1 / 32.0);
+        AABBList* collisions = level->getCubes(shared_from_this(), &shrunk);
         if (!collisions->empty()) {
             double yTop = 0;
             AUTO_VAR(itEnd, collisions->end());
             for (AUTO_VAR(it, collisions->begin()); it != itEnd; it++) {
-                AABB* ab = *it;  // collisions->at(i);
-                if (ab->y1 > yTop) yTop = ab->y1;
+                if (it->y1 > yTop) yTop = it->y1;
             }
 
-            y += yTop - bb->y0;
+            y += yTop - bb.y0;
             setPos(x, y, z);
         }
     }
@@ -1533,7 +1537,7 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
 
 float Entity::getPickRadius() { return 0.1f; }
 
-Vec3* Entity::getLookAngle() { return NULL; }
+std::optional<Vec3> Entity::getLookAngle() { return std::nullopt; }
 
 void Entity::handleInsidePortal() {
     if (changingDimensionDelay > 0) {
@@ -1663,7 +1667,7 @@ bool Entity::checkInTile(double x, double y, double z) {
     double yd = y - (yTile);
     double zd = z - (zTile);
 
-    std::vector<AABB*>* cubes = level->getTileCubes(bb);
+    auto* cubes = level->getTileCubes(&bb);
     if ((cubes && !cubes->empty()) ||
         level->isFullAABBTile(xTile, yTile, zTile)) {
         bool west = !level->isFullAABBTile(xTile - 1, yTile, zTile);

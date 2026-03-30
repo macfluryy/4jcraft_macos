@@ -435,7 +435,7 @@ void Player::tick() {
 		// minecart. For some reason some of the torches come off so it will also need some fixing along the way.
 		static bool madeTrack = false;
 		if( !madeTrack )
-		{	
+		{
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Item::minecart, 1 ) ) );
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Tile::goldenRail, 10 ) ) );
 			this->drop( std::shared_ptr<ItemInstance>( new ItemInstance( Tile::lever, 10 ) ) );
@@ -527,20 +527,20 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
     }
     if (useItem->getUseAnimation() == UseAnim_eat) {
         for (int i = 0; i < count; i++) {
-            Vec3* d = Vec3::newTemp((random->nextFloat() - 0.5) * 0.1,
-                                    Math::random() * 0.1 + 0.1, 0);
+            Vec3 d{(random->nextFloat() - 0.5) * 0.1,
+                   Math::random() * 0.1 + 0.1, 0};
 
-            d->xRot(-xRot * PI / 180);
-            d->yRot(-yRot * PI / 180);
+            d.xRot(-xRot * PI / 180);
+            d.yRot(-yRot * PI / 180);
 
-            Vec3* p = Vec3::newTemp((random->nextFloat() - 0.5) * 0.3,
-                                    -random->nextFloat() * 0.6 - 0.3, 0.6);
-            p->xRot(-xRot * PI / 180);
-            p->yRot(-yRot * PI / 180);
-            p = p->add(x, y + getHeadHeight(), z);
+            Vec3 p{(random->nextFloat() - 0.5) * 0.3,
+                   -random->nextFloat() * 0.6 - 0.3, 0.6};
+            p.xRot(-xRot * PI / 180);
+            p.yRot(-yRot * PI / 180);
+            p = p.add(x, y + getHeadHeight(), z);
 
             level->addParticle(PARTICLE_ICONCRACK(useItem->getItem()->id, 0),
-                               p->x, p->y, p->z, d->x, d->y + 0.05, d->z);
+                               p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
         }
 
         // 4J Stu - Was L"mob.eat" which doesnt exist
@@ -961,17 +961,17 @@ void Player::aiStep() {
     tilt += (tTilt - tilt) * 0.8f;
 
     if (getHealth() > 0) {
-        AABB* pickupArea = NULL;
+        AABB pickupArea;
         if (riding != NULL && !riding->removed) {
             // if the player is riding, also touch entities under the
             // pig/horse
-            pickupArea = bb->minmax(riding->bb)->grow(1, 0, 1);
+            pickupArea = bb.minmax(riding->bb).grow(1, 0, 1);
         } else {
-            pickupArea = bb->grow(1, .5, 1);
+            pickupArea = bb.grow(1, .5, 1);
         }
 
         std::vector<std::shared_ptr<Entity> >* entities =
-            level->getEntities(shared_from_this(), pickupArea);
+            level->getEntities(shared_from_this(), &pickupArea);
         if (entities != NULL) {
             AUTO_VAR(itEnd, entities->end());
             for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
@@ -1596,11 +1596,10 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
 
             double hRange = 8;
             double vRange = 5;
+            AABB monster_bb =
+                AABB(x, y, z, x, y, z).grow(hRange, vRange, hRange);
             std::vector<std::shared_ptr<Entity> >* monsters =
-                level->getEntitiesOfClass(
-                    typeid(Monster),
-                    AABB::newTemp(x - hRange, y - vRange, z - hRange,
-                                  x + hRange, y + vRange, z + hRange));
+                level->getEntitiesOfClass(typeid(Monster), &monster_bb);
             if (!monsters->empty()) {
                 delete monsters;
                 return NOT_SAFE;

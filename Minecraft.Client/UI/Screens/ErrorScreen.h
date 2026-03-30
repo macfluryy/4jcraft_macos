@@ -7,9 +7,9 @@ private:
 
 public:
     ErrorScreen(const std::wstring& title, const std::wstring& message);
-    virtual void init();
-    virtual void render(int xm, int ym, float a);
+    virtual void init() override;
+    virtual void render(int xm, int ym, float a) override;
 
 protected:
-    virtual void keyPressed(wchar_t eventCharacter, int eventKey);
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
 };

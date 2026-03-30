@@ -44,13 +44,12 @@ void MoveIndoorsGoal::start() {
     }
     if (mob->distanceToSqr(_doorInfo->getIndoorX(), _doorInfo->y,
                            _doorInfo->getIndoorZ()) > 16 * 16) {
-        Vec3* pos = RandomPos::getPosTowards(
+        Vec3 towards(_doorInfo->getIndoorX() + 0.5, _doorInfo->getIndoorY(),
+                     _doorInfo->getIndoorZ() + 0.5);
+        auto pos = RandomPos::getPosTowards(
             std::dynamic_pointer_cast<PathfinderMob>(mob->shared_from_this()),
-            14, 3,
-            Vec3::newTemp(_doorInfo->getIndoorX() + 0.5,
-                          _doorInfo->getIndoorY(),
-                          _doorInfo->getIndoorZ() + 0.5));
-        if (pos != NULL)
+            14, 3, &towards);
+        if (pos.has_value())
             mob->getNavigation()->moveTo(pos->x, pos->y, pos->z, 1.0f);
     } else
         mob->getNavigation()->moveTo(_doorInfo->getIndoorX() + 0.5,

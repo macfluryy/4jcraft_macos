@@ -31,14 +31,14 @@ private:
 
 public:
     StatsScreen(Screen* lastScreen, StatsCounter* stats);
-    virtual void init();
+    virtual void init() override;
     virtual void postInit();
 
 protected:
-    virtual void buttonClicked(Button* button);
+    virtual void buttonClicked(Button* button) override;
 
 public:
-    virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a) override;
 
     class GeneralStatisticsList : public ScrolledSelectionList {
     protected:

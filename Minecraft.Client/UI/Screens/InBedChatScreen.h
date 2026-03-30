@@ -7,17 +7,17 @@ private:
     static const int WAKE_UP_BUTTON = 1;
 
 public:
-    virtual void init();
-    virtual void removed();
+    virtual void init() override;
+    virtual void removed() override;
 
 protected:
-    virtual void keyPressed(wchar_t ch, int eventKey);
+    virtual void keyPressed(wchar_t ch, int eventKey) override;
 
 public:
-    virtual void render(int xm, int ym, float a);
+    virtual void render(int xm, int ym, float a) override;
 
 protected:
-    virtual void buttonClicked(Button* button);
+    virtual void buttonClicked(Button* button) override;
 
 private:
     void sendWakeUp();

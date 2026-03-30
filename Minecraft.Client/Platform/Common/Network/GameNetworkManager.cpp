@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 #include "../../Minecraft.World/Util/AABB.h"
@@ -344,7 +347,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                                                 // message I could find
         pMinecraft->progressRenderer->progressStagePercentage(
             g_NetworkManager.GetJoiningReadyPercentage());
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     if (changedMessage) {
         pMinecraft->progressRenderer->progressStagePercentage(100);
@@ -367,7 +370,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
     // this
     while (!app.DLCInstallProcessCompleted() && app.DLCInstallPending() &&
            !g_NetworkManager.IsLeavingGame()) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     if (g_NetworkManager.IsLeavingGame()) {
         MinecraftServer::HaltServer();
@@ -448,7 +451,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
 
         // 4J Stu - We were ticking this way too fast which could cause the
         // connection to time out The connections should tick at 20 per second
-        Sleep(50);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     } while ((IsInSession() && !connection->isStarted() &&
               !connection->isClosed() && !g_NetworkManager.IsLeavingGame()) ||
              tPack->isLoadingData() ||
@@ -548,7 +551,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                 // 4J Stu - We were ticking this way too fast which could cause
                 // the connection to time out The connections should tick at 20
                 // per second
-                Sleep(50);
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
                 app.DebugPrintf("<***> %d %d %d %d %d\n", IsInSession(),
                                 !connection->isStarted(),
                                 !connection->isClosed(),
@@ -947,8 +950,6 @@ bool CGameNetworkManager::IsNetworkThreadRunning() {
 int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
     Tile::CreateNewThreadStorage();
 
@@ -960,7 +961,7 @@ int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
         while (tPack->isLoadingData() ||
                (Minecraft::GetInstance()->skins->needsUIUpdate() ||
                 ui.IsReloadingSkin())) {
-            Sleep(1);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
         ui.CleanUpSkinReload();
         if (app.GetDisconnectReason() == DisconnectPacket::eDisconnect_None) {
@@ -978,7 +979,7 @@ int CGameNetworkManager::RunNetworkGameThreadProc(void* lpParameter) {
 #ifdef __PSVITA__
     // 4J-JEV: Wait for the loading/saving to finish.
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle)
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 #endif
 
     Tile::ReleaseThreadStorage();
@@ -1000,15 +1001,13 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
                  param->texturePackId)) {
             while ((Minecraft::GetInstance()->skins->needsUIUpdate() ||
                     ui.IsReloadingSkin())) {
-                Sleep(1);
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
             }
             param->levelGen->loadBaseSaveData();
         }
     }
 
     SetThreadName(-1, "Minecraft Server thread");
-    AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::UseDefaultThreadStorage();
     OldChunkStorage::UseDefaultThreadStorage();
     Entity::useSmallIds();
@@ -1021,8 +1020,6 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
         lpParameter);  // saveData, app.GetGameHostOption(eGameHostOption_All));
 
     Tile::ReleaseThreadStorage();
-    AABB::ReleaseThreadStorage();
-    Vec3::ReleaseThreadStorage();
     Level::destroyLightingCache();
 
     if (lpParameter != NULL) delete (NetworkGameInitData*)lpParameter;
@@ -1033,15 +1030,13 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
 int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);
     UIScene_PauseMenu::_ExitWorld(NULL);
 
     while (g_NetworkManager.IsInSession()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     // Xbox should always be online when receiving invites - on PS3 we need to
@@ -1186,8 +1181,6 @@ void CGameNetworkManager::_LeaveGame() {
 int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -1247,7 +1240,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     while (app.GetXuiServerAction(ProfileManager.GetPrimaryPad()) !=
                eXuiServerAction_Idle &&
            !MinecraftServer::serverHalted()) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
     app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                            eXuiServerAction_PauseServer, (void*)TRUE);
@@ -1287,7 +1280,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // if we don't do this then there's an async thread running doing this,
     // which could then finish at any inappropriate time later
     while (s_pPlatformNetworkManager->IsAddingPlayer()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 #endif
 
@@ -1318,7 +1311,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
 
     // wait for the current session to end
     while (g_NetworkManager.IsInSession()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     // Reset this flag as the we don't need to know that we only lost the room
@@ -1348,7 +1341,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
 
     // Wait for all the local players to rejoin the session
     while (g_NetworkManager.GetPlayerCount() < numLocalPlayers) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     // Restore the network player of all the server players that are local
@@ -1398,7 +1391,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // Make sure that we have transitioned through any joining/creating stages
     // so we're actually ready to set to play
     while (!s_pPlatformNetworkManager->IsReadyToPlayOrIdle()) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 #endif
 
@@ -1407,7 +1400,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
 #ifndef _XBOX
     // Wait until the message box has been closed
     while (ui.IsSceneInStack(XUSER_INDEX_ANY, eUIScene_MessageBox)) {
-        Sleep(10);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 #endif
 
@@ -1957,7 +1950,7 @@ void CGameNetworkManager::HandleInviteWhenInMenus(
 #if 0
 	while( waitHere )
 	{
-		Sleep(1);
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 #endif
 

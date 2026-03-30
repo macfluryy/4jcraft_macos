@@ -242,11 +242,10 @@ void ChestTileEntity::tick() {
         openCount = 0;
 
         float range = 5;
+        AABB player_aabb(x - range, y - range, z - range, x + 1 + range,
+                         y + 1 + range, z + 1 + range);
         std::vector<std::shared_ptr<Entity> >* players =
-            level->getEntitiesOfClass(
-                typeid(Player),
-                AABB::newTemp(x - range, y - range, z - range, x + 1 + range,
-                              y + 1 + range, z + 1 + range));
+            level->getEntitiesOfClass(typeid(Player), &player_aabb);
         for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
             std::shared_ptr<Player> player =
                 std::dynamic_pointer_cast<Player>(*it);

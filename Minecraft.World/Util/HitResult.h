@@ -7,10 +7,10 @@ public:
 
     Type type;
     int x, y, z, f;
-    Vec3* pos;
+    Vec3 pos;
     std::shared_ptr<Entity> entity;
 
-    HitResult(int x, int y, int z, int f, Vec3* pos);
+    HitResult(int x, int y, int z, int f, const Vec3& pos);
 
     HitResult(std::shared_ptr<Entity> entity);
 

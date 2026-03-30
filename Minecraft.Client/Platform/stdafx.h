@@ -5,8 +5,8 @@
 
 #pragma once
 
-//#include <xtl.h>
-//#include <xboxmath.h>
+// #include <xtl.h>
+// #include <xboxmath.h>
 
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
@@ -34,7 +34,7 @@
 #include <kernel.h>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector> 
+#include <vector>
 #include <fios2.h>
 #include <message_dialog.h>
 #include <game_live_streaming.h>
@@ -49,7 +49,7 @@
 #include <kernel.h>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector> 
+#include <vector>
 #include <touch.h>
 #include "../Platform/PSVita/PSVitaExtras/PSVitaTypes.h"
 #include "../Platform/PSVita/PSVitaExtras/PSVitaStubs.h"
@@ -71,8 +71,8 @@
 typedef unsigned __int64 __uint64;
 #endif
 
-#ifdef  _WINDOWS64
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
+#ifdef _WINDOWS64
+#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
 // Windows Header Files:
 #include <windows.h>
 #include <malloc.h>
@@ -80,13 +80,11 @@ typedef unsigned __int64 __uint64;
 // TODO: reference additional headers your program requires here
 #include <d3d11.h>
 #include <DirectXMath.h>
-using namespace DirectX; 
+using namespace DirectX;
 
 #define HRESULT_SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
 
 #endif
-
-
 
 #ifdef _DURANGO
 #include <xdk.h>
@@ -95,13 +93,11 @@ using namespace DirectX;
 #include <DirectXMath.h>
 #include <ppltasks.h>
 #include <collection.h>
-using namespace DirectX; 
+using namespace DirectX;
 #include <pix.h>
 #include "../Platform/Durango/DurangoExtras/DurangoStubs.h"
 #define HRESULT_SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
 #endif
-
-
 
 #ifdef _XBOX
 #include <xtl.h>
@@ -166,42 +162,42 @@ typedef XUID GameSessionUID;
 #include "../../Minecraft.World/Util/PerformanceTimer.h"
 
 #ifdef _XBOX
-	#include "xbox/4JLibs/inc/4J_Input.h"
-	#include "xbox/4JLibs/inc/4J_Profile.h"
-	#include "xbox/4JLibs/inc/4J_Render.h"
-	#include "xbox/4JLibs/inc/4J_XTMS.h"
-	#include "xbox/4JLibs/inc/4J_Storage.h"
-#elif defined (__PS3__)
+#include "xbox/4JLibs/inc/4J_Input.h"
+#include "xbox/4JLibs/inc/4J_Profile.h"
+#include "xbox/4JLibs/inc/4J_Render.h"
+#include "xbox/4JLibs/inc/4J_XTMS.h"
+#include "xbox/4JLibs/inc/4J_Storage.h"
+#elif defined(__PS3__)
 
-	#include "../Platform/PS3/4JLibs/inc/4J_Input.h"
-	#include "../Platform/PS3/4JLibs/inc/4J_Profile.h"
-	#include "../Platform/PS3/4JLibs/inc/4J_Render.h"
-	#include "../Platform/PS3/4JLibs/inc/4J_Storage.h"
+#include "../Platform/PS3/4JLibs/inc/4J_Input.h"
+#include "../Platform/PS3/4JLibs/inc/4J_Profile.h"
+#include "../Platform/PS3/4JLibs/inc/4J_Render.h"
+#include "../Platform/PS3/4JLibs/inc/4J_Storage.h"
 #elif defined _DURANGO
-	#include "../Platform/Durango/4JLibs/inc/4J_Input.h"
-	#include "../Platform/Durango/4JLibs/inc/4J_Profile.h"
-	#include "../Platform/Durango/4JLibs/inc/4J_Render.h"
-	#include "../Platform/Durango/4JLibs/inc/4J_Storage.h"
+#include "../Platform/Durango/4JLibs/inc/4J_Input.h"
+#include "../Platform/Durango/4JLibs/inc/4J_Profile.h"
+#include "../Platform/Durango/4JLibs/inc/4J_Render.h"
+#include "../Platform/Durango/4JLibs/inc/4J_Storage.h"
 #elif defined _WINDOWS64
-	#include "../Platform/Windows64/4JLibs/inc/4J_Input.h"	
-	#include "../Platform/Windows64/4JLibs/inc/4J_Profile.h"
-	#include "../Platform/Windows64/4JLibs/inc/4J_Render.h"
-	#include "../Platform/Windows64/4JLibs/inc/4J_Storage.h"
+#include "../Platform/Windows64/4JLibs/inc/4J_Input.h"
+#include "../Platform/Windows64/4JLibs/inc/4J_Profile.h"
+#include "../Platform/Windows64/4JLibs/inc/4J_Render.h"
+#include "../Platform/Windows64/4JLibs/inc/4J_Storage.h"
 #elif defined __linux__
-	#include "4J_Input.h"
-	#include "4J_Profile.h"
-	#include "4J_Render.h"
-	#include "4J_Storage.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "4J_Render.h"
+#include "4J_Storage.h"
 #elif defined __PSVITA__
-	#include "../Platform/PSVita/4JLibs/inc/4J_Input.h"	
-	#include "../Platform/PSVita/4JLibs/inc/4J_Profile.h"
-	#include "../Platform/PSVita/4JLibs/inc/4J_Render.h"
-	#include "../Platform/PSVita/4JLibs/inc/4J_Storage.h"
+#include "../Platform/PSVita/4JLibs/inc/4J_Input.h"
+#include "../Platform/PSVita/4JLibs/inc/4J_Profile.h"
+#include "../Platform/PSVita/4JLibs/inc/4J_Render.h"
+#include "../Platform/PSVita/4JLibs/inc/4J_Storage.h"
 #else
-	#include "../Platform/Orbis/4JLibs/inc/4J_Input.h"	
-	#include "../Platform/Orbis/4JLibs/inc/4J_Profile.h"
-	#include "../Platform/Orbis/4JLibs/inc/4J_Render.h"
-	#include "../Platform/Orbis/4JLibs/inc/4J_Storage.h"
+#include "../Platform/Orbis/4JLibs/inc/4J_Input.h"
+#include "../Platform/Orbis/4JLibs/inc/4J_Profile.h"
+#include "../Platform/Orbis/4JLibs/inc/4J_Render.h"
+#include "../Platform/Orbis/4JLibs/inc/4J_Storage.h"
 #endif
 
 #include "../Textures/Textures.h"
@@ -229,7 +225,7 @@ typedef XUID GameSessionUID;
 #include "../Platform/Common/App_enums.h"
 #include "../Platform/Common/Tutorial/TutorialEnum.h"
 #include "../Platform/Common/App_structs.h"
-//#endif
+// #endif
 
 #include "../Platform/Common/Consoles_App.h"
 #include "../Platform/Common/Minecraft_Macros.h"
@@ -242,95 +238,94 @@ typedef XUID GameSessionUID;
 #include "strings.h"
 
 #ifdef _XBOX
-	#include "../Platform/Xbox/Xbox_App.h"
-	#include "../Platform/Xbox/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/Xbox/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Xbox/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Xbox/Sentient/Include/SenClientStats.h"
-	#include "../Platform/Xbox/GameConfig/Minecraft.spa.h"
-	#include "../../Minecraft.Assets/XboxMedia/4J_strings.h"
-	#include "../Platform/Xbox/XML/ATGXmlParser.h"
-	#include "../Platform/Xbox/Leaderboards/XboxLeaderboardManager.h"
-	#include "../Platform/Xbox/Social/SocialManager.h"
-	#include "../Platform/Xbox/Audio/SoundEngine.h"
-	#include "../Platform/Xbox/Xbox_UIController.h"
+#include "../Platform/Xbox/Xbox_App.h"
+#include "../Platform/Xbox/Sentient/MinecraftTelemetry.h"
+#include "../Platform/Xbox/Sentient/DynamicConfigurations.h"
+#include "../Platform/Xbox/Sentient/SentientTelemetryCommon.h"
+#include "../Platform/Xbox/Sentient/Include/SenClientStats.h"
+#include "../Platform/Xbox/GameConfig/Minecraft.spa.h"
+#include "../../Minecraft.Assets/XboxMedia/4J_strings.h"
+#include "../Platform/Xbox/XML/ATGXmlParser.h"
+#include "../Platform/Xbox/Leaderboards/XboxLeaderboardManager.h"
+#include "../Platform/Xbox/Social/SocialManager.h"
+#include "../Platform/Xbox/Audio/SoundEngine.h"
+#include "../Platform/Xbox/Xbox_UIController.h"
 
-#elif defined (__PS3__)
-	#include "extraX64client.h"
-	#include "../Platform/PS3/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/PS3/Sentient/DynamicConfigurations.h"
-	#include "../Platform/PS3/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/PS3/PS3_App.h"
-	#include "../Platform/PS3/GameConfig/Minecraft.spa.h"
-	#include "../../Minecraft.Assets/PS3Media/4J_strings.h"
-	#include "../Platform/PS3/XML/ATGXmlParser.h"
-	#include "../Platform/PS3/Social/SocialManager.h"
-	#include "../Platform/Common/Audio/SoundEngine.h"
-	#include "../Platform/PS3/Iggy/include/iggy.h"
-	#include "../Platform/PS3/Iggy/gdraw/gdraw_ps3gcm.h"
-	#include "../Platform/PS3/PS3_UIController.h"
+#elif defined(__PS3__)
+#include "extraX64client.h"
+#include "../Platform/PS3/Sentient/MinecraftTelemetry.h"
+#include "../Platform/PS3/Sentient/DynamicConfigurations.h"
+#include "../Platform/PS3/Sentient/SentientTelemetryCommon.h"
+#include "../Platform/PS3/PS3_App.h"
+#include "../Platform/PS3/GameConfig/Minecraft.spa.h"
+#include "../../Minecraft.Assets/PS3Media/4J_strings.h"
+#include "../Platform/PS3/XML/ATGXmlParser.h"
+#include "../Platform/PS3/Social/SocialManager.h"
+#include "../Platform/Common/Audio/SoundEngine.h"
+#include "../Platform/PS3/Iggy/include/iggy.h"
+#include "../Platform/PS3/Iggy/gdraw/gdraw_ps3gcm.h"
+#include "../Platform/PS3/PS3_UIController.h"
 #elif defined _DURANGO
-	#include "../Platform/Durango/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/Durango/Durango_App.h"
-	#include "../Platform/Durango/Sentient/DynamicConfigurations.h"	
-	#include "../Platform/Durango/Sentient/TelemetryEnum.h"
-	#include "../Platform/Durango/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Durango/PresenceIds.h"
-	#include "../../Minecraft.Assets/DurangoMedia/4J_strings.h"
-	#include "../Platform/Durango/XML/ATGXmlParser.h"
-	#include "../Platform/Durango/Social/SocialManager.h"
-	#include "../Platform/Common/Audio/SoundEngine.h"
-	#include "../Platform/Durango/Iggy/include/iggy.h"
-	#include "../Platform/Durango/Iggy/gdraw/gdraw_d3d11.h"
-	#include "../Platform/Durango/Durango_UIController.h"
+#include "../Platform/Durango/Sentient/MinecraftTelemetry.h"
+#include "../Platform/Durango/Durango_App.h"
+#include "../Platform/Durango/Sentient/DynamicConfigurations.h"
+#include "../Platform/Durango/Sentient/TelemetryEnum.h"
+#include "../Platform/Durango/Sentient/SentientTelemetryCommon.h"
+#include "../Platform/Durango/PresenceIds.h"
+#include "../../Minecraft.Assets/DurangoMedia/4J_strings.h"
+#include "../Platform/Durango/XML/ATGXmlParser.h"
+#include "../Platform/Durango/Social/SocialManager.h"
+#include "../Platform/Common/Audio/SoundEngine.h"
+#include "../Platform/Durango/Iggy/include/iggy.h"
+#include "../Platform/Durango/Iggy/gdraw/gdraw_d3d11.h"
+#include "../Platform/Durango/Durango_UIController.h"
 #elif defined _WINDOWS64
-	#include "../Platform/Windows64/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/Windows64/Windows64_App.h"
-	#include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Windows64/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Windows64/GameConfig/Minecraft.spa.h"
-	#include "../Platform/Windows64/XML/ATGXmlParser.h"	
-	#include "../Platform/Windows64/Social/SocialManager.h"
-	#include "../Platform/Common/Audio/SoundEngine.h"
-	#include "../Platform/Windows64/Iggy/include/iggy.h"
-	#include "../Platform/Windows64/Iggy/gdraw/gdraw_d3d11.h"
-	#include "../Platform/Windows64/Windows64_UIController.h"
+#include "../Platform/Windows64/Sentient/MinecraftTelemetry.h"
+#include "../Platform/Windows64/Windows64_App.h"
+#include "../Platform/Windows64/Sentient/DynamicConfigurations.h"
+#include "../Platform/Windows64/Sentient/SentientTelemetryCommon.h"
+#include "../Platform/Windows64/GameConfig/Minecraft.spa.h"
+#include "../Platform/Windows64/XML/ATGXmlParser.h"
+#include "../Platform/Windows64/Social/SocialManager.h"
+#include "../Platform/Common/Audio/SoundEngine.h"
+#include "../Platform/Windows64/Iggy/include/iggy.h"
+#include "../Platform/Windows64/Iggy/gdraw/gdraw_d3d11.h"
+#include "../Platform/Windows64/Windows64_UIController.h"
 #elif defined __linux__
-	// Linux build: avoid pulling in Windows64 platform headers (they cause
-	// symbol/class redefinitions). Use Orbis-compatible stubs and Linux controller.
-	#include "../Platform/Linux/Linux_App.h"
-	#include "../Platform/Linux/Iggy/include/iggy.h"
-	#include "../Platform/Linux/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Linux/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
-	#include "../Platform/Common/Audio/SoundEngine.h"
-	#include "../Platform/Linux/Linux_UIController.h"
-	#include "../Platform/Linux/Social/SocialManager.h"
+// todo: cleanup ts
+#include "../Platform/Linux/Linux_App.h"
+#include "../Platform/Linux/Iggy/include/iggy.h"
+#include "../Platform/Linux/Sentient/SentientTelemetryCommon.h"
+#include "../Platform/Linux/Sentient/DynamicConfigurations.h"
+#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
+#include "../Platform/Common/Audio/SoundEngine.h"
+#include "../Platform/Linux/Linux_UIController.h"
+#include "../Platform/Linux/Social/SocialManager.h"
 #elif defined __PSVITA__
-	#include "../Platform/PSVita/PSVita_App.h"
-	#include "../Platform/PSVita/Sentient/SentientManager.h"
-	#include "../Platform/PSVita/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/PSVita/Sentient/DynamicConfigurations.h"
-	#include "../Platform/PSVita/GameConfig/Minecraft.spa.h"
-	#include "../Platform/PSVita/XML/ATGXmlParser.h"
-	#include "../Platform/PSVita/Social/SocialManager.h"
-	#include "../Platform/Common/Audio/SoundEngine.h"
-	#include "../Platform/PSVita/Iggy/include/iggy.h"
-	#include "../Platform/PSVita/Iggy/gdraw/gdraw_psp2.h"
-	#include "../Platform/PSVita/PSVita_UIController.h"
+#include "../Platform/PSVita/PSVita_App.h"
+#include "../Platform/PSVita/Sentient/SentientManager.h"
+#include "../Platform/PSVita/Sentient/MinecraftTelemetry.h"
+#include "../Platform/PSVita/Sentient/DynamicConfigurations.h"
+#include "../Platform/PSVita/GameConfig/Minecraft.spa.h"
+#include "../Platform/PSVita/XML/ATGXmlParser.h"
+#include "../Platform/PSVita/Social/SocialManager.h"
+#include "../Platform/Common/Audio/SoundEngine.h"
+#include "../Platform/PSVita/Iggy/include/iggy.h"
+#include "../Platform/PSVita/Iggy/gdraw/gdraw_psp2.h"
+#include "../Platform/PSVita/PSVita_UIController.h"
 #else
-	#include "../Platform/Orbis/Sentient/MinecraftTelemetry.h"
-	#include "../Platform/Orbis/Orbis_App.h"
-	#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
-	#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
-	#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
-	#include "../../Minecraft.Assets/OrbisMedia/4J_strings.h"
-	#include "../Platform/Orbis/XML/ATGXmlParser.h"	
-	#include "../Platform/Windows64/Social/SocialManager.h"
-	#include "../Platform/Common/Audio/SoundEngine.h"
-	#include "../Platform/Orbis/Iggy/include/iggy.h"
-	#include "../Platform/Orbis/Iggy/gdraw/gdraw_orbis.h"
-	#include "../Platform/Orbis/Orbis_UIController.h"
+#include "../Platform/Orbis/Sentient/MinecraftTelemetry.h"
+#include "../Platform/Orbis/Orbis_App.h"
+#include "../Platform/Orbis/Sentient/SentientTelemetryCommon.h"
+#include "../Platform/Orbis/Sentient/DynamicConfigurations.h"
+#include "../Platform/Orbis/GameConfig/Minecraft.spa.h"
+#include "../../Minecraft.Assets/OrbisMedia/4J_strings.h"
+#include "../Platform/Orbis/XML/ATGXmlParser.h"
+#include "../Platform/Windows64/Social/SocialManager.h"
+#include "../Platform/Common/Audio/SoundEngine.h"
+#include "../Platform/Orbis/Iggy/include/iggy.h"
+#include "../Platform/Orbis/Iggy/gdraw/gdraw_orbis.h"
+#include "../Platform/Orbis/Orbis_UIController.h"
 #endif
 
 #ifdef _XBOX
@@ -358,12 +353,10 @@ typedef XUID GameSessionUID;
 #include "../Platform/Common/Telemetry/TelemetryManager.h"
 
 #ifdef _XBOX
-//#include "../Platform/Xbox/Xbox_App.h"
+// #include "../Platform/Xbox/Xbox_App.h"
 #elif !defined(__PS3__)
 #include "extraX64client.h"
 #endif
-
-
 
 #ifdef _FINAL_BUILD
 #define printf BREAKTHECOMPILE

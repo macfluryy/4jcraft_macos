@@ -28,13 +28,13 @@ public:
     virtual void neighborChanged(Level* level, int x, int y, int z, int type);
     static std::shared_ptr<TileEntity> newMovingPieceEntity(
         int block, int data, int facing, bool extending, bool isSourcePiston);
-    virtual AABB* getAABB(Level* level, int x, int y, int z);
+    virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<
             TileEntity>());  // 4J added forceData, forceEntity param
 
-    AABB* getAABB(Level* level, int x, int y, int z, int tile, float progress,
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z, int tile, float progress,
                   int facing);
 
 private:

@@ -1,5 +1,4 @@
-﻿
-#include "../Minecraft.World/Platform/stdafx.h"
+﻿#include "../Minecraft.World/Platform/stdafx.h"
 
 #include "../Minecraft.World/Recipes/Recipy.h"
 #include "../Minecraft.Client/GameState/Options.h"
@@ -72,6 +71,9 @@
 #ifdef __ORBIS__
 #include <save_data_dialog.h>
 #endif
+
+#include <thread>
+#include <chrono>
 
 #include "Leaderboards/LeaderboardManager.h"
 
@@ -4720,8 +4722,6 @@ int CMinecraftApp::EthernetDisconnectReturned(
 int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // app.SetGameStarted(false);
@@ -4847,7 +4847,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     // We can't start/join a new game until the session is destroyed, so wait
     // for it to be idle again
     while (g_NetworkManager.IsInSession()) {
-        Sleep(1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     return S_OK;
@@ -6347,7 +6347,7 @@ int CMinecraftApp::WarningTrialTexturePackReturned(
 				DLCPack *pDLCPack=pDLCTexPack->getDLCInfoParentPack();//tPack->getDLCPack();
 				const char *pchPackName=wstringtofilename(pDLCPack->getName());
 				app.DebugPrintf("Texture Pack - %s\n",pchPackName);
-				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);		
+				SONYDLC *pSONYDLCInfo=app.GetSONYDLCInfo((char *)pchPackName);
 
 				if(pSONYDLCInfo!=NULL)
 				{
@@ -6368,14 +6368,14 @@ int CMinecraftApp::WarningTrialTexturePackReturned(
 #if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
 					if(app.CheckForEmptyStore(iPad)==false)
 #endif
-					{					
+					{
 						if(app.DLCAlreadyPurchased(chSkuID))
 						{
 							app.DownloadAlreadyPurchased(chSkuID);
 						}
 						else
 						{
-							app.Checkout(chSkuID);	
+							app.Checkout(chSkuID);
 						}
 					}
 				}
@@ -7712,8 +7712,6 @@ void CMinecraftApp::LeaveSaveNotificationSection() {
 int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
     // The game should be stopped while we are doing this, but the connections
     // ticks may try to create some AABB's or Vec3's
-    AABB::UseDefaultThreadStorage();
-    Vec3::UseDefaultThreadStorage();
     Compression::UseDefaultThreadStorage();
 
     // 4J-PB - Xbox 360 - 163153 - [CRASH] TU17: Code: Multiplayer: During the
@@ -7741,7 +7739,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
                eAppAction_WaitRemoteServerSaveComplete) {
         // Tick all the games connections
         pMinecraft->tickAllConnections();
-        Sleep(100);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
     if (app.GetXuiAction(ProfileManager.GetPrimaryPad()) !=
@@ -9244,7 +9242,8 @@ bool CMinecraftApp::RetrieveNextTMSPPContent() {
                         C4JStorage::ETMSStatus_Fail_ReadInProgress) {
                         app.DebugPrintf(
                             "TMSPP_ReadFile failed - read in progress\n");
-                        Sleep(50);
+                        std::this_thread::sleep_for(
+                            std::chrono::milliseconds(50));
                         LeaveCriticalSection(&csTMSPPDownloadQueue);
                         return false;
                     }
@@ -9283,7 +9282,8 @@ bool CMinecraftApp::RetrieveNextTMSPPContent() {
                         app.DebugPrintf(
                             "@@@@@@@@@@@@@@@@@ TMSPP_ReadFile failed - busy "
                             "(probably reading already)\n");
-                        Sleep(50);
+                        std::this_thread::sleep_for(
+                            std::chrono::milliseconds(50));
                         LeaveCriticalSection(&csTMSPPDownloadQueue);
                         return false;
                     }

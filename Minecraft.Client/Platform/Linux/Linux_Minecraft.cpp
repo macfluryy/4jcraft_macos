@@ -5,7 +5,6 @@
 
 #include <assert.h>
 // #include <system_service.h>
-#include <codecvt>
 #if defined(__linux__) && defined(__GLIBC__)
 #include <signal.h>
 #include <execinfo.h>
@@ -710,16 +709,6 @@ void CleanupDevice() {
 }
 #endif
 
-int StartMinecraftThreadProc(void* lpParameter) {
-    Vec3::UseDefaultThreadStorage();
-    AABB::UseDefaultThreadStorage();
-    Tesselator::CreateNewThreadStorage(1024 * 1024);
-    RenderManager.InitialiseContext();
-    Minecraft::start(std::wstring(), std::wstring());
-    delete Tesselator::getInstance();
-    return 0;
-}
-
 int main(int argc, const char* argv[]) {
 #if defined(__linux__) && defined(__GLIBC__)
     struct sigaction sa;
@@ -867,8 +856,6 @@ return -1;
     // Initialise TLS for tesselator, for this main thread
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     // Initialise TLS for AABB and Vec3 pools, for this main thread
-    AABB::CreateNewThreadStorage();
-    Vec3::CreateNewThreadStorage();
     Compression::CreateNewThreadStorage();
     OldChunkStorage::CreateNewThreadStorage();
     Level::enableLightingCache();
@@ -1103,9 +1090,6 @@ PIXEndNamedEvent();
         }
 
         // Fix for #7318 - Title crashes after short soak in the leaderboards
-        // menu A memory leak was caused because the icon renderer kept creating
-        // new Vec3's because the pool wasn't reset
-        Vec3::resetPool();
     }  // end game loop
 
     // Graceful shutdown: destroy GL context and GLFW before any C++ dtors run.
@@ -1202,7 +1186,7 @@ void FreeRichPresenceStrings() {
     vRichPresenceStrings.clear();
 }
 
-#ifdef MEMORY_TRACKING
+#if 0  // #ifdef MEMORY_TRACKING
 
 int totalAllocGen = 0;
 std::unordered_map<int, int> allocCounts;

@@ -88,7 +88,7 @@ FishingHook::FishingHook(Level* level, std::shared_ptr<Player> mob)
 void FishingHook::defineSynchedData() {}
 
 bool FishingHook::shouldRenderAtSqrDistance(double distance) {
-    double size = bb->getSize() * 4;
+    double size = bb.getSize() * 4;
     size *= 64.0f;
     return distance < size * size;
 }
@@ -175,7 +175,7 @@ void FishingHook::tick() {
                 hookedIn = nullptr;
             else {
                 x = hookedIn->x;
-                y = hookedIn->bb->y0 + hookedIn->bbHeight * 0.8;
+                y = hookedIn->bb.y0 + hookedIn->bbHeight * 0.8;
                 z = hookedIn->z;
                 return;
             }
@@ -203,18 +203,19 @@ void FishingHook::tick() {
         flightTime++;
     }
 
-    Vec3* from = Vec3::newTemp(x, y, z);
-    Vec3* to = Vec3::newTemp(x + xd, y + yd, z + zd);
-    HitResult* res = level->clip(from, to);
+    Vec3 from(x, y, z);
+    Vec3 to(x + xd, y + yd, z + zd);
+    HitResult* res = level->clip(&from, &to);
 
-    from = Vec3::newTemp(x, y, z);
-    to = Vec3::newTemp(x + xd, y + yd, z + zd);
+    from = Vec3(x, y, z);
+    to = Vec3(x + xd, y + yd, z + zd);
     if (res != NULL) {
-        to = Vec3::newTemp(res->pos->x, res->pos->y, res->pos->z);
+        to = Vec3(res->pos.x, res->pos.y, res->pos.z);
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
-    std::vector<std::shared_ptr<Entity> >* objects = level->getEntities(
-        shared_from_this(), bb->expand(xd, yd, zd)->grow(1, 1, 1));
+    AABB grown = bb.expand(xd, yd, zd).grow(1, 1, 1);
+    std::vector<std::shared_ptr<Entity> >* objects =
+        level->getEntities(shared_from_this(), &grown);
     double nearest = 0;
     AUTO_VAR(itEnd, objects->end());
     for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
@@ -222,10 +223,10 @@ void FishingHook::tick() {
         if (!e->isPickable() || (e == owner && flightTime < 5)) continue;
 
         float rr = 0.3f;
-        AABB* bb = e->bb->grow(rr, rr, rr);
-        HitResult* p = bb->clip(from, to);
+        AABB bb = e->bb.grow(rr, rr, rr);
+        HitResult* p = bb.clip(from, to);
         if (p != NULL) {
-            double dd = from->distanceTo(p->pos);
+            double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {
                 hitEntity = e;
                 nearest = dd;
@@ -283,12 +284,12 @@ void FishingHook::tick() {
     int steps = 5;
     double waterPercentage = 0;
     for (int i = 0; i < steps; i++) {
-        double y0 = bb->y0 + (bb->y1 - bb->y0) * (i + 0) / steps - 2 / 16.0f +
+        double y0 = bb.y0 + (bb.y1 - bb.y0) * (i + 0) / steps - 2 / 16.0f +
                     2 / 16.0f;
-        double y1 = bb->y0 + (bb->y1 - bb->y0) * (i + 1) / steps - 2 / 16.0f +
+        double y1 = bb.y0 + (bb.y1 - bb.y0) * (i + 1) / steps - 2 / 16.0f +
                     2 / 16.0f;
-        AABB* bb2 = AABB::newTemp(bb->x0, y0, bb->z0, bb->x1, y1, bb->z1);
-        if (level->containsLiquid(bb2, Material::water)) {
+        AABB bb2(bb.x0, y0, bb.z0, bb.x1, y1, bb.z1);
+        if (level->containsLiquid(&bb2, Material::water)) {
             waterPercentage += 1.0 / steps;
         }
     }
@@ -308,7 +309,7 @@ void FishingHook::tick() {
                 playSound(
                     eSoundType_RANDOM_SPLASH, 0.25f,
                     1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
-                float yt = (float)Mth::floor(bb->y0);
+                float yt = (float)Mth::floor(bb.y0);
                 for (int i = 0; i < 1 + bbWidth * 20; i++) {
                     float xo = (random->nextFloat() * 2 - 1) * bbWidth;
                     float zo = (random->nextFloat() * 2 - 1) * bbWidth;

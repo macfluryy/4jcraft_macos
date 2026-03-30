@@ -7,6 +7,7 @@
 #include "../Util/SoundTypes.h"
 #include "../../Minecraft.Client/MinecraftServer.h"
 #include "../../Minecraft.Client/Network/PlayerList.h"
+#include "Util/AABB.h"
 
 // AP - added for Vita to set Alpha Cut out
 #include "../IO/Streams/IntBuffer.h"
@@ -57,7 +58,7 @@ void FireTile::setFlammable(int id, int flame, int burn) {
     burnOdds[id] = burn;
 }
 
-AABB* FireTile::getAABB(Level* level, int x, int y, int z) { return NULL; }
+std::optional<AABB> FireTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
 
 bool FireTile::blocksLight() { return false; }
 

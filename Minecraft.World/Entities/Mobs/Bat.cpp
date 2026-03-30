@@ -185,7 +185,7 @@ void Bat::addAdditonalSaveData(CompoundTag* entityTag) {
 }
 
 bool Bat::canSpawn() {
-    int yt = Mth::floor(bb->y0);
+    int yt = Mth::floor(bb.y0);
     if (yt >= level->seaLevel) return false;
 
     int xt = Mth::floor(x);

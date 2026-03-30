@@ -1,5 +1,8 @@
 #pragma once
 
+#include <optional>
+
+#include "../../Util/Vec3.h"
 #include "Goal.h"
 
 class FleeSunGoal : public Goal {
@@ -17,7 +20,7 @@ public:
     virtual void start();
 
 private:
-    Vec3* getHidePos();
+    std::optional<Vec3> getHidePos();
 
 public:
     // 4J Added override to update ai elements when loading entity from

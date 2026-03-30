@@ -13,6 +13,8 @@
 #include "../../../Minecraft.Client/Level/ServerLevel.h"
 #include "../../Headers/com.mojang.nbt.h"
 #include "Minecart.h"
+#include <cstddef>
+#include <optional>
 #include "../../Util/SharedConstants.h"
 
 const int Minecart::EXITS[][2][3] = {
@@ -96,7 +98,7 @@ void Minecart::defineSynchedData() {
 
 AABB* Minecart::getCollideAgainstBox(std::shared_ptr<Entity> entity) {
     if (entity->isPushable()) {
-        return entity->bb;
+        return &entity->bb;
     }
     return NULL;
 }
@@ -129,10 +131,9 @@ bool Minecart::hurt(DamageSource* source, float hurtDamage) {
     if (dynamic_cast<EntityDamageSource*>(source) != NULL) {
         std::shared_ptr<Entity> attacker = source->getDirectEntity();
 
-        if (attacker->instanceof
-            (eTYPE_PLAYER) &&
-                !std::dynamic_pointer_cast<Player>(attacker)
-                     ->isAllowedToHurtEntity(shared_from_this())) {
+        if (attacker->instanceof(eTYPE_PLAYER) &&
+            !std::dynamic_pointer_cast<Player>(attacker)->isAllowedToHurtEntity(
+                shared_from_this())) {
             return false;
         }
     }
@@ -149,9 +150,9 @@ bool Minecart::hurt(DamageSource* source, float hurtDamage) {
     if (rider.lock() != NULL && rider.lock() == source->getEntity())
         hurtDamage += 1;
 
-    bool creativePlayer =
-        source->getEntity() != NULL && source->getEntity()->instanceof
-        (eTYPE_PLAYER) && std::dynamic_pointer_cast<Player>(source->getEntity())
+    bool creativePlayer = source->getEntity() != NULL &&
+                          source->getEntity()->instanceof(eTYPE_PLAYER) &&
+                          std::dynamic_pointer_cast<Player>(source->getEntity())
                               ->abilities.instabuild;
 
     if (creativePlayer || getDamage() > 20 * 2) {
@@ -304,14 +305,15 @@ void Minecart::tick() {
         }
         setRot(yRot, xRot);
 
+        AABB grown = bb.grow(0.2, 0, 0.2);
         std::vector<std::shared_ptr<Entity> >* entities =
-            level->getEntities(shared_from_this(), bb->grow(0.2f, 0, 0.2f));
+            level->getEntities(shared_from_this(), &grown);
         if (entities != NULL && !entities->empty()) {
             AUTO_VAR(itEnd, entities->end());
             for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
                 std::shared_ptr<Entity> e = (*it);  // entities->at(i);
-                if (e != rider.lock() && e->isPushable() && e->instanceof
-                    (eTYPE_MINECART)) {
+                if (e != rider.lock() && e->isPushable() &&
+                    e->instanceof(eTYPE_MINECART)) {
                     std::shared_ptr<Minecart> cart =
                         std::dynamic_pointer_cast<Minecart>(e);
                     cart->m_bHasPushedCartThisTick = false;
@@ -362,7 +364,7 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
                               double slideSpeed, int tile, int data) {
     fallDistance = 0;
 
-    Vec3* oldPos = getPos(x, y, z);
+    auto oldPos = getPos(x, y, z);
     y = yt;
 
     bool powerTrack = false;
@@ -405,7 +407,7 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
     xd = pow * xD / dd;
     zd = pow * zD / dd;
 
-    if (rider.lock() != NULL && rider.lock()->instanceof (eTYPE_LIVINGENTITY)) {
+    if (rider.lock() != NULL && rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
         std::shared_ptr<LivingEntity> living =
             std::dynamic_pointer_cast<LivingEntity>(rider.lock());
 
@@ -490,8 +492,8 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
 
     applyNaturalSlowdown();
 
-    Vec3* newPos = getPos(x, y, z);
-    if (newPos != NULL && oldPos != NULL) {
+    auto newPos = getPos(x, y, z);
+    if (newPos.has_value() && oldPos.has_value()) {
         double speed = (oldPos->y - newPos->y) * 0.05;
 
         pow = sqrt(xd * xd + zd * zd);
@@ -550,7 +552,8 @@ void Minecart::applyNaturalSlowdown() {
     }
 }
 
-Vec3* Minecart::getPosOffs(double x, double y, double z, double offs) {
+std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z,
+                                         double offs) {
     int xt = Mth::floor(x);
     int yt = Mth::floor(y);
     int zt = Mth::floor(z);
@@ -595,10 +598,11 @@ Vec3* Minecart::getPosOffs(double x, double y, double z, double offs) {
 
         return getPos(x, y, z);
     }
-    return NULL;
+
+    return std::nullopt;
 }
 
-Vec3* Minecart::getPos(double x, double y, double z) {
+std::optional<Vec3> Minecart::getPos(double x, double y, double z) {
     int xt = Mth::floor(x);
     int yt = Mth::floor(y);
     int zt = Mth::floor(z);
@@ -654,9 +658,10 @@ Vec3* Minecart::getPos(double x, double y, double z) {
         z = z0 + zD * progress;
         if (yD < 0) y += 1;
         if (yD > 0) y += 0.5;
-        return Vec3::newTemp(x, y, z);
+        return Vec3(x, y, z);
     }
-    return NULL;
+
+    return std::nullopt;
 }
 
 void Minecart::readAdditionalSaveData(CompoundTag* tag) {
@@ -689,10 +694,9 @@ void Minecart::push(std::shared_ptr<Entity> e) {
     if (level->isClientSide) return;
 
     if (e == rider.lock()) return;
-    if (e->instanceof (eTYPE_LIVINGENTITY) && !e->instanceof
-        (eTYPE_PLAYER) && !e->instanceof
-        (eTYPE_VILLAGERGOLEM) && (getType() == TYPE_RIDEABLE) &&
-            (xd * xd + zd * zd > 0.01)) {
+    if (e->instanceof(eTYPE_LIVINGENTITY) && !e->instanceof(eTYPE_PLAYER) &&
+        !e->instanceof(eTYPE_VILLAGERGOLEM) && (getType() == TYPE_RIDEABLE) &&
+        (xd * xd + zd * zd > 0.01)) {
         if ((rider.lock() == NULL) && (e->riding == NULL)) {
             e->ride(shared_from_this());
         }
@@ -718,7 +722,7 @@ void Minecart::push(std::shared_ptr<Entity> e) {
         xa *= 0.5;
         za *= 0.5;
 
-        if (e->instanceof (eTYPE_MINECART)) {
+        if (e->instanceof(eTYPE_MINECART)) {
             double xo = e->x - x;
             double zo = e->z - z;
 
@@ -726,12 +730,13 @@ void Minecart::push(std::shared_ptr<Entity> e) {
             // other
             //  Fix for #38882 - TU5: Gameplay: Minecart with furnace is not
             //  able to move another minecart on the rail.
-            Vec3* dir = Vec3::newTemp(xo, 0, zo)->normalize();
-            Vec3* facing =
-                Vec3::newTemp(cos(yRot * PI / 180), 0, sin(yRot * PI / 180))
-                    ->normalize();
+            Vec3 dir(xo, 0, zo);
+            dir = dir.normalize();
 
-            double dot = abs(dir->dot(facing));
+            Vec3 facing(cos(yRot * PI / 180), 0, sin(yRot * PI / 180));
+            facing = facing.normalize();
+
+            double dot = abs(dir.dot(facing));
 
             if (dot < 0.8f) {
                 return;

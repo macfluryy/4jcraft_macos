@@ -93,14 +93,14 @@ void Blaze::aiStep() {
 }
 
 void Blaze::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
-    if (attackTime <= 0 && d < 2.0f && target->bb->y1 > bb->y0 &&
-        target->bb->y0 < bb->y1) {
+    if (attackTime <= 0 && d < 2.0f && target->bb.y1 > bb.y0 &&
+        target->bb.y0 < bb.y1) {
         attackTime = 20;
         doHurtTarget(target);
     } else if (d < 30) {
         double xd = target->x - x;
         double yd =
-            (target->bb->y0 + target->bbHeight / 2) - (y + bbHeight / 2);
+            (target->bb.y0 + target->bbHeight / 2) - (y + bbHeight / 2);
         double zd = target->z - z;
 
         if (attackTime == 0) {

@@ -1,3 +1,6 @@
+#include <thread>
+#include <chrono>
+
 #include "../Platform/stdafx.h"
 #include "ServerChunkCache.h"
 #include "../Level/ServerLevel.h"
@@ -277,7 +280,7 @@ LevelChunk* ServerChunkCache::create(
     }
 
 #ifdef __PS3__
-    Sleep(1);
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
 #endif  // __PS3__
     return chunk;
 }

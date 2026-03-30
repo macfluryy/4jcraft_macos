@@ -33,7 +33,7 @@ PathFinder::~PathFinder() {
 }
 
 Path* PathFinder::findPath(Entity* from, Entity* to, float maxDist) {
-    return findPath(from, to->x, to->bb->y0, to->z, maxDist);
+    return findPath(from, to->x, to->bb.y0, to->z, maxDist);
 }
 
 Path* PathFinder::findPath(Entity* from, int x, int y, int z, float maxDist) {
@@ -46,9 +46,9 @@ Path* PathFinder::findPath(Entity* e, double xt, double yt, double zt,
     nodes.clear();
 
     bool resetAvoidWater = avoidWater;
-    int startY = Mth::floor(e->bb->y0 + 0.5f);
+    int startY = Mth::floor(e->bb.y0 + 0.5f);
     if (canFloat && e->isInWater()) {
-        startY = (int)(e->bb->y0);
+        startY = (int)(e->bb.y0);
         int tileId = level->getTile((int)Mth::floor(e->x), startY,
                                     (int)Mth::floor(e->z));
         while (tileId == Tile::water_Id || tileId == Tile::calmWater_Id) {
@@ -59,9 +59,9 @@ Path* PathFinder::findPath(Entity* e, double xt, double yt, double zt,
         resetAvoidWater = avoidWater;
         avoidWater = false;
     } else
-        startY = Mth::floor(e->bb->y0 + 0.5f);
+        startY = Mth::floor(e->bb.y0 + 0.5f);
 
-    Node* from = getNode((int)floor(e->bb->x0), startY, (int)floor(e->bb->z0));
+    Node* from = getNode((int)floor(e->bb.x0), startY, (int)floor(e->bb.z0));
     Node* to = getNode((int)floor(xt - e->bbWidth / 2), (int)floor(yt),
                        (int)floor(zt - e->bbWidth / 2));
 

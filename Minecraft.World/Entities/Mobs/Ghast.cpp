@@ -119,7 +119,7 @@ void Ghast::serverAiStep() {
         target->distanceToSqr(shared_from_this()) < maxDist * maxDist) {
         double xdd = target->x - x;
         double ydd =
-            (target->bb->y0 + target->bbHeight / 2) - (y + bbHeight / 2);
+            (target->bb.y0 + target->bbHeight / 2) - (y + bbHeight / 2);
         double zdd = target->z - z;
         yBodyRot = yRot = -(float)atan2(xdd, zdd) * 180 / PI;
 
@@ -141,10 +141,10 @@ void Ghast::serverAiStep() {
                         ydd, zdd));
                 ie->explosionPower = explosionPower;
                 double d = 4;
-                Vec3* v = getViewVector(1);
-                ie->x = x + v->x * d;
+                Vec3 v = getViewVector(1);
+                ie->x = x + v.x * d;
                 ie->y = y + bbHeight / 2 + 0.5f;
-                ie->z = z + v->z * d;
+                ie->z = z + v.z * d;
                 level->addEntity(ie);
                 charge = -40;
             }
@@ -169,11 +169,11 @@ bool Ghast::canReach(double xt, double yt, double zt, double dist) {
     double xd = (xTarget - x) / dist;
     double yd = (yTarget - y) / dist;
     double zd = (zTarget - z) / dist;
+    AABB probe = bb;
 
-    AABB* bb = this->bb->copy();
     for (int d = 1; d < dist; d++) {
-        bb->move(xd, yd, zd);
-        if (!level->getCubes(shared_from_this(), bb)->empty()) return false;
+        probe = probe.move(xd, yd, zd);
+        if (!level->getCubes(shared_from_this(), &probe)->empty()) return false;
     }
 
     return true;

@@ -16,7 +16,7 @@ protected:
 
 public:
     void registerIcons(IconRegister* iconRegister);
-    AABB* getAABB(Level* level, int x, int y, int z);
+    std::optional<AABB> getAABB(Level* level, int x, int y, int z);
 
 public:
     static float getHeight(Level* level, int x, int y, int z);

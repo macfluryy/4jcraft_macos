@@ -91,7 +91,7 @@ void Slime::tick() {
             float d = random->nextFloat() * 0.5f + 0.5f;
             float xd = Mth::sin(dir) * size * 0.5f * d;
             float zd = Mth::cos(dir) * size * 0.5f * d;
-            level->addParticle(getParticleName(), x + xd, bb->y0, z + zd, 0, 0,
+            level->addParticle(getParticleName(), x + xd, bb.y0, z + zd, 0, 0,
                                0);
         }
 

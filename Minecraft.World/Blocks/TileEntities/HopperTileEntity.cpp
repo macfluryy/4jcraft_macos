@@ -345,9 +345,10 @@ std::shared_ptr<Container> HopperTileEntity::getSourceContainer(
 
 std::shared_ptr<ItemEntity> HopperTileEntity::getItemAt(Level* level, double xt,
                                                         double yt, double zt) {
-    std::vector<std::shared_ptr<Entity> >* entities = level->getEntitiesOfClass(
-        typeid(ItemEntity), AABB::newTemp(xt, yt, zt, xt + 1, yt + 1, zt + 1),
-        EntitySelector::ENTITY_STILL_ALIVE);
+    AABB item_entity_aabb{xt, yt, zt, xt + 1, yt + 1, zt + 1};
+    std::vector<std::shared_ptr<Entity> >* entities =
+        level->getEntitiesOfClass(typeid(ItemEntity), &item_entity_aabb,
+                                  EntitySelector::ENTITY_STILL_ALIVE);
 
     if (entities->size() > 0) {
         std::shared_ptr<ItemEntity> out =
@@ -384,9 +385,9 @@ std::shared_ptr<Container> HopperTileEntity::getContainerAt(Level* level,
     }
 
     if (result == NULL) {
+        AABB block_above{x, y, z, x + 1, y + 1, z + 1};
         std::vector<std::shared_ptr<Entity> >* entities = level->getEntities(
-            nullptr, AABB::newTemp(x, y, z, x + 1, y + 1, z + 1),
-            EntitySelector::CONTAINER_ENTITY_SELECTOR);
+            nullptr, &block_above, EntitySelector::CONTAINER_ENTITY_SELECTOR);
 
         if ((entities != NULL) && (entities->size() > 0)) {
             result = std::dynamic_pointer_cast<Container>(

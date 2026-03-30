@@ -66,16 +66,15 @@ void AchievementPopup::prepareWindow() {
 }
 
 void AchievementPopup::render() {
-// 4J Unused
 #if ENABLE_JAVA_GUIS
-    if (Minecraft::warezTime > 0)
-	{
+    if (Minecraft::warezTime > 0) {
         glDisable(GL_DEPTH_TEST);
         glDepthMask(false);
         Lighting::turnOff();
         prepareWindow();
 
-        std::wstring title = L"Minecraft " + SharedConstants::VERSION_STRING + L"   Unlicensed Copy :(";
+        std::wstring title = L"Minecraft " + SharedConstants::VERSION_STRING +
+                             L"   Unlicensed Copy :(";
         std::wstring msg1 = L"(Or logged in from another location)";
         std::wstring msg2 = L"Purchase at minecraft.net";
 
@@ -89,15 +88,11 @@ void AchievementPopup::render() {
     if (ach == NULL || startTime == 0) return;
 
     double time = (System::currentTimeMillis() - startTime) / 3000.0;
-    if (isHelper)
-	{
-    }
-	else if (!isHelper && (time < 0 || time > 1))
-	{
+    if (isHelper) {
+    } else if (!isHelper && (time < 0 || time > 1)) {
         startTime = 0;
         return;
     }
-
 
     prepareWindow();
     glDisable(GL_DEPTH_TEST);
@@ -112,7 +107,7 @@ void AchievementPopup::render() {
     yo = yo * yo;
 
     int xx = width - 160;
-    int yy = 0 - (int) (yo * 36);
+    int yy = 0 - (int)(yo * 36);
     int tex = mc->textures->loadTexture(TN_ACHIEVEMENT_BG);
     glColor4f(1, 1, 1, 1);
     glEnable(GL_TEXTURE_2D);
@@ -122,13 +117,13 @@ void AchievementPopup::render() {
     blit(xx, yy, 96, 202, 160, 32);
 
     // if (isHelper)
-	// {
+    // {
     //     mc->font->drawWordWrap(desc, xx + 30, yy + 7, 120, 0xffffffff);
     // }
-	// else
-	// {
-        mc->font->draw(title, xx + 30, yy + 7, 0xffffff00);
-        mc->font->draw(desc, xx + 30, yy + 18, 0xffffffff);
+    // else
+    // {
+    mc->font->draw(title, xx + 30, yy + 7, 0xffffff00);
+    mc->font->draw(desc, xx + 30, yy + 18, 0xffffffff);
     // }
 
     glPushMatrix();

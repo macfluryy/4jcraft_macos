@@ -18,7 +18,7 @@ bool WaterAnimal::isWaterMob() {
     return true;  // prevent drowning
 }
 
-bool WaterAnimal::canSpawn() { return level->isUnobstructed(bb); }
+bool WaterAnimal::canSpawn() { return level->isUnobstructed(&bb); }
 
 int WaterAnimal::getAmbientSoundInterval() { return 20 * 6; }
 

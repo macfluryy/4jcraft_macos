@@ -1,22 +1,8 @@
-name: Clang Format
+name: Format Check
 
 on:
   push:
-    paths:
-      - '**.cpp'
-      - '**.h'
-      - '**.c'
-      - '**.cc'
-      - '**.cxx'
-      - '**.hh'
-      - '**.hpp'
-      - '**.hxx'
-      - '**.inl'
-      - '.clang-format'
-      - '.github/workflows/clang-format.yml'
-      - '.github/scripts/check-clang-format.sh'
-  pull_request:
-    paths:
+    paths: &workflow_paths
       - '**.cpp'
       - '**.h'
       - '**.c'
@@ -30,26 +16,29 @@ on:
       - '.github/workflows/clang-format.yml'
       - '.github/scripts/check-clang-format.sh'
 
+  pull_request:
+    paths: *workflow_paths
+
 jobs:
   clang-format:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     concurrency:
       group: clang-format-${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Install clang-format
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-format-19
+        uses: daaku/gh-action-apt-install@v4
+        with:
+          packages: clang-format
 
       - name: Check changed files
         env:
-          CLANG_FORMAT_BIN: clang-format-19
+          CLANG_FORMAT_BIN: clang-format
           EVENT_NAME: ${{ github.event_name }}
           PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}

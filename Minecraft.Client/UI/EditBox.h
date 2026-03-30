@@ -18,6 +18,8 @@ private:
 public:
     bool inFocus;
     bool active;
+    bool enableBackgroundDrawing;  // 4jcraft: for toggling the background
+                                   // rendering (mainly for RepairScreen)
 
 private:
     Screen* screen;
@@ -34,4 +36,7 @@ public:
     void render();
     void setMaxLength(int maxLength);
     int getMaxLength();
+
+    // 4jcraft: for toggling the background rendering (mainly for RepairScreen)
+    void setEnableBackgroundDrawing(bool enable);
 };

@@ -4,6 +4,7 @@
 #include "../Headers/net.minecraft.world.level.h"
 #include "../Headers/net.minecraft.h"
 #include "../Level/Events/LevelEvent.h"
+#include "Util/Direction.h"
 
 FenceGateTile::FenceGateTile(int id)
     : DirectionalTile(id, Material::wood, false) {}
@@ -17,19 +18,29 @@ bool FenceGateTile::mayPlace(Level* level, int x, int y, int z) {
     return Tile::mayPlace(level, x, y, z);
 }
 
-AABB* FenceGateTile::getAABB(Level* level, int x, int y, int z) {
+std::optional<AABB> FenceGateTile::getAABB(Level* level, int x, int y, int z) {
     int data = level->getData(x, y, z);
     if (isOpen(data)) {
-        return NULL;
+        return std::nullopt;
     }
-    // 4J Brought forward change from 1.2.3 to fix hit box rotation
-    if (data == Direction::NORTH || data == Direction::SOUTH) {
-        return AABB::newTemp(x, y, z + 6.0f / 16.0f, x + 1, y + 1.5f,
-                             z + 10.0f / 16.0f);
+
+    switch (data) {
+        case Direction::NORTH:
+        case Direction::SOUTH:
+            return AABB{static_cast<double>(x),
+                        static_cast<double>(y),
+                        z + 6.0 / 16.0,
+                        x + 1.0,
+                        y + 1.5,
+                        z + 10.0 / 16.0};
+        default:
+            return AABB{x + 6.0 / 16.0,
+                        static_cast<double>(y),
+                        static_cast<double>(z),
+                        x + 10.0 / 16.0,
+                        y + 1.5,
+                        z + 1.0};
     }
-    return AABB::newTemp(x + 6.0f / 16.0f, y, z, x + 10.0f / 16.0f, y + 1.5f,
-                         z + 1);
-    // return AABB::newTemp(x, y, z, x + 1, y + 1.5f, z + 1);
 }
 
 // 4J - Brought forward from 1.2.3 to fix hit box rotation

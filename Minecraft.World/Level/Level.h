@@ -10,6 +10,7 @@
 #include "../WorldGen/Biomes/Biome.h"
 #include "../Util/C4JThread.h"
 #include <cstdint>
+#include <unordered_set>
 
 #ifdef __PSVITA__
 #include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/CustomSet.h"
@@ -118,7 +119,7 @@ public:
 
 private:
     std::vector<std::shared_ptr<TileEntity> > pendingTileEntities;
-    std::vector<std::shared_ptr<TileEntity> > tileEntitiesToUnload;
+    std::unordered_set<std::shared_ptr<TileEntity> > tileEntitiesToUnload;
     bool updatingTileEntities;
 
 public:
@@ -365,13 +366,13 @@ public:
                        false);  // 4J: Added noEntities & blockAtEdge parameters
     int getOldSkyDarken(float a);  // 4J - change brought forward from 1.8.2
     float getSkyDarken(float a);   // 4J - change brought forward from 1.8.2
-    Vec3* getSkyColor(std::shared_ptr<Entity> source, float a);
+    Vec3 getSkyColor(std::shared_ptr<Entity> source, float a);
     float getTimeOfDay(float a);
     int getMoonPhase();
     float getMoonBrightness();
     float getSunAngle(float a);
-    Vec3* getCloudColor(float a);
-    Vec3* getFogColor(float a);
+    Vec3 getCloudColor(float a);
+    Vec3 getFogColor(float a);
     int getTopRainBlock(int x, int z);
     int getTopSolidBlock(int x, int z);
     bool biomeHasRain(int x, int z);  // 4J added
@@ -665,3 +666,4 @@ public:
 
     bool canCreateMore(eINSTANCEOF type, ESPAWN_TYPE spawnType);
 };
+#include <unordered_set>

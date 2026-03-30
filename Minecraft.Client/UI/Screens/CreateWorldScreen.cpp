@@ -30,8 +30,8 @@ void CreateWorldScreen::tick() {
     if (moreOptions) seedEdit->tick();
 
     // 4J - debug code - to be removed
-    static int count = 0;
-    if (count++ == 100) buttonClicked(buttons[0]);
+    // static int count = 0;
+    // if (count++ == 100) buttonClicked(buttons[0]);
 }
 
 void CreateWorldScreen::init() {
@@ -155,7 +155,9 @@ void CreateWorldScreen::buttonClicked(Button* button) {
     app.DebugPrintf("CreateWorldScreen::buttonClicked START\n");
     if (!button->active) return;
     if (button->id == 1) {
-        app.DebugPrintf("CreateWorldScreen::buttonClicked 'Cancel' minecraft->setScreen(lastScreen)\n");
+        app.DebugPrintf(
+            "CreateWorldScreen::buttonClicked 'Cancel' "
+            "minecraft->setScreen(lastScreen)\n");
         minecraft->setScreen(lastScreen);
     } else if (button->id == 0) {
         minecraft->setScreen(

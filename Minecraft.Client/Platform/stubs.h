@@ -13,30 +13,32 @@ class FloatBuffer;
 class IntBuffer;
 class ByteBuffer;
 
-void glGenTextures(IntBuffer *);
+void glGenTextures(IntBuffer*);
 int glGenTextures();
-void glDeleteTextures(IntBuffer *);
+void glDeleteTextures(IntBuffer*);
 void glDeleteTextures(int);
-void glLight(int, int, FloatBuffer *);
-void glLightModel(int, FloatBuffer *);
-void glGetFloat(int, FloatBuffer *);
-void glTexGen(int, int, FloatBuffer *);
-void glFog(int, FloatBuffer *);
-void glTexCoordPointer(int, int, FloatBuffer *);
-void glNormalPointer(int, ByteBuffer *);
-void glColorPointer(int, bool, int, ByteBuffer *);
-void glVertexPointer(int, int, FloatBuffer *);
-void glEndList(int);
-void glTexImage2D(int, int, int, int, int, int, int, int, ByteBuffer *);
-void glCallLists(IntBuffer *);
-void glGenQueriesARB(IntBuffer *);
+void glLight(int, int, FloatBuffer*);
+void glLightModel(int, FloatBuffer*);
+void glGetFloat(int, FloatBuffer*);
+void glTexGen(int, int, FloatBuffer*);
+void glFog(int, FloatBuffer*);
+void glTexCoordPointer(int, int, FloatBuffer*);
+void glNormalPointer(int, ByteBuffer*);
+void glColorPointer(int, bool, int, ByteBuffer*);
+void glVertexPointer(int, int, FloatBuffer*);
+
+void glEndList_4J(int vertexCount = 0);
+
+void glTexImage2D(int, int, int, int, int, int, int, int, ByteBuffer*);
+void glCallLists(IntBuffer*);
+void glGenQueriesARB(IntBuffer*);
 void glBeginQueryARB(int, int);
 void glEndQueryARB(int);
-void glGetQueryObjectuARB(int, int, IntBuffer *);
-void glReadPixels(int, int, int, int, int, int, ByteBuffer *);
+void glGetQueryObjectuARB(int, int, IntBuffer*);
+void glReadPixels(int, int, int, int, int, int, ByteBuffer*);
+
 void LinuxGLLogLightmapState(const char* stage, int textureId, bool scaleLight);
 void LinuxLogStubLightmapProbe();
-
 #else
 
 const int GL_BYTE = 0;
@@ -54,12 +56,8 @@ const int GL_NORMALIZE = 0;
 
 const int GL_RESCALE_NORMAL = 0;
 
-
-
 const int GL_SMOOTH = 0;
 const int GL_FLAT = 0;
-
-
 
 const int GL_RGBA = 0;
 const int GL_BGRA = 1;
@@ -83,73 +81,73 @@ const int GL_TEXTURE1 = 0;
 const int GL_TEXTURE0 = 1;
 
 void glFlush();
-void glTexGeni(int,int,int);
-void glTexGen(int,int,FloatBuffer *);
-void glReadPixels(int,int, int, int, int, int, ByteBuffer *);
+void glTexGeni(int, int, int);
+void glTexGen(int, int, FloatBuffer*);
+void glReadPixels(int, int, int, int, int, int, ByteBuffer*);
 void glClearDepth(double);
 void glCullFace(int);
-void glDeleteLists(int,int);
-void glGenTextures(IntBuffer *);
+void glDeleteLists(int, int);
+void glGenTextures(IntBuffer*);
 int glGenTextures();
 int glGenLists(int);
-void glLight(int, int,FloatBuffer *);
-void glLightModel(int, FloatBuffer *);
-void glGetFloat(int a, FloatBuffer *b);
+void glLight(int, int, FloatBuffer*);
+void glLightModel(int, FloatBuffer*);
+void glGetFloat(int a, FloatBuffer* b);
 void glTexCoordPointer(int, int, int, int);
-void glTexCoordPointer(int, int, FloatBuffer *);
+void glTexCoordPointer(int, int, FloatBuffer*);
 void glNormalPointer(int, int, int);
-void glNormalPointer(int, ByteBuffer *);
+void glNormalPointer(int, ByteBuffer*);
 void glEnableClientState(int);
 void glDisableClientState(int);
-void glColorPointer(int, bool, int, ByteBuffer *);
+void glColorPointer(int, bool, int, ByteBuffer*);
 void glColorPointer(int, int, int, int);
 void glVertexPointer(int, int, int, int);
-void glVertexPointer(int, int, FloatBuffer *);
-void glDrawArrays(int,int,int);
-void glTranslatef(float,float,float);
-void glRotatef(float,float,float,float);
-void glNewList(int,int);
+void glVertexPointer(int, int, FloatBuffer*);
+void glDrawArrays(int, int, int);
+void glTranslatef(float, float, float);
+void glRotatef(float, float, float, float);
+void glNewList(int, int);
 void glEndList(int vertexCount = 0);
 void glCallList(int);
 void glPopMatrix();
 void glPushMatrix();
-void glColor3f(float,float,float);
-void glScalef(float,float,float);
-void glMultMatrixf(float *);
-void glColor4f(float,float,float,float);
+void glColor3f(float, float, float);
+void glScalef(float, float, float);
+void glMultMatrixf(float*);
+void glColor4f(float, float, float, float);
 void glDisable(int);
 void glEnable(int);
-void glBlendFunc(int,int);
+void glBlendFunc(int, int);
 void glDepthMask(bool);
-void glNormal3f(float,float,float);
+void glNormal3f(float, float, float);
 void glDepthFunc(int);
 void glMatrixMode(int);
 void glLoadIdentity();
-void glBindTexture(int,int);
-void glTexParameteri(int,int,int);
-void glTexImage2D(int,int,int,int,int,int,int,int,ByteBuffer *);
-void glDeleteTextures(IntBuffer *);
+void glBindTexture(int, int);
+void glTexParameteri(int, int, int);
+void glTexImage2D(int, int, int, int, int, int, int, int, ByteBuffer*);
+void glDeleteTextures(IntBuffer*);
 void glDeleteTextures(int);
-void glCallLists(IntBuffer *);
-void glGenQueriesARB(IntBuffer *);
-void glColorMask(bool,bool,bool,bool);
-void glBeginQueryARB(int,int);
+void glCallLists(IntBuffer*);
+void glGenQueriesARB(IntBuffer*);
+void glColorMask(bool, bool, bool, bool);
+void glBeginQueryARB(int, int);
 void glEndQueryARB(int);
-void glGetQueryObjectuARB(int,int,IntBuffer *);
+void glGetQueryObjectuARB(int, int, IntBuffer*);
 void glShadeModel(int);
-void glPolygonOffset(float,float);
+void glPolygonOffset(float, float);
 void glLineWidth(float);
-void glScaled(double,double,double);
-void gluPerspective(float,float,float,float);
+void glScaled(double, double, double);
+void gluPerspective(float, float, float, float);
 void glClear(int);
-void glViewport(int,int,int,int);
-void glAlphaFunc(int,float);
-void glOrtho(float,float,float,float,float,float);
-void glClearColor(float,float,float,float);
-void glFogi(int,int);
-void glFogf(int,float);
-void glFog(int,FloatBuffer *);
-void glColorMaterial(int,int);
+void glViewport(int, int, int, int);
+void glAlphaFunc(int, float);
+void glOrtho(float, float, float, float, float, float);
+void glClearColor(float, float, float, float);
+void glFogi(int, int);
+void glFogf(int, float);
+void glFog(int, FloatBuffer*);
+void glColorMaterial(int, int);
 void glMultiTexCoord2f(int, float, float);
 
 void glClientActiveTexture(int);
@@ -158,45 +156,42 @@ void glActiveTexture(int);
 #endif
 
 #ifdef __linux__
-class GL11
-{
-public:
-	static const int GL_SMOOTH = 0x1D01;
-	static const int GL_FLAT = 0x1D00;
-	static void glShadeModel(int mode) { ::glShadeModel(mode); }
-};
 
+class GL11 {
+public:
+    static const int GL_SMOOTH = 0x1D01;
+    static const int GL_FLAT = 0x1D00;
+#undef glShadeModel
+#define GL_SHADEMODEL_IS_FUNCTION
+    static void glShadeModel(int mode) { ::glShadeModel(mode); }
+};
 #undef GL_ARRAY_BUFFER_ARB
 #undef GL_STREAM_DRAW_ARB
-class ARBVertexBufferObject
-{
+class ARBVertexBufferObject {
 public:
-	static const int GL_ARRAY_BUFFER_ARB = 0x8892;
-	static const int GL_STREAM_DRAW_ARB = 0x88E0;
-	static void glBindBufferARB(int, int) {}
-	static void glBufferDataARB(int, ByteBuffer *, int) {}
-	static void glGenBuffersARB(IntBuffer *) {}
+    static const int GL_ARRAY_BUFFER_ARB = 0x8892;
+    static const int GL_STREAM_DRAW_ARB = 0x88E0;
+    static void glBindBufferARB(int, int) {}
+    static void glBufferDataARB(int, ByteBuffer*, int) {}
+    static void glGenBuffersARB(IntBuffer*) {}
 };
 #else
-class GL11
-{
+class GL11 {
 public:
-	static const int GL_SMOOTH = 0;
-	static const int GL_FLAT = 0;
-	static void glShadeModel(int) {};
+    static const int GL_SMOOTH = 0;
+    static const int GL_FLAT = 0;
+    static void glShadeModel(int) {};
 };
 
-class ARBVertexBufferObject
-{
+class ARBVertexBufferObject {
 public:
-	static const int GL_ARRAY_BUFFER_ARB = 0;
-	static const int GL_STREAM_DRAW_ARB = 0;
-	static void glBindBufferARB(int, int) {}
-	static void glBufferDataARB(int, ByteBuffer *, int) {}
-	static void glGenBuffersARB(IntBuffer *) {}
+    static const int GL_ARRAY_BUFFER_ARB = 0;
+    static const int GL_STREAM_DRAW_ARB = 0;
+    static void glBindBufferARB(int, int) {}
+    static void glBufferDataARB(int, ByteBuffer*, int) {}
+    static void glGenBuffersARB(IntBuffer*) {}
 };
 #endif
-
 
 class Level;
 class Player;
@@ -204,118 +199,107 @@ class Textures;
 class Font;
 class MapItemSavedData;
 class Mob;
-class Particles
-{
+class Particles {
 public:
-	void render(float) {}
-	void tick() {}
+    void render(float) {}
+    void tick() {}
 };
 
 class BufferedImage;
 
-class Graphics
-{
+class Graphics {
 public:
-	void drawImage(BufferedImage *, int, int, void *) {}
-	void dispose() {}
+    void drawImage(BufferedImage*, int, int, void*) {}
+    void dispose() {}
 };
 
-class ZipEntry
-{
-};
+class ZipEntry {};
 class InputStream;
 
 class File;
-class ZipFile
-{
+class ZipFile {
 public:
-	ZipFile(File *file) {}
-	InputStream *getInputStream(ZipEntry *entry) { return NULL; }
-	ZipEntry *getEntry(const std::wstring& name) {return NULL;}
-	void close() {}
+    ZipFile(File* file) {}
+    InputStream* getInputStream(ZipEntry* entry) { return NULL; }
+    ZipEntry* getEntry(const std::wstring& name) { return NULL; }
+    void close() {}
 };
 
-class ImageIO
-{
+class ImageIO {
 public:
-	static BufferedImage *read(InputStream *in) { return NULL; }
+    static BufferedImage* read(InputStream* in) { return NULL; }
 };
 
-class Keyboard
-{
+class Keyboard {
 public:
-	static void create() {}
-	static void destroy() {}
-	static bool isKeyDown(int) {return false;}
-	static std::wstring getKeyName(int) { return L"KEYNAME"; }
-	static void enableRepeatEvents(bool) {}
-	static const int KEY_A = 0;
-	static const int KEY_B = 1;
-	static const int KEY_C = 2;
-	static const int KEY_D = 3;
-	static const int KEY_E = 4;
-	static const int KEY_F = 5;
-	static const int KEY_G = 6;
-	static const int KEY_H = 7;
-	static const int KEY_I = 8;
-	static const int KEY_J = 9;
-	static const int KEY_K = 10;
-	static const int KEY_L = 11;
-	static const int KEY_M = 12;
-	static const int KEY_N = 13;
-	static const int KEY_O = 14;
-	static const int KEY_P = 15;
-	static const int KEY_Q = 16;
-	static const int KEY_R = 17;
-	static const int KEY_S = 18;
-	static const int KEY_T = 19;
-	static const int KEY_U = 20;
-	static const int KEY_V = 21;
-	static const int KEY_W = 22;
-	static const int KEY_X = 23;
-	static const int KEY_Y = 24;
-	static const int KEY_Z = 25;
-	static const int KEY_SPACE = 26;
-	static const int KEY_LSHIFT = 27;
-	static const int KEY_ESCAPE = 28;
-	static const int KEY_BACK = 29;
-	static const int KEY_RETURN = 30;
-	static const int KEY_RSHIFT = 31;
-	static const int KEY_UP = 32;
-	static const int KEY_DOWN = 33;
-	static const int KEY_TAB = 34;
+    static void create() {}
+    static void destroy() {}
+    static bool isKeyDown(int) { return false; }
+    static std::wstring getKeyName(int) { return L"KEYNAME"; }
+    static void enableRepeatEvents(bool) {}
+    static const int KEY_A = 0;
+    static const int KEY_B = 1;
+    static const int KEY_C = 2;
+    static const int KEY_D = 3;
+    static const int KEY_E = 4;
+    static const int KEY_F = 5;
+    static const int KEY_G = 6;
+    static const int KEY_H = 7;
+    static const int KEY_I = 8;
+    static const int KEY_J = 9;
+    static const int KEY_K = 10;
+    static const int KEY_L = 11;
+    static const int KEY_M = 12;
+    static const int KEY_N = 13;
+    static const int KEY_O = 14;
+    static const int KEY_P = 15;
+    static const int KEY_Q = 16;
+    static const int KEY_R = 17;
+    static const int KEY_S = 18;
+    static const int KEY_T = 19;
+    static const int KEY_U = 20;
+    static const int KEY_V = 21;
+    static const int KEY_W = 22;
+    static const int KEY_X = 23;
+    static const int KEY_Y = 24;
+    static const int KEY_Z = 25;
+    static const int KEY_SPACE = 26;
+    static const int KEY_LSHIFT = 27;
+    static const int KEY_ESCAPE = 28;
+    static const int KEY_BACK = 29;
+    static const int KEY_RETURN = 30;
+    static const int KEY_RSHIFT = 31;
+    static const int KEY_UP = 32;
+    static const int KEY_DOWN = 33;
+    static const int KEY_TAB = 34;
 };
 
-class Mouse
-{
+class Mouse {
 public:
-	static void create() {}
-	static void destroy() {}
-	static int getX() { return 0; }
-	static int getY() { return 0; }
-	static bool isButtonDown(int) { return false; }
+    static void create() {}
+    static void destroy() {}
+    static int getX() { return 0; }
+    static int getY() { return 0; }
+    static bool isButtonDown(int) { return false; }
 };
 
-class Display
-{
+class Display {
 public:
-	static bool isActive() {return true;}
-	static void update();
-	static void swapBuffers();
-	static void destroy() {}
+    static bool isActive() { return true; }
+    static void update();
+    static void swapBuffers();
+    static void destroy() {}
 };
 
-class BackgroundDownloader
-{
+class BackgroundDownloader {
 public:
-	BackgroundDownloader(File workDir, Minecraft* minecraft) {}
-	void start() {}
-	void halt() {}
-	void forceReload() {}
+    BackgroundDownloader(File workDir, Minecraft* minecraft) {}
+    void start() {}
+    void halt() {}
+    void forceReload() {}
 };
 
-class Color
-{
+class Color {
 public:
-	static int HSBtoRGB(float,float,float) {return 0;}
+    static int HSBtoRGB(float, float, float) { return 0; }
 };

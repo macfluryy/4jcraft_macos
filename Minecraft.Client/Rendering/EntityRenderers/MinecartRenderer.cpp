@@ -1,5 +1,6 @@
 #include "../../Platform/stdafx.h"
 #include "MinecartRenderer.h"
+#include <optional>
 #include "../Models/MinecartModel.h"
 #include "../../Textures/TextureAtlas.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.entity.item.h"
@@ -40,26 +41,27 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
 
     double r = 0.3f;
 
-    Vec3* p = cart->getPos(xx, yy, zz);
+    std::optional<Vec3> p = cart->getPos(xx, yy, zz);
 
     float xRot = cart->xRotO + (cart->xRot - cart->xRotO) * a;
 
-    if (p != NULL) {
-        Vec3* p0 = cart->getPosOffs(xx, yy, zz, r);
-        Vec3* p1 = cart->getPosOffs(xx, yy, zz, -r);
-        if (p0 == NULL) p0 = p;
-        if (p1 == NULL) p1 = p;
+    if (p.has_value()) {
+        auto p0 = cart->getPosOffs(xx, yy, zz, r);
+        auto p1 = cart->getPosOffs(xx, yy, zz, -r);
+        if (!p0.has_value()) p0 = p;
+        if (!p1.has_value()) p1 = p;
 
         x += p->x - xx;
         y += (p0->y + p1->y) / 2 - yy;
         z += p->z - zz;
 
-        Vec3* dir = p1->add(-p0->x, -p0->y, -p0->z);
-        if (dir->length() == 0) {
+        Vec3 dir(-p0->x, -p0->y, -p0->z);
+        dir = dir.add(p1->x, p1->y, p1->z);
+        if (dir.length() == 0) {
         } else {
-            dir = dir->normalize();
-            rot = (float)(atan2(dir->z, dir->x) * 180 / PI);
-            xRot = (float)(atan(dir->y) * 73);
+            dir = dir.normalize();
+            rot = (float)(atan2(dir.z, dir.x) * 180 / PI);
+            xRot = (float)(atan(dir.y) * 73);
         }
     }
     glTranslatef((float)x, (float)y, (float)z);
