@@ -10,6 +10,7 @@
 #include "../WorldGen/Biomes/Biome.h"
 #include "../Util/C4JThread.h"
 #include <cstdint>
+#include <mutex>
 #include <unordered_set>
 
 // 4J Stu - This value should be big enough that we don't get any crashes causes
@@ -100,7 +101,7 @@ public:
     static const int TICKS_PER_DAY = 20 * 60 * 20;  // ORG:20*60*20
 
 public:
-    CRITICAL_SECTION m_entitiesCS;  // 4J added
+    std::recursive_mutex m_entitiesCS;  // 4J added
 
     std::vector<std::shared_ptr<Entity> > entities;
 
@@ -108,9 +109,9 @@ protected:
     std::vector<std::shared_ptr<Entity> > entitiesToRemove;
 
 public:
-    bool hasEntitiesToRemove();           // 4J added
-    bool m_bDisableAddNewTileEntities;    // 4J Added
-    CRITICAL_SECTION m_tileEntityListCS;  // 4J added
+    bool hasEntitiesToRemove();               // 4J added
+    bool m_bDisableAddNewTileEntities;        // 4J Added
+    std::recursive_mutex m_tileEntityListCS;  // 4J added
     std::vector<std::shared_ptr<TileEntity> > tileEntityList;
 
 private:
@@ -631,7 +632,7 @@ public:
     virtual bool newFallingTileAllowed() { return true; }
 
     // 4J - added for new lighting from 1.8.2
-    CRITICAL_SECTION m_checkLightCS;
+    std::recursive_mutex m_checkLightCS;
 
 private:
     int m_iHighestY;  // 4J-PB - for the end portal in The End

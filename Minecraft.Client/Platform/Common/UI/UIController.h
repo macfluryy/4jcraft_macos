@@ -1,6 +1,7 @@
 #pragma once
 // using namespace std;
 #include <cstdint>
+#include <mutex>
 
 #include "IUIController.h"
 #include "UIEnums.h"
@@ -20,7 +21,7 @@ public:
 
     // MGH - added to prevent crash loading Iggy movies while the skins were
     // being reloaded
-    static CRITICAL_SECTION ms_reloadSkinCS;
+    static std::mutex ms_reloadSkinCS;
     static bool ms_bReloadSkinCSInitialised;
 
 protected:
@@ -28,7 +29,7 @@ protected:
     UIComponent_DebugUIMarketingGuide* m_uiDebugMarketingGuide;
 
 private:
-    CRITICAL_SECTION m_navigationLock;
+    std::mutex m_navigationLock;
 
     static const int UI_REPEAT_KEY_DELAY_MS =
         300;  // How long from press until the first repeat
@@ -165,7 +166,7 @@ private:
                                      // that are used in async callbacks so we
                                      // can safely handle when they get
                                      // destroyed
-    CRITICAL_SECTION m_registeredCallbackScenesCS;
+    std::mutex m_registeredCallbackScenesCS;
     ;
 
 public:
@@ -190,7 +191,7 @@ protected:
     void postInit();
 
 public:
-    CRITICAL_SECTION m_Allocatorlock;
+    std::mutex m_Allocatorlock;
     void SetupFont();
     bool PendingFontChange();
     bool UsingBitmapFont();
@@ -311,8 +312,8 @@ public:
     size_t RegisterForCallbackId(UIScene* scene);
     void UnregisterCallbackId(size_t id);
     UIScene* GetSceneFromCallbackId(size_t id);
-    void EnterCallbackIdCriticalSection();
-    void LeaveCallbackIdCriticalSection();
+    void lockCallbackScenes();
+    void unlockCallbackScenes();
 
 private:
     void setFullscreenMenuDisplayed(bool displayed);

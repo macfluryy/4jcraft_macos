@@ -22,10 +22,6 @@ int Connection::writeSizes[256];
 
 void Connection::_init() {
     //	printf("Con:0x%x init\n",this);
-    InitializeCriticalSection(&writeLock);
-    InitializeCriticalSection(&threadCounterLock);
-    InitializeCriticalSection(&incoming_cs);
-
     running = true;
     quitting = false;
     disconnected = false;
@@ -42,7 +38,6 @@ void Connection::_init() {
     tickCount = 0;
 }
 
-// 4J Jev, need to delete the critical section.
 Connection::~Connection() {
     // 4J Stu - Just to be sure, make sure the read and write threads terminate
     // themselves before the connection object is destroyed
@@ -51,12 +46,8 @@ Connection::~Connection() {
         dis->close();  // The input stream needs closed before the readThread,
                        // or the readThread may get stuck whilst blocking
                        // waiting on a read
-    readThread->WaitForCompletion(INFINITE);
-    writeThread->WaitForCompletion(INFINITE);
-
-    DeleteCriticalSection(&writeLock);
-    DeleteCriticalSection(&threadCounterLock);
-    DeleteCriticalSection(&incoming_cs);
+    readThread->waitForCompletion(C4JThread::kInfiniteTimeout);
+    writeThread->waitForCompletion(C4JThread::kInfiniteTimeout);
 
     delete m_hWakeReadThread;
     delete m_hWakeWriteThread;
@@ -120,11 +111,11 @@ Connection::Connection(Socket* socket, const std::wstring& id,
         new C4JThread(runRead, (void*)this, readThreadName, READ_STACK_SIZE);
     writeThread =
         new C4JThread(runWrite, this, writeThreadName, WRITE_STACK_SIZE);
-    readThread->SetProcessor(CPU_CORE_CONNECTIONS);
-    writeThread->SetProcessor(CPU_CORE_CONNECTIONS);
+    readThread->setProcessor(CPU_CORE_CONNECTIONS);
+    writeThread->setProcessor(CPU_CORE_CONNECTIONS);
 
-    readThread->Run();
-    writeThread->Run();
+    readThread->run();
+    writeThread->run();
 
     /* 4J JEV, java:
     new Thread(wstring(id).append(L" read thread")) {
@@ -150,29 +141,31 @@ void Connection::send(std::shared_ptr<Packet> packet) {
 
     MemSect(15);
     // 4J Jev, synchronized (&writeLock)
-    EnterCriticalSection(&writeLock);
+    {
+        std::lock_guard<std::mutex> lock(writeLock);
 
-    estimatedRemaining += packet->getEstimatedSize() + 1;
-    if (packet->shouldDelay) {
-        // 4J We have delayed it enough by putting it in the slow queue, so
-        // don't delay when we actually send it
-        packet->shouldDelay = false;
-        outgoing_slow.push(packet);
-    } else {
-        outgoing.push(packet);
+        estimatedRemaining += packet->getEstimatedSize() + 1;
+        if (packet->shouldDelay) {
+            // 4J We have delayed it enough by putting it in the slow queue, so
+            // don't delay when we actually send it
+            packet->shouldDelay = false;
+            outgoing_slow.push(packet);
+        } else {
+            outgoing.push(packet);
+        }
     }
 
     // 4J Jev, end synchronized.
-    LeaveCriticalSection(&writeLock);
     MemSect(0);
 }
 
 void Connection::queueSend(std::shared_ptr<Packet> packet) {
     if (quitting) return;
-    EnterCriticalSection(&writeLock);
-    estimatedRemaining += packet->getEstimatedSize() + 1;
-    outgoing_slow.push(packet);
-    LeaveCriticalSection(&writeLock);
+    {
+        std::lock_guard<std::mutex> lock(writeLock);
+        estimatedRemaining += packet->getEstimatedSize() + 1;
+        outgoing_slow.push(packet);
+    }
 }
 
 bool Connection::writeTick() {
@@ -189,13 +182,13 @@ bool Connection::writeTick() {
              fakeLag)) {
         std::shared_ptr<Packet> packet;
 
-        EnterCriticalSection(&writeLock);
+        {
+            std::lock_guard<std::mutex> lock(writeLock);
 
-        packet = outgoing.front();
-        outgoing.pop();
-        estimatedRemaining -= packet->getEstimatedSize() + 1;
-
-        LeaveCriticalSection(&writeLock);
+            packet = outgoing.front();
+            outgoing.pop();
+            estimatedRemaining -= packet->getEstimatedSize() + 1;
+        }
 
         Packet::writePacket(packet, bufferedDos);
 #if defined(__linux__)
@@ -238,13 +231,13 @@ bool Connection::writeTick() {
 
         // synchronized (writeLock) {
 
-        EnterCriticalSection(&writeLock);
+        {
+            std::lock_guard<std::mutex> lock(writeLock);
 
-        packet = outgoing_slow.front();
-        outgoing_slow.pop();
-        estimatedRemaining -= packet->getEstimatedSize() + 1;
-
-        LeaveCriticalSection(&writeLock);
+            packet = outgoing_slow.front();
+            outgoing_slow.pop();
+            estimatedRemaining -= packet->getEstimatedSize() + 1;
+        }
 
         // If the shouldDelay flag is still set at this point then we want to
         // write it to QNet as a single packet with priority flags Otherwise
@@ -311,8 +304,8 @@ void Connection::flush() {
     // multithreaded functions a bit more
     // readThread.interrupt();
     // writeThread.interrupt();
-    m_hWakeReadThread->Set();
-    m_hWakeWriteThread->Set();
+    m_hWakeReadThread->set();
+    m_hWakeWriteThread->set();
 }
 
 bool Connection::readTick() {
@@ -329,11 +322,12 @@ bool Connection::readTick() {
 
     if (packet != nullptr) {
         readSizes[packet->getId()] += packet->getEstimatedSize() + 1;
-        EnterCriticalSection(&incoming_cs);
-        if (!quitting) {
-            incoming.push(packet);
+        {
+            std::lock_guard<std::mutex> lock(incoming_cs);
+            if (!quitting) {
+                incoming.push(packet);
+            }
         }
-        LeaveCriticalSection(&incoming_cs);
         didSomething = true;
     } else {
         //		printf("Con:0x%x readTick close EOS\n",this);
@@ -394,8 +388,8 @@ void Connection::close(DisconnectPacket::eDisconnectReason reason) {
 
     // Make sure that the read & write threads are dead before we go and kill
     // the streams that they depend on
-    readThread->WaitForCompletion(INFINITE);
-    writeThread->WaitForCompletion(INFINITE);
+    readThread->waitForCompletion(C4JThread::kInfiniteTimeout);
+    writeThread->waitForCompletion(C4JThread::kInfiniteTimeout);
 
     delete dis;
     dis = nullptr;
@@ -420,9 +414,11 @@ void Connection::tick() {
     if (estimatedRemaining > 1 * 1024 * 1024) {
         close(DisconnectPacket::eDisconnect_Overflow);
     }
-    EnterCriticalSection(&incoming_cs);
-    bool empty = incoming.empty();
-    LeaveCriticalSection(&incoming_cs);
+    bool empty;
+    {
+        std::lock_guard<std::mutex> lock(incoming_cs);
+        empty = incoming.empty();
+    }
     if (empty) {
 #if CONNECTION_ENABLE_TIMEOUT_DISCONNECT
         if (noInputTicks++ == MAX_TICKS_WITHOUT_INPUT) {
@@ -461,16 +457,18 @@ void Connection::tick() {
     // changed to use a eAppAction_ExitPlayerPreLogin which will run in the main
     // loop, so the connection will not be ticked at that point
 
-    EnterCriticalSection(&incoming_cs);
     // 4J Stu - If disconnected, then we shouldn't process incoming packets
     std::vector<std::shared_ptr<Packet> > packetsToHandle;
-    while (!disconnected && !g_NetworkManager.IsLeavingGame() &&
-           g_NetworkManager.IsInSession() && !incoming.empty() && max-- >= 0) {
-        std::shared_ptr<Packet> packet = incoming.front();
-        packetsToHandle.push_back(packet);
-        incoming.pop();
+    {
+        std::lock_guard<std::mutex> lock(incoming_cs);
+        while (!disconnected && !g_NetworkManager.IsLeavingGame() &&
+               g_NetworkManager.IsInSession() && !incoming.empty() &&
+               max-- >= 0) {
+            std::shared_ptr<Packet> packet = incoming.front();
+            packetsToHandle.push_back(packet);
+            incoming.pop();
+        }
     }
-    LeaveCriticalSection(&incoming_cs);
 
     // MGH - moved the packet handling outside of the incoming_cs block, as it
     // was locking up sometimes when disconnecting
@@ -490,11 +488,13 @@ void Connection::tick() {
     }
 
     // 4J - split the following condition (used to be disconnect &&
-    // iscoming.empty()) so we can wrap the access in a critical section
+    // iscoming.empty()) so we can wrap the access in a mutex
     if (disconnected) {
-        EnterCriticalSection(&incoming_cs);
-        bool empty = incoming.empty();
-        LeaveCriticalSection(&incoming_cs);
+        bool empty;
+        {
+            std::lock_guard<std::mutex> lock(incoming_cs);
+            empty = incoming.empty();
+        }
         if (empty) {
             packetListener->onDisconnect(disconnectReason,
                                          disconnectReasonObjects);
@@ -540,11 +540,12 @@ int Connection::runRead(void* lpParam) {
 
     Compression::UseDefaultThreadStorage();
 
-    CRITICAL_SECTION* cs = &con->threadCounterLock;
+    std::mutex* cs = &con->threadCounterLock;
 
-    EnterCriticalSection(cs);
-    con->readThreads++;
-    LeaveCriticalSection(cs);
+    {
+        std::lock_guard<std::mutex> lock(*cs);
+        con->readThreads++;
+    }
 
     // try {
 
@@ -558,7 +559,7 @@ int Connection::runRead(void* lpParam) {
         // std::this_thread::sleep_for(std::chrono::milliseconds(100L));
         // TODO - 4J Stu - 1.8.2 changes these sleeps to 2L, but not sure
         // whether we should do that as well
-        con->m_hWakeReadThread->WaitForSignal(100L);
+        con->m_hWakeReadThread->waitForSignal(100L);
     }
     MemSect(0);
 
@@ -587,36 +588,38 @@ int Connection::runWrite(void* lpParam) {
 
     Compression::UseDefaultThreadStorage();
 
-    CRITICAL_SECTION* cs = &con->threadCounterLock;
+    std::mutex* cs = &con->threadCounterLock;
 
-    EnterCriticalSection(cs);
-    con->writeThreads++;
-    LeaveCriticalSection(cs);
+    {
+        std::lock_guard<std::mutex> lock(*cs);
+        con->writeThreads++;
+    }
 
     // 4J Stu - Adding this to force us to run through the writeTick at least
     // once after the event is fired Otherwise there is a race between the
     // calling thread setting the running flag and this loop checking the
     // condition
-    unsigned int waitResult = WAIT_TIMEOUT;
+    unsigned int waitResult = C4JThread::WaitResult::Timeout;
 
     while (
-        (con->running || waitResult == WAIT_OBJECT_0) &&
+        (con->running || waitResult == C4JThread::WaitResult::Signaled) &&
         ShutdownManager::ShouldRun(ShutdownManager::eConnectionWriteThreads)) {
         while (con->writeTick());
 
         // std::this_thread::sleep_for(std::chrono::milliseconds(100L));
         //  TODO - 4J Stu - 1.8.2 changes these sleeps to 2L, but not sure
         //  whether we should do that as well
-        waitResult = con->m_hWakeWriteThread->WaitForSignal(100L);
+        waitResult = con->m_hWakeWriteThread->waitForSignal(100L);
 
         if (con->bufferedDos != nullptr) con->bufferedDos->flush();
         // if (con->byteArrayDos != nullptr) con->byteArrayDos->flush();
     }
 
     // 4J was in a finally block.
-    EnterCriticalSection(cs);
-    con->writeThreads--;
-    LeaveCriticalSection(cs);
+    {
+        std::lock_guard<std::mutex> lock(*cs);
+        con->writeThreads--;
+    }
 
     ShutdownManager::HasFinished(ShutdownManager::eConnectionWriteThreads);
     return 0;

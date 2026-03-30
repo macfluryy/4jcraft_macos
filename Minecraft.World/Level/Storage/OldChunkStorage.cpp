@@ -1,4 +1,5 @@
 #include "../../Platform/stdafx.h"
+#include <mutex>
 #include "../../IO/Files/File.h"
 #include "../../IO/Streams/InputOutputStream.h"
 #include "../../Headers/net.minecraft.world.entity.h"
@@ -196,29 +197,22 @@ bool OldChunkStorage::saveEntities(LevelChunk* lc, Level* level,
     lc->lastSaveHadEntities = false;
     ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
-#if defined(_ENTITIES_RW_SECTION)
-    EnterCriticalRWSection(&lc->m_csEntities, true);
-#else
-    EnterCriticalSection(&lc->m_csEntities);
-#endif
-    for (int i = 0; i < lc->ENTITY_BLOCKS_LENGTH; i++) {
-        auto itEnd = lc->entityBlocks[i]->end();
-        for (std::vector<std::shared_ptr<Entity> >::iterator it =
-                 lc->entityBlocks[i]->begin();
-             it != itEnd; it++) {
-            std::shared_ptr<Entity> e = *it;
-            lc->lastSaveHadEntities = true;
-            CompoundTag* teTag = new CompoundTag();
-            if (e->save(teTag)) {
-                entityTags->add(teTag);
+    {
+        std::lock_guard<std::recursive_mutex> lock(lc->m_csEntities);
+        for (int i = 0; i < lc->ENTITY_BLOCKS_LENGTH; i++) {
+            auto itEnd = lc->entityBlocks[i]->end();
+            for (std::vector<std::shared_ptr<Entity> >::iterator it =
+                     lc->entityBlocks[i]->begin();
+                 it != itEnd; it++) {
+                std::shared_ptr<Entity> e = *it;
+                lc->lastSaveHadEntities = true;
+                CompoundTag* teTag = new CompoundTag();
+                if (e->save(teTag)) {
+                    entityTags->add(teTag);
+                }
             }
         }
     }
-#if defined(_ENTITIES_RW_SECTION)
-    LeaveCriticalRWSection(&lc->m_csEntities, true);
-#else
-    LeaveCriticalSection(&lc->m_csEntities);
-#endif
 
     tag->put(L"Entities", entityTags);
 

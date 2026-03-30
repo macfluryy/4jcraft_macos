@@ -1,4 +1,5 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
+#include <mutex>
 #include "UI.h"
 #include "UIScene.h"
 
@@ -243,12 +244,11 @@ bool UIScene::mapElementsAndNames() {
     return true;
 }
 
-extern CRITICAL_SECTION s_loadSkinCS;
+extern std::mutex s_loadSkinCS;
 void UIScene::loadMovie() {
-    EnterCriticalSection(
-        &UIController::ms_reloadSkinCS);  // MGH - added to prevent crash
-                                          // loading Iggy movies while the skins
-                                          // were being reloaded
+    UIController::ms_reloadSkinCS.lock();  // MGH - added to prevent crash
+                                           // loading Iggy movies while the
+                                           // skins were being reloaded
     std::wstring moviePath = getMoviePath();
 
 #if defined(_WINDOWS64)
@@ -318,7 +318,7 @@ void UIScene::loadMovie() {
     IggyPlayerSetUserdata(swf, this);
 
     // #ifdef _DEBUG
-    LeaveCriticalSection(&UIController::ms_reloadSkinCS);
+    UIController::ms_reloadSkinCS.unlock();
 }
 
 void UIScene::getDebugMemoryUseRecursive(const std::wstring& moviePath,

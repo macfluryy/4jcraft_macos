@@ -108,7 +108,7 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart() {
 
     C4JThread* thread = new C4JThread(loadingParams->func,
                                       loadingParams->lpParam, "RunNetworkGame");
-    thread->Run();
+    thread->run();
 }
 
 int CConsoleMinecraftApp::GetLocalTMSFileIndex(wchar_t* wchTMSFile,

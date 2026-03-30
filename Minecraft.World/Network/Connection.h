@@ -8,6 +8,8 @@
 #include "../Headers/net.minecraft.network.packet.h"
 #include "../Util/C4JThread.h"
 
+#include <mutex>
+
 #include "Socket.h"
 
 // 4J JEV, size of the threads (bytes).
@@ -53,15 +55,14 @@ private:
     bool running;
 
     std::queue<std::shared_ptr<Packet> >
-        incoming;                  // 4J - was using synchronizedList...
-    CRITICAL_SECTION incoming_cs;  // ... now has this critical section
+        incoming;            // 4J - was using synchronizedList...
+    std::mutex incoming_cs;  // ... now has this mutex
     std::queue<std::shared_ptr<Packet> >
         outgoing;  // 4J - was using synchronizedList - but don't think it is
-                   // required as usage is wrapped in writeLock critical section
+                   // required as usage is wrapped in writeLock
     std::queue<std::shared_ptr<Packet> >
         outgoing_slow;  // 4J - was using synchronizedList - but don't think it
-                        // is required as usage is wrapped in writeLock critical
-                        // section
+                        // is required as usage is wrapped in writeLock
 
     PacketListener* packetListener;
     bool quitting;
@@ -93,11 +94,10 @@ private:
     void _init();
 
     // 4J Jev, these might be better of as private
-    CRITICAL_SECTION threadCounterLock;
-    CRITICAL_SECTION writeLock;
+    std::mutex threadCounterLock;
+    std::mutex writeLock;
 
 public:
-    // 4J Jev, need to delete the critical section.
     ~Connection();
     Connection(Socket* socket, const std::wstring& id,
                PacketListener* packetListener);  // throws IOException

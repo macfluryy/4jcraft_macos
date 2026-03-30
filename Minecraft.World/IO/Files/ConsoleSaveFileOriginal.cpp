@@ -774,13 +774,9 @@ int ConsoleSaveFileOriginal::getOriginalSaveVersion() {
     return header.getOriginalSaveVersion();
 }
 
-void ConsoleSaveFileOriginal::LockSaveAccess() {
-    EnterCriticalSection(&m_lock);
-}
+void ConsoleSaveFileOriginal::LockSaveAccess() { m_lock.lock(); }
 
-void ConsoleSaveFileOriginal::ReleaseSaveAccess() {
-    LeaveCriticalSection(&m_lock);
-}
+void ConsoleSaveFileOriginal::ReleaseSaveAccess() { m_lock.unlock(); }
 
 ESavePlatform ConsoleSaveFileOriginal::getSavePlatform() {
     return header.getSavePlatform();

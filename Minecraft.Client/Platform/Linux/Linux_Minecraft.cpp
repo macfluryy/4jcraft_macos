@@ -4,6 +4,7 @@
 #include "../../../Minecraft.World/Platform/stdafx.h"
 
 #include <assert.h>
+#include <mutex>
 // #include <system_service.h>
 #if defined(__linux__) && defined(__GLIBC__)
 #include <signal.h>
@@ -1042,7 +1043,7 @@ bool trackStarted = false;
 volatile size_t sizeCheckMin = 1160;
 volatile size_t sizeCheckMax = 1160;
 volatile int sectCheck = 48;
-CRITICAL_SECTION memCS;
+std::mutex memCS;
 uint32_t tlsIdx;
 
 void* XMemAlloc(size_t dwSize, uint32_t dwAllocAttributes) {
@@ -1053,32 +1054,33 @@ void* XMemAlloc(size_t dwSize, uint32_t dwAllocAttributes) {
         return p;
     }
 
-    EnterCriticalSection(&memCS);
+    void* p;
+    {
+        std::lock_guard<std::mutex> lock(memCS);
 
-    void* p = XMemAllocDefault(dwSize + 16, dwAllocAttributes);
-    size_t realSize = XMemSizeDefault(p, dwAllocAttributes) - 16;
+        p = XMemAllocDefault(dwSize + 16, dwAllocAttributes);
+        size_t realSize = XMemSizeDefault(p, dwAllocAttributes) - 16;
 
-    if (trackEnable) {
-        int sect = ((int)TlsGetValue(tlsIdx)) & 0x3f;
-        *(((unsigned char*)p) + realSize) = sect;
+        if (trackEnable) {
+            int sect = ((int)TlsGetValue(tlsIdx)) & 0x3f;
+            *(((unsigned char*)p) + realSize) = sect;
 
-        if ((realSize >= sizeCheckMin) && (realSize <= sizeCheckMax) &&
-            ((sect == sectCheck) || (sectCheck == -1))) {
-            app.DebugPrintf("Found one\n");
-        }
+            if ((realSize >= sizeCheckMin) && (realSize <= sizeCheckMax) &&
+                ((sect == sectCheck) || (sectCheck == -1))) {
+                app.DebugPrintf("Found one\n");
+            }
 
-        if (p) {
-            totalAllocGen += realSize;
-            trackEnable = false;
-            int key = (sect << 26) | realSize;
-            int oldCount = allocCounts[key];
-            allocCounts[key] = oldCount + 1;
+            if (p) {
+                totalAllocGen += realSize;
+                trackEnable = false;
+                int key = (sect << 26) | realSize;
+                int oldCount = allocCounts[key];
+                allocCounts[key] = oldCount + 1;
 
-            trackEnable = true;
+                trackEnable = true;
+            }
         }
     }
-
-    LeaveCriticalSection(&memCS);
 
     return p;
 }
@@ -1110,22 +1112,23 @@ void WINAPI XMemFree(void* pAddress, uint32_t dwAllocAttributes) {
         totalAllocGen -= realSize;
         return;
     }
-    EnterCriticalSection(&memCS);
-    if (pAddress) {
-        size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
+    {
+        std::lock_guard<std::mutex> lock(memCS);
+        if (pAddress) {
+            size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
 
-        if (trackEnable) {
-            int sect = *(((unsigned char*)pAddress) + realSize);
-            totalAllocGen -= realSize;
-            trackEnable = false;
-            int key = (sect << 26) | realSize;
-            int oldCount = allocCounts[key];
-            allocCounts[key] = oldCount - 1;
-            trackEnable = true;
+            if (trackEnable) {
+                int sect = *(((unsigned char*)pAddress) + realSize);
+                totalAllocGen -= realSize;
+                trackEnable = false;
+                int key = (sect << 26) | realSize;
+                int oldCount = allocCounts[key];
+                allocCounts[key] = oldCount - 1;
+                trackEnable = true;
+            }
+            XMemFreeDefault(pAddress, dwAllocAttributes);
         }
-        XMemFreeDefault(pAddress, dwAllocAttributes);
     }
-    LeaveCriticalSection(&memCS);
 }
 
 size_t WINAPI XMemSize(void* pAddress, uint32_t dwAllocAttributes) {
@@ -1154,14 +1157,14 @@ void ResetMem() {
         trackEnable = true;
         trackStarted = true;
         totalAllocGen = 0;
-        InitializeCriticalSection(&memCS);
         tlsIdx = TlsAlloc();
     }
-    EnterCriticalSection(&memCS);
-    trackEnable = false;
-    allocCounts.clear();
-    trackEnable = true;
-    LeaveCriticalSection(&memCS);
+    {
+        std::lock_guard<std::mutex> lock(memCS);
+        trackEnable = false;
+        allocCounts.clear();
+        trackEnable = true;
+    }
 }
 
 void MemSect(int section) {

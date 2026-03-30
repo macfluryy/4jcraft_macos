@@ -67,8 +67,6 @@ BiomeCache::BiomeCache(BiomeSource* source) {
     lastUpdateTime = 0;
 
     this->source = source;
-
-    InitializeCriticalSection(&m_CS);
 }
 
 BiomeCache::~BiomeCache() {
@@ -78,11 +76,10 @@ BiomeCache::~BiomeCache() {
     for (auto it = all.begin(); it != all.end(); ++it) {
         delete (*it);
     }
-    DeleteCriticalSection(&m_CS);
 }
 
 BiomeCache::Block* BiomeCache::getBlockAt(int x, int z) {
-    EnterCriticalSection(&m_CS);
+    std::lock_guard<std::mutex> lock(m_CS);
     x >>= ZONE_SIZE_BITS;
     z >>= ZONE_SIZE_BITS;
     int64_t slot =
@@ -99,7 +96,6 @@ BiomeCache::Block* BiomeCache::getBlockAt(int x, int z) {
         block = it->second;
     }
     block->lastUse = app.getAppTime();
-    LeaveCriticalSection(&m_CS);
     return block;
 }
 
@@ -116,7 +112,7 @@ float BiomeCache::getDownfall(int x, int z) {
 }
 
 void BiomeCache::update() {
-    EnterCriticalSection(&m_CS);
+    std::lock_guard<std::mutex> lock(m_CS);
     int64_t now = app.getAppTime();
     int64_t utime = now - lastUpdateTime;
     if (utime > DECAY_TIME / 4 || utime < 0) {
@@ -136,7 +132,6 @@ void BiomeCache::update() {
             }
         }
     }
-    LeaveCriticalSection(&m_CS);
 }
 
 BiomeArray BiomeCache::getBiomeBlockAt(int x, int z) {

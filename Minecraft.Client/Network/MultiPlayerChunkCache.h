@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.chunk.h"
 #include "../../Minecraft.World/Level/RandomLevelSource.h"
@@ -18,7 +19,7 @@ private:
 
     LevelChunk** cache;
     // 4J - added for multithreaded support
-    CRITICAL_SECTION m_csLoadCreate;
+    std::mutex m_csLoadCreate;
     // 4J - size of cache is defined by size of one side - must be even
     int XZSIZE;
     int XZOFFSET;

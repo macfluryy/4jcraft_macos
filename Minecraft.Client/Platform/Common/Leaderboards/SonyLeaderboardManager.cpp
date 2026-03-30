@@ -33,8 +33,6 @@ SonyLeaderboardManager::SonyLeaderboardManager() {
 
     m_openSessions = 0;
 
-    InitializeCriticalSection(&m_csViewsLock);
-
     m_running = false;
     m_threadScoreboard = nullptr;
 }
@@ -50,8 +48,6 @@ SonyLeaderboardManager::~SonyLeaderboardManager() {
     }
 
     delete m_threadScoreboard;
-
-    DeleteCriticalSection(&m_csViewsLock);
 }
 
 int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
@@ -68,9 +64,10 @@ int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
             self->scoreboardThreadInternal();
         }
 
-        EnterCriticalSection(&self->m_csViewsLock);
-        needsWriting = self->m_views.size() > 0;
-        LeaveCriticalSection(&self->m_csViewsLock);
+        {
+            std::lock_guard<std::mutex> lock(self->m_csViewsLock);
+            needsWriting = self->m_views.size() > 0;
+        }
 
         // 4J Stu - We can't write while we aren't signed in to live
         if (!ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad())) {
@@ -166,9 +163,11 @@ void SonyLeaderboardManager::scoreboardThreadInternal() {
             // 4J-JEV: Writing no longer changes the manager state,
             // we'll manage the write queue seperately.
 
-            EnterCriticalSection(&m_csViewsLock);
-            bool hasWork = !m_views.empty();
-            LeaveCriticalSection(&m_csViewsLock);
+            bool hasWork;
+            {
+                std::lock_guard<std::mutex> lock(m_csViewsLock);
+                hasWork = !m_views.empty();
+            }
 
             if (hasWork) {
                 setScore();
@@ -493,10 +492,12 @@ bool SonyLeaderboardManager::setScore() {
 
     // Get next job.
 
-    EnterCriticalSection(&m_csViewsLock);
-    RegisterScore rscore = m_views.front();
-    m_views.pop();
-    LeaveCriticalSection(&m_csViewsLock);
+    RegisterScore rscore;
+    {
+        std::lock_guard<std::mutex> lock(m_csViewsLock);
+        rscore = m_views.front();
+        m_views.pop();
+    }
 
     if (ProfileManager.IsGuest(rscore.m_iPad)) {
         app.DebugPrintf(
@@ -519,9 +520,8 @@ bool SonyLeaderboardManager::setScore() {
 
     // Start emptying queue if leaderboards has been closed.
     if (ret == SCE_NP_COMMUNITY_ERROR_NOT_INITIALIZED) {
-        EnterCriticalSection(&m_csViewsLock);
+        std::lock_guard<std::mutex> lock(m_csViewsLock);
         m_views.pop();
-        LeaveCriticalSection(&m_csViewsLock);
     }
 
     // Error handling.
@@ -641,9 +641,10 @@ bool SonyLeaderboardManager::OpenSession() {
         if (m_threadScoreboard == nullptr) {
             m_threadScoreboard =
                 new C4JThread(&scoreboardThreadEntry, this, "4JScoreboard");
-            m_threadScoreboard->SetProcessor(CPU_CORE_LEADERBOARDS);
-            m_threadScoreboard->SetPriority(THREAD_PRIORITY_BELOW_NORMAL);
-            m_threadScoreboard->Run();
+            m_threadScoreboard->setProcessor(CPU_CORE_LEADERBOARDS);
+            m_threadScoreboard->setPriority(
+                C4JThread::ThreadPriority::BelowNormal);
+            m_threadScoreboard->run();
         }
 
         app.DebugPrintf(
@@ -683,17 +684,19 @@ bool SonyLeaderboardManager::WriteStats(unsigned int viewCount, ViewIn views) {
     // Write relevant parameters.
     // RegisterScore *regScore = reinterpret_cast<RegisterScore *>(views);
 
-    EnterCriticalSection(&m_csViewsLock);
-    for (int i = 0; i < viewCount; i++) {
-        app.DebugPrintf(
-            "[SonyLeaderboardManager] WriteStats(), starting. difficulty=%i, "
-            "statsType=%i, score=%i\n",
-            views[i].m_difficulty, views[i].m_commentData.m_statsType,
-            views[i].m_score);
+    {
+        std::lock_guard<std::mutex> lock(m_csViewsLock);
+        for (int i = 0; i < viewCount; i++) {
+            app.DebugPrintf(
+                "[SonyLeaderboardManager] WriteStats(), starting. "
+                "difficulty=%i, "
+                "statsType=%i, score=%i\n",
+                views[i].m_difficulty, views[i].m_commentData.m_statsType,
+                views[i].m_score);
 
-        m_views.push(views[i]);
+            m_views.push(views[i]);
+        }
     }
-    LeaveCriticalSection(&m_csViewsLock);
 
     delete[] views;  //*regScore;
 

@@ -14,7 +14,7 @@
 // link. 2 sockets can be created, one for either end of this local link, the
 // end (0 or 1) is passed as a parameter to the ctor.
 
-CRITICAL_SECTION Socket::s_hostQueueLock[2];
+std::mutex Socket::s_hostQueueLock[2];
 std::queue<std::uint8_t> Socket::s_hostQueue[2];
 Socket::SocketOutputStreamLocal* Socket::s_hostOutStream[2];
 Socket::SocketInputStreamLocal* Socket::s_hostInStream[2];
@@ -26,7 +26,6 @@ void Socket::EnsureStreamsInitialised() {
     // concurrently.
     static bool initialized = []() -> bool {
         for (int i = 0; i < 2; i++) {
-            InitializeCriticalSection(&Socket::s_hostQueueLock[i]);
             s_hostOutStream[i] = new SocketOutputStreamLocal(i);
             s_hostInStream[i] = new SocketInputStreamLocal(i);
         }
@@ -47,11 +46,14 @@ void Socket::Initialise(ServerConnection* serverConnection) {
     if (init) {
         // Streams already exist – just reset queue state and re-open streams.
         for (int i = 0; i < 2; i++) {
-            if (TryEnterCriticalSection(&s_hostQueueLock[i])) {
-                // Clear the queue
-                std::queue<std::uint8_t> empty;
-                std::swap(s_hostQueue[i], empty);
-                LeaveCriticalSection(&s_hostQueueLock[i]);
+            {
+                std::unique_lock<std::mutex> lock(s_hostQueueLock[i],
+                                                  std::try_to_lock);
+                if (lock.owns_lock()) {
+                    // Clear the queue
+                    std::queue<std::uint8_t> empty;
+                    std::swap(s_hostQueue[i], empty);
+                }
             }
             s_hostOutStream[i]->m_streamOpen = true;
             s_hostInStream[i]->m_streamOpen = true;
@@ -94,7 +96,6 @@ Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
     m_hostLocal = hostLocal;
 
     for (int i = 0; i < 2; i++) {
-        InitializeCriticalSection(&m_queueLockNetwork[i]);
         m_inputStream[i] = nullptr;
         m_outputStream[i] = nullptr;
         m_endClosed[i] = false;
@@ -143,11 +144,12 @@ void Socket::pushDataToQueue(const std::uint8_t* pbData, std::size_t dataSize,
         return;
     }
 
-    EnterCriticalSection(&m_queueLockNetwork[queueIdx]);
-    for (std::size_t i = 0; i < dataSize; ++i) {
-        m_queueNetwork[queueIdx].push(*pbData++);
+    {
+        std::lock_guard<std::mutex> lock(m_queueLockNetwork[queueIdx]);
+        for (std::size_t i = 0; i < dataSize; ++i) {
+            m_queueNetwork[queueIdx].push(*pbData++);
+        }
     }
-    LeaveCriticalSection(&m_queueLockNetwork[queueIdx]);
 }
 
 void Socket::addIncomingSocket(Socket* socket) {
@@ -226,7 +228,7 @@ bool Socket::close(bool isServerConnection) {
         m_endClosed[m_end] = true;
     }
     if (allClosed && m_socketClosedEvent != nullptr) {
-        m_socketClosedEvent->Set();
+        m_socketClosedEvent->set();
     }
     if (allClosed) createdOk = false;
     return allClosed;
@@ -244,14 +246,16 @@ Socket::SocketInputStreamLocal::SocketInputStreamLocal(int queueIdx) {
 int Socket::SocketInputStreamLocal::read() {
     while (m_streamOpen && ShutdownManager::ShouldRun(
                                ShutdownManager::eConnectionReadThreads)) {
-        if (TryEnterCriticalSection(&s_hostQueueLock[m_queueIdx])) {
-            if (s_hostQueue[m_queueIdx].size()) {
-                std::uint8_t retval = s_hostQueue[m_queueIdx].front();
-                s_hostQueue[m_queueIdx].pop();
-                LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
-                return retval;
+        {
+            std::unique_lock<std::mutex> lock(s_hostQueueLock[m_queueIdx],
+                                              std::try_to_lock);
+            if (lock.owns_lock()) {
+                if (s_hostQueue[m_queueIdx].size()) {
+                    std::uint8_t retval = s_hostQueue[m_queueIdx].front();
+                    s_hostQueue[m_queueIdx].pop();
+                    return retval;
+                }
             }
-            LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
@@ -269,16 +273,18 @@ int Socket::SocketInputStreamLocal::read(byteArray b) {
 int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset,
                                          unsigned int length) {
     while (m_streamOpen) {
-        if (TryEnterCriticalSection(&s_hostQueueLock[m_queueIdx])) {
-            if (s_hostQueue[m_queueIdx].size() >= length) {
-                for (unsigned int i = 0; i < length; i++) {
-                    b[i + offset] = s_hostQueue[m_queueIdx].front();
-                    s_hostQueue[m_queueIdx].pop();
+        {
+            std::unique_lock<std::mutex> lock(s_hostQueueLock[m_queueIdx],
+                                              std::try_to_lock);
+            if (lock.owns_lock()) {
+                if (s_hostQueue[m_queueIdx].size() >= length) {
+                    for (unsigned int i = 0; i < length; i++) {
+                        b[i + offset] = s_hostQueue[m_queueIdx].front();
+                        s_hostQueue[m_queueIdx].pop();
+                    }
+                    return length;
                 }
-                LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
-                return length;
             }
-            LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
@@ -287,9 +293,10 @@ int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset,
 
 void Socket::SocketInputStreamLocal::close() {
     m_streamOpen = false;
-    EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
-    std::queue<std::uint8_t>().swap(s_hostQueue[m_queueIdx]);
-    LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
+    {
+        std::lock_guard<std::mutex> lock(s_hostQueueLock[m_queueIdx]);
+        std::queue<std::uint8_t>().swap(s_hostQueue[m_queueIdx]);
+    }
 }
 
 /////////////////////////////////// Socket for output, on local connection
@@ -304,9 +311,10 @@ void Socket::SocketOutputStreamLocal::write(unsigned int b) {
     if (m_streamOpen != true) {
         return;
     }
-    EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
-    s_hostQueue[m_queueIdx].push((std::uint8_t)b);
-    LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
+    {
+        std::lock_guard<std::mutex> lock(s_hostQueueLock[m_queueIdx]);
+        s_hostQueue[m_queueIdx].push((std::uint8_t)b);
+    }
 }
 
 void Socket::SocketOutputStreamLocal::write(byteArray b) {
@@ -319,19 +327,21 @@ void Socket::SocketOutputStreamLocal::write(byteArray b, unsigned int offset,
         return;
     }
     MemSect(12);
-    EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
-    for (unsigned int i = 0; i < length; i++) {
-        s_hostQueue[m_queueIdx].push(b[offset + i]);
+    {
+        std::lock_guard<std::mutex> lock(s_hostQueueLock[m_queueIdx]);
+        for (unsigned int i = 0; i < length; i++) {
+            s_hostQueue[m_queueIdx].push(b[offset + i]);
+        }
     }
-    LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
     MemSect(0);
 }
 
 void Socket::SocketOutputStreamLocal::close() {
     m_streamOpen = false;
-    EnterCriticalSection(&s_hostQueueLock[m_queueIdx]);
-    std::queue<std::uint8_t>().swap(s_hostQueue[m_queueIdx]);
-    LeaveCriticalSection(&s_hostQueueLock[m_queueIdx]);
+    {
+        std::lock_guard<std::mutex> lock(s_hostQueueLock[m_queueIdx]);
+        std::queue<std::uint8_t>().swap(s_hostQueue[m_queueIdx]);
+    }
 }
 
 /////////////////////////////////// Socket for input, on network connection
@@ -348,16 +358,17 @@ Socket::SocketInputStreamNetwork::SocketInputStreamNetwork(Socket* socket,
 int Socket::SocketInputStreamNetwork::read() {
     while (m_streamOpen && ShutdownManager::ShouldRun(
                                ShutdownManager::eConnectionReadThreads)) {
-        if (TryEnterCriticalSection(
-                &m_socket->m_queueLockNetwork[m_queueIdx])) {
-            if (m_socket->m_queueNetwork[m_queueIdx].size()) {
-                std::uint8_t retval =
-                    m_socket->m_queueNetwork[m_queueIdx].front();
-                m_socket->m_queueNetwork[m_queueIdx].pop();
-                LeaveCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]);
-                return retval;
+        {
+            std::unique_lock<std::mutex> lock(
+                m_socket->m_queueLockNetwork[m_queueIdx], std::try_to_lock);
+            if (lock.owns_lock()) {
+                if (m_socket->m_queueNetwork[m_queueIdx].size()) {
+                    std::uint8_t retval =
+                        m_socket->m_queueNetwork[m_queueIdx].front();
+                    m_socket->m_queueNetwork[m_queueIdx].pop();
+                    return retval;
+                }
             }
-            LeaveCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]);
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
@@ -375,18 +386,19 @@ int Socket::SocketInputStreamNetwork::read(byteArray b) {
 int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset,
                                            unsigned int length) {
     while (m_streamOpen) {
-        if (TryEnterCriticalSection(
-                &m_socket->m_queueLockNetwork[m_queueIdx])) {
-            if (m_socket->m_queueNetwork[m_queueIdx].size() >= length) {
-                for (unsigned int i = 0; i < length; i++) {
-                    b[i + offset] =
-                        m_socket->m_queueNetwork[m_queueIdx].front();
-                    m_socket->m_queueNetwork[m_queueIdx].pop();
+        {
+            std::unique_lock<std::mutex> lock(
+                m_socket->m_queueLockNetwork[m_queueIdx], std::try_to_lock);
+            if (lock.owns_lock()) {
+                if (m_socket->m_queueNetwork[m_queueIdx].size() >= length) {
+                    for (unsigned int i = 0; i < length; i++) {
+                        b[i + offset] =
+                            m_socket->m_queueNetwork[m_queueIdx].front();
+                        m_socket->m_queueNetwork[m_queueIdx].pop();
+                    }
+                    return length;
                 }
-                LeaveCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]);
-                return length;
             }
-            LeaveCriticalSection(&m_socket->m_queueLockNetwork[m_queueIdx]);
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
@@ -441,11 +453,13 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
         else
             queueIdx = SOCKET_CLIENT_END;
 
-        EnterCriticalSection(&m_socket->m_queueLockNetwork[queueIdx]);
-        for (unsigned int i = 0; i < length; i++) {
-            m_socket->m_queueNetwork[queueIdx].push(b[offset + i]);
+        {
+            std::lock_guard<std::mutex> lock(
+                m_socket->m_queueLockNetwork[queueIdx]);
+            for (unsigned int i = 0; i < length; i++) {
+                m_socket->m_queueNetwork[queueIdx].push(b[offset + i]);
+            }
         }
-        LeaveCriticalSection(&m_socket->m_queueLockNetwork[queueIdx]);
     } else {
         XRNM_SEND_BUFFER buffer;
         buffer.pbyData = &b[offset];

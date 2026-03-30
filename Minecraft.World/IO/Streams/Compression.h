@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "../Files/FileHeader.h"
 
 class Compression {
@@ -67,8 +68,8 @@ private:
 
     XMEMCOMPRESSION_CONTEXT compressionContext;
     XMEMDECOMPRESSION_CONTEXT decompressionContext;
-    CRITICAL_SECTION rleCompressLock;
-    CRITICAL_SECTION rleDecompressLock;
+    std::mutex rleCompressLock;
+    std::mutex rleDecompressLock;
 
     unsigned char rleCompressBuf[1024 * 100];
     static const unsigned int staticRleSize = 1024 * 200;

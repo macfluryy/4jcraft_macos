@@ -9,6 +9,7 @@ class SparseLightStorage;
 class CompressedTileStorage;
 class SparseDataStorage;
 
+#include <mutex>
 #include "../../Minecraft.World/Util/SmoothFloat.h"
 #include "../../Minecraft.World/Util/C4JThread.h"
 #include "../Textures/ResourceLocation.h"
@@ -191,7 +192,7 @@ public:
     static std::vector<CompressedTileStorage*>
         m_deleteStackCompressedTileStorage;
     static std::vector<SparseDataStorage*> m_deleteStackSparseDataStorage;
-    static CRITICAL_SECTION m_csDeleteStack;
+    static std::mutex m_csDeleteStack;
     static void AddForDelete(uint8_t* deleteThis);
     static void AddForDelete(SparseLightStorage* deleteThis);
     static void AddForDelete(CompressedTileStorage* deleteThis);

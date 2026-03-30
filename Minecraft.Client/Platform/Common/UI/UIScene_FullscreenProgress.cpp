@@ -63,11 +63,11 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
     m_labelTip.setVisible(m_CompletionData->bShowTips);
 
     thread = new C4JThread(params->func, params->lpParam, "FullscreenProgress");
-    thread->SetProcessor(CPU_CORE_UI_SCENE);  // TODO 4J Stu - Make sure this is
+    thread->setProcessor(CPU_CORE_UI_SCENE);  // TODO 4J Stu - Make sure this is
                                               // a good thread/core to use
 
     m_threadCompleted = false;
-    thread->Run();
+    thread->run();
     threadStarted = true;
 }
 
@@ -92,12 +92,12 @@ void UIScene_FullscreenProgress::updateTooltips() {
 }
 
 void UIScene_FullscreenProgress::handleDestroy() {
-    int code = thread->GetExitCode();
+    int code = thread->getExitCode();
     const unsigned int exitcode = static_cast<unsigned int>(code);
 
     // If we're active, have a cancel func, and haven't already cancelled, call
     // cancel func
-    if (exitcode == STILL_ACTIVE && m_cancelFunc != nullptr &&
+    if (exitcode == C4JThread::kStillActive && m_cancelFunc != nullptr &&
         !m_bWasCancelled) {
         m_bWasCancelled = true;
         m_cancelFunc(m_cancelFuncParam);
@@ -140,12 +140,12 @@ void UIScene_FullscreenProgress::tick() {
         m_progressBar.setLabel(wstrText.c_str());
     }
 
-    int code = thread->GetExitCode();
+    int code = thread->getExitCode();
     uint32_t exitcode = *((uint32_t*)&code);
 
     // app.DebugPrintf("CScene_FullscreenProgress Timer %d\n",pTimer->nId);
 
-    if (exitcode != STILL_ACTIVE) {
+    if (exitcode != C4JThread::kStillActive) {
         // If we failed (currently used by network connection thread), navigate
         // back
         if (exitcode != S_OK) {

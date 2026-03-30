@@ -120,8 +120,6 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
     rightClickDelay = 0;
 
     // 4J Stu Added
-    InitializeCriticalSection(&ProgressRenderer::s_progress);
-    InitializeCriticalSection(&m_setLevelCS);
     // m_hPlayerRespawned = CreateEvent(nullptr, false, false, nullptr);
 
     progressRenderer = nullptr;
@@ -214,7 +212,7 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
         new C4JThread::EventQueue(levelTickUpdateFunc, levelTickThreadInitFunc,
                                   "LevelTick_EventQueuePoll");
     levelTickEventQueue->setProcessor(3);
-    levelTickEventQueue->setPriority(THREAD_PRIORITY_NORMAL);
+    levelTickEventQueue->setPriority(C4JThread::ThreadPriority::Normal);
 #endif
 }
 
@@ -989,356 +987,447 @@ void Minecraft::run_middle() {
     }
 #endif
 
-    EnterCriticalSection(&m_setLevelCS);
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
 
-    if (running) {
-        if (reloadTextures) {
-            reloadTextures = false;
-            textures->reloadAll();
-        }
+        if (running) {
+            if (reloadTextures) {
+                reloadTextures = false;
+                textures->reloadAll();
+            }
 
-        // while (running)
-        {
-            //        try {	// 4J - removed try/catch
-            //            if (minecraftApplet != null &&
-            //            !minecraftApplet.isActive()) break;	// 4J - removed
+            // while (running)
+            {
+                //        try {	// 4J - removed try/catch
+                //            if (minecraftApplet != null &&
+                //            !minecraftApplet.isActive()) break;	// 4J -
+                //            removed
 
-            //            if (parent == nullptr && Display.isCloseRequested()) {
-            //            // 4J - removed
-            //                stop();
-            //            }
+                //            if (parent == nullptr &&
+                //            Display.isCloseRequested()) {
+                //            // 4J - removed
+                //                stop();
+                //            }
 
-            // 4J-PB - AUTOSAVE TIMER - only in the full game and if the player
-            // is the host
-            if (level != nullptr && ProfileManager.IsFullVersion() &&
-                g_NetworkManager.IsHost()) {
-                /*if(!bAutosaveTimerSet)
-                {
-                // set the timer
-                bAutosaveTimerSet=true;
+                // 4J-PB - AUTOSAVE TIMER - only in the full game and if the
+                // player is the host
+                if (level != nullptr && ProfileManager.IsFullVersion() &&
+                    g_NetworkManager.IsHost()) {
+                    /*if(!bAutosaveTimerSet)
+                    {
+                    // set the timer
+                    bAutosaveTimerSet=true;
 
-                app.SetAutosaveTimerTime();
-                }
-                else*/
-                {
-                    // if the pause menu is up for the primary player, don't
-                    // autosave If saving isn't disabled, and the main player
-                    // has a app action running , or has any crafting or
-                    // containers open, don't autosave
-                    if (!StorageManager.GetSaveDisabled() &&
-                        (app.GetXuiAction(ProfileManager.GetPrimaryPad()) ==
-                         eAppAction_Idle)) {
-                        if (!ui.IsPauseMenuDisplayed(
-                                ProfileManager.GetPrimaryPad()) &&
-                            !ui.IsIgnoreAutosaveMenuDisplayed(
-                                ProfileManager.GetPrimaryPad())) {
-                            // check if the autotimer countdown has reached zero
-                            unsigned char ucAutosaveVal = app.GetGameSettings(
-                                ProfileManager.GetPrimaryPad(),
-                                eGameSetting_Autosave);
-                            bool bTrialTexturepack = false;
-                            if (!Minecraft::GetInstance()
-                                     ->skins->isUsingDefaultSkin()) {
-                                TexturePack* tPack = Minecraft::GetInstance()
-                                                         ->skins->getSelected();
-                                DLCTexturePack* pDLCTexPack =
-                                    (DLCTexturePack*)tPack;
-
-                                DLCPack* pDLCPack =
-                                    pDLCTexPack->getDLCInfoParentPack();
-
-                                if (pDLCPack) {
-                                    if (!pDLCPack->hasPurchasedFile(
-                                            DLCManager::e_DLCType_Texture,
-                                            L"")) {
-                                        bTrialTexturepack = true;
-                                    }
-                                }
-                            }
-
-                            // If the autosave value is not zero, and the player
-                            // isn't using a trial texture pack, then check
-                            // whether we need to save this tick
-                            if ((ucAutosaveVal != 0) && !bTrialTexturepack) {
-                                if (app.AutosaveDue()) {
-                                    // disable the autosave countdown
-                                    ui.ShowAutosaveCountdownTimer(false);
-
-                                    // Need to save now
-                                    app.DebugPrintf("+++++++++++\n");
-                                    app.DebugPrintf("+++Autosave\n");
-                                    app.DebugPrintf("+++++++++++\n");
-                                    app.SetAction(
+                    app.SetAutosaveTimerTime();
+                    }
+                    else*/
+                    {
+                        // if the pause menu is up for the primary player, don't
+                        // autosave If saving isn't disabled, and the main
+                        // player has a app action running , or has any crafting
+                        // or containers open, don't autosave
+                        if (!StorageManager.GetSaveDisabled() &&
+                            (app.GetXuiAction(ProfileManager.GetPrimaryPad()) ==
+                             eAppAction_Idle)) {
+                            if (!ui.IsPauseMenuDisplayed(
+                                    ProfileManager.GetPrimaryPad()) &&
+                                !ui.IsIgnoreAutosaveMenuDisplayed(
+                                    ProfileManager.GetPrimaryPad())) {
+                                // check if the autotimer countdown has reached
+                                // zero
+                                unsigned char ucAutosaveVal =
+                                    app.GetGameSettings(
                                         ProfileManager.GetPrimaryPad(),
-                                        eAppAction_AutosaveSaveGame);
-                                    // app.SetAutosaveTimerTime();
+                                        eGameSetting_Autosave);
+                                bool bTrialTexturepack = false;
+                                if (!Minecraft::GetInstance()
+                                         ->skins->isUsingDefaultSkin()) {
+                                    TexturePack* tPack =
+                                        Minecraft::GetInstance()
+                                            ->skins->getSelected();
+                                    DLCTexturePack* pDLCTexPack =
+                                        (DLCTexturePack*)tPack;
+
+                                    DLCPack* pDLCPack =
+                                        pDLCTexPack->getDLCInfoParentPack();
+
+                                    if (pDLCPack) {
+                                        if (!pDLCPack->hasPurchasedFile(
+                                                DLCManager::e_DLCType_Texture,
+                                                L"")) {
+                                            bTrialTexturepack = true;
+                                        }
+                                    }
+                                }
+
+                                // If the autosave value is not zero, and the
+                                // player isn't using a trial texture pack, then
+                                // check whether we need to save this tick
+                                if ((ucAutosaveVal != 0) &&
+                                    !bTrialTexturepack) {
+                                    if (app.AutosaveDue()) {
+                                        // disable the autosave countdown
+                                        ui.ShowAutosaveCountdownTimer(false);
+
+                                        // Need to save now
+                                        app.DebugPrintf("+++++++++++\n");
+                                        app.DebugPrintf("+++Autosave\n");
+                                        app.DebugPrintf("+++++++++++\n");
+                                        app.SetAction(
+                                            ProfileManager.GetPrimaryPad(),
+                                            eAppAction_AutosaveSaveGame);
+                                        // app.SetAutosaveTimerTime();
 #if !defined(_CONTENT_PACKAGE)
-                                    {
-                                        // print the time
-                                        SYSTEMTIME UTCSysTime;
-                                        GetSystemTime(&UTCSysTime);
-                                        // char szTime[15];
+                                        {
+                                            // print the time
+                                            SYSTEMTIME UTCSysTime;
+                                            GetSystemTime(&UTCSysTime);
+                                            // char szTime[15];
 
-                                        app.DebugPrintf("%02d:%02d:%02d\n",
-                                                        UTCSysTime.wHour,
-                                                        UTCSysTime.wMinute,
-                                                        UTCSysTime.wSecond);
-                                    }
+                                            app.DebugPrintf("%02d:%02d:%02d\n",
+                                                            UTCSysTime.wHour,
+                                                            UTCSysTime.wMinute,
+                                                            UTCSysTime.wSecond);
+                                        }
 #endif
-                                } else {
-                                    unsigned int uiTimeToAutosave =
-                                        app.SecondsToAutosave();
+                                    } else {
+                                        unsigned int uiTimeToAutosave =
+                                            app.SecondsToAutosave();
 
-                                    if (uiTimeToAutosave < 6) {
-                                        ui.ShowAutosaveCountdownTimer(true);
-                                        ui.UpdateAutosaveCountdownTimer(
-                                            uiTimeToAutosave);
+                                        if (uiTimeToAutosave < 6) {
+                                            ui.ShowAutosaveCountdownTimer(true);
+                                            ui.UpdateAutosaveCountdownTimer(
+                                                uiTimeToAutosave);
+                                        }
                                     }
                                 }
-                            }
-                        } else {
-                            // disable the autosave countdown
-                            ui.ShowAutosaveCountdownTimer(false);
-                        }
-                    }
-                }
-            }
-
-            // 4J-PB - Once we're in the level, check if the players have the
-            // level in their banned list and ask if they want to play it
-            for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-                if (localplayers[i] && (app.GetBanListCheck(i) == false) &&
-                    !Minecraft::GetInstance()->isTutorial() &&
-                    ProfileManager.IsSignedInLive(i) &&
-                    !ProfileManager.IsGuest(i)) {
-                    // If there is a sys ui displayed, we can't display the
-                    // message box here, so ignore until we can
-                    if (!ProfileManager.IsSystemUIDisplayed()) {
-                        app.SetBanListCheck(i, true);
-                        // 4J-PB - check if the level is in the banned level
-                        // list get the unique save name and xuid from whoever
-                        // is the host
-                        INetworkPlayer* pHostPlayer =
-                            g_NetworkManager.GetHostPlayer();
-                        PlayerUID xuid = pHostPlayer->GetUID();
-
-                        if (app.IsInBannedLevelList(i, xuid,
-                                                    app.GetUniqueMapName())) {
-                            // put up a message box asking if the player would
-                            // like to unban this level
-                            app.DebugPrintf("This level is banned\n");
-                            // set the app action to bring up the message box to
-                            // give them the option to remove from the ban list
-                            // or exit the level
-                            app.SetAction(i, eAppAction_LevelInBanLevelList,
-                                          (void*)true);
-                        }
-                    }
-                }
-            }
-
-            if (!ProfileManager.IsSystemUIDisplayed() &&
-                app.DLCInstallProcessCompleted() && !app.DLCInstallPending() &&
-                app.m_dlcManager.NeedsCorruptCheck()) {
-                app.m_dlcManager.checkForCorruptDLCAndAlert();
-            }
-
-            // When we go into the first loaded level, check if the console has
-            // active joypads that are not in the game, and bring up the
-            // quadrant display to remind them to press start (if the session
-            // has space)
-            if (level != nullptr && bFirstTimeIntoGame &&
-                g_NetworkManager.SessionHasSpace()) {
-                // have a short delay before the display
-                if (iFirstTimeCountdown == 0) {
-                    bFirstTimeIntoGame = false;
-
-                    if (app.IsLocalMultiplayerAvailable()) {
-                        for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-                            if ((localplayers[i] == nullptr) &&
-                                InputManager.IsPadConnected(i)) {
-                                if (!ui.PressStartPlaying(i)) {
-                                    ui.ShowPressStart(i);
-                                }
+                            } else {
+                                // disable the autosave countdown
+                                ui.ShowAutosaveCountdownTimer(false);
                             }
                         }
                     }
-                } else
-                    iFirstTimeCountdown--;
-            }
-            // 4J-PB - store any button toggles for the players, since the
-            // minecraft::tick may not be called if we're running fast, and a
-            // button press and release will be missed
+                }
 
-            for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-                if (localplayers[i]) {
-                    // 4J-PB - add these to check for coming out of idle
-                    if (InputManager.ButtonPressed(i, MINECRAFT_ACTION_JUMP))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_JUMP;
-                    if (InputManager.ButtonPressed(i, MINECRAFT_ACTION_USE))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_USE;
+                // 4J-PB - Once we're in the level, check if the players have
+                // the level in their banned list and ask if they want to play
+                // it
+                for (int i = 0; i < XUSER_MAX_COUNT; i++) {
+                    if (localplayers[i] && (app.GetBanListCheck(i) == false) &&
+                        !Minecraft::GetInstance()->isTutorial() &&
+                        ProfileManager.IsSignedInLive(i) &&
+                        !ProfileManager.IsGuest(i)) {
+                        // If there is a sys ui displayed, we can't display the
+                        // message box here, so ignore until we can
+                        if (!ProfileManager.IsSystemUIDisplayed()) {
+                            app.SetBanListCheck(i, true);
+                            // 4J-PB - check if the level is in the banned level
+                            // list get the unique save name and xuid from
+                            // whoever is the host
+                            INetworkPlayer* pHostPlayer =
+                                g_NetworkManager.GetHostPlayer();
+                            PlayerUID xuid = pHostPlayer->GetUID();
 
-                    if (InputManager.ButtonPressed(i,
-                                                   MINECRAFT_ACTION_INVENTORY))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_INVENTORY;
-                    if (InputManager.ButtonPressed(i, MINECRAFT_ACTION_ACTION))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_ACTION;
-                    if (InputManager.ButtonPressed(i,
-                                                   MINECRAFT_ACTION_CRAFTING))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_CRAFTING;
-                    if (InputManager.ButtonPressed(
-                            i, MINECRAFT_ACTION_PAUSEMENU)) {
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_PAUSEMENU;
-                        app.DebugPrintf(
-                            "PAUSE PRESSED - ipad = %d, Storing press\n", i);
-#if defined(ENABLE_JAVA_GUIS)
-                        pauseGame();
-#endif
+                            if (app.IsInBannedLevelList(
+                                    i, xuid, app.GetUniqueMapName())) {
+                                // put up a message box asking if the player
+                                // would like to unban this level
+                                app.DebugPrintf("This level is banned\n");
+                                // set the app action to bring up the message
+                                // box to give them the option to remove from
+                                // the ban list or exit the level
+                                app.SetAction(i, eAppAction_LevelInBanLevelList,
+                                              (void*)true);
+                            }
+                        }
                     }
-                    if (InputManager.ButtonPressed(i, MINECRAFT_ACTION_DROP))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_DROP;
+                }
 
-                    // 4J-PB - If we're flying, the sneak needs to be held on to
-                    // go down
-                    if (localplayers[i]->abilities.flying) {
-                        if (InputManager.ButtonDown(
-                                i, MINECRAFT_ACTION_SNEAK_TOGGLE))
+                if (!ProfileManager.IsSystemUIDisplayed() &&
+                    app.DLCInstallProcessCompleted() &&
+                    !app.DLCInstallPending() &&
+                    app.m_dlcManager.NeedsCorruptCheck()) {
+                    app.m_dlcManager.checkForCorruptDLCAndAlert();
+                }
+
+                // When we go into the first loaded level, check if the console
+                // has active joypads that are not in the game, and bring up the
+                // quadrant display to remind them to press start (if the
+                // session has space)
+                if (level != nullptr && bFirstTimeIntoGame &&
+                    g_NetworkManager.SessionHasSpace()) {
+                    // have a short delay before the display
+                    if (iFirstTimeCountdown == 0) {
+                        bFirstTimeIntoGame = false;
+
+                        if (app.IsLocalMultiplayerAvailable()) {
+                            for (int i = 0; i < XUSER_MAX_COUNT; i++) {
+                                if ((localplayers[i] == nullptr) &&
+                                    InputManager.IsPadConnected(i)) {
+                                    if (!ui.PressStartPlaying(i)) {
+                                        ui.ShowPressStart(i);
+                                    }
+                                }
+                            }
+                        }
+                    } else
+                        iFirstTimeCountdown--;
+                }
+                // 4J-PB - store any button toggles for the players, since the
+                // minecraft::tick may not be called if we're running fast, and
+                // a button press and release will be missed
+
+                for (int i = 0; i < XUSER_MAX_COUNT; i++) {
+                    if (localplayers[i]) {
+                        // 4J-PB - add these to check for coming out of idle
+                        if (InputManager.ButtonPressed(i,
+                                                       MINECRAFT_ACTION_JUMP))
                             localplayers[i]->ullButtonsPressed |=
-                                1LL << MINECRAFT_ACTION_SNEAK_TOGGLE;
-                    } else {
+                                1LL << MINECRAFT_ACTION_JUMP;
+                        if (InputManager.ButtonPressed(i, MINECRAFT_ACTION_USE))
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_USE;
+
                         if (InputManager.ButtonPressed(
-                                i, MINECRAFT_ACTION_SNEAK_TOGGLE))
+                                i, MINECRAFT_ACTION_INVENTORY))
                             localplayers[i]->ullButtonsPressed |=
-                                1LL << MINECRAFT_ACTION_SNEAK_TOGGLE;
-                    }
-                    if (InputManager.ButtonPressed(
-                            i, MINECRAFT_ACTION_RENDER_THIRD_PERSON))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_RENDER_THIRD_PERSON;
-                    if (InputManager.ButtonPressed(i,
-                                                   MINECRAFT_ACTION_GAME_INFO))
-                        localplayers[i]->ullButtonsPressed |=
-                            1LL << MINECRAFT_ACTION_GAME_INFO;
+                                1LL << MINECRAFT_ACTION_INVENTORY;
+                        if (InputManager.ButtonPressed(i,
+                                                       MINECRAFT_ACTION_ACTION))
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_ACTION;
+                        if (InputManager.ButtonPressed(
+                                i, MINECRAFT_ACTION_CRAFTING))
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_CRAFTING;
+                        if (InputManager.ButtonPressed(
+                                i, MINECRAFT_ACTION_PAUSEMENU)) {
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_PAUSEMENU;
+                            app.DebugPrintf(
+                                "PAUSE PRESSED - ipad = %d, Storing press\n",
+                                i);
+#if defined(ENABLE_JAVA_GUIS)
+                            pauseGame();
+#endif
+                        }
+                        if (InputManager.ButtonPressed(i,
+                                                       MINECRAFT_ACTION_DROP))
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_DROP;
+
+                        // 4J-PB - If we're flying, the sneak needs to be held
+                        // on to go down
+                        if (localplayers[i]->abilities.flying) {
+                            if (InputManager.ButtonDown(
+                                    i, MINECRAFT_ACTION_SNEAK_TOGGLE))
+                                localplayers[i]->ullButtonsPressed |=
+                                    1LL << MINECRAFT_ACTION_SNEAK_TOGGLE;
+                        } else {
+                            if (InputManager.ButtonPressed(
+                                    i, MINECRAFT_ACTION_SNEAK_TOGGLE))
+                                localplayers[i]->ullButtonsPressed |=
+                                    1LL << MINECRAFT_ACTION_SNEAK_TOGGLE;
+                        }
+                        if (InputManager.ButtonPressed(
+                                i, MINECRAFT_ACTION_RENDER_THIRD_PERSON))
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_RENDER_THIRD_PERSON;
+                        if (InputManager.ButtonPressed(
+                                i, MINECRAFT_ACTION_GAME_INFO))
+                            localplayers[i]->ullButtonsPressed |=
+                                1LL << MINECRAFT_ACTION_GAME_INFO;
 
 #if !defined(_FINAL_BUILD)
-                    if (app.DebugSettingsOn() && app.GetUseDPadForDebug()) {
-                        localplayers[i]->ullDpad_last = 0;
-                        localplayers[i]->ullDpad_this = 0;
-                        localplayers[i]->ullDpad_filtered = 0;
-                        if (InputManager.ButtonPressed(
-                                i, MINECRAFT_ACTION_DPAD_RIGHT))
-                            localplayers[i]->ullButtonsPressed |=
-                                1LL << MINECRAFT_ACTION_CHANGE_SKIN;
-                        if (InputManager.ButtonPressed(
-                                i, MINECRAFT_ACTION_DPAD_UP))
-                            localplayers[i]->ullButtonsPressed |=
-                                1LL << MINECRAFT_ACTION_FLY_TOGGLE;
-                        if (InputManager.ButtonPressed(
-                                i, MINECRAFT_ACTION_DPAD_DOWN))
-                            localplayers[i]->ullButtonsPressed |=
-                                1LL << MINECRAFT_ACTION_RENDER_DEBUG;
-                        if (InputManager.ButtonPressed(
-                                i, MINECRAFT_ACTION_DPAD_LEFT))
-                            localplayers[i]->ullButtonsPressed |=
-                                1LL << MINECRAFT_ACTION_SPAWN_CREEPER;
-                    } else
-#endif
-                    {
-                        // Movement on DPAD is stored ulimately into
-                        // ullDpad_filtered - this ignores any diagonals
-                        // pressed, instead reporting the last single direction
-                        // - otherwise we get loads of accidental diagonal
-                        // movements
-
-                        localplayers[i]->ullDpad_this = 0;
-                        int dirCount = 0;
-
-                        if (InputManager.ButtonDown(
-                                i, MINECRAFT_ACTION_DPAD_LEFT)) {
-                            localplayers[i]->ullDpad_this |=
-                                1LL << MINECRAFT_ACTION_DPAD_LEFT;
-                            dirCount++;
-                        }
-                        if (InputManager.ButtonDown(
-                                i, MINECRAFT_ACTION_DPAD_RIGHT)) {
-                            localplayers[i]->ullDpad_this |=
-                                1LL << MINECRAFT_ACTION_DPAD_RIGHT;
-                            dirCount++;
-                        }
-                        if (InputManager.ButtonDown(i,
-                                                    MINECRAFT_ACTION_DPAD_UP)) {
-                            localplayers[i]->ullDpad_this |=
-                                1LL << MINECRAFT_ACTION_DPAD_UP;
-                            dirCount++;
-                        }
-                        if (InputManager.ButtonDown(
-                                i, MINECRAFT_ACTION_DPAD_DOWN)) {
-                            localplayers[i]->ullDpad_this |=
-                                1LL << MINECRAFT_ACTION_DPAD_DOWN;
-                            dirCount++;
-                        }
-
-                        if (dirCount <= 1) {
-                            localplayers[i]->ullDpad_last =
-                                localplayers[i]->ullDpad_this;
-                            localplayers[i]->ullDpad_filtered =
-                                localplayers[i]->ullDpad_this;
-                        } else {
-                            localplayers[i]->ullDpad_filtered =
-                                localplayers[i]->ullDpad_last;
-                        }
-                    }
-
-                    // for the opacity timer
-                    if (InputManager.ButtonPressed(
-                            i, MINECRAFT_ACTION_LEFT_SCROLL) ||
-                        InputManager.ButtonPressed(
-                            i, MINECRAFT_ACTION_RIGHT_SCROLL))
-                    // InputManager.ButtonPressed(i, MINECRAFT_ACTION_USE) ||
-                    // InputManager.ButtonPressed(i, MINECRAFT_ACTION_ACTION))
-                    {
-                        app.SetOpacityTimer(i);
-                    }
-                } else {
-                    // 4J Stu - This doesn't make any sense with the way we
-                    // handle XboxOne users
-                    // did we just get input from a player who doesn't exist?
-                    // They'll be wanting to join the game then
-                    bool tryJoin = !pause &&
-                                   !ui.IsIgnorePlayerJoinMenuDisplayed(
-                                       ProfileManager.GetPrimaryPad()) &&
-                                   g_NetworkManager.SessionHasSpace() &&
-                                   RenderManager.IsHiDef() &&
-                                   InputManager.ButtonPressed(i);
-                    if (tryJoin) {
-                        if (!ui.PressStartPlaying(i)) {
-                            ui.ShowPressStart(i);
-                        } else {
-                            // did we just get input from a player who doesn't
-                            // exist? They'll be wanting to join the game then
+                        if (app.DebugSettingsOn() && app.GetUseDPadForDebug()) {
+                            localplayers[i]->ullDpad_last = 0;
+                            localplayers[i]->ullDpad_this = 0;
+                            localplayers[i]->ullDpad_filtered = 0;
                             if (InputManager.ButtonPressed(
-                                    i, MINECRAFT_ACTION_PAUSEMENU)) {
-                                // Let them join
+                                    i, MINECRAFT_ACTION_DPAD_RIGHT))
+                                localplayers[i]->ullButtonsPressed |=
+                                    1LL << MINECRAFT_ACTION_CHANGE_SKIN;
+                            if (InputManager.ButtonPressed(
+                                    i, MINECRAFT_ACTION_DPAD_UP))
+                                localplayers[i]->ullButtonsPressed |=
+                                    1LL << MINECRAFT_ACTION_FLY_TOGGLE;
+                            if (InputManager.ButtonPressed(
+                                    i, MINECRAFT_ACTION_DPAD_DOWN))
+                                localplayers[i]->ullButtonsPressed |=
+                                    1LL << MINECRAFT_ACTION_RENDER_DEBUG;
+                            if (InputManager.ButtonPressed(
+                                    i, MINECRAFT_ACTION_DPAD_LEFT))
+                                localplayers[i]->ullButtonsPressed |=
+                                    1LL << MINECRAFT_ACTION_SPAWN_CREEPER;
+                        } else
+#endif
+                        {
+                            // Movement on DPAD is stored ulimately into
+                            // ullDpad_filtered - this ignores any diagonals
+                            // pressed, instead reporting the last single
+                            // direction
+                            // - otherwise we get loads of accidental diagonal
+                            // movements
 
-                                // are they signed in?
-                                if (ProfileManager.IsSignedIn(i)) {
-                                    // if this is a local game, then the player
-                                    // just needs to be signed in
-                                    if (g_NetworkManager.IsLocalGame() ||
-                                        (ProfileManager.IsSignedInLive(i) &&
-                                         ProfileManager
-                                             .AllowedToPlayMultiplayer(i))) {
-                                        if (level->isClientSide) {
-                                            bool success = addLocalPlayer(i);
+                            localplayers[i]->ullDpad_this = 0;
+                            int dirCount = 0;
 
-                                            if (!success) {
+                            if (InputManager.ButtonDown(
+                                    i, MINECRAFT_ACTION_DPAD_LEFT)) {
+                                localplayers[i]->ullDpad_this |=
+                                    1LL << MINECRAFT_ACTION_DPAD_LEFT;
+                                dirCount++;
+                            }
+                            if (InputManager.ButtonDown(
+                                    i, MINECRAFT_ACTION_DPAD_RIGHT)) {
+                                localplayers[i]->ullDpad_this |=
+                                    1LL << MINECRAFT_ACTION_DPAD_RIGHT;
+                                dirCount++;
+                            }
+                            if (InputManager.ButtonDown(
+                                    i, MINECRAFT_ACTION_DPAD_UP)) {
+                                localplayers[i]->ullDpad_this |=
+                                    1LL << MINECRAFT_ACTION_DPAD_UP;
+                                dirCount++;
+                            }
+                            if (InputManager.ButtonDown(
+                                    i, MINECRAFT_ACTION_DPAD_DOWN)) {
+                                localplayers[i]->ullDpad_this |=
+                                    1LL << MINECRAFT_ACTION_DPAD_DOWN;
+                                dirCount++;
+                            }
+
+                            if (dirCount <= 1) {
+                                localplayers[i]->ullDpad_last =
+                                    localplayers[i]->ullDpad_this;
+                                localplayers[i]->ullDpad_filtered =
+                                    localplayers[i]->ullDpad_this;
+                            } else {
+                                localplayers[i]->ullDpad_filtered =
+                                    localplayers[i]->ullDpad_last;
+                            }
+                        }
+
+                        // for the opacity timer
+                        if (InputManager.ButtonPressed(
+                                i, MINECRAFT_ACTION_LEFT_SCROLL) ||
+                            InputManager.ButtonPressed(
+                                i, MINECRAFT_ACTION_RIGHT_SCROLL))
+                        // InputManager.ButtonPressed(i, MINECRAFT_ACTION_USE)
+                        // || InputManager.ButtonPressed(i,
+                        // MINECRAFT_ACTION_ACTION))
+                        {
+                            app.SetOpacityTimer(i);
+                        }
+                    } else {
+                        // 4J Stu - This doesn't make any sense with the way we
+                        // handle XboxOne users
+                        // did we just get input from a player who doesn't
+                        // exist? They'll be wanting to join the game then
+                        bool tryJoin = !pause &&
+                                       !ui.IsIgnorePlayerJoinMenuDisplayed(
+                                           ProfileManager.GetPrimaryPad()) &&
+                                       g_NetworkManager.SessionHasSpace() &&
+                                       RenderManager.IsHiDef() &&
+                                       InputManager.ButtonPressed(i);
+                        if (tryJoin) {
+                            if (!ui.PressStartPlaying(i)) {
+                                ui.ShowPressStart(i);
+                            } else {
+                                // did we just get input from a player who
+                                // doesn't exist? They'll be wanting to join the
+                                // game then
+                                if (InputManager.ButtonPressed(
+                                        i, MINECRAFT_ACTION_PAUSEMENU)) {
+                                    // Let them join
+
+                                    // are they signed in?
+                                    if (ProfileManager.IsSignedIn(i)) {
+                                        // if this is a local game, then the
+                                        // player just needs to be signed in
+                                        if (g_NetworkManager.IsLocalGame() ||
+                                            (ProfileManager.IsSignedInLive(i) &&
+                                             ProfileManager
+                                                 .AllowedToPlayMultiplayer(
+                                                     i))) {
+                                            if (level->isClientSide) {
+                                                bool success =
+                                                    addLocalPlayer(i);
+
+                                                if (!success) {
+                                                    app.DebugPrintf(
+                                                        "Bringing up the sign "
+                                                        "in "
+                                                        "ui\n");
+                                                    ProfileManager.RequestSignInUI(
+                                                        false,
+                                                        g_NetworkManager
+                                                            .IsLocalGame(),
+                                                        true, false, true,
+                                                        &Minecraft::
+                                                            InGame_SignInReturned,
+                                                        this, i);
+                                                } else {
+                                                }
+                                            } else {
+                                                // create the localplayer
+                                                std::shared_ptr<Player> player =
+                                                    localplayers[i];
+                                                if (player == nullptr) {
+                                                    player =
+                                                        createExtraLocalPlayer(
+                                                            i,
+                                                            (convStringToWstring(
+                                                                 ProfileManager
+                                                                     .GetGamertag(
+                                                                         i)))
+                                                                .c_str(),
+                                                            i,
+                                                            level->dimension
+                                                                ->id);
+                                                }
+                                            }
+                                        } else {
+                                            if (ProfileManager.IsSignedInLive(
+                                                    ProfileManager
+                                                        .GetPrimaryPad()) &&
+                                                !ProfileManager
+                                                     .AllowedToPlayMultiplayer(
+                                                         i)) {
+                                                ProfileManager
+                                                    .RequestConvertOfflineToGuestUI(
+                                                        &Minecraft::
+                                                            InGame_SignInReturned,
+                                                        this, i);
+                                                // 4J Stu - Don't allow
+                                                // converting to guests as we
+                                                // don't allow any guest sign-in
+                                                // while in the game Fix for
+                                                // #66516 - TCR #124: MPS Guest
+                                                // Support ; #001: BAS Game
+                                                // Stability: TU8: The game
+                                                // crashes when second Guest
+                                                // signs-in on console which
+                                                // takes part in Xbox LIVE
+                                                // multiplayer session.
+                                                // ProfileManager.RequestConvertOfflineToGuestUI(
+                                                // &Minecraft::InGame_SignInReturned,
+                                                // this,i);
+
+                                                ui.HidePressStart();
+                                                {
+                                                    uint32_t uiIDA[1];
+                                                    uiIDA[0] = IDS_CONFIRM_OK;
+                                                    ui.RequestErrorMessage(
+                                                        IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
+                                                        IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
+                                                        uiIDA, 1, i);
+                                                }
+                                            }
+                                            // else
+                                            {
+                                                // player not signed in to live
+                                                // bring up the sign in dialog
                                                 app.DebugPrintf(
                                                     "Bringing up the sign in "
                                                     "ui\n");
@@ -1350,391 +1439,336 @@ void Minecraft::run_middle() {
                                                     &Minecraft::
                                                         InGame_SignInReturned,
                                                     this, i);
-                                            } else {
-                                            }
-                                        } else {
-                                            // create the localplayer
-                                            std::shared_ptr<Player> player =
-                                                localplayers[i];
-                                            if (player == nullptr) {
-                                                player = createExtraLocalPlayer(
-                                                    i,
-                                                    (convStringToWstring(
-                                                         ProfileManager
-                                                             .GetGamertag(i)))
-                                                        .c_str(),
-                                                    i, level->dimension->id);
                                             }
                                         }
                                     } else {
-                                        if (ProfileManager.IsSignedInLive(
-                                                ProfileManager
-                                                    .GetPrimaryPad()) &&
-                                            !ProfileManager
-                                                 .AllowedToPlayMultiplayer(i)) {
-                                            ProfileManager
-                                                .RequestConvertOfflineToGuestUI(
-                                                    &Minecraft::
-                                                        InGame_SignInReturned,
-                                                    this, i);
-                                            // 4J Stu - Don't allow converting
-                                            // to guests as we don't allow any
-                                            // guest sign-in while in the game
-                                            // Fix for #66516 - TCR #124: MPS
-                                            // Guest Support ; #001: BAS Game
-                                            // Stability: TU8: The game crashes
-                                            // when second Guest signs-in on
-                                            // console which takes part in Xbox
-                                            // LIVE multiplayer session.
-                                            // ProfileManager.RequestConvertOfflineToGuestUI(
-                                            // &Minecraft::InGame_SignInReturned,
-                                            // this,i);
-
-                                            ui.HidePressStart();
-                                            {
-                                                uint32_t uiIDA[1];
-                                                uiIDA[0] = IDS_CONFIRM_OK;
-                                                ui.RequestErrorMessage(
-                                                    IDS_NO_MULTIPLAYER_PRIVILEGE_TITLE,
-                                                    IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT,
-                                                    uiIDA, 1, i);
-                                            }
-                                        }
-                                        // else
-                                        {
-                                            // player not signed in to live
-                                            // bring up the sign in dialog
-                                            app.DebugPrintf(
-                                                "Bringing up the sign in ui\n");
-                                            ProfileManager.RequestSignInUI(
-                                                false,
-                                                g_NetworkManager.IsLocalGame(),
-                                                true, false, true,
-                                                &Minecraft::
-                                                    InGame_SignInReturned,
-                                                this, i);
-                                        }
+                                        // bring up the sign in dialog
+                                        app.DebugPrintf(
+                                            "Bringing up the sign in ui\n");
+                                        ProfileManager.RequestSignInUI(
+                                            false,
+                                            g_NetworkManager.IsLocalGame(),
+                                            true, false, true,
+                                            &Minecraft::InGame_SignInReturned,
+                                            this, i);
                                     }
-                                } else {
-                                    // bring up the sign in dialog
-                                    app.DebugPrintf(
-                                        "Bringing up the sign in ui\n");
-                                    ProfileManager.RequestSignInUI(
-                                        false, g_NetworkManager.IsLocalGame(),
-                                        true, false, true,
-                                        &Minecraft::InGame_SignInReturned, this,
-                                        i);
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            if (pause && level != nullptr) {
-                float lastA = timer->a;
-                timer->advanceTime();
-                timer->a = lastA;
-            } else {
-                timer->advanceTime();
-            }
-
-            // int64_t beforeTickTime = System::nanoTime();
-            for (int i = 0; i < timer->ticks; i++) {
-                bool bLastTimerTick = (i == (timer->ticks - 1));
-                // 4J-PB - the tick here can run more than once, and this is a
-                // problem for our input, which would see the a key press twice
-                // with the same time - let's tick the inputmanager again
-                if (i != 0) {
-                    InputManager.Tick();
-                    app.HandleButtonPresses();
+                if (pause && level != nullptr) {
+                    float lastA = timer->a;
+                    timer->advanceTime();
+                    timer->a = lastA;
+                } else {
+                    timer->advanceTime();
                 }
 
-                ticks++;
-                //            try {		// 4J - try/catch removed
-                bool bFirst = true;
-                for (int idx = 0; idx < XUSER_MAX_COUNT; idx++) {
-                    // 4J - If we are waiting for this connection to do
-                    // something, then tick it here. This replaces many of the
-                    // original Java scenes which would tick the connection
-                    // while showing that scene
-                    if (m_pendingLocalConnections[idx] != nullptr) {
-                        m_pendingLocalConnections[idx]->tick();
+                // int64_t beforeTickTime = System::nanoTime();
+                for (int i = 0; i < timer->ticks; i++) {
+                    bool bLastTimerTick = (i == (timer->ticks - 1));
+                    // 4J-PB - the tick here can run more than once, and this is
+                    // a problem for our input, which would see the a key press
+                    // twice with the same time - let's tick the inputmanager
+                    // again
+                    if (i != 0) {
+                        InputManager.Tick();
+                        app.HandleButtonPresses();
                     }
 
-                    // reset the player inactive tick
-                    if (localplayers[idx] != nullptr) {
-                        // any input received?
-                        if ((localplayers[idx]->ullButtonsPressed != 0) ||
-                            InputManager.GetJoypadStick_LX(idx, false) !=
-                                0.0f ||
-                            InputManager.GetJoypadStick_LY(idx, false) !=
-                                0.0f ||
-                            InputManager.GetJoypadStick_RX(idx, false) !=
-                                0.0f ||
-                            InputManager.GetJoypadStick_RY(idx, false) !=
-                                0.0f) {
-                            localplayers[idx]->ResetInactiveTicks();
-                        } else {
-                            localplayers[idx]->IncrementInactiveTicks();
+                    ticks++;
+                    //            try {		// 4J - try/catch removed
+                    bool bFirst = true;
+                    for (int idx = 0; idx < XUSER_MAX_COUNT; idx++) {
+                        // 4J - If we are waiting for this connection to do
+                        // something, then tick it here. This replaces many of
+                        // the original Java scenes which would tick the
+                        // connection while showing that scene
+                        if (m_pendingLocalConnections[idx] != nullptr) {
+                            m_pendingLocalConnections[idx]->tick();
                         }
 
-                        if (localplayers[idx]->GetInactiveTicks() > 200) {
-                            if (!localplayers[idx]->isIdle() &&
-                                localplayers[idx]->onGround) {
-                                localplayers[idx]->setIsIdle(true);
+                        // reset the player inactive tick
+                        if (localplayers[idx] != nullptr) {
+                            // any input received?
+                            if ((localplayers[idx]->ullButtonsPressed != 0) ||
+                                InputManager.GetJoypadStick_LX(idx, false) !=
+                                    0.0f ||
+                                InputManager.GetJoypadStick_LY(idx, false) !=
+                                    0.0f ||
+                                InputManager.GetJoypadStick_RX(idx, false) !=
+                                    0.0f ||
+                                InputManager.GetJoypadStick_RY(idx, false) !=
+                                    0.0f) {
+                                localplayers[idx]->ResetInactiveTicks();
+                            } else {
+                                localplayers[idx]->IncrementInactiveTicks();
                             }
-                        } else {
-                            if (localplayers[idx]->isIdle()) {
-                                localplayers[idx]->setIsIdle(false);
+
+                            if (localplayers[idx]->GetInactiveTicks() > 200) {
+                                if (!localplayers[idx]->isIdle() &&
+                                    localplayers[idx]->onGround) {
+                                    localplayers[idx]->setIsIdle(true);
+                                }
+                            } else {
+                                if (localplayers[idx]->isIdle()) {
+                                    localplayers[idx]->setIsIdle(false);
+                                }
                             }
                         }
-                    }
 
-                    if (setLocalPlayerIdx(idx)) {
-                        tick(bFirst, bLastTimerTick);
-                        bFirst = false;
-                        // clear the stored button downs since the tick for this
-                        // player will now have actioned them
-                        player->ullButtonsPressed = 0LL;
-                    } else if (screen != nullptr) {
-                        screen->updateEvents();
-                        // 4jcraft: this fixes the title screen panorama running
-                        // faster than it should
-                        if (!idx) {
-                            screen->tick();
-                        }
-                    }
-                }
-
-                ui.HandleGameTick();
-
-                setLocalPlayerIdx(ProfileManager.GetPrimaryPad());
-
-                // 4J - added - now do the equivalent of level::animateTick, but
-                // taking into account the positions of all our players
-
-                for (int l = 0; l < levels.length; l++) {
-                    if (levels[l]) {
-                        levels[l]->animateTickDoWork();
-                    }
-                }
-
-                //            } catch (LevelConflictException e) {
-                //                this.level = null;
-                //                setLevel(null);
-                //                setScreen(new LevelConflictScreen());
-                //            }
-                // 				SparseLightStorage::tick();
-                // // 4J added
-                // CompressedTileStorage::tick();	// 4J added
-                // 				SparseDataStorage::tick();
-                // // 4J added
-            }
-            // int64_t tickDuraction = System::nanoTime() - beforeTickTime;
-            MemSect(31);
-            checkGlError(L"Pre render");
-            MemSect(0);
-
-            TileRenderer::fancy = options->fancyGraphics;
-
-            // if (pause) timer.a = 1;
-
-            PIXBeginNamedEvent(0, "Sound engine update");
-            soundEngine->tick((std::shared_ptr<Mob>*)localplayers, timer->a);
-            PIXEndNamedEvent();
-
-            PIXBeginNamedEvent(0, "Light update");
-
-            // if (level != nullptr) level->updateLights();
-            glEnable(GL_TEXTURE_2D);
-
-            PIXEndNamedEvent();
-
-            //        if (!Keyboard::isKeyDown(Keyboard.KEY_F7))
-            //        Display.update();		// 4J - removed
-
-            // 4J-PB - changing this to be per player
-            // if (player != nullptr && player->isInWall())
-            // options->thirdPersonView = false;
-            if (player != nullptr && player->isInWall())
-                player->SetThirdPersonView(0);
-
-            if (!noRender) {
-                bool bFirst = true;
-                int iPrimaryPad = ProfileManager.GetPrimaryPad();
-                for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-                    if (setLocalPlayerIdx(i)) {
-                        PIXBeginNamedEvent(0, "Game render player idx %d", i);
-                        RenderManager.StateSetViewport(
-                            (C4JRender::eViewportType)player->m_iScreenSection);
-                        gameRenderer->render(timer->a, bFirst);
-                        bFirst = false;
-                        PIXEndNamedEvent();
-
-                        if (i == iPrimaryPad) {
-                            // check to see if we need to capture a screenshot
-                            // for the save game thumbnail
-                            switch (app.GetXuiAction(i)) {
-                                case eAppAction_ExitWorldCapturedThumbnail:
-                                case eAppAction_SaveGameCapturedThumbnail:
-                                case eAppAction_AutosaveSaveGameCapturedThumbnail:
-                                    // capture the save thumbnail
-                                    app.CaptureSaveThumbnail();
-                                    break;
-                                default:
-                                    break;
+                        if (setLocalPlayerIdx(idx)) {
+                            tick(bFirst, bLastTimerTick);
+                            bFirst = false;
+                            // clear the stored button downs since the tick for
+                            // this player will now have actioned them
+                            player->ullButtonsPressed = 0LL;
+                        } else if (screen != nullptr) {
+                            screen->updateEvents();
+                            // 4jcraft: this fixes the title screen panorama
+                            // running faster than it should
+                            if (!idx) {
+                                screen->tick();
                             }
                         }
                     }
+
+                    ui.HandleGameTick();
+
+                    setLocalPlayerIdx(ProfileManager.GetPrimaryPad());
+
+                    // 4J - added - now do the equivalent of level::animateTick,
+                    // but taking into account the positions of all our players
+
+                    for (int l = 0; l < levels.length; l++) {
+                        if (levels[l]) {
+                            levels[l]->animateTickDoWork();
+                        }
+                    }
+
+                    //            } catch (LevelConflictException e) {
+                    //                this.level = null;
+                    //                setLevel(null);
+                    //                setScreen(new LevelConflictScreen());
+                    //            }
+                    // 				SparseLightStorage::tick();
+                    // // 4J added
+                    // CompressedTileStorage::tick();	// 4J added
+                    // 				SparseDataStorage::tick();
+                    // // 4J added
                 }
+                // int64_t tickDuraction = System::nanoTime() - beforeTickTime;
+                MemSect(31);
+                checkGlError(L"Pre render");
+                MemSect(0);
+
+                TileRenderer::fancy = options->fancyGraphics;
+
+                // if (pause) timer.a = 1;
+
+                PIXBeginNamedEvent(0, "Sound engine update");
+                soundEngine->tick((std::shared_ptr<Mob>*)localplayers,
+                                  timer->a);
+                PIXEndNamedEvent();
+
+                PIXBeginNamedEvent(0, "Light update");
+
+                // if (level != nullptr) level->updateLights();
+                glEnable(GL_TEXTURE_2D);
+
+                PIXEndNamedEvent();
+
+                //        if (!Keyboard::isKeyDown(Keyboard.KEY_F7))
+                //        Display.update();		// 4J - removed
+
+                // 4J-PB - changing this to be per player
+                // if (player != nullptr && player->isInWall())
+                // options->thirdPersonView = false;
+                if (player != nullptr && player->isInWall())
+                    player->SetThirdPersonView(0);
+
+                if (!noRender) {
+                    bool bFirst = true;
+                    int iPrimaryPad = ProfileManager.GetPrimaryPad();
+                    for (int i = 0; i < XUSER_MAX_COUNT; i++) {
+                        if (setLocalPlayerIdx(i)) {
+                            PIXBeginNamedEvent(0, "Game render player idx %d",
+                                               i);
+                            RenderManager.StateSetViewport(
+                                (C4JRender::eViewportType)
+                                    player->m_iScreenSection);
+                            gameRenderer->render(timer->a, bFirst);
+                            bFirst = false;
+                            PIXEndNamedEvent();
+
+                            if (i == iPrimaryPad) {
+                                // check to see if we need to capture a
+                                // screenshot for the save game thumbnail
+                                switch (app.GetXuiAction(i)) {
+                                    case eAppAction_ExitWorldCapturedThumbnail:
+                                    case eAppAction_SaveGameCapturedThumbnail:
+                                    case eAppAction_AutosaveSaveGameCapturedThumbnail:
+                                        // capture the save thumbnail
+                                        app.CaptureSaveThumbnail();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
+                    }
 
 #if !defined(_ENABLEIGGY)
-                // On Linux, Iggy Flash UI is not available. If no players were
-                // rendered (menu / title-screen state), call GameRenderer
-                // directly so mc->screen draws.
-                if (bFirst) {
-                    localPlayerIdx = 0;
+                    // On Linux, Iggy Flash UI is not available. If no players
+                    // were rendered (menu / title-screen state), call
+                    // GameRenderer directly so mc->screen draws.
+                    if (bFirst) {
+                        localPlayerIdx = 0;
+                        RenderManager.StateSetViewport(
+                            C4JRender::VIEWPORT_TYPE_FULLSCREEN);
+                        gameRenderer->render(timer->a, true);
+                    }
+#endif
+
+                    // If there's an unoccupied quadrant, then clear that to
+                    // black
+                    if (unoccupiedQuadrant > -1) {
+                        // render a logo
+                        RenderManager.StateSetViewport((
+                            C4JRender::
+                                eViewportType)(C4JRender::
+                                                   VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
+                                               unoccupiedQuadrant));
+                        glClearColor(0, 0, 0, 0);
+                        glClear(GL_COLOR_BUFFER_BIT);
+
+                        ui.SetEmptyQuadrantLogo(
+                            C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
+                            unoccupiedQuadrant);
+                    }
+                    setLocalPlayerIdx(iPrimaryPad);
                     RenderManager.StateSetViewport(
                         C4JRender::VIEWPORT_TYPE_FULLSCREEN);
-                    gameRenderer->render(timer->a, true);
                 }
-#endif
+                glFlush();
 
-                // If there's an unoccupied quadrant, then clear that to black
-                if (unoccupiedQuadrant > -1) {
-                    // render a logo
-                    RenderManager.StateSetViewport((
-                        C4JRender::
-                            eViewportType)(C4JRender::
-                                               VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
-                                           unoccupiedQuadrant));
-                    glClearColor(0, 0, 0, 0);
-                    glClear(GL_COLOR_BUFFER_BIT);
-
-                    ui.SetEmptyQuadrantLogo(
-                        C4JRender::VIEWPORT_TYPE_QUADRANT_TOP_LEFT +
-                        unoccupiedQuadrant);
+                /*	4J - removed
+                if (!Display::isActive())
+                {
+                if (fullscreen)
+                {
+                this->toggleFullScreen();
                 }
-                setLocalPlayerIdx(iPrimaryPad);
-                RenderManager.StateSetViewport(
-                    C4JRender::VIEWPORT_TYPE_FULLSCREEN);
-            }
-            glFlush();
-
-            /*	4J - removed
-            if (!Display::isActive())
-            {
-            if (fullscreen)
-            {
-            this->toggleFullScreen();
-            }
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            }
-            */
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
+                }
+                */
 
 #if PACKET_ENABLE_STAT_TRACKING
-            Packet::updatePacketStatsPIX();
+                Packet::updatePacketStatsPIX();
 #endif
 
-            if (options->renderDebug) {
-                // renderFpsMeter(tickDuraction);
+                if (options->renderDebug) {
+                    // renderFpsMeter(tickDuraction);
 
 #if DEBUG_RENDER_SHOWS_PACKETS
-                // To show data for only one packet type
-                // Packet::renderPacketStats(31);
+                    // To show data for only one packet type
+                    // Packet::renderPacketStats(31);
 
-                // To show data for all packet types selected as being
-                // renderable in the Packet:static_ctor call to Packet::map
-                Packet::renderAllPacketStats();
+                    // To show data for all packet types selected as being
+                    // renderable in the Packet:static_ctor call to Packet::map
+                    Packet::renderAllPacketStats();
 #else
-                // To show the size of the QNet queue in bytes and messages
-                g_NetworkManager.renderQueueMeter();
+                    // To show the size of the QNet queue in bytes and messages
+                    g_NetworkManager.renderQueueMeter();
 #endif
-            } else {
-                lastTimer = System::nanoTime();
-            }
+                } else {
+                    lastTimer = System::nanoTime();
+                }
 
-            achievementPopup->render();
+                achievementPopup->render();
 
-            PIXBeginNamedEvent(0, "Sleeping");
-            std::this_thread::yield();  // 4jcraft added now that we have
-                                        // portable thread yield.
-            // std::this_thread::sleep_for(
-            //     std::chrono::milliseconds(0));  // 4J - was Thread.yield())
-            PIXEndNamedEvent();
+                PIXBeginNamedEvent(0, "Sleeping");
+                std::this_thread::yield();  // 4jcraft added now that we have
+                                            // portable thread yield.
+                // std::this_thread::sleep_for(
+                //     std::chrono::milliseconds(0));  // 4J - was
+                //     Thread.yield())
+                PIXEndNamedEvent();
 
-            //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
-            //        Display.update();	// 4J - removed condition
-            PIXBeginNamedEvent(0, "Display update");
-            Display::update();
-            PIXEndNamedEvent();
+                //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
+                //        Display.update();	// 4J - removed condition
+                PIXBeginNamedEvent(0, "Display update");
+                Display::update();
+                PIXEndNamedEvent();
 
-            //        checkScreenshot();	// 4J - removed
+                //        checkScreenshot();	// 4J - removed
 
-            /* 4J - removed
-            if (parent != nullptr && !fullscreen)
-            {
-            if (parent.getWidth() != width || parent.getHeight() != height)
-            {
-            width = parent.getWidth();
-            height = parent.getHeight();
-            if (width <= 0) width = 1;
-            if (height <= 0) height = 1;
+                /* 4J - removed
+                if (parent != nullptr && !fullscreen)
+                {
+                if (parent.getWidth() != width || parent.getHeight() != height)
+                {
+                width = parent.getWidth();
+                height = parent.getHeight();
+                if (width <= 0) width = 1;
+                if (height <= 0) height = 1;
 
-            resize(width, height);
-            }
-            }
-            */
-            MemSect(31);
-            checkGlError(L"Post render");
-            MemSect(0);
-            frames++;
-            // pause = !isClientSide() && screen != nullptr &&
-            // screen->isPauseScreen();
+                resize(width, height);
+                }
+                }
+                */
+                MemSect(31);
+                checkGlError(L"Post render");
+                MemSect(0);
+                frames++;
+                // pause = !isClientSide() && screen != nullptr &&
+                // screen->isPauseScreen();
 #if defined(ENABLE_JAVA_GUIS)
-            pause = g_NetworkManager.IsLocalGame() &&
-                    g_NetworkManager.GetPlayerCount() == 1 &&
-                    screen != nullptr && screen->isPauseScreen();
+                pause = g_NetworkManager.IsLocalGame() &&
+                        g_NetworkManager.GetPlayerCount() == 1 &&
+                        screen != nullptr && screen->isPauseScreen();
 #else
-            pause = app.IsAppPaused();
+                pause = app.IsAppPaused();
 #endif
 
 #if !defined(_CONTENT_PACKAGE)
-            while (System::nanoTime() >= lastTime + 1000000000) {
-                MemSect(31);
-                fpsString = _toString<int>(frames) + L" fps, " +
-                            _toString<int>(Chunk::updates) + L" chunk updates";
-                MemSect(0);
-                Chunk::updates = 0;
-                lastTime += 1000000000;
-                frames = 0;
-            }
+                while (System::nanoTime() >= lastTime + 1000000000) {
+                    MemSect(31);
+                    fpsString = _toString<int>(frames) + L" fps, " +
+                                _toString<int>(Chunk::updates) +
+                                L" chunk updates";
+                    MemSect(0);
+                    Chunk::updates = 0;
+                    lastTime += 1000000000;
+                    frames = 0;
+                }
 #endif
+                /*
+                } catch (LevelConflictException e) {
+                this.level = null;
+                setLevel(null);
+                setScreen(new LevelConflictScreen());
+                } catch (OutOfMemoryError e) {
+                emergencySave();
+                setScreen(new OutOfMemoryScreen());
+                System.gc();
+                }
+                */
+            }
             /*
-            } catch (LevelConflictException e) {
-            this.level = null;
-            setLevel(null);
-            setScreen(new LevelConflictScreen());
-            } catch (OutOfMemoryError e) {
+            } catch (StopGameException e) {
+            } catch (Throwable e) {
             emergencySave();
-            setScreen(new OutOfMemoryScreen());
-            System.gc();
+            e.printStackTrace();
+            crash(new CrashReport("Unexpected error", e));
+            } finally {
+            destroy();
             }
             */
         }
-        /*
-        } catch (StopGameException e) {
-        } catch (Throwable e) {
-        emergencySave();
-        e.printStackTrace();
-        crash(new CrashReport("Unexpected error", e));
-        } finally {
-        destroy();
-        }
-        */
-    }
-    LeaveCriticalSection(&m_setLevelCS);
+    }  // lock_guard scope
 }
 
 void Minecraft::run_end() { destroy(); }
@@ -3671,7 +3705,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
                          std::shared_ptr<Player> forceInsertPlayer /*=nullptr*/,
                          bool doForceStatsSave /*=true*/,
                          bool bPrimaryPlayerSignedOut /*=false*/) {
-    EnterCriticalSection(&m_setLevelCS);
+    std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
     bool playerAdded = false;
     this->cameraTargetPlayer = nullptr;
 
@@ -3843,7 +3877,6 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     //    System.gc();	// 4J - removed
     // 4J removed
     // this->lastTickTime = 0;
-    LeaveCriticalSection(&m_setLevelCS);
 }
 
 void Minecraft::prepareLevel(int title) {

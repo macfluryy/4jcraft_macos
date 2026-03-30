@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "../Minecraft.World/Util/JavaIntHash.h"
 
 class BiomeCache {
@@ -48,5 +49,5 @@ public:
     byteArray getBiomeIndexBlockAt(int x, int z);
 
 private:
-    CRITICAL_SECTION m_CS;
+    std::mutex m_CS;
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <mutex>
+
 class DataLayer;
 class TileEntity;
 class Random;
@@ -268,17 +270,11 @@ public:
     virtual void attemptCompression();
 
 #if defined(SHARING_ENABLED)
-    static CRITICAL_SECTION m_csSharing;  // 4J added
+    static std::recursive_mutex m_csSharing;  // 4J added
 #endif
     // 4J  added
-#if defined(_ENTITIES_RW_SECTION)
-    static CRITICAL_RW_SECTION
-        m_csEntities;  // AP - we're using a RW critical so we can do multiple
-                       // reads without contention
-#else
-    static CRITICAL_SECTION m_csEntities;
-#endif
-    static CRITICAL_SECTION m_csTileEntities;  // 4J  added
+    static std::recursive_mutex m_csEntities;
+    static std::recursive_mutex m_csTileEntities;  // 4J  added
     static void staticCtor();
     void checkPostProcess(ChunkSource* source, ChunkSource* parent, int x,
                           int z);

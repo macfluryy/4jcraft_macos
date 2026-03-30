@@ -1,3 +1,4 @@
+#include <mutex>
 #include <thread>
 #include <chrono>
 
@@ -8,7 +9,7 @@
 #include "../LevelData.h"
 #include "McRegionChunkStorage.h"
 
-CRITICAL_SECTION McRegionChunkStorage::cs_memory;
+std::mutex McRegionChunkStorage::cs_memory;
 
 std::deque<DataOutputStream*> McRegionChunkStorage::s_chunkDataQueue;
 int McRegionChunkStorage::s_runningThreadCount = 0;
@@ -181,11 +182,11 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     // 4J - removed try/catch
     //    try {
 
-    // Note - have added use of a critical section round sections of code that
+    // Note - have added use of a mutex round sections of code that
     // do a lot of memory alloc/free operations. This is because when we are
-    // running saves on multiple threads these sections have a lot of contention
-    // and thrash the memory system's critical sections Better to let each
-    // thread have its turn at a higher level of granularity.
+    // running saves on multiple threads these sections have a lot of
+    // contention. Better to let each thread have its turn at a higher level of
+    // granularity.
     MemSect(30);
     PIXBeginNamedEvent(0, "Getting output stream\n");
     DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(
@@ -199,22 +200,25 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
         PIXEndNamedEvent();
 
         PIXBeginNamedEvent(0, "Updating chunk queue");
-        EnterCriticalSection(&cs_memory);
-        s_chunkDataQueue.push_back(output);
-        LeaveCriticalSection(&cs_memory);
+        {
+            std::lock_guard<std::mutex> lock(cs_memory);
+            s_chunkDataQueue.push_back(output);
+        }
         PIXEndNamedEvent();
     } else {
-        EnterCriticalSection(&cs_memory);
-        PIXBeginNamedEvent(0, "Creating tags\n");
-        CompoundTag* tag = new CompoundTag();
-        CompoundTag* levelData = new CompoundTag();
-        tag->put(L"Level", levelData);
-        OldChunkStorage::save(levelChunk, level, levelData);
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "NbtIo writing\n");
-        NbtIo::write(tag, output);
-        PIXEndNamedEvent();
-        LeaveCriticalSection(&cs_memory);
+        CompoundTag* tag;
+        {
+            std::lock_guard<std::mutex> lock(cs_memory);
+            PIXBeginNamedEvent(0, "Creating tags\n");
+            tag = new CompoundTag();
+            CompoundTag* levelData = new CompoundTag();
+            tag->put(L"Level", levelData);
+            OldChunkStorage::save(levelChunk, level, levelData);
+            PIXEndNamedEvent();
+            PIXBeginNamedEvent(0, "NbtIo writing\n");
+            NbtIo::write(tag, output);
+            PIXEndNamedEvent();
+        }
         PIXBeginNamedEvent(0, "Output closing\n");
         output->close();
         PIXEndNamedEvent();
@@ -222,12 +226,13 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
         // 4J Stu - getChunkDataOutputStream makes a new DataOutputStream that
         // points to a new ChunkBuffer( ByteArrayOutputStream ) We should clean
         // these up when we are done
-        EnterCriticalSection(&cs_memory);
-        PIXBeginNamedEvent(0, "Cleaning up\n");
-        output->deleteChildStream();
-        delete output;
-        delete tag;
-        LeaveCriticalSection(&cs_memory);
+        {
+            std::lock_guard<std::mutex> lock(cs_memory);
+            PIXBeginNamedEvent(0, "Cleaning up\n");
+            output->deleteChildStream();
+            delete output;
+            delete tag;
+        }
         PIXEndNamedEvent();
     }
     MemSect(0);
@@ -321,8 +326,6 @@ void McRegionChunkStorage::flush() {
 }
 
 void McRegionChunkStorage::staticCtor() {
-    InitializeCriticalSectionAndSpinCount(&cs_memory, 5120);
-
     for (unsigned int i = 0; i < 3; ++i) {
         char threadName[256];
         sprintf(threadName, "McRegion Save thread %d\n", i);
@@ -337,14 +340,14 @@ void McRegionChunkStorage::staticCtor() {
 
         // Threads 1,3 and 5 are generally idle so use them
         if (i == 0)
-            s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_A);
+            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_A);
         else if (i == 1) {
-            s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_B);
+            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_B);
         } else if (i == 2)
-            s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_C);
+            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_C);
 
         // ResumeThread( saveThreads[j] );
-        s_saveThreads[i]->Run();
+        s_saveThreads[i]->run();
     }
 }
 
@@ -356,29 +359,33 @@ int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
 
     DataOutputStream* dos = nullptr;
     while (running) {
-        if (TryEnterCriticalSection(&cs_memory)) {
-            lastQueueSize = s_chunkDataQueue.size();
-            if (lastQueueSize > 0) {
-                dos = s_chunkDataQueue.front();
-                s_chunkDataQueue.pop_front();
-            }
-            s_runningThreadCount++;
-            LeaveCriticalSection(&cs_memory);
+        {
+            std::unique_lock<std::mutex> lock(cs_memory, std::try_to_lock);
+            if (lock.owns_lock()) {
+                lastQueueSize = s_chunkDataQueue.size();
+                if (lastQueueSize > 0) {
+                    dos = s_chunkDataQueue.front();
+                    s_chunkDataQueue.pop_front();
+                }
+                s_runningThreadCount++;
+                lock.unlock();
 
-            if (dos) {
-                PIXBeginNamedEvent(0, "Saving chunk");
-                // app.DebugPrintf("Compressing chunk data (%d left)\n",
-                // lastQueueSize - 1);
-                dos->close();
-                dos->deleteChildStream();
-                PIXEndNamedEvent();
-            }
-            delete dos;
-            dos = nullptr;
+                if (dos) {
+                    PIXBeginNamedEvent(0, "Saving chunk");
+                    // app.DebugPrintf("Compressing chunk data (%d left)\n",
+                    // lastQueueSize - 1);
+                    dos->close();
+                    dos->deleteChildStream();
+                    PIXEndNamedEvent();
+                }
+                delete dos;
+                dos = nullptr;
 
-            EnterCriticalSection(&cs_memory);
-            s_runningThreadCount--;
-            LeaveCriticalSection(&cs_memory);
+                {
+                    std::lock_guard<std::mutex> lock2(cs_memory);
+                    s_runningThreadCount--;
+                }
+            }
         }
 
         // If there was more than one thing in the queue last time we checked,
@@ -402,30 +409,36 @@ void McRegionChunkStorage::WaitIfTooManyQueuedChunks() { WaitForSaves(); }
 // Static
 void McRegionChunkStorage::WaitForAllSaves() {
     // Wait for there to be no more tasks to be processed...
-    EnterCriticalSection(&cs_memory);
-    size_t queueSize = s_chunkDataQueue.size();
-    LeaveCriticalSection(&cs_memory);
+    size_t queueSize;
+    {
+        std::lock_guard<std::mutex> lock(cs_memory);
+        queueSize = s_chunkDataQueue.size();
+    }
 
     while (queueSize > 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        EnterCriticalSection(&cs_memory);
-        queueSize = s_chunkDataQueue.size();
-        LeaveCriticalSection(&cs_memory);
+        {
+            std::lock_guard<std::mutex> lock(cs_memory);
+            queueSize = s_chunkDataQueue.size();
+        }
     }
 
     // And then wait for there to be no running threads that are processing
     // these tasks
-    EnterCriticalSection(&cs_memory);
-    int runningThreadCount = s_runningThreadCount;
-    LeaveCriticalSection(&cs_memory);
+    int runningThreadCount;
+    {
+        std::lock_guard<std::mutex> lock(cs_memory);
+        runningThreadCount = s_runningThreadCount;
+    }
 
     while (runningThreadCount > 0) {
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-        EnterCriticalSection(&cs_memory);
-        runningThreadCount = s_runningThreadCount;
-        LeaveCriticalSection(&cs_memory);
+        {
+            std::lock_guard<std::mutex> lock(cs_memory);
+            runningThreadCount = s_runningThreadCount;
+        }
     }
 }
 
@@ -435,17 +448,20 @@ void McRegionChunkStorage::WaitForSaves() {
     static const int DESIRED_QUEUE_SIZE = 6;
 
     // Wait for the queue to reduce to a level where we should add more elements
-    EnterCriticalSection(&cs_memory);
-    size_t queueSize = s_chunkDataQueue.size();
-    LeaveCriticalSection(&cs_memory);
+    size_t queueSize;
+    {
+        std::lock_guard<std::mutex> lock(cs_memory);
+        queueSize = s_chunkDataQueue.size();
+    }
 
     if (queueSize > MAX_QUEUE_SIZE) {
         while (queueSize > DESIRED_QUEUE_SIZE) {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
-            EnterCriticalSection(&cs_memory);
-            queueSize = s_chunkDataQueue.size();
-            LeaveCriticalSection(&cs_memory);
+            {
+                std::lock_guard<std::mutex> lock(cs_memory);
+                queueSize = s_chunkDataQueue.size();
+            }
         }
     }
 }

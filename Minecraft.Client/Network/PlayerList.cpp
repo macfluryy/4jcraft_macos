@@ -48,9 +48,6 @@ PlayerList::PlayerList(MinecraftServer* server) {
 
     maxPlayers = server->settings->getInt(L"max-players", 20);
     doWhiteList = false;
-
-    InitializeCriticalSection(&m_kickPlayersCS);
-    InitializeCriticalSection(&m_closePlayersCS);
 }
 
 PlayerList::~PlayerList() {
@@ -61,9 +58,6 @@ PlayerList::~PlayerList() {
                                  // back to this player
         (*it)->gameMode = nullptr;
     }
-
-    DeleteCriticalSection(&m_kickPlayersCS);
-    DeleteCriticalSection(&m_closePlayersCS);
 }
 
 void PlayerList::placeNewPlayer(Connection* connection,
@@ -995,73 +989,76 @@ void PlayerList::tick() {
         }
     }
 
-    EnterCriticalSection(&m_closePlayersCS);
-    while (!m_smallIdsToClose.empty()) {
-        std::uint8_t smallId = m_smallIdsToClose.front();
-        m_smallIdsToClose.pop_front();
+    {
+        std::lock_guard<std::mutex> lock(m_closePlayersCS);
+        while (!m_smallIdsToClose.empty()) {
+            std::uint8_t smallId = m_smallIdsToClose.front();
+            m_smallIdsToClose.pop_front();
 
-        std::shared_ptr<ServerPlayer> player = nullptr;
+            std::shared_ptr<ServerPlayer> player = nullptr;
 
-        for (unsigned int i = 0; i < players.size(); i++) {
-            std::shared_ptr<ServerPlayer> p = players.at(i);
-            // 4J Stu - May be being a bit overprotective with all the nullptr
-            // checks, but adding late in TU7 so want to be safe
-            if (p != nullptr && p->connection != nullptr &&
-                p->connection->connection != nullptr &&
-                p->connection->connection->getSocket() != nullptr &&
-                p->connection->connection->getSocket()->getSmallId() ==
-                    smallId) {
-                player = p;
-                break;
+            for (unsigned int i = 0; i < players.size(); i++) {
+                std::shared_ptr<ServerPlayer> p = players.at(i);
+                // 4J Stu - May be being a bit overprotective with all the
+                // nullptr checks, but adding late in TU7 so want to be safe
+                if (p != nullptr && p->connection != nullptr &&
+                    p->connection->connection != nullptr &&
+                    p->connection->connection->getSocket() != nullptr &&
+                    p->connection->connection->getSocket()->getSmallId() ==
+                        smallId) {
+                    player = p;
+                    break;
+                }
+            }
+
+            if (player != nullptr) {
+                player->connection->disconnect(
+                    DisconnectPacket::eDisconnect_Closed);
             }
         }
-
-        if (player != nullptr) {
-            player->connection->disconnect(
-                DisconnectPacket::eDisconnect_Closed);
-        }
     }
-    LeaveCriticalSection(&m_closePlayersCS);
 
-    EnterCriticalSection(&m_kickPlayersCS);
-    while (!m_smallIdsToKick.empty()) {
-        std::uint8_t smallId = m_smallIdsToKick.front();
-        m_smallIdsToKick.pop_front();
-        INetworkPlayer* selectedPlayer =
-            g_NetworkManager.GetPlayerBySmallId(smallId);
-        if (selectedPlayer != nullptr) {
-            if (selectedPlayer->IsLocal() != true) {
-                // #if 0
-                PlayerUID xuid = selectedPlayer->GetUID();
-                // Kick this player from the game
-                std::shared_ptr<ServerPlayer> player = nullptr;
+    {
+        std::lock_guard<std::mutex> lock(m_kickPlayersCS);
+        while (!m_smallIdsToKick.empty()) {
+            std::uint8_t smallId = m_smallIdsToKick.front();
+            m_smallIdsToKick.pop_front();
+            INetworkPlayer* selectedPlayer =
+                g_NetworkManager.GetPlayerBySmallId(smallId);
+            if (selectedPlayer != nullptr) {
+                if (selectedPlayer->IsLocal() != true) {
+                    // #if 0
+                    PlayerUID xuid = selectedPlayer->GetUID();
+                    // Kick this player from the game
+                    std::shared_ptr<ServerPlayer> player = nullptr;
 
-                for (unsigned int i = 0; i < players.size(); i++) {
-                    std::shared_ptr<ServerPlayer> p = players.at(i);
-                    PlayerUID playersXuid = p->getOnlineXuid();
-                    if (p != nullptr &&
-                        ProfileManager.AreXUIDSEqual(playersXuid, xuid)) {
-                        player = p;
-                        break;
+                    for (unsigned int i = 0; i < players.size(); i++) {
+                        std::shared_ptr<ServerPlayer> p = players.at(i);
+                        PlayerUID playersXuid = p->getOnlineXuid();
+                        if (p != nullptr &&
+                            ProfileManager.AreXUIDSEqual(playersXuid, xuid)) {
+                            player = p;
+                            break;
+                        }
                     }
-                }
 
-                if (player != nullptr) {
-                    m_bannedXuids.push_back(player->getOnlineXuid());
-                    // 4J Stu - If we have kicked a player, make sure that they
-                    // have no privileges if they later try to join the world
-                    // when trust players is off
-                    player->enableAllPlayerPrivileges(false);
-                    player->connection->setWasKicked();
-                    player->connection->send(
-                        std::shared_ptr<DisconnectPacket>(new DisconnectPacket(
-                            DisconnectPacket::eDisconnect_Kicked)));
+                    if (player != nullptr) {
+                        m_bannedXuids.push_back(player->getOnlineXuid());
+                        // 4J Stu - If we have kicked a player, make sure that
+                        // they have no privileges if they later try to join the
+                        // world when trust players is off
+                        player->enableAllPlayerPrivileges(false);
+                        player->connection->setWasKicked();
+                        player->connection->send(
+                            std::shared_ptr<DisconnectPacket>(
+                                new DisconnectPacket(
+                                    DisconnectPacket::eDisconnect_Kicked)));
+                    }
+                    // #endif
                 }
-                // #endif
             }
         }
     }
-    LeaveCriticalSection(&m_kickPlayersCS);
 
     // Check our receiving players, and if they are dead see if we can replace
     // them
@@ -1628,15 +1625,17 @@ bool PlayerList::canReceiveAllPackets(std::shared_ptr<ServerPlayer> player) {
 }
 
 void PlayerList::kickPlayerByShortId(std::uint8_t networkSmallId) {
-    EnterCriticalSection(&m_kickPlayersCS);
-    m_smallIdsToKick.push_back(networkSmallId);
-    LeaveCriticalSection(&m_kickPlayersCS);
+    {
+        std::lock_guard<std::mutex> lock(m_kickPlayersCS);
+        m_smallIdsToKick.push_back(networkSmallId);
+    }
 }
 
 void PlayerList::closePlayerConnectionBySmallId(std::uint8_t networkSmallId) {
-    EnterCriticalSection(&m_closePlayersCS);
-    m_smallIdsToClose.push_back(networkSmallId);
-    LeaveCriticalSection(&m_closePlayersCS);
+    {
+        std::lock_guard<std::mutex> lock(m_closePlayersCS);
+        m_smallIdsToClose.push_back(networkSmallId);
+    }
 }
 
 bool PlayerList::isXuidBanned(PlayerUID xuid) {

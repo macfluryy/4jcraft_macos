@@ -57,8 +57,6 @@ PlayerConnection::PlayerConnection(MinecraftServer* server,
     this->player = player;
     //	player->connection = this;		// 4J - moved out as we can't
     // assign in a ctor
-    InitializeCriticalSection(&done_cs);
-
     m_bCloseOnTick = false;
     m_bWasKicked = false;
 
@@ -71,10 +69,7 @@ PlayerConnection::PlayerConnection(MinecraftServer* server,
         app.GetGameHostOption(eGameHostOption_Gamertags) != 0 ? true : false);
 }
 
-PlayerConnection::~PlayerConnection() {
-    delete connection;
-    DeleteCriticalSection(&done_cs);
-}
+PlayerConnection::~PlayerConnection() { delete connection; }
 
 void PlayerConnection::tick() {
     if (done) return;
@@ -106,9 +101,8 @@ void PlayerConnection::tick() {
 }
 
 void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
-    EnterCriticalSection(&done_cs);
+    std::lock_guard<std::mutex> lock(done_cs);
     if (done) {
-        LeaveCriticalSection(&done_cs);
         return;
     }
 
@@ -135,7 +129,6 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
 
     server->getPlayers()->remove(player);
     done = true;
-    LeaveCriticalSection(&done_cs);
 }
 
 void PlayerConnection::handlePlayerInput(
@@ -551,7 +544,7 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
 
 void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
                                     void* reasonObjects) {
-    EnterCriticalSection(&done_cs);
+    std::lock_guard<std::mutex> lock(done_cs);
     if (done) return;
     //    logger.info(player.name + " lost connection: " + reason);
     // 4J-PB - removed, since it needs to be localised in the language the
@@ -568,7 +561,6 @@ void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
     }
     server->getPlayers()->remove(player);
     done = true;
-    LeaveCriticalSection(&done_cs);
 }
 
 void PlayerConnection::onUnhandledPacket(std::shared_ptr<Packet> packet) {

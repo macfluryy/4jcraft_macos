@@ -95,7 +95,7 @@ UIScene_InGameSaveManagementMenu::~UIScene_InGameSaveManagementMenu() {
         }
         delete[] m_saveDetails;
     }
-    app.LeaveSaveNotificationSection();
+    app.unlockSaveNotification();
     StorageManager.SetSaveDisabled(false);
     StorageManager.ContinueIncompleteOperation();
 }

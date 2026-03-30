@@ -8,6 +8,7 @@
 #include <xmcore.h>
 #endif
 #include <unordered_set>
+#include <mutex>
 class MultiPlayerLevel;
 class Textures;
 class Chunk;
@@ -164,7 +165,7 @@ private:
     typedef std::unordered_map<int, rtePendingRemovalSet, IntKeyHash, IntKeyEq>
         rtePendingRemovalMap;
     rtePendingRemovalMap m_renderableTileEntitiesPendingRemoval;
-    CRITICAL_SECTION m_csRenderableTileEntities;
+    std::mutex m_csRenderableTileEntities;
     MultiPlayerLevel* level[4];  // 4J - now one per player
     Textures* textures;
     //    std::vector<Chunk *> *sortedChunks[4];	// 4J - removed - not
@@ -215,7 +216,7 @@ private:
 public:
     void fullyFlagRenderableTileEntitiesToBeRemoved();  // 4J added
 
-    CRITICAL_SECTION m_csDirtyChunks;
+    std::recursive_mutex m_csDirtyChunks;
     bool m_nearDirtyChunk;
 
     // 4J - Destroyed Tile Management - these things added so we can track tiles
@@ -235,7 +236,7 @@ public:
             RecentTile(int x, int y, int z, Level* level);
             ~RecentTile() = default;
         };
-        CRITICAL_SECTION m_csDestroyedTiles;
+        std::mutex m_csDestroyedTiles;
         std::vector<RecentTile*> m_destroyedTiles;
 
     public:
@@ -343,7 +344,7 @@ public:
     static void staticCtor();
     static int rebuildChunkThreadProc(void* lpParam);
 
-    CRITICAL_SECTION m_csChunkFlags;
+    std::mutex m_csChunkFlags;
 #endif
     void nonStackDirtyChunksAdded();
 
