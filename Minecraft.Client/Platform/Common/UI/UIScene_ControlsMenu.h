@@ -87,73 +87,74 @@ UI_MAP_ELEMENT(m_labelsPad[e_PadBack], "LabelBack") UI_MAP_ELEMENT(
                     "LabelRS_2") UI_MAP_ELEMENT(m_labelsPad[e_PadTouch],
                                                 "LabelTouch")
 
-                    UI_MAP_ELEMENT(
-                        m_controlLines[e_PadBack],
-                        "LineBack") UI_MAP_ELEMENT(m_controlLines[e_PadLT],
-                                                   "LineLT")
-                        UI_MAP_ELEMENT(m_controlLines[e_PadLB], "LineLB") UI_MAP_ELEMENT(
-                            m_controlLines[e_PadDPadLeft],
-                            "Line"
-                            "Dpad"
-                            "Lef"
-                            "t") UI_MAP_ELEMENT(m_controlLines[e_PadDPadRight],
-                                                "LineDpadRight")
+                    UI_MAP_ELEMENT(m_controlLines[e_PadBack], "LineBack") UI_MAP_ELEMENT(
+                        m_controlLines[e_PadLT],
+                        "LineLT") UI_MAP_ELEMENT(m_controlLines[e_PadLB],
+                                                 "LineLB") UI_MAP_ELEMENT(m_controlLines
+                                                                              [e_PadDPadLeft],
+                                                                          "Line"
+                                                                          "Dpad"
+                                                                          "Lef"
+                                                                          "t")
+                        UI_MAP_ELEMENT(
+                            m_controlLines[e_PadDPadRight],
+                            "LineDpadRight") UI_MAP_ELEMENT(m_controlLines
+                                                                [e_PadDPadUp],
+                                                            "LineDpadUp")
                             UI_MAP_ELEMENT(
-                                m_controlLines[e_PadDPadUp],
-                                "LineDpadUp") UI_MAP_ELEMENT(m_controlLines
-                                                                 [e_PadDPadDown],
-                                                             "LineDpadDown")
+                                m_controlLines[e_PadDPadDown],
+                                "LineDpadDown") UI_MAP_ELEMENT(m_controlLines
+                                                                   [e_PadLS_1],
+                                                               "LineL3")
                                 UI_MAP_ELEMENT(
-                                    m_controlLines[e_PadLS_1],
-                                    "LineL3") UI_MAP_ELEMENT(m_controlLines
-                                                                 [e_PadLS_2],
-                                                             "LineLeftStick")
+                                    m_controlLines[e_PadLS_2],
+                                    "LineLeftStick") UI_MAP_ELEMENT(m_controlLines
+                                                                        [e_PadStart],
+                                                                    "LineStart")
                                     UI_MAP_ELEMENT(
-                                        m_controlLines[e_PadStart],
-                                        "LineStart") UI_MAP_ELEMENT(m_controlLines
-                                                                        [e_PadRT],
-                                                                    "LineRT")
+                                        m_controlLines[e_PadRT],
+                                        "LineRT") UI_MAP_ELEMENT(m_controlLines
+                                                                     [e_PadRB],
+                                                                 "LineRB")
                                         UI_MAP_ELEMENT(
-                                            m_controlLines[e_PadRB],
-                                            "LineRB") UI_MAP_ELEMENT(m_controlLines
-                                                                         [e_PadY],
-                                                                     "LineY")
+                                            m_controlLines[e_PadY],
+                                            "LineY") UI_MAP_ELEMENT(m_controlLines
+                                                                        [e_PadB],
+                                                                    "LineB")
                                             UI_MAP_ELEMENT(
-                                                m_controlLines[e_PadB],
-                                                "LineB") UI_MAP_ELEMENT(m_controlLines
-                                                                            [e_PadA],
-                                                                        "LineA")
+                                                m_controlLines[e_PadA],
+                                                "LineA") UI_MAP_ELEMENT(m_controlLines
+                                                                            [e_PadX],
+                                                                        "LineX")
                                                 UI_MAP_ELEMENT(
-                                                    m_controlLines[e_PadX],
-                                                    "LineX") UI_MAP_ELEMENT(m_controlLines
-                                                                                [e_PadRS_1],
-                                                                            "Li"
-                                                                            "ne"
-                                                                            "R"
-                                                                            "3")
+                                                    m_controlLines[e_PadRS_1],
+                                                    "Li"
+                                                    "ne"
+                                                    "R"
+                                                    "3") UI_MAP_ELEMENT(m_controlLines
+                                                                            [e_PadRS_2],
+                                                                        "L"
+                                                                        "i"
+                                                                        "n"
+                                                                        "e"
+                                                                        "R"
+                                                                        "i"
+                                                                        "g"
+                                                                        "h"
+                                                                        "t"
+                                                                        "S"
+                                                                        "t"
+                                                                        "i"
+                                                                        "c"
+                                                                        "k")
                                                     UI_MAP_ELEMENT(
                                                         m_controlLines
-                                                            [e_PadRS_2],
-                                                        "L"
-                                                        "i"
-                                                        "n"
-                                                        "e"
-                                                        "R"
-                                                        "i"
-                                                        "g"
-                                                        "h"
-                                                        "t"
-                                                        "S"
-                                                        "t"
-                                                        "i"
-                                                        "c"
-                                                        "k") UI_MAP_ELEMENT(m_controlLines
-                                                                                [e_PadTouch],
-                                                                            "Li"
-                                                                            "ne"
-                                                                            "To"
-                                                                            "uc"
-                                                                            "h")
+                                                            [e_PadTouch],
+                                                        "Li"
+                                                        "ne"
+                                                        "To"
+                                                        "uc"
+                                                        "h")
 
                                                         UI_MAP_ELEMENT(
                                                             m_checkboxInvert,
