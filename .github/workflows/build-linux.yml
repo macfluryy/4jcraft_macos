@@ -1,19 +1,23 @@
 name: Build (Linux, x86-64)
 
-on: [push, pull_request]
-  paths:
-    - '**.cpp'
-    - '**.h'
-    - '**.c'
-    - '**.cc'
-    - '**.cxx'
-    - '**.hh'
-    - '**.hpp'
-    - '**.hxx'
-    - '**.inl'
-    - "**meson.build"
-    - "flake.nix"
-    - '.github/workflows/build-linux.yml'
+on:
+  push:
+    paths: &workflow_paths
+      - '**.cpp'
+      - '**.h'
+      - '**.c'
+      - '**.cc'
+      - '**.cxx'
+      - '**.hh'
+      - '**.hpp'
+      - '**.hxx'
+      - '**.inl'
+      - "**meson.build"
+      - "flake.nix"
+      - '.github/workflows/build-linux.yml'
+
+  pull_request:
+    paths: *workflow_paths
 
 jobs:
   build-linux:
