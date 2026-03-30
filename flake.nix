@@ -100,6 +100,7 @@
             openssl.dev
             libGL
             libGLU
+            glm
             SDL2
             zlib
           ];
