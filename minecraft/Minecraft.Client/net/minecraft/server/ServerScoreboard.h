@@ -1,0 +1,45 @@
+#pragma once
+
+#include "Minecraft.World/net/minecraft/world/scores/Scoreboard.h"
+
+class MinecraftServer;
+class ScoreboardSaveData;
+class Score;
+class Objective;
+class PlayerTeam;
+
+class ServerScoreboard : public Scoreboard {
+private:
+    MinecraftServer* server;
+    std::unordered_set<Objective*> trackedObjectives;
+    ScoreboardSaveData* saveData;
+
+public:
+    ServerScoreboard(MinecraftServer* server);
+
+    MinecraftServer* getServer();
+    void onScoreChanged(Score* score);
+    void onPlayerRemoved(const std::wstring& player);
+    void setDisplayObjective(int slot, Objective* objective);
+    void addPlayerToTeam(const std::wstring& player, PlayerTeam* team);
+    void removePlayerFromTeam(const std::wstring& player, PlayerTeam* team);
+    void onObjectiveAdded(Objective* objective);
+    void onObjectiveChanged(Objective* objective);
+    void onObjectiveRemoved(Objective* objective);
+    void onTeamAdded(PlayerTeam* team);
+    void onTeamChanged(PlayerTeam* team);
+    void onTeamRemoved(PlayerTeam* team);
+    void setSaveData(ScoreboardSaveData* data);
+
+protected:
+    void setDirty();
+
+public:
+    std::vector<std::shared_ptr<Packet> >* getStartTrackingPackets(
+        Objective* objective);
+    void startTrackingObjective(Objective* objective);
+    std::vector<std::shared_ptr<Packet> >* getStopTrackingPackets(
+        Objective* objective);
+    void stopTrackingObjective(Objective* objective);
+    int getObjectiveDisplaySlotCount(Objective* objective);
+};
