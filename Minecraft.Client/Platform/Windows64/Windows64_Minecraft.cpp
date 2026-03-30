@@ -986,7 +986,7 @@ void operator delete(void* p) {
                     XALLOC_MEMPROTECT_READWRITE, FALSE, XALLOC_MEMTYPE_HEAP));
 }
 
-void WINAPI XMemFree(PVOID pAddress, DWORD dwAllocAttributes) {
+void WINAPI XMemFree(void* pAddress, DWORD dwAllocAttributes) {
     bool special = false;
     if (dwAllocAttributes == 0) {
         dwAllocAttributes = MAKE_XALLOC_ATTRIBUTES(
@@ -1018,7 +1018,7 @@ void WINAPI XMemFree(PVOID pAddress, DWORD dwAllocAttributes) {
     LeaveCriticalSection(&memCS);
 }
 
-SIZE_T WINAPI XMemSize(PVOID pAddress, DWORD dwAllocAttributes) {
+SIZE_T WINAPI XMemSize(void* pAddress, DWORD dwAllocAttributes) {
     if (trackStarted) {
         return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
     } else {

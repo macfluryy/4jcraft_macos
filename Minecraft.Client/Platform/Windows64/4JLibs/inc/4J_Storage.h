@@ -260,7 +260,7 @@ public:
 	bool						GetSaveDisabled(void);
 	unsigned int				GetSaveSize();
 	void						GetSaveData(void *pvData,unsigned int *puiBytes);
-	PVOID						AllocateSaveData(unsigned int uiBytes);
+	void*						AllocateSaveData(unsigned int uiBytes);
 	void						SetSaveImages( PBYTE pbThumbnail,DWORD dwThumbnailBytes,PBYTE pbImage,DWORD dwImageBytes, PBYTE pbTextData ,DWORD dwTextDataBytes);					// Sets the thumbnail & image for the save, optionally setting the metadata in the png
 	C4JStorage::ESaveGameState	SaveSaveData(int( *Func)(void* ,const bool),void* lpParam);
 	void						CopySaveDataToNewSave(PBYTE pbThumbnail,DWORD cbThumbnail,WCHAR *wchNewName,int ( *Func)(void* lpParam, bool), void* lpParam);

@@ -204,8 +204,8 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
 
 #if (defined _WIN64 || defined __LP64__)
         if (InterlockedCompareExchangeRelease64(
-                (LONG64*)&cache[idx], (LONG64)chunk, (LONG64)lastChunk) ==
-            (LONG64)lastChunk)
+                (int64_t*)&cache[idx], (int64_t)chunk, (int64_t)lastChunk) ==
+            (int64_t)lastChunk)
 #else
         if (InterlockedCompareExchangeRelease((LONG*)&cache[idx], (LONG)chunk,
                                               (LONG)lastChunk) ==

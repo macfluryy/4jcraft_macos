@@ -474,7 +474,7 @@ void								C4JStorage::SetSaveDisabled(bool bDisable) {}
 bool								C4JStorage::GetSaveDisabled(void) { return false; }
 unsigned int						C4JStorage::GetSaveSize() { return 0; }
 void								C4JStorage::GetSaveData(void *pvData,unsigned int *pulBytes) {}
-PVOID								C4JStorage::AllocateSaveData(unsigned int ulBytes) { return new char[ulBytes]; }
+void*								C4JStorage::AllocateSaveData(unsigned int ulBytes) { return new char[ulBytes]; }
 void								C4JStorage::SaveSaveData(unsigned int ulBytes,PBYTE pbThumbnail,DWORD cbThumbnail,PBYTE pbTextData, DWORD dwTextLen) {}
 void								C4JStorage::CopySaveDataToNewSave(std::uint8_t *pbThumbnail,unsigned int cbThumbnail,WCHAR *wchNewName,int ( *Func)(void* lpParam, bool), void* lpParam) {}
 void								C4JStorage::SetSaveDeviceSelected(unsigned int uiPad,bool bSelected) {}

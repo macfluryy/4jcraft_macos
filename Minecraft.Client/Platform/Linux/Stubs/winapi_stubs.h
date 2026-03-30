@@ -29,12 +29,9 @@ typedef void* HANDLE;
 typedef int INT;
 typedef long* PLONG;
 typedef unsigned int* LPDWORD;
-typedef const void* LPCVOID;
 typedef char CHAR;
-typedef void* PVOID;
 typedef uintptr_t ULONG_PTR;
 typedef long LONG;
-typedef long LONG64, *PLONG64;
 typedef void VOID;
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
@@ -307,15 +304,15 @@ static inline VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
 static inline DWORD GetLastError(VOID) { return errno; }
 
 #ifdef __LP64__
-static inline LONG64 InterlockedCompareExchangeRelease64(
-    LONG64 volatile* Destination, LONG64 Exchange, LONG64 Comperand) {
-    LONG64 expected = Comperand;
+static inline int64_t InterlockedCompareExchangeRelease64(
+    int64_t volatile* Destination, int64_t Exchange, int64_t Comperand) {
+    int64_t expected = Comperand;
     __atomic_compare_exchange_n(Destination, &expected, Exchange, false,
                                 __ATOMIC_RELEASE, __ATOMIC_RELAXED);
     return expected;
 }
 #else
-static inline LONG64 InterlockedCompareExchangeRelease(
+static inline int64_t InterlockedCompareExchangeRelease(
     LONG volatile* Destination, LONG Exchange, LONG Comperand) {
     LONG expected = Comperand;
     __atomic_compare_exchange_n(Destination, &expected, Exchange, false,
