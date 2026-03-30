@@ -3256,7 +3256,6 @@ void ClientConnection::handleCustomPayload(
             UIScene_TradingMenu* screen = (UIScene_TradingMenu*)scene;
             trader = screen->getMerchant();
 #endif
-#endif
             MerchantRecipeList* recipeList =
                 MerchantRecipeList::createFromStream(&input);
             trader->overrideOffers(recipeList);

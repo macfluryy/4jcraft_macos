@@ -2,7 +2,7 @@
 #include "FileFilter.h"
 #include "../../Level/Storage/McRegionLevelStorageSource.h"
 #include "File.h"
-#include "PathHelper.h"
+#include "../../../Minecraft.World/Util/PathHelper.h"
 
 #include <chrono>
 #include <filesystem>
