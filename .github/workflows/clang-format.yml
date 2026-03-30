@@ -19,6 +19,8 @@ on:
   pull_request:
     paths: *workflow_paths
 
+  workflow_dispatch:
+
 jobs:
   clang-format:
     runs-on: ubuntu-latest
