@@ -9,6 +9,7 @@
 !/Minecraft.Assets/
 !/Minecraft.Client/
 !/Minecraft.World/
+!/4J.*/
 !/scripts/
 !/subprojects/
 /subprojects/*
