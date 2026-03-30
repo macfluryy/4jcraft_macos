@@ -30,7 +30,7 @@ protected:
 
     // SceNpId m_myNpId;
 
-    static int scoreboardThreadEntry(LPVOID lpParam);
+    static int scoreboardThreadEntry(void* lpParam);
     void scoreboardThreadInternal();
 
     virtual bool getScoreByIds();

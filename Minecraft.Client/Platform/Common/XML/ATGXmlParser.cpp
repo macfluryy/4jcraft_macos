@@ -344,7 +344,7 @@ HRESULT XMLParser::AdvanceName()
 //       and getting another chunk of the file if needed
 //       Returns S_OK if there are more characters, E_ABORT for no characters to read
 //-------------------------------------------------------------------------------------
-HRESULT XMLParser::AdvanceCharacter( BOOL bOkToFail )
+HRESULT XMLParser::AdvanceCharacter( bool bOkToFail )
 {  
     if( m_bSkipNextAdvance )
     {
@@ -737,7 +737,7 @@ ISAXCallback* XMLParser::GetSAXCallbackInterface()
 //-------------------------------------------------------------------------------------
 HRESULT XMLParser::MainParseLoop()
 {
-    BOOL bWhiteSpaceOnly = TRUE;
+    bool bWhiteSpaceOnly = TRUE;
     HRESULT hr = S_OK;
 
     if( FAILED( m_pISAXCallback->StartDocument() ) )

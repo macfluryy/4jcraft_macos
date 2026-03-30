@@ -219,7 +219,7 @@ public:
     getUnfinishedSchematicFiles();
 
     void loadBaseSaveData();
-    static int packMounted(LPVOID pParam, int iPad, DWORD dwErr,
+    static int packMounted(void* pParam, int iPad, DWORD dwErr,
                            DWORD dwLicenceMask);
 
     // 4J-JEV:

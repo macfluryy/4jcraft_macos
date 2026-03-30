@@ -180,7 +180,7 @@ protected:
     virtual void UpdateMultiPanel();
 
     virtual void HandleMessage(EUIMessage message, void* data);
-    void handleInventoryUpdated(LPVOID data);
+    void handleInventoryUpdated(void* data);
 
     // 4J - TomK If update tooltips is called then make sure the correct parent
     // is invoked! (both UIScene AND IUIScene_CraftingMenu have an instance of

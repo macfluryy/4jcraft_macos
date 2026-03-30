@@ -1095,9 +1095,9 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
     ui.AnimateKeyPress(iPad, iAction, bRepeat, true, false);
 
     int buttonNum = 0;          // 0 = LeftMouse, 1 = RightMouse
-    BOOL quickKeyHeld = FALSE;  // Represents shift key on PC
+    bool quickKeyHeld = FALSE;  // Represents shift key on PC
 
-    BOOL validKeyPress = FALSE;
+    bool validKeyPress = FALSE;
     bool itemEditorKeyPress = false;
 
     // Ignore input from other players

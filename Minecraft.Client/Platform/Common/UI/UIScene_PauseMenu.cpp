@@ -360,7 +360,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
                             uiIDA, 2, m_iPad,
                             &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (LPVOID)GetCallbackUniqueId());
+                            (void*)GetCallbackUniqueId());
                     } else {
                         if (g_NetworkManager.IsHost()) {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -374,14 +374,14 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                     uiIDA, 3, m_iPad,
                                     &UIScene_PauseMenu::
                                         ExitGameSaveDialogReturned,
-                                    (LPVOID)GetCallbackUniqueId());
+                                    (void*)GetCallbackUniqueId());
                             } else {
                                 ui.RequestAlertMessage(
                                     IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA,
                                     3, m_iPad,
                                     &UIScene_PauseMenu::
                                         ExitGameSaveDialogReturned,
-                                    (LPVOID)GetCallbackUniqueId());
+                                    (void*)GetCallbackUniqueId());
                             }
                         } else {
                             uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -391,7 +391,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                 IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
                                 m_iPad,
                                 &IUIScene_PauseMenu::ExitGameDialogReturned,
-                                (LPVOID)GetCallbackUniqueId());
+                                (void*)GetCallbackUniqueId());
                         }
                     }
                 } else {
@@ -427,7 +427,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                         IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
                         uiIDA, 2, m_iPad,
                         &IUIScene_PauseMenu::ExitGameDialogReturned,
-                        (LPVOID)GetCallbackUniqueId());
+                        (void*)GetCallbackUniqueId());
 
                 } else {
                     int playTime = -1;
@@ -460,7 +460,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
             ui.RequestAlertMessage(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT,
                                    uiIDA, 2, m_iPad,
                                    &UIScene_PauseMenu::UnlockFullSaveReturned,
-                                   (LPVOID)GetCallbackUniqueId());
+                                   (void*)GetCallbackUniqueId());
         }
 
         return;
@@ -488,7 +488,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, m_iPad,
                     &UIScene_PauseMenu::WarningTrialTexturePackReturned,
-                    (LPVOID)GetCallbackUniqueId());
+                    (void*)GetCallbackUniqueId());
             }
 
             return;
@@ -512,7 +512,7 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
                 ui.RequestAlertMessage(
                     IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2,
                     m_iPad, &IUIScene_PauseMenu::SaveGameDialogReturned,
-                    (LPVOID)GetCallbackUniqueId());
+                    (void*)GetCallbackUniqueId());
             } else {
             // flag a app action of save game
             app.SetAction(m_iPad, eAppAction_SaveGame);

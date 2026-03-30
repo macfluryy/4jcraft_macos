@@ -390,19 +390,19 @@ public:
     virtual C4JStorage::EMessageResult RequestAlertMessage(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
         DWORD dwPad = XUSER_INDEX_ANY,
-        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult) = NULL,
-        LPVOID lpParam = NULL, WCHAR* pwchFormatString = NULL);
+        int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
+        void* lpParam = NULL, WCHAR* pwchFormatString = NULL);
     virtual C4JStorage::EMessageResult RequestErrorMessage(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
         DWORD dwPad = XUSER_INDEX_ANY,
-        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult) = NULL,
-        LPVOID lpParam = NULL, WCHAR* pwchFormatString = NULL);
+        int (*Func)(void*, int, const C4JStorage::EMessageResult) = NULL,
+        void* lpParam = NULL, WCHAR* pwchFormatString = NULL);
 
 private:
     virtual C4JStorage::EMessageResult RequestMessageBox(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
-        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult),
-        LPVOID lpParam, WCHAR* pwchFormatString, DWORD dwFocusButton,
+        int (*Func)(void*, int, const C4JStorage::EMessageResult),
+        void* lpParam, WCHAR* pwchFormatString, DWORD dwFocusButton,
         bool bIsError);
 
 public:

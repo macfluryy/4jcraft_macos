@@ -43,7 +43,7 @@ DWORD XUserAreUsersFriends(
 		 DWORD dwUserIndex,
 		 PPlayerUID pXuids,
 		 DWORD dwXuidCount,
-		 PBOOL pfResult,
+		 bool* pfResult,
 		 void *pOverlapped);
 
 class XSOCIAL_IMAGEPOSTPARAMS

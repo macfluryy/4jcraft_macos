@@ -18,11 +18,7 @@
 
 #define S_OK 0
 typedef unsigned int DWORD;
-typedef const char* LPCSTR;
-typedef bool BOOL;
-typedef BOOL* PBOOL;
-typedef BOOL* LPBOOL;
-typedef void* LPVOID;
+typedef bool bool;
 typedef wchar_t WCHAR;
 typedef unsigned char BYTE;
 typedef BYTE* PBYTE;
@@ -426,7 +422,7 @@ static inline HANDLE CreateFile(const wchar_t* lpFileName,
                        dwFlagsAndAttributes, hTemplateFile);
 }
 
-static inline BOOL CloseHandle(HANDLE hObject) {
+static inline bool CloseHandle(HANDLE hObject) {
     if (hObject == INVALID_HANDLE_VALUE) return FALSE;
     return close((int)(intptr_t)hObject) == 0;
 }
@@ -442,7 +438,7 @@ static inline DWORD GetFileSize(HANDLE hFile, DWORD* lpFileSizeHigh) {
     return (DWORD)(st.st_size & 0xFFFFFFFF);
 }
 
-static inline BOOL GetFileSizeEx(HANDLE hFile, LARGE_INTEGER* lpFileSize) {
+static inline bool GetFileSizeEx(HANDLE hFile, LARGE_INTEGER* lpFileSize) {
     struct stat st{};
     if (fstat((int)(intptr_t)hFile, &st) != 0) return FALSE;
     if (lpFileSize) {
@@ -453,7 +449,7 @@ static inline BOOL GetFileSizeEx(HANDLE hFile, LARGE_INTEGER* lpFileSize) {
     return TRUE;
 }
 
-static inline BOOL ReadFile(HANDLE hFile, void* lpBuffer,
+static inline bool ReadFile(HANDLE hFile, void* lpBuffer,
                             DWORD nNumberOfBytesToRead,
                             DWORD* lpNumberOfBytesRead, void* lpOverlapped) {
     ssize_t n = read((int)(intptr_t)hFile, lpBuffer, nNumberOfBytesToRead);
@@ -461,7 +457,7 @@ static inline BOOL ReadFile(HANDLE hFile, void* lpBuffer,
     return n >= 0;
 }
 
-static inline BOOL WriteFile(HANDLE hFile, const void* lpBuffer,
+static inline bool WriteFile(HANDLE hFile, const void* lpBuffer,
                              DWORD nNumberOfBytesToWrite,
                              DWORD* lpNumberOfBytesWritten,
                              void* lpOverlapped) {
@@ -500,7 +496,7 @@ static inline DWORD GetFileAttributes(const char* lpFileName) {
     return GetFileAttributesA(lpFileName);
 }
 
-static inline BOOL GetFileAttributesExA(const char* lpFileName,
+static inline bool GetFileAttributesExA(const char* lpFileName,
                                         GET_FILEEX_INFO_LEVELS fInfoLevelId,
                                         void* lpFileInformation) {
     if (fInfoLevelId != GetFileExInfoStandard || !lpFileInformation)
@@ -518,36 +514,36 @@ static inline BOOL GetFileAttributesExA(const char* lpFileName,
     return TRUE;
 }
 
-static inline BOOL GetFileAttributesEx(const char* lpFileName,
+static inline bool GetFileAttributesEx(const char* lpFileName,
                                        GET_FILEEX_INFO_LEVELS fInfoLevelId,
                                        void* lpFileInformation) {
     return GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation);
 }
 
-static inline BOOL CreateDirectoryA(const char* lpPathName,
+static inline bool CreateDirectoryA(const char* lpPathName,
                                     void* lpSecurityAttributes) {
     return mkdir(lpPathName, 0755) == 0;
 }
 
-static inline BOOL CreateDirectory(const char* lpPathName,
+static inline bool CreateDirectory(const char* lpPathName,
                                    void* lpSecurityAttributes) {
     return CreateDirectoryA(lpPathName, lpSecurityAttributes);
 }
 
-static inline BOOL DeleteFileA(const char* lpFileName) {
+static inline bool DeleteFileA(const char* lpFileName) {
     return unlink(lpFileName) == 0;
 }
 
-static inline BOOL DeleteFile(const char* lpFileName) {
+static inline bool DeleteFile(const char* lpFileName) {
     return DeleteFileA(lpFileName);
 }
 
-static inline BOOL MoveFileA(const char* lpExistingFileName,
+static inline bool MoveFileA(const char* lpExistingFileName,
                              const char* lpNewFileName) {
     return rename(lpExistingFileName, lpNewFileName) == 0;
 }
 
-static inline BOOL MoveFile(const char* lpExistingFileName,
+static inline bool MoveFile(const char* lpExistingFileName,
                             const char* lpNewFileName) {
     return MoveFileA(lpExistingFileName, lpNewFileName);
 }
@@ -613,7 +609,7 @@ static inline HANDLE FindFirstFile(const char* lpFileName,
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findnextfilea
-static inline BOOL FindNextFileA(HANDLE hFindFile,
+static inline bool FindNextFileA(HANDLE hFindFile,
                                  WIN32_FIND_DATAA* lpFindFileData) {
     if (hFindFile == INVALID_HANDLE_VALUE || !lpFindFileData) return FALSE;
     _LINUXSTUBS_FIND_HANDLE* fh = (_LINUXSTUBS_FIND_HANDLE*)hFindFile;
@@ -639,13 +635,13 @@ static inline BOOL FindNextFileA(HANDLE hFindFile,
     return FALSE;
 }
 
-static inline BOOL FindNextFile(HANDLE hFindFile,
+static inline bool FindNextFile(HANDLE hFindFile,
                                 WIN32_FIND_DATAA* lpFindFileData) {
     return FindNextFileA(hFindFile, lpFindFileData);
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findclose
-static inline BOOL FindClose(HANDLE hFindFile) {
+static inline bool FindClose(HANDLE hFindFile) {
     if (hFindFile == INVALID_HANDLE_VALUE) return FALSE;
     _LINUXSTUBS_FIND_HANDLE* fh = (_LINUXSTUBS_FIND_HANDLE*)hFindFile;
     closedir(fh->dir);
@@ -707,7 +703,7 @@ static inline VOID GetLocalTime(LPSYSTEMTIME lpSystemTime) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-systemtimetofiletime
-static inline BOOL SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
+static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
                                         LPFILETIME lpFileTime) {
     struct tm tm = {};
     tm.tm_year = lpSystemTime->wYear - 1900;
@@ -728,7 +724,7 @@ static inline BOOL SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
-static inline BOOL FileTimeToSystemTime(const FILETIME* lpFileTime,
+static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
                                         LPSYSTEMTIME lpSystemTime) {
     ULONGLONG ft = ((ULONGLONG)lpFileTime->dwHighDateTime << 32) |
                    lpFileTime->dwLowDateTime;
@@ -748,13 +744,13 @@ static inline DWORD GetTickCount() {
     return (long long)ts.tv_sec * 1000 + (long long)ts.tv_nsec / 1000000;
 }
 
-static inline BOOL QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency) {
+static inline bool QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency) {
     // nanoseconds
     lpFrequency->QuadPart = 1000000000;
     return false;
 }
 
-static inline BOOL QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount) {
+static inline bool QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount) {
     struct timespec ts;
     clock_gettime(CLOCK_MONOTONIC, &ts);
 
@@ -766,7 +762,7 @@ static inline BOOL QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa
-static inline VOID OutputDebugStringA(LPCSTR lpOutputString) {
+static inline VOID OutputDebugStringA(const char* lpOutputString) {
     if (!lpOutputString) return;
     fputs(lpOutputString, stderr);
 }
@@ -777,7 +773,7 @@ static inline VOID OutputDebugStringW(LPCWSTR lpOutputString) {
     fprintf(stderr, "%ls", lpOutputString);
 }
 
-static inline VOID OutputDebugString(LPCSTR lpOutputString) {
+static inline VOID OutputDebugString(const char* lpOutputString) {
     return OutputDebugStringA(lpOutputString);
 }
 
@@ -797,12 +793,12 @@ static inline HANDLE CreateEvent(int manual_reset, int initial_state) {
     return (HANDLE)ev;
 }
 
-static inline HANDLE CreateEvent(void*, BOOL manual_reset, BOOL initial_state,
+static inline HANDLE CreateEvent(void*, bool manual_reset, bool initial_state,
                                  void*) {
     return CreateEvent(manual_reset, initial_state);
 }
 
-static inline BOOL SetEvent(HANDLE hEvent) {
+static inline bool SetEvent(HANDLE hEvent) {
     Event* ev = (Event*)hEvent;
     if (!ev) return FALSE;
     pthread_mutex_lock(&ev->mutex);
@@ -815,7 +811,7 @@ static inline BOOL SetEvent(HANDLE hEvent) {
     return TRUE;
 }
 
-static inline BOOL ResetEvent(HANDLE hEvent) {
+static inline bool ResetEvent(HANDLE hEvent) {
     Event* ev = (Event*)hEvent;
     if (!ev) return FALSE;
     pthread_mutex_lock(&ev->mutex);
@@ -874,7 +870,7 @@ static inline DWORD WaitForSingleObject(HANDLE hHandle, DWORD dwMilliseconds) {
 
 static inline DWORD WaitForMultipleObjects(DWORD nCount,
                                            const HANDLE* lpHandles,
-                                           BOOL bWaitAll,
+                                           bool bWaitAll,
                                            DWORD dwMilliseconds) {
     if (bWaitAll) {
         for (DWORD i = 0; i < nCount; i++)
@@ -1005,13 +1001,13 @@ static inline DWORD ResumeThread(HANDLE hThread) {
     return 0;
 }
 
-static inline BOOL SetThreadPriority(HANDLE hThread, int nPriority) {
+static inline bool SetThreadPriority(HANDLE hThread, int nPriority) {
     (void)hThread;
     (void)nPriority;
     return TRUE;
 }
 
-static inline BOOL GetExitCodeThread(HANDLE hThread, DWORD* lpExitCode) {
+static inline bool GetExitCodeThread(HANDLE hThread, DWORD* lpExitCode) {
     LinuxThread* lt = (LinuxThread*)hThread;
     if (!lt || !lpExitCode) return FALSE;
     *lpExitCode = lt->exitCode;
@@ -1060,9 +1056,9 @@ static inline int swprintf_s(wchar_t* buf, size_t sz, const wchar_t* fmt, ...) {
     return ret;
 }
 
-static inline HMODULE GetModuleHandle(LPCSTR lpModuleName) { return 0; }
+static inline HMODULE GetModuleHandle(const char* lpModuleName) { return 0; }
 
-static inline LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize,
+static inline void* VirtualAlloc(void* lpAddress, SIZE_T dwSize,
                                   DWORD flAllocationType, DWORD flProtect) {
     // MEM_COMMIT | MEM_RESERVE → mmap anonymous
     int prot = 0;
@@ -1083,7 +1079,7 @@ static inline LPVOID VirtualAlloc(LPVOID lpAddress, SIZE_T dwSize,
     return p;
 }
 
-static inline BOOL VirtualFree(LPVOID lpAddress, SIZE_T dwSize,
+static inline bool VirtualFree(void* lpAddress, SIZE_T dwSize,
                                DWORD dwFreeType) {
     if (lpAddress == NULL) return FALSE;
     // MEM_RELEASE (0x8000) frees the whole region

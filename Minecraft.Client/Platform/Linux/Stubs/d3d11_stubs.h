@@ -36,7 +36,7 @@ typedef RECT D3D11_RECT;
 typedef void ID3D11RenderTargetView;
 typedef void ID3D11DepthStencilView;
 typedef void ID3D11Buffer;
-// typedef DWORD (*PTHREAD_START_ROUTINE)(	LPVOID lpThreadParameter);
+// typedef DWORD (*PTHREAD_START_ROUTINE)(	void* lpThreadParameter);
 // typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
 
 // Used only by windows/durango gdraw and UIController. Will be unnecessary once

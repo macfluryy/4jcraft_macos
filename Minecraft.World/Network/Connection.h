@@ -17,10 +17,10 @@
 class ByteArrayOutputStream;
 
 class Connection {
-    friend DWORD WINAPI runRead(LPVOID lpParam);
-    friend DWORD WINAPI runWrite(LPVOID lpParam);
-    friend DWORD WINAPI runSendAndQuit(LPVOID lpParam);
-    friend DWORD WINAPI runClose(LPVOID lpParam);
+    friend DWORD WINAPI runRead(void* lpParam);
+    friend DWORD WINAPI runWrite(void* lpParam);
+    friend DWORD WINAPI runSendAndQuit(void* lpParam);
+    friend DWORD WINAPI runClose(void* lpParam);
 
 private:
     static const int SEND_BUFFER_SIZE = 1024 * 5;

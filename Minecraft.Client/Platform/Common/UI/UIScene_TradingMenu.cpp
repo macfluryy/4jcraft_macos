@@ -279,6 +279,6 @@ void UIScene_TradingMenu::HandleMessage(EUIMessage message, void* data) {
     };
 }
 
-void UIScene_TradingMenu::handleInventoryUpdated(LPVOID data) {
+void UIScene_TradingMenu::handleInventoryUpdated(void* data) {
     HandleInventoryUpdated();
 }

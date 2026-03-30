@@ -80,13 +80,13 @@ public:
 		}
 	};
 
-	virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, BOOL More ) {    return S_OK;   };
+	virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, bool More ) {    return S_OK;   };
 
 	virtual HRESULT  ElementEnd( CONST WCHAR *strName, UINT NameLen ){       return S_OK;    };
 
 	virtual HRESULT  CDATABegin( )  { return S_OK; };
 
-	virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, BOOL bMore ){ return S_OK; };
+	virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, bool bMore ){ return S_OK; };
 
 	virtual HRESULT  CDATAEnd( ){ return S_OK; };
 
@@ -161,13 +161,13 @@ public:
 	}
 
 
-	virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, BOOL More ) {    return S_OK;   };
+	virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, bool More ) {    return S_OK;   };
 
 	virtual HRESULT  ElementEnd( CONST WCHAR *strName, UINT NameLen ){       return S_OK;    };
 
 	virtual HRESULT  CDATABegin( )  { return S_OK; };
 
-	virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, BOOL bMore ){ return S_OK; };
+	virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, bool bMore ){ return S_OK; };
 
 	virtual HRESULT  CDATAEnd( ){ return S_OK; };
 
@@ -313,13 +313,13 @@ public:
 		}
 	};
 
-	virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, BOOL More ) {    return S_OK;   };
+	virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, bool More ) {    return S_OK;   };
 
 	virtual HRESULT  ElementEnd( CONST WCHAR *strName, UINT NameLen ){       return S_OK;    };
 
 	virtual HRESULT  CDATABegin( )  { return S_OK; };
 
-	virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, BOOL bMore ){ return S_OK; };
+	virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, bool bMore ){ return S_OK; };
 
 	virtual HRESULT  CDATAEnd( ){ return S_OK; };
 

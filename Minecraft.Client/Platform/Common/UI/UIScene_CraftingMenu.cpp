@@ -601,7 +601,7 @@ void UIScene_CraftingMenu::HandleMessage(EUIMessage message, void* data) {
     };
 }
 
-void UIScene_CraftingMenu::handleInventoryUpdated(LPVOID data) {
+void UIScene_CraftingMenu::handleInventoryUpdated(void* data) {
     HandleInventoryUpdated();
 }
 
