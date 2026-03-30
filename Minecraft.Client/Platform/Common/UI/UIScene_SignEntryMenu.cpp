@@ -1,5 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "UIScene_SignEntryMenu.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
@@ -17,6 +18,7 @@ UIScene_SignEntryMenu::UIScene_SignEntryMenu(int iPad, void* _initData,
     SignEntryScreenInput* initData = (SignEntryScreenInput*)_initData;
     m_sign = initData->sign;
 
+    m_iEditingLine = 0;
     m_bConfirmed = false;
     m_bIgnoreInput = false;
 
@@ -140,12 +142,10 @@ int UIScene_SignEntryMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     // 4J HEG - No reason to set value if keyboard was cancelled
     UIScene_SignEntryMenu* pClass = (UIScene_SignEntryMenu*)lpParam;
     pClass->m_bIgnoreInput = false;
-    if (bRes) {
-        uint16_t pchText[128];
-        ZeroMemory(pchText, 128 * sizeof(uint16_t));
-        InputManager.GetText(pchText);
-        pClass->m_textInputLines[pClass->m_iEditingLine].setLabel(
-            (wchar_t*)pchText);
+    if (bRes && pClass->m_iEditingLine >= 0 && pClass->m_iEditingLine < 4) {
+        std::wstring str = convStringToWstring(InputManager.GetText());
+        if (str.size() > 15) str.resize(15);
+        pClass->m_textInputLines[pClass->m_iEditingLine].setLabel(str);
     }
     return 0;
 }

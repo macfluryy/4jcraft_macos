@@ -3,11 +3,11 @@
     "4jlibs": {
       "flake": false,
       "locked": {
-        "lastModified": 1774012501,
-        "narHash": "sha256-NoM5LtKcU+3LFPVZUtep1L+hfZS6YSQ4P/xkJU/2NY4=",
+        "lastModified": 1774836469,
+        "narHash": "sha256-ukp6tLThQugPlREYFDDB6IaunjGte08f0Ler/c8cvaY=",
         "owner": "4jcraft",
         "repo": "4jlibs",
-        "rev": "df5f4a1fc3288fdc021b3d8ee2abaed3083de460",
+        "rev": "ab37891dabba90cf1e568660f750cebf46ba83f6",
         "type": "github"
       },
       "original": {
