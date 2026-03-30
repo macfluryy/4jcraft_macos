@@ -14,8 +14,8 @@
 #include "Minecraft.World/net/minecraft/world/item/trading/net.minecraft.world.item.trading.h"
 #include "../Minecraft.h"
 #include "../multiplayer/ClientConnection.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/ByteArrayOutputStream.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/DataOutputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "Minecraft.World/net/minecraft/world/item/Rarity.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing

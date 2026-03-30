@@ -24,7 +24,7 @@ float* SkyIslandDimension::getSunriseColor(float td, float a) {
 
 Vec3 SkyIslandDimension::getFogColor(float td, float a) const {
     int fogColor = 0x8080a0;
-    float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
+    float br = Mth::cos(td * M_PI * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 

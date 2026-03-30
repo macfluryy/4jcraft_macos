@@ -10,7 +10,7 @@
 #include "../../../network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Arrow.h"
 
 // 4J : WESTY : Added for other award, kill creeper with arrow.
@@ -69,8 +69,8 @@ Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob,
     double sd = sqrt(xd * xd + zd * zd);
     if (sd < 0.0000001) return;
 
-    float yRot = (float)(atan2(zd, xd) * 180 / PI) - 90;
-    float xRot = (float)-(atan2(yd, sd) * 180 / PI);
+    float yRot = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
+    float xRot = (float)-(atan2(yd, sd) * 180 / M_PI);
 
     double xdn = xd / sd;
     double zdn = zd / sd;
@@ -103,15 +103,15 @@ Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob, float power)
 
     moveTo(mob->x, mob->y + mob->getHeadHeight(), mob->z, mob->yRot, mob->xRot);
 
-    x -= Mth::cos(yRot / 180 * PI) * 0.16f;
+    x -= Mth::cos(yRot / 180 * M_PI) * 0.16f;
     y -= 0.1f;
-    z -= Mth::sin(yRot / 180 * PI) * 0.16f;
+    z -= Mth::sin(yRot / 180 * M_PI) * 0.16f;
     setPos(x, y, z);
     heightOffset = 0;
 
-    xd = -Mth::sin(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI);
-    zd = Mth::cos(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI);
-    yd = -Mth::sin(xRot / 180 * PI);
+    xd = -Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
+    zd = Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
+    yd = -Mth::sin(xRot / 180 * M_PI);
 
     shoot(xd, yd, zd, power * 1.5f, 1);
 }
@@ -143,8 +143,8 @@ void Arrow::shoot(double xd, double yd, double zd, float pow,
 
     double sd = sqrt(xd * xd + zd * zd);
 
-    yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
     life = 0;
 }
 
@@ -160,8 +160,8 @@ void Arrow::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         double sd = sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+        xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
         xRotO = xRot;
         yRotO = yRot;
         app.DebugPrintf("%f %f : 0x%x\n", xRot, yRot, &yRot);
@@ -175,8 +175,8 @@ void Arrow::tick() {
 
     if (xRotO == 0 && yRotO == 0) {
         double sd = sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+        xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
     }
 
     {
@@ -401,8 +401,8 @@ void Arrow::tick() {
     z += zd;
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRot = (float)(atan2(yd, sd) * 180 / PI);
+    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRot = (float)(atan2(yd, sd) * 180 / M_PI);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

@@ -269,7 +269,7 @@ bool StairTile::setInnerPieceShape(LevelSource* level, int x, int y, int z) {
 }
 
 void StairTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                         AABBList* boxes, std::shared_ptr<Entity> source) {
+                         std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
     setBaseShape(level, x, y, z);
     Tile::addAABBs(level, x, y, z, box, boxes, source);
 

@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "net.minecraft.world.entity.player.h"
 #include "../../item/net.minecraft.world.item.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
@@ -17,8 +17,8 @@ const int Inventory::SELECTION_SIZE = 9;
 // we don't want to also keep a shared_ptr of it. If we pass it on we should use
 // shared_from_this() though
 Inventory::Inventory(Player* player) {
-    items = ItemInstanceArray(INVENTORY_SIZE);
-    armor = ItemInstanceArray(4);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(INVENTORY_SIZE);
+    armor = arrayWithLength<std::shared_ptr<ItemInstance>>(4);
 
     selected = 0;
 
@@ -344,7 +344,7 @@ bool Inventory::add(std::shared_ptr<ItemInstance> item) {
 
 std::shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot,
                                                     int count) {
-    ItemInstanceArray pile = items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> pile = items;
     if (slot >= items.length) {
         pile = armor;
         slot -= items.length;
@@ -365,7 +365,7 @@ std::shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> Inventory::removeItemNoUpdate(int slot) {
-    ItemInstanceArray pile = items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> pile = items;
     if (slot >= items.length) {
         pile = armor;
         slot -= items.length;
@@ -403,7 +403,7 @@ void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) {
     }
     player->handleCollectItem(item);
     /*
-    ItemInstanceArray& pile = items;
+    arrayWithLength<std::shared_ptr<ItemInstance>>& pile = items;
     if (slot >= pile.length)
     {
     slot -= pile.length;
@@ -450,8 +450,8 @@ void Inventory::load(ListTag<CompoundTag>* inventoryList) {
         delete[] armor.data;
         armor.data = nullptr;
     }
-    items = ItemInstanceArray(INVENTORY_SIZE);
-    armor = ItemInstanceArray(4);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(INVENTORY_SIZE);
+    armor = arrayWithLength<std::shared_ptr<ItemInstance>>(4);
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot") & 0xff;
@@ -475,7 +475,7 @@ std::shared_ptr<ItemInstance> Inventory::getItem(unsigned int slot) {
         return items[slot];
     }
     /*
-    ItemInstanceArray pile = items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> pile = items;
     if (slot >= pile.length)
     {
     slot -= pile.length;

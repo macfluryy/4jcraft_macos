@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/Arrays.h"
+#include "java/Arrays.h"
 #include "FixedBiomeSource.h"
 
 FixedBiomeSource::FixedBiomeSource(Biome* fixed, float temperature,

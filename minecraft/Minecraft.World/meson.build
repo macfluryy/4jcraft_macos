@@ -33,6 +33,8 @@ simdutf_dep = dependency('simdutf',
 lib_world = static_library('Minecraft.World',
   world_sources,
   dependencies : [
+    nbt_dep,
+    java_dep,
     assets_localisation_dep,
     render_dep,
     input_dep,

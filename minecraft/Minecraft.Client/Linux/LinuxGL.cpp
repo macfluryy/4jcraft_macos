@@ -3,9 +3,9 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "4J_Render.h"
 
-#include "Minecraft.World/ConsoleJavaLibs/IntBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/ByteBuffer.h"
+#include "java/IntBuffer.h"
+#include "java/FloatBuffer.h"
+#include "java/ByteBuffer.h"
 
 extern C4JRender RenderManager;
 

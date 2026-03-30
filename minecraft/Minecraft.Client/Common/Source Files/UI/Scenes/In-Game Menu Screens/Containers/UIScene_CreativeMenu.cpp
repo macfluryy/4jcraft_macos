@@ -2,7 +2,7 @@
 #include "../../../UI.h"
 #include "UIScene_CreativeMenu.h"
 
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../../../../net/minecraft/client/player/LocalPlayer.h"
 #include "../../../../Tutorial/Tutorial.h"
 #include "../../../../Tutorial/TutorialMode.h"

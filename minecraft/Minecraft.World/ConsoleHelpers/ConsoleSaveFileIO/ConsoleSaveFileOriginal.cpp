@@ -5,7 +5,7 @@
 #include "../StringHelpers.h"
 #include "../../Header Files/PortableFileIO.h"
 #include "ConsoleSaveFileOriginal.h"
-#include "../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include <chrono>
 #include <thread>
 #include "../../Header Files/compression.h"

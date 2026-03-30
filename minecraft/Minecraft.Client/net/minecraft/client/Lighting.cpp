@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Lighting.h"
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
+#include "java/FloatBuffer.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 FloatBuffer* Lighting::lb = new FloatBuffer(16);

@@ -1,8 +1,8 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Tesselator.h"
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/IntBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/ByteBuffer.h"
+#include "java/FloatBuffer.h"
+#include "java/IntBuffer.h"
+#include "java/ByteBuffer.h"
 
 bool Tesselator::TRIANGLE_MODE = false;
 bool Tesselator::USE_VBO = false;

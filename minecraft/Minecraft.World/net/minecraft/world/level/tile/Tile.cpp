@@ -2015,7 +2015,7 @@ AABB Tile::getTileAABB(Level* level, int x, int y, int z) {
 }
 
 void Tile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                    AABBList* boxes, std::shared_ptr<Entity> source) {
+                    std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
     auto aabb = getAABB(level, x, y, z);
     if (aabb.has_value() && box->intersects(*aabb)) boxes->push_back(*aabb);
 }

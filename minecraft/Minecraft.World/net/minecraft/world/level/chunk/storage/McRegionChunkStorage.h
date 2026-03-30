@@ -5,7 +5,7 @@
 #include "ChunkStorage.h"
 #include "../LevelChunk.h"
 #include "RegionFileCache.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "OldChunkStorage.h"
 
 class ConsoleSaveFile;

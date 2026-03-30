@@ -1,6 +1,6 @@
 ﻿#include "Minecraft.World/Header Files/stdafx.h"
 #include "SoundEngine.h"
-#include "Minecraft.World/Header Files/PathHelper.h"
+#include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "../../Consoles_App.h"
 #include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
@@ -1111,8 +1111,8 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
 
                 float yRot = players[i]->yRotO +
                              (players[i]->yRot - players[i]->yRotO) * a;
-                float yCos = (float)cos(-yRot * Mth::RAD_TO_GRAD - PI);
-                float ySin = (float)sin(-yRot * Mth::RAD_TO_GRAD - PI);
+                float yCos = (float)cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
+                float ySin = (float)sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
 
                 // store the listener positions for splitscreen
                 m_ListenerA[i].vPosition.x = x;

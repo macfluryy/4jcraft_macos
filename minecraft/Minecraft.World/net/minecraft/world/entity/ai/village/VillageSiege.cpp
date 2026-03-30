@@ -86,11 +86,11 @@ bool VillageSiege::tryToSetupSiege() {
         bool overlaps = false;
         for (int i = 0; i < 10; ++i) {
             spawnX = center->x +
-                     (int)(Mth::cos(level->random->nextFloat() * PI * 2.f) *
+                     (int)(Mth::cos(level->random->nextFloat() * M_PI * 2.f) *
                            radius * 0.9);
             spawnY = center->y;
             spawnZ = center->z +
-                     (int)(Mth::sin(level->random->nextFloat() * PI * 2.f) *
+                     (int)(Mth::sin(level->random->nextFloat() * M_PI * 2.f) *
                            radius * 0.9);
             overlaps = false;
             std::vector<std::shared_ptr<Village> >* villages =

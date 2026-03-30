@@ -2,7 +2,7 @@
 #include "Minecraft.World/net/minecraft/world/level/LevelListener.h"
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
 #include "OffsettedRenderList.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #if !defined(__linux__)
 #include <xmcore.h>
@@ -230,7 +230,7 @@ public:
             int y;
             int z;
             Level* level;
-            AABBList boxes;
+            std::vector<AABB> boxes;
             int timeout_ticks;
             bool rebuilt;
             RecentTile(int x, int y, int z, Level* level);
@@ -250,7 +250,7 @@ public:
                                  // that a chunk (a 16x16x16 tile render chunk)
                                  // has been updated
         void addAABBs(Level* level, AABB* box,
-                      AABBList* boxes);  // For game to get any AABBs that the
+                      std::vector<AABB>* boxes);  // For game to get any AABBs that the
                                          // user should be colliding with as
                                          // render data has not yet been updated
         void tick();

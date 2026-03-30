@@ -11,7 +11,7 @@ SimpleContainer::SimpleContainer(int name, std::wstring stringName,
     this->stringName = stringName;
     this->customName = customName;
     this->size = size;
-    items = new ItemInstanceArray(size);
+    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(size);
 
     listeners = nullptr;
 }

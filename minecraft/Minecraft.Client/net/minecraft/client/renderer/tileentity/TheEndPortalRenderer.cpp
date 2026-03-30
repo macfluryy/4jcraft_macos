@@ -1,10 +1,10 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "../Tesselator.h"
 #include "TileEntityRenderDispatcher.h"
 #include "../../Camera.h"
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
+#include "java/FloatBuffer.h"
 #include "TheEndPortalRenderer.h"
 
 ResourceLocation TheEndPortalRenderer::END_SKY_LOCATION =

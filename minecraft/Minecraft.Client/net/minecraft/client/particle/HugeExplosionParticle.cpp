@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "HugeExplosionParticle.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "../renderer/Textures.h"
 #include "../renderer/Tesselator.h"
 #include "../Lighting.h"

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "DirectoryLevelStorageSource.h"
-#include "../../../../../ConsoleJavaLibs/FileFilter.h"
-#include "../../../../../ConsoleJavaLibs/FilenameFilter.h"
+#include "java/FileFilter.h"
+#include "java/FilenameFilter.h"
 
 class ProgressListener;
 class LevelStorage;

@@ -2,15 +2,15 @@
 
 #include "../../../Header Files/stdafx.h"
 #include <queue>
-#include "../../../ConsoleJavaLibs/System.h"
-#include "../../../ConsoleJavaLibs/InputOutputStream/DataInputStream.h"
-#include "../../../ConsoleJavaLibs/InputOutputStream/DataOutputStream.h"
+#include "java/System.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "packet/net.minecraft.network.packet.h"
 #include "../../../ConsoleHelpers/C4JThread.h"
 
 #include <mutex>
 
-#include "../../../ConsoleJavaLibs/Socket.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 
 // 4J JEV, size of the threads (bytes).
 #define READ_STACK_SIZE 0

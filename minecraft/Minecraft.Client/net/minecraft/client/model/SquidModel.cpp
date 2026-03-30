@@ -13,7 +13,7 @@ SquidModel::SquidModel() : Model() {
     {
         tentacles[i] = new ModelPart(this, 48, 0);
 
-        double angle = i * PI * 2.0 /
+        double angle = i * M_PI * 2.0 /
                        (double)TENTACLES_LENGTH;  // 4J - 8 was tentacles.length
         float xo = Mth::cos((float)angle) * 5;
         float yo = Mth::sin((float)angle) * 5;
@@ -23,8 +23,8 @@ SquidModel::SquidModel() : Model() {
         tentacles[i]->z = yo;
         tentacles[i]->y = (float)(31 + yoffs);
 
-        angle = i * PI * -2.0 / (double)TENTACLES_LENGTH +
-                PI * .5;  // 4J - 8 was tentacles.length
+        angle = i * M_PI * -2.0 / (double)TENTACLES_LENGTH +
+                M_PI * .5;  // 4J - 8 was tentacles.length
         tentacles[i]->yRot = (float)angle;
 
         // 4J added - compile now to avoid random performance hit first time

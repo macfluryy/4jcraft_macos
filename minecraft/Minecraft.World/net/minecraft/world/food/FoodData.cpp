@@ -4,7 +4,7 @@
 #include "../level/net.minecraft.world.level.h"
 #include "../net.minecraft.world.h"
 #include "../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "FoodConstants.h"
 #include "FoodData.h"
 

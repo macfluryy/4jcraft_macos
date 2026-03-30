@@ -10,7 +10,7 @@ class MerchantRecipe;
 class MerchantContainer : public Container {
 private:
     std::shared_ptr<Merchant> merchant;
-    ItemInstanceArray items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> items;
     std::shared_ptr<Player> player;
     MerchantRecipe* activeRecipe;
     int selectionHint;

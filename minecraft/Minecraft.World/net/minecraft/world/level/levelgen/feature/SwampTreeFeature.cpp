@@ -2,7 +2,7 @@
 #include "SwampTreeFeature.h"
 #include "../../net.minecraft.world.level.h"
 #include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 bool SwampTreeFeature::place(Level* level, Random* random, int x, int y,
                              int z) {

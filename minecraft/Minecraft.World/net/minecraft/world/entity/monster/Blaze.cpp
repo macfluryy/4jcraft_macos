@@ -139,7 +139,7 @@ void Blaze::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
                 }
             }
         }
-        yRot = (float)(atan2(zd, xd) * 180 / PI) - 90;
+        yRot = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
 
         holdGround = true;
     }

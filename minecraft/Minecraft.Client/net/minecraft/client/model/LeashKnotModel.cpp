@@ -30,6 +30,6 @@ void LeashKnotModel::setupAnim(float time, float r, float bob, float yRot,
                                unsigned int uiBitmaskOverrideAnim) {
     Model::setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
-    knot->yRot = yRot / (180 / PI);
-    knot->xRot = xRot / (180 / PI);
+    knot->yRot = yRot / (180 / M_PI);
+    knot->xRot = xRot / (180 / M_PI);
 }

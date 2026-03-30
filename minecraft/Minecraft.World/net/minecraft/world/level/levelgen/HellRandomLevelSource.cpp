@@ -351,7 +351,7 @@ doubleArray HellRandomLevelSource::getHeights(doubleArray buffer, int x, int y,
     int pp = 0;
     doubleArray yoffs = doubleArray(ySize);
     for (int yy = 0; yy < ySize; yy++) {
-        yoffs[yy] = cos(yy * PI * 6 / (double)ySize) * 2;
+        yoffs[yy] = cos(yy * M_PI * 6 / (double)ySize) * 2;
 
         double dd = yy;
         if (yy > ySize / 2) {

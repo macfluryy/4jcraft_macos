@@ -1,7 +1,7 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../ConsoleJavaLibs/System.h"
-#include "../../../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
-#include "../../../../../../ConsoleJavaLibs/File.h"
+#include "java/System.h"
+#include "java/InputOutputStream/InputOutputStream.h"
+#include "java/File.h"
 #include "RegionFile.h"
 
 #include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"

@@ -4,7 +4,7 @@
 #include <iostream>
 #include "PacketListener.h"
 #include "PreLoginPacket.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 PreLoginPacket::PreLoginPacket() {
     loginKey = L"";

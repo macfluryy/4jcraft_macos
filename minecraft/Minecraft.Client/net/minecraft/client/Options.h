@@ -2,7 +2,7 @@
 
 class Minecraft;
 class KeyMapping;
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 
 class Options {
 public:

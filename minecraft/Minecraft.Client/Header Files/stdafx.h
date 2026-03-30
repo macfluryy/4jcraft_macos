@@ -53,10 +53,10 @@ using namespace DirectX;
 #include <assert.h>
 
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
-#include "Minecraft.World/ConsoleJavaLibs/Class.h"
+#include "java/Class.h"
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/ConsoleHelpers/PerformanceTimer.h"
 

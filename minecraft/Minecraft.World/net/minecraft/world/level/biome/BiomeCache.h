@@ -1,6 +1,6 @@
 #pragma once
 #include <mutex>
-#include "../../../../../ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 
 class BiomeCache {
 private:

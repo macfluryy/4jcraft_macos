@@ -1,6 +1,6 @@
 ﻿#include "../../Header Files/stdafx.h"
-#include "../../ConsoleJavaLibs/File.h"
-#include "../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/File.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "SharedConstants.h"
 
 const std::wstring SharedConstants::VERSION_STRING = L"1.6.4";

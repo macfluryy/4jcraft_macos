@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "LavaParticle.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/JavaMath.h"
+#include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 
 LavaParticle::LavaParticle(Level* level, double x, double y, double z)

@@ -52,8 +52,8 @@ void VillagerGolemModel::setupAnim(float time, float r, float bob, float yRot,
                                    float xRot, float scale,
                                    std::shared_ptr<Entity> entity,
                                    unsigned int uiBitmaskOverrideAnim) {
-    head->yRot = yRot / (float)(180 / PI);
-    head->xRot = xRot / (float)(180 / PI);
+    head->yRot = yRot / (float)(180 / M_PI);
+    head->xRot = xRot / (float)(180 / M_PI);
 
     leg0->xRot = (-1.5f * triangleWave(time, 13)) * r;
     leg1->xRot = (1.5f * triangleWave(time, 13)) * r;

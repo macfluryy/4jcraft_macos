@@ -1,9 +1,9 @@
 #pragma once
 #include <cstdio>
 
-#include "../../../../../../com/mojang/nbt/CompoundTag.h"
+#include "nbt/CompoundTag.h"
 #include "ZonedChunkStorage.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 
 class NbtSlotFile {
 private:

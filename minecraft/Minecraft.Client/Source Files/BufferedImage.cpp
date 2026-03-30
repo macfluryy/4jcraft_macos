@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "../net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.World/Header Files/PathHelper.h"
+#include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "../Header Files/BufferedImage.h"
 #if defined(__linux__)

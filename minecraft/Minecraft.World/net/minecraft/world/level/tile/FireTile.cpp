@@ -10,7 +10,7 @@
 #include "../../phys/AABB.h"
 
 // AP - added for Vita to set Alpha Cut out
-#include "../../../../../ConsoleJavaLibs/IntBuffer.h"
+#include "java/IntBuffer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 
 const std::wstring FireTile::TEXTURE_FIRST = L"fire_0";

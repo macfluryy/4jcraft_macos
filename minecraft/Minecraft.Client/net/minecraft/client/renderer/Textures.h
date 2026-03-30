@@ -1,6 +1,8 @@
 #pragma once
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
+class Icon;
+class Entity;
 class DynamicTexture;
 class BufferedImage;
 class HttpTexture;

@@ -2,7 +2,7 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "DripParticle.h"
 

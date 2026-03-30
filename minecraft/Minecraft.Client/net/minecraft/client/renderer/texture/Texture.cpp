@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleJavaLibs/ByteBuffer.h"
+#include "java/ByteBuffer.h"
 #include "../Rect2i.h"
 #include "TextureManager.h"
 #include "Texture.h"

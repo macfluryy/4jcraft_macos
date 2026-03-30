@@ -11,7 +11,7 @@
 #include "../player/net.minecraft.world.entity.player.h"
 #include "net.minecraft.world.entity.monster.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Slime.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../../../../../Header Files/SoundTypes.h"
@@ -87,7 +87,7 @@ void Slime::tick() {
     if (onGround && !wasOnGround) {
         int size = getSize();
         for (int i = 0; i < size * 8; i++) {
-            float dir = random->nextFloat() * PI * 2;
+            float dir = random->nextFloat() * M_PI * 2;
             float d = random->nextFloat() * 0.5f + 0.5f;
             float xd = Mth::sin(dir) * size * 0.5f * d;
             float zd = Mth::cos(dir) * size * 0.5f * d;

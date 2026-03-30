@@ -64,6 +64,9 @@ stb_dep = declare_dependency(include_directories: stb)
 
 miniaudio_dep = dependency('miniaudio')
 
+subdir('minecraft/java')
+subdir('minecraft/nbt')
+
 subdir('minecraft/4J.Render')
 subdir('minecraft/4J.Input')
 subdir('minecraft/4J.Profile')
@@ -71,3 +74,4 @@ subdir('minecraft/4J.Storage')
 subdir('minecraft/Minecraft.Assets')
 subdir('minecraft/Minecraft.World')
 subdir('minecraft/Minecraft.Client')
+

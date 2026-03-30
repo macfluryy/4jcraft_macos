@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 #include "DLCManager.h"
 #include "DLCGameRulesHeader.h"

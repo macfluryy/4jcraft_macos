@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../../../com/mojang/nbt/ListTag.h"
-#include "../../../../com/mojang/nbt/DoubleTag.h"
-#include "../../../../com/mojang/nbt/FloatTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/FloatTag.h"
 #include "../phys/Vec3.h"
 #include "../../../../ConsoleHelpers/Definitions.h"
 #include "../phys/AABB.h"
@@ -350,7 +350,7 @@ public:
     virtual void lerpMotion(double xd, double yd, double zd);
     virtual void handleEntityEvent(uint8_t eventId);
     virtual void animateHurt();
-    virtual ItemInstanceArray getEquipmentSlots();  // ItemInstance[]
+    virtual arrayWithLength<std::shared_ptr<ItemInstance>> getEquipmentSlots();  // ItemInstance[]
     virtual void setEquippedSlot(
         int slot, std::shared_ptr<ItemInstance>
                       item);  // 4J Stu - Brought forward change from 1.3 to fix

@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "PistonPieceTileEntity.h"
 #include "PistonMovingTileEntity.h"
 #include "../../net.minecraft.world.level.h"

@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "CritParticle.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 

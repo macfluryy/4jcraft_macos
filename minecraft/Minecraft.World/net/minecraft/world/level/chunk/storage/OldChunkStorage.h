@@ -1,9 +1,9 @@
 #pragma once
 #include "ChunkStorage.h"
 #include "../LevelChunk.h"
-#include "../../../../../../ConsoleJavaLibs/File.h"
-#include "../../../../../../com/mojang/nbt/CompoundTag.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "java/File.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/com.mojang.nbt.h"
 #include <cstdint>
 
 class Level;

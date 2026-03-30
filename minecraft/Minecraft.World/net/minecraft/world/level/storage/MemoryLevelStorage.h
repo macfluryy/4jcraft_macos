@@ -8,7 +8,7 @@
 #include "../net.minecraft.world.level.h"
 #include "../chunk/storage/net.minecraft.world.level.chunk.storage.h"
 #include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 
 #include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 

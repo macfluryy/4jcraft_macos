@@ -26,7 +26,7 @@ std::shared_ptr<TileEntity> BrewingStandTile::newTileEntity(Level* level) {
 bool BrewingStandTile::isCubeShaped() { return false; }
 
 void BrewingStandTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                                AABBList* boxes,
+                                std::vector<AABB>* boxes,
                                 std::shared_ptr<Entity> source) {
     setShape(7.0f / 16.0f, 0, 7.0f / 16.0f, 9.0f / 16.0f, 14.0f / 16.0f,
              9.0f / 16.0f);

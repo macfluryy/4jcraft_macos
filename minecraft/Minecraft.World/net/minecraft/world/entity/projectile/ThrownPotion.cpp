@@ -5,7 +5,7 @@
 #include "../../item/net.minecraft.world.item.h"
 #include "../../effect/net.minecraft.world.effect.h"
 #include "../../../SharedConstants.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "ThrownPotion.h"
 
 const double ThrownPotion::SPLASH_RANGE = 4.0;

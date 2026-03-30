@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "../../../../../net/minecraft/client/User.h"
 #include "../../../../../net/minecraft/server/MinecraftServer.h"
 #include "../../UI.h"
@@ -348,7 +348,7 @@ void UIScene_MainMenu::customDrawSplash(IggyCustomDrawCallbackRegion* region) {
 
     glRotatef(-17, 0, 0, 1);
     float sss = 1.8f - Mth::abs(Mth::sin(System::currentTimeMillis() % 1000 /
-                                         1000.0f * PI * 2) *
+                                         1000.0f * M_PI * 2) *
                                 0.1f);
     sss *= (m_fScreenWidth / m_fRawWidth);
 

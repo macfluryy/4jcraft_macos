@@ -8,7 +8,7 @@
 #include "../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
 #include "../../phys/net.minecraft.world.phys.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "EnderMan.h"
 

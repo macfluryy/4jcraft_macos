@@ -1,6 +1,6 @@
 #pragma once
 #include "../../../../../../Header Files/compression.h"
-#include "../../../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 class FileEntry;
 class ConsoleSaveFile;

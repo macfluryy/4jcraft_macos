@@ -110,7 +110,7 @@ void PauseScreen::render(int xm, int ym, float a) {
     bool isSaving = false;  //! minecraft->level->pauseSave(saveStep++);
     if (isSaving || visibleTime < 20) {
         float col = ((visibleTime % 10) + a) / 10.0f;
-        col = Mth::sin(col * PI * 2) * 0.2f + 0.8f;
+        col = Mth::sin(col * M_PI * 2) * 0.2f + 0.8f;
         int br = (int)(255 * col);
 
         drawString(font, L"Saving level..", 8, height - 16,

@@ -1120,8 +1120,8 @@ void EntityHorse::travel(float xa, float ya) {
         hasImpulse = true;
 
         if (ya > 0) {
-            float sin = Mth::sin(yRot * PI / 180);
-            float cos = Mth::cos(yRot * PI / 180);
+            float sin = Mth::sin(yRot * M_PI / 180);
+            float cos = Mth::cos(yRot * M_PI / 180);
 
             xd += -0.4f * sin * playerJumpPendingScale;
             zd += 0.4f * cos * playerJumpPendingScale;
@@ -1465,8 +1465,8 @@ void EntityHorse::positionRider() {
     Animal::positionRider();
 
     if (standAnimO > 0) {
-        float sin = Mth::sin(yBodyRot * PI / 180);
-        float cos = Mth::cos(yBodyRot * PI / 180);
+        float sin = Mth::sin(yBodyRot * M_PI / 180);
+        float cos = Mth::cos(yBodyRot * M_PI / 180);
         float dist = .7f * standAnimO;
         float height = .15f * standAnimO;
 

@@ -8,10 +8,10 @@
 #include "../../renderer/Textures.h"
 #include "../../../stats/StatsCounter.h"
 #include "../../renderer/entity/ItemRenderer.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 AchievementScreen::AchievementScreen(StatsCounter* statsCounter) {
     // 4J - added initialisers

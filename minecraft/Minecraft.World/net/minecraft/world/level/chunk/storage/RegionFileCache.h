@@ -1,7 +1,7 @@
 #pragma once
 #include "RegionFile.h"
-#include "../../../../../../ConsoleJavaLibs/Reference.h"
-#include "../../../../../../ConsoleJavaLibs/File.h"
+#include "java/Reference.h"
+#include "java/File.h"
 
 class RegionFileCache {
     friend class ConsoleSaveFileOriginal;

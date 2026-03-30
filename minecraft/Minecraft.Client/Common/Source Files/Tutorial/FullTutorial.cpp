@@ -535,7 +535,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     /*
      *
      *
-     * PISTON - SELF-REPAIRING BRIDGE
+     * M_PISTON - SELF-REPAIRING BRIDGE
      *
      */
     if (app.getGameRuleDefinitions() != nullptr) {
@@ -555,7 +555,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     /*
      *
      *
-     * PISTON - PISTON AND REDSTONE CIRCUITS
+     * M_PISTON - PISTON AND REDSTONE CIRCUITS
      *
      */
     if (app.getGameRuleDefinitions() != nullptr) {

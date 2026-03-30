@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../phys/net.minecraft.world.phys.h"
 #include "../../level/net.minecraft.world.level.h"
@@ -135,12 +135,12 @@ float Sheep::getHeadEatAngleScale(float a) {
     if (eatAnimationTick > 4 && eatAnimationTick <= (EAT_ANIMATION_TICKS - 4)) {
         float scale = ((float)(eatAnimationTick - 4) - a) /
                       (float)(EAT_ANIMATION_TICKS - 8);
-        return PI * .20f + PI * .07f * Mth::sin(scale * 28.7f);
+        return M_PI * .20f + M_PI * .07f * Mth::sin(scale * 28.7f);
     }
     if (eatAnimationTick > 0) {
-        return PI * .20f;
+        return M_PI * .20f;
     }
-    return ((xRot / (180.0f / PI)));
+    return ((xRot / (180.0f / M_PI)));
 }
 
 bool Sheep::mobInteract(std::shared_ptr<Player> player) {

@@ -1,11 +1,11 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../util/ProgressListener.h"
 #include "../chunk/storage/net.minecraft.world.level.chunk.storage.h"
 #include "../chunk/net.minecraft.world.level.chunk.h"
 #include "LevelSummary.h"
 #include "McRegionLevelStorage.h"
-#include "../../../../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "LevelData.h"
 #include "McRegionLevelStorageSource.h"
 

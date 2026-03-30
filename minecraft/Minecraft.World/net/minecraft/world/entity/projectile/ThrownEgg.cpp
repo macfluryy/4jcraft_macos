@@ -3,7 +3,7 @@
 #include "../../phys/net.minecraft.world.phys.h"
 #include "../animal/net.minecraft.world.entity.animal.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "ThrownEgg.h"
 #include "../MobCategory.h"
 

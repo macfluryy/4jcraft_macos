@@ -199,8 +199,8 @@ void EnderDragon::aiStep() {
         // previously saved at point of hes death
         setHealth(getHealth());
 
-        float flap = Mth::cos(flapTime * PI * 2);
-        float oldFlap = Mth::cos(oFlapTime * PI * 2);
+        float flap = Mth::cos(flapTime * M_PI * 2);
+        float oldFlap = Mth::cos(oFlapTime * M_PI * 2);
 
         if (oldFlap <= -0.3f && flap >= -0.3f) {
             level->playLocalSound(x, y, z, eSoundType_MOB_ENDERDRAGON_MOVE, 1,
@@ -316,7 +316,7 @@ void EnderDragon::aiStep() {
             // d < 3; ++d)
             {
                 Vec3 vN = Vec3{v.x, v.y, v.z}.normalize();
-                vN.yRot(-PI / 4);
+                vN.yRot(-M_PI  / 4);
 
                 for (unsigned int i = 0; i < 8; ++i) {
                     if (getSynchedAction() == e_EnderdragonAction_Landing) {
@@ -363,7 +363,7 @@ void EnderDragon::aiStep() {
                                                -vN.z * xzVelocity * j);
                         }
                     }
-                    vN.yRot(PI / (2 * 8));
+                    vN.yRot(M_PI / (2 * 8));
                 }
             }
         } else if (getSynchedAction() ==
@@ -481,11 +481,11 @@ void EnderDragon::aiStep() {
                 Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
                                .normalize();
 
-                Vec3 dir = Vec3(sin(yRot * PI / 180), 0, -cos(yRot * PI / 180))
+                Vec3 dir = Vec3(sin(yRot * M_PI / 180), 0, -cos(yRot * M_PI / 180))
                                .normalize();
 
                 float dot = (float)dir.dot(aim);
-                float angleDegs = acos(dot) * 180 / PI;
+                float angleDegs = acos(dot) * 180 / M_PI;
                 angleDegs = angleDegs + 0.5f;
 
                 if (angleDegs < 0 || angleDegs > 10) {
@@ -495,7 +495,7 @@ void EnderDragon::aiStep() {
                     // 2);
                     double zdd = attackTarget->z - head->z;
 
-                    double yRotT = (180) - atan2(xdd, zdd) * 180 / PI;
+                    double yRotT = (180) - atan2(xdd, zdd) * 180 / M_PI;
                     double yRotD = Mth::wrapDegrees(yRotT - yRot);
 
                     if (yRotD > 50) yRotD = 50;
@@ -554,7 +554,7 @@ void EnderDragon::aiStep() {
             while (yRot < -180) yRot += 180 * 2;
             while (yRot >= 180) yRot -= 180 * 2;
 
-            double yRotT = (180) - atan2(xdd, zdd) * 180 / PI;
+            double yRotT = (180) - atan2(xdd, zdd) * 180 / M_PI;
             double yRotD = yRotT - yRot;
             while (yRotD < -180) yRotD += 180 * 2;
             while (yRotD >= 180) yRotD -= 180 * 2;
@@ -565,7 +565,7 @@ void EnderDragon::aiStep() {
             Vec3 aim =
                 Vec3((xTarget - x), (yTarget - y), (zTarget - z)).normalize();
 
-            Vec3 dir = Vec3(sin(yRot * PI / 180), yd, -cos(yRot * PI / 180))
+            Vec3 dir = Vec3(sin(yRot * M_PI / 180), yd, -cos(yRot * M_PI / 180))
                            .normalize();
             float dot = (float)(dir.dot(aim) + 0.5f) / 1.5f;
             if (dot < 0) dot = 0;
@@ -623,8 +623,8 @@ void EnderDragon::aiStep() {
     // getLatencyPos(latencyPosB, 10, 1);
 
     // float tilt = (float) (latencyPosA[1] - latencyPosB[1]) * 10 / 180.0f *
-    // PI;
-    float tilt = (float)getTilt(1) / 180.0f * PI;
+    // M_PI;
+    float tilt = (float)getTilt(1) / 180.0f * M_PI;
     float ccTilt = cos(tilt);
 
     // 4J Stu - ssTilt was negative sin(tilt), but this causes the bounding
@@ -632,7 +632,7 @@ void EnderDragon::aiStep() {
     // when tilting forward, and down when tilting backwards
     float ssTilt = sin(tilt);
 
-    float rot1 = yRot * PI / 180;
+    float rot1 = yRot * M_PI / 180;
     float ss1 = sin(rot1);
     float cc1 = cos(rot1);
 
@@ -667,8 +667,8 @@ void EnderDragon::aiStep() {
 
         double yRotDiff = getHeadYRotDiff(1);
 
-        float ss = sin((yRot + yRotDiff) * PI / 180 - yRotA * 0.01f);
-        float cc = cos((yRot + yRotDiff) * PI / 180 - yRotA * 0.01f);
+        float ss = sin((yRot + yRotDiff) * M_PI / 180 - yRotA * 0.01f);
+        float cc = cos((yRot + yRotDiff) * M_PI / 180 - yRotA * 0.01f);
         head->tick();
         neck->tick();
         double yOffset = getHeadYOffset(1);  // (p0[1] - p1[1]) * 1
@@ -715,7 +715,7 @@ void EnderDragon::aiStep() {
         doubleArray p0 = doubleArray(p0components, 3);
         getLatencyPos(p0, 12 + i * 2, 1);
 
-        float rot = yRot * PI / 180 + rotWrap(p0[0] - p1[0]) * PI / 180 * (1);
+        float rot = yRot * M_PI / 180 + rotWrap(p0[0] - p1[0]) * M_PI / 180 * (1);
         float ss = sin(rot);
         float cc = cos(rot);
 
@@ -739,11 +739,11 @@ void EnderDragon::aiStep() {
                 Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
                                .normalize();
 
-                Vec3 dir = Vec3(sin(yRot * PI / 180), 0, -cos(yRot * PI / 180))
+                Vec3 dir = Vec3(sin(yRot * M_PI / 180), 0, -cos(yRot * M_PI / 180))
                                .normalize();
 
                 float dot = (float)dir.dot(aim);
-                float angleDegs = acos(dot) * 180 / PI;
+                float angleDegs = acos(dot) * 180 / M_PI;
                 angleDegs = angleDegs + 0.5f;
 
                 if (m_fireballCharge >= 20 &&
@@ -1116,7 +1116,7 @@ bool EnderDragon::hurt(std::shared_ptr<MultiEntityMobPart> MultiEntityMobPart,
         damage = damage / 4 + 1;
     }
 
-    // float rot1 = yRot * PI / 180;
+    // float rot1 = yRot * M_PI / 180;
     // float ss1 = sin(rot1);
     // float cc1 = cos(rot1);
 
@@ -1529,18 +1529,18 @@ int EnderDragon::findClosestNode() {
             int yAdjustment = 5;
             multiplier = i;
             if (i < 12) {
-                nodeX = 60 * Mth::cos(2 * (-PI + (PI / 12) * multiplier));
-                nodeZ = 60 * Mth::sin(2 * (-PI + (PI / 12) * multiplier));
+                nodeX = 60 * Mth::cos(2 * (-M_PI  + (M_PI / 12) * multiplier));
+                nodeZ = 60 * Mth::sin(2 * (-M_PI  + (M_PI / 12) * multiplier));
             } else if (i < 20) {
                 multiplier -= 12;
-                nodeX = 40 * Mth::cos(2 * (-PI + (PI / 8) * multiplier));
-                nodeZ = 40 * Mth::sin(2 * (-PI + (PI / 8) * multiplier));
+                nodeX = 40 * Mth::cos(2 * (-M_PI  + (M_PI / 8) * multiplier));
+                nodeZ = 40 * Mth::sin(2 * (-M_PI  + (M_PI / 8) * multiplier));
                 yAdjustment +=
                     10;  // Make the target well above the top of the towers
             } else {
                 multiplier -= 20;
-                nodeX = 20 * Mth::cos(2 * (-PI + (PI / 4) * multiplier));
-                nodeZ = 20 * Mth::sin(2 * (-PI + (PI / 4) * multiplier));
+                nodeX = 20 * Mth::cos(2 * (-M_PI  + (M_PI / 4) * multiplier));
+                nodeZ = 20 * Mth::sin(2 * (-M_PI  + (M_PI / 4) * multiplier));
             }
             // Fix for #77202 - TU9: Content: Gameplay: The Ender Dragon
             // sometimes flies through terrain Add minimum height

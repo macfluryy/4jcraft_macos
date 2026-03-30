@@ -8,7 +8,7 @@ private:
     int name;
     std::wstring stringName;
     int size;
-    ItemInstanceArray* items;
+    arrayWithLength<std::shared_ptr<ItemInstance>>* items;
     std::vector<net_minecraft_world::ContainerListener*>* listeners;
     bool customName;
 

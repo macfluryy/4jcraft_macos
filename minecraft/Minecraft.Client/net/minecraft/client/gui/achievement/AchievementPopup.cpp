@@ -4,7 +4,7 @@
 #include "../Font.h"
 #include "../../renderer/Textures.h"
 #include "../../Lighting.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"

@@ -1,9 +1,9 @@
 #pragma once
 #include <mutex>
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/RandomLevelSource.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 

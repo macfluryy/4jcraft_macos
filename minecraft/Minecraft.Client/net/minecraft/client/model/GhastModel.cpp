@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "GhastModel.h"
 #include "geom/ModelPart.h"

@@ -3,7 +3,7 @@
 #include "TileEntity.h"
 #include "../../../Container.h"
 
-#include "../../../../../../com/mojang/nbt/ListTag.h"
+#include "nbt/ListTag.h"
 
 class Player;
 class CompoundTag;
@@ -26,7 +26,7 @@ public:
     virtual ~ChestTileEntity();
 
 private:
-    ItemInstanceArray* items;
+    arrayWithLength<std::shared_ptr<ItemInstance>>* items;
 
 public:
     bool isBonusChest;  // 4J added

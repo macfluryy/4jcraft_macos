@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "../DLC/DLCPack.h"
 #include "../DLC/DLCLocalisationFile.h"

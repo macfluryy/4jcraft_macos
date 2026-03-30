@@ -1,6 +1,6 @@
 #include "../../../../../../Header Files/stdafx.h"
 #include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../../util/Mth.h"
 
 const std::wstring MineShaftFeature::OPTION_CHANCE = L"chance";

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 class FileEntry;
 class ConsoleSaveFile;
 class ProgressRenderer;

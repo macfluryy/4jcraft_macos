@@ -7,7 +7,7 @@
 #include "../../net.minecraft.world.h"
 
 // AP - included for PSVita Alpha cut out optimisation
-#include "../../../../../ConsoleJavaLibs/IntBuffer.h"
+#include "java/IntBuffer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 
 GrassTile::GrassTile(int id) : Tile(id, Material::grass) {

@@ -1,8 +1,8 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "LevelData.h"
 #include "LevelSummary.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "DirectoryLevelStorage.h"
 #include "DirectoryLevelStorageSource.h"
 

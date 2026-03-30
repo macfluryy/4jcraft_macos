@@ -19,7 +19,7 @@ public:
     virtual int getRenderShape();
     virtual void updateDefaultShape();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          AABBList* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
     static bool hasEye(int data);
     virtual int getResource(int data, Random* random, int playerBonusLevel);
     virtual void setPlacedBy(Level* level, int x, int y, int z,

@@ -414,7 +414,7 @@ public:
     virtual std::shared_ptr<ItemInstance> getCarriedItem();
     virtual void setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item);
     virtual bool isInvisibleTo(std::shared_ptr<Player> player);
-    virtual ItemInstanceArray getEquipmentSlots();
+    virtual arrayWithLength<std::shared_ptr<ItemInstance>> getEquipmentSlots();
     virtual bool isCapeHidden();
     virtual bool isPushedByWater();
     virtual Scoreboard* getScoreboard();

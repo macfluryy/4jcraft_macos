@@ -21,7 +21,7 @@ public:
     virtual bool shouldRenderFace(LevelSource* level, int x, int y, int z,
                                   int face);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          AABBList* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual bool isCubeShaped();
     virtual int getResourceCount(Random* random);

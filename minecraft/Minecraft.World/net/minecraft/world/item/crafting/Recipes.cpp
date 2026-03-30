@@ -22,7 +22,7 @@ void Recipes::staticCtor() { Recipes::instance = new Recipes(); }
 
 void Recipes::_init() {
     // 4J Jev: instance = new Recipes();
-    recipies = new RecipyList();
+    recipies = new std::vector<Recipy*>();
 }
 
 Recipes::Recipes() {
@@ -1178,7 +1178,7 @@ std::shared_ptr<ItemInstance> Recipes::getItemForRecipe(Recipy* r) {
 
 // 4J-PB - build the required ingredients for recipes
 void Recipes::buildRecipeIngredientsArray(void) {
-    // RecipyList *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
 
     int iRecipeC = (int)recipies->size();
 

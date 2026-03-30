@@ -11,7 +11,7 @@
 #include "../../damageSource/net.minecraft.world.damagesource.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Minecart.h"
 #include <cstddef>
 #include <optional>
@@ -295,7 +295,7 @@ void Minecart::tick() {
         double xDiff = xo - x;
         double zDiff = zo - z;
         if (xDiff * xDiff + zDiff * zDiff > 0.001) {
-            yRot = (float)(atan2(zDiff, xDiff) * 180 / PI);
+            yRot = (float)(atan2(zDiff, xDiff) * 180 / M_PI);
             if (flipped) yRot += 180;
         }
 
@@ -417,8 +417,8 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
         double forward = living->yya;
 
         if (forward > 0) {
-            double riderXd = -sin(living->yRot * PI / 180);
-            double riderZd = cos(living->yRot * PI / 180);
+            double riderXd = -sin(living->yRot * M_PI / 180);
+            double riderZd = cos(living->yRot * M_PI / 180);
 
             double ownDist = xd * xd + zd * zd;
 
@@ -736,7 +736,7 @@ void Minecart::push(std::shared_ptr<Entity> e) {
             Vec3 dir(xo, 0, zo);
             dir = dir.normalize();
 
-            Vec3 facing(cos(yRot * PI / 180), 0, sin(yRot * PI / 180));
+            Vec3 facing(cos(yRot * M_PI / 180), 0, sin(yRot * M_PI / 180));
             facing = facing.normalize();
 
             double dot = abs(dir.dot(facing));

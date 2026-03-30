@@ -1,7 +1,7 @@
 #include "../../../../Header Files/stdafx.h"
 #include <iostream>
 #include "../../../../ConsoleHelpers/ArrayWithLength.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "RemoveEntitiesPacket.h"
 

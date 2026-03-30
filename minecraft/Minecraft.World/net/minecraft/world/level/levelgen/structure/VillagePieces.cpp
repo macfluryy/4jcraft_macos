@@ -12,7 +12,7 @@
 #include "VillagePieces.h"
 #include "VillageFeature.h"
 #include "../../../../Direction.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../biome/BiomeSource.h"
 
 WeighedTreasureArray VillagePieces::Smithy::treasureItems;

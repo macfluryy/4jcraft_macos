@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../../ConsoleJavaLibs/Class.h"
+#include "java/Class.h"
 
 class CompoundTag;
 

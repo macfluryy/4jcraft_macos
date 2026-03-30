@@ -137,7 +137,7 @@ void Bat::newServerAiStep() {
         yd = yd + (signum(dy) * .7f - yd) * .1f;
         zd = zd + (signum(dz) * .5f - zd) * .1f;
 
-        float yRotD = (float)(atan2(zd, xd) * 180 / PI) - 90;
+        float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
         float rotDiff = Mth::wrapDegrees(yRotD - yRot);
         yya = .5f;
         yRot += rotDiff;

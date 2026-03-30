@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_map>
 
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
 class ArchiveFile {

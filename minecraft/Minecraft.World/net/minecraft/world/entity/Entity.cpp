@@ -1,5 +1,5 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../item/net.minecraft.world.item.h"
 #include "../item/enchantment/net.minecraft.world.item.enchantment.h"
 #include "../level/net.minecraft.world.level.h"
@@ -618,7 +618,7 @@ void Entity::outOfWorld() { remove(); }
 
 bool Entity::isFree(float xa, float ya, float za, float grow) {
     AABB box = bb.grow(grow, grow, grow).move(xa, ya, za);
-    AABBList* aABBs = level->getCubes(shared_from_this(), &box);
+    std::vector<AABB>* aABBs = level->getCubes(shared_from_this(), &box);
     if (!aABBs->empty()) return false;
     if (level->containsAnyLiquid(&box)) return false;
     return true;
@@ -626,7 +626,7 @@ bool Entity::isFree(float xa, float ya, float za, float grow) {
 
 bool Entity::isFree(double xa, double ya, double za) {
     AABB box = bb.move(xa, ya, za);
-    AABBList* aABBs = level->getCubes(shared_from_this(), &box);
+    std::vector<AABB>* aABBs = level->getCubes(shared_from_this(), &box);
     if (!aABBs->empty()) return false;
     if (level->containsAnyLiquid(&box)) return false;
     return true;
@@ -717,7 +717,7 @@ void Entity::move(double xa, double ya, double za,
     }
 
     AABB expanded = bb.expand(xa, ya, za);
-    AABBList* aABBs =
+    std::vector<AABB>* aABBs =
         level->getCubes(shared_from_this(), &expanded, noEntityCubes, true);
 
     // LAND FIRST, then x and z
@@ -1066,8 +1066,8 @@ void Entity::moveRelative(float xa, float za, float speed) {
     xa *= dist;
     za *= dist;
 
-    float sinVar = Mth::sin(yRot * PI / 180);
-    float cosVar = Mth::cos(yRot * PI / 180);
+    float sinVar = Mth::sin(yRot * M_PI / 180);
+    float cosVar = Mth::cos(yRot * M_PI / 180);
 
     xd += xa * cosVar - za * sinVar;
     zd += za * cosVar + xa * sinVar;
@@ -1521,7 +1521,7 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
     // intersect the geometry they land in slightly.
     if (GetType() != eTYPE_ARROW) {
         AABB shrunk = bb.shrink(1 / 32.0, 0.0, 1 / 32.0);
-        AABBList* collisions = level->getCubes(shared_from_this(), &shrunk);
+        std::vector<AABB>* collisions = level->getCubes(shared_from_this(), &shrunk);
         if (!collisions->empty()) {
             double yTop = 0;
             auto itEnd = collisions->end();
@@ -1569,9 +1569,9 @@ void Entity::handleEntityEvent(uint8_t eventId) {}
 
 void Entity::animateHurt() {}
 
-ItemInstanceArray Entity::getEquipmentSlots()  // ItemInstance[]
+arrayWithLength<std::shared_ptr<ItemInstance>> Entity::getEquipmentSlots()  // ItemInstance[]
 {
-    return ItemInstanceArray();  // Default ctor creates nullptr internal array
+    return arrayWithLength<std::shared_ptr<ItemInstance>>();  // Default ctor creates nullptr internal array
 }
 
 // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer

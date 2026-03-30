@@ -1,7 +1,7 @@
 #include "../../../Header Files/stdafx.h"
 #include "Language.h"
-#include "../../../ConsoleJavaLibs/File.h"
-#include "../../../ConsoleJavaLibs/InputOutputStream/FileInputStream.h"
+#include "java/File.h"
+#include "java/InputOutputStream/FileInputStream.h"
 
 // 4J - TODO - properly implement
 // 4jcraft: done!

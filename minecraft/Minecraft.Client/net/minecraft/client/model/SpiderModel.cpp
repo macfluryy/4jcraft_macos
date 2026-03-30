@@ -89,10 +89,10 @@ void SpiderModel::setupAnim(float time, float r, float bob, float yRot,
                             float xRot, float scale,
                             std::shared_ptr<Entity> entity,
                             unsigned int uiBitmaskOverrideAnim) {
-    head->yRot = yRot / (float)(180 / PI);
-    head->xRot = xRot / (float)(180 / PI);
+    head->yRot = yRot / (float)(180 / M_PI);
+    head->xRot = xRot / (float)(180 / M_PI);
 
-    float sr = (float)PI / 4.0f;
+    float sr = (float)M_PI / 4.0f;
     leg0->zRot = -sr;
     leg1->zRot = sr;
 
@@ -105,8 +105,8 @@ void SpiderModel::setupAnim(float time, float r, float bob, float yRot,
     leg6->zRot = -sr;
     leg7->zRot = sr;
 
-    float ro = -(float)PI / 2.0f * 0;
-    float ur = (float)PI / 8.0f;
+    float ro = -(float)M_PI / 2.0f * 0;
+    float ur = (float)M_PI / 8.0f;
     leg0->yRot = +ur * 2.0f + ro;
     leg1->yRot = -ur * 2.0f - ro;
     leg2->yRot = +ur * 1.0f + ro;
@@ -117,22 +117,22 @@ void SpiderModel::setupAnim(float time, float r, float bob, float yRot,
     leg7->yRot = +ur * 2.0f - ro;
 
     float c0 =
-        -((float)Mth::cos(time * 0.6662f * 2 + PI * 2 * 0 / 4.0f) * 0.4f) * r;
+        -((float)Mth::cos(time * 0.6662f * 2 + M_PI * 2 * 0 / 4.0f) * 0.4f) * r;
     float c1 =
-        -((float)Mth::cos(time * 0.6662f * 2 + PI * 2 * 2 / 4.0f) * 0.4f) * r;
+        -((float)Mth::cos(time * 0.6662f * 2 + M_PI * 2 * 2 / 4.0f) * 0.4f) * r;
     float c2 =
-        -((float)Mth::cos(time * 0.6662f * 2 + PI * 2 * 1 / 4.0f) * 0.4f) * r;
+        -((float)Mth::cos(time * 0.6662f * 2 + M_PI * 2 * 1 / 4.0f) * 0.4f) * r;
     float c3 =
-        -((float)Mth::cos(time * 0.6662f * 2 + PI * 2 * 3 / 4.0f) * 0.4f) * r;
+        -((float)Mth::cos(time * 0.6662f * 2 + M_PI * 2 * 3 / 4.0f) * 0.4f) * r;
 
     float s0 =
-        abs((float)Mth::sin(time * 0.6662f + PI * 2 * 0 / 4.0f) * 0.4f) * r;
+        abs((float)Mth::sin(time * 0.6662f + M_PI * 2 * 0 / 4.0f) * 0.4f) * r;
     float s1 =
-        abs((float)Mth::sin(time * 0.6662f + PI * 2 * 2 / 4.0f) * 0.4f) * r;
+        abs((float)Mth::sin(time * 0.6662f + M_PI * 2 * 2 / 4.0f) * 0.4f) * r;
     float s2 =
-        abs((float)Mth::sin(time * 0.6662f + PI * 2 * 1 / 4.0f) * 0.4f) * r;
+        abs((float)Mth::sin(time * 0.6662f + M_PI * 2 * 1 / 4.0f) * 0.4f) * r;
     float s3 =
-        abs((float)Mth::sin(time * 0.6662f + PI * 2 * 3 / 4.0f) * 0.4f) * r;
+        abs((float)Mth::sin(time * 0.6662f + M_PI * 2 * 3 / 4.0f) * 0.4f) * r;
 
     leg0->yRot += +c0;
     leg1->yRot += -c0;

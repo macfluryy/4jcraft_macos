@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "../../entity/net.minecraft.world.entity.h"
 #include "../net.minecraft.world.level.h"
 #include "../dimension/net.minecraft.world.level.dimension.h"

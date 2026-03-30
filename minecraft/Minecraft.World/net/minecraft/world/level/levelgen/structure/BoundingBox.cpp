@@ -1,7 +1,7 @@
 #include "../../../../../../Header Files/stdafx.h"
 #include "BoundingBox.h"
 #include "../../../../Direction.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 BoundingBox::BoundingBox() {
     // 4J added initialisers

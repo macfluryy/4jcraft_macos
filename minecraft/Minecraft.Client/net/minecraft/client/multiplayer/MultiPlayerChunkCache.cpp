@@ -3,7 +3,7 @@
 #include "../../server/level/ServerChunkCache.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/ConsoleJavaLibs/Arrays.h"
+#include "java/Arrays.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "../../server/MinecraftServer.h"
 #include "../../server/level/ServerLevel.h"

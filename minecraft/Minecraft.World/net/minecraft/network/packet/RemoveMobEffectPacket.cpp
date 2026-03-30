@@ -1,6 +1,6 @@
 #include "../../../../Header Files/stdafx.h"
 #include "../../world/effect/net.minecraft.world.effect.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "RemoveMobEffectPacket.h"
 

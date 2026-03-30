@@ -5,7 +5,7 @@
 #include "PlayerConnection.h"
 #include "../level/ServerPlayer.h"
 #include "Minecraft.World/net/minecraft/network/net.minecraft.network.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "../../client/multiplayer/MultiPlayerLevel.h"
 

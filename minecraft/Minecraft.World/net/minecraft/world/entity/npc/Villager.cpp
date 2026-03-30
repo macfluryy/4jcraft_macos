@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
 #include "../ai/goal/net.minecraft.world.entity.ai.goal.h"
 #include "../ai/navigation/net.minecraft.world.entity.ai.navigation.h"

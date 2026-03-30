@@ -27,13 +27,13 @@
 #include "Minecraft.World/net/minecraft/world/level/biome/net.minecraft.world.level.biome.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
+#include "java/System.h"
+#include "java/FloatBuffer.h"
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseLightStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/CompressedTileStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseDataStorage.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
 #include "Minecraft.World/net/minecraft/util/SmoothFloat.h"
@@ -407,7 +407,7 @@ void GameRenderer::bobHurt(float a) {
 
     if (hurt < 0) return;
     hurt /= player->hurtDuration;
-    hurt = (float)Mth::sin(hurt * hurt * hurt * hurt * PI);
+    hurt = (float)Mth::sin(hurt * hurt * hurt * hurt * M_PI);
 
     float rr = player->hurtDir;
 
@@ -426,10 +426,10 @@ void GameRenderer::bobView(float a) {
     float b = -(player->walkDist + wda * a);
     float bob = player->oBob + (player->bob - player->oBob) * a;
     float tilt = player->oTilt + (player->tilt - player->oTilt) * a;
-    glTranslatef((float)Mth::sin(b * PI) * bob * 0.5f,
-                 -(float)abs(Mth::cos(b * PI) * bob), 0);
-    glRotatef((float)Mth::sin(b * PI) * bob * 3, 0, 0, 1);
-    glRotatef((float)abs(Mth::cos(b * PI - 0.2f) * bob) * 5, 1, 0, 0);
+    glTranslatef((float)Mth::sin(b * M_PI) * bob * 0.5f,
+                 -(float)abs(Mth::cos(b * M_PI) * bob), 0);
+    glRotatef((float)Mth::sin(b * M_PI) * bob * 3, 0, 0, 1);
+    glRotatef((float)abs(Mth::cos(b * M_PI - 0.2f) * bob) * 5, 1, 0, 0);
     glRotatef((float)tilt, 1, 0, 0);
 }
 
@@ -500,11 +500,11 @@ void GameRenderer::moveCameraToPlayer(float a) {
                 xRot += 180.0f;
             }
 
-            double xd = -Mth::sin(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI) *
+            double xd = -Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI) *
                         cameraDist;
-            double zd = Mth::cos(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI) *
+            double zd = Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI) *
                         cameraDist;
-            double yd = -Mth::sin(xRot / 180 * PI) * cameraDist;
+            double yd = -Mth::sin(xRot / 180 * M_PI) * cameraDist;
 
             for (int i = 0; i < 8; i++) {
                 float xo = (float)((i & 1) * 2 - 1);
@@ -961,7 +961,7 @@ float GameRenderer::getNightVisionScale(std::shared_ptr<Player> player,
         return 1.0f;
     } else {
         float flash = std::max(0.0f, (float)duration - a);
-        return .7f + Mth::sin(flash * PI * .05f) *
+        return .7f + Mth::sin(flash * M_PI * .05f) *
                          .3f;  // was:  .7 + sin(flash*pi*0.2) * .3
     }
 }

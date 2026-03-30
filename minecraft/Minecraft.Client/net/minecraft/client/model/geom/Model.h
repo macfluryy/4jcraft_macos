@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "../../../../../Header Files/SkinBox.h"
 class Mob;
 class ModelPart;

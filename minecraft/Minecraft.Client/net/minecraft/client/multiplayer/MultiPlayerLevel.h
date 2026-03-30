@@ -3,7 +3,7 @@
 #include "Minecraft.World/ConsoleHelpers/HashExtension.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 
 class ClientConnection;
 class MultiPlayerChunkCache;

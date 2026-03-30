@@ -6,7 +6,7 @@
 #include "../../../level/net.minecraft.world.level.h"
 #include "../../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../../../../ConsoleJavaLibs/Arrays.h"
+#include "java/Arrays.h"
 #include "OcelotSitOnTileGoal.h"
 #include <limits>
 

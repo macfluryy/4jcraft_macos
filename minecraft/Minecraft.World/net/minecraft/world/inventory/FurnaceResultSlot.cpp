@@ -5,7 +5,7 @@
 #include "../item/crafting/net.minecraft.world.item.crafting.h"
 #include "../level/net.minecraft.world.level.h"
 #include "../item/net.minecraft.world.item.h"
-#include "../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "FurnaceResultSlot.h"
 
 FurnaceResultSlot::FurnaceResultSlot(std::shared_ptr<Player> player,

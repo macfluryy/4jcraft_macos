@@ -1,7 +1,7 @@
 #include "../../../../Header Files/stdafx.h"
 #include <exception>
 #include <iostream>
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "../../world/entity/net.minecraft.world.entity.h"
 #include "../../world/entity/global/net.minecraft.world.entity.global.h"
 #include "PacketListener.h"

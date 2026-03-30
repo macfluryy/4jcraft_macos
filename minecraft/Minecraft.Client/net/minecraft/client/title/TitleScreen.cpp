@@ -7,10 +7,10 @@
 #include "../renderer/Textures.h"
 #include "../Options.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/System.h"
+#include "java/Random.h"
 #include <GL/gl.h>
 #include "TitleScreen.h"
 
@@ -392,7 +392,7 @@ void TitleScreen::render(int xm, int ym, float a) {
 
     glRotatef(-20, 0, 0, 1);
     float sss = 1.8f - Mth::abs(Mth::sin(System::currentTimeMillis() % 1000 /
-                                         1000.0f * PI * 2) *
+                                         1000.0f * M_PI * 2) *
                                 0.1f);
 
     sss = sss * 100 / (font->width(splash) + 8 * 4);

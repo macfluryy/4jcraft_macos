@@ -6,7 +6,7 @@
 #include "../Tesselator.h"
 #include "EntityRenderDispatcher.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 ResourceLocation ExperienceOrbRenderer::XP_ORB_LOCATION =
     ResourceLocation(TN_ITEM_EXPERIENCE_ORB);
@@ -47,9 +47,9 @@ void ExperienceOrbRenderer::render(std::shared_ptr<Entity> _orb, double x,
     }
     float br = 255.0f;
     float rr = (orb->tickCount + a) / 2;
-    int rc = (int)((Mth::sin(rr + 0 * PI * 2 / 3) + 1) * 0.5f * br);
+    int rc = (int)((Mth::sin(rr + 0 * M_PI * 2 / 3) + 1) * 0.5f * br);
     int gc = (int)(br);
-    int bc = (int)((Mth::sin(rr + 2 * PI * 2 / 3) + 1) * 0.1f * br);
+    int bc = (int)((Mth::sin(rr + 2 * M_PI * 2 / 3) + 1) * 0.1f * br);
     int col = rc << 16 | gc << 8 | bc;
     glRotatef(180 - entityRenderDispatcher->playerRotY, 0, 1, 0);
     glRotatef(-entityRenderDispatcher->playerRotX, 1, 0, 0);

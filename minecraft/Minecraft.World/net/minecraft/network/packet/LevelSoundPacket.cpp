@@ -1,5 +1,5 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "net.minecraft.network.packet.h"
 #include "LevelSoundPacket.h"
 #include <limits>
@@ -26,7 +26,7 @@ LevelSoundPacket::LevelSoundPacket(int sound, double x, double y, double z,
     this->volume = volume;
     // 4J-PB - Let's make the pitch a float so it doesn't get mangled and make
     // the noteblock people unhappy
-    // this->pitch = (int) (pitch * PITCH_ACCURACY);
+    // this->pitch = (int) (pitch * M_PITCH_ACCURACY);
     this->pitch = pitch;
 
     // 	if (this->pitch < 0) this->pitch = 0;
@@ -64,7 +64,7 @@ double LevelSoundPacket::getZ() { return z / LOCATION_ACCURACY; }
 float LevelSoundPacket::getVolume() { return volume; }
 
 float LevelSoundPacket::getPitch() {
-    // return pitch / PITCH_ACCURACY;
+    // return pitch / M_PITCH_ACCURACY;
     return pitch;
 }
 

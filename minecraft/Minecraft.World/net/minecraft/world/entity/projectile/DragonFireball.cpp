@@ -4,7 +4,7 @@
 #include "../../damageSource/net.minecraft.world.damagesource.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../level/net.minecraft.world.level.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "DragonFireball.h"
 
 const double DragonFireball::SPLASH_RANGE = 4.0;

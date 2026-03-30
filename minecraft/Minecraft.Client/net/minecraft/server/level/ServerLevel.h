@@ -1,7 +1,7 @@
 #pragma once
 #include <mutex>
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 class ServerChunkCache;
 class MinecraftServer;
 class Node;

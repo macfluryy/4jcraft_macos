@@ -1,5 +1,7 @@
 #pragma once
 
+#include "nbt/CompoundTag.h"
+
 class Packet;
 class PacketListener;
 class DataInputStream;
@@ -8,6 +10,7 @@ class DataOutputStream;
 #define PACKET_ENABLE_STAT_TRACKING 0
 
 class Packet;
+class ItemInstance;
 
 typedef std::shared_ptr<Packet> (*packetCreateFn)();
 

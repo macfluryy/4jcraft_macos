@@ -28,7 +28,7 @@
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 
 #include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "../../client/renderer/LevelRenderer.h"
@@ -52,7 +52,7 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
     latency = 0;
     wonGame = false;
     m_enteredEndExitPortal = false;
-    // lastCarried = ItemInstanceArray(5);
+    // lastCarried = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
     lastActionTime = 0;
 
     viewDistance = server->getPlayers()->getViewDistance();

@@ -5,7 +5,7 @@
 #include "../../tile/net.minecraft.world.level.tile.h"
 #include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "../../../item/net.minecraft.world.item.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../../util/WeighedTreasure.h"
 #include "MineShaftPieces.h"
 

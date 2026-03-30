@@ -8,8 +8,8 @@
 // Spike centre positions, calculated using
 // for(int i=0;i<8;i++)
 // {
-// int x=40 * Mth::cos(2*(-PI+(PI/8)*i));
-// int z=40* Mth::sin(2*(-PI+(PI/8)*i));
+// int x=40 * Mth::cos(2*(-M_PI +(PI/8)*i));
+// int z=40* Mth::sin(2*(-M_PI +(PI/8)*i));
 // }
 
 TheEndBiomeDecorator::SPIKE TheEndBiomeDecorator::SpikeValA[8] = {

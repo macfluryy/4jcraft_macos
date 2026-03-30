@@ -1,9 +1,9 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Particle.h"
 #include "../renderer/Tesselator.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 
 /*

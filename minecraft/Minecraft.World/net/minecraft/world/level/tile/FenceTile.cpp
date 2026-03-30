@@ -10,7 +10,7 @@ FenceTile::FenceTile(int id, const std::wstring& texture, Material* material)
 }
 
 void FenceTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                         AABBList* boxes, std::shared_ptr<Entity> source) {
+                         std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
     bool n = connectsTo(level, x, y, z - 1);
     bool s = connectsTo(level, x, y, z + 1);
     bool w = connectsTo(level, x - 1, y, z);

@@ -16,7 +16,7 @@
 #include "../../../stats/GenericStats.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../net.minecraft.world.entity.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../../../Header Files/SoundTypes.h"
 
 Attribute* Zombie::SPAWN_REINFORCEMENTS_CHANCE =

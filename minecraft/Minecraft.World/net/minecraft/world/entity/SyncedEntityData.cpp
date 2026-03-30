@@ -1,6 +1,6 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/Class.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/Class.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "../../net.minecraft.h"
 #include "../../network/packet/net.minecraft.network.packet.h"
 #include "../item/net.minecraft.world.item.h"

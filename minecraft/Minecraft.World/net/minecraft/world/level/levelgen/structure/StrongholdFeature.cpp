@@ -6,7 +6,7 @@
 #include "../../dimension/net.minecraft.world.level.dimension.h"
 #include "../../../../util/Mth.h"
 #include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 const std::wstring StrongholdFeature::OPTION_DISTANCE = L"distance";
 const std::wstring StrongholdFeature::OPTION_COUNT = L"count";
@@ -76,7 +76,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
         Random random;
 
         random.setSeed(level->getSeed());
-        double angle = random.nextDouble() * PI * 2.0;
+        double angle = random.nextDouble() * M_PI * 2.0;
         int circle = 1;
 
         // 4J Stu - Changed so that we keep trying more until we have found
@@ -158,7 +158,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                 delete strongholdPos[i];
                 strongholdPos[i] = new ChunkPos(selectedX, selectedZ);
 
-                angle += PI * 2.0 / (double)strongholdPos_length;
+                angle += M_PI * 2.0 / (double)strongholdPos_length;
             }
 
             // 4J Stu - We want to make sure that we have at least one
@@ -167,7 +167,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 
             // 4J Stu - Randomise the angles for retries as well
 #ifdef _LARGE_WORLDS
-            angle = random.nextDouble() * PI * 2.0 * circle / (double)spread;
+            angle = random.nextDouble() * M_PI * 2.0 * circle / (double)spread;
 #endif
         } while (!hasFoundValidPos && findAttempts < MAX_STRONGHOLD_ATTEMPTS);
 

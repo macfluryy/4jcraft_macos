@@ -61,25 +61,25 @@ void BatModel::render(std::shared_ptr<Entity> entity, float time, float r,
                       bool usecompiled) {
     std::shared_ptr<Bat> bat = std::dynamic_pointer_cast<Bat>(entity);
     if (bat->isResting()) {
-        float rad = 180 / PI;
+        float rad = 180 / M_PI;
         head->xRot = xRot / rad;
-        head->yRot = PI - yRot / rad;
-        head->zRot = PI;
+        head->yRot = M_PI - yRot / rad;
+        head->zRot = M_PI;
 
         head->setPos(0, -2, 0);
         rightWing->setPos(-3, 0, 3);
         leftWing->setPos(3, 0, 3);
 
-        body->xRot = PI;
+        body->xRot = M_PI;
 
-        rightWing->xRot = -PI * .05f;
-        rightWing->yRot = -PI * .40f;
-        rightWingTip->yRot = -PI * .55f;
+        rightWing->xRot = -M_PI  * .05f;
+        rightWing->yRot = -M_PI  * .40f;
+        rightWingTip->yRot = -M_PI  * .55f;
         leftWing->xRot = rightWing->xRot;
         leftWing->yRot = -rightWing->yRot;
         leftWingTip->yRot = -rightWingTip->yRot;
     } else {
-        float rad = 180 / PI;
+        float rad = 180 / M_PI;
         head->xRot = xRot / rad;
         head->yRot = yRot / rad;
         head->zRot = 0;
@@ -88,10 +88,10 @@ void BatModel::render(std::shared_ptr<Entity> entity, float time, float r,
         rightWing->setPos(0, 0, 0);
         leftWing->setPos(0, 0, 0);
 
-        body->xRot = PI * .25f + cos(bob * .1f) * .15f;
+        body->xRot = M_PI * .25f + cos(bob * .1f) * .15f;
         body->yRot = 0;
 
-        rightWing->yRot = cos(bob * 1.3f) * PI * .25f;
+        rightWing->yRot = cos(bob * 1.3f) * M_PI * .25f;
         leftWing->yRot = -rightWing->yRot;
         rightWingTip->yRot = rightWing->yRot * .5f;
         leftWingTip->yRot = -rightWing->yRot * .5f;

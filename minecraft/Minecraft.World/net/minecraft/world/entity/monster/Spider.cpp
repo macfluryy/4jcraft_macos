@@ -8,7 +8,7 @@
 #include "../../effect/net.minecraft.world.effect.h"
 #include "../net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.monster.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Spider.h"
 #include <limits>
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"

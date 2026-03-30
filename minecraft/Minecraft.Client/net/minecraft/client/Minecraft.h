@@ -37,7 +37,7 @@ class ItemInHandRenderer;
 class LevelSettings;
 class ColourTable;
 class MultiPlayerGameMode;
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "resources/ResourceLocation.h"

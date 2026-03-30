@@ -40,6 +40,6 @@ void SkeletonHeadModel::setupAnim(float time, float r, float bob, float yRot,
     Model::setupAnim(time, r, bob, yRot, xRot, scale, entity,
                      uiBitmaskOverrideAnim);
 
-    head->yRot = yRot / (180 / PI);
-    head->xRot = xRot / (180 / PI);
+    head->yRot = yRot / (180 / M_PI);
+    head->xRot = xRot / (180 / M_PI);
 }

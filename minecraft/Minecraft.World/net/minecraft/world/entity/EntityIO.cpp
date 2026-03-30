@@ -1,7 +1,7 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/Class.h"
+#include "java/Class.h"
 #include "Painting.h"
-#include "../../../../ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "Entity.h"
 #include "boss/wither/WitherBoss.h"
 #include "ambient/net.minecraft.world.entity.ambient.h"
@@ -13,7 +13,7 @@
 #include "npc/net.minecraft.world.entity.npc.h"
 #include "net.minecraft.world.entity.h"
 #include "../level/net.minecraft.world.level.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "EntityIO.h"
 
 std::unordered_map<std::wstring, entityCreateFn>* EntityIO::idCreateMap =

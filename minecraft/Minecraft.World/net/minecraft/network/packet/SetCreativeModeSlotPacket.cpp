@@ -1,5 +1,5 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetCreativeModeSlotPacket.h"
 

@@ -5,7 +5,7 @@
 #include "../redstone/net.minecraft.world.level.redstone.h"
 #include "entity/net.minecraft.world.level.tile.entity.h"
 #include "../../net.minecraft.world.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "DaylightDetectorTile.h"
 
 DaylightDetectorTile::DaylightDetectorTile(int id)
@@ -53,10 +53,10 @@ void DaylightDetectorTile::updateSignalStrength(Level* level, int x, int y,
 
     // tilt sunAngle towards zenith (to make the transition to night
     // smoother)
-    if (sunAngle < PI) {
+    if (sunAngle < M_PI) {
         sunAngle = sunAngle + (0 - sunAngle) * .2f;
     } else {
-        sunAngle = sunAngle + (PI * 2.0f - sunAngle) * .2f;
+        sunAngle = sunAngle + (M_PI * 2.0f - sunAngle) * .2f;
     }
 
     target = Math::round((float)target * Mth::cos(sunAngle));

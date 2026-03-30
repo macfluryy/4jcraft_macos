@@ -14,7 +14,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/item/PrimedTnt.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 MultiPlayerLevel::ResetInfo::ResetInfo(int x, int y, int z, int tile,
                                        int data) {

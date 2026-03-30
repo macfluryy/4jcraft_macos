@@ -119,9 +119,9 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
         std::dynamic_pointer_cast<EnderDragon>(entity);
 
     float ttt = dragon->oFlapTime + (dragon->flapTime - dragon->oFlapTime) * a;
-    jaw->xRot = (float)(Mth::sin(ttt * PI * 2) + 1) * 0.2f;
+    jaw->xRot = (float)(Mth::sin(ttt * M_PI * 2) + 1) * 0.2f;
 
-    float yo = (float)(Mth::sin(ttt * PI * 2 - 1) + 1);
+    float yo = (float)(Mth::sin(ttt * M_PI * 2 - 1) + 1);
     yo = (yo * yo * 1 + yo * 2) * 0.05f;
 
     glTranslatef(0, yo - 2.0f, -3);
@@ -148,7 +148,7 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     yy += 2.0f;
 
     float rr = 0;
-    float roff = ttt * PI * 2.0f;
+    float roff = ttt * M_PI * 2.0f;
     yy = 20.0f;
     zz = -12.0f;
     double pComponents[3];
@@ -158,14 +158,14 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
         dragon->getLatencyPos(p, 5 - i, a);
 
         rr = (float)Mth::cos(i * 0.45f + roff) * 0.15f;
-        neck->yRot = rotWrap(dragon->getHeadPartYRotDiff(i, start, p)) * PI /
+        neck->yRot = rotWrap(dragon->getHeadPartYRotDiff(i, start, p)) * M_PI /
                      180.0f * rotScale;  // 4J replaced "p[0] - start[0] with
                                          // call to getHeadPartYRotDiff
         neck->xRot = rr + (float)(dragon->getHeadPartYOffset(i, start, p)) *
-                              PI / 180.0f * rotScale *
+                              M_PI / 180.0f * rotScale *
                               5.0f;  // 4J replaced "p[1] - start[1]" with call
                                      // to getHeadPartYOffset
-        neck->zRot = -rotWrap(p[0] - rot) * PI / 180.0f * rotScale;
+        neck->zRot = -rotWrap(p[0] - rot) * M_PI / 180.0f * rotScale;
 
         neck->y = yy;
         neck->z = zz;
@@ -181,11 +181,11 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     head->x = xx;
     dragon->getLatencyPos(p, 0, a);
     head->yRot =
-        rotWrap(dragon->getHeadPartYRotDiff(6, start, p)) * PI / 180.0f *
+        rotWrap(dragon->getHeadPartYRotDiff(6, start, p)) * M_PI / 180.0f *
         1;  // 4J replaced "p[0] - start[0] with call to getHeadPartYRotDiff
-    head->xRot = (float)(dragon->getHeadPartYOffset(6, start, p)) * PI /
+    head->xRot = (float)(dragon->getHeadPartYOffset(6, start, p)) * M_PI /
                  180.0f * rotScale * 5.0f;  // 4J Added
-    head->zRot = -rotWrap(p[0] - rot) * PI / 180 * 1;
+    head->zRot = -rotWrap(p[0] - rot) * M_PI / 180 * 1;
     head->render(scale, usecompiled);
     glPushMatrix();
     glTranslatef(0, 1, 0);
@@ -196,7 +196,7 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
     glEnable(GL_CULL_FACE);
     for (int i = 0; i < 2; i++) {
-        float flapTime = ttt * PI * 2;
+        float flapTime = ttt * M_PI * 2;
         wing->xRot = 0.125f - (float)(Mth::cos(flapTime)) * 0.2f;
         wing->yRot = 0.25f;
         wing->zRot = (float)(Mth::sin(flapTime) + 0.125f) * 0.8f;
@@ -221,8 +221,8 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     glCullFace(GL_BACK);
     glDisable(GL_CULL_FACE);
 
-    rr = -(float)Mth::sin(ttt * PI * 2) * 0.0f;
-    roff = ttt * PI * 2;
+    rr = -(float)Mth::sin(ttt * M_PI * 2) * 0.0f;
+    roff = ttt * M_PI * 2;
     yy = 10;
     zz = 60;
     xx = 0;
@@ -230,9 +230,9 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     for (int i = 0; i < 12; i++) {
         dragon->getLatencyPos(p, 12 + i, a);
         rr += Mth::sin(i * 0.45f + roff) * 0.05f;
-        neck->yRot = (rotWrap(p[0] - start[0]) * rotScale + 180) * PI / 180;
-        neck->xRot = rr + (float)(p[1] - start[1]) * PI / 180 * rotScale * 5;
-        neck->zRot = rotWrap(p[0] - rot) * PI / 180 * rotScale;
+        neck->yRot = (rotWrap(p[0] - start[0]) * rotScale + 180) * M_PI / 180;
+        neck->xRot = rr + (float)(p[1] - start[1]) * M_PI / 180 * rotScale * 5;
+        neck->zRot = rotWrap(p[0] - rot) * M_PI / 180 * rotScale;
         neck->y = yy;
         neck->z = zz;
         neck->x = xx;

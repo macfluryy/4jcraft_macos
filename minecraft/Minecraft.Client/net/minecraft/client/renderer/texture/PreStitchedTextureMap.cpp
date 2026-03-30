@@ -2,7 +2,7 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/ConsoleJavaLibs/ByteBuffer.h"
+#include "java/ByteBuffer.h"
 #include "../../Minecraft.h"
 #include "../LevelRenderer.h"
 #include "../entity/EntityRenderDispatcher.h"

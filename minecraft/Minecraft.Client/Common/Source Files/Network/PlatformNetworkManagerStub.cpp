@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Socket.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "NetworkPlayerQNet.h"
 #include "PlatformNetworkManagerStub.h"

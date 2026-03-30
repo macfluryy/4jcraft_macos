@@ -9,7 +9,7 @@ CraftingContainer::~CraftingContainer() {}
 CraftingContainer::CraftingContainer(AbstractContainerMenu* menu,
                                      unsigned int w, unsigned int h) {
     unsigned int size = w * h;
-    items = new ItemInstanceArray(size);
+    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(size);
     this->menu = menu;
     this->width = w;
 }

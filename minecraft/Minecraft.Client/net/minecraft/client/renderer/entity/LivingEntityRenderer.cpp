@@ -319,8 +319,8 @@ void LivingEntityRenderer::renderArrows(std::shared_ptr<LivingEntity> mob,
                 zd *= -1;
             }
             float sd = (float)sqrt(xd * xd + zd * zd);
-            arrow->yRotO = arrow->yRot = (float)(atan2(xd, zd) * 180 / PI);
-            arrow->xRotO = arrow->xRot = (float)(atan2(yd, sd) * 180 / PI);
+            arrow->yRotO = arrow->yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+            arrow->xRotO = arrow->xRot = (float)(atan2(yd, sd) * 180 / M_PI);
             double x = 0;
             double y = 0;
             double z = 0;

@@ -5,7 +5,7 @@
 #include "../level/net.minecraft.world.level.h"
 #include "../level/material/net.minecraft.world.level.material.h"
 #include "../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Painting.h"
 #include "../level/material/Material.h"
 

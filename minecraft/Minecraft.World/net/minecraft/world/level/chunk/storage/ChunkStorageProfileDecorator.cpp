@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "ChunkStorageProfileDecorator.h"
 
 ChunkStorageProfilerDecorator::ChunkStorageProfilerDecorator(

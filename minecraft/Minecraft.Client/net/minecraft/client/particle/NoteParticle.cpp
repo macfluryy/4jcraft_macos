@@ -18,9 +18,9 @@ gMin = ( (cMin>>8)&0xFF )/255.0, bMin = ( cMin&0xFF )/255.0; double rMax = (
 (cMax>>16)&0xFF )/255.0f, gMax = ( (cMax>>8)&0xFF )/255.0, bMax = ( cMax&0xFF
 )/255.0;
 
-rCol = Mth::sin(((float) xa + 0.0f / 3) * PI * 2) * (rMax - rMin) + rMin;
-gCol = Mth::sin(((float) xa + 1.0f / 3) * PI * 2) * (gMax - gMin) + gMin;
-bCol = Mth::sin(((float) xa + 2.0f / 3) * PI * 2) * (bMax - bMin) + bMin;
+rCol = Mth::sin(((float) xa + 0.0f / 3) * M_PI * 2) * (rMax - rMin) + rMin;
+gCol = Mth::sin(((float) xa + 1.0f / 3) * M_PI * 2) * (gMax - gMin) + gMin;
+bCol = Mth::sin(((float) xa + 2.0f / 3) * M_PI * 2) * (bMax - bMin) + bMin;
     */
 
     // 4J-JEV: Added,

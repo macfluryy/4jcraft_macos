@@ -3,7 +3,7 @@
 #include "Button.h"
 #include "../renderer/Tesselator.h"
 #include "../renderer/Textures.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "java/System.h"
 
 ScrolledSelectionList::ScrolledSelectionList(Minecraft* minecraft, int width,
                                              int height, int y0, int y1,

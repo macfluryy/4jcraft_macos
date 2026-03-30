@@ -27,13 +27,13 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #if defined(SPLIT_SAVES)
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
 #endif
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "../client/ProgressRenderer.h"
 #include "level/ServerPlayer.h"
@@ -1129,7 +1129,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                     }
                     //					int64_t afterall =
                     // System::currentTimeMillis();
-                    // PIXReportCounter(L"Server time
+                    // M_PIXReportCounter(L"Server time
                     // all",(float)(afterall-beforeall));
                     //					PIXReportCounter(L"Server
                     // ticks",(float)tickcount);

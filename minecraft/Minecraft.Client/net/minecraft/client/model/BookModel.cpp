@@ -30,7 +30,7 @@ BookModel::BookModel() {
     leftLid->setPos(0, 0, -1);
     rightLid->setPos(0, 0, 1);
 
-    seam->yRot = PI / 2;
+    seam->yRot = M_PI / 2;
 
     // 4J added - compile now to avoid random performance hit first time cubes
     // are rendered
@@ -65,7 +65,7 @@ void BookModel::setupAnim(float time, float r, float bob, float yRot,
                           unsigned int uiBitmaskOverrideAnim) {
     float openness = (Mth::sin(time * 0.02f) * 0.10f + 1.25f) * yRot;
 
-    leftLid->yRot = PI + openness;
+    leftLid->yRot = M_PI + openness;
     rightLid->yRot = -openness;
     leftPages->yRot = +openness;
     rightPages->yRot = -openness;

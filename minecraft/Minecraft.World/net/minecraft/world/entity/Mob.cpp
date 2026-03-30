@@ -1,5 +1,5 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../network/packet/net.minecraft.network.packet.h"
 #include "../level/tile/net.minecraft.world.level.tile.h"
 #include "../phys/net.minecraft.world.phys.h"
@@ -21,7 +21,7 @@
 #include "../net.minecraft.world.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/level/EntityTracker.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Mob.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../../../../Header Files/SoundTypes.h"
@@ -43,7 +43,7 @@ void Mob::_init() {
     target = nullptr;
     sensing = nullptr;
 
-    equipment = ItemInstanceArray(5);
+    equipment = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
     dropChances = floatArray(5);
     for (unsigned int i = 0; i < 5; ++i) {
         equipment[i] = nullptr;
@@ -157,7 +157,7 @@ int Mob::getExperienceReward(std::shared_ptr<Player> killedBy) {
     if (xpReward > 0) {
         int result = xpReward;
 
-        ItemInstanceArray slots = getEquipmentSlots();
+        arrayWithLength<std::shared_ptr<ItemInstance>> slots = getEquipmentSlots();
         for (int i = 0; i < slots.length; i++) {
             if (slots[i] != nullptr && dropChances[i] <= 1) {
                 result += 1 + random->nextInt(3);
@@ -505,8 +505,8 @@ void Mob::lookAt(std::shared_ptr<Entity> e, float yMax, float xMax) {
 
     double sd = Mth::sqrt(xd * xd + zd * zd);
 
-    float yRotD = (float)(atan2(zd, xd) * 180 / PI) - 90;
-    float xRotD = (float)-(atan2(yd, sd) * 180 / PI);
+    float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
+    float xRotD = (float)-(atan2(yd, sd) * 180 / M_PI);
     xRot = rotlerp(xRot, xRotD, xMax);
     yRot = rotlerp(yRot, yRotD, yMax);
 }
@@ -563,7 +563,7 @@ void Mob::setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item) {
     equipment[slot] = item;
 }
 
-ItemInstanceArray Mob::getEquipmentSlots() { return equipment; }
+arrayWithLength<std::shared_ptr<ItemInstance>> Mob::getEquipmentSlots() { return equipment; }
 
 void Mob::dropEquipment(bool byPlayer, int playerBonusLevel) {
     for (int slot = 0; slot < getEquipmentSlots().length; slot++) {

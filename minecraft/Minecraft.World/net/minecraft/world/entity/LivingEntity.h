@@ -56,7 +56,7 @@ private:
     BaseAttributeMap* attributes;
     CombatTracker* combatTracker;
     std::unordered_map<int, MobEffectInstance*> activeEffects;
-    ItemInstanceArray lastEquipment;
+    arrayWithLength<std::shared_ptr<ItemInstance>> lastEquipment;
 
 public:
     bool swinging;
@@ -242,7 +242,7 @@ public:
                                  std::shared_ptr<ItemInstance> item) = 0;
     virtual void setSprinting(bool value);
 
-    virtual ItemInstanceArray getEquipmentSlots() = 0;
+    virtual arrayWithLength<std::shared_ptr<ItemInstance>> getEquipmentSlots() = 0;
 
     virtual Icon* getItemInHandIcon(std::shared_ptr<ItemInstance> item,
                                     int layer);

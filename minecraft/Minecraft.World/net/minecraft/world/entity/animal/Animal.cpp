@@ -1,6 +1,6 @@
 #include "../../../../../Header Files/stdafx.h"
 
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../item/net.minecraft.world.item.h"
 #include "../../phys/net.minecraft.world.phys.h"
@@ -12,7 +12,7 @@
 #include "../../damageSource/net.minecraft.world.damagesource.h"
 #include "../monster/net.minecraft.world.entity.monster.h"
 #include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../../../../../ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "Animal.h"
 
 Animal::Animal(Level* level) : AgableMob(level) {
@@ -65,7 +65,7 @@ void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
         if (d < 3) {
             double xd = target->x - x;
             double zd = target->z - z;
-            yRot = (float)(atan2(zd, xd) * 180 / PI) - 90;
+            yRot = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
 
             holdGround = true;
         }

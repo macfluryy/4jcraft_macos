@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
+#include "java/FloatBuffer.h"
 #include "Frustum.h"
 #include "../../Camera.h"
 

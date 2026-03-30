@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../entity/player/net.minecraft.world.entity.player.h"
 #include "../../item/net.minecraft.world.item.h"
 #include "MapItemSavedData.h"

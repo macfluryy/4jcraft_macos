@@ -396,7 +396,7 @@ void PistonBaseTile::updateShape(
 void PistonBaseTile::updateDefaultShape() { setShape(0, 0, 0, 1, 1, 1); }
 
 void PistonBaseTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                              AABBList* boxes, std::shared_ptr<Entity> source) {
+                              std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
     setShape(0, 0, 0, 1, 1, 1);
     Tile::addAABBs(level, x, y, z, box, boxes, source);
 }

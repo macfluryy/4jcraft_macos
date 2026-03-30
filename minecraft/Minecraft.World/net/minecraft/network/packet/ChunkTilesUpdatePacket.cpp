@@ -1,6 +1,6 @@
 #include "../../../../Header Files/stdafx.h"
 #include <iostream>
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "../../world/level/net.minecraft.world.level.h"
 #include "../../world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "PacketListener.h"

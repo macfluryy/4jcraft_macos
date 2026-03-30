@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../net.minecraft.world.entity.h"
 #include "../player/net.minecraft.world.entity.player.h"
 #include "../../item/net.minecraft.world.item.h"
@@ -175,8 +175,8 @@ void Boat::tick() {
 
     double lastSpeed = sqrt(xd * xd + zd * zd);
     if (lastSpeed > MAX_COLLISION_SPEED) {
-        double xa = cos(yRot * PI / 180);
-        double za = sin(yRot * PI / 180);
+        double xa = cos(yRot * M_PI / 180);
+        double za = sin(yRot * M_PI / 180);
 
         for (int i = 0; i < 1 + lastSpeed * 60; i++) {
             double side = (random->nextFloat() * 2 - 1);
@@ -248,8 +248,8 @@ void Boat::tick() {
         double forward = livingRider->yya;
 
         if (forward > 0) {
-            double riderXd = -sin(livingRider->yRot * PI / 180);
-            double riderZd = cos(livingRider->yRot * PI / 180);
+            double riderXd = -sin(livingRider->yRot * M_PI / 180);
+            double riderZd = cos(livingRider->yRot * M_PI / 180);
             xd += riderXd * acceleration * 0.05f;
             zd += riderZd * acceleration * 0.05f;
         }
@@ -301,7 +301,7 @@ void Boat::tick() {
     double xDiff = xo - x;
     double zDiff = zo - z;
     if (xDiff * xDiff + zDiff * zDiff > 0.001) {
-        yRotT = (float)(atan2(zDiff, xDiff) * 180 / PI);
+        yRotT = (float)(atan2(zDiff, xDiff) * 180 / M_PI);
     }
 
     double rotDiff = Mth::wrapDegrees(yRotT - yRot);
@@ -352,8 +352,8 @@ void Boat::tick() {
 void Boat::positionRider() {
     if (rider.lock() == nullptr) return;
 
-    double xa = cos(yRot * PI / 180) * 0.4;
-    double za = sin(yRot * PI / 180) * 0.4;
+    double xa = cos(yRot * M_PI / 180) * 0.4;
+    double za = sin(yRot * M_PI / 180) * 0.4;
     rider.lock()->setPos(
         x + xa, y + getRideHeight() + rider.lock()->getRidingHeight(), z + za);
 }

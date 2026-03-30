@@ -36,8 +36,8 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "Minecraft.World/com/mojang/nbt/com.mojang.nbt.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "nbt/com.mojang.nbt.h"
+#include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "../gui/achievement/AchievementPopup.h"
@@ -150,7 +150,7 @@ void LocalPlayer::serverAiStep() {
         // Don't bother for tiny inputs
         if (fMag >= 0.1f) {
             // Get angle (in player rotated space) of input controls
-            float yRotInput = atan2f(input->ya, input->xa) * (180.0f / PI);
+            float yRotInput = atan2f(input->ya, input->xa) * (180.0f / M_PI);
             // Now get in world space
             float yRotFinal = yRotInput + yRot;
             // Snap this to nearest 90 degrees
@@ -161,8 +161,8 @@ void LocalPlayer::serverAiStep() {
             float yRotInputAdjust = yRotInput + yRotDiff;
 
             // Calculate final x/y player-space movement required
-            this->xxa = cos(yRotInputAdjust * (PI / 180.0f)) * fMag;
-            this->yya = sin(yRotInputAdjust * (PI / 180.0f)) * fMag;
+            this->xxa = cos(yRotInputAdjust * (M_PI / 180.0f)) * fMag;
+            this->yya = sin(yRotInputAdjust * (M_PI / 180.0f)) * fMag;
         } else {
             this->xxa = input->xa;
             this->yya = input->ya;
@@ -354,11 +354,11 @@ void LocalPlayer::aiStep() {
 
         if (InputManager.GetJoypadMapVal(m_iPad) == 0) {
             if (ullDpad_filtered & (1LL << MINECRAFT_ACTION_DPAD_RIGHT)) {
-                xd = -0.15 * cos(yRotSnapped * PI / 180);
-                zd = -0.15 * sin(yRotSnapped * PI / 180);
+                xd = -0.15 * cos(yRotSnapped * M_PI / 180);
+                zd = -0.15 * sin(yRotSnapped * M_PI / 180);
             } else if (ullDpad_filtered & (1LL << MINECRAFT_ACTION_DPAD_LEFT)) {
-                xd = 0.15 * cos(yRotSnapped * PI / 180);
-                zd = 0.15 * sin(yRotSnapped * PI / 180);
+                xd = 0.15 * cos(yRotSnapped * M_PI / 180);
+                zd = 0.15 * sin(yRotSnapped * M_PI / 180);
             }
         }
     }

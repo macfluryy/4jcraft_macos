@@ -2,7 +2,7 @@
 #include "../net.minecraft.world.entity.h"
 #include "../../level/net.minecraft.world.level.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "ThrownExpBottle.h"
 
 ThrownExpBottle::ThrownExpBottle(Level* level) : Throwable(level) {}

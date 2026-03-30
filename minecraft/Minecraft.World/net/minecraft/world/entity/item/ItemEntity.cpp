@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../stats/net.minecraft.stats.h"
 #include "../net.minecraft.world.entity.h"
 #include "../../level/net.minecraft.world.level.h"
@@ -9,7 +9,7 @@
 #include "../player/net.minecraft.world.entity.player.h"
 #include "../../level/material/net.minecraft.world.level.material.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "ItemEntity.h"
 #include "../../../../../Header Files/SoundTypes.h"
 
@@ -17,7 +17,7 @@ void ItemEntity::_init() {
     age = 0;
     throwTime = 0;
     health = 5;
-    bobOffs = (float)(Math::random() * PI * 2);
+    bobOffs = (float)(Math::random() * M_PI * 2);
 
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called

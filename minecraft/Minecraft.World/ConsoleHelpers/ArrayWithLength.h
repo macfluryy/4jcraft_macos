@@ -1,6 +1,8 @@
 #pragma once
 
-#include <assert.h>
+#include <cassert>
+#include <cstring>
+#include <memory>
 
 // Note - this is meant to be a really simple wrapper round a pointer just to be
 // able to add a length value to arrays.
@@ -126,5 +128,3 @@ typedef arrayWithLength<ModelPart*> ModelPartArray;
 typedef arrayWithLength<Enchantment*> EnchantmentArray;
 typedef arrayWithLength<ClipChunk> ClipChunkArray;
 
-#include "../net/minecraft/world/item/ItemInstance.h"
-typedef arrayWithLength<std::shared_ptr<ItemInstance> > ItemInstanceArray;

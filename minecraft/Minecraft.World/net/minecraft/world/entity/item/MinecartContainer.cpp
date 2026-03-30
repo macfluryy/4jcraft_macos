@@ -7,7 +7,7 @@
 #include "MinecartContainer.h"
 
 void MinecartContainer::_init() {
-    items = ItemInstanceArray(9 * 4);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(9 * 4);
     dropEquipment = true;
 
     // 4J Stu - This function call had to be moved here from the Entity ctor to
@@ -181,7 +181,7 @@ void MinecartContainer::readAdditionalSaveData(CompoundTag* base) {
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
     delete[] items.data;
-    items = ItemInstanceArray(getContainerSize());
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         int slot = tag->getByte(L"Slot") & 0xff;

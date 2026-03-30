@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "Packet.h"
 

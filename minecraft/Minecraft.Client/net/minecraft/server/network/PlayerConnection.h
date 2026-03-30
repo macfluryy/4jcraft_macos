@@ -2,7 +2,7 @@
 #include <mutex>
 #include "../ConsoleInputSource.h"
 #include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 
 class MinecraftServer;
 class Connection;

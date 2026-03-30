@@ -67,11 +67,11 @@ void CreeperModel::setupAnim(float time, float r, float bob, float yRot,
                              float xRot, float scale,
                              std::shared_ptr<Entity> entity,
                              unsigned int uiBitmaskOverrideAnim) {
-    head->yRot = yRot / (float)(180 / PI);
-    head->xRot = xRot / (float)(180 / PI);
+    head->yRot = yRot / (float)(180 / M_PI);
+    head->xRot = xRot / (float)(180 / M_PI);
 
     leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-    leg1->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
-    leg2->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
+    leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
+    leg2->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
     leg3->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
 }

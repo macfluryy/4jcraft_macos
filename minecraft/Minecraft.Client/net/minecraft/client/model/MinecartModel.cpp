@@ -34,11 +34,11 @@ MinecartModel::MinecartModel() : Model() {
     cubes[4]->addBox((float)(-w / 2 + 2), (float)(-d - 1), -1, w - 4, d, 2, 0);
     cubes[4]->setPos(0, (float)(0 + yOff), (float)(+h / 2 - 1));
 
-    cubes[0]->xRot = PI / 2;
-    cubes[1]->yRot = PI / 2 * 3;
-    cubes[2]->yRot = PI / 2 * 1;
-    cubes[3]->yRot = PI / 2 * 2;
-    cubes[5]->xRot = -PI / 2;
+    cubes[0]->xRot = M_PI / 2;
+    cubes[1]->yRot = M_PI / 2 * 3;
+    cubes[2]->yRot = M_PI / 2 * 1;
+    cubes[3]->yRot = M_PI / 2 * 2;
+    cubes[5]->xRot = -M_PI  / 2;
 
     // 4J added - compile now to avoid random performance hit first time cubes
     // are rendered

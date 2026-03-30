@@ -1,6 +1,6 @@
 #pragma once
 #include "../../Container.h"
-#include "../../../../../com/mojang/nbt/ListTag.h"
+#include "nbt/ListTag.h"
 #include "../../item/ItemInstance.h"
 
 class Player;
@@ -16,8 +16,8 @@ private:
     static const int SELECTION_SIZE;
 
 public:
-    ItemInstanceArray items;
-    ItemInstanceArray armor;
+    arrayWithLength<std::shared_ptr<ItemInstance>> items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> armor;
 
     int selected;
     Player* player;  // This is owned by shared_ptrs, but we are owned by it

@@ -1,6 +1,6 @@
 #pragma once
 #include "AbstractContainerMenu.h"
-#include "../../../../ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 
 class EnchantmentMenu : public AbstractContainerMenu {
     // 4J Stu Made these public for UI menus, perhaps should make friend class?

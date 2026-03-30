@@ -21,7 +21,7 @@ const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
         0xff33cc33,  // GREEN
         0xffcc3333,  // RED
         0xff3333cc,  // BLUE
-        0xffcc33cc,  // PINK
+        0xffcc33cc,  // M_PINK
         0xffcc6633,  // ORANGE
         0xffcccc33,  // YELLOW
         0xff33dccc,  // TURQUOISE
@@ -318,8 +318,8 @@ bool b2 = !mob->isCapeHidden();*/
 
         float yr = mob->yBodyRotO + (mob->yBodyRot - mob->yBodyRotO) * a;
 
-        double xa = Mth::sin(yr * PI / 180);
-        double za = -Mth::cos(yr * PI / 180);
+        double xa = Mth::sin(yr * M_PI / 180);
+        double za = -Mth::cos(yr * M_PI / 180);
 
         float flap = (float)yd * 10;
         if (flap < -6) flap = -6;

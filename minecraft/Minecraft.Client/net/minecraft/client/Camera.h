@@ -1,6 +1,6 @@
 #pragma once
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/IntBuffer.h"
+#include "java/FloatBuffer.h"
+#include "java/IntBuffer.h"
 
 class TilePos;
 class Vec3;

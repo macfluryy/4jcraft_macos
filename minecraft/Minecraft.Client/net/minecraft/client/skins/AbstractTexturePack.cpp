@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "../renderer/Textures.h"
 #include "AbstractTexturePack.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 #include <limits>

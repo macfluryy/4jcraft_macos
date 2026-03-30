@@ -1,6 +1,6 @@
 #include "../../../../Header Files/stdafx.h"
 #include <iostream>
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "../../world/item/net.minecraft.world.item.h"
 #include "PacketListener.h"
 #include "ContainerSetContentPacket.h"
@@ -12,7 +12,7 @@ ContainerSetContentPacket::ContainerSetContentPacket() { containerId = 0; }
 ContainerSetContentPacket::ContainerSetContentPacket(
     int containerId, std::vector<std::shared_ptr<ItemInstance> >* newItems) {
     this->containerId = containerId;
-    items = ItemInstanceArray((int)newItems->size());
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>((int)newItems->size());
     for (unsigned int i = 0; i < items.length; i++) {
         std::shared_ptr<ItemInstance> item = newItems->at(i);
         items[i] = item == nullptr ? nullptr : item->copy();
@@ -24,7 +24,7 @@ void ContainerSetContentPacket::read(
 {
     containerId = (int)dis->readByte();
     int count = dis->readShort();
-    items = ItemInstanceArray(count);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(count);
     for (int i = 0; i < count; i++) {
         items[i] = readItem(dis);
     }

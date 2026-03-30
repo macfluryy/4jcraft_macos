@@ -477,16 +477,16 @@ void ItemInHandRenderer::render(float a) {
         {
             float swing = player->getAttackAnim(a);
 
-            float swing1 = Mth::sin(swing * PI);
-            float swing2 = Mth::sin((sqrt(swing)) * PI);
-            glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * PI * 2) * 0.2f,
+            float swing1 = Mth::sin(swing * M_PI);
+            float swing2 = Mth::sin((sqrt(swing)) * M_PI);
+            glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * M_PI * 2) * 0.2f,
                          -swing1 * 0.2f);
         }
 
         float tilt = 1 - xr / 45.0f + 0.1f;
         if (tilt < 0) tilt = 0;
         if (tilt > 1) tilt = 1;
-        tilt = -Mth::cos(tilt * PI) * 0.5f + 0.5f;
+        tilt = -Mth::cos(tilt * M_PI) * 0.5f + 0.5f;
 
         glTranslatef(0.0f, 0.0f * d - (1 - h) * 1.2f - tilt * 0.5f + 0.04f,
                      -0.9f * d);
@@ -537,8 +537,8 @@ void ItemInHandRenderer::render(float a) {
 
         {
             float swing = player->getAttackAnim(a);
-            float swing3 = Mth::sin(swing * swing * PI);
-            float swing2 = Mth::sin(sqrt(swing) * PI);
+            float swing3 = Mth::sin(swing * swing * M_PI);
+            float swing2 = Mth::sin(sqrt(swing) * M_PI);
             glRotatef(-swing3 * 20, 0, 1, 0);
             glRotatef(-swing2 * 20, 0, 0, 1);
             glRotatef(-swing2 * 80, 1, 0, 0);
@@ -603,7 +603,7 @@ void ItemInHandRenderer::render(float a) {
                 is = is * is * is;
                 float iss = 1 - is;
                 glTranslatef(0,
-                             Mth::abs(Mth::cos(t / 4 * PI) * 0.1f) *
+                             Mth::abs(Mth::cos(t / 4 * M_PI) * 0.1f) *
                                  (swing > 0.2 ? 1 : 0),
                              0);
                 glTranslatef(iss * 0.6f, -iss * 0.5f, 0);
@@ -614,9 +614,9 @@ void ItemInHandRenderer::render(float a) {
         } else {
             float swing = powf(player->getAttackAnim(a), swingPowFactor);
 
-            float swing1 = Mth::sin(swing * PI);
-            float swing2 = Mth::sin((sqrt(swing)) * PI);
-            glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * PI * 2) * 0.2f,
+            float swing1 = Mth::sin(swing * M_PI);
+            float swing2 = Mth::sin((sqrt(swing)) * M_PI);
+            glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * M_PI * 2) * 0.2f,
                          -swing1 * 0.2f);
         }
 
@@ -627,8 +627,8 @@ void ItemInHandRenderer::render(float a) {
         glEnable(GL_RESCALE_NORMAL);
 
         float swing = powf(player->getAttackAnim(a), swingPowFactor);
-        float swing3 = Mth::sin(swing * swing * PI);
-        float swing2 = Mth::sin(sqrt(swing) * PI);
+        float swing3 = Mth::sin(swing * swing * M_PI);
+        float swing2 = Mth::sin(sqrt(swing) * M_PI);
         glRotatef(-swing3 * 20, 0, 1, 0);
         glRotatef(-swing2 * 20, 0, 0, 1);
         glRotatef(-swing2 * 80, 1, 0, 0);
@@ -700,9 +700,9 @@ void ItemInHandRenderer::render(float a) {
         {
             float swing = player->getAttackAnim(a);
 
-            float swing1 = Mth::sin(swing * PI);
-            float swing2 = Mth::sin((sqrt(swing)) * PI);
-            glTranslatef(-swing2 * 0.3f, Mth::sin(sqrt(swing) * PI * 2) * 0.4f,
+            float swing1 = Mth::sin(swing * M_PI);
+            float swing2 = Mth::sin((sqrt(swing)) * M_PI);
+            glTranslatef(-swing2 * 0.3f, Mth::sin(sqrt(swing) * M_PI * 2) * 0.4f,
                          -swing1 * 0.4f);
         }
 
@@ -713,8 +713,8 @@ void ItemInHandRenderer::render(float a) {
         glEnable(GL_RESCALE_NORMAL);
         {
             float swing = player->getAttackAnim(a);
-            float swing3 = Mth::sin(swing * swing * PI);
-            float swing2 = Mth::sin(sqrt(swing) * PI);
+            float swing3 = Mth::sin(swing * swing * M_PI);
+            float swing2 = Mth::sin(sqrt(swing) * M_PI);
             glRotatef(swing2 * 70, 0, 1, 0);
             glRotatef(-swing3 * 20, 0, 0, 1);
         }

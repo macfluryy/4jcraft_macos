@@ -74,7 +74,7 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     PIXBeginNamedEvent(0, "MegaTree placing branches");
     int branchHeight = y + treeHeight - 2 - random->nextInt(4);
     while (branchHeight > y + treeHeight / 2) {
-        float angle = random->nextFloat() * PI * 2.0f;
+        float angle = random->nextFloat() * M_PI * 2.0f;
         int bx = x + (int)(0.5f + Mth::cos(angle) * 4.0f);
         int bz = z + (int)(0.5f + Mth::sin(angle) * 4.0f);
         placeLeaves(level, bx, bz, branchHeight, 0, random);

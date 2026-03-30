@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "CritParticle2.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 void CritParticle2::_init(double xa, double ya, double za, float scale) {
     xd *= 0.1f;

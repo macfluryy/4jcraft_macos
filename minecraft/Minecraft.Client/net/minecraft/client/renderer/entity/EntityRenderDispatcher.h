@@ -1,7 +1,7 @@
 #pragma once
 #include "EntityRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 class font;
 
 class EntityRenderDispatcher {

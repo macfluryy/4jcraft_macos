@@ -1,6 +1,6 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "java/JavaMath.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../level/net.minecraft.world.level.h"
 #include "PrimedTnt.h"
 
@@ -30,7 +30,7 @@ PrimedTnt::PrimedTnt(Level* level, double x, double y, double z,
 
     setPos(x, y, z);
 
-    float rot = (float)(Math::random() * PI * 2);
+    float rot = (float)(Math::random() * M_PI * 2);
     xd = -sin(rot) * 0.02f;
     yd = +0.2f;
     zd = -cos(rot) * 0.02f;

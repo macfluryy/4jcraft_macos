@@ -2,7 +2,7 @@
 #include "../UI.h"
 #include "UIControl.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 UIControl_Base::UIControl_Base() {
     m_bLabelChanged = false;

@@ -9,7 +9,7 @@
 #include "StructurePiece.h"
 #include "BoundingBox.h"
 #include "../../../../Direction.h"
-#include "../../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../../Facing.h"
 #include "../../../item/DoorItem.h"
 

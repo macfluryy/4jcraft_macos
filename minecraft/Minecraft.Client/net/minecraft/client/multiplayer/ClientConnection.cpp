@@ -37,7 +37,7 @@
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "../Minecraft.h"
 #include "../ProgressRenderer.h"
 #include "../renderer/LevelRenderer.h"

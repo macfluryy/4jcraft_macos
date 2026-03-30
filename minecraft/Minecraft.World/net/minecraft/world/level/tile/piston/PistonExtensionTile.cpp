@@ -99,7 +99,7 @@ bool PistonExtensionTile::mayPlace(Level* level, int x, int y, int z,
 int PistonExtensionTile::getResourceCount(Random* random) { return 0; }
 
 void PistonExtensionTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                                   AABBList* boxes,
+                                   std::vector<AABB>* boxes,
                                    std::shared_ptr<Entity> source) {
     int data = level->getData(x, y, z);
 

@@ -2,9 +2,9 @@
 
 #if !defined(__linux__)
 
-#include "Minecraft.World/ConsoleJavaLibs/FloatBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/IntBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/ByteBuffer.h"
+#include "java/FloatBuffer.h"
+#include "java/IntBuffer.h"
+#include "java/ByteBuffer.h"
 
 void glViewport(int x, int y, int w, int h) {
     // We don't really need anything here because minecraft doesn't current do
@@ -16,7 +16,7 @@ void glTranslatef(float x, float y, float z) {
 }
 
 void glRotatef(float angle, float x, float y, float z) {
-    RenderManager.MatrixRotate(angle * (PI / 180.0f), x, y, z);
+    RenderManager.MatrixRotate(angle * (M_PI / 180.0f), x, y, z);
 }
 
 void glPopMatrix() { RenderManager.MatrixPop(); }

@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "SmokeParticle.h"
 
 void SmokeParticle::init(Level* level, double x, double y, double z, double xa,

@@ -1,10 +1,10 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/System.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/System.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "net.minecraft.network.packet.h"
 #include "PacketListener.h"
 #include "Packet.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 
 #if !defined(_CONTENT_PACKAGE)
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

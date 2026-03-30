@@ -59,7 +59,7 @@ void MobRenderer::renderLeash(std::shared_ptr<Mob> entity, double x, double y,
 
         double entityYRot =
             lerp(entity->yBodyRotO, entity->yBodyRot, a) * Mth::RAD_TO_GRAD +
-            PI * .5;
+            M_PI * .5;
         rotOffCos = cos(entityYRot) * entity->bbWidth * .4;
         rotOffSin = sin(entityYRot) * entity->bbWidth * .4;
         double startX = lerp(entity->xo, entity->x, a) + rotOffCos;

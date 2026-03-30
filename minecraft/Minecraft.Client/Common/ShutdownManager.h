@@ -6,7 +6,7 @@
 #include <cstddef>
 #include <mutex>
 
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "../../Minecraft.World/ConsoleHelpers/C4JThread.h"
 
 class ShutdownManager {
 public:

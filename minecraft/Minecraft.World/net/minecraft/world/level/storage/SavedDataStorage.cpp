@@ -2,8 +2,8 @@
 #include "../saveddata/net.minecraft.world.level.saveddata.h"
 #include "net.minecraft.world.level.storage.h"
 #include "../../entity/ai/village/net.minecraft.world.entity.ai.village.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
-#include "../../../../../ConsoleJavaLibs/File.h"
+#include "nbt/com.mojang.nbt.h"
+#include "java/File.h"
 #include "SavedDataStorage.h"
 
 #include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"

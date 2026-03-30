@@ -24,7 +24,7 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
 #include "Minecraft.World/net/minecraft/world/level/saveddata/net.minecraft.world.level.saveddata.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
 // 4J - this class is fairly substantially altered as there didn't seem any
 // point in porting code for banning, whitelisting, ops etc.

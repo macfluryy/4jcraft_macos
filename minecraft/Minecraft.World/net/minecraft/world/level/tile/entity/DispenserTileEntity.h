@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "TileEntity.h"
 #include "../../../Container.h"
 
@@ -17,7 +17,7 @@ public:
     using TileEntity::setChanged;
 
 private:
-    ItemInstanceArray items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> items;
     Random* random;
 
 protected:

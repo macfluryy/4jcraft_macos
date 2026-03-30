@@ -7,7 +7,7 @@ class ContainerSetContentPacket
       public std::enable_shared_from_this<ContainerSetContentPacket> {
 public:
     int containerId;
-    ItemInstanceArray items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> items;
 
     ContainerSetContentPacket();
     ~ContainerSetContentPacket();

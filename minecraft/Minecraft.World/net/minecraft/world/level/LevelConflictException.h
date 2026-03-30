@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../ConsoleJavaLibs/Exceptions.h"
+#include "java/Exceptions.h"
 
 class LevelConflictException : public RuntimeException {
 private:

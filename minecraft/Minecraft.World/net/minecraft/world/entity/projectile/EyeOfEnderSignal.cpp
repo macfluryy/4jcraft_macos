@@ -5,7 +5,7 @@
 #include "../../item/net.minecraft.world.item.h"
 #include "../item/net.minecraft.world.entity.item.h"
 #include "../../../SharedConstants.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "EyeOfEnderSignal.h"
 
 void EyeOfEnderSignal::_init() {
@@ -68,8 +68,8 @@ void EyeOfEnderSignal::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         float sd = (float)sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
     }
 }
 
@@ -84,8 +84,8 @@ void EyeOfEnderSignal::tick() {
     z += zd;
 
     float sd = (float)sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
+    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

@@ -13,8 +13,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "../../Minecraft.h"
 #include "../../multiplayer/ClientConnection.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/ByteArrayOutputStream.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/DataOutputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes (and iggy too)

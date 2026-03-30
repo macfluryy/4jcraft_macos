@@ -139,7 +139,7 @@ void PathfinderMob::serverAiStep() {
         double xd = target->x - x;
         double zd = target->z - z;
         double yd = target->y - yFloor;
-        float yRotD = (float)(atan2(zd, xd) * 180 / PI) - 90;
+        float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
         float rotDiff = Mth::wrapDegrees(yRotD - yRot);
         yya = (float)getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)
                   ->getValue();
@@ -157,9 +157,9 @@ void PathfinderMob::serverAiStep() {
                 double zd2 = attackTarget->z - z;
 
                 float oldyRot = yRot;
-                yRot = (float)(atan2(zd2, xd2) * 180 / PI) - 90;
+                yRot = (float)(atan2(zd2, xd2) * 180 / M_PI) - 90;
 
-                rotDiff = ((oldyRot - yRot) + 90) * PI / 180;
+                rotDiff = ((oldyRot - yRot) + 90) * M_PI / 180;
                 xxa = -Mth::sin(rotDiff) * yya * 1.0f;
                 yya = Mth::cos(rotDiff) * yya * 1.0f;
             }

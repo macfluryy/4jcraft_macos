@@ -5,7 +5,7 @@
 #include "FolderTexturePack.h"
 #include "DLCTexturePack.h"
 #include "../Options.h"
-#include "Minecraft.World/ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "../gui/Minimap.h"
 

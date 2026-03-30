@@ -48,8 +48,8 @@ void LookControl::tick() {
         double zd = wantedZ - mob->z;
         double sd = sqrt(xd * xd + zd * zd);
 
-        float yRotD = (float)(atan2(zd, xd) * 180 / PI) - 90;
-        float xRotD = (float)-(atan2(yd, sd) * 180 / PI);
+        float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
+        float xRotD = (float)-(atan2(yd, sd) * 180 / M_PI);
         mob->xRot = rotlerp(mob->xRot, xRotD, xMax);
         mob->yHeadRot = rotlerp(mob->yHeadRot, yRotD, yMax);
     } else {

@@ -68,7 +68,7 @@ public:
             TileEntity>());  // 4J added forceData, forceEntity param
     virtual void updateDefaultShape();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          AABBList* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual bool isCubeShaped();
 

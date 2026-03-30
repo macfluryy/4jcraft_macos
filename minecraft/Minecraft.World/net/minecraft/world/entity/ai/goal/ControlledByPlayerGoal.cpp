@@ -63,7 +63,7 @@ void ControlledByPlayerGoal::tick() {
             boosting = false;
         }
         moveSpeed += moveSpeed * 1.15f *
-                     Mth::sin((float)boostTime / boostTimeTotal * PI);
+                     Mth::sin((float)boostTime / boostTimeTotal * M_PI);
     }
 
     float friction = 0.91f;
@@ -76,8 +76,8 @@ void ControlledByPlayerGoal::tick() {
     }
     float friction2 = (0.6f * 0.6f * 0.91f * 0.91f * 0.6f * 0.91f) /
                       (friction * friction * friction);
-    float sin = Mth::sin(pig->yRot * PI / 180);
-    float cos = Mth::cos(pig->yRot * PI / 180);
+    float sin = Mth::sin(pig->yRot * M_PI / 180);
+    float cos = Mth::cos(pig->yRot * M_PI / 180);
     float aproxSpeed = pig->getSpeed() * friction2;
     float dist = std::max((int)moveSpeed, 1);
     dist = aproxSpeed / dist;

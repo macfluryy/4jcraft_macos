@@ -1,7 +1,7 @@
 #include "../../../../Header Files/stdafx.h"
 #include "SetExperiencePacket.h"
 #include "PacketListener.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 SetExperiencePacket::SetExperiencePacket() {
     this->experienceProgress = 0;

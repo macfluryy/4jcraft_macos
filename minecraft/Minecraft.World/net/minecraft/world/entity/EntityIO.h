@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "../../../../ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 
 class Level;
 class CompoundTag;

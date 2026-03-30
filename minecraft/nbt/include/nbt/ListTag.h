@@ -1,0 +1,138 @@
+#pragma once
+#include "Tag.h"
+
+#include <vector>
+
+template <class T>
+class ListTag : public Tag {
+private:
+    std::vector<Tag*> list;
+    uint8_t type;
+
+public:
+    ListTag() : Tag(L"") {}
+    ListTag(const std::wstring& name) : Tag(name) {}
+
+    void write(DataOutput* dos) {
+        if (list.size() > 0)
+            type = (list[0])->getId();
+        else
+            type = static_cast<uint8_t>(1);
+
+        dos->writeByte(type);
+        dos->writeInt((int)list.size());
+
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) (*it)->write(dos);
+    }
+
+    void load(DataInput* dis, int tagDepth) {
+        if (tagDepth > MAX_DEPTH) {
+#ifndef _CONTENT_PACKAGE
+            printf("Tried to read NBT tag with too high complexity, depth > %d",
+                   MAX_DEPTH);
+#endif
+            return;
+        }
+        type = dis->readByte();
+        int size = dis->readInt();
+
+        list.clear();
+        for (int i = 0; i < size; i++) {
+            Tag* tag = Tag::newTag(type, L"");
+            tag->load(dis, tagDepth);
+            list.push_back(tag);
+        }
+    }
+
+    uint8_t getId() { return TAG_List; }
+
+    std::wstring toString() {
+        static wchar_t buf[64];
+        swprintf(buf, 64, L"%d entries of type %ls", list.size(),
+                 Tag::getTagName(type));
+        return std::wstring(buf);
+    }
+
+    void print(char* prefix, std::wostream& out) {
+        Tag::print(prefix, out);
+
+        out << prefix << "{" << std::endl;
+
+        char* newPrefix = new char[strlen(prefix) + 4];
+        strcpy(newPrefix, prefix);
+        strcat(newPrefix, "   ");
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) {
+            (*it)->print(newPrefix, out);
+        }
+        delete[] newPrefix;
+        out << prefix << "}" << std::endl;
+    }
+
+    void add(T* tag) {
+        type = tag->getId();
+        // 4J: List tag write/load doesn't preserve tag names so remove them so
+        // we can safely do comparisons There are a few ways I could have fixed
+        // this but this seems the least invasive, most complete fix (covers
+        // other items that also use list tags and require equality checks to
+        // work) considering we can't change the write/load functions.
+        tag->setName(L"");
+        list.push_back(tag);
+    }
+
+    T* get(int index) { return (T*)list[index]; }
+
+    int size() { return (int)list.size(); }
+
+    virtual ~ListTag() {
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) {
+            delete *it;
+        }
+    }
+
+    virtual Tag* copy() {
+        ListTag<T>* res = new ListTag<T>(getName());
+        res->type = type;
+        auto itEnd = list.end();
+        for (auto it = list.begin(); it != itEnd; it++) {
+            T* copy = (T*)(*it)->copy();
+            res->list.push_back(copy);
+        }
+        return res;
+    }
+
+    virtual bool equals(Tag* obj) {
+        if (Tag::equals(obj)) {
+            ListTag* o = (ListTag*)obj;
+            if (type == o->type) {
+                bool equal = false;
+                if (list.size() == o->list.size()) {
+                    equal = true;
+                    auto itEnd = list.end();
+                    // 4J Stu - Pretty inefficient method, but I think we can
+                    // live with it give how often it will happen, and the small
+                    // sizes of the data sets
+                    for (auto it = list.begin(); it != itEnd; ++it) {
+                        bool thisMatches = false;
+                        for (auto it2 = o->list.begin(); it2 != o->list.end();
+                             ++it2) {
+                            if ((*it)->equals(*it2)) {
+                                thisMatches = true;
+                                break;
+                            }
+                        }
+                        if (!thisMatches) {
+                            equal = false;
+                            break;
+                        }
+                    }
+                }
+
+                return equal;
+            }
+        }
+        return false;
+    }
+};

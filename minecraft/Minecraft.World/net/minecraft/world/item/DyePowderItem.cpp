@@ -1,6 +1,6 @@
 
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../level/tile/net.minecraft.world.level.tile.h"
 #include "../phys/net.minecraft.world.phys.h"
 #include "../level/net.minecraft.world.level.h"

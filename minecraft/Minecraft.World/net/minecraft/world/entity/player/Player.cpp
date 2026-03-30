@@ -8,7 +8,7 @@
 // virtual GetType function)
 
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../net.minecraft.h"
 #include "../../net.minecraft.world.h"
 #include "../../../stats/net.minecraft.stats.h"
@@ -425,13 +425,13 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
             Vec3 d{(random->nextFloat() - 0.5) * 0.1,
                    Math::random() * 0.1 + 0.1, 0};
 
-            d.xRot(-xRot * PI / 180);
-            d.yRot(-yRot * PI / 180);
+            d.xRot(-xRot * M_PI / 180);
+            d.yRot(-yRot * M_PI / 180);
 
             Vec3 p{(random->nextFloat() - 0.5) * 0.3,
                    -random->nextFloat() * 0.6 - 0.3, 0.6};
-            p.xRot(-xRot * PI / 180);
-            p.yRot(-yRot * PI / 180);
+            p.xRot(-xRot * M_PI / 180);
+            p.yRot(-yRot * M_PI / 180);
             p = p.add(x, y + getHeadHeight(), z);
 
             level->addParticle(PARTICLE_ICONCRACK(useItem->getItem()->id, 0),
@@ -899,8 +899,8 @@ void Player::die(DamageSource* source) {
     }
 
     if (source != nullptr) {
-        xd = -Mth::cos((hurtDir + yRot) * PI / 180) * 0.1f;
-        zd = -Mth::sin((hurtDir + yRot) * PI / 180) * 0.1f;
+        xd = -Mth::cos((hurtDir + yRot) * M_PI / 180) * 0.1f;
+        zd = -Mth::sin((hurtDir + yRot) * M_PI / 180) * 0.1f;
     } else {
         xd = zd = 0;
     }
@@ -962,19 +962,19 @@ std::shared_ptr<ItemEntity> Player::drop(std::shared_ptr<ItemInstance> item,
     float pow = 0.1f;
     if (randomly) {
         float _pow = random->nextFloat() * 0.5f;
-        float dir = random->nextFloat() * PI * 2;
+        float dir = random->nextFloat() * M_PI * 2;
         thrownItem->xd = -sin(dir) * _pow;
         thrownItem->zd = cos(dir) * _pow;
         thrownItem->yd = 0.2f;
 
     } else {
         pow = 0.3f;
-        thrownItem->xd = -sin(yRot / 180 * PI) * cos(xRot / 180 * PI) * pow;
-        thrownItem->zd = cos(yRot / 180 * PI) * cos(xRot / 180 * PI) * pow;
-        thrownItem->yd = -sin(xRot / 180 * PI) * pow + 0.1f;
+        thrownItem->xd = -sin(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI) * pow;
+        thrownItem->zd = cos(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI) * pow;
+        thrownItem->yd = -sin(xRot / 180 * M_PI) * pow + 0.1f;
         pow = 0.02f;
 
-        float dir = random->nextFloat() * PI * 2;
+        float dir = random->nextFloat() * M_PI * 2;
         pow *= random->nextFloat();
         thrownItem->xd += cos(dir) * pow;
         thrownItem->yd += (random->nextFloat() - random->nextFloat()) * 0.1f;
@@ -1353,8 +1353,8 @@ void Player::attack(std::shared_ptr<Entity> entity) {
         delete damageSource;
         if (wasHurt) {
             if (knockback > 0) {
-                entity->push(-Mth::sin(yRot * PI / 180) * knockback * .5f, 0.1,
-                             Mth::cos(yRot * PI / 180) * knockback * .5f);
+                entity->push(-Mth::sin(yRot * M_PI / 180) * knockback * .5f, 0.1,
+                             Mth::cos(yRot * M_PI / 180) * knockback * .5f);
                 xd *= 0.6;
                 zd *= 0.6;
                 setSprinting(false);
@@ -1429,7 +1429,7 @@ void Player::respawn() { deathFadeCounter = 0; }
 
 void Player::animateRespawn(std::shared_ptr<Player> player, Level* level) {
     for (int i = 0; i < 45; i++) {
-        float angle = i * PI * 4.0f / 25.0f;
+        float angle = i * M_PI * 4.0f / 25.0f;
         float xo = Mth::cos(angle) * 0.7f;
         float zo = Mth::sin(angle) * 0.7f;
 
@@ -2200,7 +2200,7 @@ bool Player::isInvisibleTo(std::shared_ptr<Player> player) {
     return isInvisible();
 }
 
-ItemInstanceArray Player::getEquipmentSlots() { return inventory->armor; }
+arrayWithLength<std::shared_ptr<ItemInstance>> Player::getEquipmentSlots() { return inventory->armor; }
 
 bool Player::isCapeHidden() { return getPlayerFlag(FLAG_HIDE_CAPE); }
 

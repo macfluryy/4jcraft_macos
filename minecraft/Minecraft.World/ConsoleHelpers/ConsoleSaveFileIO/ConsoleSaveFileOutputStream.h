@@ -2,7 +2,7 @@
 // 4J Stu - Implements the Java InputStream but rather than writing directly to
 // disc it writes through the save file
 
-#include "../../ConsoleJavaLibs/InputOutputStream/OutputStream.h"
+#include "java/InputOutputStream/OutputStream.h"
 
 #include "ConsoleSavePath.h"
 

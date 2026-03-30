@@ -3,7 +3,7 @@
 #include "../net.minecraft.world.entity.h"
 #include "../../level/net.minecraft.world.level.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Throwable.h"
 
 void Throwable::_throwableInit() {
@@ -41,16 +41,16 @@ Throwable::Throwable(Level* level, std::shared_ptr<LivingEntity> mob)
 
     moveTo(mob->x, mob->y + mob->getHeadHeight(), mob->z, mob->yRot, mob->xRot);
 
-    x -= cos(yRot / 180 * PI) * 0.16f;
+    x -= cos(yRot / 180 * M_PI) * 0.16f;
     y -= 0.1f;
-    z -= sin(yRot / 180 * PI) * 0.16f;
+    z -= sin(yRot / 180 * M_PI) * 0.16f;
     setPos(x, y, z);
     heightOffset = 0;
 
     float speed = 0.4f;
-    xd = (-sin(yRot / 180 * PI) * cos(xRot / 180 * PI)) * speed;
-    zd = (cos(yRot / 180 * PI) * cos(xRot / 180 * PI)) * speed;
-    yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * PI)) * speed;
+    xd = (-sin(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI)) * speed;
+    zd = (cos(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI)) * speed;
+    yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * M_PI)) * speed;
 
     shoot(xd, yd, zd, getThrowPower(), 1);
 }
@@ -92,8 +92,8 @@ void Throwable::shoot(double xd, double yd, double zd, float pow,
 
     float sd = (float)sqrt(xd * xd + zd * zd);
 
-    yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
     life = 0;
 }
 
@@ -103,8 +103,8 @@ void Throwable::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         float sd = (float)sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
     }
 }
 
@@ -189,8 +189,8 @@ void Throwable::tick() {
     z += zd;
 
     float sd = (float)sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRot = (float)(atan2(yd, (double)sd) * 180 / PI);
+    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

@@ -1,7 +1,7 @@
 #include "../../../../../../Header Files/stdafx.h"
 #include <mutex>
-#include "../../../../../../ConsoleJavaLibs/File.h"
-#include "../../../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/File.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "../../../entity/net.minecraft.world.entity.h"
 #include "../../net.minecraft.world.level.h"
 #include "../net.minecraft.world.level.chunk.h"

@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/Arrays.h"
+#include "java/Arrays.h"
 #include "../net.minecraft.world.level.h"
 #include "../../phys/net.minecraft.world.phys.h"
 #include "WaterLevelChunk.h"

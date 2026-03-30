@@ -8,7 +8,7 @@
 #include "net.minecraft.world.entity.h"
 #include "../level/tile/net.minecraft.world.level.tile.h"
 #include "../level/saveddata/net.minecraft.world.level.saveddata.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "ItemFrame.h"
 
 // 4J - added for common ctor code

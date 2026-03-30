@@ -6,7 +6,7 @@
 #include "../../Header Files/PortableFileIO.h"
 #include "ConsoleSaveFileSplit.h"
 #include "ConsoleSaveFileConverter.h"
-#include "../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "../../Header Files/compression.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"

@@ -156,8 +156,8 @@ void WitherBoss::aiStep() {
             double zd = e->z - hz;
             double sd = Mth::sqrt(xd * xd + zd * zd);
 
-            float yRotD = (float)(atan2(zd, xd) * 180 / PI) - 90;
-            float xRotD = (float)-(atan2(yd, sd) * 180 / PI);
+            float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
+            float xRotD = (float)-(atan2(yd, sd) * 180 / M_PI);
             xRotHeads[i] = rotlerp(xRotHeads[i], xRotD, 40);
             yRotHeads[i] = rotlerp(yRotHeads[i], yRotD, 10);
 
@@ -348,7 +348,7 @@ double WitherBoss::getHeadX(int index) {
     if (index <= 0) {
         return x;
     }
-    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * PI;
+    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * M_PI;
     float cos = Mth::cos(headAngle);
     return x + cos * 1.3;
 }
@@ -365,7 +365,7 @@ double WitherBoss::getHeadZ(int index) {
     if (index <= 0) {
         return z;
     }
-    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * PI;
+    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * M_PI;
     float sin = Mth::sin(headAngle);
     return z + sin * 1.3;
 }

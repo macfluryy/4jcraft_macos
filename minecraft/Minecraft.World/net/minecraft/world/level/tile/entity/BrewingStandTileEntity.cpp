@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "BrewingStandTileEntity.h"
 #include "../../../../SharedConstants.h"
 #include "../../../../net.minecraft.h"
@@ -16,7 +16,7 @@ intArray BrewingStandTileEntity::SLOTS_FOR_OTHER_FACES =
 
 BrewingStandTileEntity::BrewingStandTileEntity() {
     brewTime = 0;
-    items = ItemInstanceArray(4);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(4);
     name = L"";
 }
 
@@ -261,7 +261,7 @@ void BrewingStandTileEntity::load(CompoundTag* base) {
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
     delete[] items.data;
-    items = ItemInstanceArray(getContainerSize());
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         int slot = tag->getByte(L"Slot");

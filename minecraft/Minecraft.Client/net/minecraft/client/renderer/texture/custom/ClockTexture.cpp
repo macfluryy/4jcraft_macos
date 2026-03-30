@@ -3,7 +3,7 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "../../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../Texture.h"
 #include "ClockTexture.h"
 

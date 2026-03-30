@@ -46,6 +46,8 @@ if host_machine.system() == 'linux'
 endif
 
 client_dependencies = [
+  java_dep,
+  nbt_dep,
   render_dep,
   input_dep,
   profile_dep,

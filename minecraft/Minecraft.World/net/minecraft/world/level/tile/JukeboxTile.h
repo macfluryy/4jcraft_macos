@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseEntityTile.h"
-#include "../../../../../com/mojang/nbt/CompoundTag.h"
+#include "nbt/CompoundTag.h"
 #include "entity/TileEntity.h"
 
 class CompoundTag;

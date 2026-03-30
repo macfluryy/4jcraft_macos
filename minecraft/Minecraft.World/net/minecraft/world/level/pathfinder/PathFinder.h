@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../../../ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 
 class LevelSource;
 

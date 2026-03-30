@@ -37,7 +37,7 @@ bool ThinFenceTile::shouldRenderFace(LevelSource* level, int x, int y, int z,
 }
 
 void ThinFenceTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                             AABBList* boxes, std::shared_ptr<Entity> source) {
+                             std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
     bool n = attachsTo(level->getTile(x, y, z - 1));
     bool s = attachsTo(level->getTile(x, y, z + 1));
     bool w = attachsTo(level->getTile(x - 1, y, z));

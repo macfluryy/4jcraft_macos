@@ -1,6 +1,6 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../ConsoleJavaLibs/ByteBuffer.h"
-#include "../../../../../../ConsoleJavaLibs/File.h"
+#include "java/ByteBuffer.h"
+#include "java/File.h"
 #include "ZoneFile.h"
 
 namespace {

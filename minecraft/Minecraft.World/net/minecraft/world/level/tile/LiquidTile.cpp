@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../net.minecraft.world.level.h"
 #include "../dimension/net.minecraft.world.level.dimension.h"
 #include "../biome/net.minecraft.world.level.biome.h"
@@ -314,7 +314,7 @@ double LiquidTile::getSlopeAngle(LevelSource* level, int x, int y, int z,
     if (m == Material::water) flow = Tile::water->getFlow(level, x, y, z);
     if (m == Material::lava) flow = Tile::lava->getFlow(level, x, y, z);
     if (flow.x == 0 && flow.z == 0) return -1000;
-    return atan2(flow.z, flow.x) - PI / 2;
+    return atan2(flow.z, flow.x) - M_PI / 2;
 }
 
 void LiquidTile::onPlace(Level* level, int x, int y, int z) {

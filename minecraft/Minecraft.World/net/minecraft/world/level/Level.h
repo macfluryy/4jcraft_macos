@@ -351,14 +351,14 @@ public:
     void removeListener(LevelListener* listener);
 
 private:
-    AABBList boxes;
+    std::vector<AABB> boxes;
 
 public:
-    AABBList* getCubes(
+    std::vector<AABB>* getCubes(
         std::shared_ptr<Entity> source, AABB* box, bool noEntities = false,
         bool blockAtEdge =
             false);  // 4J: Added noEntities & blockAtEdge parameters
-    AABBList* getTileCubes(
+    std::vector<AABB>* getTileCubes(
         AABB* box, bool blockAtEdge =
                        false);  // 4J: Added noEntities & blockAtEdge parameters
     int getOldSkyDarken(float a);  // 4J - change brought forward from 1.8.2

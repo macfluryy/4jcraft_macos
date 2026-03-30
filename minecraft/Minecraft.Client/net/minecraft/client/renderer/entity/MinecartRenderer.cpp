@@ -60,7 +60,7 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
         if (dir.length() == 0) {
         } else {
             dir = dir.normalize();
-            rot = (float)(atan2(dir.z, dir.x) * 180 / PI);
+            rot = (float)(atan2(dir.z, dir.x) * 180 / M_PI);
             xRot = (float)(atan(dir.y) * 73);
         }
     }

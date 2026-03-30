@@ -19,7 +19,7 @@ OreFeature::OreFeature(int tile, int count, int targetTile) {
 
 bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
     PIXBeginNamedEvent(0, "Place Ore Feature");
-    float dir = random->nextFloat() * PI;
+    float dir = random->nextFloat() * M_PI;
 
     double x0 = x + 8 + Mth::sin(dir) * count / 8;
     double x1 = x + 8 - Mth::sin(dir) * count / 8;
@@ -42,8 +42,8 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
         int minZ = z0 - 1;
 
         double maxss = count / 16;
-        double maxr = (Mth::sin(PI) + 1) * maxss + 1;
-        double maxhr = (Mth::sin(PI) + 1) * maxss + 1;
+        double maxr = (Mth::sin(M_PI) + 1) * maxss + 1;
+        double maxhr = (Mth::sin(M_PI) + 1) * maxss + 1;
         int maxX = Mth::floor(x1 + maxr / 2);
         int maxY = Mth::floor(y1 + maxhr / 2);
         int maxZ = Mth::floor(z1 + maxr / 2);
@@ -63,8 +63,8 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
         double zz = z0 + (z1 - z0) * d / count;
 
         double ss = random->nextDouble() * count / 16;
-        double r = (Mth::sin(d * PI / count) + 1) * ss + 1;
-        double hr = r;  //(Mth::sin(d * PI / count) + 1) * ss + 1;
+        double r = (Mth::sin(d * M_PI / count) + 1) * ss + 1;
+        double hr = r;  //(Mth::sin(d * M_PI / count) + 1) * ss + 1;
 
         double halfR = r / 2;
         double halfHR = halfR;  // hr/2;

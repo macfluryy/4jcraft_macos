@@ -5,7 +5,7 @@
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Socket.h"
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"

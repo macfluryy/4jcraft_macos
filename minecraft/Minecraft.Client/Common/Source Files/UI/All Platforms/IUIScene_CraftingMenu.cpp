@@ -168,7 +168,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
         case ACTION_MENU_A:
             // Do some crafting!
             if (m_pPlayer && m_pPlayer->inventory) {
-                // RecipyList *recipes = ((Recipes
+                // std::vector<Recipy*> *recipes = ((Recipes
                 // *)Recipes::getInstance())->getRecipies();
                 Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
                     Recipes::getInstance()->getRecipeIngredientsArray();
@@ -627,7 +627,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         }
         }
         */
-        RecipyList* recipes = ((Recipes*)Recipes::getInstance())->getRecipies();
+        std::vector<Recipy*>* recipes = ((Recipes*)Recipes::getInstance())->getRecipies();
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();
         int iRecipeC = (int)recipes->size();
@@ -868,7 +868,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
 
     // run through the canbemade list and update the icons displayed
     int iIndex = 0;
-    // RecipyList *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -929,7 +929,7 @@ void IUIScene_CraftingMenu::UpdateHighlight() {
 
     bool bCanBeMade = CanBeMadeA[m_iCurrentSlotHIndex].iCount != 0;
     if (bCanBeMade) {
-        // RecipyList *recipes = ((Recipes
+        // std::vector<Recipy*> *recipes = ((Recipes
         // *)Recipes::getInstance())->getRecipies();
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();
@@ -990,7 +990,7 @@ void IUIScene_CraftingMenu::UpdateHighlight() {
 //
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::UpdateVerticalSlots() {
-    // RecipyList *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -1061,7 +1061,7 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
 //
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::DisplayIngredients() {
-    // RecipyList *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -1228,7 +1228,7 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
     int iIDSString = 0;
-    // RecipyList *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -1316,7 +1316,7 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
 //
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::UpdateTooltips() {
-    // RecipyList *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
     // Update tooltips
@@ -1398,7 +1398,7 @@ void IUIScene_CraftingMenu::HandleInventoryUpdated() {
 bool IUIScene_CraftingMenu::isItemSelected(int itemId) {
     bool isSelected = false;
     if (m_pPlayer && m_pPlayer->inventory) {
-        // RecipyList *recipes = ((Recipes
+        // std::vector<Recipy*> *recipes = ((Recipes
         // *)Recipes::getInstance())->getRecipies();
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();

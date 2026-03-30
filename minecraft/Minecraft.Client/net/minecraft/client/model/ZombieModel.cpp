@@ -18,14 +18,14 @@ void ZombieModel::setupAnim(float time, float r, float bob, float yRot,
     HumanoidModel::setupAnim(time, r, bob, yRot, xRot, scale, entity,
                              uiBitmaskOverrideAnim);
 
-    float attack2 = Mth::sin(attackTime * PI);
-    float attack = Mth::sin((1 - (1 - attackTime) * (1 - attackTime)) * PI);
+    float attack2 = Mth::sin(attackTime * M_PI);
+    float attack = Mth::sin((1 - (1 - attackTime) * (1 - attackTime)) * M_PI);
     arm0->zRot = 0;
     arm1->zRot = 0;
     arm0->yRot = -(0.1f - attack2 * 0.6f);
     arm1->yRot = +(0.1f - attack2 * 0.6f);
-    arm0->xRot = -(float)PI / 2.0f;
-    arm1->xRot = -(float)PI / 2.0f;
+    arm0->xRot = -(float)M_PI / 2.0f;
+    arm1->xRot = -(float)M_PI / 2.0f;
     arm0->xRot -= attack2 * 1.2f - attack * 0.4f;
     arm1->xRot -= attack2 * 1.2f - attack * 0.4f;
     arm0->zRot += ((Mth::cos(bob * 0.09f)) * 0.05f + 0.05f);

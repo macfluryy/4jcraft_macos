@@ -23,7 +23,7 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/HopperTileEntity.h"
-#include "Minecraft.World/Header Files/PathHelper.h"
+#include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "../net/minecraft/stats/StatsCounter.h"
 #include "../net/minecraft/server/level/GameMode.h"
 #include "../Windows64/Source Files/Social/SocialManager.h"
@@ -37,7 +37,7 @@
 #include "../net/minecraft/server/level/ServerPlayer.h"
 #include "Source Files/GameRules/ConsoleGameRules.h"
 #include "Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
 #include "../net/minecraft/client/User.h"
 #include <cstring>

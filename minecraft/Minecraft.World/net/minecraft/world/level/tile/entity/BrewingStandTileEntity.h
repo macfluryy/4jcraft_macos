@@ -10,7 +10,7 @@ public:
     static const int INGREDIENT_SLOT = 3;
 
 private:
-    ItemInstanceArray items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> items;
     static intArray SLOTS_FOR_UP;
     static intArray SLOTS_FOR_OTHER_FACES;
 

@@ -3,7 +3,7 @@
 #include "../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../level/net.minecraft.world.level.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "FallingTile.h"
 
 // 4J - added for common ctor code

@@ -1,5 +1,5 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../util/Mth.h"
 #include "../../network/packet/net.minecraft.network.packet.h"
 #include "../level/net.minecraft.world.level.h"
@@ -22,7 +22,7 @@
 #include "../item/alchemy/net.minecraft.world.item.alchemy.h"
 #include "../item/enchantment/net.minecraft.world.item.enchantment.h"
 #include "../scores/net.minecraft.world.scores.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "LivingEntity.h"
 #include <optional>
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
@@ -44,7 +44,7 @@ AttributeModifier* LivingEntity::SPEED_MODIFIER_SPRINTING =
 void LivingEntity::_init() {
     attributes = nullptr;
     combatTracker = new CombatTracker(this);
-    lastEquipment = ItemInstanceArray(5);
+    lastEquipment = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
 
     swinging = false;
     swingTime = 0;
@@ -113,7 +113,7 @@ LivingEntity::LivingEntity(Level* level) : Entity(level) {
     rotA = (float)(Math::random() + 1) * 0.01f;
     setPos(x, y, z);
     timeOffs = (float)Math::random() * 12398;
-    yRot = (float)(Math::random() * PI * 2);
+    yRot = (float)(Math::random() * M_PI * 2);
     yHeadRot = yRot;
 
     footSize = 0.5f;
@@ -357,7 +357,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->putShort(L"AttackTime", (short)attackTime);
     entityTag->putFloat(L"AbsorptionAmount", getAbsorptionAmount());
 
-    ItemInstanceArray items = getEquipmentSlots();
+    arrayWithLength<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
         if (item != nullptr) {
@@ -768,7 +768,7 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
                 xd = (Math::random() - Math::random()) * 0.01;
                 zd = (Math::random() - Math::random()) * 0.01;
             }
-            hurtDir = (float)(atan2(zd, xd) * 180 / PI) - yRot;
+            hurtDir = (float)(atan2(zd, xd) * 180 / M_PI) - yRot;
             knockback(sourceEntity, dmg, xd, zd);
         } else {
             hurtDir = (float)(int)((Math::random() * 2) *
@@ -796,13 +796,13 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
     for (int i = 0; i < 5; i++) {
         Vec3 d = Vec3((random->nextFloat() - 0.5) * 0.1,
                       Math::random() * 0.1 + 0.1, 0);
-        d.xRot(-xRot * PI / 180);
-        d.yRot(-yRot * PI / 180);
+        d.xRot(-xRot * M_PI / 180);
+        d.yRot(-yRot * M_PI / 180);
 
         Vec3 p = Vec3((random->nextFloat() - 0.5) * 0.3,
                       -random->nextFloat() * 0.6 - 0.3, 0.6);
-        p.xRot(-xRot * PI / 180);
-        p.yRot(-yRot * PI / 180);
+        p.xRot(-xRot * M_PI / 180);
+        p.yRot(-yRot * M_PI / 180);
         p = p.add(x, y + getHeadHeight(), z);
         level->addParticle(PARTICLE_ICONCRACK(itemInstance->getItem()->id, 0),
                            p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
@@ -951,7 +951,7 @@ void LivingEntity::animateHurt() {
  */
 int LivingEntity::getArmorValue() {
     int val = 0;
-    ItemInstanceArray items = getEquipmentSlots();
+    arrayWithLength<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
         if (item != nullptr &&
@@ -1439,7 +1439,7 @@ void LivingEntity::tick() {
     if (sideDist > 0.05f * 0.05f) {
         tRun = 1;
         walkSpeed = sqrt(sideDist) * 3;
-        yBodyRotT = ((float)atan2(zd, xd) * 180 / (float)PI - 90);
+        yBodyRotT = ((float)atan2(zd, xd) * 180 / (float)M_PI - 90);
     }
     if (attackAnim > 0) {
         yBodyRotT = yRot;
@@ -1511,7 +1511,7 @@ void LivingEntity::aiStep() {
         // pop up the sides of walls, undersides of trees etc.
         AABB shrinkbb = bb.shrink(0.1, 0, 0.1);
         shrinkbb.y1 = shrinkbb.y0 + 0.1;
-        AABBList* collisions = level->getCubes(shared_from_this(), &shrinkbb);
+        std::vector<AABB>* collisions = level->getCubes(shared_from_this(), &shrinkbb);
         if (collisions->size() > 0) {
             double yTop = 0;
             auto itEnd = collisions->end();
@@ -1653,8 +1653,8 @@ std::optional<Vec3> LivingEntity::getLookAngle() { return getViewVector(1); }
 
 Vec3 LivingEntity::getViewVector(float a) {
     if (a == 1) {
-        float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
-        float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
+        float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
+        float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
         float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
         float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 
@@ -1663,8 +1663,8 @@ Vec3 LivingEntity::getViewVector(float a) {
     float xRot = xRotO + (this->xRot - xRotO) * a;
     float yRot = yRotO + (this->yRot - yRotO) * a;
 
-    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
-    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
+    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
+    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
     float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
     float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 

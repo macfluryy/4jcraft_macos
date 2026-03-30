@@ -1,26 +1,26 @@
 #include "../../../Header Files/stdafx.h"
 #include "Mth.h"
-#include "../../../ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "../../../ConsoleHelpers/StringHelpers.h"
 
 const int Mth::BIG_ENOUGH_INT = 1024;
 const float Mth::BIG_ENOUGH_FLOAT = BIG_ENOUGH_INT;
-const float Mth::DEGRAD = PI / 180.0f;
-const float Mth::RADDEG = 180.0f / PI;
-const float Mth::RAD_TO_GRAD = PI / 180.0f;
+const float Mth::DEGRAD = M_PI / 180.0f;
+const float Mth::RADDEG = 180.0f / M_PI;
+const float Mth::RAD_TO_GRAD = M_PI / 180.0f;
 
 float* Mth::_sin = nullptr;
 
 // 4jcraft for clarity
 constexpr size_t SIN_TAB_CNT = 65536;
 
-const float Mth::sinScale = 65536.0f / (float)(PI * 2);
+const float Mth::sinScale = 65536.0f / (float)(M_PI * 2);
 
 // 4J - added - was in static constructor
 void Mth::init() {
     _sin = new float[SIN_TAB_CNT];
     for (int i = 0; i < SIN_TAB_CNT; i++) {
-        _sin[i] = (float)::sin(i * PI * 2 / (float)SIN_TAB_CNT);
+        _sin[i] = (float)::sin(i * M_PI * 2 / (float)SIN_TAB_CNT);
     }
 }
 
@@ -38,7 +38,7 @@ float Mth::sin(float i) {
 float Mth::cos(float i) {
     if (_sin == nullptr) init();  // 4J - added
     // 4jcraft same thing as ::sin but shift by SIN_TAB_CNT / 4
-    // which is aquivalent to shift by pi / 2
+    // which is aquivalent to shift by M_PI / 2
     // and again the same modulo logic to cramp and map it onto the computed
     // table
 

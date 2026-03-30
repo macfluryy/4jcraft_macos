@@ -21,7 +21,7 @@
 
 #include "../../net/minecraft/client/multiplayer/ClientConnection.h"
 #include "../../net/minecraft/client/User.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "../../net/minecraft/stats/StatsCounter.h"
 #include "../../net/minecraft/client/multiplayer/ConnectScreen.h"

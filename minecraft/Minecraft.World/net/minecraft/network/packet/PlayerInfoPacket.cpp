@@ -6,7 +6,7 @@
 #include <qnet.h>
 #endif  // __linux__
 #include "PacketListener.h"
-#include "../../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "PlayerInfoPacket.h"
 
 PlayerInfoPacket::PlayerInfoPacket() {

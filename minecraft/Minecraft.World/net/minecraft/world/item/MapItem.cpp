@@ -12,7 +12,7 @@
 #include "net.minecraft.world.item.h"
 #include "MapItem.h"
 #include "../inventory/net.minecraft.world.inventory.h"
-#include "../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 MapItem::MapItem(int id) : ComplexItem(id) { setStackedByData(true); }
 

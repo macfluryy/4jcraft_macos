@@ -3,7 +3,7 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "../../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../Texture.h"
 #include "CompassTexture.h"
 
@@ -51,9 +51,9 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         double za = spawnPos->z - z;
         delete spawnPos;
         yRot = (int)yRot % 360;
-        rott = -((yRot - 90) * PI / 180 - atan2(za, xa));
+        rott = -((yRot - 90) * M_PI / 180 - atan2(za, xa));
         if (!level->dimension->isNaturalDimension()) {
-            rott = Math::random() * PI * 2;
+            rott = Math::random() * M_PI * 2;
         }
     }
 
@@ -61,8 +61,8 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         rot = rott;
     } else {
         double rotd = rott - rot;
-        while (rotd < -PI) rotd += PI * 2;
-        while (rotd >= PI) rotd -= PI * 2;
+        while (rotd < -M_PI ) rotd += M_PI * 2;
+        while (rotd >= M_PI) rotd -= M_PI * 2;
         if (rotd < -1) rotd = -1;
         if (rotd > 1) rotd = 1;
         rota += rotd * 0.1;
@@ -73,7 +73,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
     // 4J Stu - We share data with another texture
     if (m_dataTexture != nullptr) {
         int newFrame =
-            (int)(((rot / (PI * 2)) + 1.0) * m_dataTexture->frames->size()) %
+            (int)(((rot / (M_PI * 2)) + 1.0) * m_dataTexture->frames->size()) %
             m_dataTexture->frames->size();
         while (newFrame < 0) {
             newFrame = (newFrame + m_dataTexture->frames->size()) %
@@ -87,7 +87,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         }
     } else {
         int newFrame =
-            (int)(((rot / (PI * 2)) + 1.0) * frames->size()) % frames->size();
+            (int)(((rot / (M_PI * 2)) + 1.0) * frames->size()) % frames->size();
         while (newFrame < 0) {
             newFrame = (newFrame + frames->size()) % frames->size();
         }

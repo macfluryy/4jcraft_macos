@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../../../net.minecraft.h"
 #include "../../../entity/player/net.minecraft.world.entity.player.h"
 #include "../../../item/net.minecraft.world.item.h"
@@ -24,7 +24,7 @@ const int FurnaceTileEntity::BURN_INTERVAL = 10 * 20;
 
 // 4J Stu - Need a ctor to initialise member variables
 FurnaceTileEntity::FurnaceTileEntity() : TileEntity() {
-    items = ItemInstanceArray(3);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(3);
 
     litTime = 0;
     litDuration = 0;
@@ -100,7 +100,7 @@ void FurnaceTileEntity::load(CompoundTag* base) {
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
     delete[] items.data;
-    items = ItemInstanceArray(getContainerSize());
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot");

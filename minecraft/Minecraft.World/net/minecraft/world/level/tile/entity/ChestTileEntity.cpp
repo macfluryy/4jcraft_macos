@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../../net.minecraft.world.h"
 #include "../../net.minecraft.world.level.h"
 #include "TileEntity.h"
@@ -21,7 +21,7 @@ int ChestTileEntity::getContainerType() {
 }
 
 void ChestTileEntity::_init(bool isBonusChest) {
-    items = new ItemInstanceArray(9 * 4);
+    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(9 * 4);
 
     hasCheckedNeighbors = false;
     this->isBonusChest = isBonusChest;
@@ -119,7 +119,7 @@ void ChestTileEntity::load(CompoundTag* base) {
         delete[] items->data;
         delete items;
     }
-    items = new ItemInstanceArray(getContainerSize());
+    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
     if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);

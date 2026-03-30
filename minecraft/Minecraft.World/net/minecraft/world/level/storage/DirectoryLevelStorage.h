@@ -25,7 +25,7 @@
 // The save file version in which we added the End dimension map mappings
 #define END_DIMENSION_MAP_MAPPINGS_SAVE_VERSION 5
 
-#include "../../../../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "LevelStorage.h"
 #include "PlayerIO.h"
 

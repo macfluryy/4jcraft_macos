@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../ConsoleJavaLibs/ByteBuffer.h"
+#include "java/ByteBuffer.h"
 #include "ZoneIo.h"
 
 namespace {

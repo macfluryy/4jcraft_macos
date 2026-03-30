@@ -1,6 +1,6 @@
 #include "../../../../../Header Files/stdafx.h"
 #include "Node.h"
-#include "../../../../../ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "BinaryHeap.h"
 
 #include <limits>

@@ -3,7 +3,7 @@
 #include "Biome.h"
 #include "BiomeSource.h"
 #include "BiomeCache.h"
-#include "../../../../../ConsoleJavaLibs/System.h"
+#include "java/System.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
     // 	temps = floatArray(ZONE_SIZE * ZONE_SIZE, false);		// MGH -

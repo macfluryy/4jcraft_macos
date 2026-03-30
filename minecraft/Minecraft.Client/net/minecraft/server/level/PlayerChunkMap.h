@@ -1,5 +1,5 @@
 #pragma once
-#include "Minecraft.World/ConsoleJavaLibs/JavaIntHash.h"
+#include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
 class ServerPlayer;
 class ServerLevel;

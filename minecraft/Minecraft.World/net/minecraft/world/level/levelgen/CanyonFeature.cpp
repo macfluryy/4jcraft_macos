@@ -39,7 +39,7 @@ void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
     }
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (Mth::sin(step * PI / dist) * thickness) * 1;
+        double rad = 1.5 + (Mth::sin(step * M_PI / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
         rad *= (random->nextFloat() * 0.25 + 0.75);
@@ -167,7 +167,7 @@ void CanyonFeature::addFeature(Level* level, int x, int z, int xOffs, int zOffs,
     int tunnels = 1;
 
     for (int i = 0; i < tunnels; i++) {
-        float yRot = random->nextFloat() * PI * 2;
+        float yRot = random->nextFloat() * M_PI * 2;
         float xRot = ((random->nextFloat() - 0.5f) * 2) / 8;
         float thickness = (random->nextFloat() * 2 + random->nextFloat()) * 2;
 

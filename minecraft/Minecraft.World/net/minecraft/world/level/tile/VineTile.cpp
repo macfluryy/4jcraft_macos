@@ -1,7 +1,7 @@
 #include "../../../../../Header Files/stdafx.h"
 #include "VineTile.h"
 #include "../material/Material.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../Facing.h"
 #include "../net.minecraft.world.level.h"
 #include "../../item/net.minecraft.world.item.h"

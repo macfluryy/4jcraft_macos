@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UseAnim.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../entity/ai/attributes/Attribute.h"
 
 class Entity;

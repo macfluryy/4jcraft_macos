@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "ExplodeParticle.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/JavaMath.h"
+#include "java/Random.h"
 
 ExplodeParticle::ExplodeParticle(Level* level, double x, double y, double z,
                                  double xa, double ya, double za)

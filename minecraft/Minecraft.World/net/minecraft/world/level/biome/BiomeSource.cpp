@@ -3,7 +3,7 @@
 #include "../storage/net.minecraft.world.level.storage.h"
 #include "net.minecraft.world.level.biome.h"
 #include "../newbiome/layer/net.minecraft.world.level.newbiome.layer.h"
-#include "../../../../../ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "BiomeSource.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"

@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-// #include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "MultiPlayerLocalPlayer.h"
 #include "ClientConnection.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"

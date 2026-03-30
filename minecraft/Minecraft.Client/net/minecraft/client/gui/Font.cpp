@@ -4,10 +4,10 @@
 #include "../Options.h"
 #include "../renderer/Tesselator.h"
 #include "../resources/ResourceLocation.h"
-#include "Minecraft.World/ConsoleJavaLibs/IntBuffer.h"
+#include "java/IntBuffer.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 
 Font::Font(Options* options, const std::wstring& name, Textures* textures,
            bool enforceUnicode, ResourceLocation* textureLocation, int cols,

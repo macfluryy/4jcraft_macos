@@ -1,5 +1,7 @@
 #pragma once
-// using namespace stdtd;
+
+#include <sstream>
+#include <string>
 
 std::wstring toLower(const std::wstring& a);
 std::wstring trimString(const std::wstring& a);

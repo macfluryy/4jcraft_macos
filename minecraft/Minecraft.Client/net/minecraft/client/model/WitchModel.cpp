@@ -57,9 +57,9 @@ void WitchModel::setupAnim(float time, float r, float bob, float yRot,
     nose->translateX = nose->translateY = nose->translateZ = 0;
 
     float speed = 0.01f * (entity->entityId % 10);
-    nose->xRot = (sin(entity->tickCount * speed) * 4.5f) * PI / 180;
+    nose->xRot = (sin(entity->tickCount * speed) * 4.5f) * M_PI / 180;
     nose->yRot = 0;
-    nose->zRot = (cos(entity->tickCount * speed) * 2.5f) * PI / 180;
+    nose->zRot = (cos(entity->tickCount * speed) * 2.5f) * M_PI / 180;
 
     if (holdingItem) {
         nose->xRot = -0.9f;

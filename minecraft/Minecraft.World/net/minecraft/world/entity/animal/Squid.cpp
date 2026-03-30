@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../phys/net.minecraft.world.phys.h"
 #include "../../level/net.minecraft.world.level.h"
@@ -80,17 +80,17 @@ void Squid::aiStep() {
     oldTentacleAngle = tentacleAngle;
 
     tentacleMovement += tentacleSpeed;
-    if (tentacleMovement > (float)PI * 2.0f) {
-        tentacleMovement -= (float)PI * 2.0f;
+    if (tentacleMovement > (float)M_PI * 2.0f) {
+        tentacleMovement -= (float)M_PI * 2.0f;
         if (random->nextInt(10) == 0)
             tentacleSpeed = 1 / (random->nextFloat() + 1) * 0.2f;
     }
 
     if (isInWater()) {
-        if (tentacleMovement < PI) {
-            float tentacleScale = tentacleMovement / PI;
+        if (tentacleMovement < M_PI) {
+            float tentacleScale = tentacleMovement / M_PI;
             tentacleAngle =
-                Mth::sin(tentacleScale * tentacleScale * PI) * PI * 0.25f;
+                Mth::sin(tentacleScale * tentacleScale * M_PI) * M_PI * 0.25f;
 
             if (tentacleScale > .75) {
                 speed = 1.0f;
@@ -112,14 +112,14 @@ void Squid::aiStep() {
 
         double horizontalMovement = sqrt(xd * xd + zd * zd);
 
-        yBodyRot += ((-(float)atan2(xd, zd) * 180 / PI) - yBodyRot) * 0.1f;
+        yBodyRot += ((-(float)atan2(xd, zd) * 180 / M_PI) - yBodyRot) * 0.1f;
         yRot = yBodyRot;
-        zBodyRot = zBodyRot + (float)PI * rotateSpeed * 1.5f;
+        zBodyRot = zBodyRot + (float)M_PI * rotateSpeed * 1.5f;
         xBodyRot +=
-            ((-(float)atan2(horizontalMovement, yd) * 180 / PI) - xBodyRot) *
+            ((-(float)atan2(horizontalMovement, yd) * 180 / M_PI) - xBodyRot) *
             0.1f;
     } else {
-        tentacleAngle = Mth::abs(Mth::sin(tentacleMovement)) * PI * 0.25f;
+        tentacleAngle = Mth::abs(Mth::sin(tentacleMovement)) * M_PI * 0.25f;
 
         if (!level->isClientSide) {
             // unable to move, apply gravity
@@ -144,7 +144,7 @@ void Squid::serverAiStep() {
         tx = ty = tz = 0;
     } else if (random->nextInt(50) == 0 || !wasInWater ||
                (tx == 0 && ty == 0 && tz == 0)) {
-        float angle = random->nextFloat() * PI * 2.0f;
+        float angle = random->nextFloat() * M_PI * 2.0f;
         tx = Mth::cos(angle) * 0.2f;
         ty = -0.1f + random->nextFloat() * 0.2f;
         tz = Mth::sin(angle) * 0.2f;

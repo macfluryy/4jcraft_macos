@@ -2,7 +2,7 @@
 #include "ItemRenderer.h"
 #include "../TileRenderer.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"

@@ -24,7 +24,7 @@ private:
     static const intArray SLOTS_FOR_SIDES;
 
     static const int BURN_INTERVAL;
-    ItemInstanceArray items;
+    arrayWithLength<std::shared_ptr<ItemInstance>> items;
 
     // 4J-JEV: Added for 'Renewable Energy' achievement.
     // Should be true iff characoal was consumed whilst cooking the current

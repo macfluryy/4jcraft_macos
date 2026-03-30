@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../ConsoleJavaLibs/Color.h"
+#include "java/Color.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
 #include "../tile/net.minecraft.world.level.tile.h"

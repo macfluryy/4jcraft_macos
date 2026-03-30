@@ -1,7 +1,7 @@
 #include "../../../../../Header Files/stdafx.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "../../effect/net.minecraft.world.effect.h"
-#include "../../../../../ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 #include "../../../SharedConstants.h"
 #include "PotionBrewing.h"
 

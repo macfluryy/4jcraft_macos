@@ -491,8 +491,8 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     MuleEarL->xRot = Head->xRot;
     MuleEarR->xRot = Head->xRot;
     Neck->xRot = Head->xRot;
-    UMouth->xRot = 0 - (PI * .03f) * openMouth;
-    LMouth->xRot = 0 + (PI * .05f) * openMouth;
+    UMouth->xRot = 0 - (M_PI * .03f) * openMouth;
+    LMouth->xRot = 0 + (M_PI * .05f) * openMouth;
 
     Mane->xRot = Head->xRot;
 
@@ -513,8 +513,8 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
      * knee joints Leg1 and Leg4 use LLegXRot Leg2 and Leg3 use RLegXRot
      */
     {
-        float r90 = PI * .5f;
-        float r270 = PI * 1.5f;
+        float r90 = M_PI * .5f;
+        float r270 = M_PI * 1.5f;
         float r300 = -60 * Mth::DEGRAD;
         float standAngle = 15 * Mth::DEGRAD * standing;
         float bobValue = Mth::cos((bob * 0.6f) + 3.141593f);
@@ -567,14 +567,14 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
 
         Leg3A->xRot = rlegRot;
         Leg3B->xRot =
-            (Leg3A->xRot + PI * std::max(0.0f, (.2f + bobValue * .2f))) *
+            (Leg3A->xRot + M_PI * std::max(0.0f, (.2f + bobValue * .2f))) *
                 standing +
             (legXRotAnim + std::max(0.0f, legAnim1 * 0.5f * ws)) * iStanding;
         Leg3C->xRot = Leg3B->xRot;
 
         Leg4A->xRot = llegRot;
         Leg4B->xRot =
-            (Leg4A->xRot + PI * std::max(0.0f, (.2f - bobValue * .2f))) *
+            (Leg4A->xRot + M_PI * std::max(0.0f, (.2f - bobValue * .2f))) *
                 standing +
             (-legXRotAnim + std::max(0.0f, -legAnim1 * 0.5f * ws)) * iStanding;
         Leg4C->xRot = Leg4B->xRot;

@@ -11,7 +11,7 @@
 #include "HopperTileEntity.h"
 
 HopperTileEntity::HopperTileEntity() {
-    items = ItemInstanceArray(5);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
     name = L"";
     cooldownTime = -1;
 }
@@ -24,7 +24,7 @@ void HopperTileEntity::load(CompoundTag* base) {
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
     delete[] items.data;
-    items = ItemInstanceArray(getContainerSize());
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
     if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
     cooldownTime = base->getInt(L"TransferCooldown");
     for (int i = 0; i < inventoryList->size(); i++) {

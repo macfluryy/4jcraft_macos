@@ -246,10 +246,10 @@ void FireworksParticles::FireworksStarter::createParticleShape(
                        fadeColors, trail, flicker);
     }
 
-    float baseAngle = random->nextFloat() * PI;
+    float baseAngle = random->nextFloat() * M_PI;
     double angleMod = (flat ? .034 : .34);
     for (int angleStep = 0; angleStep < 3; angleStep++) {
-        double angle = baseAngle + angleStep * PI * angleMod;
+        double angle = baseAngle + angleStep * M_PI * angleMod;
 
         double ox = sx;
         double oy = sy;
@@ -434,7 +434,7 @@ void FireworksParticles::FireworksOverlayParticle::render(Tesselator* t,
     float u1 = u0 + 32.0f / 128.0f;
     float v0 = 16.0f / 128.0f;
     float v1 = v0 + 32.0f / 128.0f;
-    float r = 7.1f * sin(((float)age + a - 1.0f) * .25f * PI);
+    float r = 7.1f * sin(((float)age + a - 1.0f) * .25f * M_PI);
     alpha = 0.6f - ((float)age + a - 1.0f) * .25f * .5f;
 
     float x = (float)(xo + (this->x - xo) * a - xOff);

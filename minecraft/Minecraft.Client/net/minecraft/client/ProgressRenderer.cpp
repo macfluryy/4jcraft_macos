@@ -2,7 +2,7 @@
 #include "renderer/Tesselator.h"
 #include "renderer/Textures.h"
 #include "ProgressRenderer.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "java/System.h"
 
 std::recursive_mutex ProgressRenderer::s_progress;
 

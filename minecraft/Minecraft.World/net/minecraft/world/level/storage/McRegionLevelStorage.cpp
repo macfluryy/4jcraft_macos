@@ -4,7 +4,7 @@
 #include "../dimension/net.minecraft.world.level.dimension.h"
 #include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
 #include "LevelData.h"
-#include "../../../../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 #include "McRegionLevelStorage.h"
 
 McRegionLevelStorage::McRegionLevelStorage(ConsoleSaveFile* saveFile, File dir,

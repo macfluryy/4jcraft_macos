@@ -6,7 +6,7 @@
 #include "../entity/net.minecraft.world.entity.h"
 #include "../phys/net.minecraft.world.phys.h"
 #include "../level/net.minecraft.world.level.h"
-#include "../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "ArmorItem.h"
 
 const int ArmorItem::healthPerSlot[] = {11, 16, 15, 13};

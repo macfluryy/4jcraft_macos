@@ -44,12 +44,12 @@
 #include <assert.h>
 
 #include "../ConsoleHelpers/Definitions.h"
-#include "../ConsoleJavaLibs/Class.h"
-#include "../ConsoleJavaLibs/Exceptions.h"
+#include "java/Class.h"
+#include "java/Exceptions.h"
 #include "../net/minecraft/util/Mth.h"
 #include "../ConsoleHelpers/StringHelpers.h"
 #include "../ConsoleHelpers/ArrayWithLength.h"
-#include "../ConsoleJavaLibs/Random.h"
+#include "java/Random.h"
 #include "../net/minecraft/world/level/TilePos.h"
 #include "../net/minecraft/world/level/ChunkPos.h"
 #include "../Header Files/compression.h"

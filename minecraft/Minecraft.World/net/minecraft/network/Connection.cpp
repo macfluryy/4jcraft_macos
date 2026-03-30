@@ -2,8 +2,8 @@
 #include <chrono>
 
 #include "../../../Header Files/stdafx.h"
-#include "../../../ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
-#include "../../../ConsoleJavaLibs/Socket.h"
+#include "java/InputOutputStream/InputOutputStream.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Connection.h"
 #include "../../../ConsoleHelpers/ThreadName.h"
 #include "../../../Header Files/compression.h"

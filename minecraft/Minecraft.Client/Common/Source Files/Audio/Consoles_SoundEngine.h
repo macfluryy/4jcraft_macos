@@ -20,6 +20,7 @@ typedef struct {
 } AUDIO_LISTENER;
 
 class Options;
+class Mob;
 
 class ConsoleSoundEngine {
 public:

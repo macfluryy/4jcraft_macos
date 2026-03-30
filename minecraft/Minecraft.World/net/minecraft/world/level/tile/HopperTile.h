@@ -31,7 +31,7 @@ public:
                              std::shared_ptr<TileEntity> forceEntity =
                                  std::shared_ptr<TileEntity>());
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          AABBList* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
     virtual int getPlacedOnFaceDataValue(Level* level, int x, int y, int z,
                                          int face, float clickX, float clickY,
                                          float clickZ, int itemValue);

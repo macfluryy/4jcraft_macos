@@ -21,13 +21,13 @@
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/ConsoleJavaLibs/Socket.h"
+#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Minecraft.World/net/minecraft/stats/Achievements.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "../level/EntityTracker.h"
 #include "ServerConnection.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/JavaMath.h"
 
 // 4J Added
 #include "Minecraft.World/net/minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"

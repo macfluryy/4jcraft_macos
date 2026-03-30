@@ -48,15 +48,15 @@
 #include "../Options.h"
 #include "../multiplayer/MultiPlayerChunkCache.h"
 #include "Minecraft.World/Header Files/ParticleTypes.h"
-#include "Minecraft.World/ConsoleJavaLibs/IntBuffer.h"
-#include "Minecraft.World/ConsoleJavaLibs/JavaMath.h"
+#include "java/IntBuffer.h"
+#include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "java/System.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
@@ -239,7 +239,7 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
             1000;  // How much we raise the circle origin to make the circle
                    // curve back towards us
         const int WIDTH = 10;
-        const float ARC_RADIANS = 2.0f * PI / ARC_SEGMENTS;
+        const float ARC_RADIANS = 2.0f * M_PI / ARC_SEGMENTS;
         const float HALF_ARC_SEG = ARC_SEGMENTS / 2;
         const float WIDE_ARC_SEGS = ARC_SEGMENTS / 8;
         const float WIDE_ARC_SEGS_SQR = WIDE_ARC_SEGS * WIDE_ARC_SEGS;
@@ -307,7 +307,7 @@ void LevelRenderer::renderStars() {
             double xSin = sin(xRot);
             double xCos = cos(xRot);
 
-            double zRot = random.nextDouble() * PI * 2;
+            double zRot = random.nextDouble() * M_PI * 2;
             double zSin = sin(zRot);
             double zCos = cos(zRot);
 
@@ -966,7 +966,7 @@ void LevelRenderer::renderSky(float alpha) {
             int steps = 16;
             t->color(c[0], c[1], c[2], 0.0f);
             for (int i = 0; i <= steps; i++) {
-                float a = i * PI * 2 / steps;
+                float a = i * M_PI * 2 / steps;
                 float _sin = Mth::sin(a);
                 float _cos = Mth::cos(a);
                 t->vertex((float)(_sin * 120), (float)(_cos * 120),
@@ -1959,7 +1959,7 @@ bool LevelRenderer::updateDirtyChunks() {
                                  // main thread
 
             if (bAtomic || (index == 0)) {
-                // PIXBeginNamedEvent(0,"Rebuilding near chunk %d %d
+                // M_PIXBeginNamedEvent(0,"Rebuilding near chunk %d %d
                 // %d",chunk->x, chunk->y, chunk->z); 		static int64_t
                 // totalTime =
                 // 0; 		static int64_t countTime = 0;
@@ -3321,7 +3321,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
                             random->nextDouble() * 0.2,
                             random->nextGaussian() * .15);
             }
-            for (double a = 0; a < PI * 2.0; a += PI * 0.05) {
+            for (double a = 0; a < M_PI * 2.0; a += M_PI * 0.05) {
                 addParticle(eParticleType_ender, xp + cos(a) * 5, yp - .4,
                             zp + sin(a) * 5, cos(a) * -5, 0, sin(a) * -5);
                 addParticle(eParticleType_ender, xp + cos(a) * 5, yp - .4,
@@ -3355,7 +3355,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
 
             for (int i = 0; i < 100; i++) {
                 double dist = random->nextDouble() * ThrownPotion::SPLASH_RANGE;
-                double angle = random->nextDouble() * PI * 2;
+                double angle = random->nextDouble() * M_PI * 2;
                 double xs = cos(angle) * dist;
                 double ys = 0.01 + random->nextDouble() * 0.5;
                 double zs = sin(angle) * dist;
@@ -3385,7 +3385,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
             for (int i = 0; i < 200; i++) {
                 double dist =
                     random->nextDouble() * DragonFireball::SPLASH_RANGE;
-                double angle = random->nextDouble() * PI * 2;
+                double angle = random->nextDouble() * M_PI * 2;
                 double xs = cos(angle) * dist;
                 double ys = 0.01 + random->nextDouble() * 0.5;
                 double zs = sin(angle) * dist;
@@ -3951,7 +3951,7 @@ void LevelRenderer::DestroyedTileManager::updatedChunkAt(Level* level, int x,
 // For game to get any AABBs that the user should be colliding with as render
 // data has not yet been updated
 void LevelRenderer::DestroyedTileManager::addAABBs(Level* level, AABB* box,
-                                                   AABBList* boxes) {
+                                                   std::vector<AABB>* boxes) {
     std::lock_guard<std::mutex> lock(m_csDestroyedTiles);
 
     for (unsigned int i = 0; i < m_destroyedTiles.size(); i++) {

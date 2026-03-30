@@ -1,9 +1,9 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include <vector>
-#include "Minecraft.World/com/mojang/nbt/com.mojang.nbt.h"
-#include "Minecraft.World/ConsoleJavaLibs/System.h"
+#include "nbt/com.mojang.nbt.h"
+#include "java/System.h"
 #include "ConsoleSchematicFile.h"
-#include "Minecraft.World/ConsoleJavaLibs/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"

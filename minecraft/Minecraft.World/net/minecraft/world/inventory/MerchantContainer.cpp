@@ -7,7 +7,7 @@ MerchantContainer::MerchantContainer(std::shared_ptr<Player> player,
                                      std::shared_ptr<Merchant> villager) {
     this->player = player;
     merchant = villager;
-    items = ItemInstanceArray(3);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(3);
     items[0] = nullptr;
     items[1] = nullptr;
     items[2] = nullptr;

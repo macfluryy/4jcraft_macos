@@ -1,5 +1,5 @@
 #include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "TileEntity.h"
 #include "../../net.minecraft.world.level.h"
 #include "../../../entity/item/net.minecraft.world.entity.item.h"
@@ -8,7 +8,7 @@
 #include "DispenserTileEntity.h"
 
 DispenserTileEntity::DispenserTileEntity() : TileEntity() {
-    items = ItemInstanceArray(9);
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(9);
     random = new Random();
     name = L"";
 }
@@ -140,7 +140,7 @@ void DispenserTileEntity::load(CompoundTag* base) {
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
     delete[] items.data;
-    items = ItemInstanceArray(getContainerSize());
+    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot") & 0xff;

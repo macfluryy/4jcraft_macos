@@ -385,9 +385,7 @@ std::vector<std::pair<int, int> >* PotionItem::getUniquePotionValues() {
             if (effects != nullptr) {
                 if (!effects->empty()) {
                     // 4J Stu - Based on implementation of Java List.hashCode()
-                    // at
-                    // http://docs.oracle.com/javase/6/docs/api/java/util/List.html#hashCode()
-                    // and adding deleting to clear up as we go
+                    // at hashCode() and adding deleting to clear up as we go
                     int effectsHashCode = 1;
                     for (auto it = effects->begin(); it != effects->end();
                          ++it) {

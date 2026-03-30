@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LevelStorageSource.h"
-#include "../../../../../ConsoleJavaLibs/File.h"
+#include "java/File.h"
 
 class ProgressListener;
 class LevelData;

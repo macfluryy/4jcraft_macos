@@ -75,14 +75,14 @@ void QuadrupedModel::setupAnim(float time, float r, float bob, float yRot,
                                float xRot, float scale,
                                std::shared_ptr<Entity> entity,
                                unsigned int uiBitmaskOverrideAnim) {
-    float rad = (float)(180 / PI);
+    float rad = (float)(180 / M_PI);
     head->xRot = xRot / rad;
     head->yRot = yRot / rad;
     body->xRot = 90 / rad;
 
     leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-    leg1->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
-    leg2->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
+    leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
+    leg2->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
     leg3->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
 }
 

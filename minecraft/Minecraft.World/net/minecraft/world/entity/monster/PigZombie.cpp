@@ -1,5 +1,5 @@
 #include "../../../../../Header Files/stdafx.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "../../net.minecraft.world.h"
 #include "../../level/net.minecraft.world.level.h"
 #include "../../phys/net.minecraft.world.phys.h"

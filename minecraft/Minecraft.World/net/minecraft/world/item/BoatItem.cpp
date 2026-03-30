@@ -27,8 +27,8 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
 
     Vec3 from(x, y, z);
 
-    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
-    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
+    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
+    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
     float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
     float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 
@@ -64,8 +64,8 @@ std::shared_ptr<ItemInstance> BoatItem::use(
 
     Vec3 from(x, y, z);
 
-    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - PI);
-    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - PI);
+    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
+    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
     float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
     float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
 

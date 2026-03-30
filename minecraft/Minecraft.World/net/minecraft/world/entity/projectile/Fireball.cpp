@@ -5,7 +5,7 @@
 #include "../../phys/net.minecraft.world.phys.h"
 #include "../../item/net.minecraft.world.item.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "Fireball.h"
 #include "../../level/dimension/net.minecraft.world.level.dimension.h"
 #include "../../../SharedConstants.h"
@@ -215,8 +215,8 @@ void Fireball::tick() {
     z += zd;
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(zd, xd) * 180 / PI) + 90;
-    xRot = (float)(atan2(sd, yd) * 180 / PI) - 90;
+    yRot = (float)(atan2(zd, xd) * 180 / M_PI) + 90;
+    xRot = (float)(atan2(sd, yd) * 180 / M_PI) - 90;
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

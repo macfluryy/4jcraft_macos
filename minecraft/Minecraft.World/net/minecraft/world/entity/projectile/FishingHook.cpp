@@ -8,7 +8,7 @@
 #include "../item/net.minecraft.world.entity.item.h"
 #include "../net.minecraft.world.entity.h"
 #include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../../../com/mojang/nbt/com.mojang.nbt.h"
+#include "nbt/com.mojang.nbt.h"
 #include "FishingHook.h"
 #include "../../../../../Header Files/SoundTypes.h"
 
@@ -71,16 +71,16 @@ FishingHook::FishingHook(Level* level, std::shared_ptr<Player> mob)
     moveTo(mob->x, mob->y + 1.62 - mob->heightOffset, mob->z, mob->yRot,
            mob->xRot);
 
-    x -= Mth::cos(yRot / 180 * PI) * 0.16f;
+    x -= Mth::cos(yRot / 180 * M_PI) * 0.16f;
     y -= 0.1f;
-    z -= Mth::sin(yRot / 180 * PI) * 0.16f;
+    z -= Mth::sin(yRot / 180 * M_PI) * 0.16f;
     setPos(x, y, z);
     heightOffset = 0;
 
     float speed = 0.4f;
-    xd = (-Mth::sin(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI)) * speed;
-    zd = (Mth::cos(yRot / 180 * PI) * Mth::cos(xRot / 180 * PI)) * speed;
-    yd = (-Mth::sin(xRot / 180 * PI)) * speed;
+    xd = (-Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI)) * speed;
+    zd = (Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI)) * speed;
+    yd = (-Mth::sin(xRot / 180 * M_PI)) * speed;
 
     shoot(xd, yd, zd, 1.5f, 1);
 }
@@ -115,8 +115,8 @@ void FishingHook::shoot(double xd, double yd, double zd, float pow,
 
     double sd = sqrt(xd * xd + zd * zd);
 
-    yRotO = yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRotO = xRot = (float)(atan2(yd, sd) * 180 / PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
     life = 0;
 }
 
@@ -263,8 +263,8 @@ void FishingHook::tick() {
     move(xd, yd, zd);
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / PI);
-    xRot = (float)(atan2(yd, sd) * 180 / PI);
+    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
+    xRot = (float)(atan2(yd, sd) * 180 / M_PI);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

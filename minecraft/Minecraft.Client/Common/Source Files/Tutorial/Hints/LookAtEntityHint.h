@@ -1,7 +1,7 @@
 #pragma once
 // using namespace std;
 
-#include "Minecraft.World/ConsoleJavaLibs/Class.h"
+#include "java/Class.h"
 #include "TutorialHint.h"
 
 class ItemInstance;

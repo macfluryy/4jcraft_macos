@@ -1,6 +1,6 @@
 #pragma once
 #include "Particle.h"
-#include "Minecraft.World/com/mojang/nbt/CompoundTag.h"
+#include "nbt/CompoundTag.h"
 
 class ParticleEngine;
 

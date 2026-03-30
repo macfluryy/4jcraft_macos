@@ -104,26 +104,26 @@ void WolfModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
 
     if (wolf->isSitting()) {
         upperBody->setPos(-1.0f, 11 + 13.0f - 8, -3);
-        upperBody->xRot = .40f * PI;
-        upperBody->yRot = .0f * PI;
+        upperBody->xRot = .40f * M_PI;
+        upperBody->yRot = .0f * M_PI;
 
         body->setPos(0, 11 + 15 - legSize, 0);
-        body->xRot = .25f * PI;
+        body->xRot = .25f * M_PI;
 
         tail->setPos(-1, 11 + 18 - legSize, 6);
 
         leg0->setPos(-2.5f, 18 + 12 - legSize, 2);
-        leg0->xRot = 1.5f * PI;
+        leg0->xRot = 1.5f * M_PI;
         leg1->setPos(.5f, 18 + 12 - legSize, 2);
-        leg1->xRot = 1.5f * PI;
+        leg1->xRot = 1.5f * M_PI;
 
-        leg2->xRot = 1.85f * PI;
+        leg2->xRot = 1.85f * M_PI;
         leg2->setPos(-2.49f, 18 + 7.0f - legSize, -4);
-        leg3->xRot = 1.85f * PI;
+        leg3->xRot = 1.85f * M_PI;
         leg3->setPos(.51f, 18 + 7.0f - legSize, -4);
     } else {
         body->setPos(0, 11 + 11 - legSize, 2);
-        body->xRot = 90 / (float)(180 / PI);
+        body->xRot = 90 / (float)(180 / M_PI);
 
         upperBody->setPos(-1.0f, 11 + 11.0f - legSize, -3);
         upperBody->xRot = body->xRot;
@@ -136,8 +136,8 @@ void WolfModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
         leg3->setPos(.5f, 18 + 6 - legSize, -4);
 
         leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-        leg1->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
-        leg2->xRot = (Mth::cos(time * 0.6662f + PI) * 1.4f) * r;
+        leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
+        leg2->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
         leg3->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
     }
 
@@ -154,7 +154,7 @@ void WolfModel::setupAnim(float time, float r, float bob, float yRot,
                           std::shared_ptr<Entity> entity,
                           unsigned int uiBitmaskOverrideAnim) {
     Model::setupAnim(time, r, bob, yRot, xRot, scale, entity);
-    head->xRot = xRot / (float)(180 / PI);
-    head->yRot = yRot / (float)(180 / PI);
+    head->xRot = xRot / (float)(180 / M_PI);
+    head->yRot = yRot / (float)(180 / M_PI);
     tail->xRot = bob;
 }

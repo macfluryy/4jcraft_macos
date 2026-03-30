@@ -1,6 +1,6 @@
 #include "../../../../Header Files/stdafx.h"
-#include "../../../../ConsoleJavaLibs/System.h"
-#include "../../../../ConsoleJavaLibs/File.h"
+#include "java/System.h"
+#include "java/File.h"
 #include "../../util/ProgressListener.h"
 #include "../../net.minecraft.h"
 #include "../net.minecraft.world.h"
@@ -1726,7 +1726,7 @@ void Level::removeListener(LevelListener* listener) {
 }
 
 // 4J - added noEntities and blockAtEdge parameter
-AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
+std::vector<AABB>* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
                           bool noEntities /* = false*/,
                           bool blockAtEdge /* = false*/) {
     boxes.clear();
@@ -1814,7 +1814,7 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
 
 // 4J Stu - Brought forward from 12w36 to fix #46282 - TU5: Gameplay: Exiting
 // the minecart in a tight corridor damages the player
-AABBList* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
+std::vector<AABB>* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
     return getCubes(nullptr, box, true, blockAtEdge);
     // boxes.clear();
     // int x0 = Mth::floor(box->x0);
@@ -1851,7 +1851,7 @@ AABBList* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
 int Level::getOldSkyDarken(float a) {
     float td = getTimeOfDay(a);
 
-    float br = 1 - (Mth::cos(td * PI * 2) * 2 + 0.5f);
+    float br = 1 - (Mth::cos(td * M_PI * 2) * 2 + 0.5f);
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -1867,7 +1867,7 @@ int Level::getOldSkyDarken(float a) {
 float Level::getSkyDarken(float a) {
     float td = getTimeOfDay(a);
 
-    float br = 1 - (Mth::cos(td * PI * 2) * 2 + 0.2f);
+    float br = 1 - (Mth::cos(td * M_PI * 2) * 2 + 0.2f);
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -1883,7 +1883,7 @@ float Level::getSkyDarken(float a) {
 Vec3 Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
     float td = getTimeOfDay(a);
 
-    float br = Mth::cos(td * PI * 2) * 2 + 0.5f;
+    float br = Mth::cos(td * M_PI * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -1956,13 +1956,13 @@ float Level::getMoonBrightness() {
 
 float Level::getSunAngle(float a) {
     float td = getTimeOfDay(a);
-    return td * PI * 2;
+    return td * M_PI * 2;
 }
 
 Vec3 Level::getCloudColor(float a) {
     float td = getTimeOfDay(a);
 
-    float br = Mth::cos(td * PI * 2) * 2.0f + 0.5f;
+    float br = Mth::cos(td * M_PI * 2) * 2.0f + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -2048,7 +2048,7 @@ int Level::getLightDepth(int x, int z) {
 float Level::getStarBrightness(float a) {
     float td = getTimeOfDay(a);
 
-    float br = 1 - (Mth::cos(td * PI * 2) * 2 + 0.25f);
+    float br = 1 - (Mth::cos(td * M_PI * 2) * 2 + 0.25f);
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 

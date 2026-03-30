@@ -35,7 +35,7 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, byteArray blocks,
     bool steep = random->nextInt(6) == 0;
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (Mth::sin(step * PI / dist) * thickness) * 1;
+        double rad = 1.5 + (Mth::sin(step * M_PI / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
         float xc = Mth::cos(xRot);
@@ -61,10 +61,10 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, byteArray blocks,
 
         if (!singleStep && step == splitPoint && thickness > 1) {
             addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave,
-                      random->nextFloat() * 0.5f + 0.5f, yRot - PI / 2,
+                      random->nextFloat() * 0.5f + 0.5f, yRot - M_PI / 2,
                       xRot / 3, step, dist, 1.0);
             addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave,
-                      random->nextFloat() * 0.5f + 0.5f, yRot + PI / 2,
+                      random->nextFloat() * 0.5f + 0.5f, yRot + M_PI / 2,
                       xRot / 3, step, dist, 1.0);
             return;
         }
@@ -169,7 +169,7 @@ void DungeonFeature::addFeature(Level* level, int x, int z, int xOffs,
         }
 
         for (int i = 0; i < tunnels; i++) {
-            float yRot = random->nextFloat() * PI * 2;
+            float yRot = random->nextFloat() * M_PI * 2;
             float xRot = ((random->nextFloat() - 0.5f) * 2) / 8;
             float thickness = random->nextFloat() * 2 + random->nextFloat();
 

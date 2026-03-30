@@ -25,12 +25,12 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
 
     glTranslatef(0, 0.1f + sin(tt * 0.1f) * 0.01f, 0);
     float orot = (table->rot - table->oRot);
-    while (orot >= PI) orot -= PI * 2;
-    while (orot < -PI) orot += PI * 2;
+    while (orot >= M_PI) orot -= M_PI * 2;
+    while (orot < -M_PI ) orot += M_PI * 2;
 
     float yRot = table->oRot + orot * a;
 
-    glRotatef(-yRot * 180 / PI, 0, 1, 0);
+    glRotatef(-yRot * 180 / M_PI, 0, 1, 0);
     glRotatef(80, 0, 0, 1);
     bindTexture(&BOOK_LOCATION);  // 4J was "/item/book.png"
 
