@@ -68,7 +68,8 @@ static void RADLINK WarningCallback(void* user_callback_data, Iggy* player,
         // hooks/controls. We guard the call sites, so drop the residual Iggy
         // warning noise.
         if (strstr(message, "LabelGamertag") != nullptr ||
-            strstr(message, "Method SetSafeZone was not a function") != nullptr) {
+            strstr(message, "Method SetSafeZone was not a function") !=
+                nullptr) {
             return;
         }
     }
@@ -371,7 +372,8 @@ void UIController::SetupFont() {
 
     if (m_eTargetFont == eFont_Bitmap) {
         // these may have been set up by a previous language being chosen
-        if (m_moj7 == nullptr) m_moj7 = new UIBitmapFont(SFontData::Mojangles_7);
+        if (m_moj7 == nullptr)
+            m_moj7 = new UIBitmapFont(SFontData::Mojangles_7);
         if (m_moj11 == nullptr)
             m_moj11 = new UIBitmapFont(SFontData::Mojangles_11);
 
@@ -452,8 +454,7 @@ void UIController::tick() {
 
     // Clear out the cached movie file data
     int64_t currentTime = System::currentTimeMillis();
-    for (auto it = m_cachedMovieData.begin();
-         it != m_cachedMovieData.end();) {
+    for (auto it = m_cachedMovieData.begin(); it != m_cachedMovieData.end();) {
         if (it->second.m_expiry < currentTime) {
             delete[] it->second.m_ba.data;
             it = m_cachedMovieData.erase(it);
@@ -481,7 +482,6 @@ void UIController::loadSkins() {
         m_iggyLibraries[eLibrary_Platform] =
             loadSkin(platformSkinPath, L"platformskin.swf");
     }
-
 
 #if defined(_WINDOWS64) || defined(__linux__)
 
@@ -722,9 +722,7 @@ void UIController::handleInput() {
         for (unsigned int key = 0; key <= ACTION_MAX_MENU; ++key) {
             handleKeyPress(iPad, key);
         }
-
     }
-
 }
 
 void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
@@ -732,7 +730,6 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
     bool pressed = false;   // Toggle
     bool released = false;  // Toggle
     bool repeat = false;
-
 
     down = InputManager.ButtonDown(iPad, key);
     pressed = InputManager.ButtonPressed(iPad, key);    // Toggle
@@ -1082,9 +1079,9 @@ UIController::CustomDrawCallback(void* user_callback_data, Iggy* player,
 // value you can set; the value will be passed along to the corresponding
 // Iggy_TextureSubstitutionDestroyCallback (e.g. you can store the pointer to
 // your own internal structure here). return - A platform-independent wrapped
-// texture handle provided by GDraw, or nullptr (nullptr with throw an ActionScript 3
-// ArgumentError that the Flash developer can catch) Use by calling
-// IggySetTextureSubstitutionCallbacks.
+// texture handle provided by GDraw, or nullptr (nullptr with throw an
+// ActionScript 3 ArgumentError that the Flash developer can catch) Use by
+// calling IggySetTextureSubstitutionCallbacks.
 //
 // Discussion
 //
@@ -1095,8 +1092,7 @@ GDrawTexture* RADLINK UIController::TextureSubstitutionCreateCallback(
     void* user_callback_data, IggyUTF16* texture_name, S32* width, S32* height,
     void** destroy_callback_data) {
     UIController* uiController = (UIController*)user_callback_data;
-    auto it =
-             uiController->m_substitutionTextures.find((wchar_t*)texture_name);
+    auto it = uiController->m_substitutionTextures.find((wchar_t*)texture_name);
 
     if (it != uiController->m_substitutionTextures.end()) {
         app.DebugPrintf("Found substitution texture %ls, with %d bytes\n",
@@ -1588,7 +1584,6 @@ void UIController::SetMenuDisplayed(int iPad, bool bVal) {
         } else {
             m_bMenuToBeClosed[iPad] = true;
             m_iCountDown[iPad] = 10;
-
         }
     }
 }
@@ -1665,7 +1660,6 @@ void UIController::SetTooltips(unsigned int iPad, int iA, int iB, int iX,
     // 4J-PB - strip out any that are not applicable on the platform
     if (iX == IDS_TOOLTIPS_SELECTDEVICE) iX = -1;
     if (iX == IDS_TOOLTIPS_CHANGEDEVICE) iX = -1;
-
 
     if (app.GetGameStarted()) {
         // If the game isn't running treat as user 0, otherwise map index
@@ -1817,7 +1811,6 @@ void UIController::HandleDLCInstalled(int iPad) {
         m_groups[i]->HandleDLCInstalled();
     }
 }
-
 
 void UIController::HandleTMSDLCFileRetrieved(int iPad) {
     app.DebugPrintf(
@@ -2019,7 +2012,8 @@ void UIController::UpdateTrialTimer(unsigned int iPad) {
         // bring up the pause menu to stop the trial over message box being
         // called again?
         if (!ui.GetMenuDisplayed(iPad)) {
-            ui.NavigateToScene(iPad, eUIScene_PauseMenu, nullptr, eUILayer_Scene);
+            ui.NavigateToScene(iPad, eUIScene_PauseMenu, nullptr,
+                               eUILayer_Scene);
 
             app.SetAction(iPad, eAppAction_TrialOver);
         }

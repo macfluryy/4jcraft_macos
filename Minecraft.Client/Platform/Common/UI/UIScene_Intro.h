@@ -23,7 +23,6 @@ public:
 protected:
     virtual std::wstring getMoviePath();
 
-
 public:
     // INPUT
     virtual void handleInput(int iPad, int key, bool repeat, bool pressed,
@@ -31,7 +30,6 @@ public:
 
     virtual void handleAnimationEnd();
     virtual void handleGainFocus(bool navBack);
-
 
 #if !defined(_ENABLEIGGY)
     virtual void tick();

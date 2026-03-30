@@ -56,9 +56,7 @@ int glGenLists(int count) { return RenderManager.CBuffCreate(count); }
 
 void glNewList(int index, int mode) { RenderManager.CBuffStart(index); }
 
-void glEndList(int vertexCount) {
-    RenderManager.CBuffEnd();
-}
+void glEndList(int vertexCount) { RenderManager.CBuffEnd(); }
 
 void glCallList(int index) { RenderManager.CBuffCall(index); }
 
@@ -186,9 +184,7 @@ void glAlphaFunc(int func, float param) {
     RenderManager.StateSetAlphaFunc(func, param);
 }
 
-void glDepthFunc(int func) {
-    RenderManager.StateSetDepthFunc(func);
-}
+void glDepthFunc(int func) { RenderManager.StateSetDepthFunc(func); }
 
 void glTexParameteri(int target, int param, int value) {
     RenderManager.TextureSetParam(param, value);

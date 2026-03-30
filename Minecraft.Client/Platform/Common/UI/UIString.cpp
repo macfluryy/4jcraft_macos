@@ -109,9 +109,7 @@ UIString::UIString(const wchar_t* constant) {
     m_core = std::shared_ptr<UIStringCore>(core);
 }
 
-UIString::~UIString() {
-    m_core = nullptr;
-}
+UIString::~UIString() { m_core = nullptr; }
 
 bool UIString::empty() { return m_core.get() == nullptr; }
 

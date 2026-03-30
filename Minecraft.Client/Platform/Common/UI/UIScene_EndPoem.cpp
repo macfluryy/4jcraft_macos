@@ -247,7 +247,7 @@ void UIScene_EndPoem::updateNoise() {
         // int pos = 0;
         // do {
         //	pos =
-        //random->nextInt(SharedConstants::acceptableLetters.length()); } while
+        // random->nextInt(SharedConstants::acceptableLetters.length()); } while
         // (pMinecraft->font->charWidths[ch + 32] !=
         // pMinecraft->font->charWidths[pos + 32]); ib.put(listPos + 256 +
         // random->nextInt(2) + 8 + (darken ? 16 : 0)); ib.put(listPos + pos +

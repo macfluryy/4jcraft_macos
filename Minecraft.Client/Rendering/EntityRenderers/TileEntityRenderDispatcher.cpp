@@ -59,7 +59,7 @@ TileEntityRenderer* TileEntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
     TileEntityRenderer* r = nullptr;
     // TileEntityRenderer *r = renderers[e];
     auto it = renderers.find(e);  // 4J Stu - The .at and [] accessors
-                                      // insert elements if they don't exist
+                                  // insert elements if they don't exist
 
     if (it == renderers.end()) {
         return nullptr;

@@ -8,7 +8,6 @@
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 #include "../../Minecraft.World/Util/StringHelpers.h"
 
-
 UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                      UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {
@@ -71,7 +70,8 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
 
 UIScene_PauseMenu::~UIScene_PauseMenu() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft != nullptr && pMinecraft->localgameModes[m_iPad] != nullptr) {
+    if (pMinecraft != nullptr &&
+        pMinecraft->localgameModes[m_iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
 
@@ -92,18 +92,12 @@ std::wstring UIScene_PauseMenu::getMoviePath() {
     }
 }
 
-void UIScene_PauseMenu::tick() {
-    UIScene::tick();
-
-
-
-}
+void UIScene_PauseMenu::tick() { UIScene::tick(); }
 
 void UIScene_PauseMenu::updateTooltips() {
     bool bUserisClientSide = ProfileManager.IsSignedInLive(m_iPad);
     bool bIsisPrimaryHost =
         g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == m_iPad);
-
 
     int iY = -1;
     int iRB = -1;
@@ -140,13 +134,11 @@ void UIScene_PauseMenu::updateComponents() {
         m_parentLayer->showComponent(m_iPad, eUIComponent_Logo, false);
 }
 
-void UIScene_PauseMenu::handlePreReload() {
-}
+void UIScene_PauseMenu::handlePreReload() {}
 
 void UIScene_PauseMenu::handleReload() {
     updateTooltips();
     updateControlsVisibility();
-
 
     doHorizontalResizeCheck();
 }
@@ -184,7 +176,6 @@ void UIScene_PauseMenu::updateControlsVisibility() {
     // is saving disabled?
     if (StorageManager.GetSaveDisabled()) {
     }
-
 }
 
 void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
@@ -198,7 +189,6 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
     // down- %s, pressed- %s, released- %s\n", iPad, key, down?"true":"false",
     // pressed?"true":"false", released?"true":"false");
     ui.AnimateKeyPress(iPad, key, repeat, pressed, released);
-
 
     switch (key) {
         case ACTION_MENU_CANCEL:
@@ -298,7 +288,6 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
             } else if (!ProfileManager.IsSignedInLive(m_iPad)) {
-
                 unsigned int uiIDA[1] = {IDS_OK};
                 ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
                                        IDS_PRO_NOTONLINE_TEXT, uiIDA, 1,
@@ -307,7 +296,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                 bool bContentRestricted = false;
                 if (bContentRestricted) {
 #if !defined(_WINDOWS64)
-                           // we check this for other platforms
+                    // we check this for other platforms
                     // you can't see leaderboards
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
@@ -450,7 +439,6 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 void UIScene_PauseMenu::PerformActionSaveGame() {
     // is the player trying to save in the trial version?
     if (!ProfileManager.IsFullVersion()) {
-
         // Unlock the full version?
         if (!ProfileManager.IsSignedInLive(m_iPad)) {
         } else {
@@ -503,20 +491,20 @@ void UIScene_PauseMenu::PerformActionSaveGame() {
         StorageManager.DoesSaveExist(&bSaveExists);
 
     {
-            // we need to ask if they are sure they want to overwrite the
-            // existing game
-            if (bSaveExists) {
-                unsigned int uiIDA[2];
-                uiIDA[0] = IDS_CONFIRM_CANCEL;
-                uiIDA[1] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(
-                    IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2,
-                    m_iPad, &IUIScene_PauseMenu::SaveGameDialogReturned,
-                    (void*)GetCallbackUniqueId());
-            } else {
+        // we need to ask if they are sure they want to overwrite the
+        // existing game
+        if (bSaveExists) {
+            unsigned int uiIDA[2];
+            uiIDA[0] = IDS_CONFIRM_CANCEL;
+            uiIDA[1] = IDS_CONFIRM_OK;
+            ui.RequestAlertMessage(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME,
+                                   uiIDA, 2, m_iPad,
+                                   &IUIScene_PauseMenu::SaveGameDialogReturned,
+                                   (void*)GetCallbackUniqueId());
+        } else {
             // flag a app action of save game
             app.SetAction(m_iPad, eAppAction_SaveGame);
-            }
+        }
     }
 }
 
@@ -596,10 +584,6 @@ int UIScene_PauseMenu::SaveGame_SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-
-
 void UIScene_PauseMenu::SetIgnoreInput(bool ignoreInput) {
     m_bIgnoreInput = ignoreInput;
 }
-
-

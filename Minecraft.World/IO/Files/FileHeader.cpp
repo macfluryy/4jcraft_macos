@@ -177,16 +177,18 @@ void FileHeader::ReadHeader(
     switch (m_saveVersion) {
         // case SAVE_FILE_VERSION_NUMBER:
         // case 8: // 4J Stu - SAVE_FILE_VERSION_NUMBER 2,3,4,5,6,7,8 are the
-        // same, but: 							: Bumped it to 3 in TU5 to force older builds (ie 0062) to
-        //generate a new world when trying to load new saves 							: Bumped it to 4 in
-        //TU9 to delete versions of The End that were generated in builds prior
-        //to TU9 							: Bumped it to 5 in TU9 to update the map data that was only
-        //using 1 bit to determine dimension 							: Bumped it to 6 for PS3 v1 to
-        //update map data mappings to use larger PlayerUID 							: Bumped it to 7 for
-        //Durango v1 to update map data mappings to use string based PlayerUID
-        //							: Bumped it to 8
-        //for Durango v1 when to save the chunks in a different compressed
-        //format
+        // same, but: 							: Bumped
+        // it to 3 in TU5 to force older builds (ie 0062) to
+        // generate a new world when trying to load new saves
+        // : Bumped it to 4 in TU9 to delete versions of The End that were
+        // generated in builds prior to TU9
+        // : Bumped it to 5 in TU9 to update the map data that was only using 1
+        // bit to determine dimension
+        // : Bumped it to 6 for PS3 v1 to update map data mappings to use larger
+        // PlayerUID 							: Bumped
+        // it to 7 for Durango v1 to update map data mappings to use string
+        // based PlayerUID 							: Bumped it to 8 for Durango v1 when to save the
+        // chunks in a different compressed format
         case SAVE_FILE_VERSION_COMPRESSED_CHUNK_STORAGE:
         case SAVE_FILE_VERSION_DURANGO_CHANGE_MAP_DATA_MAPPING_SIZE:
         case SAVE_FILE_VERSION_CHANGE_MAP_DATA_MAPPING_SIZE:
@@ -337,7 +339,6 @@ std::vector<FileEntry*>* FileHeader::getFilesWithPrefix(
 
     return files;
 }
-
 
 ByteOrder FileHeader::getEndian(ESavePlatform plat) {
     ByteOrder platEndian;

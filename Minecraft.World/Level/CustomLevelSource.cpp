@@ -31,8 +31,8 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     std::string path = "GAME:\\GameRules\\heightmap.bin";
 #endif
 #endif
-    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING,
-                             FILE_ATTRIBUTE_NORMAL, nullptr);
+    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr,
+                            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
     if (file == INVALID_HANDLE_VALUE) {
         app.FatalLoadError();
         uint32_t error = GetLastError();
@@ -528,7 +528,6 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     }
     PIXEndNamedEvent();
 
-
     PIXBeginNamedEvent(0, "Monster rooms");
     for (int i = 0; i < 8; i++) {
         int x = xo + pprandom->nextInt(16) + 8;
@@ -606,7 +605,8 @@ std::vector<Biome::MobSpawnerData*>* CustomLevelSource::getMobsAt(
 TilePos* CustomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
 #if defined(_OVERRIDE_HEIGHTMAP)
-    if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != nullptr) {
+    if (LargeFeature::STRONGHOLD == featureName &&
+        strongholdFeature != nullptr) {
         return strongholdFeature->getNearestGeneratedFeature(level, x, y, z);
     }
 #endif

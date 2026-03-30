@@ -241,7 +241,8 @@ void Boat::tick() {
         yd += 0.007f;
     }
 
-    if (rider.lock() != nullptr && rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
+    if (rider.lock() != nullptr &&
+        rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
         std::shared_ptr<LivingEntity> livingRider =
             std::dynamic_pointer_cast<LivingEntity>(rider.lock());
         double forward = livingRider->yya;

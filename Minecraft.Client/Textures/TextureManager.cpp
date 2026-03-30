@@ -36,8 +36,7 @@ void TextureManager::registerName(const std::wstring& name, Texture* texture) {
 }
 
 void TextureManager::registerTexture(Texture* texture) {
-    for (auto it = idToTextureMap.begin(); it != idToTextureMap.end();
-         ++it) {
+    for (auto it = idToTextureMap.begin(); it != idToTextureMap.end(); ++it) {
         if (it->second == texture) {
             // Minecraft.getInstance().getLogger().warning("TextureManager.registerTexture
             // called, but this texture has " + "already been registered.

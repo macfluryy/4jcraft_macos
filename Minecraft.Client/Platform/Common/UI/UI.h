@@ -38,7 +38,6 @@
 #include "UIControl_SpaceIndicatorBar.h"
 #include "UIControl_BeaconEffectButton.h"
 
-
 #include "UIScene_HUD.h"
 #include "UIComponent_Panorama.h"
 #include "UIComponent_Logo.h"

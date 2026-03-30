@@ -157,5 +157,4 @@ private:
 
     bool m_bUpdateOnline;  // If true, update online settings on next tick
     void UpdateOnline();
-
 };

@@ -529,11 +529,12 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 
 void Textures::bind(int id) {
     // 4jcraft: Classic GUI code still performs some raw glBindTexture calls, so
-    // this path must always rebind rather than trusting lastBoundId to be in sync.
-    // TODO(4jcraft): Long term, route all texture binds through one synchronized
-    // path or invalidate lastBoundId at every raw glBindTexture call so this can
-    // safely use cached binds again without breaking font/UI rendering.
-    // if (id != lastBoundId)
+    // this path must always rebind rather than trusting lastBoundId to be in
+    // sync.
+    // TODO(4jcraft): Long term, route all texture binds through one
+    // synchronized path or invalidate lastBoundId at every raw glBindTexture
+    // call so this can safely use cached binds again without breaking font/UI
+    // rendering. if (id != lastBoundId)
     {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
@@ -1189,7 +1190,6 @@ void Textures::reloadAll() {
     stitch();
 
     skins->clearInvalidTexturePacks();
-
 
     // Recalculate fonts
     // Minecraft::GetInstance()->font->loadCharacterWidths();

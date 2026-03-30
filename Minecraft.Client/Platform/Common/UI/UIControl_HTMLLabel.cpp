@@ -47,8 +47,7 @@ void UIControl_HTMLLabel::setLabel(const std::string& label) {
                                getIggyValuePath(), m_setLabelFunc, 1, value);
 }
 
-void UIControl_HTMLLabel::SetupTouch() {
-}
+void UIControl_HTMLLabel::SetupTouch() {}
 
 void UIControl_HTMLLabel::TouchScroll(S32 iY, bool bActive) {
     IggyDataValue result;
@@ -66,9 +65,9 @@ void UIControl_HTMLLabel::TouchScroll(S32 iY, bool bActive) {
 
 S32 UIControl_HTMLLabel::GetRealWidth() {
     IggyDataValue result;
-    IggyResult out =
-        IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_funcGetRealWidth, 0, nullptr);
+    IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
+                                            getIggyValuePath(),
+                                            m_funcGetRealWidth, 0, nullptr);
 
     S32 iRealWidth = m_width;
     if (result.type == IGGY_DATATYPE_number) {

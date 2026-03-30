@@ -46,7 +46,7 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
 ServerChunkCache::~ServerChunkCache() {
     storage->WaitForAll();  // MGH -  added to fix crash bug 175183
     delete emptyChunk;
-    delete[] cache; // 4jcraft changed to delete[]
+    delete[] cache;  // 4jcraft changed to delete[]
     delete source;
 
 #if defined(_LARGE_WORLDS)
@@ -166,8 +166,8 @@ LevelChunk* ServerChunkCache::create(
                 (int64_t*)&cache[idx], (int64_t)chunk, (int64_t)lastChunk) ==
             (int64_t)lastChunk)
 #else
-        if (InterlockedCompareExchangeRelease((int32_t*)&cache[idx], (int32_t)chunk,
-                                              (int32_t)lastChunk) ==
+        if (InterlockedCompareExchangeRelease(
+                (int32_t*)&cache[idx], (int32_t)chunk, (int32_t)lastChunk) ==
             (int32_t)lastChunk)
 #endif
         {
@@ -715,8 +715,8 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
             }
         }
     } else {
-       // 4J Stu - We have multiple for threads for all saving as part of the
-       // storage, so use that rather than new threads here
+        // 4J Stu - We have multiple for threads for all saving as part of the
+        // storage, so use that rather than new threads here
 
         // Created a roughly sorted list to match the order that the files were
         // created in 	McRegionChunkStorage::McRegionChunkStorage. This is to
@@ -814,7 +814,7 @@ bool ServerChunkCache::tick() {
                         // loadedChunks.remove(cp);
                         // loadedChunkList.remove(chunk);
                         auto it = find(m_loadedChunkList.begin(),
-                                          m_loadedChunkList.end(), chunk);
+                                       m_loadedChunkList.end(), chunk);
                         if (it != m_loadedChunkList.end())
                             m_loadedChunkList.erase(it);
 

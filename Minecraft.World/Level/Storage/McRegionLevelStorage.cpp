@@ -31,8 +31,8 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
                 m_saveFile->getRegionFilesByDimension(1);
             if (netherFiles != nullptr) {
                 uint32_t bytesWritten = 0;
-                for (auto it = netherFiles->begin();
-                     it != netherFiles->end(); ++it) {
+                for (auto it = netherFiles->begin(); it != netherFiles->end();
+                     ++it) {
                     m_saveFile->zeroFile(*it, (*it)->getFileSize(),
                                          &bytesWritten);
                 }
@@ -42,8 +42,8 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
             std::vector<FileEntry*>* netherFiles =
                 m_saveFile->getFilesWithPrefix(LevelStorage::NETHER_FOLDER);
             if (netherFiles != nullptr) {
-                for (auto it = netherFiles->begin();
-                     it != netherFiles->end(); ++it) {
+                for (auto it = netherFiles->begin(); it != netherFiles->end();
+                     ++it) {
                     m_saveFile->deleteFile(*it);
                 }
                 delete netherFiles;
@@ -78,8 +78,7 @@ ChunkStorage* McRegionLevelStorage::createChunkStorage(Dimension* dimension) {
 
             // 4J-PB - There will be no End in early saves
             if (endFiles != nullptr) {
-                for (auto it = endFiles->begin(); it != endFiles->end();
-                     ++it) {
+                for (auto it = endFiles->begin(); it != endFiles->end(); ++it) {
                     m_saveFile->deleteFile(*it);
                 }
                 delete endFiles;

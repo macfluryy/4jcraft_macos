@@ -103,15 +103,15 @@ void UIScene_Keyboard::handleInput(int iPad, int key, bool repeat, bool pressed,
                 handled = true;
                 break;
             case ACTION_MENU_Y:  // Y
-                out = IggyPlayerCallMethodRS(getMovie(), &result,
-                                             IggyPlayerRootPath(getMovie()),
-                                             m_funcSpaceButtonPressed, 0, nullptr);
+                out = IggyPlayerCallMethodRS(
+                    getMovie(), &result, IggyPlayerRootPath(getMovie()),
+                    m_funcSpaceButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_STICK_PRESS:  // LS
-                out = IggyPlayerCallMethodRS(getMovie(), &result,
-                                             IggyPlayerRootPath(getMovie()),
-                                             m_funcCapsButtonPressed, 0, nullptr);
+                out = IggyPlayerCallMethodRS(
+                    getMovie(), &result, IggyPlayerRootPath(getMovie()),
+                    m_funcCapsButtonPressed, 0, nullptr);
                 handled = true;
                 break;
             case ACTION_MENU_LEFT_SCROLL:  // LB

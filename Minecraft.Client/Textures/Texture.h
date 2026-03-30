@@ -4,7 +4,6 @@ class Rect2i;
 class ByteBuffer;
 class BufferedImage;
 
-
 class Texture {
 public:
     static const int WM_WRAP = GL_REPEAT;

@@ -438,7 +438,6 @@ void PlayerRenderer::renderNameTags(std::shared_ptr<LivingEntity> player,
                                     double x, double y, double z,
                                     std::wstring msg, float scale,
                                     double dist) {
-
     LivingEntityRenderer::renderNameTags(player, x, y, z, msg, scale, dist);
 }
 

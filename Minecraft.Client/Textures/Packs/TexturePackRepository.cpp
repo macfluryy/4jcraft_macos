@@ -224,8 +224,7 @@ void TexturePackRepository::removeTexturePackById(std::uint32_t id) {
     if (it != cacheById.end()) {
         TexturePack* oldPack = it->second;
 
-        auto it2 =
-                 find(texturePacks->begin(), texturePacks->end(), oldPack);
+        auto it2 = find(texturePacks->begin(), texturePacks->end(), oldPack);
         if (it2 != texturePacks->end()) {
             texturePacks->erase(it2);
             if (lastSelected == oldPack) {

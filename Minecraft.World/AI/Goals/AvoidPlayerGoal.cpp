@@ -55,8 +55,8 @@ bool AvoidPlayerGoal::canUse() {
     } else {
         AABB grown_bb = mob->bb.grow(maxDist, 3, maxDist);
         std::vector<std::shared_ptr<Entity> >* entities =
-            mob->level->getEntitiesOfClass(
-                avoidType, &grown_bb, entitySelector);
+            mob->level->getEntitiesOfClass(avoidType, &grown_bb,
+                                           entitySelector);
         if (entities->empty()) {
             delete entities;
             return false;

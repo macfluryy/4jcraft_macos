@@ -273,9 +273,7 @@ void PlayerConnection::handleMovePlayer(
 
         float r = 1 / 16.0f;
         AABB shrunk = player->bb.shrink(r, r, r);
-        bool oldOk =
-            level->getCubes(player, &shrunk)
-                ->empty();
+        bool oldOk = level->getCubes(player, &shrunk)->empty();
 
         if (player->onGround && !packet->onGround && yDist > 0) {
             // assume the player made a jump
@@ -327,9 +325,7 @@ void PlayerConnection::handleMovePlayer(
 
         // TODO: check if this can be elided
         shrunk = player->bb.shrink(r, r, r);
-        bool newOk =
-            level->getCubes(player, &shrunk)
-                ->empty();
+        bool newOk = level->getCubes(player, &shrunk)->empty();
         if (oldOk && (fail || !newOk) && !player->isSleeping()) {
             teleport(xLastOk, yLastOk, zLastOk, yRotT, xRotT);
             return;
@@ -712,7 +708,7 @@ void PlayerConnection::handleInteract(std::shared_ptr<InteractPacket> packet) {
     // a ray from head->head, but we may actually be looking at a different part
     // of the entity that can be seen even though the ray is blocked.
     if (target != nullptr)  // && player->canSee(target) &&
-                         // player->distanceToSqr(target) < 6 * 6)
+                            // player->distanceToSqr(target) < 6 * 6)
     {
         // boole canSee = player->canSee(target);
         // double maxDist = 6 * 6;
@@ -852,7 +848,7 @@ void PlayerConnection::handleTextureReceived(const std::wstring& textureName) {
     // This sends the server received texture out to any other players waiting
     // for the data
     auto it = find(m_texturesRequested.begin(), m_texturesRequested.end(),
-                      textureName);
+                   textureName);
     if (it != m_texturesRequested.end()) {
         std::uint8_t* pbData = nullptr;
         unsigned int dwBytes = 0;
@@ -871,7 +867,7 @@ void PlayerConnection::handleTextureAndGeometryReceived(
     // This sends the server received texture out to any other players waiting
     // for the data
     auto it = find(m_texturesRequested.begin(), m_texturesRequested.end(),
-                      textureName);
+                   textureName);
     if (it != m_texturesRequested.end()) {
         std::uint8_t* pbData = nullptr;
         unsigned int dwTextureBytes = 0;
@@ -1112,7 +1108,8 @@ void PlayerConnection::handleContainerSetSlot(
             std::shared_ptr<ItemInstance> lastItem =
                 player->inventoryMenu->getSlot(packet->slot)->getItem();
             if (packet->item != nullptr) {
-                if (lastItem == nullptr || lastItem->count < packet->item->count) {
+                if (lastItem == nullptr ||
+                    lastItem->count < packet->item->count) {
                     packet->item->popTime = Inventory::POP_TIME_DURATION;
                 }
             }
@@ -1226,11 +1223,12 @@ void PlayerConnection::handleSetCreativeModeSlot(
         bool validSlot = (packet->slotNum >= InventoryMenu::CRAFT_SLOT_START &&
                           packet->slotNum < (InventoryMenu::USE_ROW_SLOT_START +
                                              Inventory::getSelectionSize()));
-        bool validItem =
-            item == nullptr || (item->id < Item::items.length && item->id >= 0 &&
-                             Item::items[item->id] != nullptr);
-        bool validData = item == nullptr || (item->getAuxValue() >= 0 &&
-                                          item->count > 0 && item->count <= 64);
+        bool validItem = item == nullptr ||
+                         (item->id < Item::items.length && item->id >= 0 &&
+                          Item::items[item->id] != nullptr);
+        bool validData =
+            item == nullptr ||
+            (item->getAuxValue() >= 0 && item->count > 0 && item->count <= 64);
 
         if (validSlot && validItem && validData) {
             if (item == nullptr) {
@@ -1795,8 +1793,10 @@ void PlayerConnection::handleTradeItem(
 
                     int buyAMatches = player->inventory->countMatches(buyAItem);
                     int buyBMatches = player->inventory->countMatches(buyBItem);
-                    if ((buyAItem != nullptr && buyAMatches >= buyAItem->count) &&
-                        (buyBItem == nullptr || buyBMatches >= buyBItem->count)) {
+                    if ((buyAItem != nullptr &&
+                         buyAMatches >= buyAItem->count) &&
+                        (buyBItem == nullptr ||
+                         buyBMatches >= buyBItem->count)) {
                         menu->getMerchant()->notifyTrade(activeRecipe);
 
                         // Remove the items we are purchasing with

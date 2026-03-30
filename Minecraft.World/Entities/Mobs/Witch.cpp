@@ -93,8 +93,8 @@ void Witch::aiStep() {
                     std::vector<MobEffectInstance*>* effects =
                         Item::potion->getMobEffects(item);
                     if (effects != nullptr) {
-                        for (auto it = effects->begin();
-                             it != effects->end(); ++it) {
+                        for (auto it = effects->begin(); it != effects->end();
+                             ++it) {
                             addEffect(new MobEffectInstance(*it));
                         }
                     }

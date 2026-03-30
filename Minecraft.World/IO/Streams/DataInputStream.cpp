@@ -18,7 +18,8 @@ DataInputStream::DataInputStream(InputStream* in) : stream(in) {}
 int DataInputStream::read() {
     if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::read() called but underlying stream is nullptr\n");
+            "DataInputStream::read() called but underlying stream is "
+            "nullptr\n");
         return -1;
     }
     return stream->read();
@@ -104,7 +105,8 @@ int DataInputStream::read(byteArray b, unsigned int offset,
 void DataInputStream::close() {
     if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::close() called but underlying stream is nullptr\n");
+            "DataInputStream::close() called but underlying stream is "
+            "nullptr\n");
         return;
     }
     stream->close();
@@ -116,7 +118,8 @@ void DataInputStream::close() {
 bool DataInputStream::readBoolean() {
     if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readBoolean() but underlying stream is nullptr\n");
+            "DataInputStream::readBoolean() but underlying stream is "
+            "nullptr\n");
         return false;
     }
     return stream->read() != 0;
@@ -513,7 +516,8 @@ int DataInputStream::readUTFChar() {
     int returnValue = -1;
     if (stream == nullptr) {
         app.DebugPrintf(
-            "DataInputStream::readUTFChar() but underlying stream is nullptr\n");
+            "DataInputStream::readUTFChar() but underlying stream is "
+            "nullptr\n");
         return returnValue;
     }
     int firstByte = stream->read();

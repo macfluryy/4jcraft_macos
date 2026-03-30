@@ -63,9 +63,7 @@ int AwardStatPacket::getEstimatedSize() { return 6; }
 bool AwardStatPacket::isAync() { return true; }
 
 // On most platforms we only store 'count' in an AwardStatPacket.
-int AwardStatPacket::getCount() {
-    return *((int*)this->m_paramData.data);
-}
+int AwardStatPacket::getCount() { return *((int*)this->m_paramData.data); }
 
 // On Durango we store 'Event' parameters here in a blob.
 byteArray AwardStatPacket::getParamData() { return m_paramData; }

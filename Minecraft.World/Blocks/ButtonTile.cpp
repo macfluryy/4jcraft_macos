@@ -21,7 +21,9 @@ Icon* ButtonTile::getTexture(int face, int data) {
         return Tile::stone->getTexture(Facing::UP);
 }
 
-std::optional<AABB> ButtonTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> ButtonTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 int ButtonTile::getTickDelay(Level* level) { return sensitive ? 30 : 20; }
 

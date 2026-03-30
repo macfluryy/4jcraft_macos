@@ -42,18 +42,18 @@ typedef std::vector<PXCONTENT_DATA> XContentDataArray;
 class C4JStorage {
 public:
     // Structs defined in the DLC_Creator, but added here to be used in the app
-typedef struct {
-    unsigned int uiFileSize;
-    std::uint32_t dwType;
-    std::uint32_t dwWchCount;  // count of wchar_t in next array
-    wchar_t wchFile[1];
-} DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
+    typedef struct {
+        unsigned int uiFileSize;
+        std::uint32_t dwType;
+        std::uint32_t dwWchCount;  // count of wchar_t in next array
+        wchar_t wchFile[1];
+    } DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
 
-typedef struct {
-    std::uint32_t dwType;
-    std::uint32_t dwWchCount;  // count of wchar_t in next array;
-    wchar_t wchData[1];  // will be an array of size dwBytes
-} DLC_FILE_PARAM, *PDLC_FILE_PARAM;
+    typedef struct {
+        std::uint32_t dwType;
+        std::uint32_t dwWchCount;  // count of wchar_t in next array;
+        wchar_t wchData[1];        // will be an array of size dwBytes
+    } DLC_FILE_PARAM, *PDLC_FILE_PARAM;
     // End of DLC_Creator structs
 
     typedef struct {
@@ -240,8 +240,8 @@ typedef struct {
         std::uint8_t* pbImage, unsigned int imageBytes,
         std::uint8_t* pbTextData,
         unsigned int textDataBytes);  // Sets the thumbnail & image for the
-                                        // save, optionally setting the
-                                        // metadata in the png
+                                      // save, optionally setting the
+                                      // metadata in the png
     C4JStorage::ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
                                             void* lpParam);
     void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
@@ -269,7 +269,8 @@ typedef struct {
         void* lpParam);  // Get the thumbnail for an individual save referenced
                          // by pSaveInfo
 
-    void GetSaveCacheFileInfo(unsigned int fileIndex, XCONTENT_DATA& xContentData);
+    void GetSaveCacheFileInfo(unsigned int fileIndex,
+                              XCONTENT_DATA& xContentData);
     void GetSaveCacheFileInfo(unsigned int fileIndex,
                               std::uint8_t** ppbImageData,
                               unsigned int* pImageBytes);
@@ -291,8 +292,7 @@ typedef struct {
     void SetDLCPackageRoot(char* pszDLCRoot);
     C4JStorage::EDLCStatus GetDLCOffers(
         int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
-        std::uint32_t dwOfferTypesBitmask =
-            XMARKETPLACE_OFFERING_TYPE_CONTENT);
+        std::uint32_t dwOfferTypesBitmask = XMARKETPLACE_OFFERING_TYPE_CONTENT);
     unsigned int CancelGetDLCOffers();
     void ClearDLCOffers();
     XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(unsigned int dw);
@@ -334,9 +334,8 @@ typedef struct {
 #ifdef _XBOX
     C4JStorage::ETMSStatus WriteTMSFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
-        C4JStorage::eTMS_FileType eFileType, char* pchFilePath,
-        char* pchBuffer, unsigned int bufferSize, TMSCLIENT_CALLBACK Func,
-        void* lpParam);
+        C4JStorage::eTMS_FileType eFileType, char* pchFilePath, char* pchBuffer,
+        unsigned int bufferSize, TMSCLIENT_CALLBACK Func, void* lpParam);
     int GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, void* lpParam);
 #endif
 

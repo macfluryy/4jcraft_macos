@@ -86,7 +86,6 @@ void UIControl_LeaderboardList::initLeaderboard(int iFirstFocus,
     IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                             getIggyValuePath(),
                                             m_funcInitLeaderboard, 3, value);
-
 }
 
 void UIControl_LeaderboardList::setColumnIcon(int iColumn, int iType) {
@@ -215,4 +214,3 @@ void UIControl_LeaderboardList::addDataSet(
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_funcAddDataSet, 12, value);
 }
-

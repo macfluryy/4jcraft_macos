@@ -55,7 +55,8 @@ void Minecart::_init() {
 Minecart::Minecart(Level* level) : Entity(level) {
     _init();
 
-    // soundUpdater = level != nullptr ? level->makeSoundUpdater(this) : nullptr;
+    // soundUpdater = level != nullptr ? level->makeSoundUpdater(this) :
+    // nullptr;
 }
 
 Minecart::~Minecart() {}
@@ -201,7 +202,8 @@ void Minecart::tick() {
             outOfWorld();
         }
 
-        if (!level->isClientSide && dynamic_cast<ServerLevel*>(level) != nullptr) {
+        if (!level->isClientSide &&
+            dynamic_cast<ServerLevel*>(level) != nullptr) {
             MinecraftServer* server = ((ServerLevel*)level)->getServer();
             int waitTime = getPortalWaitTime();
 
@@ -407,7 +409,8 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
     xd = pow * xD / dd;
     zd = pow * zD / dd;
 
-    if (rider.lock() != nullptr && rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
+    if (rider.lock() != nullptr &&
+        rider.lock()->instanceof(eTYPE_LIVINGENTITY)) {
         std::shared_ptr<LivingEntity> living =
             std::dynamic_pointer_cast<LivingEntity>(rider.lock());
 

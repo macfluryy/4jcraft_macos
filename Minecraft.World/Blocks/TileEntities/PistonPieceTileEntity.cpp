@@ -93,8 +93,8 @@ void PistonPieceEntity::moveCollidedEntities(float progress, float amount) {
                 collisionHolder.push_back(*it);
             }
 
-            for (auto it = collisionHolder.begin();
-                 it != collisionHolder.end(); it++) {
+            for (auto it = collisionHolder.begin(); it != collisionHolder.end();
+                 it++) {
                 (*it)->move(amount * Facing::STEP_X[facing],
                             amount * Facing::STEP_Y[facing],
                             amount * Facing::STEP_Z[facing]);

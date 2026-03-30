@@ -8,8 +8,7 @@
 #include "../Headers/net.minecraft.h"
 #include "SkullTile.h"
 
-SkullTile::SkullTile(int id)
-    : BaseEntityTile(id, Material::decoration, false) {
+SkullTile::SkullTile(int id) : BaseEntityTile(id, Material::decoration, false) {
     setShape(4.0f / 16.0f, 0, 4.0f / 16.0f, 12.0f / 16.0f, .5f, 12.0f / 16.0f);
 }
 

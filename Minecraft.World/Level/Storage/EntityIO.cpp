@@ -317,7 +317,8 @@ std::shared_ptr<Entity> EntityIO::newByEnumType(eINSTANCEOF eType,
         auto it2 = numCreateMap->find(it->second);
         if (it2 != numCreateMap->end()) {
             entityCreateFn create = it2->second;
-            if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
+            if (create != nullptr)
+                entity = std::shared_ptr<Entity>(create(level));
             if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
                 std::dynamic_pointer_cast<EnderDragon>(entity)
                     ->AddParts();  // 4J added to finalise creation

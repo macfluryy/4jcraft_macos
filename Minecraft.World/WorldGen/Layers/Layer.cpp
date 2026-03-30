@@ -3,7 +3,6 @@
 #include "../../Headers/net.minecraft.world.level.h"
 #include "BiomeOverrideLayer.h"
 
-
 LayerArray Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     // 4J - Some changes moved here from 1.2.3. Temperature & downfall layers
     // are no longer created & returned, and a debug layer is isn't. For
@@ -160,7 +159,6 @@ void Layer::initRandom(int64_t x, int64_t y) {
 }
 
 int Layer::nextRandom(int max) {
-
     int result = (int)((rval >> 24) % max);
 
     if (result < 0) result += max;

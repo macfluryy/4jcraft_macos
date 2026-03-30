@@ -37,7 +37,6 @@ void ProgressRenderer::_progressStart(int title) {
     lastPercent = 0;
     this->title = title;
     LeaveCriticalSection(&ProgressRenderer::s_progress);
-
 }
 
 void ProgressRenderer::progressStage(int status) {
@@ -61,7 +60,6 @@ void ProgressRenderer::progressStagePercentage(int i) {
     EnterCriticalSection(&ProgressRenderer::s_progress);
     lastPercent = i;
     LeaveCriticalSection(&ProgressRenderer::s_progress);
-
 }
 
 int ProgressRenderer::getCurrentPercent() {

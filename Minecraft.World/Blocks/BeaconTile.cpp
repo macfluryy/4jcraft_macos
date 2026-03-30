@@ -4,8 +4,7 @@
 #include "../Headers/net.minecraft.world.level.tile.entity.h"
 #include "BeaconTile.h"
 
-BeaconTile::BeaconTile(int id)
-    : BaseEntityTile(id, Material::glass, false) {
+BeaconTile::BeaconTile(int id) : BaseEntityTile(id, Material::glass, false) {
     setDestroyTime(3.0f);
 }
 

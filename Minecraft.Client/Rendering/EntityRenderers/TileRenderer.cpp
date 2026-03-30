@@ -183,10 +183,7 @@ void TileRenderer::setFixedTexture(Icon* fixedTexture) {
 
 void TileRenderer::clearFixedTexture() { this->fixedTexture = nullptr; }
 
-bool TileRenderer::hasFixedTexture() {
-
-    return fixedTexture != nullptr;
-}
+bool TileRenderer::hasFixedTexture() { return fixedTexture != nullptr; }
 
 void TileRenderer::setShape(float x0, float y0, float z0, float x1, float y1,
                             float z1) {
@@ -7130,7 +7127,6 @@ void TileRenderer::renderFaceDown(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-
         t->color(c1r, c1g, c1b);
         if (SharedConstants::TEXTURE_LIGHTING) t->tex2(tc1);
         t->vertexUV((float)(x0), (float)(y0), (float)(z1), (float)(u10),
@@ -7238,7 +7234,6 @@ void TileRenderer::renderFaceUp(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-
         t->color(c1r, c1g, c1b);
         if (SharedConstants::TEXTURE_LIGHTING) t->tex2(tc1);
         t->vertexUV((float)(x1), (float)(y1), (float)(z1), (float)(u11),
@@ -7351,7 +7346,6 @@ void TileRenderer::renderNorth(Tile* tt, double x, double y, double z,
     double z0 = z + tileShapeZ0;
 
     if (applyAmbienceOcclusion) {
-
         t->color(c1r, c1g, c1b);
         if (SharedConstants::TEXTURE_LIGHTING) t->tex2(tc1);
         t->vertexUV((float)(x0), (float)(y1), (float)(z0), (float)(u01),
@@ -7464,7 +7458,6 @@ void TileRenderer::renderSouth(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-
         t->color(c1r, c1g, c1b);
         if (SharedConstants::TEXTURE_LIGHTING) t->tex2(tc1);
         t->vertexUV((float)(x0), (float)(y1), (float)(z1), (float)(u00),
@@ -7577,7 +7570,6 @@ void TileRenderer::renderWest(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-
         t->color(c1r, c1g, c1b);
         if (SharedConstants::TEXTURE_LIGHTING) t->tex2(tc1);
         t->vertexUV((float)(x0), (float)(y1), (float)(z1), (float)(u01),
@@ -7690,7 +7682,6 @@ void TileRenderer::renderEast(Tile* tt, double x, double y, double z,
     double z1 = z + tileShapeZ1;
 
     if (applyAmbienceOcclusion) {
-
         t->color(c1r, c1g, c1b);
         if (SharedConstants::TEXTURE_LIGHTING) t->tex2(tc1);
         t->vertexUV((float)(x1), (float)(y0), (float)(z1), (float)(u10),
@@ -8332,7 +8323,6 @@ Icon* TileRenderer::getTexture(Tile* tile) {
 Icon* TileRenderer::getTextureOrMissing(Icon* icon) {
     if (icon == nullptr)
         return minecraft->textures->getMissingIcon(Icon::TYPE_TERRAIN);
-
 
     return icon;
 }

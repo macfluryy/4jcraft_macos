@@ -12,7 +12,6 @@
 #include "../../Minecraft.World/Level/Storage/LevelType.h"
 #include "../../Minecraft.Client/Textures/Packs/DLCTexturePack.h"
 
-
 #if defined(_WINDOWS64)
 
 #include <windows.h>
@@ -261,7 +260,6 @@ UIControl* UIScene_CreateWorldMenu::GetMainPanel() {
 }
 
 void UIScene_CreateWorldMenu::handleDestroy() {
-
     // shut down the keyboard if it is displayed
 }
 
@@ -278,9 +276,7 @@ void UIScene_CreateWorldMenu::tick() {
 
         m_bShowTexturePackDescription = false;
     }
-
 }
-
 
 void UIScene_CreateWorldMenu::handleInput(int iPad, int key, bool repeat,
                                           bool pressed, bool released,
@@ -369,7 +365,6 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId) {
         }
     }
 }
-
 
 void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -498,7 +493,6 @@ void UIScene_CreateWorldMenu::handleSliderMove(F64 sliderId, F64 currentValue) {
 }
 
 void UIScene_CreateWorldMenu::handleTimerComplete(int id) {
-
     switch (id) {
         case GAME_CREATE_ONLINE_TIMER_ID: {
             bool bMultiplayerAllowed =
@@ -533,7 +527,7 @@ void UIScene_CreateWorldMenu::handleTimerComplete(int id) {
                 m_bMultiplayerAllowed = bMultiplayerAllowed;
             }
         } break;
-        // 4J-PB - Only Xbox will not have trial DLC patched into the game
+            // 4J-PB - Only Xbox will not have trial DLC patched into the game
     };
 }
 
@@ -590,7 +584,6 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
         return;
     }
 
-
     unsigned int uiIDA[2];
     if (m_bGameModeCreative == true ||
         m_MoreOptionsParams.bHostPrivileges == true) {
@@ -625,9 +618,9 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
         bool pccFriendsAllowed = true;
         bool bContentRestricted = false;
 
-        ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),
-                                            false, &pccAllowed,
-                                            &pccFriendsAllowed);
+        ProfileManager.AllowedPlayerCreatedContent(
+            ProfileManager.GetPrimaryPad(), false, &pccAllowed,
+            &pccFriendsAllowed);
 
         noUGC = !pccAllowed && !pccFriendsAllowed;
 
@@ -642,8 +635,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
             } else if (bContentRestricted) {
                 m_bIgnoreInput = false;
                 ui.RequestContentRestrictedMessageBox();
-            }
-            else {
+            } else {
                 // ProfileManager.RequestSignInUI(false, false, false, true,
                 // false,&CScene_MultiGameCreate::StartGame_SignInReturned,
                 // this,ProfileManager.GetPrimaryPad());
@@ -663,8 +655,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
             } else if (isOnlineGame && isSignedInLive && bContentRestricted) {
                 m_bIgnoreInput = false;
                 ui.RequestContentRestrictedMessageBox();
-            }
-            else {
+            } else {
                 CreateGame(this, 0);
             }
         }
@@ -931,9 +922,9 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             bool pccAllowed = true;
             bool pccFriendsAllowed = true;
 
-            ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),
-                                                false, &pccAllowed,
-                                                &pccFriendsAllowed);
+            ProfileManager.AllowedPlayerCreatedContent(
+                ProfileManager.GetPrimaryPad(), false, &pccAllowed,
+                &pccFriendsAllowed);
             if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
 
             if (isOnlineGame && (noPrivileges || noUGC)) {
@@ -1025,7 +1016,6 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(
     }
     return 0;
 }
-
 
 void UIScene_CreateWorldMenu::handleTouchBoxRebuild() {
     m_bRebuildTouchBoxes = true;

@@ -189,7 +189,7 @@ EntityRenderer* EntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
     if ((e & eTYPE_PLAYER) == eTYPE_PLAYER) e = eTYPE_PLAYER;
     // EntityRenderer * r = renderers[e];
     auto it = renderers.find(e);  // 4J Stu - The .at and [] accessors
-                                      // insert elements if they don't exist
+                                  // insert elements if they don't exist
 
     if (it == renderers.end()) {
         app.DebugPrintf("Couldn't find renderer for entity of type %d\n", e);

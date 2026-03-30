@@ -236,88 +236,86 @@ bool SonyLeaderboardManager::getScoreByIds() {
 
     /* app.DebugPrintf("sceNpScoreGetRankingByNpId(\n\t transaction=%i,\n\t
     boardID=0,\n\t npId=%i,\n\t friendCount*sizeof(SceNpId)=%i*%i=%i,\
-    rankData=%i,\n\t friendCount*sizeof(SceNpScorePlayerRankData)=%i,\n\t nullptr,
-    0, nullptr, 0,\n\t friendCount=%i,\n...\n", transaction, npId, friendCount,
-    sizeof(SceNpId), friendCount*sizeof(SceNpId), rankData,
+    rankData=%i,\n\t friendCount*sizeof(SceNpScorePlayerRankData)=%i,\n\t
+    nullptr, 0, nullptr, 0,\n\t friendCount=%i,\n...\n", transaction, npId,
+    friendCount, sizeof(SceNpId), friendCount*sizeof(SceNpId), rankData,
     friendCount*sizeof(SceNpScorePlayerRankData), friendCount
     ); */
 
     int boardId = getBoardId(m_difficulty, m_statsType);
 
     // 4J-JEV: Orbis can only do with 100 ids max, so we use batches.
-        ret = createTransactionContext(m_titleContext);
-        if (m_eStatsState == eStatsState_Canceled) {
-            // Cancel operation has been called, abort.
-            app.DebugPrintf(
-                "[SonyLeaderboardManager]\tgetScoreByIds() - m_eStatsState == "
-                "eStatsState_Canceled.\n");
+    ret = createTransactionContext(m_titleContext);
+    if (m_eStatsState == eStatsState_Canceled) {
+        // Cancel operation has been called, abort.
+        app.DebugPrintf(
+            "[SonyLeaderboardManager]\tgetScoreByIds() - m_eStatsState == "
+            "eStatsState_Canceled.\n");
 
-            destroyTransactionContext(ret);
+        destroyTransactionContext(ret);
 
-            if (npIds != nullptr) delete[] npIds;
-            if (ptr != nullptr) delete[] ptr;
-            if (comments != nullptr) delete[] comments;
+        if (npIds != nullptr) delete[] npIds;
+        if (ptr != nullptr) delete[] ptr;
+        if (comments != nullptr) delete[] comments;
 
-            return false;
-        } else if (ret < 0) {
-            // Error occurred creating a transacion, abort.
-            app.DebugPrintf(
-                "[SonyLeaderboardManager]\tgetScoreByIds() - createTransaction "
-                "failed, ret=0x%X\n",
-                ret);
+        return false;
+    } else if (ret < 0) {
+        // Error occurred creating a transacion, abort.
+        app.DebugPrintf(
+            "[SonyLeaderboardManager]\tgetScoreByIds() - createTransaction "
+            "failed, ret=0x%X\n",
+            ret);
 
-            m_eStatsState = eStatsState_Failed;
+        m_eStatsState = eStatsState_Failed;
 
-            if (npIds != nullptr) delete[] npIds;
-            if (ptr != nullptr) delete[] ptr;
-            if (comments != nullptr) delete[] comments;
+        if (npIds != nullptr) delete[] npIds;
+        if (ptr != nullptr) delete[] ptr;
+        if (comments != nullptr) delete[] comments;
 
-            return false;
-        } else {
-            // Transaction created successfully, continue.
-            m_requestId = ret;
-        }
+        return false;
+    } else {
+        // Transaction created successfully, continue.
+        m_requestId = ret;
+    }
 
     int tmpNum = num;
-        ret = sceNpScoreGetRankingByNpId(
-            m_requestId,
-            boardId,  // BoardId
+    ret = sceNpScoreGetRankingByNpId(
+        m_requestId,
+        boardId,  // BoardId
 
         npIds, sizeof(SceNpId) * tmpNum,                 // IN: Player IDs
         ptr, sizeof(SceNpScorePlayerRankData) * tmpNum,  // OUT: Rank Data
         comments, sizeof(SceNpScoreComment) * tmpNum,    // OUT: Comments
 
-            nullptr, 0,  // GameData. (unused)
+        nullptr, 0,  // GameData. (unused)
 
-            tmpNum,
+        tmpNum,
 
-            &last_sort_date, &mTotalRecord,
+        &last_sort_date, &mTotalRecord,
 
-            nullptr  // Reserved, specify null.
-        );
+        nullptr  // Reserved, specify null.
+    );
 
-        if (ret == SCE_NP_COMMUNITY_ERROR_ABORTED) {
-            ret = destroyTransactionContext(m_requestId);
-            app.DebugPrintf(
-                "[SonyLeaderboardManager] getScoreByIds(): "
-                "'sceNpScoreGetRankingByRange' aborted (0x%X).\n",
-                ret);
+    if (ret == SCE_NP_COMMUNITY_ERROR_ABORTED) {
+        ret = destroyTransactionContext(m_requestId);
+        app.DebugPrintf(
+            "[SonyLeaderboardManager] getScoreByIds(): "
+            "'sceNpScoreGetRankingByRange' aborted (0x%X).\n",
+            ret);
 
-            delete[] ptr;
-            delete[] comments;
-            delete[] npIds;
+        delete[] ptr;
+        delete[] comments;
+        delete[] npIds;
 
-            return false;
-        } else if (ret ==
-                   SCE_NP_COMMUNITY_SERVER_ERROR_GAME_RANKING_NOT_FOUND) {
-            // 4J-JEV: Keep going, other batches might have scores.
-        } else if (ret < 0)
-            goto error3;
+        return false;
+    } else if (ret == SCE_NP_COMMUNITY_SERVER_ERROR_GAME_RANKING_NOT_FOUND) {
+        // 4J-JEV: Keep going, other batches might have scores.
+    } else if (ret < 0)
+        goto error3;
 
-        // Return.
-        destroyTransactionContext(m_requestId);
-        m_requestId = 0;
-
+    // Return.
+    destroyTransactionContext(m_requestId);
+    m_requestId = 0;
 
     m_readCount = num;
 
@@ -544,7 +542,7 @@ bool SonyLeaderboardManager::setScore() {
                                 rscore.m_score,  // IN: new score,
 
                                 &comment,  // Comments
-                                nullptr,      // GameInfo
+                                nullptr,   // GameInfo
 
                                 &tmp,  // OUT: current rank,
 

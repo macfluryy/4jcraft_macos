@@ -96,8 +96,7 @@ bool VillageSiege::tryToSetupSiege() {
             std::vector<std::shared_ptr<Village> >* villages =
                 level->villages->getVillages();
             // for (Village v : level.villages.getVillages())
-            for (auto itV = villages->begin(); itV != villages->end();
-                 ++itV) {
+            for (auto itV = villages->begin(); itV != villages->end(); ++itV) {
                 std::shared_ptr<Village> v = *itV;
                 if (v == _village) continue;
                 if (v->isInside(spawnX, spawnY, spawnZ)) {

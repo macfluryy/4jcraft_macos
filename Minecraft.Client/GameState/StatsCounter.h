@@ -90,6 +90,5 @@ private:
     bool isLargeStat(Stat* stat);
     void dumpStatsToTTY();
 
-
     void writeStats();
 };

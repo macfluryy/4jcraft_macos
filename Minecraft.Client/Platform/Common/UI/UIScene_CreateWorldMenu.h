@@ -80,20 +80,19 @@ private:
     void StartSharedLaunchFlow();
     bool IsLocalMultiplayerAvailable();
 
-
 protected:
     static int KeyboardCompleteWorldNameCallback(void* lpParam,
                                                  const bool bRes);
     void handlePress(F64 controlId, F64 childId);
     void handleSliderMove(F64 sliderId, F64 currentValue);
 
-    static void CreateGame(UIScene_CreateWorldMenu* pClass, int32_t LocalUsersMask);
+    static void CreateGame(UIScene_CreateWorldMenu* pClass,
+                           int32_t LocalUsersMask);
     static int ConfirmCreateReturned(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
     static int StartGame_SignInReturned(void* pParam, bool bContinue, int iPad);
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
-
 
     virtual void checkStateAndStartGame();
 };

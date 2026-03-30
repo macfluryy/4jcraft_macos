@@ -164,7 +164,6 @@ protected:
     int m_iCurrSlotX;
     int m_iCurrSlotY;
 
-
     // ENum indexes of the first section for this scene, and 1+the last section
     ESceneSection m_eFirstSection, m_eMaxSection;
 

@@ -717,7 +717,7 @@ static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
 static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
                                         LPSYSTEMTIME lpSystemTime) {
     uint64_t ft = ((uint64_t)lpFileTime->dwHighDateTime << 32) |
-                   lpFileTime->dwLowDateTime;
+                  lpFileTime->dwLowDateTime;
     time_t t = _FileTimeToTimeT(*lpFileTime);
     long remainder_ns = (long)((ft % 10000000ULL) * 100);
 
@@ -1049,7 +1049,7 @@ static inline int swprintf_s(wchar_t* buf, size_t sz, const wchar_t* fmt, ...) {
 static inline HMODULE GetModuleHandle(const char* lpModuleName) { return 0; }
 
 static inline void* VirtualAlloc(void* lpAddress, size_t dwSize,
-                                  DWORD flAllocationType, DWORD flProtect) {
+                                 DWORD flAllocationType, DWORD flProtect) {
     // MEM_COMMIT | MEM_RESERVE → mmap anonymous
     int prot = 0;
     if (flProtect == 0x04 /*PAGE_READWRITE*/)

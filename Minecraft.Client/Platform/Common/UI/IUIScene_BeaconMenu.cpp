@@ -271,7 +271,8 @@ void IUIScene_BeaconMenu::handleTick() {
             int totalWidth = count * 22 + (count - 1) * 2;
 
             for (int c = 0; c < count; c++) {
-                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == nullptr) continue;
+                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == nullptr)
+                    continue;
 
                 int effectId = BeaconTileEntity::BEACON_EFFECTS[tier][c]->id;
                 int icon = BeaconTileEntity::BEACON_EFFECTS[tier][c]->getIcon();
@@ -298,7 +299,8 @@ void IUIScene_BeaconMenu::handleTick() {
             int totalWidth = count * 22 + (count - 1) * 2;
 
             for (int c = 0; c < count - 1; c++) {
-                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == nullptr) continue;
+                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == nullptr)
+                    continue;
 
                 int effectId = BeaconTileEntity::BEACON_EFFECTS[tier][c]->id;
                 int icon = BeaconTileEntity::BEACON_EFFECTS[tier][c]->getIcon();

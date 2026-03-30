@@ -3,8 +3,7 @@
 #include "LadderTile.h"
 #include "Util/AABB.h"
 
-LadderTile::LadderTile(int id)
-    : Tile(id, Material::decoration, false) {}
+LadderTile::LadderTile(int id) : Tile(id, Material::decoration, false) {}
 
 std::optional<AABB> LadderTile::getAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);

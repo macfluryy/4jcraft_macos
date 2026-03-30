@@ -2,5 +2,4 @@
 
 #include "../../Platform/stdafx.h"
 
-class ClientInformationPacket : public Packet {
-};
+class ClientInformationPacket : public Packet {};

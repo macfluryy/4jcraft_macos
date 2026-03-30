@@ -87,5 +87,3 @@ private:
     bool m_bIsPlayingEndMusic;
     bool m_bIsPlayingNetherMusic;
 };
-
-

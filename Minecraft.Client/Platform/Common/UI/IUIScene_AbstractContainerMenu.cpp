@@ -9,7 +9,6 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.Client/Minecraft.h"
 
-
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = nullptr;
     m_autoDeleteMenu = false;
@@ -68,12 +67,11 @@ void IUIScene_AbstractContainerMenu::Initialize(
     m_iCurrSlotX = 0;
     m_iCurrSlotY = 0;
 #endif
-        //
-        // 	for(int i=0;i<XUSER_MAX_COUNT;i++)
-        // 	{
-        // 		m_bFirstTouchStored[i]=false;
-        // 	}
-
+    //
+    // 	for(int i=0;i<XUSER_MAX_COUNT;i++)
+    // 	{
+    // 		m_bFirstTouchStored[i]=false;
+    // 	}
 
     PlatformInitialize(iPad, startIndex);
 }
@@ -247,123 +245,117 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
         ((float)app.GetGameSettings(iPad, eGameSetting_Sensitivity_InMenu) /
          100.0f);  // apply the sensitivity
 
-
-        // If there is any input on sticks, move the pointer.
-        if ((fabs(fInputX) >= 0.01f) || (fabs(fInputY) >= 0.01f)) {
-            fInputDirX = (fInputX > 0.0f)   ? 1.0f
-                         : (fInputX < 0.0f) ? -1.0f
-                                            : 0.0f;
-            fInputDirY = (fInputY > 0.0f)   ? 1.0f
-                         : (fInputY < 0.0f) ? -1.0f
-                                            : 0.0f;
+    // If there is any input on sticks, move the pointer.
+    if ((fabs(fInputX) >= 0.01f) || (fabs(fInputY) >= 0.01f)) {
+        fInputDirX = (fInputX > 0.0f) ? 1.0f : (fInputX < 0.0f) ? -1.0f : 0.0f;
+        fInputDirY = (fInputY > 0.0f) ? 1.0f : (fInputY < 0.0f) ? -1.0f : 0.0f;
 
 #if defined(TAP_DETECTION)
-            // Check for potential tap input to jump slot.
-            ETapState eNewTapInput = GetTapInputType(fInputX, fInputY);
+        // Check for potential tap input to jump slot.
+        ETapState eNewTapInput = GetTapInputType(fInputX, fInputY);
 
-            switch (m_eCurrTapState) {
-                case eTapStateNoInput:
-                    m_eCurrTapState = eNewTapInput;
-                    break;
+        switch (m_eCurrTapState) {
+            case eTapStateNoInput:
+                m_eCurrTapState = eNewTapInput;
+                break;
 
-                case eTapStateUp:
-                case eTapStateDown:
-                case eTapStateLeft:
-                case eTapStateRight:
-                    if ((eNewTapInput != m_eCurrTapState) &&
-                        (eNewTapInput != eTapStateNoInput)) {
-                        // Input is no longer suitable for tap.
-                        m_eCurrTapState = eTapNone;
-                    }
-                    break;
+            case eTapStateUp:
+            case eTapStateDown:
+            case eTapStateLeft:
+            case eTapStateRight:
+                if ((eNewTapInput != m_eCurrTapState) &&
+                    (eNewTapInput != eTapStateNoInput)) {
+                    // Input is no longer suitable for tap.
+                    m_eCurrTapState = eTapNone;
+                }
+                break;
 
-                case eTapNone:
-                    /// Nothing to do, input is not a tap.
-                    break;
-                default:
-                    break;
-            }
+            case eTapNone:
+                /// Nothing to do, input is not a tap.
+                break;
+            default:
+                break;
+        }
 #endif
 
-            // Square it so we get more precision for small inputs.
-            fInputX = fInputX * fInputX * fInputDirX * POINTER_SPEED_FACTOR;
-            fInputY = fInputY * fInputY * fInputDirY * POINTER_SPEED_FACTOR;
-            // fInputX = fInputX * POINTER_SPEED_FACTOR;
-            // fInputY = fInputY * POINTER_SPEED_FACTOR;
-            float fInputScale = 1.0f;
+        // Square it so we get more precision for small inputs.
+        fInputX = fInputX * fInputX * fInputDirX * POINTER_SPEED_FACTOR;
+        fInputY = fInputY * fInputY * fInputDirY * POINTER_SPEED_FACTOR;
+        // fInputX = fInputX * POINTER_SPEED_FACTOR;
+        // fInputY = fInputY * POINTER_SPEED_FACTOR;
+        float fInputScale = 1.0f;
 
-            // Ramp up input from zero when new input is recieved over
-            // INPUT_TICKS_FOR_SCALING ticks. This is to try to improve tapping
-            // stick to move 1 box.
-            if (m_iConsectiveInputTicks < MAX_INPUT_TICKS_FOR_SCALING) {
-                ++m_iConsectiveInputTicks;
-                fInputScale = ((float)(m_iConsectiveInputTicks) /
-                               (float)(MAX_INPUT_TICKS_FOR_SCALING));
-            }
+        // Ramp up input from zero when new input is recieved over
+        // INPUT_TICKS_FOR_SCALING ticks. This is to try to improve tapping
+        // stick to move 1 box.
+        if (m_iConsectiveInputTicks < MAX_INPUT_TICKS_FOR_SCALING) {
+            ++m_iConsectiveInputTicks;
+            fInputScale = ((float)(m_iConsectiveInputTicks) /
+                           (float)(MAX_INPUT_TICKS_FOR_SCALING));
+        }
 #if defined(TAP_DETECTION)
-            else if (m_iConsectiveInputTicks < MAX_INPUT_TICKS_FOR_TAPPING) {
-                ++m_iConsectiveInputTicks;
-            } else {
-                m_eCurrTapState = eTapNone;
-            }
+        else if (m_iConsectiveInputTicks < MAX_INPUT_TICKS_FOR_TAPPING) {
+            ++m_iConsectiveInputTicks;
+        } else {
+            m_eCurrTapState = eTapNone;
+        }
 #endif
-            // 4J Stu - The cursor moves too fast in SD mode
-            // The SD/splitscreen scenes are approximately 0.6 times the size of
-            // the fullscreen on
-            if (!RenderManager.IsHiDef() || app.GetLocalPlayerCount() > 1)
-                fInputScale *= 0.6f;
+        // 4J Stu - The cursor moves too fast in SD mode
+        // The SD/splitscreen scenes are approximately 0.6 times the size of
+        // the fullscreen on
+        if (!RenderManager.IsHiDef() || app.GetLocalPlayerCount() > 1)
+            fInputScale *= 0.6f;
 
-            fInputX *= fInputScale;
-            fInputY *= fInputScale;
+        fInputX *= fInputScale;
+        fInputY *= fInputScale;
 
 #if defined(USE_POINTER_ACCEL)
-            m_fPointerAccelX += fInputX / 50.0f;
-            m_fPointerAccelY += fInputY / 50.0f;
+        m_fPointerAccelX += fInputX / 50.0f;
+        m_fPointerAccelY += fInputY / 50.0f;
 
-            if (fabsf(fInputX) > fabsf(m_fPointerVelX + m_fPointerAccelX)) {
-                m_fPointerVelX += m_fPointerAccelX;
-            } else {
-                m_fPointerAccelX = fInputX - m_fPointerVelX;
-                m_fPointerVelX = fInputX;
-            }
+        if (fabsf(fInputX) > fabsf(m_fPointerVelX + m_fPointerAccelX)) {
+            m_fPointerVelX += m_fPointerAccelX;
+        } else {
+            m_fPointerAccelX = fInputX - m_fPointerVelX;
+            m_fPointerVelX = fInputX;
+        }
 
-            if (fabsf(fInputY) > fabsf(m_fPointerVelY + m_fPointerAccelY)) {
-                m_fPointerVelY += m_fPointerAccelY;
-            } else {
-                m_fPointerAccelY = fInputY - m_fPointerVelY;
-                m_fPointerVelY = fInputY;
-            }
-            // printf( "IN %.2f  VEL %.2f  ACC %.2f\n", fInputY, m_fPointerVelY,
-            // m_fPointerAccelY );
+        if (fabsf(fInputY) > fabsf(m_fPointerVelY + m_fPointerAccelY)) {
+            m_fPointerVelY += m_fPointerAccelY;
+        } else {
+            m_fPointerAccelY = fInputY - m_fPointerVelY;
+            m_fPointerVelY = fInputY;
+        }
+        // printf( "IN %.2f  VEL %.2f  ACC %.2f\n", fInputY, m_fPointerVelY,
+        // m_fPointerAccelY );
 
-            vPointerPos.x += m_fPointerVelX;
-            vPointerPos.y -= m_fPointerVelY;
+        vPointerPos.x += m_fPointerVelX;
+        vPointerPos.y -= m_fPointerVelY;
 #else
         // Add input to pointer position.
         vPointerPos.x += fInputX;
         vPointerPos.y -= fInputY;
 #endif
-            // Clamp to pointer extents.
-            if (vPointerPos.x < m_fPointerMinX)
-                vPointerPos.x = m_fPointerMinX;
-            else if (vPointerPos.x > m_fPointerMaxX)
-                vPointerPos.x = m_fPointerMaxX;
-            if (vPointerPos.y < m_fPointerMinY)
-                vPointerPos.y = m_fPointerMinY;
-            else if (vPointerPos.y > m_fPointerMaxY)
-                vPointerPos.y = m_fPointerMaxY;
+        // Clamp to pointer extents.
+        if (vPointerPos.x < m_fPointerMinX)
+            vPointerPos.x = m_fPointerMinX;
+        else if (vPointerPos.x > m_fPointerMaxX)
+            vPointerPos.x = m_fPointerMaxX;
+        if (vPointerPos.y < m_fPointerMinY)
+            vPointerPos.y = m_fPointerMinY;
+        else if (vPointerPos.y > m_fPointerMaxY)
+            vPointerPos.y = m_fPointerMaxY;
 
-            bStickInput = true;
-        } else {
-            m_iConsectiveInputTicks = 0;
+        bStickInput = true;
+    } else {
+        m_iConsectiveInputTicks = 0;
 #if defined(USE_POINTER_ACCEL)
-            m_fPointerVelX = 0.0f;
-            m_fPointerVelY = 0.0f;
-            m_fPointerAccelX = 0.0f;
-            m_fPointerAccelY = 0.0f;
+        m_fPointerVelX = 0.0f;
+        m_fPointerVelY = 0.0f;
+        m_fPointerAccelX = 0.0f;
+        m_fPointerAccelY = 0.0f;
 #endif
-        }
-
+    }
 
     // Determine which slot the pointer is currently over.
     ESceneSection eSectionUnderPointer = eSectionNone;
@@ -480,8 +472,8 @@ void IUIScene_AbstractContainerMenu::onMouseTick() {
                         m_iCurrSlotX = iNewSlotX;
                         m_iCurrSlotY = iNewSlotY;
 #endif
-        // No need to check any further slots, the pointer can only ever be over
-        // one.
+                        // No need to check any further slots, the pointer can
+                        // only ever be over one.
                         break;
                     }
                 }

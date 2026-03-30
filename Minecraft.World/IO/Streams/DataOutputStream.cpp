@@ -34,7 +34,8 @@ void DataOutputStream::write(unsigned int b) {
 void DataOutputStream::flush() {
     if (stream == nullptr) {
         app.DebugPrintf(
-            "DataOutputStream::flush() called but underlying stream is nullptr\n");
+            "DataOutputStream::flush() called but underlying stream is "
+            "nullptr\n");
         return;
     }
     stream->flush();
@@ -68,7 +69,8 @@ void DataOutputStream::write(byteArray b, unsigned int offset,
 void DataOutputStream::close() {
     if (stream == nullptr) {
         app.DebugPrintf(
-            "DataOutputStream::close() called but underlying stream is nullptr\n");
+            "DataOutputStream::close() called but underlying stream is "
+            "nullptr\n");
         return;
     }
     stream->close();
@@ -254,6 +256,4 @@ void DataOutputStream::writeUTF(const std::wstring& str) {
 }
 
 // 4J Added
-void DataOutputStream::writePlayerUID(PlayerUID player) {
-    writeLong(player);
-}
+void DataOutputStream::writePlayerUID(PlayerUID player) { writeLong(player); }

@@ -40,7 +40,6 @@ public:
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex) = 0;
 
-
     virtual int getSaveVersion() = 0;
     virtual int getOriginalSaveVersion() = 0;
 

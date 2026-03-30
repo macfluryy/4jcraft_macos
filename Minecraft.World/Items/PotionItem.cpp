@@ -43,8 +43,9 @@ std::vector<MobEffectInstance*>* PotionItem::getMobEffects(
         }
 
         // Result should be a new (unmanaged) vector, so create a new one
-        return effects == nullptr ? nullptr
-                               : new std::vector<MobEffectInstance*>(*effects);
+        return effects == nullptr
+                   ? nullptr
+                   : new std::vector<MobEffectInstance*>(*effects);
     } else {
         std::vector<MobEffectInstance*>* effects =
             new std::vector<MobEffectInstance*>();
@@ -391,8 +392,9 @@ std::vector<std::pair<int, int> >* PotionItem::getUniquePotionValues() {
                     for (auto it = effects->begin(); it != effects->end();
                          ++it) {
                         MobEffectInstance* mei = *it;
-                        effectsHashCode = 31 * effectsHashCode +
-                                          (mei == nullptr ? 0 : mei->hashCode());
+                        effectsHashCode =
+                            31 * effectsHashCode +
+                            (mei == nullptr ? 0 : mei->hashCode());
                         delete (*it);
                     }
 

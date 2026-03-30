@@ -25,7 +25,9 @@ void SignTile::updateDefaultShape() {
     this->setShape(0.5f - r, 0, 0.5f - r, 0.5f + r, h, 0.5f + r);
 }
 
-std::optional<AABB> SignTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> SignTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 AABB SignTile::getTileAABB(Level* level, int x, int y, int z) {
     updateShape(level, x, y, z);

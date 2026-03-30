@@ -51,7 +51,6 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(
                         ->getDLCInfoParentPack();  // tPack->getDLCPack();
                 if (!pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
                                                 L"")) {
-
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_OK;
                     uiIDA[1] = IDS_CONFIRM_CANCEL;
@@ -192,9 +191,6 @@ int IUIScene_PauseMenu::ExitGameDeclineSaveReturned(
 
 int IUIScene_PauseMenu::WarningTrialTexturePackReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-
-
-
     return 0;
 }
 
@@ -227,7 +223,6 @@ int IUIScene_PauseMenu::SaveWorldThreadProc(void* lpParameter) {
 
         if (!MinecraftServer::serverHalted() && !app.GetChangingSessionType())
             app.SetGameStarted(true);
-
     }
 
     int32_t hr = S_OK;
@@ -443,7 +438,6 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
     app.SetChangingSessionType(false);
     app.SetReallyChangingSessionType(false);
     pMinecraft->exitingWorldRightNow = false;
-
 }
 
 int IUIScene_PauseMenu::SaveGameDialogReturned(

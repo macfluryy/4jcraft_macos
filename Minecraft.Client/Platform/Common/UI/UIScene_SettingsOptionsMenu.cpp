@@ -2,7 +2,6 @@
 #include "UI.h"
 #include "UIScene_SettingsOptionsMenu.h"
 
-
 int UIScene_SettingsOptionsMenu::m_iDifficultySettingA[4] = {
     IDS_DIFFICULTY_PEACEFUL, IDS_DIFFICULTY_EASY, IDS_DIFFICULTY_NORMAL,
     IDS_DIFFICULTY_HARD};
@@ -63,7 +62,6 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     m_sliderAutosave.setAllPossibleLabels(9, autosaveLabels);
     m_sliderAutosave.init(autosaveLabels[ucValue], eControl_Autosave, 0, 8,
                           ucValue);
-
 
     ucValue = app.GetGameSettings(m_iPad, eGameSetting_Difficulty);
     wchar_t difficultyLabels[4][256];
@@ -267,7 +265,6 @@ void UIScene_SettingsOptionsMenu::handleReload() {
     m_sliderAutosave.setAllPossibleLabels(9, autosaveLabels);
     m_sliderAutosave.init(autosaveLabels[ucValue], eControl_Autosave, 0, 8,
                           ucValue);
-
 
     ucValue = app.GetGameSettings(m_iPad, eGameSetting_Difficulty);
 

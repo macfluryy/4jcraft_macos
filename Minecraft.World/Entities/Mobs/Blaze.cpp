@@ -99,8 +99,7 @@ void Blaze::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
         doHurtTarget(target);
     } else if (d < 30) {
         double xd = target->x - x;
-        double yd =
-            (target->bb.y0 + target->bbHeight / 2) - (y + bbHeight / 2);
+        double yd = (target->bb.y0 + target->bbHeight / 2) - (y + bbHeight / 2);
         double zd = target->z - z;
 
         if (attackTime == 0) {

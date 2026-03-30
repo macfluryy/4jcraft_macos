@@ -88,8 +88,8 @@ bool CollectItemRuleDefinition::onCollectItem(
                         std::shared_ptr<UpdateGameRuleProgressPacket>(
                             new UpdateGameRuleProgressPacket(
                                 getActionType(), this->m_descriptionId,
-                                m_itemId, m_auxValue, this->m_4JDataValue, nullptr,
-                                0)));
+                                m_itemId, m_auxValue, this->m_4JDataValue,
+                                nullptr, 0)));
                 }
             }
         }

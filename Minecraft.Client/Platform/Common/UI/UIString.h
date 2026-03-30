@@ -3,9 +3,7 @@
 #include <set>
 #include <functional>
 
-
 typedef std::function<std::wstring(void)> StringBuilder;
-
 
 class UIString {
 protected:

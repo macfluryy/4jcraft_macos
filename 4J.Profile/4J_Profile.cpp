@@ -102,8 +102,7 @@ void initialiseDefaultGameSettings(ProfileGameSettings* gameSettings) {
 }
 }  // namespace
 
-void C_4JProfile::Initialise(std::uint32_t dwTitleID,
-                             std::uint32_t dwOfferID,
+void C_4JProfile::Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
                              unsigned short usProfileVersion,
                              unsigned int uiProfileValuesC,
                              unsigned int uiProfileSettingsC,
@@ -139,9 +138,9 @@ unsigned int C_4JProfile::RequestSignInUI(
     int iQuadrant) {
     return 0;
 }
-unsigned int C_4JProfile::DisplayOfflineProfile(
-    int (*Func)(void*, const bool, const int iPad), void* lpParam,
-    int iQuadrant) {
+unsigned int C_4JProfile::DisplayOfflineProfile(int (*Func)(void*, const bool,
+                                                            const int iPad),
+                                                void* lpParam, int iQuadrant) {
     return 0;
 }
 unsigned int C_4JProfile::RequestConvertOfflineToGuestUI(
@@ -152,7 +151,9 @@ unsigned int C_4JProfile::RequestConvertOfflineToGuestUI(
 void C_4JProfile::SetPrimaryPlayerChanged(bool bVal) {}
 bool C_4JProfile::QuerySigninStatus(void) { return true; }
 void C_4JProfile::GetXUID(int iPad, PlayerUID* pXuid, bool bOnlineXuid) {
-    if (pXuid) *pXuid = kFakeXuidBase + static_cast<PlayerUID>(isValidPad(iPad) ? iPad : 0);
+    if (pXuid)
+        *pXuid =
+            kFakeXuidBase + static_cast<PlayerUID>(isValidPad(iPad) ? iPad : 0);
 }
 bool C_4JProfile::AreXUIDSEqual(PlayerUID xuid1, PlayerUID xuid2) {
     return xuid1 == xuid2;
@@ -267,4 +268,6 @@ void C_4JProfile::SetUpsellCallback(void (*Func)(void* lpParam,
                                                  eUpsellResponse response,
                                                  int iUserData),
                                     void* lpParam) {}
-void C_4JProfile::SetDebugFullOverride(bool bVal) { s_profileIsFullVersion = bVal; }
+void C_4JProfile::SetDebugFullOverride(bool bVal) {
+    s_profileIsFullVersion = bVal;
+}

@@ -4,7 +4,6 @@
 #include "TextureManager.h"
 #include "Texture.h"
 
-
 #define MAX_MIP_LEVELS 5
 
 Texture::Texture(const std::wstring& name, int mode, int width, int height,
@@ -64,7 +63,6 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
         // TODO - The render libs currently limit max mip map levels to 5
         if (m_iMipLevels > MAX_MIP_LEVELS) m_iMipLevels = MAX_MIP_LEVELS;
     }
-
 
     if (mode != TM_CONTAINER) {
         glId = glGenTextures();
@@ -232,7 +230,6 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
         data[level]->position(0);
         srcBuffer->position(0);
 
-
         for (int srcY = 0; srcY < shh; srcY++) {
             int dstY = yy + srcY;
             int srcLine = srcY * sww * 4;
@@ -347,10 +344,10 @@ void Texture::transferFromImage(BufferedImage* image) {
         return;
     }
 
-// #if 0
-// 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
-// 	int byteRemapBGRA[] = { 2, 1, 0, 3 };
-// #else
+    // #if 0
+    // 	int byteRemapRGBA[] = { 0, 1, 2, 3 };
+    // 	int byteRemapBGRA[] = { 2, 1, 0, 3 };
+    // #else
     int byteRemapRGBA[] = {3, 0, 1, 2};
     int byteRemapBGRA[] = {3, 2, 1, 0};
     // #endif

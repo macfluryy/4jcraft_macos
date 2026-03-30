@@ -83,7 +83,6 @@ void PlayerList::placeNewPlayer(Connection* connection,
         player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_HOST, 1);
     }
 
-
     // 4J Stu - TU-1 hotfix
     // Fix for #13150 - When a player loads/joins a game after saving/leaving in
     // the nether, sometimes they are spawned on top of the nether and cannot
@@ -268,8 +267,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         level->getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT))));
 
     auto activeEffects = player->getActiveEffects();
-    for (auto it = activeEffects->begin(); it != activeEffects->end();
-         ++it) {
+    for (auto it = activeEffects->begin(); it != activeEffects->end(); ++it) {
         MobEffectInstance* effect = *it;
         playerConnection->send(std::shared_ptr<UpdateMobEffectPacket>(
             new UpdateMobEffectPacket(player->entityId, effect)));
@@ -602,7 +600,8 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
             if (ep->dimension != oldDimension) continue;
 
             INetworkPlayer* otherPlayer = ep->connection->getNetworkPlayer();
-            if (otherPlayer != nullptr && thisPlayer->IsSameSystem(otherPlayer)) {
+            if (otherPlayer != nullptr &&
+                thisPlayer->IsSameSystem(otherPlayer)) {
                 // There's another player here in the same dimension - we're not
                 // the last one out
                 isEmptying = false;
@@ -614,9 +613,9 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     // (1) if this isn't the primary player, then we just need to remove it from
     // the entity tracker (2) if this Is the primary player then:
     //		(a) if isEmptying is true, then remove the player from the
-    //tracker, and send "remove entity" packets for anything seen (this is the
-    //original behaviour of the code) 		(b) if isEmptying is false, then we'll be
-    //transferring control of entity tracking to another player
+    // tracker, and send "remove entity" packets for anything seen (this is the
+    // original behaviour of the code) 		(b) if isEmptying is false, then
+    // we'll be transferring control of entity tracking to another player
 
     if (isPrimary) {
         if (isEmptying) {
@@ -893,8 +892,7 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
     // 4J Stu - Fix for #64683 - Customer Encountered: TU7: Content: Gameplay:
     // Potion effects are removed after using the Nether Portal
     std::vector<MobEffectInstance*>* activeEffects = player->getActiveEffects();
-    for (auto it = activeEffects->begin(); it != activeEffects->end();
-         ++it) {
+    for (auto it = activeEffects->begin(); it != activeEffects->end(); ++it) {
         MobEffectInstance* effect = *it;
 
         player->connection->send(std::shared_ptr<UpdateMobEffectPacket>(
@@ -1130,9 +1128,9 @@ bool PlayerList::isOp(std::shared_ptr<ServerPlayer> player) {
     cheatsEnabled = cheatsEnabled || app.GetUseDPadForDebug();
 #endif
     INetworkPlayer* networkPlayer = player->connection->getNetworkPlayer();
-    bool isOp =
-        cheatsEnabled && (player->isModerator() ||
-                          (networkPlayer != nullptr && networkPlayer->IsHost()));
+    bool isOp = cheatsEnabled &&
+                (player->isModerator() ||
+                 (networkPlayer != nullptr && networkPlayer->IsHost()));
     return isOp;
 }
 
@@ -1345,8 +1343,8 @@ void PlayerList::saveAll(ProgressListener* progressListener,
                          bool bDeleteGuestMaps /*= false*/) {
     if (progressListener != nullptr)
         progressListener->progressStart(IDS_PROGRESS_SAVING_PLAYERS);
-    // 4J - playerIo can be nullptr if we have have to exit a game really early on
-    // due to network failure
+    // 4J - playerIo can be nullptr if we have have to exit a game really early
+    // on due to network failure
     if (playerIo) {
         playerIo->saveAllCachedData();
         for (unsigned int i = 0; i < players.size(); i++) {
@@ -1489,7 +1487,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
     bool playerRemoved = false;
 
     auto it = find(receiveAllPlayers[dimIndex].begin(),
-                      receiveAllPlayers[dimIndex].end(), player);
+                   receiveAllPlayers[dimIndex].end(), player);
     if (it != receiveAllPlayers[dimIndex].end()) {
 #if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf(
@@ -1509,7 +1507,8 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
                 newPlayer->connection->getNetworkPlayer();
 
             if (newPlayer != player && newPlayer->dimension == playerDim &&
-                otherPlayer != nullptr && otherPlayer->IsSameSystem(thisPlayer)) {
+                otherPlayer != nullptr &&
+                otherPlayer->IsSameSystem(thisPlayer)) {
 #if !defined(_CONTENT_PACKAGE)
                 app.DebugPrintf(
                     "Remove: Adding player %ls as primary in dimension %d\n",
@@ -1522,7 +1521,8 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
     } else if (thisPlayer == nullptr) {
 #if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf(
-            "Remove: Qnet player for %ls was nullptr so re-checking all players\n",
+            "Remove: Qnet player for %ls was nullptr so re-checking all "
+            "players\n",
             player->name.c_str());
 #endif
         // 4J Stu - Something went wrong, or possibly the QNet player left

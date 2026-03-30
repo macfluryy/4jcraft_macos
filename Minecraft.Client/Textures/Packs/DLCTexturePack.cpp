@@ -65,7 +65,6 @@ DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack* pack,
 
     m_stringTable = nullptr;
 
-
     if (m_dlcInfoPack->doesPackContainFile(
             DLCManager::e_DLCType_LocalisationData, L"languages.loc")) {
         DLCLocalisationFile* localisationFile =
@@ -223,8 +222,7 @@ void DLCTexturePack::loadData() {
         if (StorageManager.MountInstalledDLC(ProfileManager.GetPrimaryPad(),
                                              mountIndex,
                                              &DLCTexturePack::packMounted, this,
-                                             "TPACK") != ERROR_IO_PENDING)
-        {
+                                             "TPACK") != ERROR_IO_PENDING) {
             // corrupt DLC
             m_bHasLoadedData = true;
             if (app.getLevelGenerationOptions())
@@ -394,8 +392,7 @@ void DLCTexturePack::loadUI() {
     if (m_archiveFile && m_archiveFile->hasFile(L"skin.swf")) {
         ui.ReloadSkin();
         bUILoaded = true;
-    }
-    else {
+    } else {
         loadDefaultUI();
         bUILoaded = true;
     }

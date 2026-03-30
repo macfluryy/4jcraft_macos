@@ -301,7 +301,7 @@ void Mob::aiStep() {
 
     if (!level->isClientSide && canPickUpLoot() && !dead &&
         level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING)) {
-            AABB grown = bb.grow(1, 0, 1);
+        AABB grown = bb.grow(1, 0, 1);
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntitiesOfClass(typeid(ItemEntity), &grown);
         for (auto it = entities->begin(); it != entities->end(); ++it) {
@@ -323,7 +323,8 @@ void Mob::aiStep() {
                             dynamic_cast<WeaponItem*>(current->getItem());
                         if (newWeapon != nullptr && oldWeapon == nullptr) {
                             replace = true;
-                        } else if (newWeapon != nullptr && oldWeapon != nullptr) {
+                        } else if (newWeapon != nullptr &&
+                                   oldWeapon != nullptr) {
                             if (newWeapon->getTierDamage() ==
                                 oldWeapon->getTierDamage()) {
                                 replace = item->getAuxValue() >
@@ -850,10 +851,8 @@ void Mob::restoreLeashFromSave() {
             std::wstring leashUuid = leashInfoTag->getString(L"UUID");
             AABB grown = bb.grow(10, 10, 10);
             std::vector<std::shared_ptr<Entity> >* livingEnts =
-                level->getEntitiesOfClass(typeid(LivingEntity),
-                                          &grown);
-            for (auto it = livingEnts->begin(); it != livingEnts->end();
-                 ++it) {
+                level->getEntitiesOfClass(typeid(LivingEntity), &grown);
+            for (auto it = livingEnts->begin(); it != livingEnts->end(); ++it) {
                 std::shared_ptr<LivingEntity> le =
                     std::dynamic_pointer_cast<LivingEntity>(*it);
                 if (le->getUUID().compare(leashUuid) == 0) {

@@ -28,7 +28,6 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
 
     m_labelSelected.init(app.GetString(IDS_SELECTED));
 
-
     m_bIgnoreInput = false;
     m_bNoSkinsToShow = false;
 
@@ -78,7 +77,6 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
     m_centreLabel = L"";
     m_rightLabel = L"";
 
-
     // block input if we're waiting for DLC to install. The end of dlc mounting
     // custom message will fill the save list
     if (app.StartInstallDLCProcess(m_iPad)) {
@@ -121,7 +119,6 @@ UIScene_SkinSelectMenu::UIScene_SkinSelectMenu(int iPad, void* initData,
     }
 
     // Display the tooltips
-
 }
 
 void UIScene_SkinSelectMenu::updateTooltips() {
@@ -399,48 +396,46 @@ void UIScene_SkinSelectMenu::InputActionOK(unsigned int iPad) {
                     // if(true)
                     if (!m_currentPack->hasPurchasedFile(
                             DLCManager::e_DLCType_Skin, skinFile->getPath())) {
-
                         // no
                         unsigned int uiIDA[1];
                         uiIDA[0] = IDS_OK;
 
-                            // We need to upsell the full version
-                            if (ProfileManager.IsGuest(iPad)) {
-                                // can't buy
-                                ui.RequestAlertMessage(
-                                    IDS_PRO_GUESTPROFILE_TITLE,
-                                    IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1, iPad);
-                            }
-                            else {
-                                // upsell
-                                bool bContentRestricted = false;
-                                if (bContentRestricted) {
+                        // We need to upsell the full version
+                        if (ProfileManager.IsGuest(iPad)) {
+                            // can't buy
+                            ui.RequestAlertMessage(IDS_PRO_GUESTPROFILE_TITLE,
+                                                   IDS_PRO_GUESTPROFILE_TEXT,
+                                                   uiIDA, 1, iPad);
+                        } else {
+                            // upsell
+                            bool bContentRestricted = false;
+                            if (bContentRestricted) {
 #if !defined(_WIN64)
-                    // check this for other platforms you can't see the store
-                                    unsigned int uiIDA[1];
-                                    uiIDA[0] = IDS_CONFIRM_OK;
-                                    ui.RequestAlertMessage(
-                                        IDS_ONLINE_SERVICE_TITLE,
-                                        IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                        iPad);
+                                // check this for other platforms you can't see
+                                // the store
+                                unsigned int uiIDA[1];
+                                uiIDA[0] = IDS_CONFIRM_OK;
+                                ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
+                                                       IDS_CONTENT_RESTRICTION,
+                                                       uiIDA, 1, iPad);
 #endif
-                                } else {
-                                    // 4J-PB - need to check for an empty store
-                                    {
-                                        m_bIgnoreInput = true;
-                                        renableInputAfterOperation = false;
+                            } else {
+                                // 4J-PB - need to check for an empty store
+                                {
+                                    m_bIgnoreInput = true;
+                                    renableInputAfterOperation = false;
 
-                                        unsigned int uiIDA[2] = {
-                                            IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL};
-                                        ui.RequestAlertMessage(
-                                            IDS_UNLOCK_DLC_TITLE,
-                                            IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,
-                                            &UIScene_SkinSelectMenu::
-                                                UnlockSkinReturned,
-                                            this);
-                                    }
+                                    unsigned int uiIDA[2] = {
+                                        IDS_CONFIRM_OK, IDS_CONFIRM_CANCEL};
+                                    ui.RequestAlertMessage(
+                                        IDS_UNLOCK_DLC_TITLE,
+                                        IDS_UNLOCK_DLC_SKIN, uiIDA, 2, iPad,
+                                        &UIScene_SkinSelectMenu::
+                                            UnlockSkinReturned,
+                                        this);
                                 }
                             }
+                        }
                     } else {
                         app.SetPlayerSkin(iPad, skinFile->getPath());
                         app.SetPlayerCape(iPad,
@@ -1145,9 +1140,7 @@ void UIScene_SkinSelectMenu::setRightLabel(const std::wstring& label) {
     }
 }
 
-
 void UIScene_SkinSelectMenu::HandleDLCInstalled() {
-
     app.DebugPrintf(4, "UIScene_SkinSelectMenu::HandleDLCInstalled\n");
     // mounted DLC may have changed
     if (app.StartInstallDLCProcess(m_iPad) == false) {
@@ -1164,7 +1157,6 @@ void UIScene_SkinSelectMenu::HandleDLCInstalled() {
     }
 
     // this will send a CustomMessage_DLCMountingComplete when done
-
 }
 
 void UIScene_SkinSelectMenu::HandleDLCMountingComplete() {
@@ -1278,5 +1270,3 @@ void UIScene_SkinSelectMenu::handleReload() {
 
     handlePackIndexChanged();
 }
-
-

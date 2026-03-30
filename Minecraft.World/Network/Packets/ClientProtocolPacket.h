@@ -2,5 +2,4 @@
 
 #include "Packet.h"
 
-class ClientProtocolPacket : public Packet {
-};
+class ClientProtocolPacket : public Packet {};

@@ -7,8 +7,7 @@ class DescFormatter;
 class Achievement : public Stat {
 public:
     const int x, y;
-    Achievement*
-        prerequisite;
+    Achievement* prerequisite;
 
 private:
     const std::wstring desc;

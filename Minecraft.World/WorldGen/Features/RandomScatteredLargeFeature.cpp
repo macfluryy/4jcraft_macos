@@ -67,8 +67,7 @@ bool RandomScatteredLargeFeature::isFeatureChunk(int x, int z,
         (x == xCenterFeatureChunk && z == zCenterFeatureChunk)) {
         Biome* biome =
             level->getBiomeSource()->getBiome(x * 16 + 8, z * 16 + 8);
-        for (auto it = allowedBiomes.begin(); it != allowedBiomes.end();
-             ++it) {
+        for (auto it = allowedBiomes.begin(); it != allowedBiomes.end(); ++it) {
             Biome* a = *it;
             if (biome == a) {
                 return true;
@@ -122,7 +121,8 @@ bool RandomScatteredLargeFeature::isSwamphut(int cellX, int cellY, int cellZ) {
     StructurePiece* first = nullptr;
     auto it = structureAt->pieces.begin();
     if (it != structureAt->pieces.end()) first = *it;
-    return dynamic_cast<ScatteredFeaturePieces::SwamplandHut*>(first) != nullptr;
+    return dynamic_cast<ScatteredFeaturePieces::SwamplandHut*>(first) !=
+           nullptr;
 }
 
 std::vector<Biome::MobSpawnerData*>*

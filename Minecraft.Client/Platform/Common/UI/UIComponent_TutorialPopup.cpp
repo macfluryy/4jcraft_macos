@@ -335,7 +335,8 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
             m_iconItem = nullptr;
         }
     }
-    if (!isFixedIcon && m_iconItem != nullptr) setupIconHolder(e_ICON_TYPE_IGGY);
+    if (!isFixedIcon && m_iconItem != nullptr)
+        setupIconHolder(e_ICON_TYPE_IGGY);
     m_controlIconHolder.setVisible(isFixedIcon || m_iconItem != nullptr);
 
     return temp;

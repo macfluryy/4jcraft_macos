@@ -285,7 +285,6 @@ int Packet::renderPos = 0;
 void Packet::map(int id, bool receiveOnClient, bool receiveOnServer,
                  bool sendToAnyClient, bool renderStats,
                  const std::type_info& clazz, packetCreateFn createFn) {
-
     idToCreateMap.insert(
         std::unordered_map<int, packetCreateFn>::value_type(id, createFn));
 
@@ -337,8 +336,8 @@ void Packet::updatePacketStatsPIX() {
 #if !defined(_CONTENT_PACKAGE)
 #if PACKET_ENABLE_STAT_TRACKING
 
-    for (auto it = outgoingStatistics.begin();
-         it != outgoingStatistics.end(); it++) {
+    for (auto it = outgoingStatistics.begin(); it != outgoingStatistics.end();
+         it++) {
         Packet::PacketStatistics* stat = it->second;
         int64_t count = stat->getRunningCount();
         wchar_t pixName[256];
@@ -473,7 +472,6 @@ void Packet::writeUtf(const std::wstring& value,
                       DataOutputStream* dos)  // throws IOException TODO 4J JEV,
                                               // should this declare a throws?
 {
-
     dos->writeShort((short)value.length());
     dos->writeChars(value);
 }

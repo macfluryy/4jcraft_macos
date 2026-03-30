@@ -9,8 +9,7 @@
 #include "../Headers/net.minecraft.world.level.biome.h"
 #include "Util/AABB.h"
 
-VineTile::VineTile(int id)
-    : Tile(id, Material::replaceable_plant, false) {
+VineTile::VineTile(int id) : Tile(id, Material::replaceable_plant, false) {
     setTicking(true);
 }
 
@@ -86,7 +85,9 @@ void VineTile::updateShape(
     setShape(minX, minY, minZ, maxX, maxY, maxZ);
 }
 
-std::optional<AABB> VineTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> VineTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 bool VineTile::mayPlace(Level* level, int x, int y, int z, int face) {
     switch (face) {

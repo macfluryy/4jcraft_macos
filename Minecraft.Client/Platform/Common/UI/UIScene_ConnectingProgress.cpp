@@ -28,7 +28,6 @@ UIScene_ConnectingProgress::UIScene_ConnectingProgress(int iPad,
     m_buttonConfirm.init(app.GetString(IDS_CONFIRM_OK), eControl_Confirm);
     m_buttonConfirm.setVisible(false);
 
-
     m_showTooltips = param->showTooltips;
     m_runFailTimer = param->setFailTimer;
     m_timerTime = param->timerTime;
@@ -98,7 +97,6 @@ void UIScene_ConnectingProgress::handleTimerComplete(int id) {
 
     if (pMinecraft->m_connectionFailed[m_iPad] ||
         !g_NetworkManager.IsInSession()) {
-
         int exitReasonStringId;
         switch (pMinecraft->m_connectionFailedReason[m_iPad]) {
             case DisconnectPacket::eDisconnect_LoginTooLong:

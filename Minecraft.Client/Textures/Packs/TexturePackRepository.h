@@ -59,7 +59,7 @@ public:
     bool canUseWebSkin();
     bool isUsingDefaultSkin() {
         return selected == DEFAULT_TEXTURE_PACK;
-    }                                                           // 4J Added
+    }  // 4J Added
     TexturePack* getDefault() { return DEFAULT_TEXTURE_PACK; }  // 4J Added
 
     std::vector<std::pair<std::uint32_t, std::wstring> >*

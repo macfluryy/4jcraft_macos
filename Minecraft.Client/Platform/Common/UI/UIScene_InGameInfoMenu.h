@@ -68,5 +68,4 @@ public:
 
 private:
     PlayerInfo* BuildPlayerInfo(INetworkPlayer* player);
-
 };

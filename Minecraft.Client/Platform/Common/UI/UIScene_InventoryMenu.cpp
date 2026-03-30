@@ -260,8 +260,7 @@ void UIScene_InventoryMenu::updateEffectsDisplay() {
     int iValue = 0;
     IggyDataValue* UpdateValue = new IggyDataValue[activeEffects->size() * 2];
 
-    for (auto it = activeEffects->begin(); it != activeEffects->end();
-         ++it) {
+    for (auto it = activeEffects->begin(); it != activeEffects->end(); ++it) {
         MobEffectInstance* effect = *it;
 
         if (effect->getDuration() >= m_bEffectTime[effect->getId()]) {

@@ -99,7 +99,7 @@ void AddPlayerPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeInt(z);
     dos->writeByte(static_cast<std::uint8_t>(yRot));
     dos->writeByte(static_cast<std::uint8_t>(xRot));
-    dos->writeByte(static_cast<std::uint8_t>(yHeadRot)); // 4J Added
+    dos->writeByte(static_cast<std::uint8_t>(yHeadRot));  // 4J Added
     dos->writeShort(carriedItem);
     dos->writePlayerUID(xuid);
     dos->writePlayerUID(OnlineXuid);

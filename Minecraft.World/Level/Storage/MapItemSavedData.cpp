@@ -246,8 +246,8 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
         if (hp->player->removed)  //|| (!hp->player->inventory->contains(item)
                                   //&& !item->isFramed() ))
         {
-            auto it2 =  carriedByPlayers.find(
-                              (std::shared_ptr<Player>)hp->player);
+            auto it2 =
+                carriedByPlayers.find((std::shared_ptr<Player>)hp->player);
             if (it2 != carriedByPlayers.end()) {
                 carriedByPlayers.erase(it2);
             }
@@ -271,8 +271,8 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                     }
                 }
 
-                auto currentPortalDecoration = 
-                         nonPlayerDecorations.find(END_PORTAL_DECORATION_KEY);
+                auto currentPortalDecoration =
+                    nonPlayerDecorations.find(END_PORTAL_DECORATION_KEY);
                 if (currentPortalDecoration == nonPlayerDecorations.end() &&
                     atLeastOnePlayerInTheEnd) {
                     float origX = 0.0f;
@@ -573,7 +573,7 @@ void MapItemSavedData::mergeInMapData(
 void MapItemSavedData::removeItemFrameDecoration(
     std::shared_ptr<ItemInstance> item) {
     auto frameDecoration =
-             nonPlayerDecorations.find(item->getFrame()->entityId);
+        nonPlayerDecorations.find(item->getFrame()->entityId);
     if (frameDecoration != nonPlayerDecorations.end()) {
         delete frameDecoration->second;
         nonPlayerDecorations.erase(frameDecoration);

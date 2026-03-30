@@ -9,7 +9,7 @@
 #include "../../../Minecraft.World/Util/C4JThread.h"
 
 class ShutdownManager {
-   public:
+public:
     enum EThreadId {
         eMainThread,
         eLeaderboardThread,
@@ -36,7 +36,7 @@ class ShutdownManager {
     static bool ShouldRun(EThreadId threadId);
     static void HasFinished(EThreadId threadId);
 
-   private:
+private:
     struct GroupState {
         std::size_t started = 0;
         std::size_t running = 0;

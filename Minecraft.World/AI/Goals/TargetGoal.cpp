@@ -70,8 +70,9 @@ bool TargetGoal::canAttack(std::shared_ptr<LivingEntity> target,
     if (ownableMob != nullptr && !ownableMob->getOwnerUUID().empty()) {
         std::shared_ptr<OwnableEntity> ownableTarget =
             std::dynamic_pointer_cast<OwnableEntity>(target);
-        if (ownableTarget != nullptr && ownableMob->getOwnerUUID().compare(
-                                         ownableTarget->getOwnerUUID()) == 0) {
+        if (ownableTarget != nullptr &&
+            ownableMob->getOwnerUUID().compare(ownableTarget->getOwnerUUID()) ==
+                0) {
             // We're attacking something owned by the same person...
             return false;
         }

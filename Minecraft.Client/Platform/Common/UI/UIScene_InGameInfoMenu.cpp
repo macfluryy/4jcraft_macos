@@ -108,7 +108,8 @@ void UIScene_InGameInfoMenu::updateTooltips() {
             bool editingHost = selectedPlayer->IsHost();
             if ((cheats && (m_isHostPlayer || !editingHost)) ||
                 (!trust && (m_isHostPlayer || !editingHost))
-#if !defined(_CONTENT_PACKAGE) && !defined(_FINAL_BUILD) && defined(_DEBUG_MENUS_ENABLED)
+#if !defined(_CONTENT_PACKAGE) && !defined(_FINAL_BUILD) && \
+    defined(_DEBUG_MENUS_ENABLED)
                 || (m_isHostPlayer && editingHost)
 #endif
             ) {
@@ -295,16 +296,18 @@ void UIScene_InGameInfoMenu::handlePress(F64 controlId, F64 childId) {
                 bool editingHost = selectedPlayer->IsHost();
                 if ((cheats && (m_isHostPlayer || !editingHost)) ||
                     (!trust && (m_isHostPlayer || !editingHost))
-#if !defined(_CONTENT_PACKAGE) && !defined(_FINAL_BUILD) && defined(_DEBUG_MENUS_ENABLED)
+#if !defined(_CONTENT_PACKAGE) && !defined(_FINAL_BUILD) && \
+    defined(_DEBUG_MENUS_ENABLED)
                     || (m_isHostPlayer && editingHost)
 #endif
                 ) {
                     InGamePlayerOptionsInitData* pInitData =
                         new InGamePlayerOptionsInitData();
                     pInitData->iPad = m_iPad;
-                    pInitData->networkSmallId = m_players[currentSelection]->m_smallId;
-                    pInitData->playerPrivileges =
-                        app.GetPlayerPrivileges(m_players[currentSelection]->m_smallId);
+                    pInitData->networkSmallId =
+                        m_players[currentSelection]->m_smallId;
+                    pInitData->playerPrivileges = app.GetPlayerPrivileges(
+                        m_players[currentSelection]->m_smallId);
                     pInitData->playerPrivileges = app.GetPlayerPrivileges(
                         m_players[currentSelection]->m_smallId);
                     ui.NavigateToScene(m_iPad, eUIScene_InGamePlayerOptionsMenu,
@@ -463,4 +466,3 @@ UIScene_InGameInfoMenu::PlayerInfo* UIScene_InGameInfoMenu::BuildPlayerInfo(
 
     return info;
 }
-

@@ -77,8 +77,7 @@ void SynchedEntityData::defineNULL(int id, void* pVal) {
     m_isEmpty = false;
 }
 
-void SynchedEntityData::checkId(int id) {
-}
+void SynchedEntityData::checkId(int id) {}
 
 uint8_t SynchedEntityData::getByte(int id) {
     return itemsById[id]->getValue_byte();

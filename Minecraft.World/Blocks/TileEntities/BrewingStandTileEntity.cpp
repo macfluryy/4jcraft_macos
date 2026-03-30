@@ -71,7 +71,8 @@ void BrewingStandTileEntity::tick() {
 int BrewingStandTileEntity::getBrewTime() { return brewTime; }
 
 bool BrewingStandTileEntity::isBrewable() {
-    if (items[INGREDIENT_SLOT] == nullptr || items[INGREDIENT_SLOT]->count <= 0) {
+    if (items[INGREDIENT_SLOT] == nullptr ||
+        items[INGREDIENT_SLOT]->count <= 0) {
         return false;
     }
     std::shared_ptr<ItemInstance> ingredient = items[INGREDIENT_SLOT];

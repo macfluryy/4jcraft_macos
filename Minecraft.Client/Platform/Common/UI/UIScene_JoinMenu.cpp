@@ -50,7 +50,6 @@ void UIScene_JoinMenu::tick() {
 
         m_buttonListPlayers.init(eControl_GamePlayers);
 
-
         m_labelLabels[eLabel_Difficulty].init(
             app.GetString(IDS_LABEL_DIFFICULTY));
         m_labelLabels[eLabel_GameType].init(app.GetString(IDS_LABEL_GAME_TYPE));
@@ -274,7 +273,6 @@ void UIScene_JoinMenu::handleFocusChange(F64 controlId, F64 childId) {
     updateTooltips();
 }
 
-
 void UIScene_JoinMenu::StartSharedLaunchFlow() {
     if (!app.IsLocalMultiplayerAvailable()) {
         JoinGame(this);
@@ -376,7 +374,6 @@ void UIScene_JoinMenu::JoinGame(UIScene_JoinMenu* pClass) {
     ProfileManager.AllowedPlayerCreatedContent(
         ProfileManager.GetPrimaryPad(), false, &pccAllowed, &pccFriendsAllowed);
     if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
-
 
     if (noUGC) {
         pClass->setVisible(true);

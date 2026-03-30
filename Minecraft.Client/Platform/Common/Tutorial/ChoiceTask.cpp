@@ -14,7 +14,8 @@ ChoiceTask::ChoiceTask(
     int iCancelMapping /*= 0*/,
     eTutorial_CompletionAction cancelAction /*= e_Tutorial_Completion_None*/,
     ETelemetryChallenges telemetryEvent /*= eTelemetryTutorial_NoEvent*/)
-    : TutorialTask(tutorial, descriptionId, false, nullptr, true, false, false) {
+    : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
+                   false) {
     if (requiresUserInput == true) {
         constraints.push_back(new InputConstraint(iConfirmMapping));
         constraints.push_back(new InputConstraint(iCancelMapping));

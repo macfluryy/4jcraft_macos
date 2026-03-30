@@ -18,8 +18,7 @@ bool UIControl_Label::setupControl(UIScene* scene, IggyValuePath* parent,
 void UIControl_Label::init(UIString label) {
     m_label = label;
 
-    const std::u16string convLabel =
-        wstring_to_u16string(label.getString());
+    const std::u16string convLabel = wstring_to_u16string(label.getString());
 
     IggyDataValue result;
     IggyDataValue value[1];

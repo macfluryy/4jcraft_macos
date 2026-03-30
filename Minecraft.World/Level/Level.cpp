@@ -562,9 +562,9 @@ Biome* Level::getBiome(int x, int z) {
     if (hasChunkAt(x, 0, z)) {
         LevelChunk* lc = getChunkAt(x, z);
         if (lc != nullptr) {
-            // Water chunks at the edge of the world return nullptr for their biome
-            // as they can't store it, so should fall back on the normal method
-            // below
+            // Water chunks at the edge of the world return nullptr for their
+            // biome as they can't store it, so should fall back on the normal
+            // method below
             Biome* biome =
                 lc->getBiome(x & 0xf, z & 0xf, dimension->biomeSource);
             if (biome) return biome;
@@ -602,8 +602,8 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage,
     }
 
     dimension->init(this);
-    chunkSource = nullptr;  // 4J - added flag so chunk source can be called from
-                         // derived class instead
+    chunkSource = nullptr;  // 4J - added flag so chunk source can be called
+                            // from derived class instead
 
     updateSkyBrightness();
     prepareWeather();
@@ -672,8 +672,8 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
 
     chunkSource = doCreateChunkSource
                       ? createChunkSource()
-                      : nullptr;  // 4J - added flag so chunk source can be called
-                               // from derived class instead
+                      : nullptr;  // 4J - added flag so chunk source can be
+                                  // called from derived class instead
 
     // 4J Stu- Moved to derived classes
     // if (!levelData->isInitialized())
@@ -1377,8 +1377,10 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid) {
 }
 
 HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
-    if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z)) return nullptr;
-    if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z)) return nullptr;
+    if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z))
+        return nullptr;
+    if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z))
+        return nullptr;
 
     int xTile1 = Mth::floor(b->x);
     int yTile1 = Mth::floor(b->y);
@@ -1800,9 +1802,8 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
     if (noEntities) return &boxes;
 
     double r = 0.25;
-    AABB grown =  box->grow(r, r, r);
-    std::vector<std::shared_ptr<Entity> >* ee =
-        getEntities(source, &grown);
+    AABB grown = box->grow(r, r, r);
+    std::vector<std::shared_ptr<Entity> >* ee = getEntities(source, &grown);
     std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
     for (auto it = ee->begin(); it != itEnd; it++) {
         AABB* collideBox = (*it)->getCollideBox();
@@ -2088,8 +2089,8 @@ void Level::tickEntities() {
 
     for (auto it = entities.begin(); it != entities.end();) {
         bool found = false;
-        for (auto it2 = entitiesToRemove.begin();
-             it2 != entitiesToRemove.end(); it2++) {
+        for (auto it2 = entitiesToRemove.begin(); it2 != entitiesToRemove.end();
+             it2++) {
             if ((*it) == (*it2)) {
                 found = true;
                 break;
@@ -2209,8 +2210,7 @@ void Level::tickEntities() {
     if (!tileEntitiesToUnload.empty()) {
         FRAME_PROFILE_SCOPE(TileEntityUnloadCleanup);
 
-        for (auto it = tileEntityList.begin();
-             it != tileEntityList.end();) {
+        for (auto it = tileEntityList.begin(); it != tileEntityList.end();) {
             if (tileEntitiesToUnload.find(*it) != tileEntitiesToUnload.end()) {
                 if (isClientSide) {
                     __debugbreak();
@@ -2267,8 +2267,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     int xc = Mth::floor(e->x);
     int zc = Mth::floor(e->z);
     int r = 32;
-    if (actual && !hasChunksAt(xc - r, 0, zc - r, xc + r, 0, zc + r))
-    {
+    if (actual && !hasChunksAt(xc - r, 0, zc - r, xc + r, 0, zc + r)) {
         return;
     }
 
@@ -2278,8 +2277,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     e->yRotO = e->yRot;
     e->xRotO = e->xRot;
 
-    if (actual && e->inChunk)
-    {
+    if (actual && e->inChunk) {
         e->tickCount++;
         if (e->riding != nullptr) {
             e->rideTick();
@@ -2686,20 +2684,19 @@ void Level::removeTileEntity(int x, int y, int z) {
     std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
     if (te != nullptr && updatingTileEntities) {
         te->setRemoved();
-        auto it = find(pendingTileEntities.begin(),
-                          pendingTileEntities.end(), te);
+        auto it =
+            find(pendingTileEntities.begin(), pendingTileEntities.end(), te);
         if (it != pendingTileEntities.end()) {
             pendingTileEntities.erase(it);
         }
     } else {
         if (te != nullptr) {
             auto it = find(pendingTileEntities.begin(),
-                              pendingTileEntities.end(), te);
+                           pendingTileEntities.end(), te);
             if (it != pendingTileEntities.end()) {
                 pendingTileEntities.erase(it);
             }
-            auto it2 =
-                     find(tileEntityList.begin(), tileEntityList.end(), te);
+            auto it2 = find(tileEntityList.begin(), tileEntityList.end(), te);
             if (it2 != tileEntityList.end()) {
                 tileEntityList.erase(it2);
             }
@@ -3109,7 +3106,6 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
         if (!hasChunksAt(xc, yc, zc, 17)) return;
     }
 
-
     EnterCriticalSection(&m_checkLightCS);
 
     initCachePartial(cache, xc, yc, zc);
@@ -3203,8 +3199,9 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                                     // 4J - some changes here brought forward
                                     // from 1.2.3
                                     int block = std::max(
-                                        1, getBlockingCached(cache, layer, nullptr,
-                                                             xx, yy, zz));
+                                        1,
+                                        getBlockingCached(cache, layer, nullptr,
+                                                          xx, yy, zz));
                                     current = getBrightnessCached(cache, layer,
                                                                   xx, yy, zz);
                                     if ((current == expected - block) &&
@@ -3362,7 +3359,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     int zc0 = Mth::floor((bb->z0 - 2) / 16);
     int zc1 = Mth::floor((bb->z1 + 2) / 16);
 
-
     for (int xc = xc0; xc <= xc1; xc++)
         for (int zc = zc0; zc <= zc1; zc++) {
             if (hasChunk(xc, zc)) {
@@ -3370,7 +3366,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
             }
         }
     MemSect(0);
-
 
     return &es;
 }
@@ -3389,7 +3384,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
     std::vector<std::shared_ptr<Entity> >* es =
         new std::vector<std::shared_ptr<Entity> >();
 
-
     for (int xc = xc0; xc <= xc1; xc++) {
         for (int zc = zc0; zc <= zc1; zc++) {
             if (hasChunk(xc, zc)) {
@@ -3398,7 +3392,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
             }
         }
     }
-
 
     return es;
 }
@@ -3436,13 +3429,13 @@ void Level::tileEntityChanged(int x, int y, int z,
     }
 }
 
-
 // 4J - added - more limited (but faster) version of above, used to count water
 // animals, animals, monsters for the mob spawner singleType flag should be true
 // if we are just trying to match eINSTANCEOF exactly, and false if it is a
 // eINSTANCEOF from a group (eTYPE_WATERANIMAL, eTYPE_ANIMAL, eTYPE_MONSTER)
 unsigned int Level::countInstanceOf(
-    eINSTANCEOF clas, bool singleType, unsigned int* protectedCount /* = nullptr*/,
+    eINSTANCEOF clas, bool singleType,
+    unsigned int* protectedCount /* = nullptr*/,
     unsigned int* couldWanderCount /* = nullptr*/) {
     unsigned int count = 0;
     if (protectedCount) *protectedCount = 0;

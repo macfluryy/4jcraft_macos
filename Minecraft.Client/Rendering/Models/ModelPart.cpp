@@ -58,8 +58,8 @@ ModelPart* ModelPart::retrieveChild(SKIN_BOX* pBox) {
     for (auto it = children.begin(); it != children.end(); ++it) {
         ModelPart* child = *it;
 
-        for (auto itcube = child->cubes.begin();
-             itcube != child->cubes.end(); ++itcube) {
+        for (auto itcube = child->cubes.begin(); itcube != child->cubes.end();
+             ++itcube) {
             Cube* pCube = *itcube;
 
             if ((pCube->x0 == pBox->fX) && (pCube->y0 == pBox->fY) &&

@@ -84,7 +84,8 @@ void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
                 holdGround = true;
             }
         } else if (getInLoveValue() > 0 && a->getInLoveValue() > 0) {
-            if (a->attackTarget == nullptr) a->attackTarget = shared_from_this();
+            if (a->attackTarget == nullptr)
+                a->attackTarget = shared_from_this();
 
             if (a->attackTarget == shared_from_this() && d < 3.5) {
                 a->setInLoveValue(a->getInLoveValue() + 1);

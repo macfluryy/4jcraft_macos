@@ -283,7 +283,9 @@ protected:
         void* user_callback_data, void* destroy_callback_data,
         GDrawTexture* handle);
 
-    virtual GDrawTexture* getSubstitutionTexture(int textureId) { return nullptr; }
+    virtual GDrawTexture* getSubstitutionTexture(int textureId) {
+        return nullptr;
+    }
     virtual void destroySubstitutionTexture(void* destroyCallBackData,
                                             GDrawTexture* handle) {}
 
@@ -388,19 +390,20 @@ public:
     void ClearPressStart();
 
     virtual C4JStorage::EMessageResult RequestAlertMessage(
-        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA, uint32_t uiOptionC,
-        uint32_t dwPad = XUSER_INDEX_ANY,
+        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA,
+        uint32_t uiOptionC, uint32_t dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
         void* lpParam = nullptr, wchar_t* pwchFormatString = nullptr);
     virtual C4JStorage::EMessageResult RequestErrorMessage(
-        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA, uint32_t uiOptionC,
-        uint32_t dwPad = XUSER_INDEX_ANY,
+        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA,
+        uint32_t uiOptionC, uint32_t dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
         void* lpParam = nullptr, wchar_t* pwchFormatString = nullptr);
 
 private:
     virtual C4JStorage::EMessageResult RequestMessageBox(
-        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA, uint32_t uiOptionC, uint32_t dwPad,
+        uint32_t uiTitle, uint32_t uiText, uint32_t* uiOptionA,
+        uint32_t uiOptionC, uint32_t dwPad,
         int (*Func)(void*, int, const C4JStorage::EMessageResult),
         void* lpParam, wchar_t* pwchFormatString, uint32_t dwFocusButton,
         bool bIsError);

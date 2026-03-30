@@ -66,10 +66,11 @@ StatArray Stats::biomesVisisted;
 #endif
 
 Stat* Stats::killsEnderdragon =
-    nullptr;  // The number of times this player has dealt the killing blow to the
-           // Enderdragon
-Stat* Stats::completeTheEnd = nullptr;  // The number of times this player has been
-                                     // present when the Enderdragon has died
+    nullptr;  // The number of times this player has dealt the killing blow to
+              // the Enderdragon
+Stat* Stats::completeTheEnd =
+    nullptr;  // The number of times this player has been
+              // present when the Enderdragon has died
 
 void Stats::staticCtor() {
     Stats::walkOneM = (new GeneralStat(2000, L"stat.walkOneM",

@@ -107,9 +107,7 @@ int64_t System::currentTimeMillis() {
 
 // 4J Stu - Added this so that we can use real-world timestamps in PSVita saves.
 // Particularly required for the save transfers to be smooth
-int64_t System::currentRealTimeMillis() {
-    return currentTimeMillis();
-}
+int64_t System::currentRealTimeMillis() { return currentTimeMillis(); }
 
 void System::ReverseUSHORT(unsigned short* pusVal) {
     unsigned short usValue = *pusVal;

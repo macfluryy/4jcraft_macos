@@ -118,8 +118,8 @@ void Explosion::explode() {
         // walls
         bool canDamage = false;
         for (auto it2 = toBlow.begin(); it2 != toBlow.end(); ++it2) {
-            if (e->bb.intersects(it2->x, it2->y, it2->z, it2->x + 1,
-                                  it2->y + 1, it2->z + 1)) {
+            if (e->bb.intersects(it2->x, it2->y, it2->z, it2->x + 1, it2->y + 1,
+                                 it2->z + 1)) {
                 canDamage = true;
                 break;
             }
@@ -201,8 +201,7 @@ void Explosion::finalizeExplosion(
         if (fraction == 0) fraction = 1;
         size_t j = toBlowArray->size() - 1;
         // for (size_t j = toBlowArray->size() - 1; j >= 0; j--)
-        for (auto it = toBlowArray->rbegin(); it != toBlowArray->rend();
-             ++it) {
+        for (auto it = toBlowArray->rbegin(); it != toBlowArray->rend(); ++it) {
             TilePos* tp = &(*it);  //&toBlowArray->at(j);
             int xt = tp->x;
             int yt = tp->y;
@@ -261,8 +260,7 @@ void Explosion::finalizeExplosion(
 
     if (fire) {
         // for (size_t j = toBlowArray->size() - 1; j >= 0; j--)
-        for (auto it = toBlowArray->rbegin(); it != toBlowArray->rend();
-             ++it) {
+        for (auto it = toBlowArray->rbegin(); it != toBlowArray->rend(); ++it) {
             TilePos* tp = &(*it);  //&toBlowArray->at(j);
             int xt = tp->x;
             int yt = tp->y;

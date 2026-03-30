@@ -74,7 +74,6 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
             m_funcSetControllerLayout, 1, value);
     }
 
-
     for (unsigned int i = 0; i < e_PadCOUNT; ++i) {
         m_labelsPad[i].init(L"");
         m_controlLines[i].setVisible(false);
@@ -85,7 +84,7 @@ UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
 }
 
 std::wstring UIScene_ControlsMenu::getMoviePath() {
-        if (app.GetLocalPlayerCount() > 1) {
+    if (app.GetLocalPlayerCount() > 1) {
         return L"ControlsSplit";
     } else {
         return L"Controls";

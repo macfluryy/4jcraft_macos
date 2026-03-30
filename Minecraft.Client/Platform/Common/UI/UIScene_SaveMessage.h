@@ -19,7 +19,6 @@ private:
     UI_MAP_NAME(m_funcAutoResize, L"AutoResize")
     UI_END_MAP_ELEMENTS_AND_NAMES()
 
-
 public:
     UIScene_SaveMessage(int iPad, void* initData, UILayer* parentLayer);
     ~UIScene_SaveMessage();

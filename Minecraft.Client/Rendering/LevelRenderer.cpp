@@ -68,7 +68,6 @@
 
 // #define DISABLE_SPU_CODE
 
-
 ResourceLocation LevelRenderer::MOON_LOCATION =
     ResourceLocation(TN_TERRAIN_MOON);
 ResourceLocation LevelRenderer::MOON_PHASES_LOCATION =
@@ -157,7 +156,8 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
     totalChunks = offscreenChunks = occludedChunks = renderedChunks =
         emptyChunks = 0;
     for (int i = 0; i < 4; i++) {
-        //		sortedChunks[i] = nullptr;	// 4J - removed - not sorting
+        //		sortedChunks[i] = nullptr;	// 4J - removed - not
+        //sorting
         // our chunks anymore
         chunks[i] = ClipChunkArray();
         lastPlayerCount[i] = 0;
@@ -474,8 +474,8 @@ void LevelRenderer::allChanged(int playerIndex) {
     zMaxChunk = zChunks;
 
     // 4J removed - we now only fully clear this on exiting the game (setting
-    // level to nullptr). Apart from that, the chunk rebuilding is responsible for
-    // maintaining this
+    // level to nullptr). Apart from that, the chunk rebuilding is responsible
+    // for maintaining this
     //	renderableTileEntities.clear();
 
     for (int x = 0; x < xChunks; x++) {
@@ -565,8 +565,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
     totalEntities = (int)entities.size();
 
     auto itEndGE = level[playerIndex]->globalEntities.end();
-    for (auto it = level[playerIndex]->globalEntities.begin();
-         it != itEndGE; it++) {
+    for (auto it = level[playerIndex]->globalEntities.begin(); it != itEndGE;
+         it++) {
         std::shared_ptr<Entity> entity = *it;  // level->globalEntities[i];
         renderedEntities++;
         if (entity->shouldRender(cam))
@@ -626,8 +626,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
         // Don't render if it isn't in the same dimension as this player
         if (!isGlobalIndexInSameDimension(idx, level[playerIndex])) continue;
 
-        for (auto it2 = it->second.tiles.begin();
-             it2 != it->second.tiles.end(); it2++) {
+        for (auto it2 = it->second.tiles.begin(); it2 != it->second.tiles.end();
+             it2++) {
             TileEntityRenderDispatcher::instance->render(*it2, a);
         }
     }
@@ -768,10 +768,6 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
 
     glTranslatef((float)-xOff, (float)-yOff, (float)-zOff);
 
-
-
-
-
     bool first = true;
     int count = 0;
     ClipChunk* pClipChunk = chunks[playerIndex].data;
@@ -835,8 +831,6 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
         }
         RenderManager.SetChunkOffset(0.f, 0.f, 0.f);
     }
-
-
 
     glPopMatrix();
     mc->gameRenderer->turnOffLightLayer(alpha);
@@ -933,7 +927,6 @@ void LevelRenderer::renderSky(float alpha) {
     Tesselator* t = Tesselator::getInstance();
 
     glDepthMask(false);
-
 
     glEnable(GL_FOG);
     glColor3f(sr, sg, sb);
@@ -1048,7 +1041,6 @@ void LevelRenderer::renderSky(float alpha) {
     glDisable(GL_BLEND);
     glEnable(GL_ALPHA_TEST);
     glEnable(GL_FOG);
-
 
     glPopMatrix();
     glDisable(GL_TEXTURE_2D);
@@ -1783,9 +1775,9 @@ bool LevelRenderer::updateDirtyChunks() {
 
             // Find nearest chunk that is dirty
             for (int p = 0; p < XUSER_MAX_COUNT; p++) {
-                // It's possible that the localplayers member can be set to nullptr
-                // on the main thread when a player chooses to exit the game So
-                // take a reference to the player object now. As it is a
+                // It's possible that the localplayers member can be set to
+                // nullptr on the main thread when a player chooses to exit the
+                // game So take a reference to the player object now. As it is a
                 // shared_ptr it should live as long as we need it
                 std::shared_ptr<LocalPlayer> player = mc->localplayers[p];
                 if (player == nullptr) continue;
@@ -2444,13 +2436,11 @@ bool inline clip(float* bb, float* frustum) {
     return true;
 }
 
-
 // 4jcraft: optional occlusion culling system, i hope to upgrade it soon
 // gives better performances but mostly breaks chunk rendering
 void LevelRenderer::cull(Culler* culler, float a) {
     int playerIndex = mc->player->GetXboxPad();
     if (chunks[playerIndex].data == nullptr) return;
-
 
     FrustumCuller* fc = (FrustumCuller*)culler;
     FrustumData* fd = fc->frustum;
@@ -2821,8 +2811,8 @@ void LevelRenderer::playSoundExceptPlayer(std::shared_ptr<Player> player,
 void LevelRenderer::addParticle(const wstring& name, double x, double y, double
 z, double xa, double ya, double za)
 {
-if (mc == nullptr || mc->cameraTargetPlayer == nullptr || mc->particleEngine == nullptr)
-return;
+if (mc == nullptr || mc->cameraTargetPlayer == nullptr || mc->particleEngine ==
+nullptr) return;
 
 double xd = mc->cameraTargetPlayer->x - x;
 double yd = mc->cameraTargetPlayer->y - y;
@@ -2915,14 +2905,15 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
     }
 
     // 4J - this is a bit of hack to get communication through from the level
-    // itself, but if Minecraft::animateTickLevel is nullptr then we are to behave
-    // as normal, and if it is set, then we should use that as a pointer to the
-    // level the particle is to be created with rather than try to work it out
-    // from the current player. This is because in this state we are calling
-    // from a loop that is trying to amalgamate particle creation between all
-    // players for a particular level. Also don't do distance clipping as it
-    // isn't for a particular player, and distance is already taken into account
-    // before we get here anyway by the code in Level::animateTickDoWork
+    // itself, but if Minecraft::animateTickLevel is nullptr then we are to
+    // behave as normal, and if it is set, then we should use that as a pointer
+    // to the level the particle is to be created with rather than try to work
+    // it out from the current player. This is because in this state we are
+    // calling from a loop that is trying to amalgamate particle creation
+    // between all players for a particular level. Also don't do distance
+    // clipping as it isn't for a particular player, and distance is already
+    // taken into account before we get here anyway by the code in
+    // Level::animateTickDoWork
     if (mc->animateTickLevel == nullptr) {
         double particleDistanceSquared = 16 * 16;
         double xd = 0.0f;

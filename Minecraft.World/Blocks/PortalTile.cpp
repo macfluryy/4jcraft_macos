@@ -37,7 +37,9 @@ void PortalTile::tick(Level* level, int x, int y, int z, Random* random) {
     }
 }
 
-std::optional<AABB> PortalTile::getAABB(Level* level, int x, int y, int z) { return std::nullopt; }
+std::optional<AABB> PortalTile::getAABB(Level* level, int x, int y, int z) {
+    return std::nullopt;
+}
 
 void PortalTile::updateShape(
     LevelSource* level, int x, int y, int z, int forceData,

@@ -229,7 +229,6 @@ DLCPack* DLCManager::getPack(const std::wstring& name) {
     return pack;
 }
 
-
 DLCPack* DLCManager::getPack(unsigned int index,
                              EDLCType type /*= e_DLCType_All*/) {
     DLCPack* pack = nullptr;

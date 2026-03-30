@@ -72,6 +72,7 @@ private:
 
     static const int ALL_0_INDEX = 128;
     static const int ALL_15_INDEX = 129;
+
 public:
     SparseLightStorage(bool sky);
     SparseLightStorage(bool sky, bool isUpper);

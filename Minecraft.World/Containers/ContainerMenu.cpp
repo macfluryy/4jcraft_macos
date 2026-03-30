@@ -103,8 +103,7 @@ std::shared_ptr<ItemInstance> ContainerMenu::clicked(
         int minedCount =
             sc->getTotalValue(GenericStats::blocksMined(Tile::stone_Id)) +
             sc->getTotalValue(GenericStats::blocksMined(Tile::cobblestone_Id));
-        if (cobblecount >= 1728 && minedCount >= 1728)
-        {
+        if (cobblecount >= 1728 && minedCount >= 1728) {
             localPlayer->awardStat(
                 GenericStats::chestfulOfCobblestone(),
                 GenericStats::param_chestfulOfCobblestone(cobblecount));

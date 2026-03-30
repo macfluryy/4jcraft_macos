@@ -102,7 +102,6 @@ private:
     virtual void checkStateAndStartGame();
     void LaunchGame(void);
 
-
     static int ConfirmLoadReturned(void* pParam, int iPad,
                                    C4JStorage::EMessageResult result);
     static void StartGameFromSave(UIScene_LoadMenu* pClass, int localUsersMask);
@@ -120,8 +119,8 @@ private:
                                      C4JStorage::EMessageResult result);
 
 public:
-    // 4jcraft: made public for the thunk system we have for thumbnail loading, probably a FIXME for
-    // when this gets cleaned up
+    // 4jcraft: made public for the thunk system we have for thumbnail loading,
+    // probably a FIXME for when this gets cleaned up
     static int LoadSaveDataThumbnailReturned(void* lpParam,
                                              std::uint8_t* pbThumbnail,
                                              unsigned int thumbnailBytes);

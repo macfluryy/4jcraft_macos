@@ -122,7 +122,8 @@ void ConsoleSchematicFile::load(DataInputStream* dis) {
                 if (te == nullptr) {
 #ifndef _CONTENT_PACKAGE
                     app.DebugPrintf(
-                        "ConsoleSchematicFile has read a nullptr tile entity\n");
+                        "ConsoleSchematicFile has read a nullptr tile "
+                        "entity\n");
                     __debugbreak();
 #endif
                 } else {
@@ -169,8 +170,7 @@ void ConsoleSchematicFile::save_tags(DataOutputStream* dos) {
     ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
     tag->put(L"TileEntities", tileEntityTags);
 
-    for (auto it = m_tileEntities.begin(); it != m_tileEntities.end();
-         it++) {
+    for (auto it = m_tileEntities.begin(); it != m_tileEntities.end(); it++) {
         CompoundTag* cTag = new CompoundTag();
         (*it)->save(cTag);
         tileEntityTags->add(cTag);
@@ -452,8 +452,7 @@ void ConsoleSchematicFile::schematicCoordToChunkCoord(
 void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
                                              AABB* destinationBox,
                                              ESchematicRotation rot) {
-    for (auto it = m_tileEntities.begin(); it != m_tileEntities.end();
-         ++it) {
+    for (auto it = m_tileEntities.begin(); it != m_tileEntities.end(); ++it) {
         std::shared_ptr<TileEntity> te = *it;
 
         double targetX = te->x;
@@ -1070,8 +1069,8 @@ ConsoleSchematicFile::getTileEntitiesInRegion(LevelChunk* chunk, int x0, int y0,
                                               int z0, int x1, int y1, int z1) {
     std::vector<std::shared_ptr<TileEntity> >* result =
         new std::vector<std::shared_ptr<TileEntity> >;
-    for (auto it = chunk->tileEntities.begin();
-         it != chunk->tileEntities.end(); ++it) {
+    for (auto it = chunk->tileEntities.begin(); it != chunk->tileEntities.end();
+         ++it) {
         std::shared_ptr<TileEntity> te = it->second;
         if (te->x >= x0 && te->y >= y0 && te->z >= z0 && te->x < x1 &&
             te->y < y1 && te->z < z1) {

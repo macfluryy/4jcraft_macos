@@ -99,8 +99,9 @@ private:
                unsigned int fileSize, ESavePlatform plat);
 
 public:
-    ConsoleSaveFileSplit(const std::wstring& fileName, void* pvSaveData = nullptr,
-                         unsigned int fileSize = 0, bool forceCleanSave = false,
+    ConsoleSaveFileSplit(const std::wstring& fileName,
+                         void* pvSaveData = nullptr, unsigned int fileSize = 0,
+                         bool forceCleanSave = false,
                          ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
     ConsoleSaveFileSplit(ConsoleSaveFile* sourceSave,
                          bool alreadySmallRegions = true,
@@ -144,7 +145,6 @@ public:
         const std::wstring& prefix);
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex);
-
 
     virtual int getSaveVersion();
     virtual int getOriginalSaveVersion();

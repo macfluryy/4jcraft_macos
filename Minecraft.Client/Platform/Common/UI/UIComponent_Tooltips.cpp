@@ -12,8 +12,6 @@ UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void* initData,
     }
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
-
-
 }
 
 std::wstring UIComponent_Tooltips::getMoviePath() {
@@ -311,13 +309,10 @@ void UIComponent_Tooltips::_Relayout() {
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
                                             m_funcUpdateLayout, 0, nullptr);
-
 }
-
 
 void UIComponent_Tooltips::handleReload() {
     app.DebugPrintf("UIComponent_Tooltips::handleReload\n");
-
 
     for (unsigned int i = 0; i < eToolTipNumButtons; ++i) {
         _SetTooltip(i, m_tooltipValues[i].iString, m_tooltipValues[i].show,

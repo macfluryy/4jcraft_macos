@@ -23,8 +23,12 @@ public:
     bool IsTitleAllowedToPostLinks() { return false; }
     bool AreAllUsersAllowedToPostImages() { return false; }
 
-    bool PostLinkToSocialNetwork(ESocialNetwork, uint32_t, bool) { return false; }
-    bool PostImageToSocialNetwork(ESocialNetwork, uint32_t, bool) { return false; }
+    bool PostLinkToSocialNetwork(ESocialNetwork, uint32_t, bool) {
+        return false;
+    }
+    bool PostImageToSocialNetwork(ESocialNetwork, uint32_t, bool) {
+        return false;
+    }
 
     void SetSocialPostText(const wchar_t*, const wchar_t*, const wchar_t*) {}
 

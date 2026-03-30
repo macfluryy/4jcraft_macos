@@ -170,5 +170,4 @@ private:
     int m_iStream_End_Min, m_iStream_End_Max;
     int m_iStream_CD_1;
     bool* m_bHeardTrackA;
-
 };

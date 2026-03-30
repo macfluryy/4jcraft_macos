@@ -113,8 +113,8 @@ MineShaftPieces::MineShaftRoom::MineShaftRoom(int genDepth, Random* random,
 }
 
 MineShaftPieces::MineShaftRoom::~MineShaftRoom() {
-    for (auto it = childEntranceBoxes.begin();
-         it != childEntranceBoxes.end(); ++it) {
+    for (auto it = childEntranceBoxes.begin(); it != childEntranceBoxes.end();
+         ++it) {
         delete (*it);
     }
 }
@@ -225,8 +225,8 @@ bool MineShaftPieces::MineShaftRoom::postProcess(Level* level, Random* random,
                 boundingBox->z0, boundingBox->x1,
                 std::min(boundingBox->y0 + 3, boundingBox->y1), boundingBox->z1,
                 0, 0, false);
-    for (auto it = childEntranceBoxes.begin();
-         it != childEntranceBoxes.end(); ++it) {
+    for (auto it = childEntranceBoxes.begin(); it != childEntranceBoxes.end();
+         ++it) {
         BoundingBox* entranceBox = *it;
         generateBox(level, chunkBB, entranceBox->x0,
                     entranceBox->y1 - (DEFAULT_SHAFT_HEIGHT - 1),
@@ -242,8 +242,8 @@ bool MineShaftPieces::MineShaftRoom::postProcess(Level* level, Random* random,
 
 void MineShaftPieces::MineShaftRoom::addAdditonalSaveData(CompoundTag* tag) {
     ListTag<IntArrayTag>* entrances = new ListTag<IntArrayTag>(L"Entrances");
-    for (auto it = childEntranceBoxes.begin();
-         it != childEntranceBoxes.end(); ++it) {
+    for (auto it = childEntranceBoxes.begin(); it != childEntranceBoxes.end();
+         ++it) {
         BoundingBox* bb = *it;
         entrances->add(bb->createTag(L""));
     }

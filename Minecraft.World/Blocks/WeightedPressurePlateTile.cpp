@@ -22,8 +22,7 @@ int WeightedPressurePlateTile::getSignalStrength(Level* level, int x, int y,
                                                  int z) {
     AABB at_bb = getSensitiveAABB(x, y, z);
     int weightOfEntities =
-        level->getEntitiesOfClass(typeid(Entity), &at_bb)
-            ->size();
+        level->getEntitiesOfClass(typeid(Entity), &at_bb)->size();
     int count = std::min(weightOfEntities, maxWeight);
 
     if (count <= 0) {

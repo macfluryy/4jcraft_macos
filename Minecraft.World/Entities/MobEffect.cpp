@@ -412,8 +412,8 @@ MobEffect::getAttributeModifiers() {
 void MobEffect::removeAttributeModifiers(std::shared_ptr<LivingEntity> entity,
                                          BaseAttributeMap* attributes,
                                          int amplifier) {
-    for (auto it = attributeModifiers.begin();
-         it != attributeModifiers.end(); ++it) {
+    for (auto it = attributeModifiers.begin(); it != attributeModifiers.end();
+         ++it) {
         AttributeInstance* attribute = attributes->getInstance(it->first);
 
         if (attribute != nullptr) {
@@ -425,8 +425,8 @@ void MobEffect::removeAttributeModifiers(std::shared_ptr<LivingEntity> entity,
 void MobEffect::addAttributeModifiers(std::shared_ptr<LivingEntity> entity,
                                       BaseAttributeMap* attributes,
                                       int amplifier) {
-    for (auto it = attributeModifiers.begin();
-         it != attributeModifiers.end(); ++it) {
+    for (auto it = attributeModifiers.begin(); it != attributeModifiers.end();
+         ++it) {
         AttributeInstance* attribute = attributes->getInstance(it->first);
 
         if (attribute != nullptr) {

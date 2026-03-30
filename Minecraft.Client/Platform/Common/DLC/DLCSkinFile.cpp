@@ -107,10 +107,10 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
             SKIN_BOX* pSkinBox = new SKIN_BOX;
             ZeroMemory(pSkinBox, sizeof(SKIN_BOX));
 
-            swscanf_s(
-                value.c_str(), L"%9ls%f%f%f%f%f%f%f%f", wchBodyPart, 10,
-                    &pSkinBox->fX, &pSkinBox->fY, &pSkinBox->fZ, &pSkinBox->fW,
-                    &pSkinBox->fH, &pSkinBox->fD, &pSkinBox->fU, &pSkinBox->fV);
+            swscanf_s(value.c_str(), L"%9ls%f%f%f%f%f%f%f%f", wchBodyPart, 10,
+                      &pSkinBox->fX, &pSkinBox->fY, &pSkinBox->fZ,
+                      &pSkinBox->fW, &pSkinBox->fH, &pSkinBox->fD,
+                      &pSkinBox->fU, &pSkinBox->fV);
 
             if (wcscmp(wchBodyPart, L"HEAD") == 0) {
                 pSkinBox->ePart = eBodyPart_Head;
