@@ -40,12 +40,6 @@ jobs:
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
           restore-keys: ${{ runner.os }}-ccache-
 
-      - name: Restore meson cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/meson
-          key: ${{ runner.os }}-meson-${{ hashFiles('**/meson.build') }}
-
       - name: Configure Meson
         env:
           CC: "ccache clang"
@@ -61,9 +55,6 @@ jobs:
         run: |
           # Use all available cores for faster parallel builds
           meson compile -C build -j $(nproc) -v Minecraft.Client
-
-      - name: Install patchelf
-        run: sudo apt-get install -y patchelf
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
