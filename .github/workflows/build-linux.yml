@@ -30,7 +30,7 @@ jobs:
       - name: Install system dependencies
         uses: daaku/gh-action-apt-install@v4
         with:
-          packages: build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev patchelf
+          packages: build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev patchelf libglm-dev
 
       - name: Install meson from pip
         run: |
