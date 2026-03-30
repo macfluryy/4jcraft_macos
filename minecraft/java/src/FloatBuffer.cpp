@@ -1,4 +1,4 @@
-#include "FloatBuffer.h"
+#include "java/FloatBuffer.h"
 
 // Allocates a new float buffer.
 // The new buffer's position will be zero, its limit will be its capacity, and

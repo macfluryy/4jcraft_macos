@@ -1,6 +1,6 @@
 
-#include "File.h"
-#include "InputOutputStream/FileInputStream.h"
+#include "java/File.h"
+#include "java/InputOutputStream/FileInputStream.h"
 #include <algorithm>
 
 #include "../../../Minecraft.World/ConsoleHelpers/StringHelpers.h"

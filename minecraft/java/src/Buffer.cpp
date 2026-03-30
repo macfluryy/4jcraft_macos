@@ -1,4 +1,4 @@
-#include "Buffer.h"
+#include "java/Buffer.h"
 
 Buffer::Buffer(unsigned int capacity)
     : m_capacity(capacity),

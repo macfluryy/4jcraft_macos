@@ -1,4 +1,4 @@
-#include "JavaMath.h"
+#include "java/JavaMath.h"
 
 #include <cmath>
 

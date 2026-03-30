@@ -1,4 +1,4 @@
-#include "InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
 
 // Creates a new byte array output stream. The buffer capacity is initially 32
 // bytes, though its size increases if necessary.

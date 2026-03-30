@@ -1,4 +1,4 @@
-#include "InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 // Creates ByteArrayInputStream that uses buf as its buffer array. The initial
 // value of pos is offset and the initial value of count is the minimum of

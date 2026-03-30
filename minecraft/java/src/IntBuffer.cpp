@@ -1,5 +1,4 @@
-
-#include "IntBuffer.h"
+#include "java/IntBuffer.h"
 
 // Allocates a new int buffer.
 // The new buffer's position will be zero, its limit will be its capacity, and

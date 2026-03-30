@@ -1,5 +1,5 @@
 #include "java/InputOutputStream/InputOutputStream.h"
-#include "NbtIo.h"
+#include "nbt/NbtIo.h"
 
 CompoundTag* NbtIo::readCompressed(InputStream* in) {
     // MemSect(26);

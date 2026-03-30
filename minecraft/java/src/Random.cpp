@@ -1,7 +1,8 @@
-#include "Random.h"
 #include <ctime>
 #include <cstdint>  // for int64_t
-#include "System.h"
+
+#include "java/System.h"
+#include "java/Random.h"
 
 Random::Random() {
     // 4J - jave now uses the system nanosecond counter added to a

@@ -6,7 +6,7 @@ nbt_sources = files(
 lib_nbt = static_library('nbt',
   nbt_sources,
   dependencies: [java_dep],
-  include_directories : include_directories('include/nbt'),
+  include_directories : include_directories('include'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )
 

@@ -1,9 +1,10 @@
-#include "System.h"
 #if defined(__linux__)
 #include <sys/time.h>
 #include <time.h>
 #include <ctime>
 #endif
+
+#include "java/System.h"
 
 template <class T>
 void System::arraycopy(arrayWithLength<T> src, unsigned int srcPos,

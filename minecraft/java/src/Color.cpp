@@ -1,7 +1,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "Color.h"
+#include "java/Color.h"
 
 // Creates an opaque sRGB color with the specified red, green, and blue values
 // in the range (0.0 - 1.0). Alpha is defaulted to 1.0. The actual color used in

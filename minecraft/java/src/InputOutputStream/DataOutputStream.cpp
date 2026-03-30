@@ -1,7 +1,7 @@
-
-#include "InputOutputStream/DataOutputStream.h"
 #include <bit>
 #include <cstdint>
+
+#include "java/InputOutputStream/DataOutputStream.h"
 
 // Creates a new data output stream to write data to the specified underlying
 // output stream. The counter written is set to zero. Parameters: out - the

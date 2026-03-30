@@ -1,4 +1,4 @@
-#include "InputOutputStream/BufferedReader.h"
+#include "java/InputOutputStream/BufferedReader.h"
 
 // Creates a buffering character-input stream that uses a default-sized input
 // buffer. Parameters: in - A Reader

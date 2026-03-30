@@ -1,7 +1,7 @@
-#include "File.h"
-#include "InputOutputStream/FileOutputStream.h"
-
 #include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
+
+#include "java/File.h"
+#include "java/InputOutputStream/FileOutputStream.h"
 
 // Creates a file output stream to write to the file represented by the
 // specified File object. A new FileDescriptor object is created to represent

@@ -1,7 +1,7 @@
 
-#include "IntBuffer.h"
-#include "FloatBuffer.h"
-#include "ByteBuffer.h"
+#include "java/IntBuffer.h"
+#include "java/FloatBuffer.h"
+#include "java/ByteBuffer.h"
 
 ByteBuffer::ByteBuffer(unsigned int capacity) : Buffer(capacity) {
     hasBackingArray = false;
