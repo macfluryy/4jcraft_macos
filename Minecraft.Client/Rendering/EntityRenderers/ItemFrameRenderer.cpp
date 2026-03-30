@@ -120,7 +120,7 @@ void ItemFrameRenderer::drawItem(std::shared_ptr<ItemFrame> entity) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     std::shared_ptr<ItemInstance> instance = entity->getItem();
-    if (instance == NULL) return;
+    if (instance == nullptr) return;
 
     std::shared_ptr<ItemEntity> itemEntity = std::shared_ptr<ItemEntity>(
         new ItemEntity(entity->level, 0, 0, 0, instance));
@@ -165,7 +165,7 @@ void ItemFrameRenderer::drawItem(std::shared_ptr<ItemFrame> entity) {
 
         std::shared_ptr<MapItemSavedData> data =
             Item::map->getSavedData(itemEntity->getItem(), entity->level);
-        if (data != NULL) {
+        if (data != nullptr) {
             entityRenderDispatcher->itemInHandRenderer->minimap->render(
                 nullptr, entityRenderDispatcher->textures, data,
                 entity->entityId);

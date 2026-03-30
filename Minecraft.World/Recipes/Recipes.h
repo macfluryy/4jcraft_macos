@@ -100,7 +100,7 @@ public:
 
     std::shared_ptr<ItemInstance> getItemFor(
         std::shared_ptr<CraftingContainer> craftSlots, Level* level,
-        Recipy* recipesClass = NULL);  // 4J Added recipesClass param
+        Recipy* recipesClass = nullptr);  // 4J Added recipesClass param
     std::vector<Recipy*>* getRecipies();
 
     // 4J-PB - Added all below for new Xbox 'crafting'

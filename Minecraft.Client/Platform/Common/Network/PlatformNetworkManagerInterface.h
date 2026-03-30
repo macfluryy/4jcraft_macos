@@ -107,7 +107,7 @@ private:
 
 public:
     virtual void UpdateAndSetGameSessionData(
-        INetworkPlayer* pNetworkPlayerLeaving = NULL) = 0;
+        INetworkPlayer* pNetworkPlayerLeaving = nullptr) = 0;
 
 private:
     virtual bool RemoveLocalPlayer(INetworkPlayer* pNetworkPlayer) = 0;

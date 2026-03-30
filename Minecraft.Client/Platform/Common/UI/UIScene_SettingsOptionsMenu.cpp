@@ -20,7 +20,7 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-    m_bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    m_bNotInGame = (Minecraft::GetInstance()->level == nullptr);
 
     m_checkboxViewBob.init(
         IDS_VIEW_BOBBING, eControl_ViewBob,
@@ -97,7 +97,7 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     bool bRemoveAutosave = false;
     bool bRemoveInGameGamertags = false;
 
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
     bool bPrimaryPlayer = ProfileManager.GetPrimaryPad() == m_iPad;
     if (!bPrimaryPlayer) {
         bRemoveDifficulty = true;
@@ -176,7 +176,7 @@ void UIScene_SettingsOptionsMenu::updateTooltips() {
 }
 
 void UIScene_SettingsOptionsMenu::updateComponents() {
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
     if (bNotInGame) {
         m_parentLayer->showComponent(m_iPad, eUIComponent_Panorama, true);
         m_parentLayer->showComponent(m_iPad, eUIComponent_Logo, true);
@@ -302,7 +302,7 @@ void UIScene_SettingsOptionsMenu::handleReload() {
     bool bRemoveAutosave = false;
     bool bRemoveInGameGamertags = false;
 
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
     bool bPrimaryPlayer = ProfileManager.GetPrimaryPad() == m_iPad;
     if (!bPrimaryPlayer) {
         bRemoveDifficulty = true;

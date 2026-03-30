@@ -22,7 +22,7 @@ CustomPayloadPacket::CustomPayloadPacket(const std::wstring& identifier,
     this->identifier = identifier;
     this->data = data;
 
-    if (data.data != NULL) {
+    if (data.data != nullptr) {
         length = data.length;
 
         if (length > std::numeric_limits<short>::max()) {
@@ -41,7 +41,7 @@ void CustomPayloadPacket::read(DataInputStream* dis) {
     length = dis->readShort();
 
     if (length > 0 && length < std::numeric_limits<short>::max()) {
-        if (data.data != NULL) {
+        if (data.data != nullptr) {
             delete[] data.data;
         }
         data = byteArray(length);
@@ -52,7 +52,7 @@ void CustomPayloadPacket::read(DataInputStream* dis) {
 void CustomPayloadPacket::write(DataOutputStream* dos) {
     writeUtf(identifier, dos);
     dos->writeShort((short)length);
-    if (data.data != NULL) {
+    if (data.data != nullptr) {
         dos->write(data);
     }
 }

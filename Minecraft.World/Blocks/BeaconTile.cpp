@@ -21,7 +21,7 @@ bool BeaconTile::use(Level* level, int x, int y, int z,
     std::shared_ptr<BeaconTileEntity> beacon =
         std::dynamic_pointer_cast<BeaconTileEntity>(
             level->getTileEntity(x, y, z));
-    if (beacon != NULL) player->openBeacon(beacon);
+    if (beacon != nullptr) player->openBeacon(beacon);
 
     return true;
 }

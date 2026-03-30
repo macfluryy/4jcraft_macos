@@ -55,43 +55,43 @@ StructurePiece* MineShaftPieces::createRandomShaftPiece(
     if (randomSelection >= 80) {
         BoundingBox* crossingBox = MineShaftCrossing::findCrossing(
             pieces, random, footX, footY, footZ, direction);
-        if (crossingBox != NULL) {
+        if (crossingBox != nullptr) {
             return new MineShaftCrossing(genDepth, random, crossingBox,
                                          direction);
         }
     } else if (randomSelection >= 70) {
         BoundingBox* stairsBox = MineShaftStairs::findStairs(
             pieces, random, footX, footY, footZ, direction);
-        if (stairsBox != NULL) {
+        if (stairsBox != nullptr) {
             return new MineShaftPieces::MineShaftStairs(genDepth, random,
                                                         stairsBox, direction);
         }
     } else {
         BoundingBox* corridorBox = MineShaftCorridor::findCorridorSize(
             pieces, random, footX, footY, footZ, direction);
-        if (corridorBox != NULL) {
+        if (corridorBox != nullptr) {
             return new MineShaftCorridor(genDepth, random, corridorBox,
                                          direction);
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 StructurePiece* MineShaftPieces::generateAndAddPiece(
     StructurePiece* startPiece, std::list<StructurePiece*>* pieces,
     Random* random, int footX, int footY, int footZ, int direction, int depth) {
     if (depth > MAX_DEPTH) {
-        return NULL;
+        return nullptr;
     }
     if (abs(footX - startPiece->getBoundingBox()->x0) > 5 * 16 ||
         abs(footZ - startPiece->getBoundingBox()->z0) > 5 * 16) {
-        return NULL;
+        return nullptr;
     }
 
     StructurePiece* newPiece = createRandomShaftPiece(
         pieces, random, footX, footY, footZ, direction, depth + 1);
-    if (newPiece != NULL) {
+    if (newPiece != nullptr) {
         MemSect(50);
         pieces->push_back(newPiece);
         MemSect(0);
@@ -142,7 +142,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
             startPiece, pieces, random, boundingBox->x0 + pos,
             boundingBox->y0 + random->nextInt(heightSpace) + 1,
             boundingBox->z0 - 1, Direction::NORTH, depth);
-        if (child != NULL) {
+        if (child != nullptr) {
             BoundingBox* childBox = child->getBoundingBox();
             childEntranceBoxes.push_back(new BoundingBox(
                 childBox->x0, childBox->y0, boundingBox->z0, childBox->x1,
@@ -161,7 +161,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
             startPiece, pieces, random, boundingBox->x0 + pos,
             boundingBox->y0 + random->nextInt(heightSpace) + 1,
             boundingBox->z1 + 1, Direction::SOUTH, depth);
-        if (child != NULL) {
+        if (child != nullptr) {
             BoundingBox* childBox = child->getBoundingBox();
             childEntranceBoxes.push_back(
                 new BoundingBox(childBox->x0, childBox->y0, boundingBox->z1 - 1,
@@ -180,7 +180,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
             startPiece, pieces, random, boundingBox->x0 - 1,
             boundingBox->y0 + random->nextInt(heightSpace) + 1,
             boundingBox->z0 + pos, Direction::WEST, depth);
-        if (child != NULL) {
+        if (child != nullptr) {
             BoundingBox* childBox = child->getBoundingBox();
             childEntranceBoxes.push_back(new BoundingBox(
                 boundingBox->x0, childBox->y0, childBox->z0,
@@ -199,7 +199,7 @@ void MineShaftPieces::MineShaftRoom::addChildren(
             startPiece, pieces, random, boundingBox->x1 + 1,
             boundingBox->y0 + random->nextInt(heightSpace) + 1,
             boundingBox->z0 + pos, Direction::EAST, depth);
-        if (child != NULL) {
+        if (child != nullptr) {
             BoundingBox* childBox = child->getBoundingBox();
             childEntranceBoxes.push_back(
                 new BoundingBox(boundingBox->x1 - 1, childBox->y0, childBox->z0,
@@ -327,7 +327,7 @@ BoundingBox* MineShaftPieces::MineShaftCorridor::findCorridorSize(
                 break;
         }
 
-        if (StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        if (StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
             corridorLength--;
         } else {
             break;
@@ -339,7 +339,7 @@ BoundingBox* MineShaftPieces::MineShaftCorridor::findCorridorSize(
     }
     delete box;
     // unable to place corridor here
-    return NULL;
+    return nullptr;
 }
 
 void MineShaftPieces::MineShaftCorridor::addChildren(
@@ -579,7 +579,7 @@ bool MineShaftPieces::MineShaftCorridor::postProcess(Level* level,
                 std::shared_ptr<MobSpawnerTileEntity> entity =
                     std::dynamic_pointer_cast<MobSpawnerTileEntity>(
                         level->getTileEntity(x, y, newZ));
-                if (entity != NULL)
+                if (entity != nullptr)
                     entity->getSpawner()->setEntityId(L"CaveSpider");
             }
         }
@@ -669,9 +669,9 @@ BoundingBox* MineShaftPieces::MineShaftCrossing::findCrossing(
             break;
     }
 
-    if (StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+    if (StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return box;
@@ -864,9 +864,9 @@ BoundingBox* MineShaftPieces::MineShaftStairs::findStairs(
             break;
     }
 
-    if (StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+    if (StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return box;

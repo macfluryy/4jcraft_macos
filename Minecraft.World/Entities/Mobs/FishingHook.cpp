@@ -162,7 +162,7 @@ void FishingHook::tick() {
 
     if (!level->isClientSide) {
         std::shared_ptr<ItemInstance> selectedItem = owner->getSelectedItem();
-        if (owner->removed || !owner->isAlive() || selectedItem == NULL ||
+        if (owner->removed || !owner->isAlive() || selectedItem == nullptr ||
             selectedItem->getItem() != Item::fishingRod ||
             distanceToSqr(owner) > 32 * 32) {
             remove();
@@ -170,7 +170,7 @@ void FishingHook::tick() {
             return;
         }
 
-        if (hookedIn != NULL) {
+        if (hookedIn != nullptr) {
             if (hookedIn->removed)
                 hookedIn = nullptr;
             else {
@@ -209,7 +209,7 @@ void FishingHook::tick() {
 
     from = Vec3(x, y, z);
     to = Vec3(x + xd, y + yd, z + zd);
-    if (res != NULL) {
+    if (res != nullptr) {
         to = Vec3(res->pos.x, res->pos.y, res->pos.z);
     }
     std::shared_ptr<Entity> hitEntity = nullptr;
@@ -225,7 +225,7 @@ void FishingHook::tick() {
         float rr = 0.3f;
         AABB bb = e->bb.grow(rr, rr, rr);
         HitResult* p = bb.clip(from, to);
-        if (p != NULL) {
+        if (p != nullptr) {
             double dd = from.distanceTo(p->pos);
             if (dd < nearest || nearest == 0) {
                 hitEntity = e;
@@ -235,13 +235,13 @@ void FishingHook::tick() {
         }
     }
 
-    if (hitEntity != NULL) {
+    if (hitEntity != nullptr) {
         delete res;
         res = new HitResult(hitEntity);
     }
 
-    if (res != NULL) {
-        if (res->entity != NULL) {
+    if (res != nullptr) {
+        if (res->entity != nullptr) {
             // 4J Stu Move fix for : fix for #48587 - CRASH: Code: Gameplay:
             // Hitting another player with the fishing bobber crashes the game.
             // [Fishing pole, line] Incorrect dynamic_pointer_cast used around
@@ -370,7 +370,7 @@ int FishingHook::retrieve() {
     if (level->isClientSide) return 0;
 
     int dmg = 0;
-    if (hookedIn != NULL) {
+    if (hookedIn != nullptr) {
         double xa = owner->x - x;
         double ya = owner->y - y;
         double za = owner->z - z;
@@ -412,5 +412,5 @@ int FishingHook::retrieve() {
 // 4J Stu - Brought forward from 1.4
 void FishingHook::remove() {
     Entity::remove();
-    if (owner != NULL) owner->fishing = nullptr;
+    if (owner != nullptr) owner->fishing = nullptr;
 }

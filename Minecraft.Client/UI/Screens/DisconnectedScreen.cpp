@@ -10,7 +10,7 @@ DisconnectedScreen::DisconnectedScreen(const std::wstring& title,
     Language* language = Language::getInstance();
 
     this->title = language->getElement(title);
-    if (reasonObjects != NULL) {
+    if (reasonObjects != nullptr) {
         this->reason = language->getElement(reason, reasonObjects);
     } else {
         this->reason = language->getElement(reason);

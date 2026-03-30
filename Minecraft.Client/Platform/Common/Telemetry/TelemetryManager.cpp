@@ -163,7 +163,7 @@ int CTelemetryManager::GetMode(int userId)
 	
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 
-	if( pMinecraft->localplayers[userId] != NULL && pMinecraft->localplayers[userId]->level != NULL && pMinecraft->localplayers[userId]->level->getLevelData() != NULL )
+	if( pMinecraft->localplayers[userId] != nullptr && pMinecraft->localplayers[userId]->level != nullptr && pMinecraft->localplayers[userId]->level->getLevelData() != nullptr )
 	{
 		GameType *gameType = pMinecraft->localplayers[userId]->level->getLevelData()->getGameType();
 
@@ -235,7 +235,7 @@ int CTelemetryManager::GetSubLevelId(int userId)
 
 	Minecraft *pMinecraft = Minecraft::GetInstance();
 
-	if(pMinecraft->localplayers[userId] != NULL)
+	if(pMinecraft->localplayers[userId] != nullptr)
 	{
 		switch(pMinecraft->localplayers[userId]->dimension)
 		{

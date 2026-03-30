@@ -29,7 +29,7 @@ ThrownEnderpearl::ThrownEnderpearl(Level* level, double x, double y, double z)
 }
 
 void ThrownEnderpearl::onHit(HitResult* res) {
-    if (res->entity != NULL) {
+    if (res->entity != nullptr) {
         DamageSource* damageSource =
             DamageSource::thrown(shared_from_this(), getOwner());
         res->entity->hurt(damageSource, 0);
@@ -48,7 +48,7 @@ void ThrownEnderpearl::onHit(HitResult* res) {
         // the ground. If the owner has been removed, then ignore
 
         // 4J-JEV: Cheap type check first.
-        if ((getOwner() != NULL) &&
+        if ((getOwner() != nullptr) &&
             getOwner()->instanceof(eTYPE_SERVERPLAYER)) {
             std::shared_ptr<ServerPlayer> serverPlayer =
                 std::dynamic_pointer_cast<ServerPlayer>(getOwner());

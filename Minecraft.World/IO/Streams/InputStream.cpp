@@ -5,5 +5,5 @@
 
 InputStream* InputStream::getResourceAsStream(const std::wstring& fileName) {
     File file(fileName);
-    return file.exists() ? new FileInputStream(file) : NULL;
+    return file.exists() ? new FileInputStream(file) : nullptr;
 }

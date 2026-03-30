@@ -48,7 +48,7 @@ void FireworksItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
         return;
     }
     CompoundTag* fireTag = itemInstance->getTag()->getCompound(TAG_FIREWORKS);
-    if (fireTag == NULL) {
+    if (fireTag == nullptr) {
         return;
     }
     if (fireTag->contains(TAG_FLIGHT)) {
@@ -59,7 +59,7 @@ void FireworksItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
 
     ListTag<CompoundTag>* explosions =
         (ListTag<CompoundTag>*)fireTag->getList(TAG_EXPLOSIONS);
-    if (explosions != NULL && explosions->size() > 0) {
+    if (explosions != nullptr && explosions->size() > 0) {
         for (int i = 0; i < explosions->size(); i++) {
             CompoundTag* expTag = explosions->get(i);
 

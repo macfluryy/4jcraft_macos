@@ -30,7 +30,7 @@ public:
     virtual void Flush(bool autosave, bool updateThumbnail = true) = 0;
 
 #if !defined(_CONTENT_PACKAGE)
-    virtual void DebugFlushToFile(void* compressedData = NULL,
+    virtual void DebugFlushToFile(void* compressedData = nullptr,
                                   unsigned int compressedDataSize = 0) = 0;
 #endif
     virtual unsigned int getSizeOnDisk() = 0;
@@ -58,5 +58,5 @@ public:
     virtual void ConvertRegionFile(File sourceFile) = 0;
     virtual void ConvertToLocalPlatform() = 0;
 
-    virtual void* getWritePointer(FileEntry* file) { return NULL; }
+    virtual void* getWritePointer(FileEntry* file) { return nullptr; }
 };

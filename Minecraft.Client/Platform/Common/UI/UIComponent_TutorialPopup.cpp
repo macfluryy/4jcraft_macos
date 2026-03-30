@@ -13,8 +13,8 @@ UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-    m_interactScene = NULL;
-    m_lastInteractSceneMoved = NULL;
+    m_interactScene = nullptr;
+    m_lastInteractSceneMoved = nullptr;
     m_lastSceneMovedLeft = false;
     m_bAllowFade = false;
     m_iconItem = nullptr;
@@ -27,7 +27,7 @@ UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,
     m_labelDescription.init(L"");
 
     // 4jcraft added
-    m_tutorial = NULL;
+    m_tutorial = nullptr;
 }
 
 std::wstring UIComponent_TutorialPopup::getMoviePath() {
@@ -104,7 +104,7 @@ void UIComponent_TutorialPopup::SetTutorialDescription(
 
 void UIComponent_TutorialPopup::RemoveInteractSceneReference(UIScene* scene) {
     if (m_interactScene == scene) {
-        m_interactScene = NULL;
+        m_interactScene = nullptr;
     }
 }
 
@@ -152,7 +152,7 @@ void UIComponent_TutorialPopup::_SetDescription(UIScene* interactScene,
     m_interactScene = interactScene;
     app.DebugPrintf("Setting m_interactScene to %08x\n", m_interactScene);
     if (interactScene != m_lastInteractSceneMoved)
-        m_lastInteractSceneMoved = NULL;
+        m_lastInteractSceneMoved = nullptr;
     if (desc.empty()) {
         SetVisible(false);
         app.DebugPrintf(
@@ -335,8 +335,8 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
             m_iconItem = nullptr;
         }
     }
-    if (!isFixedIcon && m_iconItem != NULL) setupIconHolder(e_ICON_TYPE_IGGY);
-    m_controlIconHolder.setVisible(isFixedIcon || m_iconItem != NULL);
+    if (!isFixedIcon && m_iconItem != nullptr) setupIconHolder(e_ICON_TYPE_IGGY);
+    m_controlIconHolder.setVisible(isFixedIcon || m_iconItem != nullptr);
 
     return temp;
 }
@@ -382,7 +382,7 @@ std::wstring UIComponent_TutorialPopup::ParseDescription(int iPad,
 }
 
 void UIComponent_TutorialPopup::UpdateInteractScenePosition(bool visible) {
-    if (m_interactScene == NULL) return;
+    if (m_interactScene == nullptr) return;
 
     // 4J-PB - check this players screen section to see if we should allow the
     // animation
@@ -486,7 +486,7 @@ void UIComponent_TutorialPopup::render(S32 width, S32 height,
 
 void UIComponent_TutorialPopup::customDraw(
     IggyCustomDrawCallbackRegion* region) {
-    if (m_iconItem != NULL)
+    if (m_iconItem != nullptr)
         customDrawSlotControl(region, m_iPad, m_iconItem, 1.0f,
                               m_iconItem->isFoil() || m_iconIsFoil, false);
 }

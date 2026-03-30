@@ -511,8 +511,8 @@ public:
     void tileEntityChanged(int x, int y, int z, std::shared_ptr<TileEntity> te);
     //	unsigned int countInstanceOf(BaseObject::Class *clas);
     unsigned int countInstanceOf(
-        eINSTANCEOF clas, bool singleType, unsigned int* protectedCount = NULL,
-        unsigned int* couldWanderCount = NULL);  // 4J added
+        eINSTANCEOF clas, bool singleType, unsigned int* protectedCount = nullptr,
+        unsigned int* couldWanderCount = nullptr);  // 4J added
     unsigned int countInstanceOfInRange(eINSTANCEOF clas, bool singleType,
                                         int range, int x, int y,
                                         int z);  // 4J Added

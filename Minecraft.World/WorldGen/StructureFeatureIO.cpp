@@ -66,14 +66,14 @@ std::wstring StructureFeatureIO::getEncodeId(StructurePiece* piece) {
 
 StructureStart* StructureFeatureIO::loadStaticStart(CompoundTag* tag,
                                                     Level* level) {
-    StructureStart* start = NULL;
+    StructureStart* start = nullptr;
 
     AUTO_VAR(it, startIdClassMap.find(tag->getString(L"id")));
     if (it != startIdClassMap.end()) {
         start = (it->second)();
     }
 
-    if (start != NULL) {
+    if (start != nullptr) {
         start->load(level, tag);
     } else {
         app.DebugPrintf("Skipping Structure with id %ls",
@@ -84,14 +84,14 @@ StructureStart* StructureFeatureIO::loadStaticStart(CompoundTag* tag,
 
 StructurePiece* StructureFeatureIO::loadStaticPiece(CompoundTag* tag,
                                                     Level* level) {
-    StructurePiece* piece = NULL;
+    StructurePiece* piece = nullptr;
 
     AUTO_VAR(it, pieceIdClassMap.find(tag->getString(L"id")));
     if (it != pieceIdClassMap.end()) {
         piece = (it->second)();
     }
 
-    if (piece != NULL) {
+    if (piece != nullptr) {
         piece->load(level, tag);
     } else {
         app.DebugPrintf("Skipping Piece with id %ls",

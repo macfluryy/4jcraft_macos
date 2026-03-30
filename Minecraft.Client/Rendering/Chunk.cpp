@@ -197,7 +197,7 @@ void Chunk::makeCopyForRebuild(Chunk* source) {
     this->ym = source->ym;
     this->zm = source->zm;
     this->bb = source->bb;
-    this->clipChunk = NULL;
+    this->clipChunk = nullptr;
     this->id = source->id;
     this->globalRenderableTileEntities = source->globalRenderableTileEntities;
     this->globalRenderableTileEntities_cs =
@@ -742,7 +742,7 @@ void Chunk::reset() {
 
 void Chunk::_delete() {
     reset();
-    level = NULL;
+    level = nullptr;
 }
 
 int Chunk::getList(int layer) {

@@ -25,7 +25,7 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
     if (it != cache.end()) return (*it).second;
 
     std::shared_ptr<SavedData> data = nullptr;
-    if (levelStorage != NULL) {
+    if (levelStorage != nullptr) {
         // File file = levelStorage->getDataFile(id);
         ConsoleSavePath file = levelStorage->getDataFile(id);
         if (!file.getName().empty() &&
@@ -60,7 +60,7 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
         }
     }
 
-    if (data != NULL) {
+    if (data != nullptr) {
         cache.insert(
             std::unordered_map<std::wstring,
                                std::shared_ptr<SavedData> >::value_type(id,
@@ -72,7 +72,7 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
 
 void SavedDataStorage::set(const std::wstring& id,
                            std::shared_ptr<SavedData> data) {
-    if (data == NULL) {
+    if (data == nullptr) {
         // TODO 4J Stu - throw new RuntimeException("Can't set null data");
         assert(false);
     }
@@ -100,7 +100,7 @@ void SavedDataStorage::save() {
 }
 
 void SavedDataStorage::save(std::shared_ptr<SavedData> data) {
-    if (levelStorage == NULL) return;
+    if (levelStorage == nullptr) return;
     // File file = levelStorage->getDataFile(data->id);
     ConsoleSavePath file = levelStorage->getDataFile(data->id);
     if (!file.getName().empty()) {
@@ -122,7 +122,7 @@ void SavedDataStorage::save(std::shared_ptr<SavedData> data) {
 void SavedDataStorage::loadAuxValues() {
     usedAuxIds.clear();
 
-    if (levelStorage == NULL) return;
+    if (levelStorage == nullptr) return;
     // File file = levelStorage->getDataFile(L"idcounts");
     ConsoleSavePath file = levelStorage->getDataFile(L"idcounts");
     if (!file.getName().empty() &&
@@ -139,7 +139,7 @@ void SavedDataStorage::loadAuxValues() {
         for (AUTO_VAR(it, allTags->begin()); it != itEnd; it++) {
             tag = *it;  // tags->getAllTags()->at(i);
 
-            if (dynamic_cast<ShortTag*>(tag) != NULL) {
+            if (dynamic_cast<ShortTag*>(tag) != nullptr) {
                 ShortTag* sTag = (ShortTag*)tag;
                 std::wstring id = sTag->getName();
                 short val = sTag->data;
@@ -159,7 +159,7 @@ int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id) {
     }
 
     usedAuxIds[id] = val;
-    if (levelStorage == NULL) return val;
+    if (levelStorage == nullptr) return val;
     // File file = levelStorage->getDataFile(L"idcounts");
     ConsoleSavePath file = levelStorage->getDataFile(L"idcounts");
     if (!file.getName().empty()) {
@@ -186,7 +186,7 @@ int SavedDataStorage::getFreeAuxValueFor(const std::wstring& id) {
 // 4J Added
 int SavedDataStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
                                         int centreXC, int centreZC, int scale) {
-    if (levelStorage == NULL) {
+    if (levelStorage == nullptr) {
         switch (dimension) {
             case -1:
                 return MAP_NETHER_DEFAULT_INDEX;

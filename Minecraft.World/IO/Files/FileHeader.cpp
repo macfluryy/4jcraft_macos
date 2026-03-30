@@ -6,7 +6,7 @@
 extern CConsoleMinecraftApp app;
 
 FileHeader::FileHeader() {
-    lastFile = NULL;
+    lastFile = nullptr;
     m_saveVersion = 0;
 
     // New saves should have an original version set to the latest version. This
@@ -47,7 +47,7 @@ FileEntry* FileHeader::AddFile(const std::wstring& name,
 }
 
 void FileHeader::RemoveFile(FileEntry* file) {
-    if (file == NULL) return;
+    if (file == nullptr) return;
 
     AdjustStartOffsets(file, file->getFileSize(), true);
 
@@ -322,12 +322,12 @@ bool FileHeader::fileExists(const std::wstring& name) {
 
 std::vector<FileEntry*>* FileHeader::getFilesWithPrefix(
     const std::wstring& prefix) {
-    std::vector<FileEntry*>* files = NULL;
+    std::vector<FileEntry*>* files = nullptr;
 
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
         if (wcsncmp(fileTable[i]->data.filename, prefix.c_str(),
                     prefix.size()) == 0) {
-            if (files == NULL) {
+            if (files == nullptr) {
                 files = new std::vector<FileEntry*>();
             }
 

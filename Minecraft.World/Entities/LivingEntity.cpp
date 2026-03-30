@@ -42,7 +42,7 @@ AttributeModifier* LivingEntity::SPEED_MODIFIER_SPRINTING =
         ->setSerialize(false);
 
 void LivingEntity::_init() {
-    attributes = NULL;
+    attributes = nullptr;
     combatTracker = new CombatTracker(this);
     lastEquipment = ItemInstanceArray(5);
 
@@ -127,7 +127,7 @@ LivingEntity::~LivingEntity() {
     delete attributes;
     delete combatTracker;
 
-    if (lastEquipment.data != NULL) delete[] lastEquipment.data;
+    if (lastEquipment.data != nullptr) delete[] lastEquipment.data;
 }
 
 void LivingEntity::defineSynchedData() {
@@ -192,7 +192,7 @@ void LivingEntity::baseTick() {
     std::shared_ptr<Player> thisPlayer =
         std::dynamic_pointer_cast<Player>(shared_from_this());
     bool isInvulnerable =
-        (thisPlayer != NULL && thisPlayer->abilities.invulnerable);
+        (thisPlayer != nullptr && thisPlayer->abilities.invulnerable);
 
     if (isAlive() && isUnderLiquid(Material::water)) {
         if (!isWaterMob() && !hasEffect(MobEffect::waterBreathing->id) &&
@@ -241,12 +241,12 @@ void LivingEntity::baseTick() {
             lastHurtByPlayer.reset();
         }
     }
-    if (lastHurtMob != NULL && !lastHurtMob->isAlive()) {
+    if (lastHurtMob != nullptr && !lastHurtMob->isAlive()) {
         lastHurtMob = nullptr;
     }
 
     // If lastHurtByMob is dead, remove it
-    if (lastHurtByMob != NULL && !lastHurtByMob->isAlive()) {
+    if (lastHurtByMob != nullptr && !lastHurtByMob->isAlive()) {
         setLastHurtByMob(nullptr);
     }
 
@@ -360,7 +360,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
     ItemInstanceArray items = getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
-        if (item != NULL) {
+        if (item != nullptr) {
             attributes->removeItemModifiers(item);
         }
     }
@@ -370,7 +370,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
 
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
-        if (item != NULL) {
+        if (item != nullptr) {
             attributes->addItemModifiers(item);
         }
     }
@@ -390,7 +390,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
 void LivingEntity::readAdditionalSaveData(CompoundTag* tag) {
     setAbsorptionAmount(tag->getFloat(L"AbsorptionAmount"));
 
-    if (tag->contains(L"Attributes") && level != NULL && !level->isClientSide) {
+    if (tag->contains(L"Attributes") && level != nullptr && !level->isClientSide) {
         SharedMonsterAttributes::loadAttributes(
             getAttributes(),
             (ListTag<CompoundTag>*)tag->getList(L"Attributes"));
@@ -412,7 +412,7 @@ void LivingEntity::readAdditionalSaveData(CompoundTag* tag) {
         setHealth(tag->getFloat(L"HealF"));
     } else {
         Tag* healthTag = tag->get(L"Health");
-        if (healthTag == NULL) {
+        if (healthTag == nullptr) {
             setHealth(getMaxHealth());
         } else if (healthTag->getId() == Tag::TAG_Float) {
             setHealth(((FloatTag*)healthTag)->data);
@@ -552,7 +552,7 @@ bool LivingEntity::hasEffect(MobEffect* effect) {
 }
 
 MobEffectInstance* LivingEntity::getEffect(MobEffect* effect) {
-    MobEffectInstance* effectInst = NULL;
+    MobEffectInstance* effectInst = nullptr;
 
     AUTO_VAR(it, activeEffects.find(effect->id));
     if (it != activeEffects.end()) effectInst = it->second;
@@ -614,7 +614,7 @@ void LivingEntity::removeEffectNoUpdate(int effectId) {
     AUTO_VAR(it, activeEffects.find(effectId));
     if (it != activeEffects.end()) {
         MobEffectInstance* effect = it->second;
-        if (effect != NULL) {
+        if (effect != nullptr) {
             delete effect;
         }
         activeEffects.erase(it);
@@ -625,7 +625,7 @@ void LivingEntity::removeEffect(int effectId) {
     AUTO_VAR(it, activeEffects.find(effectId));
     if (it != activeEffects.end()) {
         MobEffectInstance* effect = it->second;
-        if (effect != NULL) {
+        if (effect != nullptr) {
             onEffectRemoved(effect);
             delete effect;
         }
@@ -684,9 +684,9 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
     // Stu - Change to the fix to only show damage when attacked, rather than
     // collision damage Fix for #10299 - When in corners, passive mobs may show
     // that they are taking damage. 4J Stu - Change to the fix for TU6, as
-    // source is never NULL due to changes in 1.8.2 to what source actually is
+    // source is never nullptr due to changes in 1.8.2 to what source actually is
     if (level->isClientSide &&
-        dynamic_cast<EntityDamageSource*>(source) == NULL)
+        dynamic_cast<EntityDamageSource*>(source) == nullptr)
         return false;
     noActionTime = 0;
     if (getHealth() <= 0) return false;
@@ -708,7 +708,7 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
 
     if ((source == DamageSource::anvil ||
          source == DamageSource::fallingBlock) &&
-        getCarried(SLOT_HELM) != NULL) {
+        getCarried(SLOT_HELM) != nullptr) {
         getCarried(SLOT_HELM)->hurtAndBreak(
             (int)(dmg * 4 + random->nextFloat() * dmg * 2.0f),
             std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
@@ -734,7 +734,7 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
     hurtDir = 0;
 
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
-    if (sourceEntity != NULL) {
+    if (sourceEntity != nullptr) {
         if (sourceEntity->instanceof(eTYPE_LIVINGENTITY)) {
             setLastHurtByMob(
                 std::dynamic_pointer_cast<LivingEntity>(sourceEntity));
@@ -760,7 +760,7 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
     if (sound) {
         level->broadcastEntityEvent(shared_from_this(), EntityEvent::HURT);
         if (source != DamageSource::drown) markHurt();
-        if (sourceEntity != NULL) {
+        if (sourceEntity != nullptr) {
             double xd = sourceEntity->x - x;
             double zd = sourceEntity->z - z;
             while (xd * xd + zd * zd < 0.0001) {
@@ -811,10 +811,10 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
 void LivingEntity::die(DamageSource* source) {
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
     std::shared_ptr<LivingEntity> killer = getKillCredit();
-    if (deathScore >= 0 && killer != NULL)
+    if (deathScore >= 0 && killer != nullptr)
         killer->awardKillScore(shared_from_this(), deathScore);
 
-    if (sourceEntity != NULL)
+    if (sourceEntity != nullptr)
         sourceEntity->killed(
             std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
 
@@ -824,7 +824,7 @@ void LivingEntity::die(DamageSource* source) {
         int playerBonus = 0;
 
         std::shared_ptr<Player> player = nullptr;
-        if ((sourceEntity != NULL) && sourceEntity->instanceof(eTYPE_PLAYER)) {
+        if ((sourceEntity != nullptr) && sourceEntity->instanceof(eTYPE_PLAYER)) {
             player = std::dynamic_pointer_cast<Player>(sourceEntity);
             playerBonus = EnchantmentHelper::getKillingLootBonus(
                 std::dynamic_pointer_cast<LivingEntity>(player));
@@ -843,7 +843,7 @@ void LivingEntity::die(DamageSource* source) {
         }
 
         // 4J-JEV, hook for Durango mobKill event.
-        if (player != NULL) {
+        if (player != nullptr) {
             player->awardStat(
                 GenericStats::killMob(),
                 GenericStats::param_mobKill(
@@ -912,7 +912,7 @@ bool LivingEntity::isAlive() { return !removed && getHealth() > 0; }
 void LivingEntity::causeFallDamage(float distance) {
     Entity::causeFallDamage(distance);
     MobEffectInstance* jumpBoost = getEffect(MobEffect::jump);
-    float padding = jumpBoost != NULL ? jumpBoost->getAmplifier() + 1 : 0;
+    float padding = jumpBoost != nullptr ? jumpBoost->getAmplifier() + 1 : 0;
 
     int dmg = (int)ceil(distance - 3 - padding);
     if (dmg > 0) {
@@ -952,7 +952,7 @@ int LivingEntity::getArmorValue() {
     ItemInstanceArray items = getEquipmentSlots();
     for (unsigned int i = 0; i < items.length; ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
-        if (item != NULL && dynamic_cast<ArmorItem*>(item->getItem()) != NULL) {
+        if (item != nullptr && dynamic_cast<ArmorItem*>(item->getItem()) != nullptr) {
             int baseProtection = ((ArmorItem*)item->getItem())->defense;
             val += baseProtection;
         }
@@ -1023,9 +1023,9 @@ void LivingEntity::actuallyHurt(DamageSource* source, float dmg) {
 CombatTracker* LivingEntity::getCombatTracker() { return combatTracker; }
 
 std::shared_ptr<LivingEntity> LivingEntity::getKillCredit() {
-    if (combatTracker->getKiller() != NULL) return combatTracker->getKiller();
-    if (lastHurtByPlayer != NULL) return lastHurtByPlayer;
-    if (lastHurtByMob != NULL) return lastHurtByMob;
+    if (combatTracker->getKiller() != nullptr) return combatTracker->getKiller();
+    if (lastHurtByPlayer != nullptr) return lastHurtByPlayer;
+    if (lastHurtByMob != nullptr) return lastHurtByMob;
     return nullptr;
 }
 
@@ -1059,7 +1059,7 @@ void LivingEntity::swing() {
         swingTime = -1;
         swinging = true;
 
-        if (dynamic_cast<ServerLevel*>(level) != NULL) {
+        if (dynamic_cast<ServerLevel*>(level) != nullptr) {
             ((ServerLevel*)level)
                 ->getTracker()
                 ->broadcast(shared_from_this(),
@@ -1126,7 +1126,7 @@ AttributeInstance* LivingEntity::getAttribute(Attribute* attribute) {
 }
 
 BaseAttributeMap* LivingEntity::getAttributes() {
-    if (attributes == NULL) {
+    if (attributes == nullptr) {
         attributes = new ServersideAttributeMap();
     }
 
@@ -1140,7 +1140,7 @@ void LivingEntity::setSprinting(bool value) {
 
     AttributeInstance* speed =
         getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
-    if (speed->getModifier(eModifierId_MOB_SPRINTING) != NULL) {
+    if (speed->getModifier(eModifierId_MOB_SPRINTING) != nullptr) {
         speed->removeModifier(eModifierId_MOB_SPRINTING);
     }
     if (value) {
@@ -1411,9 +1411,9 @@ void LivingEntity::tick() {
                         shared_from_this(),
                         std::shared_ptr<SetEquippedItemPacket>(
                             new SetEquippedItemPacket(entityId, i, current)));
-                if (previous != NULL) attributes->removeItemModifiers(previous);
-                if (current != NULL) attributes->addItemModifiers(current);
-                lastEquipment[i] = current == NULL ? nullptr : current->copy();
+                if (previous != nullptr) attributes->removeItemModifiers(previous);
+                if (current != nullptr) attributes->addItemModifiers(current);
+                lastEquipment[i] = current == nullptr ? nullptr : current->copy();
             }
         }
     }
@@ -1576,7 +1576,7 @@ void LivingEntity::pushEntities() {
     AABB grown = bb.grow(0.2, 0, 0.2);
     std::vector<std::shared_ptr<Entity> >* entities =
         level->getEntities(shared_from_this(), &grown);
-    if (entities != NULL && !entities->empty()) {
+    if (entities != nullptr && !entities->empty()) {
         AUTO_VAR(itEnd, entities->end());
         for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
@@ -1638,7 +1638,7 @@ bool LivingEntity::canSee(std::shared_ptr<Entity> target) {
     Vec3 b{target->x, target->y + target->getHeadHeight(), target->z};
 
     HitResult* hres = level->clip(&a, &b);
-    bool retVal = (hres == NULL);
+    bool retVal = (hres == nullptr);
     delete hres;
     return retVal;
 }
@@ -1715,14 +1715,14 @@ void LivingEntity::setAbsorptionAmount(float absorptionAmount) {
     this->absorptionAmount = absorptionAmount;
 }
 
-Team* LivingEntity::getTeam() { return NULL; }
+Team* LivingEntity::getTeam() { return nullptr; }
 
 bool LivingEntity::isAlliedTo(std::shared_ptr<LivingEntity> other) {
     return isAlliedTo(other->getTeam());
 }
 
 bool LivingEntity::isAlliedTo(Team* other) {
-    if (getTeam() != NULL) {
+    if (getTeam() != nullptr) {
         return getTeam()->isAlliedTo(other);
     }
     return false;

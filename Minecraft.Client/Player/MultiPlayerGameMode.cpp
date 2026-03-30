@@ -65,9 +65,9 @@ bool MultiPlayerGameMode::destroyBlock(int x, int y, int z, int face) {
     }
 
     if (localPlayerMode->isCreative()) {
-        if (minecraft->player->getCarriedItem() != NULL &&
+        if (minecraft->player->getCarriedItem() != nullptr &&
             dynamic_cast<WeaponItem*>(
-                minecraft->player->getCarriedItem()->getItem()) != NULL) {
+                minecraft->player->getCarriedItem()->getItem()) != nullptr) {
             return false;
         }
     }
@@ -75,7 +75,7 @@ bool MultiPlayerGameMode::destroyBlock(int x, int y, int z, int face) {
     Level* level = minecraft->level;
     Tile* oldTile = Tile::tiles[level->getTile(x, y, z)];
 
-    if (oldTile == NULL) return false;
+    if (oldTile == nullptr) return false;
 
     level->levelEvent(
         LevelEvent::PARTICLES_DESTROY_BLOCK, x, y, z,
@@ -91,7 +91,7 @@ bool MultiPlayerGameMode::destroyBlock(int x, int y, int z, int face) {
     if (!localPlayerMode->isCreative()) {
         std::shared_ptr<ItemInstance> item =
             minecraft->player->getSelectedItem();
-        if (item != NULL) {
+        if (item != nullptr) {
             item->mineBlock(level, oldTile->id, x, y, z, minecraft->player);
             if (item->count == 0) {
                 minecraft->player->removeSelectedItem();
@@ -201,7 +201,7 @@ void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face) {
             minecraft->player, minecraft->player->level, x, y, z);
 
         if (destroyTicks % 4 == 0) {
-            if (tile != NULL) {
+            if (tile != nullptr) {
                 int iStepSound = tile->soundType->getStepSound();
 
                 minecraft->soundEngine->play(
@@ -247,8 +247,8 @@ void MultiPlayerGameMode::tick() {
 bool MultiPlayerGameMode::sameDestroyTarget(int x, int y, int z) {
     std::shared_ptr<ItemInstance> selected =
         minecraft->player->getCarriedItem();
-    bool sameItems = destroyingItem == NULL && selected == NULL;
-    if (destroyingItem != NULL && selected != NULL) {
+    bool sameItems = destroyingItem == nullptr && selected == nullptr;
+    if (destroyingItem != nullptr && selected != nullptr) {
         sameItems = selected->id == destroyingItem->id &&
                     ItemInstance::tagMatches(selected, destroyingItem) &&
                     (selected->isDamageableItem() ||
@@ -283,7 +283,7 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
     float clickZ = (float)hit->z - z;
     bool didSomething = false;
 
-    if (!player->isSneaking() || player->getCarriedItem() == NULL) {
+    if (!player->isSneaking() || player->getCarriedItem() == nullptr) {
         int t = level->getTile(x, y, z);
         if (t > 0 && player->isAllowedToUse(Tile::tiles[t])) {
             if (bTestUseOnly) {
@@ -313,16 +313,16 @@ bool MultiPlayerGameMode::useItemOn(std::shared_ptr<Player> player,
         }
     }
 
-    if (!didSomething && item != NULL &&
+    if (!didSomething && item != nullptr &&
         dynamic_cast<TileItem*>(item->getItem())) {
         TileItem* tile = dynamic_cast<TileItem*>(item->getItem());
         if (!tile->mayPlace(level, x, y, z, face, player, item)) return false;
     }
 
     // 4J Stu - In Java we send the use packet before the above check for item
-    // being NULL so the following never gets executed but the packet still gets
+    // being nullptr so the following never gets executed but the packet still gets
     // sent (for opening chests etc)
-    if (item != NULL) {
+    if (item != nullptr) {
         if (!didSomething && player->isAllowedToUse(item)) {
             if (localPlayerMode->isCreative()) {
                 int aux = item->getAuxValue();
@@ -394,8 +394,8 @@ bool MultiPlayerGameMode::useItem(std::shared_ptr<Player> player, Level* level,
     } else {
         int oldCount = item->count;
         std::shared_ptr<ItemInstance> itemInstance = item->use(level, player);
-        if ((itemInstance != NULL && itemInstance != item) ||
-            (itemInstance != NULL && itemInstance->count != oldCount)) {
+        if ((itemInstance != nullptr && itemInstance != item) ||
+            (itemInstance != nullptr && itemInstance->count != oldCount)) {
             player->inventory->items[player->inventory->selected] =
                 itemInstance;
             if (itemInstance->count == 0) {
@@ -467,7 +467,7 @@ void MultiPlayerGameMode::handleCreativeModeItemAdd(
 
 void MultiPlayerGameMode::handleCreativeModeItemDrop(
     std::shared_ptr<ItemInstance> clicked) {
-    if (localPlayerMode->isCreative() && clicked != NULL) {
+    if (localPlayerMode->isCreative() && clicked != nullptr) {
         connection->send(std::shared_ptr<SetCreativeModeSlotPacket>(
             new SetCreativeModeSlotPacket(-1, clicked)));
     }

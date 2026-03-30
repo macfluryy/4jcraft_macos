@@ -162,7 +162,7 @@ void PlayerConnection::handleMovePlayer(
     }
 
     if (synched) {
-        if (player->riding != NULL) {
+        if (player->riding != nullptr) {
             float yRotT = player->yRot;
             float xRotT = player->xRot;
             player->riding->positionRider();
@@ -180,7 +180,7 @@ void PlayerConnection::handleMovePlayer(
             player->doTick(false);
             player->ySlideOffset = 0;
             player->absMoveTo(xt, yt, zt, yRotT, xRotT);
-            if (player->riding != NULL) player->riding->positionRider();
+            if (player->riding != nullptr) player->riding->positionRider();
             server->getPlayers()->move(player);
 
             // player may have been kicked off the mount during the tick, so
@@ -467,7 +467,7 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
         level->canEditSpawn;  // = level->dimension->id != 0 ||
                               // server->players->isOp(player->name);
     if (packet->getFace() == 255) {
-        if (item == NULL) return;
+        if (item == nullptr) return;
         player->gameMode->useItem(player, level, item);
     } else if ((packet->getY() < server->getMaxBuildHeight() - 1) ||
                (packet->getFace() != Facing::UP &&
@@ -524,15 +524,15 @@ void PlayerConnection::handleUseItem(std::shared_ptr<UseItemPacket> packet) {
     item = player->inventory->getSelected();
 
     bool forceClientUpdate = false;
-    if (item != NULL && packet->getItem() == NULL) {
+    if (item != nullptr && packet->getItem() == nullptr) {
         forceClientUpdate = true;
     }
-    if (item != NULL && item->count == 0) {
+    if (item != nullptr && item->count == 0) {
         player->inventory->items[player->inventory->selected] = nullptr;
         item = nullptr;
     }
 
-    if (item == NULL || item->getUseDuration() == 0) {
+    if (item == nullptr || item->getUseDuration() == 0) {
         player->ignoreSlotUpdateHack = true;
         player->inventory->items[player->inventory->selected] =
             ItemInstance::clone(
@@ -582,7 +582,7 @@ void PlayerConnection::onUnhandledPacket(std::shared_ptr<Packet> packet) {
 }
 
 void PlayerConnection::send(std::shared_ptr<Packet> packet) {
-    if (connection->getSocket() != NULL) {
+    if (connection->getSocket() != nullptr) {
         if (!server->getPlayers()->canReceiveAllPackets(player)) {
             // Check if we are allowed to send this packet type
             if (!Packet::canSendToAnyClient(packet)) {
@@ -598,7 +598,7 @@ void PlayerConnection::send(std::shared_ptr<Packet> packet) {
 
 // 4J Added
 void PlayerConnection::queueSend(std::shared_ptr<Packet> packet) {
-    if (connection->getSocket() != NULL) {
+    if (connection->getSocket() != nullptr) {
         if (!server->getPlayers()->canReceiveAllPackets(player)) {
             // Check if we are allowed to send this packet type
             if (!Packet::canSendToAnyClient(packet)) {
@@ -654,14 +654,14 @@ void PlayerConnection::handlePlayerCommand(
         synched = false;
     } else if (packet->action == PlayerCommandPacket::RIDING_JUMP) {
         // currently only supported by horses...
-        if ((player->riding != NULL) &&
+        if ((player->riding != nullptr) &&
             player->riding->GetType() == eTYPE_HORSE) {
             std::dynamic_pointer_cast<EntityHorse>(player->riding)
                 ->onPlayerJump(packet->data);
         }
     } else if (packet->action == PlayerCommandPacket::OPEN_INVENTORY) {
         // also only supported by horses...
-        if ((player->riding != NULL) &&
+        if ((player->riding != nullptr) &&
             player->riding->instanceof(eTYPE_HORSE)) {
             std::dynamic_pointer_cast<EntityHorse>(player->riding)
                 ->openInventory(player);
@@ -711,7 +711,7 @@ void PlayerConnection::handleInteract(std::shared_ptr<InteractPacket> packet) {
     // hit something, then agree with it. The canSee can fail here as it checks
     // a ray from head->head, but we may actually be looking at a different part
     // of the entity that can be seen even though the ray is blocked.
-    if (target != NULL)  // && player->canSee(target) &&
+    if (target != nullptr)  // && player->canSee(target) &&
                          // player->distanceToSqr(target) < 6 * 6)
     {
         // boole canSee = player->canSee(target);
@@ -752,7 +752,7 @@ void PlayerConnection::handleTexture(std::shared_ptr<TexturePacket> packet) {
         wprintf(L"Server received request for custom texture %ls\n",
                 packet->textureName.c_str());
 #endif
-        std::uint8_t* pbData = NULL;
+        std::uint8_t* pbData = nullptr;
         unsigned int dwBytes = 0;
         app.GetMemFileDetails(packet->textureName, &pbData, &dwBytes);
 
@@ -785,7 +785,7 @@ void PlayerConnection::handleTextureAndGeometry(
         wprintf(L"Server received request for custom texture %ls\n",
                 packet->textureName.c_str());
 #endif
-        std::uint8_t* pbData = NULL;
+        std::uint8_t* pbData = nullptr;
         unsigned int dwTextureBytes = 0;
         app.GetMemFileDetails(packet->textureName, &pbData, &dwTextureBytes);
         DLCSkinFile* pDLCSkinFile =
@@ -854,7 +854,7 @@ void PlayerConnection::handleTextureReceived(const std::wstring& textureName) {
     AUTO_VAR(it, find(m_texturesRequested.begin(), m_texturesRequested.end(),
                       textureName));
     if (it != m_texturesRequested.end()) {
-        std::uint8_t* pbData = NULL;
+        std::uint8_t* pbData = nullptr;
         unsigned int dwBytes = 0;
         app.GetMemFileDetails(textureName, &pbData, &dwBytes);
 
@@ -873,7 +873,7 @@ void PlayerConnection::handleTextureAndGeometryReceived(
     AUTO_VAR(it, find(m_texturesRequested.begin(), m_texturesRequested.end(),
                       textureName));
     if (it != m_texturesRequested.end()) {
-        std::uint8_t* pbData = NULL;
+        std::uint8_t* pbData = nullptr;
         unsigned int dwTextureBytes = 0;
         app.GetMemFileDetails(textureName, &pbData, &dwTextureBytes);
         DLCSkinFile* pDLCSkinFile = app.m_dlcManager.getSkinFile(textureName);
@@ -933,12 +933,12 @@ void PlayerConnection::handleTextureChange(
                 packet->path.c_str(), player->name.c_str());
 #endif
             send(std::shared_ptr<TexturePacket>(
-                new TexturePacket(packet->path, NULL, 0)));
+                new TexturePacket(packet->path, nullptr, 0)));
         }
     } else if (!packet->path.empty() &&
                app.IsFileInMemoryTextures(packet->path)) {
         // Update the ref count on the memory texture data
-        app.AddMemoryTextureFile(packet->path, NULL, 0);
+        app.AddMemoryTextureFile(packet->path, nullptr, 0);
     }
     server->getPlayers()->broadcastAll(
         std::shared_ptr<TextureChangePacket>(
@@ -968,12 +968,12 @@ void PlayerConnection::handleTextureAndGeometryChange(
                 packet->path.c_str(), player->name.c_str());
 #endif
             send(std::shared_ptr<TextureAndGeometryPacket>(
-                new TextureAndGeometryPacket(packet->path, NULL, 0)));
+                new TextureAndGeometryPacket(packet->path, nullptr, 0)));
         }
     } else if (!packet->path.empty() &&
                app.IsFileInMemoryTextures(packet->path)) {
         // Update the ref count on the memory texture data
-        app.AddMemoryTextureFile(packet->path, NULL, 0);
+        app.AddMemoryTextureFile(packet->path, nullptr, 0);
 
         player->setCustomSkin(packet->dwSkinID);
 
@@ -995,7 +995,7 @@ void PlayerConnection::handleServerSettingsChanged(
         // individual setting?
 
         INetworkPlayer* networkPlayer = getNetworkPlayer();
-        if ((networkPlayer != NULL && networkPlayer->IsHost()) ||
+        if ((networkPlayer != nullptr && networkPlayer->IsHost()) ||
             player->isModerator()) {
             app.SetGameHostOption(
                 eGameHostOption_FireSpreads,
@@ -1047,7 +1047,7 @@ void PlayerConnection::handleServerSettingsChanged(
 void PlayerConnection::handleKickPlayer(
     std::shared_ptr<KickPlayerPacket> packet) {
     INetworkPlayer* networkPlayer = getNetworkPlayer();
-    if ((networkPlayer != NULL && networkPlayer->IsHost()) ||
+    if ((networkPlayer != nullptr && networkPlayer->IsHost()) ||
         player->isModerator()) {
         server->getPlayers()->kickPlayerByShortId(packet->m_networkSmallId);
     }
@@ -1111,8 +1111,8 @@ void PlayerConnection::handleContainerSetSlot(
             packet->slot >= 36 && packet->slot < 36 + 9) {
             std::shared_ptr<ItemInstance> lastItem =
                 player->inventoryMenu->getSlot(packet->slot)->getItem();
-            if (packet->item != NULL) {
-                if (lastItem == NULL || lastItem->count < packet->item->count) {
+            if (packet->item != nullptr) {
+                if (lastItem == nullptr || lastItem->count < packet->item->count) {
                     packet->item->popTime = Inventory::POP_TIME_DURATION;
                 }
             }
@@ -1185,7 +1185,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
         bool drop = packet->slotNum < 0;
         std::shared_ptr<ItemInstance> item = packet->item;
 
-        if (item != NULL && item->id == Item::map_Id) {
+        if (item != nullptr && item->id == Item::map_Id) {
             int mapScale = 3;
 #if defined(_LARGE_WORLDS)
             int scale = MapItemSavedData::MAP_SIZE * 2 * (1 << mapScale);
@@ -1208,7 +1208,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
             wchar_t buf[64];
             swprintf(buf, 64, L"map_%d", item->getAuxValue());
             std::wstring id = std::wstring(buf);
-            if (data == NULL) {
+            if (data == nullptr) {
                 data =
                     std::shared_ptr<MapItemSavedData>(new MapItemSavedData(id));
             }
@@ -1227,13 +1227,13 @@ void PlayerConnection::handleSetCreativeModeSlot(
                           packet->slotNum < (InventoryMenu::USE_ROW_SLOT_START +
                                              Inventory::getSelectionSize()));
         bool validItem =
-            item == NULL || (item->id < Item::items.length && item->id >= 0 &&
-                             Item::items[item->id] != NULL);
-        bool validData = item == NULL || (item->getAuxValue() >= 0 &&
+            item == nullptr || (item->id < Item::items.length && item->id >= 0 &&
+                             Item::items[item->id] != nullptr);
+        bool validData = item == nullptr || (item->getAuxValue() >= 0 &&
                                           item->count > 0 && item->count <= 64);
 
         if (validSlot && validItem && validData) {
-            if (item == NULL) {
+            if (item == nullptr) {
                 player->inventoryMenu->setItem(packet->slotNum, nullptr);
             } else {
                 player->inventoryMenu->setItem(packet->slotNum, item);
@@ -1247,13 +1247,13 @@ void PlayerConnection::handleSetCreativeModeSlot(
                 dropSpamTickCount += SharedConstants::TICKS_PER_SECOND;
                 // drop item
                 std::shared_ptr<ItemEntity> dropped = player->drop(item);
-                if (dropped != NULL) {
+                if (dropped != nullptr) {
                     dropped->setShortLifeTime();
                 }
             }
         }
 
-        if (item != NULL && item->id == Item::map_Id) {
+        if (item != nullptr && item->id == Item::map_Id) {
             // 4J Stu - Maps need to have their aux value update, so the client
             // should always be assumed to be wrong This is how the Java works,
             // as the client also incorrectly predicts the auxvalue of the
@@ -1289,7 +1289,7 @@ void PlayerConnection::handleSignUpdate(
         std::shared_ptr<TileEntity> te =
             level->getTileEntity(packet->x, packet->y, packet->z);
 
-        if (std::dynamic_pointer_cast<SignTileEntity>(te) != NULL) {
+        if (std::dynamic_pointer_cast<SignTileEntity>(te) != nullptr) {
             std::shared_ptr<SignTileEntity> ste =
                 std::dynamic_pointer_cast<SignTileEntity>(te);
             if (!ste->isEditable() || ste->getPlayerWhoMayEdit() != player) {
@@ -1300,7 +1300,7 @@ void PlayerConnection::handleSignUpdate(
         }
 
         // 4J-JEV: Changed to allow characters to display as a [].
-        if (std::dynamic_pointer_cast<SignTileEntity>(te) != NULL) {
+        if (std::dynamic_pointer_cast<SignTileEntity>(te) != nullptr) {
             int x = packet->x;
             int y = packet->y;
             int z = packet->z;
@@ -1331,14 +1331,14 @@ void PlayerConnection::handlePlayerInfo(
     // setting?
 
     INetworkPlayer* networkPlayer = getNetworkPlayer();
-    if ((networkPlayer != NULL && networkPlayer->IsHost()) ||
+    if ((networkPlayer != nullptr && networkPlayer->IsHost()) ||
         player->isModerator()) {
         std::shared_ptr<ServerPlayer> serverPlayer;
         // Find the player being edited
         for (AUTO_VAR(it, server->getPlayers()->players.begin());
              it != server->getPlayers()->players.end(); ++it) {
             std::shared_ptr<ServerPlayer> checkingPlayer = *it;
-            if (checkingPlayer->connection->getNetworkPlayer() != NULL &&
+            if (checkingPlayer->connection->getNetworkPlayer() != nullptr &&
                 checkingPlayer->connection->getNetworkPlayer()->GetSmallId() ==
                     packet->m_networkSmallId) {
                 serverPlayer = checkingPlayer;
@@ -1346,7 +1346,7 @@ void PlayerConnection::handlePlayerInfo(
             }
         }
 
-        if (serverPlayer != NULL) {
+        if (serverPlayer != nullptr) {
             unsigned int origPrivs = serverPlayer->getAllPlayerGamePrivileges();
 
             bool trustPlayers =
@@ -1564,7 +1564,7 @@ void PlayerConnection::handleCustomPayload(
                 player->level->getTileEntity(x, y, z);
             std::shared_ptr<CommandBlockEntity> cbe =
                 std::dynamic_pointer_cast<CommandBlockEntity>(tileEntity);
-            if (tileEntity != NULL && cbe != NULL) {
+            if (tileEntity != nullptr && cbe != nullptr) {
                 cbe->setCommand(command);
                 player->level->sendTileUpdated(x, y, z);
                 // player->sendMessage(ChatMessageComponent.forTranslation("advMode.setCommand.success",
@@ -1575,7 +1575,7 @@ void PlayerConnection::handleCustomPayload(
         }
     } else if (CustomPayloadPacket::SET_BEACON_PACKET.compare(
                    customPayloadPacket->identifier) == 0) {
-        if (dynamic_cast<BeaconMenu*>(player->containerMenu) != NULL) {
+        if (dynamic_cast<BeaconMenu*>(player->containerMenu) != nullptr) {
             ByteArrayInputStream bais(customPayloadPacket->data);
             DataInputStream input(&bais);
             int primary = input.readInt();
@@ -1596,7 +1596,7 @@ void PlayerConnection::handleCustomPayload(
                    customPayloadPacket->identifier) == 0) {
         AnvilMenu* menu = dynamic_cast<AnvilMenu*>(player->containerMenu);
         if (menu) {
-            if (customPayloadPacket->data.data == NULL ||
+            if (customPayloadPacket->data.data == nullptr ||
                 customPayloadPacket->data.length < 1) {
                 menu->setItemName(L"");
             } else {
@@ -1680,7 +1680,7 @@ void PlayerConnection::handleCraftItem(
 
                 // 4J Stu - Fix for #13097 - Bug: Milk Buckets are removed when
                 // crafting Cake
-                if (ingItemInst != NULL) {
+                if (ingItemInst != nullptr) {
                     if (ingItemInst->getItem()->hasCraftingRemainingItem()) {
                         // replace item with remaining result
                         player->inventory->add(
@@ -1795,8 +1795,8 @@ void PlayerConnection::handleTradeItem(
 
                     int buyAMatches = player->inventory->countMatches(buyAItem);
                     int buyBMatches = player->inventory->countMatches(buyBItem);
-                    if ((buyAItem != NULL && buyAMatches >= buyAItem->count) &&
-                        (buyBItem == NULL || buyBMatches >= buyBItem->count)) {
+                    if ((buyAItem != nullptr && buyAMatches >= buyAItem->count) &&
+                        (buyBItem == nullptr || buyBMatches >= buyBItem->count)) {
                         menu->getMerchant()->notifyTrade(activeRecipe);
 
                         // Remove the items we are purchasing with
@@ -1825,14 +1825,14 @@ void PlayerConnection::handleTradeItem(
 }
 
 INetworkPlayer* PlayerConnection::getNetworkPlayer() {
-    if (connection != NULL && connection->getSocket() != NULL)
+    if (connection != nullptr && connection->getSocket() != nullptr)
         return connection->getSocket()->getPlayer();
     else
-        return NULL;
+        return nullptr;
 }
 
 bool PlayerConnection::isLocal() {
-    if (connection->getSocket() == NULL) {
+    if (connection->getSocket() == nullptr) {
         return false;
     } else {
         bool isLocal = connection->getSocket()->isLocal();
@@ -1841,12 +1841,12 @@ bool PlayerConnection::isLocal() {
 }
 
 bool PlayerConnection::isGuest() {
-    if (connection->getSocket() == NULL) {
+    if (connection->getSocket() == nullptr) {
         return false;
     } else {
         INetworkPlayer* networkPlayer = connection->getSocket()->getPlayer();
         bool isGuest = false;
-        if (networkPlayer != NULL) {
+        if (networkPlayer != nullptr) {
             isGuest = networkPlayer->IsGuest() == TRUE;
         }
         return isGuest;

@@ -57,7 +57,7 @@ bool PickaxeItem::canDestroySpecial(Tile* tile) {
 // 4J - brought forward from 1.2.3
 float PickaxeItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                    Tile* tile) {
-    if (tile != NULL && (tile->material == Material::metal ||
+    if (tile != nullptr && (tile->material == Material::metal ||
                          tile->material == Material::heavyMetal ||
                          tile->material == Material::stone)) {
         return speed;

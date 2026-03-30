@@ -184,15 +184,15 @@ std::wstring HellFlatLevelSource::gatherStats() {
 std::vector<Biome::MobSpawnerData*>* HellFlatLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
     Biome* biome = level->getBiome(x, z);
-    if (biome == NULL) {
-        return NULL;
+    if (biome == nullptr) {
+        return nullptr;
     }
     return biome->getMobs(mobCategory);
 }
 
 TilePos* HellFlatLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
-    return NULL;
+    return nullptr;
 }
 
 void HellFlatLevelSource::recreateLogicStructuresForChunk(int chunkX,

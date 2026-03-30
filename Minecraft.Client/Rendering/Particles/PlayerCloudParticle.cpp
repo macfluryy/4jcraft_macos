@@ -51,7 +51,7 @@ void PlayerCloudParticle::tick() {
     yd *= 0.96f;
     zd *= 0.96f;
     std::shared_ptr<Player> p = level->getNearestPlayer(shared_from_this(), 2);
-    if (p != NULL) {
+    if (p != nullptr) {
         if (y > p->bb.y0) {
             y += (p->bb.y0 - y) * 0.2;
             yd += (p->yd - yd) * 0.2;

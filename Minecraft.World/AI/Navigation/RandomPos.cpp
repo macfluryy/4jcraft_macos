@@ -10,7 +10,7 @@ std::optional<Vec3> RandomPos::getPos(
     std::shared_ptr<PathfinderMob> mob, int xzDist, int yDist,
     int quadrant /*=-1*/)  // 4J - added quadrant
 {
-    return generateRandomPos(mob, xzDist, yDist, NULL, quadrant);
+    return generateRandomPos(mob, xzDist, yDist, nullptr, quadrant);
 }
 
 std::optional<Vec3> RandomPos::getPosTowards(std::shared_ptr<PathfinderMob> mob,
@@ -68,7 +68,7 @@ std::optional<Vec3> RandomPos::generateRandomPos(
         }
         yt = random->nextInt(2 * yDist) - yDist;
 
-        if (dir != NULL && xt * dir->x + zt * dir->z < 0) continue;
+        if (dir != nullptr && xt * dir->x + zt * dir->z < 0) continue;
 
         xt += Mth::floor(mob->x);
         yt += Mth::floor(mob->y);

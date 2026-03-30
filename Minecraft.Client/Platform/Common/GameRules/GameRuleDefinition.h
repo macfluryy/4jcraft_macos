@@ -77,5 +77,5 @@ public:
         Connection* connection);
     static std::wstring generateDescriptionString(
         ConsoleGameRules::EGameRuleType defType,
-        const std::wstring& description, void* data = NULL, int dataLength = 0);
+        const std::wstring& description, void* data = nullptr, int dataLength = 0);
 };

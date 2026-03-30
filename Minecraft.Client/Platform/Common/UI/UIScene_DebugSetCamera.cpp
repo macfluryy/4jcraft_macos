@@ -18,7 +18,7 @@ UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,
     currentPosition->player = playerNo;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft != NULL) {
+    if (pMinecraft != nullptr) {
         Vec3 vec = pMinecraft->localplayers[playerNo]->getPos(1.0);
 
         currentPosition->m_camX = vec.x;

@@ -63,17 +63,17 @@ void Player::_init() {
     customTextureUrl2 = L"";
     m_uiPlayerCurrentSkin = 0;
 
-    bedPosition = NULL;
+    bedPosition = nullptr;
 
     sleepCounter = 0;
     deathFadeCounter = 0;
 
     bedOffsetX = bedOffsetY = bedOffsetZ = 0.0f;
-    stats = NULL;
+    stats = nullptr;
 
-    respawnPosition = NULL;
+    respawnPosition = nullptr;
     respawnForced = false;
-    minecartAchievementPos = NULL;
+    minecartAchievementPos = nullptr;
 
     fishing = nullptr;
 
@@ -97,7 +97,7 @@ void Player::_init() {
 
     m_uiGamePrivileges = 0;
 
-    m_ppAdditionalModelParts = NULL;
+    m_ppAdditionalModelParts = nullptr;
     m_bCheckedForModelParts = false;
     m_bCheckedDLCForModelParts = false;
 
@@ -180,7 +180,7 @@ std::shared_ptr<ItemInstance> Player::getUseItem() { return useItem; }
 
 int Player::getUseItemDuration() { return useItemDuration; }
 
-bool Player::isUsingItem() { return useItem != NULL; }
+bool Player::isUsingItem() { return useItem != nullptr; }
 
 int Player::getTicksUsingItem() {
     if (isUsingItem()) {
@@ -190,7 +190,7 @@ int Player::getTicksUsingItem() {
 }
 
 void Player::releaseUsingItem() {
-    if (useItem != NULL) {
+    if (useItem != nullptr) {
         useItem->releaseUsing(
             level, std::dynamic_pointer_cast<Player>(shared_from_this()),
             useItemDuration);
@@ -220,16 +220,16 @@ bool Player::isBlocking() {
 // 4J Stu - Added for things that should only be ticked once per simulation
 // frame
 void Player::updateFrameTick() {
-    if (useItem != NULL) {
+    if (useItem != nullptr) {
         std::shared_ptr<ItemInstance> item = inventory->getSelected();
         // 4J Stu - Fix for #45508 - TU5: Gameplay: Eating one piece of food
         // will result in a second piece being eaten as well Original code was
         // item != useItem. Changed this now to use the equals function, and add
-        // the NULL check as well for the other possible not equals (useItem is
-        // not NULL if we are here) This is because the useItem and item could
+        // the nullptr check as well for the other possible not equals (useItem is
+        // not nullptr if we are here) This is because the useItem and item could
         // be different objects due to an inventory update from the server, but
         // still be the same item (with the same id,count and auxvalue)
-        if (item == NULL || !item->equals(useItem)) {
+        if (item == nullptr || !item->equals(useItem)) {
             stopUsingItem();
         } else {
             if (useItemDuration <= 25 && useItemDuration % 4 == 0) {
@@ -283,7 +283,7 @@ void Player::tick() {
     LivingEntity::tick();
 
     if (!level->isClientSide) {
-        if (containerMenu != NULL &&
+        if (containerMenu != nullptr &&
             !containerMenu->stillValid(
                 std::dynamic_pointer_cast<Player>(shared_from_this()))) {
             closeContainer();
@@ -315,10 +315,10 @@ void Player::tick() {
     zCloak += zca * 0.25;
     yCloak += yca * 0.25;
 
-    if (riding == NULL) {
-        if (minecartAchievementPos != NULL) {
+    if (riding == nullptr) {
+        if (minecartAchievementPos != nullptr) {
             delete minecartAchievementPos;
-            minecartAchievementPos = NULL;
+            minecartAchievementPos = nullptr;
         }
     }
 
@@ -445,14 +445,14 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
 }
 
 void Player::completeUsingItem() {
-    if (useItem != NULL) {
+    if (useItem != nullptr) {
         spawnEatParticles(useItem, 16);
 
         int oldCount = useItem->count;
         std::shared_ptr<ItemInstance> itemInstance = useItem->useTimeDepleted(
             level, std::dynamic_pointer_cast<Player>(shared_from_this()));
         if (itemInstance != useItem ||
-            (itemInstance != NULL && itemInstance->count != oldCount)) {
+            (itemInstance != nullptr && itemInstance->count != oldCount)) {
             inventory->items[inventory->selected] = itemInstance;
             if (itemInstance->count == 0) {
                 inventory->items[inventory->selected] = nullptr;
@@ -475,10 +475,10 @@ bool Player::isImmobile() { return getHealth() <= 0 || isSleeping(); }
 void Player::closeContainer() { containerMenu = inventoryMenu; }
 
 void Player::ride(std::shared_ptr<Entity> e) {
-    if (riding != NULL && e == NULL) {
+    if (riding != nullptr && e == nullptr) {
         if (!level->isClientSide) findStandUpPosition(riding);
 
-        if (riding != NULL) {
+        if (riding != nullptr) {
             riding->rider = std::weak_ptr<Entity>();
         }
         riding = nullptr;
@@ -531,7 +531,7 @@ void Player::setCustomSkin(std::uint32_t skinId) {
     // set the new player additional boxes
     /*vector<ModelPart *> *pvModelParts=app.GetAdditionalModelParts(m_dwSkinId);
 
-    if(pvModelParts==NULL)
+    if(pvModelParts==nullptr)
     {
     // we don't have the data from the dlc skin yet
     app.DebugPrintf("Couldn't get model parts for skin %X\n",m_dwSkinId);
@@ -540,7 +540,7 @@ void Player::setCustomSkin(std::uint32_t skinId) {
     DLCSkinFile *pDLCSkinFile =
     app.m_dlcManager.getSkinFile(this->customTextureUrl);
 
-    if(pDLCSkinFile!=NULL)
+    if(pDLCSkinFile!=nullptr)
     {
             const int additionalBoxCount =
     pDLCSkinFile->getAdditionalBoxesCount(); if(additionalBoxCount != 0)
@@ -551,13 +551,13 @@ void Player::setCustomSkin(std::uint32_t skinId) {
     }
     else
     {
-    this->SetAdditionalModelParts(NULL);
+    this->SetAdditionalModelParts(nullptr);
     }
     app.SetAnimOverrideBitmask(pDLCSkinFile->getSkinID(),pDLCSkinFile->getAnimOverrideBitmask());
     }
     else
     {
-    this->SetAdditionalModelParts(NULL);
+    this->SetAdditionalModelParts(nullptr);
     }
     }
     else
@@ -571,7 +571,7 @@ void Player::setCustomSkin(std::uint32_t skinId) {
     // reset the check for model parts
     m_bCheckedForModelParts = false;
     m_bCheckedDLCForModelParts = false;
-    this->SetAdditionalModelParts(NULL);
+    this->SetAdditionalModelParts(nullptr);
 }
 
 unsigned int Player::getSkinAnimOverrideBitmask(std::uint32_t skinId) {
@@ -781,7 +781,7 @@ void Player::rideTick() {
     checkRidingStatistiscs(x - preX, y - preY, z - preZ);
 
     // riding can be set to null inside 'Entity::rideTick()'.
-    if (riding != NULL && (riding->GetType() & eTYPE_PIG) == eTYPE_PIG) {
+    if (riding != nullptr && (riding->GetType() & eTYPE_PIG) == eTYPE_PIG) {
         // 4J Stu - I don't know why we would want to do this, but it means that
         // the players head is locked in position and can't move around
         // xRot = preXRot;
@@ -850,7 +850,7 @@ void Player::aiStep() {
 
     if (getHealth() > 0) {
         AABB pickupArea;
-        if (riding != NULL && !riding->removed) {
+        if (riding != nullptr && !riding->removed) {
             // if the player is riding, also touch entities under the
             // pig/horse
             pickupArea = bb.minmax(riding->bb).grow(1, 0, 1);
@@ -860,7 +860,7 @@ void Player::aiStep() {
 
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntities(shared_from_this(), &pickupArea);
-        if (entities != NULL) {
+        if (entities != nullptr) {
             AUTO_VAR(itEnd, entities->end());
             for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
                 std::shared_ptr<Entity> e = *it;  // entities->at(i);
@@ -900,7 +900,7 @@ void Player::die(DamageSource* source) {
         inventory->dropAll();
     }
 
-    if (source != NULL) {
+    if (source != nullptr) {
         xd = -Mth::cos((hurtDir + yRot) * PI / 180) * 0.1f;
         zd = -Mth::sin((hurtDir + yRot) * PI / 180) * 0.1f;
     } else {
@@ -940,7 +940,7 @@ bool Player::isCreativeModeAllowed() { return true; }
 
 std::shared_ptr<ItemEntity> Player::drop(bool all) {
     return drop(inventory->removeItem(inventory->selected,
-                                      all && inventory->getSelected() != NULL
+                                      all && inventory->getSelected() != nullptr
                                           ? inventory->getSelected()->count
                                           : 1),
                 false);
@@ -952,7 +952,7 @@ std::shared_ptr<ItemEntity> Player::drop(std::shared_ptr<ItemInstance> item) {
 
 std::shared_ptr<ItemEntity> Player::drop(std::shared_ptr<ItemInstance> item,
                                          bool randomly) {
-    if (item == NULL) return nullptr;
+    if (item == nullptr) return nullptr;
     if (item->count == 0) return nullptr;
 
     std::shared_ptr<ItemEntity> thrownItem = std::shared_ptr<ItemEntity>(
@@ -1000,7 +1000,7 @@ float Player::getDestroySpeed(Tile* tile, bool hasProperTool) {
             std::dynamic_pointer_cast<LivingEntity>(shared_from_this()));
         std::shared_ptr<ItemInstance> item = inventory->getSelected();
 
-        if (efficiency > 0 && item != NULL) {
+        if (efficiency > 0 && item != nullptr) {
             float boost = efficiency * efficiency + 1;
 
             if (item->canDestroySpecial(tile) || speed > 1) {
@@ -1087,7 +1087,7 @@ void Player::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->putInt(L"XpTotal", totalExperience);
     entityTag->putInt(L"Score", getScore());
 
-    if (respawnPosition != NULL) {
+    if (respawnPosition != nullptr) {
         entityTag->putInt(L"SpawnX", respawnPosition->x);
         entityTag->putInt(L"SpawnY", respawnPosition->y);
         entityTag->putInt(L"SpawnZ", respawnPosition->z);
@@ -1161,10 +1161,10 @@ bool Player::hurt(DamageSource* source, float dmg) {
     if (dmg == 0) return false;
 
     std::shared_ptr<Entity> attacker = source->getEntity();
-    if (attacker != NULL && attacker->instanceof(eTYPE_ARROW)) {
+    if (attacker != nullptr && attacker->instanceof(eTYPE_ARROW)) {
         std::shared_ptr<Arrow> arrow =
             std::dynamic_pointer_cast<Arrow>(attacker);
-        if (arrow->owner != NULL) {
+        if (arrow->owner != nullptr) {
             attacker = arrow->owner;
         }
     }
@@ -1176,7 +1176,7 @@ bool Player::canHarmPlayer(std::shared_ptr<Player> target) {
     Team* team = getTeam();
     Team* otherTeam = target->getTeam();
 
-    if (team == NULL) {
+    if (team == nullptr) {
         return true;
     }
     if (!team->isAlliedTo(otherTeam)) {
@@ -1194,7 +1194,7 @@ int Player::getArmorValue() { return inventory->getArmorValue(); }
 float Player::getArmorCoverPercentage() {
     int count = 0;
     for (int i = 0; i < inventory->armor.length; i++) {
-        if (inventory->armor[i] != NULL) {
+        if (inventory->armor[i] != nullptr) {
             count++;
         }
     }
@@ -1257,12 +1257,12 @@ bool Player::interact(std::shared_ptr<Entity> entity) {
 
     std::shared_ptr<ItemInstance> item = getSelectedItem();
     std::shared_ptr<ItemInstance> itemClone =
-        (item != NULL) ? item->copy() : nullptr;
+        (item != nullptr) ? item->copy() : nullptr;
     if (entity->interact(thisPlayer)) {
         // [EB]: Added rude check to see if we're still talking about the
         // same item; this code caused bucket->milkbucket to be deleted because
         // the milkbuckets' stack got decremented to 0.
-        if (item != NULL && item == getSelectedItem()) {
+        if (item != nullptr && item == getSelectedItem()) {
             if (item->count <= 0 && !abilities.instabuild) {
                 removeSelectedItem();
             } else if (item->count < itemClone->count && abilities.instabuild) {
@@ -1272,7 +1272,7 @@ bool Player::interact(std::shared_ptr<Entity> entity) {
         return true;
     }
 
-    if ((item != NULL) && entity->instanceof(eTYPE_LIVINGENTITY)) {
+    if ((item != nullptr) && entity->instanceof(eTYPE_LIVINGENTITY)) {
         // 4J - PC Comments
         // Hack to prevent item stacks from decrementing if the player has
         // the ability to instabuild
@@ -1331,7 +1331,7 @@ void Player::attack(std::shared_ptr<Entity> entity) {
     if (dmg > 0 || magicBoost > 0) {
         bool bCrit = fallDistance > 0 && !onGround && !onLadder() &&
                      !isInWater() && !hasEffect(MobEffect::blindness) &&
-                     (riding == NULL) && entity->instanceof(eTYPE_LIVINGENTITY);
+                     (riding == nullptr) && entity->instanceof(eTYPE_LIVINGENTITY);
         if (bCrit && dmg > 0) {
             dmg *= 1.5f;
         }
@@ -1389,12 +1389,12 @@ void Player::attack(std::shared_ptr<Entity> entity) {
                 std::dynamic_pointer_cast<Entity>(
                     (std::dynamic_pointer_cast<MultiEntityMobPart>(entity))
                         ->parentMob.lock());
-            if ((multiMob != NULL) &&
+            if ((multiMob != nullptr) &&
                 multiMob->instanceof(eTYPE_LIVINGENTITY)) {
                 hurtTarget = std::dynamic_pointer_cast<LivingEntity>(multiMob);
             }
         }
-        if ((item != NULL) && hurtTarget->instanceof(eTYPE_LIVINGENTITY)) {
+        if ((item != nullptr) && hurtTarget->instanceof(eTYPE_LIVINGENTITY)) {
             item->hurtEnemy(
                 std::dynamic_pointer_cast<LivingEntity>(hurtTarget),
                 std::dynamic_pointer_cast<Player>(shared_from_this()));
@@ -1440,13 +1440,13 @@ void Player::animateRespawn(std::shared_ptr<Player> player, Level* level) {
     }
 }
 
-Slot* Player::getInventorySlot(int slotId) { return NULL; }
+Slot* Player::getInventorySlot(int slotId) { return nullptr; }
 
 void Player::remove() {
     LivingEntity::remove();
     inventoryMenu->removed(
         std::dynamic_pointer_cast<Player>(shared_from_this()));
-    if (containerMenu != NULL) {
+    if (containerMenu != nullptr) {
         containerMenu->removed(
             std::dynamic_pointer_cast<Player>(shared_from_this()));
     }
@@ -1591,12 +1591,12 @@ void Player::stopSleepInBed(bool forcefulWakeUp, bool updateLevelList,
 
     Pos* pos = bedPosition;
     Pos* standUp = bedPosition;
-    if (pos != NULL && level->getTile(pos->x, pos->y, pos->z) == Tile::bed_Id) {
+    if (pos != nullptr && level->getTile(pos->x, pos->y, pos->z) == Tile::bed_Id) {
         BedTile::setOccupied(level, pos->x, pos->y, pos->z, false);
 
         standUp =
             BedTile::findStandUpPosition(level, pos->x, pos->y, pos->z, 0);
-        if (standUp == NULL) {
+        if (standUp == nullptr) {
             standUp = new Pos(pos->x, pos->y + 1, pos->z);
         }
         setPos(standUp->x + .5f, standUp->y + heightOffset + .1f,
@@ -1641,7 +1641,7 @@ Pos* Player::checkBedValidRespawnPosition(Level* level, Pos* pos, bool forced) {
         if (forced && freeFeet && freeHead) {
             return pos;
         }
-        return NULL;
+        return nullptr;
     }
     // make sure the bed still has a stand-up position
     Pos* standUp =
@@ -1650,7 +1650,7 @@ Pos* Player::checkBedValidRespawnPosition(Level* level, Pos* pos, bool forced) {
 }
 
 float Player::getSleepRotation() {
-    if (bedPosition != NULL) {
+    if (bedPosition != nullptr) {
         int data =
             level->getData(bedPosition->x, bedPosition->y, bedPosition->z);
         int direction = BedTile::getDirection(data);
@@ -1707,17 +1707,17 @@ Pos* Player::getRespawnPosition() { return respawnPosition; }
 bool Player::isRespawnForced() { return respawnForced; }
 
 void Player::setRespawnPosition(Pos* respawnPosition, bool forced) {
-    if (respawnPosition != NULL) {
+    if (respawnPosition != nullptr) {
         this->respawnPosition = new Pos(*respawnPosition);
         respawnForced = forced;
     } else {
-        this->respawnPosition = NULL;
+        this->respawnPosition = nullptr;
         respawnForced = false;
     }
 }
 
 void Player::awardStat(Stat* stat, byteArray paramBlob) {
-    if (paramBlob.data != NULL) {
+    if (paramBlob.data != nullptr) {
         delete[] paramBlob.data;
     }
 }
@@ -1738,7 +1738,7 @@ void Player::jumpFromGround() {
 void Player::travel(float xa, float ya) {
     double preX = x, preY = y, preZ = z;
 
-    if (abilities.flying && riding == NULL) {
+    if (abilities.flying && riding == nullptr) {
         double ydo = yd;
         float ofs = flyingSpeed;
         flyingSpeed = abilities.getFlyingSpeed();
@@ -1758,7 +1758,7 @@ float Player::getSpeed() {
 }
 
 void Player::checkMovementStatistiscs(double dx, double dy, double dz) {
-    if (riding != NULL) {
+    if (riding != nullptr) {
         return;
     }
     if (isUnderLiquid(Material::water)) {
@@ -1816,7 +1816,7 @@ void Player::checkMovementStatistiscs(double dx, double dy, double dz) {
 }
 
 void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
-    if (riding != NULL) {
+    if (riding != nullptr) {
         int distance =
             (int)Math::round(sqrt(dx * dx + dy * dy + dz * dz) * 100.0f);
         if (distance > 0) {
@@ -1831,7 +1831,7 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                 }
 
                 int dist = 0;
-                if (minecartAchievementPos == NULL) {
+                if (minecartAchievementPos == nullptr) {
                     minecartAchievementPos =
                         new Pos(Mth::floor(x), Mth::floor(y), Mth::floor(z));
                 }
@@ -1908,7 +1908,7 @@ void Player::killed(std::shared_ptr<LivingEntity> mob) {
                               GenericStats::param_noArgs());
                 break;
             case eTYPE_SPIDER:
-                if (mob->rider.lock() != NULL &&
+                if (mob->rider.lock() != nullptr &&
                     mob->rider.lock()->GetType() == eTYPE_SKELETON)
                     awardStat(GenericStats::killsSpiderJockey(),
                               GenericStats::param_noArgs());
@@ -1954,11 +1954,11 @@ void Player::makeStuckInWeb() {
 
 Icon* Player::getItemInHandIcon(std::shared_ptr<ItemInstance> item, int layer) {
     Icon* icon = LivingEntity::getItemInHandIcon(item, layer);
-    if (item->id == Item::fishingRod->id && fishing != NULL) {
+    if (item->id == Item::fishingRod->id && fishing != nullptr) {
         icon = Item::fishingRod->getEmptyIcon();
     } else if (item->getItem()->hasMultipleSpriteLayers()) {
         return item->getItem()->getLayerIcon(item->getAuxValue(), layer);
-    } else if (useItem != NULL && item->id == Item::bow_Id) {
+    } else if (useItem != nullptr && item->id == Item::bow_Id) {
         int ticksHeld = (item->getUseDuration() - useItemDuration);
         if (ticksHeld >= BowItem::MAX_DRAW_DURATION - 2) {
             return Item::bow->getDrawnIcon(2);
@@ -2090,7 +2090,7 @@ bool Player::mayDestroyBlockAt(int x, int y, int z) {
 
         if (tile->material->isDestroyedByHand()) {
             return true;
-        } else if (getSelectedItem() != NULL) {
+        } else if (getSelectedItem() != nullptr) {
             std::shared_ptr<ItemInstance> carried = getSelectedItem();
 
             if (carried->canDestroySpecial(tile) ||
@@ -2107,7 +2107,7 @@ bool Player::mayUseItemAt(int x, int y, int z, int face,
     if (abilities.mayBuild) {
         return true;
     }
-    if (item != NULL) {
+    if (item != nullptr) {
         return item->mayBePlacedInAdventureMode();
     }
     return false;
@@ -2341,7 +2341,7 @@ void Player::setPlayerGamePrivilege(unsigned int& uiGamePrivileges,
 
 bool Player::isAllowedToUse(Tile* tile) {
     bool allowed = true;
-    if (tile != NULL &&
+    if (tile != nullptr &&
         app.GetGameHostOption(eGameHostOption_TrustPlayers) == 0) {
         allowed = false;
 
@@ -2412,7 +2412,7 @@ bool Player::isAllowedToUse(Tile* tile) {
 
 bool Player::isAllowedToUse(std::shared_ptr<ItemInstance> item) {
     bool allowed = true;
-    if (item != NULL &&
+    if (item != nullptr &&
         app.GetGameHostOption(eGameHostOption_TrustPlayers) == 0) {
         if (getPlayerGamePrivilege(Player::ePlayerGamePrivilege_CannotBuild) !=
             0) {
@@ -2620,7 +2620,7 @@ void Player::enableAllPlayerPrivileges(bool enable) {
 bool Player::canCreateParticles() { return !hasInvisiblePrivilege(); }
 
 std::vector<ModelPart*>* Player::GetAdditionalModelParts() {
-    if (m_ppAdditionalModelParts == NULL && !m_bCheckedForModelParts) {
+    if (m_ppAdditionalModelParts == nullptr && !m_bCheckedForModelParts) {
         bool hasCustomTexture = !customTextureUrl.empty();
         bool customTextureIsDefaultSkin =
             customTextureUrl.substr(0, 3).compare(L"def") == 0;
@@ -2632,11 +2632,11 @@ std::vector<ModelPart*>* Player::GetAdditionalModelParts() {
         // we already have the texture (in which case we should have parts if
         // there are any) then we are done
         if (!hasCustomTexture || customTextureIsDefaultSkin ||
-            m_ppAdditionalModelParts != NULL ||
+            m_ppAdditionalModelParts != nullptr ||
             app.IsFileInMemoryTextures(customTextureUrl)) {
             m_bCheckedForModelParts = true;
         }
-        if (m_ppAdditionalModelParts == NULL && !m_bCheckedDLCForModelParts) {
+        if (m_ppAdditionalModelParts == nullptr && !m_bCheckedDLCForModelParts) {
             m_bCheckedDLCForModelParts = true;
 
             // we don't have the data from the dlc skin yet
@@ -2649,7 +2649,7 @@ std::vector<ModelPart*>* Player::GetAdditionalModelParts() {
             DLCSkinFile* pDLCSkinFile =
                 app.m_dlcManager.getSkinFile(this->customTextureUrl);
 
-            if (pDLCSkinFile != NULL) {
+            if (pDLCSkinFile != nullptr) {
                 const int additionalBoxCount =
                     pDLCSkinFile->getAdditionalBoxesCount();
                 if (additionalBoxCount != 0) {

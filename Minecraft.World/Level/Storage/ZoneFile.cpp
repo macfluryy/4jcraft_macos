@@ -7,13 +7,13 @@ namespace {
 std::FILE* OpenBinaryFileForReadWrite(const File& file) {
 #if defined(_WIN32)
     std::FILE* stream = _wfopen(file.getPath().c_str(), L"r+b");
-    if (stream == NULL) {
+    if (stream == nullptr) {
         stream = _wfopen(file.getPath().c_str(), L"w+b");
     }
 #else
     const std::string nativePath = wstringtofilename(file.getPath());
     std::FILE* stream = std::fopen(nativePath.c_str(), "r+b");
-    if (stream == NULL) {
+    if (stream == nullptr) {
         stream = std::fopen(nativePath.c_str(), "w+b");
     }
 #endif
@@ -85,9 +85,9 @@ void ZoneFile::writeHeader() {
 }
 
 void ZoneFile::close() {
-    if (channel != NULL) {
+    if (channel != nullptr) {
         std::fclose(channel);
-        channel = NULL;
+        channel = nullptr;
     }
     entityFile->close();
 }

@@ -16,7 +16,7 @@ UIScene_DispenserMenu::UIScene_DispenserMenu(int iPad, void* _initData,
     m_labelDispenser.init(initData->trap->getName());
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -151,7 +151,7 @@ void UIScene_DispenserMenu::setSectionSelectedSlot(ESceneSection eSection,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionTrapTrap:
             slotList = &m_slotListTrap;
@@ -170,7 +170,7 @@ void UIScene_DispenserMenu::setSectionSelectedSlot(ESceneSection eSection,
 }
 
 UIControl* UIScene_DispenserMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionTrapTrap:
             control = &m_slotListTrap;

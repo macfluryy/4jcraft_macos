@@ -234,8 +234,8 @@ std::shared_ptr<Entity> EntityIO::newEntity(const std::wstring& id,
     AUTO_VAR(it, idCreateMap->find(id));
     if (it != idCreateMap->end()) {
         entityCreateFn create = it->second;
-        if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
-        if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+        if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
+        if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
             std::dynamic_pointer_cast<EnderDragon>(entity)
                 ->AddParts();  // 4J added to finalise creation
         }
@@ -268,14 +268,14 @@ std::shared_ptr<Entity> EntityIO::loadStatic(CompoundTag* tag, Level* level) {
     AUTO_VAR(it, idCreateMap->find(tag->getString(L"id")));
     if (it != idCreateMap->end()) {
         entityCreateFn create = it->second;
-        if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
-        if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+        if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
+        if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
             std::dynamic_pointer_cast<EnderDragon>(entity)
                 ->AddParts();  // 4J added to finalise creation
         }
     }
 
-    if (entity != NULL) {
+    if (entity != nullptr) {
         entity->load(tag);
     } else {
 #ifdef _DEBUG
@@ -292,14 +292,14 @@ std::shared_ptr<Entity> EntityIO::newById(int id, Level* level) {
     AUTO_VAR(it, numCreateMap->find(id));
     if (it != numCreateMap->end()) {
         entityCreateFn create = it->second;
-        if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
-        if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+        if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
+        if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
             std::dynamic_pointer_cast<EnderDragon>(entity)
                 ->AddParts();  // 4J added to finalise creation
         }
     }
 
-    if (entity != NULL) {
+    if (entity != nullptr) {
     } else {
         // printf("Skipping Entity with id %d\n", id ) ;
     }
@@ -317,8 +317,8 @@ std::shared_ptr<Entity> EntityIO::newByEnumType(eINSTANCEOF eType,
         AUTO_VAR(it2, numCreateMap->find(it->second));
         if (it2 != numCreateMap->end()) {
             entityCreateFn create = it2->second;
-            if (create != NULL) entity = std::shared_ptr<Entity>(create(level));
-            if ((entity != NULL) && entity->GetType() == eTYPE_ENDERDRAGON) {
+            if (create != nullptr) entity = std::shared_ptr<Entity>(create(level));
+            if ((entity != nullptr) && entity->GetType() == eTYPE_ENDERDRAGON) {
                 std::dynamic_pointer_cast<EnderDragon>(entity)
                     ->AddParts();  // 4J added to finalise creation
             }

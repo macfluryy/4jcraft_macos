@@ -7,12 +7,12 @@
 TexturePacket::TexturePacket() {
     this->textureName = L"";
     this->dataBytes = 0;
-    this->pbData = NULL;
+    this->pbData = nullptr;
 }
 
 TexturePacket::~TexturePacket() {
     // can't free this - it's used elsewhere
-    // 	if(this->pbData!=NULL)
+    // 	if(this->pbData!=nullptr)
     // 	{
     // 		delete [] this->pbData;
     // 	}

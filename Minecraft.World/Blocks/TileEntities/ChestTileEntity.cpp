@@ -60,7 +60,7 @@ std::shared_ptr<ItemInstance> ChestTileEntity::getItem(unsigned int slot) {
 
 std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot,
                                                           int count) {
-    if (items->data[slot] != NULL) {
+    if (items->data[slot] != nullptr) {
         if (items->data[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = items->data[slot];
             items->data[slot] = nullptr;
@@ -81,7 +81,7 @@ std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> ChestTileEntity::removeItemNoUpdate(int slot) {
-    if (items->data[slot] != NULL) {
+    if (items->data[slot] != nullptr) {
         std::shared_ptr<ItemInstance> item = items->data[slot];
         items->data[slot] = nullptr;
         return item;
@@ -92,7 +92,7 @@ std::shared_ptr<ItemInstance> ChestTileEntity::removeItemNoUpdate(int slot) {
 void ChestTileEntity::setItem(unsigned int slot,
                               std::shared_ptr<ItemInstance> item) {
     items->data[slot] = item;
-    if (item != NULL && item->count > getMaxStackSize())
+    if (item != nullptr && item->count > getMaxStackSize())
         item->count = getMaxStackSize();
     this->setChanged();
 }
@@ -135,7 +135,7 @@ void ChestTileEntity::save(CompoundTag* base) {
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>;
 
     for (unsigned int i = 0; i < items->length; i++) {
-        if (items->data[i] != NULL) {
+        if (items->data[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
             items->data[i]->save(tag);
@@ -214,17 +214,17 @@ void ChestTileEntity::checkNeighbors() {
 
     std::shared_ptr<ChestTileEntity> cteThis =
         std::dynamic_pointer_cast<ChestTileEntity>(shared_from_this());
-    if (n.lock() != NULL)
+    if (n.lock() != nullptr)
         n.lock()->heyImYourNeighbor(cteThis, Direction::SOUTH);
-    if (s.lock() != NULL)
+    if (s.lock() != nullptr)
         s.lock()->heyImYourNeighbor(cteThis, Direction::NORTH);
-    if (e.lock() != NULL) e.lock()->heyImYourNeighbor(cteThis, Direction::WEST);
-    if (w.lock() != NULL) w.lock()->heyImYourNeighbor(cteThis, Direction::EAST);
+    if (e.lock() != nullptr) e.lock()->heyImYourNeighbor(cteThis, Direction::WEST);
+    if (w.lock() != nullptr) w.lock()->heyImYourNeighbor(cteThis, Direction::EAST);
 }
 
 bool ChestTileEntity::isSameChest(int x, int y, int z) {
     Tile* tile = Tile::tiles[level->getTile(x, y, z)];
-    if (tile == NULL || !(dynamic_cast<ChestTile*>(tile) != NULL)) return false;
+    if (tile == nullptr || !(dynamic_cast<ChestTile*>(tile) != nullptr)) return false;
     return ((ChestTile*)tile)->type == getType();
 }
 
@@ -252,7 +252,7 @@ void ChestTileEntity::tick() {
 
             ContainerMenu* containerMenu =
                 dynamic_cast<ContainerMenu*>(player->containerMenu);
-            if (containerMenu != NULL) {
+            if (containerMenu != nullptr) {
                 std::shared_ptr<Container> container =
                     containerMenu->getContainer();
                 std::shared_ptr<Container> thisContainer =
@@ -260,7 +260,7 @@ void ChestTileEntity::tick() {
                 std::shared_ptr<CompoundContainer> compoundContainer =
                     std::dynamic_pointer_cast<CompoundContainer>(container);
                 if ((container == thisContainer) ||
-                    (compoundContainer != NULL &&
+                    (compoundContainer != nullptr &&
                      compoundContainer->contains(thisContainer))) {
                     openCount++;
                 }
@@ -273,11 +273,11 @@ void ChestTileEntity::tick() {
 
     float speed = 0.10f;
     if (openCount > 0 && openness == 0) {
-        if (n.lock() == NULL && w.lock() == NULL) {
+        if (n.lock() == nullptr && w.lock() == nullptr) {
             double xc = x + 0.5;
             double zc = z + 0.5;
-            if (s.lock() != NULL) zc += 0.5;
-            if (e.lock() != NULL) xc += 0.5;
+            if (s.lock() != nullptr) zc += 0.5;
+            if (e.lock() != nullptr) xc += 0.5;
 
             // 4J-PB - Seems the chest open volume is much louder than other
             // sounds from user reports. We'll tone it down a bit
@@ -299,11 +299,11 @@ void ChestTileEntity::tick() {
             // Fix for #64546 - Customer Encountered: TU7: Chests placed by the
             // Player are closing too fast.
             // openness = 0;
-            if (n.lock() == NULL && w.lock() == NULL) {
+            if (n.lock() == nullptr && w.lock() == nullptr) {
                 double xc = x + 0.5;
                 double zc = z + 0.5;
-                if (s.lock() != NULL) zc += 0.5;
-                if (e.lock() != NULL) xc += 0.5;
+                if (s.lock() != nullptr) zc += 0.5;
+                if (e.lock() != nullptr) xc += 0.5;
 
                 // 4J-PB - Seems the chest open volume is much louder than other
                 // sounds from user reports. We'll tone it down a bit
@@ -338,7 +338,7 @@ void ChestTileEntity::startOpen() {
 }
 
 void ChestTileEntity::stopOpen() {
-    if (getTile() == NULL || !(dynamic_cast<ChestTile*>(getTile()) != NULL))
+    if (getTile() == nullptr || !(dynamic_cast<ChestTile*>(getTile()) != nullptr))
         return;
     openCount--;
     level->tileEvent(x, y, z, getTile()->id, ChestTile::EVENT_SET_OPEN_COUNT,
@@ -360,7 +360,7 @@ void ChestTileEntity::setRemoved() {
 
 int ChestTileEntity::getType() {
     if (type == -1) {
-        if (level != NULL && dynamic_cast<ChestTile*>(getTile()) != NULL) {
+        if (level != nullptr && dynamic_cast<ChestTile*>(getTile()) != nullptr) {
             type = ((ChestTile*)getTile())->type;
         } else {
             return ChestTile::TYPE_BASIC;
@@ -377,7 +377,7 @@ std::shared_ptr<TileEntity> ChestTileEntity::clone() {
     TileEntity::clone(result);
 
     for (unsigned int i = 0; i < items->length; i++) {
-        if (items->data[i] != NULL) {
+        if (items->data[i] != nullptr) {
             result->items->data[i] = ItemInstance::clone(items->data[i]);
         }
     }

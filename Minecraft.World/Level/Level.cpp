@@ -113,7 +113,7 @@ inline int GetIndex(int x, int y, int z) {
 
 void Level::initCachePartial(lightCache_t* cache, int xc, int yc, int zc) {
     cachewritten = false;
-    if (cache == NULL) return;
+    if (cache == nullptr) return;
 
     int idx;
     if (!(yc & 0xffffff00)) {
@@ -175,7 +175,7 @@ void Level::initCacheComplete(lightCache_t* cache, int xc, int yc, int zc) {
 void inline Level::setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
                                        LightLayer::variety layer, int x, int y,
                                        int z, int brightness) {
-    if (cache == NULL) {
+    if (cache == nullptr) {
         setBrightness(layer, x, y, z, brightness, true);
         return;
     }
@@ -235,7 +235,7 @@ void inline Level::setBrightnessCached(lightCache_t* cache, uint64_t* cacheUse,
 inline int Level::getBrightnessCached(lightCache_t* cache,
                                       LightLayer::variety layer, int x, int y,
                                       int z) {
-    if (cache == NULL) return getBrightness(layer, x, y, z);
+    if (cache == nullptr) return getBrightness(layer, x, y, z);
     if (y & 0xffffff00)
         return getBrightness(
             layer, x, y,
@@ -298,7 +298,7 @@ inline int Level::getBrightnessCached(lightCache_t* cache,
 // thread
 inline int Level::getEmissionCached(lightCache_t* cache, int ct, int x, int y,
                                     int z) {
-    if (cache == NULL) return Tile::lightEmission[ct];
+    if (cache == nullptr) return Tile::lightEmission[ct];
 
     int idx = ((x & 15) << 8) | ((y & 15) << 4) | (z & 15);
     lightCache_t posbits =
@@ -362,7 +362,7 @@ inline int Level::getEmissionCached(lightCache_t* cache, int ct, int x, int y,
 inline int Level::getBlockingCached(lightCache_t* cache,
                                     LightLayer::variety layer, int* ct, int x,
                                     int y, int z) {
-    if (cache == NULL) {
+    if (cache == nullptr) {
         int t = getTile(x, y, z);
         if (ct) *ct = t;
         return Tile::lightBlock[t];
@@ -519,17 +519,17 @@ void Level::_init() {
     random = new Random();
     isNew = false;
 
-    dimension = NULL;
+    dimension = nullptr;
 
-    chunkSource = NULL;
+    chunkSource = nullptr;
 
     levelStorage = nullptr;
 
-    levelData = NULL;
+    levelData = nullptr;
 
     isFindingSpawn = false;
 
-    savedDataStorage = NULL;
+    savedDataStorage = nullptr;
 
     spawnEnemies = true;
 
@@ -561,8 +561,8 @@ void Level::_init() {
 Biome* Level::getBiome(int x, int z) {
     if (hasChunkAt(x, 0, z)) {
         LevelChunk* lc = getChunkAt(x, z);
-        if (lc != NULL) {
-            // Water chunks at the edge of the world return NULL for their biome
+        if (lc != nullptr) {
+            // Water chunks at the edge of the world return nullptr for their biome
             // as they can't store it, so should fall back on the normal method
             // below
             Biome* biome =
@@ -593,7 +593,7 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage,
     std::shared_ptr<Villages> savedVillages =
         std::dynamic_pointer_cast<Villages>(
             savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
-    if (savedVillages == NULL) {
+    if (savedVillages == nullptr) {
         villages = std::shared_ptr<Villages>(new Villages(this));
         savedDataStorage->set(Villages::VILLAGE_FILE_ID, villages);
     } else {
@@ -602,7 +602,7 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage,
     }
 
     dimension->init(this);
-    chunkSource = NULL;  // 4J - added flag so chunk source can be called from
+    chunkSource = nullptr;  // 4J - added flag so chunk source can be called from
                          // derived class instead
 
     updateSkyBrightness();
@@ -612,7 +612,7 @@ Level::Level(std::shared_ptr<LevelStorage> levelStorage,
 Level::Level(std::shared_ptr<LevelStorage> levelStorage,
              const std::wstring& levelName, LevelSettings* levelSettings)
     : seaLevel(constSeaLevel) {
-    _init(levelStorage, levelName, levelSettings, NULL, true);
+    _init(levelStorage, levelName, levelSettings, nullptr, true);
 }
 
 Level::Level(std::shared_ptr<LevelStorage> levelStorage,
@@ -634,7 +634,7 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
     std::shared_ptr<Villages> savedVillages =
         std::dynamic_pointer_cast<Villages>(
             savedDataStorage->get(typeid(Villages), Villages::VILLAGE_FILE_ID));
-    if (savedVillages == NULL) {
+    if (savedVillages == nullptr) {
         villages = std::shared_ptr<Villages>(new Villages(this));
         savedDataStorage->set(Villages::VILLAGE_FILE_ID, villages);
     } else {
@@ -643,14 +643,14 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
     }
 
     levelData = levelStorage->prepareLevel();
-    isNew = levelData == NULL;
+    isNew = levelData == nullptr;
 
-    if (fixedDimension != NULL) {
+    if (fixedDimension != nullptr) {
         dimension = fixedDimension;
     }
     // 4J Remove TU9 as getDimensions was never accurate. This path was never
     // used anyway as we always set fixedDimension
-    // else if (levelData != NULL && levelData->getDimension() != 0)
+    // else if (levelData != nullptr && levelData->getDimension() != 0)
     //{
     //	dimension = Dimension::getNew(levelData->getDimension());
     //}
@@ -658,7 +658,7 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
         dimension = Dimension::getNew(0);
     }
 
-    if (levelData == NULL) {
+    if (levelData == nullptr) {
         levelData = new LevelData(levelSettings, levelName);
     } else {
         levelData->setLevelName(levelName);
@@ -672,7 +672,7 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
 
     chunkSource = doCreateChunkSource
                       ? createChunkSource()
-                      : NULL;  // 4J - added flag so chunk source can be called
+                      : nullptr;  // 4J - added flag so chunk source can be called
                                // from derived class instead
 
     // 4J Stu- Moved to derived classes
@@ -704,7 +704,7 @@ Level::~Level() {
     // 4J-PB - savedDataStorage is shared between overworld and nether levels in
     // the server, so it will already have been deleted on the first level
     // delete
-    if (savedDataStorage != NULL) delete savedDataStorage;
+    if (savedDataStorage != nullptr) delete savedDataStorage;
 
     DeleteCriticalSection(&m_entitiesCS);
     DeleteCriticalSection(&m_tileEntityListCS);
@@ -760,7 +760,7 @@ bool Level::isEmptyTile(int x, int y, int z) { return getTile(x, y, z) == 0; }
 
 bool Level::isEntityTile(int x, int y, int z) {
     int t = getTile(x, y, z);
-    if (Tile::tiles[t] != NULL && Tile::tiles[t]->isEntityTile()) {
+    if (Tile::tiles[t] != nullptr && Tile::tiles[t]->isEntityTile()) {
         return true;
     }
     return false;
@@ -768,7 +768,7 @@ bool Level::isEntityTile(int x, int y, int z) {
 
 int Level::getTileRenderShape(int x, int y, int z) {
     int t = getTile(x, y, z);
-    if (Tile::tiles[t] != NULL) {
+    if (Tile::tiles[t] != nullptr) {
         return Tile::tiles[t]->getRenderShape();
     }
     return Tile::SHAPE_INVISIBLE;
@@ -777,7 +777,7 @@ int Level::getTileRenderShape(int x, int y, int z) {
 // 4J Added to slightly optimise and avoid getTile call if we already know the
 // tile
 int Level::getTileRenderShape(int t) {
-    if (Tile::tiles[t] != NULL) {
+    if (Tile::tiles[t] != nullptr) {
         return Tile::tiles[t]->getRenderShape();
     }
     return Tile::SHAPE_INVISIBLE;
@@ -883,7 +883,7 @@ bool Level::setTileAndData(int x, int y, int z, int tile, int data,
         if (!isClientSide && (updateFlags & Tile::UPDATE_NEIGHBORS) != 0) {
             tileUpdated(x, y, z, oldTile);
             Tile* tobj = Tile::tiles[tile];
-            if (tobj != NULL && tobj->hasAnalogOutputSignal())
+            if (tobj != nullptr && tobj->hasAnalogOutputSignal())
                 updateNeighbourForOutputSignal(x, y, z, tile);
         }
     }
@@ -947,7 +947,7 @@ bool Level::setData(int x, int y, int z, int data, int updateFlags,
             (forceUpdate || (updateFlags & Tile::UPDATE_NEIGHBORS) != 0)) {
             tileUpdated(x, y, z, tile);
             Tile* tobj = Tile::tiles[tile];
-            if (tobj != NULL && tobj->hasAnalogOutputSignal())
+            if (tobj != nullptr && tobj->hasAnalogOutputSignal())
                 updateNeighbourForOutputSignal(x, y, z, tile);
         }
     }
@@ -1066,7 +1066,7 @@ void Level::neighborChanged(int x, int y, int z, int type) {
     int id = getTile(x, y, z);
     Tile* tile = Tile::tiles[id];
 
-    if (tile != NULL) {
+    if (tile != nullptr) {
         tile->neighborChanged(this, x, y, z, type);
     }
 }
@@ -1239,7 +1239,7 @@ int Level::getBrightness(LightLayer::variety layer, int x, int y, int z) {
     int idx = ix * chunkSourceXZSize + iz;
     LevelChunk* c = chunkSourceCache[idx];
 
-    if (c == NULL) return (int)layer;
+    if (c == nullptr) return (int)layer;
 
     if (y < 0) y = 0;
     if (y >= maxBuildHeight) y = maxBuildHeight - 1;
@@ -1290,7 +1290,7 @@ void Level::getNeighbourBrightnesses(int* brightnesses,
         // "surrounding" which is what we were returning here. Surrounding has
         // the same value as the enum value in our C++ code, so just cast it to
         // an int
-        if (c == NULL) {
+        if (c == nullptr) {
             for (int i = 0; i < 6; i++) {
                 brightnesses[i] = (int)layer;
             }
@@ -1377,8 +1377,8 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid) {
 }
 
 HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
-    if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z)) return NULL;
-    if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z)) return NULL;
+    if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z)) return nullptr;
+    if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z)) return nullptr;
 
     int xTile1 = Mth::floor(b->x);
     int yTile1 = Mth::floor(b->y);
@@ -1392,22 +1392,22 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
         int t = getTile(xTile0, yTile0, zTile0);
         int data = getData(xTile0, yTile0, zTile0);
         Tile* tile = Tile::tiles[t];
-        if (solidOnly && tile != NULL &&
+        if (solidOnly && tile != nullptr &&
             !tile->getAABB(this, xTile0, yTile0, zTile0).has_value()) {
             // No collision
 
         } else if (t > 0 && tile->mayPick(data, liquid)) {
             HitResult* r = tile->clip(this, xTile0, yTile0, zTile0, a, b);
-            if (r != NULL) return r;
+            if (r != nullptr) return r;
         }
     }
 
     int maxIterations = 200;
     while (maxIterations-- >= 0) {
         if (std::isnan(a->x) || std::isnan(a->y) || std::isnan(a->z))
-            return NULL;
+            return nullptr;
         if (xTile0 == xTile1 && yTile0 == yTile1 && zTile0 == zTile1)
-            return NULL;
+            return nullptr;
 
         bool xClipped = true;
         bool yClipped = true;
@@ -1500,21 +1500,21 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
         int t = getTile(xTile0, yTile0, zTile0);
         int data = getData(xTile0, yTile0, zTile0);
         Tile* tile = Tile::tiles[t];
-        if (solidOnly && tile != NULL &&
+        if (solidOnly && tile != nullptr &&
             !tile->getAABB(this, xTile0, yTile0, zTile0).has_value()) {
             // No collision
 
         } else if (t > 0 && tile->mayPick(data, liquid)) {
             HitResult* r = tile->clip(this, xTile0, yTile0, zTile0, a, b);
-            if (r != NULL) return r;
+            if (r != nullptr) return r;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void Level::playEntitySound(std::shared_ptr<Entity> entity, int iSound,
                             float volume, float pitch) {
-    if (entity == NULL) return;
+    if (entity == nullptr) return;
     AUTO_VAR(itEnd, listeners.end());
     for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++) {
         // 4J-PB - if the entity is a local player, don't play the sound
@@ -1534,7 +1534,7 @@ void Level::playEntitySound(std::shared_ptr<Entity> entity, int iSound,
 
 void Level::playPlayerSound(std::shared_ptr<Player> entity, int iSound,
                             float volume, float pitch) {
-    if (entity == NULL) return;
+    if (entity == nullptr) return;
     AUTO_VAR(itEnd, listeners.end());
     for (AUTO_VAR(it, listeners.begin()); it != itEnd; it++) {
         (*it)->playSoundExceptPlayer(entity, iSound, entity->x,
@@ -1597,7 +1597,7 @@ bool Level::addEntity(std::shared_ptr<Entity> e) {
     int xc = Mth::floor(e->x / 16);
     int zc = Mth::floor(e->z / 16);
 
-    if (e == NULL) {
+    if (e == nullptr) {
         return false;
     }
 
@@ -1660,10 +1660,10 @@ void Level::playerRemoved(std::shared_ptr<Entity> e) {
 }
 
 void Level::removeEntity(std::shared_ptr<Entity> e) {
-    if (e->rider.lock() != NULL) {
+    if (e->rider.lock() != nullptr) {
         e->rider.lock()->ride(nullptr);
     }
-    if (e->riding != NULL) {
+    if (e->riding != nullptr) {
         e->ride(nullptr);
     }
     e->remove();
@@ -1758,7 +1758,7 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
                 if (hasChunkAt(x, 64, z)) {
                     for (int y = y0 - 1; y < y1; y++) {
                         Tile* tile = Tile::tiles[getTile(x, y, z)];
-                        if (tile != NULL) {
+                        if (tile != nullptr) {
                             tile->addAABBs(this, x, y, z, box, &boxes, source);
                         }
                     }
@@ -1806,12 +1806,12 @@ AABBList* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
     std::vector<std::shared_ptr<Entity> >::iterator itEnd = ee->end();
     for (AUTO_VAR(it, ee->begin()); it != itEnd; it++) {
         AABB* collideBox = (*it)->getCollideBox();
-        if (collideBox != NULL && collideBox->intersects(*box)) {
+        if (collideBox != nullptr && collideBox->intersects(*box)) {
             boxes.push_back(*collideBox);
         }
 
         collideBox = source->getCollideAgainstBox(*it);
-        if (collideBox != NULL && collideBox->intersects(*box)) {
+        if (collideBox != nullptr && collideBox->intersects(*box)) {
             boxes.push_back(*collideBox);
         }
     }
@@ -1841,7 +1841,7 @@ AABBList* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
     //			{
     //				Tile *tile = Tile::tiles[getTile(x, y, z)];
 
-    //				if (tile != NULL)
+    //				if (tile != nullptr)
     //				{
     //					tile->addAABBs(this, x, y, z, box,
     //&boxes);
@@ -1944,7 +1944,7 @@ float Level::getTimeOfDay(float a) {
      * getTimeOfDay and changed it before releasing (without
      * re-committing)... that should be the only difference // jeb
      */
-    /* if (this != NULL) return 0.5f; */
+    /* if (this != nullptr) return 0.5f; */
 
     // 4J Added if so we can override timeOfDay without changing the time that
     // affects ticking of things
@@ -2130,7 +2130,7 @@ void Level::tickEntities() {
     for (unsigned int i = 0; i < entities.size();) {
         std::shared_ptr<Entity> e = entities.at(i);
 
-        if (e->riding != NULL) {
+        if (e->riding != nullptr) {
             if (e->riding->removed || e->riding->rider.lock() != e) {
                 e->riding->rider = std::weak_ptr<Entity>();
                 e->riding = nullptr;
@@ -2195,7 +2195,7 @@ void Level::tickEntities() {
             it = tileEntityList.erase(it);
             if (hasChunk(te->x >> 4, te->z >> 4)) {
                 LevelChunk* lc = getChunk(te->x >> 4, te->z >> 4);
-                if (lc != NULL)
+                if (lc != nullptr)
                     lc->removeTileEntity(te->x & 15, te->y, te->z & 15);
             }
         } else {
@@ -2234,7 +2234,7 @@ void Level::tickEntities() {
                 }
                 if (hasChunk(e->x >> 4, e->z >> 4)) {
                     LevelChunk* lc = getChunk(e->x >> 4, e->z >> 4);
-                    if (lc != NULL)
+                    if (lc != nullptr)
                         lc->setTileEntity(e->x & 15, e->y, e->z & 15, e);
                 }
 
@@ -2281,7 +2281,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     if (actual && e->inChunk)
     {
         e->tickCount++;
-        if (e->riding != NULL) {
+        if (e->riding != nullptr) {
             e->rideTick();
         } else {
             e->tick();
@@ -2318,7 +2318,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     }
 
     if (actual && e->inChunk) {
-        if (e->rider.lock() != NULL) {
+        if (e->rider.lock() != nullptr) {
             if (e->rider.lock()->removed || e->rider.lock()->riding != e) {
                 e->rider.lock()->riding = nullptr;
                 e->rider = std::weak_ptr<Entity>();
@@ -2357,7 +2357,7 @@ bool Level::containsAnyBlocks(AABB* box) {
         for (int y = y0; y < y1; y++)
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
-                if (tile != NULL) {
+                if (tile != nullptr) {
                     return true;
                 }
             }
@@ -2380,7 +2380,7 @@ bool Level::containsAnyLiquid(AABB* box) {
         for (int y = y0; y < y1; y++)
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
-                if (tile != NULL && tile->material->isLiquid()) {
+                if (tile != nullptr && tile->material->isLiquid()) {
                     return true;
                 }
             }
@@ -2410,7 +2410,7 @@ bool Level::containsAnyLiquid_NoLoad(AABB* box) {
                 if (!hasChunkAt(x, y, z))
                     return true;  // If we don't have it, it might be liquid...
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
-                if (tile != NULL && tile->material->isLiquid()) {
+                if (tile != nullptr && tile->material->isLiquid()) {
                     return true;
                 }
             }
@@ -2460,7 +2460,7 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
         for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
-                if (tile != NULL && tile->material == material) {
+                if (tile != nullptr && tile->material == material) {
                     double yt0 =
                         y + 1 - LiquidTile::getHeight(getData(x, y, z));
                     if (y1 >= yt0) {
@@ -2493,7 +2493,7 @@ bool Level::containsMaterial(AABB* box, Material* material) {
         for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
-                if (tile != NULL && tile->material == material) {
+                if (tile != nullptr && tile->material == material) {
                     return true;
                 }
             }
@@ -2514,7 +2514,7 @@ bool Level::containsLiquid(AABB* box, Material* material) {
         for (int y = y0; y < y1; y++) {
             for (int z = z0; z < z1; z++) {
                 Tile* tile = Tile::tiles[getTile(x, y, z)];
-                if (tile != NULL && tile->material == material) {
+                if (tile != nullptr && tile->material == material) {
                     int data = getData(x, y, z);
                     double yh1 = y + 1;
                     if (data < 8) {
@@ -2564,7 +2564,7 @@ float Level::getSeenPercent(Vec3* center, AABB* bb) {
                 double z = bb->z0 + (bb->z1 - bb->z0) * zz;
                 Vec3 a(x, y, z);
                 HitResult* res = clip(&a, center);
-                if (res == NULL) hits++;
+                if (res == nullptr) hits++;
                 delete res;
                 count++;
             }
@@ -2626,14 +2626,14 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
         LeaveCriticalSection(&m_tileEntityListCS);
     }
 
-    if (tileEntity == NULL) {
+    if (tileEntity == nullptr) {
         LevelChunk* lc = getChunk(x >> 4, z >> 4);
-        if (lc != NULL) {
+        if (lc != nullptr) {
             tileEntity = lc->getTileEntity(x & 15, y, z & 15);
         }
     }
 
-    if (tileEntity == NULL) {
+    if (tileEntity == nullptr) {
         EnterCriticalSection(&m_tileEntityListCS);
         for (AUTO_VAR(it, pendingTileEntities.begin());
              it != pendingTileEntities.end(); it++) {
@@ -2651,7 +2651,7 @@ std::shared_ptr<TileEntity> Level::getTileEntity(int x, int y, int z) {
 
 void Level::setTileEntity(int x, int y, int z,
                           std::shared_ptr<TileEntity> tileEntity) {
-    if (tileEntity != NULL && !tileEntity->isRemoved()) {
+    if (tileEntity != nullptr && !tileEntity->isRemoved()) {
         EnterCriticalSection(&m_tileEntityListCS);
         if (updatingTileEntities) {
             tileEntity->x = x;
@@ -2675,7 +2675,7 @@ void Level::setTileEntity(int x, int y, int z,
             tileEntityList.push_back(tileEntity);
 
             LevelChunk* lc = getChunk(x >> 4, z >> 4);
-            if (lc != NULL) lc->setTileEntity(x & 15, y, z & 15, tileEntity);
+            if (lc != nullptr) lc->setTileEntity(x & 15, y, z & 15, tileEntity);
         }
         LeaveCriticalSection(&m_tileEntityListCS);
     }
@@ -2684,7 +2684,7 @@ void Level::setTileEntity(int x, int y, int z,
 void Level::removeTileEntity(int x, int y, int z) {
     EnterCriticalSection(&m_tileEntityListCS);
     std::shared_ptr<TileEntity> te = getTileEntity(x, y, z);
-    if (te != NULL && updatingTileEntities) {
+    if (te != nullptr && updatingTileEntities) {
         te->setRemoved();
         AUTO_VAR(it, find(pendingTileEntities.begin(),
                           pendingTileEntities.end(), te));
@@ -2692,7 +2692,7 @@ void Level::removeTileEntity(int x, int y, int z) {
             pendingTileEntities.erase(it);
         }
     } else {
-        if (te != NULL) {
+        if (te != nullptr) {
             AUTO_VAR(it, find(pendingTileEntities.begin(),
                               pendingTileEntities.end(), te));
             if (it != pendingTileEntities.end()) {
@@ -2705,7 +2705,7 @@ void Level::removeTileEntity(int x, int y, int z) {
             }
         }
         LevelChunk* lc = getChunk(x >> 4, z >> 4);
-        if (lc != NULL) lc->removeTileEntity(x & 15, y, z & 15);
+        if (lc != nullptr) lc->removeTileEntity(x & 15, y, z & 15);
     }
     LeaveCriticalSection(&m_tileEntityListCS);
 }
@@ -2718,7 +2718,7 @@ void Level::markForRemoval(std::shared_ptr<TileEntity> entity) {
 
 bool Level::isSolidRenderTile(int x, int y, int z) {
     Tile* tile = Tile::tiles[getTile(x, y, z)];
-    if (tile == NULL) return false;
+    if (tile == nullptr) return false;
 
     // 4J - addition here to make rendering big blocks of leaves more efficient.
     // Normally leaves never consider themselves as solid, so blocks of leaves
@@ -2737,7 +2737,7 @@ bool Level::isSolidRenderTile(int x, int y, int z) {
         int azo[6] = {0, 0, 0, 0, 1, -1};
         for (int i = 0; i < 6; i++) {
             int t = getTile(x + axo[i], y + ayo[i], z + azo[i]);
-            if ((t != Tile::leaves_Id) && ((Tile::tiles[t] == NULL) ||
+            if ((t != Tile::leaves_Id) && ((Tile::tiles[t] == nullptr) ||
                                            !Tile::tiles[t]->isSolidRender())) {
                 return false;
             }
@@ -2765,18 +2765,18 @@ bool Level::isSolidBlockingTileInLoadedChunk(int x, int y, int z,
         return valueIfNotLoaded;
     }
     LevelChunk* chunk = chunkSource->getChunk(x >> 4, z >> 4);
-    if (chunk == NULL || chunk->isEmpty()) {
+    if (chunk == nullptr || chunk->isEmpty()) {
         return valueIfNotLoaded;
     }
 
     Tile* tile = Tile::tiles[getTile(x, y, z)];
-    if (tile == NULL) return false;
+    if (tile == nullptr) return false;
     return tile->material->isSolidBlocking() && tile->isCubeShaped();
 }
 
 bool Level::isFullAABBTile(int x, int y, int z) {
     int tile = getTile(x, y, z);
-    if (tile == 0 || Tile::tiles[tile] == NULL) {
+    if (tile == 0 || Tile::tiles[tile] == nullptr) {
         return false;
     }
     auto aabb = Tile::tiles[tile]->getAABB(this, x, y, z);
@@ -2790,18 +2790,18 @@ bool Level::isTopSolidBlocking(int x, int y, int z) {
 }
 
 bool Level::isTopSolidBlocking(Tile* tile, int data) {
-    if (tile == NULL) return false;
+    if (tile == nullptr) return false;
 
     if (tile->material->isSolidBlocking() && tile->isCubeShaped()) return true;
-    if (dynamic_cast<StairTile*>(tile) != NULL) {
+    if (dynamic_cast<StairTile*>(tile) != nullptr) {
         return (data & StairTile::UPSIDEDOWN_BIT) == StairTile::UPSIDEDOWN_BIT;
     }
-    if (dynamic_cast<HalfSlabTile*>(tile) != NULL) {
+    if (dynamic_cast<HalfSlabTile*>(tile) != nullptr) {
         return (data & HalfSlabTile::TOP_SLOT_BIT) ==
                HalfSlabTile::TOP_SLOT_BIT;
     }
-    if (dynamic_cast<HopperTile*>(tile) != NULL) return true;
-    if (dynamic_cast<TopSnowTile*>(tile) != NULL)
+    if (dynamic_cast<HopperTile*>(tile) != nullptr) return true;
+    if (dynamic_cast<TopSnowTile*>(tile) != nullptr)
         return (data & TopSnowTile::HEIGHT_MASK) == TopSnowTile::MAX_HEIGHT + 1;
     return false;
 }
@@ -2976,7 +2976,7 @@ void Level::tickClientSideTiles(int xo, int zo, LevelChunk* lc) {
             getBrightness(LightLayer::Sky, x, y, z) <= 0) {
             std::shared_ptr<Player> player =
                 getNearestPlayer(x + 0.5, y + 0.5, z + 0.5, 8);
-            if (player != NULL &&
+            if (player != nullptr &&
                 player->distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 2 * 2) {
                 // 4J-PB - Fixed issue with cave audio event having 2 sounds at
                 // 192k
@@ -3119,7 +3119,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
     // cached data sit on the CPU L2 cache better.
 
     int* toCheck;
-    if (cache == NULL) {
+    if (cache == nullptr) {
         toCheck = toCheckLevel;
     } else {
         toCheck = (int*)(cache + (16 * 16 * 16));
@@ -3203,7 +3203,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                                     // 4J - some changes here brought forward
                                     // from 1.2.3
                                     int block = std::max(
-                                        1, getBlockingCached(cache, layer, NULL,
+                                        1, getBlockingCached(cache, layer, nullptr,
                                                              xx, yy, zz));
                                     current = getBrightnessCached(cache, layer,
                                                                   xx, yy, zz);
@@ -3345,12 +3345,12 @@ bool Level::tickPendingTicks(bool force) { return false; }
 
 std::vector<TickNextTickData>* Level::fetchTicksInChunk(LevelChunk* chunk,
                                                         bool remove) {
-    return NULL;
+    return nullptr;
 }
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     std::shared_ptr<Entity> except, AABB* bb) {
-    return getEntities(except, bb, NULL);
+    return getEntities(except, bb, nullptr);
 }
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntities(
@@ -3377,7 +3377,7 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
     const std::type_info& baseClass, AABB* bb) {
-    return getEntitiesOfClass(baseClass, bb, NULL);
+    return getEntitiesOfClass(baseClass, bb, nullptr);
 }
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
@@ -3442,8 +3442,8 @@ void Level::tileEntityChanged(int x, int y, int z,
 // if we are just trying to match eINSTANCEOF exactly, and false if it is a
 // eINSTANCEOF from a group (eTYPE_WATERANIMAL, eTYPE_ANIMAL, eTYPE_MONSTER)
 unsigned int Level::countInstanceOf(
-    eINSTANCEOF clas, bool singleType, unsigned int* protectedCount /* = NULL*/,
-    unsigned int* couldWanderCount /* = NULL*/) {
+    eINSTANCEOF clas, bool singleType, unsigned int* protectedCount /* = nullptr*/,
+    unsigned int* couldWanderCount /* = nullptr*/) {
     unsigned int count = 0;
     if (protectedCount) *protectedCount = 0;
     if (couldWanderCount) *couldWanderCount = 0;
@@ -3547,16 +3547,16 @@ bool Level::mayPlace(int tileId, int x, int y, int z, bool ignoreEntities,
     auto aabb = tile->getAABB(this, x, y, z);
     if (ignoreEntities) aabb = std::nullopt;
     if (aabb.has_value() && !isUnobstructed(&*aabb, ignoreEntity)) return false;
-    if (targetTile != NULL &&
+    if (targetTile != nullptr &&
         (targetTile == Tile::water || targetTile == Tile::calmWater ||
          targetTile == Tile::lava || targetTile == Tile::calmLava ||
          targetTile == Tile::fire || targetTile->material->isReplaceable())) {
-        targetTile = NULL;
+        targetTile = nullptr;
     }
-    if (targetTile != NULL && targetTile->material == Material::decoration &&
+    if (targetTile != nullptr && targetTile->material == Material::decoration &&
         tile == Tile::anvil)
         return true;
-    if (tileId > 0 && targetTile == NULL) {
+    if (tileId > 0 && targetTile == nullptr) {
         if (tile->mayPlace(this, x, y, z, face, item)) {
             return true;
         }
@@ -4053,7 +4053,7 @@ int Level::getHeight() {
 }
 
 Tickable* Level::makeSoundUpdater(std::shared_ptr<Minecart> minecart) {
-    return NULL;
+    return nullptr;
 }
 
 Random* Level::getRandomFor(int x, int z, int blend) {

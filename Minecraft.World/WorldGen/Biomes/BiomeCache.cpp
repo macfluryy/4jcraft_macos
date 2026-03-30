@@ -88,7 +88,7 @@ BiomeCache::Block* BiomeCache::getBlockAt(int x, int z) {
     int64_t slot =
         (((int64_t)x) & 0xffffffffl) | ((((int64_t)z) & 0xffffffffl) << 32l);
     AUTO_VAR(it, cached.find(slot));
-    Block* block = NULL;
+    Block* block = nullptr;
     if (it == cached.end()) {
         MemSect(48);
         block = new Block(x, z, this);

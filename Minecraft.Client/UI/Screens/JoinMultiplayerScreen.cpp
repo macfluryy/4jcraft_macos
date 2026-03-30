@@ -6,7 +6,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.locale.h"
 
 JoinMultiplayerScreen::JoinMultiplayerScreen(Screen* lastScreen) {
-    ipEdit = NULL;
+    ipEdit = nullptr;
     this->lastScreen = lastScreen;
 }
 

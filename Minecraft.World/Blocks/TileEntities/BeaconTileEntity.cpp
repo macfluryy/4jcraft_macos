@@ -28,7 +28,7 @@ void BeaconTileEntity::staticCtor() {
     for (unsigned int tier = 0; tier < BEACON_EFFECTS_TIERS; ++tier) {
         for (unsigned int effect = 0; effect < BEACON_EFFECTS_EFFECTS;
              ++effect) {
-            BEACON_EFFECTS[tier][effect] = NULL;
+            BEACON_EFFECTS[tier][effect] = nullptr;
         }
     }
     BEACON_EFFECTS[0][0] = MobEffect::movementSpeed;
@@ -172,7 +172,7 @@ void BeaconTileEntity::setPrimaryPower(int primaryPower) {
     for (int tier = 0; tier < levels && tier < 3; tier++) {
         for (unsigned int e = 0; e < BEACON_EFFECTS_EFFECTS; ++e) {
             MobEffect* effect = BEACON_EFFECTS[tier][e];
-            if (effect == NULL) break;
+            if (effect == nullptr) break;
 
             if (effect->id == primaryPower) {
                 this->primaryPower = primaryPower;
@@ -190,7 +190,7 @@ void BeaconTileEntity::setSecondaryPower(int secondaryPower) {
         for (int tier = 0; tier < 4; tier++) {
             for (unsigned int e = 0; e < BEACON_EFFECTS_EFFECTS; ++e) {
                 MobEffect* effect = BEACON_EFFECTS[tier][e];
-                if (effect == NULL) break;
+                if (effect == nullptr) break;
 
                 if (effect->id == secondaryPower) {
                     this->secondaryPower = secondaryPower;
@@ -238,7 +238,7 @@ std::shared_ptr<ItemInstance> BeaconTileEntity::getItem(unsigned int slot) {
 
 std::shared_ptr<ItemInstance> BeaconTileEntity::removeItem(unsigned int slot,
                                                            int count) {
-    if (slot == 0 && paymentItem != NULL) {
+    if (slot == 0 && paymentItem != nullptr) {
         if (count >= paymentItem->count) {
             std::shared_ptr<ItemInstance> returnItem = paymentItem;
             paymentItem = nullptr;
@@ -253,7 +253,7 @@ std::shared_ptr<ItemInstance> BeaconTileEntity::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> BeaconTileEntity::removeItemNoUpdate(int slot) {
-    if (slot == 0 && paymentItem != NULL) {
+    if (slot == 0 && paymentItem != nullptr) {
         std::shared_ptr<ItemInstance> returnItem = paymentItem;
         paymentItem = nullptr;
         return returnItem;

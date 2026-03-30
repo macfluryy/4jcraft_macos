@@ -10,8 +10,8 @@
 #include "../Util/SoundTypes.h"
 
 TntTile::TntTile(int id) : Tile(id, Material::explosive) {
-    iconTop = NULL;
-    iconBottom = NULL;
+    iconTop = nullptr;
+    iconBottom = nullptr;
 }
 
 Icon* TntTile::getTexture(int face, int data) {
@@ -87,7 +87,7 @@ bool TntTile::use(Level* level, int x, int y, int z,
                   bool soundOnly /*=false*/)  // 4J added soundOnly param
 {
     if (soundOnly) return false;
-    if (player->getSelectedItem() != NULL &&
+    if (player->getSelectedItem() != nullptr &&
         player->getSelectedItem()->id == Item::flintAndSteel_Id) {
         destroy(level, x, y, z, EXPLODE_BIT, player);
         level->removeTile(x, y, z);

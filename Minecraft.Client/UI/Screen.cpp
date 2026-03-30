@@ -8,13 +8,13 @@
 
 Screen::Screen()  // 4J added
 {
-    minecraft = NULL;
+    minecraft = nullptr;
     width = 0;
     height = 0;
     passEvents = false;
-    font = NULL;
-    particles = NULL;
-    clickedButton = NULL;
+    font = nullptr;
+    particles = nullptr;
+    clickedButton = nullptr;
 }
 
 void Screen::render(int xm, int ym, float a) {
@@ -27,7 +27,7 @@ void Screen::render(int xm, int ym, float a) {
 
 void Screen::keyPressed(wchar_t eventCharacter, int eventKey) {
     if (eventKey == Keyboard::KEY_ESCAPE) {
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         //    minecraft->grabMouse();	// 4J - removed
         // 4jcraft: moved here from PauseScreen to ensure that serverside
         // unpausing is done in all scenarios
@@ -62,9 +62,9 @@ void Screen::mouseClicked(int x, int y, int buttonNum) {
 }
 
 void Screen::mouseReleased(int x, int y, int buttonNum) {
-    if (clickedButton != NULL && buttonNum == 0) {
+    if (clickedButton != nullptr && buttonNum == 0) {
         clickedButton->released(x, y);
-        clickedButton = NULL;
+        clickedButton = nullptr;
     }
 }
 
@@ -166,7 +166,7 @@ void Screen::removed() {}
 void Screen::renderBackground() { renderBackground(0); }
 
 void Screen::renderBackground(int vo) {
-    if (minecraft->level != NULL) {
+    if (minecraft->level != nullptr) {
         fillGradient(0, 0, width, height, 0xc0101010, 0xd0101010);
     } else {
         renderDirtBackground(vo);

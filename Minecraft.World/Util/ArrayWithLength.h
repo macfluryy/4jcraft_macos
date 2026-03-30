@@ -13,7 +13,7 @@ public:
     T* data;
     unsigned int length;
     arrayWithLength() {
-        data = NULL;
+        data = nullptr;
         length = 0;
     }
     arrayWithLength(unsigned int elements, bool bClearArray = true) {
@@ -39,7 +39,7 @@ public:
         T* temp = new T[elements];
         memset((void*)temp, 0, sizeof(T) * elements);
 
-        if (data != NULL) {
+        if (data != nullptr) {
             std::copy(data, data + length, temp);
 
             delete[] data;
@@ -61,7 +61,7 @@ public:
     _parrayWithLength* data;
     unsigned int length;
     array2DWithLength() {
-        data = NULL;
+        data = nullptr;
         length = 0;
     }
     array2DWithLength(unsigned int dimA, unsigned int dimB) {

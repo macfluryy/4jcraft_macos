@@ -478,7 +478,7 @@ static uint64_t libdivide_128_div_64_to_64(uint64_t u1, uint64_t u0, uint64_t v,
     int s;                  // Shift amount for norm.
     
     if (u1 >= v) {            // If overflow, set rem.
-        if (r != NULL)         // to an impossible value,
+        if (r != nullptr)         // to an impossible value,
             *r = (uint64_t)(-1);    // and return the largest
         return (uint64_t)(-1);}    // possible quotient.
     
@@ -513,7 +513,7 @@ again2:
         rhat = rhat + vn1;
         if (rhat < b) goto again2;}
     
-    if (r != NULL)            // If remainder is wanted,
+    if (r != nullptr)            // If remainder is wanted,
         *r = (un21*b + un0 - q0*v) >> s;     // return it.
     return q1*b + q0;
 }
@@ -1141,11 +1141,11 @@ namespace libdivide_internal {
 #endif
 
     /* Some bogus unswitch functions for unsigned types so the same (presumably templated) code can work for both signed and unsigned. */
-    uint32_t crash_u32(uint32_t, const libdivide_u32_t *) { abort(); return *(uint32_t *)NULL; }
-    uint64_t crash_u64(uint64_t, const libdivide_u64_t *) { abort(); return *(uint64_t *)NULL; }
+    uint32_t crash_u32(uint32_t, const libdivide_u32_t *) { abort(); return *(uint32_t *)nullptr; }
+    uint64_t crash_u64(uint64_t, const libdivide_u64_t *) { abort(); return *(uint64_t *)nullptr; }
 #if LIBDIVIDE_USE_SSE2
-    __m128i crash_u32_vector(__m128i, const libdivide_u32_t *) { abort(); return *(__m128i *)NULL; }
-    __m128i crash_u64_vector(__m128i, const libdivide_u64_t *) { abort(); return *(__m128i *)NULL; }
+    __m128i crash_u32_vector(__m128i, const libdivide_u32_t *) { abort(); return *(__m128i *)nullptr; }
+    __m128i crash_u64_vector(__m128i, const libdivide_u64_t *) { abort(); return *(__m128i *)nullptr; }
 #endif
 
     template<typename IntType, typename DenomType, DenomType gen_func(IntType), int get_algo(const DenomType *), IntType do_func(IntType, const DenomType *), MAYBE_VECTOR_PARAM>

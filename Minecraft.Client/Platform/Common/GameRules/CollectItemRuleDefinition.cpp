@@ -66,7 +66,7 @@ void CollectItemRuleDefinition::populateGameRule(
 bool CollectItemRuleDefinition::onCollectItem(
     GameRule* rule, std::shared_ptr<ItemInstance> item) {
     bool statusChanged = false;
-    if (item != NULL && item->id == m_itemId &&
+    if (item != nullptr && item->id == m_itemId &&
         item->getAuxValue() == m_auxValue &&
         item->get4JData() == m_4JDataValue) {
         if (!getComplete(rule)) {
@@ -83,12 +83,12 @@ bool CollectItemRuleDefinition::onCollectItem(
                     "auxValue:%d, quantity:%d, dataTag:%d\n",
                     m_itemId, m_auxValue, m_quantity, m_4JDataValue);
 
-                if (rule->getConnection() != NULL) {
+                if (rule->getConnection() != nullptr) {
                     rule->getConnection()->send(
                         std::shared_ptr<UpdateGameRuleProgressPacket>(
                             new UpdateGameRuleProgressPacket(
                                 getActionType(), this->m_descriptionId,
-                                m_itemId, m_auxValue, this->m_4JDataValue, NULL,
+                                m_itemId, m_auxValue, this->m_4JDataValue, nullptr,
                                 0)));
                 }
             }
@@ -101,7 +101,7 @@ std::wstring CollectItemRuleDefinition::generateXml(
     std::shared_ptr<ItemInstance> item) {
     // 4J Stu - This should be kept in sync with the GameRulesDefinition.xsd
     std::wstring xml = L"";
-    if (item != NULL) {
+    if (item != nullptr) {
         xml = L"<CollectItemRule itemId=\"" + _toString<int>(item->id) +
               L"\" quantity=\"SET\" descriptionName=\"OPTIONAL\" "
               L"promptName=\"OPTIONAL\"";

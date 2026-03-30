@@ -17,7 +17,7 @@ void ChatScreen::tick() { frame++; }
 
 void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
     if (eventKey == Keyboard::KEY_ESCAPE) {
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         return;
     }
     if (eventKey == Keyboard::KEY_RETURN) {
@@ -28,7 +28,7 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
                 minecraft->player->chat(trim);
             }
         }
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         return;
     }
     if (eventKey == Keyboard::KEY_BACK && message.length() > 0)
@@ -49,7 +49,7 @@ void ChatScreen::render(int xm, int ym, float a) {
 
 void ChatScreen::mouseClicked(int x, int y, int buttonNum) {
     if (buttonNum == 0) {
-        if (minecraft->gui->selectedName != L"")  // 4J - was NULL comparison
+        if (minecraft->gui->selectedName != L"")  // 4J - was nullptr comparison
         {
             if (message.length() > 0 && message[message.length() - 1] != L' ') {
                 message += L" ";

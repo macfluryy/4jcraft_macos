@@ -11,7 +11,7 @@
 
 UIControl_EnchantmentBook::UIControl_EnchantmentBook() {
     UIControl::setControlType(UIControl::eEnchantmentBook);
-    model = NULL;
+    model = nullptr;
     last = nullptr;
 
     time = 0;
@@ -68,13 +68,13 @@ void UIControl_EnchantmentBook::render(IggyCustomDrawCallbackRegion* region) {
 
     glEnable(GL_CULL_FACE);
 
-    if (model == NULL) {
+    if (model == nullptr) {
         // Share the model the the EnchantTableRenderer
 
         EnchantTableRenderer* etr =
             (EnchantTableRenderer*)TileEntityRenderDispatcher::instance
                 ->getRenderer(eTYPE_ENCHANTMENTTABLEENTITY);
-        if (etr != NULL) {
+        if (etr != nullptr) {
             model = etr->bookModel;
         } else {
             model = new BookModel();

@@ -33,7 +33,7 @@ void RepairResultSlot::onTake(std::shared_ptr<Player> player,
     if (m_menu->repairItemCountCost > 0) {
         std::shared_ptr<ItemInstance> addition =
             m_menu->repairSlots->getItem(AnvilMenu::ADDITIONAL_SLOT);
-        if (addition != NULL && addition->count > m_menu->repairItemCountCost) {
+        if (addition != nullptr && addition->count > m_menu->repairItemCountCost) {
             addition->count -= m_menu->repairItemCountCost;
             m_menu->repairSlots->setItem(AnvilMenu::ADDITIONAL_SLOT, addition);
         } else {

@@ -13,7 +13,7 @@ PanicGoal::PanicGoal(PathfinderMob* mob, double speedModifier) {
 }
 
 bool PanicGoal::canUse() {
-    if (mob->getLastHurtByMob() == NULL && !mob->isOnFire()) return false;
+    if (mob->getLastHurtByMob() == nullptr && !mob->isOnFire()) return false;
 
     // 4jcraft: stop entities from being eternally scared (referenced from
     // smartcmd/MinecraftConsoles #519)

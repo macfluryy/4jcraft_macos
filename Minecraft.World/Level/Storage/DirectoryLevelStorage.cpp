@@ -208,12 +208,12 @@ void DirectoryLevelStorage::checkSession() {
 ChunkStorage* DirectoryLevelStorage::createChunkStorage(Dimension* dimension) {
     // 4J Jev, removed try/catch.
 
-    if (dynamic_cast<HellDimension*>(dimension) != NULL) {
+    if (dynamic_cast<HellDimension*>(dimension) != nullptr) {
         File dir2 = File(dir, LevelStorage::NETHER_FOLDER);
         // dir2.mkdirs(); // 4J Removed
         return new OldChunkStorage(dir2, true);
     }
-    if (dynamic_cast<TheEndDimension*>(dimension) != NULL) {
+    if (dynamic_cast<TheEndDimension*>(dimension) != nullptr) {
         File dir2 = File(dir, LevelStorage::ENDER_FOLDER);
         // dir2.mkdirs(); // 4J Removed
         return new OldChunkStorage(dir2, true);
@@ -318,7 +318,7 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
         return ret;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void DirectoryLevelStorage::saveLevelData(
@@ -394,7 +394,7 @@ void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
 // 4J Changed return val to bool to check if new player or loaded player
 CompoundTag* DirectoryLevelStorage::load(std::shared_ptr<Player> player) {
     CompoundTag* tag = loadPlayerDataTag(player->getXuid());
-    if (tag != NULL) {
+    if (tag != nullptr) {
         player->load(tag);
     }
     return tag;
@@ -418,7 +418,7 @@ CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {
             ConsoleSaveFileInputStream(m_saveFile, realFile);
         return NbtIo::readCompressed(&fis);
     }
-    return NULL;
+    return nullptr;
 }
 
 // 4J Added function
@@ -428,7 +428,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
     std::vector<FileEntry*>* playerFiles =
         m_saveFile->getFilesWithPrefix(playerDir.getName());
 
-    if (playerFiles != NULL) {
+    if (playerFiles != nullptr) {
 #if !defined(_FINAL_BUILD)
         if (app.DebugSettingsOn() &&
             app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
@@ -496,14 +496,14 @@ void DirectoryLevelStorage::resetNetherPlayerPositions() {
         std::vector<FileEntry*>* playerFiles =
             m_saveFile->getFilesWithPrefix(playerDir.getName());
 
-        if (playerFiles != NULL) {
+        if (playerFiles != nullptr) {
             for (AUTO_VAR(it, playerFiles->begin()); it != playerFiles->end();
                  ++it) {
                 FileEntry* realFile = *it;
                 ConsoleSaveFileInputStream fis =
                     ConsoleSaveFileInputStream(m_saveFile, realFile);
                 CompoundTag* tag = NbtIo::readCompressed(&fis);
-                if (tag != NULL) {
+                if (tag != nullptr) {
                     // If the player is in the nether, set their y position
                     // above the top of the nether This will force the player to
                     // be spawned in a valid position in the overworld when they

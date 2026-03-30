@@ -21,7 +21,7 @@ InputStream* FolderTexturePack::getResourceImplementation(
     wDrive = L"Common\\DummyTexturePack\\res";
     InputStream* resource = InputStream::getResourceAsStream(wDrive + name);
     // InputStream *stream =
-    // DefaultTexturePack::class->getResourceAsStream(name); if (stream == NULL)
+    // DefaultTexturePack::class->getResourceAsStream(name); if (stream == nullptr)
     //{
     //	throw new FileNotFoundException(name);
     // }

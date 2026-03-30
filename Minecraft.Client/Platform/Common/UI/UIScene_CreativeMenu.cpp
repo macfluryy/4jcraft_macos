@@ -42,7 +42,7 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
     }
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -335,7 +335,7 @@ void UIScene_CreativeMenu::setSectionSelectedSlot(ESceneSection eSection, int x,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionInventoryCreativeSelector:
             slotList = &m_slotListContainer;
@@ -352,7 +352,7 @@ void UIScene_CreativeMenu::setSectionSelectedSlot(ESceneSection eSection, int x,
 }
 
 UIControl* UIScene_CreativeMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionInventoryCreativeSelector:
             control = &m_slotListContainer;

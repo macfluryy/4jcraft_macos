@@ -12,12 +12,12 @@ bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 
     for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
         std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-        if (item == NULL) continue;
+        if (item == nullptr) continue;
 
         ArmorItem* armor = dynamic_cast<ArmorItem*>(item->getItem());
         if (armor) {
             if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH &&
-                target == NULL) {
+                target == nullptr) {
                 target = item;
             } else {
                 return false;
@@ -29,7 +29,7 @@ bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
         }
     }
 
-    return target != NULL && !dyes.empty();
+    return target != nullptr && !dyes.empty();
 }
 
 std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
@@ -38,17 +38,17 @@ std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
     int colorTotals[3] = {0, 0, 0};
     int intensityTotal = 0;
     int colourCounts = 0;
-    ArmorItem* armor = NULL;
+    ArmorItem* armor = nullptr;
 
-    if (craftSlots != NULL) {
+    if (craftSlots != nullptr) {
         for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
             std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-            if (item == NULL) continue;
+            if (item == nullptr) continue;
 
             armor = dynamic_cast<ArmorItem*>(item->getItem());
             if (armor) {
                 if (armor->getMaterial() == ArmorItem::ArmorMaterial::CLOTH &&
-                    target == NULL) {
+                    target == nullptr) {
                     target = item->copy();
                     target->count = 1;
 
@@ -88,7 +88,7 @@ std::shared_ptr<ItemInstance> ArmorDyeRecipe::assembleDyedArmor(
         }
     }
 
-    if (armor == NULL) return nullptr;
+    if (armor == nullptr) return nullptr;
 
     int red = (colorTotals[0] / colourCounts);
     int green = (colorTotals[1] / colourCounts);
@@ -117,7 +117,7 @@ std::shared_ptr<ItemInstance> ArmorDyeRecipe::assemble(
 
 int ArmorDyeRecipe::size() { return 10; }
 
-const ItemInstance* ArmorDyeRecipe::getResultItem() { return NULL; }
+const ItemInstance* ArmorDyeRecipe::getResultItem() { return nullptr; }
 
 const int ArmorDyeRecipe::getGroup() { return ShapedRecipy::eGroupType_Armour; }
 

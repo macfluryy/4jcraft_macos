@@ -40,7 +40,7 @@ bool	CSocialManager::IsTitleAllowedToPostImages() { return false; }
 
 bool	CSocialManager::PostLinkToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect ) { return false; }
 bool	CSocialManager::PostImageToSocialNetwork( ESocialNetwork eSocialNetwork, DWORD dwUserIndex, bool bUsingKinect ) { return false; }
-CSocialManager *CSocialManager::Instance() { return NULL; }
+CSocialManager *CSocialManager::Instance() { return nullptr; }
 void CSocialManager::SetSocialPostText(LPCWSTR Title, LPCWSTR Caption, LPCWSTR Desc) {};
 #endif
 
@@ -91,7 +91,7 @@ void PIXEndNamedEvent()
 }
 void PIXSetMarkerDeprecated(int a, char *b, ...) {}
 
-// void *D3DXBUFFER::GetBufferPointer() { return NULL; }
+// void *D3DXBUFFER::GetBufferPointer() { return nullptr; }
 // int D3DXBUFFER::GetBufferSize() { return 0; }
 // void D3DXBUFFER::Release() {}
 
@@ -253,11 +253,11 @@ HRESULT XMemCreateCompressionContext(
 )
 {
 	/*
-	COMPRESSOR_HANDLE Compressor    = NULL;
+	COMPRESSOR_HANDLE Compressor    = nullptr;
 
 	HRESULT hr = CreateCompressor(
 		COMPRESS_ALGORITHM_XPRESS_HUFF, //  Compression Algorithm
-		NULL,                           //  Optional allocation routine
+		nullptr,                           //  Optional allocation routine
 		&Compressor);                   //  Handle
 
 	pContext = (XMEMDECOMPRESSION_CONTEXT *)Compressor;
@@ -274,11 +274,11 @@ HRESULT XMemCreateDecompressionContext(
 )
 {
 	/*
-	DECOMPRESSOR_HANDLE  Decompressor    = NULL;
+	DECOMPRESSOR_HANDLE  Decompressor    = nullptr;
 
 	HRESULT hr = CreateDecompressor(
 		COMPRESS_ALGORITHM_XPRESS_HUFF, //  Compression Algorithm
-		NULL,                           //  Optional allocation routine
+		nullptr,                           //  Optional allocation routine
 		&Decompressor);                   //  Handle
 
 	pContext = (XMEMDECOMPRESSION_CONTEXT *)Decompressor;
@@ -410,8 +410,8 @@ bool				C_4JProfile::LocaleIsUSorCanada(void) { return false; }
 HRESULT				C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
 bool				C_4JProfile::IsSystemUIDisplayed() { return false; }
 void				C_4JProfile::SetProfileReadErrorCallback(void ( *Func)(void *), void *lpParam) {}
-int( *defaultOptionsCallback)(void *,C_4JProfile::PROFILESETTINGS *, const int iPad) = NULL;
-void *lpProfileParam = NULL;
+int( *defaultOptionsCallback)(void *,C_4JProfile::PROFILESETTINGS *, const int iPad) = nullptr;
+void *lpProfileParam = nullptr;
 int					C_4JProfile::SetDefaultOptionsCallback(int( *Func)(void *,PROFILESETTINGS *, const int iPad),void *lpParam)
 {
 	defaultOptionsCallback = Func;
@@ -489,7 +489,7 @@ void								C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,XCONTENT_DAT
 void								C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,	std::uint8_t * *ppbImageData, unsigned int *pImageBytes) {}
 C4JStorage::ESaveGameState			C4JStorage::LoadSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool, const bool), LPVOID lpParam) {return C4JStorage::ESaveGame_Idle;}
 C4JStorage::EDeleteGameStatus		C4JStorage::DeleteSaveData(PSAVE_INFO pSaveInfo,int( *Func)(LPVOID lpParam,const bool), LPVOID lpParam) { return C4JStorage::EDeleteGame_Idle; }
-PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return NULL;}
+PSAVE_DETAILS						C4JStorage::ReturnSavesInfo() {return nullptr;}
 
 void								C4JStorage::RegisterMarketplaceCountsCallback(int ( *Func)(LPVOID lpParam, C4JStorage::DLC_TMS_DETAILS *, int), LPVOID lpParam ) {}
 void								C4JStorage::SetDLCPackageRoot(char *pszDLCRoot) {}
@@ -511,7 +511,7 @@ void								C4JStorage::StoreTMSPathName(WCHAR *pwchName) {}
 unsigned int						C4JStorage::CRC(unsigned char *buf, int len) { return 0; }
 
 struct PTMSPP_FILEDATA;
-C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)/*=NULL*/,LPVOID lpParam/*=NULL*/, int iUserData/*=0*/) {return C4JStorage::ETMSStatus_Idle;}
+C4JStorage::ETMSStatus				C4JStorage::TMSPP_ReadFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,LPCSTR szFilename,int( *Func)(LPVOID,int,int,PTMSPP_FILEDATA, LPCSTR)/*=nullptr*/,LPVOID lpParam/*=nullptr*/, int iUserData/*=0*/) {return C4JStorage::ETMSStatus_Idle;}
 #endif
 
 #endif

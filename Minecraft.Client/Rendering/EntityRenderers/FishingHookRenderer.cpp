@@ -54,7 +54,7 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
     glDisable(GL_RESCALE_NORMAL);
     glPopMatrix();
 
-    if (hook->owner != NULL) {
+    if (hook->owner != nullptr) {
         float swing = hook->owner->getAttackAnim(a);
         float swing2 = (float)Mth::sin(sqrt(swing) * PI);
 

@@ -76,7 +76,7 @@ void Cow::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
 
 bool Cow::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item != NULL && item->id == Item::bucket_empty->id &&
+    if (item != nullptr && item->id == Item::bucket_empty->id &&
         !player->abilities.instabuild) {
         player->awardStat(GenericStats::cowsMilked(),
                           GenericStats::param_cowsMilked());

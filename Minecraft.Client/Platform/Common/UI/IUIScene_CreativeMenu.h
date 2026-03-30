@@ -77,9 +77,9 @@ public:
         TabSpec(const wchar_t* icon, int descriptionId, int staticGroupsCount,
                 ECreative_Inventory_Groups* staticGroups,
                 int dynamicGroupsCount = 0,
-                ECreative_Inventory_Groups* dynamicGroups = NULL,
+                ECreative_Inventory_Groups* dynamicGroups = nullptr,
                 int debugGroupsCount = 0,
-                ECreative_Inventory_Groups* debugGroups = NULL);
+                ECreative_Inventory_Groups* debugGroups = nullptr);
         ~TabSpec();
 
         void populateMenu(AbstractContainerMenu* menu, int dynamicIndex,

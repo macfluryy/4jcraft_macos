@@ -5,7 +5,7 @@
 #include "AwardStatPacket.h"
 
 AwardStatPacket::AwardStatPacket() {
-    this->m_paramData.data = NULL;
+    this->m_paramData.data = nullptr;
     this->m_paramData.length = 0;
 }
 
@@ -28,15 +28,15 @@ AwardStatPacket::AwardStatPacket(int statId, byteArray paramData) {
 }
 
 AwardStatPacket::~AwardStatPacket() {
-    if (m_paramData.data != NULL) {
+    if (m_paramData.data != nullptr) {
         delete[] m_paramData.data;
-        m_paramData.data = NULL;
+        m_paramData.data = nullptr;
     }
 }
 
 void AwardStatPacket::handle(PacketListener* listener) {
     listener->handleAwardStat(shared_from_this());
-    m_paramData.data = NULL;
+    m_paramData.data = nullptr;
 }
 
 void AwardStatPacket::read(DataInputStream* dis)  // throws IOException

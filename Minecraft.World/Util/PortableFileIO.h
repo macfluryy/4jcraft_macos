@@ -48,7 +48,7 @@ inline int64_t Tell(std::FILE* file) {
 inline BinaryReadResult ReadBinaryFile(const std::wstring& path, void* buffer,
                                        std::size_t capacity) {
     std::FILE* stream = OpenBinaryFileForRead(path);
-    if (stream == NULL) {
+    if (stream == nullptr) {
         return {BinaryReadStatus::not_found, 0, 0};
     }
 
@@ -88,7 +88,7 @@ inline BinaryReadResult ReadBinaryFileSegment(const std::wstring& path,
                                               std::size_t offset, void* buffer,
                                               std::size_t bytesToRead) {
     std::FILE* stream = OpenBinaryFileForRead(path);
-    if (stream == NULL) {
+    if (stream == nullptr) {
         return {BinaryReadStatus::not_found, 0, 0};
     }
 
@@ -132,7 +132,7 @@ inline bool WriteBinaryFile(const std::wstring& path, const void* buffer,
     const std::string nativePath = wstringtofilename(path);
     std::FILE* stream = std::fopen(nativePath.c_str(), "wb");
 #endif
-    if (stream == NULL) {
+    if (stream == nullptr) {
         return false;
     }
 

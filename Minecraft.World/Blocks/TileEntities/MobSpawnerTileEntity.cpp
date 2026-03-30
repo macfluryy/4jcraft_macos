@@ -27,7 +27,7 @@ int MobSpawnerTileEntity::TileEntityMobSpawner::getZ() { return m_parent->z; }
 void MobSpawnerTileEntity::TileEntityMobSpawner::setNextSpawnData(
     BaseMobSpawner::SpawnData* nextSpawnData) {
     BaseMobSpawner::setNextSpawnData(nextSpawnData);
-    if (getLevel() != NULL)
+    if (getLevel() != nullptr)
         getLevel()->sendTileUpdated(m_parent->x, m_parent->y, m_parent->z);
 }
 

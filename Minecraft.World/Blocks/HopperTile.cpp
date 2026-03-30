@@ -74,7 +74,7 @@ bool HopperTile::use(Level* level, int x, int y, int z,
         return true;
     }
     std::shared_ptr<HopperTileEntity> hopper = getHopper(level, x, y, z);
-    if (hopper != NULL) player->openHopper(hopper);
+    if (hopper != nullptr) player->openHopper(hopper);
     return true;
 }
 
@@ -98,10 +98,10 @@ void HopperTile::onRemove(Level* level, int x, int y, int z, int id, int data) {
     std::shared_ptr<Container> container =
         std::dynamic_pointer_cast<HopperTileEntity>(
             level->getTileEntity(x, y, z));
-    if (container != NULL) {
+    if (container != nullptr) {
         for (int i = 0; i < container->getContainerSize(); i++) {
             std::shared_ptr<ItemInstance> item = container->getItem(i);
-            if (item != NULL) {
+            if (item != nullptr) {
                 float xo = random.nextFloat() * 0.8f + 0.1f;
                 float yo = random.nextFloat() * 0.8f + 0.1f;
                 float zo = random.nextFloat() * 0.8f + 0.1f;
@@ -177,7 +177,7 @@ void HopperTile::registerIcons(IconRegister* iconRegister) {
 Icon* HopperTile::getTexture(const std::wstring& name) {
     if (name.compare(TEXTURE_OUTSIDE) == 0) return Tile::hopper->hopperIcon;
     if (name.compare(TEXTURE_INSIDE) == 0) return Tile::hopper->hopperInnerIcon;
-    return NULL;
+    return nullptr;
 }
 
 std::wstring HopperTile::getTileItemIconName() { return L"hopper"; }

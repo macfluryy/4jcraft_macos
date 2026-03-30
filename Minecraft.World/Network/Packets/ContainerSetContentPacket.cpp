@@ -15,7 +15,7 @@ ContainerSetContentPacket::ContainerSetContentPacket(
     items = ItemInstanceArray((int)newItems->size());
     for (unsigned int i = 0; i < items.length; i++) {
         std::shared_ptr<ItemInstance> item = newItems->at(i);
-        items[i] = item == NULL ? nullptr : item->copy();
+        items[i] = item == nullptr ? nullptr : item->copy();
     }
 }
 

@@ -104,7 +104,7 @@ void PistonPieceEntity::moveCollidedEntities(float progress, float amount) {
 }
 
 void PistonPieceEntity::finalTick() {
-    if (progressO < 1 && level != NULL) {
+    if (progressO < 1 && level != nullptr) {
         progressO = progress = 1;
         level->removeTileEntity(x, y, z);
         setRemoved();

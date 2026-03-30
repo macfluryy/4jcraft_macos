@@ -52,7 +52,7 @@ void RemotePlayer::tick() {
     walkAnimPos += walkAnimSpeed;
 
     if (!hasStartedUsingItem && isUsingItemFlag() &&
-        inventory->items[inventory->selected] != NULL) {
+        inventory->items[inventory->selected] != nullptr) {
         std::shared_ptr<ItemInstance> item =
             inventory->items[inventory->selected];
         startUsingItem(inventory->items[inventory->selected],

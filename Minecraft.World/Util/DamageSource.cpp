@@ -69,7 +69,7 @@ DamageSource* DamageSource::arrow(std::shared_ptr<Arrow> arrow,
 
 DamageSource* DamageSource::fireball(std::shared_ptr<Fireball> fireball,
                                      std::shared_ptr<Entity> owner) {
-    if (owner == NULL) {
+    if (owner == nullptr) {
         return (new IndirectEntityDamageSource(ChatPacket::e_ChatDeathOnFire,
                                                ChatPacket::e_ChatDeathOnFire,
                                                fireball, fireball))
@@ -108,7 +108,7 @@ DamageSource* DamageSource::thorns(std::shared_ptr<Entity> source) {
 }
 
 DamageSource* DamageSource::explosion(Explosion* explosion) {
-    if ((explosion != NULL) && (explosion->getSourceMob() != NULL)) {
+    if ((explosion != nullptr) && (explosion->getSourceMob() != nullptr)) {
         return (new EntityDamageSource(ChatPacket::e_ChatDeathExplosionPlayer,
                                        ChatPacket::e_ChatDeathExplosionPlayer,
                                        explosion->getSourceMob()))
@@ -205,7 +205,7 @@ DamageSource* DamageSource::setMagic() {
 std::shared_ptr<ChatPacket> DamageSource::getDeathMessagePacket(
     std::shared_ptr<LivingEntity> player) {
     std::shared_ptr<LivingEntity> source = player->getKillCredit();
-    if (source != NULL) {
+    if (source != nullptr) {
         return std::shared_ptr<ChatPacket>(new ChatPacket(
             player->getNetworkName(),
             m_msgWithItemId != ChatPacket::e_ChatCustom ? m_msgWithItemId

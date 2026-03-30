@@ -38,7 +38,7 @@ void EnchantmentTableEntity::tick() {
 
     std::shared_ptr<Player> player =
         level->getNearestPlayer(x + 0.5f, y + 0.5f, z + 0.5f, 3);
-    if (player != NULL) {
+    if (player != nullptr) {
         double xd = player->x - (x + 0.5f);
         double zd = player->z - (z + 0.5f);
 

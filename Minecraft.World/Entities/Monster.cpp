@@ -42,7 +42,7 @@ std::shared_ptr<Entity> Monster::findAttackTarget() {
 
     std::shared_ptr<Player> player =
         level->getNearestAttackablePlayer(shared_from_this(), 16);
-    if (player != NULL && canSee(player)) return player;
+    if (player != nullptr && canSee(player)) return player;
     return std::shared_ptr<Player>();
 }
 

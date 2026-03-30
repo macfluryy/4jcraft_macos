@@ -78,7 +78,7 @@ void SharedMonsterAttributes::loadAttributes(BaseAttributeMap* attributes,
         AttributeInstance* instance = attributes->getInstance(
             static_cast<eATTRIBUTE_ID>(tag->getInt(L"ID")));
 
-        if (instance != NULL) {
+        if (instance != nullptr) {
             loadAttribute(instance, tag);
         } else {
             app.DebugPrintf("Ignoring unknown attribute '%d'",
@@ -98,7 +98,7 @@ void SharedMonsterAttributes::loadAttribute(AttributeInstance* instance,
         for (int i = 0; i < list->size(); i++) {
             AttributeModifier* modifier = loadAttributeModifier(list->get(i));
             AttributeModifier* old = instance->getModifier(modifier->getId());
-            if (old != NULL) instance->removeModifier(old);
+            if (old != nullptr) instance->removeModifier(old);
             instance->addModifier(modifier);
         }
     }

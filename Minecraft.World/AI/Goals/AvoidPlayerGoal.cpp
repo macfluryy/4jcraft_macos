@@ -36,11 +36,11 @@ AvoidPlayerGoal::AvoidPlayerGoal(PathfinderMob* mob,
     entitySelector = new AvoidPlayerGoalEntitySelector(this);
 
     toAvoid = std::weak_ptr<Entity>();
-    path = NULL;
+    path = nullptr;
 }
 
 AvoidPlayerGoal::~AvoidPlayerGoal() {
-    if (path != NULL) delete path;
+    if (path != nullptr) delete path;
     delete entitySelector;
 }
 
@@ -48,10 +48,10 @@ bool AvoidPlayerGoal::canUse() {
     if (avoidType == typeid(Player)) {
         std::shared_ptr<TamableAnimal> tamableAnimal =
             std::dynamic_pointer_cast<TamableAnimal>(mob->shared_from_this());
-        if (tamableAnimal != NULL && tamableAnimal->isTame()) return false;
+        if (tamableAnimal != nullptr && tamableAnimal->isTame()) return false;
         toAvoid = std::weak_ptr<Entity>(
             mob->level->getNearestPlayer(mob->shared_from_this(), maxDist));
-        if (toAvoid.lock() == NULL) return false;
+        if (toAvoid.lock() == nullptr) return false;
     } else {
         AABB grown_bb = mob->bb.grow(maxDist, 3, maxDist);
         std::vector<std::shared_ptr<Entity> >* entities =
@@ -75,18 +75,18 @@ bool AvoidPlayerGoal::canUse() {
         return false;
     delete path;
     path = pathNav->createPath(pos->x, pos->y, pos->z);
-    if (path == NULL) return false;
+    if (path == nullptr) return false;
     if (!path->endsInXZ(&*pos)) return false;
     return true;
 }
 
 bool AvoidPlayerGoal::canContinueToUse() {
-    return toAvoid.lock() != NULL && !pathNav->isDone();
+    return toAvoid.lock() != nullptr && !pathNav->isDone();
 }
 
 void AvoidPlayerGoal::start() {
     pathNav->moveTo(path, walkSpeedModifier);
-    path = NULL;
+    path = nullptr;
 }
 
 void AvoidPlayerGoal::stop() { toAvoid = std::weak_ptr<Entity>(); }

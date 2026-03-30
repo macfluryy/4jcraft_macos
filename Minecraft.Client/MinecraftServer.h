@@ -45,9 +45,9 @@ typedef struct _NetworkGameInitData {
 
     _NetworkGameInitData() {
         seed = 0;
-        saveData = NULL;
+        saveData = nullptr;
         settings = 0;
-        levelGen = NULL;
+        levelGen = nullptr;
         texturePackId = 0;
         findSeed = false;
         xzSize = LEVEL_LEGACY_WIDTH;
@@ -254,10 +254,10 @@ public:
 
 public:
     static PlayerList* getPlayerList() {
-        if (server != NULL)
+        if (server != nullptr)
             return server->players;
         else
-            return NULL;
+            return nullptr;
     }
     static void SetTimeOfDay(int64_t time) {
         setTimeOfDayAtEndOfTick = true;

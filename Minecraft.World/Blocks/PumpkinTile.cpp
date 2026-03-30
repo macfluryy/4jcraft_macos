@@ -13,8 +13,8 @@ const std::wstring PumpkinTile::TEXTURE_LANTERN = L"pumpkin_jack";
 
 PumpkinTile::PumpkinTile(int id, bool lit)
     : DirectionalTile(id, Material::vegetable, false) {
-    iconTop = NULL;
-    iconFace = NULL;
+    iconTop = nullptr;
+    iconFace = nullptr;
     setTicking(true);
     this->lit = lit;
 }

@@ -44,7 +44,7 @@ AttributeModifier* AttributeModifier::setSerialize(bool serialize) {
 
 bool AttributeModifier::equals(AttributeModifier* modifier) {
     if (this == modifier) return true;
-    if (modifier == NULL)
+    if (modifier == nullptr)
         return false;  //|| getClass() != o.getClass()) return false;
 
     if (id != modifier->id) return false;

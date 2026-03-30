@@ -14,11 +14,11 @@ SelectWorldScreen::SelectWorldScreen(Screen* lastScreen) {
     title = L"Select world";
     done = false;
     selectedWorld = 0;
-    worldSelectionList = NULL;
+    worldSelectionList = nullptr;
     isDeleting = false;
-    deleteButton = NULL;
-    selectButton = NULL;
-    renameButton = NULL;
+    deleteButton = nullptr;
+    selectButton = nullptr;
+    renameButton = nullptr;
 
     this->lastScreen = lastScreen;
 }
@@ -113,7 +113,7 @@ void SelectWorldScreen::buttonClicked(Button* button) {
             minecraft->setScreen(new CreateWorldScreen(this));
         } else {
             // create demo world
-            minecraft->setScreen(NULL);
+            minecraft->setScreen(nullptr);
             if (done) return;
             done = true;
 // 4J Stu - Not used, so commenting to stop the build failing
@@ -132,13 +132,13 @@ void SelectWorldScreen::buttonClicked(Button* button) {
 }
 
 void SelectWorldScreen::worldSelected(int id) {
-    minecraft->setScreen(NULL);
+    minecraft->setScreen(nullptr);
     if (done) return;
     done = true;
-    minecraft->gameMode = NULL;  // new SurvivalMode(minecraft);
+    minecraft->gameMode = nullptr;  // new SurvivalMode(minecraft);
 
     std::wstring worldFolderName = getWorldId(id);
-    if (worldFolderName == L"")  // 4J - was NULL comparison
+    if (worldFolderName == L"")  // 4J - was nullptr comparison
     {
         worldFolderName = L"World" + _toString<int>(id);
     }

@@ -29,7 +29,7 @@ bool ShapelessRecipy::matches(std::shared_ptr<CraftingContainer> craftSlots,
         for (int x = 0; x < 3; x++) {
             std::shared_ptr<ItemInstance> item = craftSlots->getItem(x, y);
 
-            if (item != NULL) {
+            if (item != nullptr) {
                 bool found = false;
 
                 AUTO_VAR(citEnd, ingredients->end());
@@ -114,7 +114,7 @@ void ShapelessRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
          ingredient != citEnd; ingredient++) {
         ItemInstance* expected = *ingredient;
 
-        if (expected != NULL) {
+        if (expected != nullptr) {
             int iAuxVal = (*ingredient)->getAuxValue();
             TempIngReq.uiGridA[iCount++] = expected->id | iAuxVal << 24;
             // 4J-PB - put the ingredients in boxes 1,2,4,5 so we can see them

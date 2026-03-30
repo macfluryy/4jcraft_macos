@@ -17,7 +17,7 @@ ByteArrayOutputStream::ByteArrayOutputStream(unsigned int size) {
 }
 
 ByteArrayOutputStream::~ByteArrayOutputStream() {
-    if (buf.data != NULL) delete[] buf.data;
+    if (buf.data != nullptr) delete[] buf.data;
 }
 
 // Writes the specified byte to this byte array output stream.

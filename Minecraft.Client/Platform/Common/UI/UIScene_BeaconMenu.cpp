@@ -25,7 +25,7 @@ UIScene_BeaconMenu::UIScene_BeaconMenu(int iPad, void* _initData,
     BeaconScreenInput* initData = (BeaconScreenInput*)_initData;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -244,7 +244,7 @@ void UIScene_BeaconMenu::setSectionSelectedSlot(ESceneSection eSection, int x,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionBeaconItem:
             slotList = &m_slotListActivator;
@@ -264,7 +264,7 @@ void UIScene_BeaconMenu::setSectionSelectedSlot(ESceneSection eSection, int x,
 }
 
 UIControl* UIScene_BeaconMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionBeaconItem:
             control = &m_slotListActivator;
@@ -310,8 +310,8 @@ UIControl* UIScene_BeaconMenu::getSection(ESceneSection eSection) {
 
 void UIScene_BeaconMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     std::shared_ptr<ItemInstance> item = nullptr;
@@ -340,7 +340,7 @@ void UIScene_BeaconMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
                 assert(false);
                 break;
         };
-        if (item != NULL)
+        if (item != nullptr)
             customDrawSlotControl(region, m_iPad, item, 1.0f, item->isFoil(),
                                   true);
     } else {

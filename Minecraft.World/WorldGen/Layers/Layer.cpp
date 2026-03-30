@@ -133,7 +133,7 @@ Layer::Layer(int64_t seedMixup) {
 
 void Layer::init(int64_t seed) {
     this->seed = seed;
-    if (parent != NULL) parent->init(seed);
+    if (parent != nullptr) parent->init(seed);
     // 4jcraft added casts to prevent signed int overflow
     this->seed *=
         (uint64_t)this->seed * 6364136223846793005l + 1442695040888963407l;

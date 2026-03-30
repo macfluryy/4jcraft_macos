@@ -12,10 +12,10 @@ CRITICAL_SECTION CompressedTileStorage::cs_write;
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)
 // AP - this will create a precomputed table to speed up getData
-static int* CompressedTile_StorageIndexTable = NULL;
+static int* CompressedTile_StorageIndexTable = nullptr;
 
 void CompressedTileStorage_InitTable() {
-    if (CompressedTile_StorageIndexTable == NULL) {
+    if (CompressedTile_StorageIndexTable == nullptr) {
         CompressedTile_StorageIndexTable = (int*)malloc(sizeof(int) * 64);
         for (int j = 0; j < 64; j += 1) {
             int index = ((j & 0x30) << 7) | ((j & 0x0c) << 5) | (j & 0x03);
@@ -26,7 +26,7 @@ void CompressedTileStorage_InitTable() {
 #endif
 
 CompressedTileStorage::CompressedTileStorage() {
-    indicesAndData = NULL;
+    indicesAndData = nullptr;
     allocatedSize = 0;
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)
@@ -43,7 +43,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
             PAGE_READWRITE);  //(unsigned char *)malloc(allocatedSize);
         XMemCpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
     } else {
-        indicesAndData = NULL;
+        indicesAndData = nullptr;
     }
     LeaveCriticalSection(&cs_write);
 
@@ -54,7 +54,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
 
 CompressedTileStorage::CompressedTileStorage(byteArray initFrom,
                                              unsigned int initOffset) {
-    indicesAndData = NULL;
+    indicesAndData = nullptr;
     allocatedSize = 0;
 
     // We need 32768 bytes for a fully uncompressed chunk, plus 1024 for the
@@ -98,7 +98,7 @@ bool CompressedTileStorage::isCompressed() {
 }
 
 CompressedTileStorage::CompressedTileStorage(bool isEmpty) {
-    indicesAndData = NULL;
+    indicesAndData = nullptr;
     allocatedSize = 0;
 
     // Empty and already compressed, so we only need 1K. Rounding up to nearest
@@ -362,7 +362,7 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
                 ucMappings[j] = 255;
             }
 
-            unsigned char* repacked = NULL;
+            unsigned char* repacked = nullptr;
 
             int bitspertile = 1 << indexTypeNew;   // will be 1, 2 or 4 (from
                                                    // index values of 0, 1, 2)
@@ -765,7 +765,7 @@ void CompressedTileStorage::tick() {
 
     //	printf("Free queue: %d,
     //%d\n",deleteQueue[freeIndex].GetEntryCount(),deleteQueue[freeIndex].GetAllocated());
-    unsigned char* toFree = NULL;
+    unsigned char* toFree = nullptr;
     do {
         toFree = deleteQueue[freeIndex].Pop();
 //		if( toFree ) printf("Deleting 0x%x\n", toFree);
@@ -802,7 +802,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
     for (int i = 0; i < 512; i++) {
         unsigned short indexType = blockIndices[i] & INDEX_TYPE_MASK;
 
-        unsigned char* unpacked_data = NULL;
+        unsigned char* unpacked_data = nullptr;
         unsigned char* packed_data;
 
         // First task is to find out what type of storage each block needs. Need
@@ -956,7 +956,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
         unsigned char* newIndicesAndData = (unsigned char*)XPhysicalAlloc(
             memToAlloc, MAXULONG_PTR, 4096,
             PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
-        if (newIndicesAndData == NULL) {
+        if (newIndicesAndData == nullptr) {
             DWORD lastError = GetLastError();
             MEMORYSTATUS memStatus;
             GlobalMemoryStatus(&memStatus);
@@ -1014,9 +1014,9 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
             // If we're not done, then we actually need to recompress this
             // block. First of all decompress from its current format.
             if (!done) {
-                unsigned char* unpacked_data = NULL;
-                unsigned char* tile_types = NULL;
-                unsigned char* packed_data = NULL;
+                unsigned char* unpacked_data = nullptr;
+                unsigned char* tile_types = nullptr;
+                unsigned char* packed_data = nullptr;
                 if (indexTypeOld == INDEX_TYPE_0_OR_8_BIT) {
                     if (blockIndices[i] & INDEX_TYPE_0_BIT_FLAG) {
                         unpacked_data = tempdata;
@@ -1065,7 +1065,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                     ucMappings[j] = 255;
                 }
 
-                unsigned char* repacked = NULL;
+                unsigned char* repacked = nullptr;
 
                 if (indexTypeNew == INDEX_TYPE_0_OR_8_BIT) {
                     if (_blockIndices[i] & INDEX_TYPE_0_BIT_FLAG) {

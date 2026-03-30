@@ -131,13 +131,13 @@ bool EnderEyeItem::useOn(std::shared_ptr<ItemInstance> instance,
 bool EnderEyeItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
                            Level* level, std::shared_ptr<Player> player) {
     HitResult* hr = getPlayerPOVHitResult(level, player, false);
-    if (hr != NULL && hr->type == HitResult::TILE) {
+    if (hr != nullptr && hr->type == HitResult::TILE) {
         int tile = level->getTile(hr->x, hr->y, hr->z);
         delete hr;
         if (tile == Tile::endPortalFrameTile_Id) {
             return false;
         }
-    } else if (hr != NULL) {
+    } else if (hr != nullptr) {
         delete hr;
     }
 
@@ -171,7 +171,7 @@ bool EnderEyeItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
         // level->findNearestMapFeature(LargeFeature::STRONGHOLD, (int)
         // player->x, (int) player->y, (int) player->z); 		if
         // (nearestMapFeature
-        // != NULL)
+        // != nullptr)
         // 		{
         // 			delete nearestMapFeature;
         // 			return true;
@@ -184,13 +184,13 @@ std::shared_ptr<ItemInstance> EnderEyeItem::use(
     std::shared_ptr<ItemInstance> instance, Level* level,
     std::shared_ptr<Player> player) {
     HitResult* hr = getPlayerPOVHitResult(level, player, false);
-    if (hr != NULL && hr->type == HitResult::TILE) {
+    if (hr != nullptr && hr->type == HitResult::TILE) {
         int tile = level->getTile(hr->x, hr->y, hr->z);
         delete hr;
         if (tile == Tile::endPortalFrameTile_Id) {
             return instance;
         }
-    } else if (hr != NULL) {
+    } else if (hr != nullptr) {
         delete hr;
     }
 

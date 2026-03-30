@@ -24,9 +24,9 @@ SlimeModel::SlimeModel(int vOffs) {
         eye1->compile(1.0f / 16.0f);
         mouth->compile(1.0f / 16.0f);
     } else {
-        eye0 = NULL;
-        eye1 = NULL;
-        mouth = NULL;
+        eye0 = nullptr;
+        eye1 = nullptr;
+        mouth = nullptr;
     }
     cube->compile(1.0f / 16.0f);
 }
@@ -37,7 +37,7 @@ void SlimeModel::render(std::shared_ptr<Entity> entity, float time, float r,
     setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     cube->render(scale, usecompiled);
-    if (eye0 != NULL) {
+    if (eye0 != nullptr) {
         eye0->render(scale, usecompiled);
         eye1->render(scale, usecompiled);
         mouth->render(scale, usecompiled);

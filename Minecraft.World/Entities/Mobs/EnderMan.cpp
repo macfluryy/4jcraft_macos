@@ -92,7 +92,7 @@ std::shared_ptr<Entity> EnderMan::findAttackTarget() {
 
     std::shared_ptr<Player> player =
         level->getNearestAttackablePlayer(shared_from_this(), 64);
-    if (player != NULL) {
+    if (player != nullptr) {
         if (isLookingAtMe(player)) {
             aggroedByPlayer = true;
             if (aggroTime == 0)
@@ -112,7 +112,7 @@ std::shared_ptr<Entity> EnderMan::findAttackTarget() {
 
 bool EnderMan::isLookingAtMe(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> helmet = player->inventory->armor[3];
-    if (helmet != NULL && helmet->id == Tile::pumpkin_Id) return false;
+    if (helmet != nullptr && helmet->id == Tile::pumpkin_Id) return false;
 
     Vec3 look = player->getViewVector(1).normalize();
 
@@ -137,7 +137,7 @@ void EnderMan::aiStep() {
             getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED);
         speed->removeModifier(SPEED_MODIFIER_ATTACKING);
 
-        if (attackTarget != NULL) {
+        if (attackTarget != nullptr) {
             speed->addModifier(
                 new AttributeModifier(*SPEED_MODIFIER_ATTACKING));
         }
@@ -212,12 +212,12 @@ void EnderMan::aiStep() {
     }
 
     jumping = false;
-    if (attackTarget != NULL) {
+    if (attackTarget != nullptr) {
         lookAt(attackTarget, 100, 100);
     }
 
     if (!level->isClientSide && isAlive()) {
-        if (attackTarget != NULL) {
+        if (attackTarget != nullptr) {
             if (attackTarget->instanceof(eTYPE_PLAYER) &&
                 isLookingAtMe(
                     std::dynamic_pointer_cast<Player>(attackTarget))) {
@@ -358,12 +358,12 @@ bool EnderMan::hurt(DamageSource* source, float damage) {
     if (isInvulnerable()) return false;
     setCreepy(true);
 
-    if (dynamic_cast<EntityDamageSource*>(source) != NULL &&
+    if (dynamic_cast<EntityDamageSource*>(source) != nullptr &&
         source->getEntity()->instanceof(eTYPE_PLAYER)) {
         aggroedByPlayer = true;
     }
 
-    if (dynamic_cast<IndirectEntityDamageSource*>(source) != NULL) {
+    if (dynamic_cast<IndirectEntityDamageSource*>(source) != nullptr) {
         aggroedByPlayer = false;
         for (int i = 0; i < 64; i++) {
             if (teleport()) {

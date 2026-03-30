@@ -79,7 +79,7 @@ void InventoryMenu::removed(std::shared_ptr<Player> player) {
     AbstractContainerMenu::removed(player);
     for (int i = 0; i < 4; i++) {
         std::shared_ptr<ItemInstance> item = craftSlots->removeItemNoUpdate(i);
-        if (item != NULL) {
+        if (item != nullptr) {
             player->drop(item);
             craftSlots->setItem(i, nullptr);
         }
@@ -99,7 +99,7 @@ std::shared_ptr<ItemInstance> InventoryMenu::quickMoveStack(
     Slot* LeggingsSlot = slots.at(ARMOR_SLOT_START + 2);
     Slot* BootsSlot = slots.at(ARMOR_SLOT_START + 3);
 
-    if (slot != NULL && slot->hasItem()) {
+    if (slot != nullptr && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();
 
@@ -230,7 +230,7 @@ std::shared_ptr<ItemInstance> InventoryMenu::clicked(
                                Item::leggings_iron_Id, Item::boots_iron_Id};
     for (int i = ARMOR_SLOT_START; i < ARMOR_SLOT_END; i++) {
         Slot* slot = slots.at(i);
-        if ((slot == NULL) || (!slot->hasItem()) ||
+        if ((slot == nullptr) || (!slot->hasItem()) ||
             (slot->getItem()->getItem()->id !=
              ironItems[i - ARMOR_SLOT_START])) {
             return out;

@@ -51,7 +51,7 @@ public:
 
     // 4J Added
     virtual std::wstring getPath(bool bTitleUpdateTexture = false,
-                                 const char* pchBDPatchFilename = NULL);
+                                 const char* pchBDPatchFilename = nullptr);
     virtual std::wstring getAnimationString(const std::wstring& textureName,
                                             const std::wstring& path);
     virtual BufferedImage* getImageResource(const std::wstring& File,

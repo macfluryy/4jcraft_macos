@@ -71,7 +71,7 @@ std::shared_ptr<ItemInstance> BrewingStandMenu::quickMoveStack(
     Slot* PotionSlot2 = slots.at(BOTTLE_SLOT_START + 1);
     Slot* PotionSlot3 = slots.at(BOTTLE_SLOT_START + 2);
 
-    if (slot != NULL && slot->hasItem()) {
+    if (slot != nullptr && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();
 
@@ -191,7 +191,7 @@ bool BrewingStandMenu::PotionSlot::mayCombine(
 
 bool BrewingStandMenu::PotionSlot::mayPlaceItem(
     std::shared_ptr<ItemInstance> item) {
-    return item != NULL &&
+    return item != nullptr &&
            (item->id == Item::potion_Id || item->id == Item::glassBottle_Id);
 }
 
@@ -201,7 +201,7 @@ BrewingStandMenu::IngredientsSlot::IngredientsSlot(
 
 bool BrewingStandMenu::IngredientsSlot::mayPlace(
     std::shared_ptr<ItemInstance> item) {
-    if (item != NULL) {
+    if (item != nullptr) {
         if (PotionBrewing::SIMPLIFIED_BREWING) {
             return Item::items[item->id]->hasPotionBrewingFormula();
         } else {

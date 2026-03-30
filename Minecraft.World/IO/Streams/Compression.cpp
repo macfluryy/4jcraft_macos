@@ -156,12 +156,12 @@ HRESULT Compression::DecompressLZXRLE(void* pDestination,
 
     // 4J Stu - Changed this again to dynamically allocate a buffer if it's
     // going to be too big
-    unsigned char* pucIn = NULL;
+    unsigned char* pucIn = nullptr;
 
     // const unsigned int staticRleSize = 1024*200;
     // static unsigned char rleBuf[staticRleSize];
     unsigned int rleSize = staticRleSize;
-    unsigned char* dynamicRleBuf = NULL;
+    unsigned char* dynamicRleBuf = nullptr;
 
     if (*pDestSize > rleSize) {
         rleSize = *pDestSize;
@@ -201,7 +201,7 @@ HRESULT Compression::DecompressLZXRLE(void* pDestination,
 
     //	printf("Decompressed from %d to %d to %d\n",SrcSize,rleSize,*pDestSize);
 
-    if (dynamicRleBuf != NULL) delete[] dynamicRleBuf;
+    if (dynamicRleBuf != nullptr) delete[] dynamicRleBuf;
 
     LeaveCriticalSection(&rleDecompressLock);
     return S_OK;
@@ -344,12 +344,12 @@ HRESULT Compression::DecompressWithType(void* pDestination,
         } break;
         case eCompressionType_ZLIBRLE:
 #if defined(_WIN64) || defined(__linux__)
-            if (pDestination != NULL)
+            if (pDestination != nullptr)
                 return ::uncompress(
                     (Bytef*)pDestination, (unsigned long*)pDestSize,
                     (const Bytef*)pSource, SrcSize);  // Decompress
             else
-                break;  // Cannot decompress when destination is NULL
+                break;  // Cannot decompress when destination is nullptr
 #else
             assert(0);
             break;
@@ -359,7 +359,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
             // Note that we're missing the normal zlib header and footer so
             // we'll use inflate to decompress the payload and skip all the CRC
             // checking, etc
-            if (pDestination != NULL) {
+            if (pDestination != nullptr) {
                 // Read big-endian srcize from array
                 std::uint8_t* pbDestSize =
                     reinterpret_cast<std::uint8_t*>(pDestSize);
@@ -411,7 +411,7 @@ HRESULT Compression::DecompressWithType(void* pDestination,
                 delete uncompr.data;
                 return S_OK;
             } else
-                break;  // Cannot decompress when destination is NULL
+                break;  // Cannot decompress when destination is nullptr
 #else
             assert(0);
 #endif

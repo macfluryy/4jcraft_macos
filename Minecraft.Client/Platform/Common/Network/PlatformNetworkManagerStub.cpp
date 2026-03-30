@@ -80,7 +80,7 @@ void CPlatformNetworkManagerStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     }
 
     for (int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-        if (playerChangedCallback[idx] != NULL)
+        if (playerChangedCallback[idx] != nullptr)
             playerChangedCallback[idx](playerChangedCallbackParam[idx],
                                        networkPlayer, false);
     }
@@ -88,7 +88,7 @@ void CPlatformNetworkManagerStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     if (m_pIQNet->GetState() == QNET_STATE_GAME_PLAY) {
         int localPlayerCount = 0;
         for (unsigned int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-            if (m_pIQNet->GetLocalPlayerByUserIndex(idx) != NULL)
+            if (m_pIQNet->GetLocalPlayerByUserIndex(idx) != nullptr)
                 ++localPlayerCount;
         }
 
@@ -107,7 +107,7 @@ bool CPlatformNetworkManagerStub::Initialise(
     // 4jcraft added this, as it was never called
     m_pIQNet = new IQNet();
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-        playerChangedCallback[i] = NULL;
+        playerChangedCallback[i] = nullptr;
     }
 
     m_bLeavingGame = false;
@@ -126,10 +126,10 @@ bool CPlatformNetworkManagerStub::Initialise(
         m_lastSearchStartTime[i] = 0;
 
         // The results that will be filled in with the current search
-        m_pSearchResults[i] = NULL;
-        m_pQoSResult[i] = NULL;
-        m_pCurrentSearchResults[i] = NULL;
-        m_pCurrentQoSResult[i] = NULL;
+        m_pSearchResults[i] = nullptr;
+        m_pQoSResult[i] = nullptr;
+        m_pCurrentSearchResults[i] = nullptr;
+        m_pCurrentQoSResult[i] = nullptr;
         m_currentSearchResultsCount[i] = 0;
     }
 
@@ -266,8 +266,8 @@ void CPlatformNetworkManagerStub::UnRegisterPlayerChangedCallback(
                      bool leaving),
     void* callbackParam) {
     if (playerChangedCallbackParam[iPad] == callbackParam) {
-        playerChangedCallback[iPad] = NULL;
-        playerChangedCallbackParam[iPad] = NULL;
+        playerChangedCallback[iPad] = nullptr;
+        playerChangedCallbackParam[iPad] = nullptr;
     }
 }
 
@@ -276,13 +276,13 @@ void CPlatformNetworkManagerStub::HandleSignInChange() { return; }
 bool CPlatformNetworkManagerStub::_RunNetworkGame() { return true; }
 
 void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(
-    INetworkPlayer* pNetworkPlayerLeaving /*= NULL*/) {
+    INetworkPlayer* pNetworkPlayerLeaving /*= nullptr*/) {
     // 	DWORD playerCount = m_pIQNet->GetPlayerCount();
     //
     // 	if( this->m_bLeavingGame )
     // 		return;
     //
-    // 	if( GetHostPlayer() == NULL )
+    // 	if( GetHostPlayer() == nullptr )
     // 		return;
     //
     // 	for(unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i)
@@ -305,13 +305,13 @@ void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(
     // 			}
     // 			else
     // 			{
-    // 				m_hostGameSessionData.players[i] = NULL;
+    // 				m_hostGameSessionData.players[i] = nullptr;
     // 				memset(m_hostGameSessionData.szPlayers[i],0,XUSER_NAME_SIZE);
     // 			}
     // 		}
     // 		else
     // 		{
-    // 			m_hostGameSessionData.players[i] = NULL;
+    // 			m_hostGameSessionData.players[i] = nullptr;
     // 			memset(m_hostGameSessionData.szPlayers[i],0,XUSER_NAME_SIZE);
     // 		}
     // 	}
@@ -328,13 +328,13 @@ int CPlatformNetworkManagerStub::RemovePlayerOnSocketClosedThreadProc(
 
     Socket* socket = pNetworkPlayer->GetSocket();
 
-    if (socket != NULL) {
+    if (socket != nullptr) {
         // printf("Waiting for socket closed event\n");
         socket->m_socketClosedEvent->WaitForSignal(INFINITE);
 
         // printf("Socket closed event has fired\n");
         //  4J Stu - Clear our reference to this socket
-        pNetworkPlayer->SetSocket(NULL);
+        pNetworkPlayer->SetSocket(nullptr);
         delete socket;
     }
 
@@ -404,7 +404,7 @@ void CPlatformNetworkManagerStub::SystemFlagReset() {
 void CPlatformNetworkManagerStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
                                                 int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return;
-    if (pNetworkPlayer == NULL) return;
+    if (pNetworkPlayer == nullptr) return;
 
     for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
         if (pNetworkPlayer->IsSameSystem(m_playerFlags[i]->m_pNetworkPlayer)) {
@@ -419,7 +419,7 @@ void CPlatformNetworkManagerStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
 bool CPlatformNetworkManagerStub::SystemFlagGet(INetworkPlayer* pNetworkPlayer,
                                                 int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return false;
-    if (pNetworkPlayer == NULL) {
+    if (pNetworkPlayer == nullptr) {
         return false;
     }
 
@@ -497,7 +497,7 @@ void CPlatformNetworkManagerStub::ForceFriendsSessionRefresh() {
         m_searchResultsCount[i] = 0;
         m_lastSearchStartTime[i] = 0;
         delete m_pSearchResults[i];
-        m_pSearchResults[i] = NULL;
+        m_pSearchResults[i] = nullptr;
     }
 }
 
@@ -524,7 +524,7 @@ void CPlatformNetworkManagerStub::removeNetworkPlayer(
 INetworkPlayer* CPlatformNetworkManagerStub::getNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
     return pQNetPlayer ? (INetworkPlayer*)(pQNetPlayer->GetCustomDataValue())
-                       : NULL;
+                       : nullptr;
 }
 
 INetworkPlayer* CPlatformNetworkManagerStub::GetLocalPlayerByUserIndex(

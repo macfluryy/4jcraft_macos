@@ -127,7 +127,7 @@ VillagePieces::VillagePiece* VillagePieces::findAndCreatePieceFactory(
     std::list<StructurePiece*>* pieces, Random* random, int footX, int footY,
     int footZ, int direction, int depth) {
     VillagePieces::EPieceClass pieceClass = piece->pieceClass;
-    VillagePiece* villagePiece = NULL;
+    VillagePiece* villagePiece = nullptr;
 
     if (pieceClass == VillagePieces::EPieceClass_SimpleHouse) {
         villagePiece = SimpleHouse::createPiece(
@@ -166,7 +166,7 @@ VillagePieces::VillagePiece* VillagePieces::generatePieceFromSmallDoor(
     int footX, int footY, int footZ, int direction, int depth) {
     int totalWeight = updatePieceWeight(startPiece->pieceSet);
     if (totalWeight <= 0) {
-        return NULL;
+        return nullptr;
     }
 
     int numAttempts = 0;
@@ -188,7 +188,7 @@ VillagePieces::VillagePiece* VillagePieces::generatePieceFromSmallDoor(
                 VillagePiece* villagePiece = findAndCreatePieceFactory(
                     startPiece, piece, pieces, random, footX, footY, footZ,
                     direction, depth);
-                if (villagePiece != NULL) {
+                if (villagePiece != nullptr) {
                     piece->placeCount++;
                     startPiece->previousPiece = piece;
 
@@ -205,29 +205,29 @@ VillagePieces::VillagePiece* VillagePieces::generatePieceFromSmallDoor(
     {
         BoundingBox* box = LightPost::findPieceBox(
             startPiece, pieces, random, footX, footY, footZ, direction);
-        if (box != NULL) {
+        if (box != nullptr) {
             return new LightPost(startPiece, depth, random, box, direction);
         }
         delete box;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 StructurePiece* VillagePieces::generateAndAddPiece(
     StartPiece* startPiece, std::list<StructurePiece*>* pieces, Random* random,
     int footX, int footY, int footZ, int direction, int depth) {
     if (depth > MAX_DEPTH) {
-        return NULL;
+        return nullptr;
     }
     if (abs(footX - startPiece->getBoundingBox()->x0) > 7 * 16 ||
         abs(footZ - startPiece->getBoundingBox()->z0) > 7 * 16) {
-        return NULL;
+        return nullptr;
     }
 
     StructurePiece* newPiece = generatePieceFromSmallDoor(
         startPiece, pieces, random, footX, footY, footZ, direction, depth + 1);
-    if (newPiece != NULL) {
+    if (newPiece != nullptr) {
         int x = (newPiece->boundingBox->x0 + newPiece->boundingBox->x1) / 2;
         int z = (newPiece->boundingBox->z0 + newPiece->boundingBox->z1) / 2;
         int xs = newPiece->boundingBox->x1 - newPiece->boundingBox->x0;
@@ -241,23 +241,23 @@ StructurePiece* VillagePieces::generateAndAddPiece(
         }
         delete newPiece;
     }
-    return NULL;
+    return nullptr;
 }
 
 StructurePiece* VillagePieces::generateAndAddRoadPiece(
     StartPiece* startPiece, std::list<StructurePiece*>* pieces, Random* random,
     int footX, int footY, int footZ, int direction, int depth) {
     if (depth > BASE_ROAD_DEPTH + startPiece->villageSize) {
-        return NULL;
+        return nullptr;
     }
     if (abs(footX - startPiece->getBoundingBox()->x0) > 7 * 16 ||
         abs(footZ - startPiece->getBoundingBox()->z0) > 7 * 16) {
-        return NULL;
+        return nullptr;
     }
 
     BoundingBox* box = StraightRoad::findPieceBox(
         startPiece, pieces, random, footX, footY, footZ, direction);
-    if (box != NULL && box->y0 > LOWEST_Y_POSITION) {
+    if (box != nullptr && box->y0 > LOWEST_Y_POSITION) {
         StructurePiece* newPiece =
             new StraightRoad(startPiece, depth, random, box, direction);
         int x = (newPiece->boundingBox->x0 + newPiece->boundingBox->x1) / 2;
@@ -273,18 +273,18 @@ StructurePiece* VillagePieces::generateAndAddRoadPiece(
         }
         // 4J Stu - The dtor for newPiece will destroy box
         delete newPiece;
-    } else if (box != NULL) {
+    } else if (box != nullptr) {
         delete box;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 VillagePieces::VillagePiece::VillagePiece() {
     heightPosition = -1;
     spawnedVillagerCount = 0;
     isDesertVillage = false;
-    startPiece = NULL;
+    startPiece = nullptr;
     // for reflection
 }
 
@@ -294,7 +294,7 @@ VillagePieces::VillagePiece::VillagePiece(StartPiece* startPiece, int genDepth)
     isDesertVillage = false;
     spawnedVillagerCount = 0;
     this->startPiece = startPiece;
-    if (startPiece != NULL) {
+    if (startPiece != nullptr) {
         this->isDesertVillage = startPiece->isDesertVillage;
     }
 }
@@ -336,7 +336,7 @@ StructurePiece* VillagePieces::VillagePiece::generateHouseNorthernLeft(
                 boundingBox->y0 + yOff, boundingBox->z0 - 1, Direction::NORTH,
                 getGenDepth());
     }
-    return NULL;
+    return nullptr;
 }
 
 StructurePiece* VillagePieces::VillagePiece::generateHouseNorthernRight(
@@ -364,7 +364,7 @@ StructurePiece* VillagePieces::VillagePiece::generateHouseNorthernRight(
                 boundingBox->y0 + yOff, boundingBox->z1 + 1, Direction::SOUTH,
                 getGenDepth());
     }
-    return NULL;
+    return nullptr;
 }
 
 int VillagePieces::VillagePiece::getAverageGroundHeight(Level* level,
@@ -391,7 +391,7 @@ bool VillagePieces::VillagePiece::isOkBox(BoundingBox* box,
                                           StartPiece* startRoom) {
     bool bIsOk = false;
 
-    if (box != NULL) {
+    if (box != nullptr) {
         if (box->y0 > LOWEST_Y_POSITION) bIsOk = true;
 
         int xzSize = startRoom->m_level->getLevelData()->getXZSize();
@@ -598,9 +598,9 @@ VillagePieces::StartPiece::StartPiece(BiomeSource* biomeSource, int genDepth,
                                       Random* random, int west, int north,
                                       std::list<PieceWeight*>* pieceSet,
                                       int villageSize, Level* level)
-    : Well(NULL, 0, random, west, north) {
+    : Well(nullptr, 0, random, west, north) {
     isLibraryAdded = false;  // 4J - added initialiser
-    previousPiece = NULL;    // 4J - added initialiser
+    previousPiece = nullptr;    // 4J - added initialiser
     this->biomeSource = biomeSource;
     this->pieceSet = pieceSet;
     this->villageSize = villageSize;
@@ -652,7 +652,7 @@ void VillagePieces::StraightRoad::addChildren(
     while (depth < length - 8) {
         StructurePiece* piece = generateHouseNorthernLeft(
             (StartPiece*)startPiece, pieces, random, 0, depth);
-        if (piece != NULL) {
+        if (piece != nullptr) {
             depth += Math::_max(piece->boundingBox->getXSpan(),
                                 piece->boundingBox->getZSpan());
             hasHouses = true;
@@ -665,7 +665,7 @@ void VillagePieces::StraightRoad::addChildren(
     while (depth < length - 8) {
         StructurePiece* piece = generateHouseNorthernRight(
             (StartPiece*)startPiece, pieces, random, 0, depth);
-        if (piece != NULL) {
+        if (piece != nullptr) {
             depth += Math::_max(piece->boundingBox->getXSpan(),
                                 piece->boundingBox->getZSpan());
             hasHouses = true;
@@ -741,14 +741,14 @@ BoundingBox* VillagePieces::StraightRoad::findPieceBox(
                                                   width, 3, length, direction);
 
         if (isOkBox(box, startPiece) &&
-            StructurePiece::findCollisionPiece(pieces, box) == NULL) {
+            StructurePiece::findCollisionPiece(pieces, box) == nullptr) {
             return box;
         }
         delete box;
         length -= 7;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 bool VillagePieces::StraightRoad::postProcess(Level* level, Random* random,
@@ -796,9 +796,9 @@ VillagePieces::SimpleHouse* VillagePieces::SimpleHouse::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new SimpleHouse(startPiece, genDepth, random, box, direction);
@@ -928,9 +928,9 @@ VillagePieces::SmallTemple* VillagePieces::SmallTemple::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new SmallTemple(startPiece, genDepth, random, box, direction);
@@ -1084,9 +1084,9 @@ VillagePieces::BookHouse* VillagePieces::BookHouse::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new BookHouse(startPiece, genDepth, random, box, direction);
@@ -1262,9 +1262,9 @@ VillagePieces::SmallHut* VillagePieces::SmallHut::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new SmallHut(startPiece, genDepth, random, box, direction);
@@ -1381,9 +1381,9 @@ VillagePieces::PigHouse* VillagePieces::PigHouse::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new PigHouse(startPiece, genDepth, random, box, direction);
@@ -1543,9 +1543,9 @@ VillagePieces::TwoRoomHouse* VillagePieces::TwoRoomHouse::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new TwoRoomHouse(startPiece, genDepth, random, box, direction);
@@ -1753,9 +1753,9 @@ VillagePieces::Smithy* VillagePieces::Smithy::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new Smithy(startPiece, genDepth, random, box, direction);
@@ -1931,9 +1931,9 @@ VillagePieces::Farmland* VillagePieces::Farmland::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new Farmland(startPiece, genDepth, random, box, direction);
@@ -2044,9 +2044,9 @@ VillagePieces::DoubleFarmland* VillagePieces::DoubleFarmland::createPiece(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new DoubleFarmland(startPiece, genDepth, random, box, direction);
@@ -2134,9 +2134,9 @@ BoundingBox* VillagePieces::LightPost::findPieceBox(
                                               width, height, depth, direction);
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return box;

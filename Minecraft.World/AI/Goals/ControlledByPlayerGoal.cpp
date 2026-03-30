@@ -36,7 +36,7 @@ void ControlledByPlayerGoal::stop() {
 }
 
 bool ControlledByPlayerGoal::canUse() {
-    return mob->isAlive() && mob->rider.lock() != NULL &&
+    return mob->isAlive() && mob->rider.lock() != nullptr &&
            mob->rider.lock()->instanceof(eTYPE_PLAYER) &&
            (boosting || mob->canBeControlledByRider());
 }
@@ -117,7 +117,7 @@ void ControlledByPlayerGoal::tick() {
         mob->getRandom()->nextFloat() < 0.006f && !boosting) {
         std::shared_ptr<ItemInstance> carriedItem = player->getCarriedItem();
 
-        if (carriedItem != NULL && carriedItem->id == Item::carrotOnAStick_Id) {
+        if (carriedItem != nullptr && carriedItem->id == Item::carrotOnAStick_Id) {
             carriedItem->hurtAndBreak(1, player);
 
             if (carriedItem->count == 0) {
@@ -135,9 +135,9 @@ void ControlledByPlayerGoal::tick() {
 }
 
 bool ControlledByPlayerGoal::isNoJumpTile(int tile) {
-    return Tile::tiles[tile] != NULL &&
+    return Tile::tiles[tile] != nullptr &&
            (Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_STAIRS ||
-            (dynamic_cast<HalfSlabTile*>(Tile::tiles[tile]) != NULL));
+            (dynamic_cast<HalfSlabTile*>(Tile::tiles[tile]) != nullptr));
 }
 
 bool ControlledByPlayerGoal::isBoosting() { return boosting; }

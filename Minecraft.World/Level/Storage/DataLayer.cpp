@@ -38,7 +38,7 @@ void DataLayer::set(int x, int y, int z, int val) {
     }
 }
 
-bool DataLayer::isValid() { return data.data != NULL; }
+bool DataLayer::isValid() { return data.data != nullptr; }
 
 void DataLayer::setAll(int br) {
     uint8_t val = (uint8_t)(br & (br << 4));

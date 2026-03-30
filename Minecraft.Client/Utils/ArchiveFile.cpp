@@ -28,7 +28,7 @@ void ArchiveFile::_readHeader(DataInputStream* dis) {
 }
 
 ArchiveFile::ArchiveFile(File file) {
-    m_cachedData = NULL;
+    m_cachedData = nullptr;
     m_sourcefile = file;
     app.DebugPrintf("Loading archive file...\n");
 #if !defined(_CONTENT_PACKAGE)
@@ -121,7 +121,7 @@ byteArray ArchiveFile::getFile(const std::wstring& filename) {
 #endif
 
         // Compressed filenames are preceeded with an asterisk.
-        if (data->isCompressed && out.data != NULL) {
+        if (data->isCompressed && out.data != nullptr) {
             /* 4J-JEV:
              * If a compressed file is accessed before compression object is
              * initialized it will crash here (Compression::getCompression).
@@ -145,7 +145,7 @@ byteArray ArchiveFile::getFile(const std::wstring& filename) {
             out.length = decompressedSize;
         }
 
-        assert(out.data != NULL);  // THERE IS NO FILE WITH THIS NAME!
+        assert(out.data != nullptr);  // THERE IS NO FILE WITH THIS NAME!
     }
 
     return out;

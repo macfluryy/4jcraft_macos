@@ -112,7 +112,7 @@ void WitherBoss::aiStep() {
 
     if (!level->isClientSide && getAlternativeTarget(0) > 0) {
         std::shared_ptr<Entity> e = level->getEntity(getAlternativeTarget(0));
-        if (e != NULL) {
+        if (e != nullptr) {
             if ((y < e->y) || (!isPowered() && y < (e->y + 5))) {
                 if (yd < 0) {
                     yd = 0;
@@ -146,7 +146,7 @@ void WitherBoss::aiStep() {
         if (entityId > 0) {
             e = level->getEntity(entityId);
         }
-        if (e != NULL) {
+        if (e != nullptr) {
             double hx = getHeadX(i + 1);
             double hy = getHeadY(i + 1);
             double hz = getHeadZ(i + 1);
@@ -237,7 +237,7 @@ void WitherBoss::newServerAiStep() {
 
                 // 4J: Added check for instance of living entity, had a problem
                 // with IDs being recycled to other entities
-                if (current == NULL ||
+                if (current == nullptr ||
                     !current->instanceof(eTYPE_LIVINGENTITY) ||
                     !current->isAlive() || distanceToSqr(current) > 30 * 30 ||
                     !canSee(current)) {
@@ -287,7 +287,7 @@ void WitherBoss::newServerAiStep() {
             }
         }
     }
-    if (getTarget() != NULL) {
+    if (getTarget() != nullptr) {
         assert(getTarget()->instanceof(eTYPE_LIVINGENTITY));
         setAlternativeTarget(0, getTarget()->entityId);
     } else {
@@ -426,13 +426,13 @@ bool WitherBoss::hurt(DamageSource* source, float dmg) {
 
     if (isPowered()) {
         std::shared_ptr<Entity> directEntity = source->getDirectEntity();
-        if (directEntity != NULL && directEntity->GetType() == eTYPE_ARROW) {
+        if (directEntity != nullptr && directEntity->GetType() == eTYPE_ARROW) {
             return false;
         }
     }
 
     std::shared_ptr<Entity> sourceEntity = source->getEntity();
-    if (sourceEntity != NULL) {
+    if (sourceEntity != nullptr) {
         if (sourceEntity->instanceof(eTYPE_PLAYER)) {
         } else if (sourceEntity->instanceof(eTYPE_LIVINGENTITY) &&
                    std::dynamic_pointer_cast<LivingEntity>(sourceEntity)

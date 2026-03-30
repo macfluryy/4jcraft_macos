@@ -21,8 +21,8 @@ void PistonMovingPiece::onPlace(Level* level, int x, int y, int z) {}
 void PistonMovingPiece::onRemove(Level* level, int x, int y, int z, int id,
                                  int data) {
     std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(x, y, z);
-    if (tileEntity != NULL &&
-        std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL) {
+    if (tileEntity != nullptr &&
+        std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != nullptr) {
         std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity)->finalTick();
     } else {
         BaseEntityTile::onRemove(level, x, y, z, id, data);
@@ -51,7 +51,7 @@ bool PistonMovingPiece::use(
     if (soundOnly) return false;
     // this is a special case in order to help removing invisible, unbreakable,
     // blocks in the world
-    if (!level->isClientSide && level->getTileEntity(x, y, z) == NULL) {
+    if (!level->isClientSide && level->getTileEntity(x, y, z) == nullptr) {
         // this block is no longer valid
         level->removeTile(x, y, z);
         return true;
@@ -69,7 +69,7 @@ void PistonMovingPiece::spawnResources(Level* level, int x, int y, int z,
     if (level->isClientSide) return;
 
     std::shared_ptr<PistonPieceEntity> entity = getEntity(level, x, y, z);
-    if (entity == NULL) {
+    if (entity == nullptr) {
         return;
     }
 
@@ -95,7 +95,7 @@ std::shared_ptr<TileEntity> PistonMovingPiece::newMovingPieceEntity(
 std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
                                                int z) {
     std::shared_ptr<PistonPieceEntity> entity = getEntity(level, x, y, z);
-    if (entity == NULL) {
+    if (entity == nullptr) {
         return std::nullopt;
     }
 
@@ -115,10 +115,10 @@ void PistonMovingPiece::updateShape(
 {
     std::shared_ptr<PistonPieceEntity> entity =
         std::dynamic_pointer_cast<PistonPieceEntity>(forceEntity);
-    if (entity == NULL) entity = getEntity(level, x, y, z);
-    if (entity != NULL) {
+    if (entity == nullptr) entity = getEntity(level, x, y, z);
+    if (entity != nullptr) {
         Tile* tile = Tile::tiles[entity->getId()];
-        if (tile == NULL || tile == this) {
+        if (tile == nullptr || tile == this) {
             return;
         }
         tile->updateShape(level, x, y, z);
@@ -175,8 +175,8 @@ std::optional<AABB> PistonMovingPiece::getAABB(Level* level, int x, int y,
 std::shared_ptr<PistonPieceEntity> PistonMovingPiece::getEntity(
     LevelSource* level, int x, int y, int z) {
     std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(x, y, z);
-    if (tileEntity != NULL &&
-        std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != NULL) {
+    if (tileEntity != nullptr &&
+        std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) != nullptr) {
         return std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity);
     }
     return nullptr;

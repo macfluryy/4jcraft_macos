@@ -15,7 +15,7 @@ PathNavigation::PathNavigation(Mob* mob, Level* level) {
     this->level = level;
     dist = mob->getAttribute(SharedMonsterAttributes::FOLLOW_RANGE);
 
-    path = NULL;
+    path = nullptr;
     speedModifier = 0.0;
     avoidSun = false;
     _tick = 0;
@@ -28,7 +28,7 @@ PathNavigation::PathNavigation(Mob* mob, Level* level) {
 }
 
 PathNavigation::~PathNavigation() {
-    if (path != NULL) delete path;
+    if (path != nullptr) delete path;
 }
 
 void PathNavigation::setAvoidWater(bool avoidWater) {
@@ -58,7 +58,7 @@ void PathNavigation::setCanFloat(bool canFloat) { this->canFloat = canFloat; }
 float PathNavigation::getMaxDist() { return (float)dist->getValue(); }
 
 Path* PathNavigation::createPath(double x, double y, double z) {
-    if (!canUpdatePath()) return NULL;
+    if (!canUpdatePath()) return nullptr;
     return level->findPath(mob->shared_from_this(), Mth::floor(x), (int)y,
                            Mth::floor(z), getMaxDist(), _canPassDoors,
                            _canOpenDoors, avoidWater, canFloat);
@@ -75,7 +75,7 @@ bool PathNavigation::moveTo(double x, double y, double z,
 }
 
 Path* PathNavigation::createPath(std::shared_ptr<Entity> target) {
-    if (!canUpdatePath()) return NULL;
+    if (!canUpdatePath()) return nullptr;
     return level->findPath(mob->shared_from_this(), target, getMaxDist(),
                            _canPassDoors, _canOpenDoors, avoidWater, canFloat);
 }
@@ -87,20 +87,20 @@ bool PathNavigation::moveTo(std::shared_ptr<Entity> target,
     MemSect(0);
     // No need to delete newPath here as this will be copied into the member
     // variable path and the class can assume responsibility for it
-    if (newPath != NULL)
+    if (newPath != nullptr)
         return moveTo(newPath, speedModifier);
     else
         return false;
 }
 
 bool PathNavigation::moveTo(Path* newPath, double speedModifier) {
-    if (newPath == NULL) {
-        if (path != NULL) delete path;
-        path = NULL;
+    if (newPath == nullptr) {
+        if (path != nullptr) delete path;
+        path = nullptr;
         return false;
     }
     if (!newPath->sameAs(path)) {
-        if (path != NULL) delete path;
+        if (path != nullptr) delete path;
         path = newPath;
     } else {
         delete newPath;
@@ -137,7 +137,7 @@ void PathNavigation::updatePath() {
 
     // find first elevations in path
     int firstElevation = path->getSize();
-    for (int i = path->getIndex(); path != NULL && i < path->getSize(); ++i) {
+    for (int i = path->getIndex(); path != nullptr && i < path->getSize(); ++i) {
         if ((int)path->get(i)->y != (int)mobPos.y) {
             firstElevation = i;
             break;
@@ -176,11 +176,11 @@ void PathNavigation::updatePath() {
     }
 }
 
-bool PathNavigation::isDone() { return path == NULL || path->isDone(); }
+bool PathNavigation::isDone() { return path == nullptr || path->isDone(); }
 
 void PathNavigation::stop() {
-    if (path != NULL) delete path;
-    path = NULL;
+    if (path != nullptr) delete path;
+    path = nullptr;
 }
 
 Vec3 PathNavigation::getTempMobPos() {

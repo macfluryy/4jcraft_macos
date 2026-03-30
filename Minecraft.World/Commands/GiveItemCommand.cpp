@@ -24,7 +24,7 @@ void GiveItemCommand::execute(std::shared_ptr<CommandSender> source,
     bais.reset();
 
     std::shared_ptr<ServerPlayer> player = getPlayer(uid);
-    if (player != NULL && item > 0 && Item::items[item] != NULL) {
+    if (player != nullptr && item > 0 && Item::items[item] != nullptr) {
         std::shared_ptr<ItemInstance> itemInstance =
             std::shared_ptr<ItemInstance>(new ItemInstance(item, amount, aux));
         std::shared_ptr<ItemEntity> drop = player->drop(itemInstance);
@@ -40,7 +40,7 @@ void GiveItemCommand::execute(std::shared_ptr<CommandSender> source,
 std::shared_ptr<GameCommandPacket> GiveItemCommand::preparePacket(
     std::shared_ptr<Player> player, int item, int amount, int aux,
     const std::wstring& tag) {
-    if (player == NULL) return nullptr;
+    if (player == nullptr) return nullptr;
 
     ByteArrayOutputStream baos;
     DataOutputStream dos(&baos);

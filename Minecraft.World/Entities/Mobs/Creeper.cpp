@@ -57,7 +57,7 @@ void Creeper::registerAttributes() {
 bool Creeper::useNewAi() { return true; }
 
 int Creeper::getMaxFallDistance() {
-    if (getTarget() == NULL) return 3;
+    if (getTarget() == nullptr) return 3;
     // As long as they survive the fall they should try.
     return 3 + (int)(getHealth() - 1);
 }
@@ -127,7 +127,7 @@ int Creeper::getDeathSound() { return eSoundType_MOB_CREEPER_DEATH; }
 void Creeper::die(DamageSource* source) {
     Monster::die(source);
 
-    if (source->getEntity() != NULL &&
+    if (source->getEntity() != nullptr &&
         source->getEntity()->instanceof(eTYPE_SKELETON)) {
         int recordId =
             Item::record_01_Id +
@@ -135,9 +135,9 @@ void Creeper::die(DamageSource* source) {
         spawnAtLocation(recordId, 1);
     }
 
-    if (source->getDirectEntity() != NULL &&
+    if (source->getDirectEntity() != nullptr &&
         source->getDirectEntity()->instanceof(eTYPE_ARROW) &&
-        source->getEntity() != NULL &&
+        source->getEntity() != nullptr &&
         source->getEntity()->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(source->getEntity());

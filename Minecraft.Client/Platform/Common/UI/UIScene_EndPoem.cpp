@@ -38,7 +38,7 @@ UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     std::wstring playerName = L"";
-    if (pMinecraft->localplayers[ui.GetWinUserIndex()] != NULL) {
+    if (pMinecraft->localplayers[ui.GetWinUserIndex()] != nullptr) {
         playerName = escapeXML(
             pMinecraft->localplayers[ui.GetWinUserIndex()]->getDisplayName());
     } else {
@@ -142,7 +142,7 @@ void UIScene_EndPoem::handleInput(int iPad, int key, bool repeat, bool pressed,
                 m_bIgnoreInput = true;
                 Minecraft* pMinecraft = Minecraft::GetInstance();
                 for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
-                    if (pMinecraft->localplayers[i] != NULL) {
+                    if (pMinecraft->localplayers[i] != nullptr) {
                         app.SetAction(i, eAppAction_Respawn);
                     }
                 }
@@ -150,7 +150,7 @@ void UIScene_EndPoem::handleInput(int iPad, int key, bool repeat, bool pressed,
                 // This just allows it to be shown
                 if (pMinecraft
                         ->localgameModes[ProfileManager.GetPrimaryPad()] !=
-                    NULL)
+                    nullptr)
                     pMinecraft->localgameModes[ProfileManager.GetPrimaryPad()]
                         ->getTutorial()
                         ->showTutorialPopup(true);

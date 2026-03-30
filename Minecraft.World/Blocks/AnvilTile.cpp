@@ -20,7 +20,7 @@ AnvilTile::AnvilTile(int id)
     : HeavyTile(id, Material::heavyMetal, false) {
     part = PART_BASE;
     setLightBlock(0);
-    icons = NULL;
+    icons = nullptr;
 }
 
 bool AnvilTile::isCubeShaped() { return false; }

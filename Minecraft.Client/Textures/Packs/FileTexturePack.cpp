@@ -16,7 +16,7 @@ void FileTexturePack::unload(Textures* textures) {
 InputStream* FileTexturePack::getResourceImplementation(
     const std::wstring& name)  // throws IOException
 {
-    return NULL;
+    return nullptr;
 }
 
 bool FileTexturePack::hasFile(const std::wstring& name) {

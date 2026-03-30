@@ -24,7 +24,7 @@ void ItemSpriteRenderer::render(std::shared_ptr<Entity> e, double x, double y,
     // the icon is already cached in the item object, so there should not be any
     // performance impact by not caching it here
     Icon* icon = sourceItem->getIcon(sourceItemAuxValue);
-    if (icon == NULL) {
+    if (icon == nullptr) {
         return;
     }
 

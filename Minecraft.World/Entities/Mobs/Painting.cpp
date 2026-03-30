@@ -51,7 +51,7 @@ const int Painting::Motive::MAX_MOTIVE_NAME_LENGTH =
     13;  // JAVA: "SkullAndRoses".length();
 
 // 4J - added for common ctor code
-void Painting::_init(Level* level) { motive = NULL; };
+void Painting::_init(Level* level) { motive = nullptr; };
 
 Painting::Painting(Level* level) : HangingEntity(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to
@@ -124,7 +124,7 @@ void Painting::readAdditionalSaveData(CompoundTag* tag) {
             this->motive = (Motive*)Motive::values[i];
         }
     }
-    if (this->motive == NULL) motive = (Motive*)Motive::values[Kebab];
+    if (this->motive == nullptr) motive = (Motive*)Motive::values[Kebab];
 
     HangingEntity::readAdditionalSaveData(tag);
 }
@@ -134,7 +134,7 @@ int Painting::getWidth() { return motive->w; }
 int Painting::getHeight() { return motive->h; }
 
 void Painting::dropItem(std::shared_ptr<Entity> causedBy) {
-    if ((causedBy != NULL) && causedBy->instanceof(eTYPE_PLAYER)) {
+    if ((causedBy != nullptr) && causedBy->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player =
             std::dynamic_pointer_cast<Player>(causedBy);
         if (player->abilities.instabuild) {

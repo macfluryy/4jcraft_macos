@@ -44,7 +44,7 @@ public:
                                 const std::type_info& targetType,
                                 int randomInterval, bool mustSee,
                                 bool mustReach = false,
-                                EntitySelector* entitySelector = NULL);
+                                EntitySelector* entitySelector = nullptr);
 
     virtual ~NearestAttackableTargetGoal();
 

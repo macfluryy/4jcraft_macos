@@ -24,7 +24,7 @@ SmallFireball::SmallFireball(Level* level, double x, double y, double z,
 
 void SmallFireball::onHit(HitResult* res) {
     if (!level->isClientSide) {
-        if (res->entity != NULL) {
+        if (res->entity != nullptr) {
             DamageSource* damageSource = DamageSource::fireball(
                 std::dynamic_pointer_cast<Fireball>(shared_from_this()), owner);
             if (!res->entity->isFireImmune() &&

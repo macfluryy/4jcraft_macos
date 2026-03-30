@@ -23,18 +23,18 @@ std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 
 const float Tile::INDESTRUCTIBLE_DESTROY_TIME = -1.0f;
 
-Tile::SoundType* Tile::SOUND_NORMAL = NULL;
-Tile::SoundType* Tile::SOUND_WOOD = NULL;
-Tile::SoundType* Tile::SOUND_GRAVEL = NULL;
-Tile::SoundType* Tile::SOUND_GRASS = NULL;
-Tile::SoundType* Tile::SOUND_STONE = NULL;
-Tile::SoundType* Tile::SOUND_METAL = NULL;
-Tile::SoundType* Tile::SOUND_GLASS = NULL;
-Tile::SoundType* Tile::SOUND_CLOTH = NULL;
-Tile::SoundType* Tile::SOUND_SAND = NULL;
-Tile::SoundType* Tile::SOUND_SNOW = NULL;
-Tile::SoundType* Tile::SOUND_LADDER = NULL;
-Tile::SoundType* Tile::SOUND_ANVIL = NULL;
+Tile::SoundType* Tile::SOUND_NORMAL = nullptr;
+Tile::SoundType* Tile::SOUND_WOOD = nullptr;
+Tile::SoundType* Tile::SOUND_GRAVEL = nullptr;
+Tile::SoundType* Tile::SOUND_GRASS = nullptr;
+Tile::SoundType* Tile::SOUND_STONE = nullptr;
+Tile::SoundType* Tile::SOUND_METAL = nullptr;
+Tile::SoundType* Tile::SOUND_GLASS = nullptr;
+Tile::SoundType* Tile::SOUND_CLOTH = nullptr;
+Tile::SoundType* Tile::SOUND_SAND = nullptr;
+Tile::SoundType* Tile::SOUND_SNOW = nullptr;
+Tile::SoundType* Tile::SOUND_LADDER = nullptr;
+Tile::SoundType* Tile::SOUND_ANVIL = nullptr;
 
 bool Tile::solid[TILE_NUM_COUNT];
 int Tile::lightBlock[TILE_NUM_COUNT];
@@ -47,182 +47,182 @@ unsigned char
 bool Tile::mipmapEnable[TILE_NUM_COUNT];
 bool Tile::propagate[TILE_NUM_COUNT];
 
-Tile** Tile::tiles = NULL;
+Tile** Tile::tiles = nullptr;
 
-Tile* Tile::stone = NULL;
-GrassTile* Tile::grass = NULL;
-Tile* Tile::dirt = NULL;
-Tile* Tile::cobblestone = NULL;
-Tile* Tile::wood = NULL;
-Tile* Tile::sapling = NULL;
-Tile* Tile::unbreakable = NULL;
-LiquidTile* Tile::water = NULL;
-Tile* Tile::calmWater = NULL;
-LiquidTile* Tile::lava = NULL;
-Tile* Tile::calmLava = NULL;
-Tile* Tile::sand = NULL;
-Tile* Tile::gravel = NULL;
-Tile* Tile::goldOre = NULL;
-Tile* Tile::ironOre = NULL;
-Tile* Tile::coalOre = NULL;
-Tile* Tile::treeTrunk = NULL;
-LeafTile* Tile::leaves = NULL;
-Tile* Tile::sponge = NULL;
-Tile* Tile::glass = NULL;
-Tile* Tile::lapisOre = NULL;
-Tile* Tile::lapisBlock = NULL;
-Tile* Tile::dispenser = NULL;
-Tile* Tile::sandStone = NULL;
-Tile* Tile::noteblock = NULL;
-Tile* Tile::bed = NULL;
-Tile* Tile::goldenRail = NULL;
-Tile* Tile::detectorRail = NULL;
-PistonBaseTile* Tile::pistonStickyBase = NULL;
-Tile* Tile::web = NULL;
-TallGrass* Tile::tallgrass = NULL;
-DeadBushTile* Tile::deadBush = NULL;
-PistonBaseTile* Tile::pistonBase = NULL;
-PistonExtensionTile* Tile::pistonExtension = NULL;
-Tile* Tile::wool = NULL;
-PistonMovingPiece* Tile::pistonMovingPiece = NULL;
-Bush* Tile::flower = NULL;
-Bush* Tile::rose = NULL;
-Bush* Tile::mushroom_brown = NULL;
-Bush* Tile::mushroom_red = NULL;
-Tile* Tile::goldBlock = NULL;
-Tile* Tile::ironBlock = NULL;
-HalfSlabTile* Tile::stoneSlab = NULL;
-HalfSlabTile* Tile::stoneSlabHalf = NULL;
-Tile* Tile::redBrick = NULL;
-Tile* Tile::tnt = NULL;
-Tile* Tile::bookshelf = NULL;
-Tile* Tile::mossyCobblestone = NULL;
-Tile* Tile::obsidian = NULL;
-Tile* Tile::torch = NULL;
-FireTile* Tile::fire = NULL;
-Tile* Tile::mobSpawner = NULL;
-Tile* Tile::stairs_wood = NULL;
-ChestTile* Tile::chest = NULL;
-RedStoneDustTile* Tile::redStoneDust = NULL;
-Tile* Tile::diamondOre = NULL;
-Tile* Tile::diamondBlock = NULL;
-Tile* Tile::workBench = NULL;
-Tile* Tile::wheat = NULL;
-Tile* Tile::farmland = NULL;
-Tile* Tile::furnace = NULL;
-Tile* Tile::furnace_lit = NULL;
-Tile* Tile::sign = NULL;
-Tile* Tile::door_wood = NULL;
-Tile* Tile::ladder = NULL;
-Tile* Tile::rail = NULL;
-Tile* Tile::stairs_stone = NULL;
-Tile* Tile::wallSign = NULL;
-Tile* Tile::lever = NULL;
-Tile* Tile::pressurePlate_stone = NULL;
-Tile* Tile::door_iron = NULL;
-Tile* Tile::pressurePlate_wood = NULL;
-Tile* Tile::redStoneOre = NULL;
-Tile* Tile::redStoneOre_lit = NULL;
-Tile* Tile::redstoneTorch_off = NULL;
-Tile* Tile::redstoneTorch_on = NULL;
-Tile* Tile::button = NULL;
-Tile* Tile::topSnow = NULL;
-Tile* Tile::ice = NULL;
-Tile* Tile::snow = NULL;
-Tile* Tile::cactus = NULL;
-Tile* Tile::clay = NULL;
-Tile* Tile::reeds = NULL;
-Tile* Tile::jukebox = NULL;
-Tile* Tile::fence = NULL;
-Tile* Tile::pumpkin = NULL;
-Tile* Tile::netherRack = NULL;
-Tile* Tile::soulsand = NULL;
-Tile* Tile::glowstone = NULL;
-PortalTile* Tile::portalTile = NULL;
-Tile* Tile::litPumpkin = NULL;
-Tile* Tile::cake = NULL;
-RepeaterTile* Tile::diode_off = NULL;
-RepeaterTile* Tile::diode_on = NULL;
-Tile* Tile::stained_glass = NULL;
-Tile* Tile::trapdoor = NULL;
+Tile* Tile::stone = nullptr;
+GrassTile* Tile::grass = nullptr;
+Tile* Tile::dirt = nullptr;
+Tile* Tile::cobblestone = nullptr;
+Tile* Tile::wood = nullptr;
+Tile* Tile::sapling = nullptr;
+Tile* Tile::unbreakable = nullptr;
+LiquidTile* Tile::water = nullptr;
+Tile* Tile::calmWater = nullptr;
+LiquidTile* Tile::lava = nullptr;
+Tile* Tile::calmLava = nullptr;
+Tile* Tile::sand = nullptr;
+Tile* Tile::gravel = nullptr;
+Tile* Tile::goldOre = nullptr;
+Tile* Tile::ironOre = nullptr;
+Tile* Tile::coalOre = nullptr;
+Tile* Tile::treeTrunk = nullptr;
+LeafTile* Tile::leaves = nullptr;
+Tile* Tile::sponge = nullptr;
+Tile* Tile::glass = nullptr;
+Tile* Tile::lapisOre = nullptr;
+Tile* Tile::lapisBlock = nullptr;
+Tile* Tile::dispenser = nullptr;
+Tile* Tile::sandStone = nullptr;
+Tile* Tile::noteblock = nullptr;
+Tile* Tile::bed = nullptr;
+Tile* Tile::goldenRail = nullptr;
+Tile* Tile::detectorRail = nullptr;
+PistonBaseTile* Tile::pistonStickyBase = nullptr;
+Tile* Tile::web = nullptr;
+TallGrass* Tile::tallgrass = nullptr;
+DeadBushTile* Tile::deadBush = nullptr;
+PistonBaseTile* Tile::pistonBase = nullptr;
+PistonExtensionTile* Tile::pistonExtension = nullptr;
+Tile* Tile::wool = nullptr;
+PistonMovingPiece* Tile::pistonMovingPiece = nullptr;
+Bush* Tile::flower = nullptr;
+Bush* Tile::rose = nullptr;
+Bush* Tile::mushroom_brown = nullptr;
+Bush* Tile::mushroom_red = nullptr;
+Tile* Tile::goldBlock = nullptr;
+Tile* Tile::ironBlock = nullptr;
+HalfSlabTile* Tile::stoneSlab = nullptr;
+HalfSlabTile* Tile::stoneSlabHalf = nullptr;
+Tile* Tile::redBrick = nullptr;
+Tile* Tile::tnt = nullptr;
+Tile* Tile::bookshelf = nullptr;
+Tile* Tile::mossyCobblestone = nullptr;
+Tile* Tile::obsidian = nullptr;
+Tile* Tile::torch = nullptr;
+FireTile* Tile::fire = nullptr;
+Tile* Tile::mobSpawner = nullptr;
+Tile* Tile::stairs_wood = nullptr;
+ChestTile* Tile::chest = nullptr;
+RedStoneDustTile* Tile::redStoneDust = nullptr;
+Tile* Tile::diamondOre = nullptr;
+Tile* Tile::diamondBlock = nullptr;
+Tile* Tile::workBench = nullptr;
+Tile* Tile::wheat = nullptr;
+Tile* Tile::farmland = nullptr;
+Tile* Tile::furnace = nullptr;
+Tile* Tile::furnace_lit = nullptr;
+Tile* Tile::sign = nullptr;
+Tile* Tile::door_wood = nullptr;
+Tile* Tile::ladder = nullptr;
+Tile* Tile::rail = nullptr;
+Tile* Tile::stairs_stone = nullptr;
+Tile* Tile::wallSign = nullptr;
+Tile* Tile::lever = nullptr;
+Tile* Tile::pressurePlate_stone = nullptr;
+Tile* Tile::door_iron = nullptr;
+Tile* Tile::pressurePlate_wood = nullptr;
+Tile* Tile::redStoneOre = nullptr;
+Tile* Tile::redStoneOre_lit = nullptr;
+Tile* Tile::redstoneTorch_off = nullptr;
+Tile* Tile::redstoneTorch_on = nullptr;
+Tile* Tile::button = nullptr;
+Tile* Tile::topSnow = nullptr;
+Tile* Tile::ice = nullptr;
+Tile* Tile::snow = nullptr;
+Tile* Tile::cactus = nullptr;
+Tile* Tile::clay = nullptr;
+Tile* Tile::reeds = nullptr;
+Tile* Tile::jukebox = nullptr;
+Tile* Tile::fence = nullptr;
+Tile* Tile::pumpkin = nullptr;
+Tile* Tile::netherRack = nullptr;
+Tile* Tile::soulsand = nullptr;
+Tile* Tile::glowstone = nullptr;
+PortalTile* Tile::portalTile = nullptr;
+Tile* Tile::litPumpkin = nullptr;
+Tile* Tile::cake = nullptr;
+RepeaterTile* Tile::diode_off = nullptr;
+RepeaterTile* Tile::diode_on = nullptr;
+Tile* Tile::stained_glass = nullptr;
+Tile* Tile::trapdoor = nullptr;
 
-Tile* Tile::monsterStoneEgg = NULL;
-Tile* Tile::stoneBrick = NULL;
-Tile* Tile::hugeMushroom_brown = NULL;
-Tile* Tile::hugeMushroom_red = NULL;
-Tile* Tile::ironFence = NULL;
-Tile* Tile::thinGlass = NULL;
-Tile* Tile::melon = NULL;
-Tile* Tile::pumpkinStem = NULL;
-Tile* Tile::melonStem = NULL;
-Tile* Tile::vine = NULL;
-Tile* Tile::fenceGate = NULL;
-Tile* Tile::stairs_bricks = NULL;
-Tile* Tile::stairs_stoneBrickSmooth = NULL;
+Tile* Tile::monsterStoneEgg = nullptr;
+Tile* Tile::stoneBrick = nullptr;
+Tile* Tile::hugeMushroom_brown = nullptr;
+Tile* Tile::hugeMushroom_red = nullptr;
+Tile* Tile::ironFence = nullptr;
+Tile* Tile::thinGlass = nullptr;
+Tile* Tile::melon = nullptr;
+Tile* Tile::pumpkinStem = nullptr;
+Tile* Tile::melonStem = nullptr;
+Tile* Tile::vine = nullptr;
+Tile* Tile::fenceGate = nullptr;
+Tile* Tile::stairs_bricks = nullptr;
+Tile* Tile::stairs_stoneBrickSmooth = nullptr;
 
-MycelTile* Tile::mycel = NULL;
-Tile* Tile::waterLily = NULL;
-Tile* Tile::netherBrick = NULL;
-Tile* Tile::netherFence = NULL;
-Tile* Tile::stairs_netherBricks = NULL;
-Tile* Tile::netherStalk = NULL;
-Tile* Tile::enchantTable = NULL;
-Tile* Tile::brewingStand = NULL;
-CauldronTile* Tile::cauldron = NULL;
-Tile* Tile::endPortalTile = NULL;
-Tile* Tile::endPortalFrameTile = NULL;
-Tile* Tile::endStone = NULL;
-Tile* Tile::dragonEgg = NULL;
-Tile* Tile::redstoneLight = NULL;
-Tile* Tile::redstoneLight_lit = NULL;
+MycelTile* Tile::mycel = nullptr;
+Tile* Tile::waterLily = nullptr;
+Tile* Tile::netherBrick = nullptr;
+Tile* Tile::netherFence = nullptr;
+Tile* Tile::stairs_netherBricks = nullptr;
+Tile* Tile::netherStalk = nullptr;
+Tile* Tile::enchantTable = nullptr;
+Tile* Tile::brewingStand = nullptr;
+CauldronTile* Tile::cauldron = nullptr;
+Tile* Tile::endPortalTile = nullptr;
+Tile* Tile::endPortalFrameTile = nullptr;
+Tile* Tile::endStone = nullptr;
+Tile* Tile::dragonEgg = nullptr;
+Tile* Tile::redstoneLight = nullptr;
+Tile* Tile::redstoneLight_lit = nullptr;
 
 // TU9
-Tile* Tile::stairs_sandstone = NULL;
-Tile* Tile::woodStairsDark = NULL;
-Tile* Tile::woodStairsBirch = NULL;
-Tile* Tile::woodStairsJungle = NULL;
-Tile* Tile::commandBlock = NULL;
-BeaconTile* Tile::beacon = NULL;
-Tile* Tile::button_wood = NULL;
-HalfSlabTile* Tile::woodSlab = NULL;
-HalfSlabTile* Tile::woodSlabHalf = NULL;
+Tile* Tile::stairs_sandstone = nullptr;
+Tile* Tile::woodStairsDark = nullptr;
+Tile* Tile::woodStairsBirch = nullptr;
+Tile* Tile::woodStairsJungle = nullptr;
+Tile* Tile::commandBlock = nullptr;
+BeaconTile* Tile::beacon = nullptr;
+Tile* Tile::button_wood = nullptr;
+HalfSlabTile* Tile::woodSlab = nullptr;
+HalfSlabTile* Tile::woodSlabHalf = nullptr;
 
-Tile* Tile::emeraldOre = NULL;
-Tile* Tile::enderChest = NULL;
-TripWireSourceTile* Tile::tripWireSource = NULL;
-Tile* Tile::tripWire = NULL;
-Tile* Tile::emeraldBlock = NULL;
+Tile* Tile::emeraldOre = nullptr;
+Tile* Tile::enderChest = nullptr;
+TripWireSourceTile* Tile::tripWireSource = nullptr;
+Tile* Tile::tripWire = nullptr;
+Tile* Tile::emeraldBlock = nullptr;
 
-Tile* Tile::cocoa = NULL;
-Tile* Tile::skull = NULL;
+Tile* Tile::cocoa = nullptr;
+Tile* Tile::skull = nullptr;
 
-Tile* Tile::cobbleWall = NULL;
-Tile* Tile::flowerPot = NULL;
-Tile* Tile::carrots = NULL;
-Tile* Tile::potatoes = NULL;
-Tile* Tile::anvil = NULL;
-Tile* Tile::chest_trap = NULL;
-Tile* Tile::weightedPlate_light = NULL;
-Tile* Tile::weightedPlate_heavy = NULL;
-ComparatorTile* Tile::comparator_off = NULL;
-ComparatorTile* Tile::comparator_on = NULL;
+Tile* Tile::cobbleWall = nullptr;
+Tile* Tile::flowerPot = nullptr;
+Tile* Tile::carrots = nullptr;
+Tile* Tile::potatoes = nullptr;
+Tile* Tile::anvil = nullptr;
+Tile* Tile::chest_trap = nullptr;
+Tile* Tile::weightedPlate_light = nullptr;
+Tile* Tile::weightedPlate_heavy = nullptr;
+ComparatorTile* Tile::comparator_off = nullptr;
+ComparatorTile* Tile::comparator_on = nullptr;
 
-DaylightDetectorTile* Tile::daylightDetector = NULL;
-Tile* Tile::redstoneBlock = NULL;
+DaylightDetectorTile* Tile::daylightDetector = nullptr;
+Tile* Tile::redstoneBlock = nullptr;
 
-Tile* Tile::netherQuartz = NULL;
-HopperTile* Tile::hopper = NULL;
-Tile* Tile::quartzBlock = NULL;
-Tile* Tile::stairs_quartz = NULL;
-Tile* Tile::activatorRail = NULL;
-Tile* Tile::dropper = NULL;
-Tile* Tile::clayHardened_colored = NULL;
-Tile* Tile::stained_glass_pane = NULL;
+Tile* Tile::netherQuartz = nullptr;
+HopperTile* Tile::hopper = nullptr;
+Tile* Tile::quartzBlock = nullptr;
+Tile* Tile::stairs_quartz = nullptr;
+Tile* Tile::activatorRail = nullptr;
+Tile* Tile::dropper = nullptr;
+Tile* Tile::clayHardened_colored = nullptr;
+Tile* Tile::stained_glass_pane = nullptr;
 
-Tile* Tile::hayBlock = NULL;
-Tile* Tile::woolCarpet = NULL;
-Tile* Tile::clayHardened = NULL;
-Tile* Tile::coalBlock = NULL;
+Tile* Tile::hayBlock = nullptr;
+Tile* Tile::woolCarpet = nullptr;
+Tile* Tile::clayHardened = nullptr;
+Tile* Tile::coalBlock = nullptr;
 
 thread_local Tile::ThreadStorage* Tile::m_tlsShape = nullptr;
 
@@ -1704,8 +1704,8 @@ void Tile::staticCtor() {
                                 ->setUseDescriptionId(IDS_DESC_ANVIL);
 
     for (int i = 0; i < 256; i++) {
-        if (Tile::tiles[i] != NULL) {
-            if (Item::items[i] == NULL) {
+        if (Tile::tiles[i] != nullptr) {
+            if (Item::items[i] == nullptr) {
                 Item::items[i] = new TileItem(i - 256);
                 Tile::tiles[i]->init();
             }
@@ -1713,7 +1713,7 @@ void Tile::staticCtor() {
             bool propagate = false;
             if (i > 0 && Tile::tiles[i]->getRenderShape() == Tile::SHAPE_STAIRS)
                 propagate = true;
-            if (i > 0 && dynamic_cast<HalfSlabTile*>(Tile::tiles[i]) != NULL) {
+            if (i > 0 && dynamic_cast<HalfSlabTile*>(Tile::tiles[i]) != nullptr) {
                 propagate = true;
             }
             if (i == Tile::farmland_Id) propagate = true;
@@ -1774,7 +1774,7 @@ Tile::Tile(int id, Material* material, bool isSolidRender) {
     _init(id, material, isSolidRender);
     m_iMaterial = Item::eMaterial_undefined;
     m_iBaseItemType = Item::eBaseItemType_undefined;
-    icon = NULL;
+    icon = nullptr;
 }
 
 Tile* Tile::sendTileData(unsigned char importantMask /*=15*/) {
@@ -1821,7 +1821,7 @@ Tile* Tile::setExplodeable(float explosionResistance) {
 
 bool Tile::isSolidBlockingTile(int t) {
     Tile* tile = Tile::tiles[t];
-    if (tile == NULL) return false;
+    if (tile == nullptr) return false;
     return tile->material->isSolidBlocking() && tile->isCubeShaped() &&
            !tile->isSignalSource();
 }
@@ -1982,13 +1982,13 @@ Icon* Tile::getTexture(LevelSource* level, int x, int y, int z, int face) {
         int azo[6] = {0, 0, 0, 0, 1, -1};
         for (int i = 0; (i < 6) && opaque; i++) {
             int t = level->getTile(x + axo[i], y + ayo[i], z + azo[i]);
-            if ((t != Tile::leaves_Id) && ((Tile::tiles[t] == NULL) ||
+            if ((t != Tile::leaves_Id) && ((Tile::tiles[t] == nullptr) ||
                                            !Tile::tiles[t]->isSolidRender())) {
                 opaque = false;
             }
         }
 
-        Icon* icon = NULL;
+        Icon* icon = nullptr;
         if (opaque) {
             Tile::leaves->setFancy(false);
             icon = getTexture(face, tileData);
@@ -2343,15 +2343,15 @@ void Tile::playerDestroy(Level* level, std::shared_ptr<Player> player, int x,
                          int y, int z, int data) {
     // 4J Stu - Special case - only record a crop destroy if is fully grown
     if (id == Tile::wheat_Id) {
-        if (Tile::wheat->getResource(data, NULL, 0) > 0)
+        if (Tile::wheat->getResource(data, nullptr, 0) > 0)
             player->awardStat(GenericStats::blocksMined(id),
                               GenericStats::param_blocksMined(id, data, 1));
     } else if (id == Tile::potatoes_Id) {
-        if (Tile::potatoes->getResource(data, NULL, 0) > 0)
+        if (Tile::potatoes->getResource(data, nullptr, 0) > 0)
             player->awardStat(GenericStats::blocksMined(id),
                               GenericStats::param_blocksMined(id, data, 1));
     } else if (id == Tile::carrots_Id) {
-        if (Tile::potatoes->getResource(data, NULL, 0) > 0)
+        if (Tile::potatoes->getResource(data, nullptr, 0) > 0)
             player->awardStat(GenericStats::blocksMined(id),
                               GenericStats::param_blocksMined(id, data, 1));
     } else {
@@ -2369,7 +2369,7 @@ void Tile::playerDestroy(Level* level, std::shared_ptr<Player> player, int x,
 
     if (isSilkTouchable() && EnchantmentHelper::hasSilkTouch(player)) {
         std::shared_ptr<ItemInstance> item = getSilkTouchItemInstance(data);
-        if (item != NULL) {
+        if (item != nullptr) {
             popResource(level, x, y, z, item);
         }
     } else {
@@ -2469,8 +2469,8 @@ bool Tile::isMatching(int tileIdA, int tileIdB) {
     if (tileIdA == tileIdB) {
         return true;
     }
-    if (tileIdA == 0 || tileIdB == 0 || tiles[tileIdA] == NULL ||
-        tiles[tileIdB] == NULL) {
+    if (tileIdA == 0 || tileIdB == 0 || tiles[tileIdA] == nullptr ||
+        tiles[tileIdB] == nullptr) {
         return false;
     }
     return tiles[tileIdA]->isMatching(tileIdB);

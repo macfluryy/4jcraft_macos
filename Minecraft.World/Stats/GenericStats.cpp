@@ -4,87 +4,87 @@
 
 #include "GenericStats.h"
 
-GenericStats* GenericStats::instance = NULL;
+GenericStats* GenericStats::instance = nullptr;
 
-Stat* GenericStats::get_walkOneM() { return NULL; }
+Stat* GenericStats::get_walkOneM() { return nullptr; }
 
-Stat* GenericStats::get_swimOneM() { return NULL; }
+Stat* GenericStats::get_swimOneM() { return nullptr; }
 
-Stat* GenericStats::get_fallOneM() { return NULL; }
+Stat* GenericStats::get_fallOneM() { return nullptr; }
 
-Stat* GenericStats::get_climbOneM() { return NULL; }
+Stat* GenericStats::get_climbOneM() { return nullptr; }
 
-Stat* GenericStats::get_minecartOneM() { return NULL; }
+Stat* GenericStats::get_minecartOneM() { return nullptr; }
 
-Stat* GenericStats::get_boatOneM() { return NULL; }
+Stat* GenericStats::get_boatOneM() { return nullptr; }
 
-Stat* GenericStats::get_pigOneM() { return NULL; }
+Stat* GenericStats::get_pigOneM() { return nullptr; }
 
-Stat* GenericStats::get_portalsCreated() { return NULL; }
+Stat* GenericStats::get_portalsCreated() { return nullptr; }
 
-Stat* GenericStats::get_cowsMilked() { return NULL; }
+Stat* GenericStats::get_cowsMilked() { return nullptr; }
 
-Stat* GenericStats::get_netherLavaCollected() { return NULL; }
+Stat* GenericStats::get_netherLavaCollected() { return nullptr; }
 
-Stat* GenericStats::get_killMob() { return NULL; }
+Stat* GenericStats::get_killMob() { return nullptr; }
 
-Stat* GenericStats::get_killsZombie() { return NULL; }
+Stat* GenericStats::get_killsZombie() { return nullptr; }
 
-Stat* GenericStats::get_killsSkeleton() { return NULL; }
+Stat* GenericStats::get_killsSkeleton() { return nullptr; }
 
-Stat* GenericStats::get_killsCreeper() { return NULL; }
+Stat* GenericStats::get_killsCreeper() { return nullptr; }
 
-Stat* GenericStats::get_killsSpider() { return NULL; }
+Stat* GenericStats::get_killsSpider() { return nullptr; }
 
-Stat* GenericStats::get_killsSpiderJockey() { return NULL; }
+Stat* GenericStats::get_killsSpiderJockey() { return nullptr; }
 
-Stat* GenericStats::get_killsZombiePigman() { return NULL; }
+Stat* GenericStats::get_killsZombiePigman() { return nullptr; }
 
-Stat* GenericStats::get_killsSlime() { return NULL; }
+Stat* GenericStats::get_killsSlime() { return nullptr; }
 
-Stat* GenericStats::get_killsGhast() { return NULL; }
+Stat* GenericStats::get_killsGhast() { return nullptr; }
 
-Stat* GenericStats::get_killsNetherZombiePigman() { return NULL; }
+Stat* GenericStats::get_killsNetherZombiePigman() { return nullptr; }
 
-Stat* GenericStats::get_breedEntity(eINSTANCEOF entityId) { return NULL; }
+Stat* GenericStats::get_breedEntity(eINSTANCEOF entityId) { return nullptr; }
 
-Stat* GenericStats::get_tamedEntity(eINSTANCEOF entityId) { return NULL; }
+Stat* GenericStats::get_tamedEntity(eINSTANCEOF entityId) { return nullptr; }
 
-Stat* GenericStats::get_curedEntity(eINSTANCEOF entityId) { return NULL; }
+Stat* GenericStats::get_curedEntity(eINSTANCEOF entityId) { return nullptr; }
 
-Stat* GenericStats::get_craftedEntity(eINSTANCEOF entityId) { return NULL; }
+Stat* GenericStats::get_craftedEntity(eINSTANCEOF entityId) { return nullptr; }
 
-Stat* GenericStats::get_shearedEntity(eINSTANCEOF entityId) { return NULL; }
+Stat* GenericStats::get_shearedEntity(eINSTANCEOF entityId) { return nullptr; }
 
-Stat* GenericStats::get_totalBlocksMined() { return NULL; }
+Stat* GenericStats::get_totalBlocksMined() { return nullptr; }
 
-Stat* GenericStats::get_timePlayed() { return NULL; }
+Stat* GenericStats::get_timePlayed() { return nullptr; }
 
-Stat* GenericStats::get_blocksPlaced(int blockId) { return NULL; }
+Stat* GenericStats::get_blocksPlaced(int blockId) { return nullptr; }
 
-Stat* GenericStats::get_blocksMined(int blockId) { return NULL; }
+Stat* GenericStats::get_blocksMined(int blockId) { return nullptr; }
 
-Stat* GenericStats::get_itemsCollected(int itemId, int itemAux) { return NULL; }
+Stat* GenericStats::get_itemsCollected(int itemId, int itemAux) { return nullptr; }
 
-Stat* GenericStats::get_itemsCrafted(int itemId) { return NULL; }
+Stat* GenericStats::get_itemsCrafted(int itemId) { return nullptr; }
 
 Stat* GenericStats::get_itemsSmelted(int itemId) {
     return this->get_itemsCrafted(itemId);
 }
 
-Stat* GenericStats::get_itemsUsed(int itemId) { return NULL; }
+Stat* GenericStats::get_itemsUsed(int itemId) { return nullptr; }
 
-Stat* GenericStats::get_itemsBought(int itemId) { return NULL; }
+Stat* GenericStats::get_itemsBought(int itemId) { return nullptr; }
 
-Stat* GenericStats::get_killsEnderdragon() { return NULL; }
+Stat* GenericStats::get_killsEnderdragon() { return nullptr; }
 
-Stat* GenericStats::get_completeTheEnd() { return NULL; }
+Stat* GenericStats::get_completeTheEnd() { return nullptr; }
 
-Stat* GenericStats::get_changedDimension(int from, int to) { return NULL; }
+Stat* GenericStats::get_changedDimension(int from, int to) { return nullptr; }
 
-Stat* GenericStats::get_enteredBiome(int biomeId) { return NULL; }
+Stat* GenericStats::get_enteredBiome(int biomeId) { return nullptr; }
 
-Stat* GenericStats::get_achievement(eAward achievementId) { return NULL; }
+Stat* GenericStats::get_achievement(eAward achievementId) { return nullptr; }
 
 Stat* GenericStats::openInventory() {
     return instance->get_achievement(eAward_TakingInventory);
@@ -186,7 +186,7 @@ Stat* GenericStats::overkill() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_overkill);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -194,7 +194,7 @@ Stat* GenericStats::bookcase() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_bookcase);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -242,7 +242,7 @@ Stat* GenericStats::adventuringTime() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_adventuringTime);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -250,7 +250,7 @@ Stat* GenericStats::repopulation() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_repopulation);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -258,7 +258,7 @@ Stat* GenericStats::porkChop() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_eatPorkChop);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -266,7 +266,7 @@ Stat* GenericStats::diamondsToYou() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_diamondsToYou);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -274,7 +274,7 @@ Stat* GenericStats::passingTheTime() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_play100Days);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -282,7 +282,7 @@ Stat* GenericStats::archer() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_arrowKillCreeper);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -290,7 +290,7 @@ Stat* GenericStats::theHaggler() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_theHaggler);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -298,7 +298,7 @@ Stat* GenericStats::potPlanter() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_potPlanter);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -306,7 +306,7 @@ Stat* GenericStats::itsASign() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_itsASign);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -314,7 +314,7 @@ Stat* GenericStats::ironBelly() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_ironBelly);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -322,7 +322,7 @@ Stat* GenericStats::haveAShearfulDay() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_haveAShearfulDay);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -330,7 +330,7 @@ Stat* GenericStats::rainbowCollection() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_rainbowCollection);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -338,7 +338,7 @@ Stat* GenericStats::stayinFrosty() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_stayinFrosty);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -346,7 +346,7 @@ Stat* GenericStats::chestfulOfCobblestone() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_chestfulOfCobblestone);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -354,7 +354,7 @@ Stat* GenericStats::renewableEnergy() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_renewableEnergy);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -362,7 +362,7 @@ Stat* GenericStats::musicToMyEars() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_musicToMyEars);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -370,7 +370,7 @@ Stat* GenericStats::bodyGuard() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_bodyGuard);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -378,7 +378,7 @@ Stat* GenericStats::ironMan() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_ironMan);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -386,7 +386,7 @@ Stat* GenericStats::zombieDoctor() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_zombieDoctor);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -394,7 +394,7 @@ Stat* GenericStats::lionTamer() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->get_achievement(eAward_lionTamer);
 #else
-    return NULL;
+    return nullptr;
 #endif
 }
 
@@ -585,7 +585,7 @@ byteArray GenericStats::param_itemsSmelted(int id, int aux, int count) {
 
 byteArray GenericStats::param_itemsUsed(std::shared_ptr<Player> plr,
                                         std::shared_ptr<ItemInstance> itm) {
-    if ((plr != NULL) && (itm != NULL))
+    if ((plr != nullptr) && (itm != nullptr))
         return instance->getParam_itemsUsed(plr, itm);
     else
         return instance->getParam_noArgs();
@@ -598,7 +598,7 @@ byteArray GenericStats::param_itemsBought(int id, int aux, int count) {
 byteArray GenericStats::param_mobKill(std::shared_ptr<Player> plr,
                                       std::shared_ptr<Mob> mob,
                                       DamageSource* dmgSrc) {
-    if ((plr != NULL) && (mob != NULL))
+    if ((plr != nullptr) && (mob != nullptr))
         return instance->getParam_mobKill(plr, mob, dmgSrc);
     else
         return instance->getParam_noArgs();

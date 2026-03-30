@@ -3,7 +3,7 @@
 #include "Team.h"
 
 bool Team::isAlliedTo(Team* other) {
-    if (other == NULL) {
+    if (other == nullptr) {
         return false;
     }
     if (this == other) {

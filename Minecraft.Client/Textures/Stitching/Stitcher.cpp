@@ -17,7 +17,7 @@ void Stitcher::_init(const std::wstring& name, int maxWidth, int maxHeight,
     // 4J init
     storageX = 0;
     storageY = 0;
-    stitchedTexture = NULL;
+    stitchedTexture = nullptr;
 }
 
 Stitcher::Stitcher(const std::wstring& name, int maxWidth, int maxHeight,
@@ -70,7 +70,7 @@ void Stitcher::stitch() {
     // TextureHolder[] textureHolders = texturesToBeStitched.toArray(new
     // TextureHolder[texturesToBeStitched.size()]); Arrays.sort(textureHolders);
 
-    stitchedTexture = NULL;
+    stitchedTexture = nullptr;
 
     // for (int i = 0; i < textureHolders.length; i++)
     for (AUTO_VAR(it, texturesToBeStitched.begin());

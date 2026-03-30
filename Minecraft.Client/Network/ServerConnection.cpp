@@ -71,7 +71,7 @@ void ServerConnection::tick() {
             //            logger.log(Level.WARNING, "Failed to handle packet: "
             //            + e, e);
             //        }
-            if (uc->connection != NULL) uc->connection->flush();
+            if (uc->connection != nullptr) uc->connection->flush();
         }
     }
 
@@ -153,7 +153,7 @@ void ServerConnection::handleServerSettingsChanged(
 
     if (packet->action == ServerSettingsChangedPacket::HOST_DIFFICULTY) {
         for (unsigned int i = 0; i < pMinecraft->levels.length; ++i) {
-            if (pMinecraft->levels[i] != NULL) {
+            if (pMinecraft->levels[i] != nullptr) {
                 app.DebugPrintf(
                     "ClientConnection::handleServerSettingsChanged - "
                     "Difficulty = %d",

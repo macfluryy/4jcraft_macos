@@ -101,7 +101,7 @@ std::shared_ptr<ItemInstance> SpawnEggDispenseBehavior::execute(
                                  spawnX, spawnY, spawnZ, &iResult);
 
     // 4J-JEV: Added in-case spawn limit is encountered.
-    if (entity == NULL) {
+    if (entity == nullptr) {
         outcome = LEFT_ITEM;
         return dispensed;
     }

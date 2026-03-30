@@ -29,7 +29,7 @@ void MinecartContainer::destroy(DamageSource* source) {
 
     for (int i = 0; i < getContainerSize(); i++) {
         std::shared_ptr<ItemInstance> item = getItem(i);
-        if (item != NULL) {
+        if (item != nullptr) {
             float xo = random->nextFloat() * 0.8f + 0.1f;
             float yo = random->nextFloat() * 0.8f + 0.1f;
             float zo = random->nextFloat() * 0.8f + 0.1f;
@@ -60,7 +60,7 @@ std::shared_ptr<ItemInstance> MinecartContainer::getItem(unsigned int slot) {
 
 std::shared_ptr<ItemInstance> MinecartContainer::removeItem(unsigned int slot,
                                                             int count) {
-    if (items[slot] != NULL) {
+    if (items[slot] != nullptr) {
         if (items[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = items[slot];
             items[slot] = nullptr;
@@ -75,7 +75,7 @@ std::shared_ptr<ItemInstance> MinecartContainer::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> MinecartContainer::removeItemNoUpdate(int slot) {
-    if (items[slot] != NULL) {
+    if (items[slot] != nullptr) {
         std::shared_ptr<ItemInstance> item = items[slot];
         items[slot] = nullptr;
         return item;
@@ -86,7 +86,7 @@ std::shared_ptr<ItemInstance> MinecartContainer::removeItemNoUpdate(int slot) {
 void MinecartContainer::setItem(unsigned int slot,
                                 std::shared_ptr<ItemInstance> item) {
     items[slot] = item;
-    if (item != NULL && item->count > getMaxStackSize())
+    if (item != nullptr && item->count > getMaxStackSize())
         item->count = getMaxStackSize();
 }
 
@@ -125,7 +125,7 @@ void MinecartContainer::remove() {
     if (dropEquipment) {
         for (int i = 0; i < getContainerSize(); i++) {
             std::shared_ptr<ItemInstance> item = getItem(i);
-            if (item != NULL) {
+            if (item != nullptr) {
                 float xo = random->nextFloat() * 0.8f + 0.1f;
                 float yo = random->nextFloat() * 0.8f + 0.1f;
                 float zo = random->nextFloat() * 0.8f + 0.1f;
@@ -165,7 +165,7 @@ void MinecartContainer::addAdditonalSaveData(CompoundTag* base) {
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
     for (int i = 0; i < items.length; i++) {
-        if (items[i] != NULL) {
+        if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
             items[i]->save(tag);

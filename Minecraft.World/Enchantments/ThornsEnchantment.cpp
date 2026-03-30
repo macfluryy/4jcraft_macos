@@ -50,11 +50,11 @@ void ThornsEnchantment::doThornsAfterAttack(
         source->hurt(DamageSource::thorns(target), getDamage(level, random));
         source->playSound(eSoundType_DAMAGE_THORNS, .5f, 1.0f);
 
-        if (item != NULL) {
+        if (item != nullptr) {
             item->hurtAndBreak(3, target);
         }
     } else {
-        if (item != NULL) {
+        if (item != nullptr) {
             item->hurtAndBreak(1, target);
         }
     }

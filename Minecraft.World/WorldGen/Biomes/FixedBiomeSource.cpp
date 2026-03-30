@@ -17,8 +17,8 @@ float FixedBiomeSource::getTemperature(int x, int z) { return temperature; }
 
 void FixedBiomeSource::getTemperatureBlock(floatArray& temperatures, int x,
                                            int z, int w, int h) const {
-    if (temperatures.data == NULL || temperatures.length < w * h) {
-        if (temperatures.data != NULL) delete[] temperatures.data;
+    if (temperatures.data == nullptr || temperatures.length < w * h) {
+        if (temperatures.data != nullptr) delete[] temperatures.data;
         temperatures = floatArray(w * h);
     }
 
@@ -43,8 +43,8 @@ void FixedBiomeSource::getTemperatureBlock(doubleArray& temperatures, int x,
 
 void FixedBiomeSource::getDownfallBlock(floatArray& downfalls, int x, int z,
                                         int w, int h) const {
-    if (downfalls.data == NULL || downfalls.length < w * h) {
-        if (downfalls.data != NULL) delete[] downfalls.data;
+    if (downfalls.data == nullptr || downfalls.length < w * h) {
+        if (downfalls.data != nullptr) delete[] downfalls.data;
         downfalls = floatArray(w * h);
     }
     Arrays::fill(downfalls, 0, w * h, downfall);
@@ -61,8 +61,8 @@ float FixedBiomeSource::getDownfall(int x, int z) const { return downfall; }
 
 void FixedBiomeSource::getDownfallBlock(doubleArray downfalls, int x, int z,
                                         int w, int h) {
-    if (downfalls.data == NULL || downfalls.length < w * h) {
-        if (downfalls.data != NULL) delete[] downfalls.data;
+    if (downfalls.data == nullptr || downfalls.length < w * h) {
+        if (downfalls.data != nullptr) delete[] downfalls.data;
         downfalls = doubleArray(w * h);
     }
     Arrays::fill(downfalls, 0, w * h, (double)downfall);
@@ -129,7 +129,7 @@ TilePos* FixedBiomeSource::findBiome(int x, int z, int r,
                            z - r + random->nextInt(r * 2 + 1));
     }
 
-    return NULL;
+    return nullptr;
 }
 
 bool FixedBiomeSource::containsOnly(int x, int z, int r, Biome* allowed) {

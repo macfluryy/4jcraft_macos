@@ -10,8 +10,8 @@
 UIScene::UIScene(int iPad, UILayer* parentLayer) {
     m_parentLayer = parentLayer;
     m_iPad = iPad;
-    swf = NULL;
-    m_pItemRenderer = NULL;
+    swf = nullptr;
+    m_pItemRenderer = nullptr;
 
     bHasFocus = false;
     m_hasTickedOnce = false;
@@ -26,7 +26,7 @@ UIScene::UIScene(int iPad, UILayer* parentLayer) {
     m_lastOpacity = 1.0f;
     m_bUpdateOpacity = false;
 
-    m_backScene = NULL;
+    m_backScene = nullptr;
 
     m_cacheSlotRenders = false;
     m_needsCacheRendered = true;
@@ -47,13 +47,13 @@ UIScene::~UIScene() {
         ui.UnregisterCallbackId(m_callbackUniqueId);
     }
 
-    if (m_pItemRenderer != NULL) delete m_pItemRenderer;
+    if (m_pItemRenderer != nullptr) delete m_pItemRenderer;
 }
 
 void UIScene::destroyMovie() {
     /* Destroy the Iggy player. */
     IggyPlayerDestroy(swf);
-    swf = NULL;
+    swf = nullptr;
     m_hasSetSafeZoneMethod = false;
 
     // Clear out the controls collection (doesn't delete the controls, and they
@@ -113,7 +113,7 @@ void UIScene::reloadMovie(bool force) {
 
 bool UIScene::needsReloaded() { return !swf && (!stealsFocus() || bHasFocus); }
 
-bool UIScene::hasMovie() { return swf != NULL; }
+bool UIScene::hasMovie() { return swf != nullptr; }
 
 F64 UIScene::getSafeZoneHalfHeight() {
     float height = ui.getScreenHeight();
@@ -238,7 +238,7 @@ bool UIScene::mapElementsAndNames() {
 
     IggyDatatype safeZoneType = IGGY_DATATYPE__invalid_request;
     IggyResult safeZoneResult = IggyValueGetTypeRS(
-        m_rootPath, m_funcSetSafeZone, NULL, &safeZoneType);
+        m_rootPath, m_funcSetSafeZone, nullptr, &safeZoneType);
     m_hasSetSafeZoneMethod =
         safeZoneResult == IGGY_RESULT_SUCCESS &&
         safeZoneType == IGGY_DATATYPE_function;
@@ -293,7 +293,7 @@ void UIScene::loadMovie() {
 
     byteArray baFile = ui.getMovieData(moviePath.c_str());
     int64_t beforeLoad = ui.iggyAllocCount;
-    swf = IggyPlayerCreateFromMemory(baFile.data, baFile.length, NULL);
+    swf = IggyPlayerCreateFromMemory(baFile.data, baFile.length, nullptr);
     int64_t afterLoad = ui.iggyAllocCount;
     IggyPlayerInitializeAndTickRS(swf);
     int64_t afterTick = ui.iggyAllocCount;
@@ -385,7 +385,7 @@ void UIScene::tick() {
     }
 }
 
-UIControl* UIScene::GetMainPanel() { return NULL; }
+UIControl* UIScene::GetMainPanel() { return nullptr; }
 
 void UIScene::addTimer(int id, int ms) {
     int currentTime = System::currentTimeMillis();
@@ -459,21 +459,21 @@ void UIScene::slideLeft() {
     IggyDataValue result;
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
-                                            m_funcSlideLeft, 0, NULL);
+                                            m_funcSlideLeft, 0, nullptr);
 }
 
 void UIScene::slideRight() {
     IggyDataValue result;
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
-                                            m_funcSlideRight, 0, NULL);
+                                            m_funcSlideRight, 0, nullptr);
 }
 
 void UIScene::doHorizontalResizeCheck() {
     IggyDataValue result;
     IggyResult out = IggyPlayerCallMethodRS(
         getMovie(), &result, IggyPlayerRootPath(getMovie()),
-        m_funcHorizontalResizeCheck, 0, NULL);
+        m_funcHorizontalResizeCheck, 0, nullptr);
 }
 
 void UIScene::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
@@ -514,7 +514,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                                     std::shared_ptr<ItemInstance> item,
                                     float fAlpha, bool isFoil,
                                     bool bDecorations) {
-    if (item != NULL) {
+    if (item != nullptr) {
         if (m_cacheSlotRenders) {
             if ((m_cachedSlotDraw.size() + 1) == m_expectedCachedSlotCount) {
                 // Make sure that pMinecraft->player is the correct player so
@@ -663,7 +663,7 @@ void UIScene::_customDrawSlotControl(CustomDrawData* region, int iPad,
     }
 
     PIXBeginNamedEvent(0, "Render and decorate");
-    if (m_pItemRenderer == NULL) m_pItemRenderer = new ItemRenderer();
+    if (m_pItemRenderer == nullptr) m_pItemRenderer = new ItemRenderer();
     m_pItemRenderer->renderAndDecorateItem(
         pMinecraft->font, pMinecraft->textures, item, x, y, scaleX, scaleY,
         fAlpha, isFoil, false, !usingCommandBuffer);
@@ -701,10 +701,10 @@ void UIScene::_customDrawSlotControl(CustomDrawData* region, int iPad,
 // 4J Stu - Not threadsafe
 // void UIScene::navigateForward(int iPad, EUIScene scene, void *initData)
 //{
-//	if(m_parentLayer == NULL)
+//	if(m_parentLayer == nullptr)
 //	{
 //		app.DebugPrintf("A scene is trying to navigate forwards, but
-// it's parent layer is NULL!\n"); #ifndef _CONTENT_PACKAGE
+// it's parent layer is nullptr!\n"); #ifndef _CONTENT_PACKAGE
 //		__debugbreak();
 // #endif
 //	}
@@ -720,9 +720,9 @@ void UIScene::navigateBack() {
 
     ui.NavigateBack(m_iPad);
 
-    if (m_parentLayer == NULL) {
+    if (m_parentLayer == nullptr) {
 //		app.DebugPrintf("A scene is trying to navigate back, but it's
-// parent layer is NULL!\n");
+// parent layer is nullptr!\n");
 #if !defined(_CONTENT_PACKAGE)
 //		__debugbreak();
 #endif

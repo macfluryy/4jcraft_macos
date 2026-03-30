@@ -63,14 +63,14 @@ float ThrownPotion::getThrowPower() { return 0.5f; }
 float ThrownPotion::getThrowUpAngleOffset() { return -20; }
 
 void ThrownPotion::setPotionValue(int potionValue) {
-    if (potionItem == NULL)
+    if (potionItem == nullptr)
         potionItem =
             std::shared_ptr<ItemInstance>(new ItemInstance(Item::potion, 1, 0));
     potionItem->setAuxValue(potionValue);
 }
 
 int ThrownPotion::getPotionValue() {
-    if (potionItem == NULL)
+    if (potionItem == nullptr)
         potionItem =
             std::shared_ptr<ItemInstance>(new ItemInstance(Item::potion, 1, 0));
     return potionItem->getAuxValue();
@@ -81,12 +81,12 @@ void ThrownPotion::onHit(HitResult* res) {
         std::vector<MobEffectInstance*>* mobEffects =
             Item::potion->getMobEffects(potionItem);
 
-        if (mobEffects != NULL && !mobEffects->empty()) {
+        if (mobEffects != nullptr && !mobEffects->empty()) {
             AABB aoe = bb.grow(SPLASH_RANGE, SPLASH_RANGE / 2, SPLASH_RANGE);
             std::vector<std::shared_ptr<Entity> >* entitiesOfClass =
                 level->getEntitiesOfClass(typeid(LivingEntity), &aoe);
 
-            if (entitiesOfClass != NULL && !entitiesOfClass->empty()) {
+            if (entitiesOfClass != nullptr && !entitiesOfClass->empty()) {
                 // for (Entity e : entitiesOfClass)
                 for (AUTO_VAR(it, entitiesOfClass->begin());
                      it != entitiesOfClass->end(); ++it) {
@@ -143,12 +143,12 @@ void ThrownPotion::readAdditionalSaveData(CompoundTag* tag) {
         setPotionValue(tag->getInt(L"potionValue"));
     }
 
-    if (potionItem == NULL) remove();
+    if (potionItem == nullptr) remove();
 }
 
 void ThrownPotion::addAdditonalSaveData(CompoundTag* tag) {
     Throwable::addAdditonalSaveData(tag);
 
-    if (potionItem != NULL)
+    if (potionItem != nullptr)
         tag->putCompound(L"Potion", potionItem->save(new CompoundTag()));
 }

@@ -83,7 +83,7 @@ int64_t System::nanoTime() {
 int64_t System::currentTimeMillis() {
 #if defined(__linux__)
     struct timeval tv;
-    gettimeofday(&tv, NULL);
+    gettimeofday(&tv, nullptr);
     // Convert to milliseconds since unix epoch instead of windows file time
     // time is expecting calculation to be between 10-30 ms.
     return (int64_t)tv.tv_sec * 1000LL + tv.tv_usec / 1000;

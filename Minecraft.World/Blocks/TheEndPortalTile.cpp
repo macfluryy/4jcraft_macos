@@ -54,7 +54,7 @@ void TheEndPortal::entityInside(Level* level, int x, int y, int z,
                                 std::shared_ptr<Entity> entity) {
     if (entity->GetType() == eTYPE_EXPERIENCEORB) return;  // 4J added
 
-    if (entity->riding == NULL && entity->rider.lock() == NULL) {
+    if (entity->riding == nullptr && entity->rider.lock() == nullptr) {
         if (!level->isClientSide) {
             if (entity->instanceof(eTYPE_PLAYER)) {
                 // 4J Stu - Update the level data position so that the

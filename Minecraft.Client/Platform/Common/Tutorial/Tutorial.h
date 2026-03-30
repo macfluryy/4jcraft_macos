@@ -135,7 +135,7 @@ public:
     void setCompleted(int completableId);
     bool getCompleted(int completableId);
 
-    void changeTutorialState(eTutorial_State newState, UIScene* scene = NULL);
+    void changeTutorialState(eTutorial_State newState, UIScene* scene = nullptr);
     bool isSelectedItemState();
 
     bool setMessage(PopupMessageDetails* message);

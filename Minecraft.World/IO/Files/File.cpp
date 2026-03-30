@@ -113,7 +113,7 @@ File::File(const std::wstring& pathname) {
     if( path.back().compare( pathRoot ) != 0 )
     this->parent = new File( &path );
     else
-    this->parent = NULL;
+    this->parent = nullptr;
     }
     */
 }
@@ -129,7 +129,7 @@ File::File(const std::wstring& parent,
 // Creates a new File instance by converting the given path vector into an
 // abstract pathname.
 /*
-File::File( std::vector<std::wstring> *path ) : parent( NULL )
+File::File( std::vector<std::wstring> *path ) : parent( nullptr )
 {
 m_abstractPathName = path->back();
 path->pop_back();
@@ -140,7 +140,7 @@ if( path->size() > 0 )
 if( path->back().compare( pathRoot ) != 0 )
 this->parent = new File( path );
 else
-this->parent = NULL;
+this->parent = nullptr;
 }
 }
 */
@@ -298,7 +298,7 @@ std::vector<File*>* File::listFiles() const {
 // or if an I/O error occurs.
 std::vector<File*>* File::listFiles(FileFilter* filter) const {
     // TODO 4J Stu - Also need to check for I/O errors?
-    if (!isDirectory()) return NULL;
+    if (!isDirectory()) return nullptr;
 
     std::vector<File*>* vOutput = new std::vector<File*>();
 
@@ -362,7 +362,7 @@ __int64 File::lastModified() {
 const std::wstring File::getPath() const {
     /*
     std::wstring path;
-    if ( parent != NULL)
+    if ( parent != nullptr)
     path = parent->getPath();
     else
     path = std::wstring(pathRoot);
@@ -387,7 +387,7 @@ bool File::eq_test(const File& x, const File& y) {
 int File::hash_fnct(const File& k) {
     int hashCode = 0;
 
-    // if (k->parent != NULL)
+    // if (k->parent != nullptr)
     //	hashCode = hash_fnct(k->getParent());
 
     wchar_t* ref = (wchar_t*)k.m_abstractPathName.c_str();

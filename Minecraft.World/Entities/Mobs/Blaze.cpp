@@ -64,7 +64,7 @@ void Blaze::aiStep() {
             allowedHeightOffset = .5f + (float)random->nextGaussian() * 3;
         }
 
-        if (getAttackTarget() != NULL &&
+        if (getAttackTarget() != nullptr &&
             (getAttackTarget()->y + getAttackTarget()->getHeadHeight()) >
                 (y + getHeadHeight() + allowedHeightOffset)) {
             yd = yd + (.3f - yd) * .3f;

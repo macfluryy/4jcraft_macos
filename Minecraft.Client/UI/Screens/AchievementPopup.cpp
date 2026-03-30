@@ -13,7 +13,7 @@ AchievementPopup::AchievementPopup(Minecraft* mc) {
     // 4J - added initialisers
     width = 0;
     height = 0;
-    ach = NULL;
+    ach = nullptr;
     startTime = 0;
     isHelper = false;
 
@@ -85,7 +85,7 @@ void AchievementPopup::render() {
         glDepthMask(true);
         glEnable(GL_DEPTH_TEST);
     }
-    if (ach == NULL || startTime == 0) return;
+    if (ach == nullptr || startTime == 0) return;
 
     double time = (System::currentTimeMillis() - startTime) / 3000.0;
     if (isHelper) {

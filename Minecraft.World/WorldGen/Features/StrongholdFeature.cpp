@@ -36,7 +36,7 @@ void StrongholdFeature::_init() {
 
     // 4J added initialisers
     for (int i = 0; i < strongholdPos_length; i++) {
-        strongholdPos[i] = NULL;
+        strongholdPos[i] = nullptr;
     }
     isSpotSelected = false;
 }
@@ -131,7 +131,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                     ((unsigned int)selectedX << 4) + 8,
                     ((unsigned int)selectedZ << 4) + 8, 7 << 4, allowedBiomes,
                     &random);
-                if (position != NULL) {
+                if (position != nullptr) {
                     selectedX = position->x >> 4;
                     selectedZ = position->z >> 4;
 
@@ -188,7 +188,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
         bool forcePlacement = false;
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
-        if (levelGenOptions != NULL) {
+        if (levelGenOptions != nullptr) {
             forcePlacement =
                 levelGenOptions->isFeatureChunk(x, z, eFeature_Stronghold);
         }
@@ -205,7 +205,7 @@ std::vector<TilePos>* StrongholdFeature::getGuesstimatedFeaturePositions() {
     std::vector<TilePos>* positions = new std::vector<TilePos>();
     for (int i = 0; i < strongholdPos_length; i++) {
         ChunkPos* chunkPos = strongholdPos[i];
-        if (chunkPos != NULL) {
+        if (chunkPos != nullptr) {
             positions->push_back(chunkPos->getMiddleBlockPosition(64));
         }
     }
@@ -218,7 +218,7 @@ StructureStart* StrongholdFeature::createStructureStart(int x, int z) {
     // 4J - front() was get(0)
     while (start->getPieces()->empty() ||
            ((StrongholdPieces::StartPiece*)start->getPieces()->front())
-                   ->portalRoomPiece == NULL) {
+                   ->portalRoomPiece == nullptr) {
         delete start;
         // regenerate stronghold without changing seed
         start = new StrongholdStart(level, random, x, z);

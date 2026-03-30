@@ -13,7 +13,7 @@ bool LeashItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
                       int y, int z, int face, float clickX, float clickY,
                       float clickZ, bool bTestUseOnOnly) {
     int tile = level->getTile(x, y, z);
-    if (Tile::tiles[tile] != NULL &&
+    if (Tile::tiles[tile] != nullptr &&
         Tile::tiles[tile]->getRenderShape() == Tile::SHAPE_FENCE) {
         if (bTestUseOnOnly) return bindPlayerMobsTest(player, level, x, y, z);
 
@@ -39,11 +39,11 @@ bool LeashItem::bindPlayerMobs(std::shared_ptr<Player> player, Level* level,
     AABB mob_bb = AABB(x, y, z, x, y, z).grow(range, range, range);
     std::vector<std::shared_ptr<Entity> >* mobs =
         level->getEntitiesOfClass(typeid(Mob), &mob_bb);
-    if (mobs != NULL) {
+    if (mobs != nullptr) {
         for (AUTO_VAR(it, mobs->begin()); it != mobs->end(); ++it) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(*it);
             if (mob->isLeashed() && mob->getLeashHolder() == player) {
-                if (activeKnot == NULL) {
+                if (activeKnot == nullptr) {
                     activeKnot =
                         LeashFenceKnotEntity::createAndAddKnot(level, x, y, z);
                 }
@@ -64,7 +64,7 @@ bool LeashItem::bindPlayerMobsTest(std::shared_ptr<Player> player, Level* level,
     std::vector<std::shared_ptr<Entity> >* mobs =
         level->getEntitiesOfClass(typeid(Mob), &mob_bb);
 
-    if (mobs != NULL) {
+    if (mobs != nullptr) {
         for (AUTO_VAR(it, mobs->begin()); it != mobs->end(); ++it) {
             std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(*it);
             if (mob->isLeashed() && mob->getLeashHolder() == player)

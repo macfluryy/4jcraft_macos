@@ -76,7 +76,7 @@ void PauseScreen::buttonClicked(Button* button) {
         //     minecraft->level->disconnect();
         // }
 
-        // minecraft->setLevel(NULL);
+        // minecraft->setLevel(nullptr);
         // minecraft->setScreen(new TitleScreen());
 
         // 4jcraft: exit with our new exitWorld method
@@ -85,7 +85,7 @@ void PauseScreen::buttonClicked(Button* button) {
     if (button->id == 4) {
         app.SetXuiServerAction(ProfileManager.GetPrimaryPad(),
                                eXuiServerAction_PauseServer, (void*)FALSE);
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         //       minecraft->grabMouse();		// 4J - removed
     }
 

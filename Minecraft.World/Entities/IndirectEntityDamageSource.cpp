@@ -40,17 +40,17 @@ std::shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(
             : nullptr;
     std::wstring additional = L"";
     int type;
-    if (owner != NULL) {
+    if (owner != nullptr) {
         type = owner->GetType();
         if (type == eTYPE_SERVERPLAYER) {
             std::shared_ptr<Player> sourcePlayer =
                 std::dynamic_pointer_cast<Player>(owner);
-            if (sourcePlayer != NULL) additional = sourcePlayer->name;
+            if (sourcePlayer != nullptr) additional = sourcePlayer->name;
         }
     } else {
         type = entity->GetType();
     }
-    if (held != NULL && held->hasCustomHoverName()) {
+    if (held != nullptr && held->hasCustomHoverName()) {
         return std::shared_ptr<ChatPacket>(
             new ChatPacket(player->getNetworkName(), m_msgWithItemId, type,
                            additional, held->getHoverName()));

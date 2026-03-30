@@ -55,7 +55,7 @@ private:
     bool immediateUpdate;
     bool updated;
     int m_iMipLevels;
-    ByteBuffer* data[10];  // Arrays for mipmaps - NULL if not used
+    ByteBuffer* data[10];  // Arrays for mipmaps - nullptr if not used
 
 public:
     bool m_bInitialised;  // 4J Added

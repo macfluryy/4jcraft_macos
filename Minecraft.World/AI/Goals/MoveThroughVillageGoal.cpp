@@ -12,7 +12,7 @@
 MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,
                                                double speedModifier,
                                                bool onlyAtNight) {
-    path = NULL;
+    path = nullptr;
     doorInfo = std::weak_ptr<DoorInfo>();
 
     this->mob = mob;
@@ -22,7 +22,7 @@ MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,
 }
 
 MoveThroughVillageGoal::~MoveThroughVillageGoal() {
-    if (path != NULL) delete path;
+    if (path != nullptr) delete path;
 }
 
 bool MoveThroughVillageGoal::canUse() {
@@ -32,10 +32,10 @@ bool MoveThroughVillageGoal::canUse() {
 
     std::shared_ptr<Village> village = mob->level->villages->getClosestVillage(
         Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z), 0);
-    if (village == NULL) return false;
+    if (village == nullptr) return false;
 
     std::shared_ptr<DoorInfo> _doorInfo = getNextDoorInfo(village);
-    if (_doorInfo == NULL) return false;
+    if (_doorInfo == nullptr) return false;
     doorInfo = _doorInfo;
 
     bool oldCanOpenDoors = mob->getNavigation()->canOpenDoors();
@@ -45,7 +45,7 @@ bool MoveThroughVillageGoal::canUse() {
     path = mob->getNavigation()->createPath(_doorInfo->x, _doorInfo->y,
                                             _doorInfo->z);
     mob->getNavigation()->setCanOpenDoors(oldCanOpenDoors);
-    if (path != NULL) return true;
+    if (path != nullptr) return true;
 
     Vec3 towards(_doorInfo->x, _doorInfo->y, _doorInfo->z);
     auto pos = RandomPos::getPosTowards(
@@ -56,14 +56,14 @@ bool MoveThroughVillageGoal::canUse() {
     delete path;
     path = mob->getNavigation()->createPath(pos->x, pos->y, pos->z);
     mob->getNavigation()->setCanOpenDoors(oldCanOpenDoors);
-    return path != NULL;
+    return path != nullptr;
 }
 
 bool MoveThroughVillageGoal::canContinueToUse() {
     if (mob->getNavigation()->isDone()) return false;
     float dist = mob->bbWidth + 4.f;
     std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
-    if (_doorInfo == NULL) return false;
+    if (_doorInfo == nullptr) return false;
 
     return mob->distanceToSqr(_doorInfo->x, _doorInfo->y, _doorInfo->z) >
            dist * dist;
@@ -71,12 +71,12 @@ bool MoveThroughVillageGoal::canContinueToUse() {
 
 void MoveThroughVillageGoal::start() {
     mob->getNavigation()->moveTo(path, speedModifier);
-    path = NULL;
+    path = nullptr;
 }
 
 void MoveThroughVillageGoal::stop() {
     std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
-    if (_doorInfo == NULL) return;
+    if (_doorInfo == nullptr) return;
 
     if (mob->getNavigation()->isDone() ||
         mob->distanceToSqr(_doorInfo->x, _doorInfo->y, _doorInfo->z) < 4 * 4) {
@@ -108,7 +108,7 @@ bool MoveThroughVillageGoal::hasVisited(std::shared_ptr<DoorInfo> di) {
     // for (DoorInfo di2 : visited)
     for (AUTO_VAR(it, visited.begin()); it != visited.end();) {
         std::shared_ptr<DoorInfo> di2 = (*it).lock();
-        if (di2 == NULL) {
+        if (di2 == nullptr) {
             it = visited.erase(it);
         } else {
             if (di->x == di2->x && di->y == di2->y && di->z == di2->z)

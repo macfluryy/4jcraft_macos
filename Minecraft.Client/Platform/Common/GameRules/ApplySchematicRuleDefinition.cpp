@@ -20,13 +20,13 @@ ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     m_rotation = ConsoleSchematicFile::eSchematicRot_0;
     m_completed = false;
     m_dimension = 0;
-    m_schematic = NULL;
+    m_schematic = nullptr;
 }
 
 ApplySchematicRuleDefinition::~ApplySchematicRuleDefinition() {
     app.DebugPrintf("Deleting ApplySchematicRuleDefinition.\n");
     if (!m_completed) m_levelGenOptions->releaseSchematicFile(m_schematicName);
-    m_schematic = NULL;
+    m_schematic = nullptr;
 }
 
 void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream* dos,
@@ -128,7 +128,7 @@ void ApplySchematicRuleDefinition::addAttribute(
 }
 
 void ApplySchematicRuleDefinition::updateLocationBox() {
-    if (m_schematic == NULL)
+    if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     m_locationBox = AABB(0, 0, 0, 0, 0, 0);
@@ -160,7 +160,7 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
     if (chunk->level->dimension->id != m_dimension) return;
 
     PIXBeginNamedEvent(0, "Processing ApplySchematicRuleDefinition");
-    if (m_schematic == NULL)
+    if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     if (!m_locationBox.has_value()) updateLocationBox();
@@ -192,7 +192,7 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
             (m_totalBlocksChangedLighting == targetBlocks)) {
             m_completed = true;
             // m_levelGenOptions->releaseSchematicFile(m_schematicName);
-            // m_schematic = NULL;
+            // m_schematic = nullptr;
         }
     }
     PIXEndNamedEvent();
@@ -204,7 +204,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
     if (chunk->level->dimension->id != m_dimension) return;
 
     PIXBeginNamedEvent(0, "Processing ApplySchematicRuleDefinition (lighting)");
-    if (m_schematic == NULL)
+    if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     if (!m_locationBox.has_value()) updateLocationBox();
@@ -230,7 +230,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
             (m_totalBlocksChangedLighting == targetBlocks)) {
             m_completed = true;
             // m_levelGenOptions->releaseSchematicFile(m_schematicName);
-            // m_schematic = NULL;
+            // m_schematic = nullptr;
         }
     }
     PIXEndNamedEvent();

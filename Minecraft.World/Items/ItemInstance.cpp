@@ -24,7 +24,7 @@ void ItemInstance::_init(int id, int count, int auxValue) {
     this->id = id;
     this->count = count;
     this->auxValue = auxValue;
-    this->tag = NULL;
+    this->tag = nullptr;
     this->frame = nullptr;
     // 4J-PB - for trading menu
     this->m_bForceNumberDisplay = false;
@@ -61,17 +61,17 @@ std::shared_ptr<ItemInstance> ItemInstance::fromTag(CompoundTag* itemTag) {
     std::shared_ptr<ItemInstance> itemInstance =
         std::shared_ptr<ItemInstance>(new ItemInstance());
     itemInstance->load(itemTag);
-    return itemInstance->getItem() != NULL ? itemInstance : nullptr;
+    return itemInstance->getItem() != nullptr ? itemInstance : nullptr;
 }
 
 ItemInstance::~ItemInstance() {
-    if (tag != NULL) delete tag;
+    if (tag != nullptr) delete tag;
 }
 
 std::shared_ptr<ItemInstance> ItemInstance::remove(int count) {
     std::shared_ptr<ItemInstance> ii =
         std::shared_ptr<ItemInstance>(new ItemInstance(id, count, auxValue));
-    if (tag != NULL) ii->tag = (CompoundTag*)tag->copy();
+    if (tag != nullptr) ii->tag = (CompoundTag*)tag->copy();
     this->count -= count;
 
     // 4J Stu Fix for duplication glitch, make sure that item count is in range
@@ -117,7 +117,7 @@ CompoundTag* ItemInstance::save(CompoundTag* compoundTag) {
     compoundTag->putShort(L"id", (short)id);
     compoundTag->putByte(L"Count", (uint8_t)count);
     compoundTag->putShort(L"Damage", (short)auxValue);
-    if (tag != NULL) compoundTag->put(L"tag", tag->copy());
+    if (tag != nullptr) compoundTag->put(L"tag", tag->copy());
     return compoundTag;
 }
 
@@ -199,16 +199,16 @@ bool ItemInstance::hurt(int dmg, Random* random) {
 
 void ItemInstance::hurtAndBreak(int dmg, std::shared_ptr<LivingEntity> owner) {
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(owner);
-    if (player != NULL && player->abilities.instabuild) return;
+    if (player != nullptr && player->abilities.instabuild) return;
     if (!isDamageableItem()) return;
 
     if (hurt(dmg, owner->getRandom())) {
         owner->breakItem(shared_from_this());
 
         count--;
-        if (player != NULL) {
+        if (player != nullptr) {
             // player->awardStat(Stats::itemBroke[id], 1);
-            if (count == 0 && dynamic_cast<BowItem*>(getItem()) != NULL) {
+            if (count == 0 && dynamic_cast<BowItem*>(getItem()) != nullptr) {
                 player->removeSelectedItem();
             }
         }
@@ -241,7 +241,7 @@ bool ItemInstance::interactEnemy(std::shared_ptr<Player> player,
 std::shared_ptr<ItemInstance> ItemInstance::copy() const {
     std::shared_ptr<ItemInstance> copy =
         std::shared_ptr<ItemInstance>(new ItemInstance(id, count, auxValue));
-    if (tag != NULL) {
+    if (tag != nullptr) {
         copy->tag = (CompoundTag*)tag->copy();
     }
     return copy;
@@ -250,7 +250,7 @@ std::shared_ptr<ItemInstance> ItemInstance::copy() const {
 // 4J Stu - Added this as we need it in the recipe code
 ItemInstance* ItemInstance::copy_not_shared() const {
     ItemInstance* copy = new ItemInstance(id, count, auxValue);
-    if (tag != NULL) {
+    if (tag != nullptr) {
         copy->tag = (CompoundTag*)tag->copy();
         if (!copy->tag->equals(tag)) {
             return copy;
@@ -262,13 +262,13 @@ ItemInstance* ItemInstance::copy_not_shared() const {
 // 4J Brought forward from 1.2
 bool ItemInstance::tagMatches(std::shared_ptr<ItemInstance> a,
                               std::shared_ptr<ItemInstance> b) {
-    if (a == NULL && b == NULL) return true;
-    if (a == NULL || b == NULL) return false;
+    if (a == nullptr && b == nullptr) return true;
+    if (a == nullptr || b == nullptr) return false;
 
-    if (a->tag == NULL && b->tag != NULL) {
+    if (a->tag == nullptr && b->tag != nullptr) {
         return false;
     }
-    if (a->tag != NULL && !a->tag->equals(b->tag)) {
+    if (a->tag != nullptr && !a->tag->equals(b->tag)) {
         return false;
     }
     return true;
@@ -276,8 +276,8 @@ bool ItemInstance::tagMatches(std::shared_ptr<ItemInstance> a,
 
 bool ItemInstance::matches(std::shared_ptr<ItemInstance> a,
                            std::shared_ptr<ItemInstance> b) {
-    if (a == NULL && b == NULL) return true;
-    if (a == NULL || b == NULL) return false;
+    if (a == nullptr && b == nullptr) return true;
+    if (a == nullptr || b == nullptr) return false;
     return a->matches(b);
 }
 
@@ -285,10 +285,10 @@ bool ItemInstance::matches(std::shared_ptr<ItemInstance> b) {
     if (count != b->count) return false;
     if (id != b->id) return false;
     if (auxValue != b->auxValue) return false;
-    if (tag == NULL && b->tag != NULL) {
+    if (tag == nullptr && b->tag != nullptr) {
         return false;
     }
-    if (tag != NULL && !tag->equals(b->tag)) {
+    if (tag != nullptr && !tag->equals(b->tag)) {
         return false;
     }
     return true;
@@ -308,10 +308,10 @@ bool ItemInstance::sameItem(std::shared_ptr<ItemInstance> b) {
 bool ItemInstance::sameItemWithTags(std::shared_ptr<ItemInstance> b) {
     if (id != b->id) return false;
     if (auxValue != b->auxValue) return false;
-    if (tag == NULL && b->tag != NULL) {
+    if (tag == nullptr && b->tag != nullptr) {
         return false;
     }
-    if (tag != NULL && !tag->equals(b->tag)) {
+    if (tag != nullptr && !tag->equals(b->tag)) {
         return false;
     }
     return true;
@@ -340,7 +340,7 @@ ItemInstance* ItemInstance::setDescriptionId(unsigned int id) {
 
 std::shared_ptr<ItemInstance> ItemInstance::clone(
     std::shared_ptr<ItemInstance> item) {
-    return item == NULL ? nullptr : item->copy();
+    return item == nullptr ? nullptr : item->copy();
 }
 
 std::wstring ItemInstance::toString() {
@@ -349,8 +349,8 @@ std::wstring ItemInstance::toString() {
 
     std::wostringstream oss;
     // 4J-PB - TODO - temp fix until ore recipe issue is fixed
-    if (Item::items[id] == NULL) {
-        oss << std::dec << count << L"x" << L" Item::items[id] is NULL " << L"@"
+    if (Item::items[id] == nullptr) {
+        oss << std::dec << count << L"x" << L" Item::items[id] is nullptr " << L"@"
             << auxValue;
     } else {
         oss << std::dec << count << L"x"
@@ -397,13 +397,13 @@ void ItemInstance::releaseUsing(Level* level, std::shared_ptr<Player> player,
 }
 
 // 4J Stu - Brought forward these functions for enchanting/game rules
-bool ItemInstance::hasTag() { return tag != NULL; }
+bool ItemInstance::hasTag() { return tag != nullptr; }
 
 CompoundTag* ItemInstance::getTag() { return tag; }
 
 ListTag<CompoundTag>* ItemInstance::getEnchantmentTags() {
-    if (tag == NULL) {
-        return NULL;
+    if (tag == nullptr) {
+        return nullptr;
     }
     return (ListTag<CompoundTag>*)tag->get(L"ench");
 }
@@ -416,7 +416,7 @@ void ItemInstance::setTag(CompoundTag* tag) {
 std::wstring ItemInstance::getHoverName() {
     std::wstring title = getItem()->getHoverName(shared_from_this());
 
-    if (tag != NULL && tag->contains(L"display")) {
+    if (tag != nullptr && tag->contains(L"display")) {
         CompoundTag* display = tag->getCompound(L"display");
 
         if (display->contains(L"Name")) {
@@ -428,14 +428,14 @@ std::wstring ItemInstance::getHoverName() {
 }
 
 void ItemInstance::setHoverName(const std::wstring& name) {
-    if (tag == NULL) tag = new CompoundTag();
+    if (tag == nullptr) tag = new CompoundTag();
     if (!tag->contains(L"display"))
         tag->putCompound(L"display", new CompoundTag());
     tag->getCompound(L"display")->putString(L"Name", name);
 }
 
 void ItemInstance::resetHoverName() {
-    if (tag == NULL) return;
+    if (tag == nullptr) return;
     if (!tag->contains(L"display")) return;
     CompoundTag* display = tag->getCompound(L"display");
     display->remove(L"Name");
@@ -444,13 +444,13 @@ void ItemInstance::resetHoverName() {
         tag->remove(L"display");
 
         if (tag->isEmpty()) {
-            setTag(NULL);
+            setTag(nullptr);
         }
     }
 }
 
 bool ItemInstance::hasCustomHoverName() {
-    if (tag == NULL) return false;
+    if (tag == nullptr) return false;
     if (!tag->contains(L"display")) return false;
     return tag->getCompound(L"display")->contains(L"Name");
 }
@@ -505,12 +505,12 @@ std::vector<std::wstring>* ItemInstance::getHoverText(
 
     if (hasTag()) {
         ListTag<CompoundTag>* list = getEnchantmentTags();
-        if (list != NULL) {
+        if (list != nullptr) {
             for (int i = 0; i < list->size(); i++) {
                 int type = list->get(i)->getShort((wchar_t*)TAG_ENCH_ID);
                 int level = list->get(i)->getShort((wchar_t*)TAG_ENCH_LEVEL);
 
-                if (Enchantment::enchantments[type] != NULL) {
+                if (Enchantment::enchantments[type] != nullptr) {
                     std::wstring unformatted = L"";
                     lines->push_back(
                         Enchantment::enchantments[type]->getFullname(
@@ -568,12 +568,12 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
 
     if (hasTag()) {
         ListTag<CompoundTag>* list = getEnchantmentTags();
-        if (list != NULL) {
+        if (list != nullptr) {
             for (int i = 0; i < list->size(); i++) {
                 int type = list->get(i)->getShort((wchar_t*)TAG_ENCH_ID);
                 int level = list->get(i)->getShort((wchar_t*)TAG_ENCH_LEVEL);
 
-                if (Enchantment::enchantments[type] != NULL) {
+                if (Enchantment::enchantments[type] != nullptr) {
                     std::wstring unformatted = L"";
                     lines->push_back(
                         Enchantment::enchantments[type]->getFullname(level));
@@ -660,12 +660,12 @@ std::vector<HtmlString>* ItemInstance::getHoverTextOnly(
 
     if (hasTag()) {
         ListTag<CompoundTag>* list = getEnchantmentTags();
-        if (list != NULL) {
+        if (list != nullptr) {
             for (int i = 0; i < list->size(); i++) {
                 int type = list->get(i)->getShort((wchar_t*)TAG_ENCH_ID);
                 int level = list->get(i)->getShort((wchar_t*)TAG_ENCH_LEVEL);
 
-                if (Enchantment::enchantments[type] != NULL) {
+                if (Enchantment::enchantments[type] != nullptr) {
                     std::wstring unformatted = L"";
                     lines->push_back(
                         Enchantment::enchantments[type]->getFullname(level));
@@ -689,7 +689,7 @@ bool ItemInstance::isEnchantable() {
 }
 
 void ItemInstance::enchant(const Enchantment* enchantment, int level) {
-    if (tag == NULL) this->setTag(new CompoundTag());
+    if (tag == nullptr) this->setTag(new CompoundTag());
     if (!tag->contains(L"ench"))
         tag->put(L"ench", new ListTag<CompoundTag>(L"ench"));
 
@@ -701,12 +701,12 @@ void ItemInstance::enchant(const Enchantment* enchantment, int level) {
 }
 
 bool ItemInstance::isEnchanted() {
-    if (tag != NULL && tag->contains(L"ench")) return true;
+    if (tag != nullptr && tag->contains(L"ench")) return true;
     return false;
 }
 
 void ItemInstance::addTagElement(std::wstring name, Tag* tag) {
-    if (this->tag == NULL) {
+    if (this->tag == nullptr) {
         setTag(new CompoundTag());
     }
     this->tag->put((wchar_t*)name.c_str(), tag);
@@ -716,7 +716,7 @@ bool ItemInstance::mayBePlacedInAdventureMode() {
     return getItem()->mayBePlacedInAdventureMode();
 }
 
-bool ItemInstance::isFramed() { return frame != NULL; }
+bool ItemInstance::isFramed() { return frame != nullptr; }
 
 void ItemInstance::setFramed(std::shared_ptr<ItemFrame> frame) {
     this->frame = frame;
@@ -738,7 +738,7 @@ void ItemInstance::setRepairCost(int cost) {
 }
 
 attrAttrModMap* ItemInstance::getAttributeModifiers() {
-    attrAttrModMap* result = NULL;
+    attrAttrModMap* result = nullptr;
 
     if (hasTag() && tag->contains(L"AttributeModifiers")) {
         result = new attrAttrModMap();
@@ -767,8 +767,8 @@ attrAttrModMap* ItemInstance::getAttributeModifiers() {
 }
 
 void ItemInstance::set4JData(int data) {
-    if (tag == NULL && data == 0) return;
-    if (tag == NULL) this->setTag(new CompoundTag());
+    if (tag == nullptr && data == 0) return;
+    if (tag == nullptr) this->setTag(new CompoundTag());
 
     if (tag->contains(L"4jdata")) {
         IntTag* dataTag = (IntTag*)tag->get(L"4jdata");
@@ -779,7 +779,7 @@ void ItemInstance::set4JData(int data) {
 }
 
 int ItemInstance::get4JData() {
-    if (tag == NULL || !tag->contains(L"4jdata"))
+    if (tag == nullptr || !tag->contains(L"4jdata"))
         return 0;
     else {
         IntTag* dataTag = (IntTag*)tag->get(L"4jdata");

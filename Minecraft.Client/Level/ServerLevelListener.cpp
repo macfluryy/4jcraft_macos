@@ -123,7 +123,7 @@ void ServerLevelListener::destroyTileProgress(int id, int x, int y, int z,
     for (AUTO_VAR(it, server->getPlayers()->players.begin());
          it != server->getPlayers()->players.end(); ++it) {
         std::shared_ptr<ServerPlayer> p = *it;
-        if (p == NULL || p->level != level || p->entityId == id) continue;
+        if (p == nullptr || p->level != level || p->entityId == id) continue;
         double xd = (double)x - p->x;
         double yd = (double)y - p->y;
         double zd = (double)z - p->z;

@@ -68,6 +68,6 @@ RecordingItem* RecordingItem::getByName(const std::wstring& name) {
     if (it != BY_NAME.end()) {
         return it->second;
     } else {
-        return NULL;
+        return nullptr;
     }
 }

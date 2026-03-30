@@ -7,7 +7,7 @@ DLCTextureFile::DLCTextureFile(const std::wstring& path)
     m_bIsAnim = false;
     m_animString = L"";
 
-    m_pbData = NULL;
+    m_pbData = nullptr;
     m_dataBytes = 0;
 }
 

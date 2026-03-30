@@ -27,7 +27,7 @@ bool ReadPortableBinaryFile(File& file, std::uint8_t*& data,
     if (fileLength < 0 ||
         fileLength >
             static_cast<__int64>(std::numeric_limits<unsigned int>::max())) {
-        data = NULL;
+        data = nullptr;
         size = 0;
         return false;
     }
@@ -39,7 +39,7 @@ bool ReadPortableBinaryFile(File& file, std::uint8_t*& data,
     if (readResult.status != PortableFileIO::BinaryReadStatus::ok ||
         readResult.fileSize > std::numeric_limits<unsigned int>::max()) {
         delete[] buffer;
-        data = NULL;
+        data = nullptr;
         size = 0;
         return false;
     }
@@ -52,18 +52,18 @@ bool ReadPortableBinaryFile(File& file, std::uint8_t*& data,
 
 DLCTexturePack::DLCTexturePack(std::uint32_t id, DLCPack* pack,
                                TexturePack* fallback)
-    : AbstractTexturePack(id, NULL, pack->getName(), fallback) {
+    : AbstractTexturePack(id, nullptr, pack->getName(), fallback) {
     m_dlcInfoPack = pack;
-    m_dlcDataPack = NULL;
+    m_dlcDataPack = nullptr;
     bUILoaded = false;
     m_bLoadingData = false;
     m_bHasLoadedData = false;
-    m_archiveFile = NULL;
+    m_archiveFile = nullptr;
     if (app.getLevelGenerationOptions())
         app.getLevelGenerationOptions()->setLoadedData();
     m_bUsingDefaultColourTable = true;
 
-    m_stringTable = NULL;
+    m_stringTable = nullptr;
 
 
     if (m_dlcInfoPack->doesPackContainFile(
@@ -109,12 +109,12 @@ void DLCTexturePack::loadName() {
     texname = L"";
 
     if (m_dlcInfoPack->GetPackID() & 1024) {
-        if (m_stringTable != NULL) {
+        if (m_stringTable != nullptr) {
             texname = m_stringTable->getString(L"IDS_DISPLAY_NAME");
             m_wsWorldName = m_stringTable->getString(L"IDS_WORLD_NAME");
         }
     } else {
-        if (m_stringTable != NULL) {
+        if (m_stringTable != nullptr) {
             texname = m_stringTable->getString(L"IDS_DISPLAY_NAME");
         }
     }
@@ -123,7 +123,7 @@ void DLCTexturePack::loadName() {
 void DLCTexturePack::loadDescription() {
     desc1 = L"";
 
-    if (m_stringTable != NULL) {
+    if (m_stringTable != nullptr) {
         desc1 = m_stringTable->getString(L"IDS_TP_DESCRIPTION");
     }
 }
@@ -142,14 +142,14 @@ InputStream* DLCTexturePack::getResourceImplementation(
     // 4J Stu - We should never call this function
 #if !defined(_CONTENT_PACKAGE)
     __debugbreak();
-    if (hasFile(name)) return NULL;
+    if (hasFile(name)) return nullptr;
 #endif
-    return NULL;  // resource;
+    return nullptr;  // resource;
 }
 
 bool DLCTexturePack::hasFile(const std::wstring& name) {
     bool hasFile = false;
-    if (m_dlcDataPack != NULL)
+    if (m_dlcDataPack != nullptr)
         hasFile = m_dlcDataPack->doesPackContainFile(
             DLCManager::e_DLCType_Texture, name);
     return hasFile;
@@ -190,7 +190,7 @@ DLCPack* DLCTexturePack::getDLCPack() { return m_dlcDataPack; }
 
 void DLCTexturePack::loadColourTable() {
     // Load the game colours
-    if (m_dlcDataPack != NULL &&
+    if (m_dlcDataPack != nullptr &&
         m_dlcDataPack->doesPackContainFile(DLCManager::e_DLCType_ColourTable,
                                            L"colours.col")) {
         DLCColourTableFile* colourFile =
@@ -201,7 +201,7 @@ void DLCTexturePack::loadColourTable() {
     } else {
         // 4J Stu - We can delete the default colour table, but not the one from
         // the DLCColourTableFile
-        if (!m_bUsingDefaultColourTable) m_colourTable = NULL;
+        if (!m_bUsingDefaultColourTable) m_colourTable = nullptr;
         loadDefaultColourTable();
         m_bUsingDefaultColourTable = true;
     }
@@ -275,11 +275,11 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
                                 dataFilePath),
                     texturePack->m_dlcDataPack)) {
                 delete texturePack->m_dlcDataPack;
-                texturePack->m_dlcDataPack = NULL;
+                texturePack->m_dlcDataPack = nullptr;
             }
 
             // Load the UI data
-            if (texturePack->m_dlcDataPack != NULL) {
+            if (texturePack->m_dlcDataPack != nullptr) {
                 File archivePath(
                     getFilePath(texturePack->m_dlcInfoPack->GetPackID(),
                                 std::wstring(L"media.arc")));
@@ -293,7 +293,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
                 DLCPack* pack = texturePack->m_dlcInfoPack->GetParentPack();
                 LevelGenerationOptions* levelGen =
                     app.getLevelGenerationOptions();
-                if (levelGen != NULL && !levelGen->hasLoadedData()) {
+                if (levelGen != nullptr && !levelGen->hasLoadedData()) {
                     int gameRulesCount = pack->getDLCItemsCount(
                         DLCManager::e_DLCType_GameRulesHeader);
                     for (int i = 0; i < gameRulesCount; ++i) {
@@ -306,7 +306,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
                                 texturePack->m_dlcInfoPack->GetPackID(),
                                 dlcFile->getGrfPath()));
                             if (grf.exists()) {
-                                std::uint8_t* pbData = NULL;
+                                std::uint8_t* pbData = nullptr;
                                 unsigned int fileSize = 0;
                                 if (ReadPortableBinaryFile(grf, pbData,
                                                            fileSize)) {
@@ -333,7 +333,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
                             getFilePath(texturePack->m_dlcInfoPack->GetPackID(),
                                         levelGen->getBaseSavePath()));
                         if (grf.exists()) {
-                            std::uint8_t* pbData = NULL;
+                            std::uint8_t* pbData = nullptr;
                             unsigned int fileSize = 0;
                             if (ReadPortableBinaryFile(grf, pbData, fileSize)) {
                                 // 4J-PB - is it possible that we can get here
@@ -414,7 +414,7 @@ void DLCTexturePack::unloadUI() {
     AbstractTexturePack::unloadUI();
 
     app.m_dlcManager.removePack(m_dlcDataPack);
-    m_dlcDataPack = NULL;
+    m_dlcDataPack = nullptr;
     delete m_archiveFile;
     m_bHasLoadedData = false;
 
@@ -423,7 +423,7 @@ void DLCTexturePack::unloadUI() {
 
 std::wstring DLCTexturePack::getXuiRootPath() {
     std::wstring path = L"";
-    if (m_dlcDataPack != NULL &&
+    if (m_dlcDataPack != nullptr &&
         m_dlcDataPack->doesPackContainFile(DLCManager::e_DLCType_UIData,
                                            L"TexturePack.xzp")) {
         DLCUIDataFile* dataFile = (DLCUIDataFile*)m_dlcDataPack->getFile(

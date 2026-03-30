@@ -28,10 +28,10 @@ RedStoneDustTile::RedStoneDustTile(int id)
 
     updateDefaultShape();
 
-    iconCross = NULL;
-    iconLine = NULL;
-    iconCrossOver = NULL;
-    iconLineOver = NULL;
+    iconCross = nullptr;
+    iconLine = nullptr;
+    iconCrossOver = nullptr;
+    iconLineOver = nullptr;
 }
 
 // 4J Added override
@@ -430,5 +430,5 @@ Icon* RedStoneDustTile::getTexture(const std::wstring& name) {
         return Tile::redStoneDust->iconCrossOver;
     if (name.compare(TEXTURE_LINE_OVERLAY) == 0)
         return Tile::redStoneDust->iconLineOver;
-    return NULL;
+    return nullptr;
 }

@@ -18,7 +18,7 @@
 
 TileItem::TileItem(int id) : Item(id) {
     this->tileId = id + 256;
-    itemIcon = NULL;
+    itemIcon = nullptr;
 }
 
 int TileItem::getTileId() { return tileId; }
@@ -31,7 +31,7 @@ int TileItem::getIconType() {
 }
 
 Icon* TileItem::getIcon(int auxValue) {
-    if (itemIcon != NULL) {
+    if (itemIcon != nullptr) {
         return itemIcon;
     }
     return Tile::tiles[tileId]->getTexture(Facing::UP, auxValue);
@@ -135,7 +135,7 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                 //
                 // 				if(iPlaceSound==-1)
                 // 				{
-                // 					strcpy(szPlaceSoundName,"NULL");
+                // 					strcpy(szPlaceSoundName,"nullptr");
                 // 				}
                 // 				else
                 // 				{
@@ -143,7 +143,7 @@ bool TileItem::useOn(std::shared_ptr<ItemInstance> instance,
                 // 				}
                 // 				if(iStepSound==-1)
                 // 				{
-                // 					strcpy(szStepSoundName,"NULL");
+                // 					strcpy(szStepSoundName,"nullptr");
                 // 				}
                 // 				else
                 // 				{

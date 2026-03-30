@@ -18,7 +18,7 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
 
     // 4J Stu Added to stop tree features generating areas previously place by
     // game rule generation
-    if (app.getLevelGenerationOptions() != NULL) {
+    if (app.getLevelGenerationOptions() != nullptr) {
         PIXBeginNamedEvent(0, "MegaTreeFeature Checking intersects");
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();

@@ -17,12 +17,12 @@ FireworksParticles::FireworksStarter::FireworksStarter(
     this->engine = engine;
     lifetime = 8;
 
-    if (infoTag != NULL) {
+    if (infoTag != nullptr) {
         explosions = (ListTag<CompoundTag>*)infoTag
                          ->getList(FireworksItem::TAG_EXPLOSIONS)
                          ->copy();
         if (explosions->size() == 0) {
-            explosions = NULL;
+            explosions = nullptr;
         } else {
             lifetime = explosions->size() * 2 - 1;
 
@@ -38,7 +38,7 @@ FireworksParticles::FireworksStarter::FireworksStarter(
         }
     } else {
         // 4J:
-        explosions = NULL;
+        explosions = nullptr;
     }
 }
 
@@ -49,7 +49,7 @@ void FireworksParticles::FireworksStarter::render(Tesselator* t, float a,
 }
 
 void FireworksParticles::FireworksStarter::tick() {
-    if (life == 0 && explosions != NULL) {
+    if (life == 0 && explosions != nullptr) {
         bool farEffect = isFarAwayFromCamera();
 
         bool largeExplosion = false;
@@ -82,7 +82,7 @@ void FireworksParticles::FireworksStarter::tick() {
                               .95f + random->nextFloat() * .1f, true, 100.0f);
     }
 
-    if ((life % 2) == 0 && explosions != NULL &&
+    if ((life % 2) == 0 && explosions != nullptr &&
         (life / 2) < explosions->size()) {
         int eIndex = life / 2;
         CompoundTag* compoundTag = explosions->get(eIndex);
@@ -177,7 +177,7 @@ void FireworksParticles::FireworksStarter::tick() {
 
 bool FireworksParticles::FireworksStarter::isFarAwayFromCamera() {
     Minecraft* instance = Minecraft::GetInstance();
-    if (instance != NULL && instance->cameraTargetPlayer != NULL) {
+    if (instance != nullptr && instance->cameraTargetPlayer != nullptr) {
         if (instance->cameraTargetPlayer->distanceToSqr(x, y, z) < 16 * 16) {
             return false;
         }
@@ -197,7 +197,7 @@ void FireworksParticles::FireworksStarter::createParticle(
 
     int color = random->nextInt(rgbColors.length);
     fireworksSparkParticle->setColor(rgbColors[color]);
-    if (/*fadeColors != NULL &&*/ fadeColors.length > 0) {
+    if (/*fadeColors != nullptr &&*/ fadeColors.length > 0) {
         fireworksSparkParticle->setFadeColor(
             fadeColors[random->nextInt(fadeColors.length)]);
     }
@@ -344,7 +344,7 @@ void FireworksParticles::FireworksSparkParticle::setFadeColor(int rgb) {
 }
 
 AABB* FireworksParticles::FireworksSparkParticle::getCollideBox() {
-    return NULL;
+    return nullptr;
 }
 
 bool FireworksParticles::FireworksSparkParticle::isPushable() { return false; }

@@ -29,8 +29,8 @@ PreStitchedTextureMap::PreStitchedTextureMap(int type, const std::wstring& name,
     this->missingTexture = missingTexture;
 
     // 4J Initialisers
-    missingPosition = NULL;
-    stitchResult = NULL;
+    missingPosition = nullptr;
+    stitchResult = nullptr;
 
     m_mipMap = mipmap;
     missingPosition = (StitchedTexture*)(new SimpleIcon(
@@ -51,7 +51,7 @@ void PreStitchedTextureMap::stitch() {
     if (iconType == Icon::TYPE_TERRAIN) {
         // for (Tile tile : Tile.tiles)
         for (unsigned int i = 0; i < Tile::TILE_NUM_COUNT; ++i) {
-            if (Tile::tiles[i] != NULL) {
+            if (Tile::tiles[i] != nullptr) {
                 Tile::tiles[i]->registerIcons(this);
             }
         }
@@ -63,7 +63,7 @@ void PreStitchedTextureMap::stitch() {
     // for (Item item : Item.items)
     for (unsigned int i = 0; i < Item::ITEM_NUM_COUNT; ++i) {
         Item* item = Item::items[i];
-        if (item != NULL && item->getIconType() == iconType) {
+        if (item != nullptr && item->getIconType() == iconType) {
             item->registerIcons(this);
         }
     }
@@ -108,7 +108,7 @@ void PreStitchedTextureMap::stitch() {
     int height = image->getHeight();
     int width = image->getWidth();
 
-    if (stitchResult != NULL) {
+    if (stitchResult != nullptr) {
         TextureManager::getInstance()->unregisterTexture(name, stitchResult);
         delete stitchResult;
     }
@@ -128,7 +128,7 @@ void PreStitchedTextureMap::stitch() {
         int width = (preStitched->getU1() * stitchResult->getWidth()) - x;
         int height = (preStitched->getV1() * stitchResult->getHeight()) - y;
 
-        preStitched->init(stitchResult, NULL, x, y, width, height, false);
+        preStitched->init(stitchResult, nullptr, x, y, width, height, false);
     }
 
     MemSect(52);
@@ -166,7 +166,7 @@ void PreStitchedTextureMap::makeTextureAnimated(TexturePack* texturePack,
         // hack
         std::vector<Texture*>* frames =
             TextureManager::getInstance()->createTextures(filename, m_mipMap);
-        if (frames == NULL || frames->empty()) {
+        if (frames == nullptr || frames->empty()) {
             return;  // Couldn't load a texture, skip it
         }
 
@@ -199,7 +199,7 @@ StitchedTexture* PreStitchedTextureMap::getTexture(const std::wstring& name) {
     app.DebugPrintf("Not implemented!\n");
     __debugbreak();
 #endif
-    return NULL;
+    return nullptr;
 }
 
 void PreStitchedTextureMap::cycleAnimationFrames() {
@@ -215,9 +215,9 @@ Texture* PreStitchedTextureMap::getStitchedTexture() { return stitchResult; }
 
 // 4J Stu - register is a reserved keyword in C++
 Icon* PreStitchedTextureMap::registerIcon(const std::wstring& name) {
-    Icon* result = NULL;
+    Icon* result = nullptr;
     if (name.empty()) {
-        app.DebugPrintf("Don't register NULL\n");
+        app.DebugPrintf("Don't register nullptr\n");
 #if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
@@ -228,7 +228,7 @@ Icon* PreStitchedTextureMap::registerIcon(const std::wstring& name) {
     AUTO_VAR(it, texturesByName.find(name));
     if (it != texturesByName.end()) result = it->second;
 
-    if (result == NULL) {
+    if (result == nullptr) {
 #if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf("Could not find uv data for icon %ls\n", name.c_str());
         __debugbreak();

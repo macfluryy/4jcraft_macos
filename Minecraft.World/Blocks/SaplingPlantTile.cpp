@@ -15,7 +15,7 @@ const std::wstring Sapling::TEXTURE_NAMES[] = {
 
 Sapling::Sapling(int id) : Bush(id) {
     this->updateDefaultShape();
-    icons = NULL;
+    icons = nullptr;
 }
 
 // 4J Added override
@@ -53,7 +53,7 @@ void Sapling::advanceTree(Level* level, int x, int y, int z, Random* random) {
 void Sapling::growTree(Level* level, int x, int y, int z, Random* random) {
     int data = level->getData(x, y, z) & TYPE_MASK;
 
-    Feature* f = NULL;
+    Feature* f = nullptr;
 
     int ox = 0, oz = 0;
     bool multiblock = false;
@@ -77,11 +77,11 @@ void Sapling::growTree(Level* level, int x, int y, int z, Random* random) {
                     break;
                 }
             }
-            if (f != NULL) {
+            if (f != nullptr) {
                 break;
             }
         }
-        if (f == NULL) {
+        if (f == nullptr) {
             ox = oz = 0;
             f = new TreeFeature(true, 4 + random->nextInt(7),
                                 TreeTile::JUNGLE_TRUNK, LeafTile::JUNGLE_LEAF,
@@ -117,7 +117,7 @@ void Sapling::growTree(Level* level, int x, int y, int z, Random* random) {
             level->setTileAndData(x, y, z, id, data, Tile::UPDATE_NONE);
         }
     }
-    if (f != NULL) delete f;
+    if (f != nullptr) delete f;
 }
 
 unsigned int Sapling::getDescriptionId(int iData /*= -1*/) {

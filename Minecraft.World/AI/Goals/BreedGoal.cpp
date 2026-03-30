@@ -24,11 +24,11 @@ BreedGoal::BreedGoal(Animal* animal, double speedModifier) {
 bool BreedGoal::canUse() {
     if (!animal->isInLove()) return false;
     partner = std::weak_ptr<Animal>(getFreePartner());
-    return partner.lock() != NULL;
+    return partner.lock() != nullptr;
 }
 
 bool BreedGoal::canContinueToUse() {
-    return partner.lock() != NULL && partner.lock()->isAlive() &&
+    return partner.lock() != nullptr && partner.lock()->isAlive() &&
            partner.lock()->isInLove() && loveTime < 20 * 3;
 }
 
@@ -69,8 +69,8 @@ void BreedGoal::breed() {
         animal->getBreedOffspring(partner.lock());
     animal->setDespawnProtected();
     partner.lock()->setDespawnProtected();
-    if (offspring == NULL) {
-        // This will be NULL if we've hit our limits for spawning any particular
+    if (offspring == nullptr) {
+        // This will be nullptr if we've hit our limits for spawning any particular
         // type of animal... reset things as normally as we can, without
         // actually producing any offspring
         animal->resetLove();
@@ -79,11 +79,11 @@ void BreedGoal::breed() {
     }
 
     std::shared_ptr<Player> loveCause = animal->getLoveCause();
-    if (loveCause == NULL && partner.lock()->getLoveCause() != NULL) {
+    if (loveCause == nullptr && partner.lock()->getLoveCause() != nullptr) {
         loveCause = partner.lock()->getLoveCause();
     }
 
-    if (loveCause != NULL) {
+    if (loveCause != nullptr) {
         // Record mob bred stat.
         loveCause->awardStat(
             GenericStats::breedEntity(offspring->GetType()),

@@ -75,9 +75,9 @@ floatArray BiomeSource::getDownfallBlock(int x, int z, int w, int h) const {
 // downfall layers brought forward from 1.2.3
 void BiomeSource::getDownfallBlock(floatArray& downfalls, int x, int z, int w,
                                    int h) const {
-    // if (downfalls == NULL || downfalls->length < w * h)
-    if (downfalls.data == NULL || downfalls.length < w * h) {
-        if (downfalls.data != NULL) delete[] downfalls.data;
+    // if (downfalls == nullptr || downfalls->length < w * h)
+    if (downfalls.data == nullptr || downfalls.length < w * h) {
+        if (downfalls.data != nullptr) delete[] downfalls.data;
         downfalls = floatArray(w * h);
     }
 
@@ -112,8 +112,8 @@ floatArray BiomeSource::getTemperatureBlock(int x, int z, int w, int h) const {
 void BiomeSource::getTemperatureBlock(floatArray& temperatures, int x, int z,
                                       int w, int h) const {
     // if (temperatures == null || temperatures.length < w * h) {
-    if (temperatures.data == NULL || temperatures.length < w * h) {
-        if (temperatures.data != NULL) delete[] temperatures.data;
+    if (temperatures.data == nullptr || temperatures.length < w * h) {
+        if (temperatures.data != nullptr) delete[] temperatures.data;
         temperatures = floatArray(w * h);
     }
 
@@ -145,8 +145,8 @@ void BiomeSource::getRawBiomeIndices(intArray& biomes, int x, int z, int w,
 void BiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
                                    int h) const {
     // if (biomes == null || biomes.length < w * h)
-    if (biomes.data == NULL || biomes.length < w * h) {
-        if (biomes.data != NULL) delete[] biomes.data;
+    if (biomes.data == nullptr || biomes.length < w * h) {
+        if (biomes.data != nullptr) delete[] biomes.data;
         biomes = BiomeArray(w * h);
     }
 
@@ -154,7 +154,7 @@ void BiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
     for (int i = 0; i < w * h; i++) {
         biomes[i] = Biome::biomes[result[i]];
 #if !defined(_CONTENT_PACKAGE)
-        if (biomes[i] == NULL) {
+        if (biomes[i] == nullptr) {
             app.DebugPrintf("Tried to assign null biome %d\n", result[i]);
             __debugbreak();
         }
@@ -175,8 +175,8 @@ BiomeArray BiomeSource::getBiomeBlock(int x, int z, int w, int h) const {
 void BiomeSource::getBiomeBlock(BiomeArray& biomes, int x, int z, int w, int h,
                                 bool useCache) const {
     // if (biomes == null || biomes.length < w * h)
-    if (biomes.data == NULL || biomes.length < w * h) {
-        if (biomes.data != NULL) delete[] biomes.data;
+    if (biomes.data == nullptr || biomes.length < w * h) {
+        if (biomes.data != nullptr) delete[] biomes.data;
         biomes = BiomeArray(w * h);
     }
 
@@ -207,8 +207,8 @@ byteArray BiomeSource::getBiomeIndexBlock(int x, int z, int w, int h) const {
 void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
                                      int w, int h, bool useCache) const {
     // if (biomes == null || biomes.length < w * h)
-    if (biomeIndices.data == NULL || biomeIndices.length < w * h) {
-        if (biomeIndices.data != NULL) delete[] biomeIndices.data;
+    if (biomeIndices.data == nullptr || biomeIndices.length < w * h) {
+        if (biomeIndices.data != nullptr) delete[] biomeIndices.data;
         biomeIndices = byteArray(w * h);
     }
 
@@ -292,7 +292,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
     int w = x1 - x0 + 1;
     int h = z1 - z0 + 1;
     intArray biomes = layer->getArea(x0, z0, w, h);
-    TilePos* res = NULL;
+    TilePos* res = nullptr;
     int found = 0;
     int biomesCount = w * h;
     for (unsigned int i = 0; i < biomesCount; i++) {
@@ -300,7 +300,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
         int zz = z0 + i / w;
         Biome* b = Biome::biomes[biomes[i]];
         if (b == toFind) {
-            if (res == NULL || random->nextInt(found + 1) == 0) {
+            if (res == nullptr || random->nextInt(found + 1) == 0) {
                 res = new TilePos(xx, 0, zz);
                 found++;
             }
@@ -327,14 +327,14 @@ TilePos* BiomeSource::findBiome(int x, int z, int r,
     int h = z1 - z0 + 1;
     MemSect(50);
     intArray biomes = layer->getArea(x0, z0, w, h);
-    TilePos* res = NULL;
+    TilePos* res = nullptr;
     int found = 0;
     for (unsigned int i = 0; i < w * h; i++) {
         int xx = (x0 + i % w) << 2;
         int zz = (z0 + i / w) << 2;
         Biome* b = Biome::biomes[biomes[i]];
         if (find(allowed.begin(), allowed.end(), b) != allowed.end()) {
-            if (res == NULL || random->nextInt(found + 1) == 0) {
+            if (res == nullptr || random->nextInt(found + 1) == 0) {
                 delete res;
                 res = new TilePos(xx, 0, zz);
                 found++;

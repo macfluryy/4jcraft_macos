@@ -38,7 +38,7 @@ ScatteredFeaturePieces::ScatteredFeaturePiece::ScatteredFeaturePiece(
     orientation = random->nextInt(4);
 
     LevelGenerationOptions* levelGenOptions = app.getLevelGenerationOptions();
-    if (levelGenOptions != NULL) {
+    if (levelGenOptions != nullptr) {
         int tempOrientation = 0;
         if (levelGenOptions->isFeatureChunk(west >> 4, north >> 4,
                                             StructureFeature::eFeature_Temples,
@@ -932,7 +932,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
             std::shared_ptr<Witch> witch =
                 std::shared_ptr<Witch>(new Witch(level));
             witch->moveTo(wx + .5, wy, wz + .5, 0, 0);
-            witch->finalizeMobSpawn(NULL);
+            witch->finalizeMobSpawn(nullptr);
             level->addEntity(witch);
         }
     }

@@ -23,7 +23,7 @@ FireTile::FireTile(int id) : Tile(id, Material::fire, false) {
     burnOdds = new int[256];
     memset(burnOdds, 0, sizeof(int) * 256);
 
-    icons = NULL;
+    icons = nullptr;
 
     setTicking(true);
 }

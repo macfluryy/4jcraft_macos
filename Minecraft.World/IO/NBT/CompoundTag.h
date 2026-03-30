@@ -111,7 +111,7 @@ public:
     Tag* get(const std::wstring& name) {
         AUTO_VAR(it, tags.find(name));
         if (it != tags.end()) return it->second;
-        return NULL;
+        return nullptr;
     }
 
     bool contains(const std::wstring& name) {

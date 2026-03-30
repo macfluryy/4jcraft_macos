@@ -43,7 +43,7 @@ void UIComponent_Chat::handleTimerComplete(int id) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     bool anyVisible = false;
-    if (pMinecraft->localplayers[m_iPad] != NULL) {
+    if (pMinecraft->localplayers[m_iPad] != nullptr) {
         Gui* pGui = pMinecraft->gui;
         // DWORD messagesToDisplay = std::min( CHAT_LINES_COUNT,
         // pGui->getMessagesCount(m_iPad) );

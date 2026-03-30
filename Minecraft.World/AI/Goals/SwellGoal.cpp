@@ -15,7 +15,7 @@ SwellGoal::SwellGoal(Creeper* creeper) {
 bool SwellGoal::canUse() {
     std::shared_ptr<LivingEntity> target = creeper->getTarget();
     return creeper->getSwellDir() > 0 ||
-           (target != NULL && (creeper->distanceToSqr(target) < 3 * 3));
+           (target != nullptr && (creeper->distanceToSqr(target) < 3 * 3));
 }
 
 void SwellGoal::start() {
@@ -26,7 +26,7 @@ void SwellGoal::start() {
 void SwellGoal::stop() { target = std::weak_ptr<LivingEntity>(); }
 
 void SwellGoal::tick() {
-    if (target.lock() == NULL) {
+    if (target.lock() == nullptr) {
         creeper->setSwellDir(-1);
         return;
     }

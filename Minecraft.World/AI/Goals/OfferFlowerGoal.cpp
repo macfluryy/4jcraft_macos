@@ -19,11 +19,11 @@ bool OfferFlowerGoal::canUse() {
     villager = std::weak_ptr<Villager>(std::dynamic_pointer_cast<Villager>(
         golem->level->getClosestEntityOfClass(typeid(Villager), &golem_bb,
                                               golem->shared_from_this())));
-    return villager.lock() != NULL;
+    return villager.lock() != nullptr;
 }
 
 bool OfferFlowerGoal::canContinueToUse() {
-    return _tick > 0 && villager.lock() != NULL;
+    return _tick > 0 && villager.lock() != nullptr;
 }
 
 void OfferFlowerGoal::start() {

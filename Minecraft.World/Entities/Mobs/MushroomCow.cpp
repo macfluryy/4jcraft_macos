@@ -20,7 +20,7 @@ MushroomCow::MushroomCow(Level* level) : Cow(level) {
 
 bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    if (item != NULL && item->id == Item::bowl_Id && getAge() >= 0) {
+    if (item != nullptr && item->id == Item::bowl_Id && getAge() >= 0) {
         if (item->count == 1) {
             player->inventory->setItem(
                 player->inventory->selected,
@@ -37,7 +37,7 @@ bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
         }
     }
     // 4J: Do not allow shearing if we can't create more cows
-    if (item != NULL && item->id == Item::shears_Id && getAge() >= 0 &&
+    if (item != nullptr && item->id == Item::shears_Id && getAge() >= 0 &&
         level->canCreateMore(eTYPE_COW, Level::eSpawnType_Breed)) {
         remove();
         level->addParticle(eParticleType_largeexplode, x, y + bbHeight / 2, z,

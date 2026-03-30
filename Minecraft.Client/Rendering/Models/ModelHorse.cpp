@@ -293,7 +293,7 @@ void ModelHorse::render(std::shared_ptr<Entity> entity, float time, float r,
         type == EntityHorse::TYPE_DONKEY || type == EntityHorse::TYPE_MULE;
     float sizeFactor = entityhorse->getFoalScale();
 
-    bool rider = (entityhorse->rider.lock() != NULL);
+    bool rider = (entityhorse->rider.lock() != nullptr);
 
     if (saddled) {
         HeadSaddle->render(scale, usecompiled);
@@ -428,7 +428,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     float openMouth = entityhorse->getMouthAnim(a);
     bool tail = entityhorse->tailCounter != 0;
     bool saddled = entityhorse->isSaddled();
-    bool rider = entityhorse->rider.lock() != NULL;
+    bool rider = entityhorse->rider.lock() != nullptr;
     float bob = mob->tickCount + a;
 
     float legAnim1 = cos((wp * 0.6662f) + 3.141593f);

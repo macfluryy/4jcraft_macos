@@ -7,12 +7,12 @@
 
 #include "../../IO/Files/ConsoleSaveFileIO.h"
 
-LevelData* MockedLevelStorage::prepareLevel() { return NULL; }
+LevelData* MockedLevelStorage::prepareLevel() { return nullptr; }
 
 void MockedLevelStorage::checkSession() {}
 
 ChunkStorage* MockedLevelStorage::createChunkStorage(Dimension* dimension) {
-    return NULL;
+    return nullptr;
 }
 
 void MockedLevelStorage::saveLevelData(
@@ -20,7 +20,7 @@ void MockedLevelStorage::saveLevelData(
 
 void MockedLevelStorage::saveLevelData(LevelData* levelData) {}
 
-PlayerIO* MockedLevelStorage::getPlayerIO() { return NULL; }
+PlayerIO* MockedLevelStorage::getPlayerIO() { return nullptr; }
 
 void MockedLevelStorage::closeAll() {}
 

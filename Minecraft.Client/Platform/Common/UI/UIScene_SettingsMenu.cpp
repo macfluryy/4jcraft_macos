@@ -9,7 +9,7 @@ UIScene_SettingsMenu::UIScene_SettingsMenu(int iPad, void* initData,
     // Setup all the Iggy references we need for this scene
     initialiseMovie();
 
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
 
     m_buttons[BUTTON_ALL_OPTIONS].init(IDS_OPTIONS, BUTTON_ALL_OPTIONS);
     m_buttons[BUTTON_ALL_AUDIO].init(IDS_AUDIO, BUTTON_ALL_AUDIO);
@@ -44,7 +44,7 @@ std::wstring UIScene_SettingsMenu::getMoviePath() {
 }
 
 void UIScene_SettingsMenu::handleReload() {
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
 
     if (ProfileManager.GetPrimaryPad() != m_iPad) {
         removeControl(&m_buttons[BUTTON_ALL_AUDIO], bNotInGame);
@@ -59,7 +59,7 @@ void UIScene_SettingsMenu::updateTooltips() {
 }
 
 void UIScene_SettingsMenu::updateComponents() {
-    bool bNotInGame = (Minecraft::GetInstance()->level == NULL);
+    bool bNotInGame = (Minecraft::GetInstance()->level == nullptr);
     if (bNotInGame) {
         m_parentLayer->showComponent(m_iPad, eUIComponent_Panorama, true);
         m_parentLayer->showComponent(m_iPad, eUIComponent_Logo, true);

@@ -16,7 +16,7 @@
 FishingRodItem::FishingRodItem(int id) : Item(id) {
     setMaxDamage(64);
     setMaxStackSize(1);
-    emptyIcon = NULL;
+    emptyIcon = nullptr;
 }
 
 bool FishingRodItem::isHandEquipped() { return true; }
@@ -26,7 +26,7 @@ bool FishingRodItem::isMirroredArt() { return true; }
 std::shared_ptr<ItemInstance> FishingRodItem::use(
     std::shared_ptr<ItemInstance> instance, Level* level,
     std::shared_ptr<Player> player) {
-    if (player->fishing != NULL) {
+    if (player->fishing != nullptr) {
         int dmg = player->fishing->retrieve();
         instance->hurtAndBreak(dmg, player);
         player->swing();

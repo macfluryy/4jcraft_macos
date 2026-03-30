@@ -215,7 +215,7 @@ void UIScene_Credits::tick() {
         }
 
         // Set up the new text element.
-        if (pDef->m_Text != NULL)  // 4J-PB - think the RAD logo ones aren't set
+        if (pDef->m_Text != nullptr)  // 4J-PB - think the RAD logo ones aren't set
                                    // up yet and are coming is as null
         {
             if (pDef->m_iStringID[0] == CREDIT_ICON) {

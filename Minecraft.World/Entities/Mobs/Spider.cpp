@@ -155,12 +155,12 @@ MobGroupData* Spider::finalizeMobSpawn(
         std::shared_ptr<Skeleton> skeleton =
             std::shared_ptr<Skeleton>(new Skeleton(level));
         skeleton->moveTo(x, y, z, yRot, 0);
-        skeleton->finalizeMobSpawn(NULL);
+        skeleton->finalizeMobSpawn(nullptr);
         level->addEntity(skeleton);
         skeleton->ride(shared_from_this());
     }
 
-    if (groupData == NULL) {
+    if (groupData == nullptr) {
         groupData = new SpiderEffectsGroupData();
 
         if (level->difficulty > Difficulty::NORMAL &&
@@ -170,9 +170,9 @@ MobGroupData* Spider::finalizeMobSpawn(
                 ->setRandomEffect(level->random);
         }
     }
-    if (dynamic_cast<SpiderEffectsGroupData*>(groupData) != NULL) {
+    if (dynamic_cast<SpiderEffectsGroupData*>(groupData) != nullptr) {
         int effect = ((SpiderEffectsGroupData*)groupData)->effectId;
-        if (effect > 0 && MobEffect::effects[effect] != NULL) {
+        if (effect > 0 && MobEffect::effects[effect] != nullptr) {
             addEffect(
                 new MobEffectInstance(effect, std::numeric_limits<int>::max()));
         }

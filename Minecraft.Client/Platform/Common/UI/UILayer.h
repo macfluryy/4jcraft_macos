@@ -62,7 +62,7 @@ public:
     // layer
     void showComponent(int iPad, EUIScene scene, bool show);
     bool isComponentVisible(EUIScene scene);
-    UIScene* addComponent(int iPad, EUIScene scene, void* initData = NULL);
+    UIScene* addComponent(int iPad, EUIScene scene, void* initData = nullptr);
     void removeComponent(EUIScene scene);
 
     // INPUT

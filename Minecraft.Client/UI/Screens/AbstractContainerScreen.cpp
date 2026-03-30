@@ -47,7 +47,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
     glEnable(GL_RESCALE_NORMAL);
     Lighting::turnOnGui();
 
-    Slot* hoveredSlot = NULL;
+    Slot* hoveredSlot = nullptr;
 
     AUTO_VAR(itEnd, menu->slots.end());
     for (AUTO_VAR(it, menu->slots.begin()); it != itEnd; it++) {
@@ -70,7 +70,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
     }
 
     std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
-    if (inventory->getCarried() != NULL) {
+    if (inventory->getCarried() != nullptr) {
         glTranslatef(0, 0, 32);
         // Slot old = carriedSlot;
         // carriedSlot = null;
@@ -91,7 +91,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
     renderLabels();
 
     // 4jcraft: newer tooltips backported from java edition 1.3.x (MCP 7.x)
-    if (inventory->getCarried() == NULL && hoveredSlot != NULL &&
+    if (inventory->getCarried() == nullptr && hoveredSlot != nullptr &&
         hoveredSlot->hasItem()) {
         std::shared_ptr<ItemInstance> item = hoveredSlot->getItem();
 
@@ -182,7 +182,7 @@ void AbstractContainerScreen::renderTooltip(std::shared_ptr<ItemInstance> item,
     std::vector<std::wstring>* tooltipLines =
         item->getHoverText(minecraft->player, false, elementName);
 
-    if (tooltipLines != NULL && tooltipLines->size() > 0) {
+    if (tooltipLines != nullptr && tooltipLines->size() > 0) {
         std::vector<std::wstring> cleanedLines;
         std::vector<int> lineColors;
 
@@ -276,7 +276,7 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
     int y = slot->y;
     std::shared_ptr<ItemInstance> item = slot->getItem();
 
-    // if (item == NULL)
+    // if (item == nullptr)
     // {
     //     int icon = slot->getNoItemIcon();
     //     if (icon >= 0)
@@ -289,7 +289,7 @@ void AbstractContainerScreen::renderSlot(Slot* slot) {
     //     }
     // }
 
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
 
@@ -305,7 +305,7 @@ Slot* AbstractContainerScreen::findSlot(int x, int y) {
         Slot* slot = *it;  // menu->slots.at(i);
         if (isHovering(slot, x, y)) return slot;
     }
-    return NULL;
+    return nullptr;
 }
 
 // 4jcraft: equivalent to MCP 8.11 (1.6.x)'s GuiContainer.isPointInRegion() for
@@ -335,7 +335,7 @@ void AbstractContainerScreen::mouseClicked(int x, int y, int buttonNum) {
             (x < xo || y < yo || x >= xo + imageWidth || y >= yo + imageHeight);
 
         int slotId = -1;
-        if (slot != NULL) slotId = slot->index;
+        if (slot != nullptr) slotId = slot->index;
 
         if (clickedOutside) {
             slotId = AbstractContainerMenu::SLOT_CLICKED_OUTSIDE;
@@ -366,7 +366,7 @@ void AbstractContainerScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
 }
 
 void AbstractContainerScreen::removed() {
-    if (minecraft->player == NULL) return;
+    if (minecraft->player == nullptr) return;
 }
 
 void AbstractContainerScreen::slotsChanged(

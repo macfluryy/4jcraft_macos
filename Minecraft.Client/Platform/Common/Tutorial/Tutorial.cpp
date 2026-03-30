@@ -30,7 +30,7 @@ int Tutorial::m_iTutorialConstraintDelayRemoveTicks = 15;
 int Tutorial::m_iTutorialFreezeTimeValue = 8000;
 
 bool Tutorial::PopupMessageDetails::isSameContent(PopupMessageDetails* other) {
-    if (other == NULL) return false;
+    if (other == nullptr) return false;
 
     bool textTheSame = (m_messageId == other->m_messageId) &&
                        (m_messageString.compare(other->m_messageString) == 0);
@@ -362,7 +362,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
     m_hintDisplayed = false;
     m_freezeTime = false;
     m_timeFrozen = false;
-    m_UIScene = NULL;
+    m_UIScene = nullptr;
     m_allowShow = true;
     m_bHasTickedOnce = false;
     m_firstTickTime = 0;
@@ -370,7 +370,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
     // 4jcraft added, not initialized
     m_bSceneIsSplitscreen = false;
 
-    m_lastMessage = NULL;
+    m_lastMessage = nullptr;
 
     lastMessageTime = 0;
     m_iTaskReminders = 0;
@@ -380,8 +380,8 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
     m_hasStateChanged = false;
 
     for (unsigned int i = 0; i < e_Tutorial_State_Max; ++i) {
-        currentTask[i] = NULL;
-        currentFailedConstraint[i] = NULL;
+        currentTask[i] = nullptr;
+        currentFailedConstraint[i] = nullptr;
     }
 
     // DEFAULT TASKS THAT ALL TUTORIALS SHARE
@@ -1683,7 +1683,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         if (isFullTutorial)
             addTask(e_Tutorial_State_Horse,
                     new RideEntityTask(eTYPE_HORSE, this,
-                                       IDS_TUTORIAL_TASK_HORSE_RIDE, true, NULL,
+                                       IDS_TUTORIAL_TASK_HORSE_RIDE, true, nullptr,
                                        false, false, false));
         else
             addTask(e_Tutorial_State_Horse,
@@ -1947,8 +1947,8 @@ Tutorial::~Tutorial() {
             delete (*it);
         }
 
-        currentTask[i] = NULL;
-        currentFailedConstraint[i] = NULL;
+        currentTask[i] = nullptr;
+        currentFailedConstraint[i] = nullptr;
     }
 }
 
@@ -2115,7 +2115,7 @@ void Tutorial::tick() {
     }
 
     if (!m_allowShow) {
-        if (currentTask[m_CurrentState] != NULL &&
+        if (currentTask[m_CurrentState] != nullptr &&
             (!currentTask[m_CurrentState]->AllowFade() ||
              (lastMessageTime + m_iTutorialDisplayMessageTime) >
                  GetTickCount())) {
@@ -2136,7 +2136,7 @@ void Tutorial::tick() {
     }
 
     if (ui.IsPauseMenuDisplayed(m_iPad)) {
-        if (currentTask[m_CurrentState] != NULL &&
+        if (currentTask[m_CurrentState] != nullptr &&
             (!currentTask[m_CurrentState]->AllowFade() ||
              (lastMessageTime + m_iTutorialDisplayMessageTime) >
                  GetTickCount())) {
@@ -2186,14 +2186,14 @@ void Tutorial::tick() {
     // Check constraints
     // Only need to update these if we aren't already failing something
     if (!m_allTutorialsComplete &&
-        (currentFailedConstraint[m_CurrentState] == NULL ||
+        (currentFailedConstraint[m_CurrentState] == nullptr ||
          currentFailedConstraint[m_CurrentState]->isConstraintSatisfied(
              m_iPad))) {
-        if (currentFailedConstraint[m_CurrentState] != NULL &&
+        if (currentFailedConstraint[m_CurrentState] != nullptr &&
             currentFailedConstraint[m_CurrentState]->isConstraintSatisfied(
                 m_iPad)) {
             constraintChanged = true;
-            currentFailedConstraint[m_CurrentState] = NULL;
+            currentFailedConstraint[m_CurrentState] = nullptr;
         }
         for (AUTO_VAR(it, constraints[m_CurrentState].begin());
              it < constraints[m_CurrentState].end(); ++it) {
@@ -2207,7 +2207,7 @@ void Tutorial::tick() {
     }
 
     if (!m_allTutorialsComplete &&
-        currentFailedConstraint[m_CurrentState] == NULL) {
+        currentFailedConstraint[m_CurrentState] == nullptr) {
         // Update tasks
         bool isCurrentTask = true;
         AUTO_VAR(it, activeTasks[m_CurrentState].begin());
@@ -2225,7 +2225,7 @@ void Tutorial::tick() {
                         task->getCompletionAction();
                     it = activeTasks[m_CurrentState].erase(it);
                     delete task;
-                    task = NULL;
+                    task = nullptr;
 
                     if (activeTasks[m_CurrentState].size() > 0) {
                         switch (compAction) {
@@ -2297,20 +2297,20 @@ void Tutorial::tick() {
                     } else {
                         setStateCompleted(m_CurrentState);
 
-                        currentTask[m_CurrentState] = NULL;
+                        currentTask[m_CurrentState] = nullptr;
                     }
                     taskChanged = true;
 
                     // If we can complete this early, check if we can complete
                     // it right now
-                    if (currentTask[m_CurrentState] != NULL &&
+                    if (currentTask[m_CurrentState] != nullptr &&
                         currentTask[m_CurrentState]->isPreCompletionEnabled()) {
                         isCurrentTask = true;
                     }
                 } else {
                     ++it;
                 }
-                if (task != NULL && task->ShowMinimumTime() &&
+                if (task != nullptr && task->ShowMinimumTime() &&
                     task->hasBeenActivated() &&
                     (lastMessageTime + m_iTutorialMinimumDisplayMessageTime) <
                         GetTickCount()) {
@@ -2331,7 +2331,7 @@ void Tutorial::tick() {
             }
         }
 
-        if (currentTask[m_CurrentState] == NULL &&
+        if (currentTask[m_CurrentState] == nullptr &&
             activeTasks[m_CurrentState].size() > 0) {
             currentTask[m_CurrentState] = activeTasks[m_CurrentState][0];
             currentTask[m_CurrentState]->setAsCurrentTask();
@@ -2355,19 +2355,19 @@ void Tutorial::tick() {
     }
 
     if (constraintChanged || taskChanged || m_hasStateChanged ||
-        (currentFailedConstraint[m_CurrentState] == NULL &&
-         currentTask[m_CurrentState] != NULL &&
-         (m_lastMessage == NULL ||
+        (currentFailedConstraint[m_CurrentState] == nullptr &&
+         currentTask[m_CurrentState] != nullptr &&
+         (m_lastMessage == nullptr ||
           currentTask[m_CurrentState]->getDescriptionId() !=
               m_lastMessage->m_messageId) &&
          !m_hintDisplayed)) {
-        if (currentFailedConstraint[m_CurrentState] != NULL) {
+        if (currentFailedConstraint[m_CurrentState] != nullptr) {
             PopupMessageDetails* message = new PopupMessageDetails();
             message->m_messageId =
                 currentFailedConstraint[m_CurrentState]->getDescriptionId();
             message->m_allowFade = false;
             setMessage(message);
-        } else if (currentTask[m_CurrentState] != NULL) {
+        } else if (currentTask[m_CurrentState] != nullptr) {
             PopupMessageDetails* message = new PopupMessageDetails();
             message->m_messageId =
                 currentTask[m_CurrentState]->getDescriptionId();
@@ -2377,7 +2377,7 @@ void Tutorial::tick() {
             currentTask[m_CurrentState]->TaskReminders() ? m_iTaskReminders = 1
                                                          : m_iTaskReminders = 0;
         } else {
-            setMessage(NULL);
+            setMessage(nullptr);
         }
     }
 
@@ -2386,8 +2386,8 @@ void Tutorial::tick() {
         m_hintDisplayed = false;
     }
 
-    if (currentFailedConstraint[m_CurrentState] == NULL &&
-        currentTask[m_CurrentState] != NULL && (m_iTaskReminders != 0) &&
+    if (currentFailedConstraint[m_CurrentState] == nullptr &&
+        currentTask[m_CurrentState] != nullptr && (m_iTaskReminders != 0) &&
         (lastMessageTime + (m_iTaskReminders * m_iTutorialReminderTime)) <
             GetTickCount()) {
         // Reminder
@@ -2413,7 +2413,7 @@ void Tutorial::tick() {
 }
 
 bool Tutorial::setMessage(PopupMessageDetails* message) {
-    if (message != NULL && !message->m_forceDisplay &&
+    if (message != nullptr && !message->m_forceDisplay &&
         m_lastMessageState == m_CurrentState &&
         message->isSameContent(m_lastMessage) &&
         (!message->m_isReminder ||
@@ -2423,7 +2423,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         return false;
     }
 
-    if (message != NULL &&
+    if (message != nullptr &&
         (message->m_messageId > 0 || !message->m_messageString.empty())) {
         m_lastMessageState = m_CurrentState;
 
@@ -2434,7 +2434,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
             text = message->m_messageString;
         } else {
             AUTO_VAR(it, messages.find(message->m_messageId));
-            if (it != messages.end() && it->second != NULL) {
+            if (it != messages.end() && it->second != nullptr) {
                 TutorialMessage* messageString = it->second;
                 text = std::wstring(messageString->getMessageForDisplay());
 
@@ -2458,7 +2458,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
             text.append(message->m_promptString);
         } else if (message->m_promptId >= 0) {
             AUTO_VAR(it, messages.find(message->m_promptId));
-            if (it != messages.end() && it->second != NULL) {
+            if (it != messages.end() && it->second != nullptr) {
                 TutorialMessage* prompt = it->second;
                 text.append(prompt->getMessageForDisplay());
             }
@@ -2484,7 +2484,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         } else {
             ui.SetTutorialDescription(m_iPad, &popupInfo);
         }
-    } else if ((m_lastMessage != NULL &&
+    } else if ((m_lastMessage != nullptr &&
                 m_lastMessage->m_messageId !=
                     -1))  //&& (lastMessageTime + m_iTutorialReminderTime ) >
                           // GetTickCount() )
@@ -2496,7 +2496,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         ui.SetTutorialDescription(m_iPad, &popupInfo);
     }
 
-    if (m_lastMessage != NULL) delete m_lastMessage;
+    if (m_lastMessage != nullptr) delete m_lastMessage;
     m_lastMessage = message;
 
     return true;
@@ -2511,7 +2511,7 @@ bool Tutorial::setMessage(TutorialHint* hint, PopupMessageDetails* message) {
 
     bool messageShown = false;
     std::uint32_t time = GetTickCount();
-    if (message != NULL && (message->m_forceDisplay || hintsOn) &&
+    if (message != nullptr && (message->m_forceDisplay || hintsOn) &&
         (!message->m_delay ||
          ((m_hintDisplayed &&
            (time - m_lastHintDisplayedTime) > m_iTutorialHintDelayTime) ||
@@ -2522,7 +2522,7 @@ bool Tutorial::setMessage(TutorialHint* hint, PopupMessageDetails* message) {
         if (messageShown) {
             m_lastHintDisplayedTime = time;
             m_hintDisplayed = true;
-            if (hint != NULL) setHintCompleted(hint);
+            if (hint != nullptr) setHintCompleted(hint);
         }
     }
     return messageShown;
@@ -2543,7 +2543,7 @@ void Tutorial::showTutorialPopup(bool show) {
     m_allowShow = show;
 
     if (!show) {
-        if (currentTask[m_CurrentState] != NULL &&
+        if (currentTask[m_CurrentState] != nullptr &&
             (!currentTask[m_CurrentState]->AllowFade() ||
              (lastMessageTime + m_iTutorialDisplayMessageTime) >
                  GetTickCount())) {
@@ -2660,7 +2660,7 @@ void Tutorial::handleUIInput(int iAction) {
     //	TutorialTask *task = *it;
     //	task->handleUIInput(iAction);
     // }
-    if (currentTask[m_CurrentState] != NULL)
+    if (currentTask[m_CurrentState] != nullptr)
         currentTask[m_CurrentState]->handleUIInput(iAction);
 }
 
@@ -2719,7 +2719,7 @@ void Tutorial::onSelectedItemChanged(std::shared_ptr<ItemInstance> item) {
     // the selected item Menus and states like riding in a minecart will NOT
     // allow this
     if (isSelectedItemState()) {
-        if (item != NULL) {
+        if (item != nullptr) {
             switch (item->id) {
                 case Item::fishingRod_Id:
                     changeTutorialState(e_Tutorial_State_Fishing);
@@ -2871,7 +2871,7 @@ void Tutorial::AddConstraint(TutorialConstraint* c) {
 void Tutorial::RemoveConstraint(TutorialConstraint* c,
                                 bool delayedRemove /*= false*/) {
     if (currentFailedConstraint[m_CurrentState] == c)
-        currentFailedConstraint[m_CurrentState] = NULL;
+        currentFailedConstraint[m_CurrentState] = nullptr;
 
     if (c->getQueuedForRemoval()) {
         // If it is already queued for removal, remove it on the next tick
@@ -2934,12 +2934,12 @@ void Tutorial::addMessage(
 }
 
 void Tutorial::changeTutorialState(eTutorial_State newState,
-                                   UIScene* scene /*= NULL*/)
+                                   UIScene* scene /*= nullptr*/)
 {
     if (newState == m_CurrentState) {
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed
-        if (scene == NULL) {
+        if (scene == nullptr) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }
         m_UIScene = scene;
@@ -2960,7 +2960,7 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
 
         // The action that caused the change of state may also have completed
         // the current task
-        if (currentTask[m_CurrentState] != NULL &&
+        if (currentTask[m_CurrentState] != nullptr &&
             currentTask[m_CurrentState]->isCompleted()) {
             activeTasks[m_CurrentState].erase(
                 find(activeTasks[m_CurrentState].begin(),
@@ -2971,20 +2971,20 @@ void Tutorial::changeTutorialState(eTutorial_State newState,
                 currentTask[m_CurrentState] = activeTasks[m_CurrentState][0];
                 currentTask[m_CurrentState]->setAsCurrentTask();
             } else {
-                currentTask[m_CurrentState] = NULL;
+                currentTask[m_CurrentState] = nullptr;
             }
         }
 
-        if (currentTask[m_CurrentState] != NULL) {
+        if (currentTask[m_CurrentState] != nullptr) {
             currentTask[m_CurrentState]->onStateChange(newState);
         }
 
         // Make sure that the current message is cleared
-        setMessage(NULL);
+        setMessage(nullptr);
 
         // If clearing the scene, make sure that the tutorial popup has its
         // reference to this scene removed
-        if (scene == NULL) {
+        if (scene == nullptr) {
             ui.RemoveInteractSceneReference(m_iPad, m_UIScene);
         }
         m_UIScene = scene;

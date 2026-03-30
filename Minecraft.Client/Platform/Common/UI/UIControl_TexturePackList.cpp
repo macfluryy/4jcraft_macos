@@ -79,7 +79,7 @@ void UIControl_TexturePackList::clearSlots() {
     IggyDataValue result;
     IggyResult out =
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
-                               getIggyValuePath(), m_clearSlotsFunc, 0, NULL);
+                               getIggyValuePath(), m_clearSlotsFunc, 0, nullptr);
 }
 
 void UIControl_TexturePackList::setEnabled(bool enable) {
@@ -132,7 +132,7 @@ S32 UIControl_TexturePackList::GetRealHeight() {
     IggyDataValue result;
     IggyResult out = IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                             getIggyValuePath(),
-                                            m_funcGetRealHeight, 0, NULL);
+                                            m_funcGetRealHeight, 0, nullptr);
 
     S32 iRealHeight = m_height;
     if (result.type == IGGY_DATATYPE_number) {

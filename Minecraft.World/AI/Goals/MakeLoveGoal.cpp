@@ -26,13 +26,13 @@ bool MakeLoveGoal::canUse() {
     village = level->villages->getClosestVillage(Mth::floor(villager->x),
                                                  Mth::floor(villager->y),
                                                  Mth::floor(villager->z), 0);
-    if (village.lock() == NULL) return false;
+    if (village.lock() == nullptr) return false;
     if (!villageNeedsMoreVillagers()) return false;
 
     AABB villager_bb = villager->bb.grow(8, 3, 8);
     std::shared_ptr<Entity> mate = level->getClosestEntityOfClass(
         typeid(Villager), &villager_bb, villager->shared_from_this());
-    if (mate == NULL) return false;
+    if (mate == nullptr) return false;
 
     partner =
         std::weak_ptr<Villager>(std::dynamic_pointer_cast<Villager>(mate));
@@ -53,7 +53,7 @@ void MakeLoveGoal::stop() {
 }
 
 bool MakeLoveGoal::canContinueToUse() {
-    return partner.lock() != NULL && loveMakingTime >= 0 &&
+    return partner.lock() != nullptr && loveMakingTime >= 0 &&
            villageNeedsMoreVillagers() && villager->getAge() == 0;
 }
 
@@ -74,7 +74,7 @@ void MakeLoveGoal::tick() {
 
 bool MakeLoveGoal::villageNeedsMoreVillagers() {
     std::shared_ptr<Village> _village = village.lock();
-    if (_village == NULL) return false;
+    if (_village == nullptr) return false;
 
     if (!_village->isBreedTimerOk()) {
         return false;

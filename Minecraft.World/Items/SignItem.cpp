@@ -48,7 +48,7 @@ bool SignItem::useOn(std::shared_ptr<ItemInstance> instance,
         std::shared_ptr<SignTileEntity> ste =
             std::dynamic_pointer_cast<SignTileEntity>(
                 level->getTileEntity(x, y, z));
-        if (ste != NULL) player->openTextEdit(ste);
+        if (ste != nullptr) player->openTextEdit(ste);
 
         // 4J-JEV: Hook for durango 'BlockPlaced' event.
         player->awardStat(GenericStats::blocksPlaced(

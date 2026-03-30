@@ -8,7 +8,7 @@
 
 DoorInteractGoal::DoorInteractGoal(Mob* mob) {
     doorX = doorY = doorZ = 0;
-    doorTile = NULL;
+    doorTile = nullptr;
     passed = false;
     doorOpenDirX = doorOpenDirZ = 0.0f;
 
@@ -19,7 +19,7 @@ bool DoorInteractGoal::canUse() {
     if (!mob->horizontalCollision) return false;
     PathNavigation* pathNav = mob->getNavigation();
     Path* path = pathNav->getPath();
-    if (path == NULL || path->isDone() || !pathNav->canOpenDoors())
+    if (path == nullptr || path->isDone() || !pathNav->canOpenDoors())
         return false;
 
     for (int i = 0; i < std::min(path->getIndex() + 2, path->getSize()); ++i) {
@@ -29,7 +29,7 @@ bool DoorInteractGoal::canUse() {
         doorZ = n->z;
         if (mob->distanceToSqr(doorX, mob->y, doorZ) > 1.5 * 1.5) continue;
         doorTile = getDoorTile(doorX, doorY, doorZ);
-        if (doorTile == NULL) continue;
+        if (doorTile == nullptr) continue;
         return true;
     }
 
@@ -37,7 +37,7 @@ bool DoorInteractGoal::canUse() {
     doorY = Mth::floor(mob->y + 1);
     doorZ = Mth::floor(mob->z);
     doorTile = getDoorTile(doorX, doorY, doorZ);
-    return doorTile != NULL;
+    return doorTile != nullptr;
 }
 
 bool DoorInteractGoal::canContinueToUse() { return !passed; }
@@ -59,6 +59,6 @@ void DoorInteractGoal::tick() {
 
 DoorTile* DoorInteractGoal::getDoorTile(int x, int y, int z) {
     int tileId = mob->level->getTile(x, y, z);
-    if (tileId != Tile::door_wood_Id) return NULL;
+    if (tileId != Tile::door_wood_Id) return nullptr;
     return (DoorTile*)Tile::tiles[tileId];
 }

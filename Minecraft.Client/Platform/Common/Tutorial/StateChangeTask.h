@@ -10,7 +10,7 @@ private:
 public:
     StateChangeTask(eTutorial_State state, Tutorial* tutorial,
                     int descriptionId = -1, bool enablePreCompletion = false,
-                    std::vector<TutorialConstraint*>* inConstraints = NULL,
+                    std::vector<TutorialConstraint*>* inConstraints = nullptr,
                     bool bShowMinimumTime = false, bool bAllowFade = true,
                     bool m_bTaskReminders = true)
         : TutorialTask(tutorial, descriptionId, enablePreCompletion,

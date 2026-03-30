@@ -17,7 +17,7 @@ UIScene_FireworksMenu::UIScene_FireworksMenu(int iPad, void* _initData,
     m_labelFireworks.init(app.GetString(IDS_HOW_TO_PLAY_MENU_FIREWORKS));
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[initData->iPad] != NULL) {
+    if (pMinecraft->localgameModes[initData->iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[initData->iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -171,7 +171,7 @@ void UIScene_FireworksMenu::setSectionSelectedSlot(ESceneSection eSection,
 
     int index = (y * cols) + x;
 
-    UIControl_SlotList* slotList = NULL;
+    UIControl_SlotList* slotList = nullptr;
     switch (eSection) {
         case eSectionFireworksIngredients:
             slotList = &m_slotList3x3;
@@ -193,7 +193,7 @@ void UIScene_FireworksMenu::setSectionSelectedSlot(ESceneSection eSection,
 }
 
 UIControl* UIScene_FireworksMenu::getSection(ESceneSection eSection) {
-    UIControl* control = NULL;
+    UIControl* control = nullptr;
     switch (eSection) {
         case eSectionFireworksIngredients:
             control = &m_slotList3x3;

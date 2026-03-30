@@ -148,11 +148,11 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
         }
 #endif
 
-        // 4J Stu - For item frame renders, the player is NULL. We do not want
+        // 4J Stu - For item frame renders, the player is nullptr. We do not want
         // to show player icons on the frames.
-        if (player == NULL && (imgIndex != 12))
+        if (player == nullptr && (imgIndex != 12))
             continue;
-        else if (player != NULL && imgIndex == 12)
+        else if (player != nullptr && imgIndex == 12)
             continue;
         else if (imgIndex == 12 && dec->entityId != entityId)
             continue;
@@ -194,11 +194,11 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
         char imgIndex = dec->img;
         imgIndex -= 16;
 
-        // 4J Stu - For item frame renders, the player is NULL. We do not want
+        // 4J Stu - For item frame renders, the player is nullptr. We do not want
         // to show player icons on the frames.
-        if (player == NULL && (imgIndex != 12))
+        if (player == nullptr && (imgIndex != 12))
             continue;
-        else if (player != NULL && imgIndex == 12)
+        else if (player != nullptr && imgIndex == 12)
             continue;
         else if (imgIndex == 12 && dec->entityId != entityId)
             continue;
@@ -241,7 +241,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
     // #else
     // 4J Stu - TU-1 hotfix
     // DCR: Render the players current position here instead
-    if (player != NULL) {
+    if (player != nullptr) {
         wchar_t playerPosText[32];
         ZeroMemory(&playerPosText, sizeof(wchar_t) * 32);
         int posx = floor(player->x);

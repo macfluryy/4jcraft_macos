@@ -15,7 +15,7 @@ BowItem::BowItem(int id) : Item(id) {
     maxStackSize = 1;
     setMaxDamage(384);
 
-    icons = NULL;
+    icons = nullptr;
 }
 
 void BowItem::releaseUsing(std::shared_ptr<ItemInstance> itemInstance,

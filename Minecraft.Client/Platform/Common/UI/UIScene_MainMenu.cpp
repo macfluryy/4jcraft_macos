@@ -75,7 +75,7 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
     m_bLoadTrialOnNetworkManagerReady = false;
 
     // 4J Stu - Clear out any loaded game rules
-    app.setLevelGenerationOptions(NULL);
+    app.setLevelGenerationOptions(nullptr);
 
     // 4J Stu - Reset the leaving game flag so that we correctly handle signouts
     // while in the menus
@@ -210,7 +210,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
     int primaryPad = ProfileManager.GetPrimaryPad();
 
-    int (*signInReturnedFunc)(void*, const bool, const int iPad) = NULL;
+    int (*signInReturnedFunc)(void*, const bool, const int iPad) = nullptr;
 
     switch ((int)controlId) {
         case eControl_PlayGame:
@@ -269,7 +269,7 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
     bool confirmUser = false;
 
     // Note: if no sign in returned func, assume this isn't required
-    if (signInReturnedFunc != NULL) {
+    if (signInReturnedFunc != nullptr) {
         if (ProfileManager.IsSignedIn(primaryPad)) {
             if (confirmUser) {
                 ProfileManager.RequestSignInUI(false, false, true, false, true,
@@ -888,7 +888,7 @@ void UIScene_MainMenu::RunLeaderboards(int iPad) {
             uiIDA[0] = IDS_CONFIRM_OK;
             ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
                                    IDS_CONTENT_RESTRICTION, uiIDA, 1,
-                                   ProfileManager.GetPrimaryPad(), NULL, this);
+                                   ProfileManager.GetPrimaryPad(), nullptr, this);
 #endif
         } else {
             ProfileManager.SetLockedProfile(iPad);
@@ -930,7 +930,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                         uiIDA[0] = IDS_CONFIRM_OK;
                         ui.RequestErrorMessage(
                             IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION,
-                            uiIDA, 1, ProfileManager.GetPrimaryPad(), NULL,
+                            uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr,
                             this);
 #endif
                     } else {
@@ -1109,7 +1109,7 @@ void UIScene_MainMenu::LoadTrial(void) {
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = 0;
-    param->saveData = NULL;
+    param->saveData = nullptr;
     param->settings = app.GetGameHostOption(eGameHostOption_Tutorial) |
                       app.GetGameHostOption(eGameHostOption_DisableSaving);
 

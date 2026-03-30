@@ -14,7 +14,7 @@ LevelData::LevelData(CompoundTag* tag) {
     if (tag->contains(L"generatorName")) {
         std::wstring generatorName = tag->getString(L"generatorName");
         m_pGenerator = LevelType::getLevelType(generatorName);
-        if (m_pGenerator == NULL) {
+        if (m_pGenerator == nullptr) {
             m_pGenerator = LevelType::lvl_normal;
         } else if (m_pGenerator->hasReplacement()) {
             int generatorVersion = 0;
@@ -184,7 +184,7 @@ LevelData::LevelData(CompoundTag* tag) {
     }
     else
     {
-    this->loadedPlayerTag = NULL;
+    this->loadedPlayerTag = nullptr;
     }
     */
     dimension = 0;
@@ -210,7 +210,7 @@ LevelData::LevelData(LevelSettings* levelSettings,
     gameTime = -1;
     lastPlayed = 0;
     sizeOnDisk = 0;
-    //    this->loadedPlayerTag = NULL;	// 4J - we don't store this anymore
+    //    this->loadedPlayerTag = nullptr;	// 4J - we don't store this anymore
     dimension = 0;
     version = 0;
     rainTime = 0;
@@ -392,7 +392,7 @@ int64_t LevelData::getDayTime() { return dayTime; }
 int64_t LevelData::getSizeOnDisk() { return sizeOnDisk; }
 
 CompoundTag* LevelData::getLoadedPlayerTag() {
-    return NULL;  // 4J - we don't store this anymore
+    return nullptr;  // 4J - we don't store this anymore
 }
 
 // 4J Removed TU9 as it's never accurate due to the dimension never being set

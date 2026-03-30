@@ -4,7 +4,7 @@
 
 DLCGameRulesFile::DLCGameRulesFile(const std::wstring& path)
     : DLCGameRules(DLCManager::e_DLCType_GameRules, path) {
-    m_pbData = NULL;
+    m_pbData = nullptr;
     m_dataBytes = 0;
 }
 

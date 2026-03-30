@@ -35,7 +35,7 @@ std::wstring Hasher::getHash(std::wstring& name) {
     std::string combined_str(combined.begin(), combined.end());
     unsigned char result[EVP_MAX_MD_SIZE];
     EVP_MD_CTX* md5_ctx = EVP_MD_CTX_new();
-    EVP_DigestInit_ex(md5_ctx, EVP_md5(), NULL);
+    EVP_DigestInit_ex(md5_ctx, EVP_md5(), nullptr);
     EVP_DigestUpdate(md5_ctx, combined_str.c_str(), combined_str.size());
     unsigned int result_len;
     EVP_DigestFinal_ex(md5_ctx, result, &result_len);

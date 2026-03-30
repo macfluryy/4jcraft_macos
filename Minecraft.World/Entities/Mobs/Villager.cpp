@@ -53,7 +53,7 @@ void Villager::_init(int profession) {
     village = std::weak_ptr<Village>();
 
     tradingPlayer = std::weak_ptr<Player>();
-    offers = NULL;
+    offers = nullptr;
     updateMerchantTimer = 0;
     addRecipeOnUpdate = false;
     riches = 0;
@@ -107,7 +107,7 @@ void Villager::serverAiMobStep() {
         std::shared_ptr<Village> _village = level->villages->getClosestVillage(
             Mth::floor(x), Mth::floor(y), Mth::floor(z), Villages::MaxDoorDist);
         village = _village;
-        if (_village == NULL)
+        if (_village == nullptr)
             clearRestriction();
         else {
             Pos* center = _village->getCenter();
@@ -139,7 +139,7 @@ void Villager::serverAiMobStep() {
                 addOffers(1);
                 addRecipeOnUpdate = false;
 
-                if (village.lock() != NULL && !lastPlayerTradeName.empty()) {
+                if (village.lock() != nullptr && !lastPlayerTradeName.empty()) {
                     level->broadcastEntityEvent(shared_from_this(),
                                                 EntityEvent::VILLAGER_HAPPY);
                     village.lock()->modifyStanding(lastPlayerTradeName, 1);
@@ -157,7 +157,7 @@ void Villager::serverAiMobStep() {
 bool Villager::mobInteract(std::shared_ptr<Player> player) {
     // [EB]: Truly dislike this code but I don't see another easy way
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
-    bool holdingSpawnEgg = item != NULL && item->id == Item::spawnEgg_Id;
+    bool holdingSpawnEgg = item != nullptr && item->id == Item::spawnEgg_Id;
 
     if (!holdingSpawnEgg && isAlive() && !isTrading() && !isBaby()) {
         if (!level->isClientSide) {
@@ -183,7 +183,7 @@ void Villager::addAdditonalSaveData(CompoundTag* tag) {
     AgableMob::addAdditonalSaveData(tag);
     tag->putInt(L"Profession", getProfession());
     tag->putInt(L"Riches", riches);
-    if (offers != NULL) {
+    if (offers != nullptr) {
         tag->putCompound(L"Offers", offers->createTag());
     }
 }
@@ -231,7 +231,7 @@ bool Villager::isChasing() { return chasing; }
 void Villager::setLastHurtByMob(std::shared_ptr<LivingEntity> mob) {
     AgableMob::setLastHurtByMob(mob);
     std::shared_ptr<Village> _village = village.lock();
-    if (_village != NULL && mob != NULL) {
+    if (_village != nullptr && mob != nullptr) {
         _village->addAggressor(mob);
 
         if (mob->instanceof (eTYPE_PLAYER)) {
@@ -251,9 +251,9 @@ void Villager::setLastHurtByMob(std::shared_ptr<LivingEntity> mob) {
 
 void Villager::die(DamageSource* source) {
     std::shared_ptr<Village> _village = village.lock();
-    if (_village != NULL) {
+    if (_village != nullptr) {
         std::shared_ptr<Entity> sourceEntity = source->getEntity();
-        if (sourceEntity != NULL) {
+        if (sourceEntity != nullptr) {
             if (sourceEntity->instanceof (eTYPE_PLAYER)) {
                 _village->modifyStanding(
                     std::dynamic_pointer_cast<Player>(sourceEntity)->getName(),
@@ -261,12 +261,12 @@ void Villager::die(DamageSource* source) {
             } else if (sourceEntity->instanceof (eTYPE_ENEMY)) {
                 _village->resetNoBreedTimer();
             }
-        } else if (sourceEntity == NULL) {
+        } else if (sourceEntity == nullptr) {
             // if the villager was killed by the world (such as lava or
             // falling), blame the nearest player by not reproducing for a while
             std::shared_ptr<Player> nearestPlayer =
                 level->getNearestPlayer(shared_from_this(), 16.0f);
-            if (nearestPlayer != NULL) {
+            if (nearestPlayer != nullptr) {
                 _village->resetNoBreedTimer();
             }
         }
@@ -283,7 +283,7 @@ std::shared_ptr<Player> Villager::getTradingPlayer() {
     return tradingPlayer.lock();
 }
 
-bool Villager::isTrading() { return tradingPlayer.lock() != NULL; }
+bool Villager::isTrading() { return tradingPlayer.lock() != nullptr; }
 
 void Villager::notifyTrade(MerchantRecipe* activeRecipe) {
     activeRecipe->increaseUses();
@@ -295,7 +295,7 @@ void Villager::notifyTrade(MerchantRecipe* activeRecipe) {
     if (activeRecipe->isSame(offers->at(offers->size() - 1))) {
         updateMerchantTimer = SharedConstants::TICKS_PER_SECOND * 2;
         addRecipeOnUpdate = true;
-        if (tradingPlayer.lock() != NULL) {
+        if (tradingPlayer.lock() != nullptr) {
             lastPlayerTradeName = tradingPlayer.lock()->getName();
         } else {
             lastPlayerTradeName = L"";
@@ -312,7 +312,7 @@ void Villager::notifyTradeUpdated(std::shared_ptr<ItemInstance> item) {
         (ambientSoundTime >
          (-getAmbientSoundInterval() + SharedConstants::TICKS_PER_SECOND))) {
         ambientSoundTime = -getAmbientSoundInterval();
-        if (item != NULL) {
+        if (item != nullptr) {
             playSound(eSoundType_MOB_VILLAGER_YES, getSoundVolume(),
                       getVoicePitch());
         } else {
@@ -323,7 +323,7 @@ void Villager::notifyTradeUpdated(std::shared_ptr<ItemInstance> item) {
 }
 
 MerchantRecipeList* Villager::getOffers(std::shared_ptr<Player> forPlayer) {
-    if (offers == NULL) {
+    if (offers == nullptr) {
         addOffers(1);
     }
     return offers;
@@ -528,7 +528,7 @@ void Villager::addOffers(int addCount) {
     std::shuffle(newOffers->begin(), newOffers->end(),
                  VillagerShuffleRandom(random));
 
-    if (offers == NULL) {
+    if (offers == nullptr) {
         offers = new MerchantRecipeList();
     }
     for (int i = 0; i < addCount && i < newOffers->size(); i++) {
@@ -730,7 +730,7 @@ std::shared_ptr<AgableMob> Villager::getBreedOffspring(
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Villager> villager =
             std::shared_ptr<Villager>(new Villager(level));
-        villager->finalizeMobSpawn(NULL);
+        villager->finalizeMobSpawn(nullptr);
         return villager;
     } else {
         return nullptr;

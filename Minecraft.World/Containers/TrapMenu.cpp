@@ -35,7 +35,7 @@ std::shared_ptr<ItemInstance> TrapMenu::quickMoveStack(
     std::shared_ptr<Player> player, int slotIndex) {
     std::shared_ptr<ItemInstance> clicked = nullptr;
     Slot* slot = slots.at(slotIndex);
-    if (slot != NULL && slot->hasItem()) {
+    if (slot != nullptr && slot->hasItem()) {
         std::shared_ptr<ItemInstance> stack = slot->getItem();
         clicked = stack->copy();
 

@@ -108,7 +108,7 @@ NetherBridgePieces::findAndCreateBridgePieceFactory(
     NetherBridgePieces::PieceWeight* piece, std::list<StructurePiece*>* pieces,
     Random* random, int footX, int footY, int footZ, int direction, int depth) {
     EPieceClass pieceClass = piece->pieceClass;
-    NetherBridgePiece* structurePiece = NULL;
+    NetherBridgePiece* structurePiece = nullptr;
 
     if (pieceClass == EPieceClass_BridgeStraight) {
         structurePiece = BridgeStraight::createPiece(
@@ -227,7 +227,7 @@ NetherBridgePieces::NetherBridgePiece::generatePiece(
                     findAndCreateBridgePieceFactory(piece, pieces, random,
                                                     footX, footY, footZ,
                                                     direction, depth);
-                if (structurePiece != NULL) {
+                if (structurePiece != nullptr) {
                     piece->placeCount++;
                     startPiece->previousPiece = piece;
 
@@ -261,7 +261,7 @@ StructurePiece* NetherBridgePieces::NetherBridgePiece::generateAndAddPiece(
     StructurePiece* newPiece =
         generatePiece(startPiece, availablePieces, pieces, random, footX, footY,
                       footZ, direction, depth + 1);
-    if (newPiece != NULL) {
+    if (newPiece != nullptr) {
         pieces->push_back(newPiece);
         startPiece->pendingChildren.push_back(newPiece);
     }
@@ -293,7 +293,7 @@ StructurePiece* NetherBridgePieces::NetherBridgePiece::generateChildForward(
                 boundingBox->y0 + yOff, boundingBox->z0 + xOff, orientation,
                 getGenDepth(), isCastle);
     }
-    return NULL;
+    return nullptr;
 }
 
 StructurePiece* NetherBridgePieces::NetherBridgePiece::generateChildLeft(
@@ -321,7 +321,7 @@ StructurePiece* NetherBridgePieces::NetherBridgePiece::generateChildLeft(
                 boundingBox->y0 + yOff, boundingBox->z0 - 1, Direction::NORTH,
                 getGenDepth(), isCastle);
     }
-    return NULL;
+    return nullptr;
 }
 
 StructurePiece* NetherBridgePieces::NetherBridgePiece::generateChildRight(
@@ -349,14 +349,14 @@ StructurePiece* NetherBridgePieces::NetherBridgePiece::generateChildRight(
                 boundingBox->y0 + yOff, boundingBox->z1 + 1, Direction::SOUTH,
                 getGenDepth(), isCastle);
     }
-    return NULL;
+    return nullptr;
 }
 
 bool NetherBridgePieces::NetherBridgePiece::isOkBox(BoundingBox* box,
                                                     StartPiece* startPiece) {
     bool bIsOk = false;
 
-    if (box != NULL) {
+    if (box != nullptr) {
         if (box->y0 > LOWEST_Y_POSITION) bIsOk = true;
         int xzSize = (startPiece->m_level->getLevelData()->getXZSize() /
                       startPiece->m_level->getLevelData()
@@ -448,14 +448,14 @@ NetherBridgePieces::BridgeStraight::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, -3, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new BridgeStraight(genDepth, random, box, direction);
@@ -535,14 +535,14 @@ NetherBridgePieces::BridgeEndFiller::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, -3, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new BridgeEndFiller(genDepth, random, box, direction);
@@ -652,14 +652,14 @@ NetherBridgePieces::BridgeCrossing::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -8, -3, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new BridgeCrossing(genDepth, random, box, direction);
@@ -732,13 +732,13 @@ bool NetherBridgePieces::BridgeCrossing::postProcess(Level* level,
 
 NetherBridgePieces::StartPiece::StartPiece() {
     // for reflection
-    previousPiece = NULL;
+    previousPiece = nullptr;
 }
 
 NetherBridgePieces::StartPiece::StartPiece(Random* random, int west, int north,
                                            Level* level)
     : BridgeCrossing(random, west, north) {
-    previousPiece = NULL;
+    previousPiece = nullptr;
     m_level = level;
 
     for (int i = 0; i < BRIDGE_PIECEWEIGHTS_COUNT; i++) {
@@ -788,14 +788,14 @@ NetherBridgePieces::RoomCrossing* NetherBridgePieces::RoomCrossing::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -2, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new RoomCrossing(genDepth, random, box, direction);
@@ -877,14 +877,14 @@ NetherBridgePieces::StairsRoom* NetherBridgePieces::StairsRoom::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -2, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new StairsRoom(genDepth, random, box, direction);
@@ -969,14 +969,14 @@ NetherBridgePieces::MonsterThrone::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -2, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new MonsterThrone(genDepth, random, box, direction);
@@ -1046,7 +1046,7 @@ bool NetherBridgePieces::MonsterThrone::postProcess(Level* level,
             std::shared_ptr<MobSpawnerTileEntity> entity =
                 std::dynamic_pointer_cast<MobSpawnerTileEntity>(
                     level->getTileEntity(x, y, z));
-            if (entity != NULL) entity->getSpawner()->setEntityId(L"Blaze");
+            if (entity != nullptr) entity->getSpawner()->setEntityId(L"Blaze");
         }
     }
 
@@ -1084,14 +1084,14 @@ NetherBridgePieces::CastleEntrance::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -5, -3, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleEntrance(genDepth, random, box, direction);
@@ -1240,14 +1240,14 @@ NetherBridgePieces::CastleStalkRoom::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -5, -3, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleStalkRoom(genDepth, random, box, direction);
@@ -1444,14 +1444,14 @@ NetherBridgePieces::CastleSmallCorridorPiece::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleSmallCorridorPiece(genDepth, random, box, direction);
@@ -1521,14 +1521,14 @@ NetherBridgePieces::CastleSmallCorridorCrossingPiece::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleSmallCorridorCrossingPiece(genDepth, random, box,
@@ -1609,14 +1609,14 @@ NetherBridgePieces::CastleSmallCorridorRightTurnPiece::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleSmallCorridorRightTurnPiece(genDepth, random, box,
@@ -1717,14 +1717,14 @@ NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleSmallCorridorLeftTurnPiece(genDepth, random, box,
@@ -1807,14 +1807,14 @@ NetherBridgePieces::CastleCorridorStairsPiece::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -1, -7, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleCorridorStairsPiece(genDepth, random, box, direction);
@@ -1900,14 +1900,14 @@ NetherBridgePieces::CastleCorridorTBalconyPiece::createPiece(
     BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, -3, 0, 0,
                                               width, height, depth, direction);
 
-    StartPiece* startPiece = NULL;
-    if (pieces != NULL)
+    StartPiece* startPiece = nullptr;
+    if (pieces != nullptr)
         startPiece = ((NetherBridgePieces::StartPiece*)pieces->front());
 
     if (!isOkBox(box, startPiece) ||
-        StructurePiece::findCollisionPiece(pieces, box) != NULL) {
+        StructurePiece::findCollisionPiece(pieces, box) != nullptr) {
         delete box;
-        return NULL;
+        return nullptr;
     }
 
     return new CastleCorridorTBalconyPiece(genDepth, random, box, direction);

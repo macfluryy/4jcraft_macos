@@ -9,7 +9,7 @@ const float Mth::DEGRAD = PI / 180.0f;
 const float Mth::RADDEG = 180.0f / PI;
 const float Mth::RAD_TO_GRAD = PI / 180.0f;
 
-float* Mth::_sin = NULL;
+float* Mth::_sin = nullptr;
 
 // 4jcraft for clarity
 constexpr size_t SIN_TAB_CNT = 65536;
@@ -25,7 +25,7 @@ void Mth::init() {
 }
 
 float Mth::sin(float i) {
-    if (_sin == NULL) init();  // 4J - added
+    if (_sin == nullptr) init();  // 4J - added
 
     // 4jcraft changed, what ever this was, it was not safe
     // fmodf returns between -65536 and 65536 (casted)
@@ -36,7 +36,7 @@ float Mth::sin(float i) {
 }
 
 float Mth::cos(float i) {
-    if (_sin == NULL) init();  // 4J - added
+    if (_sin == nullptr) init();  // 4J - added
     // 4jcraft same thing as ::sin but shift by SIN_TAB_CNT / 4
     // which is aquivalent to shift by pi / 2
     // and again the same modulo logic to cramp and map it onto the computed

@@ -232,7 +232,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         }
 
         param->seed = seedValue;
-        param->saveData = NULL;
+        param->saveData = nullptr;
         param->texturePackId = 0;
         param->settings = 0;
 

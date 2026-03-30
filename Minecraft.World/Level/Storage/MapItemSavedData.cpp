@@ -112,7 +112,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
             ++dataIndex;
         }
         bool thesame = !itemInstance->isFramed();
-        if (lastSentDecorations.data == NULL ||
+        if (lastSentDecorations.data == nullptr ||
             lastSentDecorations.length != data.length) {
             thesame = false;
         } else {
@@ -125,7 +125,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
         }
 
         if (!thesame) {
-            if (lastSentDecorations.data != NULL) {
+            if (lastSentDecorations.data != nullptr) {
                 delete[] lastSentDecorations.data;
             }
             // Make a copy of data, as the calling function presumes it can
@@ -190,7 +190,7 @@ void MapItemSavedData::load(CompoundTag* tag) {
     } else {
         byteArray newColors = tag->getByteArray(L"colors");
         // 4J
-        if (colors.data != NULL) {
+        if (colors.data != nullptr) {
             delete[] colors.data;
         }
         // End4J
@@ -370,7 +370,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                 for (AUTO_VAR(it3, players->players.begin());
                      it3 != players->players.end(); ++it3) {
                     std::shared_ptr<ServerPlayer> decorationPlayer = *it3;
-                    if (decorationPlayer != NULL &&
+                    if (decorationPlayer != nullptr &&
                         decorationPlayer->dimension == this->dimension) {
                         float xd =
                             (float)(decorationPlayer->x - x) / (1 << scale);

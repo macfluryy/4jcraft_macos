@@ -57,14 +57,14 @@ int Inventory::getSelectionSize() { return SELECTION_SIZE; }
 
 int Inventory::getSlot(int tileId) {
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL && items[i]->id == tileId) return i;
+        if (items[i] != nullptr && items[i]->id == tileId) return i;
     }
     return -1;
 }
 
 int Inventory::getSlot(int tileId, int data) {
     for (int i = 0; i < items.length; i++) {
-        if (items[i] != NULL && items[i]->id == tileId &&
+        if (items[i] != nullptr && items[i]->id == tileId &&
             items[i]->getAuxValue() == data)
             return i;
     }
@@ -73,7 +73,7 @@ int Inventory::getSlot(int tileId, int data) {
 
 int Inventory::getSlotWithRemainingSpace(std::shared_ptr<ItemInstance> item) {
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL && items[i]->id == item->id &&
+        if (items[i] != nullptr && items[i]->id == item->id &&
             items[i]->isStackable() &&
             items[i]->count < items[i]->getMaxStackSize() &&
             items[i]->count < getMaxStackSize() &&
@@ -88,7 +88,7 @@ int Inventory::getSlotWithRemainingSpace(std::shared_ptr<ItemInstance> item) {
 
 int Inventory::getFreeSlot() {
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] == NULL) return i;
+        if (items[i] == nullptr) return i;
     }
     return -1;
 }
@@ -132,7 +132,7 @@ int Inventory::clearInventory(int id, int data) {
     int count = 0;
     for (int i = 0; i < items.length; i++) {
         std::shared_ptr<ItemInstance> item = items[i];
-        if (item == NULL) continue;
+        if (item == nullptr) continue;
         if (id > -1 && item->id != id) continue;
         if (data > -1 && item->getAuxValue() != data) continue;
 
@@ -141,7 +141,7 @@ int Inventory::clearInventory(int id, int data) {
     }
     for (int i = 0; i < armor.length; i++) {
         std::shared_ptr<ItemInstance> item = armor[i];
-        if (item == NULL) continue;
+        if (item == nullptr) continue;
         if (id > -1 && item->id != id) continue;
         if (data > -1 && item->getAuxValue() != data) continue;
 
@@ -149,7 +149,7 @@ int Inventory::clearInventory(int id, int data) {
         armor[i] = nullptr;
     }
 
-    if (carried != NULL) {
+    if (carried != nullptr) {
         if (id > -1 && carried->id != id) return count;
         if (data > -1 && carried->getAuxValue() != data) return count;
 
@@ -161,9 +161,9 @@ int Inventory::clearInventory(int id, int data) {
 }
 
 void Inventory::replaceSlot(Item* item, int data) {
-    if (item != NULL) {
+    if (item != nullptr) {
         // It's too easy to accidentally pick block and lose enchanted items.
-        if (heldItem != NULL && heldItem->isEnchantable() &&
+        if (heldItem != nullptr && heldItem->isEnchantable() &&
             getSlot(heldItem->id, heldItem->getDamageValue()) == selected) {
             return;
         }
@@ -189,7 +189,7 @@ int Inventory::addResource(std::shared_ptr<ItemInstance> itemInstance) {
     if (itemInstance->getMaxStackSize() == 1) {
         int slot = getFreeSlot();
         if (slot < 0) return count;
-        if (items[slot] == NULL) {
+        if (items[slot] == nullptr) {
             items[slot] = ItemInstance::clone(itemInstance);
             player->handleCollectItem(itemInstance);
         }
@@ -199,7 +199,7 @@ int Inventory::addResource(std::shared_ptr<ItemInstance> itemInstance) {
     int slot = getSlotWithRemainingSpace(itemInstance);
     if (slot < 0) slot = getFreeSlot();
     if (slot < 0) return count;
-    if (items[slot] == NULL) {
+    if (items[slot] == nullptr) {
         items[slot] = std::shared_ptr<ItemInstance>(
             new ItemInstance(type, 0, itemInstance->getAuxValue()));
         // 4J Stu - Brought forward from 1.2
@@ -228,7 +228,7 @@ int Inventory::addResource(std::shared_ptr<ItemInstance> itemInstance) {
 
 void Inventory::tick() {
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL) {
+        if (items[i] != nullptr) {
             items[i]->inventoryTick(player->level, player->shared_from_this(),
                                     i, selected == i);
         }
@@ -252,11 +252,11 @@ bool Inventory::removeResource(int type, int iAuxVal) {
 }
 
 void Inventory::removeResources(std::shared_ptr<ItemInstance> item) {
-    if (item == NULL) return;
+    if (item == nullptr) return;
 
     int countToRemove = item->count;
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL && items[i]->sameItemWithTags(item)) {
+        if (items[i] != nullptr && items[i]->sameItemWithTags(item)) {
             int slotCount = items[i]->count;
             items[i]->count -= countToRemove;
             if (slotCount < countToRemove) {
@@ -296,7 +296,7 @@ void Inventory::swapSlots(int from, int to) {
 }
 
 bool Inventory::add(std::shared_ptr<ItemInstance> item) {
-    if (item == NULL) return false;
+    if (item == nullptr) return false;
     if (item->count == 0) return false;
 
     if (!item->isDamaged()) {
@@ -350,7 +350,7 @@ std::shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot,
         slot -= items.length;
     }
 
-    if (pile[slot] != NULL) {
+    if (pile[slot] != nullptr) {
         if (pile[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = pile[slot];
             pile[slot] = nullptr;
@@ -371,7 +371,7 @@ std::shared_ptr<ItemInstance> Inventory::removeItemNoUpdate(int slot) {
         slot -= items.length;
     }
 
-    if (pile[slot] != NULL) {
+    if (pile[slot] != nullptr) {
         std::shared_ptr<ItemInstance> item = pile[slot];
         pile[slot] = nullptr;
         return item;
@@ -381,7 +381,7 @@ std::shared_ptr<ItemInstance> Inventory::removeItemNoUpdate(int slot) {
 
 void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) {
 #ifdef _DEBUG
-    if (item != NULL) {
+    if (item != nullptr) {
         std::wstring itemstring = item->toString();
         app.DebugPrintf("Inventory::setItem - slot = %d,\t item = %d ", slot,
                         item->id);
@@ -389,7 +389,7 @@ void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) {
         app.DebugPrintf("\n");
     }
 #else
-    if (item != NULL) {
+    if (item != nullptr) {
         app.DebugPrintf(
             "Inventory::setItem - slot = %d,\t item = %d, aux = %d\n", slot,
             item->id, item->getAuxValue());
@@ -416,14 +416,14 @@ void Inventory::setItem(unsigned int slot, std::shared_ptr<ItemInstance> item) {
 
 float Inventory::getDestroySpeed(Tile* tile) {
     float speed = 1.0f;
-    if (items[selected] != NULL)
+    if (items[selected] != nullptr)
         speed *= items[selected]->getDestroySpeed(tile);
     return speed;
 }
 
 ListTag<CompoundTag>* Inventory::save(ListTag<CompoundTag>* listTag) {
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL) {
+        if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
             items[i]->save(tag);
@@ -431,7 +431,7 @@ ListTag<CompoundTag>* Inventory::save(ListTag<CompoundTag>* listTag) {
         }
     }
     for (unsigned int i = 0; i < armor.length; i++) {
-        if (armor[i] != NULL) {
+        if (armor[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)(i + 100));
             armor[i]->save(tag);
@@ -442,13 +442,13 @@ ListTag<CompoundTag>* Inventory::save(ListTag<CompoundTag>* listTag) {
 }
 
 void Inventory::load(ListTag<CompoundTag>* inventoryList) {
-    if (items.data != NULL) {
+    if (items.data != nullptr) {
         delete[] items.data;
-        items.data = NULL;
+        items.data = nullptr;
     }
-    if (armor.data != NULL) {
+    if (armor.data != nullptr) {
         delete[] armor.data;
-        armor.data = NULL;
+        armor.data = nullptr;
     }
     items = ItemInstanceArray(INVENTORY_SIZE);
     armor = ItemInstanceArray(4);
@@ -457,7 +457,7 @@ void Inventory::load(ListTag<CompoundTag>* inventoryList) {
         unsigned int slot = tag->getByte(L"Slot") & 0xff;
         std::shared_ptr<ItemInstance> item =
             std::shared_ptr<ItemInstance>(ItemInstance::fromTag(tag));
-        if (item != NULL) {
+        if (item != nullptr) {
             if (slot >= 0 && slot < items.length) items[slot] = item;
             if (slot >= 100 && slot < armor.length + 100)
                 armor[slot - 100] = item;
@@ -498,7 +498,7 @@ bool Inventory::canDestroy(Tile* tile) {
     if (tile->material->isAlwaysDestroyable()) return true;
 
     std::shared_ptr<ItemInstance> item = getItem(selected);
-    if (item != NULL) return item->canDestroySpecial(tile);
+    if (item != nullptr) return item->canDestroySpecial(tile);
     return false;
 }
 
@@ -509,8 +509,8 @@ std::shared_ptr<ItemInstance> Inventory::getArmor(int layer) {
 int Inventory::getArmorValue() {
     int val = 0;
     for (unsigned int i = 0; i < armor.length; i++) {
-        if (armor[i] != NULL &&
-            dynamic_cast<ArmorItem*>(armor[i]->getItem()) != NULL) {
+        if (armor[i] != nullptr &&
+            dynamic_cast<ArmorItem*>(armor[i]->getItem()) != nullptr) {
             int baseProtection =
                 dynamic_cast<ArmorItem*>(armor[i]->getItem())->defense;
 
@@ -526,8 +526,8 @@ void Inventory::hurtArmor(float dmg) {
         dmg = 1;
     }
     for (unsigned int i = 0; i < armor.length; i++) {
-        if (armor[i] != NULL &&
-            dynamic_cast<ArmorItem*>(armor[i]->getItem()) != NULL) {
+        if (armor[i] != nullptr &&
+            dynamic_cast<ArmorItem*>(armor[i]->getItem()) != nullptr) {
             armor[i]->hurtAndBreak((int)dmg,
                                    std::dynamic_pointer_cast<LivingEntity>(
                                        player->shared_from_this()));
@@ -540,13 +540,13 @@ void Inventory::hurtArmor(float dmg) {
 
 void Inventory::dropAll() {
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL) {
+        if (items[i] != nullptr) {
             player->drop(items[i], true);
             items[i] = nullptr;
         }
     }
     for (unsigned int i = 0; i < armor.length; i++) {
-        if (armor[i] != NULL) {
+        if (armor[i] != nullptr) {
             player->drop(armor[i], true);
             armor[i] = nullptr;
         }
@@ -567,8 +567,8 @@ bool Inventory::isSame(std::shared_ptr<Inventory> copy) {
 
 bool Inventory::isSame(std::shared_ptr<ItemInstance> a,
                        std::shared_ptr<ItemInstance> b) {
-    if (a == NULL && b == NULL) return true;
-    if (a == NULL || b == NULL) return false;
+    if (a == nullptr && b == nullptr) return true;
+    if (a == nullptr || b == nullptr) return false;
 
     return a->id == b->id && a->count == b->count &&
            a->getAuxValue() == b->getAuxValue();
@@ -576,12 +576,12 @@ bool Inventory::isSame(std::shared_ptr<ItemInstance> a,
 
 std::shared_ptr<Inventory> Inventory::copy() {
     std::shared_ptr<Inventory> copy =
-        std::shared_ptr<Inventory>(new Inventory(NULL));
+        std::shared_ptr<Inventory>(new Inventory(nullptr));
     for (unsigned int i = 0; i < items.length; i++) {
-        copy->items[i] = items[i] != NULL ? items[i]->copy() : nullptr;
+        copy->items[i] = items[i] != nullptr ? items[i]->copy() : nullptr;
     }
     for (unsigned int i = 0; i < armor.length; i++) {
-        copy->armor[i] = armor[i] != NULL ? armor[i]->copy() : nullptr;
+        copy->armor[i] = armor[i] != nullptr ? armor[i]->copy() : nullptr;
     }
     return copy;
 }
@@ -602,10 +602,10 @@ bool Inventory::stillValid(std::shared_ptr<Player> player) {
 
 bool Inventory::contains(std::shared_ptr<ItemInstance> itemInstance) {
     for (unsigned int i = 0; i < armor.length; i++) {
-        if (armor[i] != NULL && armor[i]->sameItem(itemInstance)) return true;
+        if (armor[i] != nullptr && armor[i]->sameItem(itemInstance)) return true;
     }
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL && items[i]->sameItem(itemInstance)) return true;
+        if (items[i] != nullptr && items[i]->sameItem(itemInstance)) return true;
     }
     return false;
 }
@@ -634,15 +634,15 @@ void Inventory::replaceWith(std::shared_ptr<Inventory> other) {
 }
 
 int Inventory::countMatches(std::shared_ptr<ItemInstance> itemInstance) {
-    if (itemInstance == NULL) return 0;
+    if (itemInstance == nullptr) return 0;
     int count = 0;
     // for (unsigned int i = 0; i < armor.length; i++)
     //{
-    //	if (armor[i] != NULL && armor[i]->sameItem(itemInstance)) count +=
+    //	if (armor[i] != nullptr && armor[i]->sameItem(itemInstance)) count +=
     // items[i]->count;
     // }
     for (unsigned int i = 0; i < items.length; i++) {
-        if (items[i] != NULL && items[i]->sameItemWithTags(itemInstance))
+        if (items[i] != nullptr && items[i]->sameItemWithTags(itemInstance))
             count += items[i]->count;
     }
     return count;

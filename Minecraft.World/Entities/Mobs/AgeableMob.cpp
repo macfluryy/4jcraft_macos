@@ -15,7 +15,7 @@ AgableMob::AgableMob(Level* level) : PathfinderMob(level) {
 bool AgableMob::mobInteract(std::shared_ptr<Player> player) {
     std::shared_ptr<ItemInstance> item = player->inventory->getSelected();
 
-    if (item != NULL && item->id == Item::spawnEgg_Id) {
+    if (item != nullptr && item->id == Item::spawnEgg_Id) {
         if (!level->isClientSide) {
             eINSTANCEOF classToSpawn = EntityIO::getClass(item->getAuxValue());
             if (classToSpawn != eTYPE_NOTSET &&
@@ -27,11 +27,11 @@ bool AgableMob::mobInteract(std::shared_ptr<Player> player) {
                 std::shared_ptr<Entity> result =
                     SpawnEggItem::canSpawn(item->getAuxValue(), level, &error);
 
-                if (result != NULL) {
+                if (result != nullptr) {
                     std::shared_ptr<AgableMob> offspring =
                         getBreedOffspring(std::dynamic_pointer_cast<AgableMob>(
                             shared_from_this()));
-                    if (offspring != NULL) {
+                    if (offspring != nullptr) {
                         offspring->setAge(BABY_START_AGE);
                         offspring->moveTo(x, y, z, 0, 0);
 

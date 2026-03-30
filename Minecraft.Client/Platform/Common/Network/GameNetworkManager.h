@@ -111,7 +111,7 @@ public:
     static int JoinFromInvite_SignInReturned(void* pParam, bool bContinue,
                                              int iPad);
     void UpdateAndSetGameSessionData(
-        INetworkPlayer* pNetworkPlayerLeaving = NULL);
+        INetworkPlayer* pNetworkPlayerLeaving = nullptr);
     void SendInviteGUI(int iPad);
     void ResetLeavingGame();
 
@@ -133,17 +133,17 @@ public:
 
     // Events
 
-    void ServerReadyCreate(bool create);  // Create the signal (or set to NULL)
+    void ServerReadyCreate(bool create);  // Create the signal (or set to nullptr)
     void ServerReady();                   // Signal that we are ready
     void ServerReadyWait();               // Wait for the signal
     void ServerReadyDestroy();            // Destroy signal
-    bool ServerReadyValid();              // Is non-NULL
+    bool ServerReadyValid();              // Is non-nullptr
 
     void ServerStoppedCreate(bool create);  // Create the signal
     void ServerStopped();                   // Signal that we are ready
     void ServerStoppedWait();               // Wait for the signal
     void ServerStoppedDestroy();            // Destroy signal
-    bool ServerStoppedValid();              // Is non-NULL
+    bool ServerStoppedValid();              // Is non-nullptr
 
     // Debug output
 

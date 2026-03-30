@@ -13,7 +13,7 @@ FireworksRocketEntity::FireworksRocketEntity(Level* level) : Entity(level) {
 }
 
 void FireworksRocketEntity::defineSynchedData() {
-    entityData->defineNULL(DATA_ID_FIREWORKS_ITEM, NULL);
+    entityData->defineNULL(DATA_ID_FIREWORKS_ITEM, nullptr);
 }
 
 bool FireworksRocketEntity::shouldRenderAtSqrDistance(double distance) {
@@ -34,12 +34,12 @@ FireworksRocketEntity::FireworksRocketEntity(
     heightOffset = 0;
 
     int flightCount = 1;
-    if (sourceItem != NULL && sourceItem->hasTag()) {
+    if (sourceItem != nullptr && sourceItem->hasTag()) {
         entityData->set(DATA_ID_FIREWORKS_ITEM, sourceItem);
 
         CompoundTag* tag = sourceItem->getTag();
         CompoundTag* compound = tag->getCompound(FireworksItem::TAG_FIREWORKS);
-        if (compound != NULL) {
+        if (compound != nullptr) {
             flightCount += compound->getByte(FireworksItem::TAG_FLIGHT);
         }
     }
@@ -110,8 +110,8 @@ void FireworksRocketEntity::handleEntityEvent(uint8_t eventId) {
     if (eventId == EntityEvent::FIREWORKS_EXPLODE && level->isClientSide) {
         std::shared_ptr<ItemInstance> sourceItem =
             entityData->getItemInstance(DATA_ID_FIREWORKS_ITEM);
-        CompoundTag* tag = NULL;
-        if (sourceItem != NULL && sourceItem->hasTag()) {
+        CompoundTag* tag = nullptr;
+        if (sourceItem != nullptr && sourceItem->hasTag()) {
             tag =
                 sourceItem->getTag()->getCompound(FireworksItem::TAG_FIREWORKS);
         }
@@ -125,7 +125,7 @@ void FireworksRocketEntity::addAdditonalSaveData(CompoundTag* tag) {
     tag->putInt(L"LifeTime", lifetime);
     std::shared_ptr<ItemInstance> itemInstance =
         entityData->getItemInstance(DATA_ID_FIREWORKS_ITEM);
-    if (itemInstance != NULL) {
+    if (itemInstance != nullptr) {
         CompoundTag* itemTag = new CompoundTag();
         itemInstance->save(itemTag);
         tag->putCompound(L"FireworksItem", itemTag);
@@ -137,9 +137,9 @@ void FireworksRocketEntity::readAdditionalSaveData(CompoundTag* tag) {
     lifetime = tag->getInt(L"LifeTime");
 
     CompoundTag* itemTag = tag->getCompound(L"FireworksItem");
-    if (itemTag != NULL) {
+    if (itemTag != nullptr) {
         std::shared_ptr<ItemInstance> fromTag = ItemInstance::fromTag(itemTag);
-        if (fromTag != NULL) {
+        if (fromTag != nullptr) {
             entityData->set(DATA_ID_FIREWORKS_ITEM, fromTag);
         }
     }

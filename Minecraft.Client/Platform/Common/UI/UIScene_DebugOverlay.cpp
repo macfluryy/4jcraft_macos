@@ -48,7 +48,7 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
 
     int listId = 0;
     for (unsigned int i = 0; i < Item::items.length; ++i) {
-        if (Item::items[i] != NULL) {
+        if (Item::items[i] != nullptr) {
             m_itemIds.push_back(i);
             m_buttonListItems.addItem(
                 app.GetString(Item::items[i]->getDescriptionId()), listId);
@@ -120,20 +120,20 @@ std::wstring UIScene_DebugOverlay::getMoviePath() { return L"DebugMenu"; }
 
 void UIScene_DebugOverlay::customDraw(IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     int itemId = -1;
     // 4jcraft TODO: UB on our platform since this casts char16_t* to wchar_t*
     swscanf((wchar_t*)region->name, L"item_%d", &itemId);
     if (itemId == -1 || itemId > Item::ITEM_NUM_COUNT ||
-        Item::items[itemId] == NULL) {
+        Item::items[itemId] == nullptr) {
         app.DebugPrintf("This is not the control we are looking for\n");
     } else {
         std::shared_ptr<ItemInstance> item =
             std::shared_ptr<ItemInstance>(new ItemInstance(itemId, 1, 0));
-        if (item != NULL)
+        if (item != nullptr)
             customDrawSlotControl(region, m_iPad, item, 1.0f, false, false);
     }
 }
@@ -202,14 +202,14 @@ void UIScene_DebugOverlay::handlePress(F64 controlId, F64 childId) {
         case eControl_Schematic: {
 #ifndef _CONTENT_PACKAGE
             ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
-                               eUIScene_DebugCreateSchematic, NULL,
+                               eUIScene_DebugCreateSchematic, nullptr,
                                eUILayer_Debug);
 #endif
         } break;
         case eControl_SetCamera: {
 #ifndef _CONTENT_PACKAGE
             ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
-                               eUIScene_DebugSetCamera, NULL, eUILayer_Debug);
+                               eUIScene_DebugSetCamera, nullptr, eUILayer_Debug);
 #endif
         } break;
         case eControl_Rain: {

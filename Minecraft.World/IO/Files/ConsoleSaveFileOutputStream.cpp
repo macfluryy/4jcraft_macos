@@ -103,7 +103,7 @@ void ConsoleSaveFileOutputStream::write(byteArray b, unsigned int offset,
 // bytes. If this stream has an associated channel then the channel is closed as
 // well.
 void ConsoleSaveFileOutputStream::close() {
-    if (m_saveFile != NULL) {
+    if (m_saveFile != nullptr) {
         bool result = m_saveFile->closeHandle(m_file);
 
         if (!result) {
@@ -111,6 +111,6 @@ void ConsoleSaveFileOutputStream::close() {
         }
 
         // Stop the dtor from trying to close it again
-        m_saveFile = NULL;
+        m_saveFile = nullptr;
     }
 }

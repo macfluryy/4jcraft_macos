@@ -25,25 +25,25 @@ PotionItem::PotionItem(int id) : Item(id) {
     setStackedByData(true);
     setMaxDamage(0);
 
-    iconThrowable = NULL;
-    iconDrinkable = NULL;
-    iconOverlay = NULL;
+    iconThrowable = nullptr;
+    iconDrinkable = nullptr;
+    iconOverlay = nullptr;
 }
 
 std::vector<MobEffectInstance*>* PotionItem::getMobEffects(
     std::shared_ptr<ItemInstance> potion) {
     if (!potion->hasTag() ||
         !potion->getTag()->contains(L"CustomPotionEffects")) {
-        std::vector<MobEffectInstance*>* effects = NULL;
+        std::vector<MobEffectInstance*>* effects = nullptr;
         AUTO_VAR(it, cachedMobEffects.find(potion->getAuxValue()));
         if (it != cachedMobEffects.end()) effects = it->second;
-        if (effects == NULL) {
+        if (effects == nullptr) {
             effects = PotionBrewing::getEffects(potion->getAuxValue(), false);
             cachedMobEffects[potion->getAuxValue()] = effects;
         }
 
         // Result should be a new (unmanaged) vector, so create a new one
-        return effects == NULL ? NULL
+        return effects == nullptr ? nullptr
                                : new std::vector<MobEffectInstance*>(*effects);
     } else {
         std::vector<MobEffectInstance*>* effects =
@@ -62,12 +62,12 @@ std::vector<MobEffectInstance*>* PotionItem::getMobEffects(
 }
 
 std::vector<MobEffectInstance*>* PotionItem::getMobEffects(int auxValue) {
-    std::vector<MobEffectInstance*>* effects = NULL;
+    std::vector<MobEffectInstance*>* effects = nullptr;
     AUTO_VAR(it, cachedMobEffects.find(auxValue));
     if (it != cachedMobEffects.end()) effects = it->second;
-    if (effects == NULL) {
+    if (effects == nullptr) {
         effects = PotionBrewing::getEffects(auxValue, false);
-        if (effects != NULL)
+        if (effects != nullptr)
             cachedMobEffects.insert(
                 std::pair<int, std::vector<MobEffectInstance*>*>(auxValue,
                                                                  effects));
@@ -82,7 +82,7 @@ std::shared_ptr<ItemInstance> PotionItem::useTimeDepleted(
 
     if (!level->isClientSide) {
         std::vector<MobEffectInstance*>* effects = getMobEffects(instance);
-        if (effects != NULL) {
+        if (effects != nullptr) {
             // for (MobEffectInstance effect : effects)
             for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
                 player->addEffect(new MobEffectInstance(*it));
@@ -172,7 +172,7 @@ bool PotionItem::hasMultipleSpriteLayers() { return true; }
 
 bool PotionItem::hasInstantenousEffects(int itemAuxValue) {
     std::vector<MobEffectInstance*>* mobEffects = getMobEffects(itemAuxValue);
-    if (mobEffects == NULL || mobEffects->empty()) {
+    if (mobEffects == nullptr || mobEffects->empty()) {
         return false;
     }
     // for (MobEffectInstance effect : mobEffects) {
@@ -204,7 +204,7 @@ std::wstring PotionItem::getHoverName(
 
     std::vector<MobEffectInstance*>* effects =
         ((PotionItem*)Item::potion)->getMobEffects(itemInstance);
-    if (effects != NULL && !effects->empty()) {
+    if (effects != nullptr && !effects->empty()) {
         // String postfixString = effects.get(0).getDescriptionId();
         // postfixString += ".postfix";
         // return elementName + " " + I18n.get(postfixString).trim();
@@ -236,7 +236,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
     std::vector<MobEffectInstance*>* effects =
         ((PotionItem*)Item::potion)->getMobEffects(itemInstance);
     attrAttrModMap modifiers;
-    if (effects != NULL && !effects->empty()) {
+    if (effects != nullptr && !effects->empty()) {
         // for (MobEffectInstance effect : effects)
         for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
             MobEffectInstance* effect = *it;
@@ -247,7 +247,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
             std::unordered_map<Attribute*, AttributeModifier*>*
                 effectModifiers = mobEffect->getAttributeModifiers();
 
-            if (effectModifiers != NULL && effectModifiers->size() > 0) {
+            if (effectModifiers != nullptr && effectModifiers->size() > 0) {
                 for (AUTO_VAR(it, effectModifiers->begin());
                      it != effectModifiers->end(); ++it) {
                     // 4J - anonymous modifiers added here are destroyed
@@ -327,7 +327,7 @@ void PotionItem::appendHoverText(std::shared_ptr<ItemInstance> itemInstance,
 
 bool PotionItem::isFoil(std::shared_ptr<ItemInstance> itemInstance) {
     std::vector<MobEffectInstance*>* mobEffects = getMobEffects(itemInstance);
-    return mobEffects != NULL && !mobEffects->empty();
+    return mobEffects != nullptr && !mobEffects->empty();
 }
 
 unsigned int PotionItem::getUseDescriptionId(
@@ -370,7 +370,7 @@ Icon* PotionItem::getTexture(const std::wstring& name) {
     if (name.compare(DEFAULT_ICON) == 0) return Item::potion->iconDrinkable;
     if (name.compare(THROWABLE_ICON) == 0) return Item::potion->iconThrowable;
     if (name.compare(CONTENTS_ICON) == 0) return Item::potion->iconOverlay;
-    return NULL;
+    return nullptr;
 }
 
 // 4J Stu - Based loosely on a function that gets added in java much later on
@@ -381,7 +381,7 @@ std::vector<std::pair<int, int> >* PotionItem::getUniquePotionValues() {
             std::vector<MobEffectInstance*>* effects =
                 PotionBrewing::getEffects(brew, false);
 
-            if (effects != NULL) {
+            if (effects != nullptr) {
                 if (!effects->empty()) {
                     // 4J Stu - Based on implementation of Java List.hashCode()
                     // at
@@ -392,7 +392,7 @@ std::vector<std::pair<int, int> >* PotionItem::getUniquePotionValues() {
                          ++it) {
                         MobEffectInstance* mei = *it;
                         effectsHashCode = 31 * effectsHashCode +
-                                          (mei == NULL ? 0 : mei->hashCode());
+                                          (mei == nullptr ? 0 : mei->hashCode());
                         delete (*it);
                     }
 

@@ -6,7 +6,7 @@
 #include "../../../Minecraft.World/Headers/net.minecraft.h"
 #include "../../../Minecraft.World/Headers/net.minecraft.world.level.tile.h"
 
-SkullTileRenderer* SkullTileRenderer::instance = NULL;
+SkullTileRenderer* SkullTileRenderer::instance = nullptr;
 
 ResourceLocation SkullTileRenderer::SKELETON_LOCATION =
     ResourceLocation(TN_MOB_SKELETON);

@@ -104,7 +104,7 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
     // Update the tutorial state
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+    if (pMinecraft->localgameModes[m_iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -176,10 +176,10 @@ UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
 void UIScene_CraftingMenu::handleDestroy() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+    if (pMinecraft->localgameModes[m_iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
-        if (gameMode != NULL)
+        if (gameMode != nullptr)
             gameMode->getTutorial()->changeTutorialState(
                 m_previousTutorialState);
     }
@@ -187,7 +187,7 @@ void UIScene_CraftingMenu::handleDestroy() {
     // We need to make sure that we call closeContainer() anytime this menu is
     // closed, even if it is forced to close by some other reason (like the
     // player dying)
-    if (Minecraft::GetInstance()->localplayers[m_iPad] != NULL &&
+    if (Minecraft::GetInstance()->localplayers[m_iPad] != nullptr &&
         Minecraft::GetInstance()
                 ->localplayers[m_iPad]
                 ->containerMenu->containerId == m_menu->containerId) {
@@ -287,8 +287,8 @@ void UIScene_CraftingMenu::handleReload() {
 
 void UIScene_CraftingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     std::shared_ptr<ItemInstance> item = nullptr;
@@ -351,7 +351,7 @@ void UIScene_CraftingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
         }
     }
 
-    if (item != NULL) {
+    if (item != nullptr) {
         if (!inventoryItem) {
             if (item->id == Item::clock_Id || item->id == Item::compass_Id) {
                 // 4J Stu - For clocks and compasses we set the aux value to a
@@ -458,7 +458,7 @@ void UIScene_CraftingMenu::setCraftingOutputSlotItem(
     int iPad, std::shared_ptr<ItemInstance> item) {
     m_craftingOutputSlotInfo.item = item;
     m_craftingOutputSlotInfo.alpha = 31;
-    m_craftingOutputSlotInfo.show = item != NULL;
+    m_craftingOutputSlotInfo.show = item != nullptr;
 }
 
 void UIScene_CraftingMenu::setCraftingOutputSlotRedBox(bool show) {
@@ -469,7 +469,7 @@ void UIScene_CraftingMenu::setIngredientSlotItem(
     int iPad, int index, std::shared_ptr<ItemInstance> item) {
     m_ingredientsSlotsInfo[index].item = item;
     m_ingredientsSlotsInfo[index].alpha = 31;
-    m_ingredientsSlotsInfo[index].show = item != NULL;
+    m_ingredientsSlotsInfo[index].show = item != nullptr;
 }
 
 void UIScene_CraftingMenu::setIngredientSlotRedBox(int index, bool show) {
@@ -480,7 +480,7 @@ void UIScene_CraftingMenu::setIngredientDescriptionItem(
     int iPad, int index, std::shared_ptr<ItemInstance> item) {
     m_ingredientsInfo[index].item = item;
     m_ingredientsInfo[index].alpha = 31;
-    m_ingredientsInfo[index].show = item != NULL;
+    m_ingredientsInfo[index].show = item != nullptr;
 
     IggyDataValue result;
     IggyDataValue value[2];

@@ -79,7 +79,7 @@ void ResultSlot::onTake(std::shared_ptr<Player> player,
 
     for (unsigned int i = 0; i < craftSlots->getContainerSize(); i++) {
         std::shared_ptr<ItemInstance> item = craftSlots->getItem(i);
-        if (item != NULL) {
+        if (item != nullptr) {
             craftSlots->removeItem(i, 1);
 
             if (item->getItem()->hasCraftingRemainingItem()) {
@@ -98,7 +98,7 @@ void ResultSlot::onTake(std::shared_ptr<Player> player,
                 }
 
                 // If this slot is now empty, place it there (current behavior)
-                if (craftSlots->getItem(i) == NULL) {
+                if (craftSlots->getItem(i) == nullptr) {
                     craftSlots->setItem(i, craftResult);
                 } else {
                     // Finally, if nothing else, just drop the item

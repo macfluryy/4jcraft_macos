@@ -40,7 +40,7 @@ float DamageEnchantment::getDamageBonus(int level,
 int DamageEnchantment::getDescriptionId() { return names[type]; }
 
 bool DamageEnchantment::isCompatibleWith(Enchantment* other) const {
-    return dynamic_cast<DamageEnchantment*>(other) == NULL;
+    return dynamic_cast<DamageEnchantment*>(other) == nullptr;
 }
 
 bool DamageEnchantment::canEnchant(std::shared_ptr<ItemInstance> item) {

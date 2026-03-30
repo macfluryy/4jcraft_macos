@@ -28,7 +28,7 @@ LoginPacket::LoginPacket() {
     m_playerCapeId = 0;
     m_isGuest = false;
     m_newSeaLevel = false;
-    m_pLevelType = NULL;
+    m_pLevelType = nullptr;
     m_uiGamePrivileges = 0;
     m_xzSize = LEVEL_MAX_WIDTH;
     m_hellScale = HELL_LEVEL_MAX_SCALE;
@@ -60,7 +60,7 @@ LoginPacket::LoginPacket(const std::wstring& userName, int clientVersion,
     m_playerCapeId = capeId;
     m_isGuest = isGuest;
     m_newSeaLevel = false;
-    m_pLevelType = NULL;
+    m_pLevelType = nullptr;
     m_uiGamePrivileges = 0;
     m_xzSize = LEVEL_MAX_WIDTH;
     m_hellScale = HELL_LEVEL_MAX_SCALE;
@@ -106,7 +106,7 @@ void LoginPacket::read(DataInputStream* dis)  // throws IOException
     userName = readUtf(dis, Player::MAX_NAME_LENGTH);
     std::wstring typeName = readUtf(dis, 16);
     m_pLevelType = LevelType::getLevelType(typeName);
-    if (m_pLevelType == NULL) {
+    if (m_pLevelType == nullptr) {
         m_pLevelType = LevelType::lvl_normal;
     }
     seed = dis->readLong();
@@ -137,7 +137,7 @@ void LoginPacket::write(DataOutputStream* dos)  // throws IOException
 {
     dos->writeInt(clientVersion);
     writeUtf(userName, dos);
-    if (m_pLevelType == NULL) {
+    if (m_pLevelType == nullptr) {
         writeUtf(L"", dos);
     } else {
         writeUtf(m_pLevelType->getGeneratorName(), dos);
@@ -171,7 +171,7 @@ void LoginPacket::handle(PacketListener* listener) {
 
 int LoginPacket::getEstimatedSize() {
     int length = 0;
-    if (m_pLevelType != NULL) {
+    if (m_pLevelType != nullptr) {
         length = (int)m_pLevelType->getGeneratorName().length();
     }
 

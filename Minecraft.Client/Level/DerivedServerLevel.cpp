@@ -12,7 +12,7 @@ DerivedServerLevel::DerivedServerLevel(
     // delete the current one
     if (this->savedDataStorage) {
         delete this->savedDataStorage;
-        this->savedDataStorage = NULL;
+        this->savedDataStorage = nullptr;
     }
     this->savedDataStorage = wrapped->savedDataStorage;
     levelData = new DerivedLevelData(wrapped->getLevelData());
@@ -21,7 +21,7 @@ DerivedServerLevel::DerivedServerLevel(
 DerivedServerLevel::~DerivedServerLevel() {
     // we didn't allocate savedDataStorage here, so we don't want the level
     // destructor to delete it
-    this->savedDataStorage = NULL;
+    this->savedDataStorage = nullptr;
 }
 
 void DerivedServerLevel::saveLevelData() {

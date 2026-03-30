@@ -23,7 +23,7 @@ WeighedRandomItem* WeighedRandom::getRandomItem(
             return *it;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 WeighedRandomItem* WeighedRandom::getRandomItem(
@@ -53,7 +53,7 @@ WeighedRandomItem* WeighedRandom::getRandomItem(Random* random,
             return items[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 WeighedRandomItem* WeighedRandom::getRandomItem(Random* random,

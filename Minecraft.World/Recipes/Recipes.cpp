@@ -8,15 +8,15 @@
 #include "../Headers/net.minecraft.world.level.tile.h"
 #include "../Headers/net.minecraft.world.item.crafting.h"
 
-Recipes* Recipes::instance = NULL;
-ArmorRecipes* Recipes::pArmorRecipes = NULL;
-ClothDyeRecipes* Recipes::pClothDyeRecipes = NULL;
-FoodRecipies* Recipes::pFoodRecipies = NULL;
-OreRecipies* Recipes::pOreRecipies = NULL;
-StructureRecipies* Recipes::pStructureRecipies = NULL;
-ToolRecipies* Recipes::pToolRecipies = NULL;
-WeaponRecipies* Recipes::pWeaponRecipies = NULL;
-FireworksRecipe* Recipes::pFireworksRecipes = NULL;
+Recipes* Recipes::instance = nullptr;
+ArmorRecipes* Recipes::pArmorRecipes = nullptr;
+ClothDyeRecipes* Recipes::pClothDyeRecipes = nullptr;
+FoodRecipies* Recipes::pFoodRecipies = nullptr;
+OreRecipies* Recipes::pOreRecipies = nullptr;
+StructureRecipies* Recipes::pStructureRecipies = nullptr;
+ToolRecipies* Recipes::pToolRecipies = nullptr;
+WeaponRecipies* Recipes::pWeaponRecipies = nullptr;
+FireworksRecipe* Recipes::pFireworksRecipes = nullptr;
 
 void Recipes::staticCtor() { Recipes::instance = new Recipes(); }
 
@@ -939,7 +939,7 @@ ShapedRecipy* Recipes::addShapedRecipy(ItemInstance* result, ...) {
     Item* pItem;
     wchar_t wchFrom;
     int iCount;
-    ItemInstance** ids = NULL;
+    ItemInstance** ids = nullptr;
 
     myMap* mappings = new std::unordered_map<wchar_t, ItemInstance*>();
 
@@ -1047,7 +1047,7 @@ ShapedRecipy* Recipes::addShapedRecipy(ItemInstance* result, ...) {
             if (it != mappings->end()) {
                 ids[j] = it->second;
             } else {
-                ids[j] = NULL;
+                ids[j] = nullptr;
             }
         }
     }
@@ -1130,13 +1130,13 @@ void Recipes::addShapelessRecipy(ItemInstance* result, ...) {
 
 std::shared_ptr<ItemInstance> Recipes::getItemFor(
     std::shared_ptr<CraftingContainer> craftSlots, Level* level,
-    Recipy* recipesClass /*= NULL*/) {
+    Recipy* recipesClass /*= nullptr*/) {
     int count = 0;
     std::shared_ptr<ItemInstance> first = nullptr;
     std::shared_ptr<ItemInstance> second = nullptr;
     for (int i = 0; i < craftSlots->getContainerSize(); i++) {
         std::shared_ptr<ItemInstance> item = craftSlots->getItem(i);
-        if (item != NULL) {
+        if (item != nullptr) {
             if (count == 0) first = item;
             if (count == 1) second = item;
             count++;
@@ -1156,7 +1156,7 @@ std::shared_ptr<ItemInstance> Recipes::getItemFor(
             new ItemInstance(first->id, 1, resultDamage));
     }
 
-    if (recipesClass != NULL) {
+    if (recipesClass != nullptr) {
         if (recipesClass->matches(craftSlots, level))
             return recipesClass->assemble(craftSlots);
     } else {

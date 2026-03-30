@@ -7,7 +7,7 @@
 const std::wstring CompassItem::TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT] = {
     L"compassP0", L"compassP1", L"compassP2", L"compassP3"};
 
-CompassItem::CompassItem(int id) : Item(id) { icons = NULL; }
+CompassItem::CompassItem(int id) : Item(id) { icons = nullptr; }
 
 // 4J Added so that we can override the icon id used to calculate the texture
 // UV's for each player
@@ -16,7 +16,7 @@ Icon* CompassItem::getIcon(int auxValue) {
     Icon* icon = Item::getIcon(auxValue);
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    if (pMinecraft->player != NULL && auxValue == 0) {
+    if (pMinecraft->player != nullptr && auxValue == 0) {
         icon = icons[pMinecraft->player->GetXboxPad()];
     }
     return icon;

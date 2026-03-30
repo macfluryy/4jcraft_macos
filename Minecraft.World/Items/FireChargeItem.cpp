@@ -9,7 +9,7 @@
 #include "../Blocks/Tile.h"
 
 FireChargeItem::FireChargeItem(int id) : Item(id) {
-    m_dragonFireballIcon = NULL;
+    m_dragonFireballIcon = nullptr;
 }
 
 bool FireChargeItem::useOn(std::shared_ptr<ItemInstance> instance,

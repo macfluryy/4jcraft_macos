@@ -202,7 +202,7 @@ void IUIScene_BeaconMenu::handleOtherClicked(int iPad, ESceneSection eSection,
                                              int buttonNum, bool quickKey) {
     switch (eSection) {
         case eSectionBeaconConfirm: {
-            if ((m_beacon->getItem(0) == NULL) ||
+            if ((m_beacon->getItem(0) == nullptr) ||
                 (m_beacon->getPrimaryPower() <= 0))
                 return;
             ByteArrayOutputStream baos;
@@ -271,7 +271,7 @@ void IUIScene_BeaconMenu::handleTick() {
             int totalWidth = count * 22 + (count - 1) * 2;
 
             for (int c = 0; c < count; c++) {
-                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == NULL) continue;
+                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == nullptr) continue;
 
                 int effectId = BeaconTileEntity::BEACON_EFFECTS[tier][c]->id;
                 int icon = BeaconTileEntity::BEACON_EFFECTS[tier][c]->getIcon();
@@ -298,7 +298,7 @@ void IUIScene_BeaconMenu::handleTick() {
             int totalWidth = count * 22 + (count - 1) * 2;
 
             for (int c = 0; c < count - 1; c++) {
-                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == NULL) continue;
+                if (BeaconTileEntity::BEACON_EFFECTS[tier][c] == nullptr) continue;
 
                 int effectId = BeaconTileEntity::BEACON_EFFECTS[tier][c]->id;
                 int icon = BeaconTileEntity::BEACON_EFFECTS[tier][c]->getIcon();
@@ -335,7 +335,7 @@ void IUIScene_BeaconMenu::handleTick() {
         }
     }
 
-    SetConfirmButtonEnabled((m_beacon->getItem(0) != NULL) &&
+    SetConfirmButtonEnabled((m_beacon->getItem(0) != nullptr) &&
                             (m_beacon->getPrimaryPower() > 0));
 }
 
@@ -345,7 +345,7 @@ int IUIScene_BeaconMenu::GetId(int tier, int effectId) {
 
 std::vector<HtmlString>* IUIScene_BeaconMenu::GetSectionHoverText(
     ESceneSection eSection) {
-    std::vector<HtmlString>* desc = NULL;
+    std::vector<HtmlString>* desc = nullptr;
     switch (eSection) {
         case eSectionBeaconSecondaryTwo:
             if (GetPowerButtonId(eSectionBeaconSecondaryTwo) == 0) {

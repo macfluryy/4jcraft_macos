@@ -123,8 +123,8 @@ public:
 
     std::shared_ptr<MultiplayerLocalPlayer> createExtraLocalPlayer(
         int idx, const std::wstring& name, int pad, int iDimension,
-        ClientConnection* clientConnection = NULL,
-        MultiPlayerLevel* levelpassedin = NULL);
+        ClientConnection* clientConnection = nullptr,
+        MultiPlayerLevel* levelpassedin = nullptr);
     void createPrimaryLocalPlayer(int iPad);
     bool setLocalPlayerIdx(int idx);
     int getLocalPlayerIdx();

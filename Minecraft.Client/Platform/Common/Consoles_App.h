@@ -950,7 +950,7 @@ public:
         m_bRead_BannedListA[iPad] = bVal;
     }
     void ClearBanList(int iPad) {
-        BannedListA[iPad].pBannedList = NULL;
+        BannedListA[iPad].pBannedList = nullptr;
         BannedListA[iPad].byteCount = 0;
     }
 
@@ -964,7 +964,7 @@ public:
     virtual void GetFileFromTPD(eTPDFileType eType, std::uint8_t* pbData,
                                 unsigned int byteCount, std::uint8_t** ppbData,
                                 unsigned int* pByteCount) {
-        *ppbData = NULL;
+        *ppbData = nullptr;
         *pByteCount = 0;
     }
 

@@ -45,7 +45,7 @@ MobEffect* MobEffect::reserved_30;
 MobEffect* MobEffect::reserved_31;
 
 void MobEffect::staticCtor() {
-    voidEffect = NULL;
+    voidEffect = nullptr;
     movementSpeed =
         (new MobEffect(1, false, eMinecraftColour_Effect_MovementSpeed))
             ->setDescriptionId(IDS_POTION_MOVESPEED)
@@ -191,14 +191,14 @@ void MobEffect::staticCtor() {
                                             eMinecraftColour_Effect_Saturation))
                      ->setDescriptionId(IDS_POTION_SATURATION)
                      ->setPostfixDescriptionId(IDS_POTION_SATURATION_POSTFIX);
-    reserved_24 = NULL;
-    reserved_25 = NULL;
-    reserved_26 = NULL;
-    reserved_27 = NULL;
-    reserved_28 = NULL;
-    reserved_29 = NULL;
-    reserved_30 = NULL;
-    reserved_31 = NULL;
+    reserved_24 = nullptr;
+    reserved_25 = nullptr;
+    reserved_26 = nullptr;
+    reserved_27 = nullptr;
+    reserved_28 = nullptr;
+    reserved_29 = nullptr;
+    reserved_30 = nullptr;
+    reserved_31 = nullptr;
 }
 
 MobEffect::MobEffect(int id, bool isHarmful, eMinecraftColour color)
@@ -281,7 +281,7 @@ void MobEffect::applyInstantenousEffect(std::shared_ptr<LivingEntity> source,
     } else if ((id == harm->id && !mob->isInvertedHealAndHarm()) ||
                (id == heal->id && mob->isInvertedHealAndHarm())) {
         int amount = (int)(scale * (double)(6 << amplification) + .5);
-        if (source == NULL) {
+        if (source == nullptr) {
             mob->hurt(DamageSource::magic, amount);
         } else {
             DamageSource* damageSource =
@@ -416,7 +416,7 @@ void MobEffect::removeAttributeModifiers(std::shared_ptr<LivingEntity> entity,
          it != attributeModifiers.end(); ++it) {
         AttributeInstance* attribute = attributes->getInstance(it->first);
 
-        if (attribute != NULL) {
+        if (attribute != nullptr) {
             attribute->removeModifier(it->second);
         }
     }
@@ -429,7 +429,7 @@ void MobEffect::addAttributeModifiers(std::shared_ptr<LivingEntity> entity,
          it != attributeModifiers.end(); ++it) {
         AttributeInstance* attribute = attributes->getInstance(it->first);
 
-        if (attribute != NULL) {
+        if (attribute != nullptr) {
             AttributeModifier* original = it->second;
             attribute->removeModifier(original);
             attribute->addModifier(new AttributeModifier(

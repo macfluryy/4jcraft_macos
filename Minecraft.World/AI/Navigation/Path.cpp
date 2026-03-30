@@ -35,7 +35,7 @@ Node* Path::last() {
     if (length > 0) {
         return nodes[length - 1];
     }
-    return NULL;
+    return nullptr;
 }
 
 Node* Path::get(int i) { return nodes[i]; }
@@ -62,7 +62,7 @@ Vec3 Path::currentPos() {
 }
 
 bool Path::sameAs(Path* path) {
-    if (path == NULL) return false;
+    if (path == nullptr) return false;
     if (path->nodes.length != nodes.length) return false;
     for (int i = 0; i < nodes.length; ++i)
         if (nodes[i]->x != path->nodes[i]->x ||
@@ -74,13 +74,13 @@ bool Path::sameAs(Path* path) {
 
 bool Path::endsIn(Vec3* pos) {
     Node* lastNode = last();
-    if (lastNode == NULL) return false;
+    if (lastNode == nullptr) return false;
     return lastNode->x == (int)pos->x && lastNode->y == (int)pos->y &&
            lastNode->z == (int)pos->z;
 }
 
 bool Path::endsInXZ(Vec3* pos) {
     Node* lastNode = last();
-    if (lastNode == NULL) return false;
+    if (lastNode == nullptr) return false;
     return lastNode->x == (int)pos->x && lastNode->z == (int)pos->z;
 }

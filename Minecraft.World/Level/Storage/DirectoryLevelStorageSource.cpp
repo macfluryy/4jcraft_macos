@@ -41,7 +41,7 @@ LevelData* DirectoryLevelStorageSource::getDataTagFor(
         return ret;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void DirectoryLevelStorageSource::renameLevel(

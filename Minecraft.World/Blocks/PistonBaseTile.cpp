@@ -47,9 +47,9 @@ PistonBaseTile::PistonBaseTile(int id, bool isSticky)
     setSoundType(SOUND_STONE);
     setDestroyTime(0.5f);
 
-    iconInside = NULL;
-    iconBack = NULL;
-    iconPlatform = NULL;
+    iconInside = nullptr;
+    iconBack = nullptr;
+    iconPlatform = nullptr;
 }
 
 Icon* PistonBaseTile::getPlatformTexture() { return iconPlatform; }
@@ -92,7 +92,7 @@ Icon* PistonBaseTile::getTexture(const std::wstring& name) {
         return Tile::pistonStickyBase->iconPlatform;
     if (name.compare(INSIDE_TEX) == 0) return Tile::pistonBase->iconInside;
 
-    return NULL;
+    return nullptr;
 }
 
 //@Override
@@ -135,7 +135,7 @@ void PistonBaseTile::neighborChanged(Level* level, int x, int y, int z,
 }
 
 void PistonBaseTile::onPlace(Level* level, int x, int y, int z) {
-    if (!level->isClientSide && level->getTileEntity(x, y, z) == NULL &&
+    if (!level->isClientSide && level->getTileEntity(x, y, z) == nullptr &&
         !ignoreUpdate()) {
         checkIfExtend(level, x, y, z);
     }
@@ -252,9 +252,9 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
         std::shared_ptr<TileEntity> prevTileEntity = level->getTileEntity(
             x + Facing::STEP_X[facing], y + Facing::STEP_Y[facing],
             z + Facing::STEP_Z[facing]);
-        if (prevTileEntity != NULL &&
+        if (prevTileEntity != nullptr &&
             std::dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity) !=
-                NULL) {
+                nullptr) {
             std::dynamic_pointer_cast<PistonPieceEntity>(prevTileEntity)
                 ->finalTick();
         }
@@ -287,9 +287,9 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                 // piston which is changing too fast
                 std::shared_ptr<TileEntity> tileEntity =
                     level->getTileEntity(twoX, twoY, twoZ);
-                if (tileEntity != NULL &&
+                if (tileEntity != nullptr &&
                     std::dynamic_pointer_cast<PistonPieceEntity>(tileEntity) !=
-                        NULL) {
+                        nullptr) {
                     std::shared_ptr<PistonPieceEntity> ppe =
                         std::dynamic_pointer_cast<PistonPieceEntity>(
                             tileEntity);

@@ -38,7 +38,7 @@ SetPlayerTeamPacket::SetPlayerTeamPacket(PlayerTeam* team,
         __debugbreak();
 #endif
     }
-    if (playerNames == NULL || playerNames->empty()) {
+    if (playerNames == nullptr || playerNames->empty()) {
         app.DebugPrintf("Players cannot be null/empty");
 #ifndef _CONTENT_PACKAGE
         __debugbreak();

@@ -9,7 +9,7 @@ void Node::_init() {
 
     closed = false;
 
-    cameFrom = NULL;
+    cameFrom = nullptr;
 }
 
 Node::Node(const int x, const int y, const int z)
@@ -46,7 +46,7 @@ float Node::distanceToSqr(Node* to) {
 
 bool Node::equals(Node* o) {
     // 4J Jev, never used anything other than a node.
-    // if (dynamic_cast<Node *>((Node *) o) != NULL)
+    // if (dynamic_cast<Node *>((Node *) o) != nullptr)
     //{
     return hash == o->hash && x == o->x && y == o->y && z == o->z;
     //}

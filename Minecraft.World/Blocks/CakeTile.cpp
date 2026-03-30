@@ -11,9 +11,9 @@
 CakeTile::CakeTile(int id) : Tile(id, Material::cake, false) {
     setTicking(true);
 
-    iconTop = NULL;
-    iconBottom = NULL;
-    iconInner = NULL;
+    iconTop = nullptr;
+    iconBottom = nullptr;
+    iconInner = nullptr;
 }
 
 void CakeTile::updateShape(

@@ -14,7 +14,7 @@ AddMobPacket::AddMobPacket() {
     yRot = static_cast<uint8_t>(0);
     xRot = static_cast<uint8_t>(0);
     entityData = nullptr;
-    unpack = NULL;
+    unpack = nullptr;
 }
 
 AddMobPacket::~AddMobPacket() { delete unpack; }
@@ -56,7 +56,7 @@ AddMobPacket::AddMobPacket(std::shared_ptr<LivingEntity> mob, int yRotp,
     //	printf("%d: New add mob rot %d\n",id,yRot);
 
     entityData = mob->getEntityData();
-    unpack = NULL;
+    unpack = nullptr;
 }
 
 void AddMobPacket::read(DataInputStream* dis)  // throws IOException
@@ -111,9 +111,9 @@ void AddMobPacket::handle(PacketListener* listener) {
 
 int AddMobPacket::getEstimatedSize() {
     int size = 11;
-    if (entityData != NULL) {
+    if (entityData != nullptr) {
         size += entityData->getSizeInBytes();
-    } else if (unpack != NULL) {
+    } else if (unpack != nullptr) {
         // 4J Stu - This is an incoming value which we aren't currently
         // analysing
         // size += unpack->get
@@ -123,7 +123,7 @@ int AddMobPacket::getEstimatedSize() {
 
 std::vector<std::shared_ptr<SynchedEntityData::DataItem> >*
 AddMobPacket::getUnpackedData() {
-    if (unpack == NULL) {
+    if (unpack == nullptr) {
         unpack = entityData->getAll();
     }
     return unpack;

@@ -3,15 +3,15 @@
 #include "Scoreboard.h"
 
 Objective* Scoreboard::getObjective(const std::wstring& name) {
-    return NULL;
+    return nullptr;
     // return objectivesByName.find(name)->second;
 }
 
 Objective* Scoreboard::addObjective(const std::wstring& name,
                                     ObjectiveCriteria* criteria) {
-    return NULL;
+    return nullptr;
     //	Objective *objective = getObjective(name);
-    //	if (objective != NULL)
+    //	if (objective != nullptr)
     //	{
     // #indef _CONTENT_PACKAGE
     //		__debugbreak();
@@ -25,7 +25,7 @@ Objective* Scoreboard::addObjective(const std::wstring& name,
     //	vector<Objective *> *criteriaList =
     // objectivesByCriteria.find(criteria)->second;
     //
-    //	if (criteriaList == NULL)
+    //	if (criteriaList == nullptr)
     //	{
     //		criteriaList = new vector<Objective *>();
     //		objectivesByCriteria[criteria] = criteriaList;
@@ -40,21 +40,21 @@ Objective* Scoreboard::addObjective(const std::wstring& name,
 
 std::vector<Objective*>* Scoreboard::findObjectiveFor(
     ObjectiveCriteria* criteria) {
-    return NULL;
+    return nullptr;
     // vector<Objective *> *objectives =
     // objectivesByCriteria.find(criteria)->second;
 
-    // return objectives == NULL ? new vector<Objective *>() : new
+    // return objectives == nullptr ? new vector<Objective *>() : new
     // vector<Objective *>(objectives);
 }
 
 Score* Scoreboard::getPlayerScore(const std::wstring& name,
                                   Objective* objective) {
-    return NULL;
+    return nullptr;
     // unordered_map<Objective *, Score *> *scores =
     // playerScores.find(name)->it;
 
-    // if (scores == NULL)
+    // if (scores == nullptr)
     //{
     //	scores = new unordered_map<Objective *, Score *>();
     //	playerScores.put(name, scores);
@@ -62,7 +62,7 @@ Score* Scoreboard::getPlayerScore(const std::wstring& name,
 
     // Score *score = scores->get(objective);
 
-    // if (score == NULL)
+    // if (score == nullptr)
     //{
     //	score = new Score(this, objective, name);
     //	scores->put(objective, score);
@@ -72,7 +72,7 @@ Score* Scoreboard::getPlayerScore(const std::wstring& name,
 }
 
 std::vector<Score*>* Scoreboard::getPlayerScores(Objective* objective) {
-    return NULL;
+    return nullptr;
     // vector<Score *> *result = new vector<Score *>();
 
     // for (Map<Objective, Score> scores : playerScores.values())
@@ -87,12 +87,12 @@ std::vector<Score*>* Scoreboard::getPlayerScores(Objective* objective) {
 }
 
 std::vector<Objective*>* Scoreboard::getObjectives() {
-    return NULL;
+    return nullptr;
     // return objectivesByName.values();
 }
 
 std::vector<std::wstring>* Scoreboard::getTrackedPlayers() {
-    return NULL;
+    return nullptr;
     // return playerScores.keySet();
 }
 
@@ -100,14 +100,14 @@ void Scoreboard::resetPlayerScore(const std::wstring& player) {
     // unordered_map<Objective *, Score *> *removed =
     // playerScores.remove(player);
 
-    // if (removed != NULL)
+    // if (removed != nullptr)
     //{
     //	onPlayerRemoved(player);
     // }
 }
 
 std::vector<Score*>* Scoreboard::getScores() {
-    return NULL;
+    return nullptr;
     // Collection<Map<Objective, Score>> values = playerScores.values();
     // List<Score> result = new ArrayList<Score>();
 
@@ -120,7 +120,7 @@ std::vector<Score*>* Scoreboard::getScores() {
 }
 
 std::vector<Score*>* Scoreboard::getScores(Objective* objective) {
-    return NULL;
+    return nullptr;
     // Collection<Map<Objective, Score>> values = playerScores.values();
     // List<Score> result = new ArrayList<Score>();
 
@@ -134,7 +134,7 @@ std::vector<Score*>* Scoreboard::getScores(Objective* objective) {
 
 std::unordered_map<Objective*, Score*>* Scoreboard::getPlayerScores(
     const std::wstring& player) {
-    return NULL;
+    return nullptr;
     // Map<Objective, Score> result = playerScores.get(player);
     // if (result == null) result = new HashMap<Objective, Score>();
     // return result;
@@ -163,17 +163,17 @@ void Scoreboard::setDisplayObjective(int slot, Objective* objective) {
 }
 
 Objective* Scoreboard::getDisplayObjective(int slot) {
-    return NULL;
+    return nullptr;
     // return displayObjectives[slot];
 }
 
 PlayerTeam* Scoreboard::getPlayerTeam(const std::wstring& name) {
-    return NULL;
+    return nullptr;
     // return teamsByName.get(name);
 }
 
 PlayerTeam* Scoreboard::addPlayerTeam(const std::wstring& name) {
-    return NULL;
+    return nullptr;
     // PlayerTeam team = getPlayerTeam(name);
     // if (team != null) throw new IllegalArgumentException("An objective with
     // the name '" + name + "' already exists!");
@@ -230,12 +230,12 @@ void Scoreboard::removePlayerFromTeam(const std::wstring& player,
 }
 
 std::vector<std::wstring>* Scoreboard::getTeamNames() {
-    return NULL;
+    return nullptr;
     // return teamsByName.keySet();
 }
 
 std::vector<PlayerTeam*>* Scoreboard::getPlayerTeams() {
-    return NULL;
+    return nullptr;
     // return teamsByName.values();
 }
 
@@ -245,7 +245,7 @@ std::shared_ptr<Player> Scoreboard::getPlayer(const std::wstring& name) {
 }
 
 PlayerTeam* Scoreboard::getPlayersTeam(const std::wstring& name) {
-    return NULL;
+    return nullptr;
     // return teamsByPlayer.get(name);
 }
 

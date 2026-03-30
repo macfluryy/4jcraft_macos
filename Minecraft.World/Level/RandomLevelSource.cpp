@@ -47,8 +47,8 @@ RandomLevelSource::RandomLevelSource(Level* level, int64_t seed,
         floatingIslandScale = new PerlinNoise(random, 10);
         floatingIslandNoise = new PerlinNoise(random, 16);
     } else {
-        floatingIslandScale = NULL;
-        floatingIslandNoise = NULL;
+        floatingIslandScale = nullptr;
+        floatingIslandNoise = nullptr;
     }
 
     forestNoise = new PerlinNoise(random, 8);
@@ -79,7 +79,7 @@ RandomLevelSource::~RandomLevelSource() {
 
     delete forestNoise;
 
-    if (pows.data != NULL) delete[] pows.data;
+    if (pows.data != nullptr) delete[] pows.data;
 }
 
 int g_numPrepareHeightCalls = 0;
@@ -395,7 +395,7 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
             uint8_t material = b->material;
 
             LevelGenerationOptions* lgo = app.getLevelGenerationOptions();
-            if (lgo != NULL) {
+            if (lgo != nullptr) {
                 lgo->getBiomeOverride(b->id, material, top);
             }
 
@@ -423,7 +423,7 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                                        y <= waterHeight + 1) {
                                 top = b->topMaterial;
                                 material = b->material;
-                                if (lgo != NULL) {
+                                if (lgo != nullptr) {
                                     lgo->getBiomeOverride(b->id, material, top);
                                 }
                             }
@@ -530,10 +530,10 @@ void RandomLevelSource::lightChunk(LevelChunk* lc) { lc->recalcHeightmap(); }
 doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
                                           int z, int xSize, int ySize,
                                           int zSize, BiomeArray& biomes) {
-    if (buffer.data == NULL) {
+    if (buffer.data == nullptr) {
         buffer = doubleArray(xSize * ySize * zSize);
     }
-    if (pows.data == NULL) {
+    if (pows.data == nullptr) {
         pows = floatArray(5 * 5);
         for (int xb = -2; xb <= 2; xb++) {
             for (int zb = -2; zb <= 2; zb++) {
@@ -849,8 +849,8 @@ std::wstring RandomLevelSource::gatherStats() { return L"RandomLevelSource"; }
 std::vector<Biome::MobSpawnerData*>* RandomLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
     Biome* biome = level->getBiome(x, z);
-    if (biome == NULL) {
-        return NULL;
+    if (biome == nullptr) {
+        return nullptr;
     }
     if (mobCategory == MobCategory::monster &&
         scatteredFeature->isSwamphut(x, y, z)) {
@@ -861,10 +861,10 @@ std::vector<Biome::MobSpawnerData*>* RandomLevelSource::getMobsAt(
 
 TilePos* RandomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
-    if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != NULL) {
+    if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != nullptr) {
         return strongholdFeature->getNearestGeneratedFeature(level, x, y, z);
     }
-    return NULL;
+    return nullptr;
 }
 
 void RandomLevelSource::recreateLogicStructuresForChunk(int chunkX,

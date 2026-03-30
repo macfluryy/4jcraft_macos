@@ -208,7 +208,7 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
 doubleArray TheEndLevelRandomLevelSource::getHeights(doubleArray buffer, int x,
                                                      int y, int z, int xSize,
                                                      int ySize, int zSize) {
-    if (buffer.data == NULL) {
+    if (buffer.data == nullptr) {
         buffer = doubleArray(xSize * ySize * zSize);
     }
 
@@ -422,15 +422,15 @@ std::wstring TheEndLevelRandomLevelSource::gatherStats() {
 std::vector<Biome::MobSpawnerData*>* TheEndLevelRandomLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
     Biome* biome = level->getBiome(x, z);
-    if (biome == NULL) {
-        return NULL;
+    if (biome == nullptr) {
+        return nullptr;
     }
     return biome->getMobs(mobCategory);
 }
 
 TilePos* TheEndLevelRandomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
-    return NULL;
+    return nullptr;
 }
 
 void TheEndLevelRandomLevelSource::recreateLogicStructuresForChunk(int chunkX,

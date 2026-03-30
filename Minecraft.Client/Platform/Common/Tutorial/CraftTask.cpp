@@ -4,7 +4,7 @@
 
 CraftTask::CraftTask(int itemId, int auxValue, int quantity, Tutorial* tutorial,
                      int descriptionId, bool enablePreCompletion /*= true*/,
-                     std::vector<TutorialConstraint*>* inConstraints /*= NULL*/,
+                     std::vector<TutorialConstraint*>* inConstraints /*= nullptr*/,
                      bool bShowMinimumTime /*=false*/,
                      bool bAllowFade /*=true*/, bool m_bTaskReminders /*=true*/)
     : TutorialTask(tutorial, descriptionId, enablePreCompletion, inConstraints,
@@ -21,7 +21,7 @@ CraftTask::CraftTask(int itemId, int auxValue, int quantity, Tutorial* tutorial,
 CraftTask::CraftTask(int* items, int* auxValues, int numItems, int quantity,
                      Tutorial* tutorial, int descriptionId,
                      bool enablePreCompletion /*= true*/,
-                     std::vector<TutorialConstraint*>* inConstraints /*= NULL*/,
+                     std::vector<TutorialConstraint*>* inConstraints /*= nullptr*/,
                      bool bShowMinimumTime /*=false*/,
                      bool bAllowFade /*=true*/, bool m_bTaskReminders /*=true*/)
     : TutorialTask(tutorial, descriptionId, enablePreCompletion, inConstraints,

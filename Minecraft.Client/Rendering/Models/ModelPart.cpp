@@ -50,7 +50,7 @@ void ModelPart::construct(Model* model, int xTexOffs, int yTexOffs) {
 }
 
 void ModelPart::addChild(ModelPart* child) {
-    // if (children == NULL) children = new ModelPartArray;
+    // if (children == nullptr) children = new ModelPartArray;
     children.push_back(child);
 }
 
@@ -73,7 +73,7 @@ ModelPart* ModelPart::retrieveChild(SKIN_BOX* pBox) {
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 ModelPart* ModelPart::mirror() {
@@ -158,7 +158,7 @@ void ModelPart::render(float scale, bool usecompiled,
                 }
             }
         }
-        // if (children != NULL)
+        // if (children != nullptr)
         {
             for (unsigned int i = 0; i < children.size(); i++) {
                 children.at(i)->render(scale, usecompiled);
@@ -178,7 +178,7 @@ void ModelPart::render(float scale, bool usecompiled,
                 }
             }
         }
-        // if (children != NULL)
+        // if (children != nullptr)
         {
             for (unsigned int i = 0; i < children.size(); i++) {
                 children.at(i)->render(scale, usecompiled);
@@ -196,7 +196,7 @@ void ModelPart::render(float scale, bool usecompiled,
                 }
             }
         }
-        // if (children != NULL)
+        // if (children != nullptr)
         {
             for (unsigned int i = 0; i < children.size(); i++) {
                 children.at(i)->render(scale, usecompiled);

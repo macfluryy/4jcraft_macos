@@ -7,7 +7,7 @@
 
 SetEntityDataPacket::SetEntityDataPacket() {
     id = -1;
-    packedItems = NULL;
+    packedItems = nullptr;
 }
 
 SetEntityDataPacket::~SetEntityDataPacket() { delete packedItems; }

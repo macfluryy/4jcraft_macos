@@ -82,7 +82,7 @@ void ConsoleUIController::render()
 	example, no resolve targets are required. */
 	gdraw_D3D11_SetTileOrigin( m_pRenderTargetView,
 		m_pDepthStencilView,
-		NULL,
+		nullptr,
 		0,
 		0 );
 
@@ -147,7 +147,7 @@ void ConsoleUIController::setTileOrigin(S32 xPos, S32 yPos)
 {
 	gdraw_D3D11_SetTileOrigin( m_pRenderTargetView,
 		m_pDepthStencilView,
-		NULL,
+		nullptr,
 		xPos,
 		yPos );
 }

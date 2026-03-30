@@ -317,7 +317,7 @@ void UIScene_LaunchMoreOptionsMenu::handleInput(int iPad, int key, bool repeat,
                 IggyDataValue result;
                 IggyResult out = IggyPlayerCallMethodRS(
                     getMovie(), &result, IggyPlayerRootPath(getMovie()),
-                    m_funcChangeTab, 0, NULL);
+                    m_funcChangeTab, 0, nullptr);
             }
             break;
     }

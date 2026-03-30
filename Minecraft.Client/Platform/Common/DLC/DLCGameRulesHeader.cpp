@@ -11,14 +11,14 @@
 
 DLCGameRulesHeader::DLCGameRulesHeader(const std::wstring& path)
     : DLCGameRules(DLCManager::e_DLCType_GameRulesHeader, path) {
-    m_pbData = NULL;
+    m_pbData = nullptr;
     m_dataBytes = 0;
 
     m_hasData = false;
 
     m_grfPath = path.substr(0, path.length() - 4) + L".grf";
 
-    lgo = NULL;
+    lgo = nullptr;
 }
 
 void DLCGameRulesHeader::addData(std::uint8_t* pbData,

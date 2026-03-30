@@ -310,7 +310,7 @@ void UIComponent_Tooltips::_Relayout() {
     IggyDataValue result;
     IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
                                             IggyPlayerRootPath(getMovie()),
-                                            m_funcUpdateLayout, 0, NULL);
+                                            m_funcUpdateLayout, 0, nullptr);
 
 }
 

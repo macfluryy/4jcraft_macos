@@ -29,7 +29,7 @@ public:
     virtual void ReadBannedList(int iPad, eTMSAction action = (eTMSAction)0,
                                 bool bCallback = false) {}
 
-    C4JStringTable* GetStringTable() { return NULL; }
+    C4JStringTable* GetStringTable() { return nullptr; }
 
     // original code
     virtual void TemporaryCreateGameStart();

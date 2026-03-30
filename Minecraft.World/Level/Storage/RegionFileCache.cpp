@@ -38,12 +38,12 @@ RegionFile* RegionFileCache::_getRegionFile(
     }
     MemSect(0);
 
-    RegionFile* ref = NULL;
+    RegionFile* ref = nullptr;
     AUTO_VAR(it, cache.find(file));
     if (it != cache.end()) ref = it->second;
 
     // 4J Jev, put back in.
-    if (ref != NULL) {
+    if (ref != nullptr) {
         return ref;
     }
 
@@ -70,7 +70,7 @@ void RegionFileCache::_clear()  // 4J - TODO was synchronized
         // 4J - removed try/catch
         //        try {
         RegionFile* regionFile = it->second;
-        if (regionFile != NULL) {
+        if (regionFile != nullptr) {
             regionFile->close();
         }
         delete regionFile;

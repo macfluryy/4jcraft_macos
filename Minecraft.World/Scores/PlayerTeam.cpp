@@ -56,7 +56,7 @@ std::wstring PlayerTeam::formatNameForTeam(PlayerTeam* team) {
 
 std::wstring PlayerTeam::formatNameForTeam(Team* team,
                                            const std::wstring& name) {
-    if (team == NULL) return name;
+    if (team == nullptr) return name;
     return team->getFormattedName(name);
 }
 

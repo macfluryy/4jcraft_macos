@@ -52,7 +52,7 @@ RegionFile::RegionFile(ConsoleSaveFile* saveFile, File* path) {
         m_bIsEmpty = false;
     }
 
-    // if ((GetFileSize(file,NULL) & 0xfff) != 0)
+    // if ((GetFileSize(file,nullptr) & 0xfff) != 0)
     if ((fileEntry->getFileSize() & 0xfff) != 0) {
         // std::uint8_t zero = 0;
         unsigned int numberOfBytesWritten = 0;
@@ -172,7 +172,7 @@ DataInputStream* RegionFile::getChunkDataInputStream(
 {
     if (outOfBounds(x, z)) {
         //        debugln("READ", x, z, "out of bounds");
-        return NULL;
+        return nullptr;
     }
 
     // 4J - removed try/catch
@@ -180,7 +180,7 @@ DataInputStream* RegionFile::getChunkDataInputStream(
     int offset = getOffset(x, z);
     if (offset == 0) {
         // debugln("READ", x, z, "miss");
-        return NULL;
+        return nullptr;
     }
 
     unsigned int sectorNumber = offset >> 8;
@@ -188,7 +188,7 @@ DataInputStream* RegionFile::getChunkDataInputStream(
 
     if (sectorNumber + numSectors > sectorFree->size()) {
         //        debugln("READ", x, z, "invalid sector");
-        return NULL;
+        return nullptr;
     }
 
     m_saveFile->LockSaveAccess();
@@ -228,7 +228,7 @@ DataInputStream* RegionFile::getChunkDataInputStream(
         //        " + numSectors);
 
         m_saveFile->ReleaseSaveAccess();
-        return NULL;
+        return nullptr;
     }
 
     MemSect(50);
@@ -392,7 +392,7 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
 #endif
                 unsigned int numberOfBytesWritten = 0;
                 for (int i = 0; i < sectorsNeeded; ++i) {
-                    // WriteFile(file,emptySector.data,SECTOR_BYTES,&numberOfBytesWritten,NULL);
+                    // WriteFile(file,emptySector.data,SECTOR_BYTES,&numberOfBytesWritten,nullptr);
                     m_saveFile->writeFile(fileEntry, emptySector.data,
                                           SECTOR_BYTES, &numberOfBytesWritten);
                     sectorFree->push_back(false);

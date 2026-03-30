@@ -29,6 +29,6 @@ public:
     virtual bool useItemOn(std::shared_ptr<Player> player, Level* level,
                            std::shared_ptr<ItemInstance> item, int x, int y,
                            int z, int face, bool bTestUseOnOnly = false,
-                           bool* pbUsedItem = NULL);
+                           bool* pbUsedItem = nullptr);
     virtual bool hasExperience();
 };

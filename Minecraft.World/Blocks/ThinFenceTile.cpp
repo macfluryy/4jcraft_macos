@@ -7,7 +7,7 @@ ThinFenceTile::ThinFenceTile(int id, const std::wstring& tex,
                              const std::wstring& edgeTex, Material* material,
                              bool dropsResources)
     : Tile(id, material, false) {
-    iconSide = NULL;
+    iconSide = nullptr;
     edgeTexture = edgeTex;
     this->dropsResources = dropsResources;
     this->texture = tex;

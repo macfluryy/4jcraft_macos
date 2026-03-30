@@ -49,7 +49,7 @@ void AchievementScreen::init() {
 
 void AchievementScreen::buttonClicked(Button* button) {
     if (button->id == 1) {
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         //        minecraft->grabMouse();	// 4J removed
     }
     Screen::buttonClicked(button);
@@ -57,7 +57,7 @@ void AchievementScreen::buttonClicked(Button* button) {
 
 void AchievementScreen::keyPressed(char eventCharacter, int eventKey) {
     if (eventKey == minecraft->options->keyBuild->key) {
-        minecraft->setScreen(NULL);
+        minecraft->setScreen(nullptr);
         //        minecraft->grabMouse();	// 4J removed
     } else {
         Screen::keyPressed(eventCharacter, eventKey);

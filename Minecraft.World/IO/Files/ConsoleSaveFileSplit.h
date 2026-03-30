@@ -42,7 +42,7 @@ private:
     public:
         RegionFileReference(int index, unsigned int regionIndex,
                             unsigned int length = 0,
-                            unsigned char* data = NULL);
+                            unsigned char* data = nullptr);
         ~RegionFileReference();
         void Compress();    // Compress from data to dataCompressed
         void Decompress();  // Decompress from dataCompressed -> data
@@ -99,12 +99,12 @@ private:
                unsigned int fileSize, ESavePlatform plat);
 
 public:
-    ConsoleSaveFileSplit(const std::wstring& fileName, void* pvSaveData = NULL,
+    ConsoleSaveFileSplit(const std::wstring& fileName, void* pvSaveData = nullptr,
                          unsigned int fileSize = 0, bool forceCleanSave = false,
                          ESavePlatform plat = SAVE_FILE_PLATFORM_LOCAL);
     ConsoleSaveFileSplit(ConsoleSaveFile* sourceSave,
                          bool alreadySmallRegions = true,
-                         ProgressListener* progress = NULL);
+                         ProgressListener* progress = nullptr);
     virtual ~ConsoleSaveFileSplit();
 
     // 4J Stu - Initial implementation is intended to have a similar interface
@@ -133,7 +133,7 @@ public:
     virtual void Flush(bool autosave, bool updateThumbnail = true);
 
 #if !defined(_CONTENT_PACKAGE)
-    virtual void DebugFlushToFile(void* compressedData = NULL,
+    virtual void DebugFlushToFile(void* compressedData = nullptr,
                                   unsigned int compressedDataSize = 0);
 #endif
     virtual unsigned int getSizeOnDisk();

@@ -30,7 +30,7 @@ UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void* _initData,
     m_merchant = initData->trader;
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[iPad] != NULL) {
+    if (pMinecraft->localgameModes[iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[iPad];
         m_previousTutorialState = gameMode->getTutorial()->getCurrentState();
@@ -82,10 +82,10 @@ void UIScene_TradingMenu::updateTooltips() {
 void UIScene_TradingMenu::handleDestroy() {
     app.DebugPrintf("UIScene_TradingMenu::handleDestroy\n");
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localgameModes[m_iPad] != NULL) {
+    if (pMinecraft->localgameModes[m_iPad] != nullptr) {
         TutorialMode* gameMode =
             (TutorialMode*)pMinecraft->localgameModes[m_iPad];
-        if (gameMode != NULL)
+        if (gameMode != nullptr)
             gameMode->getTutorial()->changeTutorialState(
                 m_previousTutorialState);
     }
@@ -95,7 +95,7 @@ void UIScene_TradingMenu::handleDestroy() {
     // packet loss. We need to make sure that we call closeContainer() anytime
     // this menu is closed, even if it is forced to close by some other reason
     // (like the player dying)
-    if (pMinecraft->localplayers[m_iPad] != NULL)
+    if (pMinecraft->localplayers[m_iPad] != nullptr)
         pMinecraft->localplayers[m_iPad]->closeContainer();
 
     ui.OverrideSFX(m_iPad, ACTION_MENU_A, false);
@@ -153,8 +153,8 @@ void UIScene_TradingMenu::handleInput(int iPad, int key, bool repeat,
 
 void UIScene_TradingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
-    if (pMinecraft->localplayers[m_iPad] == NULL ||
-        pMinecraft->localgameModes[m_iPad] == NULL)
+    if (pMinecraft->localplayers[m_iPad] == nullptr ||
+        pMinecraft->localgameModes[m_iPad] == nullptr)
         return;
 
     std::shared_ptr<ItemInstance> item = nullptr;
@@ -181,7 +181,7 @@ void UIScene_TradingMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
             };
         }
     }
-    if (item != NULL)
+    if (item != nullptr)
         customDrawSlotControl(region, m_iPad, item, 1.0f, item->isFoil(), true);
 }
 

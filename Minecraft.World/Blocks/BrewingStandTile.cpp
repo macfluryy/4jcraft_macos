@@ -10,7 +10,7 @@
 BrewingStandTile::BrewingStandTile(int id)
     : BaseEntityTile(id, Material::metal, false) {
     random = new Random();
-    iconBase = NULL;
+    iconBase = nullptr;
 }
 
 BrewingStandTile::~BrewingStandTile() { delete random; }
@@ -52,7 +52,7 @@ bool BrewingStandTile::use(
     std::shared_ptr<BrewingStandTileEntity> brewingStand =
         std::dynamic_pointer_cast<BrewingStandTileEntity>(
             level->getTileEntity(x, y, z));
-    if (brewingStand != NULL) player->openBrewingStand(brewingStand);
+    if (brewingStand != nullptr) player->openBrewingStand(brewingStand);
 
     return true;
 }
@@ -79,14 +79,14 @@ void BrewingStandTile::animateTick(Level* level, int xt, int yt, int zt,
 void BrewingStandTile::onRemove(Level* level, int x, int y, int z, int id,
                                 int data) {
     std::shared_ptr<TileEntity> tileEntity = level->getTileEntity(x, y, z);
-    if (tileEntity != NULL &&
+    if (tileEntity != nullptr &&
         (std::dynamic_pointer_cast<BrewingStandTileEntity>(tileEntity) !=
-         NULL)) {
+         nullptr)) {
         std::shared_ptr<BrewingStandTileEntity> container =
             std::dynamic_pointer_cast<BrewingStandTileEntity>(tileEntity);
         for (int i = 0; i < container->getContainerSize(); i++) {
             std::shared_ptr<ItemInstance> item = container->getItem(i);
-            if (item != NULL) {
+            if (item != nullptr) {
                 float xo = random->nextFloat() * 0.8f + 0.1f;
                 float yo = random->nextFloat() * 0.8f + 0.1f;
                 float zo = random->nextFloat() * 0.8f + 0.1f;

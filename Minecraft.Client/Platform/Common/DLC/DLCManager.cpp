@@ -87,12 +87,12 @@ std::wstring getMountedDlcReadPath(const std::string& path) {
 
 bool readOwnedDlcFile(const std::string& path, std::uint8_t** ppData,
                       unsigned int* pBytesRead) {
-    *ppData = NULL;
+    *ppData = nullptr;
     *pBytesRead = 0;
 
     const std::wstring readPath = getMountedDlcReadPath(path);
     std::FILE* file = PortableFileIO::OpenBinaryFileForRead(readPath);
-    if (file == NULL) {
+    if (file == nullptr) {
         return false;
     }
 
@@ -189,7 +189,7 @@ unsigned int DLCManager::getPackCount(EDLCType type /*= e_DLCType_All*/) {
 void DLCManager::addPack(DLCPack* pack) { m_packs.push_back(pack); }
 
 void DLCManager::removePack(DLCPack* pack) {
-    if (pack != NULL) {
+    if (pack != nullptr) {
         AUTO_VAR(it, find(m_packs.begin(), m_packs.end(), pack));
         if (it != m_packs.end()) m_packs.erase(it);
         delete pack;
@@ -214,9 +214,9 @@ void DLCManager::LanguageChanged(void) {
 }
 
 DLCPack* DLCManager::getPack(const std::wstring& name) {
-    DLCPack* pack = NULL;
+    DLCPack* pack = nullptr;
     // DWORD currentIndex = 0;
-    DLCPack* currentPack = NULL;
+    DLCPack* currentPack = nullptr;
     for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
         currentPack = *it;
         std::wstring wsName = currentPack->getName();
@@ -232,10 +232,10 @@ DLCPack* DLCManager::getPack(const std::wstring& name) {
 
 DLCPack* DLCManager::getPack(unsigned int index,
                              EDLCType type /*= e_DLCType_All*/) {
-    DLCPack* pack = NULL;
+    DLCPack* pack = nullptr;
     if (type != e_DLCType_All) {
         unsigned int currentIndex = 0;
-        DLCPack* currentPack = NULL;
+        DLCPack* currentPack = nullptr;
         for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
             currentPack = *it;
             if (currentPack->getDLCItemsCount(type) > 0) {
@@ -263,9 +263,9 @@ unsigned int DLCManager::getPackIndex(DLCPack* pack, bool& found,
                                       EDLCType type /*= e_DLCType_All*/) {
     unsigned int foundIndex = 0;
     found = false;
-    if (pack == NULL) {
+    if (pack == nullptr) {
         app.DebugPrintf(
-            "DLCManager: Attempting to find the index for a NULL pack\n");
+            "DLCManager: Attempting to find the index for a nullptr pack\n");
         //__debugbreak();
         return foundIndex;
     }
@@ -317,7 +317,7 @@ unsigned int DLCManager::getPackIndexContainingSkin(const std::wstring& path,
 }
 
 DLCPack* DLCManager::getPackContainingSkin(const std::wstring& path) {
-    DLCPack* foundPack = NULL;
+    DLCPack* foundPack = nullptr;
     for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
         DLCPack* pack = *it;
         if (pack->getDLCItemsCount(e_DLCType_Skin) > 0) {
@@ -331,11 +331,11 @@ DLCPack* DLCManager::getPackContainingSkin(const std::wstring& path) {
 }
 
 DLCSkinFile* DLCManager::getSkinFile(const std::wstring& path) {
-    DLCSkinFile* foundSkinfile = NULL;
+    DLCSkinFile* foundSkinfile = nullptr;
     for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
         DLCPack* pack = *it;
         foundSkinfile = pack->getSkinFile(path);
-        if (foundSkinfile != NULL) {
+        if (foundSkinfile != nullptr) {
             break;
         }
     }
@@ -345,14 +345,14 @@ DLCSkinFile* DLCManager::getSkinFile(const std::wstring& path) {
 unsigned int DLCManager::checkForCorruptDLCAndAlert(
     bool showMessage /*= true*/) {
     unsigned int corruptDLCCount = m_dwUnnamedCorruptDLCCount;
-    DLCPack* pack = NULL;
-    DLCPack* firstCorruptPack = NULL;
+    DLCPack* pack = nullptr;
+    DLCPack* firstCorruptPack = nullptr;
 
     for (AUTO_VAR(it, m_packs.begin()); it != m_packs.end(); ++it) {
         pack = *it;
         if (pack->IsCorrupt()) {
             ++corruptDLCCount;
-            if (firstCorruptPack == NULL) firstCorruptPack = pack;
+            if (firstCorruptPack == nullptr) firstCorruptPack = pack;
         }
     }
 
@@ -360,7 +360,7 @@ unsigned int DLCManager::checkForCorruptDLCAndAlert(
     if (corruptDLCCount > 0 && showMessage) {
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
-        if (corruptDLCCount == 1 && firstCorruptPack != NULL) {
+        if (corruptDLCCount == 1 && firstCorruptPack != nullptr) {
             // pass in the pack format string
             WCHAR wchFormat[132];
             swprintf(wchFormat, 132, L"%ls\n\n%%ls",
@@ -368,7 +368,7 @@ unsigned int DLCManager::checkForCorruptDLCAndAlert(
 
             C4JStorage::EMessageResult result = ui.RequestErrorMessage(
                 IDS_CORRUPT_DLC_TITLE, IDS_CORRUPT_DLC, uiIDA, 1,
-                ProfileManager.GetPrimaryPad(), NULL, NULL, wchFormat);
+                ProfileManager.GetPrimaryPad(), nullptr, nullptr, wchFormat);
 
         } else {
             C4JStorage::EMessageResult result = ui.RequestErrorMessage(
@@ -401,7 +401,7 @@ bool DLCManager::readDLCDataFile(unsigned int& dwFilesProcessed,
         return false;
 
     unsigned int bytesRead = 0;
-    std::uint8_t* pbData = NULL;
+    std::uint8_t* pbData = nullptr;
     if (!readOwnedDlcFile(path, &pbData, &bytesRead)) {
         app.DebugPrintf("Failed to open DLC data file %s\n", path.c_str());
         pack->SetIsCorrupt(true);
@@ -462,7 +462,7 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
     uiCurrentByte += sizeof(int);
 
     if (uiVersion < CURRENT_DLC_VERSION_NUM) {
-        if (pbData != NULL) delete[] pbData;
+        if (pbData != nullptr) delete[] pbData;
         app.DebugPrintf("DLC version of %d is too old to be read\n", uiVersion);
         return false;
     }
@@ -508,8 +508,8 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
     for (unsigned int i = 0; i < uiFileCount; i++) {
         DLCManager::EDLCType type = (DLCManager::EDLCType)fileBuf.dwType;
 
-        DLCFile* dlcFile = NULL;
-        DLCPack* dlcTexturePack = NULL;
+        DLCFile* dlcFile = nullptr;
+        DLCPack* dlcTexturePack = nullptr;
 
         if (type == e_DLCType_TexturePack) {
             dlcTexturePack =
@@ -535,10 +535,10 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
                 if (type == e_DLCType_PackConfig) {
                     pack->addParameter(it->second, DLC_PARAM_WSTR(pbTemp, 0));
                 } else {
-                    if (dlcFile != NULL)
+                    if (dlcFile != nullptr)
                         dlcFile->addParameter(it->second,
                                               DLC_PARAM_WSTR(pbTemp, 0));
-                    else if (dlcTexturePack != NULL)
+                    else if (dlcTexturePack != nullptr)
                         dlcTexturePack->addParameter(it->second,
                                                      DLC_PARAM_WSTR(pbTemp, 0));
                 }
@@ -548,16 +548,16 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
         }
         // pbTemp+=ulParameterCount * sizeof(C4JStorage::DLC_FILE_PARAM);
 
-        if (dlcTexturePack != NULL) {
+        if (dlcTexturePack != nullptr) {
             unsigned int texturePackFilesProcessed = 0;
             bool validPack =
                 processDLCDataFile(texturePackFilesProcessed, pbTemp,
                                    fileBuf.uiFileSize, dlcTexturePack);
             pack->SetDataPointer(
-                NULL);  // If it's a child pack, it doesn't own the data
+                nullptr);  // If it's a child pack, it doesn't own the data
             if (!validPack || texturePackFilesProcessed == 0) {
                 delete dlcTexturePack;
-                dlcTexturePack = NULL;
+                dlcTexturePack = nullptr;
             } else {
                 pack->addChildPack(dlcTexturePack);
 
@@ -568,7 +568,7 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
                 }
             }
             ++dwFilesProcessed;
-        } else if (dlcFile != NULL) {
+        } else if (dlcFile != nullptr) {
             // Data
             dlcFile->addData(pbTemp, fileBuf.uiFileSize);
 
@@ -610,7 +610,7 @@ std::uint32_t DLCManager::retrievePackIDFromDLCDataFile(const std::string& path,
     std::uint32_t packId = 0;
 
     unsigned int bytesRead = 0;
-    std::uint8_t* pbData = NULL;
+    std::uint8_t* pbData = nullptr;
     if (!readOwnedDlcFile(path, &pbData, &bytesRead)) {
         return 0;
     }

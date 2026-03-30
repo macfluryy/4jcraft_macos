@@ -173,7 +173,7 @@ void UIScene_ConnectingProgress::handleInput(int iPad, int key, bool repeat,
                 // 4J-PB - Removed the option to cancel join - it didn't work
                 // anyway 		case ACTION_MENU_CANCEL:
                 // 			{
-                // 				if(m_cancelFunc != NULL)
+                // 				if(m_cancelFunc != nullptr)
                 // 				{
                 // 					m_cancelFunc(m_cancelFuncParam);
                 // 				}

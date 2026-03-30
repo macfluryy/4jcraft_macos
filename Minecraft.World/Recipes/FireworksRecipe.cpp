@@ -50,7 +50,7 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 
     for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
         std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-        if (item == NULL) continue;
+        if (item == nullptr) continue;
 
         if (item->id == Item::gunpowder_Id) {
             sulphurCount++;
@@ -103,7 +103,7 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
 
             for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
                 std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-                if (item == NULL || item->id != Item::fireworksCharge_Id)
+                if (item == nullptr || item->id != Item::fireworksCharge_Id)
                     continue;
 
                 if (item->hasTag() &&
@@ -136,7 +136,7 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
         std::vector<int> colors;
         for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
             std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-            if (item == NULL) continue;
+            if (item == nullptr) continue;
 
             if (item->id == Item::dye_powder_Id) {
                 colors.push_back(DyePowderItem::COLOR_RGB[item->getAuxValue()]);
@@ -176,7 +176,7 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
         std::vector<int> colors;
         for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
             std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-            if (item == NULL) continue;
+            if (item == nullptr) continue;
 
             if (item->id == Item::dye_powder_Id) {
                 colors.push_back(DyePowderItem::COLOR_RGB[item->getAuxValue()]);
@@ -189,10 +189,10 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
         for (int i = 0; i < colorArray.length; i++) {
             colorArray[i] = colors.at(i);
         }
-        if (resultItem != NULL && resultItem->hasTag()) {
+        if (resultItem != nullptr && resultItem->hasTag()) {
             CompoundTag* compound =
                 resultItem->getTag()->getCompound(FireworksItem::TAG_EXPLOSION);
-            if (compound == NULL) {
+            if (compound == nullptr) {
                 delete colorArray.data;
 
                 setResultItem(resultItem);
@@ -243,7 +243,7 @@ void FireworksRecipe::updatePossibleRecipes(
 
     for (int slot = 0; slot < craftSlots->getContainerSize(); slot++) {
         std::shared_ptr<ItemInstance> item = craftSlots->getItem(slot);
-        if (item == NULL) continue;
+        if (item == nullptr) continue;
 
         if (item->id == Item::gunpowder_Id) {
             sulphurCount++;

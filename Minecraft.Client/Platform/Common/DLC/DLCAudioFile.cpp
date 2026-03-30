@@ -64,7 +64,7 @@ inline std::wstring ReadAudioParamString(const std::uint8_t* data,
 
 DLCAudioFile::DLCAudioFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_Audio, path) {
-    m_pbData = NULL;
+    m_pbData = nullptr;
     m_dataBytes = 0;
 }
 
@@ -181,7 +181,7 @@ bool DLCAudioFile::processDLCDataFile(std::uint8_t* pbData,
     uiCurrentByte += sizeof(int);
 
     if (uiVersion < CURRENT_AUDIO_VERSION_NUM) {
-        if (pbData != NULL) delete[] pbData;
+        if (pbData != nullptr) delete[] pbData;
         app.DebugPrintf("DLC version of %d is too old to be read\n", uiVersion);
         return false;
     }
