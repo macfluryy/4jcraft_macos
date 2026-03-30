@@ -810,7 +810,7 @@ public:
     void GetImageTextData(std::uint8_t* imageData, unsigned int imageBytes,
                           unsigned char* seedText, unsigned int& uiHostOptions,
                           bool& bHostOptionsRead, std::uint32_t& uiTexturePack);
-    unsigned int CreateImageTextData(std::uint8_t* textMetadata, __int64 seed,
+    unsigned int CreateImageTextData(std::uint8_t* textMetadata, int64_t seed,
                                      bool hasSeed, unsigned int uiHostOptions,
                                      unsigned int uiTexturePackId);
 

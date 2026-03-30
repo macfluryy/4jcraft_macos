@@ -71,7 +71,7 @@ VOID XMLParser::FillBuffer()
     }
 
     m_dwCharsConsumed += NChars;
-    __int64 iProgress = m_dwCharsTotal ? (( (__int64)m_dwCharsConsumed * 1000 ) / (__int64)m_dwCharsTotal) : 0;
+    int64_t iProgress = m_dwCharsTotal ? (( (int64_t)m_dwCharsConsumed * 1000 ) / (int64_t)m_dwCharsTotal) : 0;
     m_pISAXCallback->SetParseProgress( (DWORD)iProgress );
 
     m_pReadBuf[ NChars ] = '\0';

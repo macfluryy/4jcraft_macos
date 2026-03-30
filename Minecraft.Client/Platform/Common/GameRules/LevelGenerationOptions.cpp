@@ -170,7 +170,7 @@ GameRuleDefinition* LevelGenerationOptions::addChild(
 void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
                                           const std::wstring& attributeValue) {
     if (attributeName.compare(L"seed") == 0) {
-        m_seed = _fromString<__int64>(attributeValue);
+        m_seed = _fromString<int64_t>(attributeValue);
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter m_seed=%I64d\n", m_seed);
     } else if (attributeName.compare(L"spawnX") == 0) {

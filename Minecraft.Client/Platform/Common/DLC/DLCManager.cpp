@@ -101,7 +101,7 @@ bool readOwnedDlcFile(const std::string& path, std::uint8_t** ppData,
         return false;
     }
 
-    const __int64 endPosition = PortableFileIO::Tell(file);
+    const int64_t endPosition = PortableFileIO::Tell(file);
     if (endPosition <= 0 ||
         endPosition > std::numeric_limits<unsigned int>::max()) {
         std::fclose(file);

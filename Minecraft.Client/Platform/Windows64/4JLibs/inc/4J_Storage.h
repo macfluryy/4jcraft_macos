@@ -291,7 +291,7 @@ public:
 	void								ClearDLCOffers();
 	XMARKETPLACE_CONTENTOFFER_INFO&		GetOffer(DWORD dw);
 	int									GetOfferCount();
-	DWORD								InstallOffer(int iOfferIDC, __uint64 *ullOfferIDA,int( *Func)(LPVOID, int, int),LPVOID lpParam, bool bTrial=false);
+	DWORD								InstallOffer(int iOfferIDC, uint64_t *ullOfferIDA,int( *Func)(LPVOID, int, int),LPVOID lpParam, bool bTrial=false);
 	DWORD								GetAvailableDLCCount( int iPad);
 
 	C4JStorage::EDLCStatus				GetInstalledDLC(int iPad,int( *Func)(LPVOID, int, int),LPVOID lpParam);

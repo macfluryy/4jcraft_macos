@@ -392,7 +392,7 @@ bool GameRuleManager::readRuleFile(
     // Read File.
 
     // version_number
-    __int64 version = dis.readShort();
+    int64_t version = dis.readShort();
     unsigned char compressionType = 0;
     if (version == 0) {
         for (int i = 0; i < 14; i++) dis.readByte();  // Read padding.

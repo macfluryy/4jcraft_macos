@@ -5549,8 +5549,8 @@ HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
 }
 #elif defined(__linux__)
 HRESULT CMinecraftApp::RegisterDLCData(WCHAR* pType, WCHAR* pBannerName,
-                                       int iGender, __uint64 ullOfferID_Full,
-                                       __uint64 ullOfferID_Trial,
+                                       int iGender, uint64_t ullOfferID_Full,
+                                       uint64_t ullOfferID_Trial,
                                        WCHAR* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
                                        WCHAR* pDataFile) {

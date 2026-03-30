@@ -62,10 +62,7 @@ typedef size_t SIZE_T;
 typedef WCHAR *LPWSTR, *PWSTR;
 typedef unsigned char boolean;  // java brainrot
 #define __debugbreak()
-#define __int32 int
 #define CONST const
-typedef int64_t __int64;
-typedef uint64_t __uint64;
 typedef unsigned long ULONG;
 // typedef unsigned char byte;
 typedef short SHORT;

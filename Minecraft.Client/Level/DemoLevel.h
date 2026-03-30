@@ -3,7 +3,7 @@
 
 class DemoLevel : public Level {
 private:
-    static const __int64 DEMO_LEVEL_SEED =
+    static const int64_t DEMO_LEVEL_SEED =
         0;  // 4J - TODO - was "Don't Look Back".hashCode();
     static const int DEMO_SPAWN_X = 796;
     static const int DEMO_SPAWN_Y = 72;

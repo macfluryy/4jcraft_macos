@@ -186,7 +186,7 @@ void ConsoleSchematicFile::save_tags(DataOutputStream* dos) {
     delete tag;
 }
 
-__int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
+int64_t ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
                                                  AABB* chunkBox,
                                                  AABB* destinationBox,
                                                  ESchematicRotation rot) {
@@ -328,7 +328,7 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
 // At the point that this is called, we have all the neighbouring chunks loaded
 // in (and generally post-processed, apart from this lighting pass), so we can
 // do the sort of lighting that might propagate out of the chunk.
-__int64 ConsoleSchematicFile::applyLighting(LevelChunk* chunk, AABB* chunkBox,
+int64_t ConsoleSchematicFile::applyLighting(LevelChunk* chunk, AABB* chunkBox,
                                             AABB* destinationBox,
                                             ESchematicRotation rot) {
     int xStart = std::max(destinationBox->x0, (double)chunk->x * 16);

@@ -25,9 +25,9 @@ class CommandDispatcher;
 
 typedef struct _LoadSaveDataThreadParam {
     void* data;
-    __int64 fileSize;
+    int64_t fileSize;
     const std::wstring saveName;
-    _LoadSaveDataThreadParam(void* data, __int64 filesize,
+    _LoadSaveDataThreadParam(void* data, int64_t filesize,
                              const std::wstring& saveName)
         : data(data), fileSize(filesize), saveName(saveName) {}
 } LoadSaveDataThreadParam;
@@ -135,11 +135,11 @@ public:
 
 private:
     // 4J Added - LoadSaveDataThreadParam
-    bool initServer(__int64 seed, NetworkGameInitData* initData,
+    bool initServer(int64_t seed, NetworkGameInitData* initData,
                     std::uint32_t initSettings, bool findSeed);
     void postProcessTerminate(ProgressRenderer* mcprogress);
     bool loadLevel(LevelStorageSource* storageSource, const std::wstring& name,
-                   __int64 levelSeed, LevelType* pLevelType,
+                   int64_t levelSeed, LevelType* pLevelType,
                    NetworkGameInitData* initData);
     void setProgress(const std::wstring& status, int progress);
     void endProgress();
@@ -184,7 +184,7 @@ public:
 
 public:
     void halt();
-    void run(__int64 seed, void* lpParameter);
+    void run(int64_t seed, void* lpParameter);
 
     void broadcastStartSavingPacket();
     void broadcastStopSavingPacket();

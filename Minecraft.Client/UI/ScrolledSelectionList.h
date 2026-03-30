@@ -31,7 +31,7 @@ private:
     float yo;
 
     int lastSelection;
-    __int64 lastSelectionTime;
+    int64_t lastSelectionTime;
 
     bool renderSelection;
     bool _renderHeader;
