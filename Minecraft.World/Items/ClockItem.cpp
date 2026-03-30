@@ -4,13 +4,8 @@
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../Headers/net.minecraft.world.h"
 
-#ifdef __PSVITA__
-const std::wstring ClockItem::TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT] = {
-    L"clockP0"};
-#else
 const std::wstring ClockItem::TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT] = {
     L"clockP0", L"clockP1", L"clockP2", L"clockP3"};
-#endif
 
 ClockItem::ClockItem(int id) : Item(id) { icons = NULL; }
 

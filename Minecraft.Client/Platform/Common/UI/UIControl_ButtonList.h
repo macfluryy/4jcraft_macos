@@ -39,10 +39,6 @@ public:
 
     void setButtonLabel(int iButtonId, const std::wstring& label);
 
-#ifdef __PSVITA__
-    void SetTouchFocus(S32 iX, S32 iY, bool bRepeat);
-    bool CanTouchTrigger(S32 iX, S32 iY);
-#endif
 };
 
 class UIControl_DynamicButtonList : public UIControl_ButtonList {

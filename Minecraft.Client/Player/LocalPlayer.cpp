@@ -60,9 +60,7 @@
 #include "../GameState/Options.h"
 #include "../../Minecraft.World/Level/Dimensions/Dimension.h"
 
-#ifndef _DURANGO
 #include "../../Minecraft.World/Stats/CommonStats.h"
-#endif
 
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)
@@ -313,11 +311,11 @@ void LocalPlayer::aiStep() {
             }
         } else if ((!input->jumping) && (jumpTriggerTime > 0) &&
                    twoJumpsRegistered) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             printf("flying was %s\n", abilities.flying ? "on" : "off");
 #endif
             abilities.flying = !abilities.flying;
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             printf("flying is %s\n", abilities.flying ? "on" : "off");
 #endif
             jumpTriggerTime = 0;
@@ -328,7 +326,7 @@ void LocalPlayer::aiStep() {
                             // into flying mode whilst sneaking?
         }
     } else if (abilities.flying) {
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
         if (!abilities.debugflying)
 #endif
         {
@@ -400,7 +398,7 @@ void LocalPlayer::aiStep() {
     // 4J-PB - If we're in Creative Mode, allow flying on ground
     if (!abilities.mayfly && !isAllowedToFly()) {
         if (onGround && abilities.flying) {
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
             if (!abilities.debugflying)
 #endif
             {
@@ -416,7 +414,7 @@ void LocalPlayer::aiStep() {
         // 4J-PB - To let the player build easily while flying, we need to
         // change this
 
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
         if (abilities.debugflying) {
             flyX = (float)viewVector.x * input->ya;
             flyY = (float)viewVector.y * input->ya;
@@ -493,7 +491,7 @@ void LocalPlayer::changeDimension(int i) {
         if (dimension == 1 && i == 1) {
             awardStat(GenericStats::winGame(), GenericStats::param_noArgs());
             // minecraft.setScreen(new WinScreen());
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             app.DebugPrintf(
                 "LocalPlayer::changeDimension from 1 to 1 but WinScreen has "
                 "not been implemented.\n");
@@ -555,7 +553,7 @@ void LocalPlayer::closeContainer() {
 }
 
 void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
     if (tileEntity->GetType() == eTYPE_SIGNTILEENTITY) {
         minecraft->setScreen(new TextEditScreen(
             std::dynamic_pointer_cast<SignTileEntity>(tileEntity)));
@@ -579,7 +577,7 @@ void LocalPlayer::openTextEdit(std::shared_ptr<TileEntity> tileEntity) {
 }
 
 bool LocalPlayer::openContainer(std::shared_ptr<Container> container) {
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
     minecraft->setScreen(new ContainerScreen(inventory, container));
     bool success = true;
 #else
@@ -625,7 +623,7 @@ bool LocalPlayer::openHorseInventory(std::shared_ptr<EntityHorse> horse,
 }
 
 bool LocalPlayer::startCrafting(int x, int y, int z) {
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
     minecraft->setScreen(new CraftingScreen(inventory, level, x, y, z));
     bool success = true;
 #else
@@ -673,7 +671,7 @@ bool LocalPlayer::startRepairing(int x, int y, int z) {
 }
 
 bool LocalPlayer::openFurnace(std::shared_ptr<FurnaceTileEntity> furnace) {
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
     minecraft->setScreen(new FurnaceScreen(inventory, furnace));
     bool success = true;
 #else
@@ -799,15 +797,6 @@ void LocalPlayer::displayClientMessage(int messageId) {
 }
 
 void LocalPlayer::awardStat(Stat* stat, byteArray param) {
-#ifdef _DURANGO
-    // 4J-JEV: Maybe we want to fine tune this later? #TODO
-    if (!ProfileManager.IsGuest(GetXboxPad()) &&
-        app.CanRecordStatsAndAchievements() && ProfileManager.IsFullVersion()) {
-        stat->handleParamBlob(
-            std::dynamic_pointer_cast<LocalPlayer>(shared_from_this()), param);
-    }
-    delete[] param.data;
-#else
     int count = CommonStats::readParam(param);
     delete[] param.data;
 
@@ -822,7 +811,7 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         // award manager figure it out
         if (!minecraft->stats[m_iPad]->hasTaken(ach)) {
             // 4J-PB - Don't display the java popup
-#ifdef ENABLE_JAVA_GUIS
+#if defined(ENABLE_JAVA_GUIS)
             minecraft->achievementPopup->popup(ach);
 #endif
 
@@ -945,27 +934,8 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
             }
         }
 
-#ifdef _XBOX
-        // AWARD: Have we killed 10 creepers?
-        if (pStats->getTotalValue(GenericStats::killsCreeper()) >= 10) {
-            awardStat(GenericStats::kill10Creepers(),
-                      GenericStats::param_noArgs());
-        }
 
-        // AWARD : Have we been playing for 100 game days?
-        if (pStats->getTotalValue(GenericStats::timePlayed()) >=
-            (Level::TICKS_PER_DAY * 100)) {
-            awardStat(GenericStats::play100Days(),
-                      GenericStats::param_noArgs());
-        }
-        // AWARD : Have we mined 100 blocks?
-        if (pStats->getTotalValue(GenericStats::totalBlocksMined()) >= 100) {
-            awardStat(GenericStats::mine100Blocks(),
-                      GenericStats::param_noArgs());
-        }
-#endif
-
-#ifdef _EXTENDED_ACHIEVEMENTS
+#if defined(_EXTENDED_ACHIEVEMENTS)
 
         // AWARD : Porkchop, cook and eat a porkchop.
         {
@@ -1124,7 +1094,6 @@ void LocalPlayer::awardStat(Stat* stat, byteArray param) {
         }
 #endif
     }
-#endif
 }
 
 bool LocalPlayer::isSolidBlock(int x, int y, int z) {

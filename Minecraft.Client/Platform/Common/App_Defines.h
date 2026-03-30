@@ -9,11 +9,7 @@
 #define MAX_TYPE_SIZE 32
 #define MAX_EXTENSION_TYPES 3
 
-#ifdef __PSVITA__
-#define MAX_LOCAL_PLAYERS 1
-#else
 #define MAX_LOCAL_PLAYERS 4
-#endif
 
 // 4J Stu - Required for sentient reporting of whether the volume level has been
 // changed or not
@@ -59,15 +55,6 @@ enum EGameHostOptionWorldSize {
     e_worldSize_Large
 };
 
-#ifdef _XBOX
-#define PROFILE_VERSION_1 1
-#define PROFILE_VERSION_2 2
-#define PROFILE_VERSION_3 3
-#define PROFILE_VERSION_4 4
-#define PROFILE_VERSION_5 6
-#define PROFILE_VERSION_6 7
-#define PROFILE_VERSION_7 8
-#endif
 #define PROFILE_VERSION_8 10
 #define PROFILE_VERSION_9 11
 

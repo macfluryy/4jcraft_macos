@@ -12,10 +12,6 @@
 #include <cstdint>
 #include <unordered_set>
 
-#ifdef __PSVITA__
-#include "../../Minecraft.Client/Platform/PSVita/PSVitaExtras/CustomSet.h"
-#endif
-
 // 4J Stu - This value should be big enough that we don't get any crashes causes
 // by memory overwrites, however it does seem way too large for what is actually
 // needed. Needs further investigation
@@ -52,7 +48,7 @@ class GameRules;
 
 class Level : public LevelSource {
 public:
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     using lightCache_t = uint64_t;
 #else
     using lightCache_t = unsigned int;
@@ -294,7 +290,7 @@ public:
     static const int LIGHTING_SHIFT = 24;
     static const int BLOCKING_SHIFT = 20;
     static const int EMISSION_SHIFT = 16;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     static const int64_t LIGHTING_WRITEBACK = 0x80000000LL;
     static const int64_t EMISSION_VALID = 0x40000000LL;
     static const int64_t BLOCKING_VALID = 0x20000000LL;
@@ -452,12 +448,7 @@ public:
     void toggleDownfall();
 
 protected:
-#ifdef __PSVITA__
-    // AP - See CustomSet.h for an explanation of this
-    CustomSet chunksToPoll;
-#else
     std::unordered_set<ChunkPos, ChunkPosKeyHash, ChunkPosKeyEq> chunksToPoll;
-#endif
 
 private:
     int delayUntilNextMoodSound;

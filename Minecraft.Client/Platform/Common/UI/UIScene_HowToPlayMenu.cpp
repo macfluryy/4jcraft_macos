@@ -28,10 +28,6 @@ unsigned int UIScene_HowToPlayMenu::m_uiHTPButtonNameA[] = {
 
     IDS_HOW_TO_PLAY_MENU_NETHERPORTAL,  // eHTPButton_NetherPortal,
     IDS_HOW_TO_PLAY_MENU_THEEND,        // eHTPButton_TheEnd,
-#ifdef _XBOX
-    IDS_HOW_TO_PLAY_MENU_SOCIALMEDIA,  // eHTPButton_SocialMedia,
-    IDS_HOW_TO_PLAY_MENU_BANLIST,      // eHTPButton_BanningLevels,
-#endif
     IDS_HOW_TO_PLAY_MENU_HOSTOPTIONS,  // eHTPButton_HostOptions,
 };
 
@@ -52,9 +48,6 @@ unsigned int UIScene_HowToPlayMenu::m_uiHTPSceneA[] = {
     eHowToPlay_Droppers,
 
     eHowToPlay_NetherPortal, eHowToPlay_TheEnd,
-#ifdef _XBOX
-    eHowToPlay_SocialMedia,  eHowToPlay_BanList,
-#endif
     eHowToPlay_HostOptions,
 };
 
@@ -68,17 +61,6 @@ UIScene_HowToPlayMenu::UIScene_HowToPlayMenu(int iPad, void* initData,
 
     for (unsigned int i = 0; i < eHTPButton_Max; ++i) {
         // 4J Stu - Re-add for future platforms
-#if 0
-		// No What's New
-		if(true)
-		{
-			if(!(i==eHTPButton_WhatsNew) )
-			{
-				m_buttonListHowTo.addItem( app.GetString(m_uiHTPButtonNameA[i]) , i);//iCount++);
-			}
-		}
-		else
-#endif
         {
             m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]),
                                       i);  // iCount++);
@@ -118,17 +100,6 @@ void UIScene_HowToPlayMenu::updateComponents() {
 void UIScene_HowToPlayMenu::handleReload() {
     for (unsigned int i = 0; i < eHTPButton_Max; ++i) {
         // 4J Stu - Re-add for future platforms
-#if 0
-		// No What's New
-		if(true)
-		{
-			if(!(i==eHTPButton_WhatsNew) )
-			{
-				m_buttonListHowTo.addItem( app.GetString(m_uiHTPButtonNameA[i]) , i);
-			}
-		}
-		else
-#endif
         { m_buttonListHowTo.addItem(app.GetString(m_uiHTPButtonNameA[i]), i); }
     }
 
@@ -150,9 +121,6 @@ void UIScene_HowToPlayMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
         case ACTION_MENU_UP:

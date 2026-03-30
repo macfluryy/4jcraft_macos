@@ -36,69 +36,13 @@ std::wstring AbstractTexturePack::trim(std::wstring line) {
 }
 
 void AbstractTexturePack::loadIcon() {
-#ifdef _XBOX
-    // 4J Stu - Temporary only
-    constexpr int LOCATOR_SIZE =
-        256;  // Use this to allocate space to hold a ResourceLocator string
-    WCHAR szResourceLocator[LOCATOR_SIZE];
-
-    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
-    swprintf(szResourceLocator, LOCATOR_SIZE, L"section://%X,%ls#%ls",
-             c_ModuleHandle, L"media", L"media/Graphics/TexturePackIcon.png");
-
-    unsigned int size = 0;
-    HRESULT hr = XuiResourceLoadAllNoLoc(szResourceLocator, &m_iconData, &size);
-    m_iconSize = static_cast<std::uint32_t>(size);
-#endif
 }
 
 void AbstractTexturePack::loadComparison() {
-#ifdef _XBOX
-    // 4J Stu - Temporary only
-    constexpr int LOCATOR_SIZE =
-        256;  // Use this to allocate space to hold a ResourceLocator string
-    WCHAR szResourceLocator[LOCATOR_SIZE];
-
-    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
-    swprintf(szResourceLocator, LOCATOR_SIZE, L"section://%X,%ls#%ls",
-             c_ModuleHandle, L"media",
-             L"media/Graphics/DefaultPack_Comparison.png");
-
-    unsigned int size = 0;
-    HRESULT hr =
-        XuiResourceLoadAllNoLoc(szResourceLocator, &m_comparisonData, &size);
-    m_comparisonSize = static_cast<std::uint32_t>(size);
-#endif
 }
 
 void AbstractTexturePack::loadDescription() {
     // 4J Unused currently
-#if 0
-	InputStream *inputStream = NULL;
-	BufferedReader *br = NULL;
-	//try {
-	inputStream = getResourceImplementation(L"/pack.txt");
-	br = new BufferedReader(new InputStreamReader(inputStream));
-	desc1 = trim(br->readLine());
-	desc2 = trim(br->readLine());
-	//} catch (IOException ignored) {
-	//} finally {
-	// TODO [EB]: use IOUtils.closeSilently()
-	//	try {
-	if (br != NULL)
-	{
-		br->close();
-		delete br;
-	}
-	if (inputStream != NULL)
-	{
-		inputStream->close();
-		delete inputStream;
-	}
-	//	} catch (IOException ignored) {
-	//	}
-	//}
-#endif
 }
 
 void AbstractTexturePack::loadName() {}
@@ -180,7 +124,7 @@ std::wstring AbstractTexturePack::getAnimationString(
     if (fileStream) {
         // Minecraft::getInstance()->getLogger().info("Found animation info for:
         // " + animationDefinitionFile);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf("Found animation info for: %ls\n",
                         animationDefinitionFile.c_str());
 #endif
@@ -214,26 +158,7 @@ BufferedImage* AbstractTexturePack::getImageResource(
 }
 
 void AbstractTexturePack::loadDefaultUI() {
-#ifdef _XBOX
-    // load from the .xzp file
-    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
-
-    // Load new skin
-    constexpr int LOCATOR_SIZE =
-        256;  // Use this to allocate space to hold a ResourceLocator string
-    WCHAR szResourceLocator[LOCATOR_SIZE];
-
-    swprintf(szResourceLocator, LOCATOR_SIZE, L"section://%X,%ls#%ls",
-             c_ModuleHandle, L"media", L"media/skin_Minecraft.xur");
-
-    XuiFreeVisuals(L"");
-    app.LoadSkin(szResourceLocator, NULL);  // L"TexturePack");
-    // CXuiSceneBase::GetInstance()->SetVisualPrefix(L"TexturePack");
-    CXuiSceneBase::GetInstance()->SkinChanged(
-        CXuiSceneBase::GetInstance()->m_hObj);
-#else
     ui.ReloadSkin();
-#endif
 }
 
 void AbstractTexturePack::loadColourTable() {
@@ -243,17 +168,8 @@ void AbstractTexturePack::loadColourTable() {
 
 void AbstractTexturePack::loadDefaultColourTable() {
     // Load the file
-#ifdef __PS3__
-    // need to check if it's a BD build, so pass in the name
-    File coloursFile(
-        AbstractTexturePack::getPath(
-            true, app.GetBootedFromDiscPatch() ? "colours.col" : NULL)
-            .append(L"res/colours.col"));
-
-#else
     File coloursFile(
         AbstractTexturePack::getPath(true).append(L"res/colours.col"));
-#endif
 
     if (coloursFile.exists()) {
         DWORD dataLength = coloursFile.length();
@@ -273,36 +189,6 @@ void AbstractTexturePack::loadDefaultColourTable() {
 }
 
 void AbstractTexturePack::loadDefaultHTMLColourTable() {
-#ifdef _XBOX
-    // load from the .xzp file
-    const ULONG_PTR c_ModuleHandle = (ULONG_PTR)GetModuleHandle(NULL);
-
-    constexpr int LOCATOR_SIZE =
-        256;  // Use this to allocate space to hold a ResourceLocator string
-    WCHAR szResourceLocator[LOCATOR_SIZE];
-
-    // Try and load the HTMLColours.col based off the common XML first, before
-    // the deprecated xuiscene_colourtable
-    wsprintfW(szResourceLocator, L"section://%X,%s#%s", c_ModuleHandle,
-              L"media", L"media/HTMLColours.col");
-    std::uint8_t* data;
-    unsigned int dataLength;
-    if (XuiResourceLoadAll(szResourceLocator, &data, &dataLength) == S_OK) {
-        m_colourTable->loadColoursFromData(data, dataLength);
-
-        XuiFree(data);
-    } else {
-        wsprintfW(szResourceLocator, L"section://%X,%s#%s", c_ModuleHandle,
-                  L"media", L"media/");
-        HXUIOBJ hScene;
-        HRESULT hr = XuiSceneCreate(szResourceLocator,
-                                    L"xuiscene_colourtable.xur", NULL, &hScene);
-
-        if (HRESULT_SUCCEEDED(hr)) {
-            loadHTMLColourTableFromXuiScene(hScene);
-        }
-    }
-#else
     if (app.hasArchiveFile(L"HTMLColours.col")) {
         byteArray textColours = app.getArchiveFile(L"HTMLColours.col");
         m_colourTable->loadColoursFromData(textColours.data,
@@ -310,45 +196,12 @@ void AbstractTexturePack::loadDefaultHTMLColourTable() {
 
         delete[] textColours.data;
     }
-#endif
 }
 
-#ifdef _XBOX
-void AbstractTexturePack::loadHTMLColourTableFromXuiScene(HXUIOBJ hObj) {
-    HXUIOBJ child;
-    HRESULT hr = XuiElementGetFirstChild(hObj, &child);
-
-    while (HRESULT_SUCCEEDED(hr) && child != NULL) {
-        LPCWSTR childName;
-        XuiElementGetId(child, &childName);
-        m_colourTable->setColour(childName, XuiTextElementGetText(child));
-
-        // eMinecraftTextColours colourIndex = eTextColor_NONE;
-        // for(int i = 0; i < (int)eTextColor_MAX; i++)
-        //{
-        //	if(wcscmp(HTMLColourTableElements[i],childName)==0)
-        //	{
-        //		colourIndex = (eMinecraftTextColours)i;
-        //		break;
-        //	}
-        // }
-
-        // LPCWSTR stringValue = XuiTextElementGetText(child);
-
-        // m_htmlColourTable[colourIndex] = XuiTextElementGetText(child);
-
-        hr = XuiElementGetNext(child, &child);
-    }
-}
-#endif
 
 void AbstractTexturePack::loadUI() {
     loadColourTable();
 
-#ifdef _XBOX
-    CXuiSceneBase::GetInstance()->SkinChanged(
-        CXuiSceneBase::GetInstance()->m_hObj);
-#endif
 }
 
 void AbstractTexturePack::unloadUI() {

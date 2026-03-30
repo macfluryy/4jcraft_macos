@@ -69,7 +69,7 @@ private:
     //	HANDLE hHeap;
     static void* pvHeap;
     static unsigned int pagesCommitted;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     static const unsigned int CSF_PAGE_SIZE = 64 * 1024;
     static const unsigned int MAX_PAGE_COUNT =
         32 * 1024;  // 2GB virtual allocation
@@ -132,7 +132,7 @@ public:
 
     virtual void Flush(bool autosave, bool updateThumbnail = true);
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     virtual void DebugFlushToFile(void* compressedData = NULL,
                                   unsigned int compressedDataSize = 0);
 #endif
@@ -145,11 +145,6 @@ public:
     virtual std::vector<FileEntry*>* getRegionFilesByDimension(
         unsigned int dimensionIndex);
 
-#if defined(__PS3__) || defined(__ORBIS__)
-    virtual std::wstring getPlayerDataFilenameForLoad(const PlayerUID& pUID);
-    virtual std::wstring getPlayerDataFilenameForSave(const PlayerUID& pUID);
-    virtual std::vector<FileEntry*>* getValidPlayerDatFiles();
-#endif  //__PS3__
 
     virtual int getSaveVersion();
     virtual int getOriginalSaveVersion();

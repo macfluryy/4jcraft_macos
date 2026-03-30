@@ -1,10 +1,6 @@
 #pragma once
 #include "../Files/FileHeader.h"
 
-#ifdef _XBOX_ONE
-#include "../../../Minecraft.Client/Platform/Durango/DurangoExtras/xcompress.h"
-#endif
-
 class Compression {
 public:
     // Enum maps directly some external tools
@@ -51,11 +47,9 @@ public:
                         void* pSource, unsigned int SrcSize);
     HRESULT DecompressRLE(void* pDestination, unsigned int* pDestSize,
                           void* pSource, unsigned int SrcSize);
-#ifndef _XBOX
     static void VitaVirtualDecompress(void* pDestination,
                                       unsigned int* pDestSize, void* pSource,
                                       unsigned int SrcSize);
-#endif
 
     void SetDecompressionType(ECompressionTypes type) {
         m_decompressType = type;
@@ -71,11 +65,8 @@ private:
     HRESULT DecompressWithType(void* pDestination, unsigned int* pDestSize,
                                void* pSource, unsigned int SrcSize);
 
-#if defined __ORBIS__ || defined __PS3__
-#else
     XMEMCOMPRESSION_CONTEXT compressionContext;
     XMEMDECOMPRESSION_CONTEXT decompressionContext;
-#endif
     CRITICAL_SECTION rleCompressLock;
     CRITICAL_SECTION rleDecompressLock;
 
@@ -88,11 +79,8 @@ private:
 
 // extern Compression gCompression;
 
-#if defined __ORBIS__ || defined _DURANGO || defined _WIN64 || \
-    defined __PSVITA__ || defined __linux__
+#if defined(_WIN64) || defined(__linux__)
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_ZLIBRLE
-#elif defined __PS3__
-#define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_PS3ZLIB
 #else
 #define APPROPRIATE_COMPRESSION_TYPE Compression::eCompressionType_LZXRLE
 #endif

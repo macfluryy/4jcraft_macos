@@ -29,7 +29,7 @@
 #include "../Minecraft.World/Util/Pos.h"
 #include "../Minecraft.World/Platform/System.h"
 #include "../Minecraft.World/Util/StringHelpers.h"
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
 #include "../Minecraft.World/IO/Files/ConsoleSaveFileSplit.h"
 #endif
 #include "../Minecraft.World/IO/Files/ConsoleSaveFileOriginal.h"
@@ -43,10 +43,8 @@
 #include "../Minecraft.World/Level/Storage/SparseLightStorage.h"
 #include "../Minecraft.World/Level/Storage/SparseDataStorage.h"
 #include "../Minecraft.World/IO/Streams/Compression.h"
-#ifdef _XBOX
-#include "Platform/Common/XUI/XUI_DebugSetCamera.h"
-#endif
-#include "Platform/PS3/PS3Extras/ShutdownManager.h"
+#include "Platform/Common/ShutdownManager.h"
+#include "Platform/Common/UI/UIStructs.h"
 #include "Network/ServerCommandDispatcher.h"
 #include "../Minecraft.World/WorldGen/Biomes/BiomeSource.h"
 #include "Network/PlayerChunkMap.h"
@@ -63,7 +61,7 @@ int64_t MinecraftServer::setTimeOfDay = 0;
 bool MinecraftServer::m_bPrimaryPlayerSignedOut = false;
 bool MinecraftServer::s_bServerHalted = false;
 bool MinecraftServer::s_bSaveOnExitAnswered = false;
-#ifdef _ACK_CHUNK_SEND_THROTTLING
+#if defined(_ACK_CHUNK_SEND_THROTTLING)
 bool MinecraftServer::s_hasSentEnoughPackets = false;
 int64_t MinecraftServer::s_tickStartTime = 0;
 std::vector<INetworkPlayer*> MinecraftServer::s_sentTo;
@@ -112,36 +110,6 @@ MinecraftServer::~MinecraftServer() {}
 bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
                                  std::uint32_t initSettings, bool findSeed) {
     // 4J - removed
-#if 0
-	commands = new ConsoleCommands(this);
-
-	Thread t = new Thread() {
-		public void run() {
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			String line = null;
-			try {
-				while (!stopped && running && (line = br.readLine()) != null) {
-					handleConsoleInput(line, MinecraftServer.this);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	};
-	t.setDaemon(true);
-	t.start();
-
-
-	LogConfigurator.initLogger();
-	logger.info("Starting minecraft server version " + VERSION);
-
-	if (Runtime.getRuntime().maxMemory() / 1024 / 1024 < 512) {
-		logger.warning("**** NOT ENOUGH RAM!");
-		logger.warning("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
-	}
-
-	logger.info("Loading properties");
-#endif
     settings = new Settings(new File(L"server.properties"));
 
     app.DebugPrintf("\n*** SERVER SETTINGS ***\n");
@@ -188,44 +156,12 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
     setFlightAllowed(true);  // settings->getBoolean(L"allow-flight", false);
 
     // 4J Stu - Enabling flight to stop it kicking us when we use it
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
     setFlightAllowed(true);
 #endif
 
-#if 1
     connection = new ServerConnection(this);
     Socket::Initialise(connection);  // 4J - added
-#else
-    // 4J - removed
-    InetAddress localAddress = null;
-    if (localIp.length() > 0) localAddress = InetAddress.getByName(localIp);
-    port = settings.getInt("server-port", DEFAULT_MINECRAFT_PORT);
-
-    logger.info("Starting Minecraft server on " +
-                (localIp.length() == 0 ? "*" : localIp) + ":" + port);
-    try {
-        connection = new ServerConnection(this, localAddress, port);
-    } catch (IOException e) {
-        logger.warning("**** FAILED TO BIND TO PORT!");
-        logger.log(Level.WARNING, "The exception was: " + e.toString());
-        logger.warning("Perhaps a server is already running on that port?");
-        return false;
-    }
-
-    if (!onlineMode) {
-        logger.warning("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
-        logger.warning(
-            "The server will make no attempt to authenticate usernames. "
-            "Beware.");
-        logger.warning(
-            "While this makes the game possible to play without internet "
-            "access, it also opens up the ability for hackers to connect with "
-            "any username they choose.");
-        logger.warning(
-            "To change this, set \"online-mode\" to \"true\" in the "
-            "server.settings file.");
-    }
-#endif
     setPlayers(new PlayerList(this));
 
     // 4J-JEV: Need to wait for levelGenerationOptions to load.
@@ -264,11 +200,7 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
     mcprogress->progressStart(IDS_PROGRESS_INITIALISING_SERVER);
 
     if (findSeed) {
-#ifdef __PSVITA__
-        seed = BiomeSource::findSeed(pLevelType, &running);
-#else
         seed = BiomeSource::findSeed(pLevelType);
-#endif
     }
 
     setMaxBuildHeight(
@@ -278,17 +210,6 @@ bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
         Mth::clamp(getMaxBuildHeight(), 64, Level::maxBuildHeight));
     // settings->setProperty(L"max-build-height", maxBuildHeight);
 
-#if 0
-	std::wstring levelSeedString = settings->getString(L"level-seed", L"");
-	int64_t levelSeed = (new Random())->nextLong();
-	if (levelSeedString.length() > 0)
-	{
-		long newSeed = _fromString<int64_t>(levelSeedString);
-		if (newSeed != 0) {
-			levelSeed = newSeed;
-		}
-	}
-#endif
     //        logger.info("Preparing level \"" + levelName + "\"");
     m_bLoaded = loadLevel(new McRegionLevelStorageSource(File(L".")), levelName,
                           seed, pLevelType, initData);
@@ -339,7 +260,7 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     } while (!server->m_postUpdateTerminate &&
              ShutdownManager::ShouldRun(ShutdownManager::ePostProcessThread));
-    // #ifndef __PS3__
+    // #ifndef 0
     //  One final pass through updates to make sure we're done
     EnterCriticalSection(&server->m_postProcessCS);
     int maxRequests = server->m_postProcessRequests.size();
@@ -351,18 +272,10 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
         LeaveCriticalSection(&server->m_postProcessCS);
         request.chunkSource->postProcess(request.chunkSource, request.x,
                                          request.z);
-#ifdef __PS3__
-#ifndef _CONTENT_PACKAGE
-        if ((server->m_postProcessRequests.size() % 10) == 0)
-            printf("processing request %00d\n",
-                   server->m_postProcessRequests.size());
-#endif
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-#endif
         EnterCriticalSection(&server->m_postProcessCS);
     }
     LeaveCriticalSection(&server->m_postProcessCS);
-    // #endif //__PS3__
+    // #endif //0
     Tile::ReleaseThreadStorage();
     Level::destroyLightingCache();
 
@@ -443,7 +356,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     if (initData->saveData != NULL) {
         // We are loading a file from disk with the data passed in
 
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
         ConsoleSaveFileOriginal oldFormatSave(
             initData->saveData->saveName, initData->saveData->data,
             initData->saveData->fileSize, false, initData->savePlatform);
@@ -465,7 +378,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
             new McRegionLevelStorage(pSave, File(L"."), name, true));
     } else {
         // We are loading a save from the storage manager
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
         bool bLevelGenBaseSave = false;
         LevelGenerationOptions* levelGen = app.getLevelGenerationOptions();
         if (levelGen != NULL && levelGen->requiresBaseSave()) {
@@ -586,11 +499,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     int64_t startTime = System::currentTimeMillis();
 
     // 4J Stu - Added this to temporarily make starting games on vita faster
-#ifdef __PSVITA__
-    int r = 48;
-#else
     int r = 196;
-#endif
 
     //  4J JEV: load gameRules.
     ConsoleSavePath filepath(GAME_RULE_SAVENAME);
@@ -614,7 +523,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     }
 
     int64_t lastTime = System::currentTimeMillis();
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     if (app.GetGameNewWorldSize() > levels[0]->getLevelData()->getXZSizeOld()) {
         if (!app.GetGameNewWorldSizeUseMoat())  // check the moat settings to
                                                 // see if we should be
@@ -639,30 +548,6 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
                 // 				storage->getSaveFile()->convertLevelChunks(level)
             }
 
-#if 0
-			int64_t lastStorageTickTime = System::currentTimeMillis();
-
-			// Test code to enable full creation of levels at start up
-			int halfsidelen = ( i == 0 ) ? 27 : 9;
-			for( int x = -halfsidelen; x < halfsidelen; x++ )
-			{
-				for( int z = -halfsidelen; z < halfsidelen; z++ )
-				{
-					int total = halfsidelen * halfsidelen * 4;
-					int pos = z + halfsidelen + ( ( x + halfsidelen ) * 2 * halfsidelen );
-					mcprogress->progressStagePercentage((pos) * 100 / total);
-					level->cache->create(x,z, true);	// 4J - added parameter to disable postprocessing here
-
-					if( System::currentTimeMillis() - lastStorageTickTime > 50 )
-					{
-						CompressedTileStorage::tick();
-						SparseLightStorage::tick();
-						SparseDataStorage::tick();
-						lastStorageTickTime = System::currentTimeMillis();
-					}
-				}
-			}
-#else
             int64_t lastStorageTickTime = System::currentTimeMillis();
             Pos* spawnPos = level->getSharedSpawnPos();
 
@@ -713,21 +598,8 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
             // 4J - removed this as now doing the recheckGaps call when each
             // chunk is post-processed, so can happen on things outside of the
             // spawn area too
-#if 0
-			// 4J - added this code to propagate lighting properly in the spawn area before we go sharing it with the local client or across the network
-			for (int x = -r; x <= r && running; x += 16)
-			{
-				for (int z = -r; z <= r && running; z += 16)
-				{
-					PIXBeginNamedEvent(0,"Lighting gaps for %d %d",x,z);
-					level->getChunkAt(spawnPos->x + x, spawnPos->z + z)->recheckGaps(true);
-					PIXEndNamedEvent();
-				}
-			}
-#endif
 
             delete spawnPos;
-#endif
         }
     }
     //	printf("Main thread complete at %dms\n",System::currentTimeMillis() -
@@ -815,7 +687,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     return true;
 }
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 void MinecraftServer::overwriteBordersForNewWorldSize(ServerLevel* level) {
     // recreate the chunks round the border (2 chunks or 32 blocks deep),
     // deleting any player data from them
@@ -900,9 +772,7 @@ void MinecraftServer::saveAllChunks() {
     for (unsigned int i = 0; i < levels.length; i++) {
         // 4J Stu - Due to the way save mounting is handled on XboxOne, we can
         // actually save after the player has signed out.
-#ifndef _XBOX_ONE
         if (m_bPrimaryPlayerSignedOut) break;
-#endif
         // 4J Stu - Save the levels in reverse order so we don't overwrite the
         // level.dat with the data from the nethers leveldata. Fix for #7418 -
         // Functional: Gameplay: Saving after sleeping in a bed will place
@@ -925,7 +795,7 @@ void MinecraftServer::saveAllChunks() {
 
 // 4J-JEV: Added
 void MinecraftServer::saveGameRules() {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_DistributableSave)) {
@@ -1005,11 +875,6 @@ bool MinecraftServer::IsSuspending() { return m_suspending; }
 void MinecraftServer::stopServer(bool didInit) {
     // 4J-PB - need to halt the rendering of the data, since we're about to
     // remove it
-#ifdef __PS3__
-    if (ShutdownManager::ShouldRun(
-            ShutdownManager::eServerThread))  // This thread will take itself
-                                              // out if we are shutting down
-#endif
     {
         Minecraft::GetInstance()->gameRenderer->DisableUpdateThread();
     }
@@ -1023,18 +888,9 @@ void MinecraftServer::stopServer(bool didInit) {
 
     // also need to check for a profile switch here - primary player signs out,
     // and another player signs in before dismissing the dash
-#ifdef _DURANGO
-    // On Durango check if the primary user is signed in OR mid-sign-out
-    if (ProfileManager.GetUser(0, true) != nullptr)
-#else
     if ((m_bPrimaryPlayerSignedOut == false) &&
         ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad()))
-#endif
     {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-        // Always save on exit! Except if saves are disabled.
-        if (!saveOnExitAnswered()) m_saveOnExit = true;
-#endif
         // if trial version or saving is disabled, then don't save anything.
         // Also don't save anything if we didn't actually get through the server
         // initialisation.
@@ -1076,11 +932,6 @@ void MinecraftServer::stopServer(bool didInit) {
     // ultimately delete the directory level storage & therefore the
     // ConsoleSaveSplit instance, which needs to be around until all the sub
     // files have completed saving.
-#if defined(_DURANGO) || defined(__ORBIS__) || defined(__PSVITA__)
-    while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-#endif
 
     // 4J-PB remove the server levels
     unsigned int iServerLevelC = levels.length;
@@ -1091,13 +942,6 @@ void MinecraftServer::stopServer(bool didInit) {
         }
     }
 
-#if defined(__PS3__) || defined(__ORBIS__)
-    // Clear the update flags as it's possible they could be out of sync,
-    // causing a crash when starting a new world after the first new level ticks
-    // Fix for PS3 #1538 - [IN GAME] If the user 'Exit without saving' from
-    // inside the Nether or The End, the title can hang when loading back into
-    // the save.
-#endif
 
     delete connection;
     connection = NULL;
@@ -1332,61 +1176,6 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
 
                 switch (eAction) {
                     case eXuiServerAction_AutoSaveGame:
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-                    {
-                        PIXBeginNamedEvent(0, "Autosave");
-
-                        // Get the frequency of the timer
-                        LARGE_INTEGER qwTicksPerSec, qwTime, qwNewTime,
-                            qwDeltaTime;
-                        float fElapsedTime = 0.0f;
-                        QueryPerformanceFrequency(&qwTicksPerSec);
-                        float fSecsPerTick =
-                            1.0f / (float)qwTicksPerSec.QuadPart;
-
-                        // Save the start time
-                        QueryPerformanceCounter(&qwTime);
-
-                        if (players != NULL) {
-                            players->saveAll(NULL);
-                        }
-
-                        for (unsigned int j = 0; j < levels.length; j++) {
-                            if (s_bServerHalted) break;
-                            // 4J Stu - Save the levels in reverse order so we
-                            // don't overwrite the level.dat with the data from
-                            // the nethers leveldata. Fix for #7418 -
-                            // Functional: Gameplay: Saving after sleeping in a
-                            // bed will place player at nighttime when
-                            // restarting.
-                            ServerLevel* level = levels[levels.length - 1 - j];
-                            PIXBeginNamedEvent(0, "Saving level %d",
-                                               levels.length - 1 - j);
-                            level->save(false, NULL, true);
-                            PIXEndNamedEvent();
-                        }
-                        if (!s_bServerHalted) {
-                            PIXBeginNamedEvent(0, "Saving game rules");
-                            saveGameRules();
-                            PIXEndNamedEvent();
-
-                            PIXBeginNamedEvent(0, "Save to disc");
-                            levels[0]->saveToDisc(
-                                Minecraft::GetInstance()->progressRenderer,
-                                true);
-                            PIXEndNamedEvent();
-                        }
-                        PIXEndNamedEvent();
-
-                        QueryPerformanceCounter(&qwNewTime);
-                        qwDeltaTime.QuadPart =
-                            qwNewTime.QuadPart - qwTime.QuadPart;
-                        fElapsedTime = fSecsPerTick *
-                                       static_cast<float>(qwDeltaTime.QuadPart);
-                        app.DebugPrintf("Autosave: Elapsed time %f\n",
-                                        fElapsedTime);
-                    } break;
-#endif
                     case eXuiServerAction_SaveGame:
                         app.EnterSaveNotificationSection();
                         if (players != NULL) {
@@ -1503,7 +1292,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                                     ->options->difficulty)));
                         break;
                     case eXuiServerAction_ExportSchematic:
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                         app.EnterSaveNotificationSection();
 
                         // players->broadcastAll(
@@ -1514,13 +1303,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                             ConsoleSchematicFile::XboxSchematicInitParam*
                                 initData = (ConsoleSchematicFile::
                                                 XboxSchematicInitParam*)param;
-#ifdef _XBOX
-                            File targetFileDir(File::pathRoot +
-                                               File::pathSeparator +
-                                               L"Schematics");
-#else
                             File targetFileDir(L"Schematics");
-#endif
                             if (!targetFileDir.exists()) targetFileDir.mkdir();
 
                             wchar_t filename[128];
@@ -1548,7 +1331,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
 #endif
                         break;
                     case eXuiServerAction_SetCameraLocation:
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                     {
                         DebugSetCameraPosition* pos =
                             (DebugSetCameraPosition*)param;
@@ -1591,29 +1374,6 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
     //		std::this_thread::sleep_for(std::chrono::milliseconds(10));
     //     }
     // }
-#if 0
-} catch (Throwable t) {
-	t.printStackTrace();
-	logger.log(Level.SEVERE, "Unexpected exception", t);
-	while (running) {
-		handleConsoleInputs();
-		try {
-			Thread.sleep(10);
-		} catch (InterruptedException e1) {
-			e1.printStackTrace();
-		}
-	}
-} finally {
-	try {
-		stopServer();
-		stopped = true;
-	} catch (Throwable t) {
-		t.printStackTrace();
-	} finally {
-		System::exit(0);
-	}
-}
-#endif
 
     // 4J Stu - Stop the server when the loops complete, as the finally would do
     stopServer(didInit);
@@ -1688,7 +1448,7 @@ void MinecraftServer::tick() {
                             GameRules::RULE_DAYLIGHT))),
                     level->dimension->id);
             }
-            // #ifndef __PS3__
+            // #ifndef 0
             static int64_t stc = 0;
             int64_t st0 = System::currentTimeMillis();
             PIXBeginNamedEvent(0, "Level tick %d", i);
@@ -1711,22 +1471,6 @@ void MinecraftServer::tick() {
             // nether, but Actually gets removed only when it returns
             if ((players->getPlayerCount(level) > 0) ||
                 (level->hasEntitiesToRemove())) {
-#ifdef __PSVITA__
-                // AP - the PlayerList->viewDistance initially starts out at 3
-                // to make starting a level speedy the problem with this is that
-                // spawned monsters are always generated on the edge of the
-                // known map which means they wont process (unless they are
-                // surrounded by 2 visible chunks). This means they wont
-                // checkDespawn so they are NEVER removed which results in
-                // monsters not spawning. This bit of hack will modify the view
-                // distance once the level is up and running.
-                int newViewDistance = 5;
-                level->getServer()->getPlayers()->setViewDistance(
-                    newViewDistance);
-                level->getTracker()->updateMaxRange();
-                level->getChunkMap()->setRadius(
-                    level->getServer()->getPlayers()->getViewDistance());
-#endif
                 level->tickEntities();
             }
             PIXEndNamedEvent();
@@ -1739,7 +1483,7 @@ void MinecraftServer::tick() {
             //			printf(">>>>>>>>>>>>>>>>>>>>>> Tick %d %d %d :
             //%d\n", st1 - st0, st2 - st1, st3 - st2, st0 - stc );
             stc = st0;
-            // #endif// __PS3__
+            // #endif// 0
         }
     }
     Entity::tickExtraWandering();  // 4J added
@@ -1752,11 +1496,6 @@ void MinecraftServer::tick() {
     PIXEndNamedEvent();
 
     // 4J - removed
-#if 0
-	for (int i = 0; i < tickables.size(); i++) {
-		tickables.get(i)-tick();
-	}
-#endif
 
     //    try {		// 4J - removed try/catch
     handleConsoleInputs();
@@ -1782,9 +1521,7 @@ void MinecraftServer::handleConsoleInputs() {
 }
 
 void MinecraftServer::main(int64_t seed, void* lpParameter) {
-#if __PS3__
     ShutdownManager::HasStarted(ShutdownManager::eServerThread);
-#endif
     server = new MinecraftServer();
     server->run(seed, lpParameter);
     delete server;
@@ -1829,7 +1566,7 @@ void MinecraftServer::setLevel(int dimension, ServerLevel* level) {
         levels[0] = level;
 }
 
-#if defined _ACK_CHUNK_SEND_THROTTLING
+#if defined(_ACK_CHUNK_SEND_THROTTLING)
 bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer* player) {
     if (s_hasSentEnoughPackets) return false;
     if (player == NULL) return false;
@@ -1840,11 +1577,7 @@ bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer* player) {
         }
     }
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-    return (player->GetOutstandingAckCount() < 3);
-#else
     return (player->GetOutstandingAckCount() < 2);
-#endif
 }
 
 void MinecraftServer::chunkPacketManagement_DidSendTo(INetworkPlayer* player) {

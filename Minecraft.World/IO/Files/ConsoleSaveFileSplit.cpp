@@ -447,7 +447,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
     // save file at a time, and the pages should be decommitted in the dtor, so
     // pages committed should always be zero at this point.
     if (pagesCommitted != 0) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
     }
@@ -458,7 +458,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
     void* pvRet = VirtualAlloc(pvHeap, pagesRequired * CSF_PAGE_SIZE,
                                COMMIT_ALLOCATION, PAGE_READWRITE);
     if (pvRet == NULL) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         // Out of physical memory
         __debugbreak();
 #endif
@@ -519,7 +519,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
                     // Corrupt save, although most of the terrain should
                     // actually be ok
                     app.DebugPrintf("Failed to decompress save data!\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                     __debugbreak();
 #endif
                     ZeroMemory(pvSaveMem, fileSize);
@@ -544,11 +544,6 @@ ConsoleSaveFileSplit::~ConsoleSaveFileSplit() {
     pagesCommitted = 0;
     // Make sure we don't have any thumbnail data still waiting round - we can't
     // need it now we've destroyed the save file anyway
-#if defined _XBOX
-    app.GetSaveThumbnail(NULL, NULL);
-#elif defined __PS3__
-    app.GetSaveThumbnail(NULL, NULL, NULL, NULL);
-#endif
 
     for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
         delete it->second;
@@ -965,7 +960,7 @@ void ConsoleSaveFileSplit::tick() {
 
         writeRequired = true;
     }
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     {
         unsigned int totalDirty = 0;
         unsigned int totalDirtyBytes = 0;
@@ -979,16 +974,6 @@ void ConsoleSaveFileSplit::tick() {
                 totalDirtyBytes += it->second->fileEntry->getFileSize();
             }
         }
-#ifdef _DURANGO
-        PIXReportCounter(L"Dirty regions", (float)totalDirty);
-        PIXReportCounter(L"Dirty MB", (float)totalDirtyBytes / (1024 * 1024));
-        PIXReportCounter(L"Dirty oldest age",
-                         ((float)currentTime - oldestDirty));
-        PIXReportCounter(L"Region writing bandwidth",
-                         ((float)bytesInTimePeriod /
-                          WRITE_BANDWIDTH_MEASUREMENT_PERIOD_SECONDS) /
-                             (1024 * 1024));
-#endif
     }
 #endif
 
@@ -1234,22 +1219,6 @@ std::wstring ConsoleSaveFileSplit::GetNameFromNumericIdentifier(
 // Compress any dirty region files, and tell the storage manager about them so
 // that it will process them when we ask it to save sub files
 void ConsoleSaveFileSplit::processSubfilesForWrite() {
-#if 0
-	// 4J Stu - There are debug reasons where we want to force a save of all regions
-	StorageManager.ResetSubfiles();
-	for(AUTO_VAR(it,regionFiles.begin()); it != regionFiles.end(); it++ )
-	{
-		RegionFileReference* region = it->second;
-		int index = StorageManager.AddSubfile(region->fileEntry->data.regionIndex);
-		//if( region->dirty )
-		{
-			region->Compress();
-			StorageManager.UpdateSubfile(index, region->dataCompressed, region->dataCompressedSize);
-			region->dirty = false;
-			region->lastWritten = System::currentTimeMillis();
-		}
-	}
-#else
     for (AUTO_VAR(it, regionFiles.begin()); it != regionFiles.end(); it++) {
         RegionFileReference* region = it->second;
         if (region->dirty) {
@@ -1260,7 +1229,6 @@ void ConsoleSaveFileSplit::processSubfilesForWrite() {
             region->lastWritten = System::currentTimeMillis();
         }
     }
-#endif
 }
 
 // Clean up any memory allocated for compressed data when we have finished
@@ -1285,20 +1253,10 @@ bool ConsoleSaveFileSplit::doesFileExist(ConsoleSavePath file) {
 void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     LockSaveAccess();
 
-#ifdef _XBOX_ONE
-    MinecraftServer* server = MinecraftServer::getInstance();
-#endif
 
     // The storage manage might potentially be busy doing a sub-file write
     // initiated from the tick. Wait until this is totally processed.
     while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
-#ifdef _XBOX_ONE
-        if (server && server->IsSuspending()) {
-            // If the server is mid-suspend we need to tick the storage manager
-            // ourselves
-            StorageManager.Tick();
-        }
-#endif
 
         app.DebugPrintf("Flush wait\n");
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -1390,12 +1348,6 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             std::uint8_t* pbDataSaveImage = NULL;
             unsigned int dwDataSizeSaveImage = 0;
 
-#if (defined _XBOX || defined _DURANGO)
-            app.GetSaveThumbnail(&pbThumbnailData, &dwThumbnailDataSize);
-#elif (defined __PS3__ || defined __ORBIS__)
-            app.GetSaveThumbnail(&pbThumbnailData, &dwThumbnailDataSize,
-                                 &pbDataSaveImage, &dwDataSizeSaveImage);
-#endif
 
             std::uint8_t bTextMetadata[88];
             ZeroMemory(bTextMetadata, 88);
@@ -1432,7 +1384,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         // save the data
         StorageManager.SaveSaveData(&ConsoleSaveFileSplit::SaveSaveDataCallback,
                                     this);
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         if (app.DebugSettingsOn()) {
             if (app.GetWriteSavesToFolderEnabled()) {
                 DebugFlushToFile(compData, compLength + 8);
@@ -1465,7 +1417,7 @@ int ConsoleSaveFileSplit::SaveRegionFilesCallback(void* lpParam, bool bRes) {
     return 0;
 }
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 void ConsoleSaveFileSplit::DebugFlushToFile(
     void* compressedData /*= NULL*/, unsigned int compressedDataSize /*= 0*/) {
     LockSaveAccess();
@@ -1549,19 +1501,6 @@ std::vector<FileEntry*>* ConsoleSaveFileSplit::getRegionFilesByDimension(
     return files;
 }
 
-#if defined(__PS3__) || defined(__ORBIS__)
-std::wstring ConsoleSaveFileSplit::getPlayerDataFilenameForLoad(
-    const PlayerUID& pUID) {
-    return header.getPlayerDataFilenameForLoad(pUID);
-}
-std::wstring ConsoleSaveFileSplit::getPlayerDataFilenameForSave(
-    const PlayerUID& pUID) {
-    return header.getPlayerDataFilenameForSave(pUID);
-}
-std::vector<FileEntry*>* ConsoleSaveFileSplit::getValidPlayerDatFiles() {
-    return header.getValidPlayerDatFiles();
-}
-#endif
 
 int ConsoleSaveFileSplit::getSaveVersion() { return header.getSaveVersion(); }
 

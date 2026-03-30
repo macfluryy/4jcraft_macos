@@ -72,9 +72,6 @@ enum eXuiAction {
     eAppAction_TexturePackRequired,  // when the user has joined from invite,
                                      // but doesn't have the texture pack
 
-#ifdef __ORBIS__
-    eAppAction_OptionsSaveNoSpace,
-#endif
     eAppAction_DebugText,
 
 };
@@ -630,153 +627,6 @@ enum eGameHostOption {
 
 // 4J-PB - If any new DLC items are added to the TMSFiles, this array needs
 // updated
-#ifdef _XBOX
-enum _TMSFILES {
-    TMS_SP1 = 0,
-    TMS_SP2,
-    TMS_SP3,
-    TMS_SP4,
-    TMS_SP5,
-    TMS_SP6,
-    TMS_SPF,
-    TMS_SPB,
-    TMS_SPC,
-    TMS_SPZ,
-    TMS_SPM,
-    TMS_SPI,
-    TMS_SPG,
-    TMS_SPD1,
-    TMS_SPSW1,
-
-    TMS_THST,
-    TMS_THIR,
-    TMS_THGO,
-    TMS_THDI,
-    TMS_THAW,
-
-    TMS_GPAN,
-    TMS_GPCO,
-    TMS_GPEN,
-    TMS_GPFO,
-    TMS_GPTO,
-    TMS_GPBA,
-    TMS_GPFA,
-    TMS_GPME,
-    TMS_GPMF,
-    TMS_GPMM,
-    TMS_GPSE,
-    TMS_GPOr,
-    TMS_GPMi,
-    TMS_GPMB,
-    TMS_GPBr,
-    TMS_GPM1,
-    TMS_GPM2,
-    TMS_GPM3,
-
-    TMS_AH_0001,
-    TMS_AH_0002,
-    TMS_AH_0003,
-    TMS_AH_0004,
-    TMS_AH_0005,
-    TMS_AH_0006,
-    TMS_AH_0007,
-    TMS_AH_0008,
-    TMS_AH_0009,
-    TMS_AH_0010,
-    TMS_AH_0011,
-    TMS_AH_0012,
-    TMS_AH_0013,
-
-    TMS_AT_0001,
-    TMS_AT_0002,
-    TMS_AT_0003,
-    TMS_AT_0004,
-    TMS_AT_0005,
-    TMS_AT_0006,
-    TMS_AT_0007,
-    TMS_AT_0008,
-    TMS_AT_0009,
-    TMS_AT_0010,
-    TMS_AT_0011,
-    TMS_AT_0012,
-    TMS_AT_0013,
-    TMS_AT_0014,
-    TMS_AT_0015,
-    TMS_AT_0016,
-    TMS_AT_0017,
-    TMS_AT_0018,
-    TMS_AT_0019,
-    TMS_AT_0020,
-    TMS_AT_0021,
-    TMS_AT_0022,
-    TMS_AT_0023,
-    TMS_AT_0024,
-    TMS_AT_0025,
-    TMS_AT_0026,
-
-    TMS_AP_0001,
-    TMS_AP_0002,
-    TMS_AP_0003,
-    TMS_AP_0004,
-    TMS_AP_0005,
-    TMS_AP_0006,
-    TMS_AP_0007,
-    TMS_AP_0009,
-    TMS_AP_0010,
-    TMS_AP_0011,
-    TMS_AP_0012,
-    TMS_AP_0013,
-    TMS_AP_0014,
-    TMS_AP_0015,
-    TMS_AP_0016,
-    TMS_AP_0017,
-    TMS_AP_0018,
-
-    TMS_AP_0019,
-    TMS_AP_0020,
-    TMS_AP_0021,
-    TMS_AP_0022,
-    TMS_AP_0023,
-    TMS_AP_0024,
-    TMS_AP_0025,
-    TMS_AP_0026,
-    TMS_AP_0027,
-    TMS_AP_0028,
-    TMS_AP_0029,
-    TMS_AP_0030,
-    TMS_AP_0031,
-    TMS_AP_0032,
-    TMS_AP_0033,
-
-    TMS_AA_0001,
-
-    TMS_MPMA,
-    TMS_MPMA_DAT,
-    TMS_MPSR,
-    TMS_MPSR_DAT,
-    TMS_MPHA,
-    TMS_MPHA_DAT,
-    TMS_MPFE,
-    TMS_MPFE_DAT,
-
-    TMS_TP01,
-    TMS_TP01_DAT,
-    TMS_TP02,
-    TMS_TP02_DAT,
-    TMS_TP04,
-    TMS_TP04_DAT,
-    TMS_TP05,
-    TMS_TP05_DAT,
-    TMS_TP06,
-    TMS_TP06_DAT,
-    TMS_TP07,
-    TMS_TP07_DAT,
-    TMS_TP08,
-    TMS_TP08_DAT,
-
-    TMS_COUNT
-};
-#endif
 
 enum EHTMLFontSize {
     eHTMLSize_Normal,
@@ -808,14 +658,7 @@ enum EControllerActions {
     ACTION_MENU_OTHER_STICK_RIGHT,
     ACTION_MENU_PAUSEMENU,
 
-#ifdef _DURANGO
-    ACTION_MENU_GTC_PAUSE,
-    ACTION_MENU_GTC_RESUME,
-#endif
 
-#ifdef __ORBIS__
-    ACTION_MENU_TOUCHPAD_PRESS,
-#endif
 
     ACTION_MENU_OK,
     ACTION_MENU_CANCEL,

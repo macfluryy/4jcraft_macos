@@ -37,9 +37,6 @@ UIScene_SaveMessage::UIScene_SaveMessage(int iPad, void* initData,
     m_bIgnoreInput = false;
 
     // 4J-TomK - rebuild touch after auto resize
-#ifdef __PSVITA__
-    ui.TouchBoxRebuild(this);
-#endif
 }
 
 UIScene_SaveMessage::~UIScene_SaveMessage() {
@@ -57,22 +54,14 @@ void UIScene_SaveMessage::handleInput(int iPad, int key, bool repeat,
                                       bool pressed, bool released,
                                       bool& handled) {
     if (m_bIgnoreInput) return;
-#if defined(__ORBIS__) || defined(__PSVITA__)
-    // ignore all players except player 0 - it's their profile that is currently
-    // being used
-    if (iPad != 0) return;
-#endif
 
     ui.AnimateKeyPress(m_iPad, key, repeat, pressed, released);
 
     switch (key) {
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
-            // #ifdef __PS3__
+            // #ifdef 0
             // 	case ACTION_MENU_Y:
             // 		if(pressed)
             // 		{
@@ -104,13 +93,7 @@ void UIScene_SaveMessage::handlePress(F64 controlId, F64 childId) {
 
             m_bIgnoreInput = true;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-            // wait for the profile to be read - this has been kicked off
-            // earlier, so should be read by now
-            addTimer(PROFILE_LOADED_TIMER_ID, PROFILE_LOADED_TIMER_TIME);
-#else
             ui.NavigateToHomeMenu();
-#endif
             break;
     };
 }
@@ -118,68 +101,9 @@ void UIScene_SaveMessage::handlePress(F64 controlId, F64 childId) {
 void UIScene_SaveMessage::handleTimerComplete(int id) {
     switch (id) {
         case PROFILE_LOADED_TIMER_ID: {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-            C4JStorage::eOptionsCallback eStatus =
-                app.GetOptionsCallbackStatus(0);
-
-            switch (eStatus) {
-                case C4JStorage::eOptions_Callback_Read:
-                case C4JStorage::eOptions_Callback_Read_FileNotFound:
-                case C4JStorage::eOptions_Callback_Read_Fail:
-#ifdef __PSVITA__
-                case C4JStorage::eOptions_Callback_Write_Fail:
-                case C4JStorage::eOptions_Callback_Write:
-#endif
-                    // set defaults - which has already been done
-                    killTimer(PROFILE_LOADED_TIMER_ID);
-                    ui.NavigateToHomeMenu();
-                    SQRNetworkManager::SafeToRespondToGameBootInvite();
-                    app.SetOptionsCallbackStatus(
-                        0, C4JStorage::eOptions_Callback_Idle);
-                    break;
-                case C4JStorage::eOptions_Callback_Read_CorruptDeleted:
-                    killTimer(PROFILE_LOADED_TIMER_ID);
-                    ui.NavigateToHomeMenu();
-                    SQRNetworkManager::SafeToRespondToGameBootInvite();
-                    app.SetOptionsCallbackStatus(
-                        0, C4JStorage::eOptions_Callback_Idle);
-                    break;
-                case C4JStorage::eOptions_Callback_Read_Corrupt:
-                    // get the user to delete the options file
-                    app.DebugPrintf("Corrupt options file\n");
-                    app.SetOptionsCallbackStatus(
-                        0, C4JStorage::
-                               eOptions_Callback_Read_CorruptDeletePending);
-                    m_bIgnoreInput = false;
-                    // give the option to delete the save
-                    unsigned int uiIDA[1];
-                    uiIDA[0] = IDS_CORRUPT_OPTIONS_RETRY;
-                    uiIDA[1] = IDS_CORRUPT_OPTIONS_DELETE;
-                    ui.RequestErrorMessage(
-                        IDS_CORRUPT_FILE, IDS_CORRUPT_OPTIONS, uiIDA, 2, 0,
-                        &UIScene_SaveMessage::DeleteOptionsDialogReturned,
-                        this);
-                    break;
-            }
-#endif
         }
 
         break;
     }
 }
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-int UIScene_SaveMessage::DeleteOptionsDialogReturned(
-    void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // UIScene_SaveMessage* pClass = (UIScene_SaveMessage*)pParam;
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        // retry loading the options file
-        StorageManager.ReadFromProfile(iPad);
-    } else  // result == EMessage_ResultDecline
-    {
-        // kick off the delete
-        StorageManager.DeleteOptionsData(iPad);
-    }
-    return 0;
-}
-#endif

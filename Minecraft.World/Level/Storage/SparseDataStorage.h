@@ -1,7 +1,7 @@
 #pragma once
-#ifndef __linux__
+#if !defined(__linux__)
 #include "../../Platform/x64headers/xmcore.h"
-#endif  // __linux__
+#endif
 
 // 4J added - Storage for data (ie the extra per tile storage). Data is normally
 // stored as 4-bits per tile, in a DataLayer class of 16384 bytes ( 128 x 16 x
@@ -70,11 +70,6 @@ private:
 
     static const int ALL_0_INDEX = 128;
 
-#ifdef _XBOX
-    static const unsigned int MM_PHYSICAL_4KB_BASE =
-        0xE0000000;  // Start of where 4KB page sized physical allocations are
-                     // made
-#endif
 public:
     SparseDataStorage();
     SparseDataStorage(bool isUpper);
@@ -119,7 +114,7 @@ public:
     static int deleteQueueIndex;
     static XLockFreeStack<unsigned char> deleteQueue[3];
 
-#ifdef DATA_COMPRESSION_STATS
+#if defined(DATA_COMPRESSION_STATS)
     int count;
 #endif
 

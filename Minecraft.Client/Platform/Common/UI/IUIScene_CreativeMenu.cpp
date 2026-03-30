@@ -211,43 +211,8 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM_AUX(Tile::woolCarpet_Id, 13)  // Green
     ITEM_AUX(Tile::woolCarpet_Id, 12)  // Brown
 
-#if 0
-		ITEM_AUX(Tile::stained_glass_Id,14)	// Red
-		ITEM_AUX(Tile::stained_glass_Id,1)	// Orange
-		ITEM_AUX(Tile::stained_glass_Id,4)	// Yellow
-		ITEM_AUX(Tile::stained_glass_Id,5)	// Lime
-		ITEM_AUX(Tile::stained_glass_Id,3)	// Light Blue
-		ITEM_AUX(Tile::stained_glass_Id,9)	// Cyan
-		ITEM_AUX(Tile::stained_glass_Id,11)	// Blue
-		ITEM_AUX(Tile::stained_glass_Id,10)	// Purple
-		ITEM_AUX(Tile::stained_glass_Id,2)	// Magenta
-		ITEM_AUX(Tile::stained_glass_Id,6)	// Pink
-		ITEM_AUX(Tile::stained_glass_Id,0)	// White
-		ITEM_AUX(Tile::stained_glass_Id,8)	// Light Gray
-		ITEM_AUX(Tile::stained_glass_Id,7)	// Gray
-		ITEM_AUX(Tile::stained_glass_Id,15)	// Black
-		ITEM_AUX(Tile::stained_glass_Id,13)	// Green
-		ITEM_AUX(Tile::stained_glass_Id,12)	// Brown
 
-		ITEM_AUX(Tile::stained_glass_pane_Id,14)	// Red
-		ITEM_AUX(Tile::stained_glass_pane_Id,1)	// Orange
-		ITEM_AUX(Tile::stained_glass_pane_Id,4)	// Yellow
-		ITEM_AUX(Tile::stained_glass_pane_Id,5)	// Lime
-		ITEM_AUX(Tile::stained_glass_pane_Id,3)	// Light Blue
-		ITEM_AUX(Tile::stained_glass_pane_Id,9)	// Cyan
-		ITEM_AUX(Tile::stained_glass_pane_Id,11)	// Blue
-		ITEM_AUX(Tile::stained_glass_pane_Id,10)	// Purple
-		ITEM_AUX(Tile::stained_glass_pane_Id,2)	// Magenta
-		ITEM_AUX(Tile::stained_glass_pane_Id,6)	// Pink
-		ITEM_AUX(Tile::stained_glass_pane_Id,0)	// White
-		ITEM_AUX(Tile::stained_glass_pane_Id,8)	// Light Gray
-		ITEM_AUX(Tile::stained_glass_pane_Id,7)	// Gray
-		ITEM_AUX(Tile::stained_glass_pane_Id,15)	// Black
-		ITEM_AUX(Tile::stained_glass_pane_Id,13)	// Green
-		ITEM_AUX(Tile::stained_glass_pane_Id,12)	// Brown
-#endif
-
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     DEF(eCreativeInventory_ArtToolsDecorations)
     if (app.DebugSettingsOn()) {
         for (unsigned int i = 0; i < Painting::LAST_VALUE; ++i) {
@@ -427,7 +392,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     BuildFirework(list, FireworksItem::TYPE_STAR, DyePowderItem::YELLOW, 2,
                   false, true, DyePowderItem::ORANGE);
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     DEF(eCreativeInventory_ArtToolsMisc)
     if (app.DebugSettingsOn()) {
         ITEM_AUX(Item::spawnEgg_Id,
@@ -548,7 +513,7 @@ void IUIScene_CreativeMenu::staticCtor() {
             new EnchantmentInstance(enchantment, enchantment->getMaxLevel())));
     }
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn()) {
         std::shared_ptr<ItemInstance> debugSword =
             std::shared_ptr<ItemInstance>(
@@ -831,7 +796,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     specs[eCreativeInventoryTab_BuildingBlocks] = new TabSpec(
         L"Structures", IDS_GROUPNAME_BUILDING_BLOCKS, 1, blocksGroup);
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     ECreative_Inventory_Groups decorationsGroup[] = {
         eCreativeInventory_Decoration};
     ECreative_Inventory_Groups debugDecorationsGroup[] = {
@@ -892,7 +857,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     // potionsGroup);
     // 	}
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     ECreative_Inventory_Groups miscGroup[] = {eCreativeInventory_Misc};
     ECreative_Inventory_Groups debugMiscGroup[] = {
         eCreativeInventory_ArtToolsMisc};
@@ -1069,7 +1034,7 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
         }
     }
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugArtToolsOn()) {
         if (m_debugGroupsCount > 0) {
             startIndex = 0;
@@ -1116,7 +1081,7 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
 }
 
 unsigned int IUIScene_CreativeMenu::TabSpec::getPageCount() {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugArtToolsOn()) {
         return (int)ceil((float)(m_staticItems + m_debugItems) /
                          m_staticPerPage);

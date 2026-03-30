@@ -17,9 +17,6 @@ class EntitySelector;
 #define SHARING_ENABLED
 class TileCompressData_SPU;
 
-#if 0  //__PSVITA__
-#define _ENTITIES_RW_SECTION
-#endif
 
 class LevelChunk {
     friend class TileCompressData_SPU;
@@ -162,7 +159,7 @@ protected:
 public:
     bool dontSave;
     bool lastSaveHadEntities;
-#ifdef SHARING_ENABLED
+#if defined(SHARING_ENABLED)
     bool sharingTilesAndData;  // 4J added
 #endif
     bool emissiveAdded;                              // 4J added
@@ -175,7 +172,7 @@ public:
     int lowestHeightmap;
     int64_t inhabitedTime;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     bool m_bUnloaded;
     CompoundTag* m_unloadedEntitiesTag;
 #endif
@@ -242,7 +239,7 @@ public:
     virtual void load();
     virtual void unload(bool unloadTileEntities);  // 4J - added parameter
     virtual bool containsPlayer();                 // 4J - added
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     virtual bool isUnloaded();
 #endif
     virtual void markUnsaved();
@@ -271,11 +268,11 @@ public:
     virtual bool isEmpty();
     virtual void attemptCompression();
 
-#ifdef SHARING_ENABLED
+#if defined(SHARING_ENABLED)
     static CRITICAL_SECTION m_csSharing;  // 4J added
 #endif
     // 4J  added
-#ifdef _ENTITIES_RW_SECTION
+#if defined(_ENTITIES_RW_SECTION)
     static CRITICAL_RW_SECTION
         m_csEntities;  // AP - we're using a RW critical so we can do multiple
                        // reads without contention
@@ -309,13 +306,13 @@ public:
                                         int zs);
     static void reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
                                           byteArray* data);
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
     int getBlockLightPlanesLower() { return lowerBlockLight->count; }
     int getSkyLightPlanesLower() { return lowerSkyLight->count; }
     int getBlockLightPlanesUpper() { return upperBlockLight->count; }
     int getSkyLightPlanesUpper() { return upperSkyLight->count; }
 #endif
-#ifdef DATA_COMPRESSION_STATS
+#if defined(DATA_COMPRESSION_STATS)
     int getDataPlanes() { return data->count; }
 #endif
 };

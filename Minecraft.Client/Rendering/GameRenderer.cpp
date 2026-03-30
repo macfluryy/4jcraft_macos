@@ -44,7 +44,7 @@
 #include "Models/HumanoidModel.h"
 #include "../../Minecraft.World/Items/Item.h"
 #include "../../Minecraft.World/IO/Streams/Compression.h"
-#include "PS3/PS3Extras/ShutdownManager.h"
+#include "../Platform/Common/ShutdownManager.h"
 #include "../UI/BossMobGuiInfo.h"
 
 #include "../Textures/Packs/TexturePackRepository.h"
@@ -55,7 +55,7 @@
 bool GameRenderer::anaglyph3d = false;
 int GameRenderer::anaglyphPass = 0;
 
-#ifdef MULTITHREAD_ENABLE
+#if defined(MULTITHREAD_ENABLE)
 C4JThread* GameRenderer::m_updateThread;
 C4JThread::EventArray* GameRenderer::m_updateEvents;
 bool GameRenderer::nearThingsToDo = false;
@@ -162,27 +162,16 @@ GameRenderer::GameRenderer(Minecraft* mc) {
                                             // per level to support split screen
     }
     delete img;
-#ifdef __PS3__
-    // we're using the RSX now to upload textures to vram, so we need the main
-    // ram textures allocated from io space
-    for (int i = 0; i < NUM_LIGHT_TEXTURES; i++)
-        lightPixels[i] = intArray(
-            (int*)RenderManager.allocIOMem(16 * 16 * sizeof(int)), 16 * 16);
-#else
     for (int i = 0; i < NUM_LIGHT_TEXTURES; i++)
         lightPixels[i] = intArray(16 * 16);
-#endif
 
-#ifdef MULTITHREAD_ENABLE
+#if defined(MULTITHREAD_ENABLE)
     m_updateEvents = new C4JThread::EventArray(
         eUpdateEventCount, C4JThread::EventArray::e_modeAutoClear);
     m_updateEvents->Set(eUpdateEventIsFinished);
 
     InitializeCriticalSection(&m_csDeleteStack);
     m_updateThread = new C4JThread(runUpdate, NULL, "Chunk update");
-#ifdef __PS3__
-    m_updateThread->SetPriority(THREAD_PRIORITY_ABOVE_NORMAL);
-#endif  // __PS3__
     m_updateThread->SetProcessor(CPU_CORE_CHUNK_UPDATE);
     m_updateThread->Run();
 #endif
@@ -778,7 +767,7 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
     FRAME_PROFILE_SCOPE(Lightmap);
-#ifdef __linux__
+#if defined(__linux__)
     if (SharedConstants::TEXTURE_LIGHTING) {
         LinuxLogStubLightmapProbe();
         RenderManager.TextureBindVertex(-1);
@@ -787,7 +776,6 @@ void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
 #else
     // 4jcraft: manually handle this in order to ensure that the light layer is
     // turned off correctly
-#if 1
     if (SharedConstants::TEXTURE_LIGHTING) {
         glClientActiveTexture(GL_TEXTURE1);
         glActiveTexture(GL_TEXTURE1);
@@ -799,9 +787,6 @@ void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
         glClientActiveTexture(GL_TEXTURE0);
         glActiveTexture(GL_TEXTURE0);
     }
-#else
-    RenderManager.TextureBindVertex(-1);
-#endif
 #endif
 }
 
@@ -810,7 +795,7 @@ void GameRenderer::turnOnLightLayer(
     double alpha,
     bool scaleLight) {  // 4jcraft: added scaleLight for entity lighting
     FRAME_PROFILE_SCOPE(Lightmap);
-#ifdef __linux__
+#if defined(__linux__)
     if (!SharedConstants::TEXTURE_LIGHTING) return;
 
     LinuxLogStubLightmapProbe();
@@ -826,43 +811,10 @@ void GameRenderer::turnOnLightLayer(
     RenderManager.TextureBindVertex(textureId, scaleLight);
     LinuxGLLogLightmapState("turnOnLightLayer", textureId, scaleLight);
 #else
-#if 0
-	if (SharedConstants::TEXTURE_LIGHTING)
-	{
-		glClientActiveTexture(GL_TEXTURE1);
-		glActiveTexture(GL_TEXTURE1);
-		glMatrixMode(GL_TEXTURE);
-		glLoadIdentity();
-		// float s = 1 / 16f / 15.0f*16/14.0f;
-		float s = 1 / 16.0f / 15.0f * 15 / 16;
-		glScalef(s, s, s);
-		glTranslatef(8f, 8f, 8f);
-		glMatrixMode(GL_MODELVIEW);
-
-		mc->textures->bind(lightTexture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-		glColor4f(1, 1, 1, 1);
-		glEnable(GL_TEXTURE_2D);
-		glClientActiveTexture(GL_TEXTURE0);
-		glActiveTexture(GL_TEXTURE0);
-	}
-#endif
     // 4jcraft: update light texture
     // todo: check implementation of getLightTexture.
     RenderManager.TextureBindVertex(
         getLightTexture(mc->player->GetXboxPad(), mc->level), scaleLight);
-#if 0
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-#endif
 #endif
 }
 
@@ -988,10 +940,8 @@ void GameRenderer::updateLightTexture(float a) {
             int g = (int)(_g * 255);
             int b = (int)(_b * 255);
 
-#if (defined _DURANGO || defined _WIN64 || __PSVITA__ || __linux__)
+#if defined(_WIN64) || __linux__
             lightPixels[j][i] = alpha << 24 | b << 16 | g << 8 | r;
-#elif (defined _XBOX || defined __ORBIS__)
-            lightPixels[j][i] = alpha << 24 | r << 16 | g << 8 | b;
 #else
             lightPixels[j][i] = r << 24 | g << 16 | b << 8 | alpha;
 #endif
@@ -1040,28 +990,6 @@ void GameRenderer::render(float a, bool bFirst) {
         }
     }
 
-#if 0  // 4J - TODO
-	if (mc->mouseGrabbed && focused) {
-		mc->mouseHandler.poll();
-
-		float ss = mc->options->sensitivity * 0.6f + 0.2f;
-		float sens = (ss * ss * ss) * 8;
-		float xo = mc->mouseHandler.xd * sens;
-		float yo = mc->mouseHandler.yd * sens;
-
-		int yAxis = 1;
-		if (mc->options->invertYMouse) yAxis = -1;
-
-		if (mc->options->smoothCamera) {
-
-			xo = smoothTurnX.getNewDeltaValue(xo, .05f * sens);
-			yo = smoothTurnY.getNewDeltaValue(yo, .05f * sens);
-
-		}
-
-		mc->player.turn(xo, yo * yAxis);
-	}
-#endif
 
     if (mc->noRender) return;
     GameRenderer::anaglyph3d = mc->options->anaglyph3d;
@@ -1114,7 +1042,7 @@ void GameRenderer::render(float a, bool bFirst) {
 
 void GameRenderer::renderLevel(float a) { renderLevel(a, 0); }
 
-#ifdef MULTITHREAD_ENABLE
+#if defined(MULTITHREAD_ENABLE)
 // Request that an item be deleted, when it is safe to do so
 void GameRenderer::AddForDelete(uint8_t* deleteThis) {
     EnterCriticalSection(&m_csDeleteStack);
@@ -1145,7 +1073,7 @@ int GameRenderer::runUpdate(void* lpParam) {
     Tesselator::CreateNewThreadStorage(1024 * 1024);
     Compression::UseDefaultThreadStorage();
     RenderManager.InitialiseContext();
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     Chunk::CreateNewThreadStorage();
 #endif
     Tile::CreateNewThreadStorage();
@@ -1224,10 +1152,10 @@ int GameRenderer::runUpdate(void* lpParam) {
 #endif
 
 void GameRenderer::EnableUpdateThread() {
-    // #ifdef __PS3__ // MGH - disable the update on PS3 for now
+    // #if 0 // MGH - disable the update on PS3 for now
     // 	return;
     // #endif
-#ifdef MULTITHREAD_ENABLE
+#if defined(MULTITHREAD_ENABLE)
     if (updateRunning) return;
     app.DebugPrintf(
         "------------------EnableUpdateThread--------------------\n");
@@ -1238,10 +1166,10 @@ void GameRenderer::EnableUpdateThread() {
 }
 
 void GameRenderer::DisableUpdateThread() {
-    // #ifdef __PS3__ // MGH - disable the update on PS3 for now
+    // #if 0 // MGH - disable the update on PS3 for now
     // 	return;
     // #endif
-#ifdef MULTITHREAD_ENABLE
+#if defined(MULTITHREAD_ENABLE)
     if (!updateRunning) return;
     app.DebugPrintf(
         "------------------DisableUpdateThread--------------------\n");
@@ -1339,7 +1267,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         }
         PIXEndNamedEvent();
 
-#ifndef MULTITHREAD_ENABLE
+#if !defined(MULTITHREAD_ENABLE)
         if ((i == 0) && updateChunks)  // 4J - added updateChunks condition
         {
             int PIXPass = 0;
@@ -1406,10 +1334,6 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 FRAME_PROFILE_SCOPE(Entity);
                 levelRenderer->renderEntities(&cameraPos, frustum, a);
             }
-#ifdef __PSVITA__
-            // AP - make sure we're using the Alpha cut out effect for particles
-            glEnable(GL_ALPHA_TEST);
-#endif
             PIXEndNamedEvent();
             PIXBeginNamedEvent(0, "Particle render");
             turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
@@ -1785,16 +1709,6 @@ void GameRenderer::renderSnowAndRain(float a) {
             float br = 1.0f;
             float s = 1.0f;
             t->offset(-xo, -yo, -zo);
-#ifdef __PSVITA__
-            float Alpha = ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel;
-            int tex2 = (level->getLightColor(x, yl, z, 0) * 3 + 0xf000f0) / 4;
-            t->tileRainQuad(
-                x - xa + 0.5, yy0, z - za + 0.5, 0 * s, yy0 * s / 4.0f + ra * s,
-                x + xa + 0.5, yy0, z + za + 0.5, 1 * s, yy0 * s / 4.0f + ra * s,
-                x + xa + 0.5, yy1, z + za + 0.5, 1 * s, yy1 * s / 4.0f + ra * s,
-                x - xa + 0.5, yy1, z - za + 0.5, 0 * s, yy1 * s / 4.0f + ra * s,
-                br, br, br, Alpha, br, br, br, 0, tex2);
-#else
             t->tex2(level->getLightColor(x, yl, z, 0));
             t->color(br, br, br, ((1 - dd * dd) * 0.5f + 0.5f) * rainLevel);
             t->vertexUV(x - xa + 0.5, yy0, z - za + 0.5, 0 * s,
@@ -1805,7 +1719,6 @@ void GameRenderer::renderSnowAndRain(float a) {
                         yy1 * s / 4.0f + ra * s);
             t->vertexUV(x - xa + 0.5, yy1, z - za + 0.5, 0 * s,
                         yy1 * s / 4.0f + ra * s);
-#endif
             t->offset(0, 0, 0);
         }
     }

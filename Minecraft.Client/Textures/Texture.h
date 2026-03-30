@@ -4,9 +4,6 @@ class Rect2i;
 class ByteBuffer;
 class BufferedImage;
 
-#ifdef __PS3__
-class ByteBuffer_IO;
-#endif
 
 class Texture {
 public:
@@ -58,11 +55,7 @@ private:
     bool immediateUpdate;
     bool updated;
     int m_iMipLevels;
-#ifdef __PS3__
-    ByteBuffer_IO* data[10];
-#else
     ByteBuffer* data[10];  // Arrays for mipmaps - NULL if not used
-#endif
 
 public:
     bool m_bInitialised;  // 4J Added

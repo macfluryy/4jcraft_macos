@@ -34,12 +34,7 @@ SparseLightStorage::SparseLightStorage(bool sky) {
     // MM_PHYSICAL_4KB_BASE upwards. We can use this fact to identify the
     // allocation later, and so free it with the corresponding call to
     // XPhysicalFree.
-#ifdef _XBOX
-    unsigned char* planeIndices = (unsigned char*)XPhysicalAlloc(
-        128 * 128, MAXULONG_PTR, 4096, PAGE_READWRITE);
-#else
     unsigned char* planeIndices = (unsigned char*)malloc(128 * 128);
-#endif
     unsigned char* data = planeIndices + 128;
     planeIndices[127] = sky ? ALL_15_INDEX : ALL_0_INDEX;
     for (int i = 0; i < 127; i++) {
@@ -53,7 +48,7 @@ SparseLightStorage::SparseLightStorage(bool sky) {
     dataAndCount =
         0x007F000000000000L | (((int64_t)planeIndices) & 0x0000ffffffffffffL);
 
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
     count = 127;
 #endif
 }
@@ -75,7 +70,7 @@ SparseLightStorage::SparseLightStorage(bool sky, bool isUpper) {
     dataAndCount =
         0x0000000000000000L | (((int64_t)planeIndices) & 0x0000ffffffffffffL);
 
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
     count = 0;
 #endif
 }
@@ -86,11 +81,6 @@ SparseLightStorage::~SparseLightStorage() {
     // Determine correct means to free this data - could have been allocated
     // either with XPhysicalAlloc or malloc
 
-#ifdef _XBOX
-    if ((unsigned int)indicesAndData >= MM_PHYSICAL_4KB_BASE) {
-        XPhysicalFree(indicesAndData);
-    } else
-#endif
     {
         free(indicesAndData);
     }
@@ -119,7 +109,7 @@ SparseLightStorage::SparseLightStorage(SparseLightStorage* copyFrom) {
 
     XMemCpy(destIndicesAndData, sourceIndicesAndData, sourceCount * 128 + 128);
 
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
     count = sourceCount;
 #endif
 }
@@ -435,7 +425,7 @@ void SparseLightStorage::addNewPlane(int y) {
             // Queue old data to be deleted
             queueForDelete(lastDataPointer);
 //			printf("Marking for delete 0x%x\n", lastDataPointer);
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
             count = linesUsed;
 #endif
         } else {
@@ -477,11 +467,6 @@ void SparseLightStorage::tick() {
 //		if( toFree ) printf("Deleting 0x%x\n", toFree);
 // Determine correct means to free this data - could have been allocated either
 // with XPhysicalAlloc or malloc
-#ifdef _XBOX
-        if ((unsigned int)toFree >= MM_PHYSICAL_4KB_BASE) {
-            XPhysicalFree(toFree);
-        } else
-#endif
         {
             free(toFree);
         }
@@ -518,7 +503,7 @@ void SparseLightStorage::updateDataAndCount(int64_t newDataAndCount) {
         }
     } while (!success);
 
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
     count = (newDataAndCount >> 48) & 0xffff;
 #endif
 }
@@ -602,7 +587,7 @@ int SparseLightStorage::compress() {
             queueForDelete(planeIndices);
 //			printf("Successfully compressed to %d planes, to delete
 //0x%x\n", planesToAlloc, planeIndices);
-#ifdef LIGHT_COMPRESSION_STATS
+#if defined(LIGHT_COMPRESSION_STATS)
             count = planesToAlloc;
 #endif
         }

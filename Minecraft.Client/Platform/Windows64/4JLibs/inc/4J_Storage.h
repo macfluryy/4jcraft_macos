@@ -309,10 +309,6 @@ public:
 	void								StoreTMSPathName(WCHAR *pwchName=NULL);
 
 	// TMS++
-#ifdef _XBOX
-	C4JStorage::ETMSStatus				WriteTMSFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FileType eFileType,CHAR *pchFilePath,CHAR *pchBuffer,DWORD dwBufferSize,TMSCLIENT_CALLBACK Func,LPVOID lpParam);
-	HRESULT								GetUserQuotaInfo(int iPad,TMSCLIENT_CALLBACK Func,LPVOID lpParam);
-#endif
 
 	// 	C4JStorage::ETMSStatus				TMSPP_WriteFile(int iPad,C4JStorage::eGlobalStorage eStorageFacility,C4JStorage::eTMS_FILETYPEVAL eFileTypeVal,C4JStorage::eTMS_UGCTYPE eUGCType,CHAR *pchFilePath,CHAR *pchBuffer,DWORD dwBufferSize,int( *Func)(LPVOID,int,int)=NULL,LPVOID lpParam=NULL, int iUserData=0);
 	// 	C4JStorage::ETMSStatus				TMSPP_GetUserQuotaInfo(int iPad,TMSCLIENT_CALLBACK Func,LPVOID lpParam, int iUserData=0);

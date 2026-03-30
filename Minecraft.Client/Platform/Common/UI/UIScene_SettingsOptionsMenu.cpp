@@ -2,9 +2,6 @@
 #include "UI.h"
 #include "UIScene_SettingsOptionsMenu.h"
 
-#if defined(_XBOX_ONE)
-#define _ENABLE_LANGUAGE_SELECT
-#endif
 
 int UIScene_SettingsOptionsMenu::m_iDifficultySettingA[4] = {
     IDS_DIFFICULTY_PEACEFUL, IDS_DIFFICULTY_EASY, IDS_DIFFICULTY_NORMAL,
@@ -67,9 +64,6 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     m_sliderAutosave.init(autosaveLabels[ucValue], eControl_Autosave, 0, 8,
                           ucValue);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-    removeControl(&m_sliderAutosave, true);
-#endif
 
     ucValue = app.GetGameSettings(m_iPad, eGameSetting_Difficulty);
     wchar_t difficultyLabels[4][256];
@@ -136,7 +130,7 @@ UIScene_SettingsOptionsMenu::UIScene_SettingsOptionsMenu(int iPad,
     // MGH - disabled the language select for the patch build, we'll re-enable
     // afterwards 4J Stu - Removed it with a preprocessor def as we turn this
     // off in various places
-#ifdef _ENABLE_LANGUAGE_SELECT
+#if defined(_ENABLE_LANGUAGE_SELECT)
     if (app.GetGameStarted()) {
         removeControl(&m_buttonLanguageSelect, false);
     } else {
@@ -209,9 +203,6 @@ void UIScene_SettingsOptionsMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
         case ACTION_MENU_UP:
@@ -277,9 +268,6 @@ void UIScene_SettingsOptionsMenu::handleReload() {
     m_sliderAutosave.init(autosaveLabels[ucValue], eControl_Autosave, 0, 8,
                           ucValue);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-    removeControl(&m_sliderAutosave, true);
-#endif
 
     ucValue = app.GetGameSettings(m_iPad, eGameSetting_Difficulty);
 
@@ -346,7 +334,7 @@ void UIScene_SettingsOptionsMenu::handleReload() {
     // MGH - disabled the language select for the patch build, we'll re-enable
     // afterwards 4J Stu - Removed it with a preprocessor def as we turn this
     // off in various places
-#ifdef _ENABLE_LANGUAGE_SELECT
+#if defined(_ENABLE_LANGUAGE_SELECT)
     // 4J-JEV: Changing languages in-game will produce many a bug.
     if (app.GetGameStarted()) {
         removeControl(&m_buttonLanguageSelect, false);

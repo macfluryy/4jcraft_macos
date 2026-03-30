@@ -27,12 +27,6 @@ ChestRenderer::ChestRenderer() : TileEntityRenderer() {
     xmasTextures = false;
 
     // 4J Stu - Disable this
-#if 0
-	if (Calendar::GetMonth() + 1 == 12 && Calendar::GetDayOfMonth() >= 24 && Calendar::GetDayOfMonth() <= 26)
-	{
-		xmasTextures = true;
-	}
-#endif
 }
 
 ChestRenderer::~ChestRenderer() {

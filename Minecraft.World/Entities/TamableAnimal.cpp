@@ -22,36 +22,17 @@ void TamableAnimal::defineSynchedData() {
 
 void TamableAnimal::addAdditonalSaveData(CompoundTag* tag) {
     Animal::addAdditonalSaveData(tag);
-#ifdef _XBOX_ONE
-    // 4J Stu Added from later Java version to remove owners from save transfer
-    // saves. We will probably want this on other platforms in the future
-    if (getOwnerUUID().empty()) {
-        tag->putString(L"OwnerUUID", L"");
-    } else {
-        tag->putString(L"OwnerUUID", getOwnerUUID());
-    }
-#else
     if (getOwnerUUID().empty()) {
         tag->putString(L"Owner", L"");
     } else {
         tag->putString(L"Owner", getOwnerUUID());
     }
-#endif
     tag->putBoolean(L"Sitting", isSitting());
 }
 
 void TamableAnimal::readAdditionalSaveData(CompoundTag* tag) {
     Animal::readAdditionalSaveData(tag);
-#ifdef _XBOX_ONE
-    // 4J Stu Added from later Java version to remove owners from save transfer
-    // saves. We will probably want this on other platforms in the future
-    std::wstring owner = L"";
-    if (tag->contains(L"OwnerUUID")) {
-        owner = tag->getString(L"OwnerUUID");
-    }
-#else
     std::wstring owner = tag->getString(L"Owner");
-#endif
     if (owner.length() > 0) {
         setOwnerUUID(owner);
         setTame(true);

@@ -8,7 +8,7 @@
 #include "../Util/ThreadName.h"
 #include "../../Minecraft.Client/Network/ServerConnection.h"
 #include <algorithm>
-#include "../../Minecraft.Client/Platform/PS3/PS3Extras/ShutdownManager.h"
+#include "../../Minecraft.Client/Platform/Common/ShutdownManager.h"
 
 // This current socket implementation is for the creation of a single local
 // link. 2 sockets can be created, one for either end of this local link, the
@@ -464,15 +464,9 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
             return;
         }
 
-#ifdef _XBOX
-        bool lowPriority = ((flags & QNET_SENDDATA_LOW_PRIORITY) ==
-                            QNET_SENDDATA_LOW_PRIORITY);
-        bool requireAck = lowPriority;
-#else
         bool lowPriority = false;
         bool requireAck = ((flags & NON_QNET_SENDDATA_ACK_REQUIRED) ==
                            NON_QNET_SENDDATA_ACK_REQUIRED);
-#endif
 
         if (m_queueIdx == SOCKET_SERVER_END) {
             // printf( "Sent %u bytes of data from \"%ls\" to \"%ls\"\n",

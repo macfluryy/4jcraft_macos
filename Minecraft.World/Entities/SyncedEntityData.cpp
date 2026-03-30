@@ -78,16 +78,6 @@ void SynchedEntityData::defineNULL(int id, void* pVal) {
 }
 
 void SynchedEntityData::checkId(int id) {
-#if 0
-	if (id > MAX_ID_VALUE)
-	{
-		throw new IllegalArgumentException(L"Data value id is too big with " + _toString<int>(id) + L"! (Max is " + _toString<int>(MAX_ID_VALUE) + L")");
-	}
-	if (itemsById.find(id) != itemsById.end())
-	{
-		throw new IllegalArgumentException(L"Duplicate id value for " + _toString<int>(id) + L"!");
-	}
-#endif
 }
 
 uint8_t SynchedEntityData::getByte(int id) {

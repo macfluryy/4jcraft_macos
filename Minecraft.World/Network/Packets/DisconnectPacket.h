@@ -33,20 +33,12 @@ public:
         eDisconnect_NoUGC_Single_Local,
         eDisconnect_ContentRestricted_AllLocal,
         eDisconnect_ContentRestricted_Single_Local,
-#ifndef __PS3__
         eDisconnect_NoUGC_Remote,
-#endif
 
         eDisconnect_NoFriendsInGame,
         eDisconnect_Banned,
         eDisconnect_NotFriendsWithHost,
         eDisconnect_NATMismatch,
-#ifdef __ORBIS__
-        eDisconnect_NetworkError,
-#endif
-#ifdef _XBOX_ONE
-        eDisconnect_ExitedGame,
-#endif
     };
 
     // 4J Stu - The reason was a string, but we need to send a non-locale

@@ -4,11 +4,8 @@
 #include "OffsettedRenderList.h"
 #include "../../Minecraft.World/Util/JavaIntHash.h"
 #include "../../Minecraft.World/Level/Level.h"
-#ifndef __linux__
+#if !defined(__linux__)
 #include <xmcore.h>
-#endif  // __linux__
-#ifdef __PS3__
-#include "../Platform/PS3/PS3Extras/C4JSpursJob.h"
 #endif
 #include <unordered_set>
 class MultiPlayerLevel;
@@ -33,9 +30,6 @@ class Tesselator;
 // I've added another chunk flag to mark a chunk critical so it swipes a bit
 // from the reference count value (goes to 3 bits to 2). This works on Vita
 // because it doesn't have split screen reference counting.
-#ifdef __PSVITA__
-#define _CRITICAL_CHUNKS
-#endif
 
 class LevelRenderer : public LevelListener {
     friend class Chunk;
@@ -49,24 +43,15 @@ private:
 
 public:
     static const int CHUNK_XZSIZE = 16;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     static const int CHUNK_SIZE = 16;
 #else
     static const int CHUNK_SIZE = 16;
 #endif
     static const int CHUNK_Y_COUNT = Level::maxBuildHeight / CHUNK_SIZE;
-#if (defined _XBOX_ONE || defined _WINDOWS64)
+#if defined(_WINDOWS64)
     static const int MAX_COMMANDBUFFER_ALLOCATIONS =
         512 * 1024 * 1024;  // 4J - added
-#elif defined __ORBIS__
-    static const int MAX_COMMANDBUFFER_ALLOCATIONS =
-        448 * 1024 *
-        1024;  // 4J - added - hard limit is 512 so giving a lot of headroom
-               // here for fragmentation (have seen 16MB lost to fragmentation
-               // in multiplayer crash dump before)
-#elif defined __PS3__
-    static const int MAX_COMMANDBUFFER_ALLOCATIONS =
-        110 * 1024 * 1024;  // 4J - added
 #else
     static const int MAX_COMMANDBUFFER_ALLOCATIONS =
         55 * 1024 * 1024;  // 4J - added
@@ -127,13 +112,6 @@ public:
     void setTilesDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                        Level* level);  // 4J - added level param
 
-#ifdef __PS3__
-    void cull_SPU(int playerIndex, Culler* culler, float a);
-    void waitForCull_SPU();
-    C4JSpursJobQueue::Port* m_jobPort_CullSPU;
-    C4JSpursJobQueue::Port* m_jobPort_FindNearestChunk;
-    bool m_bSPUCullStarted[4];
-#endif  // __PS3__
     void cull(Culler* culler, float a);
     void playStreamingMusic(const std::wstring& name, int x, int y, int z);
     void playSound(int iSound, double x, double y, double z, float volume,
@@ -291,7 +269,7 @@ public:
     // This is the TOTAL area of columns of chunks to be allocated for render
     // round the players. So for one player, it would be a region of
     // sqrt(PLAYER_RENDER_AREA) x sqrt(PLAYER_RENDER_AREA)
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     static const int PLAYER_VIEW_DISTANCE =
         18;  // Straight line distance from centre to extent of visible world
     static const int PLAYER_RENDER_AREA =
@@ -338,7 +316,7 @@ public:
     static const int CHUNK_FLAG_EMPTY1 = 0x08;
     static const int CHUNK_FLAG_EMPTYBOTH = 0x0c;
     static const int CHUNK_FLAG_NOTSKYLIT = 0x10;
-#ifdef _CRITICAL_CHUNKS
+#if defined(_CRITICAL_CHUNKS)
     static const int CHUNK_FLAG_CRITICAL = 0x20;
     static const int CHUNK_FLAG_CUT_OUT = 0x40;
     static const int CHUNK_FLAG_REF_MASK = 0x01;
@@ -354,7 +332,7 @@ public:
     int64_t lastDirtyChunkFound;
     static const int FORCE_DIRTY_CHUNK_CHECK_PERIOD_MS = 250;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     static const int MAX_CONCURRENT_CHUNK_REBUILDS = 4;
     static const int MAX_CHUNK_REBUILD_THREADS =
         MAX_CONCURRENT_CHUNK_REBUILDS - 1;

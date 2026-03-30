@@ -78,9 +78,6 @@ protected:
     void loadDefaultUI();
     void loadDefaultColourTable();
     void loadDefaultHTMLColourTable();
-#ifdef _XBOX
-    void loadHTMLColourTableFromXuiScene(HXUIOBJ hObj);
-#endif
 
 public:
     virtual BufferedImage* getImageResource(const std::wstring& File,

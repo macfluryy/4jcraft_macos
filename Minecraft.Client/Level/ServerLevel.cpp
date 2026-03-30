@@ -38,7 +38,7 @@
 #include "../Textures/Packs/TexturePackRepository.h"
 #include "../Textures/Packs/DLCTexturePack.h"
 #include "../../Minecraft.World/Util/ProgressListener.h"
-#include "PS3/PS3Extras/ShutdownManager.h"
+#include "../Platform/Common/ShutdownManager.h"
 #include "../Network/PlayerChunkMap.h"
 
 WeighedTreasureArray ServerLevel::RANDOM_BONUS_ITEMS;
@@ -65,14 +65,6 @@ void ServerLevel::staticCtor() {
 
     m_updateThread = new C4JThread(runUpdate, NULL, "Tile update");
     m_updateThread->SetProcessor(CPU_CORE_TILE_UPDATE);
-#ifdef __ORBIS__
-    m_updateThread->SetPriority(
-        THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also used for
-                                        // Matching 2, and that priority of that
-                                        // seems to be always at default no
-                                        // matter what we set it to. Prioritise
-                                        // this below Matching 2.
-#endif
     m_updateThread->Run();
 
     RANDOM_BONUS_ITEMS = WeighedTreasureArray(20);
@@ -185,7 +177,7 @@ ServerLevel::ServerLevel(MinecraftServer* server,
     emptyTime = 0;
     activeTileEventsList = 0;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     saveInterval = 3;
 #else
     saveInterval = 20 * 2;
@@ -291,7 +283,7 @@ void ServerLevel::tick() {
     int64_t time = levelData->getGameTime() + 1;
     // 4J Stu - Putting this back in, but I have reduced the number of chunks
     // that save when not forced
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     if (time % (saveInterval) == (dimension->id + 1))
 #else
     if (time % (saveInterval) ==
@@ -310,7 +302,7 @@ void ServerLevel::tick() {
     setGameTime(levelData->getGameTime() + 1);
     if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
         // 4J: Debug setting added to keep it at day time
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
         bool freezeTime =
             app.DebugSettingsOn() &&
             app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
@@ -491,15 +483,9 @@ void ServerLevel::tickTiles() {
     if (app.GetGameSettingsDebugMask() & (1L << eDebugSetting_RegularLightning))
         prob = 100;
 
-#ifdef __PSVITA__
-    // AP - see CustomSet.h for and explanation
-    for (int i = 0; i < chunksToPoll.end(); i += 1) {
-        ChunkPos cp = chunksToPoll.get(i);
-#else
     AUTO_VAR(itEndCtp, chunksToPoll.end());
     for (AUTO_VAR(it, chunksToPoll.begin()); it != itEndCtp; it++) {
         ChunkPos cp = *it;
-#endif
         int xo = cp.x * 16;
         int zo = cp.z * 16;
 
@@ -958,17 +944,10 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
     if (progressListener != NULL)
         progressListener->progressStage(IDS_PROGRESS_SAVING_CHUNKS);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-    // Our autosave is a minimal save. All the chunks are saves by the constant
-    // save process
-    if (bAutosave) {
-        chunkSource->saveAllEntities();
-    } else
-#endif
     {
         chunkSource->save(force, progressListener);
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         // 4J Stu - Only do this if there are players in the level
         if (chunkMap->players.size() > 0) {
             // 4J Stu - This will come in a later change anyway
@@ -1572,9 +1551,6 @@ int ServerLevel::runUpdate(void* lpParam) {
             LeaveCriticalSection(&m_updateCS[iLev]);
         }
         PIXEndNamedEvent();
-#ifdef __PS3__
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-#endif  //__PS3__
     }
 
     ShutdownManager::HasFinished(ShutdownManager::eRunUpdateThread);

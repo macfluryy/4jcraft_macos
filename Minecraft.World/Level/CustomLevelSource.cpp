@@ -16,16 +16,16 @@ const double CustomLevelSource::SNOW_CUTOFF = 0.5;
 CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
                                      bool generateStructures)
     : generateStructures(generateStructures) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     m_XZSize = level->getLevelData()->getXZSize();
 
     m_heightmapOverride = byteArray((m_XZSize * 16) * (m_XZSize * 16));
 
-#ifdef _UNICODE
+#if defined(_UNICODE)
     std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
 
 #else
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
     std::string path = "GameRules\\heightmap.bin";
 #else
     std::string path = "GAME:\\GameRules\\heightmap.bin";
@@ -38,12 +38,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         DWORD error = GetLastError();
         assert(false);
     } else {
-#ifdef _DURANGO
-        __debugbreak();  // TODO
-        DWORD bytesRead, dwFileSize = 0;
-#else
         DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
-#endif
         if (dwFileSize > m_heightmapOverride.length) {
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
@@ -59,11 +54,11 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
 
     m_waterheightOverride = byteArray((m_XZSize * 16) * (m_XZSize * 16));
 
-#ifdef _UNICODE
+#if defined(_UNICODE)
     std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
 
 #else
-#ifdef _WINDOWS64
+#if defined(_WINDOWS64)
     std::string waterHeightPath = "GameRules\\waterheight.bin";
 #else
     std::string waterHeightPath = "GAME:\\GameRules\\waterheight.bin";
@@ -77,12 +72,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         memset(m_waterheightOverride.data, level->seaLevel,
                m_waterheightOverride.length);
     } else {
-#ifdef _DURANGO
-        __debugbreak();  // TODO
-        DWORD bytesRead, dwFileSize = 0;
-#else
         DWORD bytesRead, dwFileSize = GetFileSize(file, NULL);
-#endif
         if (dwFileSize > m_waterheightOverride.length) {
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
@@ -114,7 +104,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
 }
 
 CustomLevelSource::~CustomLevelSource() {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     delete caveFeature;
     delete strongholdFeature;
     delete villageFeature;
@@ -127,7 +117,7 @@ CustomLevelSource::~CustomLevelSource() {
 }
 
 void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::maxBuildHeight / CHUNK_HEIGHT;
     int waterHeight = level->seaLevel;
@@ -249,7 +239,7 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
 
 void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
                                       BiomeArray biomes) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     int waterHeight = level->seaLevel;
     int xMapStart = xOffs + m_XZSize / 2;
     int zMapStart = zOffs + m_XZSize / 2;
@@ -355,7 +345,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
 }
 
 LevelChunk* CustomLevelSource::create(int x, int z) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     return getChunk(x, z);
 #else
     return NULL;
@@ -363,7 +353,7 @@ LevelChunk* CustomLevelSource::create(int x, int z) {
 }
 
 LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
     // 4J - now allocating this with a physical alloc & bypassing general memory
@@ -431,7 +421,7 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
 // right - this isn't a new fault in the 360 version, have checked that java
 // does the same.
 void CustomLevelSource::lightChunk(LevelChunk* lc) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     lc->recalcHeightmap();
 #endif
 }
@@ -439,7 +429,7 @@ void CustomLevelSource::lightChunk(LevelChunk* lc) {
 bool CustomLevelSource::hasChunk(int x, int y) { return true; }
 
 void CustomLevelSource::calcWaterDepths(ChunkSource* parent, int xt, int zt) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     int xo = xt * 16;
     int zo = zt * 16;
     for (int x = 0; x < 16; x++) {
@@ -511,7 +501,7 @@ void CustomLevelSource::calcWaterDepths(ChunkSource* parent, int xt, int zt) {
 // 4J - changed this to used pprandom rather than random, so that we can run it
 // concurrently with getChunk
 void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     HeavyTile::instaFall = true;
     int xo = xt * 16;
     int zo = zt * 16;
@@ -538,35 +528,6 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     }
     PIXEndNamedEvent();
 
-#if 0
-	PIXBeginNamedEvent(0,"Lakes");
-	if (!hasVillage && pprandom->nextInt(4) == 0)
-	{
-		int x = xo + pprandom->nextInt(16) + 8;
-		int y = pprandom->nextInt(Level::maxBuildHeight);
-		int z = zo + pprandom->nextInt(16) + 8;
-
-		LakeFeature *calmWater = new LakeFeature(Tile::calmWater_Id);
-		calmWater->place(level, pprandom, x, y, z);
-		delete calmWater;
-	}
-	PIXEndNamedEvent();
-
-	PIXBeginNamedEvent(0,"Lava");
-	if (!hasVillage && pprandom->nextInt(8) == 0)
-	{
-		int x = xo + pprandom->nextInt(16) + 8;
-		int y = pprandom->nextInt(pprandom->nextInt(Level::maxBuildHeight - 8) + 8);
-		int z = zo + pprandom->nextInt(16) + 8;
-		if (y < level->seaLevel || pprandom->nextInt(10) == 0)
-		{
-			LakeFeature *calmLava = new LakeFeature(Tile::calmLava_Id);
-			calmLava->place(level, pprandom, x, y, z);
-			delete calmLava;
-		}
-	}
-	PIXEndNamedEvent();
-#endif
 
     PIXBeginNamedEvent(0, "Monster rooms");
     for (int i = 0; i < 8; i++) {
@@ -627,7 +588,7 @@ std::wstring CustomLevelSource::gatherStats() { return L"CustomLevelSource"; }
 
 std::vector<Biome::MobSpawnerData*>* CustomLevelSource::getMobsAt(
     MobCategory* mobCategory, int x, int y, int z) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     Biome* biome = level->getBiome(x, z);
     if (biome == NULL) {
         return NULL;
@@ -644,7 +605,7 @@ std::vector<Biome::MobSpawnerData*>* CustomLevelSource::getMobsAt(
 
 TilePos* CustomLevelSource::findNearestMapFeature(
     Level* level, const std::wstring& featureName, int x, int y, int z) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
     if (LargeFeature::STRONGHOLD == featureName && strongholdFeature != NULL) {
         return strongholdFeature->getNearestGeneratedFeature(level, x, y, z);
     }
@@ -655,7 +616,7 @@ TilePos* CustomLevelSource::findNearestMapFeature(
 void CustomLevelSource::recreateLogicStructuresForChunk(int chunkX,
                                                         int chunkZ) {
     if (generateStructures) {
-#ifdef _OVERRIDE_HEIGHTMAP
+#if defined(_OVERRIDE_HEIGHTMAP)
         mineShaftFeature->apply(this, level, chunkX, chunkZ, byteArray());
         villageFeature->apply(this, level, chunkX, chunkZ, byteArray());
         strongholdFeature->apply(this, level, chunkX, chunkZ, byteArray());

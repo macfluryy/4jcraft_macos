@@ -74,17 +74,6 @@ public:
 
 private:
     // 4J-PB - ui element type for PSVita touch control
-#ifdef __PSVITA__
-
-    typedef struct {
-        UIControl* pControl;
-        S32 x1, y1, x2, y2;
-    } UIELEMENT;
-    // E3 - Fine for now, but we need to make this better!
-    std::vector<UIELEMENT*> m_TouchBoxes[eUIGroup_COUNT][eUILayer_COUNT]
-                                        [eUIScene_COUNT];
-    bool m_bTouchscreenPressed;
-#endif
     // 4J Stu - These should be in the order that they reference each other
     // (i.e. they can only reference one with a lower value in the enum)
     enum ELibraries {
@@ -100,10 +89,10 @@ private:
         eLibrary_Tooltips,
         eLibrary_Default,
 
-#if (defined(_WINDOWS64))
+#if defined(_WINDOWS64)
     // 4J Stu - Load the 720/480 skins so that we have something to fallback on
     // during development
-#ifndef _FINAL_BUILD
+#if !defined(_FINAL_BUILD)
         eLibraryFallback_Platform,
         eLibraryFallback_GraphicsDefault,
         eLibraryFallback_GraphicsHUD,
@@ -181,23 +170,6 @@ private:
 
 public:
     UIController();
-#ifdef __PSVITA__
-    void TouchBoxAdd(UIControl* pControl, UIScene* pUIScene);
-    bool TouchBoxHit(UIScene* pUIScene, S32 x, S32 y);
-    void TouchBoxesClear(UIScene* pUIScene);
-    void TouchBoxRebuild(UIScene* pUIScene);
-
-    void HandleTouchInput(unsigned int iPad, unsigned int key, bool bPressed,
-                          bool bRepeat, bool bReleased);
-    void SendTouchInput(unsigned int iPad, unsigned int key, bool bPressed,
-                        bool bRepeat, bool bReleased);
-
-private:
-    void TouchBoxAdd(UIControl* pControl, EUIGroup eUIGroup, EUILayer eUILayer,
-                     EUIScene eUIscene, UIControl* pMainPanelControl);
-    UIELEMENT* m_ActiveUIElement;
-    UIELEMENT* m_HighlightedUIElement;
-#endif
 
 protected:
     UIGroup* m_groups[eUIGroup_COUNT];
@@ -383,9 +355,6 @@ public:
 
     virtual void HandleDLCMountingComplete();
     virtual void HandleDLCInstalled(int iPad);
-#ifdef _XBOX_ONE
-    virtual void HandleDLCLicenseChange();
-#endif
     virtual void HandleTMSDLCFileRetrieved(int iPad);
     virtual void HandleTMSBanFileRetrieved(int iPad);
     virtual void HandleInventoryUpdated(int iPad);

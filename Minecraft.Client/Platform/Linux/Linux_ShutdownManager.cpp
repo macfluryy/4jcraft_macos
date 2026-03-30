@@ -1,7 +1,7 @@
 // Linux stub implementations for ShutdownManager
 // The PS3/PSVita versions have full implementations; on Linux these are no-ops.
 #include "../../Platform/stdafx.h"
-#include "../PS3/PS3Extras/ShutdownManager.h"
+#include "../Common/ShutdownManager.h"
 
 void ShutdownManager::Initialise() {}
 void ShutdownManager::StartShutdown() {}

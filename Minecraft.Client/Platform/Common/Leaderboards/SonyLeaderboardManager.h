@@ -2,11 +2,7 @@
 
 #include "Common/Leaderboards/LeaderboardManager.h"
 
-#ifdef __PS3__
-typedef CellRtcTick SonyRtcTick;
-#else
 typedef SceRtcTick SonyRtcTick;
-#endif
 
 class SonyLeaderboardManager : public LeaderboardManager {
 protected:
@@ -135,11 +131,6 @@ protected:
     virtual HRESULT fillByIdsQuery(const SceNpId& myNpId, SceNpId*& npIds,
                                    uint32_t& len);
 
-#if (defined __ORBIS__) || (defined __PSVITA__)
-    virtual HRESULT getFriendsList(
-        sce::Toolkit::NP::Utilities::Future<sce::Toolkit::NP::FriendsList>&
-            friendsList) = 0;
-#endif
 
     virtual char* getComment(SceNpScoreComment* comment) = 0;
 };

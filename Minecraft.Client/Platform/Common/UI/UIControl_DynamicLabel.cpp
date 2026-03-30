@@ -42,17 +42,6 @@ void UIControl_DynamicLabel::addText(const std::wstring& text,
 void UIControl_DynamicLabel::ReInit() { UIControl_Base::ReInit(); }
 
 void UIControl_DynamicLabel::SetupTouch() {
-#ifdef __PSVITA__
-    // 4J-TomK - add this dynamic label to the vita touch box list
-
-    switch (m_parentScene->GetParentLayer()->m_iLayer) {
-        case eUILayer_Fullscreen:
-        case eUILayer_Scene:
-        case eUILayer_HUD:
-            ui.TouchBoxAdd(this, m_parentScene);
-            break;
-    }
-#endif
 }
 
 void UIControl_DynamicLabel::TouchScroll(S32 iY, bool bActive) {

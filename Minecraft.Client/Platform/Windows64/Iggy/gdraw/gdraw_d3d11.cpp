@@ -36,8 +36,8 @@
 
 #include <windows.h>
 #include <d3d11.h>
-#include "../../../Durango/Iggy/include/gdraw.h"
-#include "../../../Durango/Iggy/include/iggy.h"
+#include "../include/gdraw.h"
+#include "../include/iggy.h"
 #include <string.h>
 #include <math.h>
 

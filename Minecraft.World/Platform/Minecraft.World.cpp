@@ -17,11 +17,7 @@
 #include "Minecraft.World.h"
 #include "../../Minecraft.Client/Level/ServerLevel.h"
 
-#ifdef _DURANGO
-#include "../Stats/DurangoStats.h"
-#else
 #include "../Stats/CommonStats.h"
-#endif
 
 void MinecraftWorld_RunStaticCtors() {
     // The ordering of these static ctors can be important. If they are within
@@ -42,12 +38,8 @@ void MinecraftWorld_RunStaticCtors() {
         Item::staticCtor();
         FurnaceRecipes::staticCtor();
         Recipes::staticCtor();
-#ifdef _DURANGO
-        GenericStats::setInstance(new DurangoStats());
-#else
         GenericStats::setInstance(new CommonStats());
         Stats::staticCtor();
-#endif
         // Achievements::staticCtor(); // 4J Stu - This is now called from
         // within the Stats::staticCtor()
         TileEntity::staticCtor();

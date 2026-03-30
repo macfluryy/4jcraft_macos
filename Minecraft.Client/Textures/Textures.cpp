@@ -196,7 +196,7 @@ const wchar_t* Textures::preLoaded[TN_COUNT] = {
 // L"item/christmas",
 // L"item/christmas_double",
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     L"misc/additionalmapicons",
 #endif
 
@@ -403,19 +403,6 @@ int Textures::loadTexture(int idx) {
 // renderer that map the single 8-bit channel to RGBA differently.
 void Textures::setTextureFormat(const std::wstring& resourceName) {
     // 4J Stu - These texture formats are not currently in the render header
-#ifdef _XBOX
-    if (resourceName == L"/environment/clouds.png") {
-        TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_R1G1B1Ax;
-    } else if (resourceName == L"%blur%/misc/pumpkinblur.png") {
-        TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_R0G0B0Ax;
-    } else if (resourceName == L"%clamp%/misc/shadow.png") {
-        TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_R0G0B0Ax;
-    } else if (resourceName == L"/environment/snow.png") {
-        TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGxBxAx;
-    } else if (resourceName == L"/1_2_2/misc/explosion.png") {
-        TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGxBxAx;
-    } else
-#endif
     {
         TEXTURE_FORMAT = C4JRender::TEXTURE_FORMAT_RxGyBzAw;
     }
@@ -725,17 +712,10 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
         int g = (rawPixels[i] >> 8) & 0xff;
         int b = (rawPixels[i]) & 0xff;
 
-#ifdef _XBOX
-        newPixels[i * 4 + 0] = (uint8_t)a;
-        newPixels[i * 4 + 1] = (uint8_t)r;
-        newPixels[i * 4 + 2] = (uint8_t)g;
-        newPixels[i * 4 + 3] = (uint8_t)b;
-#else
         newPixels[i * 4 + 0] = (uint8_t)r;
         newPixels[i * 4 + 1] = (uint8_t)g;
         newPixels[i * 4 + 2] = (uint8_t)b;
         newPixels[i * 4 + 3] = (uint8_t)a;
-#endif
     }
     // 4J - now creating a buffer of the size we require dynamically
     ByteBuffer* pixels = MemoryTracker::createByteBuffer(w * h * 4);
@@ -777,12 +757,10 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
             // rather than generating if possible
             if (img->getData(level)) {
                 memcpy(tempData, img->getData(level), ww * hh * 4);
-#ifndef _XBOX
                 // Swap ARGB to RGBA
                 for (int i = 0; i < ww * hh; i++) {
                     tempData[i] = (tempData[i] >> 24) | (tempData[i] << 8);
                 }
-#endif
             } else {
                 for (int x = 0; x < ww; x++)
                     for (int y = 0; y < hh; y++) {
@@ -794,7 +772,6 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
                             ((x * 2 + 1) + (y * 2 + 1) * ow) * 4);
                         int c3 = pixels->getInt(
                             ((x * 2 + 0) + (y * 2 + 1) * ow) * 4);
-#ifndef _XBOX
                         // 4J - convert our RGBA texels to ARGB that crispBlend
                         // is expecting 4jcraft, added uint cast to pervent
                         // shift of neg int
@@ -806,14 +783,11 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
                             ((c2 >> 8) & 0x00ffffff) | ((unsigned int)c2 << 24);
                         c3 =
                             ((c3 >> 8) & 0x00ffffff) | ((unsigned int)c3 << 24);
-#endif
                         int col =
                             Texture::crispBlend(Texture::crispBlend(c0, c1),
                                                 Texture::crispBlend(c2, c3));
-#ifndef _XBOX
                         // 4J - and back from ARGB -> RGBA
                         col = ((unsigned int)col << 8) | ((col >> 24) & 0xff);
-#endif
                         tempData[x + y * ww] = col;
                     }
             }
@@ -859,20 +833,6 @@ void Textures::replaceTexture(intArray rawPixels, int w, int h, int id) {
     bind(id);
 
     // Removed in Java
-#if 0
-	if (MIPMAP)
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		/*
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, 0);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LOD, 4);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-		*/
-	}
-	else
-#endif
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -916,11 +876,7 @@ void Textures::replaceTexture(intArray rawPixels, int w, int h, int id) {
     // New
     // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL12.GL_BGRA,
     // GL12.GL_UNSIGNED_INT_8_8_8_8_REV, pixels);
-#ifdef _XBOX
-    RenderManager.TextureDataUpdate(pixels->getBuffer(), 0);
-#else
     RenderManager.TextureDataUpdate(0, 0, w, h, pixels->getBuffer(), 0);
-#endif
     // Old
     // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE,
     // pixels);
@@ -934,20 +890,6 @@ void Textures::replaceTextureDirect(intArray rawPixels, int w, int h, int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
     // Remove in Java
-#if 0
-	if (MIPMAP)
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		/*
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, 0);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LOD, 4);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-		*/
-	}
-	else
-#endif
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -956,11 +898,7 @@ void Textures::replaceTextureDirect(intArray rawPixels, int w, int h, int id) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-#ifdef _XBOX
-    RenderManager.TextureDataUpdate(rawPixels.data, 0);
-#else
     RenderManager.TextureDataUpdate(0, 0, w, h, rawPixels.data, 0);
-#endif
 }
 
 // 4J - added. This is a more minimal version of replaceTexture that assumes the
@@ -971,20 +909,6 @@ void Textures::replaceTextureDirect(shortArray rawPixels, int w, int h,
     glBindTexture(GL_TEXTURE_2D, id);
 
     // Remove in Java
-#if 0
-	if (MIPMAP)
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		/*
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_LOD, 0);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LOD, 4);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		* glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
-		*/
-	}
-	else
-#endif
     {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -993,11 +917,7 @@ void Textures::replaceTextureDirect(shortArray rawPixels, int w, int h,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-#ifdef _XBOX
-    RenderManager.TextureDataUpdate(rawPixels.data, 0);
-#else
     RenderManager.TextureDataUpdate(0, 0, w, h, rawPixels.data, 0);
-#endif
 }
 
 void Textures::releaseTexture(int id) {
@@ -1270,58 +1190,6 @@ void Textures::reloadAll() {
 
     skins->clearInvalidTexturePacks();
 
-#if 0
-	AUTO_VAR(itEndLI, loadedImages.end() );
-	for(std::unordered_map<int, BufferedImage *>::iterator it = loadedImages.begin(); it != itEndLI; it++ )
-	{
-        BufferedImage *image = it->second;
-        loadTexture(image, it->first);
-    }
-
-	AUTO_VAR(itEndHT, httpTextures.end());
-	for(std::unordered_map<std::wstring, HttpTexture *>::iterator it = httpTextures.begin(); it != itEndHT; it++ )
-	{
-		it->second->isLoaded = false;
-	}
-
-	AUTO_VAR(itEndMT, memTextures.end());
-	for(std::unordered_map<std::wstring, MemTexture *>::iterator it = memTextures.begin(); it != itEndMT; it++ )
-	{
-		it->second->isLoaded = false;
-	}
-
-
-	AUTO_VAR(itEndIM, idMap.end());
-	for( std::unordered_map<std::wstring, int>::iterator it = idMap.begin(); it != itEndIM; it++ )
-	{
-		std::wstring name = it->first;
-
-		int id = idMap[name];
-		BufferedImage *image;
-
-		std::wstring prefix = L"%blur%";
-		bool blur = name.substr(0, prefix.size()).compare(prefix) == 0; //name.startsWith("%blur%");
-		if (blur) name = name.substr(6);
-
-		prefix = L"%clamp%";
-		bool clamp = name.substr(0, prefix.size()).compare(prefix) == 0; //name.startsWith("%clamp%");
-		if (clamp) name = name.substr(7);
-
-		image = readImage(skin->getResource(name));
-
-		loadTexture(image, id, blur, clamp);
-		delete image;
-	}
-	AUTO_VAR(itEndPM, pixelsMap.end());
-	for( std::unordered_map<std::wstring, intArray>::iterator it = pixelsMap.begin(); it != itEndPM; it++ )
-	{
-		std::wstring name = it->first;
-		BufferedImage *image = readImage(skin->getResource(name));
-
-		loadTexturePixels(image, pixelsMap[name]);
-		delete image;
-	}
-#endif
 
     // Recalculate fonts
     // Minecraft::GetInstance()->font->loadCharacterWidths();
@@ -1360,19 +1228,6 @@ BufferedImage* Textures::readImage(
             drive);  // new BufferedImage(name,false,isTu,drive);
     } else {
         const char* pchName = wstringtofilename(name);
-#ifdef __PS3__
-        if (app.GetBootedFromDiscPatch() && app.IsFileInPatchList(pchName)) {
-            char* pchUsrDir = app.GetBDUsrDirPath(pchName);
-            std::wstring wstr(pchUsrDir, pchUsrDir + strlen(pchUsrDir));
-
-            if (isTu) {
-                drive = wstr + L"\\Common\\res\\TitleUpdate\\";
-
-            } else {
-                drive = wstr + L"\\Common\\";
-            }
-        } else
-#endif
         {
             drive = skins->getDefault()->getPath(isTu);
         }
@@ -1437,7 +1292,7 @@ TEXTURE_NAME TUImages[] = {
 // TN_TILE_XMAS_CHEST,
 // TN_TILE_LARGE_XMAS_CHEST,
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     TN_MISC_ADDITIONALMAPICONS,
 #endif
 

@@ -3,13 +3,13 @@
 // This file implements some common code that can be shared across
 // all the sample implementations of GDraw.
 
-#ifdef IGGY_DISABLE_GDRAW_ASSERT
+#if defined(IGGY_DISABLE_GDRAW_ASSERT)
 #define assert(x)
 #else
 #include <assert.h>
 #endif
 
-#ifndef GDRAW_MAYBE_UNUSED
+#if !defined(GDRAW_MAYBE_UNUSED)
 #define GDRAW_MAYBE_UNUSED
 #endif
 
@@ -105,13 +105,13 @@ struct GDrawHandle
 
    GDrawHandle       * next,*prev;  // 8/16 // doubly-linked list
 
-   #ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
    void              * raw_ptr; // 4/8 // pointer to allocation - when you're managing memory manually
-   #ifdef GDRAW_CORRUPTION_CHECK
+#if defined(GDRAW_CORRUPTION_CHECK)
    U32                 cached_raw_value[4];
    rrbool              has_check_value;
-   #endif
-   #endif
+#endif
+#endif
 
    GDrawFence          fence;   // 8 // (optional) platform fence for resource
    // 4
@@ -120,7 +120,7 @@ struct GDrawHandle
 };
 
 // validate alignment to make sure structure will pack correctly
-#ifdef __RAD64__
+#if defined(__RAD64__)
 RR_COMPILER_ASSERT((sizeof(GDrawHandle) & 7) == 0);
 #else
 RR_COMPILER_ASSERT((sizeof(GDrawHandle) & 3) == 0);
@@ -136,17 +136,17 @@ struct GDrawHandleCache
    U32          did_defragment : 1;
    // 30 unused bits
    GDrawHandle  state[GDRAW_HANDLE_STATE__count];  // sentinel nodes for all of the state lists
-   #ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
    struct gfx_allocator *alloc;
-   #endif
-   #ifdef GDRAW_MANAGE_MEM_TWOPOOL
+#endif
+#if defined(GDRAW_MANAGE_MEM_TWOPOOL)
    struct gfx_allocator *alloc_other;
-   #endif
+#endif
    GDrawFence   prev_frame_start, prev_frame_end; // fence value at start/end of previous frame, for thrashing detection
    GDrawHandle  handle[1]; // the rest of the handles must be stored right after this in the containing structure
 };
 
-#ifdef GDRAW_CORRUPTION_CHECK
+#if defined(GDRAW_CORRUPTION_CHECK)
 // values for corruption checking
 #define GDRAW_CORRUPTIONCHECK_renderbegin         0x10
 #define GDRAW_CORRUPTIONCHECK_renderend           0x20
@@ -217,20 +217,6 @@ static void debug_check_raw_values(GDrawHandleCache *c)
                assert(0);
             }
          }
-         #if 0
-         GDrawHandle *s;
-         check_block_alloc(c->alloc, t->raw_ptr, 1);
-         s = c->head;
-         while (s != t) {
-            assert(s->raw_ptr != t->raw_ptr);
-            s = s->next;
-         }
-         s = c->active;
-         while (s != NULL) {
-            assert(s->raw_ptr != t->raw_ptr);
-            s = s->next;
-         }
-         #endif
       }
       t = t->next;
    }
@@ -247,21 +233,12 @@ static void debug_check_raw_values(GDrawHandleCache *c)
                assert(0);
             }
          }
-         #if 0
-         GDrawHandle *s;
-         check_block_alloc(c->alloc, t->raw_ptr, 1);
-         s = c->active;
-         while (s != t) {
-            assert(s->raw_ptr != t->raw_ptr);
-            s = s->next;
-         }
-         #endif
       }
       t = t->next;
    }
 }
 
-#ifndef GDRAW_CORRUPTION_MASK
+#if !defined(GDRAW_CORRUPTION_MASK)
 #define GDRAW_CORRUPTION_MASK 0
 #endif
 #define debug_check_raw_values_if(c,v) \
@@ -308,7 +285,7 @@ static void debug_check_value_is_unreferenced(GDrawHandleCache *c, void *ptr)
 #define debug_check_raw_values_if(c,v)
 #endif
 
-#ifdef SUPERDEBUG
+#if defined(SUPERDEBUG)
 static void check_lists(GDrawHandleCache *c)
 {
    GDrawHandle *sentinel, *t;
@@ -377,7 +354,7 @@ static void gdraw_HandleTransitionInsertBefore(GDrawHandle *t, GDrawHandleState 
    t->prev = succ->prev;
    t->prev->next = t;
    t->next->prev = t;
-#ifdef SUPERDEBUG
+#if defined(SUPERDEBUG)
    printf("GD %chandle %p %s->%s\n", t->cache->is_vertex ? 'v' : 't', t, gdraw_StateName(t->state), gdraw_StateName(new_state));
 #endif
    t->state = new_state;
@@ -389,7 +366,7 @@ static RADINLINE void gdraw_HandleTransitionTo(GDrawHandle *t, GDrawHandleState 
    gdraw_HandleTransitionInsertBefore(t, new_state, &t->cache->state[new_state]);
 }
 
-#ifdef GDRAW_MANAGE_MEM_TWOPOOL
+#if defined(GDRAW_MANAGE_MEM_TWOPOOL)
 static rrbool gdraw_MigrateResource(GDrawHandle *t, GDrawStats *stats);
 static void gdraw_res_free(GDrawHandle *t, GDrawStats *stats);
 #endif
@@ -415,7 +392,7 @@ static rrbool gdraw_HandleCacheLockStats(GDrawHandle *t, void *owner, GDrawStats
    // unlock call
    assert(t->state == GDRAW_HANDLE_STATE_live || t->state == GDRAW_HANDLE_STATE_locked || t->state == GDRAW_HANDLE_STATE_pinned);
    if (t->state == GDRAW_HANDLE_STATE_live) {
-#ifdef GDRAW_MANAGE_MEM_TWOPOOL
+#if defined(GDRAW_MANAGE_MEM_TWOPOOL)
       // if we defragmented this frame, we can't just make resources live;
       // we need to migrate them to their new location. (which might fail
       // if we don't have enough memory left in the new pool)
@@ -464,7 +441,7 @@ static void gdraw_HandleCacheInit(GDrawHandleCache *c, S32 num_handles, S32 byte
       c->state[i].owner = NULL;
       c->state[i].cache = NULL; // should never follow cache link from sentinels!
       c->state[i].next = c->state[i].prev = &c->state[i];
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
       c->state[i].raw_ptr = NULL;
 #endif
       c->state[i].fence.value = 0;
@@ -477,7 +454,7 @@ static void gdraw_HandleCacheInit(GDrawHandleCache *c, S32 num_handles, S32 byte
       c->handle[i].next = (i == num_handles - 1) ? &c->state[GDRAW_HANDLE_STATE_free] : &c->handle[i+1];
       c->handle[i].bytes = 0;
       c->handle[i].state = GDRAW_HANDLE_STATE_free;
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
       c->handle[i].raw_ptr = NULL;
 #endif
    }
@@ -485,10 +462,10 @@ static void gdraw_HandleCacheInit(GDrawHandleCache *c, S32 num_handles, S32 byte
    c->state[GDRAW_HANDLE_STATE_free].prev = &c->handle[num_handles - 1];
    c->prev_frame_start.value = 0;
    c->prev_frame_end.value = 0;
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
    c->alloc = NULL;
 #endif
-#ifdef GDRAW_MANAGE_MEM_TWOPOOL
+#if defined(GDRAW_MANAGE_MEM_TWOPOOL)
    c->alloc_other = NULL;
 #endif
    check_lists(c);
@@ -503,10 +480,10 @@ static GDrawHandle *gdraw_HandleCacheAllocateBegin(GDrawHandleCache *c)
       gdraw_HandleTransitionTo(t, GDRAW_HANDLE_STATE_alloc);
       t->bytes = 0;
       t->owner = 0;
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
       t->raw_ptr = NULL;
 #endif
-#ifdef GDRAW_CORRUPTION_CHECK
+#if defined(GDRAW_CORRUPTION_CHECK)
       t->has_check_value = false;
 #endif
    }
@@ -537,10 +514,10 @@ static void gdraw_HandleCacheFree(GDrawHandle *t)
    c->bytes_free += t->bytes;
    t->bytes = 0;
    t->owner = 0;
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
    t->raw_ptr = 0;
 #endif
-#ifdef GDRAW_CORRUPTION_CHECK
+#if defined(GDRAW_CORRUPTION_CHECK)
    t->has_check_value = false;
 #endif
    gdraw_HandleTransitionTo(t, GDRAW_HANDLE_STATE_free);
@@ -571,7 +548,7 @@ static void gdraw_HandleCacheTick(GDrawHandleCache *c, GDrawFence now)
    c->did_defragment = false;
 }
 
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
 
 static void gdraw_HandleCacheInsertDead(GDrawHandle *t)
 {
@@ -1068,10 +1045,6 @@ static void gdraw_Blur(GDrawFunctions *g, GDrawBlurInfo *c, GDrawRenderState *r,
    gdraw_ExpandRect(&sbounds, sample_bounds, 1, 1, c->w, c->h);
 
    for (p=0; p < r->blur_passes; ++p) {
-      #if 0 // @OPTIMIZE do the filter in one pass
-      if (w*h <= MAX_TAPS) {
-      } else
-      #endif
       {
          // do the filter separably
          gdraw_BlurAxis(0,g,c,r,r->blur_x,dx, draw_bounds, &sbounds, protect, gstats);
@@ -1080,7 +1053,7 @@ static void gdraw_Blur(GDrawFunctions *g, GDrawBlurInfo *c, GDrawRenderState *r,
    }
 }
 
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
 
 static void make_pool_aligned(void **start, S32 *num_bytes, U32 alignment)
 {
@@ -1166,7 +1139,7 @@ static void *gdraw_arena_alloc(GDrawArena *arena, U32 size, U32 align)
 //   blocks is constant.
 // These invariants always hold before and after an allocation/free.
 
-#ifndef GFXALLOC_ASSERT
+#if !defined(GFXALLOC_ASSERT)
 #define GFXALLOC_ASSERT(x)
 #endif
 
@@ -1192,7 +1165,7 @@ typedef struct gfx_allocator
    U32 block_shift;
    S32 actual_bytes_free;
 
-#ifdef GFXALLOC_CHECK
+#if defined(GFXALLOC_CHECK)
    int num_blocks;
    int num_unused;
    int num_alloc;
@@ -1207,7 +1180,7 @@ typedef struct gfx_allocator
 } gfx_allocator;
 // about 1k (32bit), 2k (64bit) with 256 hash buckets (the default). dominated by hash table.
 
-#ifdef GFXALLOC_CHECK
+#if defined(GFXALLOC_CHECK)
 #define GFXALLOC_IF_CHECK(x)  x
 #else
 #define GFXALLOC_IF_CHECK(x)
@@ -1278,7 +1251,7 @@ static void gfxalloc_check1(gfx_allocator *alloc)
 #define gfxalloc_check1(a)
 #endif
 
-#ifdef COMPLETE_DEBUG
+#if defined(COMPLETE_DEBUG)
 static void verify_against_blocks(int num_regions, void *vptr, S32 len)
 {
    U32 *ptr = (U32 *) vptr;
@@ -1350,7 +1323,7 @@ static void debug_complete_check(gfx_allocator *alloc, void *ptr, S32 len, void 
 #define debug_complete_check(a,p,len,s)
 #endif
 
-#ifdef GFXALLOC_CHECK
+#if defined(GFXALLOC_CHECK)
 static void gfxalloc_check2(gfx_allocator *alloc)
 {
    int n=0;
@@ -1620,7 +1593,7 @@ gfxalloc_check(alloc);
    GFXALLOC_IF_CHECK(GFXALLOC_ASSERT(alloc->num_free <= alloc->num_blocks+1);)
 }
 
-#ifdef GDRAW_MANAGE_MEM_TWOPOOL
+#if defined(GDRAW_MANAGE_MEM_TWOPOOL)
 
 static rrbool gfxalloc_is_empty(gfx_allocator *alloc)
 {
@@ -1644,7 +1617,7 @@ static rrbool gfxalloc_mem_contains(gfx_allocator *alloc, void *ptr)
 
 #endif
 
-#ifdef GDRAW_DEBUG
+#if defined(GDRAW_DEBUG)
 
 static void gfxalloc_dump(gfx_allocator *alloc)
 {
@@ -1664,7 +1637,7 @@ static void gfxalloc_dump(gfx_allocator *alloc)
 
 #endif
 
-#ifdef GDRAW_DEFRAGMENT
+#if defined(GDRAW_DEFRAGMENT)
 
 #define GDRAW_DEFRAGMENT_may_overlap   1  // self-overlap for individual copies is OK
 
@@ -1804,7 +1777,7 @@ static void gdraw_DefragmentMain(GDrawHandleCache *c, U32 flags, GDrawStats *sta
 
 #endif
 
-#ifdef GDRAW_MANAGE_MEM_TWOPOOL
+#if defined(GDRAW_MANAGE_MEM_TWOPOOL)
 
 // Defragmentation code for graphics memory, using two-pool strategy.
 //
@@ -1968,7 +1941,7 @@ static rrbool gdraw_StateListIsEmpty(GDrawHandle *head)
 
 static void gdraw_CheckAllPointersUpdated(GDrawHandle *head)
 {
-#ifdef GDRAW_DEBUG
+#if defined(GDRAW_DEBUG)
    GDrawHandle *h;
    for (h = head->next; h != head; h = h->next) {
       assert(gfxalloc_mem_contains(h->cache->alloc, h->raw_ptr));
@@ -2106,7 +2079,7 @@ static GDRAW_MAYBE_UNUSED void gdraw_Downsample(U8 *dst, S32 dstpitch, U32 width
    }
 }
 
-#ifndef GDRAW_NO_STREAMING_MIPGEN
+#if !defined(GDRAW_NO_STREAMING_MIPGEN)
 
 #define GDRAW_MAXMIPS 16 // maximum number of mipmaps supported.
 
@@ -2203,9 +2176,9 @@ static rrbool gdraw_MipmapAddLines(GDrawMipmapContext *c, U32 level)
    }
 }
 
-#endif // GDRAW_NO_STREAMING_MIPGEN
+#endif
 
-#ifdef GDRAW_CHECK_BLOCK
+#if defined(GDRAW_CHECK_BLOCK)
 static void check_block_alloc(gfx_allocator *alloc, void *ptr, rrbool allocated)
 {
    int i,n=0,m=0;
@@ -2232,7 +2205,7 @@ static void check_block_alloc(gfx_allocator *alloc, void *ptr, rrbool allocated)
 #define check_block_alloc(a,p,f)
 #endif
 
-#ifdef GDRAW_BUFFER_RING
+#if defined(GDRAW_BUFFER_RING)
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -2339,13 +2312,13 @@ static void *gdraw_bufring_alloc(gdraw_bufring * RADRESTRICT ring, U32 size, U32
 //   General resource manager
 //
 
-#ifndef GDRAW_FENCE_FLUSH
+#if !defined(GDRAW_FENCE_FLUSH)
 #define GDRAW_FENCE_FLUSH()
 #endif
 
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
 // functions the platform must implement
-#ifndef GDRAW_BUFFER_RING // avoid "redundant redeclaration" warning
+#if !defined(GDRAW_BUFFER_RING // avoid "redundant redeclaration" warning)
 static void wait_on_fence(GDrawFence fence);
 #endif
 static rrbool is_fence_pending(GDrawFence fence);
@@ -2369,13 +2342,13 @@ static void gdraw_res_free(GDrawHandle *r, GDrawStats *stats)
    assert(r->state == GDRAW_HANDLE_STATE_live || r->state == GDRAW_HANDLE_STATE_locked || r->state == GDRAW_HANDLE_STATE_dead ||
       r->state == GDRAW_HANDLE_STATE_pinned || r->state == GDRAW_HANDLE_STATE_user_owned);
 
-#ifdef GDRAW_MANAGE_MEM
+#if defined(GDRAW_MANAGE_MEM)
    GDRAW_FENCE_FLUSH();
 
    // make sure resource isn't in use before we actually free the memory
    wait_on_fence(r->fence);
    if (r->raw_ptr) {
-#ifndef GDRAW_MANAGE_MEM_TWOPOOL
+#if !defined(GDRAW_MANAGE_MEM_TWOPOOL)
       gfxalloc_free(r->cache->alloc, r->raw_ptr);
 #else
       GDrawHandleCache *c = r->cache;
@@ -2434,7 +2407,7 @@ static GDrawHandle *gdraw_res_alloc_outofmem(GDrawHandleCache *c, GDrawHandle *t
    return NULL;
 }
 
-#ifndef GDRAW_MANAGE_MEM
+#if !defined(GDRAW_MANAGE_MEM)
 
 static GDrawHandle *gdraw_res_alloc_begin(GDrawHandleCache *c, S32 size, GDrawStats *stats)
 {

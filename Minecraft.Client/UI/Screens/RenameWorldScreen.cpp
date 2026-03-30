@@ -18,22 +18,6 @@ void RenameWorldScreen::tick() { nameEdit->tick(); }
 void RenameWorldScreen::init() {
     // 4J Stu - Removed this as we don't need the screen. Changed to how we pass
     // save data around stopped this compiling
-#if 0
-    Language *language = Language::getInstance();
-
-    Keyboard::enableRepeatEvents(true);
-    buttons.clear();
-    buttons.push_back(new Button(0, width / 2 - 100, height / 4 + 24 * 4 + 12, language->getElement(L"selectWorld.renameButton")));
-    buttons.push_back(new Button(1, width / 2 - 100, height / 4 + 24 * 5 + 12, language->getElement(L"gui.cancel")));
-
-    LevelStorageSource *levelSource = minecraft->getLevelSource();
-    LevelData *levelData = levelSource->getDataTagFor(levelId);
-    std::wstring currentName = levelData->getLevelName();
-
-    nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, currentName);
-    nameEdit->inFocus = true;
-    nameEdit->setMaxLength(32);
-#endif
 }
 
 void RenameWorldScreen::removed() { Keyboard::enableRepeatEvents(false); }

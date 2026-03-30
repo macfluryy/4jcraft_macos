@@ -10,17 +10,6 @@
 #include "../Headers/net.minecraft.world.entity.h"
 #include "RandomLevelSource.h"
 
-#ifdef __PS3__
-#include "../../Minecraft.Client/Platform/PS3/SPU_Tasks/PerlinNoise/PerlinNoiseJob.h"
-#include "../../Minecraft.Client/Platform/PS3/PS3Extras/C4JSpursJob.h"
-static PerlinNoise_DataIn g_lperlinNoise1_SPU __attribute__((__aligned__(16)));
-static PerlinNoise_DataIn g_lperlinNoise2_SPU __attribute__((__aligned__(16)));
-static PerlinNoise_DataIn g_perlinNoise1_SPU __attribute__((__aligned__(16)));
-static PerlinNoise_DataIn g_scaleNoise_SPU __attribute__((__aligned__(16)));
-static PerlinNoise_DataIn g_depthNoise_SPU __attribute__((__aligned__(16)));
-// #define DISABLE_SPU_CODE
-
-#endif
 
 const double RandomLevelSource::SNOW_SCALE = 0.3;
 const double RandomLevelSource::SNOW_CUTOFF = 0.5;
@@ -29,7 +18,7 @@ RandomLevelSource::RandomLevelSource(Level* level, int64_t seed,
                                      bool generateStructures)
     : generateStructures(generateStructures) {
     m_XZSize = level->getLevelData()->getXZSize();
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     level->getLevelData()->getMoatFlags(&m_classicEdgeMoat, &m_smallEdgeMoat,
                                         &m_mediumEdgeMoat);
 #endif
@@ -97,7 +86,7 @@ int g_numPrepareHeightCalls = 0;
 LARGE_INTEGER g_totalPrepareHeightsTime = {0, 0};
 LARGE_INTEGER g_averagePrepareHeightsTime = {0, 0};
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 
 int RandomLevelSource::getMinDistanceToEdge(int xxx, int zzz, int worldSize,
                                             float falloffStart) {
@@ -231,7 +220,7 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
     return comp;
 }
 
-#endif  // _LARGE_WORLDS
+#endif
 
 void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
     LARGE_INTEGER startTime;
@@ -568,30 +557,6 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
                                             0, 500.0);
     }
 
-#if defined __PS3__ && !defined DISABLE_SPU_CODE
-    C4JSpursJobQueue::Port port("C4JSpursJob_PerlinNoise");
-    C4JSpursJob_PerlinNoise perlinJob1(&g_scaleNoise_SPU);
-    C4JSpursJob_PerlinNoise perlinJob2(&g_depthNoise_SPU);
-    C4JSpursJob_PerlinNoise perlinJob3(&g_perlinNoise1_SPU);
-    C4JSpursJob_PerlinNoise perlinJob4(&g_lperlinNoise1_SPU);
-    C4JSpursJob_PerlinNoise perlinJob5(&g_lperlinNoise2_SPU);
-
-    g_scaleNoise_SPU.set(scaleNoise, sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
-    g_depthNoise_SPU.set(depthNoise, dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
-    g_perlinNoise1_SPU.set(perlinNoise1, pnr, x, y, z, xSize, ySize, zSize,
-                           s / 80.0, hs / 160.0, s / 80.0);
-    g_lperlinNoise1_SPU.set(lperlinNoise1, ar, x, y, z, xSize, ySize, zSize, s,
-                            hs, s);
-    g_lperlinNoise2_SPU.set(lperlinNoise2, br, x, y, z, xSize, ySize, zSize, s,
-                            hs, s);
-
-    port.submitJob(&perlinJob1);
-    port.submitJob(&perlinJob2);
-    port.submitJob(&perlinJob3);
-    port.submitJob(&perlinJob4);
-    port.submitJob(&perlinJob5);
-    port.waitForCompletion();
-#else
     sr = scaleNoise->getRegion(sr, x, z, xSize, zSize, 1.121, 1.121, 0.5);
     dr = depthNoise->getRegion(dr, x, z, xSize, zSize, 200.0, 200.0, 0.5);
     pnr = perlinNoise1->getRegion(pnr, x, y, z, xSize, ySize, zSize, s / 80.0,
@@ -599,7 +564,6 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
     ar = lperlinNoise1->getRegion(ar, x, y, z, xSize, ySize, zSize, s, hs, s);
     br = lperlinNoise2->getRegion(br, x, y, z, xSize, ySize, zSize, s, hs, s);
 
-#endif
 
     x = z = 0;
 

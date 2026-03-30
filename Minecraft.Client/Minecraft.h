@@ -36,14 +36,12 @@ class ItemInHandRenderer;
 class LevelSettings;
 class ColourTable;
 class MultiPlayerGameMode;
-class PsPlusUpsellWrapper;
-
 #include "../Minecraft.World/IO/Files/File.h"
 #include "../Minecraft.World/Network/Packets/DisconnectPacket.h"
 #include "../Minecraft.World/Util/C4JThread.h"
 #include "Textures/ResourceLocation.h"
 
-#ifdef linux
+#if defined(linux)
 #undef linux
 #endif
 
@@ -232,10 +230,6 @@ public:
 private:
     void checkGlError(const std::wstring& string);
 
-#ifdef __ORBIS__
-    PsPlusUpsellWrapper* m_pPsPlusUpsell;
-#endif
-
 public:
     void destroy();
     volatile bool running;
@@ -346,15 +340,7 @@ public:
     void delayTextureReload();
     static int64_t currentTimeMillis();
 
-#ifdef _DURANGO
-    static void inGameSignInCheckAllPrivilegesCallback(void* lpParam,
-                                                       bool hasPrivileges,
-                                                       int iPad);
-    static int InGame_SignInReturned(void* pParam, bool bContinue, int iPad,
-                                     int iController);
-#else
     static int InGame_SignInReturned(void* pParam, bool bContinue, int iPad);
-#endif
     // 4J-PB
     Screen* getScreen();
 
@@ -401,8 +387,4 @@ public:
     unsigned int getCurrentTexturePackId();
     ColourTable* getColourTable();
 
-#if defined __ORBIS__
-    static int MustSignInReturnedPSN(void* pParam, int iPad,
-                                     C4JStorage::EMessageResult result);
-#endif
 };

@@ -9,10 +9,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.inventory.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.item.h"
 
-#ifdef __PSVITA__
-#define GAME_CREATIVE_TOUCHUPDATE_TIMER_ID 0
-#define GAME_CREATIVE_TOUCHUPDATE_TIMER_TIME 100
-#endif
 
 UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)
@@ -59,12 +55,6 @@ UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
     m_curTab = eCreativeInventoryTab_COUNT;
     switchTab(eCreativeInventoryTab_BuildingBlocks);
 
-#ifdef __PSVITA__
-    // initialise vita touch controls with ids
-    for (unsigned int i = 0; i < ETouchInput_Count; ++i) {
-        m_TouchInput[i].init(i);
-    }
-#endif
 }
 
 std::wstring UIScene_CreativeMenu::getMoviePath() {
@@ -75,61 +65,6 @@ std::wstring UIScene_CreativeMenu::getMoviePath() {
     }
 }
 
-#ifdef __PSVITA__
-UIControl* UIScene_CreativeMenu::GetMainPanel() { return &m_controlMainPanel; }
-
-void UIScene_CreativeMenu::handleTouchInput(unsigned int iPad, S32 x, S32 y,
-                                            int iId, bool bPressed,
-                                            bool bRepeat, bool bReleased) {
-    // perform action on release
-    if (bReleased) {
-        if (iId >= eCreativeInventoryTab_BuildingBlocks &&
-            iId <= eCreativeInventoryTab_Misc) {
-            switchTab((ECreativeInventoryTabs)iId);
-            ui.PlayUISFX(eSFX_Focus);
-        }
-    }
-    if (bRepeat && iId == ETouchInput_TouchSlider &&
-        specs[m_curTab]->getPageCount() > 1) {
-        // calculate relative touch position on slider
-        float fPosition =
-            ((float)y - (float)m_TouchInput[ETouchInput_TouchSlider].getYPos() -
-             m_controlMainPanel.getYPos()) /
-            (float)m_TouchInput[ETouchInput_TouchSlider].getHeight();
-
-        // clamp
-        if (fPosition > 1)
-            fPosition = 1.0f;
-        else if (fPosition < 0)
-            fPosition = 0.0f;
-
-        // calculate page position according to page count
-        int iCurrentPage =
-            Math::round(fPosition * (specs[m_curTab]->getPageCount() - 1));
-
-        // set tab page
-        m_tabPage[m_curTab] = iCurrentPage;
-
-        // update tab
-        switchTab(m_curTab);
-    }
-}
-
-void UIScene_CreativeMenu::handleTouchBoxRebuild() {
-    addTimer(GAME_CREATIVE_TOUCHUPDATE_TIMER_ID,
-             GAME_CREATIVE_TOUCHUPDATE_TIMER_TIME);
-}
-
-void UIScene_CreativeMenu::handleTimerComplete(int id) {
-    if (id == GAME_CREATIVE_TOUCHUPDATE_TIMER_ID) {
-        // we cannot rebuild touch boxes in an iggy callback because it requires
-        // further iggy calls
-        GetMainPanel()->UpdateControl();
-        ui.TouchBoxRebuild(this);
-        killTimer(GAME_CREATIVE_TOUCHUPDATE_TIMER_ID);
-    }
-}
-#endif
 
 void UIScene_CreativeMenu::handleOtherClicked(int iPad, ESceneSection eSection,
                                               int buttonNum, bool quickKey) {

@@ -582,27 +582,11 @@ public:
     void SetAdditionalModelParts(
         std::vector<ModelPart*>* ppAdditionalModelParts);
 
-#if defined(__PS3__) || defined(__ORBIS__)
-    enum ePlayerNameValidState {
-        ePlayerNameValid_NotSet = 0,
-        ePlayerNameValid_True,
-        ePlayerNameValid_False
-    };
-
-    ePlayerNameValidState GetPlayerNameValidState();
-    void SetPlayerNameValidState(bool bState);
-#endif
 private:
     std::vector<ModelPart*>* m_ppAdditionalModelParts;
     bool m_bCheckedForModelParts;
     bool m_bCheckedDLCForModelParts;
 
-#if defined(__PS3__) || defined(__ORBIS__)
-    ePlayerNameValidState
-        m_ePlayerNameValidState;  // 4J-PB - to ensure we have the characters
-                                  // for this name in our font, or display a
-                                  // player number instead
-#endif
 };
 
 struct PlayerKeyHash {

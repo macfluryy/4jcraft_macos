@@ -113,11 +113,9 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
     }
 }
 
-#ifndef _XBOX
 // 4J Stu - This dtor clashes with one in xui! We never delete these anyway so
 // take it out for now. Can go back when we have got rid of XUI
 Font::~Font() { delete[] charWidths; }
-#endif
 
 void Font::renderCharacter(wchar_t c) {
     float xOff = c % m_cols * m_charWidth;
@@ -131,7 +129,6 @@ void Font::renderCharacter(wchar_t c) {
 
     Tesselator* t = Tesselator::getInstance();
     // 4J Stu - Changed to a quad so that we can use within a command buffer
-#if 1
     t->begin();
     t->tex(xOff / fontWidth, (yOff + 7.99f) / fontHeight);
     t->vertex(xPos, yPos + height, 0.0f);
@@ -146,18 +143,6 @@ void Font::renderCharacter(wchar_t c) {
     t->vertex(xPos, yPos, 0.0f);
 
     t->end();
-#else
-    t->begin(GL_TRIANGLE_STRIP);
-    t->tex(xOff / 128.0F, yOff / 128.0F);
-    t->vertex(xPos, yPos, 0.0f);
-    t->tex(xOff / 128.0F, (yOff + 7.99f) / 128.0F);
-    t->vertex(xPos, yPos + 7.99f, 0.0f);
-    t->tex((xOff + width) / 128.0F, yOff / 128.0F);
-    t->vertex(xPos + width, yPos, 0.0f);
-    t->tex((xOff + width) / 128.0F, (yOff + 7.99f) / 128.0F);
-    t->vertex(xPos + width, yPos + 7.99f, 0.0f);
-    t->end();
-#endif
 
     xPos += (float)charWidths[c];
 }

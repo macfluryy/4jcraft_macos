@@ -210,7 +210,7 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
         if (InterlockedCompareExchangeRelease((LONG*)&cache[idx], (LONG)chunk,
                                               (LONG)lastChunk) ==
             (LONG)lastChunk)
-#endif  // _DURANGO
+#endif  // 0
         {
             // If we're sharing with the server, we'll need to calculate our
             // heightmap now, which isn't shared. If we aren't sharing with the

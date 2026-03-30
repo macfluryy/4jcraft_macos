@@ -73,16 +73,6 @@ private:
     unsigned int m_t2[4];
     void packCompactQuad();
 
-#ifdef __PSVITA__
-    // AP - alpha cut out is expensive on vita. Use this to defer primitives
-    // that use icons with alpha
-    bool alphaCutOutEnabled;
-
-    // this is the cut out enabled vertex array
-    intArray* _array2;
-    int vertices2;
-    int p2;
-#endif
 
 public:
     // 4J MGH - added, to calculate tight bounds
@@ -147,31 +137,4 @@ public:
     bool setMipmapEnable(bool enable);  // 4J added
 
     bool hasMaxVertices();  // 4J Added
-#ifdef __PSVITA__
-    // AP - alpha cut out is expensive on vita. Use this to defer primitives
-    // that use icons with alpha
-    void setAlphaCutOut(bool enable);
-    bool getCutOutFound();
-
-    // AP - a faster way of creating a compressed tile quad
-    void tileQuad(float x1, float y1, float z1, float u1, float v1, float r1,
-                  float g1, float b1, int tex1, float x2, float y2, float z2,
-                  float u2, float v2, float r2, float g2, float b2, int tex2,
-                  float x3, float y3, float z3, float u3, float v3, float r3,
-                  float g3, float b3, int tex3, float x4, float y4, float z4,
-                  float u4, float v4, float r4, float g4, float b4, int tex4);
-    // AP - a faster way of creating rain quads
-    void tileRainQuad(float x1, float y1, float z1, float u1, float v1,
-                      float x2, float y2, float z2, float u2, float v2,
-                      float x3, float y3, float z3, float u3, float v3,
-                      float x4, float y4, float z4, float u4, float v4,
-                      float r1, float g1, float b1, float a1, float r2,
-                      float g2, float b2, float a2, int tex1);
-    // AP - a faster way of creating particles
-    void tileParticleQuad(float x1, float y1, float z1, float u1, float v1,
-                          float x2, float y2, float z2, float u2, float v2,
-                          float x3, float y3, float z3, float u3, float v3,
-                          float x4, float y4, float z4, float u4, float v4,
-                          float r1, float g1, float b1, float a1);
-#endif
 };

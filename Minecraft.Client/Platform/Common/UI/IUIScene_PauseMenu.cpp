@@ -17,12 +17,8 @@
 
 int IUIScene_PauseMenu::ExitGameDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-#ifdef _XBOX
-    IUIScene_PauseMenu* pScene = (IUIScene_PauseMenu*)pParam;
-#else
     IUIScene_PauseMenu* pScene = dynamic_cast<IUIScene_PauseMenu*>(
         ui.GetSceneFromCallbackId((std::size_t)pParam));
-#endif
 
     // Results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
@@ -34,12 +30,8 @@ int IUIScene_PauseMenu::ExitGameDialogReturned(
 
 int IUIScene_PauseMenu::ExitGameSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-#ifdef _XBOX
-    IUIScene_PauseMenu* pScene = (IUIScene_PauseMenu*)pParam;
-#else
     IUIScene_PauseMenu* pScene = dynamic_cast<IUIScene_PauseMenu*>(
         ui.GetSceneFromCallbackId((std::size_t)pParam));
-#endif
 
     // Exit with or without saving
     // Decline means save in this dialog
@@ -59,21 +51,6 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(
                         ->getDLCInfoParentPack();  // tPack->getDLCPack();
                 if (!pDLCPack->hasPurchasedFile(DLCManager::e_DLCType_Texture,
                                                 L"")) {
-#ifdef _XBOX
-                    // upsell
-                    ULONGLONG ullOfferID_Full;
-                    // get the dlc texture pack
-                    DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-                    app.GetDLCFullOfferIDForPackID(
-                        pDLCTexPack->getDLCParentPackId(), &ullOfferID_Full);
-
-                    // tell sentient about the upsell of the full version of the
-                    // skin pack
-                    TelemetryManager->RecordUpsellPresented(
-                        iPad, eSet_UpsellID_Texture_DLC,
-                        ullOfferID_Full & 0xFFFFFFFF);
-#endif
 
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_OK;
@@ -108,9 +85,6 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(
                     &IUIScene_PauseMenu::ExitGameAndSaveReturned, pParam);
                 return 0;
             } else {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-                StorageManager.SetSaveDisabled(false);
-#endif
                 MinecraftServer::getInstance()->setSaveOnExit(true);
             }
         } else {
@@ -135,12 +109,8 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(
 int IUIScene_PauseMenu::ExitGameAndSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // 4J-PB - we won't come in here if we have a trial texture pack
-#ifdef _XBOX
-    IUIScene_PauseMenu* pScene = (IUIScene_PauseMenu*)pParam;
-#else
     IUIScene_PauseMenu* pScene = dynamic_cast<IUIScene_PauseMenu*>(
         ui.GetSceneFromCallbackId((std::size_t)pParam));
-#endif
 
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
@@ -149,9 +119,6 @@ int IUIScene_PauseMenu::ExitGameAndSaveReturned(
         // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
         // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
         // saveOrCheckpointId);
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-        StorageManager.SetSaveDisabled(false);
-#endif
         if (pScene) pScene->SetIgnoreInput(true);
         MinecraftServer::getInstance()->setSaveOnExit(true);
         // flag a app action of exit game
@@ -186,20 +153,11 @@ int IUIScene_PauseMenu::ExitGameAndSaveReturned(
 
 int IUIScene_PauseMenu::ExitGameDeclineSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-#ifdef _XBOX
-    IUIScene_PauseMenu* pScene = (IUIScene_PauseMenu*)pParam;
-#else
     IUIScene_PauseMenu* pScene = dynamic_cast<IUIScene_PauseMenu*>(
         ui.GetSceneFromCallbackId((std::size_t)pParam));
-#endif
 
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-        // Don't do this here, as it will still try and save some things even
-        // though it shouldn't!
-        // StorageManager.SetSaveDisabled(false);
-#endif
         if (pScene) pScene->SetIgnoreInput(true);
         MinecraftServer::getInstance()->setSaveOnExit(false);
         // flag a app action of exit game
@@ -234,139 +192,8 @@ int IUIScene_PauseMenu::ExitGameDeclineSaveReturned(
 
 int IUIScene_PauseMenu::WarningTrialTexturePackReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (!ProfileManager.IsSignedInLive(iPad)) {
-            // you're not signed in to PSN!
 
-        } else {
-            // 4J-PB - need to check this user can access the store
-            bool bContentRestricted;
-            ProfileManager.GetChatAndContentRestrictions(
-                iPad, true, NULL, &bContentRestricted, NULL);
-            if (bContentRestricted) {
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_CONFIRM_OK;
-                ui.RequestAlertMessage(IDS_ONLINE_SERVICE_TITLE,
-                                       IDS_CONTENT_RESTRICTION, uiIDA, 1, iPad);
-            } else {
-                // need to get info on the pack to see if the user has already
-                // downloaded it
-                TexturePack* tPack =
-                    Minecraft::GetInstance()->skins->getSelected();
-                DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
 
-                // retrieve the store name for the skin pack
-                DLCPack* pDLCPack =
-                    pDLCTexPack
-                        ->getDLCInfoParentPack();  // tPack->getDLCPack();
-                const char* pchPackName =
-                    wstringtofilename(pDLCPack->getName());
-                app.DebugPrintf("Texture Pack - %s\n", pchPackName);
-                SONYDLC* pSONYDLCInfo = app.GetSONYDLCInfo((char*)pchPackName);
-
-                if (pSONYDLCInfo != NULL) {
-                    char chName[42];
-                    char chSkuID[SCE_NP_COMMERCE2_SKU_ID_LEN];
-
-                    memset(chSkuID, 0, SCE_NP_COMMERCE2_SKU_ID_LEN);
-                    // find the info on the skin pack
-                    // we have to retrieve the skuid from the store info, it
-                    // can't be hardcoded since Sony may change it. So we assume
-                    // the first sku for the product is the one we want
-#ifdef __ORBIS__
-                    sprintf(chName, "%s", pSONYDLCInfo->chDLCKeyname);
-#else
-                    sprintf(chName, "%s-%s", app.GetCommerceCategory(),
-                            pSONYDLCInfo->chDLCKeyname);
-#endif
-                    app.GetDLCSkuIDFromProductList(chName, chSkuID);
-                    // 4J-PB - need to check for an empty store
-#if defined __ORBIS__ || defined __PSVITA__ || defined __PS3__
-                    if (app.CheckForEmptyStore(iPad) == false)
-#endif
-                    {
-                        if (app.DLCAlreadyPurchased(chSkuID)) {
-                            app.DownloadAlreadyPurchased(chSkuID);
-                        } else {
-                            app.Checkout(chSkuID);
-                        }
-                    }
-                }
-            }
-        }
-    }
-#endif  //
-
-#ifdef _XBOX_ONE
-    IUIScene_PauseMenu* pScene = (IUIScene_PauseMenu*)pParam;
-
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedIn(iPad)) {
-            if (ProfileManager.IsSignedInLive(iPad)) {
-                TexturePack* tPack =
-                    Minecraft::GetInstance()->skins->getSelected();
-                // get the dlc texture pack
-                DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-                DLCPack* pDLCPack = pDLCTexPack->getDLCInfoParentPack();
-
-                DLC_INFO* pDLCInfo = app.GetDLCInfoForProductName(
-                    const_cast<wchar_t*>(pDLCPack->getName().c_str()));
-
-                StorageManager.InstallOffer(
-                    1, const_cast<wchar_t*>(pDLCInfo->wsProductId.c_str()),
-                    NULL, NULL);
-
-                // the license change coming in when the offer has been
-                // installed will cause this scene to refresh
-            } else {
-                // 4J-JEV: Fix for XB1: #165863 - XR-074: Compliance: With no
-                // active network connection user is unable to convert from
-                // Trial to Full texture pack and is not messaged why.
-                unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
-                ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                       IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
-                                       iPad);
-            }
-        }
-    }
-
-#endif
-
-#ifdef _XBOX
-    IUIScene_PauseMenu* pScene = (IUIScene_PauseMenu*)pParam;
-
-    // pScene->m_bIgnoreInput = false;
-    pScene->ShowScene(true);
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedIn(iPad)) {
-            ULONGLONG ullIndexA[1];
-
-            TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
-            // get the dlc texture pack
-            DLCTexturePack* pDLCTexPack = (DLCTexturePack*)tPack;
-
-            // Need to get the parent packs id, since this may be one of many
-            // child packs with their own ids
-            app.GetDLCFullOfferIDForPackID(pDLCTexPack->getDLCParentPackId(),
-                                           &ullIndexA[0]);
-
-            // need to allow downloads here, or the player would need to quit
-            // the game to let the download of a texture pack happen. This might
-            // affect the network traffic, since the download could take all the
-            // bandwidth...
-            XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
-
-            StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
-        }
-    } else {
-        TelemetryManager->RecordUpsellResponded(
-            iPad, eSet_UpsellID_Texture_DLC,
-            (pScene->m_pDLCPack->getPurchaseOfferId() & 0xFFFFFFFF),
-            eSen_UpsellOutcome_Declined);
-    }
-#endif
 
     return 0;
 }
@@ -401,10 +228,6 @@ int IUIScene_PauseMenu::SaveWorldThreadProc(void* lpParameter) {
         if (!MinecraftServer::serverHalted() && !app.GetChangingSessionType())
             app.SetGameStarted(true);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-        if (app.GetGameHostOption(eGameHostOption_DisableSaving))
-            StorageManager.SetSaveDisabled(true);
-#endif
     }
 
     HRESULT hr = S_OK;
@@ -458,38 +281,12 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
                             IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
                         exitReasonTitleId = IDS_CONNECTION_FAILED;
                         break;
-#if defined(__PS3__) || defined(__ORBIS__)
-                    case DisconnectPacket::
-                        eDisconnect_ContentRestricted_AllLocal:
-                        exitReasonStringId =
-                            IDS_CONTENT_RESTRICTION_MULTIPLAYER;
-                        exitReasonTitleId = IDS_CONNECTION_FAILED;
-                        break;
-                    case DisconnectPacket::
-                        eDisconnect_ContentRestricted_Single_Local:
-                        exitReasonStringId = IDS_CONTENT_RESTRICTION;
-                        exitReasonTitleId = IDS_CONNECTION_FAILED;
-                        break;
-#endif
-#ifdef _XBOX
-                    case DisconnectPacket::eDisconnect_NoUGC_Remote:
-                        exitReasonStringId =
-                            IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_REMOTE;
-                        exitReasonTitleId = IDS_CONNECTION_FAILED;
-                        break;
-#endif
                     case DisconnectPacket::eDisconnect_NoFlying:
                         exitReasonStringId = IDS_DISCONNECTED_FLYING;
                         break;
                     case DisconnectPacket::eDisconnect_Quitting:
                         exitReasonStringId = IDS_DISCONNECTED_SERVER_QUIT;
                         break;
-#ifdef __ORBIS__
-                    case DisconnectPacket::eDisconnect_NetworkError:
-                        exitReasonStringId = IDS_ERROR_NETWORK_EXIT;
-                        exitReasonTitleId = IDS_ERROR_NETWORK_TITLE;
-                        break;
-#endif
                     case DisconnectPacket::eDisconnect_NoFriendsInGame:
                         exitReasonStringId =
                             IDS_DISCONNECTED_NO_FRIENDS_IN_GAME;
@@ -515,19 +312,7 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
                         exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
                         exitReasonTitleId = IDS_CANTJOIN_TITLE;
                         break;
-#ifdef _XBOX_ONE
-                    case DisconnectPacket::eDisconnect_ExitedGame:
-                        exitReasonTitleId = IDS_EXIT_GAME;
-                        exitReasonStringId = IDS_DISCONNECTED_EXITED_GAME;
-                        break;
-#endif
 
-#if defined __ORBIS__ || defined __PS3__ || defined __PSVITA__
-                    case DisconnectPacket::eDisconnect_NATMismatch:
-                        exitReasonStringId = IDS_DISCONNECTED_NAT_TYPE_MISMATCH;
-                        exitReasonTitleId = IDS_CONNECTION_FAILED;
-                        break;
-#endif
                     default:
                         exitReasonStringId = IDS_CONNECTION_LOST_SERVER;
                 }
@@ -597,33 +382,9 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
                         IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
                     exitReasonTitleId = IDS_CONNECTION_FAILED;
                     break;
-#if defined(__PS3__) || defined(__ORBIS__)
-                case DisconnectPacket::eDisconnect_ContentRestricted_AllLocal:
-                    exitReasonStringId = IDS_CONTENT_RESTRICTION_MULTIPLAYER;
-                    exitReasonTitleId = IDS_CONNECTION_FAILED;
-                    break;
-                case DisconnectPacket::
-                    eDisconnect_ContentRestricted_Single_Local:
-                    exitReasonStringId = IDS_CONTENT_RESTRICTION;
-                    exitReasonTitleId = IDS_CONNECTION_FAILED;
-                    break;
-#endif
-#ifdef _XBOX
-                case DisconnectPacket::eDisconnect_NoUGC_Remote:
-                    exitReasonStringId =
-                        IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_REMOTE;
-                    exitReasonTitleId = IDS_CONNECTION_FAILED;
-                    break;
-#endif
                 case DisconnectPacket::eDisconnect_Quitting:
                     exitReasonStringId = IDS_DISCONNECTED_SERVER_QUIT;
                     break;
-#ifdef __ORBIS__
-                case DisconnectPacket::eDisconnect_NetworkError:
-                    exitReasonStringId = IDS_ERROR_NETWORK_EXIT;
-                    exitReasonTitleId = IDS_ERROR_NETWORK_TITLE;
-                    break;
-#endif
                 case DisconnectPacket::eDisconnect_NoMultiplayerPrivilegesJoin:
                     exitReasonStringId = IDS_NO_MULTIPLAYER_PRIVILEGE_JOIN_TEXT;
                     break;
@@ -639,12 +400,6 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
                     exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
                     exitReasonTitleId = IDS_CANTJOIN_TITLE;
                     break;
-#if defined __ORBIS__ || defined __PS3__ || defined __PSVITA__
-                case DisconnectPacket::eDisconnect_NATMismatch:
-                    exitReasonStringId = IDS_DISCONNECTED_NAT_TYPE_MISMATCH;
-                    exitReasonTitleId = IDS_CONNECTION_FAILED;
-                    break;
-#endif
                 default:
                     exitReasonStringId = IDS_DISCONNECTED;
             }
@@ -689,27 +444,14 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
     app.SetReallyChangingSessionType(false);
     pMinecraft->exitingWorldRightNow = false;
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-    // Make sure we don't think saving is disabled in the menus
-    StorageManager.SetSaveDisabled(false);
-#endif
 }
 
 int IUIScene_PauseMenu::SaveGameDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-        unsigned int uiIDA[2];
-        uiIDA[0] = IDS_CONFIRM_CANCEL;
-        uiIDA[1] = IDS_CONFIRM_OK;
-        ui.RequestAlertMessage(
-            IDS_TITLE_ENABLE_AUTOSAVE, IDS_CONFIRM_ENABLE_AUTOSAVE, uiIDA, 2,
-            iPad, &IUIScene_PauseMenu::EnableAutosaveDialogReturned, pParam);
-#else
         // flag a app action of save game
         app.SetAction(iPad, eAppAction_SaveGame);
-#endif
     }
     return 0;
 }

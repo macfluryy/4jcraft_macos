@@ -1647,7 +1647,7 @@ attrAttrModMap* Item::getDefaultAttributeModifiers() {
         4J: These are necesary on the PS3.
                 (and 4 and Vita).
 */
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
+#if (0 || 0 || 0 || \
      defined __linux__)
 const int Item::shovel_iron_Id;
 const int Item::pickAxe_iron_Id;

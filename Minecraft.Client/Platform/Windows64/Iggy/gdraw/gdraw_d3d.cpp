@@ -32,8 +32,8 @@
 #pragma warning (push)
 #pragma warning (disable: 4201) // nonstandard extension used : nameless struct/union
 
-#include "../../../Durango/Iggy/include/gdraw.h"
-#include "../../../Durango/Iggy/include/iggy.h"
+#include "../include/gdraw.h"
+#include "../include/iggy.h"
 #include "gdraw_d3d.h"
 
 // The native handle type holds resource handles and a coarse description.
@@ -1984,11 +1984,9 @@ GDrawFunctions *gdraw_D3D_CreateContext(IDirect3DDevice9 *dev, S32 w, S32 h)
       }
    }
 
-   #if 1
    D3DCAPS9 caps;
    dev->GetDeviceCaps(&caps);
    gdraw->conditional_nonpow2 = ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL) != 0);
-   #endif
 
    gdraw->d3d_device = dev;
    create_all_shaders();
@@ -2225,4 +2223,3 @@ void RADLINK gdraw_D3D_DestroyTextureFromResource(GDrawTexture *tex)
    h->handle.tex.d3d->Release();
    gdraw_D3D_WrappedTextureDestroy(tex);
 }
-

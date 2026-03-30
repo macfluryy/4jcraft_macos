@@ -84,8 +84,7 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
     }
 
     if (m_editingSelf) {
-#if (defined(_CONTENT_PACKAGE) || \
-     defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED))
+#if defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
         removeControl(&m_checkboxes[eControl_Op], true);
 #else
         m_checkboxes[eControl_Op].init(
@@ -280,9 +279,6 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
     g_NetworkManager.RegisterPlayerChangedCallback(
         m_iPad, &UIScene_InGamePlayerOptionsMenu::OnPlayerChanged, this);
 
-#ifdef __PSVITA__
-    ui.TouchBoxRebuild(this);
-#endif
 }
 
 std::wstring UIScene_InGamePlayerOptionsMenu::getMoviePath() {
@@ -319,8 +315,7 @@ void UIScene_InGamePlayerOptionsMenu::handleReload() {
     }
 
     if (m_editingSelf) {
-#if (defined(_CONTENT_PACKAGE) || \
-     defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED))
+#if defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
         removeControl(&m_checkboxes[eControl_Op], true);
 #endif
 
@@ -411,8 +406,7 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
                 bool cheats =
                     app.GetGameHostOption(eGameHostOption_CheatsEnabled) != 0;
                 if (m_editingSelf) {
-#if (defined(_CONTENT_PACKAGE) || \
-     defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED))
+#if defined(_CONTENT_PACKAGE) || defined(_FINAL_BUILD) && !defined(_DEBUG_MENUS_ENABLED)
 #else
                     Player::setPlayerGamePrivilege(
                         m_playerPrivileges,
@@ -548,9 +542,6 @@ void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
         case ACTION_MENU_UP:

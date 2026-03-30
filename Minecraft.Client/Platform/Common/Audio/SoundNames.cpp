@@ -85,10 +85,6 @@ const WCHAR* ConsoleSoundEngine::wchSoundNames[eSoundType_MAX] = {
     L"ambient/weather/rain",     //	eSoundType_AMBIENT_WEATHER_RAIN,
     L"ambient/weather/thunder",  //	eSoundType_AMBIENT_WEATHER_THUNDER,
     L"ambient/cave/cave",  //	eSoundType_CAVE_CAVE, DON'T USE FOR XBOX 360!!!
-#ifdef _XBOX
-    L"ambient/cave/cave2",  //	eSoundType_CAVE_CAVE2 - removed the two sounds
-                            //that were at 192k in the first ambient cave event
-#endif
     L"portal/portal",  //	eSoundType_PORTAL_PORTAL,
     // 4J-PB - added a couple that were still using std::wstring
     L"portal/trigger",  //	eSoundType_PORTAL_TRIGGER

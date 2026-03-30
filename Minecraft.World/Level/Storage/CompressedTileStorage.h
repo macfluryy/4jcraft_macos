@@ -1,7 +1,7 @@
 #pragma once
-#ifndef __linux__
+#if !defined(__linux__)
 #include "../../Platform/x64headers/xmcore.h"
-#endif  // __linux__
+#endif
 
 // This class is used for the compressed storage of tile data. Unlike the
 // SparseLightingStorage class, data is split into 512 blocks of 4x4x4 tiles.
@@ -147,9 +147,6 @@ public:
     static void staticCtor();
 
     void compress(int upgradeBlock = -1);
-#ifdef __PS3__
-    void compress_SPU(int upgradeBlock = -1);
-#endif
 
 public:
     void queueForDelete(unsigned char* data);

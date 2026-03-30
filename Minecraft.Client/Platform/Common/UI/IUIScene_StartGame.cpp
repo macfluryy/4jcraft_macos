@@ -50,16 +50,8 @@ void IUIScene_StartGame::HandleDLCMountingComplete() {
 
     for (unsigned int i = 0; i < app.GetDLCInfoTexturesOffersCount(); ++i) {
         bTexturePackAlreadyListed = false;
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-        char* pchName = app.GetDLCInfoTextures(i);
-        pDLCInfo = app.GetDLCInfo(pchName);
-#elif defined _XBOX_ONE
-        pDLCInfo = app.GetDLCInfoForFullOfferID(
-            const_cast<wchar_t*>(app.GetDLCInfoTexturesFullOffer(i).c_str()));
-#else
         ULONGLONG ull = app.GetDLCInfoTexturesFullOffer(i);
         pDLCInfo = app.GetDLCInfoForFullOfferID(ull);
-#endif
         for (unsigned int i = 0; i < texturePacksCount; ++i) {
             TexturePack* tp = pMinecraft->skins->getTexturePackByIndex(i);
             if (pDLCInfo->iConfig == tp->getDLCParentPackId()) {
@@ -257,32 +249,11 @@ int IUIScene_StartGame::UnlockTexturePackReturned(
 
     if (result == C4JStorage::EMessage_ResultAccept) {
         if (ProfileManager.IsSignedIn(iPad)) {
-#if defined _XBOX  //|| defined _XBOX_ONE
-            ULONGLONG ullIndexA[1];
-            DLC_INFO* pDLCInfo = app.GetDLCInfoForTrialOfferID(
-                pScene->m_pDLCPack->getPurchaseOfferId());
-
-            if (pDLCInfo != NULL) {
-                ullIndexA[0] = pDLCInfo->ullOfferID_Full;
-            } else {
-                ullIndexA[0] = pScene->m_pDLCPack->getPurchaseOfferId();
-            }
-
-            StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
-#elif defined _XBOX_ONE
-            // StorageManager.InstallOffer(1,StorageManager.GetOffer(iIndex).wszProductID,NULL,NULL);
-#endif
 
             // the license change coming in when the offer has been installed
             // will cause this scene to refresh
         }
     } else {
-#if defined _XBOX
-        TelemetryManager->RecordUpsellResponded(
-            iPad, eSet_UpsellID_Texture_DLC,
-            (pScene->m_pDLCPack->getPurchaseOfferId() & 0xFFFFFFFF),
-            eSen_UpsellOutcome_Declined);
-#endif
     }
 
     pScene->m_bIgnoreInput = false;
@@ -294,64 +265,6 @@ int IUIScene_StartGame::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     IUIScene_StartGame* pClass = (IUIScene_StartGame*)pParam;
 
-#ifdef _XBOX
-    // Exit with or without saving
-    // Decline means install full version of the texture pack in this dialog
-    if (result == C4JStorage::EMessage_ResultDecline ||
-        result == C4JStorage::EMessage_ResultAccept) {
-        // we need to enable background downloading for the DLC
-        XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
-
-        ULONGLONG ullOfferID_Full;
-        ULONGLONG ullIndexA[1];
-        CXuiCtrl4JList::LIST_ITEM_INFO ListItem;
-        // get the current index of the list, and then get the data
-        ListItem = pClass->m_pTexturePacksList->GetData(
-            pClass->m_currentTexturePackIndex);
-        app.GetDLCFullOfferIDForPackID(ListItem.iData, &ullOfferID_Full);
-
-        if (result == C4JStorage::EMessage_ResultAccept)  // Full version
-        {
-            ullIndexA[0] = ullOfferID_Full;
-            StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
-
-        } else  // trial version
-        {
-            // if there is no trial version, this is a Cancel
-            DLC_INFO* pDLCInfo = app.GetDLCInfoForFullOfferID(ullOfferID_Full);
-            if (pDLCInfo->ullOfferID_Trial != 0LL) {
-                ullIndexA[0] = pDLCInfo->ullOfferID_Trial;
-                StorageManager.InstallOffer(1, ullIndexA, NULL, NULL);
-            }
-        }
-    }
-#elif defined _XBOX_ONE
-    // Get the product id from the texture pack id
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedIn(iPad)) {
-            if (ProfileManager.IsSignedInLive(iPad)) {
-                std::wstring ProductId;
-                app.GetDLCFullOfferIDForPackID(
-                    pClass->m_MoreOptionsParams.dwTexturePack, ProductId);
-
-                StorageManager.InstallOffer(
-                    1, const_cast<wchar_t*>(ProductId.c_str()), NULL, NULL);
-
-                // the license change coming in when the offer has been
-                // installed will cause this scene to refresh
-            } else {
-                // 4J-JEV: Fix for XB1: #165863 - XR-074: Compliance: With no
-                // active network connection user is unable to convert from
-                // Trial to Full texture pack and is not messaged why.
-                unsigned int uiIDA[1] = {IDS_CONFIRM_OK};
-                ui.RequestMessageBox(IDS_PRO_NOTONLINE_TITLE,
-                                     IDS_PRO_XBOXLIVE_NOTIFICATION, uiIDA, 1,
-                                     iPad, NULL, NULL, app.GetStringTable());
-            }
-        }
-    }
-
-#endif
     pClass->m_bIgnoreInput = false;
     return 0;
 }

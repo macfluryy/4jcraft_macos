@@ -19,7 +19,6 @@ enum eMUSICFILES {
     eStream_Overworld_hal4,
     eStream_Overworld_nuance1,
     eStream_Overworld_nuance2,
-#ifndef _XBOX
     // Add the new music tracks
     eStream_Overworld_Creative1,
     eStream_Overworld_Creative2,
@@ -31,7 +30,6 @@ enum eMUSICFILES {
     eStream_Overworld_Menu2,
     eStream_Overworld_Menu3,
     eStream_Overworld_Menu4,
-#endif
     eStream_Overworld_piano1,
     eStream_Overworld_piano2,
     eStream_Overworld_piano3,  // <-- make piano3 the last overworld one
@@ -80,7 +78,7 @@ typedef struct {
     int iSound;
     bool bIs3D;
     bool bUseSoundsPitchVal;
-#ifdef _DEBUG
+#if defined(_DEBUG)
     char chName[64];
 #endif
 } AUDIO_INFO;
@@ -94,7 +92,7 @@ class SoundEngine : public ConsoleSoundEngine {
 public:
     SoundEngine();
     virtual void destroy();
-#ifdef _DEBUG
+#if defined(_DEBUG)
     void GetSoundName(char* szSoundName, int iSound);
 #endif
     virtual void play(int iSound, float x, float y, float z, float volume,
@@ -129,12 +127,8 @@ public:
 private:
     float getMasterMusicVolume();
     // platform specific functions
-#ifdef __PS3__
-    int initAudioHardware(int iMinSpeakers);
-#else
     int initAudioHardware(int iMinSpeakers) { return iMinSpeakers; }
-#endif
-#ifdef __linux__
+#if defined(__linux__)
     void updateMiniAudio();
 #endif
 
@@ -177,7 +171,4 @@ private:
     int m_iStream_CD_1;
     bool* m_bHeardTrackA;
 
-#ifdef __ORBIS__
-    int32_t m_hBGMAudio;
-#endif
 };

@@ -3,7 +3,7 @@
 //
 // Interface for creating a D3D GDraw driver.
 
-#include "../../../Durango/Iggy/include/gdraw.h"
+#include "../include/gdraw.h"
 
 #define IDOC
 //idoc(parent,GDraw_d3d9)

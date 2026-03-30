@@ -18,14 +18,11 @@ ContainerScreen::ContainerScreen(std::shared_ptr<Container> inventory,
 }
 
 void ContainerScreen::renderLabels() {
-#if 0
-	font->draw(container->getName(), 8, 2 + 2 + 2, 0x404040);
-	font->draw(inventory->getName(), 8, imageHeight - 96 + 2, 0x404040);
-#endif
 }
 
 void ContainerScreen::renderBg(float a) {
-#ifdef ENABLE_JAVA_GUIS
+    // 4J Unused
+#if defined(ENABLE_JAVA_GUIS)
     int tex = minecraft->textures->loadTexture(TN_GUI_CONTAINER);
     glColor4f(1, 1, 1, 1);
     minecraft->textures->bind(tex);

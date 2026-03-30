@@ -12,42 +12,12 @@ ConnectScreen::ConnectScreen(Minecraft* minecraft, const std::wstring& ip,
     aborted = false;
     //    System.out.println("Connecting to " + ip + ", " + port);
     minecraft->setLevel(NULL);
-#if 1
     // 4J - removed from separate thread, but need to investigate what we
     // actually need here
     connection = new ClientConnection(minecraft, ip, port);
     if (aborted) return;
     connection->send(std::shared_ptr<PreLoginPacket>(
         new PreLoginPacket(minecraft->user->name)));
-#else
-
-    new Thread(){public void run(){
-
-        try {connection = new ClientConnection(minecraft, ip, port);
-    if (aborted) return;
-    connection.send(new PreLoginPacket(minecraft.user.name));
-}
-catch (UnknownHostException e) {
-    if (aborted) return;
-    minecraft.setScreen(new DisconnectedScreen("connect.failed",
-                                               "disconnect.genericReason",
-                                               "Unknown host '" + ip + "'"));
-}
-catch (ConnectException e) {
-    if (aborted) return;
-    minecraft.setScreen(new DisconnectedScreen(
-        "connect.failed", "disconnect.genericReason", e.getMessage()));
-}
-catch (Exception e) {
-    if (aborted) return;
-    e.printStackTrace();
-    minecraft.setScreen(new DisconnectedScreen(
-        "connect.failed", "disconnect.genericReason", e.toString()));
-}
-}
-}
-.start();
-#endif
 }
 
 void ConnectScreen::tick() {

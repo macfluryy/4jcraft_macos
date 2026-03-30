@@ -34,8 +34,8 @@
 
 #include <windows.h>
 #include <d3d10.h>
-#include "../../../Durango/Iggy/include/gdraw.h"
-#include "../../../Durango/Iggy/include/iggy.h"
+#include "../include/gdraw.h"
+#include "../include/iggy.h"
 #include <string.h>
 #include <math.h>
 
@@ -135,4 +135,3 @@ GDrawFunctions *gdraw_D3D10_CreateContext(ID3D10Device *dev, S32 w, S32 h)
 {
    return create_context(dev, dev, w, h);
 }
-

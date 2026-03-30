@@ -73,16 +73,6 @@ Tesselator::Tesselator(int size) {
         ARBVertexBufferObject::glGenBuffersARB(vboIds);
     }
 
-#ifdef __PSVITA__
-    // AP - alpha cut out is expensive on vita. Use this to defer primitives
-    // that use icons with alpha
-    alphaCutOutEnabled = false;
-
-    // this is the cut out enabled vertex array
-    _array2 = new intArray(size);
-    vertices2 = 0;
-    p2 = 0;
-#endif
 }
 
 Tesselator* Tesselator::getUniqueInstance(int size) {
@@ -93,13 +83,7 @@ void Tesselator::end() {
     //    if (!tesselating) throw new IllegalStateException("Not tesselating!");
     //    // 4J - removed
     tesselating = false;
-#ifdef __PSVITA__
-    // AP - alpha cut out is expensive on vita. Check both counts for valid
-    // vertices
-    if (vertices > 0 || vertices2 > 0)
-#else
     if (vertices > 0)
-#endif
     {
         // 4J - a lot of stuff taken out here for fiddling round with enable
         // client states etc. that don't matter for our renderer
@@ -115,29 +99,9 @@ void Tesselator::end() {
                 *pColData = 0x00000000;
                 pColData += 8;
             }
-#ifdef __PSVITA__
-            // AP - alpha cut out is expensive on vita. Check both counts for
-            // valid vertices
-            pColData = (unsigned int*)_array2->data;
-            pColData += 5;
-            for (int i = 0; i < vertices2; i++) {
-                *pColData = 0xffffffff;
-                pColData += 8;
-            }
-#endif
         }
         if (mode == GL_QUADS && TRIANGLE_MODE) {
             // glDrawArrays(GL_TRIANGLES, 0, vertices); // 4J - changed for xbox
-#ifdef _XBOX
-            RenderManager.DrawVertices(
-                D3DPT_TRIANGLELIST, vertices, _array->data,
-                useCompactFormat360
-                    ? C4JRender::VERTEX_TYPE_PS3_TS2_CS1
-                    : C4JRender::VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,
-                useProjectedTexturePixelShader
-                    ? C4JRender::PIXEL_SHADER_TYPE_PROJECTION
-                    : C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-#else
             RenderManager.DrawVertices(
                 C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST, vertices, _array->data,
                 useCompactFormat360
@@ -146,58 +110,18 @@ void Tesselator::end() {
                 useProjectedTexturePixelShader
                     ? C4JRender::PIXEL_SHADER_TYPE_PROJECTION
                     : C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-#endif
         } else {
 //            glDrawArrays(mode, 0, vertices);	// 4J - changed for xbox
 // For compact vertices, the vertexCount has to be calculated from the amount of
 // data written, as we insert extra fake vertices to encode supplementary data
 // for more awkward quads that have non axis aligned UVs (eg flowing lava/water)
-#ifdef _XBOX
             int vertexCount = vertices;
             if (useCompactFormat360) {
-                vertexCount = p / 2;
-                RenderManager.DrawVertices(
-                    (D3DPRIMITIVETYPE)mode, vertexCount, _array->data,
-                    C4JRender::VERTEX_TYPE_PS3_TS2_CS1,
-                    C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-            } else {
-                if (useProjectedTexturePixelShader) {
-                    RenderManager.DrawVertices(
-                        (D3DPRIMITIVETYPE)mode, vertexCount, _array->data,
-                        C4JRender::VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1_TEXGEN,
-                        C4JRender::PIXEL_SHADER_TYPE_PROJECTION);
-                } else {
-                    RenderManager.DrawVertices(
-                        (D3DPRIMITIVETYPE)mode, vertexCount, _array->data,
-                        C4JRender::VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,
-                        C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-                }
-            }
-#else
-            int vertexCount = vertices;
-            if (useCompactFormat360) {
-#ifdef __PSVITA__
-                // AP - alpha cut out is expensive on vita. Render non-cut out
-                // stuff first then send the cut out stuff
-                if (vertexCount) {
-                    RenderManager.DrawVertices(
-                        (C4JRender::ePrimitiveType)mode, vertexCount,
-                        _array->data, C4JRender::VERTEX_TYPE_COMPRESSED,
-                        C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-                }
-                if (vertices2) {
-                    RenderManager.DrawVerticesCutOut(
-                        (C4JRender::ePrimitiveType)mode, vertices2,
-                        _array2->data, C4JRender::VERTEX_TYPE_COMPRESSED,
-                        C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-                }
-#else
 
                 RenderManager.DrawVertices(
                     (C4JRender::ePrimitiveType)mode, vertexCount, _array->data,
                     C4JRender::VERTEX_TYPE_COMPRESSED,
                     C4JRender::PIXEL_SHADER_TYPE_STANDARD);
-#endif
             } else {
                 if (useProjectedTexturePixelShader) {
                     RenderManager.DrawVertices(
@@ -213,7 +137,6 @@ void Tesselator::end() {
                         C4JRender::PIXEL_SHADER_TYPE_STANDARD);
                 }
             }
-#endif
         }
         // 4jcraft: gldisableclientstate breaks gl compat, commenting those lead
         // to some weird glitches with input but.. somehow stopped one day so..
@@ -235,11 +158,6 @@ void Tesselator::clear() {
     p = 0;
     count = 0;
 
-#ifdef __PSVITA__
-    // AP - alpha cut out is expensive on vita. Clear the cut out variables
-    vertices2 = 0;
-    p2 = 0;
-#endif
 }
 
 void Tesselator::begin() {
@@ -263,18 +181,6 @@ bool Tesselator::setMipmapEnable(bool enable) {
     return prev;
 }
 
-#ifdef __PSVITA__
-// AP - alpha cut out is expensive on vita. Use this to defer primitives that
-// use icons with alpha
-void Tesselator::setAlphaCutOut(bool enable) { alphaCutOutEnabled = enable; }
-
-// AP - was any cut out geometry added since the last call to Clear
-bool Tesselator::getCutOutFound() {
-    if (vertices2) return true;
-
-    return false;
-}
-#endif
 
 void Tesselator::begin(int mode) {
     /*	// 4J - removed
@@ -500,251 +406,12 @@ void Tesselator::packCompactQuad() {
     }
 }
 
-#ifdef __PSVITA__
-void Tesselator::tileQuad(float x1, float y1, float z1, float u1, float v1,
-                          float r1, float g1, float b1, int tex1, float x2,
-                          float y2, float z2, float u2, float v2, float r2,
-                          float g2, float b2, int tex2, float x3, float y3,
-                          float z3, float u3, float v3, float r3, float g3,
-                          float b3, int tex3, float x4, float y4, float z4,
-                          float u4, float v4, float r4, float g4, float b4,
-                          int tex4) {
-    hasTexture = true;
-    hasTexture2 = true;
-    hasColor = true;
-
-    count += 4;
-
-    // AP - alpha cut out is expensive on vita. This will choose the correct
-    // data buffer depending on cut out enabled
-    std::int16_t* pShortData;
-    if (!alphaCutOutEnabled) {
-        pShortData = (std::int16_t*)&_array->data[p];
-        p += 16;
-        vertices += 4;
-    } else {
-        pShortData = (std::int16_t*)&_array2->data[p2];
-        p2 += 16;
-        vertices2 += 4;
-    }
-
-    int r = ((int)(r1 * 31)) << 11;
-    int g = ((int)(g1 * 63)) << 5;
-    int b = ((int)(b1 * 31));
-    int ipackedcol = r | g | b;
-    ipackedcol -= 32768;  // -32768 to 32767 range
-    ipackedcol &= 0xffff;
-
-    bounds.addVert(x1 + xo, y1 + yo, z1 + zo);  // 4J MGH - added
-    pShortData[0] = (((int)((x1 + xo) * 1024.0f)) & 0xffff);
-    pShortData[1] = (((int)((y1 + yo) * 1024.0f)) & 0xffff);
-    pShortData[2] = (((int)((z1 + zo) * 1024.0f)) & 0xffff);
-    pShortData[3] = ipackedcol;
-    pShortData[4] = (((int)(u1 * 8192.0f)) & 0xffff);
-    pShortData[5] = (((int)(v1 * 8192.0f)) & 0xffff);
-    ((int*)pShortData)[3] = tex1;
-    pShortData += 8;
-
-    r = ((int)(r2 * 31)) << 11;
-    g = ((int)(g2 * 63)) << 5;
-    b = ((int)(b2 * 31));
-    ipackedcol = r | g | b;
-    ipackedcol -= 32768;  // -32768 to 32767 range
-    ipackedcol &= 0xffff;
-
-    bounds.addVert(x2 + xo, y2 + yo, z2 + zo);  // 4J MGH - added
-    pShortData[0] = (((int)((x2 + xo) * 1024.0f)) & 0xffff);
-    pShortData[1] = (((int)((y2 + yo) * 1024.0f)) & 0xffff);
-    pShortData[2] = (((int)((z2 + zo) * 1024.0f)) & 0xffff);
-    pShortData[3] = ipackedcol;
-    pShortData[4] = (((int)(u2 * 8192.0f)) & 0xffff);
-    pShortData[5] = (((int)(v2 * 8192.0f)) & 0xffff);
-    ((int*)pShortData)[3] = tex2;
-    pShortData += 8;
-
-    r = ((int)(r3 * 31)) << 11;
-    g = ((int)(g3 * 63)) << 5;
-    b = ((int)(b3 * 31));
-    ipackedcol = r | g | b;
-    ipackedcol -= 32768;  // -32768 to 32767 range
-    ipackedcol &= 0xffff;
-
-    bounds.addVert(x3 + xo, y3 + yo, z3 + zo);  // 4J MGH - added
-    pShortData[0] = (((int)((x3 + xo) * 1024.0f)) & 0xffff);
-    pShortData[1] = (((int)((y3 + yo) * 1024.0f)) & 0xffff);
-    pShortData[2] = (((int)((z3 + zo) * 1024.0f)) & 0xffff);
-    pShortData[3] = ipackedcol;
-    pShortData[4] = (((int)(u3 * 8192.0f)) & 0xffff);
-    pShortData[5] = (((int)(v3 * 8192.0f)) & 0xffff);
-    ((int*)pShortData)[3] = tex3;
-    pShortData += 8;
-
-    r = ((int)(r4 * 31)) << 11;
-    g = ((int)(g4 * 63)) << 5;
-    b = ((int)(b4 * 31));
-    ipackedcol = r | g | b;
-    ipackedcol -= 32768;  // -32768 to 32767 range
-    ipackedcol &= 0xffff;
-
-    bounds.addVert(x4 + xo, y4 + yo, z4 + zo);  // 4J MGH - added
-    pShortData[0] = (((int)((x4 + xo) * 1024.0f)) & 0xffff);
-    pShortData[1] = (((int)((y4 + yo) * 1024.0f)) & 0xffff);
-    pShortData[2] = (((int)((z4 + zo) * 1024.0f)) & 0xffff);
-    pShortData[3] = ipackedcol;
-    pShortData[4] = (((int)(u4 * 8192.0f)) & 0xffff);
-    pShortData[5] = (((int)(v4 * 8192.0f)) & 0xffff);
-    ((int*)pShortData)[3] = tex4;
-
-    // Max 65535 verts in D3D, so 65532 is the last point at the end of a quad
-    // to catch it
-    if ((!alphaCutOutEnabled && vertices % 4 == 0 &&
-         ((p >= size - 4 * 4) || ((p / 4) >= 65532))) ||
-        (alphaCutOutEnabled && vertices2 % 4 == 0 &&
-         ((p2 >= size - 4 * 4) || ((p2 / 4) >= 65532)))) {
-        end();
-        tesselating = true;
-    }
-}
-
-void Tesselator::tileRainQuad(float x1, float y1, float z1, float u1, float v1,
-                              float x2, float y2, float z2, float u2, float v2,
-                              float x3, float y3, float z3, float u3, float v3,
-                              float x4, float y4, float z4, float u4, float v4,
-                              float r1, float g1, float b1, float a1, float r2,
-                              float g2, float b2, float a2, int tex1) {
-    hasTexture = true;
-    hasTexture2 = true;
-    hasColor = true;
-
-    float* pfData = (float*)&_array->data[p];
-
-    count += 4;
-    p += 4 * 8;
-    vertices += 4;
-
-    unsigned int col1 = ((int)(r1 * 255) << 24) | ((int)(g1 * 255) << 16) |
-                        ((int)(b1 * 255) << 8) | (int)(a1 * 255);
-
-    bounds.addVert(x1 + xo, y1 + yo, z1 + zo);
-    pfData[0] = (x1 + xo);
-    pfData[1] = (y1 + yo);
-    pfData[2] = (z1 + zo);
-    pfData[3] = u1;
-    pfData[4] = v1;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = tex1;
-    pfData += 8;
-
-    bounds.addVert(x2 + xo, y2 + yo, z2 + zo);
-    pfData[0] = (x2 + xo);
-    pfData[1] = (y2 + yo);
-    pfData[2] = (z2 + zo);
-    pfData[3] = u2;
-    pfData[4] = v2;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = tex1;
-    pfData += 8;
-
-    col1 = ((int)(r2 * 255) << 24) | ((int)(g2 * 255) << 16) |
-           ((int)(b2 * 255) << 8) | (int)(a2 * 255);
-
-    bounds.addVert(x3 + xo, y3 + yo, z3 + zo);
-    pfData[0] = (x3 + xo);
-    pfData[1] = (y3 + yo);
-    pfData[2] = (z3 + zo);
-    pfData[3] = u3;
-    pfData[4] = v3;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = tex1;
-    pfData += 8;
-
-    bounds.addVert(x4 + xo, y4 + yo, z4 + zo);
-    pfData[0] = (x4 + xo);
-    pfData[1] = (y4 + yo);
-    pfData[2] = (z4 + zo);
-    pfData[3] = u4;
-    pfData[4] = v4;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = tex1;
-    pfData += 8;
-
-    if (vertices % 4 == 0 && p >= size - 8 * 4) {
-        end();
-        tesselating = true;
-    }
-}
-
-void Tesselator::tileParticleQuad(float x1, float y1, float z1, float u1,
-                                  float v1, float x2, float y2, float z2,
-                                  float u2, float v2, float x3, float y3,
-                                  float z3, float u3, float v3, float x4,
-                                  float y4, float z4, float u4, float v4,
-                                  float r1, float g1, float b1, float a1) {
-    hasTexture = true;
-    hasTexture2 = true;
-    hasColor = true;
-
-    float* pfData = (float*)&_array->data[p];
-
-    count += 4;
-    p += 4 * 8;
-    vertices += 4;
-
-    unsigned int col1 = ((int)(r1 * 255) << 24) | ((int)(g1 * 255) << 16) |
-                        ((int)(b1 * 255) << 8) | (int)(a1 * 255);
-
-    bounds.addVert(x1 + xo, y1 + yo, z1 + zo);
-    pfData[0] = (x1 + xo);
-    pfData[1] = (y1 + yo);
-    pfData[2] = (z1 + zo);
-    pfData[3] = u1;
-    pfData[4] = v1;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = _tex2;
-    pfData += 8;
-
-    bounds.addVert(x2 + xo, y2 + yo, z2 + zo);
-    pfData[0] = (x2 + xo);
-    pfData[1] = (y2 + yo);
-    pfData[2] = (z2 + zo);
-    pfData[3] = u2;
-    pfData[4] = v2;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = _tex2;
-    pfData += 8;
-
-    bounds.addVert(x3 + xo, y3 + yo, z3 + zo);
-    pfData[0] = (x3 + xo);
-    pfData[1] = (y3 + yo);
-    pfData[2] = (z3 + zo);
-    pfData[3] = u3;
-    pfData[4] = v3;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = _tex2;
-    pfData += 8;
-
-    bounds.addVert(x4 + xo, y4 + yo, z4 + zo);
-    pfData[0] = (x4 + xo);
-    pfData[1] = (y4 + yo);
-    pfData[2] = (z4 + zo);
-    pfData[3] = u4;
-    pfData[4] = v4;
-    ((int*)pfData)[5] = col1;
-    ((int*)pfData)[7] = _tex2;
-    pfData += 8;
-
-    if (vertices % 4 == 0 && p >= size - 8 * 4) {
-        end();
-        tesselating = true;
-    }
-}
-#endif
 
 typedef unsigned short hfloat;
 extern hfloat convertFloatToHFloat(float f);
 extern float convertHFloatToFloat(hfloat hf);
 
-#ifdef __linux__
+#if defined(__linux__)
 namespace {
 void packLinuxLightmapCoords(int tex2, std::int16_t& u, std::int16_t& v) {
     u = static_cast<std::int16_t>(tex2 & 0xffff);
@@ -783,25 +450,6 @@ void Tesselator::vertex(float x, float y, float z) {
     if (useCompactFormat360) {
         unsigned int ucol = (unsigned int)col;
 
-#ifdef _XBOX
-        // Pack as 4:4:4 RGB_
-        unsigned short packedcol =
-            (((col & 0xf0000000) >> 16) | ((col & 0x00f00000) >> 12) |
-             ((col & 0x0000f000) >> 8));
-        int ipackedcol = ((int)packedcol) & 0xffff;  // 0 to 65535 range
-
-        int quadIdx = vertices % 4;
-        m_ix[quadIdx] = (unsigned int)((x + xo) * 128.0f);
-        m_iy[quadIdx] = (unsigned int)((y + yo) * 128.0f);
-        m_iz[quadIdx] = (unsigned int)((z + zo) * 128.0f);
-        m_clr[quadIdx] = (unsigned int)ipackedcol;
-        m_u[quadIdx] = (int)(uu * 4096.0f);
-        m_v[quadIdx] = (int)(v * 4096.0f);
-        m_t2[quadIdx] = ((_tex2 & 0x00f00000) >> 20) | (_tex2 & 0x000000f0);
-        if (quadIdx == 3) {
-            packCompactQuad();
-        }
-#else
         unsigned short packedcol = ((col & 0xf8000000) >> 16) |
                                    ((col & 0x00fc0000) >> 13) |
                                    ((col & 0x0000f800) >> 11);
@@ -810,47 +458,9 @@ void Tesselator::vertex(float x, float y, float z) {
         ipackedcol -= 32768;  // -32768 to 32767 range
         ipackedcol &= 0xffff;
 
-#ifdef __PSVITA__
-        // AP - alpha cut out is expensive on vita. This will choose the correct
-        // data buffer depending on cut out enabled
-        std::int16_t* pShortData;
-        if (!alphaCutOutEnabled) {
-            pShortData = (std::int16_t*)&_array->data[p];
-        } else {
-            pShortData = (std::int16_t*)&_array2->data[p2];
-        }
-#else
         std::int16_t* pShortData = (std::int16_t*)&_array->data[p];
 
-#endif
 
-#ifdef __PS3__
-        float tex2U = ((std::int16_t*)&_tex2)[1] + 8;
-        float tex2V = ((std::int16_t*)&_tex2)[0] + 8;
-        float colVal1 = ((col & 0xff000000) >> 24) / 256.0f;
-        float colVal2 = ((col & 0x00ff0000) >> 16) / 256.0f;
-        float colVal3 = ((col & 0x0000ff00) >> 8) / 256.0f;
-
-        // 		pShortData[0] = convertFloatToHFloat(x + xo);
-        // 		pShortData[1] = convertFloatToHFloat(y + yo);
-        // 		pShortData[2] = convertFloatToHFloat(z + zo);
-        // 		pShortData[3] = convertFloatToHFloat(uu);
-        // 		pShortData[4] = convertFloatToHFloat(tex2U + colVal1);
-        // 		pShortData[5] = convertFloatToHFloat(tex2V + colVal2);
-        // 		pShortData[6] = convertFloatToHFloat(colVal3);
-        // 		pShortData[7] = convertFloatToHFloat(v);
-
-        pShortData[0] = (((int)((x + xo) * 1024.0f)) & 0xffff);
-        pShortData[1] = (((int)((y + yo) * 1024.0f)) & 0xffff);
-        pShortData[2] = (((int)((z + zo) * 1024.0f)) & 0xffff);
-        pShortData[3] = ipackedcol;
-        pShortData[4] = (((int)(uu * 8192.0f)) & 0xffff);
-        pShortData[5] = (((int)(v * 8192.0f)) & 0xffff);
-        pShortData[6] = (((int)(tex2U * (8192.0f / 256.0f))) & 0xffff);
-        pShortData[7] = (((int)(tex2V * (8192.0f / 256.0f))) & 0xffff);
-
-        p += 4;
-#else
         pShortData[0] = (((int)((x + xo) * 1024.0f)) & 0xffff);
         pShortData[1] = (((int)((y + yo) * 1024.0f)) & 0xffff);
         pShortData[2] = (((int)((z + zo) * 1024.0f)) & 0xffff);
@@ -859,77 +469,28 @@ void Tesselator::vertex(float x, float y, float z) {
         pShortData[5] = (((int)(v * 8192.0f)) & 0xffff);
         std::int16_t u2 = static_cast<std::int16_t>(_tex2 & 0xffff);
         std::int16_t v2 = static_cast<std::int16_t>((_tex2 >> 16) & 0xffff);
-#ifdef __linux__
+#if defined(__linux__)
         packLinuxLightmapCoords(_tex2, u2, v2);
         logLinuxPackedLightmapCoords("compact", _tex2, u2, v2);
 #endif
-#if defined _XBOX_ONE || defined __ORBIS__
-        // Optimisation - pack the second UVs into a single short (they could
-        // actually go in a byte), which frees up a short to store the x offset
-        // for this chunk in the vertex itself. This means that when rendering
-        // chunks, we don't need to update the vertex constants that specify the
-        // location for a chunk, when only the x offset has changed.
-        pShortData[6] = (u2 << 8) | v2;
-        pShortData[7] = -xoo;
-#else
         pShortData[6] = u2;
         pShortData[7] = v2;
-#endif
 
-#ifdef __PSVITA__
-        // AP - alpha cut out is expensive on vita. This will choose the correct
-        // data buffer depending on cut out enabled
-        if (!alphaCutOutEnabled) {
-            p += 4;
-        } else {
-            p2 += 4;
-        }
-#else
         p += 4;
-#endif
 
-#endif
 
-#endif
 
-#ifdef __PSVITA__
-        // AP - alpha cut out is expensive on vita. Increase the correct
-        // vertices depending on cut out enabled
-        if (!alphaCutOutEnabled) {
-            vertices++;
-        } else {
-            vertices2++;
-        }
-#else
 
         vertices++;
-#endif
 
-#ifdef _XBOX
-        if (vertices % 4 == 0 &&
-            ((p >= size - 8 * 2) ||
-             ((p / 2) >=
-              65532)))  // Max 65535 verts in D3D, so 65532 is the last point at
-                        // the end of a quad to catch it
-#else
 
-#ifdef __PSVITA__
-        // Max 65535 verts in D3D, so 65532 is the last point at the end of a
-        // quad to catch it
-        if ((!alphaCutOutEnabled && vertices % 4 == 0 &&
-             ((p >= size - 4 * 4) || ((p / 4) >= 65532))) ||
-            (alphaCutOutEnabled && vertices2 % 4 == 0 &&
-             ((p2 >= size - 4 * 4) || ((p2 / 4) >= 65532))))
-#else
 
         if (vertices % 4 == 0 &&
             ((p >= size - 4 * 4) ||
              ((p / 4) >=
               65532)))  // Max 65535 verts in D3D, so 65532 is the last point at
                         // the end of a quad to catch it
-#endif
 
-#endif
         {
             end();
             tesselating = true;
@@ -967,26 +528,17 @@ void Tesselator::vertex(float x, float y, float z) {
             _array->data[p + 6] = _normal;
         }
         if (hasTexture2) {
-#ifdef _XBOX
-            _array->data[p + 7] = ((_tex2 >> 16) & 0xffff) | (_tex2 << 16);
-#else
 // 4jcraft: we will be lighting the blocks right in here
-#if defined(__PS3__) || defined(__linux__)
-#ifdef __PS3__
-            std::int16_t tex2U = ((std::int16_t*)&_tex2)[1] + 8;
-            std::int16_t tex2V = ((std::int16_t*)&_tex2)[0] + 8;
-#else
+#if defined(__linux__)
             std::int16_t tex2U;
             std::int16_t tex2V;
             packLinuxLightmapCoords(_tex2, tex2U, tex2V);
             logLinuxPackedLightmapCoords("standard", _tex2, tex2U, tex2V);
-#endif
             std::int16_t* pShortArray = (std::int16_t*)&_array->data[p + 7];
             pShortArray[0] = tex2U;
             pShortArray[1] = tex2V;
 #else
             _array->data[p + 7] = _tex2;
-#endif
 #endif
         } else {
             // -512 each for u/v will mean that the renderer will use global
@@ -1025,85 +577,15 @@ void Tesselator::color(int c, int alpha) {
 
 void Tesselator::noColor() { _noColor = true; }
 
-#ifdef __PS3__
-std::uint32_t _ConvertF32toX11Y11Z10N(float x, float y, float z) {
-    //                      11111111111 X 0x000007FF
-    //           1111111111100000000000 Y 0x003FF800
-    // 11111111110000000000000000000000 Z 0xFFC00000
-    // ZZZZZZZZZZYYYYYYYYYYYXXXXXXXXXXX
-    // #defines for X11Y11Z10N format
-#define X11Y11Z10N_X_MASK 0x000007FF
-#define X11Y11Z10N_X_BITS 11
-#define X11Y11Z10N_X_SHIFT 0
-
-#define X11Y11Z10N_Y_MASK 0x003FF800
-#define X11Y11Z10N_Y_BITS 11
-#define X11Y11Z10N_Y_SHIFT 11
-
-#define X11Y11Z10N_Z_MASK 0xFFC00000
-#define X11Y11Z10N_Z_BITS 10
-#define X11Y11Z10N_Z_SHIFT 22
-
-#ifndef _CONTENT_PACKAGE
-    if (x < -1.0f || x > 1.0f) {
-        printf(
-            "Value (%5.3f) should be in range [-1..1].  Conversion will clamp "
-            "to X11Y11Z10N.\n",
-            x);
-    }
-    if (y < -1.0f || y > 1.0f) {
-        printf(
-            "Value (%5.3f) should be in range [-1..1].  Conversion will clamp "
-            "to X11Y11Z10N.\n",
-            y);
-    }
-    if (z < -1.0f || z > 1.0f) {
-        printf(
-            "Value (%5.3f) should be in range [-1..1].  Conversion will clamp "
-            "to X11Y11Z10N.\n",
-            z);
-    }
-#endif
-
-    const std::uint32_t uX =
-        ((std::int32_t(std::max(std::min(((x) * 2047.f - 1.f) * 0.5f, 1023.f),
-                                -1024.f)) &
-          (X11Y11Z10N_X_MASK >> X11Y11Z10N_X_SHIFT))
-         << X11Y11Z10N_X_SHIFT);
-    const std::uint32_t uY =
-        ((std::int32_t(std::max(std::min(((y) * 2047.f - 1.f) * 0.5f, 1023.f),
-                                -1024.f)) &
-          (X11Y11Z10N_Y_MASK >> X11Y11Z10N_Y_SHIFT))
-         << X11Y11Z10N_Y_SHIFT);
-    const std::uint32_t uZ =
-        ((std::int32_t(
-              std::max(std::min(((z) * 1023.f - 1.f) * 0.5f, 511.f), -512.f)) &
-          (X11Y11Z10N_Z_MASK >> X11Y11Z10N_Z_SHIFT))
-         << X11Y11Z10N_Z_SHIFT);
-    const std::uint32_t xyz = uX | uY | uZ;
-    return xyz;
-}
-#endif  // __PS3__
 
 void Tesselator::normal(float x, float y, float z) {
     hasNormal = true;
 
-#ifdef __PS3__
-    _normal = _ConvertF32toX11Y11Z10N(x, y, z);
-#elif __PSVITA__
-    // AP - casting a negative value to 'byte' on Vita results in zero. changed
-    // to a signed 8 value
-    std::int8_t xx = (std::int8_t)(x * 127);
-    std::int8_t yy = (std::int8_t)(y * 127);
-    std::int8_t zz = (std::int8_t)(z * 127);
-    _normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
-#else
     // 4jcraft copied the PSVITA branch, read comment above
     std::int8_t xx = (std::int8_t)(x * 127);
     std::int8_t yy = (std::int8_t)(y * 127);
     std::int8_t zz = (std::int8_t)(z * 127);
     _normal = (xx & 0xff) | ((yy & 0xff) << 8) | ((zz & 0xff) << 16);
-#endif
 }
 
 void Tesselator::offset(float xo, float yo, float zo) {
@@ -1124,14 +606,5 @@ void Tesselator::addOffset(float x, float y, float z) {
 }
 
 bool Tesselator::hasMaxVertices() {
-#ifdef __ORBIS__
-    // On PS4, the way we push data to the command buffer has a maximum size of
-    // a single command packet of 2^16 bytes, and the effective maximum size
-    // will be slightly less than that due to packet headers and padding.
-    int bytes = vertices * (useCompactFormat360 ? 16 : 32);
-
-    return bytes > 60 * 1024;
-#else
     return false;
-#endif
 }

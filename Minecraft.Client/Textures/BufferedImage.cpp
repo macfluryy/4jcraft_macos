@@ -10,25 +10,6 @@
 #include <vector>
 #include <string>
 
-#ifdef _XBOX
-typedef struct {
-    unsigned int filesz;
-    unsigned short creator1;
-    unsigned short creator2;
-    unsigned int bmp_offset;
-    unsigned int header_sz;
-    unsigned int width;
-    unsigned int height;
-    unsigned short nplanes;
-    unsigned short bitspp;
-    unsigned int compress_type;
-    unsigned int bmp_bytesz;
-    int hres;
-    int vres;
-    unsigned int ncolors;
-    unsigned int nimpcolors;
-} BITMAPINFOHEADER;
-#endif
 
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];

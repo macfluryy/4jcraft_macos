@@ -113,9 +113,6 @@ UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
 
     ReadStats(-1);
 
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
-    addTimer(PLAYER_ONLINE_TIMER_ID, PLAYER_ONLINE_TIMER_TIME);
-#endif
 }
 
 UIScene_LeaderboardsMenu::~UIScene_LeaderboardsMenu() {
@@ -128,58 +125,6 @@ void UIScene_LeaderboardsMenu::updateTooltips() {
     int iTooltipFriendRequest = -1;
     int iTooltipGamerCardOrProfile = -1;
 
-#ifdef _DURANGO
-    // if( m_leaderboard.m_entries.size() > 0 )
-    if (m_leaderboard.m_totalEntryCount > 0) {
-        unsigned int selection = m_newSel;
-
-        // If the selected user is me, don't show Send Friend Request, and show
-        // the gamer profile, not the gamer card
-
-        // Check that the index is actually within range of the data we've got
-        // before accessing the m_leaderboard.m_entries array
-        int idx = selection - GetEntryStartIndex();
-        if ((idx < 0) || (idx >= m_leaderboard.m_entries.size())) {
-            return;
-        }
-        if (m_leaderboard.m_entries[idx].m_bPlayer) {
-            iTooltipGamerCardOrProfile = IDS_TOOLTIPS_VIEW_GAMERPROFILE;
-        } else {
-            iTooltipGamerCardOrProfile = IDS_TOOLTIPS_VIEW_GAMERCARD;
-
-#ifdef _XBOX
-            // if we're on the friends filter, then don't show the Send Friend
-            // Request
-            if (!m_currentFilter == LeaderboardManager::eFM_Friends)
-#endif
-            {
-                // check the entry we're on
-                if (m_leaderboard.m_entries.size() > 0) {
-                    if (selection >= GetEntryStartIndex() &&
-                        selection < (GetEntryStartIndex() +
-                                     m_leaderboard.m_entries.size())) {
-#ifdef _XBOX
-                        if ((m_leaderboard
-                                 .m_entries[selection -
-                                            (m_leaderboard.m_entryStartIndex -
-                                             1)]
-                                 .m_bFriend == false) &&
-                            (m_leaderboard
-                                 .m_entries[selection -
-                                            (m_leaderboard.m_entryStartIndex -
-                                             1)]
-                                 .m_bRequestedFriend == false))
-#endif
-                        {
-                            iTooltipFriendRequest =
-                                IDS_TOOLTIPS_SEND_FRIEND_REQUEST;
-                        }
-                    }
-                }
-            }
-        }
-    }
-#endif
 
     ui.SetTooltips(m_iPad, iTooltipFriendRequest, IDS_TOOLTIPS_BACK,
                    IDS_TOOLTIPS_CHANGE_FILTER, iTooltipGamerCardOrProfile);
@@ -318,31 +263,6 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
 
                 sendInputToMovie(key, repeat, pressed, released);
 
-#if 0
-				if( key == ACTION_MENU_PAGEUP )
-				{
-					m_newTop = m_listGamers.GetTopItem() - 10;
-
-					if( m_newTop < 0 )
-						m_newTop = 0;
-
-					m_newSel = m_newTop;
-				}
-				else
-				{
-
-					m_newTop = m_listGamers.GetTopItem() + 10;
-
-					if( m_newTop+10 > (int)m_leaderboard.m_totalEntryCount )
-					{
-						m_newTop = m_leaderboard.m_totalEntryCount - 10;
-						if( m_newTop < 0 )
-							m_newTop = 0;
-					}
-
-					m_newSel = m_newTop;
-				}
-#endif
             }
             handled = true;
         } break;
@@ -389,73 +309,9 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
             handled = true;
         } break;
         case ACTION_MENU_Y: {
-#ifdef _DURANGO
-            // Show gamercard
-            // if( m_leaderboard.m_entries.size() > 0 )
-            if (m_leaderboard.m_totalEntryCount > 0) {
-                unsigned int selection = m_newSel;
-                if (selection >= GetEntryStartIndex() &&
-                    selection < (GetEntryStartIndex() +
-                                 m_leaderboard.m_entries.size())) {
-                    PlayerUID uid =
-                        m_leaderboard
-                            .m_entries[selection - GetEntryStartIndex()]
-                            .m_xuid;
-                    if (uid != INVALID_XUID) {
-                        ProfileManager.ShowProfileCard(
-                            ProfileManager.GetLockedProfile(), uid);
-                        ui.PlayUISFX(eSFX_Press);
-                    }
-                }
-            }
-#endif
             handled = true;
         } break;
         case ACTION_MENU_A: {
-#ifdef _DURANGO
-            // Send friend request if the filter mode is not friend, and they're
-            // not a friend or a pending friend
-#ifdef _XBOX
-            if (m_currentFilter != LeaderboardManager::eFM_Friends)
-#endif
-            {
-                if (m_leaderboard.m_entries.size() > 0) {
-                    unsigned int selection = m_newSel;
-                    if (selection >= GetEntryStartIndex() &&
-                        selection < (GetEntryStartIndex() +
-                                     m_leaderboard.m_entries.size())) {
-                        // If not the player and neither currently a friend or
-                        // requested to be a friend
-                        if (!m_leaderboard
-                                 .m_entries[selection - GetEntryStartIndex()]
-                                 .m_bPlayer
-#ifdef _XBOX
-                            &&
-                            !m_leaderboard
-                                 .m_entries[selection -
-                                            (m_leaderboard.m_entryStartIndex -
-                                             1)]
-                                 .m_bFriend &&
-                            !m_leaderboard
-                                 .m_entries[selection -
-                                            (m_leaderboard.m_entryStartIndex -
-                                             1)]
-                                 .m_bRequestedFriend
-#endif
-                        ) {
-                            PlayerUID xuid =
-                                m_leaderboard
-                                    .m_entries[selection - GetEntryStartIndex()]
-                                    .m_xuid;
-                            if (xuid != INVALID_XUID) {
-                                ProfileManager.ShowAddFriend(m_iPad, xuid);
-                                ui.PlayUISFX(eSFX_Press);
-                            }
-                        }
-                    }
-                }
-            }
-#endif
             handled = true;
         } break;
     }
@@ -634,14 +490,10 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
     if (m_leaderboard.m_totalEntryCount == 0) {
         m_leaderboard.m_entries.clear();
 
-#if _DURANGO
-        m_leaderboard.m_totalEntryCount = m_numStats;
-#else
         m_leaderboard.m_totalEntryCount =
             (m_currentFilter == LeaderboardManager::eFM_Friends)
                 ? m_newEntriesCount
                 : m_numStats;
-#endif
 
         if (m_leaderboard.m_totalEntryCount == 0 || m_newEntriesCount == 0) {
             // LeaderboardManager::Instance()->SetStatsRetrieved(false);
@@ -780,16 +632,8 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
         }
     }
 
-#ifdef __PS3__
-    // m_name can be unicode characters somehow for Japan - should use
-    // m_onlineID
-    std::wstring wstr = convStringToWstring(statsRow->m_uid.getOnlineID());
-    swprintf(leaderboardEntry->m_gamerTag, XUSER_NAME_SIZE, L"%ls",
-             wstr.c_str());
-#else
     memcpy(leaderboardEntry->m_gamerTag, statsRow->m_name.data(),
            statsRow->m_name.size() * sizeof(wchar_t));
-#endif
 
     // Copy the other columns
     for (unsigned int i = 0; i < statsRow->m_statsSize; i++) {
@@ -799,7 +643,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
             unsigned int displayValue = leaderboardEntry->m_columns[i];
             if (displayValue > 99999) displayValue = 99999;
             swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%u", displayValue);
-#ifdef _DEBUG
+#if defined(_DEBUG)
             // app.DebugPrintf("Value - %d\n",leaderboardEntry->m_columns[i]);
 #endif
         } else {
@@ -814,14 +658,14 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
                 iDigitC++;
             }
 
-#ifdef _DEBUG
+#if defined(_DEBUG)
             // app.DebugPrintf("Value - %d\n",leaderboardEntry->m_columns[i]);
 #endif
             if (iDigitC < 4) {
                 // m
                 swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%um",
                          leaderboardEntry->m_columns[i]);
-#ifdef _DEBUG
+#if defined(_DEBUG)
                 // app.DebugPrintf("Display - %um\n",
                 // leaderboardEntry->m_columns[i]);
 #endif
@@ -829,7 +673,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
                 // km with a .X
                 swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%.1fkm",
                          ((float)leaderboardEntry->m_columns[i]) / 1000.f);
-#ifdef _DEBUG
+#if defined(_DEBUG)
                 // app.DebugPrintf("Display - %.1fkm\n",
                 // ((float)leaderboardEntry->m_columns[i])/1000.f);
 #endif
@@ -837,7 +681,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
                 // bigger than that, so no decimal point
                 swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%.0fkm",
                          ((float)leaderboardEntry->m_columns[i]) / 1000.f);
-#ifdef _DEBUG
+#if defined(_DEBUG)
                 // app.DebugPrintf("Display - %.0fkm\n",
                 // ((float)leaderboardEntry->m_columns[i])/1000.f);
 #endif
@@ -845,48 +689,6 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
         }
     }
 
-#ifdef _DURANGO
-    // Is the player
-    PlayerUID myXuid;
-    ProfileManager.GetXUID(ProfileManager.GetPrimaryPad(), &myXuid, true);
-    if (statsRow->m_uid == myXuid) {
-        leaderboardEntry->m_bPlayer = true;
-        leaderboardEntry->m_bOnline = false;
-        leaderboardEntry->m_bFriend = false;
-        leaderboardEntry->m_bRequestedFriend = false;
-    } else {
-        leaderboardEntry->m_bPlayer = false;
-        leaderboardEntry->m_bOnline = false;
-        leaderboardEntry->m_bFriend = false;
-        leaderboardEntry->m_bRequestedFriend = false;
-
-#ifdef _XBOX
-        // Check for friend status
-        for (unsigned int friendIndex = 0; friendIndex < m_numFriends;
-             ++friendIndex) {
-            if (m_friends[friendIndex].xuid == statsRow->m_uid) {
-                if ((m_friends[friendIndex].dwFriendState &
-                     (XONLINE_FRIENDSTATE_FLAG_SENTREQUEST |
-                      XONLINE_FRIENDSTATE_FLAG_RECEIVEDREQUEST)) == 0) {
-                    // Is friend, might be online
-                    leaderboardEntry->m_bFriend = true;
-                    leaderboardEntry->m_bOnline =
-                        (m_friends[friendIndex].dwFriendState &
-                         XONLINE_FRIENDSTATE_FLAG_ONLINE);
-                    leaderboardEntry->m_bRequestedFriend = false;
-                } else {
-                    // Friend request sent but not accepted yet
-                    leaderboardEntry->m_bOnline = false;
-                    leaderboardEntry->m_bFriend = false;
-                    leaderboardEntry->m_bRequestedFriend = true;
-                }
-
-                break;
-            }
-        }
-#endif
-    }
-#endif
 }
 
 void UIScene_LeaderboardsMenu::PopulateLeaderboard(
@@ -969,8 +771,7 @@ void UIScene_LeaderboardsMenu::PopulateLeaderboard(
         m_labelEntries.setLabel(entriesBuffer);
 
         // Show the no results message
-#if !(defined(_XBOX) || \
-      defined(_WINDOWS64))  // 4J Stu - Temp to get the win build running, but
+#if !defined(_WINDOWS64)
                             // so we check this for other platforms
         if (ret == LeaderboardManager::eStatsReturn_NetworkError)
             m_labelInfo.setLabel(app.GetString(IDS_ERROR_NETWORK));
@@ -1049,28 +850,6 @@ void UIScene_LeaderboardsMenu::handleRequestMoreData(F64 startIndex, bool up) {
 }
 
 void UIScene_LeaderboardsMenu::handleTimerComplete(int id) {
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__)
-    switch (id) {
-        case PLAYER_ONLINE_TIMER_ID:
-#ifndef _WINDOWS64
-            if (ProfileManager.IsSignedInLive(ProfileManager.GetPrimaryPad()) ==
-                false) {
-                // check the player hasn't gone offline
-                // If they have, bring up the PSN warning and exit from the
-                // leaderboards
-                unsigned int uiIDA[1];
-                uiIDA[0] = IDS_OK;
-                C4JStorage::EMessageResult result = ui.RequestErrorMessage(
-                    IDS_CONNECTION_LOST,
-                    g_NetworkManager.CorrectErrorIDS(
-                        IDS_CONNECTION_LOST_LIVE_NO_EXIT),
-                    uiIDA, 1, ProfileManager.GetPrimaryPad(),
-                    UIScene_LeaderboardsMenu::ExitLeaderboards, this);
-            }
-#endif
-            break;
-    }
-#endif
 }
 
 int UIScene_LeaderboardsMenu::ExitLeaderboards(

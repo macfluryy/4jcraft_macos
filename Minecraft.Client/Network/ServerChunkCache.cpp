@@ -34,7 +34,7 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
     this->cache = new LevelChunk*[XZSIZE * XZSIZE];
     memset(this->cache, 0, XZSIZE * XZSIZE * sizeof(LevelChunk*));
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     m_unloadedCache = new LevelChunk*[XZSIZE * XZSIZE];
     memset(m_unloadedCache, 0, XZSIZE * XZSIZE * sizeof(LevelChunk*));
 #endif
@@ -49,7 +49,7 @@ ServerChunkCache::~ServerChunkCache() {
     delete[] cache; // 4jcraft changed to delete[]
     delete source;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     for (unsigned int i = 0; i < XZSIZE * XZSIZE; ++i) {
         delete m_unloadedCache[i];
     }
@@ -84,7 +84,7 @@ std::vector<LevelChunk*>* ServerChunkCache::getLoadedChunkList() {
 void ServerChunkCache::drop(int x, int z) {
     // 4J - we're not dropping things anymore now that we have a fixed sized
     // cache
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 
     bool canDrop = false;
     //	if (level->dimension->mayRespawn())
@@ -120,7 +120,7 @@ void ServerChunkCache::drop(int x, int z) {
 }
 
 void ServerChunkCache::dropAll() {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     for (LevelChunk* chunk : m_loadedChunkList) {
         drop(chunk->x, chunk->z);
     }
@@ -161,7 +161,7 @@ LevelChunk* ServerChunkCache::create(
 
         LeaveCriticalSection(&m_csLoadCreate);
 
-#if (defined _WIN64 || defined __LP64__)
+#if defined(_WIN64) || defined(__LP64__)
         if (InterlockedCompareExchangeRelease64(
                 (LONG64*)&cache[idx], (LONG64)chunk, (LONG64)lastChunk) ==
             (LONG64)lastChunk)
@@ -169,7 +169,7 @@ LevelChunk* ServerChunkCache::create(
         if (InterlockedCompareExchangeRelease((LONG*)&cache[idx], (LONG)chunk,
                                               (LONG)lastChunk) ==
             (LONG)lastChunk)
-#endif  // _DURANGO
+#endif
         {
             // Successfully updated the cache
             EnterCriticalSection(&m_csLoadCreate);
@@ -279,9 +279,6 @@ LevelChunk* ServerChunkCache::create(
         }
     }
 
-#ifdef __PS3__
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
-#endif  // __PS3__
     return chunk;
 }
 
@@ -307,7 +304,7 @@ LevelChunk* ServerChunkCache::getChunk(int x, int z) {
     return emptyChunk;
 }
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 // 4J added - this special variation on getChunk also checks the unloaded chunk
 // cache. It is called on a host machine from the client-side level when: (1)
 // Trying to determine whether the client blocks and data are the same as those
@@ -343,7 +340,7 @@ LevelChunk* ServerChunkCache::getChunkLoadedOrUnloaded(int x, int z) {
 
 // 4J MGH added, for expanding worlds, to kill any player changes and reset the
 // chunk
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 void ServerChunkCache::overwriteLevelChunkFromSource(int x, int z) {
     int ix = x + XZOFFSET;
     int iz = z + XZOFFSET;
@@ -412,7 +409,7 @@ void ServerChunkCache::overwriteHellLevelChunkFromSource(int x, int z,
 #endif
 
 // 4J Added //
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
 void ServerChunkCache::dontDrop(int x, int z) {
     LevelChunk* chunk = getChunk(x, z);
     m_toDrop.erase(std::remove(m_toDrop.begin(), m_toDrop.end(), chunk),
@@ -425,7 +422,7 @@ LevelChunk* ServerChunkCache::load(int x, int z) {
 
     LevelChunk* levelChunk = NULL;
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     int ix = x + XZOFFSET;
     int iz = z + XZOFFSET;
     int idx = ix * XZSIZE + iz;
@@ -697,7 +694,7 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
         //  Single threaded implementation for small saves
         for (unsigned int i = 0; i < m_loadedChunkList.size(); i++) {
             LevelChunk* chunk = m_loadedChunkList[i];
-#ifndef SPLIT_SAVES
+#if !defined(SPLIT_SAVES)
             if (force && !chunk->dontSave) saveEntities(chunk);
 #endif
             if (chunk->shouldSave(force)) {
@@ -718,7 +715,6 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
             }
         }
     } else {
-#if 1  //_LARGE_WORLDS
        // 4J Stu - We have multiple for threads for all saving as part of the
        // storage, so use that rather than new threads here
 
@@ -776,211 +772,6 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
 
         // Wait for the storage threads to be complete
         storage->WaitForAll();
-#else
-        // Multithreaded implementation for larger saves
-
-        C4JThread::Event* wakeEvent[3];  // This sets off the threads that are
-                                         // waiting to continue
-        C4JThread::Event*
-            notificationEvent[3];  // These are signalled by the threads to let
-                                   // us know they are complete
-        C4JThread* saveThreads[3];
-        DWORD threadId[3];
-        SaveThreadData threadData[3];
-        ZeroMemory(&threadData[0], sizeof(SaveThreadData));
-        ZeroMemory(&threadData[1], sizeof(SaveThreadData));
-        ZeroMemory(&threadData[2], sizeof(SaveThreadData));
-
-        for (unsigned int i = 0; i < 3; ++i) {
-            saveThreads[i] = NULL;
-
-            threadData[i].cache = this;
-
-            wakeEvent[i] =
-                new C4JThread::Event();  // CreateEvent(NULL,FALSE,FALSE,NULL);
-            threadData[i].wakeEvent = wakeEvent[i];
-
-            notificationEvent[i] =
-                new C4JThread::Event();  // CreateEvent(NULL,FALSE,FALSE,NULL);
-            threadData[i].notificationEvent = notificationEvent[i];
-
-            if (i == 0)
-                threadData[i].useSharedThreadStorage = true;
-            else
-                threadData[i].useSharedThreadStorage = false;
-        }
-
-        LevelChunk* chunk = NULL;
-        std::uint8_t workingThreads;
-        bool chunkSet = false;
-
-        // Created a roughly sorted list to match the order that the files were
-        // created in 	McRegionChunkStorage::McRegionChunkStorage. This is to
-        // minimise the amount of data that needs to be moved round when
-        // creating a new level.
-
-        std::vector<LevelChunk*> sortedChunkList;
-
-        for (int i = 0; i < m_loadedChunkList.size(); i++) {
-            if ((m_loadedChunkList[i]->x < 0) && (m_loadedChunkList[i]->z < 0))
-                sortedChunkList.push_back(m_loadedChunkList[i]);
-        }
-        for (int i = 0; i < m_loadedChunkList.size(); i++) {
-            if ((m_loadedChunkList[i]->x >= 0) && (m_loadedChunkList[i]->z < 0))
-                sortedChunkList.push_back(m_loadedChunkList[i]);
-        }
-        for (int i = 0; i < m_loadedChunkList.size(); i++) {
-            if ((m_loadedChunkList[i]->x >= 0) &&
-                (m_loadedChunkList[i]->z >= 0))
-                sortedChunkList.push_back(m_loadedChunkList[i]);
-        }
-        for (int i = 0; i < m_loadedChunkList.size(); i++) {
-            if ((m_loadedChunkList[i]->x < 0) && (m_loadedChunkList[i]->z >= 0))
-                sortedChunkList.push_back(m_loadedChunkList[i]);
-        }
-
-        for (unsigned int i = 0; i < sortedChunkList.size();) {
-            workingThreads = 0;
-            PIXBeginNamedEvent(0, "Setting tasks for save threads\n");
-            for (unsigned int j = 0; j < 3; ++j) {
-                chunkSet = false;
-
-                while (!chunkSet && i < sortedChunkList.size()) {
-                    chunk = sortedChunkList[i];
-
-                    threadData[j].saveEntities = (force && !chunk->dontSave);
-
-                    if (chunk->shouldSave(force) ||
-                        threadData[j].saveEntities) {
-                        chunkSet = true;
-                        ++workingThreads;
-
-                        threadData[j].chunkToSave = chunk;
-
-                        // app.DebugPrintf("Chunk to save set for thread %d\n",
-                        // j);
-
-                        if (saveThreads[j] == NULL) {
-                            char threadName[256];
-                            sprintf(threadName, "Save thread %d\n", j);
-                            SetThreadName(threadId[j], threadName);
-
-                            // saveThreads[j] =
-                            // CreateThread(NULL,0,runSaveThreadProc,&threadData[j],CREATE_SUSPENDED,&threadId[j]);
-                            saveThreads[j] = new C4JThread(
-                                runSaveThreadProc, (void*)&threadData[j],
-                                threadName);
-
-                            // app.DebugPrintf("Created new thread:
-                            // %s\n",threadName);
-
-                            // Threads 1,3 and 5 are generally idle so use them
-                            // (this call waits on thread 2)
-                            if (j == 0)
-                                saveThreads[j]->SetProcessor(
-                                    CPU_CORE_SAVE_THREAD_A);  // XSetThreadProcessor(
-                                                              // saveThreads[j],
-                                                              // 1);
-                            else if (j == 1)
-                                saveThreads[j]->SetProcessor(
-                                    CPU_CORE_SAVE_THREAD_B);  // XSetThreadProcessor(
-                                                              // saveThreads[j],
-                                                              // 3);
-                            else if (j == 2)
-                                saveThreads[j]->SetProcessor(
-                                    CPU_CORE_SAVE_THREAD_C);  // XSetThreadProcessor(
-                                                              // saveThreads[j],
-                                                              // 5);
-
-                            // ResumeThread( saveThreads[j] );
-                            saveThreads[j]->Run();
-                        }
-
-                        if (++saves == MAX_SAVES && !force) {
-                            maxSavesReached = true;
-                            break;
-
-                            // LeaveCriticalSection(&m_csLoadCreate);
-                            //  TODO Should we be returning from here? Probably
-                            //  not
-                            // return false;
-                        }
-
-                        // 4J - added this to support progressListener
-                        if (progressListener != NULL) {
-                            if (count > 0 && ++cc % 10 == 0) {
-                                progressListener->progressStagePercentage(
-                                    cc * 100 / count);
-                            }
-                        }
-                    }
-
-                    ++i;
-                }
-
-                if (!chunkSet) {
-                    threadData[j].chunkToSave = NULL;
-                    // app.DebugPrintf("No chunk to save set for thread
-                    // %d\n",j);
-                }
-            }
-            PIXEndNamedEvent();
-            PIXBeginNamedEvent(0, "Waking save threads\n");
-            // Start the worker threads going
-            for (unsigned int k = 0; k < 3; ++k) {
-                // app.DebugPrintf("Waking save thread %d\n",k);
-                threadData[k]
-                    .wakeEvent->Set();  // SetEvent(threadData[k].wakeEvent);
-            }
-            PIXEndNamedEvent();
-            PIXBeginNamedEvent(0, "Waiting for completion of save threads\n");
-            // app.DebugPrintf("Waiting for %d save thread(s) to complete\n",
-            // workingThreads);
-
-            // Wait for the worker threads to complete
-            // WaitForMultipleObjects(workingThreads,notificationEvent,TRUE,INFINITE);
-            // 4J Stu - TODO This isn't ideal as it's not a perfect
-            // re-implmentation of the Xbox behaviour
-            for (unsigned int k = 0; k < workingThreads; ++k) {
-                threadData[k].notificationEvent->WaitForSignal(INFINITE);
-            }
-            PIXEndNamedEvent();
-            if (maxSavesReached) break;
-        }
-
-        // app.DebugPrintf("Clearing up worker threads\n");
-        //  Stop all the worker threads by giving them nothing to process then
-        //  telling them to start
-        unsigned char validThreads = 0;
-        for (unsigned int i = 0; i < 3; ++i) {
-            // app.DebugPrintf("Settings chunk to NULL for save thread %d\n",
-            // i);
-            threadData[i].chunkToSave = NULL;
-
-            // app.DebugPrintf("Setting wake event for save thread %d\n",i);
-            threadData[i]
-                .wakeEvent->Set();  // SetEvent(threadData[i].wakeEvent);
-
-            if (saveThreads[i] != NULL) ++validThreads;
-        }
-
-        // WaitForMultipleObjects(validThreads,saveThreads,TRUE,INFINITE);
-        //  4J Stu - TODO This isn't ideal as it's not a perfect
-        //  re-implmentation of the Xbox behaviour
-        for (unsigned int k = 0; k < validThreads; ++k) {
-            saveThreads[k]->WaitForCompletion(INFINITE);
-            ;
-        }
-
-        for (unsigned int i = 0; i < 3; ++i) {
-            // app.DebugPrintf("Closing handles for save thread %d\n", i);
-            delete threadData[i]
-                .wakeEvent;  // CloseHandle(threadData[i].wakeEvent);
-            delete threadData[i]
-                .notificationEvent;  // CloseHandle(threadData[i].notificationEvent);
-            delete saveThreads[i];  // CloseHandle(saveThreads[i]);
-        }
-#endif
     }
 
     if (force) {
@@ -997,7 +788,7 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
 
 bool ServerChunkCache::tick() {
     if (!level->noSave) {
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         for (int i = 0; i < 100; i++) {
             if (!m_toDrop.empty()) {
                 LevelChunk* chunk = m_toDrop.front();

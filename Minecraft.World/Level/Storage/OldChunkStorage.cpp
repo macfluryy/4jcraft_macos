@@ -60,8 +60,7 @@ File OldChunkStorage::getFile(int x, int z) {
 
     wchar_t xRadix36[64];
     wchar_t zRadix36[64];
-#if (defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || \
-     defined __linux__)
+#if defined(__linux__)
     assert(0);  // need a gcc verison of _itow ?
 #else
     _itow(x, xRadix36, 36);
@@ -197,7 +196,7 @@ bool OldChunkStorage::saveEntities(LevelChunk* lc, Level* level,
     lc->lastSaveHadEntities = false;
     ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
-#ifdef _ENTITIES_RW_SECTION
+#if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&lc->m_csEntities, true);
 #else
     EnterCriticalSection(&lc->m_csEntities);
@@ -215,7 +214,7 @@ bool OldChunkStorage::saveEntities(LevelChunk* lc, Level* level,
             }
         }
     }
-#ifdef _ENTITIES_RW_SECTION
+#if defined(_ENTITIES_RW_SECTION)
     LeaveCriticalRWSection(&lc->m_csEntities, true);
 #else
     LeaveCriticalSection(&lc->m_csEntities);
@@ -253,7 +252,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
 
     PIXBeginNamedEvent(0, "Saving entities");
     CompoundTag* tag = new CompoundTag();
-#ifndef SPLIT_SAVES
+#if !defined(SPLIT_SAVES)
     saveEntities(lc, level, tag);
 #endif
 
@@ -351,7 +350,7 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     tag->putByteArray(L"Biomes", lc->getBiomes());
 
     PIXBeginNamedEvent(0, "Saving entities");
-#ifndef SPLIT_SAVES
+#if !defined(SPLIT_SAVES)
     saveEntities(lc, level, tag);
 #endif
 
@@ -457,7 +456,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
         levelChunk->terrainPopulated |= LevelChunk::sTerrainPostPostProcessed;
     }
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
@@ -563,35 +562,10 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
         }
     }
 
-#if 0
-	// 4J - removed - we shouldn't need this any more
-	if (!levelChunk->data->isValid())
-	{
-		levelChunk->data = new DataLayer(LevelChunk::BLOCKS_LENGTH, level->depthBits);		// 4J - BLOCKS_LENGTH was levelChunk->blocks.length
-	}
-#endif
 
     // 4J removed - we shouldn't need this any more
-#if 0
-	if (levelChunk->heightmap.data == NULL || !levelChunk->skyLight->isValid())
-	{
-		static int chunksUpdated = 0;
-		delete [] levelChunk->heightmap.data;
-		levelChunk->heightmap = byteArray(16 * 16);
-		delete levelChunk->skyLight;
-		levelChunk->skyLight = new DataLayer(levelChunk->blocks.length, level->depthBits);
-		levelChunk->recalcHeightmap();
-	}
 
-	if (!levelChunk->blockLight->isValid())
-	{
-		delete levelChunk->blockLight;
-		levelChunk->blockLight = new DataLayer(levelChunk->blocks.length, level->depthBits);
-		levelChunk->recalcBlockLights();
-	}
-#endif
-
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {

@@ -31,7 +31,7 @@ ArchiveFile::ArchiveFile(File file) {
     m_cachedData = NULL;
     m_sourcefile = file;
     app.DebugPrintf("Loading archive file...\n");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     char buf[256];
     wcstombs(buf, file.getPath().c_str(), 256);
     app.DebugPrintf("archive file - %s\n", buf);
@@ -44,7 +44,7 @@ ArchiveFile::ArchiveFile(File file) {
 
     FileInputStream fis(file);
 
-#if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
+#if defined(_WINDOWS64)
     byteArray readArray(file.length());
     fis.read(readArray, 0, file.length());
 
@@ -60,7 +60,7 @@ ArchiveFile::ArchiveFile(File file) {
 
     dis.close();
     fis.close();
-#if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
+#if defined(_WINDOWS64)
     bais.reset();
 #endif
     app.DebugPrintf("Finished loading archive file\n");
@@ -94,14 +94,14 @@ byteArray ArchiveFile::getFile(const std::wstring& filename) {
         app.DebugPrintf("Couldn't find file in archive\n");
         app.DebugPrintf("Failed to find file '%ls' in archive\n",
                         filename.c_str());
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
         app.FatalLoadError();
     } else {
         PMetaData data = it->second;
 
-#if defined _XBOX_ONE || defined __ORBIS__ || defined _WINDOWS64
+#if defined(_WINDOWS64)
         out = byteArray(data->filesize);
 
         memcpy(out.data, m_cachedData + data->ptr, data->filesize);

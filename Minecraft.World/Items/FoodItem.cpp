@@ -77,12 +77,6 @@ std::shared_ptr<ItemInstance> FoodItem::use(
 
     // 4J : WESTY : Other award ... eating cooked pork chop.
     // 4J-JEV: This is just for an avatar award on the xbox.
-#ifdef _XBOX
-    if (instance->getItem() == Item::porkChop_cooked) {
-        player->awardStat(GenericStats::eatPorkChop(),
-                          GenericStats::param_eatPorkChop());
-    }
-#endif
 
     return instance;
 }

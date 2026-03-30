@@ -81,7 +81,7 @@ std::shared_ptr<ItemInstance> ContainerMenu::clicked(
     std::shared_ptr<ItemInstance> out = AbstractContainerMenu::clicked(
         slotIndex, buttonNum, clickType, player, looped);
 
-#ifdef _EXTENDED_ACHIEVEMENTS
+#if defined(_EXTENDED_ACHIEVEMENTS)
     std::shared_ptr<LocalPlayer> localPlayer =
         std::dynamic_pointer_cast<LocalPlayer>(player);
 
@@ -98,14 +98,12 @@ std::shared_ptr<ItemInstance> ContainerMenu::clicked(
 
         // 4J-JEV: This check performed on XboxOne servers, for other platforms
         // check here.
-#ifndef _DURANGO
         StatsCounter* sc =
             Minecraft::GetInstance()->stats[localPlayer->GetXboxPad()];
         int minedCount =
             sc->getTotalValue(GenericStats::blocksMined(Tile::stone_Id)) +
             sc->getTotalValue(GenericStats::blocksMined(Tile::cobblestone_Id));
         if (cobblecount >= 1728 && minedCount >= 1728)
-#endif
         {
             localPlayer->awardStat(
                 GenericStats::chestfulOfCobblestone(),

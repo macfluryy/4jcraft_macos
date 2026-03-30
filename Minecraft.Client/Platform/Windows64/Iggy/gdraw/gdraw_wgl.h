@@ -1,8 +1,8 @@
 #ifndef __RAD_INCLUDE_GDRAW_GL_H__
 #define __RAD_INCLUDE_GDRAW_GL_H__
 
-#include "../../../Durango/Iggy/include/rrCore.h"
-#include "../../../Durango/Iggy/include/gdraw.h"
+#include "../include/rrCore.h"
+#include "../include/gdraw.h"
 
 RADDEFSTART
 

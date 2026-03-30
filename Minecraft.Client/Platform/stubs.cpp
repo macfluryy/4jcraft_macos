@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#ifdef __linux__
+#if defined(__linux__)
 
 void LinuxLogStubLightmapProbe() {
     static bool logged = false;
@@ -111,25 +111,5 @@ void glTexGeni(int,int,int)
 {
 }
 
-#ifdef _XBOX
-// 4J Stu - Added these to stop us needing to pull in loads of media libraries just to use Qnet
-#include <xcam.h>
-DWORD XCamInitialize(){ return 0; }
-VOID XCamShutdown() {}
- 
-DWORD XCamCreateStreamEngine(
-         CONST XCAM_STREAM_ENGINE_INIT_PARAMS *pParams,
-         PIXCAMSTREAMENGINE *ppEngine
-		 ) { return 0; }
- 
-DWORD XCamSetView(
-         XCAMZOOMFACTOR ZoomFactor,
-         LONG XCenter,
-         LONG YCenter,
-         PXOVERLAPPED pOverlapped
-) { return 0; }
- 
-XCAMDEVICESTATE XCamGetStatus() { return XCAMDEVICESTATE_DISCONNECTED; }
-#endif
 
 #endif

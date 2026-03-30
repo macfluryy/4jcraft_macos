@@ -1,25 +1,13 @@
 #pragma once
 // using namespace std;
 #include <vector>
-#ifndef __linux__
+#if !defined(__linux__)
 #include <qnet.h>
 #endif
 #include "../../Minecraft.World/Util/C4JThread.h"
 #include "NetworkPlayerInterface.h"
-#ifdef _XBOX
-#include "../../Minecraft.Client/Platform/Xbox/Network/PlatformNetworkManagerXbox.h"
-#elif defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
-#include "Sony/PlatformNetworkManagerSony.h"
-#elif defined _DURANGO
-#include "../../Minecraft.Client/Platform/Durango/Network/PlatformNetworkManagerDurango.h"
-#else
 #include "PlatformNetworkManagerStub.h"
-#endif
 #include "SessionInfo.h"
-
-#ifdef __ORBIS__
-#include "../../Minecraft.Client/Platform/Orbis/Network/PsPlusUpsellWrapper_Orbis.h"
-#endif
 
 class ClientConnection;
 class Minecraft;
@@ -33,15 +21,7 @@ const int NON_QNET_SENDDATA_ACK_REQUIRED = 1;
 // implementation of PlatformNetworkManager to provide this functionality.
 
 class CGameNetworkManager {
-#ifdef _XBOX
-    friend class CPlatformNetworkManagerXbox;
-#elif defined __PS3__ || defined __ORBIS__ || defined __PSVITA__
-    friend class CPlatformNetworkManagerSony;
-#elif defined _DURANGO
-    friend class CPlatformNetworkManagerDurango;
-#else
     friend class CPlatformNetworkManagerStub;
-#endif
 public:
     CGameNetworkManager();
     // Misc high level flow
@@ -142,15 +122,6 @@ public:
     static int ServerThreadProc(void* lpParameter);
     static int ExitAndJoinFromInviteThreadProc(void* lpParam);
 
-#if (defined __PS3__) || (defined __ORBIS__) || (defined __PSVITA__)
-    static int MustSignInReturned_0(void* pParam, int iPad,
-                                    C4JStorage::EMessageResult result);
-    static int PSNSignInReturned_0(void* pParam, bool bContinue, int iPad);
-
-    static int MustSignInReturned_1(void* pParam, int iPad,
-                                    C4JStorage::EMessageResult result);
-    static int PSNSignInReturned_1(void* pParam, bool bContinue, int iPad);
-#endif
 
     static void _LeaveGame();
     static int ChangeSessionTypeThreadProc(void* lpParam);
@@ -174,11 +145,6 @@ public:
     void ServerStoppedDestroy();            // Destroy signal
     bool ServerStoppedValid();              // Is non-NULL
 
-#ifdef __PSVITA__
-    static bool usingAdhocMode();
-    static void setAdhocMode(bool bAdhoc);
-    static void startAdhocMatching();
-#endif
     // Debug output
 
     std::wstring GatherStats();
@@ -212,11 +178,7 @@ private:
     void GameInviteReceived(int userIndex, const INVITE_INFO* pInviteInfo);
     void HandleInviteWhenInMenus(int userIndex, const INVITE_INFO* pInviteInfo);
     void AddLocalPlayerFailed(int idx, bool serverFull = false);
-#if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
-    void HandleDisconnect(bool bLostRoomOnly, bool bPSNSignOut);
-#else
     void HandleDisconnect(bool bLostRoomOnly);
-#endif
 
     int GetPrimaryPad();
     int GetLockedProfile();
@@ -228,12 +190,6 @@ private:
     C4JThread::Event* m_hServerReadyEvent;
     bool m_bInitialised;
 
-#ifdef _XBOX_ONE
-public:
-    void SetFullSessionMessageOnNextSessionChange() {
-        m_bFullSessionMessageOnNextSessionChange = true;
-    }
-#endif
 private:
     float m_lastPlayerEventTimeStart;  // For telemetry
     static CPlatformNetworkManager* s_pPlatformNetworkManager;
@@ -241,26 +197,11 @@ private:
     int GetJoiningReadyPercentage();
     bool m_bLastDisconnectWasLostRoomOnly;
     bool m_bFullSessionMessageOnNextSessionChange;
-#if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
-    bool m_bSignedOutofPSN;
-#endif
-
-#ifdef __ORBIS__
-    PsPlusUpsellWrapper* m_pUpsell;
-    INVITE_INFO* m_pInviteInfo;
-    int m_iPlayerInvited;
-#endif
 
 public:
-#ifndef _XBOX
     void FakeLocalPlayerJoined();  // Temporary method whilst we don't have real
                                    // networking to make this happen
-#endif
 };
 
 extern CGameNetworkManager g_NetworkManager;
 
-#ifdef __PS3__
-#undef __in
-#define __out
-#endif

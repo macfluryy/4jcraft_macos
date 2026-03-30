@@ -6,20 +6,6 @@ class Objective;
 class Score {
 public:
     // 4J Not converted
-#if 0
-	static final Comparator<Score> SCORE_COMPARATOR = new Comparator<Score>() {
-		@Override
-			public int compare(Score o1, Score o2) {
-				if (o1.getScore() > o2.getScore()) {
-					return 1;
-				} else if (o1.getScore() < o2.getScore()) {
-					return -1;
-				} else {
-					return 0;
-				}
-		}
-	};
-#endif
 
 private:
     Scoreboard* scoreboard;

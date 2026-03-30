@@ -69,9 +69,6 @@ void UIScene_ReinstallMenu::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
             sendInputToMovie(key, repeat, pressed, released);

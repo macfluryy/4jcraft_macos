@@ -6,10 +6,10 @@
 // Name: DebugSpewV()
 // Desc: Internal helper function
 //--------------------------------------------------------------------------------------
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 static void DebugSpewV(const char* strFormat, va_list pArgList)
 {
-#if defined __PS3__ || defined __ORBIS__ || defined __PSVITA__ || defined(__linux__)
+#if defined(__linux__)
 	assert(0);
 #else
 	char str[2048];
@@ -23,16 +23,12 @@ static void DebugSpewV(const char* strFormat, va_list pArgList)
 #endif
 
 //--------------------------------------------------------------------------------------
-// Name: DebugSpew()
+// Name: DebugPrintf()
 // Desc: Prints formatted debug spew
 //--------------------------------------------------------------------------------------
-#ifdef  _Printf_format_string_  // VC++ 2008 and later support this annotation
-void CDECL DebugSpew(_In_z_ _Printf_format_string_ const char* strFormat, ...)
-#else
 void CDECL DebugPrintf(const char* strFormat, ...)
-#endif
 {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 	va_list pArgList;
 	va_start( pArgList, strFormat );
 	DebugSpewV( strFormat, pArgList );

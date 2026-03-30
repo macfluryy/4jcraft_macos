@@ -21,12 +21,10 @@ const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
         0xff33cc33,  // GREEN
         0xffcc3333,  // RED
         0xff3333cc,  // BLUE
-#ifndef __PSVITA__   // only 4 player on Vita
         0xffcc33cc,  // PINK
         0xffcc6633,  // ORANGE
         0xffcccc33,  // YELLOW
         0xff33dccc,  // TURQUOISE
-#endif
 };
 
 ResourceLocation PlayerRenderer::DEFAULT_LOCATION =
@@ -440,29 +438,6 @@ void PlayerRenderer::renderNameTags(std::shared_ptr<LivingEntity> player,
                                     double x, double y, double z,
                                     std::wstring msg, float scale,
                                     double dist) {
-#if 0
-    if (dist < 10 * 10)
-	{
-        Scoreboard *scoreboard = player->getScoreboard();
-        Objective *objective = scoreboard->getDisplayObjective(Scoreboard::DISPLAY_SLOT_BELOW_NAME);
-
-        if (objective != NULL)
-		{
-            Score *score = scoreboard->getPlayerScore(player->getAName(), objective);
-
-            if (player->isSleeping())
-			{
-                renderNameTag(player, score->getScore() + " " + objective->getDisplayName(), x, y - 1.5f, z, 64);
-            }
-			else
-			{
-                renderNameTag(player, score->getScore() + " " + objective->getDisplayName(), x, y, z, 64);
-            }
-
-            y += getFont()->lineHeight * 1.15f * scale;
-        }
-    }
-#endif
 
     LivingEntityRenderer::renderNameTags(player, x, y, z, msg, scale, dist);
 }

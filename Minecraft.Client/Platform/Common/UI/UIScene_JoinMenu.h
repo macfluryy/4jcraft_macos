@@ -84,10 +84,6 @@ protected:
 
     void StartSharedLaunchFlow();
 
-#ifdef _DURANGO
-    static void checkPrivilegeCallback(void* lpParam, bool hasPrivilege,
-                                       int iPad);
-#endif
 
     static int StartGame_SignInReturned(void* pParam, bool, int);
     static void JoinGame(UIScene_JoinMenu* pClass);

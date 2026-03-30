@@ -5,11 +5,9 @@
 enum EUIGroup {
     eUIGroup_Fullscreen,
     eUIGroup_Player1,
-#ifndef __PSVITA__
     eUIGroup_Player2,
     eUIGroup_Player3,
     eUIGroup_Player4,
-#endif
 
     eUIGroup_COUNT,
 
@@ -19,7 +17,7 @@ enum EUIGroup {
 // Defines the layers in a UI group (lower numbers ticked first, rendered last
 // (ie on top))
 enum EUILayer {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     eUILayer_Debug,
 #endif
     eUILayer_Tooltips,
@@ -103,9 +101,6 @@ enum EUIScene {
     eUIScene_HorseMenu,
     eUIScene_FireworksMenu,
 
-#ifdef _XBOX
-//	eUIScene_TransferToXboxOne,
-#endif
 
 // ****************************************
 // ****************************************
@@ -116,7 +111,6 @@ enum EUIScene {
 // CConsoleMinecraftApp::NavigateToScene There are quite a few so you need to
 // check them all Also update UILayer::updateFocusState
 
-#ifndef _XBOX
     // Anything non-xbox should be added here. The ordering of scenes above is
     // required for sentient reporting on xbox 360 to continue to be accurate
     eUIComponent_Panorama,
@@ -133,13 +127,12 @@ enum EUIScene {
     eUIScene_EULA,
     eUIScene_InGameSaveManagementMenu,
     eUIScene_LanguageSelector,
-#endif  // ndef _XBOX
 
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
     eUIScene_DebugOverlay,
     eUIScene_DebugItemEditor,
 #endif
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     eUIScene_DebugCreateSchematic,
     eUIScene_DebugSetCamera,
 #endif
@@ -232,10 +225,6 @@ enum EHowToPlayPage {
 
     eHowToPlay_NetherPortal,
     eHowToPlay_TheEnd,
-#ifdef _XBOX
-    eHowToPlay_SocialMedia,
-    eHowToPlay_BanList,
-#endif
     eHowToPlay_HostOptions,
     eHowToPlay_NumPages
 };

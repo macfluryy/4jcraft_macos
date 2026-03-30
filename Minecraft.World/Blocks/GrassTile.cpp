@@ -110,13 +110,6 @@ int GrassTile::getResource(int data, Random* random, int playerBonusLevel) {
 }
 
 Icon* GrassTile::getSideTextureOverlay() {
-#ifdef __PSVITA__
-    // AP - alpha cut out is expensive on vita. Because of the way grass sides
-    // are treated as special case we need to set the alpha flag here this would
-    // normally happen in TileRenderer::getTextureOrMissing
-    Tesselator* t = Tesselator::getInstance();
-    t->setAlphaCutOut(true);
-#endif
 
     return Tile::grass->iconSideOverlay;
 }

@@ -23,11 +23,5 @@ void TrapScreen::renderLabels() {
 }
 
 void TrapScreen::renderBg(float a) {
-#ifdef ENABLE_JAVA_GUIS
-    glColor4f(1, 1, 1, 1);
-    minecraft->textures->bindTexture(&GUI_TRAP_LOCATION);
-    int xo = (width - imageWidth) / 2;
-    int yo = (height - imageHeight) / 2;
-    this->blit(xo, yo, 0, 0, imageWidth, imageHeight);
-#endif
+    // 4J Unused
 }

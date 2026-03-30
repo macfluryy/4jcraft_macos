@@ -4,6 +4,7 @@
 #include "../../Platform/stdafx.h"
 #include "../../Headers/net.minecraft.world.level.h"
 #include "../../IO/Files/ConsoleSaveFileIO.h"
+#include "../../Util/ThreadName.h"
 #include "../LevelData.h"
 #include "McRegionChunkStorage.h"
 
@@ -36,7 +37,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
         m_saveFile->createFile(ConsoleSavePath(L"r.-1.0.mcr"));
     }
 
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
     ConsoleSavePath currentFile =
         ConsoleSavePath(m_prefix + std::wstring(L"entities.dat"));
 
@@ -75,7 +76,7 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
     DataInputStream* regionChunkInputStream =
         RegionFileCache::getChunkDataInputStream(m_saveFile, m_prefix, x, z);
 
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
     // If we can't find the chunk in the save file, then we should remove any
     // entities we might have for that chunk
     if (regionChunkInputStream == NULL) {
@@ -158,12 +159,12 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
             // levelChunk = OldChunkStorage::load(level,
             // chunkData->getCompound(L"Level")); MemSect(0);
         }
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
         loadEntities(level, levelChunk);
 #endif
         delete chunkData;
     }
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     if (levelChunk && app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
@@ -245,7 +246,7 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
 }
 
 void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
     PIXBeginNamedEvent(0, "Saving entities");
     // 4j added cast to unsigned and changed index to u
     uint64_t index = ((uint64_t)(uint32_t)(levelChunk->x) << 32) |
@@ -278,7 +279,7 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
 }
 
 void McRegionChunkStorage::loadEntities(Level* level, LevelChunk* levelChunk) {
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
     int64_t index = ((int64_t)(levelChunk->x) << 32) |
                     (((int64_t)(levelChunk->z)) & 0x00000000FFFFFFFF);
 
@@ -297,7 +298,7 @@ void McRegionChunkStorage::loadEntities(Level* level, LevelChunk* levelChunk) {
 void McRegionChunkStorage::tick() { m_saveFile->tick(); }
 
 void McRegionChunkStorage::flush() {
-#ifdef SPLIT_SAVES
+#if defined(SPLIT_SAVES)
     PIXBeginNamedEvent(0, "Flushing entity data");
     ConsoleSavePath currentFile =
         ConsoleSavePath(m_prefix + std::wstring(L"entities.dat"));
@@ -338,15 +339,6 @@ void McRegionChunkStorage::staticCtor() {
             s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_A);
         else if (i == 1) {
             s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_B);
-#ifdef __ORBIS__
-            s_saveThreads[i]->SetPriority(
-                THREAD_PRIORITY_BELOW_NORMAL);  // On Orbis, this core is also
-                                                // used for Matching 2, and that
-                                                // priority of that seems to be
-                                                // always at default no matter
-                                                // what we set it to. Prioritise
-                                                // this below Matching 2.
-#endif
         } else if (i == 2)
             s_saveThreads[i]->SetProcessor(CPU_CORE_SAVE_THREAD_C);
 
@@ -456,3 +448,4 @@ void McRegionChunkStorage::WaitForSaves() {
         }
     }
 }
+

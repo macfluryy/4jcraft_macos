@@ -57,9 +57,6 @@ public:
 
     virtual void HandleDLCMountingComplete() = 0;
     virtual void HandleDLCInstalled(int iPad) = 0;
-#ifdef _XBOX_ONE
-    virtual void HandleDLCLicenseChange() = 0;
-#endif
     virtual void HandleTMSDLCFileRetrieved(int iPad) = 0;
     virtual void HandleTMSBanFileRetrieved(int iPad) = 0;
     virtual void HandleInventoryUpdated(int iPad) = 0;

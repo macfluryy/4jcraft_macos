@@ -38,22 +38,6 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                                e_Tutorial_Completion_Jump_To_Last_Task,
                                eTelemetryTutorial_TrialStart));
     } else {
-#ifdef _XBOX
-        if (getCompleted(eTutorial_Telemetry_Halfway) &&
-            !isStateCompleted(e_Tutorial_State_Redstone_And_Piston)) {
-            addTask(e_Tutorial_State_Gameplay,
-                    new ChoiceTask(this, IDS_TUTORIAL_NEW_FEATURES_CHOICE,
-                                   IDS_TUTORIAL_PROMPT_NEW_FEATURES_CHOICE,
-                                   true, ACTION_MENU_A, ACTION_MENU_B,
-                                   e_Tutorial_Completion_Jump_To_Last_Task,
-                                   eTelemetryTutorial_TrialStart));
-        }
-
-        addTask(e_Tutorial_State_Gameplay,
-                new InfoTask(this, IDS_TUTORIAL_TASK_OVERVIEW,
-                             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
-                             ACTION_MENU_A));
-#else
         if (getCompleted(eTutorial_Telemetry_Halfway)) {
             addTask(e_Tutorial_State_Gameplay,
                     new ChoiceTask(this, IDS_TUTORIAL_TASK_OVERVIEW,
@@ -67,7 +51,6 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                                  IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
                                  ACTION_MENU_A));
         }
-#endif
     }
 
     int lookMappings[] = {MINECRAFT_ACTION_LOOK_UP, MINECRAFT_ACTION_LOOK_DOWN,

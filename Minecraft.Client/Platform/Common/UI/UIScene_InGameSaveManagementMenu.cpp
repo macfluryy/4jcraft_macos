@@ -2,9 +2,6 @@
 #include "UI.h"
 #include "UIScene_InGameSaveManagementMenu.h"
 
-#if defined(__ORBIS__) || defined(__PSVITA__)
-#include <ces.h>
-#endif
 
 namespace {
 int InGameSaveManagementThumbnailReturnedThunk(void* lpParam,
@@ -59,10 +56,6 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     m_labelSavesListTitle.init(app.GetString(IDS_SAVE_INCOMPLETE_DELETE_SAVES));
     m_controlSavesTimer.setVisible(true);
 
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-    m_spaceIndicatorSaves.init(L"", eControl_SpaceIndicator, 0,
-                               (4LL * 1024LL * 1024LL * 1024LL));
-#endif
     m_bUpdateSaveSize = false;
 
     m_bAllLoaded = false;
@@ -74,11 +67,6 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
     m_saveDetails = NULL;
     m_iSaveDetailsCount = 0;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__) || \
-    defined(_DURANGO)
-    // Always clear the saves when we enter this menu
-    StorageManager.ClearSavesInfo();
-#endif
 
     // block input if we're waiting for DLC to install, and wipe the saves list.
     // The end of dlc mounting custom message will fill the list again
@@ -90,15 +78,6 @@ UIScene_InGameSaveManagementMenu::UIScene_InGameSaveManagementMenu(
         Initialise();
     }
 
-#ifdef __PSVITA__
-    if (CGameNetworkManager::usingAdhocMode() &&
-        SQRNetworkManager_AdHoc_Vita::GetAdhocStatus()) {
-        g_NetworkManager
-            .startAdhocMatching();  // create the client matching context and
-                                    // clear out the friends list
-    }
-
-#endif
 
     // If we're not ignoring input, then we aren't still waiting for the DLC to
     // mount, and can now check for corrupt dlc. Otherwise this will happen when
@@ -214,24 +193,6 @@ void UIScene_InGameSaveManagementMenu::tick() {
 
                 m_iSaveDetailsCount = m_pSaveDetails->iSaveC;
                 for (unsigned int i = 0; i < m_pSaveDetails->iSaveC; ++i) {
-#if defined(_XBOX_ONE)
-                    m_spaceIndicatorSaves.addSave(
-                        m_pSaveDetails->SaveInfoA[i].totalSize);
-#elif defined(__ORBIS__)
-                    m_spaceIndicatorSaves.addSave(
-                        m_pSaveDetails->SaveInfoA[i].blocksUsed * (32 * 1024));
-#endif
-#ifdef _DURANGO
-                    m_buttonListSaves.addItem(
-                        m_pSaveDetails->SaveInfoA[i].UTF16SaveTitle, L"");
-
-                    m_saveDetails[i].saveId = i;
-                    memcpy(m_saveDetails[i].UTF16SaveName,
-                           m_pSaveDetails->SaveInfoA[i].UTF16SaveTitle, 128);
-                    memcpy(m_saveDetails[i].UTF16SaveFilename,
-                           m_pSaveDetails->SaveInfoA[i].UTF16SaveFilename,
-                           MAX_SAVEFILENAME_LENGTH);
-#else
                     m_buttonListSaves.addItem(
                         m_pSaveDetails->SaveInfoA[i].UTF8SaveTitle, L"");
 
@@ -241,7 +202,6 @@ void UIScene_InGameSaveManagementMenu::tick() {
                     memcpy(m_saveDetails[i].UTF8SaveFilename,
                            m_pSaveDetails->SaveInfoA[i].UTF8SaveFilename,
                            MAX_SAVEFILENAME_LENGTH);
-#endif
                 }
                 m_controlSavesTimer.setVisible(false);
 
@@ -274,13 +234,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
             if (!m_bExitScene) {
                 // convert to utf16
                 std::uint16_t u16Message[MAX_SAVEFILENAME_LENGTH];
-#ifdef _DURANGO
-                // Already utf16 on durango
-                memcpy(
-                    u16Message,
-                    m_saveDetails[m_iRequestingThumbnailId].UTF16SaveFilename,
-                    MAX_SAVEFILENAME_LENGTH);
-#elif defined(_WINDOWS64)
+#if defined(_WINDOWS64)
                 int result = ::MultiByteToWideChar(
                     CP_UTF8,               // convert from UTF-8
                     MB_ERR_INVALID_CHARS,  // error on invalid chars
@@ -294,21 +248,11 @@ void UIScene_InGameSaveManagementMenu::tick() {
                                              // WCHAR's
                 );
 #else
-#ifdef __PS3
-                size_t srcmax, dstmax;
-#else
                 uint32_t srcmax, dstmax;
                 uint32_t srclen, dstlen;
-#endif
                 srcmax = MAX_SAVEFILENAME_LENGTH;
                 dstmax = MAX_SAVEFILENAME_LENGTH;
 
-#if defined(__PS3__)
-                L10nResult lres = UTF8stoUTF16s(
-                    (uint8_t*)m_saveDetails[m_iRequestingThumbnailId]
-                        .UTF8SaveFilename,
-                    &srcmax, u16Message, &dstmax);
-#else
                 SceCesUcsContext context;
                 sceCesUcsContextInit(&context);
 
@@ -317,7 +261,6 @@ void UIScene_InGameSaveManagementMenu::tick() {
                     (uint8_t*)m_saveDetails[m_iRequestingThumbnailId]
                         .UTF8SaveFilename,
                     srcmax, &srclen, u16Message, dstmax, &dstlen);
-#endif
 #endif
                 if (m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData) {
                     registerSubstitutionTexture(
@@ -410,18 +353,11 @@ void UIScene_InGameSaveManagementMenu::handleInput(int iPad, int key,
     switch (key) {
         case ACTION_MENU_CANCEL:
             if (pressed) {
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-                m_bExitScene = true;
-#else
                 navigateBack();
-#endif
                 handled = true;
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
         case ACTION_MENU_UP:
         case ACTION_MENU_DOWN:
         case ACTION_MENU_PAGEUP:

@@ -18,14 +18,6 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
     std::shared_ptr<EnchantmentTableEntity> table =
         std::dynamic_pointer_cast<EnchantmentTableEntity>(_table);
 
-#ifdef __PSVITA__
-    // AP - the book pages are made with 0 depth so the front and back polys are
-    // at the same location. This can cause z-fighting if culling is disabled
-    // which can sometimes happen depending on what object was last seen so make
-    // sure culling is always enabled. Should this be a problem for other
-    // platforms?
-    glEnable(GL_CULL_FACE);
-#endif
 
     glPushMatrix();
     glTranslatef((float)x + 0.5f, (float)y + 12 / 16.0f, (float)z + 0.5f);

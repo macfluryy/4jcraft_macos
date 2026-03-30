@@ -434,7 +434,7 @@ bool GameRuleManager::readRuleFile(
 
             default:
                 app.DebugPrintf("De-compressing game rules.");
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                 assert(compressionType == APPROPRIATE_COMPRESSION_TYPE);
 #endif
                 // 4J-JEV: DecompressLZXRLE uses the correct platform specific
@@ -627,46 +627,12 @@ void GameRuleManager::processSchematicsLighting(LevelChunk* levelChunk) {
 }
 
 void GameRuleManager::loadDefaultGameRules() {
-#ifdef _XBOX
-#ifdef _TU_BUILD
-    std::wstring fileRoot = L"UPDATE:\\res\\GameRules\\Tutorial.pck";
-#else
-    std::wstring fileRoot = L"GAME:\\res\\TitleUpdate\\GameRules\\Tutorial.pck";
-#endif
-    File packedTutorialFile(fileRoot);
-    if (loadGameRulesPack(&packedTutorialFile)) {
-        m_levelGenerators.getLevelGenerators()->at(0)->setWorldName(
-            app.GetString(IDS_PLAY_TUTORIAL));
-        // m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(L"Tutorial");
-        m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(
-            app.GetString(IDS_TUTORIALSAVENAME));
-    }
 
-#ifndef _CONTENT_PACKAGE
-    // 4J Stu - Remove these just now
-    // File testRulesPath(L"GAME:\\GameRules");
-    // std::vector<File *> *packFiles = testRulesPath.listFiles();
-
-    // for(AUTO_VAR(it,packFiles->begin()); it != packFiles->end(); ++it)
-    //{
-    //	loadGameRulesPack(*it);
-    // }
-    // delete packFiles;
-#endif
-
-#else  // _XBOX
-
-#ifndef __linux__
-#ifdef _WINDOWS64
+#if !defined(__linux__)
+#if defined(_WINDOWS64)
     File packedTutorialFile(L"Windows64Media\\Tutorial\\Tutorial.pck");
     if (!packedTutorialFile.exists())
         packedTutorialFile = File(L"Windows64\\Tutorial\\Tutorial.pck");
-#elif defined(__ORBIS__)
-    File packedTutorialFile(L"/app0/orbis/Tutorial/Tutorial.pck");
-#elif defined(__PSVITA__)
-    File packedTutorialFile(L"PSVita/Tutorial/Tutorial.pck");
-#elif defined(__PS3__)
-    File packedTutorialFile(L"PS3/Tutorial/Tutorial.pck");
 #else
     File packedTutorialFile(L"Tutorial\\Tutorial.pck");
 #endif
@@ -677,7 +643,7 @@ void GameRuleManager::loadDefaultGameRules() {
         m_levelGenerators.getLevelGenerators()->at(0)->setDefaultSaveName(
             app.GetString(IDS_TUTORIALSAVENAME));
     }
-#else // 4jcraft, TODO this is using old pre-TU19 logic for loading the tutorial, modify to use the above ifdefs
+#else
 	std::wstring fpTutorial = L"Tutorial.pck";
 	if(app.getArchiveFileSize(fpTutorial) >= 0)
 	{
@@ -691,7 +657,6 @@ void GameRuleManager::loadDefaultGameRules() {
 		}
 		else delete pack;
 	}
-#endif
 #endif
 }
 

@@ -32,67 +32,13 @@ TilePos MobSpawner::getRandomPosWithin(Level* level, int cx, int cz) {
     return TilePos(x, y, z);
 }
 
-#ifdef __PSVITA__
-// AP - See CustomMap.h for an explanation of this
-CustomMap MobSpawner::chunksToPoll;
-#else
 std::unordered_map<ChunkPos, bool, ChunkPosKeyHash, ChunkPosKeyEq>
     MobSpawner::chunksToPoll;
-#endif
 
 const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                            bool spawnFriendlies, bool spawnPersistent) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
 
-#if 0
-	// PIX output for mob counters - generally disabling as Entity::countFlagsForPIX is reasonably expensive
-	if( level->dimension->id == 0 )
-	{
-		Entity::countFlagsForPIX();
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_WATERANIMAL    ,false), "eTYPE_WATERANIMAL");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_ANIMALS_SPAWN_LIMIT_CHECK			,false), "eTYPE_ANIMAL");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_MONSTER	    ,false), "eTYPE_MONSTER");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_SQUID		  	,true ), "eTYPE_SQUID");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_VILLAGER		  	,true ), "eTYPE_VILLAGER");
-
-		unsigned int totalCount[4];
-		unsigned int protectedCount[4];
-		unsigned int unprotectedCount[4];
-		unsigned int couldWanderCount[4];
-
-		totalCount[0] = level->countInstanceOf(eTYPE_COW         	,true, &protectedCount[0], &couldWanderCount[0] );
-		totalCount[1] = level->countInstanceOf(eTYPE_SHEEP       	,true, &protectedCount[1], &couldWanderCount[1] );
-		totalCount[2] = level->countInstanceOf(eTYPE_CHICKEN     	,true, &protectedCount[2], &couldWanderCount[2] );
-		totalCount[3] = level->countInstanceOf(eTYPE_PIG         	,true, &protectedCount[3], &couldWanderCount[3] );
-
-		for( int i = 0; i < 4; i++ ) unprotectedCount[i] = totalCount[i] - protectedCount[i];
-
-		PIXAddNamedCounter( unprotectedCount[0], "eTYPE_COW (unprotected)");
-		PIXAddNamedCounter( unprotectedCount[1], "eTYPE_SHEEP (unprotected)");
-		PIXAddNamedCounter( unprotectedCount[2], "eTYPE_CHICKEN (unprotected)");
-		PIXAddNamedCounter( unprotectedCount[3], "eTYPE_PIG (unprotected)");
-
-		PIXAddNamedCounter( protectedCount[0], "eTYPE_COW (protected)");
-		PIXAddNamedCounter( protectedCount[1], "eTYPE_SHEEP (protected)");
-		PIXAddNamedCounter( protectedCount[2], "eTYPE_CHICKEN (protected)");
-		PIXAddNamedCounter( protectedCount[3], "eTYPE_PIG (protected)");
-
-		PIXAddNamedCounter( couldWanderCount[0], "eTYPE_COW (could wander)");
-		PIXAddNamedCounter( couldWanderCount[1], "eTYPE_SHEEP (could wander)");
-		PIXAddNamedCounter( couldWanderCount[2], "eTYPE_CHICKEN (could wander)");
-		PIXAddNamedCounter( couldWanderCount[3], "eTYPE_PIG (could wander)");
-
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_WOLF        	,true ), "eTYPE_WOLF");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_CREEPER     	,true ), "eTYPE_CREEPER");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_GIANT       	,true ), "eTYPE_GIANT");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_SKELETON    	,true ), "eTYPE_SKELETON");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_SPIDER      	,true ), "eTYPE_SPIDER");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_ZOMBIE      	,true ), "eTYPE_ZOMBIE");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_PIGZOMBIE   	,true ), "eTYPE_PIGZOMBIE");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_SLIME   		,true ), "eTYPE_SLIME");
-		PIXAddNamedCounter( level->countInstanceOf(eTYPE_GHAST   		,true ), "eTYPE_GHAST");
-	}
-#endif
 #endif
 
     if (!spawnEnemies && !spawnFriendlies && !spawnPersistent) {
@@ -101,22 +47,6 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     MemSect(20);
     chunksToPoll.clear();
 
-#if 0
-	AUTO_VAR(itEnd, level->players.end());
-	for (AUTO_VAR(it, level->players.begin()); it != itEnd; it++)
-	{
-		std::shared_ptr<Player> player = *it; //level->players.at(i);
-		int xx = Mth::floor(player->x / 16);
-		int zz = Mth::floor(player->z / 16);
-
-		int r = 128 / 16;
-		for (int x = -r; x <= r; x++)
-			for (int z = -r; z <= r; z++)
-			{
-				chunksToPoll.insert(ChunkPos(x + xx, z + zz));
-			}
-	}
-#else
     // 4J - rewritten to add chunks interleaved by player, and to add them from
     // the centre outwards. We're going to be potentially adding less creatures
     // than the original so that our count stays consistent with number of
@@ -129,12 +59,8 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
         std::shared_ptr<Player> player = level->players[i];
         xx[i] = Mth::floor(player->x / 16);
         zz[i] = Mth::floor(player->z / 16);
-#ifdef __PSVITA__
-        chunksToPoll.insert(ChunkPos(xx[i], zz[i]), false);
-#else
         chunksToPoll.insert(
             std::pair<ChunkPos, bool>(ChunkPos(xx[i], zz[i]), false));
-#endif
     }
 
     for (int r = 1; r <= 8; r++) {
@@ -146,16 +72,6 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                 // player, then always store with a flag of false so that if it
                 // was at the edge of another player, then this will remove that
                 if (!edgeChunk) {
-#ifdef __PSVITA__
-                    chunksToPoll.insert(ChunkPos((xx[i] - r) + l, (zz[i] - r)),
-                                        false);
-                    chunksToPoll.insert(ChunkPos((xx[i] + r), (zz[i] - r) + l),
-                                        false);
-                    chunksToPoll.insert(ChunkPos((xx[i] + r) - l, (zz[i] + r)),
-                                        false);
-                    chunksToPoll.insert(ChunkPos((xx[i] - r), (zz[i] + r) - l),
-                                        false);
-#else
                     chunksToPoll.insert(std::pair<ChunkPos, bool>(
                         ChunkPos((xx[i] - r) + l, (zz[i] - r)), false));
                     chunksToPoll.insert(std::pair<ChunkPos, bool>(
@@ -164,18 +80,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                         ChunkPos((xx[i] + r) - l, (zz[i] + r)), false));
                     chunksToPoll.insert(std::pair<ChunkPos, bool>(
                         ChunkPos((xx[i] - r), (zz[i] + r) - l), false));
-#endif
                 } else {
-#ifdef __PSVITA__
-                    ChunkPos cp = ChunkPos((xx[i] - r) + l, (zz[i] - r));
-                    if (chunksToPoll.find(cp)) chunksToPoll.insert(cp, true);
-                    cp = ChunkPos((xx[i] + r), (zz[i] - r) + l);
-                    if (chunksToPoll.find(cp)) chunksToPoll.insert(cp, true);
-                    cp = ChunkPos((xx[i] + r) - l, (zz[i] + r));
-                    if (chunksToPoll.find(cp)) chunksToPoll.insert(cp, true);
-                    cp = ChunkPos((xx[i] - r), (zz[i] + r) - l);
-                    if (chunksToPoll.find(cp)) chunksToPoll.insert(cp, true);
-#else
                     ChunkPos cp = ChunkPos((xx[i] - r) + l, (zz[i] - r));
                     if (chunksToPoll.find(cp) == chunksToPoll.end())
                         chunksToPoll.insert(
@@ -192,14 +97,12 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                     if (chunksToPoll.find(cp) == chunksToPoll.end())
                         chunksToPoll.insert(
                             std::pair<ChunkPos, bool>(cp, true));
-#endif
                 }
             }
         }
     }
     delete[] xx;
     delete[] zz;
-#endif
     MemSect(0);
     int count = 0;
     MemSect(31);
@@ -230,13 +133,8 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
             continue;
         }
 
-#ifdef __PSVITA__
-        for (int i = 0; i < chunksToPoll.end(); i += 1) {
-            SCustomMapNode* it = chunksToPoll.get(i);
-#else
         AUTO_VAR(itEndCTP, chunksToPoll.end());
         for (AUTO_VAR(it, chunksToPoll.begin()); it != itEndCTP; it++) {
-#endif
             if (it->second) {
                 // don't add mobs to edge chunks, to prevent adding mobs
                 // "outside" of the active playground
@@ -435,15 +333,6 @@ bool MobSpawner::isSpawnPositionOk(MobCategory* category, Level* level, int x,
     // can happen on another thread
     if (!level->hasChunkAt(x, y, z)) return false;
 
-#ifdef __PSVITA__
-    // AP - added this for Vita. Make sure a new spawn point has 2 chunks around
-    // it. This will make sure monsters don't keep getting spawned on the edge
-    // preventing other new monsters from being spawned
-    int r = 32;
-    if (!level->hasChunksAt(x - r, 0, z - r, x + r, 0, z + r)) {
-        return false;
-    }
-#endif
 
     if (category->getSpawnPositionMaterial() == Material::water) {
         // 4J - changed to spawn water things only in deep water
@@ -482,64 +371,4 @@ void MobSpawner::postProcessSpawnMobs(Level* level, Biome* biome, int xo,
                                       int zo, int cellWidth, int cellHeight,
                                       Random* random) {
     // 4J - not for our version. Creates a few too many mobs.
-#if 0
-	std::vector<Biome::MobSpawnerData *> *mobs = biome->getMobs(MobCategory::creature);
-	if (mobs->empty())
-	{
-		return;
-	}
-
-	while (random->nextFloat() < biome->getCreatureProbability())
-	{
-		Biome::MobSpawnerData *type = (Biome::MobSpawnerData *) WeighedRandom::getRandomItem(level->random, ((std::vector<WeighedRandomItem *> *)mobs));
-		MobGroupData *groupData = NULL;
-		int count = type->minCount + random->nextInt(1 + type->maxCount - type->minCount);
-
-		int x = xo + random->nextInt(cellWidth);
-		int z = zo + random->nextInt(cellHeight);
-		int startX = x, startZ = z;
-
-		for (int c = 0; c < count; c++)
-		{
-			bool success = false;
-			for (int attempts = 0; !success && attempts < 4; attempts++)
-			{
-				// these mobs always spawn at the topmost position
-				int y = level->getTopSolidBlock(x, z);
-				if (isSpawnPositionOk(MobCategory::creature, level, x, y, z))
-				{
-
-					float xx = x + 0.5f;
-					float yy = (float)y;
-					float zz = z + 0.5f;
-
-					std::shared_ptr<Mob> mob;
-					//try {
-					mob = std::dynamic_pointer_cast<Mob>( EntityIO::newByEnumType(type->mobClass, level ) );
-					//} catch (Exception e) {
-					//	e.printStackTrace();
-					//	continue;
-					//}
-
-					// System.out.println("Placing night mob");
-					mob->moveTo(xx, yy, zz, random->nextFloat() * 360, 0);
-
-					mob->setDespawnProtected();
-
-					level->addEntity(mob);
-					groupData = mob->finalizeMobSpawn(groupData);
-					success = true;
-				}
-
-				x += random->nextInt(5) - random->nextInt(5);
-				z += random->nextInt(5) - random->nextInt(5);
-				while (x < xo || x >= (xo + cellWidth) || z < zo || z >= (zo + cellWidth))
-				{
-					x = startX + random->nextInt(5) - random->nextInt(5);
-					z = startZ + random->nextInt(5) - random->nextInt(5);
-				}
-			}
-		}
-	}
-#endif
 }

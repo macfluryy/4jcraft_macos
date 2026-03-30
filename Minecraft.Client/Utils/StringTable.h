@@ -2,13 +2,7 @@
 
 #include <cstdint>
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
-#define LOCALE_COUNT 21
-#elif defined _XBOX_ONE
-#define LOCALE_COUNT 19
-#else
 #define LOCALE_COUNT 11
-#endif
 
 class StringTable {
 private:
@@ -33,7 +27,7 @@ public:
     // 		eLocale_TradChinese,
     // 		eLocale_Portuguese,
     // 		eLocale_Brazilian,
-    // #if defined(__PS3__) || defined(__ORBIS__) || defined __PSVITA__
+    // #if 0 || 0 || 0
     // 		eLocale_Russian,
     // 		eLocale_Dutch,
     // 		eLocale_Finish,
@@ -44,7 +38,7 @@ public:
     // 		eLocale_Turkish,
     // 		eLocale_LatinAmericanSpanish,
     // 		eLocale_Greek,
-    // #elif defined _XBOX_ONE || defined _XBOX
+    // #elif 0 || 0
     // 		eLocale_British,
     // 		eLocale_Irish,
     // 		eLocale_Australian,

@@ -51,10 +51,6 @@ private:
     IggyName m_funcSetPlatform, m_funcSetControllerLayout;
     UI_BEGIN_MAP_ELEMENTS_AND_NAMES(UIScene)
 
-#ifndef __PSVITA__
-#ifdef __ORBIS__
-    if (!InputManager.UsingRemoteVita())
-#endif
     {
         UI_MAP_ELEMENT(m_labelCurrentLayout, "CurrentLayout")
 
@@ -62,7 +58,6 @@ private:
         UI_MAP_ELEMENT(m_buttonLayouts[1], "Button2")
         UI_MAP_ELEMENT(m_buttonLayouts[2], "Button3")
     }
-#endif
 
     UI_MAP_ELEMENT(m_labelsPad[e_PadBack], "LabelBack")
     UI_MAP_ELEMENT(m_labelsPad[e_PadLT], "LabelLT")

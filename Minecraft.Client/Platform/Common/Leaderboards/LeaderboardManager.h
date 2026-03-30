@@ -133,10 +133,6 @@ public:
 	
 
 public:
-#ifdef _XBOX
-	typedef XSESSION_VIEW_PROPERTIES *ViewIn;
-	typedef PXUSER_STATS_READ_RESULTS ViewOut;
-#else
 	static const int RECORD_SIZE = 40; //base32
 
 	typedef struct StatsData
@@ -187,7 +183,6 @@ public:
 	
 	typedef ReadView ViewOut;
 	typedef RegisterScore *ViewIn;
-#endif
 
 
 public:
@@ -243,26 +238,18 @@ public:
 	virtual bool isIdle() = 0;
 
 public:
-#ifndef _XBOX
 	static void printStats(ReadView &view);
-#endif
 };
 
 class LeaderboardReadListener
 {
 public:
-#ifdef _XBOX
-	virtual bool OnStatsReadComplete(bool success, int numResults, LeaderboardManager::ViewOut results) = 0;
-#else
 	virtual bool OnStatsReadComplete(LeaderboardManager::eStatsReturn ret, int numResults, LeaderboardManager::ViewOut results) = 0;
-#endif
 };
 
-#ifndef _XBOX
 class DebugReadListener : public LeaderboardReadListener
 {
 public:
 	virtual bool OnStatsReadComplete(LeaderboardManager::eStatsReturn ret, int numResults, LeaderboardManager::ViewOut results);
 	static DebugReadListener *m_instance;
 };
-#endif

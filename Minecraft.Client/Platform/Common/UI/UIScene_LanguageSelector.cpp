@@ -89,9 +89,6 @@ void UIScene_LanguageSelector::handleInput(int iPad, int key, bool repeat,
             }
             break;
         case ACTION_MENU_OK:
-#ifdef __ORBIS__
-        case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
             sendInputToMovie(key, repeat, pressed, released);
             break;
         case ACTION_MENU_UP:

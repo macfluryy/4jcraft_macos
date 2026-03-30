@@ -9,11 +9,7 @@ SFontData SFontData::Mojangles_7 = {
 
     /* Font Name */ "Mojangles7",
 
-#ifdef _XBOX
-    /* filename */ L"/font/Mojangles_7.png",
-#else
     /* Filename */ L"/TitleUpdate/res/font/Mojangles_7.png",
-#endif
 
     /* Glyph count */ FONTSIZE,
     /* Codepoints */ SFontData::Codepoints,
@@ -39,11 +35,7 @@ SFontData SFontData::Mojangles_11 = {
 
     /* Font Name */ "Mojangles11",
 
-#ifdef _XBOX
-    /* filename */ L"/font/Mojangles_11.png",
-#else
     /* Filename */ L"/TitleUpdate/res/font/Mojangles_11.png",
-#endif
 
     /* Glyph count */ FONTSIZE,
     /* Codepoints */ SFontData::Codepoints,
@@ -762,7 +754,7 @@ CFontData::CFontData(SFontData& sFontData, int* pbRawImage)
     }
 
     // DEBUG //
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     for (int i = 0; i < sFontData.m_uiGlyphCount; i++) {
         int unicode = getUnicode(i), unicodeChar = 32, row, col;
         if (32 < unicode && unicode < 127 && unicode != 0x0025) {

@@ -14,25 +14,6 @@ std::wstring SharedConstants::readAcceptableChars() {
         L"0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_'"
         L"abcdefghijklmnopqrstuvwxyz{|}~"
         L" ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»ã";
-#if 0  // 4J - do we actually really need to get this from a file?
-       // try {
-       // BufferedReader br = new BufferedReader(new
-       // InputStreamReader(SharedConstants.class.getResourceAsStream("/font.txt"),
-       // "UTF-8"));
-		BufferedReader *br = new BufferedReader(new InputStreamReader( new FileInputStream( new File( std::wstring(L"/font.txt") ) ) ) );
-		std::wstring line;
-		while ( !(line = br->readLine()).empty())
-		{
-			if (!( wcscmp( &line[0], L"#") == 0 ) )
-			{
-				result.append( line );
-			}
-		}
-		br->close();
-	//} catch (Exception e) {
-		// TODO 4J Stu - Exception handling?
-	//}
-#endif
     return result;
 }
 

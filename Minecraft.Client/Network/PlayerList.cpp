@@ -26,12 +26,6 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.saveddata.h"
 #include "../../Minecraft.World/Util/JavaMath.h"
 #include "../../Minecraft.World/Level/Storage/EntityIO.h"
-#ifdef _XBOX
-#include "../Platform/Xbox/Network/NetworkPlayerXbox.h"
-#elif defined(__PS3__) || defined(__ORBIS__)
-#include "../Platform/Common/Network/Sony/NetworkPlayerSony.h"
-#endif
-
 // 4J - this class is fairly substantially altered as there didn't seem any
 // point in porting code for banning, whitelisting, ops etc.
 
@@ -44,9 +38,7 @@ PlayerList::PlayerList(MinecraftServer* server) {
     overrideGameMode = NULL;
     allowCheatsForAllPlayers = false;
 
-#ifdef __PSVITA__
-    viewDistance = 3;
-#elif defined _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     viewDistance = 16;
 #else
     viewDistance = 10;
@@ -91,16 +83,6 @@ void PlayerList::placeNewPlayer(Connection* connection,
         player->setPlayerGamePrivilege(Player::ePlayerGamePrivilege_HOST, 1);
     }
 
-#if defined(__PS3__) || defined(__ORBIS__)
-    // PS3 networking library doesn't automatically assign PlayerUIDs to the
-    // network players for anything remote, so need to tell it what to set from
-    // the data in this packet now
-    if (!g_NetworkManager.IsLocalGame()) {
-        if (networkPlayer != NULL) {
-            ((NetworkPlayerSony*)networkPlayer)->SetUID(packet->m_onlineXuid);
-        }
-    }
-#endif
 
     // 4J Stu - TU-1 hotfix
     // Fix for #13150 - When a player loads/joins a game after saving/leaving in
@@ -142,7 +124,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
 
     if (newPlayer) {
         int mapScale = 3;
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
         int scale = MapItemSavedData::MAP_SIZE * 2 * (1 << mapScale);
         int centreXC = (int)(Math::round(player->x / scale) * scale);
         int centreZC = (int)(Math::round(player->z / scale) * scale);
@@ -168,7 +150,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         !app.IsFileInMemoryTextures(player->customTextureUrl)) {
         if (server->getConnection()->addPendingTextureRequest(
                 player->customTextureUrl)) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(
                 L"Sending texture packet to get custom skin %ls from player "
                 L"%ls\n",
@@ -189,7 +171,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
         !app.IsFileInMemoryTextures(player->customTextureUrl2)) {
         if (server->getConnection()->addPendingTextureRequest(
                 player->customTextureUrl2)) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
             wprintf(
                 L"Sending texture packet to get custom skin %ls from player "
                 L"%ls\n",
@@ -1051,7 +1033,7 @@ void PlayerList::tick() {
             g_NetworkManager.GetPlayerBySmallId(smallId);
         if (selectedPlayer != NULL) {
             if (selectedPlayer->IsLocal() != TRUE) {
-                // #ifdef _XBOX
+                // #if 0
                 PlayerUID xuid = selectedPlayer->GetUID();
                 // Kick this player from the game
                 std::shared_ptr<ServerPlayer> player = nullptr;
@@ -1144,7 +1126,7 @@ bool PlayerList::isOp(const std::wstring& name) { return false; }
 
 bool PlayerList::isOp(std::shared_ptr<ServerPlayer> player) {
     bool cheatsEnabled = app.GetGameHostOption(eGameHostOption_CheatsEnabled);
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
     cheatsEnabled = cheatsEnabled || app.GetUseDPadForDebug();
 #endif
     INetworkPlayer* networkPlayer = player->connection->getNetworkPlayer();
@@ -1353,17 +1335,6 @@ void PlayerList::broadcast(std::shared_ptr<Player> except, double x, double y,
         double yd = y - p->y;
         double zd = z - p->z;
         if (xd * xd + yd * yd + zd * zd < range * range) {
-#if 0  // _DEBUG
-			std::shared_ptr<LevelSoundPacket> SoundPacket= std::dynamic_pointer_cast<LevelSoundPacket>(packet);
-
-			if(SoundPacket)
-			{
-
-				app.DebugPrintf("---broadcast - eSoundType_[%d] ",SoundPacket->getSound());
-				OutputDebugStringW(ConsoleSoundEngine::wchSoundNames[SoundPacket->getSound()]);
-				app.DebugPrintf("\n");
-			}
-#endif
             p->connection->send(packet);
             sentTo.push_back(p);
         }
@@ -1511,7 +1482,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
     else if (dimIndex == 1)
         dimIndex = 2;
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     app.DebugPrintf("Requesting remove player %ls as primary in dimension %d\n",
                     player->name.c_str(), dimIndex);
 #endif
@@ -1520,7 +1491,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
     AUTO_VAR(it, find(receiveAllPlayers[dimIndex].begin(),
                       receiveAllPlayers[dimIndex].end(), player));
     if (it != receiveAllPlayers[dimIndex].end()) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf(
             "Remove: Removing player %ls as primary in dimension %d\n",
             player->name.c_str(), dimIndex);
@@ -1539,7 +1510,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
 
             if (newPlayer != player && newPlayer->dimension == playerDim &&
                 otherPlayer != NULL && otherPlayer->IsSameSystem(thisPlayer)) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                 app.DebugPrintf(
                     "Remove: Adding player %ls as primary in dimension %d\n",
                     newPlayer->name.c_str(), dimIndex);
@@ -1549,7 +1520,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
             }
         }
     } else if (thisPlayer == NULL) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf(
             "Remove: Qnet player for %ls was NULL so re-checking all players\n",
             player->name.c_str());
@@ -1581,7 +1552,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
                     }
                 }
                 if (!foundPrimary) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
                     app.DebugPrintf(
                         "Remove: Adding player %ls as primary in dimension "
                         "%d\n",
@@ -1601,7 +1572,7 @@ void PlayerList::addPlayerToReceiving(std::shared_ptr<ServerPlayer> player) {
     else if (player->dimension == 1)
         playerDim = 2;
 
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
     app.DebugPrintf("Requesting add player %ls as primary in dimension %d\n",
                     player->name.c_str(), playerDim);
 #endif
@@ -1611,7 +1582,7 @@ void PlayerList::addPlayerToReceiving(std::shared_ptr<ServerPlayer> player) {
     INetworkPlayer* thisPlayer = player->connection->getNetworkPlayer();
 
     if (thisPlayer == NULL) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf(
             "Add: Qnet player for player %ls is NULL so not adding them\n",
             player->name.c_str());
@@ -1632,7 +1603,7 @@ void PlayerList::addPlayerToReceiving(std::shared_ptr<ServerPlayer> player) {
     }
 
     if (shouldAddPlayer) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf("Add: Adding player %ls as primary in dimension %d\n",
                         player->name.c_str(), playerDim);
 #endif

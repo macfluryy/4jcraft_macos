@@ -17,9 +17,6 @@ UIGroup::UIGroup(EUIGroup group, int iPad) {
 
     for (unsigned int i = 0; i < eUILayer_COUNT; ++i) {
         m_layers[i] = new UILayer(this);
-#ifdef __PSVITA__
-        m_layers[i]->m_iLayer = (EUILayer)i;
-#endif
     }
 
     m_tooltips =
@@ -188,18 +185,6 @@ bool UIGroup::HasFocus(int iPad) {
     return hasFocus;
 }
 
-#ifdef __PSVITA__
-UIScene* UIGroup::getCurrentScene() {
-    UIScene* pScene;
-    for (unsigned int i = 0; i < eUILayer_COUNT; ++i) {
-        pScene = m_layers[i]->getCurrentScene();
-
-        if (pScene != NULL) return pScene;
-    }
-
-    return NULL;
-}
-#endif
 
 // INPUT
 void UIGroup::handleInput(int iPad, int key, bool repeat, bool pressed,
@@ -273,15 +258,6 @@ void UIGroup::HandleDLCInstalled() {
     }
 }
 
-#ifdef _XBOX_ONE
-void UIGroup::HandleDLCLicenseChange() {
-    // Ignore this group if the player isn't signed in
-    if (m_iPad >= 0 && !ProfileManager.IsSignedIn(m_iPad)) return;
-    for (unsigned int i = 0; i < eUILayer_COUNT; ++i) {
-        m_layers[i]->HandleDLCLicenseChange();
-    }
-}
-#endif
 
 void UIGroup::HandleMessage(EUIMessage message, void* data) {
     // Ignore this group if the player isn't signed in
@@ -369,11 +345,7 @@ UIScene* UIGroup::FindScene(EUIScene sceneType) {
 
     for (int i = 0; i < eUILayer_COUNT; i++) {
         pScene = m_layers[i]->FindScene(sceneType);
-#ifdef __PS3__
-        if (pScene != NULL) return pScene;
-#else
         if (pScene != nullptr) return pScene;
-#endif
     }
 
     return pScene;

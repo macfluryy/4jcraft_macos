@@ -43,17 +43,6 @@ void UIControl_TexturePackList::init(const std::wstring& label, int id) {
         IggyPlayerCallMethodRS(m_parentScene->getMovie(), &result,
                                getIggyValuePath(), m_initFunc, 2, value);
 
-#ifdef __PSVITA__
-    // 4J-TomK - add this texturepack list to the vita touch box list
-
-    switch (m_parentScene->GetParentLayer()->m_iLayer) {
-        case eUILayer_Fullscreen:
-        case eUILayer_Scene:
-        case eUILayer_HUD:
-            ui.TouchBoxAdd(this, m_parentScene);
-            break;
-    }
-#endif
 }
 
 void UIControl_TexturePackList::addPack(int id,

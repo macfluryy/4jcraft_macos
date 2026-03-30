@@ -157,7 +157,7 @@ GameRuleDefinition* LevelGenerationOptions::addChild(
         rule = new StartFeature();
         m_features.push_back((StartFeature*)rule);
     } else {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(
             L"LevelGenerationOptions: Attempted to add invalid child rule - "
             L"%d\n",
@@ -355,7 +355,7 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
     // If we have already loaded this, just return
     AUTO_VAR(it, m_schematics.find(filename));
     if (it != m_schematics.end()) {
-#ifndef _CONTENT_PACKAGE
+#if !defined(_CONTENT_PACKAGE)
         wprintf(L"We have already loaded schematic file %ls\n",
                 filename.c_str());
 #endif
@@ -466,17 +466,10 @@ void LevelGenerationOptions::loadBaseSaveData() {
         mountIndex = m_parentDLCPack->GetDLCMountIndex();
 
     if (mountIndex > -1) {
-#ifdef _DURANGO
-        if (StorageManager.MountInstalledDLC(
-                ProfileManager.GetPrimaryPad(), mountIndex,
-                &LevelGenerationOptions::packMounted, this,
-                L"WPACK") != ERROR_IO_PENDING)
-#else
         if (StorageManager.MountInstalledDLC(
                 ProfileManager.GetPrimaryPad(), mountIndex,
                 &LevelGenerationOptions::packMounted, this,
                 "WPACK") != ERROR_IO_PENDING)
-#endif
         {
             // corrupt DLC
             setLoadedData();
@@ -517,7 +510,7 @@ int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
                                          dlcFile->getGrfPath(), true,
                                          L"WPACK:"));
                 if (grf.exists()) {
-#ifdef _UNICODE
+#if defined(_UNICODE)
                     std::wstring path = grf.getPath();
                     const WCHAR* pchFilename = path.c_str();
                     HANDLE fileHandle = CreateFile(
@@ -575,7 +568,7 @@ int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
             File save(app.getFilePath(lgo->m_parentDLCPack->GetPackID(),
                                       lgo->getBaseSavePath(), true, L"WPACK:"));
             if (save.exists()) {
-#ifdef _UNICODE
+#if defined(_UNICODE)
                 std::wstring path = save.getPath();
                 const WCHAR* pchFilename = path.c_str();
                 HANDLE fileHandle = CreateFile(
@@ -622,11 +615,7 @@ int LevelGenerationOptions::packMounted(LPVOID pParam, int iPad, DWORD dwErr,
                 }
             }
         }
-#ifdef _DURANGO
-        DWORD result = StorageManager.UnmountInstalledDLC(L"WPACK");
-#else
         DWORD result = StorageManager.UnmountInstalledDLC("WPACK");
-#endif
     }
 
     lgo->setLoadedData();

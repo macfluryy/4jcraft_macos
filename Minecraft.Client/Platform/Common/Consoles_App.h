@@ -5,21 +5,17 @@
 // using namespace std;
 
 #include "Audio/Consoles_SoundEngine.h"
-#ifndef __linux__
+#if !defined(__linux__)
 #include <xuiapp.h>
 #endif
 #include "Tutorial/TutorialEnum.h"
 
-#ifdef _XBOX
-#include "XUI/XUI_Helper.h"
-#include "XUI/XUI_HelpCredits.h"
-#endif
 #include "UI/UIStructs.h"
 
 #include "../Minecraft.World/Network/Packets/DisconnectPacket.h"
-#ifndef __linux__
+#if !defined(__linux__)
 #include <xsocialpost.h>
-#endif  // __linux__
+#endif
 
 #include "../Minecraft.Client/Utils/StringTable.h"
 #include "DLC/DLCManager.h"
@@ -61,9 +57,6 @@ class Merchant;
 class CMinecraftAudio;
 
 class CMinecraftApp
-#ifdef _XBOX
-    : public CXuiModule
-#endif
 {
 private:
     static int s_iHTMLFontSizesA[eHTMLSize_COUNT];
@@ -100,7 +93,7 @@ public:
     // stored at the same positions when we read them
     static const int GAME_SETTINGS_PROFILE_DATA_BYTES = 204;
 
-#ifdef _EXTENDED_ACHIEVEMENTS
+#if defined(_EXTENDED_ACHIEVEMENTS)
     /* 4J-JEV:
      * We need more space in the profile data because of the new achievements
      * and statistics necessary for the new expanded achievement set.
@@ -129,8 +122,8 @@ public:
     void HandleButtonPresses();
     bool IntroRunning() { return m_bIntroRunning; }
     void SetIntroRunning(bool bSet) { m_bIntroRunning = bSet; }
-#ifdef _CONTENT_PACKAGE
-#ifndef _FINAL_BUILD
+#if defined(_CONTENT_PACKAGE)
+#if !defined(_FINAL_BUILD)
     bool PartnernetPasswordRunning() { return m_bPartnernetPasswordRunning; }
     void SetPartnernetPasswordRunning(bool bSet) {
         m_bPartnernetPasswordRunning = bSet;
@@ -276,9 +269,6 @@ public:
 
     // debug -0 show safe area
     void ShowSafeArea(bool show) {
-#ifdef _XBOX
-        CXuiSceneBase::ShowSafeArea(show);
-#endif
     }
     // 4J-PB - to capture the social post screenshot
     virtual void CaptureScreenshot(int iPad) {};
@@ -290,38 +280,11 @@ public:
                                          const unsigned short usVersion,
                                          const int iPad);
 
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
-    std::wstring toStringOptionsStatus(
-        const C4JStorage::eOptionsCallback& eStatus);
-    static int DefaultOptionsCallback(void* pParam,
-                                      C4JStorage::PROFILESETTINGS* pSettings,
-                                      const int iPad);
-    int SetDefaultOptions(C4JStorage::PROFILESETTINGS* pSettings,
-                          const int iPad, bool bWriteProfile = true);
-#ifdef __ORBIS__
-    static int OptionsDataCallback(void* pParam, int iPad,
-                                   unsigned short usVersion,
-                                   C4JStorage::eOptionsCallback eStatus,
-                                   int iBlocksRequired);
-    int GetOptionsBlocksRequired(int iPad);
-#else
-    static int OptionsDataCallback(void* pParam, int iPad,
-                                   unsigned short usVersion,
-                                   C4JStorage::eOptionsCallback eStatus);
-#endif
-
-    C4JStorage::eOptionsCallback GetOptionsCallbackStatus(int iPad);
-
-    void SetOptionsCallbackStatus(int iPad,
-                                  C4JStorage::eOptionsCallback eStatus);
-#else
     static int DefaultOptionsCallback(void* pParam,
                                       C_4JProfile::PROFILESETTINGS* pSettings,
                                       const int iPad);
     int SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
                           const int iPad);
-#endif
     virtual void SetRichPresenceContext(int iPad, int contextId) = 0;
 
     void SetGameSettings(int iPad, eGameSetting eVal, unsigned char ucVal);
@@ -408,18 +371,8 @@ public:
     static void UpsellReturnedCallback(void* pParam, eUpsellType type,
                                        eUpsellResponse result, int iUserData);
 
-#if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
-    static int NowDisplayFullVersionPurchase(void* pParam, bool bContinue,
-                                             int iPad);
-    static int MustSignInFullVersionPurchaseReturned(
-        void* pParam, int iPad, C4JStorage::EMessageResult result);
-#endif
-#if defined __PS3__ || defined __PSVITA__ || defined __ORBIS__
-    static int MustSignInFullVersionPurchaseReturnedExitTrial(
-        void* pParam, int iPad, C4JStorage::EMessageResult result);
-#endif
 
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
     bool DebugSettingsOn() { return m_bDebugOptions; }
     bool DebugArtToolsOn();
 #else
@@ -486,9 +439,7 @@ public:
     bool IsFileInTPD(int iConfig);
     void GetTPD(int iConfig, std::uint8_t** ppbData, unsigned int* pByteCount);
     int GetTPDSize() { return m_MEM_TPD.size(); }
-#ifndef __PS3__
     int GetTPConfigVal(WCHAR* pwchDataFile);
-#endif
 
     bool DefaultCapeExists();
     // void InstallDefaultCape(); // attempt  to install the default cape once
@@ -505,11 +456,7 @@ public:
 
 private:
     PlayerUID m_xuidNotch;
-#ifdef _DURANGO
-    std::unordered_map<PlayerUID, std::uint8_t*, PlayerUID::Hash> m_GTS_Files;
-#else
     std::unordered_map<PlayerUID, std::uint8_t*> m_GTS_Files;
-#endif
 
     // for storing memory textures - player skin
     std::unordered_map<std::wstring, PMEMDATA> m_MEM_Files;
@@ -535,10 +482,6 @@ public:
     void InvalidateBannedList(int iPad);
     void SetUniqueMapName(char* pszUniqueMapName);
     char* GetUniqueMapName(void);
-#ifdef _XBOX_ONE
-    void AddLevelToBannedLevelList(int iPad, PBANNEDLISTDATA pBannedListData,
-                                   bool bWriteToTMS);
-#endif
 
 public:
     bool GetResourcesLoaded() { return m_bResourcesLoaded; }
@@ -590,8 +533,8 @@ private:
 
     // bool m_bSplitScreenEnabled;
 
-#ifdef _CONTENT_PACKAGE
-#ifndef _FINAL_BUILD
+#if defined(_CONTENT_PACKAGE)
+#if !defined(_FINAL_BUILD)
     bool m_bPartnernetPasswordRunning;
 #endif
 #endif
@@ -733,30 +676,12 @@ public:
     MOJANG_DATA* GetMojangDataForXuid(PlayerUID xuid);
     static HRESULT RegisterConfigValues(WCHAR* pType, int iValue);
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-    HRESULT RegisterDLCData(char* pchDLCName, unsigned int uiSortIndex,
-                            char* pchImageURL);
-    bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
-                                    ULONGLONG* pullVal);
-    DLC_INFO* GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial);
-    DLC_INFO* GetDLCInfoForFullOfferID(ULONGLONG ullOfferID_Full);
-#elif defined(_XBOX_ONE)
-    static HRESULT RegisterDLCData(eDLCContentType, WCHAR*, WCHAR*, WCHAR*,
-                                   WCHAR*, int, unsigned int);
-    // bool GetDLCFullOfferIDForSkinID(const std::wstring &FirstSkin,WCHAR
-    // *pwchProductId);
-    bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
-                                    std::wstring& wsProductId);
-    DLC_INFO* GetDLCInfoForFullOfferID(WCHAR* pwchProductId);
-    DLC_INFO* GetDLCInfoForProductName(WCHAR* pwchProductName);
-#else
     static HRESULT RegisterDLCData(WCHAR*, WCHAR*, int, uint64_t, uint64_t,
                                    WCHAR*, unsigned int, int, WCHAR* pDataFile);
     bool GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
                                     ULONGLONG* pullVal);
     DLC_INFO* GetDLCInfoForTrialOfferID(ULONGLONG ullOfferID_Trial);
     DLC_INFO* GetDLCInfoForFullOfferID(ULONGLONG ullOfferID_Full);
-#endif
 
     unsigned int GetDLCCreditsCount();
     SCreditTextItemDef* GetDLCCredits(int iIndex);
@@ -781,26 +706,6 @@ public:
 private:
     std::vector<SCreditTextItemDef*> vDLCCredits;
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-    static std::unordered_map<PlayerUID, MOJANG_DATA*, PlayerUID::Hash>
-        MojangData;
-    static std::unordered_map<int, char*>
-        DLCTextures_PackID;  // for mash-up packs & texture packs
-    static std::unordered_map<std::string, DLC_INFO*> DLCInfo;
-    static std::unordered_map<std::wstring, ULONGLONG>
-        DLCInfo_SkinName;  // skin name, full offer id
-#elif defined(_DURANGO)
-    static std::unordered_map<PlayerUID, MOJANG_DATA*, PlayerUID::Hash>
-        MojangData;
-    static std::unordered_map<int, std::wstring>
-        DLCTextures_PackID;  // for mash-up packs & texture packs
-    // static std::unordered_map<std::wstring,DLC_INFO * > DLCInfo_Trial; //
-    // full offerid, dlc_info
-    static std::unordered_map<std::wstring, DLC_INFO*>
-        DLCInfo_Full;  // full offerid, dlc_info
-    static std::unordered_map<std::wstring, std::wstring>
-        DLCInfo_SkinName;  // skin name, full offer id
-#else
     static std::unordered_map<PlayerUID, MOJANG_DATA*> MojangData;
     static std::unordered_map<int, ULONGLONG>
         DLCTextures_PackID;  // for mash-up packs & texture packs
@@ -810,7 +715,6 @@ private:
         DLCInfo_Full;  // full offerid, dlc_info
     static std::unordered_map<std::wstring, ULONGLONG>
         DLCInfo_SkinName;  // skin name, full offer id
-#endif
     //	bool m_bRead_TMS_XUIDS_XML; // track whether we have already read the
     // TMS xuids.xml file 	bool m_bRead_TMS_DLCINFO_XML; // track whether
     // we have already read the TMS DLC.xml file
@@ -869,7 +773,7 @@ private:
     unsigned int m_uiGameHostSettings;
     static unsigned char m_szPNG[8];
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     unsigned int m_GameNewWorldSize;
     bool m_bGameNewWorldSizeUseMoat;
     unsigned int m_GameNewHellScale;
@@ -884,7 +788,7 @@ public:
     unsigned int GetGameHostOption(unsigned int uiHostSettings,
                                    eGameHostOption eVal);
 
-#ifdef _LARGE_WORLDS
+#if defined(_LARGE_WORLDS)
     void SetGameNewWorldSize(unsigned int newSize, bool useMoat) {
         m_GameNewWorldSize = newSize;
         m_bGameNewWorldSizeUseMoat = useMoat;
@@ -962,39 +866,17 @@ public:
     unsigned int AddTMSPPFileTypeRequest(eDLCContentType eType,
                                          bool bPromote = false);
     int GetDLCInfoTexturesOffersCount();
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-    DLC_INFO* GetDLCInfo(int iIndex);
-    DLC_INFO* GetDLCInfo(char*);
-    DLC_INFO* GetDLCInfoFromTPackID(int iTPID);
-    bool GetDLCNameForPackID(const int iPackID, char** ppchKeyID);
-    char* GetDLCInfoTextures(int iIndex);
-    int GetDLCInfoCount();
-#else
 
-#ifdef _XBOX_ONE
-    static int TMSPPFileReturned(void* pParam, int iPad, int iUserData, void*,
-                                 WCHAR* wchFilename);
-    std::unordered_map<std::wstring, DLC_INFO*>* GetDLCInfo();
-#else
     static int TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                                  C4JStorage::PTMSPP_FILEDATA pFileData,
                                  LPCSTR szFilename);
-#endif
     DLC_INFO* GetDLCInfoTrialOffer(int iIndex);
     DLC_INFO* GetDLCInfoFullOffer(int iIndex);
 
     int GetDLCInfoTrialOffersCount();
     int GetDLCInfoFullOffersCount();
-#ifdef _XBOX_ONE
-    bool GetDLCFullOfferIDForPackID(const int iPackID,
-                                    std::wstring& wsProductId);
-    std::wstring GetDLCInfoTexturesFullOffer(int iIndex);
-
-#else
     bool GetDLCFullOfferIDForPackID(const int iPackID, ULONGLONG* pullVal);
     ULONGLONG GetDLCInfoTexturesFullOffer(int iIndex);
-#endif
-#endif
 
     void SetCorruptSaveDeleted(bool bVal) { m_bCorruptSaveDeleted = bVal; }
     bool GetCorruptSaveDeleted(void) { return m_bCorruptSaveDeleted; }
@@ -1099,18 +981,7 @@ private:
 
     bool m_bResetNether;
     std::uint32_t m_dwRequiredTexturePackID;
-#ifdef _XBOX_ONE
-    std::vector<std::uint8_t*> m_vTMSPPData;
-#endif
 
-#if (defined __PS3__ || defined __ORBIS__ || defined _DURANGO || \
-     defined __PSVITA__)
-    C4JStorage::eOptionsCallback m_eOptionsStatusA[XUSER_MAX_COUNT];
-
-#ifdef __ORBIS__
-    int m_eOptionsBlocksRequiredA[XUSER_MAX_COUNT];
-#endif
-#endif
 
     // 4J-PB - language and locale functions
 public:
@@ -1133,28 +1004,12 @@ private:
                              bool bAddDataFolder, std::wstring mountPoint);
 
 public:
-#ifdef _XBOX
-    // 	bool m_bTransferSavesToXboxOne;
-    // 	unsigned int m_uiTransferSlotC;
-
-#elif defined(__PS3__)
-
-#elif defined _DURANGO
-
-#elif defined _WINDOWS64
+#if defined(_WINDOWS64)
     // CMinecraftAudio audio;
-#else  // PS4
+#else
 
 #endif
 
-#ifdef _XBOX_ONE
-public:
-    void SetReachedMainMenu();
-    bool HasReachedMainMenu();
-
-private:
-    bool m_hasReachedMainMenu;
-#endif
 };
 
 // singleton

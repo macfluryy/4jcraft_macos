@@ -173,7 +173,7 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
     UIScene* newScene = NULL;
     switch (scene) {
         // Debug
-#ifdef _DEBUG_MENUS_ENABLED
+#if defined(_DEBUG_MENUS_ENABLED)
         case eUIScene_DebugOverlay:
             newScene = new UIScene_DebugOverlay(iPad, initData, this);
             break;
@@ -301,12 +301,6 @@ bool UILayer::NavigateToScene(int iPad, EUIScene scene, void* initData) {
             newScene =
                 new UIScene_InGamePlayerOptionsMenu(iPad, initData, this);
             break;
-#if defined(_XBOX_ONE) || defined(__ORBIS__)
-        case eUIScene_InGameSaveManagementMenu:
-            newScene =
-                new UIScene_InGameSaveManagementMenu(iPad, initData, this);
-            break;
-#endif
         case eUIScene_TeleportMenu:
             newScene = new UIScene_TeleportMenu(iPad, initData, this);
             break;
@@ -540,10 +534,6 @@ void UILayer::removeComponent(EUIScene scene) {
             for (AUTO_VAR(compIt, m_components.begin());
                  compIt != m_components.end();) {
                 if ((*compIt)->getSceneType() == scene) {
-#ifdef __PSVITA__
-                    // remove any touchboxes
-                    ui.TouchBoxesClear((*compIt));
-#endif
                     m_scenesToDelete.push_back((*compIt));
                     (*compIt)->handleDestroy();  // For anything that might
                                                  // require the pointer be valid
@@ -557,10 +547,6 @@ void UILayer::removeComponent(EUIScene scene) {
 }
 
 void UILayer::removeScene(UIScene* scene) {
-#ifdef __PSVITA__
-    // remove any touchboxes
-    ui.TouchBoxesClear(scene);
-#endif
 
     AUTO_VAR(newEnd,
              std::remove(m_sceneStack.begin(), m_sceneStack.end(), scene));
@@ -586,10 +572,6 @@ void UILayer::closeAllScenes() {
     temp.insert(temp.end(), m_sceneStack.begin(), m_sceneStack.end());
     m_sceneStack.clear();
     for (AUTO_VAR(it, temp.begin()); it != temp.end(); ++it) {
-#ifdef __PSVITA__
-        // remove any touchboxes
-        ui.TouchBoxesClear(*it);
-#endif
         m_scenesToDelete.push_back(*it);
         (*it)->handleDestroy();  // For anything that might require the pointer
                                  // be valid
@@ -645,9 +627,7 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
                 // (and likely Vita), but I'm removing it on XboxOne so that we
                 // can avoid the scene creation time (which can be >0.5s) since
                 // we have the memory to spare
-#ifndef _XBOX_ONE
                 m_scenesToDestroy.push_back(scene);
-#endif
             }
 
             if (scene->getSceneType() == eUIScene_SettingsOptionsMenu) {
@@ -711,20 +691,6 @@ bool UILayer::updateFocusState(bool allowedFocus /* = false */) {
     return m_hasFocus;
 }
 
-#ifdef __PSVITA__
-UIScene* UILayer::getCurrentScene() {
-    // Note: reverse iterator, the last element is the top of the stack
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
-        UIScene* scene = *it;
-        // 4J-PB - only used on Vita, so iPad 0 is fine
-        if (scene->hasFocus(0) && scene->canHandleInput()) {
-            return scene;
-        }
-    }
-
-    return NULL;
-}
-#endif
 
 void UILayer::handleInput(int iPad, int key, bool repeat, bool pressed,
                           bool released, bool& handled) {
@@ -767,14 +733,6 @@ void UILayer::HandleDLCInstalled() {
     }
 }
 
-#ifdef _XBOX_ONE
-void UILayer::HandleDLCLicenseChange() {
-    for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {
-        UIScene* topScene = *it;
-        topScene->HandleDLCLicenseChange();
-    }
-}
-#endif
 
 void UILayer::HandleMessage(EUIMessage message, void* data) {
     for (AUTO_VAR(it, m_sceneStack.rbegin()); it != m_sceneStack.rend(); ++it) {

@@ -82,10 +82,6 @@ enum eSOUND_TYPE {
     eSoundType_AMBIENT_WEATHER_RAIN,
     eSoundType_AMBIENT_WEATHER_THUNDER,
     eSoundType_AMBIENT_CAVE_CAVE,
-#ifdef _XBOX
-    eSoundType_AMBIENT_CAVE_CAVE2,  //- fixed version of eSoundType_CAVE_CAVE,
-                                    // without the two 192k sounds
-#endif
     eSoundType_PORTAL_PORTAL,
     // 4J-PB - adding some that were still text in the code
     eSoundType_PORTAL_TRIGGER,

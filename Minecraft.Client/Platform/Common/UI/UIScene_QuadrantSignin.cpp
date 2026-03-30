@@ -2,9 +2,6 @@
 #include "UI.h"
 #include "UIScene_QuadrantSignin.h"
 #include "../../Minecraft.Client/Minecraft.h"
-#if defined(__ORBIS__)
-#include "../Network/Sony/SonyHttp.h"
-#endif
 
 UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
                                                UILayer* parentLayer)
@@ -20,17 +17,6 @@ UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
 
     _initQuadrants();
 
-#if defined(__PS3__) || defined(__ORBIS__) || defined(__PSVITA__)
-    if (InputManager.IsCircleCrossSwapped()) {
-        IggyDataValue result;
-        IggyDataValue value[1];
-        value[0].type = IGGY_DATATYPE_boolean;
-        value[0].boolval = true;
-        IggyResult out = IggyPlayerCallMethodRS(getMovie(), &result,
-                                                IggyPlayerRootPath(getMovie()),
-                                                m_funcSetABSwap, 1, value);
-    }
-#endif
 
     parentLayer->addComponent(iPad, eUIComponent_MenuBackground);
 }
@@ -81,12 +67,6 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
         switch (key) {
             case ACTION_MENU_CANCEL: {
                 if (pressed) {
-#ifdef _XBOX_ONE
-                    if (InputManager.IsPadLocked(iPad)) {
-                        if (iPad != ProfileManager.GetPrimaryPad()) {
-                            ProfileManager.RemoveGamepadFromGame(iPad);
-                        } else
-#endif
                         {
                             m_bIgnoreInput = true;
                             m_signInInfo.Func(m_signInInfo.lpParam, false,
@@ -96,47 +76,18 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
                             navigateBack();
                         }
                     }
-#ifdef _XBOX_ONE
-                }
-#endif
             } break;
             case ACTION_MENU_OK:
-#ifdef __ORBIS__
-            case ACTION_MENU_TOUCHPAD_PRESS:
-#endif
                 if (pressed) {
                     m_bIgnoreInput = true;
-#ifdef _XBOX_ONE
-                    if (ProfileManager.IsSignedIn(iPad) &&
-                        InputManager.IsPadLocked(iPad))
-#else
                     if (ProfileManager.IsSignedIn(iPad))
-#endif
                     {
                         app.DebugPrintf("Signed in pad pressed\n");
                         ProfileManager.CancelProfileAvatarRequest();
 
-#ifdef _XBOX_ONE
-                        // On Durango, if we don't navigate forward here, then
-                        // when we are on the main menu, it (re)gains focus &
-                        // that causes our users to get cleared
-                        ui.NavigateToScene(m_iPad, eUIScene_Timer);
-#endif
                         navigateBack();
                         m_signInInfo.Func(m_signInInfo.lpParam, true, m_iPad);
                     } else {
-#ifdef _XBOX_ONE
-                        if (ProfileManager.IsSignedIn(0) &&
-                            !InputManager.IsPadLocked(0)) {
-                            app.DebugPrintf(
-                                "Signed in pad with no controller bound "
-                                "pressed\n");
-                            ProfileManager.RequestSignInUI(
-                                false, false, false, true, false,
-                                &UIScene_QuadrantSignin::SignInReturned, this,
-                                iPad);
-                        } else
-#endif
                         {
                             app.DebugPrintf("Non-signed in pad pressed\n");
                             ProfileManager.RequestSignInUI(
@@ -159,28 +110,13 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
     handled = true;
 }
 
-#ifdef _XBOX_ONE
-int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
-                                           int iPad, int iController)
-#else
 int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
                                            int iPad)
-#endif
 {
     app.DebugPrintf("SignInReturned for pad %d\n", iPad);
 
     UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)pParam;
 
-#ifdef _XBOX_ONE
-    if (bContinue && pClass->m_signInInfo.requireOnline &&
-        ProfileManager.IsSignedIn(iPad)) {
-        if (!InputManager.IsPadLocked(iPad)) {
-            ProfileManager.ForcePrimaryPadController(iController);
-        }
-        ProfileManager.CheckMultiplayerPrivileges(
-            iPad, true, &checkAllPrivilegesCallback, pClass);
-    } else
-#endif
     {
         pClass->m_bIgnoreInput = false;
         pClass->updateState();
@@ -189,19 +125,6 @@ int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-#ifdef _XBOX_ONE
-void UIScene_QuadrantSignin::checkAllPrivilegesCallback(LPVOID lpParam,
-                                                        bool hasPrivileges,
-                                                        int iPad) {
-    UIScene_QuadrantSignin* pClass = (UIScene_QuadrantSignin*)lpParam;
-
-    if (!hasPrivileges) {
-        ProfileManager.RemoveGamepadFromGame(iPad);
-    }
-    pClass->m_bIgnoreInput = false;
-    pClass->updateState();
-}
-#endif
 
 namespace {
 int AvatarReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
@@ -217,11 +140,6 @@ void UIScene_QuadrantSignin::updateState() {
             // app.DebugPrintf("Index %d is signed in, display name - '%s'\n",
             // i, ProfileManager.GetDisplayName(i).data());
 
-#ifdef _XBOX_ONE
-            if (!InputManager.IsPadLocked(i)) {
-                setControllerState(i, eControllerStatus_PressToJoin_LoggedIn);
-            } else
-#endif
             {
                 setControllerState(i, eControllerStatus_PlayerDetails);
             }
@@ -307,11 +225,6 @@ void UIScene_QuadrantSignin::_initQuadrants() {
         if (ProfileManager.IsSignedIn(i)) {
             app.DebugPrintf("Index %d is signed in\n", i);
 
-#ifdef _XBOX_ONE
-            if (!InputManager.IsPadLocked(i)) {
-                setControllerState(i, eControllerStatus_PressToJoin_LoggedIn);
-            } else
-#endif
             {
                 setControllerState(i, eControllerStatus_PlayerDetails);
             }
