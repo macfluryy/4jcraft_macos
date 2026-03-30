@@ -24,7 +24,7 @@ private:
 #endif
     void* pvSaveMem;
 
-    std::mutex m_lock;
+    std::recursive_mutex m_lock;
 
     void PrepareForWrite(FileEntry* file, unsigned int nNumberOfBytesToWrite);
     void MoveDataBeyond(FileEntry* file, unsigned int nNumberOfBytesToWrite);

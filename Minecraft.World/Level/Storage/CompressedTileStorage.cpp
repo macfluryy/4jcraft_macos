@@ -6,7 +6,7 @@
 int CompressedTileStorage::deleteQueueIndex;
 XLockFreeStack<unsigned char> CompressedTileStorage::deleteQueue[3];
 
-std::mutex CompressedTileStorage::cs_write;
+std::recursive_mutex CompressedTileStorage::cs_write;
 
 #if defined(PSVITA_PRECOMPUTED_TABLE)
 // AP - this will create a precomputed table to speed up getData
@@ -33,7 +33,7 @@ CompressedTileStorage::CompressedTileStorage() {
 }
 
 CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
-    { std::lock_guard<std::mutex> lock(cs_write);
+    { std::lock_guard<std::recursive_mutex> lock(cs_write);
     allocatedSize = copyFrom->allocatedSize;
     if (allocatedSize > 0) {
         indicesAndData = (unsigned char*)XPhysicalAlloc(
@@ -139,7 +139,7 @@ bool CompressedTileStorage::isRenderChunkEmpty(
 }
 
 bool CompressedTileStorage::isSameAs(CompressedTileStorage* other) {
-    std::lock_guard<std::mutex> lock(cs_write);
+    std::lock_guard<std::recursive_mutex> lock(cs_write);
     if (allocatedSize != other->allocatedSize) {
         return false;
     }
@@ -238,7 +238,7 @@ inline void CompressedTileStorage::getBlock(int* block, int x, int y, int z) {
 void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
     unsigned short _blockIndices[512];
 
-    std::lock_guard<std::mutex> lock(cs_write);
+    std::lock_guard<std::recursive_mutex> lock(cs_write);
     unsigned char* data = dataIn.data + inOffset;
 
     // Is the destination fully uncompressed? If so just write our data in -
@@ -590,7 +590,7 @@ int CompressedTileStorage::get(int x, int y, int z) {
 
 // Set an individual tile value
 void CompressedTileStorage::set(int x, int y, int z, int val) {
-    std::lock_guard<std::mutex> lock(cs_write);
+    std::lock_guard<std::recursive_mutex> lock(cs_write);
     assert(val != 255);
     int block, tile;
     getBlockAndTile(&block, &tile, x, y, z);
@@ -778,7 +778,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
         (upgradeBlock > -1);  // If an upgrade block is specified, we'll always
                               // need to recompress - otherwise default to false
 
-    std::lock_guard<std::mutex> lock(cs_write);
+    std::lock_guard<std::recursive_mutex> lock(cs_write);
 
     unsigned short* blockIndices = (unsigned short*)indicesAndData;
     unsigned char* data = indicesAndData + 1024;

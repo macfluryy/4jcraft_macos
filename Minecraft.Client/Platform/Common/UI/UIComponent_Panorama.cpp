@@ -44,7 +44,7 @@ void UIComponent_Panorama::tick() {
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
     {
-        std::lock_guard<std::mutex> lock(pMinecraft->m_setLevelCS);
+        std::lock_guard<std::recursive_mutex> lock(pMinecraft->m_setLevelCS);
         if (pMinecraft->level != nullptr) {
             int64_t i64TimeOfDay = 0;
             // are we in the Nether? - Leave the time as 0 if we are, so we show

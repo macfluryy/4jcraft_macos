@@ -198,7 +198,7 @@ bool OldChunkStorage::saveEntities(LevelChunk* lc, Level* level,
     ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
     {
-        std::lock_guard<std::mutex> lock(lc->m_csEntities);
+        std::lock_guard<std::recursive_mutex> lock(lc->m_csEntities);
         for (int i = 0; i < lc->ENTITY_BLOCKS_LENGTH; i++) {
             auto itEnd = lc->entityBlocks[i]->end();
             for (std::vector<std::shared_ptr<Entity> >::iterator it =

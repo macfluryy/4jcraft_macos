@@ -31,7 +31,7 @@ private:
 #endif
 
     // 4J - added for multithreaded support
-    std::mutex m_csLoadCreate;
+    std::recursive_mutex m_csLoadCreate;
     // 4J - size of cache is defined by size of one side - must be even
     int XZSIZE;
     int XZOFFSET;

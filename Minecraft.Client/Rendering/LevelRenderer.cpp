@@ -648,7 +648,7 @@ std::wstring LevelRenderer::gatherStats2() {
 }
 
 void LevelRenderer::resortChunks(int xc, int yc, int zc) {
-    std::lock_guard<std::mutex> lock(m_csDirtyChunks);
+    std::lock_guard<std::recursive_mutex> lock(m_csDirtyChunks);
     xc -= CHUNK_XZSIZE / 2;
     yc -= CHUNK_SIZE / 2;
     zc -= CHUNK_XZSIZE / 2;
@@ -1698,7 +1698,7 @@ bool LevelRenderer::updateDirtyChunks() {
     ClipChunk* nearChunk = nullptr;  // Nearest chunk that is dirty
     int veryNearCount = 0;
     int minDistSq = 0x7fffffff;  // Distances to this chunk
-    std::unique_lock<std::mutex> dirtyChunksLock(m_csDirtyChunks);
+    std::unique_lock<std::recursive_mutex> dirtyChunksLock(m_csDirtyChunks);
 
     // Set a flag if we should only rebuild existing chunks, not create anything
     // new

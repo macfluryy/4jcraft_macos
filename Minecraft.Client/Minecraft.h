@@ -348,7 +348,7 @@ public:
     // 4J Stu
     void forceStatsSave(int idx);
 
-    std::mutex m_setLevelCS;
+    std::recursive_mutex m_setLevelCS;
 
 private:
     // A bit field that store whether a particular quadrant is in the full

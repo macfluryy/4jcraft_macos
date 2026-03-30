@@ -10,7 +10,7 @@ public:
                                      // on a save transfer
     };
 
-    static std::mutex s_progress;
+    static std::recursive_mutex s_progress;
 
     int getCurrentPercent();
     int getCurrentTitle();

@@ -158,7 +158,7 @@ public:
 
     static unsigned char compressBuffer[32768 + 256];
 
-    static std::mutex cs_write;
+    static std::recursive_mutex cs_write;
 
     int getAllocatedSize(int* count0, int* count1, int* count2, int* count4,
                          int* count8);

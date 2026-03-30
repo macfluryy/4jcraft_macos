@@ -216,7 +216,7 @@ private:
 public:
     void fullyFlagRenderableTileEntitiesToBeRemoved();  // 4J added
 
-    std::mutex m_csDirtyChunks;
+    std::recursive_mutex m_csDirtyChunks;
     bool m_nearDirtyChunk;
 
     // 4J - Destroyed Tile Management - these things added so we can track tiles

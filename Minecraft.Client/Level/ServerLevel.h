@@ -17,7 +17,7 @@ private:
     EntityTracker* tracker;
     PlayerChunkMap* chunkMap;
 
-    std::mutex m_tickNextTickCS;  // 4J added
+    std::recursive_mutex m_tickNextTickCS;  // 4J added
     std::set<TickNextTickData, TickNextTickDataKeyCompare>
         tickNextTickList;  // 4J Was TreeSet
     std::unordered_set<TickNextTickData, TickNextTickDataKeyHash,
@@ -25,7 +25,7 @@ private:
         tickNextTickSet;  // 4J Was HashSet
 
     std::vector<Pos*> m_queuedSendTileUpdates;  // 4J added
-    std::mutex m_csQueueSendTileUpdates;
+    std::recursive_mutex m_csQueueSendTileUpdates;
 
 protected:
     int saveInterval;
@@ -178,7 +178,7 @@ public:
 
     int m_primedTntCount;
     int m_fallingTileCount;
-    std::mutex m_limiterCS;
+    std::recursive_mutex m_limiterCS;
     std::list<std::shared_ptr<Entity> > m_itemEntities;
     std::list<std::shared_ptr<Entity> > m_hangingEntities;
     std::list<std::shared_ptr<Entity> > m_arrowEntities;
@@ -212,7 +212,7 @@ public:
     static int m_randValue[3];
 
     static C4JThread::EventArray* m_updateTrigger;
-    static std::mutex m_updateCS[3];
+    static std::recursive_mutex m_updateCS[3];
 
     static C4JThread* m_updateThread;
     static int runUpdate(void* lpParam);

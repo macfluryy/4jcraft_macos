@@ -151,7 +151,7 @@ void Chunk::setPos(int x, int y, int z) {
     assigned = true;
 
     {
-        std::lock_guard<std::mutex> lock(levelRenderer->m_csDirtyChunks);
+        std::lock_guard<std::recursive_mutex> lock(levelRenderer->m_csDirtyChunks);
         unsigned char refCount =
             levelRenderer->incGlobalChunkRefCount(x, y, z, level);
         //	printf("\t\t [inc] refcount %d at %d, %d, %d\n",refCount,x,y,z);
@@ -722,7 +722,7 @@ void Chunk::reset() {
         bool retireRenderableTileEntities = false;
 
         {
-            std::lock_guard<std::mutex> lock(levelRenderer->m_csDirtyChunks);
+            std::lock_guard<std::recursive_mutex> lock(levelRenderer->m_csDirtyChunks);
             oldKey = levelRenderer->getGlobalIndexForChunk(x, y, z, level);
             unsigned char refCount =
                 levelRenderer->decGlobalChunkRefCount(x, y, z, level);

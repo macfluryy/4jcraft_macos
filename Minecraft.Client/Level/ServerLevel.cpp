@@ -46,7 +46,7 @@ WeighedTreasureArray ServerLevel::RANDOM_BONUS_ITEMS;
 
 C4JThread* ServerLevel::m_updateThread = nullptr;
 C4JThread::EventArray* ServerLevel::m_updateTrigger;
-std::mutex ServerLevel::m_updateCS[3];
+std::recursive_mutex ServerLevel::m_updateCS[3];
 
 Level* ServerLevel::m_level[3];
 int ServerLevel::m_updateChunkX[3][LEVEL_CHUNKS_TO_UPDATE_MAX];
@@ -184,7 +184,7 @@ ServerLevel::~ServerLevel() {
     delete mobSpawner;
 
     {
-        std::lock_guard<std::mutex> lock(m_csQueueSendTileUpdates);
+        std::lock_guard<std::recursive_mutex> lock(m_csQueueSendTileUpdates);
         for (auto it = m_queuedSendTileUpdates.begin();
              it != m_queuedSendTileUpdates.end(); ++it) {
             Pos* p = *it;
@@ -198,9 +198,9 @@ ServerLevel::~ServerLevel() {
     }
 
     // Make sure that the update thread isn't actually doing any updating
-    { std::lock_guard<std::mutex> lock(m_updateCS[0]); }
-    { std::lock_guard<std::mutex> lock(m_updateCS[1]); }
-    { std::lock_guard<std::mutex> lock(m_updateCS[2]); }
+    { std::lock_guard<std::recursive_mutex> lock(m_updateCS[0]); }
+    { std::lock_guard<std::recursive_mutex> lock(m_updateCS[1]); }
+    { std::lock_guard<std::recursive_mutex> lock(m_updateCS[2]); }
     m_updateTrigger->ClearAll();
 }
 
@@ -440,7 +440,7 @@ void ServerLevel::tickTiles() {
     unsigned int tickCount = 0;
 
     {
-        std::lock_guard<std::mutex> lock(m_updateCS[iLev]);
+        std::lock_guard<std::recursive_mutex> lock(m_updateCS[iLev]);
         // This section processes the tiles that need to be ticked, which we worked
         // out in the previous tick (or haven't yet, if this is the first frame)
         /*int grassTicks = 0;
@@ -594,7 +594,7 @@ void ServerLevel::addToTickNextTick(int x, int y, int z, int tileId,
             td.setPriorityTilt(priorityTilt);
         }
         {
-            std::lock_guard<std::mutex> lock(m_tickNextTickCS);
+            std::lock_guard<std::recursive_mutex> lock(m_tickNextTickCS);
             if (tickNextTickSet.find(td) == tickNextTickSet.end()) {
                 tickNextTickSet.insert(td);
                 tickNextTickList.insert(td);
@@ -613,7 +613,7 @@ void ServerLevel::forceAddTileTick(int x, int y, int z, int tileId,
         td.delay(tickDelay + levelData->getGameTime());
     }
     {
-        std::lock_guard<std::mutex> lock(m_tickNextTickCS);
+        std::lock_guard<std::recursive_mutex> lock(m_tickNextTickCS);
         if (tickNextTickSet.find(td) == tickNextTickSet.end()) {
             tickNextTickSet.insert(td);
             tickNextTickList.insert(td);
@@ -636,7 +636,7 @@ void ServerLevel::tickEntities() {
 void ServerLevel::resetEmptyTime() { emptyTime = 0; }
 
 bool ServerLevel::tickPendingTicks(bool force) {
-    std::lock_guard<std::mutex> lock(m_tickNextTickCS);
+    std::lock_guard<std::recursive_mutex> lock(m_tickNextTickCS);
     int count = (int)tickNextTickList.size();
     int count2 = (int)tickNextTickSet.size();
     if (count != tickNextTickSet.size()) {
@@ -685,7 +685,7 @@ bool ServerLevel::tickPendingTicks(bool force) {
 
 std::vector<TickNextTickData>* ServerLevel::fetchTicksInChunk(LevelChunk* chunk,
                                                               bool remove) {
-    std::lock_guard<std::mutex> lock(m_tickNextTickCS);
+    std::lock_guard<std::recursive_mutex> lock(m_tickNextTickCS);
     std::vector<TickNextTickData>* results = new std::vector<TickNextTickData>;
 
     ChunkPos* pos = chunk->getPos();
@@ -1215,12 +1215,12 @@ void ServerLevel::sendParticles(const std::wstring& name, double x, double y,
 // 4J Stu - Sometimes we want to update tiles on the server from the main thread
 // (eg SignTileEntity when string verify returns)
 void ServerLevel::queueSendTileUpdate(int x, int y, int z) {
-    std::lock_guard<std::mutex> lock(m_csQueueSendTileUpdates);
+    std::lock_guard<std::recursive_mutex> lock(m_csQueueSendTileUpdates);
     m_queuedSendTileUpdates.push_back(new Pos(x, y, z));
 }
 
 void ServerLevel::runQueuedSendTileUpdates() {
-    std::lock_guard<std::mutex> lock(m_csQueueSendTileUpdates);
+    std::lock_guard<std::recursive_mutex> lock(m_csQueueSendTileUpdates);
     for (auto it = m_queuedSendTileUpdates.begin();
          it != m_queuedSendTileUpdates.end(); ++it) {
         Pos* p = *it;
@@ -1237,7 +1237,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e) {
     if (e->instanceof(eTYPE_ITEMENTITY)) {
         //		printf("Adding item entity count
         //%d\n",m_itemEntities.size());
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_itemEntities.size() >= MAX_ITEM_ENTITIES) {
             //			printf("Adding - doing remove\n");
             removeEntityImmediately(m_itemEntities.front());
@@ -1248,7 +1248,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e) {
     else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
         //		printf("Adding item entity count
         //%d\n",m_itemEntities.size());
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_hangingEntities.size() >= MAX_HANGING_ENTITIES) {
             //			printf("Adding - doing remove\n");
 
@@ -1263,7 +1263,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e) {
     else if (e->instanceof(eTYPE_ARROW)) {
         //		printf("Adding arrow entity count
         //%d\n",m_arrowEntities.size());
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_arrowEntities.size() >= MAX_ARROW_ENTITIES) {
             //			printf("Adding - doing remove\n");
             removeEntityImmediately(m_arrowEntities.front());
@@ -1274,7 +1274,7 @@ bool ServerLevel::addEntity(std::shared_ptr<Entity> e) {
     else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
         //		printf("Adding arrow entity count
         //%d\n",m_arrowEntities.size());
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         if (m_experienceOrbEntities.size() >= MAX_EXPERIENCEORB_ENTITIES) {
             //			printf("Adding - doing remove\n");
             removeEntityImmediately(m_experienceOrbEntities.front());
@@ -1291,16 +1291,16 @@ bool ServerLevel::atEntityLimit(std::shared_ptr<Entity> e) {
     bool atLimit = false;
 
     if (e->instanceof(eTYPE_ITEMENTITY)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         atLimit = m_itemEntities.size() >= MAX_ITEM_ENTITIES;
     } else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         atLimit = m_hangingEntities.size() >= MAX_HANGING_ENTITIES;
     } else if (e->instanceof(eTYPE_ARROW)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         atLimit = m_arrowEntities.size() >= MAX_ARROW_ENTITIES;
     } else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         atLimit = m_experienceOrbEntities.size() >= MAX_EXPERIENCEORB_ENTITIES;
     }
 
@@ -1310,30 +1310,30 @@ bool ServerLevel::atEntityLimit(std::shared_ptr<Entity> e) {
 // Maintain a cound of primed tnt & falling tiles in this level
 void ServerLevel::entityAddedExtra(std::shared_ptr<Entity> e) {
     if (e->instanceof(eTYPE_ITEMENTITY)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_itemEntities.push_back(e);
         //		printf("entity added: item entity count now
         //%d\n",m_itemEntities.size());
     } else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_hangingEntities.push_back(e);
         //		printf("entity added: item entity count now
         //%d\n",m_itemEntities.size());
     } else if (e->instanceof(eTYPE_ARROW)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_arrowEntities.push_back(e);
         //		printf("entity added: arrow entity count now
         //%d\n",m_arrowEntities.size());
     } else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_experienceOrbEntities.push_back(e);
         //		printf("entity added: experience orb entity count now
         //%d\n",m_arrowEntities.size());
     } else if (e->instanceof(eTYPE_PRIMEDTNT)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_primedTntCount++;
     } else if (e->instanceof(eTYPE_FALLINGTILE)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_fallingTileCount++;
     }
 }
@@ -1342,7 +1342,7 @@ void ServerLevel::entityAddedExtra(std::shared_ptr<Entity> e) {
 // item entities from our list
 void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
     if (e->instanceof(eTYPE_ITEMENTITY)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         //		printf("entity removed: item entity count
         //%d\n",m_itemEntities.size());
         auto it = find(m_itemEntities.begin(), m_itemEntities.end(), e);
@@ -1353,7 +1353,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
         //		printf("entity removed: item entity count now
         //%d\n",m_itemEntities.size());
     } else if (e->instanceof(eTYPE_HANGING_ENTITY)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         //		printf("entity removed: item entity count
         //%d\n",m_itemEntities.size());
         auto it = find(m_hangingEntities.begin(), m_hangingEntities.end(), e);
@@ -1364,7 +1364,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
         //		printf("entity removed: item entity count now
         //%d\n",m_itemEntities.size());
     } else if (e->instanceof(eTYPE_ARROW)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         //		printf("entity removed: arrow entity count
         //%d\n",m_arrowEntities.size());
         auto it = find(m_arrowEntities.begin(), m_arrowEntities.end(), e);
@@ -1375,7 +1375,7 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
         //		printf("entity removed: arrow entity count now
         //%d\n",m_arrowEntities.size());
     } else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         //		printf("entity removed: experience orb entity count
         //%d\n",m_arrowEntities.size());
         auto it = find(m_experienceOrbEntities.begin(),
@@ -1387,22 +1387,22 @@ void ServerLevel::entityRemovedExtra(std::shared_ptr<Entity> e) {
         //		printf("entity removed: experience orb entity count now
         //%d\n",m_arrowEntities.size());
     } else if (e->instanceof(eTYPE_PRIMEDTNT)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_primedTntCount--;
     } else if (e->instanceof(eTYPE_FALLINGTILE)) {
-        std::lock_guard<std::mutex> lock(m_limiterCS);
+        std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
         m_fallingTileCount--;
     }
 }
 
 bool ServerLevel::newPrimedTntAllowed() {
-    std::lock_guard<std::mutex> lock(m_limiterCS);
+    std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
     bool retval = m_primedTntCount < MAX_PRIMED_TNT;
     return retval;
 }
 
 bool ServerLevel::newFallingTileAllowed() {
-    std::lock_guard<std::mutex> lock(m_limiterCS);
+    std::lock_guard<std::recursive_mutex> lock(m_limiterCS);
     bool retval = m_fallingTileCount < MAX_FALLING_TILE;
     return retval;
 }
@@ -1422,7 +1422,7 @@ int ServerLevel::runUpdate(void* lpParam) {
         int grassTicks = 0;
         int lavaTicks = 0;
         for (unsigned int iLev = 0; iLev < 3; ++iLev) {
-            std::lock_guard<std::mutex> lock(m_updateCS[iLev]);
+            std::lock_guard<std::recursive_mutex> lock(m_updateCS[iLev]);
             for (int i = 0; i < m_updateChunkCount[iLev]; i++) {
                 // 4J - some of these tile ticks will check things in
                 // neighbouring tiles, causing chunks to load/create that aren't

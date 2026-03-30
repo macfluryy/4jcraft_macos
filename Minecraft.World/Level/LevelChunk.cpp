@@ -22,16 +22,16 @@
 #include <mutex>
 
 #if defined(SHARING_ENABLED)
-std::mutex LevelChunk::m_csSharing;
+std::recursive_mutex LevelChunk::m_csSharing;
 #endif
 #if defined(_ENTITIES_RW_SECTION)
 // AP - use a RW critical section so we can have multiple threads reading the
 // same data to avoid a clash
 CRITICAL_RW_SECTION LevelChunk::m_csEntities;
 #else
-std::mutex LevelChunk::m_csEntities;
+std::recursive_mutex LevelChunk::m_csEntities;
 #endif
-std::mutex LevelChunk::m_csTileEntities;
+std::recursive_mutex LevelChunk::m_csTileEntities;
 bool LevelChunk::touchedSky = false;
 
 void LevelChunk::staticCtor() {
@@ -48,7 +48,7 @@ void LevelChunk::init(Level* level, int x, int z) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
     entityBlocks =
         new std::vector<std::shared_ptr<Entity> >*[ENTITY_BLOCKS_LENGTH];
@@ -79,7 +79,7 @@ void LevelChunk::init(Level* level, int x, int z) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         entityBlocks[i] = new std::vector<std::shared_ptr<Entity> >();
@@ -249,7 +249,7 @@ void LevelChunk::setUnsaved(bool unsaved) {
 
 void LevelChunk::stopSharingTilesAndData() {
 #if defined(SHARING_ENABLED)
-    { std::lock_guard<std::mutex> lock(m_csSharing);
+    { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
     lastUnsharedTime = System::currentTimeMillis();
     if (!sharingTilesAndData) {
         return;
@@ -315,7 +315,7 @@ void LevelChunk::stopSharingTilesAndData() {
 // not sharing
 void LevelChunk::reSyncLighting() {
 #if defined(SHARING_ENABLED)
-    { std::lock_guard<std::mutex> lock(m_csSharing);
+    { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
 
     if (isEmpty()) {
         return;
@@ -352,7 +352,7 @@ void LevelChunk::reSyncLighting() {
 
 void LevelChunk::startSharingTilesAndData(int forceMs) {
 #if defined(SHARING_ENABLED)
-    { std::lock_guard<std::mutex> lock(m_csSharing);
+    { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
     if (sharingTilesAndData) {
         return;
     }
@@ -1178,7 +1178,7 @@ void LevelChunk::addEntity(std::shared_ptr<Entity> e) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
     entityBlocks[yc]->push_back(e);
 #if defined(_ENTITIES_RW_SECTION)
@@ -1199,7 +1199,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
 
     // 4J - was entityBlocks[yc]->remove(e);
@@ -1242,7 +1242,7 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
     // insert when we don't want one)
     // shared_ptr<TileEntity> tileEntity = tileEntities[pos];
     std::shared_ptr<TileEntity> tileEntity = nullptr;
-    { std::unique_lock<std::mutex> lock(m_csTileEntities);
+    { std::unique_lock<std::recursive_mutex> lock(m_csTileEntities);
     auto it = tileEntities.find(pos);
 
     if (it == tileEntities.end()) {
@@ -1273,7 +1273,7 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
         // doesn't seem right - assignment wrong way? Check
 
         // 4J Stu - It should have been inserted by now, but check to be sure
-        { std::lock_guard<std::mutex> lock2(m_csTileEntities);
+        { std::lock_guard<std::recursive_mutex> lock2(m_csTileEntities);
         auto newIt = tileEntities.find(pos);
         if (newIt != tileEntities.end()) {
             tileEntity = newIt->second;
@@ -1284,7 +1284,7 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
     }
     }
     if (tileEntity != nullptr && tileEntity->isRemoved()) {
-        { std::lock_guard<std::mutex> lock(m_csTileEntities);
+        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
         tileEntities.erase(pos);
         }
         return nullptr;
@@ -1330,7 +1330,7 @@ void LevelChunk::setTileEntity(int x, int y, int z,
 
     tileEntity->clearRemoved();
 
-    { std::lock_guard<std::mutex> lock(m_csTileEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
     tileEntities[pos] = tileEntity;
     }
 }
@@ -1344,7 +1344,7 @@ void LevelChunk::removeTileEntity(int x, int y, int z) {
         //   if (removeThis != null) {
         //       removeThis.setRemoved();
         //   }
-        { std::lock_guard<std::mutex> lock(m_csTileEntities);
+        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
         auto it = tileEntities.find(pos);
         if (it != tileEntities.end()) {
             std::shared_ptr<TileEntity> te = tileEntities[pos];
@@ -1402,7 +1402,7 @@ void LevelChunk::load() {
 #endif
 
         std::vector<std::shared_ptr<TileEntity> > values;
-        { std::lock_guard<std::mutex> lock(m_csTileEntities);
+        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
         for (auto it = tileEntities.begin(); it != tileEntities.end(); it++) {
             values.push_back(it->second);
         }
@@ -1412,7 +1412,7 @@ void LevelChunk::load() {
 #if defined(_ENTITIES_RW_SECTION)
         EnterCriticalRWSection(&m_csEntities, true);
 #else
-        { std::lock_guard<std::mutex> lock(m_csEntities);
+        { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
         for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
             level->addEntities(entityBlocks[i]);
@@ -1434,7 +1434,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
     loaded = false;
     if (unloadTileEntities) {
         std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
-        { std::lock_guard<std::mutex> lock(m_csTileEntities);
+        { std::lock_guard<std::recursive_mutex> lock(m_csTileEntities);
         for (auto it = tileEntities.begin(); it != tileEntities.end(); it++) {
             tileEntitiesToRemove.push_back(it->second);
         }
@@ -1450,7 +1450,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         level->removeEntities(entityBlocks[i]);
@@ -1475,7 +1475,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             PIXBeginNamedEvent(0, "Saving entities");
             ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
-            { std::lock_guard<std::mutex> lock(m_csEntities);
+            { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
             for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
                 auto itEnd = entityBlocks[i]->end();
                 for (std::vector<std::shared_ptr<Entity> >::iterator it =
@@ -1523,7 +1523,7 @@ bool LevelChunk::containsPlayer() {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, true);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
         std::vector<std::shared_ptr<Entity> >* vecEntity = entityBlocks[i];
@@ -1561,7 +1561,7 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
 
     // AP - RW critical sections are expensive so enter once in
     // Level::getEntities
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
     for (int yc = yc0; yc <= yc1; yc++) {
         std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
@@ -1607,7 +1607,7 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
 
     // AP - RW critical sections are expensive so enter once in
     // Level::getEntitiesOfClass
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
     for (int yc = yc0; yc <= yc1; yc++) {
         std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
@@ -1655,7 +1655,7 @@ int LevelChunk::countEntities() {
 #if defined(_ENTITIES_RW_SECTION)
     EnterCriticalRWSection(&m_csEntities, false);
 #else
-    { std::lock_guard<std::mutex> lock(m_csEntities);
+    { std::lock_guard<std::recursive_mutex> lock(m_csEntities);
 #endif
     for (int yc = 0; yc < ENTITY_BLOCKS_LENGTH; yc++) {
         entityCount += (int)entityBlocks[yc]->size();
@@ -2208,7 +2208,7 @@ void LevelChunk::compressBlocks() {
         // Note - only the extraction of the pointers needs to be done in the
         // critical section, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
-        { std::lock_guard<std::mutex> lock(m_csSharing);
+        { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
         if (sharingTilesAndData) {
             blocksToCompressLower = lowerBlocks;
             blocksToCompressUpper = upperBlocks;
@@ -2307,7 +2307,7 @@ void LevelChunk::compressData() {
         // Note - only the extraction of the pointers needs to be done in the
         // critical section, since even if the data is unshared whilst we are
         // processing this data is still valid (for the server)
-        { std::lock_guard<std::mutex> lock(m_csSharing);
+        { std::lock_guard<std::recursive_mutex> lock(m_csSharing);
         if (sharingTilesAndData) {
             dataToCompressLower = lowerData;
             dataToCompressUpper = upperData;

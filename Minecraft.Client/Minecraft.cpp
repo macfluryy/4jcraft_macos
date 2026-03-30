@@ -987,7 +987,7 @@ void Minecraft::run_middle() {
     }
 #endif
 
-    { std::lock_guard<std::mutex> lock(m_setLevelCS);
+    { std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
 
     if (running) {
         if (reloadTextures) {
@@ -3669,7 +3669,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
                          std::shared_ptr<Player> forceInsertPlayer /*=nullptr*/,
                          bool doForceStatsSave /*=true*/,
                          bool bPrimaryPlayerSignedOut /*=false*/) {
-    std::lock_guard<std::mutex> lock(m_setLevelCS);
+    std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
     bool playerAdded = false;
     this->cameraTargetPlayer = nullptr;
 
