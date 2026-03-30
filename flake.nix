@@ -54,6 +54,7 @@
           version = "0.1.0";
           src = ./.;
 
+          dontFixup = true;
           dontUseCmakeConfigure = true;
 
           # 4jcraft - Meson expects this subprojects structure
@@ -100,6 +101,7 @@
             openssl.dev
             libGL
             libGLU
+            glm
             SDL2
             zlib
           ];
