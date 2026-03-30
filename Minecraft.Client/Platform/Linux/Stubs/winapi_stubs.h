@@ -32,7 +32,6 @@ typedef unsigned int* LPDWORD;
 typedef char CHAR;
 typedef uintptr_t ULONG_PTR;
 typedef long LONG;
-typedef void VOID;
 typedef ULONGLONG PlayerUID;
 typedef DWORD WORD;
 typedef DWORD* PDWORD;
@@ -211,8 +210,8 @@ typedef enum _GET_FILEEX_INFO_LEVELS {
     GetFileExMaxInfoLevel
 } GET_FILEEX_INFO_LEVELS;
 
-typedef VOID* XMEMCOMPRESSION_CONTEXT;
-typedef VOID* XMEMDECOMPRESSION_CONTEXT;
+typedef void* XMEMCOMPRESSION_CONTEXT;
+typedef void* XMEMDECOMPRESSION_CONTEXT;
 
 // internal search state for FindFirstFile/FindNextFile
 typedef struct _LINUXSTUBS_FIND_HANDLE {
@@ -296,12 +295,12 @@ static inline ULONG TryEnterCriticalSection(
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-globalmemorystatus
-static inline VOID GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
+static inline void GlobalMemoryStatus(LPMEMORYSTATUS lpBuffer) {
     // TODO: Parse /proc/meminfo and set lpBuffer based on that. Probably will
     // also need another different codepath for macOS too.
 }
 
-static inline DWORD GetLastError(VOID) { return errno; }
+static inline DWORD GetLastError(void) { return errno; }
 
 #ifdef __LP64__
 static inline int64_t InterlockedCompareExchangeRelease64(
@@ -681,7 +680,7 @@ static inline void _FillSystemTime(const struct tm* tm, long tv_nsec,
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtime
-static inline VOID GetSystemTime(LPSYSTEMTIME lpSystemTime) {
+static inline void GetSystemTime(LPSYSTEMTIME lpSystemTime) {
     struct timespec ts;
     _CurrentTimeSpec(&ts);
     struct tm tm;
@@ -690,7 +689,7 @@ static inline VOID GetSystemTime(LPSYSTEMTIME lpSystemTime) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlocaltime
-static inline VOID GetLocalTime(LPSYSTEMTIME lpSystemTime) {
+static inline void GetLocalTime(LPSYSTEMTIME lpSystemTime) {
     struct timespec ts;
     _CurrentTimeSpec(&ts);
     struct tm tm;
@@ -758,18 +757,18 @@ static inline bool QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringa
-static inline VOID OutputDebugStringA(const char* lpOutputString) {
+static inline void OutputDebugStringA(const char* lpOutputString) {
     if (!lpOutputString) return;
     fputs(lpOutputString, stderr);
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw
-static inline VOID OutputDebugStringW(LPCWSTR lpOutputString) {
+static inline void OutputDebugStringW(LPCWSTR lpOutputString) {
     if (!lpOutputString) return;
     fprintf(stderr, "%ls", lpOutputString);
 }
 
-static inline VOID OutputDebugString(const char* lpOutputString) {
+static inline void OutputDebugString(const char* lpOutputString) {
     return OutputDebugStringA(lpOutputString);
 }
 

@@ -45,7 +45,7 @@ XMLParser::~XMLParser()
 // Name: XMLParser::FillBuffer
 // Desc: Reads a block from the current open file
 //-------------------------------------------------------------------------------------
-VOID XMLParser::FillBuffer()
+void XMLParser::FillBuffer()
 {
     DWORD NChars;
 
@@ -83,7 +83,7 @@ VOID XMLParser::FillBuffer()
 // Name: XMLParser::SkipNextAdvance
 // Desc: Puts the last character read back on the input stream
 //-------------------------------------------------------------------------------------
-VOID XMLParser::SkipNextAdvance()
+void XMLParser::SkipNextAdvance()
 {
     m_bSkipNextAdvance = TRUE;
 }
@@ -715,7 +715,7 @@ HRESULT XMLParser::AdvanceComment()
 // Name: XMLParser::RegisterSAXCallbackInterface
 // Desc: Registers callback interface 
 //-------------------------------------------------------------------------------------
-VOID XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback )
+void XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback )
 {
     m_pISAXCallback = pISAXCallback;
 }
@@ -946,9 +946,9 @@ HRESULT XMLParser::ParseXMLBuffer( CONST CHAR *strBuffer, UINT uBufferSize )
 //      Logs an error through the callback interface
 //-------------------------------------------------------------------------------------
 #ifdef  _Printf_format_string_  // VC++ 2008 and later support this annotation
-VOID XMLParser::Error( HRESULT hErr, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... )
+void XMLParser::Error( HRESULT hErr, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... )
 #else
-VOID XMLParser::Error( HRESULT hErr, CONST CHAR* strFormat, ... )
+void XMLParser::Error( HRESULT hErr, CONST CHAR* strFormat, ... )
 #endif
 {
     CONST INT MAX_OUTPUT_STR = 160;

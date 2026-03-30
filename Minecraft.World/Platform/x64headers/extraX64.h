@@ -271,26 +271,26 @@ public:
     HRESULT Load(LPCWSTR szId);
 };
 
-typedef VOID* XMEMDECOMPRESSION_CONTEXT;
-typedef VOID* XMEMCOMPRESSION_CONTEXT;
+typedef void* XMEMDECOMPRESSION_CONTEXT;
+typedef void* XMEMCOMPRESSION_CONTEXT;
 
 typedef enum _XMEMCODEC_TYPE {
     XMEMCODEC_DEFAULT = 0,
     XMEMCODEC_LZX = 1
 } XMEMCODEC_TYPE;
 
-HRESULT XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, VOID* pDestination,
-                       SIZE_T* pDestSize, VOID* pSource, SIZE_T SrcSize);
+HRESULT XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
+                       SIZE_T* pDestSize, void* pSource, SIZE_T SrcSize);
 
-HRESULT XMemCompress(XMEMCOMPRESSION_CONTEXT Context, VOID* pDestination,
-                     SIZE_T* pDestSize, VOID* pSource, SIZE_T SrcSize);
+HRESULT XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
+                     SIZE_T* pDestSize, void* pSource, SIZE_T SrcSize);
 
 HRESULT XMemCreateCompressionContext(XMEMCODEC_TYPE CodecType,
-                                     const VOID* pCodecParams, DWORD Flags,
+                                     const void* pCodecParams, DWORD Flags,
                                      XMEMCOMPRESSION_CONTEXT* pContext);
 
 HRESULT XMemCreateDecompressionContext(XMEMCODEC_TYPE CodecType,
-                                       const VOID* pCodecParams, DWORD Flags,
+                                       const void* pCodecParams, DWORD Flags,
                                        XMEMDECOMPRESSION_CONTEXT* pContext);
 
 typedef struct _XMEMCODEC_PARAMETERS_LZX {

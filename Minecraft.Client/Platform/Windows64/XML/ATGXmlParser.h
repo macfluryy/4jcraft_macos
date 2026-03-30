@@ -65,9 +65,9 @@ public:
     virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, bool bMore ) = 0;
     virtual HRESULT  CDATAEnd( ) = 0;
 
-    virtual VOID     Error( HRESULT hError, CONST CHAR *strMessage ) = 0;
+    virtual void     Error( HRESULT hError, CONST CHAR *strMessage ) = 0;
 
-    virtual VOID     SetParseProgress( DWORD dwProgress ) { }
+    virtual void     SetParseProgress( DWORD dwProgress ) { }
 
     const CHAR*      GetFilename() { return m_strFilename; }
     UINT             GetLineNumber() { return m_LineNum; }
@@ -88,7 +88,7 @@ public:
     ~XMLParser();
    
     //      Register an interface inheiriting from ISAXCallback
-    VOID            RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback );
+    void            RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback );
     
     //      Get the registered interface
     ISAXCallback*   GetSAXCallbackInterface();    
@@ -112,7 +112,7 @@ private:
     HRESULT    MainParseLoop();
 
     HRESULT    AdvanceCharacter( bool bOkToFail = FALSE ); 
-    VOID       SkipNextAdvance();           
+    void       SkipNextAdvance();           
 
     HRESULT    ConsumeSpace();            
     HRESULT    ConvertEscape();           
@@ -122,12 +122,12 @@ private:
     HRESULT    AdvanceCDATA();           
     HRESULT    AdvanceComment();          
 
-    VOID    FillBuffer();
+    void    FillBuffer();
     
 #ifdef  _Printf_format_string_  // VC++ 2008 and later support this annotation
-    VOID    Error( HRESULT hRet, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... );
+    void    Error( HRESULT hRet, _In_z_ _Printf_format_string_ CONST CHAR* strFormat, ... );
 #else
-    VOID    Error( HRESULT hRet, CONST CHAR* strFormat, ... );
+    void    Error( HRESULT hRet, CONST CHAR* strFormat, ... );
 #endif
 
     ISAXCallback*   m_pISAXCallback;    

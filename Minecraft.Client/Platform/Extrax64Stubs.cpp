@@ -30,7 +30,7 @@ CXuiStringTable StringTable;
 ATG::XMLParser::XMLParser() {}
 ATG::XMLParser::~XMLParser() {}
 HRESULT    ATG::XMLParser::ParseXMLBuffer( CONST CHAR* strBuffer, UINT uBufferSize ) { return S_OK; }   
-VOID ATG::XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback ) {}
+void ATG::XMLParser::RegisterSAXCallbackInterface( ISAXCallback *pISAXCallback ) {}
 #endif
 
 #if !defined(__linux__)
@@ -185,9 +185,9 @@ DWORD XUserAreUsersFriends( DWORD dwUserIndex, PPlayerUID pXuids, DWORD dwXuidCo
 
 HRESULT XMemDecompress(
          XMEMDECOMPRESSION_CONTEXT Context,
-         VOID *pDestination,
+         void *pDestination,
          SIZE_T *pDestSize,
-         VOID *pSource,
+         void *pSource,
          SIZE_T SrcSize
 )
 {
@@ -216,9 +216,9 @@ HRESULT XMemDecompress(
 
 HRESULT XMemCompress(
          XMEMCOMPRESSION_CONTEXT Context,
-         VOID *pDestination,
+         void *pDestination,
          SIZE_T *pDestSize,
-         VOID *pSource,
+         void *pSource,
          SIZE_T SrcSize
 )
 {
@@ -247,7 +247,7 @@ HRESULT XMemCompress(
 
 HRESULT XMemCreateCompressionContext(
          XMEMCODEC_TYPE CodecType,
-         CONST VOID *pCodecParams,
+         CONST void *pCodecParams,
          DWORD Flags,
          XMEMCOMPRESSION_CONTEXT *pContext
 )
@@ -268,7 +268,7 @@ HRESULT XMemCreateCompressionContext(
 
 HRESULT XMemCreateDecompressionContext(
          XMEMCODEC_TYPE CodecType,
-         CONST VOID *pCodecParams,
+         CONST void *pCodecParams,
          DWORD Flags,
          XMEMDECOMPRESSION_CONTEXT *pContext
 )
