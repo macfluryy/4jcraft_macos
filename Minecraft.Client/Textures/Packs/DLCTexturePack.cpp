@@ -434,7 +434,7 @@ std::wstring DLCTexturePack::getXuiRootPath() {
 
         constexpr int LOCATOR_SIZE =
             256;  // Use this to allocate space to hold a ResourceLocator string
-        WCHAR szResourceLocator[LOCATOR_SIZE];
+        wchar_t szResourceLocator[LOCATOR_SIZE];
         swprintf(szResourceLocator, LOCATOR_SIZE, L"memory://%08X,%04X#",
                  pbData, dwSize);
         path = szResourceLocator;

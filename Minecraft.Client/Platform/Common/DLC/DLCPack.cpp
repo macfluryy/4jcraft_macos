@@ -151,7 +151,7 @@ DLCFile* DLCPack::addFile(DLCManager::EDLCType type, const std::wstring& path) {
             newFile = new DLCSkinFile(strippedPath);
 
             // check to see if we can get the full offer id using this skin name
-            ULONGLONG ullVal = 0LL;
+            uint64_t ullVal = 0LL;
 
             if (app.GetDLCFullOfferIDForSkinID(strippedPath, &ullVal)) {
                 m_ullFullOfferId = ullVal;

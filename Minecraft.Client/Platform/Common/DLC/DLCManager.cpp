@@ -17,7 +17,7 @@
 static const std::size_t DLC_WCHAR_BIN_SIZE = 2;
 
 #if WCHAR_MAX > 0xFFFF
-// than sizeof(WCHAR) != DLC_WCHAR_BIN_SIZE
+// than sizeof(wchar_t) != DLC_WCHAR_BIN_SIZE
 // e.g. Linux and all Posix/Unix systems with wchar_t beeing 4B/32bit
 static_assert(sizeof(wchar_t) == 4,
               "wchar_t is not 4bytes but larger than 2bytes ???");
@@ -129,7 +129,7 @@ bool readOwnedDlcFile(const std::string& path, std::uint8_t** ppData,
 }
 }  // namespace
 
-const WCHAR* DLCManager::wchTypeNamesA[] = {
+const wchar_t* DLCManager::wchTypeNamesA[] = {
     L"DISPLAYNAME",
     L"THEMENAME",
     L"FREE",
@@ -362,7 +362,7 @@ unsigned int DLCManager::checkForCorruptDLCAndAlert(
         uiIDA[0] = IDS_CONFIRM_OK;
         if (corruptDLCCount == 1 && firstCorruptPack != nullptr) {
             // pass in the pack format string
-            WCHAR wchFormat[132];
+            wchar_t wchFormat[132];
             swprintf(wchFormat, 132, L"%ls\n\n%%ls",
                      firstCorruptPack->getName().c_str());
 

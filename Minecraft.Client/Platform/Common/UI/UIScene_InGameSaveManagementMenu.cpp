@@ -245,7 +245,7 @@ void UIScene_InGameSaveManagementMenu::tick() {
                     // in CHAR's (= bytes), including end-of-string \0
                     (wchar_t*)u16Message,    // destination buffer
                     MAX_SAVEFILENAME_LENGTH  // size of destination buffer, in
-                                             // WCHAR's
+                                             // wchar_t's
                 );
 #else
                 uint32_t srcmax, dstmax;

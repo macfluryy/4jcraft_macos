@@ -177,7 +177,7 @@ void System::ReverseULONGLONG(int64_t* pullVal) {
     pchVal1[7] = pchVal2[0];
 }
 
-void System::ReverseWCHARA(WCHAR* pwch, int iLen) {
+void System::ReverseWCHARA(wchar_t* pwch, int iLen) {
     for (int i = 0; i < iLen; i++) {
         ReverseUSHORT((unsigned short*)&pwch[i]);
     }

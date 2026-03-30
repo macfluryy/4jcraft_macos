@@ -80,7 +80,7 @@ std::uint8_t* DLCAudioFile::getData(std::uint32_t& dataBytes) {
     return m_pbData;
 }
 
-const WCHAR* DLCAudioFile::wchTypeNamesA[] = {
+const wchar_t* DLCAudioFile::wchTypeNamesA[] = {
     L"CUENAME",
     L"CREDIT",
 };

@@ -214,7 +214,7 @@ std::wstring AbstractTexturePack::getXuiRootPath() {
     // Load new skin
     constexpr int LOCATOR_SIZE =
         256;  // Use this to allocate space to hold a ResourceLocator string
-    WCHAR szResourceLocator[LOCATOR_SIZE];
+    wchar_t szResourceLocator[LOCATOR_SIZE];
 
     swprintf(szResourceLocator, LOCATOR_SIZE, L"section://%X,%ls#%ls",
              c_ModuleHandle, L"media", L"media/");

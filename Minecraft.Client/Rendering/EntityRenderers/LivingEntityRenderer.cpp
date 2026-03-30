@@ -504,7 +504,7 @@ void LivingEntityRenderer::renderNameTag(std::shared_ptr<LivingEntity> mob,
     int offs = 0;
 
     std::wstring playerName;
-    WCHAR wchName[2];
+    wchar_t wchName[2];
 
     if (mob->instanceof(eTYPE_PLAYER)) {
         std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(mob);

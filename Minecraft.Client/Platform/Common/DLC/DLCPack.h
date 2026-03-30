@@ -19,7 +19,7 @@ private:
     std::uint32_t m_dwLicenseMask;
     int m_dlcMountIndex;
     XCONTENTDEVICEID m_dlcDeviceID;
-    ULONGLONG m_ullFullOfferId;
+    uint64_t m_ullFullOfferId;
     bool m_isCorrupt;
     std::uint32_t m_packId;
     std::uint32_t m_packVersion;
@@ -68,7 +68,7 @@ public:
     std::wstring getName() { return m_packName; }
 
     void UpdateLanguage();
-    ULONGLONG getPurchaseOfferId() { return m_ullFullOfferId; }
+    uint64_t getPurchaseOfferId() { return m_ullFullOfferId; }
 
     DLCFile* addFile(DLCManager::EDLCType type, const std::wstring& path);
     DLCFile* getFile(DLCManager::EDLCType type, unsigned int index);

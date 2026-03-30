@@ -391,18 +391,18 @@ public:
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
         DWORD dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
-        void* lpParam = nullptr, WCHAR* pwchFormatString = nullptr);
+        void* lpParam = nullptr, wchar_t* pwchFormatString = nullptr);
     virtual C4JStorage::EMessageResult RequestErrorMessage(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
         DWORD dwPad = XUSER_INDEX_ANY,
         int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
-        void* lpParam = nullptr, WCHAR* pwchFormatString = nullptr);
+        void* lpParam = nullptr, wchar_t* pwchFormatString = nullptr);
 
 private:
     virtual C4JStorage::EMessageResult RequestMessageBox(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
         int (*Func)(void*, int, const C4JStorage::EMessageResult),
-        void* lpParam, WCHAR* pwchFormatString, DWORD dwFocusButton,
+        void* lpParam, wchar_t* pwchFormatString, DWORD dwFocusButton,
         bool bIsError);
 
 public:

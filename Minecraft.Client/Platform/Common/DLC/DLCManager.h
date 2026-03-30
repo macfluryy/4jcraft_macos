@@ -46,7 +46,7 @@ public:
         e_DLCParamType_Max,
 
     };
-    const static WCHAR* wchTypeNamesA[e_DLCParamType_Max];
+    const static wchar_t* wchTypeNamesA[e_DLCParamType_Max];
 
 private:
     std::vector<DLCPack*> m_packs;

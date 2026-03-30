@@ -150,7 +150,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                         if (grf.exists()) {
 #if defined(_UNICODE)
                             std::wstring path = grf.getPath();
-                            const WCHAR* pchFilename = path.c_str();
+                            const wchar_t* pchFilename = path.c_str();
                             HANDLE fileHandle = CreateFile(
                                 pchFilename,   // file name
                                 GENERIC_READ,  // access mode

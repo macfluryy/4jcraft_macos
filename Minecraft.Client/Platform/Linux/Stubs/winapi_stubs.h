@@ -18,21 +18,17 @@
 
 #define S_OK 0
 typedef unsigned int DWORD;
-typedef wchar_t WCHAR;
 typedef unsigned char BYTE;
 typedef BYTE* PBYTE;
-typedef const wchar_t* LPCWSTR;
-typedef unsigned long long ULONGLONG;
 typedef int HRESULT;
 typedef unsigned int UINT;
 typedef void* HANDLE;
 typedef int INT;
-typedef long* PLONG;
 typedef unsigned int* LPDWORD;
 typedef char CHAR;
 typedef uintptr_t ULONG_PTR;
 typedef long LONG;
-typedef ULONGLONG PlayerUID;
+typedef uint64_t PlayerUID;
 typedef DWORD WORD;
 typedef DWORD* PDWORD;
 
@@ -50,7 +46,7 @@ typedef struct {
 
 typedef long long LONGLONG;
 typedef size_t SIZE_T;
-typedef WCHAR *LPWSTR, *PWSTR;
+typedef wchar_t *LPWSTR, *PWSTR;
 typedef unsigned char boolean;  // java brainrot
 #define __debugbreak()
 #define CONST const
@@ -323,8 +319,8 @@ static inline int64_t InterlockedCompareExchangeRelease(
 // internal helper: convert time_t to FILETIME (100ns intervals since
 // 1601-01-01)
 static inline FILETIME _TimeToFileTime(time_t t) {
-    const ULONGLONG EPOCH_DIFF = 11644473600ULL;
-    ULONGLONG val = ((ULONGLONG)t + EPOCH_DIFF) * 10000000ULL;
+    const uint64_t EPOCH_DIFF = 11644473600ULL;
+    uint64_t val = ((uint64_t)t + EPOCH_DIFF) * 10000000ULL;
     FILETIME ft;
     ft.dwLowDateTime = (DWORD)(val & 0xFFFFFFFF);
     ft.dwHighDateTime = (DWORD)(val >> 32);
@@ -647,8 +643,8 @@ static inline bool FindClose(HANDLE hFindFile) {
 // internal helper: convert FILETIME (100ns since 1601) to time_t (seconds since
 // 1970)
 static inline time_t _FileTimeToTimeT(const FILETIME& ft) {
-    ULONGLONG val = ((ULONGLONG)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
-    const ULONGLONG EPOCH_DIFF =
+    uint64_t val = ((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+    const uint64_t EPOCH_DIFF =
         116444736000000000ULL;  // 100ns intervals between 1601-01-01 and
                                 // 1970-01-01
     return (time_t)((val - EPOCH_DIFF) / 10000000ULL);
@@ -711,7 +707,7 @@ static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
     time_t t = timegm(&tm);
     if (t == (time_t)-1) return FALSE;
 
-    ULONGLONG ft = ((ULONGLONG)t + 11644473600ULL) * 10000000ULL;
+    uint64_t ft = ((uint64_t)t + 11644473600ULL) * 10000000ULL;
     ft += lpSystemTime->wMilliseconds * 10000ULL;
     lpFileTime->dwLowDateTime = (DWORD)(ft & 0xFFFFFFFF);
     lpFileTime->dwHighDateTime = (DWORD)(ft >> 32);
@@ -721,7 +717,7 @@ static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
 static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
                                         LPSYSTEMTIME lpSystemTime) {
-    ULONGLONG ft = ((ULONGLONG)lpFileTime->dwHighDateTime << 32) |
+    uint64_t ft = ((uint64_t)lpFileTime->dwHighDateTime << 32) |
                    lpFileTime->dwLowDateTime;
     time_t t = _FileTimeToTimeT(*lpFileTime);
     long remainder_ns = (long)((ft % 10000000ULL) * 100);
@@ -763,7 +759,7 @@ static inline void OutputDebugStringA(const char* lpOutputString) {
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-outputdebugstringw
-static inline void OutputDebugStringW(LPCWSTR lpOutputString) {
+static inline void OutputDebugStringW(const wchar_t* lpOutputString) {
     if (!lpOutputString) return;
     fprintf(stderr, "%ls", lpOutputString);
 }

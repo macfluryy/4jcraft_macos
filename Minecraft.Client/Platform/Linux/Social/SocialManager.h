@@ -26,7 +26,7 @@ public:
     bool PostLinkToSocialNetwork(ESocialNetwork, DWORD, bool) { return false; }
     bool PostImageToSocialNetwork(ESocialNetwork, DWORD, bool) { return false; }
 
-    void SetSocialPostText(const WCHAR*, const WCHAR*, const WCHAR*) {}
+    void SetSocialPostText(const wchar_t*, const wchar_t*, const wchar_t*) {}
 
 private:
     CSocialManager() {}

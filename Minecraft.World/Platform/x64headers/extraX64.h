@@ -21,7 +21,7 @@ static_assert(
     MINECRAFT_NET_MAX_PLAYERS <= std::numeric_limits<std::uint8_t>::max(),
     "MINECRAFT_NET_MAX_PLAYERS must fit in the 8-bit network protocol");
 
-typedef ULONGLONG SessionID;
+typedef uint64_t SessionID;
 typedef PlayerUID GameSessionUID;
 class INVITE_INFO;
 
@@ -128,7 +128,7 @@ public:
     bool IsGuest();
     bool IsLocal();
     PlayerUID GetXuid();
-    LPCWSTR GetGamertag();
+    const wchar_t* GetGamertag();
     int GetSessionIndex();
     bool IsTalking();
     bool IsMutedByLocalUser(DWORD dwUserIndex);
@@ -265,10 +265,10 @@ DWORD XUserGetSigninInfo(DWORD dwUserIndex, DWORD dwFlags,
 
 class CXuiStringTable {
 public:
-    LPCWSTR Lookup(LPCWSTR szId);
-    LPCWSTR Lookup(UINT nIndex);
+    const wchar_t* Lookup(const wchar_t* szId);
+    const wchar_t* Lookup(UINT nIndex);
     void Clear();
-    HRESULT Load(LPCWSTR szId);
+    HRESULT Load(const wchar_t* szId);
 };
 
 typedef void* XMEMDECOMPRESSION_CONTEXT;

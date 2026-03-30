@@ -549,7 +549,7 @@ void UIScene_LoadMenu::StartSharedLaunchFlow() {
             // upsell the texture pack
             // tell sentient about the upsell of the full version of the skin
             // pack
-            ULONGLONG ullOfferID_Full;
+            uint64_t ullOfferID_Full;
             app.GetDLCFullOfferIDForPackID(m_MoreOptionsParams.dwTexturePack,
                                            &ullOfferID_Full);
 

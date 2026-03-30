@@ -60,7 +60,7 @@ public:
     const wchar_t* getString(const std::wstring& id);
     const wchar_t* getString(int id);
 
-    // static LPCWSTR m_wchLocaleCode[LOCALE_COUNT];
+    // static const wchar_t* m_wchLocaleCode[LOCALE_COUNT];
 
 private:
     // std::wstring getLangId(DWORD dwLanguage=0);

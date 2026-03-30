@@ -31,7 +31,7 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
 
     float currentTime =
         pMinecraft->level->getLevelData()->getGameTime() % 24000;
-    swprintf((WCHAR*)TempString, 256, L"Set time (unsafe) (%d)",
+    swprintf((wchar_t*)TempString, 256, L"Set time (unsafe) (%d)",
              (int)currentTime);
     m_sliderTime.init(TempString, eControl_Time, 0, 240, currentTime / 100);
 

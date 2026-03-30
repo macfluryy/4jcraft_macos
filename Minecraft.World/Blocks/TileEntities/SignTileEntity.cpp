@@ -112,20 +112,20 @@ void SignTileEntity::setChanged() {
     if(!g_NetworkManager.IsLocalGame() && !m_bVerified)
     //if (pMinecraft->level->isClientSide)
     {
-            WCHAR *wcMessages[MAX_SIGN_LINES];
+            wchar_t *wcMessages[MAX_SIGN_LINES];
             for (int i = 0; i < MAX_SIGN_LINES; ++i)
             {
-                    wcMessages[i]=new WCHAR [MAX_LINE_LENGTH+1];
-                    ZeroMemory(wcMessages[i],sizeof(WCHAR)*(MAX_LINE_LENGTH+1));
+                    wcMessages[i]=new wchar_t [MAX_LINE_LENGTH+1];
+                    ZeroMemory(wcMessages[i],sizeof(wchar_t)*(MAX_LINE_LENGTH+1));
                     if(m_wsmessages[i].length()>0)
                     {
-                            memcpy(wcMessages[i],m_wsmessages[i].c_str(),m_wsmessages[i].length()*sizeof(WCHAR));
+                            memcpy(wcMessages[i],m_wsmessages[i].c_str(),m_wsmessages[i].length()*sizeof(wchar_t));
                     }
             }
             // at this point, we can ask the online string verifier if our sign
 text is ok #if 0 m_bVerified=true; #else
 
-            if(!InputManager.VerifyStrings((WCHAR**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback,(void*)this))
+            if(!InputManager.VerifyStrings((wchar_t**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback,(void*)this))
             {
                     // Nothing to verify
                     m_bVerified=true;

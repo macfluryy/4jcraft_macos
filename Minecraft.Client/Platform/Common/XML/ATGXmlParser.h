@@ -39,9 +39,9 @@ CONST UINT XML_WRITE_BUFFER_SIZE           =   2048;
 //-------------------------------------------------------------------------------------
 struct XMLAttribute
 {
-    WCHAR*  strName;
+    wchar_t*  strName;
     UINT    NameLen;
-    WCHAR*  strValue;
+    wchar_t*  strValue;
     UINT    ValueLen;       
 };
 
@@ -56,13 +56,13 @@ public:
     virtual HRESULT  StartDocument() = 0;
     virtual HRESULT  EndDocument() = 0;
 
-    virtual HRESULT  ElementBegin( CONST WCHAR* strName, UINT NameLen, 
+    virtual HRESULT  ElementBegin( CONST wchar_t* strName, UINT NameLen, 
                                    CONST XMLAttribute *pAttributes, UINT NumAttributes ) = 0;
-    virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, bool More ) = 0;
-    virtual HRESULT  ElementEnd( CONST WCHAR *strName, UINT NameLen ) = 0;
+    virtual HRESULT  ElementContent( CONST wchar_t *strData, UINT DataLen, bool More ) = 0;
+    virtual HRESULT  ElementEnd( CONST wchar_t *strName, UINT NameLen ) = 0;
 
     virtual HRESULT  CDATABegin( ) = 0;
-    virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, bool bMore ) = 0;
+    virtual HRESULT  CDATAData( CONST wchar_t *strCDATA, UINT CDATALen, bool bMore ) = 0;
     virtual HRESULT  CDATAEnd( ) = 0;
 
     virtual void     Error( HRESULT hError, CONST CHAR *strMessage ) = 0;
@@ -102,7 +102,7 @@ public:
 
     HRESULT    ParseXMLFile( CONST CHAR *strFilename );                              
     
-    //      Parses from a buffer- if you pass a WCHAR buffer (and cast it), it will 
+    //      Parses from a buffer- if you pass a wchar_t buffer (and cast it), it will 
     //         correctly detect it and use unicode instead.  Return codes are the
     //         same as for ParseXMLFile
 
@@ -138,17 +138,17 @@ private:
     DWORD           m_dwCharsTotal;
     DWORD           m_dwCharsConsumed;
 
-    BYTE            m_pReadBuf[ XML_READ_BUFFER_SIZE + 2 ]; // room for a trailing nullptr
-    WCHAR           m_pWriteBuf[ XML_WRITE_BUFFER_SIZE ];    
+    BYTE            m_pReadBuf[ XML_READ_BUFFER_SIZE + 2 ]; // room for a trailing NULL
+    wchar_t           m_pWriteBuf[ XML_WRITE_BUFFER_SIZE ];    
 
     BYTE*           m_pReadPtr;
-    WCHAR*          m_pWritePtr;        // write pointer within m_pBuf      
+    wchar_t*          m_pWritePtr;        // write pointer within m_pBuf      
 
     bool            m_bUnicode;         // TRUE = 16-bits, FALSE = 8-bits
     bool            m_bReverseBytes;    // TRUE = reverse bytes, FALSE = don't reverse
     
     bool            m_bSkipNextAdvance;
-    WCHAR           m_Ch;               // Current character being parsed
+    wchar_t           m_Ch;               // Current character being parsed
 };
 
 }  // namespace ATG

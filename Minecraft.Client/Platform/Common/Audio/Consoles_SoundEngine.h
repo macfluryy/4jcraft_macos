@@ -57,8 +57,8 @@ public:
     virtual void SetIsPlayingEndMusic(bool bVal);
     virtual void SetIsPlayingNetherMusic(bool bVal);
 
-    static const WCHAR* wchSoundNames[eSoundType_MAX];
-    static const WCHAR* wchUISoundNames[eSFX_MAX];
+    static const wchar_t* wchSoundNames[eSoundType_MAX];
+    static const wchar_t* wchUISoundNames[eSFX_MAX];
 
 public:
     void tick();

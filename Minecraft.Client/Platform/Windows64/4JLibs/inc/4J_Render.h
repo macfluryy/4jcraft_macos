@@ -195,7 +195,7 @@ public:
 	void StateSetForceLOD(int LOD);
 
 	// Event tracking
-	void BeginEvent(LPCWSTR eventName);
+	void BeginEvent(const wchar_t* eventName);
 	void EndEvent();
 
 	// PLM event handling
