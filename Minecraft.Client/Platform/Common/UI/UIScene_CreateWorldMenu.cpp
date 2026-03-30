@@ -625,7 +625,7 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
         bool pccFriendsAllowed = true;
         bool bContentRestricted = false;
 
-        GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+        ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),
                                             false, &pccAllowed,
                                             &pccFriendsAllowed);
 
@@ -931,7 +931,7 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             bool pccAllowed = true;
             bool pccFriendsAllowed = true;
 
-            GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+            ProfileManager.AllowedPlayerCreatedContent(ProfileManager.GetPrimaryPad(),
                                                 false, &pccAllowed,
                                                 &pccFriendsAllowed);
             if (!pccAllowed && !pccFriendsAllowed) noUGC = true;

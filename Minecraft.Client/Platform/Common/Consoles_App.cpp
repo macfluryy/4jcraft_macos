@@ -23,6 +23,7 @@
 #include "../Minecraft.World/Blocks/TileEntities/DispenserTileEntity.h"
 #include "../Minecraft.World/Blocks/TileEntities/SignTileEntity.h"
 #include "../Minecraft.World/Blocks/TileEntities/HopperTileEntity.h"
+#include "../Minecraft.World/Util/PathHelper.h"
 #include "../Minecraft.Client/GameState/StatsCounter.h"
 #include "../Minecraft.Client/GameState/GameMode.h"
 #include "../Minecraft.Client/Platform/Windows64/Social/SocialManager.h"

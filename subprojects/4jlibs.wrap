@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://github.com/4jcraft/4jlibs.git
-revision = immediategone-v2
+revision = main
 
 [provide]
 dependency_names = 4j-render, 4j-input, 4j-profile, 4j-storage

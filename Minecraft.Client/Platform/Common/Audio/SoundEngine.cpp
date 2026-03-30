@@ -1,6 +1,6 @@
 ﻿#include "../../Minecraft.World/Platform/stdafx.h"
 #include "SoundEngine.h"
-#include "PathHelper.h"
+#include "../../Minecraft.World/Util/PathHelper.h"
 #include "../Consoles_App.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.h"
