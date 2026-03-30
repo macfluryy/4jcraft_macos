@@ -22,6 +22,7 @@
 #include "../Minecraft.World/Blocks/TileEntities/DispenserTileEntity.h"
 #include "../Minecraft.World/Blocks/TileEntities/SignTileEntity.h"
 #include "../Minecraft.World/Blocks/TileEntities/HopperTileEntity.h"
+#include "../Minecraft.World/Util/PathHelper.h"
 #include "../Minecraft.Client/GameState/StatsCounter.h"
 #include "../Minecraft.Client/GameState/GameMode.h"
 #include "../Minecraft.Client/Platform/Xbox/Social/SocialManager.h"
@@ -4618,7 +4619,7 @@ void CMinecraftApp::loadMediaArchive() {
         m_mediaArchive = new ArchiveFile(File(mediapath));
 #endif
     }
-}
+
 #if 0
 	std::string path = "Common\\media.arc";
 	HANDLE hFile = CreateFile(	path.c_str(),
