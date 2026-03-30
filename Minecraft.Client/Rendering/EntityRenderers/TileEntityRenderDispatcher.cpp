@@ -48,7 +48,7 @@ TileEntityRenderDispatcher::TileEntityRenderDispatcher() {
     renderers[eTYPE_BEACONTILEENTITY] = new BeaconRenderer();
     glDisable(GL_LIGHTING);
 
-    AUTO_VAR(itEnd, renderers.end());
+    auto itEnd = renderers.end();
     for (classToTileRendererMap::iterator it = renderers.begin(); it != itEnd;
          it++) {
         if (it->second) it->second->init(this);
@@ -58,7 +58,7 @@ TileEntityRenderDispatcher::TileEntityRenderDispatcher() {
 TileEntityRenderer* TileEntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
     TileEntityRenderer* r = nullptr;
     // TileEntityRenderer *r = renderers[e];
-    AUTO_VAR(it, renderers.find(e));  // 4J Stu - The .at and [] accessors
+    auto it = renderers.find(e);  // 4J Stu - The .at and [] accessors
                                       // insert elements if they don't exist
 
     if (it == renderers.end()) {
@@ -143,7 +143,7 @@ void TileEntityRenderDispatcher::render(std::shared_ptr<TileEntity> entity,
 void TileEntityRenderDispatcher::setLevel(Level* level) {
     this->level = level;
 
-    for (AUTO_VAR(it, renderers.begin()); it != renderers.end(); it++) {
+    for (auto it = renderers.begin(); it != renderers.end(); it++) {
         if (it->second) it->second->onNewLevel(level);
     }
 }

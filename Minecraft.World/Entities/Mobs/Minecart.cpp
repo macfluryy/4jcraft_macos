@@ -309,8 +309,8 @@ void Minecart::tick() {
         std::vector<std::shared_ptr<Entity> >* entities =
             level->getEntities(shared_from_this(), &grown);
         if (entities != nullptr && !entities->empty()) {
-            AUTO_VAR(itEnd, entities->end());
-            for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+            auto itEnd = entities->end();
+            for (auto it = entities->begin(); it != itEnd; it++) {
                 std::shared_ptr<Entity> e = (*it);  // entities->at(i);
                 if (e != rider.lock() && e->isPushable() &&
                     e->instanceof(eTYPE_MINECART)) {

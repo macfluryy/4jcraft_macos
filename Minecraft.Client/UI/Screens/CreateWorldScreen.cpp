@@ -195,13 +195,13 @@ void CreateWorldScreen::buttonClicked(Button* button) {
 
         std::wstring seedString = seedEdit->getValue();
 
-        __int64 seedValue = 0;
+        int64_t seedValue = 0;
         NetworkGameInitData* param = new NetworkGameInitData();
 
         if (seedString.length() != 0) {
             // try to convert it to a long first
             //            try {	// 4J - removed try/catch
-            __int64 value = _fromString<__int64>(seedString);
+            int64_t value = _fromString<int64_t>(seedString);
 
             bool isNumber = true;
             for (unsigned int i = 0; i < seedString.length(); ++i) {
@@ -213,7 +213,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
                 }
             }
 
-            if (isNumber) value = _fromString<__int64>(seedString);
+            if (isNumber) value = _fromString<int64_t>(seedString);
 
             if (value != 0) {
                 seedValue = value;

@@ -23,10 +23,10 @@
 namespace {
 bool ReadPortableBinaryFile(File& file, std::uint8_t*& data,
                             unsigned int& size) {
-    const __int64 fileLength = file.length();
+    const int64_t fileLength = file.length();
     if (fileLength < 0 ||
         fileLength >
-            static_cast<__int64>(std::numeric_limits<unsigned int>::max())) {
+            static_cast<int64_t>(std::numeric_limits<unsigned int>::max())) {
         data = nullptr;
         size = 0;
         return false;

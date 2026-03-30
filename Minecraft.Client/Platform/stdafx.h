@@ -14,7 +14,6 @@
 
 // use  - #pragma message(__LOC__"Need to do something here")
 
-#define AUTO_VAR(_var, _val) auto _var = _val
 #include <stdio.h>
 #include <stdlib.h>
 #include <unordered_map>
@@ -23,8 +22,6 @@
 
 #ifdef __linux__
 #include "../Platform/Linux/Stubs/LinuxStubs.h"
-#else
-typedef unsigned __int64 __uint64;
 #endif
 
 #ifdef _WINDOWS64

@@ -18,8 +18,8 @@ Screen::Screen()  // 4J added
 }
 
 void Screen::render(int xm, int ym, float a) {
-    AUTO_VAR(itEnd, buttons.end());
-    for (AUTO_VAR(it, buttons.begin()); it != itEnd; it++) {
+    auto itEnd = buttons.end();
+    for (auto it = buttons.begin(); it != itEnd; it++) {
         Button* button = *it;  // buttons[i];
         button->render(minecraft, xm, ym);
     }
@@ -49,8 +49,8 @@ void Screen::setClipboard(const std::wstring& str) {
 
 void Screen::mouseClicked(int x, int y, int buttonNum) {
     if (buttonNum == 0) {
-        AUTO_VAR(itEnd, buttons.end());
-        for (AUTO_VAR(it, buttons.begin()); it != itEnd; it++) {
+        auto itEnd = buttons.end();
+        for (auto it = buttons.begin(); it != itEnd; it++) {
             Button* button = *it;  // buttons[i];
             if (button->clicked(minecraft, x, y)) {
                 clickedButton = button;

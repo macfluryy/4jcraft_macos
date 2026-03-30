@@ -321,8 +321,8 @@ void Font::drawWordWrapInternal(const std::wstring& string, int x, int y, int w,
                                 int col, bool darken, int h) {
     std::vector<std::wstring> lines = stringSplit(string, L'\n');
     if (lines.size() > 1) {
-        AUTO_VAR(itEnd, lines.end());
-        for (AUTO_VAR(it, lines.begin()); it != itEnd; it++) {
+        auto itEnd = lines.end();
+        for (auto it = lines.begin(); it != itEnd; it++) {
             // 4J Stu - Don't draw text that will be partially cutoff/overlap
             // something it shouldn't
             if ((y + this->wordWrapHeight(*it, w)) > h) break;
@@ -366,8 +366,8 @@ int Font::wordWrapHeight(const std::wstring& string, int w) {
     std::vector<std::wstring> lines = stringSplit(string, L'\n');
     if (lines.size() > 1) {
         int h = 0;
-        AUTO_VAR(itEnd, lines.end());
-        for (AUTO_VAR(it, lines.begin()); it != itEnd; it++) {
+        auto itEnd = lines.end();
+        for (auto it = lines.begin(); it != itEnd; it++) {
             h += this->wordWrapHeight(*it, w);
         }
         return h;

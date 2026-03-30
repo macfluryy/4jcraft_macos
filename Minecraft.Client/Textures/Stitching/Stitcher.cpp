@@ -73,7 +73,7 @@ void Stitcher::stitch() {
     stitchedTexture = nullptr;
 
     // for (int i = 0; i < textureHolders.length; i++)
-    for (AUTO_VAR(it, texturesToBeStitched.begin());
+    for (auto it = texturesToBeStitched.begin();
          it != texturesToBeStitched.end(); ++it) {
         TextureHolder* textureHolder = *it;  // textureHolders[i];
 
@@ -91,7 +91,7 @@ std::vector<StitchSlot*>* Stitcher::gatherAreas() {
     std::vector<StitchSlot*>* result = new std::vector<StitchSlot*>();
 
     // for (StitchSlot slot : storage)
-    for (AUTO_VAR(it, storage.begin()); it != storage.end(); ++it) {
+    for (auto it = storage.begin(); it != storage.end(); ++it) {
         StitchSlot* slot = *it;
         slot->collectAssignments(result);
     }

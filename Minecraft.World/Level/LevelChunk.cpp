@@ -1218,7 +1218,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
 #endif
 
     // 4J - was entityBlocks[yc]->remove(e);
-    AUTO_VAR(it, find(entityBlocks[yc]->begin(), entityBlocks[yc]->end(), e));
+    auto it = find(entityBlocks[yc]->begin(), entityBlocks[yc]->end(), e);
     if (it != entityBlocks[yc]->end()) {
         entityBlocks[yc]->erase(it);
         // 4J - we don't want storage creeping up here as thinkgs move round the
@@ -1258,7 +1258,7 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
     // shared_ptr<TileEntity> tileEntity = tileEntities[pos];
     EnterCriticalSection(&m_csTileEntities);
     std::shared_ptr<TileEntity> tileEntity = nullptr;
-    AUTO_VAR(it, tileEntities.find(pos));
+    auto it = tileEntities.find(pos);
 
     if (it == tileEntities.end()) {
         LeaveCriticalSection(
@@ -1290,7 +1290,7 @@ std::shared_ptr<TileEntity> LevelChunk::getTileEntity(int x, int y, int z) {
 
         // 4J Stu - It should have been inserted by now, but check to be sure
         EnterCriticalSection(&m_csTileEntities);
-        AUTO_VAR(newIt, tileEntities.find(pos));
+        auto newIt = tileEntities.find(pos);
         if (newIt != tileEntities.end()) {
             tileEntity = newIt->second;
         }
@@ -1340,7 +1340,7 @@ void LevelChunk::setTileEntity(int x, int y, int z,
             "tile!\n");
         return;
     }
-    AUTO_VAR(it, tileEntities.find(pos));
+    auto it = tileEntities.find(pos);
     if (it != tileEntities.end()) it->second->setRemoved();
 
     tileEntity->clearRemoved();
@@ -1360,7 +1360,7 @@ void LevelChunk::removeTileEntity(int x, int y, int z) {
         //       removeThis.setRemoved();
         //   }
         EnterCriticalSection(&m_csTileEntities);
-        AUTO_VAR(it, tileEntities.find(pos));
+        auto it = tileEntities.find(pos);
         if (it != tileEntities.end()) {
             std::shared_ptr<TileEntity> te = tileEntities[pos];
             tileEntities.erase(pos);
@@ -1418,7 +1418,7 @@ void LevelChunk::load() {
 
         std::vector<std::shared_ptr<TileEntity> > values;
         EnterCriticalSection(&m_csTileEntities);
-        for (AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end();
+        for (auto it = tileEntities.begin(); it != tileEntities.end();
              it++) {
             values.push_back(it->second);
         }
@@ -1451,14 +1451,14 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
     if (unloadTileEntities) {
         std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
         EnterCriticalSection(&m_csTileEntities);
-        for (AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end();
+        for (auto it = tileEntities.begin(); it != tileEntities.end();
              it++) {
             tileEntitiesToRemove.push_back(it->second);
         }
         LeaveCriticalSection(&m_csTileEntities);
 
-        AUTO_VAR(itEnd, tileEntitiesToRemove.end());
-        for (AUTO_VAR(it, tileEntitiesToRemove.begin()); it != itEnd; it++) {
+        auto itEnd = tileEntitiesToRemove.end();
+        for (auto it = tileEntitiesToRemove.begin(); it != itEnd; it++) {
             // 4J-PB -m 1.7.3 was it->second->setRemoved();
             level->markForRemoval(*it);
         }
@@ -1494,7 +1494,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 
             EnterCriticalSection(&m_csEntities);
             for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
-                AUTO_VAR(itEnd, entityBlocks[i]->end());
+                auto itEnd = entityBlocks[i]->end();
                 for (std::vector<std::shared_ptr<Entity> >::iterator it =
                          entityBlocks[i]->begin();
                      it != itEnd; it++) {
@@ -1516,7 +1516,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             PIXBeginNamedEvent(0, "Saving tile entities");
             ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
-            AUTO_VAR(itEnd, tileEntities.end());
+            auto itEnd = tileEntities.end();
             for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
                                     TilePosKeyHash, TilePosKeyEq>::iterator it =
                      tileEntities.begin();
@@ -1583,8 +1583,8 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
     for (int yc = yc0; yc <= yc1; yc++) {
         std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
-        AUTO_VAR(itEnd, entities->end());
-        for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+        auto itEnd = entities->end();
+        for (auto it = entities->begin(); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
             if (e != except && e->bb.intersects(*bb) &&
                 (selector == nullptr || selector->matches(e))) {
@@ -1629,8 +1629,8 @@ void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
     for (int yc = yc0; yc <= yc1; yc++) {
         std::vector<std::shared_ptr<Entity> >* entities = entityBlocks[yc];
 
-        AUTO_VAR(itEnd, entities->end());
-        for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+        auto itEnd = entities->end();
+        for (auto it = entities->begin(); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
 
             bool isAssignableFrom = false;
@@ -1929,7 +1929,7 @@ int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
     }
     */
 
-    for (AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end(); ++it) {
+    for (auto it = tileEntities.begin(); it != tileEntities.end(); ++it) {
         it->second->clearCache();
     }
     //        recalcHeightmap();

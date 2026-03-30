@@ -54,7 +54,7 @@ PlayerList::PlayerList(MinecraftServer* server) {
 }
 
 PlayerList::~PlayerList() {
-    for (AUTO_VAR(it, players.begin()); it < players.end(); it++) {
+    for (auto it = players.begin(); it < players.end(); it++) {
         (*it)->connection = nullptr;  // Must remove reference to connection, or
                                       // else there is a circular dependency
         delete (*it)->gameMode;  // Gamemode also needs deleted as it references
@@ -100,7 +100,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     {
         bool usedIndexes[MINECRAFT_NET_MAX_PLAYERS];
         ZeroMemory(&usedIndexes, MINECRAFT_NET_MAX_PLAYERS * sizeof(bool));
-        for (AUTO_VAR(it, players.begin()); it < players.end(); ++it) {
+        for (auto it = players.begin(); it < players.end(); ++it) {
             usedIndexes[(int)(*it)->getPlayerIndex()] = true;
         }
         for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
@@ -267,8 +267,8 @@ void PlayerList::placeNewPlayer(Connection* connection,
         level->getGameTime(), level->getDayTime(),
         level->getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT))));
 
-    AUTO_VAR(activeEffects, player->getActiveEffects());
-    for (AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end();
+    auto activeEffects = player->getActiveEffects();
+    for (auto it = activeEffects->begin(); it != activeEffects->end();
          ++it) {
         MobEffectInstance* effect = *it;
         playerConnection->send(std::shared_ptr<UpdateMobEffectPacket>(
@@ -294,7 +294,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     // to true so that respawning works when the EndPoem is closed
     INetworkPlayer* thisPlayer = player->connection->getNetworkPlayer();
     if (thisPlayer != nullptr) {
-        for (AUTO_VAR(it, players.begin()); it != players.end(); ++it) {
+        for (auto it = players.begin(); it != players.end(); ++it) {
             std::shared_ptr<ServerPlayer> servPlayer = *it;
             INetworkPlayer* checkPlayer =
                 servPlayer->connection->getNetworkPlayer();
@@ -521,7 +521,7 @@ void PlayerList::remove(std::shared_ptr<ServerPlayer> player) {
     }
     level->removeEntity(player);
     level->getChunkMap()->remove(player);
-    AUTO_VAR(it, find(players.begin(), players.end(), player));
+    auto it = find(players.begin(), players.end(), player);
     if (it != players.end()) {
         players.erase(it);
     }
@@ -632,7 +632,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     }
 
     serverPlayer->getLevel()->getChunkMap()->remove(serverPlayer);
-    AUTO_VAR(it, find(players.begin(), players.end(), serverPlayer));
+    auto it = find(players.begin(), players.end(), serverPlayer);
     if (it != players.end()) {
         players.erase(it);
     }
@@ -752,7 +752,7 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
     if (keepAllPlayerData) {
         std::vector<MobEffectInstance*>* activeEffects =
             player->getActiveEffects();
-        for (AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end();
+        for (auto it = activeEffects->begin(); it != activeEffects->end();
              ++it) {
             MobEffectInstance* effect = *it;
 
@@ -893,7 +893,7 @@ void PlayerList::toggleDimension(std::shared_ptr<ServerPlayer> player,
     // 4J Stu - Fix for #64683 - Customer Encountered: TU7: Content: Gameplay:
     // Potion effects are removed after using the Nether Portal
     std::vector<MobEffectInstance*>* activeEffects = player->getActiveEffects();
-    for (AUTO_VAR(it, activeEffects->begin()); it != activeEffects->end();
+    for (auto it = activeEffects->begin(); it != activeEffects->end();
          ++it) {
         MobEffectInstance* effect = *it;
 
@@ -1409,7 +1409,7 @@ int PlayerList::getPlayerCount() { return (int)players.size(); }
 int PlayerList::getPlayerCount(ServerLevel* level) {
     int count = 0;
 
-    for (AUTO_VAR(it, players.begin()); it != players.end(); ++it) {
+    for (auto it = players.begin(); it != players.end(); ++it) {
         if ((*it)->level == level) ++count;
     }
 
@@ -1455,7 +1455,7 @@ std::shared_ptr<ServerPlayer> PlayerList::findAlivePlayerOnSystem(
 
     INetworkPlayer* thisPlayer = player->connection->getNetworkPlayer();
     if (thisPlayer != nullptr) {
-        for (AUTO_VAR(itP, players.begin()); itP != players.end(); ++itP) {
+        for (auto itP = players.begin(); itP != players.end(); ++itP) {
             std::shared_ptr<ServerPlayer> newPlayer = *itP;
 
             INetworkPlayer* otherPlayer =
@@ -1488,8 +1488,8 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
 #endif
     bool playerRemoved = false;
 
-    AUTO_VAR(it, find(receiveAllPlayers[dimIndex].begin(),
-                      receiveAllPlayers[dimIndex].end(), player));
+    auto it = find(receiveAllPlayers[dimIndex].begin(),
+                      receiveAllPlayers[dimIndex].end(), player);
     if (it != receiveAllPlayers[dimIndex].end()) {
 #if !defined(_CONTENT_PACKAGE)
         app.DebugPrintf(
@@ -1502,7 +1502,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
 
     INetworkPlayer* thisPlayer = player->connection->getNetworkPlayer();
     if (thisPlayer != nullptr && playerRemoved) {
-        for (AUTO_VAR(itP, players.begin()); itP != players.end(); ++itP) {
+        for (auto itP = players.begin(); itP != players.end(); ++itP) {
             std::shared_ptr<ServerPlayer> newPlayer = *itP;
 
             INetworkPlayer* otherPlayer =
@@ -1528,7 +1528,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
         // 4J Stu - Something went wrong, or possibly the QNet player left
         // before we got here. Re-check all active players and make sure they
         // have someone on their system to receive all packets
-        for (AUTO_VAR(itP, players.begin()); itP != players.end(); ++itP) {
+        for (auto itP = players.begin(); itP != players.end(); ++itP) {
             std::shared_ptr<ServerPlayer> newPlayer = *itP;
             INetworkPlayer* checkingPlayer =
                 newPlayer->connection->getNetworkPlayer();
@@ -1540,7 +1540,7 @@ void PlayerList::removePlayerFromReceiving(std::shared_ptr<ServerPlayer> player,
                 else if (newPlayer->dimension == 1)
                     newPlayerDim = 2;
                 bool foundPrimary = false;
-                for (AUTO_VAR(it, receiveAllPlayers[newPlayerDim].begin());
+                for (auto it = receiveAllPlayers[newPlayerDim].begin();
                      it != receiveAllPlayers[newPlayerDim].end(); ++it) {
                     std::shared_ptr<ServerPlayer> primaryPlayer = *it;
                     INetworkPlayer* primPlayer =
@@ -1589,7 +1589,7 @@ void PlayerList::addPlayerToReceiving(std::shared_ptr<ServerPlayer> player) {
 #endif
         shouldAddPlayer = false;
     } else {
-        for (AUTO_VAR(it, receiveAllPlayers[playerDim].begin());
+        for (auto it = receiveAllPlayers[playerDim].begin();
              it != receiveAllPlayers[playerDim].end(); ++it) {
             std::shared_ptr<ServerPlayer> oldPlayer = *it;
             INetworkPlayer* checkingPlayer =
@@ -1617,7 +1617,7 @@ bool PlayerList::canReceiveAllPackets(std::shared_ptr<ServerPlayer> player) {
         playerDim = 1;
     else if (player->dimension == 1)
         playerDim = 2;
-    for (AUTO_VAR(it, receiveAllPlayers[playerDim].begin());
+    for (auto it = receiveAllPlayers[playerDim].begin();
          it != receiveAllPlayers[playerDim].end(); ++it) {
         std::shared_ptr<ServerPlayer> newPlayer = *it;
         if (newPlayer == player) {
@@ -1644,7 +1644,7 @@ bool PlayerList::isXuidBanned(PlayerUID xuid) {
 
     bool banned = false;
 
-    for (AUTO_VAR(it, m_bannedXuids.begin()); it != m_bannedXuids.end(); ++it) {
+    for (auto it = m_bannedXuids.begin(); it != m_bannedXuids.end(); ++it) {
         if (ProfileManager.AreXUIDSEqual(xuid, *it)) {
             banned = true;
             break;

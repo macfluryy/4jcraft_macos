@@ -127,7 +127,7 @@ void Villager::serverAiMobStep() {
                 // improve max uses for all obsolete recipes
                 if (offers->size() > 0) {
                     // for (MerchantRecipe recipe : offers)
-                    for (AUTO_VAR(it, offers->begin()); it != offers->end();
+                    for (auto it = offers->begin(); it != offers->end();
                          ++it) {
                         MerchantRecipe* recipe = *it;
                         if (recipe->isDeprecated()) {
@@ -633,7 +633,7 @@ std::shared_ptr<ItemInstance> Villager::getItemTradeInValue(int itemId,
 }
 
 int Villager::getTradeInValue(int itemId, Random* random) {
-    AUTO_VAR(it, MIN_MAX_VALUES.find(itemId));
+    auto it = MIN_MAX_VALUES.find(itemId);
     if (it == MIN_MAX_VALUES.end()) {
         return 1;
     }
@@ -675,7 +675,7 @@ void Villager::addItemForPurchase(MerchantRecipeList* list, int itemId,
 }
 
 int Villager::getPurchaseCost(int itemId, Random* random) {
-    AUTO_VAR(it, MIN_MAX_PRICES.find(itemId));
+    auto it = MIN_MAX_PRICES.find(itemId);
     if (it == MIN_MAX_PRICES.end()) {
         return 1;
     }

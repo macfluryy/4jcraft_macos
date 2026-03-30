@@ -993,7 +993,7 @@ void Textures::removeHttpTexture(const std::wstring& url) {
 int Textures::loadMemTexture(const std::wstring& url,
                              const std::wstring& backup) {
     MemTexture* texture = nullptr;
-    AUTO_VAR(it, memTextures.find(url));
+    auto it = memTextures.find(url);
     if (it != memTextures.end()) {
         texture = (*it).second;
     }
@@ -1030,7 +1030,7 @@ int Textures::loadMemTexture(const std::wstring& url,
 
 int Textures::loadMemTexture(const std::wstring& url, int backup) {
     MemTexture* texture = nullptr;
-    AUTO_VAR(it, memTextures.find(url));
+    auto it = memTextures.find(url);
     if (it != memTextures.end()) {
         texture = (*it).second;
     }
@@ -1067,7 +1067,7 @@ int Textures::loadMemTexture(const std::wstring& url, int backup) {
 MemTexture* Textures::addMemTexture(const std::wstring& name,
                                     MemTextureProcessor* processor) {
     MemTexture* texture = nullptr;
-    AUTO_VAR(it, memTextures.find(name));
+    auto it = memTextures.find(name);
     if (it != memTextures.end()) {
         texture = (*it).second;
     }
@@ -1107,7 +1107,7 @@ MemTexture* Textures::addMemTexture(const std::wstring& name,
 
 void Textures::removeMemTexture(const std::wstring& url) {
     MemTexture* texture = nullptr;
-    AUTO_VAR(it, memTextures.find(url));
+    auto it = memTextures.find(url);
     if (it != memTextures.end()) {
         texture = (*it).second;
 
@@ -1153,7 +1153,7 @@ void Textures::tick(
     // 4J - go over all the memory textures once per frame, and free any that
     // haven't been used for a while. Ones that are being used will have their
     // ticksSinceLastUse reset in Textures::loadMemTexture.
-    for (AUTO_VAR(it, memTextures.begin()); it != memTextures.end();) {
+    for (auto it = memTextures.begin(); it != memTextures.end();) {
         MemTexture* tex = it->second;
 
         if (tex &&

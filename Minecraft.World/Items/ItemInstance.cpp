@@ -624,14 +624,14 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
         lines->push_back(HtmlString(L""));
 
         // Modifier descriptions
-        for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+        for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
             // 4J: Moved modifier string building to AttributeModifier
             lines->push_back(it->second->getHoverText(it->first));
         }
     }
 
     // Delete modifiers map
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeModifier* modifier = it->second;
         delete modifier;
     }

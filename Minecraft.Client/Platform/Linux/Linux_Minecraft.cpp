@@ -101,7 +101,7 @@ DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = {
 uint8_t* AddRichPresenceString(int iID);
 void FreeRichPresenceStrings();
 
-BOOL g_bWidescreen = TRUE;
+bool g_bWidescreen = TRUE;
 
 void DefineActions(void) {
     // The app needs to define the actions required, and the possible mappings
@@ -583,7 +583,7 @@ HRESULT InitDevice() {
     // Create a render target view
     ID3D11Texture2D* pBackBuffer = nullptr;
     hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
-                                 (LPVOID*)&pBackBuffer);
+                                 (void**)&pBackBuffer);
     if (FAILED(hr)) return hr;
 
     // Create a depth stencil buffer
@@ -716,7 +716,7 @@ int main(int argc, const char* argv[]) {
     StorageManager.Init(0, app.GetString(IDS_DEFAULT_SAVENAME),
                         (char*)"savegame.dat", FIFTY_ONE_MB,
                         &CConsoleMinecraftApp::DisplaySavingMessage,
-                        (LPVOID)&app, (char*)"");
+                        (void*)&app, (char*)"");
 
     ////////////////
     // Initialise //
@@ -1049,7 +1049,7 @@ volatile int sectCheck = 48;
 CRITICAL_SECTION memCS;
 DWORD tlsIdx;
 
-LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
+void* XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
     if (!trackStarted) {
         void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
         size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
@@ -1142,7 +1142,7 @@ SIZE_T WINAPI XMemSize(PVOID pAddress, DWORD dwAllocAttributes) {
 
 void DumpMem() {
     int totalLeak = 0;
-    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
         if (it->second > 0) {
             app.DebugPrintf("%d %d %d %d\n", (it->first >> 26) & 0x3f,
                             it->first & 0x03ffffff, it->second,
@@ -1176,7 +1176,7 @@ void MemSect(int section) {
     } else {
         value = (value << 6) | section;
     }
-    TlsSetValue(tlsIdx, (LPVOID)value);
+    TlsSetValue(tlsIdx, (void*)value);
 }
 
 void MemPixStuff() {
@@ -1184,7 +1184,7 @@ void MemPixStuff() {
 
     int totals[MAX_SECT] = {0};
 
-    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
         if (it->second > 0) {
             int sect = (it->first >> 26) & 0x3f;
             int bytes = it->first & 0x03ffffff;

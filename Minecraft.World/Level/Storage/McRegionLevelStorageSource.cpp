@@ -85,8 +85,8 @@ void McRegionLevelStorageSource::eraseFolders(std::vector<File*>* folders,
                                               int currentCount, int totalCount,
                                               ProgressListener* progress) {
     File* folder;
-    AUTO_VAR(itEnd, folders->end());
-    for (AUTO_VAR(it, folders->begin()); it != itEnd; it++) {
+    auto itEnd = folders->end();
+    for (auto it = folders->begin(); it != itEnd; it++) {
         folder = *it;  // folders->at(i);
 
         std::vector<File*>* files = folder->listFiles();

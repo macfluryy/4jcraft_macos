@@ -59,7 +59,7 @@ void TextureMap::stitch() {
 
     Stitcher* stitcher = TextureManager::getInstance()->createStitcher(name);
 
-    for (AUTO_VAR(it, texturesByName.begin()); it != texturesByName.end();
+    for (auto it = texturesByName.begin(); it != texturesByName.end();
          ++it) {
         delete it->second;
     }
@@ -83,7 +83,7 @@ void TextureMap::stitch() {
 
     // Extract frames from textures and add them to the stitchers
     // for (final String name : texturesToRegister.keySet())
-    for (AUTO_VAR(it, texturesToRegister.begin());
+    for (auto it = texturesToRegister.begin();
          it != texturesToRegister.end(); ++it) {
         std::wstring name = it->first;
 
@@ -120,9 +120,9 @@ void TextureMap::stitch() {
     stitchResult = stitcher->constructTexture(m_mipMap);
 
     // Extract all the final positions and store them
-    AUTO_VAR(areas, stitcher->gatherAreas());
+    auto areas = stitcher->gatherAreas();
     // for (StitchSlot slot : stitcher.gatherAreas())
-    for (AUTO_VAR(it, areas->begin()); it != areas->end(); ++it) {
+    for (auto it = areas->begin(); it != areas->end(); ++it) {
         StitchSlot* slot = *it;
         TextureHolder* textureHolder = slot->getHolder();
 
@@ -133,7 +133,7 @@ void TextureMap::stitch() {
 
         StitchedTexture* stored = nullptr;
 
-        AUTO_VAR(itTex, texturesToRegister.find(textureName));
+        auto itTex = texturesToRegister.find(textureName);
         if (itTex != texturesToRegister.end()) stored = itTex->second;
 
         // [EB]: What is this code for? debug warnings for when during
@@ -194,7 +194,7 @@ void TextureMap::stitch() {
     missingPosition = texturesByName.find(NAME_MISSING_TEXTURE)->second;
 
     // for (StitchedTexture texture : texturesToRegister.values())
-    for (AUTO_VAR(it, texturesToRegister.begin());
+    for (auto it = texturesToRegister.begin();
          it != texturesToRegister.end(); ++it) {
         StitchedTexture* texture = it->second;
         texture->replaceWith(missingPosition);
@@ -212,7 +212,7 @@ StitchedTexture* TextureMap::getTexture(const std::wstring& name) {
 
 void TextureMap::cycleAnimationFrames() {
     // for (StitchedTexture texture : animatedTextures)
-    for (AUTO_VAR(it, animatedTextures.begin()); it != animatedTextures.end();
+    for (auto it = animatedTextures.begin(); it != animatedTextures.end();
          ++it) {
         StitchedTexture* texture = *it;
         texture->cycleFrames();
@@ -233,7 +233,7 @@ Icon* TextureMap::registerIcon(const std::wstring& name) {
 
     // TODO: [EB]: Why do we allow multiple registrations?
     StitchedTexture* result = nullptr;
-    AUTO_VAR(it, texturesToRegister.find(name));
+    auto it = texturesToRegister.find(name);
     if (it != texturesToRegister.end()) result = it->second;
 
     if (result == nullptr) {

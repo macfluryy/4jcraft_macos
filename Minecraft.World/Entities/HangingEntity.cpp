@@ -131,8 +131,8 @@ bool HangingEntity::survives() {
                 level->getEntities(shared_from_this(), &bb);
 
             if (entities != nullptr && entities->size() > 0) {
-                AUTO_VAR(itEnd, entities->end());
-                for (AUTO_VAR(it, entities->begin()); it != itEnd; it++) {
+                auto itEnd = entities->end();
+                for (auto it = entities->begin(); it != itEnd; it++) {
                     std::shared_ptr<Entity> e = (*it);
                     if (e->instanceof(eTYPE_HANGING_ENTITY)) {
                         return false;

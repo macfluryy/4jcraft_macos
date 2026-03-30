@@ -273,7 +273,7 @@ void SelectWorldScreen::WorldSelectionList::renderItem(int i, int x, int y,
              time.wYear, time.wHour, time.wMinute);  // 4J - TODO Localise this
     id = id + L" (" + buffer;
 
-    __int64 size = levelSummary->getSizeOnDisk();
+    int64_t size = levelSummary->getSizeOnDisk();
     id = id + L", " + _toString<float>(size / 1024 * 100 / 1024 / 100.0f) +
          L" MB)";
     std::wstring info;

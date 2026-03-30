@@ -25,12 +25,12 @@ std::wstring ToFilename(const fs::path& path) {
     return filenametowstring(filename.c_str());
 }
 
-__int64 ToEpochMilliseconds(const fs::file_time_type& fileTime) {
+int64_t ToEpochMilliseconds(const fs::file_time_type& fileTime) {
     using namespace std::chrono;
 
     const auto systemTime = time_point_cast<milliseconds>(
         fileTime - fs::file_time_type::clock::now() + system_clock::now());
-    return static_cast<__int64>(systemTime.time_since_epoch().count());
+    return static_cast<int64_t>(systemTime.time_since_epoch().count());
 }
 }  // namespace
 
@@ -326,14 +326,14 @@ bool File::isDirectory() const {
 // value is unspecified if this pathname denotes a directory. Returns: The
 // length, in bytes, of the file denoted by this abstract pathname, or 0L if the
 // file does not exist
-__int64 File::length() {
+int64_t File::length() {
     std::error_code error;
     const fs::path path = ToFilesystemPath(getPath());
 
     if (fs::is_regular_file(path, error)) {
         const auto size = fs::file_size(path, error);
         if (!error) {
-            return static_cast<__int64>(size);
+            return static_cast<int64_t>(size);
         }
     }
 
@@ -344,7 +344,7 @@ __int64 File::length() {
 // modified. Returns: A long value representing the time the file was last
 // modified, measured in milliseconds since the epoch (00:00:00 GMT, January 1,
 // 1970), or 0L if the file does not exist or if an I/O error occurs
-__int64 File::lastModified() {
+int64_t File::lastModified() {
     std::error_code error;
     const fs::path path = ToFilesystemPath(getPath());
 

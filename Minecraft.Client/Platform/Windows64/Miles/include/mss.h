@@ -326,7 +326,7 @@ RADDEFSTART
   typedef CHAR *LPSTR, *PSTR;
 
   #ifdef IS_WIN64
-      typedef unsigned __int64 ULONG_PTR, *PULONG_PTR;
+      typedef unsigned int64_t ULONG_PTR, *PULONG_PTR;
   #else
     #ifdef _Wp64
       #if !defined(__midl) && (defined(_X86_) || defined(_M_IX86)) && _MSC_VER >= 1300

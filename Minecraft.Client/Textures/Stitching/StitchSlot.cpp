@@ -109,7 +109,7 @@ bool StitchSlot::add(TextureHolder* textureHolder) {
     }
 
     // for (final StitchSlot subSlot : subSlots)
-    for (AUTO_VAR(it, subSlots->begin()); it != subSlots->end(); ++it) {
+    for (auto it = subSlots->begin(); it != subSlots->end(); ++it) {
         StitchSlot* subSlot = *it;
         if (subSlot->add(textureHolder)) {
             return true;
@@ -124,7 +124,7 @@ void StitchSlot::collectAssignments(std::vector<StitchSlot*>* result) {
         result->push_back(this);
     } else if (subSlots != nullptr) {
         // for (StitchSlot subSlot : subSlots)
-        for (AUTO_VAR(it, subSlots->begin()); it != subSlots->end(); ++it) {
+        for (auto it = subSlots->begin(); it != subSlots->end(); ++it) {
             StitchSlot* subSlot = *it;
             subSlot->collectAssignments(result);
         }

@@ -146,7 +146,7 @@ void ZonedChunkStorage::tick() {
     if (tickCount % (20 * 10) == 4) {
         std::vector<int64_t> toClose;
 
-        AUTO_VAR(itEndZF, zoneFiles.end());
+        auto itEndZF = zoneFiles.end();
         for (std::unordered_map<int64_t, ZoneFile*>::iterator it =
                  zoneFiles.begin();
              it != itEndZF; it++) {
@@ -156,8 +156,8 @@ void ZonedChunkStorage::tick() {
             }
         }
 
-        AUTO_VAR(itEndTC, toClose.end());
-        for (AUTO_VAR(it, toClose.begin()); it != itEndTC; it++) {
+        auto itEndTC = toClose.end();
+        for (auto it = toClose.begin(); it != itEndTC; it++) {
             int64_t key = *it;  // toClose[i];
             // 4J - removed try/catch
             //            try {
@@ -174,7 +174,7 @@ void ZonedChunkStorage::tick() {
 }
 
 void ZonedChunkStorage::flush() {
-    AUTO_VAR(itEnd, zoneFiles.end());
+    auto itEnd = zoneFiles.end();
     for (std::unordered_map<int64_t, ZoneFile*>::iterator it =
              zoneFiles.begin();
          it != itEnd; it++) {
@@ -194,8 +194,8 @@ void ZonedChunkStorage::loadEntities(Level* level, LevelChunk* lc) {
     ZoneFile* zoneFile = getZoneFile(lc->x, lc->z, true);
     std::vector<CompoundTag*>* tags = zoneFile->entityFile->readAll(slot);
 
-    AUTO_VAR(itEnd, tags->end());
-    for (AUTO_VAR(it, tags->begin()); it != itEnd; it++) {
+    auto itEnd = tags->end();
+    for (auto it = tags->begin(); it != itEnd; it++) {
         CompoundTag* tag = *it;  // tags->at(i);
         int type = tag->getInt(L"_TYPE");
         if (type == 0) {
@@ -222,8 +222,8 @@ void ZonedChunkStorage::saveEntities(Level* level, LevelChunk* lc) {
     for (int i = 0; i < LevelChunk::ENTITY_BLOCKS_LENGTH; i++) {
         std::vector<std::shared_ptr<Entity> >* entities = lc->entityBlocks[i];
 
-        AUTO_VAR(itEndTags, entities->end());
-        for (AUTO_VAR(it, entities->begin()); it != itEndTags; it++) {
+        auto itEndTags = entities->end();
+        for (auto it = entities->begin(); it != itEndTags; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(j);
             CompoundTag* cp = new CompoundTag();
             cp->putInt(L"_TYPE", 0);

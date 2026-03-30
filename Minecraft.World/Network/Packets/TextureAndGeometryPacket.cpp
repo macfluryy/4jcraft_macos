@@ -65,7 +65,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(
         std::vector<SKIN_BOX*>* pSkinBoxes = pDLCSkinFile->getAdditionalBoxes();
         int iCount = 0;
 
-        for (AUTO_VAR(it, pSkinBoxes->begin()); it != pSkinBoxes->end(); ++it) {
+        for (auto it = pSkinBoxes->begin(); it != pSkinBoxes->end(); ++it) {
             SKIN_BOX* pSkinBox = *it;
             this->BoxDataA[iCount++] = *pSkinBox;
         }
@@ -98,7 +98,7 @@ TextureAndGeometryPacket::TextureAndGeometryPacket(
         this->BoxDataA = new SKIN_BOX[this->dwBoxC];
         int iCount = 0;
 
-        for (AUTO_VAR(it, pvSkinBoxes->begin()); it != pvSkinBoxes->end();
+        for (auto it = pvSkinBoxes->begin(); it != pvSkinBoxes->end();
              ++it) {
             SKIN_BOX* pSkinBox = *it;
             this->BoxDataA[iCount++] = *pSkinBox;

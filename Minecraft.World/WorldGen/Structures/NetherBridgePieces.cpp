@@ -185,7 +185,7 @@ int NetherBridgePieces::NetherBridgePiece::updatePieceWeight(
     std::list<PieceWeight*>* currentPieces) {
     bool hasAnyPieces = false;
     int totalWeight = 0;
-    for (AUTO_VAR(it, currentPieces->begin()); it != currentPieces->end();
+    for (auto it = currentPieces->begin(); it != currentPieces->end();
          it++) {
         PieceWeight* piece = *it;
 
@@ -212,7 +212,7 @@ NetherBridgePieces::NetherBridgePiece::generatePiece(
         numAttempts++;
 
         int weightSelection = random->nextInt(totalWeight);
-        for (AUTO_VAR(it, currentPieces->begin()); it != currentPieces->end();
+        for (auto it = currentPieces->begin(); it != currentPieces->end();
              it++) {
             PieceWeight* piece = *it;
             weightSelection -= piece->weight;

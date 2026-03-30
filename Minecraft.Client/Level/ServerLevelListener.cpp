@@ -120,7 +120,7 @@ void ServerLevelListener::globalLevelEvent(int type, int sourceX, int sourceY,
 void ServerLevelListener::destroyTileProgress(int id, int x, int y, int z,
                                               int progress) {
     // for (ServerPlayer p : server->getPlayers()->players)
-    for (AUTO_VAR(it, server->getPlayers()->players.begin());
+    for (auto it = server->getPlayers()->players.begin();
          it != server->getPlayers()->players.end(); ++it) {
         std::shared_ptr<ServerPlayer> p = *it;
         if (p == nullptr || p->level != level || p->entityId == id) continue;

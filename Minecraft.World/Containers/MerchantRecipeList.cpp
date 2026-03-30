@@ -7,7 +7,7 @@ MerchantRecipeList::MerchantRecipeList() {}
 MerchantRecipeList::MerchantRecipeList(CompoundTag* tag) { load(tag); }
 
 MerchantRecipeList::~MerchantRecipeList() {
-    for (AUTO_VAR(it, m_recipes.begin()); it != m_recipes.end(); ++it) {
+    for (auto it = m_recipes.begin(); it != m_recipes.end(); ++it) {
         delete (*it);
     }
 }

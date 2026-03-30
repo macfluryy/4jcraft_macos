@@ -7,7 +7,7 @@ GameRule::GameRule(GameRuleDefinition* definition, Connection* connection) {
 }
 
 GameRule::~GameRule() {
-    for (AUTO_VAR(it, m_parameters.begin()); it != m_parameters.end(); ++it) {
+    for (auto it = m_parameters.begin(); it != m_parameters.end(); ++it) {
         if (it->second.isPointer) {
             delete it->second.gr;
         }
@@ -51,7 +51,7 @@ void GameRule::onCollectItem(std::shared_ptr<ItemInstance> item) {
 void GameRule::write(DataOutputStream* dos) {
     // Find required parameters.
     dos->writeInt(m_parameters.size());
-    for (AUTO_VAR(it, m_parameters.begin()); it != m_parameters.end(); it++) {
+    for (auto it = m_parameters.begin(); it != m_parameters.end(); it++) {
         std::wstring pName = (*it).first;
         ValueType vType = (*it).second;
 

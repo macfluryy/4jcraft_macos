@@ -88,7 +88,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
     std::vector<std::shared_ptr<Entity> >* objects =
         level->getEntities(player, &grown);
     // for (int i = 0; i < objects.size(); i++) {
-    for (AUTO_VAR(it, objects->begin()); it != objects->end(); ++it) {
+    for (auto it = objects->begin(); it != objects->end(); ++it) {
         std::shared_ptr<Entity> e = *it;  // objects.get(i);
         if (!e->isPickable()) continue;
 

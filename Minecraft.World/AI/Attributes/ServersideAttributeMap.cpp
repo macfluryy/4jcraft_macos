@@ -17,7 +17,7 @@ AttributeInstance* ServersideAttributeMap::getInstance(eATTRIBUTE_ID id) {
     // If we didn't find it, search by legacy name
     /*if (result == nullptr)
     {
-            AUTO_VAR(it, attributesByLegacy.find(name));
+            auto it = attributesByLegacy.find(name);
             if(it != attributesByLegacy.end())
             {
                     result = it->second;
@@ -29,7 +29,7 @@ AttributeInstance* ServersideAttributeMap::getInstance(eATTRIBUTE_ID id) {
 
 AttributeInstance* ServersideAttributeMap::registerAttribute(
     Attribute* attribute) {
-    AUTO_VAR(it, attributesById.find(attribute->getId()));
+    auto it = attributesById.find(attribute->getId());
     if (it != attributesById.end()) {
         return it->second;
     }

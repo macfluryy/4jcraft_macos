@@ -17,7 +17,7 @@ PortalForcer::PortalForcer(ServerLevel* level) {
 }
 
 PortalForcer::~PortalForcer() {
-    for (AUTO_VAR(it, cachedPortals.begin()); it != cachedPortals.end(); ++it) {
+    for (auto it = cachedPortals.begin(); it != cachedPortals.end(); ++it) {
         delete it->second;
     }
 }
@@ -83,7 +83,7 @@ bool PortalForcer::findPortal(std::shared_ptr<Entity> e, double xOriginal,
     long hash = ChunkPos::hashCode(xc, zc);
     bool updateCache = true;
 
-    AUTO_VAR(it, cachedPortals.find(hash));
+    auto it = cachedPortals.find(hash);
     if (it != cachedPortals.end()) {
         PortalPosition* pos = it->second;
 
@@ -478,7 +478,7 @@ void PortalForcer::tick(int64_t time) {
     if (time % (SharedConstants::TICKS_PER_SECOND * 5) == 0) {
         int64_t cutoff = time - SharedConstants::TICKS_PER_SECOND * 30;
 
-        for (AUTO_VAR(it, cachedPortalKeys.begin());
+        for (auto it = cachedPortalKeys.begin();
              it != cachedPortalKeys.end();) {
             int64_t key = *it;
             PortalPosition* pos = cachedPortals[key];

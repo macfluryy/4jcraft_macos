@@ -133,8 +133,8 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
             continue;
         }
 
-        AUTO_VAR(itEndCTP, chunksToPoll.end());
-        for (AUTO_VAR(it, chunksToPoll.begin()); it != itEndCTP; it++) {
+        auto itEndCTP = chunksToPoll.end();
+        for (auto it = chunksToPoll.begin(); it != itEndCTP; it++) {
             if (it->second) {
                 // don't add mobs to edge chunks, to prevent adding mobs
                 // "outside" of the active playground

@@ -54,7 +54,7 @@ SonyLeaderboardManager::~SonyLeaderboardManager() {
     DeleteCriticalSection(&m_csViewsLock);
 }
 
-int SonyLeaderboardManager::scoreboardThreadEntry(LPVOID lpParam) {
+int SonyLeaderboardManager::scoreboardThreadEntry(void* lpParam) {
     ShutdownManager::HasStarted(ShutdownManager::eLeaderboardThread);
     SonyLeaderboardManager* self =
         reinterpret_cast<SonyLeaderboardManager*>(lpParam);

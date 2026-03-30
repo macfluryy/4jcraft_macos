@@ -89,7 +89,7 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
             data[i * DEC_PACKET_BYTES + 7] |= md->visible ? 0x80 : 0x0;
         }
         unsigned int dataIndex = playerDecorationsSize;
-        for (AUTO_VAR(it, parent->nonPlayerDecorations.begin());
+        for (auto it = parent->nonPlayerDecorations.begin();
              it != parent->nonPlayerDecorations.end(); ++it) {
             MapDecoration* md = it->second;
 #if defined(_LARGE_WORLDS)
@@ -238,7 +238,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
     // 4J Stu - Put this block back in if you want to display entity positions
     // on a map (see below)
     bool addedPlayers = false;
-    for (AUTO_VAR(it, carriedBy.begin()); it != carriedBy.end();) {
+    for (auto it = carriedBy.begin(); it != carriedBy.end();) {
         std::shared_ptr<HoldingPlayer> hp = *it;
 
         // 4J Stu - Players in the same dimension as an item frame with a map
@@ -246,8 +246,8 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
         if (hp->player->removed)  //|| (!hp->player->inventory->contains(item)
                                   //&& !item->isFramed() ))
         {
-            AUTO_VAR(it2, carriedByPlayers.find(
-                              (std::shared_ptr<Player>)hp->player));
+            auto it2 =  carriedByPlayers.find(
+                              (std::shared_ptr<Player>)hp->player);
             if (it2 != carriedByPlayers.end()) {
                 carriedByPlayers.erase(it2);
             }
@@ -262,7 +262,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                 bool atLeastOnePlayerInTheEnd = false;
                 PlayerList* players =
                     MinecraftServer::getInstance()->getPlayerList();
-                for (AUTO_VAR(it3, players->players.begin());
+                for (auto it3 = players->players.begin();
                      it3 != players->players.end(); ++it3) {
                     std::shared_ptr<ServerPlayer> serverPlayer = *it3;
                     if (serverPlayer->dimension == 1) {
@@ -271,8 +271,8 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                     }
                 }
 
-                AUTO_VAR(currentPortalDecoration,
-                         nonPlayerDecorations.find(END_PORTAL_DECORATION_KEY));
+                auto currentPortalDecoration = 
+                         nonPlayerDecorations.find(END_PORTAL_DECORATION_KEY);
                 if (currentPortalDecoration == nonPlayerDecorations.end() &&
                     atLeastOnePlayerInTheEnd) {
                     float origX = 0.0f;
@@ -367,7 +367,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
 
                 PlayerList* players =
                     MinecraftServer::getInstance()->getPlayerList();
-                for (AUTO_VAR(it3, players->players.begin());
+                for (auto it3 = players->players.begin();
                      it3 != players->players.end(); ++it3) {
                     std::shared_ptr<ServerPlayer> decorationPlayer = *it3;
                     if (decorationPlayer != nullptr &&
@@ -465,7 +465,7 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
 charArray MapItemSavedData::getUpdatePacket(
     std::shared_ptr<ItemInstance> itemInstance, Level* level,
     std::shared_ptr<Player> player) {
-    AUTO_VAR(it, carriedByPlayers.find(player));
+    auto it = carriedByPlayers.find(player);
     if (it == carriedByPlayers.end()) return charArray();
 
     std::shared_ptr<HoldingPlayer> hp = it->second;
@@ -475,8 +475,8 @@ charArray MapItemSavedData::getUpdatePacket(
 void MapItemSavedData::setDirty(int x, int y0, int y1) {
     SavedData::setDirty();
 
-    AUTO_VAR(itEnd, carriedBy.end());
-    for (AUTO_VAR(it, carriedBy.begin()); it != itEnd; it++) {
+    auto itEnd = carriedBy.end();
+    for (auto it = carriedBy.begin(); it != itEnd; it++) {
         std::shared_ptr<HoldingPlayer> hp = *it;  // carriedBy.at(i);
         if (hp->rowsDirtyMin[x] < 0 || hp->rowsDirtyMin[x] > y0)
             hp->rowsDirtyMin[x] = y0;
@@ -529,7 +529,7 @@ void MapItemSavedData::handleComplexItemData(charArray& data) {
 std::shared_ptr<MapItemSavedData::HoldingPlayer>
 MapItemSavedData::getHoldingPlayer(std::shared_ptr<Player> player) {
     std::shared_ptr<HoldingPlayer> hp = nullptr;
-    AUTO_VAR(it, carriedByPlayers.find(player));
+    auto it = carriedByPlayers.find(player);
 
     if (it == carriedByPlayers.end()) {
         hp = std::shared_ptr<HoldingPlayer>(new HoldingPlayer(player, this));
@@ -572,8 +572,8 @@ void MapItemSavedData::mergeInMapData(
 
 void MapItemSavedData::removeItemFrameDecoration(
     std::shared_ptr<ItemInstance> item) {
-    AUTO_VAR(frameDecoration,
-             nonPlayerDecorations.find(item->getFrame()->entityId));
+    auto frameDecoration =
+             nonPlayerDecorations.find(item->getFrame()->entityId);
     if (frameDecoration != nonPlayerDecorations.end()) {
         delete frameDecoration->second;
         nonPlayerDecorations.erase(frameDecoration);

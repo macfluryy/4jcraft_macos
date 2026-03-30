@@ -99,7 +99,7 @@ bool StructurePiece::isInChunk(ChunkPos* pos) {
 
 StructurePiece* StructurePiece::findCollisionPiece(
     std::list<StructurePiece*>* pieces, BoundingBox* box) {
-    for (AUTO_VAR(it, pieces->begin()); it != pieces->end(); it++) {
+    for (auto it = pieces->begin(); it != pieces->end(); it++) {
         StructurePiece* piece = *it;
         if (piece->getBoundingBox() != nullptr &&
             piece->getBoundingBox()->intersects(box)) {

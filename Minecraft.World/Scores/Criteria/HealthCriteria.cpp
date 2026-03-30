@@ -8,7 +8,7 @@ int HealthCriteria::getScoreModifier(
     std::vector<std::shared_ptr<Player> >* players) {
     float health = 0;
 
-    for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+    for (auto it = players->begin(); it != players->end(); ++it) {
         std::shared_ptr<Player> player = *it;
         health += player->getHealth() + player->getAbsorptionAmount();
     }

@@ -169,7 +169,7 @@ void ConsoleSchematicFile::save_tags(DataOutputStream* dos) {
     ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
     tag->put(L"TileEntities", tileEntityTags);
 
-    for (AUTO_VAR(it, m_tileEntities.begin()); it != m_tileEntities.end();
+    for (auto it = m_tileEntities.begin(); it != m_tileEntities.end();
          it++) {
         CompoundTag* cTag = new CompoundTag();
         (*it)->save(cTag);
@@ -179,14 +179,14 @@ void ConsoleSchematicFile::save_tags(DataOutputStream* dos) {
     ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
     tag->put(L"Entities", entityTags);
 
-    for (AUTO_VAR(it, m_entities.begin()); it != m_entities.end(); it++)
+    for (auto it = m_entities.begin(); it != m_entities.end(); it++)
         entityTags->add((CompoundTag*)(*it).second->copy());
 
     NbtIo::write(tag, dos);
     delete tag;
 }
 
-__int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
+int64_t ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
                                                  AABB* chunkBox,
                                                  AABB* destinationBox,
                                                  ESchematicRotation rot) {
@@ -328,7 +328,7 @@ __int64 ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
 // At the point that this is called, we have all the neighbouring chunks loaded
 // in (and generally post-processed, apart from this lighting pass), so we can
 // do the sort of lighting that might propagate out of the chunk.
-__int64 ConsoleSchematicFile::applyLighting(LevelChunk* chunk, AABB* chunkBox,
+int64_t ConsoleSchematicFile::applyLighting(LevelChunk* chunk, AABB* chunkBox,
                                             AABB* destinationBox,
                                             ESchematicRotation rot) {
     int xStart = std::max(destinationBox->x0, (double)chunk->x * 16);
@@ -452,7 +452,7 @@ void ConsoleSchematicFile::schematicCoordToChunkCoord(
 void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
                                              AABB* destinationBox,
                                              ESchematicRotation rot) {
-    for (AUTO_VAR(it, m_tileEntities.begin()); it != m_tileEntities.end();
+    for (auto it = m_tileEntities.begin(); it != m_tileEntities.end();
          ++it) {
         std::shared_ptr<TileEntity> te = *it;
 
@@ -499,7 +499,7 @@ void ConsoleSchematicFile::applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
             teCopy->setChanged();
         }
     }
-    for (AUTO_VAR(it, m_entities.begin()); it != m_entities.end();) {
+    for (auto it = m_entities.begin(); it != m_entities.end();) {
         Vec3 source = it->first;
 
         double targetX = source.x;
@@ -714,7 +714,7 @@ void ConsoleSchematicFile::generateSchematicFile(
                 getTileEntitiesInRegion(level->getChunk(xc, zc), xStart, yStart,
                                         zStart, xStart + xSize, yStart + ySize,
                                         zStart + zSize);
-            for (AUTO_VAR(it, tileEntities->begin()); it != tileEntities->end();
+            for (auto it = tileEntities->begin(); it != tileEntities->end();
                  ++it) {
                 std::shared_ptr<TileEntity> te = *it;
                 CompoundTag* teTag = new CompoundTag();
@@ -738,7 +738,7 @@ void ConsoleSchematicFile::generateSchematicFile(
         level->getEntities(nullptr, &bb);
     ListTag<CompoundTag>* entitiesTag = new ListTag<CompoundTag>(L"entities");
 
-    for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+    for (auto it = entities->begin(); it != entities->end(); ++it) {
         std::shared_ptr<Entity> e = *it;
 
         bool mobCanBeSaved = false;
@@ -1070,7 +1070,7 @@ ConsoleSchematicFile::getTileEntitiesInRegion(LevelChunk* chunk, int x0, int y0,
                                               int z0, int x1, int y1, int z1) {
     std::vector<std::shared_ptr<TileEntity> >* result =
         new std::vector<std::shared_ptr<TileEntity> >;
-    for (AUTO_VAR(it, chunk->tileEntities.begin());
+    for (auto it = chunk->tileEntities.begin();
          it != chunk->tileEntities.end(); ++it) {
         std::shared_ptr<TileEntity> te = it->second;
         if (te->x >= x0 && te->y >= y0 && te->z >= z0 && te->x < x1 &&

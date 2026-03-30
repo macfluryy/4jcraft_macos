@@ -9,7 +9,7 @@
 CombatTracker::CombatTracker(LivingEntity* mob) { this->mob = mob; }
 
 CombatTracker::~CombatTracker() {
-    for (AUTO_VAR(it, entries.begin()); it != entries.end(); ++it) {
+    for (auto it = entries.begin(); it != entries.end(); ++it) {
         delete (*it);
     }
 }
@@ -143,7 +143,7 @@ std::shared_ptr<LivingEntity> CombatTracker::getKiller() {
     float bestMobDamage = 0;
     float bestPlayerDamage = 0;
 
-    for (AUTO_VAR(it, entries.begin()); it != entries.end(); ++it) {
+    for (auto it = entries.begin(); it != entries.end(); ++it) {
         CombatEntry* entry = *it;
         if (entry->getSource() != nullptr &&
                 entry->getSource()->getEntity() != nullptr &&
@@ -232,7 +232,7 @@ void CombatTracker::recheckStatus() {
     int reset = inCombat ? RESET_COMBAT_STATUS_TIME : RESET_DAMAGE_STATUS_TIME;
 
     if (takingDamage && mob->tickCount - lastDamageTime > reset) {
-        for (AUTO_VAR(it, entries.begin()); it != entries.end(); ++it) {
+        for (auto it = entries.begin(); it != entries.end(); ++it) {
             delete (*it);
         }
         entries.clear();

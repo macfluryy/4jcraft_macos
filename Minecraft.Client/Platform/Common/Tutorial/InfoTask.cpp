@@ -45,7 +45,7 @@ bool InfoTask::isCompleted() {
         // If a menu is displayed, then we use the handleUIInput to complete the
         // task
         bAllComplete = true;
-        for (AUTO_VAR(it, completedMappings.begin());
+        for (auto it = completedMappings.begin();
              it != completedMappings.end(); ++it) {
             bool current = (*it).second;
             if (!current) {
@@ -56,7 +56,7 @@ bool InfoTask::isCompleted() {
     } else {
         int iCurrent = 0;
 
-        for (AUTO_VAR(it, completedMappings.begin());
+        for (auto it = completedMappings.begin();
              it != completedMappings.end(); ++it) {
             bool current = (*it).second;
             if (!current) {
@@ -94,7 +94,7 @@ void InfoTask::setAsCurrentTask(bool active /*= true*/) {
 
 void InfoTask::handleUIInput(int iAction) {
     if (bHasBeenActivated) {
-        for (AUTO_VAR(it, completedMappings.begin());
+        for (auto it = completedMappings.begin();
              it != completedMappings.end(); ++it) {
             if (iAction == (*it).first) {
                 (*it).second = true;

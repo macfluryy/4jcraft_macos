@@ -74,7 +74,7 @@ void BeaconTileEntity::applyEffects() {
         bb.y1 = level->getMaxBuildHeight();
         std::vector<std::shared_ptr<Entity> >* players =
             level->getEntitiesOfClass(typeid(Player), &bb);
-        for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+        for (auto it = players->begin(); it != players->end(); ++it) {
             std::shared_ptr<Player> player =
                 std::dynamic_pointer_cast<Player>(*it);
             player->addEffect(new MobEffectInstance(
@@ -84,7 +84,7 @@ void BeaconTileEntity::applyEffects() {
 
         if (levels >= 4 && primaryPower != secondaryPower &&
             secondaryPower > 0) {
-            for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+            for (auto it = players->begin(); it != players->end(); ++it) {
                 std::shared_ptr<Player> player =
                     std::dynamic_pointer_cast<Player>(*it);
                 player->addEffect(new MobEffectInstance(

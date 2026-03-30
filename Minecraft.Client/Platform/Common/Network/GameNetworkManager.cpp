@@ -186,7 +186,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                                 DWORD bytesRead,
                                     dwFileSize = GetFileSize(fileHandle, nullptr);
                                 PBYTE pbData = (PBYTE) new BYTE[dwFileSize];
-                                BOOL bSuccess =
+                                bool bSuccess =
                                     ReadFile(fileHandle, pbData, dwFileSize,
                                              &bytesRead, nullptr);
                                 if (bSuccess == FALSE) {
@@ -444,7 +444,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
             do {
                 // We need to keep ticking the connections for players that
                 // already logged in
-                for (AUTO_VAR(it, createdConnections.begin());
+                for (auto it = createdConnections.begin();
                      it < createdConnections.end(); ++it) {
                     (*it)->tick();
                 }
@@ -482,8 +482,8 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                         idx, CONTEXT_PRESENCE_MULTIPLAYER, false);
             } else {
                 connection->close();
-                AUTO_VAR(it, find(createdConnections.begin(),
-                                  createdConnections.end(), connection));
+                auto it = find(createdConnections.begin(),
+                                  createdConnections.end(), connection);
                 if (it != createdConnections.end())
                     createdConnections.erase(it);
             }
@@ -497,7 +497,7 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
     }
 
     if (g_NetworkManager.IsLeavingGame() || !IsInSession()) {
-        for (AUTO_VAR(it, createdConnections.begin());
+        for (auto it = createdConnections.begin();
              it < createdConnections.end(); ++it) {
             (*it)->close();
         }
@@ -940,7 +940,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     // them being removed from the server when removed from the session
     if (pServer != nullptr) {
         PlayerList* players = pServer->getPlayers();
-        for (AUTO_VAR(it, players->players.begin());
+        for (auto it = players->players.begin();
              it < players->players.end(); ++it) {
             std::shared_ptr<ServerPlayer> servPlayer = *it;
             if (servPlayer->connection->isLocal() &&
@@ -1005,7 +1005,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
                     pMinecraft->localplayers[index]->getXuid();
 
                 PlayerList* players = pServer->getPlayers();
-                for (AUTO_VAR(it, players->players.begin());
+                for (auto it = players->players.begin();
                      it < players->players.end(); ++it) {
                     std::shared_ptr<ServerPlayer> servPlayer = *it;
                     if (servPlayer->getXuid() == localPlayerXuid) {

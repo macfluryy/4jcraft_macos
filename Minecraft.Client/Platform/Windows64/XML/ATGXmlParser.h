@@ -58,11 +58,11 @@ public:
 
     virtual HRESULT  ElementBegin( CONST WCHAR* strName, UINT NameLen, 
                                    CONST XMLAttribute *pAttributes, UINT NumAttributes ) = 0;
-    virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, BOOL More ) = 0;
+    virtual HRESULT  ElementContent( CONST WCHAR *strData, UINT DataLen, bool More ) = 0;
     virtual HRESULT  ElementEnd( CONST WCHAR *strName, UINT NameLen ) = 0;
 
     virtual HRESULT  CDATABegin( ) = 0;
-    virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, BOOL bMore ) = 0;
+    virtual HRESULT  CDATAData( CONST WCHAR *strCDATA, UINT CDATALen, bool bMore ) = 0;
     virtual HRESULT  CDATAEnd( ) = 0;
 
     virtual VOID     Error( HRESULT hError, CONST CHAR *strMessage ) = 0;
@@ -111,7 +111,7 @@ public:
 private:      
     HRESULT    MainParseLoop();
 
-    HRESULT    AdvanceCharacter( BOOL bOkToFail = FALSE ); 
+    HRESULT    AdvanceCharacter( bool bOkToFail = FALSE ); 
     VOID       SkipNextAdvance();           
 
     HRESULT    ConsumeSpace();            
@@ -144,10 +144,10 @@ private:
     BYTE*           m_pReadPtr;
     WCHAR*          m_pWritePtr;        // write pointer within m_pBuf      
 
-    BOOL            m_bUnicode;         // TRUE = 16-bits, FALSE = 8-bits
-    BOOL            m_bReverseBytes;    // TRUE = reverse bytes, FALSE = don't reverse
+    bool            m_bUnicode;         // TRUE = 16-bits, FALSE = 8-bits
+    bool            m_bReverseBytes;    // TRUE = reverse bytes, FALSE = don't reverse
     
-    BOOL            m_bSkipNextAdvance;
+    bool            m_bSkipNextAdvance;
     WCHAR           m_Ch;               // Current character being parsed
 };
 

@@ -32,16 +32,16 @@ bool ShapelessRecipy::matches(std::shared_ptr<CraftingContainer> craftSlots,
             if (item != nullptr) {
                 bool found = false;
 
-                AUTO_VAR(citEnd, ingredients->end());
-                for (AUTO_VAR(cit, ingredients->begin()); cit != citEnd;
+                auto citEnd = ingredients->end();
+                for (auto cit = ingredients->begin(); cit != citEnd;
                      ++cit) {
                     ItemInstance* ingredient = *cit;
                     if (item->id == ingredient->id &&
                         (ingredient->getAuxValue() == Recipes::ANY_AUX_VALUE ||
                          item->getAuxValue() == ingredient->getAuxValue())) {
                         found = true;
-                        AUTO_VAR(it, find(tempList.begin(), tempList.end(),
-                                          ingredient));
+                        auto it = find(tempList.begin(), tempList.end(),
+                                          ingredient);
                         if (it != tempList.end()) tempList.erase(it);
                         break;
                     }
@@ -72,7 +72,7 @@ bool ShapelessRecipy::requiresRecipe(int iRecipe) {
 
     // printf("ShapelessRecipy %d\n",iRecipe);
 
-    AUTO_VAR(citEnd, ingredients->end());
+    auto citEnd = ingredients->end();
     int iCount = 0;
     for (std::vector<ItemInstance*>::iterator ingredient = ingredients->begin();
          ingredient != citEnd; ingredient++) {
@@ -107,7 +107,7 @@ void ShapelessRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     memset(TempIngReq.iIngAuxValA, Recipes::ANY_AUX_VALUE, sizeof(int) * 9);
     ZeroMemory(TempIngReq.uiGridA, sizeof(unsigned int) * 9);
 
-    AUTO_VAR(citEnd, ingredients->end());
+    auto citEnd = ingredients->end();
 
     for (std::vector<ItemInstance*>::const_iterator ingredient =
              ingredients->begin();

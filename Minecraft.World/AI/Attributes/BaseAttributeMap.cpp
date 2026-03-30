@@ -3,7 +3,7 @@
 #include "BaseAttributeMap.h"
 
 BaseAttributeMap::~BaseAttributeMap() {
-    for (AUTO_VAR(it, attributesById.begin()); it != attributesById.end();
+    for (auto it = attributesById.begin(); it != attributesById.end();
          ++it) {
         delete it->second;
     }
@@ -14,7 +14,7 @@ AttributeInstance* BaseAttributeMap::getInstance(Attribute* attribute) {
 }
 
 AttributeInstance* BaseAttributeMap::getInstance(eATTRIBUTE_ID id) {
-    AUTO_VAR(it, attributesById.find(id));
+    auto it = attributesById.find(id);
     if (it != attributesById.end()) {
         return it->second;
     } else {
@@ -23,7 +23,7 @@ AttributeInstance* BaseAttributeMap::getInstance(eATTRIBUTE_ID id) {
 }
 
 void BaseAttributeMap::getAttributes(std::vector<AttributeInstance*>& atts) {
-    for (AUTO_VAR(it, attributesById.begin()); it != attributesById.end();
+    for (auto it = attributesById.begin(); it != attributesById.end();
          ++it) {
         atts.push_back(it->second);
     }
@@ -35,7 +35,7 @@ void BaseAttributeMap::onAttributeModified(
 void BaseAttributeMap::removeItemModifiers(std::shared_ptr<ItemInstance> item) {
     attrAttrModMap* modifiers = item->getAttributeModifiers();
 
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeInstance* attribute = getInstance(it->first);
         AttributeModifier* modifier = it->second;
 
@@ -52,7 +52,7 @@ void BaseAttributeMap::removeItemModifiers(std::shared_ptr<ItemInstance> item) {
 void BaseAttributeMap::addItemModifiers(std::shared_ptr<ItemInstance> item) {
     attrAttrModMap* modifiers = item->getAttributeModifiers();
 
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeInstance* attribute = getInstance(it->first);
         AttributeModifier* modifier = it->second;
 

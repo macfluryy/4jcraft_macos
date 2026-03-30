@@ -50,7 +50,7 @@ void CPlatformNetworkManagerStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
         if (m_pIQNet->IsHost() && !m_bHostChanged) {
             // Do we already have a primary player for this system?
             bool systemHasPrimaryPlayer = false;
-            for (AUTO_VAR(it, m_machineQNetPrimaryPlayers.begin());
+            for (auto it = m_machineQNetPrimaryPlayers.begin();
                  it < m_machineQNetPrimaryPlayers.end(); ++it) {
                 IQNetPlayer* pQNetPrimaryPlayer = *it;
                 if (pQNetPlayer->IsSameSystem(pQNetPrimaryPlayer)) {
@@ -512,7 +512,7 @@ INetworkPlayer* CPlatformNetworkManagerStub::addNetworkPlayer(
 void CPlatformNetworkManagerStub::removeNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
     INetworkPlayer* pNetworkPlayer = getNetworkPlayer(pQNetPlayer);
-    for (AUTO_VAR(it, currentNetworkPlayers.begin());
+    for (auto it = currentNetworkPlayers.begin();
          it != currentNetworkPlayers.end(); it++) {
         if (*it == pNetworkPlayer) {
             currentNetworkPlayers.erase(it);

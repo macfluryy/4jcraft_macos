@@ -98,8 +98,8 @@ MultiPlayerChunkCache::~MultiPlayerChunkCache() {
     delete cache;
     delete hasData;
 
-    AUTO_VAR(itEnd, loadedChunkList.end());
-    for (AUTO_VAR(it, loadedChunkList.begin()); it != itEnd; it++) delete *it;
+    auto itEnd = loadedChunkList.end();
+    for (auto it = loadedChunkList.begin(); it != itEnd; it++) delete *it;
 
     DeleteCriticalSection(&m_csLoadCreate);
 }

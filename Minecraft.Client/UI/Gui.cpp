@@ -933,7 +933,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                          iSafezoneXHalf + 2, 20, 0xffffff);
         font->drawShadow(
             L"Seed: " +
-                _toString<__int64>(minecraft->level->getLevelData()->getSeed()),
+                _toString<int64_t>(minecraft->level->getLevelData()->getSeed()),
             iSafezoneXHalf + 2, 32 + 00, 0xffffff);
         font->drawShadow(minecraft->gatherStats1(), iSafezoneXHalf + 2, 32 + 10,
                          0xffffff);
@@ -1331,8 +1331,8 @@ void Gui::tick() {
         // viewing the Pause Menu. We don't show the guiMessages when a menu is
         // up, so don't fade them out
         if (!ui.GetMenuDisplayed(iPad)) {
-            AUTO_VAR(itEnd, guiMessages[iPad].end());
-            for (AUTO_VAR(it, guiMessages[iPad].begin()); it != itEnd; it++) {
+            auto itEnd = guiMessages[iPad].end();
+            for (auto it = guiMessages[iPad].begin(); it != itEnd; it++) {
                 (*it).ticks++;
             }
         }
@@ -1506,8 +1506,8 @@ void Gui::displayClientMessage(int messageId, int iPad) {
 }
 
 // 4J Added
-void Gui::renderGraph(int dataLength, int dataPos, __int64* dataA,
-                      float dataAScale, int dataAWarning, __int64* dataB,
+void Gui::renderGraph(int dataLength, int dataPos, int64_t* dataA,
+                      float dataAScale, int dataAWarning, int64_t* dataB,
                       float dataBScale, int dataBWarning) {
     int height = minecraft->height;
     // This causes us to cover xScale*dataLength pixels in the horizontal
@@ -1541,7 +1541,7 @@ void Gui::renderGraph(int dataLength, int dataPos, __int64* dataA,
                 t->color(0xff000000 + cc * 256);
             }
 
-            __int64 aVal = dataA[i] / dataAScale;
+            int64_t aVal = dataA[i] / dataAScale;
 
             t->vertex((float)(xScale * i + 0.5f), (float)(height - aVal + 0.5f),
                       (float)(0));
@@ -1556,7 +1556,7 @@ void Gui::renderGraph(int dataLength, int dataPos, __int64* dataA,
                 t->color(0xff808080 + cc / 2 * 256);
             }
 
-            __int64 bVal = dataB[i] / dataBScale;
+            int64_t bVal = dataB[i] / dataBScale;
 
             t->vertex((float)(xScale * i + (xScale - 1) + 0.5f),
                       (float)(height - bVal + 0.5f), (float)(0));
@@ -1570,7 +1570,7 @@ void Gui::renderGraph(int dataLength, int dataPos, __int64* dataA,
 }
 
 void Gui::renderStackedGraph(int dataPos, int dataLength, int dataSources,
-                             __int64 (*func)(unsigned int dataPos,
+                             int64_t (*func)(unsigned int dataPos,
                                              unsigned int dataSource)) {
     int height = minecraft->height;
 
@@ -1587,8 +1587,8 @@ void Gui::renderStackedGraph(int dataPos, int dataLength, int dataSources,
     Tesselator* t = Tesselator::getInstance();
 
     t->begin(GL_LINES);
-    __int64 thisVal = 0;
-    __int64 topVal = 0;
+    int64_t thisVal = 0;
+    int64_t topVal = 0;
     for (int i = 0; i < dataLength; i++) {
         thisVal = 0;
         topVal = 0;

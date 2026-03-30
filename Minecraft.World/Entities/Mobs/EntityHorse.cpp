@@ -424,7 +424,7 @@ std::shared_ptr<EntityHorse> EntityHorse::getClosestMommy(
     std::vector<std::shared_ptr<Entity> >* list =
         level->getEntities(baby, &expanded, PARENT_HORSE_SELECTOR);
 
-    for (AUTO_VAR(it, list->begin()); it != list->end(); ++it) {
+    for (auto it = list->begin(); it != list->end(); ++it) {
         std::shared_ptr<Entity> horse = *it;
         double distanceSquared =
             horse->distanceToSqr(baby->x, baby->y, baby->z);

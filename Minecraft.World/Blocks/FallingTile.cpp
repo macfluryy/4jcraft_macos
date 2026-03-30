@@ -122,7 +122,7 @@ void FallingTile::tick() {
                             CompoundTag* swap = new CompoundTag();
                             tileEntity->save(swap);
                             std::vector<Tag*>* allTags = tileData->getAllTags();
-                            for (AUTO_VAR(it, allTags->begin());
+                            for (auto it = allTags->begin();
                                  it != allTags->end(); ++it) {
                                 Tag* tag = *it;
                                 if (tag->getName().compare(L"x") == 0 ||
@@ -173,7 +173,7 @@ void FallingTile::causeFallDamage(float distance) {
                                        ? DamageSource::anvil
                                        : DamageSource::fallingBlock;
             // for (Entity entity : entities)
-            for (AUTO_VAR(it, entities->begin()); it != entities->end(); ++it) {
+            for (auto it = entities->begin(); it != entities->end(); ++it) {
                 (*it)->hurt(source, std::min(Mth::floor(dmg * fallDamageAmount),
                                              fallDamageMax));
             }

@@ -44,8 +44,8 @@ void FurnaceMenu::addSlotListener(ContainerListener* listener) {
 void FurnaceMenu::broadcastChanges() {
     AbstractContainerMenu::broadcastChanges();
 
-    AUTO_VAR(itEnd, containerListeners.end());
-    for (AUTO_VAR(it, containerListeners.begin()); it != itEnd; it++) {
+    auto itEnd = containerListeners.end();
+    for (auto it = containerListeners.begin(); it != itEnd; it++) {
         ContainerListener* listener = *it;  // containerListeners->at(i);
         if (tc != furnace->tickCount) {
             listener->setContainerData(this, 0, furnace->tickCount);

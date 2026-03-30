@@ -80,7 +80,7 @@ void TrackedEntity::tick(EntityTracker* tracker,
             !e->removed) {
             std::shared_ptr<MapItemSavedData> data =
                 Item::map->getSavedData(item, e->level);
-            for (AUTO_VAR(it, players->begin()); it != players->end(); ++it) {
+            for (auto it = players->begin(); it != players->end(); ++it) {
                 std::shared_ptr<ServerPlayer> player =
                     std::dynamic_pointer_cast<ServerPlayer>(*it);
                 data->tickCarriedBy(player, item);
@@ -378,7 +378,7 @@ void TrackedEntity::broadcast(std::shared_ptr<Packet> packet) {
         // can be sent to any player, but we try to restrict the network impact
         // this has by not resending to the one machine
 
-        for (AUTO_VAR(it, seenBy.begin()); it != seenBy.end(); it++) {
+        for (auto it = seenBy.begin(); it != seenBy.end(); it++) {
             std::shared_ptr<ServerPlayer> player = *it;
             bool dontSend = false;
             if (sentTo.size()) {
@@ -422,7 +422,7 @@ void TrackedEntity::broadcast(std::shared_ptr<Packet> packet) {
         // This packet hasn't got canSendToAnyClient set, so just send to
         // everyone here, and it
 
-        for (AUTO_VAR(it, seenBy.begin()); it != seenBy.end(); it++) {
+        for (auto it = seenBy.begin(); it != seenBy.end(); it++) {
             (*it)->connection->send(packet);
         }
     }
@@ -441,13 +441,13 @@ void TrackedEntity::broadcastAndSend(std::shared_ptr<Packet> packet) {
 }
 
 void TrackedEntity::broadcastRemoved() {
-    for (AUTO_VAR(it, seenBy.begin()); it != seenBy.end(); it++) {
+    for (auto it = seenBy.begin(); it != seenBy.end(); it++) {
         (*it)->entitiesToRemove.push_back(e->entityId);
     }
 }
 
 void TrackedEntity::removePlayer(std::shared_ptr<ServerPlayer> sp) {
-    AUTO_VAR(it, seenBy.find(sp));
+    auto it = seenBy.find(sp);
     if (it != seenBy.end()) {
         sp->entitiesToRemove.push_back(e->entityId);
         seenBy.erase(it);
@@ -635,7 +635,7 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
                 std::dynamic_pointer_cast<LivingEntity>(e);
             std::vector<MobEffectInstance*>* activeEffects =
                 mob->getActiveEffects();
-            for (AUTO_VAR(it, activeEffects->begin());
+            for (auto it = activeEffects->begin();
                  it != activeEffects->end(); ++it) {
                 MobEffectInstance* effect = *it;
 
@@ -645,7 +645,7 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
             delete activeEffects;
         }
     } else if (visibility == eVisibility_NotVisible) {
-        AUTO_VAR(it, seenBy.find(sp));
+        auto it = seenBy.find(sp);
         if (it != seenBy.end()) {
             seenBy.erase(it);
             sp->entitiesToRemove.push_back(e->entityId);
@@ -838,7 +838,7 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
 }
 
 void TrackedEntity::clear(std::shared_ptr<ServerPlayer> sp) {
-    AUTO_VAR(it, seenBy.find(sp));
+    auto it = seenBy.find(sp);
     if (it != seenBy.end()) {
         seenBy.erase(it);
         sp->entitiesToRemove.push_back(e->entityId);

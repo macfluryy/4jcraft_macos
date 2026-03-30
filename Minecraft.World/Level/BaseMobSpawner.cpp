@@ -24,7 +24,7 @@ BaseMobSpawner::BaseMobSpawner() {
 
 BaseMobSpawner::~BaseMobSpawner() {
     if (spawnPotentials) {
-        for (AUTO_VAR(it, spawnPotentials->begin());
+        for (auto it = spawnPotentials->begin();
              it != spawnPotentials->end(); ++it) {
             delete *it;
         }
@@ -134,7 +134,7 @@ std::shared_ptr<Entity> BaseMobSpawner::loadDataAndAddEntity(
         entity->save(data);
 
         std::vector<Tag*>* tags = getNextSpawnData()->tag->getAllTags();
-        for (AUTO_VAR(it, tags->begin()); it != tags->end(); ++it) {
+        for (auto it = tags->begin(); it != tags->end(); ++it) {
             Tag* tag = *it;
             data->put(tag->getName(), tag->copy());
         }
@@ -154,7 +154,7 @@ std::shared_ptr<Entity> BaseMobSpawner::loadDataAndAddEntity(
                 mount->save(mountData);
 
                 std::vector<Tag*>* ridingTags = ridingTag->getAllTags();
-                for (AUTO_VAR(it, ridingTags->begin()); it != ridingTags->end();
+                for (auto it = ridingTags->begin(); it != ridingTags->end();
                      ++it) {
                     Tag* tag = *it;
                     mountData->put(tag->getName(), tag->copy());
@@ -258,7 +258,7 @@ void BaseMobSpawner::save(CompoundTag* tag) {
         ListTag<CompoundTag>* list = new ListTag<CompoundTag>();
 
         if (spawnPotentials != nullptr && spawnPotentials->size() > 0) {
-            for (AUTO_VAR(it, spawnPotentials->begin());
+            for (auto it = spawnPotentials->begin();
                  it != spawnPotentials->end(); ++it) {
                 SpawnData* data = *it;
                 list->add(data->save());

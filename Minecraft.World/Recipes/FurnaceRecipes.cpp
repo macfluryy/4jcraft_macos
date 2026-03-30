@@ -58,12 +58,12 @@ void FurnaceRecipes::addFurnaceRecipy(int itemId, ItemInstance* result,
 }
 
 bool FurnaceRecipes::isFurnaceItem(int itemId) {
-    AUTO_VAR(it, recipies.find(itemId));
+    auto it = recipies.find(itemId);
     return it != recipies.end();
 }
 
 ItemInstance* FurnaceRecipes::getResult(int itemId) {
-    AUTO_VAR(it, recipies.find(itemId));
+    auto it = recipies.find(itemId);
     if (it != recipies.end()) {
         return it->second;
     }
@@ -75,7 +75,7 @@ std::unordered_map<int, ItemInstance*>* FurnaceRecipes::getRecipies() {
 }
 
 float FurnaceRecipes::getRecipeValue(int itemId) {
-    AUTO_VAR(it, recipeValue.find(itemId));
+    auto it = recipeValue.find(itemId);
     if (it != recipeValue.end()) {
         return it->second;
     }

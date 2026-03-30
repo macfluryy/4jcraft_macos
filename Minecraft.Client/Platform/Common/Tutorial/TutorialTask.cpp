@@ -20,7 +20,7 @@ TutorialTask::TutorialTask(Tutorial* tutorial, int descriptionId,
       m_bShowMinimumTime(bShowMinimumTime),
       m_bShownForMinimumTime(false) {
     if (inConstraints != nullptr) {
-        for (AUTO_VAR(it, inConstraints->begin()); it < inConstraints->end();
+        for (auto it = inConstraints->begin(); it < inConstraints->end();
              ++it) {
             TutorialConstraint* constraint = *it;
             constraints.push_back(constraint);
@@ -34,7 +34,7 @@ TutorialTask::TutorialTask(Tutorial* tutorial, int descriptionId,
 TutorialTask::~TutorialTask() {
     enableConstraints(false);
 
-    for (AUTO_VAR(it, constraints.begin()); it < constraints.end(); ++it) {
+    for (auto it = constraints.begin(); it < constraints.end(); ++it) {
         TutorialConstraint* constraint = *it;
 
         if (constraint->getQueuedForRemoval()) {
@@ -53,7 +53,7 @@ void TutorialTask::enableConstraints(bool enable,
                                      bool delayRemove /*= false*/) {
     if (!enable && (areConstraintsEnabled || !delayRemove)) {
         // Remove
-        for (AUTO_VAR(it, constraints.begin()); it != constraints.end(); ++it) {
+        for (auto it = constraints.begin(); it != constraints.end(); ++it) {
             TutorialConstraint* constraint = *it;
             // app.DebugPrintf(">>>>>>>> %i\n", constraints.size());
             tutorial->RemoveConstraint(constraint, delayRemove);
@@ -61,7 +61,7 @@ void TutorialTask::enableConstraints(bool enable,
         areConstraintsEnabled = false;
     } else if (!areConstraintsEnabled && enable) {
         // Add
-        for (AUTO_VAR(it, constraints.begin()); it != constraints.end(); ++it) {
+        for (auto it = constraints.begin(); it != constraints.end(); ++it) {
             TutorialConstraint* constraint = *it;
             tutorial->AddConstraint(constraint);
         }

@@ -15,7 +15,7 @@ ModifiableAttributeInstance::ModifiableAttributeInstance(
 
 ModifiableAttributeInstance::~ModifiableAttributeInstance() {
     for (int i = 0; i < AttributeModifier::TOTAL_OPERATIONS; i++) {
-        for (AUTO_VAR(it, modifiers[i].begin()); it != modifiers[i].end();
+        for (auto it = modifiers[i].begin(); it != modifiers[i].end();
              ++it) {
             // Delete all modifiers
             delete *it;
@@ -45,7 +45,7 @@ void ModifiableAttributeInstance::getModifiers(
     for (int i = 0; i < AttributeModifier::TOTAL_OPERATIONS; i++) {
         std::unordered_set<AttributeModifier*>* opModifiers = &modifiers[i];
 
-        for (AUTO_VAR(it, opModifiers->begin()); it != opModifiers->end();
+        for (auto it = opModifiers->begin(); it != opModifiers->end();
              ++it) {
             result.insert(*it);
         }
@@ -55,7 +55,7 @@ void ModifiableAttributeInstance::getModifiers(
 AttributeModifier* ModifiableAttributeInstance::getModifier(eMODIFIER_ID id) {
     AttributeModifier* modifier = nullptr;
 
-    AUTO_VAR(it, modifierById.find(id));
+    auto it = modifierById.find(id);
     if (it != modifierById.end()) {
         modifier = it->second;
     }
@@ -65,7 +65,7 @@ AttributeModifier* ModifiableAttributeInstance::getModifier(eMODIFIER_ID id) {
 
 void ModifiableAttributeInstance::addModifiers(
     std::unordered_set<AttributeModifier*>* modifiers) {
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         addModifier(*it);
     }
 }
@@ -94,7 +94,7 @@ void ModifiableAttributeInstance::setDirty() {
 
 void ModifiableAttributeInstance::removeModifier(AttributeModifier* modifier) {
     for (int i = 0; i < AttributeModifier::TOTAL_OPERATIONS; i++) {
-        for (AUTO_VAR(it, modifiers[i].begin()); it != modifiers[i].end();
+        for (auto it = modifiers[i].begin(); it != modifiers[i].end();
              ++it) {
             if (modifier->equals(*it)) {
                 modifiers[i].erase(it);
@@ -117,7 +117,7 @@ void ModifiableAttributeInstance::removeModifiers() {
     std::unordered_set<AttributeModifier*> removingModifiers;
     getModifiers(removingModifiers);
 
-    for (AUTO_VAR(it, removingModifiers.begin()); it != removingModifiers.end();
+    for (auto it = removingModifiers.begin(); it != removingModifiers.end();
          ++it) {
         removeModifier(*it);
     }
@@ -137,7 +137,7 @@ double ModifiableAttributeInstance::calculateValue() {
     std::unordered_set<AttributeModifier*>* modifiers;
 
     modifiers = getModifiers(AttributeModifier::OPERATION_ADDITION);
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeModifier* modifier = *it;
         base += modifier->getAmount();
     }
@@ -145,13 +145,13 @@ double ModifiableAttributeInstance::calculateValue() {
     double result = base;
 
     modifiers = getModifiers(AttributeModifier::OPERATION_MULTIPLY_BASE);
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeModifier* modifier = *it;
         result += base * modifier->getAmount();
     }
 
     modifiers = getModifiers(AttributeModifier::OPERATION_MULTIPLY_TOTAL);
-    for (AUTO_VAR(it, modifiers->begin()); it != modifiers->end(); ++it) {
+    for (auto it = modifiers->begin(); it != modifiers->end(); ++it) {
         AttributeModifier* modifier = *it;
         result *= 1 + modifier->getAmount();
     }

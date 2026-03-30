@@ -29,12 +29,12 @@ DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
 
 
 DLCPack::~DLCPack() {
-    for (AUTO_VAR(it, m_childPacks.begin()); it != m_childPacks.end(); ++it) {
+    for (auto it = m_childPacks.begin(); it != m_childPacks.end(); ++it) {
         delete *it;
     }
 
     for (unsigned int i = 0; i < DLCManager::e_DLCType_Max; ++i) {
-        for (AUTO_VAR(it, m_files[i].begin()); it != m_files[i].end(); ++it) {
+        for (auto it = m_files[i].begin(); it != m_files[i].end(); ++it) {
             delete *it;
         }
     }
@@ -122,7 +122,7 @@ void DLCPack::addParameter(DLCManager::EDLCParameterType type,
 
 bool DLCPack::getParameterAsUInt(DLCManager::EDLCParameterType type,
                                  unsigned int& param) {
-    AUTO_VAR(it, m_parameters.find((int)type));
+    auto it = m_parameters.find((int)type);
     if (it != m_parameters.end()) {
         switch (type) {
             case DLCManager::e_DLCParamType_NetherParticleColour:
@@ -213,8 +213,8 @@ bool DLCPack::doesPackContainFile(DLCManager::EDLCType type,
         }
     } else {
         g_pathCmpString = &path;
-        AUTO_VAR(it, std::find_if(m_files[type].begin(), m_files[type].end(),
-                                  pathCmp));
+        auto it = std::find_if(m_files[type].begin(), m_files[type].end(),
+                                  pathCmp);
         hasFile = it != m_files[type].end();
         if (!hasFile && m_parentPack) {
             hasFile = m_parentPack->doesPackContainFile(type, path);
@@ -252,8 +252,7 @@ DLCFile* DLCPack::getFile(DLCManager::EDLCType type, const std::wstring& path) {
         }
     } else {
         g_pathCmpString = &path;
-        AUTO_VAR(it, std::find_if(m_files[type].begin(), m_files[type].end(),
-                                  pathCmp));
+        auto it = std::find_if(m_files[type].begin(), m_files[type].end(), pathCmp);
 
         if (it == m_files[type].end()) {
             // Not found
@@ -298,7 +297,7 @@ unsigned int DLCPack::getFileIndexAt(DLCManager::EDLCType type,
     unsigned int foundIndex = 0;
     found = false;
     unsigned int index = 0;
-    for (AUTO_VAR(it, m_files[type].begin()); it != m_files[type].end(); ++it) {
+    for (auto it = m_files[type].begin(); it != m_files[type].end(); ++it) {
         if (path.compare((*it)->getPath()) == 0) {
             foundIndex = index;
             found = true;

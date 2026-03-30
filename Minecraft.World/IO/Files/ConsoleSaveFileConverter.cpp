@@ -267,7 +267,7 @@ void ConsoleSaveFileConverter::ConvertSave(ConsoleSaveFile* sourceSave,
     // region files
     std::vector<FileEntry*>* allFilesInSave =
         sourceSave->getFilesWithPrefix(std::wstring(L""));
-    for (AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end();
+    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end();
          ++it) {
         FileEntry* fe = *it;
         if (fe != sourceLdatFe) {

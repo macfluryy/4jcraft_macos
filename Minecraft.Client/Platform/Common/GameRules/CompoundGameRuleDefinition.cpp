@@ -9,7 +9,7 @@ CompoundGameRuleDefinition::CompoundGameRuleDefinition() {
 }
 
 CompoundGameRuleDefinition::~CompoundGameRuleDefinition() {
-    for (AUTO_VAR(it, m_children.begin()); it != m_children.end(); ++it) {
+    for (auto it = m_children.begin(); it != m_children.end(); ++it) {
         delete (*it);
     }
 }
@@ -17,7 +17,7 @@ CompoundGameRuleDefinition::~CompoundGameRuleDefinition() {
 void CompoundGameRuleDefinition::getChildren(
     std::vector<GameRuleDefinition*>* children) {
     GameRuleDefinition::getChildren(children);
-    for (AUTO_VAR(it, m_children.begin()); it != m_children.end(); it++)
+    for (auto it = m_children.begin(); it != m_children.end(); it++)
         children->push_back(*it);
 }
 
@@ -48,7 +48,7 @@ void CompoundGameRuleDefinition::populateGameRule(
     GameRulesInstance::EGameRulesInstanceType type, GameRule* rule) {
     GameRule* newRule = nullptr;
     int i = 0;
-    for (AUTO_VAR(it, m_children.begin()); it != m_children.end(); ++it) {
+    for (auto it = m_children.begin(); it != m_children.end(); ++it) {
         newRule = new GameRule(*it, rule->getConnection());
         (*it)->populateGameRule(type, newRule);
 
@@ -66,7 +66,7 @@ void CompoundGameRuleDefinition::populateGameRule(
 bool CompoundGameRuleDefinition::onUseTile(GameRule* rule, int tileId, int x,
                                            int y, int z) {
     bool statusChanged = false;
-    for (AUTO_VAR(it, rule->m_parameters.begin());
+    for (auto it = rule->m_parameters.begin();
          it != rule->m_parameters.end(); ++it) {
         if (it->second.isPointer) {
             bool changed = it->second.gr->getGameRuleDefinition()->onUseTile(
@@ -84,7 +84,7 @@ bool CompoundGameRuleDefinition::onUseTile(GameRule* rule, int tileId, int x,
 bool CompoundGameRuleDefinition::onCollectItem(
     GameRule* rule, std::shared_ptr<ItemInstance> item) {
     bool statusChanged = false;
-    for (AUTO_VAR(it, rule->m_parameters.begin());
+    for (auto it = rule->m_parameters.begin();
          it != rule->m_parameters.end(); ++it) {
         if (it->second.isPointer) {
             bool changed =
@@ -102,7 +102,7 @@ bool CompoundGameRuleDefinition::onCollectItem(
 
 void CompoundGameRuleDefinition::postProcessPlayer(
     std::shared_ptr<Player> player) {
-    for (AUTO_VAR(it, m_children.begin()); it != m_children.end(); ++it) {
+    for (auto it = m_children.begin(); it != m_children.end(); ++it) {
         (*it)->postProcessPlayer(player);
     }
 }

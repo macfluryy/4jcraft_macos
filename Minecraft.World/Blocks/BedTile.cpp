@@ -97,8 +97,8 @@ bool BedTile::use(Level* level, int x, int y, int z,
 
     if (isOccupied(data)) {
         std::shared_ptr<Player> sleepingPlayer = nullptr;
-        AUTO_VAR(itEnd, level->players.end());
-        for (AUTO_VAR(it, level->players.begin()); it != itEnd; it++) {
+        auto itEnd = level->players.end();
+        for (auto it = level->players.begin(); it != itEnd; it++) {
             std::shared_ptr<Player> p = *it;
             if (p->isSleeping()) {
                 Pos pos = p->bedPosition;

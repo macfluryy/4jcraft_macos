@@ -982,8 +982,8 @@ void IUIScene_CreativeMenu::TabSpec::populateMenu(AbstractContainerMenu* menu,
 
     // Fill the dynamic group
     if (m_dynamicGroupsCount > 0 && m_dynamicGroupsA != nullptr) {
-        for (AUTO_VAR(it,
-                      categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin());
+        for (auto it=
+                      categoryGroups[m_dynamicGroupsA[dynamicIndex]].rbegin();
              it != categoryGroups[m_dynamicGroupsA[dynamicIndex]].rend() &&
              lastSlotIndex < MAX_SIZE;
              ++it) {
@@ -1195,7 +1195,7 @@ bool IUIScene_CreativeMenu::handleValidKeyPress(int iPad, int buttonNum,
 }
 
 void IUIScene_CreativeMenu::handleOutsideClicked(int iPad, int buttonNum,
-                                                 BOOL quickKeyHeld) {
+                                                 bool quickKeyHeld) {
     // Drop items.
     Minecraft* pMinecraft = Minecraft::GetInstance();
 

@@ -640,7 +640,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
 
         std::uint8_t bTextMetadata[88] = {};
 
-        __int64 seed = 0;
+        int64_t seed = 0;
         bool hasSeed = false;
         if (MinecraftServer::getInstance() != nullptr &&
             MinecraftServer::getInstance()->levels[0] != nullptr) {
@@ -857,7 +857,7 @@ void ConsoleSaveFileOriginal::ConvertToLocalPlatform() {
     // convert each of the region files to the local platform
     std::vector<FileEntry*>* allFilesInSave =
         getFilesWithPrefix(std::wstring(L""));
-    for (AUTO_VAR(it, allFilesInSave->begin()); it < allFilesInSave->end();
+    for (auto it = allFilesInSave->begin(); it < allFilesInSave->end();
          ++it) {
         FileEntry* fe = *it;
         std::wstring fName(fe->data.filename);

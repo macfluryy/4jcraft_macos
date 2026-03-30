@@ -130,7 +130,7 @@ private:
                                     IggyMemoryUseInfo& memoryInfo);
 
 public:
-    void PrintTotalMemoryUsage(__int64& totalStatic, __int64& totalDynamic);
+    void PrintTotalMemoryUsage(int64_t& totalStatic, int64_t& totalDynamic);
 
 public:
     UIScene(int iPad, UILayer* parentLayer);

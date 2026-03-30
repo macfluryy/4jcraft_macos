@@ -1160,8 +1160,8 @@ std::shared_ptr<ItemInstance> Recipes::getItemFor(
         if (recipesClass->matches(craftSlots, level))
             return recipesClass->assemble(craftSlots);
     } else {
-        AUTO_VAR(itEnd, recipies->end());
-        for (AUTO_VAR(it, recipies->begin()); it != itEnd; it++) {
+        auto itEnd = recipies->end();
+        for (auto it = recipies->begin(); it != itEnd; it++) {
             Recipy* r = *it;  // recipies->at(i);
             if (r->matches(craftSlots, level)) return r->assemble(craftSlots);
         }
@@ -1185,8 +1185,8 @@ void Recipes::buildRecipeIngredientsArray(void) {
     m_pRecipeIngredientsRequired = new Recipy::INGREDIENTS_REQUIRED[iRecipeC];
 
     int iCount = 0;
-    AUTO_VAR(itEndRec, recipies->end());
-    for (AUTO_VAR(it, recipies->begin()); it != itEndRec; it++) {
+    auto itEndRec = recipies->end();
+    for (auto it = recipies->begin(); it != itEndRec; it++) {
         Recipy* recipe = *it;
         // wprintf(L"RECIPE - [%d] is
         // %w\n",iCount,recipe->getResultItem()->getItem()->getName());

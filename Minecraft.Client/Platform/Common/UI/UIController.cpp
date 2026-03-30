@@ -452,7 +452,7 @@ void UIController::tick() {
 
     // Clear out the cached movie file data
     int64_t currentTime = System::currentTimeMillis();
-    for (AUTO_VAR(it, m_cachedMovieData.begin());
+    for (auto it = m_cachedMovieData.begin();
          it != m_cachedMovieData.end();) {
         if (it->second.m_expiry < currentTime) {
             delete[] it->second.m_ba.data;
@@ -667,7 +667,7 @@ void UIController::CleanUpSkinReload() {
         }
     }
 
-    for (AUTO_VAR(it, m_queuedMessageBoxData.begin());
+    for (auto it = m_queuedMessageBoxData.begin();
          it != m_queuedMessageBoxData.end(); ++it) {
         QueuedMessageBoxData* queuedData = *it;
         ui.NavigateToScene(queuedData->iPad, eUIScene_MessageBox,
@@ -682,7 +682,7 @@ void UIController::CleanUpSkinReload() {
 byteArray UIController::getMovieData(const std::wstring& filename) {
     // Cache everything we load in the current tick
     int64_t targetTime = System::currentTimeMillis() + (1000LL * 60);
-    AUTO_VAR(it, m_cachedMovieData.find(filename));
+    auto it = m_cachedMovieData.find(filename);
     if (it == m_cachedMovieData.end()) {
         byteArray baFile = app.getArchiveFile(filename);
         CachedMovieData cmd;
@@ -1095,8 +1095,8 @@ GDrawTexture* RADLINK UIController::TextureSubstitutionCreateCallback(
     void* user_callback_data, IggyUTF16* texture_name, S32* width, S32* height,
     void** destroy_callback_data) {
     UIController* uiController = (UIController*)user_callback_data;
-    AUTO_VAR(it,
-             uiController->m_substitutionTextures.find((wchar_t*)texture_name));
+    auto it =
+             uiController->m_substitutionTextures.find((wchar_t*)texture_name);
 
     if (it != uiController->m_substitutionTextures.end()) {
         app.DebugPrintf("Found substitution texture %ls, with %d bytes\n",
@@ -1158,7 +1158,7 @@ void UIController::registerSubstitutionTexture(const std::wstring& textureName,
 
 void UIController::unregisterSubstitutionTexture(
     const std::wstring& textureName, bool deleteData) {
-    AUTO_VAR(it, m_substitutionTextures.find(textureName));
+    auto it = m_substitutionTextures.find(textureName);
 
     if (it != m_substitutionTextures.end()) {
         if (deleteData) delete[] it->second.data;
@@ -1393,7 +1393,7 @@ size_t UIController::RegisterForCallbackId(UIScene* scene) {
 
 void UIController::UnregisterCallbackId(size_t id) {
     EnterCriticalSection(&m_registeredCallbackScenesCS);
-    AUTO_VAR(it, m_registeredCallbackScenes.find(id));
+    auto it = m_registeredCallbackScenes.find(id);
     if (it != m_registeredCallbackScenes.end()) {
         m_registeredCallbackScenes.erase(it);
     }
@@ -1402,7 +1402,7 @@ void UIController::UnregisterCallbackId(size_t id) {
 
 UIScene* UIController::GetSceneFromCallbackId(size_t id) {
     UIScene* scene = nullptr;
-    AUTO_VAR(it, m_registeredCallbackScenes.find(id));
+    auto it = m_registeredCallbackScenes.find(id);
     if (it != m_registeredCallbackScenes.end()) {
         scene = it->second;
     }

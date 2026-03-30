@@ -16,7 +16,7 @@ class UIControl;
 // Base class for all shared functions between UIControllers
 class UIController : public IUIController {
 public:
-    static __int64 iggyAllocCount;
+    static int64_t iggyAllocCount;
 
     // MGH - added to prevent crash loading Iggy movies while the skins were
     // being reloaded
@@ -390,19 +390,19 @@ public:
     virtual C4JStorage::EMessageResult RequestAlertMessage(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
         DWORD dwPad = XUSER_INDEX_ANY,
-        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult) = nullptr,
-        LPVOID lpParam = nullptr, WCHAR* pwchFormatString = nullptr);
+        int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
+        void* lpParam = nullptr, WCHAR* pwchFormatString = nullptr);
     virtual C4JStorage::EMessageResult RequestErrorMessage(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC,
         DWORD dwPad = XUSER_INDEX_ANY,
-        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult) = nullptr,
-        LPVOID lpParam = nullptr, WCHAR* pwchFormatString = nullptr);
+        int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
+        void* lpParam = nullptr, WCHAR* pwchFormatString = nullptr);
 
 private:
     virtual C4JStorage::EMessageResult RequestMessageBox(
         UINT uiTitle, UINT uiText, UINT* uiOptionA, UINT uiOptionC, DWORD dwPad,
-        int (*Func)(LPVOID, int, const C4JStorage::EMessageResult),
-        LPVOID lpParam, WCHAR* pwchFormatString, DWORD dwFocusButton,
+        int (*Func)(void*, int, const C4JStorage::EMessageResult),
+        void* lpParam, WCHAR* pwchFormatString, DWORD dwFocusButton,
         bool bIsError);
 
 public:

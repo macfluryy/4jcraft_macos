@@ -93,7 +93,7 @@ void PendingConnection::sendPreLoginResponse() {
     StorageManager.GetSaveUniqueFilename(szUniqueMapName);
 
     PlayerList* playerList = MinecraftServer::getInstance()->getPlayers();
-    for (AUTO_VAR(it, playerList->players.begin());
+    for (auto it = playerList->players.begin();
          it != playerList->players.end(); ++it) {
         std::shared_ptr<ServerPlayer> player = *it;
         // If the offline Xuid is invalid but the online one is not then that's

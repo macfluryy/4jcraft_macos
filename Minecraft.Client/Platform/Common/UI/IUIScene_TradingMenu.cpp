@@ -180,7 +180,7 @@ void IUIScene_TradingMenu::updateDisplay() {
         m_activeOffers.clear();
         int unfilteredIndex = 0;
         int firstValidTrade = INT_MAX;
-        for (AUTO_VAR(it, unfilteredOffers->begin());
+        for (auto it = unfilteredOffers->begin();
              it != unfilteredOffers->end(); ++it) {
             MerchantRecipe* recipe = *it;
             if (!recipe->isDeprecated()) {

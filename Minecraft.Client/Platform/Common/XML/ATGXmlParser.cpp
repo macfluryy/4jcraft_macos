@@ -71,7 +71,7 @@ VOID XMLParser::FillBuffer()
     }
 
     m_dwCharsConsumed += NChars;
-    __int64 iProgress = m_dwCharsTotal ? (( (__int64)m_dwCharsConsumed * 1000 ) / (__int64)m_dwCharsTotal) : 0;
+    int64_t iProgress = m_dwCharsTotal ? (( (int64_t)m_dwCharsConsumed * 1000 ) / (int64_t)m_dwCharsTotal) : 0;
     m_pISAXCallback->SetParseProgress( (DWORD)iProgress );
 
     m_pReadBuf[ NChars ] = '\0';
@@ -344,7 +344,7 @@ HRESULT XMLParser::AdvanceName()
 //       and getting another chunk of the file if needed
 //       Returns S_OK if there are more characters, E_ABORT for no characters to read
 //-------------------------------------------------------------------------------------
-HRESULT XMLParser::AdvanceCharacter( BOOL bOkToFail )
+HRESULT XMLParser::AdvanceCharacter( bool bOkToFail )
 {  
     if( m_bSkipNextAdvance )
     {
@@ -737,7 +737,7 @@ ISAXCallback* XMLParser::GetSAXCallbackInterface()
 //-------------------------------------------------------------------------------------
 HRESULT XMLParser::MainParseLoop()
 {
-    BOOL bWhiteSpaceOnly = TRUE;
+    bool bWhiteSpaceOnly = TRUE;
     HRESULT hr = S_OK;
 
     if( FAILED( m_pISAXCallback->StartDocument() ) )

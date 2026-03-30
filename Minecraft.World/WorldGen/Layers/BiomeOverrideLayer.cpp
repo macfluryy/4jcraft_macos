@@ -32,7 +32,7 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
             __debugbreak();
         }
-        BOOL bSuccess =
+        bool bSuccess =
             ReadFile(file, m_biomeOverride.data, dwFileSize, &bytesRead, nullptr);
 
         if (bSuccess == FALSE) {

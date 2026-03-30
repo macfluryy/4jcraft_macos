@@ -35,7 +35,7 @@ void DragonFireball::onHit(HitResult* res) {
 
         if (entitiesOfClass != nullptr && !entitiesOfClass->empty()) {
             // for (Entity e : entitiesOfClass)
-            for (AUTO_VAR(it, entitiesOfClass->begin());
+            for (auto it = entitiesOfClass->begin();
                  it != entitiesOfClass->end(); ++it) {
                 // shared_ptr<Entity> e = *it;
                 std::shared_ptr<LivingEntity> e =

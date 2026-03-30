@@ -40,7 +40,7 @@ PlayerChunkMap::PlayerChunk::~PlayerChunk() { delete changedTiles.data; }
 // output flag array and adds to it for this ServerPlayer.
 void PlayerChunkMap::flagEntitiesToBeRemoved(unsigned int* flags,
                                              bool* flagToBeRemoved) {
-    for (AUTO_VAR(it, players.begin()); it != players.end(); it++) {
+    for (auto it = players.begin(); it != players.end(); it++) {
         std::shared_ptr<ServerPlayer> serverPlayer = *it;
         serverPlayer->flagEntitiesToBeRemoved(flags, flagToBeRemoved);
     }
@@ -89,7 +89,7 @@ void PlayerChunkMap::PlayerChunk::remove(std::shared_ptr<ServerPlayer> player) {
 
     // app.DebugPrintf("--- PlayerChunkMap::PlayerChunk::remove
     // x=%d\tz=%d\n",x,z);
-    AUTO_VAR(it, find(players.begin(), players.end(), player));
+    auto it = find(players.begin(), players.end(), player);
     if (it == players.end()) {
         app.DebugPrintf(
             "--- INFO - Removing player from chunk x=%d\t z=%d, but they are "
@@ -104,20 +104,20 @@ void PlayerChunkMap::PlayerChunk::remove(std::shared_ptr<ServerPlayer> player) {
         {
             LevelChunk* chunk = parent->level->getChunk(pos.x, pos.z);
             updateInhabitedTime(chunk);
-            AUTO_VAR(it, find(parent->knownChunks.begin(),
-                              parent->knownChunks.end(), this));
+            auto it = find(parent->knownChunks.begin(),
+                              parent->knownChunks.end(), this);
             if (it != parent->knownChunks.end()) parent->knownChunks.erase(it);
         }
         int64_t id = (pos.x + 0x7fffffffLL) | ((pos.z + 0x7fffffffLL) << 32);
-        AUTO_VAR(it, parent->chunks.find(id));
+        auto it = parent->chunks.find(id);
         if (it != parent->chunks.end()) {
             toDelete = it->second;  // Don't delete until the end of the
                                     // function, as this might be this instance
             parent->chunks.erase(it);
         }
         if (changes > 0) {
-            AUTO_VAR(it, find(parent->changedChunks.begin(),
-                              parent->changedChunks.end(), this));
+            auto it = find(parent->changedChunks.begin(),
+                              parent->changedChunks.end(), this);
             parent->changedChunks.erase(it);
         }
         parent->getLevel()->cache->drop(pos.x, pos.z);
@@ -135,7 +135,7 @@ void PlayerChunkMap::PlayerChunk::remove(std::shared_ptr<ServerPlayer> player) {
         bool noOtherPlayersFound = true;
 
         if (thisNetPlayer != nullptr) {
-            for (AUTO_VAR(it, players.begin()); it < players.end(); ++it) {
+            for (auto it = players.begin(); it < players.end(); ++it) {
                 std::shared_ptr<ServerPlayer> currPlayer = *it;
                 INetworkPlayer* currNetPlayer =
                     currPlayer->connection->getNetworkPlayer();
@@ -405,7 +405,7 @@ PlayerChunkMap::PlayerChunkMap(ServerLevel* level, int dimension, int radius) {
 }
 
 PlayerChunkMap::~PlayerChunkMap() {
-    for (AUTO_VAR(it, chunks.begin()); it != chunks.end(); it++) {
+    for (auto it = chunks.begin(); it != chunks.end(); it++) {
         delete it->second;
     }
 }
@@ -471,7 +471,7 @@ bool PlayerChunkMap::hasChunk(int x, int z) {
 PlayerChunkMap::PlayerChunk* PlayerChunkMap::getChunk(int x, int z,
                                                       bool create) {
     int64_t id = (x + 0x7fffffffLL) | ((z + 0x7fffffffLL) << 32);
-    AUTO_VAR(it, chunks.find(id));
+    auto it = chunks.find(id);
 
     PlayerChunk* chunk = nullptr;
     if (it != chunks.end()) {
@@ -490,7 +490,7 @@ PlayerChunkMap::PlayerChunk* PlayerChunkMap::getChunk(int x, int z,
 void PlayerChunkMap::getChunkAndAddPlayer(
     int x, int z, std::shared_ptr<ServerPlayer> player) {
     int64_t id = (x + 0x7fffffffLL) | ((z + 0x7fffffffLL) << 32);
-    AUTO_VAR(it, chunks.find(id));
+    auto it = chunks.find(id);
 
     if (it != chunks.end()) {
         it->second->add(player);
@@ -503,14 +503,14 @@ void PlayerChunkMap::getChunkAndAddPlayer(
 // there. Otherwise attempt to remove from main chunk map.
 void PlayerChunkMap::getChunkAndRemovePlayer(
     int x, int z, std::shared_ptr<ServerPlayer> player) {
-    for (AUTO_VAR(it, addRequests.begin()); it != addRequests.end(); it++) {
+    for (auto it = addRequests.begin(); it != addRequests.end(); it++) {
         if ((it->x == x) && (it->z == z) && (it->player == player)) {
             addRequests.erase(it);
             return;
         }
     }
     int64_t id = (x + 0x7fffffffLL) | ((z + 0x7fffffffLL) << 32);
-    AUTO_VAR(it, chunks.find(id));
+    auto it = chunks.find(id);
 
     if (it != chunks.end()) {
         it->second->remove(player);
@@ -526,8 +526,8 @@ void PlayerChunkMap::tickAddRequests(std::shared_ptr<ServerPlayer> player) {
         int pz = (int)player->z;
         int minDistSq = -1;
 
-        AUTO_VAR(itNearest, addRequests.end());
-        for (AUTO_VAR(it, addRequests.begin()); it != addRequests.end(); it++) {
+        auto itNearest = addRequests.end();
+        for (auto it = addRequests.begin(); it != addRequests.end(); it++) {
             if (it->player == player) {
                 int xm = (it->x * 16) + 8;
                 int zm = (it->z * 16) + 8;
@@ -693,13 +693,13 @@ void PlayerChunkMap::remove(std::shared_ptr<ServerPlayer> player) {
             if (playerChunk != nullptr) playerChunk->remove(player);
         }
 
-    AUTO_VAR(it, find(players.begin(), players.end(), player));
+    auto it = find(players.begin(), players.end(), player);
     if (players.size() > 0 && it != players.end())
         players.erase(find(players.begin(), players.end(), player));
 
     // 4J - added - also remove any queued requests to be added to playerchunks
     // here
-    for (AUTO_VAR(it, addRequests.begin()); it != addRequests.end();) {
+    for (auto it = addRequests.begin(); it != addRequests.end();) {
         if (it->player == player) {
             it = addRequests.erase(it);
         } else {
@@ -764,10 +764,10 @@ bool PlayerChunkMap::isPlayerIn(std::shared_ptr<ServerPlayer> player,
     if (chunk == nullptr) {
         return false;
     } else {
-        AUTO_VAR(it1,
-                 find(chunk->players.begin(), chunk->players.end(), player));
-        AUTO_VAR(it2, find(player->chunksToSend.begin(),
-                           player->chunksToSend.end(), chunk->pos));
+        auto it1 =
+                 find(chunk->players.begin(), chunk->players.end(), player);
+        auto it2 = find(player->chunksToSend.begin(),
+                           player->chunksToSend.end(), chunk->pos);
         return it1 != chunk->players.end() && it2 == player->chunksToSend.end();
     }
 

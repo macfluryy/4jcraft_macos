@@ -108,8 +108,8 @@ void Explosion::explode() {
                                                    levelEntities->end());
     Vec3 center(x, y, z);
 
-    AUTO_VAR(itEnd, entities.end());
-    for (AUTO_VAR(it, entities.begin()); it != itEnd; it++) {
+    auto itEnd = entities.end();
+    for (auto it = entities.begin(); it != itEnd; it++) {
         std::shared_ptr<Entity> e = *it;  // entities->at(i);
 
         // 4J Stu - If the entity is not in a block that would be blown up, then
@@ -117,7 +117,7 @@ void Explosion::explode() {
         // The player can be damaged and killed by explosions behind obsidian
         // walls
         bool canDamage = false;
-        for (AUTO_VAR(it2, toBlow.begin()); it2 != toBlow.end(); ++it2) {
+        for (auto it2 = toBlow.begin(); it2 != toBlow.end(); ++it2) {
             if (e->bb.intersects(it2->x, it2->y, it2->z, it2->x + 1,
                                   it2->y + 1, it2->z + 1)) {
                 canDamage = true;
@@ -201,7 +201,7 @@ void Explosion::finalizeExplosion(
         if (fraction == 0) fraction = 1;
         size_t j = toBlowArray->size() - 1;
         // for (size_t j = toBlowArray->size() - 1; j >= 0; j--)
-        for (AUTO_VAR(it, toBlowArray->rbegin()); it != toBlowArray->rend();
+        for (auto it = toBlowArray->rbegin(); it != toBlowArray->rend();
              ++it) {
             TilePos* tp = &(*it);  //&toBlowArray->at(j);
             int xt = tp->x;
@@ -261,7 +261,7 @@ void Explosion::finalizeExplosion(
 
     if (fire) {
         // for (size_t j = toBlowArray->size() - 1; j >= 0; j--)
-        for (AUTO_VAR(it, toBlowArray->rbegin()); it != toBlowArray->rend();
+        for (auto it = toBlowArray->rbegin(); it != toBlowArray->rend();
              ++it) {
             TilePos* tp = &(*it);  //&toBlowArray->at(j);
             int xt = tp->x;
@@ -282,7 +282,7 @@ void Explosion::finalizeExplosion(
 Explosion::playerVec3Map* Explosion::getHitPlayers() { return &hitPlayers; }
 
 Vec3 Explosion::getHitPlayerKnockback(std::shared_ptr<Player> player) {
-    AUTO_VAR(it, hitPlayers.find(player));
+    auto it = hitPlayers.find(player);
 
     if (it == hitPlayers.end()) return Vec3(0.0, 0.0, 0.0);
 

@@ -34,7 +34,7 @@ void AddItemRuleDefinition::writeAttributes(DataOutputStream* dos,
 void AddItemRuleDefinition::getChildren(
     std::vector<GameRuleDefinition*>* children) {
     GameRuleDefinition::getChildren(children);
-    for (AUTO_VAR(it, m_enchantments.begin()); it != m_enchantments.end(); it++)
+    for (auto it = m_enchantments.begin(); it != m_enchantments.end(); it++)
         children->push_back(*it);
 }
 
@@ -95,7 +95,7 @@ bool AddItemRuleDefinition::addItemToContainer(
             new ItemInstance(m_itemId, quantity, m_auxValue));
         newItem->set4JData(m_dataTag);
 
-        for (AUTO_VAR(it, m_enchantments.begin()); it != m_enchantments.end();
+        for (auto it = m_enchantments.begin(); it != m_enchantments.end();
              ++it) {
             (*it)->enchantItem(newItem);
         }

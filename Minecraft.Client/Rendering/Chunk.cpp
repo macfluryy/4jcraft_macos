@@ -33,7 +33,7 @@ void Chunk::reconcileRenderableTileEntities(
     const std::vector<std::shared_ptr<TileEntity> >& renderableTileEntities) {
     int key =
         levelRenderer->getGlobalIndexForChunk(this->x, this->y, this->z, level);
-    AUTO_VAR(it, globalRenderableTileEntities->find(key));
+    auto it = globalRenderableTileEntities->find(key);
     if (!renderableTileEntities.empty()) {
         std::unordered_set<TileEntity*> currentRenderableTileEntitySet;
         currentRenderableTileEntitySet.reserve(renderableTileEntities.size());
@@ -45,7 +45,7 @@ void Chunk::reconcileRenderableTileEntities(
             LevelRenderer::RenderableTileEntityBucket& existingBucket =
                 it->second;
 
-            for (AUTO_VAR(it2, existingBucket.tiles.begin());
+            for (auto it2 = existingBucket.tiles.begin();
                  it2 != existingBucket.tiles.end(); it2++) {
                 TileEntity* tileEntity = (*it2).get();
                 if (currentRenderableTileEntitySet.find(tileEntity) ==
@@ -78,7 +78,7 @@ void Chunk::reconcileRenderableTileEntities(
             }
         }
     } else if (it != globalRenderableTileEntities->end()) {
-        for (AUTO_VAR(it2, it->second.tiles.begin());
+        for (auto it2 = it->second.tiles.begin();
              it2 != it->second.tiles.end();
              it2++) {
             (*it2)->setRenderRemoveStage(

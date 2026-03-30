@@ -107,7 +107,7 @@ MinecraftServer::MinecraftServer() {
 
 MinecraftServer::~MinecraftServer() {}
 
-bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
+bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
                                  std::uint32_t initSettings, bool findSeed) {
     // 4J - removed
     settings = new Settings(new File(L"server.properties"));
@@ -323,7 +323,7 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
 }
 
 bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
-                                const std::wstring& name, __int64 levelSeed,
+                                const std::wstring& name, int64_t levelSeed,
                                 LevelType* pLevelType,
                                 NetworkGameInitData* initData) {
     //	4J - TODO - do with new save stuff
@@ -1396,7 +1396,7 @@ void MinecraftServer::broadcastStopSavingPacket() {
 
 void MinecraftServer::tick() {
     std::vector<std::wstring> toRemove;
-    for (AUTO_VAR(it, ironTimers.begin()); it != ironTimers.end(); it++) {
+    for (auto it = ironTimers.begin(); it != ironTimers.end(); it++) {
         int t = it->second;
         if (t > 0) {
             ironTimers[it->first] = t - 1;
@@ -1512,7 +1512,7 @@ void MinecraftServer::handleConsoleInput(const std::wstring& msg,
 
 void MinecraftServer::handleConsoleInputs() {
     while (consoleInput.size() > 0) {
-        AUTO_VAR(it, consoleInput.begin());
+        auto it = consoleInput.begin();
         ConsoleInput* input = *it;
         consoleInput.erase(it);
         //        commands->handleCommand(input);		// 4J - removed
@@ -1612,8 +1612,8 @@ void MinecraftServer::chunkPacketManagement_PreTick() {
 
         do {
             int longestTime = 0;
-            AUTO_VAR(playerConnectionBest, playersOrig.begin());
-            for (AUTO_VAR(it, playersOrig.begin()); it != playersOrig.end();
+            auto playerConnectionBest = playersOrig.begin();
+            for (auto it = playersOrig.begin(); it != playersOrig.end();
                  it++) {
                 int thisTime = 0;
                 INetworkPlayer* np = (*it)->getNetworkPlayer();

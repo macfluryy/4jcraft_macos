@@ -348,7 +348,7 @@ void GameRuleManager::writeRuleFile(DataOutputStream* dos) {
     std::unordered_map<std::wstring, ConsoleSchematicFile*>* files;
     files = getLevelGenerationOptions()->getUnfinishedSchematicFiles();
     dos->writeInt(files->size());
-    for (AUTO_VAR(it, files->begin()); it != files->end(); it++) {
+    for (auto it = files->begin(); it != files->end(); it++) {
         std::wstring filename = it->first;
         ConsoleSchematicFile* file = it->second;
 
@@ -392,7 +392,7 @@ bool GameRuleManager::readRuleFile(
     // Read File.
 
     // version_number
-    __int64 version = dis.readShort();
+    int64_t version = dis.readShort();
     unsigned char compressionType = 0;
     if (version == 0) {
         for (int i = 0; i < 14; i++) dis.readByte();  // Read padding.
@@ -528,7 +528,7 @@ bool GameRuleManager::readRuleFile(
         int tagId = contentDis->readInt();
         ConsoleGameRules::EGameRuleType tagVal =
             ConsoleGameRules::eGameRuleType_Invalid;
-        AUTO_VAR(it, tagIdMap.find(tagId));
+        auto it = tagIdMap.find(tagId);
         if (it != tagIdMap.end()) tagVal = it->second;
 
         GameRuleDefinition* rule = nullptr;
@@ -601,7 +601,7 @@ void GameRuleManager::readChildren(
         int tagId = dis->readInt();
         ConsoleGameRules::EGameRuleType tagVal =
             ConsoleGameRules::eGameRuleType_Invalid;
-        AUTO_VAR(it, tagIdMap->find(tagId));
+        auto it = tagIdMap->find(tagId);
         if (it != tagIdMap->end()) tagVal = it->second;
 
         GameRuleDefinition* childRule = nullptr;

@@ -721,7 +721,7 @@ void Entity::move(double xa, double ya, double za,
         level->getCubes(shared_from_this(), &expanded, noEntityCubes, true);
 
     // LAND FIRST, then x and z
-    AUTO_VAR(itEndAABB, aABBs->end());
+    auto itEndAABB = aABBs->end();
 
     // 4J Stu - Particles (and possibly other entities) don't have xChunk and
     // zChunk set, so calculate the chunk instead
@@ -731,7 +731,7 @@ void Entity::move(double xa, double ya, double za,
         // 4J Stu - It's horrible that the client is doing any movement at all!
         // But if we don't have the chunk data then all the collision info will
         // be incorrect as well
-        for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+        for (auto it = aABBs->begin(); it != itEndAABB; it++)
             ya = it->clipYCollide(bb, ya);
         bb = bb.move(0, ya, 0);
     }
@@ -743,7 +743,7 @@ void Entity::move(double xa, double ya, double za,
     bool og = onGround || (yaOrg != ya && yaOrg < 0);
 
     itEndAABB = aABBs->end();
-    for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+    for (auto it = aABBs->begin(); it != itEndAABB; it++)
         xa = it->clipXCollide(bb, xa);
 
     bb = bb.move(xa, 0, 0);
@@ -753,7 +753,7 @@ void Entity::move(double xa, double ya, double za,
     }
 
     itEndAABB = aABBs->end();
-    for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+    for (auto it = aABBs->begin(); it != itEndAABB; it++)
         za = it->clipZCollide(bb, za);
     bb = bb.move(0, 0, za);
 
@@ -788,7 +788,7 @@ void Entity::move(double xa, double ya, double za,
             // 4J Stu - It's horrible that the client is doing any movement at
             // all! But if we don't have the chunk data then all the collision
             // info will be incorrect as well
-            for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+            for (auto it = aABBs->begin(); it != itEndAABB; it++)
                 ya = it->clipYCollide(bb, ya);
             bb = bb.move(0, ya, 0);
         }
@@ -798,7 +798,7 @@ void Entity::move(double xa, double ya, double za,
         }
 
         itEndAABB = aABBs->end();
-        for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+        for (auto it = aABBs->begin(); it != itEndAABB; it++)
             xa = it->clipXCollide(bb, xa);
         bb = bb.move(xa, 0, 0);
 
@@ -807,7 +807,7 @@ void Entity::move(double xa, double ya, double za,
         }
 
         itEndAABB = aABBs->end();
-        for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+        for (auto it = aABBs->begin(); it != itEndAABB; it++)
             za = it->clipZCollide(bb, za);
         bb = bb.move(0, 0, za);
 
@@ -821,7 +821,7 @@ void Entity::move(double xa, double ya, double za,
             ya = -footSize;
             // LAND FIRST, then x and z
             itEndAABB = aABBs->end();
-            for (AUTO_VAR(it, aABBs->begin()); it != itEndAABB; it++)
+            for (auto it = aABBs->begin(); it != itEndAABB; it++)
                 ya = it->clipYCollide(bb, ya);
             bb = bb.move(0, ya, 0);
         }
@@ -1524,8 +1524,8 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
         AABBList* collisions = level->getCubes(shared_from_this(), &shrunk);
         if (!collisions->empty()) {
             double yTop = 0;
-            AUTO_VAR(itEnd, collisions->end());
-            for (AUTO_VAR(it, collisions->begin()); it != itEnd; it++) {
+            auto itEnd = collisions->end();
+            for (auto it = collisions->begin(); it != itEnd; it++) {
                 if (it->y1 > yTop) yTop = it->y1;
             }
 

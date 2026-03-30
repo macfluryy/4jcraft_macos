@@ -60,7 +60,7 @@ void EnchantmentHelper::setEnchantments(
     ListTag<CompoundTag>* list = new ListTag<CompoundTag>();
 
     // for (int id : enchantments.keySet())
-    for (AUTO_VAR(it, enchantments->begin()); it != enchantments->end(); ++it) {
+    for (auto it = enchantments->begin(); it != enchantments->end(); ++it) {
         int id = it->first;
         CompoundTag* tag = new CompoundTag();
 
@@ -299,7 +299,7 @@ std::shared_ptr<ItemInstance> EnchantmentHelper::enchantItem(
     if (isBook) itemInstance->id = Item::enchantedBook_Id;
 
     if (newEnchantment != nullptr) {
-        for (AUTO_VAR(it, newEnchantment->begin()); it != newEnchantment->end();
+        for (auto it = newEnchantment->begin(); it != newEnchantment->end();
              ++it) {
             EnchantmentInstance* e = *it;
             if (isBook) {
@@ -351,7 +351,7 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
         getAvailableEnchantmentResults(realValue, itemInstance);
     if (availableEnchantments != nullptr && !availableEnchantments->empty()) {
         std::vector<WeighedRandomItem*> values;
-        for (AUTO_VAR(it, availableEnchantments->begin());
+        for (auto it = availableEnchantments->begin();
              it != availableEnchantments->end(); ++it) {
             values.push_back(it->second);
         }
@@ -372,12 +372,12 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
                 // final Iterator<Integer> mapIter =
                 // availableEnchantments.keySet().iterator(); while
                 // (mapIter.hasNext())
-                for (AUTO_VAR(it, availableEnchantments->begin());
+                for (auto it = availableEnchantments->begin();
                      it != availableEnchantments->end();) {
                     int nextEnchantment = it->first;  // mapIter.next();
                     bool valid = true;
                     // for (EnchantmentInstance *current : results)
-                    for (AUTO_VAR(resIt, results->begin());
+                    for (auto resIt = results->begin();
                          resIt != results->end(); ++resIt) {
                         EnchantmentInstance* current = *resIt;
                         if (!current->enchantment->isCompatibleWith(
@@ -396,7 +396,7 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
                 }
 
                 if (!availableEnchantments->empty()) {
-                    for (AUTO_VAR(it, availableEnchantments->begin());
+                    for (auto it = availableEnchantments->begin();
                          it != availableEnchantments->end(); ++it) {
                         values.push_back(it->second);
                     }
@@ -416,7 +416,7 @@ std::vector<EnchantmentInstance*>* EnchantmentHelper::selectEnchantment(
         }
     }
     if (availableEnchantments != nullptr) {
-        for (AUTO_VAR(it, availableEnchantments->begin());
+        for (auto it = availableEnchantments->begin();
              it != availableEnchantments->end(); ++it) {
             delete it->second;
         }
@@ -453,7 +453,7 @@ EnchantmentHelper::getAvailableEnchantmentResults(
                     results =
                         new std::unordered_map<int, EnchantmentInstance*>();
                 }
-                AUTO_VAR(it, results->find(e->id));
+                auto it = results->find(e->id);
                 if (it != results->end()) {
                     delete it->second;
                 }

@@ -379,7 +379,7 @@ public:
 
         m_parents.push_back(id);
 
-        for (AUTO_VAR(itr, parent->m_parents.begin());
+        for (auto itr = parent->m_parents.begin();
              itr != parent->m_parents.end(); itr++) {
             m_parents.push_back(*itr);
         }

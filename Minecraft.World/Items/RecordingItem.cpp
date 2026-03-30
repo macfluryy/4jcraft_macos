@@ -64,7 +64,7 @@ void RecordingItem::registerIcons(IconRegister* iconRegister) {
 }
 
 RecordingItem* RecordingItem::getByName(const std::wstring& name) {
-    AUTO_VAR(it, BY_NAME.find(name));
+    auto it = BY_NAME.find(name);
     if (it != BY_NAME.end()) {
         return it->second;
     } else {

@@ -3,7 +3,7 @@
 
 int WeighedRandom::getTotalWeight(std::vector<WeighedRandomItem*>* items) {
     int totalWeight = 0;
-    for (AUTO_VAR(it, items->begin()); it != items->end(); it++) {
+    for (auto it = items->begin(); it != items->end(); it++) {
         totalWeight += (*it)->randomWeight;
     }
     return totalWeight;
@@ -17,7 +17,7 @@ WeighedRandomItem* WeighedRandom::getRandomItem(
 
     int selection = random->nextInt(totalWeight);
 
-    for (AUTO_VAR(it, items->begin()); it != items->end(); it++) {
+    for (auto it = items->begin(); it != items->end(); it++) {
         selection -= (*it)->randomWeight;
         if (selection < 0) {
             return *it;

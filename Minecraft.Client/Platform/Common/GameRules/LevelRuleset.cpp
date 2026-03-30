@@ -7,14 +7,14 @@
 LevelRuleset::LevelRuleset() { m_stringTable = nullptr; }
 
 LevelRuleset::~LevelRuleset() {
-    for (AUTO_VAR(it, m_areas.begin()); it != m_areas.end(); ++it) {
+    for (auto it = m_areas.begin(); it != m_areas.end(); ++it) {
         delete *it;
     }
 }
 
 void LevelRuleset::getChildren(std::vector<GameRuleDefinition*>* children) {
     CompoundGameRuleDefinition::getChildren(children);
-    for (AUTO_VAR(it, m_areas.begin()); it != m_areas.end(); it++)
+    for (auto it = m_areas.begin(); it != m_areas.end(); it++)
         children->push_back(*it);
 }
 
@@ -44,7 +44,7 @@ const wchar_t* LevelRuleset::getString(const std::wstring& key) {
 
 AABB* LevelRuleset::getNamedArea(const std::wstring& areaName) {
     AABB* area = nullptr;
-    for (AUTO_VAR(it, m_areas.begin()); it != m_areas.end(); ++it) {
+    for (auto it = m_areas.begin(); it != m_areas.end(); ++it) {
         if ((*it)->getName().compare(areaName) == 0) {
             area = (*it)->getArea();
             break;

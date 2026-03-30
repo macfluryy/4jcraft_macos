@@ -397,7 +397,7 @@ const int XC_LOCALE_LATIN_AMERICA = 240;
 
 DWORD XGetLanguage();
 DWORD XGetLocale();
-DWORD XEnableGuestSignin(BOOL fEnable);
+DWORD XEnableGuestSignin(bool fEnable);
 
 class D3DXVECTOR3 {
 public:

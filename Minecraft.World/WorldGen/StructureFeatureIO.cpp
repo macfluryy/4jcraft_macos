@@ -47,7 +47,7 @@ void StructureFeatureIO::staticCtor() {
 }
 
 std::wstring StructureFeatureIO::getEncodeId(StructureStart* start) {
-    AUTO_VAR(it, startClassIdMap.find(start->GetType()));
+    auto it = startClassIdMap.find(start->GetType());
     if (it != startClassIdMap.end()) {
         return it->second;
     } else {
@@ -56,7 +56,7 @@ std::wstring StructureFeatureIO::getEncodeId(StructureStart* start) {
 }
 
 std::wstring StructureFeatureIO::getEncodeId(StructurePiece* piece) {
-    AUTO_VAR(it, pieceClassIdMap.find(piece->GetType()));
+    auto it = pieceClassIdMap.find(piece->GetType());
     if (it != pieceClassIdMap.end()) {
         return it->second;
     } else {
@@ -68,7 +68,7 @@ StructureStart* StructureFeatureIO::loadStaticStart(CompoundTag* tag,
                                                     Level* level) {
     StructureStart* start = nullptr;
 
-    AUTO_VAR(it, startIdClassMap.find(tag->getString(L"id")));
+    auto it = startIdClassMap.find(tag->getString(L"id"));
     if (it != startIdClassMap.end()) {
         start = (it->second)();
     }
@@ -86,7 +86,7 @@ StructurePiece* StructureFeatureIO::loadStaticPiece(CompoundTag* tag,
                                                     Level* level) {
     StructurePiece* piece = nullptr;
 
-    AUTO_VAR(it, pieceIdClassMap.find(tag->getString(L"id")));
+    auto it = pieceIdClassMap.find(tag->getString(L"id"));
     if (it != pieceIdClassMap.end()) {
         piece = (it->second)();
     }

@@ -66,7 +66,7 @@ DWORD dwProfileSettingsA[NUM_PROFILE_VALUES] = {
 //                  running for a long time.
 //-------------------------------------------------------------------------------------
 
-BOOL g_bWidescreen = TRUE;
+bool g_bWidescreen = TRUE;
 
 int g_iScreenWidth = 1920;
 int g_iScreenHeight = 1080;
@@ -476,7 +476,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
+bool InitInstance(HINSTANCE hInstance, int nCmdShow) {
     g_hInst = hInstance;  // Store instance handle in our global variable
 
     RECT wr = {0, 0, g_iScreenWidth,
@@ -601,7 +601,7 @@ HRESULT InitDevice() {
     // Create a render target view
     ID3D11Texture2D* pBackBuffer = nullptr;
     hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
-                                 (LPVOID*)&pBackBuffer);
+                                 (void**)&pBackBuffer);
     if (FAILED(hr)) return hr;
 
     // Create a depth stencil buffer
@@ -756,7 +756,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     // Set a callback for the default player options to be set - when there is
     // no profile data for the player
     ProfileManager.SetDefaultOptionsCallback(
-        &CConsoleMinecraftApp::DefaultOptionsCallback, (LPVOID)&app);
+        &CConsoleMinecraftApp::DefaultOptionsCallback, (void*)&app);
     // QNet needs to be setup after profile manager, as we do not want its
     // Notify listener to handle XN_SYS_SIGNINCHANGED notifications. This does
     // mean that we need to have a callback in the ProfileManager for
@@ -935,7 +935,7 @@ volatile int sectCheck = 48;
 CRITICAL_SECTION memCS;
 DWORD tlsIdx;
 
-LPVOID XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
+void* XMemAlloc(SIZE_T dwSize, DWORD dwAllocAttributes) {
     if (!trackStarted) {
         void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
         size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
@@ -1028,7 +1028,7 @@ SIZE_T WINAPI XMemSize(PVOID pAddress, DWORD dwAllocAttributes) {
 
 void DumpMem() {
     int totalLeak = 0;
-    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
         if (it->second > 0) {
             app.DebugPrintf("%d %d %d %d\n", (it->first >> 26) & 0x3f,
                             it->first & 0x03ffffff, it->second,
@@ -1062,7 +1062,7 @@ void MemSect(int section) {
     } else {
         value = (value << 6) | section;
     }
-    TlsSetValue(tlsIdx, (LPVOID)value);
+    TlsSetValue(tlsIdx, (void*)value);
 }
 
 void MemPixStuff() {
@@ -1070,7 +1070,7 @@ void MemPixStuff() {
 
     int totals[MAX_SECT] = {0};
 
-    for (AUTO_VAR(it, allocCounts.begin()); it != allocCounts.end(); it++) {
+    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
         if (it->second > 0) {
             int sect = (it->first >> 26) & 0x3f;
             int bytes = it->first & 0x03ffffff;

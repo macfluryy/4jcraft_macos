@@ -29,7 +29,7 @@ VillageFeature::VillageFeature(
     std::unordered_map<std::wstring, std::wstring> options, int iXZSize) {
     _init(iXZSize);
 
-    for (AUTO_VAR(it, options.begin()); it != options.end(); ++it) {
+    for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_SIZE_MODIFIER) == 0) {
             villageSizeModifier =
                 Mth::getInt(it->second, villageSizeModifier, 0);
@@ -126,13 +126,13 @@ VillageFeature::VillageStart::VillageStart(Level* level, Random* random,
         // prioritize roads
         if (pendingRoads->empty()) {
             int pos = random->nextInt((int)pendingHouses->size());
-            AUTO_VAR(it, pendingHouses->begin() + pos);
+            auto it = pendingHouses->begin() + pos;
             StructurePiece* structurePiece = *it;
             pendingHouses->erase(it);
             structurePiece->addChildren(startRoom, &pieces, random);
         } else {
             int pos = random->nextInt((int)pendingRoads->size());
-            AUTO_VAR(it, pendingRoads->begin() + pos);
+            auto it = pendingRoads->begin() + pos;
             StructurePiece* structurePiece = *it;
             pendingRoads->erase(it);
             structurePiece->addChildren(startRoom, &pieces, random);
@@ -142,7 +142,7 @@ VillageFeature::VillageStart::VillageStart(Level* level, Random* random,
     calculateBoundingBox();
 
     int count = 0;
-    for (AUTO_VAR(it, pieces.begin()); it != pieces.end(); it++) {
+    for (auto it = pieces.begin(); it != pieces.end(); it++) {
         StructurePiece* piece = *it;
         if (dynamic_cast<VillagePieces::VillageRoadPiece*>(piece) == nullptr) {
             count++;

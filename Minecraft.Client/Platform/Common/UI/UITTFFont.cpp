@@ -21,7 +21,7 @@ UITTFFont::UITTFFont(const std::string& name, const std::string& path,
         app.FatalLoadError();
     }
 
-    const __int64 endPosition = PortableFileIO::Tell(file);
+    const int64_t endPosition = PortableFileIO::Tell(file);
     if (endPosition < 0) {
         std::fclose(file);
         app.FatalLoadError();

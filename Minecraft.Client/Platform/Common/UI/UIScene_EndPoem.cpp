@@ -192,7 +192,7 @@ void UIScene_EndPoem::updateNoise() {
 
     std::wstring tag = L"{*NOISE*}";
 
-    AUTO_VAR(it, m_noiseLengths.begin());
+    auto it = m_noiseLengths.begin();
     int found = (int)noiseString.find(tag);
     while (found != std::string::npos && it != m_noiseLengths.end()) {
         length = *it;

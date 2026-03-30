@@ -88,7 +88,7 @@ void ThrownPotion::onHit(HitResult* res) {
 
             if (entitiesOfClass != nullptr && !entitiesOfClass->empty()) {
                 // for (Entity e : entitiesOfClass)
-                for (AUTO_VAR(it, entitiesOfClass->begin());
+                for (auto it = entitiesOfClass->begin();
                      it != entitiesOfClass->end(); ++it) {
                     // shared_ptr<Entity> e = *it;
                     std::shared_ptr<LivingEntity> e =
@@ -101,7 +101,7 @@ void ThrownPotion::onHit(HitResult* res) {
                         }
 
                         // for (MobEffectInstance effect : mobEffects)
-                        for (AUTO_VAR(itMEI, mobEffects->begin());
+                        for (auto itMEI = mobEffects->begin();
                              itMEI != mobEffects->end(); ++itMEI) {
                             MobEffectInstance* effect = *itMEI;
                             int id = effect->getId();

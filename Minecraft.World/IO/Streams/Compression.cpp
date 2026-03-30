@@ -293,7 +293,7 @@ HRESULT Compression::Decompress(void* pDestination, unsigned int* pDestSize,
 // platforms (so no virtual mem stuff)
 void Compression::VitaVirtualDecompress(
     void* pDestination, unsigned int* pDestSize, void* pSource,
-    unsigned int SrcSize)  // (LPVOID buf, SIZE_T dwSize, LPVOID dst)
+    unsigned int SrcSize)  // (void* buf, SIZE_T dwSize, void* dst)
 {
     std::uint8_t* pSrc = (std::uint8_t*)pSource;
     int Offset = 0;

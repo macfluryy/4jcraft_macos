@@ -56,8 +56,8 @@ ServerChunkCache::~ServerChunkCache() {
     delete m_unloadedCache;
 #endif
 
-    AUTO_VAR(itEnd, m_loadedChunkList.end());
-    for (AUTO_VAR(it, m_loadedChunkList.begin()); it != itEnd; it++) delete *it;
+    auto itEnd = m_loadedChunkList.end();
+    for (auto it = m_loadedChunkList.begin(); it != itEnd; it++) delete *it;
     DeleteCriticalSection(&m_csLoadCreate);
 }
 
@@ -654,7 +654,7 @@ bool ServerChunkCache::saveAllEntities() {
 
     PIXBeginNamedEvent(0, "saving to NBT");
     EnterCriticalSection(&m_csLoadCreate);
-    for (AUTO_VAR(it, m_loadedChunkList.begin()); it != m_loadedChunkList.end();
+    for (auto it = m_loadedChunkList.begin(); it != m_loadedChunkList.end();
          ++it) {
         storage->saveEntities(level, *it);
     }
@@ -676,8 +676,8 @@ bool ServerChunkCache::save(bool force, ProgressListener* progressListener) {
     // 4J - added this to support progressListner
     int count = 0;
     if (progressListener != nullptr) {
-        AUTO_VAR(itEnd, m_loadedChunkList.end());
-        for (AUTO_VAR(it, m_loadedChunkList.begin()); it != itEnd; it++) {
+        auto itEnd = m_loadedChunkList.end();
+        for (auto it = m_loadedChunkList.begin(); it != itEnd; it++) {
             LevelChunk* chunk = *it;
             if (chunk->shouldSave(force)) {
                 count++;
@@ -813,8 +813,8 @@ bool ServerChunkCache::tick() {
 
                         // loadedChunks.remove(cp);
                         // loadedChunkList.remove(chunk);
-                        AUTO_VAR(it, find(m_loadedChunkList.begin(),
-                                          m_loadedChunkList.end(), chunk));
+                        auto it = find(m_loadedChunkList.begin(),
+                                          m_loadedChunkList.end(), chunk);
                         if (it != m_loadedChunkList.end())
                             m_loadedChunkList.erase(it);
 
@@ -855,7 +855,7 @@ TilePos* ServerChunkCache::findNearestMapFeature(
 void ServerChunkCache::recreateLogicStructuresForChunk(int chunkX, int chunkZ) {
 }
 
-int ServerChunkCache::runSaveThreadProc(LPVOID lpParam) {
+int ServerChunkCache::runSaveThreadProc(void* lpParam) {
     SaveThreadData* params = (SaveThreadData*)lpParam;
 
     if (params->useSharedThreadStorage) {

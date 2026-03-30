@@ -205,7 +205,7 @@ int PotionBrewing::getColorValue(std::vector<MobEffectInstance*>* effects) {
     float count = 0;
 
     // for (MobEffectInstance effect : effects){
-    for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
+    for (auto it = effects->begin(); it != effects->end(); ++it) {
         MobEffectInstance* effect = *it;
         int potionColor = colourTable->getColor(
             MobEffect::effects[effect->getId()]->getColor());
@@ -227,7 +227,7 @@ int PotionBrewing::getColorValue(std::vector<MobEffectInstance*>* effects) {
 
 bool PotionBrewing::areAllEffectsAmbient(
     std::vector<MobEffectInstance*>* effects) {
-    for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
+    for (auto it = effects->begin(); it != effects->end(); ++it) {
         MobEffectInstance* effect = *it;
         if (!effect->isAmbient()) return false;
     }
@@ -237,14 +237,14 @@ bool PotionBrewing::areAllEffectsAmbient(
 
 int PotionBrewing::getColorValue(int brew, bool includeDisabledEffects) {
     if (!includeDisabledEffects) {
-        AUTO_VAR(colIt, cachedColors.find(brew));
+        auto colIt = cachedColors.find(brew);
         if (colIt != cachedColors.end()) {
             return colIt->second;  // cachedColors.get(brew);
         }
         std::vector<MobEffectInstance*>* effects = getEffects(brew, false);
         int color = getColorValue(effects);
         if (effects != nullptr) {
-            for (AUTO_VAR(it, effects->begin()); it != effects->end(); ++it) {
+            for (auto it = effects->begin(); it != effects->end(); ++it) {
                 MobEffectInstance* effect = *it;
                 delete effect;
             }
@@ -528,7 +528,7 @@ std::vector<MobEffectInstance*>* PotionBrewing::getEffects(
             continue;
         }
         // wstring durationString = potionEffectDuration.get(effect->getId());
-        AUTO_VAR(effIt, potionEffectDuration.find(effect->getId()));
+        auto effIt = potionEffectDuration.find(effect->getId());
         if (effIt == potionEffectDuration.end()) {
             continue;
         }
@@ -538,7 +538,7 @@ std::vector<MobEffectInstance*>* PotionBrewing::getEffects(
             durationString, 0, (int)durationString.length(), brew);
         if (duration > 0) {
             int amplifier = 0;
-            AUTO_VAR(ampIt, potionEffectAmplifier.find(effect->getId()));
+            auto ampIt = potionEffectAmplifier.find(effect->getId());
             if (ampIt != potionEffectAmplifier.end()) {
                 std::wstring amplifierString = ampIt->second;
                 amplifier = parseEffectFormulaValue(

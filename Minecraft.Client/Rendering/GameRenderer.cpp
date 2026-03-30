@@ -310,8 +310,8 @@ void GameRenderer::pick(float a) {
         mc->level->getEntities(mc->cameraTargetPlayer, &grown);
     double nearest = dist;
 
-    AUTO_VAR(itEnd, objects->end());
-    for (AUTO_VAR(it, objects->begin()); it != itEnd; it++) {
+    auto itEnd = objects->end();
+    for (auto it = objects->begin(); it != itEnd; it++) {
         std::shared_ptr<Entity> e = *it;  // objects->at(i);
         if (!e->isPickable()) continue;
 

@@ -188,8 +188,8 @@ void SynchedEntityData::pack(
     DataOutputStream* output)  // TODO throws IOException
 {
     if (items != nullptr) {
-        AUTO_VAR(itEnd, items->end());
-        for (AUTO_VAR(it, items->begin()); it != itEnd; it++) {
+        auto itEnd = items->end();
+        for (auto it = items->begin(); it != itEnd; it++) {
             std::shared_ptr<DataItem> dataItem = *it;
             writeDataItem(output, dataItem);
         }
@@ -363,8 +363,8 @@ SynchedEntityData::unpack(DataInputStream* input)  // throws IOException
 
 void SynchedEntityData::assignValues(
     std::vector<std::shared_ptr<DataItem> >* items) {
-    AUTO_VAR(itEnd, items->end());
-    for (AUTO_VAR(it, items->begin()); it != itEnd; it++) {
+    auto itEnd = items->end();
+    for (auto it = items->begin(); it != itEnd; it++) {
         std::shared_ptr<DataItem> item = *it;
 
         std::shared_ptr<DataItem> itemFromId = itemsById[item->getId()];

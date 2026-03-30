@@ -14,7 +14,7 @@ StructureFeature::StructureFeature() {
 }
 
 StructureFeature::~StructureFeature() {
-    for (AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end();
+    for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          it++) {
         delete it->second;
     }
@@ -62,7 +62,7 @@ bool StructureFeature::postProcess(Level* level, Random* random, int chunkX,
     int cz = ((unsigned)chunkZ << 4);  // + 8;
 
     bool intersection = false;
-    for (AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end();
+    for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          it++) {
         StructureStart* structureStart = it->second;
 
@@ -88,13 +88,13 @@ bool StructureFeature::postProcess(Level* level, Random* random, int chunkX,
 bool StructureFeature::isIntersection(int cellX, int cellZ) {
     restoreSavedData(level);
 
-    for (AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end();
+    for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          it++) {
         StructureStart* structureStart = it->second;
         if (structureStart->isValid()) {
             if (structureStart->getBoundingBox()->intersects(cellX, cellZ,
                                                              cellX, cellZ)) {
-                AUTO_VAR(it2, structureStart->getPieces()->begin());
+                auto it2 = structureStart->getPieces()->begin();
                 while (it2 != structureStart->getPieces()->end()) {
                     StructurePiece* next = *it2++;
                     if (next->getBoundingBox()->intersects(cellX, cellZ, cellX,
@@ -116,7 +116,7 @@ bool StructureFeature::isInsideFeature(int cellX, int cellY, int cellZ) {
 StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
                                                  int cellZ) {
     // for (StructureStart structureStart : cachedStructures.values())
-    for (AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end();
+    for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          ++it) {
         StructureStart* pStructureStart = it->second;
 
@@ -134,7 +134,7 @@ StructureStart* StructureFeature::getStructureAt(int cellX, int cellY,
                 std::list<StructurePiece*>* pieces =
                     pStructureStart->getPieces();
 
-                for (AUTO_VAR(it2, pieces->begin()); it2 != pieces->end();
+                for (auto it2 = pieces->begin(); it2 != pieces->end();
                      it2++) {
                     StructurePiece* piece = *it2;
                     if (piece->getBoundingBox()->isInside(cellX, cellY,
@@ -152,7 +152,7 @@ bool StructureFeature::isInsideBoundingFeature(int cellX, int cellY,
                                                int cellZ) {
     restoreSavedData(level);
 
-    for (AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end();
+    for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          ++it) {
         StructureStart* structureStart = it->second;
         if (structureStart->isValid()) {
@@ -183,7 +183,7 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
     double minDistance = DBL_MAX;
     TilePos* selected = nullptr;
 
-    for (AUTO_VAR(it, cachedStructures.begin()); it != cachedStructures.end();
+    for (auto it = cachedStructures.begin(); it != cachedStructures.end();
          ++it) {
         StructureStart* pStructureStart = it->second;
 
@@ -213,7 +213,7 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
         if (guesstimatedFeaturePositions != nullptr) {
             TilePos* pSelectedPos = new TilePos(0, 0, 0);
 
-            for (AUTO_VAR(it, guesstimatedFeaturePositions->begin());
+            for (auto it = guesstimatedFeaturePositions->begin();
                  it != guesstimatedFeaturePositions->end(); ++it) {
                 int dx = (*it).x - cellX;
                 int dy = (*it).y - cellY;
@@ -253,7 +253,7 @@ void StructureFeature::restoreSavedData(Level* level) {
             CompoundTag* fullTag = savedData->getFullTag();
 
             std::vector<Tag*>* allTags = fullTag->getAllTags();
-            for (AUTO_VAR(it, allTags->begin()); it != allTags->end(); ++it) {
+            for (auto it = allTags->begin(); it != allTags->end(); ++it) {
                 Tag* featureTag = *it;
                 if (featureTag->getId() == Tag::TAG_Compound) {
                     CompoundTag* ct = (CompoundTag*)featureTag;

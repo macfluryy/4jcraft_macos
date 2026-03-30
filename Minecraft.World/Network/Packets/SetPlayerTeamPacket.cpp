@@ -87,7 +87,7 @@ void SetPlayerTeamPacket::write(DataOutputStream* dos) {
         method == METHOD_LEAVE) {
         dos->writeShort(players.size());
 
-        for (AUTO_VAR(it, players.begin()); it != players.end(); ++it) {
+        for (auto it = players.begin(); it != players.end(); ++it) {
             writeUtf(*it, dos);
         }
     }

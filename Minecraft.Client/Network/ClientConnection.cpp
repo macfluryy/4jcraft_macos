@@ -605,7 +605,7 @@ void ClientConnection::handleAddEntity(
         if (subEntities != nullptr) {
             int offs = packet->id - e->entityId;
             // for (int i = 0; i < subEntities.length; i++)
-            for (AUTO_VAR(it, subEntities->begin()); it != subEntities->end();
+            for (auto it = subEntities->begin(); it != subEntities->end();
                  ++it) {
                 (*it)->entityId += offs;
                 // subEntities[i].entityId += offs;
@@ -2003,7 +2003,7 @@ void ClientConnection::handleAddMob(std::shared_ptr<AddMobPacket> packet) {
     if (subEntities != nullptr) {
         int offs = packet->id - mob->entityId;
         // for (int i = 0; i < subEntities.length; i++)
-        for (AUTO_VAR(it, subEntities->begin()); it != subEntities->end();
+        for (auto it = subEntities->begin(); it != subEntities->end();
              ++it) {
             // subEntities[i].entityId += offs;
             (*it)->entityId += offs;
@@ -3444,7 +3444,7 @@ void ClientConnection::handleUpdateAttributes(
         (std::dynamic_pointer_cast<LivingEntity>(entity))->getAttributes();
     std::unordered_set<UpdateAttributesPacket::AttributeSnapshot*>
         attributeSnapshots = packet->getValues();
-    for (AUTO_VAR(it, attributeSnapshots.begin());
+    for (auto it = attributeSnapshots.begin();
          it != attributeSnapshots.end(); ++it) {
         UpdateAttributesPacket::AttributeSnapshot* attribute = *it;
         AttributeInstance* instance =
@@ -3465,7 +3465,7 @@ void ClientConnection::handleUpdateAttributes(
         std::unordered_set<AttributeModifier*>* modifiers =
             attribute->getModifiers();
 
-        for (AUTO_VAR(it2, modifiers->begin()); it2 != modifiers->end();
+        for (auto it2 = modifiers->begin(); it2 != modifiers->end();
              ++it2) {
             AttributeModifier* modifier = *it2;
             instance->addModifier(
