@@ -541,11 +541,16 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 }
 
 void Textures::bind(int id) {
+    // 4jcraft: Classic GUI code still performs some raw glBindTexture calls, so
+    // this path must always rebind rather than trusting lastBoundId to be in sync.
+    // TODO(4jcraft): Long term, route all texture binds through one synchronized
+    // path or invalidate lastBoundId at every raw glBindTexture call so this can
+    // safely use cached binds again without breaking font/UI rendering.
     // if (id != lastBoundId)
     {
         if (id < 0) return;
         glBindTexture(GL_TEXTURE_2D, id);
-        //	lastBoundId = id;
+        // lastBoundId = id;
     }
 }
 
@@ -696,8 +701,8 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     }
 
     if (clamp) {
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     } else {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

@@ -72,6 +72,7 @@ private:
     bool m_bUpdateOpacity;
     bool m_bVisible;
     bool m_bCanHandleInput;
+    bool m_hasSetSafeZoneMethod;
     UIScene* m_backScene;
 
     size_t m_callbackUniqueId;

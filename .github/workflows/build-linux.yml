@@ -1,132 +1,38 @@
-name: Build (Linux, x86_64)
+name: Build (Linux, x86-64)
 
 on:
   push:
-    paths:
+    paths: &workflow_paths
       - '**.cpp'
       - '**.h'
       - '**.c'
-      - '**/meson.build'
-      - 'meson.build'
-      - '**/CMakeLists.txt'
-      - 'CMakeLists.txt'
+      - '**.cc'
+      - '**.cxx'
+      - '**.hh'
+      - '**.hpp'
+      - '**.hxx'
+      - '**.inl'
+      - "**meson.build"
+      - "flake.nix"
       - '.github/workflows/build-linux.yml'
+
   pull_request:
-    paths:
-      - '**.cpp'
-      - '**.h'
-      - '**.c'
-      - '**/meson.build'
-      - 'meson.build'
-      - '**/CMakeLists.txt'
-      - 'CMakeLists.txt'
-      - '.github/workflows/build-linux.yml'
+    paths: *workflow_paths
 
 jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
-          python -m pip install meson
-          # Set a reasonable ccache size
-          ccache -M 5G || true
-
-      - name: Restore ccache
-        uses: actions/cache@v4
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
         with:
-          path: ~/.ccache
-          key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
+          nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Restore meson cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/meson
-          key: ${{ runner.os }}-meson-${{ hashFiles('**/meson.build') }}
+      - name: Build
+        run: nix build --print-build-logs
 
-      - name: Configure Meson
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          mkdir -p "$CCACHE_DIR"
-          export CCACHE_DIR="$CCACHE_DIR"
-          meson setup build_release --wipe --buildtype=release --native-file=./scripts/llvm_native.txt
-
-      - name: Build with Meson
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          export CCACHE_DIR="${{ runner.temp }}/ccache"
-          # Use all available cores for faster parallel builds
-          meson compile -C build_release -j $(nproc) -v Minecraft.Client
-
-      - name: Install patchelf
-        run: sudo apt-get install -y patchelf
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: minecraft-client-linux-release_exe-${{ github.sha }}
-          path: build_release/Minecraft.Client/Minecraft.Client
-          retention-days: 7
-  build-linux-debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
-          python -m pip install meson
-          # Set a reasonable ccache size
-          ccache -M 5G || true
-
-      - name: Restore ccache
-        uses: actions/cache@v4
-        with:
-          path: ~/.ccache
-          key: ${{ runner.os }}-ccache-debug-${{ hashFiles('**/meson.build') }}
-
-      - name: Restore meson cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/meson
-          key: ${{ runner.os }}-meson-debug-${{ hashFiles('**/meson.build') }}
-
-      - name: Configure Meson (debug)
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          mkdir -p "$CCACHE_DIR"
-          export CCACHE_DIR="$CCACHE_DIR"
-          meson setup build_debug --wipe --buildtype=debug --native-file=./scripts/llvm_native.txt
-
-      - name: Build Debug with Meson
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          export CCACHE_DIR="${{ runner.temp }}/ccache"
-          # Use all available cores for faster parallel builds
-          meson compile -C build_debug -j $(nproc) -v Minecraft.Client
-
-      - name: Upload debug executable
-        uses: actions/upload-artifact@v4
-        with:
-          name: minecraft-client-linux-debug_exe-${{ github.sha }}
-          path: build_debug/Minecraft.Client/Minecraft.Client
-          retention-days: 7
+      - name: Flake integrity
+        run: nix flake check

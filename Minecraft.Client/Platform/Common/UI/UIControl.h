@@ -34,6 +34,7 @@ protected:
     eUIControlType m_eControlType;
     int m_id;
     bool m_bHidden;  // set by the Remove call
+    bool m_isValid;
 
 public:
     void setControlType(eUIControlType eType) { m_eControlType = eType; }
@@ -83,6 +84,7 @@ public:
     void setVisible(bool visible);
     bool getVisible();
     bool isVisible() { return m_isVisible; }
+    bool isValid() { return m_isValid; }
 
     virtual bool hasFocus() { return false; }
 

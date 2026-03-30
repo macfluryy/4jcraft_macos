@@ -1558,13 +1558,19 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
 {
     loaded = false;
     if (unloadTileEntities) {
+        std::vector<std::shared_ptr<TileEntity> > tileEntitiesToRemove;
         EnterCriticalSection(&m_csTileEntities);
         for (AUTO_VAR(it, tileEntities.begin()); it != tileEntities.end();
              it++) {
-            // 4J-PB -m 1.7.3 was it->second->setRemoved();
-            level->markForRemoval(it->second);
+            tileEntitiesToRemove.push_back(it->second);
         }
         LeaveCriticalSection(&m_csTileEntities);
+
+        AUTO_VAR(itEnd, tileEntitiesToRemove.end());
+        for (AUTO_VAR(it, tileEntitiesToRemove.begin()); it != itEnd; it++) {
+            // 4J-PB -m 1.7.3 was it->second->setRemoved();
+            level->markForRemoval(*it);
+        }
     }
 
 #ifdef _ENTITIES_RW_SECTION

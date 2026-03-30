@@ -1,7 +1,9 @@
-#ifndef __RAD_INCLUDE_GDRAW_SDL_H__
-#define __RAD_INCLUDE_GDRAW_SDL_H__
+#ifndef __LINUX_IGGY_GDRAW_H__
+#define __LINUX_IGGY_GDRAW_H__
+
 #include "../../../Windows64/Iggy/include/gdraw.h"
 #include "../../../Windows64/Iggy/include/iggy.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -34,4 +36,5 @@ extern void           gdraw_GL_DestroyTextureFromResource(GDrawTexture *tex);
 #ifdef __cplusplus
 }
 #endif
-#endif // __RAD_INCLUDE_GDRAW_SDL_H__
+
+#endif // __LINUX_IGGY_GDRAW_H__
