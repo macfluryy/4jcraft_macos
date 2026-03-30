@@ -4,6 +4,7 @@
 #include "../../Minecraft.World/Headers/net.minecraft.world.level.tile.entity.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
 #include "../../Minecraft.Client/Minecraft.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "UIScene_AnvilMenu.h"
 
 UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
@@ -300,8 +301,8 @@ int UIScene_AnvilMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
         uint16_t pchText[128];
         ZeroMemory(pchText, 128 * sizeof(uint16_t));
         InputManager.GetText(pchText);
-        pClass->setEditNameValue((wchar_t*)pchText);
-        pClass->m_itemName = (wchar_t*)pchText;
+        pClass->setEditNameValue(uint16_to_wstring(pchText));
+        pClass->m_itemName = uint16_to_wstring(pchText);
         pClass->updateItemName();
     }
     return 0;

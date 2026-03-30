@@ -124,7 +124,7 @@ int UIScene_DebugSetCamera::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     InputManager.GetText(pchText);
 
     if (pchText[0] != 0) {
-        std::wstring value = (wchar_t*)pchText;
+        std::wstring value = uint16_to_wstring(pchText);
         double val = 0;
         if (!value.empty()) val = _fromString<double>(value);
         switch (pClass->m_keyboardCallbackControl) {

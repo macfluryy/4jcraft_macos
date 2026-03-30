@@ -146,7 +146,7 @@ int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void* lpParam,
     InputManager.GetText(pchText);
 
     if (pchText[0] != 0) {
-        std::wstring value = (wchar_t*)pchText;
+        std::wstring value = uint16_to_wstring(pchText);
         int iVal = 0;
         if (!value.empty()) iVal = _fromString<int>(value);
         switch (pClass->m_keyboardCallbackControl) {

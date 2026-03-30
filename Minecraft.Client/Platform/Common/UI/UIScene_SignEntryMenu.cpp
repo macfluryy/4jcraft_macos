@@ -1,5 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "UIScene_SignEntryMenu.h"
 #include "../../Minecraft.Client/Minecraft.h"
 #include "../../Minecraft.Client/Player/MultiPlayerLocalPlayer.h"
@@ -144,8 +145,9 @@ int UIScene_SignEntryMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
         uint16_t pchText[128];
         ZeroMemory(pchText, 128 * sizeof(uint16_t));
         InputManager.GetText(pchText);
-        pClass->m_textInputLines[pClass->m_iEditingLine].setLabel(
-            (wchar_t*)pchText);
+        std::wstring str = uint16_to_wstring(pchText);
+        str.resize(15);
+        pClass->m_textInputLines[pClass->m_iEditingLine].setLabel(str);
     }
     return 0;
 }

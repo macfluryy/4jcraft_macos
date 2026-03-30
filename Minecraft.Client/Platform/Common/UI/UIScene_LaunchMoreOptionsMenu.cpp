@@ -1,5 +1,6 @@
 #include "../../Minecraft.World/Platform/stdafx.h"
 #include "UI.h"
+#include "../../Minecraft.World/Util/StringHelpers.h"
 #include "UIScene_LaunchMoreOptionsMenu.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
@@ -589,7 +590,6 @@ int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
                                                                 bool bRes) {
     UIScene_LaunchMoreOptionsMenu* pClass =
         (UIScene_LaunchMoreOptionsMenu*)lpParam;
-    pClass->m_bIgnoreInput = false;
     // 4J HEG - No reason to set value if keyboard was cancelled
     if (bRes) {
 #ifdef __PSVITA__
@@ -601,9 +601,10 @@ int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
         ZeroMemory(pchText, 128 * sizeof(uint16_t));
 #endif
         InputManager.GetText(pchText);
-        pClass->m_editSeed.setLabel((wchar_t*)pchText);
-        pClass->m_params->seed = (wchar_t*)pchText;
+        pClass->m_editSeed.setLabel(uint16_to_wstring(pchText));
+        pClass->m_params->seed = uint16_to_wstring(pchText);
     }
+    pClass->m_bIgnoreInput = false;
     return 0;
 }
 
@@ -643,6 +644,7 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
                 0, 60,
                 &UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,
                 this, C_4JInput::EKeyboardMode_Default);
+            KeyboardCompleteSeedCallback(this, true);
 #endif
         } break;
     }

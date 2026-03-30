@@ -723,8 +723,8 @@ int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
         InputManager.GetText(pchText);
 
         if (pchText[0] != 0) {
-            pClass->m_editWorldName.setLabel((wchar_t*)pchText);
-            pClass->m_worldName = (wchar_t*)pchText;
+            pClass->m_editWorldName.setLabel(uint16_to_wstring(pchText));
+            pClass->m_worldName = uint16_to_wstring(pchText);
         }
 
         pClass->m_buttonCreateWorld.setEnable(!pClass->m_worldName.empty());
@@ -901,9 +901,9 @@ IDS_PRO_NOTONLINE_TEXT, uiIDA, 1, ProfileManager.GetPrimaryPad()); return;
         bool pccFriendsAllowed = true;
         bool bContentRestricted = false;
 
-        ProfileManager.AllowedPlayerCreatedContent(
-            ProfileManager.GetPrimaryPad(), false, &pccAllowed,
-            &pccFriendsAllowed);
+        GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+                                            false, &pccAllowed,
+                                            &pccFriendsAllowed);
 #if defined(__PS3__) || defined(__PSVITA__)
         if (isOnlineGame && isSignedInLive) {
             ProfileManager.GetChatAndContentRestrictions(
@@ -1346,9 +1346,9 @@ int UIScene_CreateWorldMenu::StartGame_SignInReturned(void* pParam,
             bool pccAllowed = true;
             bool pccFriendsAllowed = true;
 
-            ProfileManager.AllowedPlayerCreatedContent(
-                ProfileManager.GetPrimaryPad(), false, &pccAllowed,
-                &pccFriendsAllowed);
+            GetAllowedPlayerCreatedContentFlags(ProfileManager.GetPrimaryPad(),
+                                                false, &pccAllowed,
+                                                &pccFriendsAllowed);
             if (!pccAllowed && !pccFriendsAllowed) noUGC = true;
 
             if (isOnlineGame && (noPrivileges || noUGC)) {

@@ -36,6 +36,19 @@ bool equalsIgnoreCase(const std::wstring& a, const std::wstring& b) {
     return out;
 }
 
+size_t uint16_len(const uint16_t* str) {
+    return std::char_traits<char16_t>::length(
+        reinterpret_cast<const char16_t*>(str));
+}
+
+std::u16string uint16_to_u16string(const uint16_t* str) {
+    return std::u16string(reinterpret_cast<const char16_t*>(str), uint16_len(str));
+}
+
+std::wstring uint16_to_wstring(const uint16_t* str) {
+    return u16string_to_wstring(uint16_to_u16string(str));
+}
+
 std::wstring convStringToWstring(const std::string& converting) {
     std::wstring converted(converting.length(), L' ');
     copy(converting.begin(), converting.end(), converted.begin());
