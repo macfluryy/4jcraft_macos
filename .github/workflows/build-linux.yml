@@ -34,7 +34,7 @@ jobs:
           python -m pip install meson
 
       - name: Restore ccache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ runner.temp }}/ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
