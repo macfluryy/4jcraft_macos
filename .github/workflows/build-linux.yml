@@ -3,10 +3,17 @@ name: Build (Linux, x86-64)
 on:
   push:
     paths:
-      - "**.cpp"
-      - "**.h"
+      - '**.cpp'
+      - '**.h'
+      - '**.c'
+      - '**.cc'
+      - '**.cxx'
+      - '**.hh'
+      - '**.hpp'
+      - '**.hxx'
+      - '**.inl'
       - "**.meson.build"
-      - '.github/workflows/*'
+      - '.github/workflows/build-linux.yml*'
 
 
 jobs:
@@ -21,8 +28,8 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
 
-      - name: Build
-        run: nix build
-
       - name: Flake integrity
         run: nix flake check
+
+      - name: Build
+        run: nix build

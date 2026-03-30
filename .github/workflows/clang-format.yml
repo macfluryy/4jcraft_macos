@@ -1,12 +1,20 @@
-name: Clang-Format (Linux, x86-64)
+name: Check Format (Linux, x86-64)
 
 on:
   push:
     paths:
-      - "**.cpp"
-      - "**.h"
-      - "**.meson.build"
-      - ".github/workflows/*"
+      - '**.cpp'
+      - '**.h'
+      - '**.c'
+      - '**.cc'
+      - '**.cxx'
+      - '**.hh'
+      - '**.hpp'
+      - '**.hxx'
+      - '**.inl'
+      - '.clang-format'
+      - '.github/workflows/clang-format.yml'
+      - '.github/scripts/check-clang-format.sh'
 
 jobs:
   formatting-check:
