@@ -22,8 +22,6 @@
 
 #ifdef __linux__
 #include "../Platform/Linux/Stubs/LinuxStubs.h"
-#else
-typedef unsigned __int64 __uint64;
 #endif
 
 #ifdef _WINDOWS64

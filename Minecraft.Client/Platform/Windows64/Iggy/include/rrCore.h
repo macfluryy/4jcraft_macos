@@ -917,8 +917,8 @@
         #define RAD_S32 signed int
         // But pointers are 64 bits.
         #if (_MSC_VER >= 1300 && defined(_Wp64) && _Wp64 )
-          #define RAD_SINTa __w64 signed __int64
-          #define RAD_UINTa __w64 unsigned __int64
+          #define RAD_SINTa __w64 signed int64_t
+          #define RAD_UINTa __w64 unsigned int64_t
         #else // non-vc.net compiler or /Wp64 turned off
           #define RAD_UINTa unsigned long long
           #define RAD_SINTa signed long long
@@ -976,8 +976,8 @@
       #define RAD_U64 unsigned long long
       #define RAD_S64 signed long long
     #elif defined(__RADX64__) || defined(__RAD32__)
-      #define RAD_U64 unsigned __int64
-      #define RAD_S64 signed __int64
+      #define RAD_U64 unsigned int64_t
+      #define RAD_S64 signed int64_t
     #else
       // 16-bit
       typedef RADSTRUCT RAD_U64  // do this so that we don't accidentally use U64s
@@ -1883,7 +1883,7 @@ unsigned long  __cdecl _byteswap_ulong  (unsigned long  _Long);
 #define RR_BSWAP16   _byteswap_ushort
 #define RR_BSWAP32  _byteswap_ulong
 
-unsigned __int64 __cdecl _byteswap_uint64 (unsigned __int64 val);
+unsigned int64_t __cdecl _byteswap_uint64 (unsigned int64_t val);
 #pragma intrinsic(_byteswap_uint64)
 #define RR_BSWAP64  _byteswap_uint64
 
@@ -1909,7 +1909,7 @@ RADFORCEINLINE unsigned long RR_BSWAP32 (unsigned long _Long)
    return _Long;
 }
 
-RADFORCEINLINE unsigned __int64 RR_BSWAP64 (unsigned __int64 _Long)
+RADFORCEINLINE unsigned int64_t RR_BSWAP64 (unsigned int64_t _Long)
 {
    __asm {
       mov eax, DWORD PTR _Long
@@ -2250,10 +2250,10 @@ void           __storewordbytereverse (unsigned int   val, int offset, void *bas
 
 #if ( defined(_MSC_VER) && _MSC_VER >= 1300)
 
-unsigned __int64 __cdecl _rotl64(unsigned __int64 _Val, int _Shift);
+unsigned int64_t __cdecl _rotl64(unsigned int64_t _Val, int _Shift);
 #pragma intrinsic(_rotl64)
 
-#define RR_ROTL64(x,k)  _rotl64((unsigned __int64)(x),(int)(k))
+#define RR_ROTL64(x,k)  _rotl64((unsigned int64_t)(x),(int)(k))
 
 #elif defined(__RADCELL__)
 

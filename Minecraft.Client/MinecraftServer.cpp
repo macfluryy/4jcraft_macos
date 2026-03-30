@@ -107,7 +107,7 @@ MinecraftServer::MinecraftServer() {
 
 MinecraftServer::~MinecraftServer() {}
 
-bool MinecraftServer::initServer(__int64 seed, NetworkGameInitData* initData,
+bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
                                  std::uint32_t initSettings, bool findSeed) {
     // 4J - removed
     settings = new Settings(new File(L"server.properties"));
@@ -323,7 +323,7 @@ void MinecraftServer::postProcessTerminate(ProgressRenderer* mcprogress) {
 }
 
 bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
-                                const std::wstring& name, __int64 levelSeed,
+                                const std::wstring& name, int64_t levelSeed,
                                 LevelType* pLevelType,
                                 NetworkGameInitData* initData) {
     //	4J - TODO - do with new save stuff

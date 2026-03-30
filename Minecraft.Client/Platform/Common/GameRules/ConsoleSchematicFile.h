@@ -70,9 +70,9 @@ public:
     void save(DataOutputStream* dos);
     void load(DataInputStream* dis);
 
-    __int64 applyBlocksAndData(LevelChunk* chunk, AABB* chunkBox,
+    int64_t applyBlocksAndData(LevelChunk* chunk, AABB* chunkBox,
                                AABB* destinationBox, ESchematicRotation rot);
-    __int64 applyLighting(LevelChunk* chunk, AABB* chunkBox,
+    int64_t applyLighting(LevelChunk* chunk, AABB* chunkBox,
                           AABB* destinationBox, ESchematicRotation rot);
     void applyTileEntities(LevelChunk* chunk, AABB* chunkBox,
                            AABB* destinationBox, ESchematicRotation rot);

@@ -20,8 +20,8 @@ private:
     ConsoleSchematicFile::ESchematicRotation m_rotation;
     int m_dimension;
 
-    __int64 m_totalBlocksChanged;
-    __int64 m_totalBlocksChangedLighting;
+    int64_t m_totalBlocksChanged;
+    int64_t m_totalBlocksChangedLighting;
     bool m_completed;
 
     void updateLocationBox();

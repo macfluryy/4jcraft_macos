@@ -16,7 +16,7 @@ class UIControl;
 // Base class for all shared functions between UIControllers
 class UIController : public IUIController {
 public:
-    static __int64 iggyAllocCount;
+    static int64_t iggyAllocCount;
 
     // MGH - added to prevent crash loading Iggy movies while the skins were
     // being reloaded

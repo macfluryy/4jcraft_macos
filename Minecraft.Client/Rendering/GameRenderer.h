@@ -135,7 +135,7 @@ private:
 public:
     void render(float a, bool bFirst);  // 4J added bFirst
     void renderLevel(float a);
-    void renderLevel(float a, __int64 until);
+    void renderLevel(float a, int64_t until);
 
 private:
     Random* random;

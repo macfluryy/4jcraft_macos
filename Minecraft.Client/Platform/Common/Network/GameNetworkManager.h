@@ -155,9 +155,9 @@ public:
 
     // Used for debugging output
     static const int messageQueue_length = 512;
-    static __int64 messageQueue[messageQueue_length];
+    static int64_t messageQueue[messageQueue_length];
     static const int byteQueue_length = 512;
-    static __int64 byteQueue[byteQueue_length];
+    static int64_t byteQueue[byteQueue_length];
     static int messageQueuePos;
 
     // Methods called from PlatformNetworkManager
