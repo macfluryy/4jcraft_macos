@@ -1,4 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include "UIController.h"
 #include "UI.h"
 #include "UIScene.h"
@@ -735,13 +736,13 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
     if (pressed) {
         // Start repeat timer
         m_actionRepeatTimer[iPad][key] =
-            GetTickCount() + UI_REPEAT_KEY_DELAY_MS;
+            PlatformTime::GetTickCount() + UI_REPEAT_KEY_DELAY_MS;
     } else if (released) {
         // Stop repeat timer
         m_actionRepeatTimer[iPad][key] = 0;
     } else if (down) {
         // Check is enough time has elapsed to be a repeat key
-        std::uint32_t currentTime = GetTickCount();
+        std::uint32_t currentTime = PlatformTime::GetTickCount();
         if (m_actionRepeatTimer[iPad][key] > 0 &&
             currentTime > m_actionRepeatTimer[iPad][key]) {
             repeat = true;
@@ -1372,7 +1373,7 @@ UIScene* UIController::GetTopScene(int iPad, EUILayer layer, EUIGroup group) {
 
 size_t UIController::RegisterForCallbackId(UIScene* scene) {
     std::lock_guard<std::mutex> lock(m_registeredCallbackScenesCS);
-    size_t newId = GetTickCount();
+    size_t newId = PlatformTime::GetTickCount();
     newId &= 0xFFFFFF;  // Chop off the top byte, we don't need any more
                         // accuracy than that
     newId |= (scene->getSceneType()

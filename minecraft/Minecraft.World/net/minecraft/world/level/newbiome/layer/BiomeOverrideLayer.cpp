@@ -1,48 +1,37 @@
 #include <string.h>
 #include <string>
+#include <fstream>
+#include <filesystem>
 
 #include "BiomeOverrideLayer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#if defined(__linux__)
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#endif
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 #include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
     m_biomeOverride = std::vector<uint8_t>(width * height);
 
-#if defined(_UNICODE)
-    std::wstring path = L"GAME:\\GameRules\\biomemap.bin";
-    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr,
-                            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-#else
-#if defined(_WINDOWS64)
-    std::string path = "GameRules\\biomemap.bin";
-#else
-    std::string path = "GAME:\\GameRules\\biomemap.bin";
-#endif
-    void* file = CreateFile(path.c_str(), GENERIC_READ, 0, nullptr,
-                            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-#endif
-    if (file == INVALID_HANDLE_VALUE) {
-        uint32_t error = GetLastError();
+    std::filesystem::path path = "GameRules/biomemap.bin";
+    std::ifstream file(path, std::ios::binary);
+    if (!file) {
         // assert(false);
         app.DebugPrintf("Biome override not found, using plains as default\n");
 
         memset(m_biomeOverride.data(), Biome::plains->id, m_biomeOverride.size());
     } else {
-        uint32_t bytesRead, dwFileSize = GetFileSize(file, nullptr);
-        if (dwFileSize > m_biomeOverride.size()) {
+        auto fileSize = std::filesystem::file_size(path);
+        if (fileSize > m_biomeOverride.size()) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
             __debugbreak();
         }
-        bool bSuccess = ReadFile(file, m_biomeOverride.data(), dwFileSize,
-                                 &bytesRead, nullptr);
+        file.read(reinterpret_cast<char*>(m_biomeOverride.data()), static_cast<std::streamsize>(fileSize));
 
-        if (bSuccess == false) {
+        if (!file) {
             app.FatalLoadError();
         }
-
-        CloseHandle(file);
     }
 }
 

@@ -640,7 +640,7 @@ int Connection::runClose(void* lpParam) {
 
     // try {
 
-    sleep(2000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     if (con->running) {
         // 4J TODO writeThread.interrupt();
         con->close(DisconnectPacket::eDisconnect_Closed);
@@ -662,7 +662,7 @@ int Connection::runSendAndQuit(void* lpParam) {
 
     // try {
 
-    sleep(2000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     if (con->running) {
         // 4J TODO writeThread.interrupt();
         con->close(DisconnectPacket::eDisconnect_Closed);

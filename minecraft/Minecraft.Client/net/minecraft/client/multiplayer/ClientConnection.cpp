@@ -1,4 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include "ClientConnection.h"
 #include <cfloat>
 #include <limits>
@@ -3454,7 +3455,7 @@ void ClientConnection::checkDeferredEntityLinkPackets(int newEntityId) {
         bool remove = false;
 
         // Only consider recently deferred packets
-        int tickInterval = GetTickCount() - deferred->m_recievedTick;
+        int tickInterval = PlatformTime::GetTickCount() - deferred->m_recievedTick;
         if (tickInterval < MAX_ENTITY_LINK_DEFERRAL_INTERVAL) {
             // Note: we assume it's the destination entity
             if (deferred->m_packet->destId == newEntityId) {
@@ -3477,6 +3478,6 @@ void ClientConnection::checkDeferredEntityLinkPackets(int newEntityId) {
 
 ClientConnection::DeferredEntityLinkPacket::DeferredEntityLinkPacket(
     std::shared_ptr<SetEntityLinkPacket> packet) {
-    m_recievedTick = GetTickCount();
+    m_recievedTick = PlatformTime::GetTickCount();
     m_packet = packet;
 }

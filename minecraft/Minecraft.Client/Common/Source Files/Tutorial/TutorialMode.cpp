@@ -1,4 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include <memory>
 #include "../../../net/minecraft/client/Minecraft.h"
 #include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
@@ -59,7 +60,7 @@ void TutorialMode::tick() {
 
     /*
     if( tutorial.m_allTutorialsComplete && (tutorial.lastMessageTime +
-    m_iTutorialDisplayMessageTime) < GetTickCount() )
+    m_iTutorialDisplayMessageTime) < PlatformTime::GetTickCount() )
     {
             // Exit tutorial
             minecraft->gameMode = new SurvivalMode( this );

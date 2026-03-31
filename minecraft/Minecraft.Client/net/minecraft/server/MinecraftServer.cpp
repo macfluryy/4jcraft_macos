@@ -29,6 +29,7 @@
 #include "Minecraft.World/net/minecraft/Pos.h"
 #include "java/System.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #if defined(SPLIT_SAVES)
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
 #endif
@@ -829,12 +830,9 @@ void MinecraftServer::Suspend() {
     PIXBeginNamedEvent(0, "Suspending server");
     m_suspending = true;
     // Get the frequency of the timer
-    LARGE_INTEGER qwTicksPerSec, qwTime, qwNewTime, qwDeltaTime;
     float fElapsedTime = 0.0f;
-    QueryPerformanceFrequency(&qwTicksPerSec);
-    float fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
     // Save the start time
-    QueryPerformanceCounter(&qwTime);
+    auto qwTime = PlatformTime::QueryPerformanceCounter();
     if (m_bLoaded &&
         (!StorageManager.GetSaveDisabled())) {
         if (players != nullptr) {
@@ -854,10 +852,9 @@ void MinecraftServer::Suspend() {
             levels[0]->saveToDisc(nullptr, true);
         }
     }
-    QueryPerformanceCounter(&qwNewTime);
+    auto qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-    qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-    fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+    fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
     m_suspending = false;
     app.DebugPrintf("Suspend server: Elapsed time %f\n", fElapsedTime);
@@ -1630,7 +1627,7 @@ void MinecraftServer::chunkPacketManagement_PostTick() {}
 bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer* player) {
     if (player == nullptr) return false;
 
-    int time = GetTickCount();
+    int time = PlatformTime::GetTickCount();
     if (player->GetSessionIndex() == s_slowQueuePlayerIndex &&
         (time - s_slowQueueLastTime) > MINECRAFT_SERVER_SLOW_QUEUE_DELAY) {
         //		app.DebugPrintf("Slow queue OK for player #%d\n",
@@ -1650,7 +1647,7 @@ void MinecraftServer::chunkPacketManagement_PreTick() {}
 void MinecraftServer::chunkPacketManagement_PostTick() {
     // 4J Ensure that the slow queue owner keeps cycling if it's not been used
     // in a while
-    int time = GetTickCount();
+    int time = PlatformTime::GetTickCount();
     if ((s_slowQueuePacketSent) || ((time - s_slowQueueLastTime) >
                                     (2 * MINECRAFT_SERVER_SLOW_QUEUE_DELAY))) {
         //		app.DebugPrintf("Considering cycling: (%d) %d - %d -> %d

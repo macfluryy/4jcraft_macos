@@ -1,5 +1,6 @@
 #include <thread>
 #include <chrono>
+#include <ctime>
 
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.h"
@@ -1069,14 +1070,19 @@ void Minecraft::run_middle() {
 #if !defined(_CONTENT_PACKAGE)
                                         {
                                             // print the time
-                                            SYSTEMTIME UTCSysTime;
-                                            GetSystemTime(&UTCSysTime);
-                                            // char szTime[15];
+                                            auto now_tp = std::chrono::system_clock::now();
+                                            std::time_t now_tt = std::chrono::system_clock::to_time_t(now_tp);
+                                            std::tm utcTime{};
+#if defined(_WIN32)
+                                            gmtime_s(&utcTime, &now_tt);
+#else
+                                            gmtime_r(&now_tt, &utcTime);
+#endif
 
                                             app.DebugPrintf("%02d:%02d:%02d\n",
-                                                            UTCSysTime.wHour,
-                                                            UTCSysTime.wMinute,
-                                                            UTCSysTime.wSecond);
+                                                            utcTime.tm_hour,
+                                                            utcTime.tm_min,
+                                                            utcTime.tm_sec);
                                         }
 #endif
                                     } else {

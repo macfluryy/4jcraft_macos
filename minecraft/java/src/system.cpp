@@ -1,7 +1,4 @@
-#if defined(__linux__)
-#include <sys/time.h>
-#include <time.h>
-#endif
+#include <chrono>
 
 #include <assert.h>
 #include <stdint.h>
@@ -69,13 +66,8 @@ void System::arraycopy(const std::vector<int>& src, unsigned int srcPos,
 // Returns:
 // The current value of the system timer, in nanoseconds.
 int64_t System::nanoTime() {
-#if !defined(__linux__)
-    return GetTickCount() * 1000000LL;
-#else
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return static_cast<int64_t>(ts.tv_sec) * 1000000000LL + ts.tv_nsec;
-#endif
+    auto now = std::chrono::steady_clock::now().time_since_epoch();
+    return std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
 }
 
 // Returns the current time in milliseconds. Note that while the unit of time of
@@ -89,28 +81,8 @@ int64_t System::nanoTime() {
 // the difference, measured in milliseconds, between the current time and
 // midnight, January 1, 1970 UTC.
 int64_t System::currentTimeMillis() {
-#if defined(__linux__)
-    struct timeval tv;
-    gettimeofday(&tv, nullptr);
-    // Convert to milliseconds since unix epoch instead of windows file time
-    // time is expecting calculation to be between 10-30 ms.
-    return (int64_t)tv.tv_sec * 1000LL + tv.tv_usec / 1000;
-#else
-
-    SYSTEMTIME UTCSysTime;
-    GetSystemTime(&UTCSysTime);
-
-    // Represents as a 64-bit value the number of 100-nanosecond intervals since
-    // January 1, 1601
-    FILETIME UTCFileTime;
-    SystemTimeToFileTime(&UTCSysTime, &UTCFileTime);
-
-    LARGE_INTEGER li;
-    li.HighPart = UTCFileTime.dwHighDateTime;
-    li.LowPart = UTCFileTime.dwLowDateTime;
-
-    return li.QuadPart / 10000;
-#endif
+    auto now = std::chrono::system_clock::now().time_since_epoch();
+    return std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
 }
 
 // 4J Stu - Added this so that we can use real-world timestamps in PSVita saves.

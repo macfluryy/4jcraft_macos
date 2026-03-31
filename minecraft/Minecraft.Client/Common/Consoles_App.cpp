@@ -31,6 +31,7 @@
 #include "../Windows64/XML/ATGXmlParser.h"
 #include "../Windows64/XML/xmlFilesCallback.h"
 #endif
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include "Minecraft_Macros.h"
 #include "../net/minecraft/server/PlayerList.h"
 #include "../net/minecraft/server/level/ServerPlayer.h"
@@ -4341,15 +4342,14 @@ void CMinecraftApp::HandleDLC(DLCPack* pack) {
 //-------------------------------------------------------------------------------------
 void CMinecraftApp::InitTime() {
     // Get the frequency of the timer
-    LARGE_INTEGER qwTicksPerSec;
-    QueryPerformanceFrequency(&qwTicksPerSec);
-    m_Time.fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
+    auto freq = PlatformTime::QueryPerformanceFrequency();
+    m_Time.fSecsPerTick = 1.0f / static_cast<float>(freq);
 
     // Save the start time
-    QueryPerformanceCounter(&m_Time.qwTime);
+    m_Time.qwTime = PlatformTime::QueryPerformanceCounter();
 
     // Zero out the elapsed and total time
-    m_Time.qwAppTime.QuadPart = 0;
+    m_Time.qwAppTime = 0;
     m_Time.fAppTime = 0.0f;
     m_Time.fElapsedTime = 0.0f;
 }
@@ -4359,19 +4359,16 @@ void CMinecraftApp::InitTime() {
 // Desc: Updates the elapsed time since our last frame.
 //-------------------------------------------------------------------------------------
 void CMinecraftApp::UpdateTime() {
-    LARGE_INTEGER qwNewTime;
-    LARGE_INTEGER qwDeltaTime;
+    auto qwNewTime = PlatformTime::QueryPerformanceCounter();
+    auto qwDeltaTime = qwNewTime - m_Time.qwTime;
 
-    QueryPerformanceCounter(&qwNewTime);
-    qwDeltaTime.QuadPart = qwNewTime.QuadPart - m_Time.qwTime.QuadPart;
-
-    m_Time.qwAppTime.QuadPart += qwDeltaTime.QuadPart;
-    m_Time.qwTime.QuadPart = qwNewTime.QuadPart;
+    m_Time.qwAppTime += qwDeltaTime;
+    m_Time.qwTime = qwNewTime;
 
     m_Time.fElapsedTime =
-        m_Time.fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+        m_Time.fSecsPerTick * static_cast<float>(qwDeltaTime);
     m_Time.fAppTime =
-        m_Time.fSecsPerTick * static_cast<float>(m_Time.qwAppTime.QuadPart);
+        m_Time.fSecsPerTick * static_cast<float>(m_Time.qwAppTime);
 }
 
 bool CMinecraftApp::isXuidNotch(PlayerUID xuid) {
@@ -7143,17 +7140,17 @@ int CMinecraftApp::GetDLCInfoTexturesOffersCount() {
 // AUTOSAVE
 void CMinecraftApp::SetAutosaveTimerTime(void) {
     m_uiAutosaveTimer =
-        GetTickCount() +
+        PlatformTime::GetTickCount() +
         GetGameSettings(ProfileManager.GetPrimaryPad(), eGameSetting_Autosave) *
             1000 * 60 * 15;
 }  // value x 15 to get mins, x60 for secs
 
 bool CMinecraftApp::AutosaveDue(void) {
-    return (GetTickCount() > m_uiAutosaveTimer);
+    return (PlatformTime::GetTickCount() > m_uiAutosaveTimer);
 }
 
 unsigned int CMinecraftApp::SecondsToAutosave() {
-    return (m_uiAutosaveTimer - GetTickCount()) / 1000;
+    return (m_uiAutosaveTimer - PlatformTime::GetTickCount()) / 1000;
 }
 
 void CMinecraftApp::SetTrialTimerStart(void) {

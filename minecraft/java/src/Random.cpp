@@ -1,4 +1,4 @@
-#include <ctime>
+#include <chrono>
 #include <cstdint>  // for int64_t
 
 #include "java/Random.h"
@@ -9,10 +9,8 @@ Random::Random() {
     // only millisecond accuate, so use QueryPerformanceCounter here instead
     int64_t seed;
 
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    seed = ts.tv_sec * 1000000000LL + ts.tv_nsec;
+    auto now = std::chrono::steady_clock::now().time_since_epoch();
+    seed = std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
 
     seed += 8682522807148012LL;
 

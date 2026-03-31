@@ -85,11 +85,11 @@ File::File(const std::wstring& pathname) {
     for (const char* base : bases) {
         std::string tryFull = exeDir + base + request;
         std::string tryFile = exeDir + base + fileName;
-        if (access(tryFull.c_str(), F_OK) != -1) {
+        if (std::filesystem::exists(tryFull)) {
             m_abstractPathName = convStringToWstring(tryFull);
             return;
         }
-        if (access(tryFile.c_str(), F_OK) != -1) {
+        if (std::filesystem::exists(tryFile)) {
             m_abstractPathName = convStringToWstring(tryFile);
             return;
         }

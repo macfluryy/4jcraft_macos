@@ -4,9 +4,7 @@
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "../Header Files/BufferedImage.h"
-#if defined(__linux__)
-#include <unistd.h>
-#endif
+#include <filesystem>
 #include <vector>
 #include <string>
 
@@ -76,7 +74,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
             size_t p;
             while ((p = attempt.find(L"//")) != std::wstring::npos)
                 attempt.replace(p, 2, L"/");
-            if (access(wstringtofilename(attempt), F_OK) != -1) {
+            if (std::filesystem::exists(wstringtofilename(attempt))) {
                 finalPath = attempt;
                 foundOnDisk = true;
                 break;

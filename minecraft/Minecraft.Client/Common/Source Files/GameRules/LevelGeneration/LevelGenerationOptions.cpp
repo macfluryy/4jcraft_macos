@@ -1,5 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 
+#include <fstream>
+#include <filesystem>
 #include <unordered_set>
 
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
@@ -504,47 +506,16 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                                          dlcFile->getGrfPath(), true,
                                          L"WPACK:"));
                 if (grf.exists()) {
-#if defined(_UNICODE)
-                    std::wstring path = grf.getPath();
-                    const wchar_t* pchFilename = path.c_str();
-                    void* fileHandle = CreateFile(
-                        pchFilename,   // file name
-                        GENERIC_READ,  // access mode
-                        0,  // share mode // TODO 4J Stu - Will we need to share
-                            // file? Probably not but...
-                        nullptr,        // Unused
-                        OPEN_EXISTING,  // how to create // TODO 4J Stu -
-                                        // Assuming that the file already exists
-                                        // if we are opening to read from it
-                        FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                        nullptr                     // Unsupported
-                    );
-#else
-                    const char* pchFilename = wstringtofilename(grf.getPath());
-                    void* fileHandle = CreateFile(
-                        pchFilename,   // file name
-                        GENERIC_READ,  // access mode
-                        0,  // share mode // TODO 4J Stu - Will we need to share
-                            // file? Probably not but...
-                        nullptr,        // Unused
-                        OPEN_EXISTING,  // how to create // TODO 4J Stu -
-                                        // Assuming that the file already exists
-                                        // if we are opening to read from it
-                        FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                        nullptr                     // Unsupported
-                    );
-#endif
+                    std::filesystem::path grfPath = grf.getPath();
+                    std::ifstream fileHandle(grfPath, std::ios::binary);
 
-                    if (fileHandle != INVALID_HANDLE_VALUE) {
+                    if (fileHandle) {
                         uint32_t dwFileSize = grf.length();
-                        uint32_t bytesRead;
                         uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
-                        bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
-                                                 &bytesRead, nullptr);
-                        if (bSuccess == false) {
+                        fileHandle.read(reinterpret_cast<char*>(pbData), static_cast<std::streamsize>(dwFileSize));
+                        if (!fileHandle) {
                             app.FatalLoadError();
                         }
-                        CloseHandle(fileHandle);
 
                         // 4J-PB - is it possible that we can get here after a
                         // read fail and it's not an error?
@@ -562,47 +533,16 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
             File save(app.getFilePath(lgo->m_parentDLCPack->GetPackID(),
                                       lgo->getBaseSavePath(), true, L"WPACK:"));
             if (save.exists()) {
-#if defined(_UNICODE)
-                std::wstring path = save.getPath();
-                const wchar_t* pchFilename = path.c_str();
-                void* fileHandle = CreateFile(
-                    pchFilename,   // file name
-                    GENERIC_READ,  // access mode
-                    0,  // share mode // TODO 4J Stu - Will we need to share
-                        // file? Probably not but...
-                    nullptr,        // Unused
-                    OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
-                                    // that the file already exists if we are
-                                    // opening to read from it
-                    FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                    nullptr                     // Unsupported
-                );
-#else
-                const char* pchFilename = wstringtofilename(save.getPath());
-                void* fileHandle = CreateFile(
-                    pchFilename,   // file name
-                    GENERIC_READ,  // access mode
-                    0,  // share mode // TODO 4J Stu - Will we need to share
-                        // file? Probably not but...
-                    nullptr,        // Unused
-                    OPEN_EXISTING,  // how to create // TODO 4J Stu - Assuming
-                                    // that the file already exists if we are
-                                    // opening to read from it
-                    FILE_FLAG_SEQUENTIAL_SCAN,  // file attributes
-                    nullptr                     // Unsupported
-                );
-#endif
+                std::filesystem::path savePath = save.getPath();
+                std::ifstream saveHandle(savePath, std::ios::binary);
 
-                if (fileHandle != INVALID_HANDLE_VALUE) {
-                    uint32_t bytesRead,
-                        dwFileSize = GetFileSize(fileHandle, nullptr);
+                if (saveHandle) {
+                    auto dwFileSize = std::filesystem::file_size(savePath);
                     uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
-                    bool bSuccess = ReadFile(fileHandle, pbData, dwFileSize,
-                                             &bytesRead, nullptr);
-                    if (bSuccess == false) {
+                    saveHandle.read(reinterpret_cast<char*>(pbData), static_cast<std::streamsize>(dwFileSize));
+                    if (!saveHandle) {
                         app.FatalLoadError();
                     }
-                    CloseHandle(fileHandle);
 
                     // 4J-PB - is it possible that we can get here after a read
                     // fail and it's not an error?

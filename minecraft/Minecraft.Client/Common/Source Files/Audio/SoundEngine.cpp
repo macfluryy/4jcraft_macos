@@ -1,5 +1,6 @@
 ﻿#include "Minecraft.World/Header Files/stdafx.h"
 #include "SoundEngine.h"
+#include <filesystem>
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "../../Consoles_App.h"
 #include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
@@ -172,7 +173,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
             for (int i = 1; i <= 16; i++) {
                 char tryP[512];
                 snprintf(tryP, 512, "%s%s%d%s", fullRoot.c_str(), szId, i, ext);
-                if (access(tryP, F_OK) != -1)
+                if (std::filesystem::exists(tryP))
                     count = i;
                 else
                     break;
@@ -185,7 +186,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
             }
             char tryP[512];
             snprintf(tryP, 512, "%s%s%s", fullRoot.c_str(), szId, ext);
-            if (access(tryP, F_OK) != -1) {
+            if (std::filesystem::exists(tryP)) {
                 strncpy(finalPath, tryP, 511);
                 found = true;
                 break;
@@ -240,7 +241,7 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
             char tryP[512];
             snprintf(tryP, 512, "%s%s%s%s", base.c_str(), root, szIdentifier,
                      ext);
-            if (access(tryP, F_OK) != -1) {
+            if (std::filesystem::exists(tryP)) {
                 strncpy(finalPath, tryP, 511);
                 found = true;
                 break;
@@ -441,14 +442,14 @@ void SoundEngine::playMusicTick() {
                         // try with folder prefix (music/ or cds/)
                         snprintf(c, 512, "%s%s%s%s%s", base.c_str(), r, folder,
                                  track, e);
-                        if (access(c, F_OK) != -1) {
+                        if (std::filesystem::exists(c)) {
                             strncpy(m_szStreamName, c, 511);
                             found = true;
                             break;
                         }
                         // try without folder prefix
                         snprintf(c, 512, "%s%s%s%s", base.c_str(), r, track, e);
-                        if (access(c, F_OK) != -1) {
+                        if (std::filesystem::exists(c)) {
                             strncpy(m_szStreamName, c, 511);
                             found = true;
                             break;

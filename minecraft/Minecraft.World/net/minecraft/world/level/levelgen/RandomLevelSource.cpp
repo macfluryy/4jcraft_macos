@@ -2,6 +2,7 @@
 #include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"
@@ -96,8 +97,8 @@ RandomLevelSource::~RandomLevelSource() {
 }
 
 int g_numPrepareHeightCalls = 0;
-LARGE_INTEGER g_totalPrepareHeightsTime = {0, 0};
-LARGE_INTEGER g_averagePrepareHeightsTime = {0, 0};
+std::int64_t g_totalPrepareHeightsTime = 0;
+std::int64_t g_averagePrepareHeightsTime = 0;
 
 #if defined(_LARGE_WORLDS)
 
@@ -236,7 +237,7 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
 #endif
 
 void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks) {
-    LARGE_INTEGER startTime;
+    std::int64_t startTime;
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::genDepth / CHUNK_HEIGHT;
     int waterHeight = level->seaLevel;
@@ -257,7 +258,7 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize, biomes);
 
-    QueryPerformanceCounter(&startTime);
+    startTime = PlatformTime::QueryPerformanceCounter();
     for (int xc = 0; xc < xChunks; xc++) {
         for (int zc = 0; zc < xChunks; zc++) {
             for (int yc = 0; yc < yChunks; yc++) {
@@ -369,14 +370,12 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t
             }
         }
     }
-    LARGE_INTEGER endTime;
-    QueryPerformanceCounter(&endTime);
-    LARGE_INTEGER timeInFunc;
-    timeInFunc.QuadPart = endTime.QuadPart - startTime.QuadPart;
+    auto endTime = PlatformTime::QueryPerformanceCounter();
+    auto timeInFunc = endTime - startTime;
     g_numPrepareHeightCalls++;
-    g_totalPrepareHeightsTime.QuadPart += timeInFunc.QuadPart;
-    g_averagePrepareHeightsTime.QuadPart =
-        g_totalPrepareHeightsTime.QuadPart / g_numPrepareHeightCalls;
+    g_totalPrepareHeightsTime += timeInFunc;
+    g_averagePrepareHeightsTime =
+        g_totalPrepareHeightsTime / g_numPrepareHeightCalls;
 
 }
 

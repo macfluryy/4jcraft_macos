@@ -28,6 +28,8 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "compression.h"
+#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
+#include <ctime>
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"
@@ -1281,10 +1283,9 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     if (!m_autosave) processSubfilesForWrite();
 
     // Get the frequency of the timer
-    LARGE_INTEGER qwTicksPerSec, qwTime, qwNewTime, qwDeltaTime;
+    auto qwTime = PlatformTime::QueryPerformanceCounter();
+    auto qwNewTime = qwTime;
     float fElapsedTime = 0.0f;
-    QueryPerformanceFrequency(&qwTicksPerSec);
-    float fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
 
     unsigned int fileSize = header.GetFileSize();
 
@@ -1312,13 +1313,12 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         // Pre-calculate the buffer size required for the compressed data
         PIXBeginNamedEvent(0, "Pre-calc save compression");
         // Save the start time
-        QueryPerformanceCounter(&qwTime);
+        qwTime = PlatformTime::QueryPerformanceCounter();
         Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
-        QueryPerformanceCounter(&qwNewTime);
+        qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-        qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-        fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+        fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
         app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
@@ -1335,13 +1335,12 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         // Re-compress all save data before we save it to disk
         PIXBeginNamedEvent(0, "Actual save compression");
         // Save the start time
-        QueryPerformanceCounter(&qwTime);
+        qwTime = PlatformTime::QueryPerformanceCounter();
         Compression::getCompression()->Compress(compData + 8, &compLength,
                                                 pvSaveMem, fileSize);
-        QueryPerformanceCounter(&qwNewTime);
+        qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-        qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
-        fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
+        fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
@@ -1445,8 +1444,14 @@ void ConsoleSaveFileSplit::DebugFlushToFile(
 
     wchar_t* fileName = new wchar_t[XCONTENT_MAX_FILENAME_LENGTH + 1];
 
-    SYSTEMTIME t;
-    GetSystemTime(&t);
+    auto now_tp = std::chrono::system_clock::now();
+    std::time_t now_tt = std::chrono::system_clock::to_time_t(now_tp);
+    std::tm t{};
+#if defined(_WIN32)
+    gmtime_s(&t, &now_tt);
+#else
+    gmtime_r(&now_tt, &t);
+#endif
 
     // 14 chars for the digits
     // 11 chars for the separators + suffix
@@ -1457,8 +1462,8 @@ void ConsoleSaveFileSplit::DebugFlushToFile(
     }
     swprintf(fileName, XCONTENT_MAX_FILENAME_LENGTH + 1,
              L"\\v%04d-%ls%02d.%02d.%02d.%02d.%02d.mcs", VER_PRODUCTBUILD,
-             cutFileName.c_str(), t.wMonth, t.wDay, t.wHour, t.wMinute,
-             t.wSecond);
+             cutFileName.c_str(), t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min,
+             t.tm_sec);
 
     const std::wstring outputPath =
         targetFileDir.getPath() + std::wstring(fileName);

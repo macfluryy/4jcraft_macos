@@ -610,8 +610,8 @@ private:
     // Trial timer
     float m_fTrialTimerStart, mfTrialPausedTime;
     typedef struct TimeInfo {
-        LARGE_INTEGER qwTime;
-        LARGE_INTEGER qwAppTime;
+        std::int64_t qwTime;
+        std::int64_t qwAppTime;
 
         float fAppTime;
         float fElapsedTime;
