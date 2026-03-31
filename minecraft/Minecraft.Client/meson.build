@@ -20,7 +20,6 @@ client_sources = run_command(
 
 # some platform-specific sources that are for some stupid reason in Common
 exclude_platform_common_sources = [
-  ' ! -name "SonyLeaderboardManager.cpp"',
   ' ! -name "UIScene_InGameSaveManagementMenu.cpp"',
 ]
 
