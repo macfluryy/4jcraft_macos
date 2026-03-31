@@ -101,7 +101,6 @@ using namespace DirectX;
 
 #ifdef _WINDOWS64
 #include "../Windows64/Windows64_App.h"
-#include "Minecraft.spa.h"
 #include "../Windows64/XML/ATGXmlParser.h"
 #include "../Common/Source Files/Audio/SoundEngine.h"
 #include "../Windows64/Iggy/include/iggy.h"
@@ -110,7 +109,6 @@ using namespace DirectX;
 #else
 #include "../Linux/Linux_App.h"
 #include "../Linux/Iggy/include/iggy.h"
-#include "Minecraft.spa.h"
 #include "../Common/Source Files/Audio/SoundEngine.h"
 #include "../Linux/Linux_UIController.h"
 #endif

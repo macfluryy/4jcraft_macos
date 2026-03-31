@@ -5,7 +5,6 @@
 
 #include <assert.h>
 #include <mutex>
-#include "../../Header Files/Minecraft.spa.h"
 #include "../../net/minecraft/server/MinecraftServer.h"
 #include "../../net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
