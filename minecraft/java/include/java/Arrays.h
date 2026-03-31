@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
+#include <vector>
 
 class Arrays {
 public:

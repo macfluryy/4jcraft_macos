@@ -5,7 +5,9 @@
 #include <algorithm>
 #include <cstring>
 #include <cassert>
-#include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
+
+class Biome;
+class Node;
 
 // 4J Jev, just thought it would be easier this way.
 #define ArrayCopyFunctionDeclaration(x)                                      \

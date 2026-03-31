@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 #include "Buffer.h"
-#include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 #include "../../../Minecraft.World/ConsoleHelpers/Definitions.h" // 4jcraft TODO
 
 class IntBuffer;

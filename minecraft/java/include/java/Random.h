@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 class Random {
 private:
     int64_t seed;

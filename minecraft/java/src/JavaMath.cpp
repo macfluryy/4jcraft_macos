@@ -1,6 +1,7 @@
 #include "java/JavaMath.h"
 
 #include <cmath>
+#include <limits>
 
 Random Math::rand = Random();
 
@@ -41,11 +42,11 @@ int64_t Math::round(double d) {
     d = std::floor(d + 0.5);
 
     // if smaller or bigger than representable int64 than return the max
-    if (d >= (double)INT64_MAX) {
-        return INT64_MAX;
+    if (d >= (double)std::numeric_limits<int64_t>::max()) {
+        return std::numeric_limits<int64_t>::max();
 
-    } else if (d <= (double)INT64_MIN) {
-        return INT64_MIN;
+    } else if (d <= (double)std::numeric_limits<int64_t>::min()) {
+        return std::numeric_limits<int64_t>::min();
     }
 
     return (int64_t)d;
