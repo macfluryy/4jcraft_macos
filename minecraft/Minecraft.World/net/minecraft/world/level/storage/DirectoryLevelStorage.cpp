@@ -11,8 +11,7 @@
 #include "java/InputOutputStream/DataInputStream.h"
 #include "LevelData.h"
 #include "DirectoryLevelStorage.h"
-#include "4J_Profile.h"
-#include "4J_Storage.h"
+#include "platform/IPlatformStorage.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
@@ -390,7 +389,7 @@ void DirectoryLevelStorage::save(std::shared_ptr<Player> player) {
             playerDir.getName() + _toString(player->getXuid()) + L".dat");
         // If saves are disabled (e.g. because we are writing the save buffer to
         // disk) then cache this player data
-        if (StorageManager.GetSaveDisabled()) {
+        if (PlatformStorage.GetSaveDisabled()) {
             ByteArrayOutputStream* bos = new ByteArrayOutputStream();
             NbtIo::writeCompressed(tag, bos);
 
@@ -446,7 +445,7 @@ CompoundTag* DirectoryLevelStorage::loadPlayerDataTag(PlayerUID xuid) {
 
 // 4J Added function
 void DirectoryLevelStorage::clearOldPlayerFiles() {
-    if (StorageManager.GetSaveDisabled()) return;
+    if (PlatformStorage.GetSaveDisabled()) return;
 
     std::vector<FileEntry*>* playerFiles =
         m_saveFile->getFilesWithPrefix(playerDir.getName());
@@ -454,7 +453,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
     if (playerFiles != nullptr) {
 #if !defined(_FINAL_BUILD)
         if (app.DebugSettingsOn() &&
-            app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+            app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
                 (1L << eDebugSetting_DistributableSave)) {
             for (unsigned int i = 0; i < playerFiles->size(); ++i) {
                 FileEntry* file = playerFiles->at(i);
@@ -500,7 +499,7 @@ std::wstring DirectoryLevelStorage::getLevelId() { return levelId; }
 void DirectoryLevelStorage::flushSaveFile(bool autosave) {
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_DistributableSave)) {
         // Delete gamerules files if it exists
         ConsoleSavePath gameRulesFiles(GAME_RULE_SAVENAME);
@@ -615,7 +614,7 @@ int DirectoryLevelStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
 }
 
 void DirectoryLevelStorage::saveMapIdLookup() {
-    if (StorageManager.GetSaveDisabled()) return;
+    if (PlatformStorage.GetSaveDisabled()) return;
 
 #if defined(_LARGE_WORLDS)
     ConsoleSavePath file = getDataFile(L"largeMapDataMappings");
@@ -704,7 +703,7 @@ void DirectoryLevelStorage::deleteMapFilesForPlayer(PlayerUID xuid) {
             if (m_saveFile->doesFileExist(file)) {
                 // If we can't actually delete this file, store the name so we
                 // can delete it later
-                if (StorageManager.GetSaveDisabled())
+                if (PlatformStorage.GetSaveDisabled())
                     m_mapFilesToDelete.push_back(itMap->second);
                 else
                     m_saveFile->deleteFile(m_saveFile->createFile(file));
@@ -728,7 +727,7 @@ void DirectoryLevelStorage::deleteMapFilesForPlayer(PlayerUID xuid) {
             if (m_saveFile->doesFileExist(file)) {
                 // If we can't actually delete this file, store the name so we
                 // can delete it later
-                if (StorageManager.GetSaveDisabled())
+                if (PlatformStorage.GetSaveDisabled())
                     m_mapFilesToDelete.push_back(i);
                 else
                     m_saveFile->deleteFile(m_saveFile->createFile(file));
@@ -742,7 +741,7 @@ void DirectoryLevelStorage::deleteMapFilesForPlayer(PlayerUID xuid) {
 }
 
 void DirectoryLevelStorage::saveAllCachedData() {
-    if (StorageManager.GetSaveDisabled()) return;
+    if (PlatformStorage.GetSaveDisabled()) return;
 
     // Save any files that were saved while saving was disabled
     for (auto it = m_cachedSaveData.begin(); it != m_cachedSaveData.end();

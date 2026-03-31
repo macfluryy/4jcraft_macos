@@ -15,7 +15,6 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
 #include "Minecraft.Client/Header Files/FrameProfiler.h"
-#include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
@@ -2826,7 +2825,7 @@ void Level::tickWeather() {
 #if !defined(_FINAL_BUILD)
     // debug setting added to disable weather
     if (app.DebugSettingsOn()) {
-        if (app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        if (app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_DisableWeather)) {
             levelData->setThundering(false);
             levelData->setThunderTime(random->nextInt(TICKS_PER_DAY * 7) +

@@ -8,7 +8,6 @@
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "McRegionChunkStorage.h"
-#include "4J_Profile.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
@@ -180,7 +179,7 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
     }
 #if !defined(_CONTENT_PACKAGE)
     if (levelChunk && app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // 4J Stu - This will force an update of the chunk's biome array
         levelChunk->reloadBiomes();

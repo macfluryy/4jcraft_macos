@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "4J.Storage/4J_Storage.h"
+
 typedef struct {
     wchar_t* wchFilename;
     eFileExtensionType eEXT;

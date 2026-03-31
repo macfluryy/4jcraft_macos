@@ -9,7 +9,6 @@
 
 #include "java/File.h"
 #include "OldChunkStorage.h"
-#include "4J_Profile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
@@ -470,7 +469,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Read the biome data from the stream, but don't use it
         std::vector<uint8_t> dummyBiomes(levelChunk->biomes.size());
@@ -584,7 +583,7 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Do nothing
     } else

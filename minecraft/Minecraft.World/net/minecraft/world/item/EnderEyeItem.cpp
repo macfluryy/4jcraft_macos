@@ -167,7 +167,7 @@ bool EnderEyeItem::TestUse(std::shared_ptr<ItemInstance> itemInstance,
             // 				app.DebugPrintf("=== FOUND stronghold in
             // terrain features list\n");
             //
-            // 				app.SetXuiServerAction(InputManager.GetPrimaryPad(),eXuiServerAction_StrongholdPosition);
+            // 				app.SetXuiServerAction(PlatformInput.GetPrimaryPad(),eXuiServerAction_StrongholdPosition);
             // 			}
             // 			else
             {

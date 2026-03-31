@@ -3,7 +3,6 @@
 #include "HellDimension.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
-#include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
@@ -48,7 +47,7 @@ void HellDimension::updateLightRamp() {
 ChunkSource* HellDimension::createRandomLevelSource() const {
 #ifdef _DEBUG_MENUS_ENABLED
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_SuperflatNether)) {
         return new HellFlatLevelSource(level, level->getSeed());
     } else

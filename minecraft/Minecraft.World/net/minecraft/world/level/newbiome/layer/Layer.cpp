@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "BiomeOverrideLayer.h"
-#include "4J_Profile.h"
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelType.h"
@@ -113,7 +112,7 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
 #if !defined(_CONTENT_PACKAGE)
 #if defined(_BIOME_OVERRIDE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeLayer =
             std::shared_ptr<BiomeOverrideLayer>(new BiomeOverrideLayer(1));

@@ -10,7 +10,6 @@
 #include "TheEndDimension.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
-#include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
@@ -51,7 +50,7 @@ void Dimension::init() {
     // 4J Stu - Added to enable overriding the heightmap from a loaded in data
     // file
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeSource = new BiomeSource(level);
     } else
@@ -86,7 +85,7 @@ ChunkSource* Dimension::createRandomLevelSource() const {
     // 4J Stu - Added to enable overriding the heightmap from a loaded in data
     // file
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableHeightWaterOverride)) {
         return new CustomLevelSource(
             level, level->getSeed(),

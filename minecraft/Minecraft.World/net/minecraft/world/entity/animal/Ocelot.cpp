@@ -7,7 +7,6 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "Ocelot.h"
-#include "4J_Profile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "SoundTypes.h"
@@ -308,7 +307,7 @@ MobGroupData* Ocelot::finalizeMobSpawn(
         setTame(true);
         setCatType(extraData - 1);
         setOwnerUUID(Minecraft::GetInstance()
-                         ->localplayers[InputManager.GetPrimaryPad()]
+                         ->localplayers[PlatformInput.GetPrimaryPad()]
                          ->getUUID());
     } else
 #endif

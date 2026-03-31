@@ -52,6 +52,7 @@ client_dependencies = [
   profile_dep,
   storage_dep,
   assets_localisation_dep,
+  platform_dep,
   world_dep,
   gl_dep,
   glu_dep,
@@ -99,9 +100,11 @@ elif occlusion_mode == 'hardware'
   global_cpp_defs += ['-DOCCLUSION_MODE_HARDWARE', '-DUSE_OCCLUSION_CULLING']
 endif
 
+platform_services_src = files('../platform/PlatformServices.cpp')
+
 client = executable(
   'Minecraft.Client',
-  client_sources + platform_sources + localisation[1],
+  client_sources + platform_sources + platform_services_src + localisation[1],
   include_directories: include_directories('Header Files', '..'),
   dependencies: client_dependencies,
   cpp_args: global_cpp_args

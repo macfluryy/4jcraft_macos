@@ -66,17 +66,7 @@
 #endif
 
 
-#ifdef _WINDOWS64
-#include "Minecraft.Client/Platform/Windows64/4JLibs/inc/4J_Profile.h"
-#include "Minecraft.Client/Platform/Windows64/4JLibs/inc/4J_Render.h"
-#include "Minecraft.Client/Platform/Windows64/4JLibs/inc/4J_Storage.h"
-#include "Minecraft.Client/Platform/Windows64/4JLibs/inc/4J_Input.h"
-#else
-#include "4J_Profile.h"
-#include "4J_Render.h"
-#include "4J_Storage.h"
-#include "4J_Input.h"
-#endif
+#include "platform/PlatformServices.h"
 
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
 

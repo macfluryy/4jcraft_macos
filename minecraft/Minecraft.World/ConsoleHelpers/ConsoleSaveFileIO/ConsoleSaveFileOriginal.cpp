@@ -18,7 +18,7 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "4J.Common/4J_Compat.h"
-#include "4J_Storage.h"
+#include "platform/IPlatformStorage.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.Client/Common/App_enums.h"
@@ -72,7 +72,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
     }
 
     if (pvSaveData == nullptr || fileSize == 0)
-        fileSize = StorageManager.GetSaveSize();
+        fileSize = PlatformStorage.GetSaveSize();
 
     if (forceCleanSave) fileSize = 0;
 
@@ -112,7 +112,7 @@ ConsoleSaveFileOriginal::ConsoleSaveFileOriginal(
             }
         } else {
             unsigned int storageLength;
-            StorageManager.GetSaveData(pvSaveMem, &storageLength);
+            PlatformStorage.GetSaveData(pvSaveMem, &storageLength);
             app.DebugPrintf("Filesize - %d, Adjusted size - %d\n", fileSize,
                             storageLength);
             fileSize = storageLength;
@@ -585,7 +585,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
     // Attempt to allocate the required memory
     // We do not own this, it belongs to the StorageManager
     std::uint8_t* compData =
-        (std::uint8_t*)StorageManager.AllocateSaveData(compLength);
+        (std::uint8_t*)PlatformStorage.AllocateSaveData(compLength);
 
     // If we failed to allocate then compData will be nullptr
     // Pre-calculate the compressed data size so that we can attempt to allocate
@@ -613,7 +613,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         compLength = compLength + 8;
 
         // Attempt to allocate the required memory
-        compData = (std::uint8_t*)StorageManager.AllocateSaveData(compLength);
+        compData = (std::uint8_t*)PlatformStorage.AllocateSaveData(compLength);
     }
 
     if (compData != nullptr) {
@@ -669,16 +669,16 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
 
         int32_t saveOrCheckpointId = 0;
         bool validSave =
-            StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
+            PlatformStorage.GetSaveUniqueNumber(&saveOrCheckpointId);
 #ifdef _WINDOWS64
         // set the icon and save image
-        StorageManager.SetSaveImages(pbThumbnailData, dwThumbnailDataSize,
+        PlatformStorage.SetSaveImages(pbThumbnailData, dwThumbnailDataSize,
                                      pbDataSaveImage, dwDataSizeSaveImage,
                                      bTextMetadata, iTextMetadataBytes);
         app.DebugPrintf("Save thumbnail size %d\n", dwThumbnailDataSize);
 
         // save the data
-        StorageManager.SaveSaveData(
+        PlatformStorage.SaveSaveData(
             &ConsoleSaveFileOriginal::SaveSaveDataCallback, this);
 #ifndef _CONTENT_PACKAGE
         if (app.DebugSettingsOn()) {

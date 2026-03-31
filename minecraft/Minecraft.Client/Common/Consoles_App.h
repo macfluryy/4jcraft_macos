@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <mutex>
 
+#include "4J.Storage/4J_Storage.h"
+#include "4J.Profile/4J_Profile.h"
+
 // using namespace std;
 
 #include "Source Files/Audio/Consoles_SoundEngine.h"

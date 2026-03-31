@@ -19,7 +19,7 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "4J.Common/4J_Compat.h"
-#include "4J_Storage.h"
+#include "platform/IPlatformStorage.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
@@ -348,7 +348,7 @@ FileEntry* ConsoleSaveFileSplit::GetRegionFileEntry(unsigned int regionIndex) {
         return it->second->fileEntry;
     }
 
-    int index = StorageManager.AddSubfile(regionIndex);
+    int index = PlatformStorage.AddSubfile(regionIndex);
     RegionFileReference* newRef = new RegionFileReference(index, regionIndex);
     regionFiles[regionIndex] = newRef;
 
@@ -371,7 +371,7 @@ ConsoleSaveFileSplit::ConsoleSaveFileSplit(
     }
 
     if (pvSaveData == nullptr || fileSize == 0)
-        fileSize = StorageManager.GetSaveSize();
+        fileSize = PlatformStorage.GetSaveSize();
 
     if (forceCleanSave) fileSize = 0;
 
@@ -432,13 +432,13 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
 
     // Get details of region files. From this point on we are responsible for
     // the memory that the storage manager initially allocated for them
-    unsigned int regionCount = StorageManager.GetSubfileCount();
+    unsigned int regionCount = PlatformStorage.GetSubfileCount();
     for (unsigned int i = 0; i < regionCount; i++) {
         unsigned int regionIndex;
         unsigned char* regionDataCompressed;
         unsigned int regionSizeCompressed;
 
-        StorageManager.GetSubfileDetails(i, (int*)&regionIndex,
+        PlatformStorage.GetSubfileDetails(i, (int*)&regionIndex,
                                          (void**)&regionDataCompressed,
                                          &regionSizeCompressed);
 
@@ -486,7 +486,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
             memcpy(pvSaveMem, pvSaveData, fileSize);
         } else {
             unsigned int storageLength;
-            StorageManager.GetSaveData(pvSaveMem, &storageLength);
+            PlatformStorage.GetSaveData(pvSaveMem, &storageLength);
             app.DebugPrintf("Filesize - %d, Adjusted size - %d\n", fileSize,
                             storageLength);
             fileSize = storageLength;
@@ -565,7 +565,7 @@ ConsoleSaveFileSplit::~ConsoleSaveFileSplit() {
         delete it->second;
     }
 
-    StorageManager.ResetSubfiles();
+    PlatformStorage.ResetSubfiles();
 }
 
 // Add the file to our table of internal files if not already there
@@ -888,12 +888,12 @@ void ConsoleSaveFileSplit::tick() {
     std::int64_t currentTime = System::currentTimeMillis();
 
     // Don't do anything if the save system is up to something...
-    if (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
+    if (PlatformStorage.GetSaveState() != IPlatformStorage::ESaveGame_Idle) {
         return;
     }
 
     // ...or we shouldn't be saving...
-    if (StorageManager.GetSaveDisabled()) {
+    if (PlatformStorage.GetSaveDisabled()) {
         return;
     }
 
@@ -967,7 +967,7 @@ void ConsoleSaveFileSplit::tick() {
         //		app.DebugPrintf("Tick: Writing region 0x%.8x, compressed
         // as %d bytes\n",regionRef->fileEntry->getRegionFileIndex(),
         // regionRef->dataCompressedSize);
-        StorageManager.UpdateSubfile(regionRef->index,
+        PlatformStorage.UpdateSubfile(regionRef->index,
                                      regionRef->dataCompressed,
                                      regionRef->dataCompressedSize);
         regionRef->dirty = false;
@@ -993,7 +993,7 @@ void ConsoleSaveFileSplit::tick() {
 #endif
 
     if (writeRequired) {
-        StorageManager.SaveSubfiles(SaveRegionFilesCallback, this);
+        PlatformStorage.SaveSubfiles(SaveRegionFilesCallback, this);
     }
 
     ReleaseSaveAccess();
@@ -1238,7 +1238,7 @@ void ConsoleSaveFileSplit::processSubfilesForWrite() {
         RegionFileReference* region = it->second;
         if (region->dirty) {
             region->Compress();
-            StorageManager.UpdateSubfile(region->index, region->dataCompressed,
+            PlatformStorage.UpdateSubfile(region->index, region->dataCompressed,
                                          region->dataCompressedSize);
             region->dirty = false;
             region->lastWritten = System::currentTimeMillis();
@@ -1249,7 +1249,7 @@ void ConsoleSaveFileSplit::processSubfilesForWrite() {
 // Clean up any memory allocated for compressed data when we have finished
 // writing
 void ConsoleSaveFileSplit::processSubfilesAfterWrite() {
-    // This is called from the StorageManager.Tick() which should always be on
+    // This is called from the PlatformStorage.Tick() which should always be on
     // the main thread
     for (auto it = regionFiles.begin(); it != regionFiles.end(); it++) {
         RegionFileReference* region = it->second;
@@ -1270,7 +1270,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
 
     // The storage manage might potentially be busy doing a sub-file write
     // initiated from the tick. Wait until this is totally processed.
-    while (StorageManager.GetSaveState() != C4JStorage::ESaveGame_Idle) {
+    while (PlatformStorage.GetSaveState() != IPlatformStorage::ESaveGame_Idle) {
         app.DebugPrintf("Flush wait\n");
         std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
@@ -1299,7 +1299,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     // Attempt to allocate the required memory
     // We do not own this, it belongs to the StorageManager
     std::uint8_t* compData =
-        (std::uint8_t*)StorageManager.AllocateSaveData(compLength);
+        (std::uint8_t*)PlatformStorage.AllocateSaveData(compLength);
 
     // If we failed to allocate then compData will be nullptr
     // Pre-calculate the compressed data size so that we can attempt to allocate
@@ -1328,7 +1328,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         compLength = compLength + 8;
 
         // Attempt to allocate the required memory
-        compData = (std::uint8_t*)StorageManager.AllocateSaveData(compLength);
+        compData = (std::uint8_t*)PlatformStorage.AllocateSaveData(compLength);
     }
 
     if (compData != nullptr) {
@@ -1381,7 +1381,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
                 Minecraft::GetInstance()->getCurrentTexturePackId());
 
             // set the icon and save image
-            StorageManager.SetSaveImages(pbThumbnailData, dwThumbnailDataSize,
+            PlatformStorage.SetSaveImages(pbThumbnailData, dwThumbnailDataSize,
                                          pbDataSaveImage, dwDataSizeSaveImage,
                                          bTextMetadata, iTextMetadataBytes);
             app.DebugPrintf("Save thumbnail size %d\n", dwThumbnailDataSize);
@@ -1389,10 +1389,10 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
 
         int32_t saveOrCheckpointId = 0;
         bool validSave =
-            StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
+            PlatformStorage.GetSaveUniqueNumber(&saveOrCheckpointId);
 
         // save the data
-        StorageManager.SaveSaveData(&ConsoleSaveFileSplit::SaveSaveDataCallback,
+        PlatformStorage.SaveSaveData(&ConsoleSaveFileSplit::SaveSaveDataCallback,
                                     this);
 #if !defined(_CONTENT_PACKAGE)
         if (app.DebugSettingsOn()) {
@@ -1410,9 +1410,9 @@ int ConsoleSaveFileSplit::SaveSaveDataCallback(void* lpParam, bool bRes) {
 
     // Don't save sub files on autosave (their always being saved anyway)
     if (!pClass->m_autosave) {
-        // This is called from the StorageManager.Tick() which should always be
+        // This is called from the PlatformStorage.Tick() which should always be
         // on the main thread
-        StorageManager.SaveSubfiles(SaveRegionFilesCallback, pClass);
+        PlatformStorage.SaveSubfiles(SaveRegionFilesCallback, pClass);
     }
     return 0;
 }
@@ -1420,7 +1420,7 @@ int ConsoleSaveFileSplit::SaveSaveDataCallback(void* lpParam, bool bRes) {
 int ConsoleSaveFileSplit::SaveRegionFilesCallback(void* lpParam, bool bRes) {
     ConsoleSaveFileSplit* pClass = (ConsoleSaveFileSplit*)lpParam;
 
-    // This is called from the StorageManager.Tick() which should always be on
+    // This is called from the PlatformStorage.Tick() which should always be on
     // the main thread
     pClass->processSubfilesAfterWrite();
 

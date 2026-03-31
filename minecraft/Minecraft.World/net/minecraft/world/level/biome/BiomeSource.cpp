@@ -349,7 +349,7 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Do nothing
     } else
@@ -456,7 +456,7 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
 
             char buf[256];
             sprintf(buf, "GAME:\\BiomeTest%d.bmp", k);
-            RenderManager.SaveTextureData(buf, &srcInfo, (int*)pixels);
+            PlatformRender.SaveTextureData(buf, &srcInfo, (int*)pixels);
 
             delete[] pixels;
             delete biomeSource;
