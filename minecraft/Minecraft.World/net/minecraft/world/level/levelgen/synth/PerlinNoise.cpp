@@ -50,14 +50,14 @@ double PerlinNoise::getValue(double x, double y, double z) {
     return value;
 }
 
-doubleArray PerlinNoise::getRegion(doubleArray buffer, int x, int y, int z,
+std::vector<double> PerlinNoise::getRegion(std::vector<double>& buffer, int x, int y, int z,
                                    int xSize, int ySize, int zSize,
                                    double xScale, double yScale,
                                    double zScale) {
-    if (buffer.data == nullptr)
-        buffer = doubleArray(xSize * ySize * zSize);
+    if (buffer.empty())
+        buffer = std::vector<double>(xSize * ySize * zSize);
     else
-        for (unsigned int i = 0; i < buffer.length; i++) buffer[i] = 0;
+        for (unsigned int i = 0; i < buffer.size(); i++) buffer[i] = 0;
 
     double pow = 1;
 
@@ -83,7 +83,7 @@ doubleArray PerlinNoise::getRegion(doubleArray buffer, int x, int y, int z,
     return buffer;
 }
 
-doubleArray PerlinNoise::getRegion(doubleArray sr, int x, int z, int xSize,
+std::vector<double> PerlinNoise::getRegion(std::vector<double>& sr, int x, int z, int xSize,
                                    int zSize, double xScale, double zScale,
                                    double pow) {
     return getRegion(sr, x, 10, z, xSize, 1, zSize, xScale, 1, zScale);

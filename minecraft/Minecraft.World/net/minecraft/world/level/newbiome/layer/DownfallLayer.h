@@ -5,5 +5,5 @@
 class DownfallLayer : public Layer {
 public:
     DownfallLayer(std::shared_ptr<Layer> parent);
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 };

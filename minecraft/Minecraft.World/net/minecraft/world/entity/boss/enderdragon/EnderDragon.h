@@ -61,7 +61,7 @@ private:
     double m_headYRot;
     AABB m_acidArea;
 
-    NodeArray* m_nodes;
+    std::vector<Node*>* m_nodes;
     int m_nodeAdjacency[24];
     BinaryHeap* openSet;
     Path* m_currentPath;
@@ -123,7 +123,7 @@ protected:
     virtual void defineSynchedData();
 
 public:
-    void getLatencyPos(doubleArray result, int step, float a);
+    void getLatencyPos(std::vector<double>& result, int step, float a);
     virtual void aiStep();
 
 private:
@@ -184,10 +184,10 @@ public:
     float getTilt(float a);
     double getHeadYOffset(float a);
     double getHeadYRotDiff(float a);
-    double getHeadPartYOffset(int partIndex, doubleArray bodyPos,
-                              doubleArray partPos);
-    double getHeadPartYRotDiff(int partIndex, doubleArray bodyPos,
-                               doubleArray partPos);
+    double getHeadPartYOffset(int partIndex, std::vector<double>& bodyPos,
+                              std::vector<double>& partPos);
+    double getHeadPartYRotDiff(int partIndex, std::vector<double>& bodyPos,
+                               std::vector<double>& partPos);
     Vec3 getHeadLookVector(float a);
 
     virtual std::wstring getAName() { return app.GetString(IDS_ENDERDRAGON); };

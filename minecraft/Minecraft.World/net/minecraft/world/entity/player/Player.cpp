@@ -1191,12 +1191,12 @@ int Player::getArmorValue() { return inventory->getArmorValue(); }
 
 float Player::getArmorCoverPercentage() {
     int count = 0;
-    for (int i = 0; i < inventory->armor.length; i++) {
+    for (int i = 0; i < inventory->armor.size(); i++) {
         if (inventory->armor[i] != nullptr) {
             count++;
         }
     }
-    return (float)count / (float)inventory->armor.length;
+    return (float)count / (float)inventory->armor.size();
 }
 
 void Player::actuallyHurt(DamageSource* source, float dmg) {
@@ -1716,10 +1716,8 @@ void Player::setRespawnPosition(Pos* respawnPosition, bool forced) {
     }
 }
 
-void Player::awardStat(Stat* stat, byteArray paramBlob) {
-    if (paramBlob.data != nullptr) {
-        delete[] paramBlob.data;
-    }
+void Player::awardStat(Stat* stat, const std::vector<uint8_t>& paramBlob) {
+    // Intentionally empty - base implementation does nothing
 }
 
 void Player::jumpFromGround() {
@@ -2200,7 +2198,7 @@ bool Player::isInvisibleTo(std::shared_ptr<Player> player) {
     return isInvisible();
 }
 
-arrayWithLength<std::shared_ptr<ItemInstance>> Player::getEquipmentSlots() { return inventory->armor; }
+std::vector<std::shared_ptr<ItemInstance>> Player::getEquipmentSlots() { return inventory->armor; }
 
 bool Player::isCapeHidden() { return getPlayerFlag(FLAG_HIDE_CAPE); }
 

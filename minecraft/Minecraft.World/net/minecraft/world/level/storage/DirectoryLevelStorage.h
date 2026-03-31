@@ -86,7 +86,7 @@ private:
         void readMappings(DataInputStream* dis);
     };
     std::unordered_map<PlayerUID, PlayerMappings> m_playerMappings;
-    byteArray m_usedMappings;
+    std::vector<uint8_t> m_usedMappings;
 #else
     MapDataMappings m_mapDataMappings;
     MapDataMappings m_saveableMapDataMappings;

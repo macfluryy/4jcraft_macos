@@ -143,7 +143,7 @@ public:
     virtual void respawn();
     virtual void animateRespawn();
     virtual void displayClientMessage(int messageId);
-    virtual void awardStat(Stat* stat, byteArray param);
+    virtual void awardStat(Stat* stat, const std::vector<uint8_t>& param);
     virtual int ThirdPersonView() { return m_iThirdPersonView; }
     // 4J - have changed 3rd person view to be 0 if not enabled, 1 for mode like
     // original, 2 reversed mode
@@ -231,7 +231,7 @@ public:
 
     virtual void handleCollectItem(std::shared_ptr<ItemInstance> item);
     void SetPlayerAdditionalModelParts(
-        std::vector<ModelPart*> pAdditionalModelParts);
+        std::vector<ModelPart*>& pAdditionalModelParts);
 
 private:
     std::vector<ModelPart*> m_pAdditionalModelParts;

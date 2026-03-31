@@ -14,7 +14,7 @@ private:
 
     static const int slotsLength;
 
-    shortArray slots;
+    std::vector<short> slots;
     short slotCount;
 
 public:

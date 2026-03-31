@@ -17,9 +17,9 @@ public:
     virtual ~LargeFeature();
 
     virtual void apply(ChunkSource* ChunkSource, Level* level, int xOffs,
-                       int zOffs, byteArray blocks);
+                       int zOffs, std::vector<uint8_t>& blocks);
 
 protected:
     virtual void addFeature(Level* level, int x, int z, int xOffs, int zOffs,
-                            byteArray blocks) {}
+                            std::vector<uint8_t>& blocks) {}
 };

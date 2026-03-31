@@ -8,15 +8,12 @@ FrustumData::FrustumData() {
     for (int i = 0; i < 6; i++) {
         this->m_Frustum[i] = new float[4];
     }
-    proj = floatArray(16);
-    modl = floatArray(16);
-    clip = floatArray(16);
+    proj = std::vector<float>(16);
+    modl = std::vector<float>(16);
+    clip = std::vector<float>(16);
 }
 
 FrustumData::~FrustumData() {
-    delete[] proj.data;
-    delete[] modl.data;
-    delete[] clip.data;
     for (int i = 0; i < 6; i++) delete[] m_Frustum[i];
     delete[] m_Frustum;
 }

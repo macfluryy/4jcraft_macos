@@ -554,10 +554,10 @@ public:
     std::shared_ptr<Player> getPlayerByName(const std::wstring& name);
     std::shared_ptr<Player> getPlayerByUUID(
         const std::wstring& name);  // 4J Added
-    byteArray getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
+    std::vector<uint8_t> getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
                                bool includeLighting = true);
     void setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
-                          byteArray data, bool includeLighting = true);
+                          std::vector<uint8_t>& data, bool includeLighting = true);
     virtual void disconnect(bool sendDisconnect = true);
     void checkSession();
     void setGameTime(int64_t time);

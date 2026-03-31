@@ -42,7 +42,7 @@
 #include "../../../../Common/ShutdownManager.h"
 #include "PlayerChunkMap.h"
 
-WeighedTreasureArray ServerLevel::RANDOM_BONUS_ITEMS;
+std::vector<WeighedTreasure*> ServerLevel::RANDOM_BONUS_ITEMS;
 
 C4JThread* ServerLevel::m_updateThread = nullptr;
 C4JThread::EventArray* ServerLevel::m_updateTrigger;
@@ -65,7 +65,7 @@ void ServerLevel::staticCtor() {
     m_updateThread->setProcessor(CPU_CORE_TILE_UPDATE);
     m_updateThread->run();
 
-    RANDOM_BONUS_ITEMS = WeighedTreasureArray(20);
+    RANDOM_BONUS_ITEMS = std::vector<WeighedTreasure*>(20);
 
     RANDOM_BONUS_ITEMS[0] = new WeighedTreasure(Item::stick_Id, 0, 1, 3, 10);
     RANDOM_BONUS_ITEMS[1] = new WeighedTreasure(Tile::wood_Id, 0, 1, 3, 10);
@@ -1008,7 +1008,7 @@ void ServerLevel::entityAdded(std::shared_ptr<Entity> e) {
     entitiesById[e->entityId] = e;
     std::vector<std::shared_ptr<Entity> >* es = e->getSubEntities();
     if (es != nullptr) {
-        // for (int i = 0; i < es.length; i++)
+        // for (int i = 0; i < es.size(); i++)
         for (auto it = es->begin(); it != es->end(); ++it) {
             entitiesById.insert(
                 intEntityMap::value_type((*it)->entityId, (*it)));
@@ -1022,7 +1022,7 @@ void ServerLevel::entityRemoved(std::shared_ptr<Entity> e) {
     entitiesById.erase(e->entityId);
     std::vector<std::shared_ptr<Entity> >* es = e->getSubEntities();
     if (es != nullptr) {
-        // for (int i = 0; i < es.length; i++)
+        // for (int i = 0; i < es.size(); i++)
         for (auto it = es->begin(); it != es->end(); ++it) {
             entitiesById.erase((*it)->entityId);
         }

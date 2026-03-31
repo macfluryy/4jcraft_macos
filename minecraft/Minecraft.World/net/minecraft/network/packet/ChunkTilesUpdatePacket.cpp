@@ -8,9 +8,6 @@
 #include "../../world/level/dimension/Dimension.h"
 
 ChunkTilesUpdatePacket::~ChunkTilesUpdatePacket() {
-    delete[] blocks.data;
-    delete[] data.data;
-    delete[] positions.data;
 }
 
 ChunkTilesUpdatePacket::ChunkTilesUpdatePacket() {
@@ -21,16 +18,16 @@ ChunkTilesUpdatePacket::ChunkTilesUpdatePacket() {
 }
 
 ChunkTilesUpdatePacket::ChunkTilesUpdatePacket(int xc, int zc,
-                                               shortArray positions,
+                                               std::vector<short>& positions,
                                                uint8_t count, Level* level) {
     shouldDelay = true;
     this->xc = xc;
     this->zc = zc;
     this->count = count;
-    this->positions = shortArray((short int)count);
+    this->positions = std::vector<short>((short int)count);
 
-    this->blocks = byteArray((unsigned int)count);
-    this->data = byteArray((unsigned int)count);
+    this->blocks = std::vector<uint8_t>((unsigned int)count);
+    this->data = std::vector<uint8_t>((unsigned int)count);
     LevelChunk* levelChunk = level->getChunk(xc, zc);
     for (int i = 0; (uint8_t)i < count; i++) {
         int x = (positions[i] >> 12) & 15;
@@ -67,9 +64,9 @@ void ChunkTilesUpdatePacket::read(DataInputStream* dis)  // throws IOException
     levelIdx = (countAndFlags >> 5) & 3;
     count = (uint8_t)countAndFlags & (uint8_t)0x1f;
 
-    positions = shortArray((short int)count);
-    blocks = byteArray((unsigned int)count);
-    data = byteArray((unsigned int)count);
+    positions = std::vector<short>((short int)count);
+    blocks = std::vector<uint8_t>((unsigned int)count);
+    data = std::vector<uint8_t>((unsigned int)count);
 
     int currentBlockType = -1;
     for (int i = 0; (uint8_t)i < count; i++) {

@@ -5,7 +5,7 @@ class Inventory;
 
 class MenuBackup {
 private:
-    std::unordered_map<short, arrayWithLength<std::shared_ptr<ItemInstance>>*>* backups;
+    std::unordered_map<short, std::vector<std::shared_ptr<ItemInstance>>*>* backups;
     std::shared_ptr<Inventory> inventory;
     AbstractContainerMenu* menu;
 

@@ -614,7 +614,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
     if (m_pPlayer && m_pPlayer->inventory) {
         // dump out the inventory
         /*		for (unsigned int k = 0; k <
-        m_pPlayer->inventory->items.length; k++)
+        m_pPlayer->inventory->items.size(); k++)
         {
         if (m_pPlayer->inventory->items[k] != nullptr)
         {
@@ -696,7 +696,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
                 int iTotalCount = 0;
 
                 // Does the player have this ingredient?
-                for (unsigned int k = 0; k < m_pPlayer->inventory->items.length;
+                for (unsigned int k = 0; k < m_pPlayer->inventory->items.size();
                      k++) {
                     if (m_pPlayer->inventory->items[k] != nullptr) {
                         // do they have the ingredient, and the aux value
@@ -723,7 +723,7 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
                                 // inventory
 
                                 for (unsigned int l = 0;
-                                     l < m_pPlayer->inventory->items.length;
+                                     l < m_pPlayer->inventory->items.size();
                                      l++) {
                                     if (m_pPlayer->inventory->items[l] !=
                                         nullptr) {

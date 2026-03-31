@@ -6,11 +6,11 @@ class Level;
 
 class BonusChestFeature : public Feature {
 private:
-    const WeighedTreasureArray treasureList;
+    const std::vector<WeighedTreasure*> treasureList;
     const int numRolls;
 
 public:
-    BonusChestFeature(WeighedTreasureArray treasureList, int numRolls);
+    BonusChestFeature(std::vector<WeighedTreasure*>& treasureList, int numRolls);
 
     virtual bool place(Level* level, Random* random, int x, int y, int z);
     bool place(Level* level, Random* random, int x, int y, int z,

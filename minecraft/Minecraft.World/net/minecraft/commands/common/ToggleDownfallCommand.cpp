@@ -14,7 +14,7 @@ EGameCommand ToggleDownfallCommand::getId() {
 int ToggleDownfallCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void ToggleDownfallCommand::execute(std::shared_ptr<CommandSender> source,
-                                    byteArray commandData) {
+                                    std::vector<uint8_t>& commandData) {
     doToggleDownfall();
     logAdminAction(source, ChatPacket::e_ChatCustom,
                    L"commands.downfall.success");
@@ -28,5 +28,5 @@ void ToggleDownfallCommand::doToggleDownfall() {
 
 std::shared_ptr<GameCommandPacket> ToggleDownfallCommand::preparePacket() {
     return std::shared_ptr<GameCommandPacket>(
-        new GameCommandPacket(eGameCommand_ToggleDownfall, byteArray()));
+        new GameCommandPacket(eGameCommand_ToggleDownfall, std::vector<uint8_t>()));
 }

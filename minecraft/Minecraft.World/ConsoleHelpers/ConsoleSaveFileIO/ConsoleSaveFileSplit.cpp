@@ -1542,7 +1542,7 @@ void ConsoleSaveFileSplit::ConvertRegionFile(File sourceFile) {
                 sourceRegionFile.getChunkDataInputStream(x, z);
 
             if (dis) {
-                byteArray inData(1024 * 1024);
+                std::vector<uint8_t> inData(1024 * 1024);
                 int read = dis->read(inData);
                 dis->close();
                 dis->deleteChildStream();
@@ -1555,7 +1555,6 @@ void ConsoleSaveFileSplit::ConvertRegionFile(File sourceFile) {
                 dos->close();
                 dos->deleteChildStream();
                 delete dos;
-                delete inData.data;
             }
         }
     }

@@ -6,12 +6,12 @@
 #include "java/System.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
-    // 	temps = floatArray(ZONE_SIZE * ZONE_SIZE, false);		// MGH -
+    // 	temps = std::vector<float>(ZONE_SIZE * ZONE_SIZE, false);		// MGH -
     // added "no clear" flag to arrayWithLength 	downfall =
-    // floatArray(ZONE_SIZE
-    // * ZONE_SIZE, false); 	biomes = BiomeArray(ZONE_SIZE * ZONE_SIZE,
+    // std::vector<float>(ZONE_SIZE
+    // * ZONE_SIZE, false); 	biomes = std::vector<Biome*>(ZONE_SIZE * ZONE_SIZE,
     // false);
-    biomeIndices = byteArray(ZONE_SIZE * ZONE_SIZE, false);
+    biomeIndices = std::vector<uint8_t>(ZONE_SIZE * ZONE_SIZE, false);
 
     lastUse = 0;
     this->x = x;
@@ -29,10 +29,6 @@ BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
 }
 
 BiomeCache::Block::~Block() {
-    // 	delete [] temps.data;
-    // 	delete [] downfall.data;
-    // 	delete [] biomes.data;
-    delete[] biomeIndices.data;
 }
 
 Biome* BiomeCache::Block::getBiome(int x, int z) {
@@ -134,14 +130,14 @@ void BiomeCache::update() {
     }
 }
 
-BiomeArray BiomeCache::getBiomeBlockAt(int x, int z) {
-    byteArray indices = getBlockAt(x, z)->biomeIndices;
-    BiomeArray biomes(indices.length);
-    for (int i = 0; i < indices.length; i++)
+std::vector<Biome*> BiomeCache::getBiomeBlockAt(int x, int z) {
+    std::vector<uint8_t> indices = getBlockAt(x, z)->biomeIndices;
+    std::vector<Biome*> biomes(indices.size());
+    for (int i = 0; i < indices.size(); i++)
         biomes[i] = Biome::biomes[indices[i]];
     return biomes;
 }
 
-byteArray BiomeCache::getBiomeIndexBlockAt(int x, int z) {
+std::vector<uint8_t> BiomeCache::getBiomeIndexBlockAt(int x, int z) {
     return getBlockAt(x, z)->biomeIndices;
 }

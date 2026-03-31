@@ -11,11 +11,11 @@ TemperatureMixerLayer::TemperatureMixerLayer(std::shared_ptr<Layer> temp,
     this->layer = layer;
 }
 
-intArray TemperatureMixerLayer::getArea(int xo, int yo, int w, int h) {
-    intArray b = parent->getArea(xo, yo, w, h);
-    intArray t = temp->getArea(xo, yo, w, h);
+std::vector<int> TemperatureMixerLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> b = parent->getArea(xo, yo, w, h);
+    std::vector<int> t = temp->getArea(xo, yo, w, h);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int i = 0; i < w * h; i++) {
         result[i] = t[i] + (Biome::biomes[b[i]]->getTemperatureInt() - t[i]) /
                                (layer * 2 + 1);

@@ -116,7 +116,7 @@ SparseLightStorage::SparseLightStorage(SparseLightStorage* copyFrom) {
 
 // Set all lighting values from a data array of length 16384 (128 x 16 x 16 x
 // 0.5). Source data must have same order as original java game
-void SparseLightStorage::setData(byteArray dataIn, unsigned int inOffset) {
+void SparseLightStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOffset) {
     //  Original order is defined as:
     //  pos = (x << 11 | z << 7 | y);
     //  slot = pos >> 1;
@@ -195,8 +195,8 @@ void SparseLightStorage::setData(byteArray dataIn, unsigned int inOffset) {
 
 // Gets all lighting values into an array of length 16384. Destination data will
 // have same order as original java game.
-void SparseLightStorage::getData(byteArray retArray, unsigned int retOffset) {
-    XMemSet(retArray.data + retOffset, 0, 16384);
+void SparseLightStorage::getData(std::vector<uint8_t>& retArray, unsigned int retOffset) {
+    XMemSet(retArray.data() + retOffset, 0, 16384);
     unsigned char *planeIndices, *data;
     getPlaneIndicesAndData(&planeIndices, &data);
 
@@ -214,7 +214,7 @@ void SparseLightStorage::getData(byteArray retArray, unsigned int retOffset) {
         } else if (planeIndices[y] == ALL_15_INDEX) {
             int part = y & 1;
             unsigned char value = 15 << (part * 4);
-            unsigned char* pucOut = &retArray.data[(y >> 1) + retOffset];
+            unsigned char* pucOut = &retArray.data()[(y >> 1) + retOffset];
             for (int xz = 0; xz < 256; xz++) {
                 *pucOut |= value;
                 pucOut += 64;
@@ -222,7 +222,7 @@ void SparseLightStorage::getData(byteArray retArray, unsigned int retOffset) {
         } else {
             int part = y & 1;
             int shift = 4 * part;
-            unsigned char* pucOut = &retArray.data[(y >> 1) + retOffset];
+            unsigned char* pucOut = &retArray.data()[(y >> 1) + retOffset];
             unsigned char* pucIn = &data[planeIndices[y] * 128];
             for (int xz = 0; xz < 128;
                  xz++)  // 128 in loop (16 x 16 x 0.5) as input data is being
@@ -322,11 +322,11 @@ void SparseLightStorage::setAllBright() {
 // code didn't make any attempt to unpack it. This behaviour is copied here for
 // compatibility even though our source data isn't packed this way. Returns size
 // of data copied.
-int SparseLightStorage::setDataRegion(byteArray dataIn, int x0, int y0, int z0,
+int SparseLightStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0, int z0,
                                       int x1, int y1, int z1, int offset) {
     // Actual setting of data happens when calling set method so no need to lock
     // here
-    unsigned char* pucIn = &dataIn.data[offset];
+    unsigned char* pucIn = &dataIn.data()[offset];
     for (int x = x0; x < x1; x++) {
         for (int z = z0; z < z1; z++) {
             // Emulate how data was extracted from DataLayer... see comment
@@ -342,7 +342,7 @@ int SparseLightStorage::setDataRegion(byteArray dataIn, int x0, int y0, int z0,
             }
         }
     }
-    ptrdiff_t count = pucIn - &dataIn.data[offset];
+    ptrdiff_t count = pucIn - &dataIn.data()[offset];
 
     return (int)count;
 }
@@ -354,10 +354,10 @@ int SparseLightStorage::setDataRegion(byteArray dataIn, int x0, int y0, int z0,
 // packed in nyblles in this dimension, and the code didn't make any attempt to
 // unpack it. This behaviour is copied here for compatibility even though our
 // source data isn't packed this way Returns size of data copied.
-int SparseLightStorage::getDataRegion(byteArray dataInOut, int x0, int y0,
+int SparseLightStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0, int y0,
                                       int z0, int x1, int y1, int z1,
                                       int offset) {
-    unsigned char* pucOut = &dataInOut.data[offset];
+    unsigned char* pucOut = &dataInOut.data()[offset];
     for (int x = x0; x < x1; x++) {
         for (int z = z0; z < z1; z++) {
             // Emulate how data was extracted from DataLayer... see comment
@@ -373,7 +373,7 @@ int SparseLightStorage::getDataRegion(byteArray dataInOut, int x0, int y0,
             }
         }
     }
-    ptrdiff_t count = pucOut - &dataInOut.data[offset];
+    ptrdiff_t count = pucOut - &dataInOut.data()[offset];
 
     return (int)count;
 }
@@ -608,15 +608,16 @@ void SparseLightStorage::write(DataOutputStream* dos) {
     dos->writeInt(count);
     unsigned char* dataPointer =
         (unsigned char*)(dataAndCount & 0x0000ffffffffffff);
-    byteArray wrapper(dataPointer, count * 128 + 128);
+    std::vector<uint8_t> wrapper(dataPointer, dataPointer + count * 128 + 128);
     dos->write(wrapper);
 }
 
 void SparseLightStorage::read(DataInputStream* dis) {
     int count = dis->readInt();
     unsigned char* dataPointer = (unsigned char*)malloc(count * 128 + 128);
-    byteArray wrapper(dataPointer, count * 128 + 128);
+    std::vector<uint8_t> wrapper(count * 128 + 128);
     dis->readFully(wrapper);
+    memcpy(dataPointer, wrapper.data(), count * 128 + 128);
 
     int64_t newDataAndCount = ((int64_t)dataPointer) & 0x0000ffffffffffffL;
 

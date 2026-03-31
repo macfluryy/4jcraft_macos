@@ -973,7 +973,7 @@ void SonyLeaderboardManager::initReadScoreStruct(ReadScore& out,
 
     // Convert to std::wstring and copy name.
     std::wstring wstrName =
-        convStringToWstring(std::string(rankData.npId.handle.data)).c_str();
+        convStringToWstring(std::string(rankData.npId.handle.data())).c_str();
     // memcpy(&out.m_name, wstrName.c_str(), XUSER_NAME_SIZE);
     out.m_name = wstrName;
 }

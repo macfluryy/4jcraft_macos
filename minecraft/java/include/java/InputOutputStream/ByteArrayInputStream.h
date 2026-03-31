@@ -6,7 +6,7 @@
 
 class ByteArrayInputStream : public InputStream {
 protected:
-    byteArray buf;  // An array of bytes that was provided by the creator of the
+    std::vector<uint8_t> buf;  // An array of bytes that was provided by the creator of the
                     // stream.
     unsigned int count;  // The index one greater than the last valid character
                          // in the input stream buffer.
@@ -15,20 +15,20 @@ protected:
                        // stream buffer.
 
 public:
-    ByteArrayInputStream(byteArray buf, unsigned int offset,
+    ByteArrayInputStream(std::vector<uint8_t>& buf, unsigned int offset,
                          unsigned int length);
-    ByteArrayInputStream(byteArray buf);
+    ByteArrayInputStream(std::vector<uint8_t>& buf);
     virtual ~ByteArrayInputStream();
     virtual int read();
-    virtual int read(byteArray b);
-    virtual int read(byteArray b, unsigned int offset, unsigned int length);
+    virtual int read(std::vector<uint8_t>& b);
+    virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
     virtual void close();
     virtual int64_t skip(int64_t n);
 
     // 4J Stu Added - Sometimes we don't want to delete the data on destroying
     // this
     void reset() {
-        buf = byteArray();
+        buf = std::vector<uint8_t>();
         count = 0;
         mark = 0;
         pos = 0;

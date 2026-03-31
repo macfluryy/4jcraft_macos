@@ -10,7 +10,7 @@ EGameCommand KillCommand::getId() { return eGameCommand_Kill; }
 int KillCommand::getPermissionLevel() { return LEVEL_ALL; }
 
 void KillCommand::execute(std::shared_ptr<CommandSender> source,
-                          byteArray commandData) {
+                          std::vector<uint8_t>& commandData) {
     std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(source);
 
     player->hurt(DamageSource::outOfWorld, std::numeric_limits<float>::max());

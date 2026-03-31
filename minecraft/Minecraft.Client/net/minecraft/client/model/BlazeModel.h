@@ -3,7 +3,7 @@
 
 class BlazeModel : public Model {
 private:
-    ModelPartArray upperBodyParts;
+    std::vector<ModelPart*> upperBodyParts;
     ModelPart* head;
 
 public:

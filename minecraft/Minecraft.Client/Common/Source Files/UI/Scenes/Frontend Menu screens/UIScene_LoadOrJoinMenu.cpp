@@ -1300,7 +1300,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(
 
     int64_t fileSize = saveFile->length();
     FileInputStream fis(*saveFile);
-    byteArray ba(fileSize);
+    std::vector<uint8_t> ba(fileSize);
     fis.read(ba);
     fis.close();
 
@@ -1319,7 +1319,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromDisk(
     g_NetworkManager.HostGame(0, isClientSide, isPrivate, maxPlayers, 0);
 
     LoadSaveDataThreadParam* saveData =
-        new LoadSaveDataThreadParam(ba.data, ba.length, saveFile->getName());
+        new LoadSaveDataThreadParam(ba.data(), ba.size(), saveFile->getName());
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = 0;
@@ -1364,7 +1364,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud() {
 
     int64_t fileSize = cloudFile.length();
     FileInputStream fis(cloudFile);
-    byteArray ba(fileSize);
+    std::vector<uint8_t> ba(fileSize);
     fis.read(ba);
     fis.close();
 
@@ -1383,7 +1383,7 @@ void UIScene_LoadOrJoinMenu::LoadSaveFromCloud() {
     g_NetworkManager.HostGame(0, isClientSide, isPrivate, maxPlayers, 0);
 
     LoadSaveDataThreadParam* saveData =
-        new LoadSaveDataThreadParam(ba.data, ba.length, cloudFile.getName());
+        new LoadSaveDataThreadParam(ba.data(), ba.size(), cloudFile.getName());
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = app.getRemoteStorage()->getSaveSeed();
@@ -1882,9 +1882,9 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 break;
             case eSaveTransfer_CreatingNewSave: {
                 unsigned int fileSize = StorageManager.GetSaveSize();
-                byteArray ba(fileSize);
-                StorageManager.GetSaveData(ba.data, &fileSize);
-                assert(ba.length == fileSize);
+                std::vector<uint8_t> ba(fileSize);
+                StorageManager.GetSaveData(ba.data(), &fileSize);
+                assert(ba.size() == fileSize);
 
                 StorageManager.ResetSaveData();
                 {
@@ -1925,7 +1925,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
 
 #if defined(SPLIT_SAVES)
                 ConsoleSaveFileOriginal oldFormatSave(
-                    wSaveName, ba.data, ba.length, false,
+                    wSaveName, ba.data(), ba.size(), false,
                     app.getRemoteStorage()->getSavePlatform());
                 pSave = new ConsoleSaveFileSplit(&oldFormatSave, false,
                                                  pMinecraft->progressRenderer);
@@ -1936,13 +1936,12 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 pClass->m_eSaveTransferState = eSaveTransfer_Saving;
 #else
                 pSave = new ConsoleSaveFileOriginal(
-                    wSaveName, ba.data, ba.length, false,
+                    wSaveName, ba.data(), ba.size(), false,
                     app.getRemoteStorage()->getSavePlatform());
                 pClass->m_eSaveTransferState = eSaveTransfer_Converting;
                 pMinecraft->progressRenderer->progressStage(
                     IDS_SAVETRANSFER_STAGE_CONVERTING);
 #endif
-                delete ba.data;
             } break;
             case eSaveTransfer_Converting: {
                 pSave->ConvertToLocalPlatform();  // check if we need to convert

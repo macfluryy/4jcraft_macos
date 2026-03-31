@@ -20,7 +20,7 @@ private:
     int64_t seedMixup;
 
 public:
-    static LayerArray getDefaultLayers(int64_t seed, LevelType* levelType);
+    static std::vector<std::shared_ptr<Layer>> getDefaultLayers(int64_t seed, LevelType* levelType);
 
     Layer(int64_t seedMixup);
 
@@ -31,5 +31,5 @@ protected:
     int nextRandom(int max);
 
 public:
-    virtual intArray getArea(int xo, int yo, int w, int h) = 0;
+    virtual std::vector<int> getArea(int xo, int yo, int w, int h) = 0;
 };

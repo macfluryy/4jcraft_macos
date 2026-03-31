@@ -5,7 +5,7 @@
 
 class MinecartContainer : public Minecart, public virtual Container {
 private:
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
+    std::vector<std::shared_ptr<ItemInstance>> items;
     bool dropEquipment;
 
     void _init();

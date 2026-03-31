@@ -1216,7 +1216,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
                           packet->slotNum < (InventoryMenu::USE_ROW_SLOT_START +
                                              Inventory::getSelectionSize()));
         bool validItem = item == nullptr ||
-                         (item->id < Item::items.length && item->id >= 0 &&
+                         (item->id < Item::items.size() && item->id >= 0 &&
                           Item::items[item->id] != nullptr);
         bool validData =
             item == nullptr ||
@@ -1586,8 +1586,7 @@ void PlayerConnection::handleCustomPayload(
                    customPayloadPacket->identifier) == 0) {
         AnvilMenu* menu = dynamic_cast<AnvilMenu*>(player->containerMenu);
         if (menu) {
-            if (customPayloadPacket->data.data == nullptr ||
-                customPayloadPacket->data.length < 1) {
+            if (customPayloadPacket->data.empty()) {
                 menu->setItemName(L"");
             } else {
                 ByteArrayInputStream bais(customPayloadPacket->data);

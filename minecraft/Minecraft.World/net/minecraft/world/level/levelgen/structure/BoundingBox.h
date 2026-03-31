@@ -7,7 +7,7 @@ public:
     int x0, y0, z0, x1, y1, z1;
 
     BoundingBox();
-    BoundingBox(intArray sourceData);
+    BoundingBox(const std::vector<int>& sourceData);
     static BoundingBox* getUnknownBox();
     static BoundingBox* orientBox(int footX, int footY, int footZ, int offX,
                                   int offY, int offZ, int width, int height,

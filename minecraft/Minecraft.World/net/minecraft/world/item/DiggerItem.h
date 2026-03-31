@@ -6,7 +6,7 @@ class Mob;
 
 class DiggerItem : public Item {
 private:
-    TileArray* tiles;
+    std::vector<Tile*>* tiles;
 
 protected:
     float speed;
@@ -17,7 +17,7 @@ private:
 protected:
     const Tier* tier;
 
-    DiggerItem(int id, float attackDamage, const Tier* tier, TileArray* tiles);
+    DiggerItem(int id, float attackDamage, const Tier* tier, std::vector<Tile*>* tiles);
 
 public:
     virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,

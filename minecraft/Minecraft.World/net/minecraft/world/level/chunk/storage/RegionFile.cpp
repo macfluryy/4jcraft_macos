@@ -6,7 +6,7 @@
 
 #include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 
-byteArray RegionFile::emptySector(SECTOR_BYTES);
+std::vector<uint8_t> RegionFile::emptySector(SECTOR_BYTES);
 
 RegionFile::RegionFile(ConsoleSaveFile* saveFile, File* path) {
     _lastModified = 0;
@@ -260,8 +260,10 @@ DataInputStream* RegionFile::getChunkDataInputStream(
     delete[] data;
 
     // 4J - was InflaterInputStream in here too, but we've already decompressed
+    std::vector<uint8_t> decompData(decomp, decomp + readDecompLength);
+    delete[] decomp;
     DataInputStream* ret = new DataInputStream(
-        new ByteArrayInputStream(byteArray(decomp, readDecompLength)));
+        new ByteArrayInputStream(decompData));
     return ret;
 
     //    } catch (IOException e) {
@@ -392,8 +394,8 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
 #endif
                 unsigned int numberOfBytesWritten = 0;
                 for (int i = 0; i < sectorsNeeded; ++i) {
-                    // WriteFile(file,emptySector.data,SECTOR_BYTES,&numberOfBytesWritten,nullptr);
-                    m_saveFile->writeFile(fileEntry, emptySector.data,
+                    // WriteFile(file,emptySector.data(),SECTOR_BYTES,&numberOfBytesWritten,nullptr);
+                    m_saveFile->writeFile(fileEntry, emptySector.data(),
                                           SECTOR_BYTES, &numberOfBytesWritten);
                     sectorFree->push_back(false);
                 }

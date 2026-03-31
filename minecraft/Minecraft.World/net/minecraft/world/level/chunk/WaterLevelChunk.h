@@ -9,7 +9,7 @@ public:
     using LevelChunk::getEntities;
     using LevelChunk::getEntitiesOfClass;
 
-    WaterLevelChunk(Level* level, byteArray blocks, int x, int z);
+    WaterLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z);
     bool isAt(int x, int z);
     void recalcBlockLights();
     void recalcHeightmapOnly();
@@ -44,11 +44,11 @@ public:
                             std::vector<std::shared_ptr<Entity> >& es);
     int countEntities();
     bool shouldSave(bool force);
-    void setBlocks(byteArray newBlocks, int sub);
+    void setBlocks(std::vector<uint8_t>& newBlocks, int sub);
     int setBlocksAndData(
-        byteArray data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
+        std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
         bool includeLighting = true);  // 4J - added includeLighting parameter;
-    bool testSetBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
+    bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0, int x1,
                               int y1, int z1, int p);
     Random* getRandom(int64_t l);
     virtual Biome* getBiome(int x, int z, BiomeSource* biomeSource);

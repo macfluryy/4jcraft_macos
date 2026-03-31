@@ -19,7 +19,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
 #if defined(_OVERRIDE_HEIGHTMAP)
     m_XZSize = level->getLevelData()->getXZSize();
 
-    m_heightmapOverride = byteArray((m_XZSize * 16) * (m_XZSize * 16));
+    m_heightmapOverride = std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
 
 #if defined(_UNICODE)
     std::wstring path = L"GAME:\\GameRules\\heightmap.bin";
@@ -39,11 +39,11 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         assert(false);
     } else {
         uint32_t bytesRead, dwFileSize = GetFileSize(file, nullptr);
-        if (dwFileSize > m_heightmapOverride.length) {
+        if (dwFileSize > m_heightmapOverride.size()) {
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
         }
-        bool bSuccess = ReadFile(file, m_heightmapOverride.data, dwFileSize,
+        bool bSuccess = ReadFile(file, m_heightmapOverride.data(), dwFileSize,
                                  &bytesRead, nullptr);
 
         if (bSuccess == false) {
@@ -52,7 +52,7 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
         CloseHandle(file);
     }
 
-    m_waterheightOverride = byteArray((m_XZSize * 16) * (m_XZSize * 16));
+    m_waterheightOverride = std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
 
 #if defined(_UNICODE)
     std::wstring waterHeightPath = L"GAME:\\GameRules\\waterheight.bin";
@@ -69,15 +69,15 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     if (file == INVALID_HANDLE_VALUE) {
         uint32_t error = GetLastError();
         // assert(false);
-        memset(m_waterheightOverride.data, level->seaLevel,
-               m_waterheightOverride.length);
+        memset(m_waterheightOverride.data(), level->seaLevel,
+               m_waterheightOverride.size());
     } else {
         uint32_t bytesRead, dwFileSize = GetFileSize(file, nullptr);
-        if (dwFileSize > m_waterheightOverride.length) {
+        if (dwFileSize > m_waterheightOverride.size()) {
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
         }
-        bool bSuccess = ReadFile(file, m_waterheightOverride.data, dwFileSize,
+        bool bSuccess = ReadFile(file, m_waterheightOverride.data(), dwFileSize,
                                  &bytesRead, nullptr);
 
         if (bSuccess == false) {
@@ -116,7 +116,7 @@ CustomLevelSource::~CustomLevelSource() {
 #endif
 }
 
-void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
+void CustomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::maxBuildHeight / CHUNK_HEIGHT;
@@ -237,8 +237,8 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
 #endif
 }
 
-void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
-                                      BiomeArray biomes) {
+void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+                                      std::vector<Biome*>& biomes) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     int waterHeight = level->seaLevel;
     int xMapStart = xOffs + m_XZSize / 2;
@@ -246,7 +246,7 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
 
     double s = 1 / 32.0;
 
-    doubleArray depthBuffer(16 *
+    std::vector<double> depthBuffer(16 *
                             16);  // 4J - used to be declared with class level
                                   // scope but moved here for thread safety
 
@@ -340,7 +340,6 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
         }
     }
 
-    delete[] depthBuffer.data;
 #endif
 }
 
@@ -362,8 +361,8 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
     XMemSet128(tileData, 0, blocksSize);
-    byteArray blocks = byteArray(tileData, blocksSize);
-    //    byteArray blocks = byteArray(16 * level->depth * 16);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 
     // LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     // // 4J - moved to below
@@ -372,13 +371,12 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
 
     // 4J - Some changes made here to how biomes, temperatures and downfalls are
     // passed around for thread safety
-    BiomeArray biomes;
+    std::vector<Biome*> biomes;
     level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16,
                                            16, true);
 
     buildSurfaces(xOffs, zOffs, blocks, biomes);
 
-    delete[] biomes.data;
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
     // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
@@ -617,10 +615,11 @@ void CustomLevelSource::recreateLogicStructuresForChunk(int chunkX,
                                                         int chunkZ) {
     if (generateStructures) {
 #if defined(_OVERRIDE_HEIGHTMAP)
-        mineShaftFeature->apply(this, level, chunkX, chunkZ, byteArray());
-        villageFeature->apply(this, level, chunkX, chunkZ, byteArray());
-        strongholdFeature->apply(this, level, chunkX, chunkZ, byteArray());
-        scatteredFeature->apply(this, level, chunkX, chunkZ, byteArray());
+        std::vector<uint8_t> emptyBlocks;
+        mineShaftFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
+        villageFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
+        strongholdFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
+        scatteredFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
 #endif
     }
 }

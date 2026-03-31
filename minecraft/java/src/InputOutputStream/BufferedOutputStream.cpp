@@ -5,7 +5,7 @@
 // the underlying output stream. size - the buffer size.
 BufferedOutputStream::BufferedOutputStream(OutputStream* out, int size) {
     stream = out;
-    buf = byteArray(size);
+    buf = std::vector<uint8_t>(size);
     count = 0;
 }
 
@@ -14,7 +14,6 @@ BufferedOutputStream::~BufferedOutputStream() {
     // TODO: ArrayWithLength.h doesnt have a destructor.
     // this wouldnt need to be done manually.
     // but for some reason the destructor is commented out in the source code?
-    delete[] buf.data;
 }
 
 // Flushes this buffered output stream. This forces any buffered output bytes to
@@ -61,11 +60,11 @@ void BufferedOutputStream::close() {
 // b - the data.
 // off - the start offset in the data.
 // len - the number of bytes to write.
-void BufferedOutputStream::write(byteArray b, unsigned int offset,
+void BufferedOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
                                  unsigned int length) {
     // Over the length of what we can store in our buffer - just flush the
     // buffer and output directly
-    if (length >= buf.length) {
+    if (length >= buf.size()) {
         flush();
         stream->write(b, offset, length);
     } else {
@@ -75,13 +74,13 @@ void BufferedOutputStream::write(byteArray b, unsigned int offset,
     }
 }
 
-// Writes b.length bytes to this output stream.
+// Writes b.size() bytes to this output stream.
 // The write method of FilterOutputStream calls its write method of three
-// arguments with the arguments b, 0, and b.length.
+// arguments with the arguments b, 0, and b.size().
 //
 // Note that this method does not call the one-argument write method of its
 // underlying stream with the single argument b.
-void BufferedOutputStream::write(byteArray b) { write(b, 0, b.length); }
+void BufferedOutputStream::write(const std::vector<uint8_t>& b) { write(b, 0, b.size()); }
 
 // Writes the specified byte to this buffered output stream.
 // Overrides:
@@ -90,7 +89,7 @@ void BufferedOutputStream::write(byteArray b) { write(b, 0, b.length); }
 // b - the byte to be written.
 void BufferedOutputStream::write(unsigned int b) {
     buf[count++] = (uint8_t)b;
-    if (count == buf.length) {
+    if (count == buf.size()) {
         flush();
     }
 }

@@ -7,8 +7,8 @@ EGameCommand DefaultGameModeCommand::getId() {
 }
 
 void DefaultGameModeCommand::execute(std::shared_ptr<CommandSender> source,
-                                     byteArray commandData) {
-    // if (args.length > 0) {
+                                     std::vector<uint8_t>& commandData) {
+    // if (args.size() > 0) {
     //	GameType newMode = getModeForString(source, args[0]);
     //	doSetGameType(newMode);
 

@@ -82,7 +82,7 @@ void EnderDragon::_init() {
         positions[i][2] = 0;
     }
 
-    m_nodes = new NodeArray(24);
+    m_nodes = new std::vector<Node*>(24);
     openSet = new BinaryHeap();
     m_currentPath = nullptr;
 }
@@ -141,11 +141,11 @@ void EnderDragon::AddParts() {
 }
 
 EnderDragon::~EnderDragon() {
-    if (m_nodes->data != nullptr) {
-        for (unsigned int i = 0; i < m_nodes->length; ++i) {
-            if (m_nodes->data[i] != nullptr) delete m_nodes->data[i];
+    if (m_nodes != nullptr) {
+        for (unsigned int i = 0; i < m_nodes->size(); ++i) {
+            if ((*m_nodes)[i] != nullptr) delete (*m_nodes)[i];
         }
-        delete[] m_nodes->data;
+        delete m_nodes;
     }
     delete openSet;
     if (m_currentPath != nullptr) delete m_currentPath;
@@ -165,7 +165,7 @@ void EnderDragon::defineSynchedData() {
                        e_EnderdragonAction_HoldingPattern);
 }
 
-void EnderDragon::getLatencyPos(doubleArray result, int step, float a) {
+void EnderDragon::getLatencyPos(std::vector<double>& result, int step, float a) {
     if (getHealth() <= 0) {
         a = 0;
     }
@@ -617,8 +617,8 @@ void EnderDragon::aiStep() {
     wing2->bbWidth = 4;
 
     // double latencyPosAcomponents[3],latencyPosBcomponents[3];
-    // doubleArray latencyPosA = doubleArray(latencyPosAcomponents,3);
-    // doubleArray latencyPosB = doubleArray(latencyPosBcomponents,3);
+    // std::vector<double> latencyPosA = std::vector<double>(latencyPosAcomponents,3);
+    // std::vector<double> latencyPosB = std::vector<double>(latencyPosBcomponents,3);
     // getLatencyPos(latencyPosA, 5, 1);
     // getLatencyPos(latencyPosB, 10, 1);
 
@@ -657,12 +657,12 @@ void EnderDragon::aiStep() {
     }
 
     double p1components[3];
-    doubleArray p1 = doubleArray(p1components, 3);
+    std::vector<double> p1 = std::vector<double>(p1components, p1components + 3);
     getLatencyPos(p1, 5, 1);
 
     {
         // double p0components[3];
-        // doubleArray p0 = doubleArray(p0components, 3);
+        // std::vector<double> p0 = std::vector<double>(p0components, p0components + 3);
         // getLatencyPos(p0, 0, 1);
 
         double yRotDiff = getHeadYRotDiff(1);
@@ -712,7 +712,7 @@ void EnderDragon::aiStep() {
         if (i == 2) part = tail3;
 
         double p0components[3];
-        doubleArray p0 = doubleArray(p0components, 3);
+        std::vector<double> p0 = std::vector<double>(p0components, p0components + 3);
         getLatencyPos(p0, 12 + i * 2, 1);
 
         float rot = yRot * M_PI / 180 + rotWrap(p0[0] - p1[0]) * M_PI / 180 * (1);
@@ -1516,7 +1516,7 @@ void EnderDragon::navigateToNextPathNode() {
 
 int EnderDragon::findClosestNode() {
     // Setup all the nodes on the first time this is called
-    if (m_nodes->data[0] == nullptr) {
+    if ((*m_nodes)[0] == nullptr) {
         // Path nodes for navigation
         // 0 - 11 are the outer ring at 60 blocks from centre
         // 12 - 19 are the middle ring at 40 blocks from centre
@@ -1551,7 +1551,7 @@ int EnderDragon::findClosestNode() {
             app.DebugPrintf("Node %d is at (%d,%d,%d)\n", i, nodeX, nodeY,
                             nodeZ);
 
-            m_nodes->data[i] = new Node(nodeX, nodeY, nodeZ);
+            (*m_nodes)[i] = new Node(nodeX, nodeY, nodeZ);
 
             // level->setTile(nodeX,nodeY,nodeZ,Tile::obsidian_Id);
         }
@@ -1606,8 +1606,8 @@ int EnderDragon::findClosestNode(double tX, double tY, double tZ) {
         startIndex = 12;
     }
     for (unsigned int i = startIndex; i < 24; ++i) {
-        if (m_nodes->data[i] != nullptr) {
-            float dist = m_nodes->data[i]->distanceTo(currentPos);
+        if ((*m_nodes)[i] != nullptr) {
+            float dist = (*m_nodes)[i]->distanceTo(currentPos);
             if (dist < closestDist) {
                 closestDist = dist;
                 closestIndex = i;
@@ -1622,7 +1622,7 @@ int EnderDragon::findClosestNode(double tX, double tY, double tZ) {
 Path* EnderDragon::findPath(int startIndex, int endIndex,
                             Node* finalNode /* = nullptr */) {
     for (unsigned int i = 0; i < 24; ++i) {
-        Node* n = m_nodes->data[i];
+        Node* n = (*m_nodes)[i];
         n->closed = false;
         n->f = 0;
         n->g = 0;
@@ -1631,8 +1631,8 @@ Path* EnderDragon::findPath(int startIndex, int endIndex,
         n->heapIdx = -1;
     }
 
-    Node* from = m_nodes->data[startIndex];
-    Node* to = m_nodes->data[endIndex];
+    Node* from = (*m_nodes)[startIndex];
+    Node* to = (*m_nodes)[endIndex];
 
     from->g = 0;
     from->h = from->distanceTo(to);
@@ -1669,7 +1669,7 @@ Path* EnderDragon::findPath(int startIndex, int endIndex,
 
         unsigned int xIndex = 0;
         for (unsigned int i = 0; i < 24; ++i) {
-            if (m_nodes->data[i] == x) {
+            if ((*m_nodes)[i] == x) {
                 xIndex = i;
                 break;
             }
@@ -1677,7 +1677,7 @@ Path* EnderDragon::findPath(int startIndex, int endIndex,
 
         for (int i = minimumNodeIndex; i < 24; i++) {
             if (m_nodeAdjacency[xIndex] & (1 << i)) {
-                Node* y = m_nodes->data[i];
+                Node* y = (*m_nodes)[i];
 
                 if (y->closed) continue;
 
@@ -1716,15 +1716,14 @@ Path* EnderDragon::reconstruct_path(Node* from, Node* to) {
         n = n->cameFrom;
     }
 
-    NodeArray nodes = NodeArray(count);
+    std::vector<Node*> nodes = std::vector<Node*>(count);
     n = to;
-    nodes.data[--count] = n;
+    nodes.data()[--count] = n;
     while (n->cameFrom != nullptr) {
         n = n->cameFrom;
-        nodes.data[--count] = n;
+        nodes.data()[--count] = n;
     }
     Path* ret = new Path(nodes);
-    delete[] nodes.data;
     return ret;
 }
 
@@ -1760,8 +1759,8 @@ float EnderDragon::getTilt(float a) {
     // else
     {
         double latencyPosAcomponents[3], latencyPosBcomponents[3];
-        doubleArray latencyPosA = doubleArray(latencyPosAcomponents, 3);
-        doubleArray latencyPosB = doubleArray(latencyPosBcomponents, 3);
+        std::vector<double> latencyPosA = std::vector<double>(latencyPosAcomponents, latencyPosAcomponents + 3);
+        std::vector<double> latencyPosB = std::vector<double>(latencyPosBcomponents, latencyPosBcomponents + 3);
         getLatencyPos(latencyPosA, 5, a);
         getLatencyPos(latencyPosB, 10, a);
 
@@ -1780,11 +1779,11 @@ double EnderDragon::getHeadYOffset(float a) {
         headYOffset = -1.0;
     } else {
         double p1components[3];
-        doubleArray p1 = doubleArray(p1components, 3);
+        std::vector<double> p1 = std::vector<double>(p1components, p1components + 3);
         getLatencyPos(p1, 5, 1);
 
         double p0components[3];
-        doubleArray p0 = doubleArray(p0components, 3);
+        std::vector<double> p0 = std::vector<double>(p0components, p0components + 3);
         getLatencyPos(p0, 0, 1);
 
         headYOffset = (p0[1] - p1[1]) * 1;
@@ -1804,8 +1803,8 @@ double EnderDragon::getHeadYRotDiff(float a) {
     return result;
 }
 
-double EnderDragon::getHeadPartYOffset(int partIndex, doubleArray bodyPos,
-                                       doubleArray partPos) {
+double EnderDragon::getHeadPartYOffset(int partIndex, std::vector<double>& bodyPos,
+                                       std::vector<double>& partPos) {
     double result = 0.0;
     if (getSynchedAction() == e_EnderdragonAction_Landing ||
         getSynchedAction() == e_EnderdragonAction_Takeoff) {
@@ -1832,8 +1831,8 @@ double EnderDragon::getHeadPartYOffset(int partIndex, doubleArray bodyPos,
     return result;
 }
 
-double EnderDragon::getHeadPartYRotDiff(int partIndex, doubleArray bodyPos,
-                                        doubleArray partPos) {
+double EnderDragon::getHeadPartYRotDiff(int partIndex, std::vector<double>& bodyPos,
+                                        std::vector<double>& partPos) {
     double result = 0.0;
     // if(	getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||
     //	getSynchedAction() == e_EnderdragonAction_Sitting_Scanning ||

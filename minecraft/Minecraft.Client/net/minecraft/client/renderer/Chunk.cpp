@@ -262,9 +262,9 @@ void Chunk::rebuild() {
 #else
     static unsigned char tileIds[16 * 16 * Level::maxBuildHeight];
 #endif
-    byteArray tileArray = byteArray(tileIds, 16 * 16 * Level::maxBuildHeight);
-    level->getChunkAt(x, z)->getBlockData(
-        tileArray);  // 4J - TODO - now our data has been re-arranged, we could
+    std::vector<uint8_t> tileArray(16 * 16 * Level::maxBuildHeight);
+    level->getChunkAt(x, z)->getBlockData(tileArray);
+    memcpy(tileIds, tileArray.data(), 16 * 16 * Level::maxBuildHeight);  // 4J - TODO - now our data has been re-arranged, we could
                      // just extra the vertical slice of this chunk rather than
                      // the whole thing
 

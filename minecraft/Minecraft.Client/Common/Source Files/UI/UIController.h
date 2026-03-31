@@ -136,10 +136,10 @@ private:
 
     static std::uint32_t m_dwTrialTimerLimitSecs;
 
-    std::unordered_map<std::wstring, byteArray> m_substitutionTextures;
+    std::unordered_map<std::wstring, std::vector<uint8_t>> m_substitutionTextures;
 
     typedef struct _CachedMovieData {
-        byteArray m_ba;
+        std::vector<uint8_t> m_ba;
         int64_t m_expiry;
     } CachedMovieData;
     std::unordered_map<std::wstring, CachedMovieData> m_cachedMovieData;
@@ -216,7 +216,7 @@ private:
     static int reloadSkinThreadProc(void* lpParam);
 
 public:
-    byteArray getMovieData(const std::wstring& filename);
+    std::vector<uint8_t> getMovieData(const std::wstring& filename);
 
     // INPUT
 private:

@@ -289,9 +289,9 @@ void UIScene::loadMovie() {
         }
     }
 
-    byteArray baFile = ui.getMovieData(moviePath.c_str());
+    std::vector<uint8_t> baFile = ui.getMovieData(moviePath.c_str());
     int64_t beforeLoad = ui.iggyAllocCount;
-    swf = IggyPlayerCreateFromMemory(baFile.data, baFile.length, nullptr);
+    swf = IggyPlayerCreateFromMemory(baFile.data(), baFile.size(), nullptr);
     int64_t afterLoad = ui.iggyAllocCount;
     IggyPlayerInitializeAndTickRS(swf);
     int64_t afterTick = ui.iggyAllocCount;

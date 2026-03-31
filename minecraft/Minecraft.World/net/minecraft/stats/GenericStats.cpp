@@ -398,120 +398,120 @@ Stat* GenericStats::lionTamer() {
 #endif
 }
 
-byteArray GenericStats::getParam_walkOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_walkOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_swimOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_swimOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_fallOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_fallOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_climbOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_climbOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_minecartOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_minecartOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_boatOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_boatOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_pigOneM(int distance) {
+std::vector<uint8_t> GenericStats::getParam_pigOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_cowsMilked() { return getParam_noArgs(); }
+std::vector<uint8_t> GenericStats::getParam_cowsMilked() { return getParam_noArgs(); }
 
-byteArray GenericStats::getParam_blocksPlaced(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::getParam_blocksPlaced(int id, int data, int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_blocksMined(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::getParam_blocksMined(int id, int data, int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_itemsCollected(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsCollected(int id, int aux, int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_itemsCrafted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsCrafted(int id, int aux, int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_itemsSmelted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsSmelted(int id, int aux, int count) {
     return this->getParam_itemsCrafted(id, aux, count);
 }
 
-byteArray GenericStats::getParam_itemsUsed(std::shared_ptr<Player> plr,
+std::vector<uint8_t> GenericStats::getParam_itemsUsed(std::shared_ptr<Player> plr,
                                            std::shared_ptr<ItemInstance> itm) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_itemsBought(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsBought(int id, int aux, int count) {
     return getParam_noArgs();
 }
 
-byteArray GenericStats::getParam_mobKill(std::shared_ptr<Player> plr,
+std::vector<uint8_t> GenericStats::getParam_mobKill(std::shared_ptr<Player> plr,
                                          std::shared_ptr<Mob> mob,
                                          DamageSource* dmgSrc) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_breedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_breedEntity(eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_tamedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_tamedEntity(eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_curedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_curedEntity(eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_craftedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_craftedEntity(eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_shearedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_shearedEntity(eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_time(int timediff) {
+std::vector<uint8_t> GenericStats::getParam_time(int timediff) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_changedDimension(int from, int to) {
+std::vector<uint8_t> GenericStats::getParam_changedDimension(int from, int to) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_enteredBiome(int biomeId) {
+std::vector<uint8_t> GenericStats::getParam_enteredBiome(int biomeId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_achievement(eAward id) {
+std::vector<uint8_t> GenericStats::getParam_achievement(eAward id) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-byteArray GenericStats::getParam_onARail(int distance) {
+std::vector<uint8_t> GenericStats::getParam_onARail(int distance) {
     return getParam_achievement(eAward_OnARail);
 }
 
-byteArray GenericStats::getParam_overkill(int damage) {
+std::vector<uint8_t> GenericStats::getParam_overkill(int damage) {
     return getParam_achievement(eAward_overkill);
 }
 
-byteArray GenericStats::getParam_openInventory(int menuId) {
+std::vector<uint8_t> GenericStats::getParam_openInventory(int menuId) {
     return getParam_achievement(eAward_TakingInventory);
 }
 
-byteArray GenericStats::getParam_chestfulOfCobblestone(int cobbleStone) {
+std::vector<uint8_t> GenericStats::getParam_chestfulOfCobblestone(int cobbleStone) {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return getParam_achievement(eAward_chestfulOfCobblestone);
 #else
@@ -519,7 +519,7 @@ byteArray GenericStats::getParam_chestfulOfCobblestone(int cobbleStone) {
 #endif
 }
 
-byteArray GenericStats::getParam_musicToMyEars(int recordId) {
+std::vector<uint8_t> GenericStats::getParam_musicToMyEars(int recordId) {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return getParam_achievement(eAward_musicToMyEars);
 #else
@@ -527,63 +527,63 @@ byteArray GenericStats::getParam_musicToMyEars(int recordId) {
 #endif
 }
 
-byteArray GenericStats::getParam_noArgs() {
-    return byteArray();  // TODO
+std::vector<uint8_t> GenericStats::getParam_noArgs() {
+    return std::vector<uint8_t>();  // TODO
 }
 
-byteArray GenericStats::param_walk(int distance) {
+std::vector<uint8_t> GenericStats::param_walk(int distance) {
     return instance->getParam_walkOneM(distance);
 }
 
-byteArray GenericStats::param_swim(int distance) {
+std::vector<uint8_t> GenericStats::param_swim(int distance) {
     return instance->getParam_swimOneM(distance);
 }
 
-byteArray GenericStats::param_fall(int distance) {
+std::vector<uint8_t> GenericStats::param_fall(int distance) {
     return instance->getParam_fallOneM(distance);
 }
 
-byteArray GenericStats::param_climb(int distance) {
+std::vector<uint8_t> GenericStats::param_climb(int distance) {
     return instance->getParam_climbOneM(distance);
 }
 
-byteArray GenericStats::param_minecart(int distance) {
+std::vector<uint8_t> GenericStats::param_minecart(int distance) {
     return instance->getParam_minecartOneM(distance);
 }
 
-byteArray GenericStats::param_boat(int distance) {
+std::vector<uint8_t> GenericStats::param_boat(int distance) {
     return instance->getParam_boatOneM(distance);
 }
 
-byteArray GenericStats::param_pig(int distance) {
+std::vector<uint8_t> GenericStats::param_pig(int distance) {
     return instance->getParam_pigOneM(distance);
 }
 
-byteArray GenericStats::param_cowsMilked() {
+std::vector<uint8_t> GenericStats::param_cowsMilked() {
     return instance->getParam_cowsMilked();
 }
 
-byteArray GenericStats::param_blocksPlaced(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::param_blocksPlaced(int id, int data, int count) {
     return instance->getParam_blocksPlaced(id, data, count);
 }
 
-byteArray GenericStats::param_blocksMined(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::param_blocksMined(int id, int data, int count) {
     return instance->getParam_blocksMined(id, data, count);
 }
 
-byteArray GenericStats::param_itemsCollected(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsCollected(int id, int aux, int count) {
     return instance->getParam_itemsCollected(id, aux, count);
 }
 
-byteArray GenericStats::param_itemsCrafted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsCrafted(int id, int aux, int count) {
     return instance->getParam_itemsCrafted(id, aux, count);
 }
 
-byteArray GenericStats::param_itemsSmelted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsSmelted(int id, int aux, int count) {
     return instance->getParam_itemsSmelted(id, aux, count);
 }
 
-byteArray GenericStats::param_itemsUsed(std::shared_ptr<Player> plr,
+std::vector<uint8_t> GenericStats::param_itemsUsed(std::shared_ptr<Player> plr,
                                         std::shared_ptr<ItemInstance> itm) {
     if ((plr != nullptr) && (itm != nullptr))
         return instance->getParam_itemsUsed(plr, itm);
@@ -591,11 +591,11 @@ byteArray GenericStats::param_itemsUsed(std::shared_ptr<Player> plr,
         return instance->getParam_noArgs();
 }
 
-byteArray GenericStats::param_itemsBought(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsBought(int id, int aux, int count) {
     return instance->getParam_itemsBought(id, aux, count);
 }
 
-byteArray GenericStats::param_mobKill(std::shared_ptr<Player> plr,
+std::vector<uint8_t> GenericStats::param_mobKill(std::shared_ptr<Player> plr,
                                       std::shared_ptr<Mob> mob,
                                       DamageSource* dmgSrc) {
     if ((plr != nullptr) && (mob != nullptr))
@@ -604,141 +604,141 @@ byteArray GenericStats::param_mobKill(std::shared_ptr<Player> plr,
         return instance->getParam_noArgs();
 }
 
-byteArray GenericStats::param_breedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::param_breedEntity(eINSTANCEOF entityId) {
     return instance->getParam_breedEntity(entityId);
 }
 
-byteArray GenericStats::param_tamedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::param_tamedEntity(eINSTANCEOF entityId) {
     return instance->getParam_tamedEntity(entityId);
 }
 
-byteArray GenericStats::param_curedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::param_curedEntity(eINSTANCEOF entityId) {
     return instance->getParam_curedEntity(entityId);
 }
 
-byteArray GenericStats::param_craftedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::param_craftedEntity(eINSTANCEOF entityId) {
     return instance->getParam_craftedEntity(entityId);
 }
 
-byteArray GenericStats::param_shearedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::param_shearedEntity(eINSTANCEOF entityId) {
     return instance->getParam_shearedEntity(entityId);
 }
 
-byteArray GenericStats::param_time(int timediff) {
+std::vector<uint8_t> GenericStats::param_time(int timediff) {
     return instance->getParam_time(timediff);
 }
 
-byteArray GenericStats::param_changedDimension(int from, int to) {
+std::vector<uint8_t> GenericStats::param_changedDimension(int from, int to) {
     return instance->getParam_changedDimension(from, to);
 }
 
-byteArray GenericStats::param_enteredBiome(int biomeId) {
+std::vector<uint8_t> GenericStats::param_enteredBiome(int biomeId) {
     return instance->getParam_enteredBiome(biomeId);
 }
 
-byteArray GenericStats::param_noArgs() { return instance->getParam_noArgs(); }
+std::vector<uint8_t> GenericStats::param_noArgs() { return instance->getParam_noArgs(); }
 
-byteArray GenericStats::param_openInventory() {
+std::vector<uint8_t> GenericStats::param_openInventory() {
     return instance->getParam_achievement(eAward_TakingInventory);
 }
 
-byteArray GenericStats::param_mineWood() {
+std::vector<uint8_t> GenericStats::param_mineWood() {
     return instance->getParam_achievement(eAward_GettingWood);
 }
 
-byteArray GenericStats::param_buildWorkbench() {
+std::vector<uint8_t> GenericStats::param_buildWorkbench() {
     return instance->getParam_achievement(eAward_Benchmarking);
 }
 
-byteArray GenericStats::param_buildPickaxe() {
+std::vector<uint8_t> GenericStats::param_buildPickaxe() {
     return instance->getParam_achievement(eAward_TimeToMine);
 }
 
-byteArray GenericStats::param_buildFurnace() {
+std::vector<uint8_t> GenericStats::param_buildFurnace() {
     return instance->getParam_achievement(eAward_HotTopic);
 }
 
-byteArray GenericStats::param_acquireIron() {
+std::vector<uint8_t> GenericStats::param_acquireIron() {
     return instance->getParam_achievement(eAward_AquireHardware);
 }
 
-byteArray GenericStats::param_buildHoe() {
+std::vector<uint8_t> GenericStats::param_buildHoe() {
     return instance->getParam_achievement(eAward_TimeToFarm);
 }
 
-byteArray GenericStats::param_makeBread() {
+std::vector<uint8_t> GenericStats::param_makeBread() {
     return instance->getParam_achievement(eAward_BakeBread);
 }
 
-byteArray GenericStats::param_bakeCake() {
+std::vector<uint8_t> GenericStats::param_bakeCake() {
     return instance->getParam_achievement(eAward_TheLie);
 }
 
-byteArray GenericStats::param_buildBetterPickaxe() {
+std::vector<uint8_t> GenericStats::param_buildBetterPickaxe() {
     return instance->getParam_achievement(eAward_GettingAnUpgrade);
 }
 
-byteArray GenericStats::param_cookFish() {
+std::vector<uint8_t> GenericStats::param_cookFish() {
     return instance->getParam_achievement(eAward_DeliciousFish);
 }
 
-byteArray GenericStats::param_onARail(int distance) {
+std::vector<uint8_t> GenericStats::param_onARail(int distance) {
     return instance->getParam_onARail(distance);
 }
 
-byteArray GenericStats::param_buildSword() {
+std::vector<uint8_t> GenericStats::param_buildSword() {
     return instance->getParam_achievement(eAward_TimeToStrike);
 }
 
-byteArray GenericStats::param_killEnemy() {
+std::vector<uint8_t> GenericStats::param_killEnemy() {
     return instance->getParam_achievement(eAward_MonsterHunter);
 }
 
-byteArray GenericStats::param_killCow() {
+std::vector<uint8_t> GenericStats::param_killCow() {
     return instance->getParam_achievement(eAward_CowTipper);
 }
 
-byteArray GenericStats::param_flyPig() {
+std::vector<uint8_t> GenericStats::param_flyPig() {
     return instance->getParam_achievement(eAward_WhenPigsFly);
 }
 
-byteArray GenericStats::param_snipeSkeleton() {
+std::vector<uint8_t> GenericStats::param_snipeSkeleton() {
     return instance->getParam_achievement(eAward_snipeSkeleton);
 }
 
-byteArray GenericStats::param_diamonds() {
+std::vector<uint8_t> GenericStats::param_diamonds() {
     return instance->getParam_achievement(eAward_diamonds);
 }
 
-byteArray GenericStats::param_ghast() {
+std::vector<uint8_t> GenericStats::param_ghast() {
     return instance->getParam_achievement(eAward_ghast);
 }
 
-byteArray GenericStats::param_blazeRod() {
+std::vector<uint8_t> GenericStats::param_blazeRod() {
     return instance->getParam_achievement(eAward_blazeRod);
 }
 
-byteArray GenericStats::param_potion() {
+std::vector<uint8_t> GenericStats::param_potion() {
     return instance->getParam_achievement(eAward_potion);
 }
 
-byteArray GenericStats::param_theEnd() {
+std::vector<uint8_t> GenericStats::param_theEnd() {
     return instance->getParam_achievement(eAward_theEnd);
 }
 
-byteArray GenericStats::param_winGame() {
+std::vector<uint8_t> GenericStats::param_winGame() {
     return instance->getParam_achievement(eAward_winGame);
 }
 
-byteArray GenericStats::param_enchantments() {
+std::vector<uint8_t> GenericStats::param_enchantments() {
     return instance->getParam_achievement(eAward_enchantments);
 }
 
-byteArray GenericStats::param_overkill(int dmg) {
+std::vector<uint8_t> GenericStats::param_overkill(int dmg) {
     return instance->getParam_overkill(dmg);
 }
 
-byteArray GenericStats::param_bookcase() {
+std::vector<uint8_t> GenericStats::param_bookcase() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_bookcase);
 #else
@@ -746,47 +746,47 @@ byteArray GenericStats::param_bookcase() {
 #endif
 }
 
-byteArray GenericStats::param_leaderOfThePack() {
+std::vector<uint8_t> GenericStats::param_leaderOfThePack() {
     return instance->getParam_achievement(eAward_LeaderOfThePack);
 }
 
-byteArray GenericStats::param_MOARTools() {
+std::vector<uint8_t> GenericStats::param_MOARTools() {
     return instance->getParam_achievement(eAward_MOARTools);
 }
 
-byteArray GenericStats::param_dispenseWithThis() {
+std::vector<uint8_t> GenericStats::param_dispenseWithThis() {
     return instance->getParam_achievement(eAward_DispenseWithThis);
 }
 
-byteArray GenericStats::param_InToTheNether() {
+std::vector<uint8_t> GenericStats::param_InToTheNether() {
     return instance->getParam_achievement(eAward_InToTheNether);
 }
 
-byteArray GenericStats::param_socialPost() {
+std::vector<uint8_t> GenericStats::param_socialPost() {
     return instance->getParam_achievement(eAward_socialPost);
 }
 
-byteArray GenericStats::param_eatPorkChop() {
+std::vector<uint8_t> GenericStats::param_eatPorkChop() {
     return instance->getParam_achievement(eAward_eatPorkChop);
 }
 
-byteArray GenericStats::param_play100Days() {
+std::vector<uint8_t> GenericStats::param_play100Days() {
     return instance->getParam_achievement(eAward_play100Days);
 }
 
-byteArray GenericStats::param_arrowKillCreeper() {
+std::vector<uint8_t> GenericStats::param_arrowKillCreeper() {
     return instance->getParam_achievement(eAward_arrowKillCreeper);
 }
 
-byteArray GenericStats::param_mine100Blocks() {
+std::vector<uint8_t> GenericStats::param_mine100Blocks() {
     return instance->getParam_achievement(eAward_mine100Blocks);
 }
 
-byteArray GenericStats::param_kill10Creepers() {
+std::vector<uint8_t> GenericStats::param_kill10Creepers() {
     return instance->getParam_achievement(eAward_kill10Creepers);
 }
 
-byteArray GenericStats::param_adventuringTime() {
+std::vector<uint8_t> GenericStats::param_adventuringTime() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_adventuringTime);
 #else
@@ -794,7 +794,7 @@ byteArray GenericStats::param_adventuringTime() {
 #endif
 }
 
-byteArray GenericStats::param_repopulation() {
+std::vector<uint8_t> GenericStats::param_repopulation() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_repopulation);
 #else
@@ -802,7 +802,7 @@ byteArray GenericStats::param_repopulation() {
 #endif
 }
 
-byteArray GenericStats::param_porkChop() {
+std::vector<uint8_t> GenericStats::param_porkChop() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_eatPorkChop);
 #else
@@ -810,7 +810,7 @@ byteArray GenericStats::param_porkChop() {
 #endif
 }
 
-byteArray GenericStats::param_diamondsToYou() {
+std::vector<uint8_t> GenericStats::param_diamondsToYou() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_diamondsToYou);
 #else
@@ -818,7 +818,7 @@ byteArray GenericStats::param_diamondsToYou() {
 #endif
 }
 
-byteArray GenericStats::param_passingTheTime() {
+std::vector<uint8_t> GenericStats::param_passingTheTime() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_play100Days);
 #else
@@ -826,7 +826,7 @@ byteArray GenericStats::param_passingTheTime() {
 #endif
 }
 
-byteArray GenericStats::param_archer() {
+std::vector<uint8_t> GenericStats::param_archer() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_arrowKillCreeper);
 #else
@@ -834,7 +834,7 @@ byteArray GenericStats::param_archer() {
 #endif
 }
 
-byteArray GenericStats::param_theHaggler() {
+std::vector<uint8_t> GenericStats::param_theHaggler() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_theHaggler);
 #else
@@ -842,7 +842,7 @@ byteArray GenericStats::param_theHaggler() {
 #endif
 }
 
-byteArray GenericStats::param_potPlanter() {
+std::vector<uint8_t> GenericStats::param_potPlanter() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_potPlanter);
 #else
@@ -850,7 +850,7 @@ byteArray GenericStats::param_potPlanter() {
 #endif
 }
 
-byteArray GenericStats::param_itsASign() {
+std::vector<uint8_t> GenericStats::param_itsASign() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_itsASign);
 #else
@@ -858,7 +858,7 @@ byteArray GenericStats::param_itsASign() {
 #endif
 }
 
-byteArray GenericStats::param_ironBelly() {
+std::vector<uint8_t> GenericStats::param_ironBelly() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_ironBelly);
 #else
@@ -866,7 +866,7 @@ byteArray GenericStats::param_ironBelly() {
 #endif
 }
 
-byteArray GenericStats::param_haveAShearfulDay() {
+std::vector<uint8_t> GenericStats::param_haveAShearfulDay() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_haveAShearfulDay);
 #else
@@ -874,7 +874,7 @@ byteArray GenericStats::param_haveAShearfulDay() {
 #endif
 }
 
-byteArray GenericStats::param_rainbowCollection() {
+std::vector<uint8_t> GenericStats::param_rainbowCollection() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_rainbowCollection);
 #else
@@ -882,7 +882,7 @@ byteArray GenericStats::param_rainbowCollection() {
 #endif
 }
 
-byteArray GenericStats::param_stayinFrosty() {
+std::vector<uint8_t> GenericStats::param_stayinFrosty() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_stayinFrosty);
 #else
@@ -890,11 +890,11 @@ byteArray GenericStats::param_stayinFrosty() {
 #endif
 }
 
-byteArray GenericStats::param_chestfulOfCobblestone(int cobbleStone) {
+std::vector<uint8_t> GenericStats::param_chestfulOfCobblestone(int cobbleStone) {
     return instance->getParam_chestfulOfCobblestone(cobbleStone);
 }
 
-byteArray GenericStats::param_renewableEnergy() {
+std::vector<uint8_t> GenericStats::param_renewableEnergy() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_renewableEnergy);
 #else
@@ -902,11 +902,11 @@ byteArray GenericStats::param_renewableEnergy() {
 #endif
 }
 
-byteArray GenericStats::param_musicToMyEars(int recordId) {
+std::vector<uint8_t> GenericStats::param_musicToMyEars(int recordId) {
     return instance->getParam_musicToMyEars(recordId);
 }
 
-byteArray GenericStats::param_bodyGuard() {
+std::vector<uint8_t> GenericStats::param_bodyGuard() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_bodyGuard);
 #else
@@ -914,7 +914,7 @@ byteArray GenericStats::param_bodyGuard() {
 #endif
 }
 
-byteArray GenericStats::param_ironMan() {
+std::vector<uint8_t> GenericStats::param_ironMan() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_ironMan);
 #else
@@ -922,7 +922,7 @@ byteArray GenericStats::param_ironMan() {
 #endif
 }
 
-byteArray GenericStats::param_zombieDoctor() {
+std::vector<uint8_t> GenericStats::param_zombieDoctor() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_zombieDoctor);
 #else
@@ -930,7 +930,7 @@ byteArray GenericStats::param_zombieDoctor() {
 #endif
 }
 
-byteArray GenericStats::param_lionTamer() {
+std::vector<uint8_t> GenericStats::param_lionTamer() {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return instance->getParam_achievement(eAward_lionTamer);
 #else

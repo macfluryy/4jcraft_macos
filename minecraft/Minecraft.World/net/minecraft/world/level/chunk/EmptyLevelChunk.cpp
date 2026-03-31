@@ -13,10 +13,9 @@ EmptyLevelChunk::EmptyLevelChunk(Level* level, int x, int z)
                        LevelChunk::sTerrainPostPostProcessed;
 }
 
-EmptyLevelChunk::EmptyLevelChunk(Level* level, byteArray blocks, int x, int z)
+EmptyLevelChunk::EmptyLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z)
     : LevelChunk(level, blocks, x, z) {
     dontSave = true;
-    delete[] blocks.data;
     // Set this as fully post-processed, so we don't try and run post-processing
     // on any edge chunks that will overlap into real chunks
     terrainPopulated = LevelChunk::sTerrainPopulatedAllNeighbours |
@@ -118,9 +117,9 @@ int EmptyLevelChunk::countEntities() { return 0; }
 
 bool EmptyLevelChunk::shouldSave(bool force) { return false; }
 
-void EmptyLevelChunk::setBlocks(byteArray newBlocks, int sub) {}
+void EmptyLevelChunk::setBlocks(std::vector<uint8_t>& newBlocks, int sub) {}
 
-int EmptyLevelChunk::getBlocksAndData(byteArray data, int x0, int y0, int z0,
+int EmptyLevelChunk::getBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
                                       int x1, int y1, int z1, int p,
                                       bool includeLighting /* = true*/) {
     int xs = x1 - x0;
@@ -139,7 +138,7 @@ int EmptyLevelChunk::getBlocksAndData(byteArray data, int x0, int y0, int z0,
     return len;
 }
 
-int EmptyLevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0,
+int EmptyLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
                                       int x1, int y1, int z1, int p,
                                       bool includeLighting /* = true*/) {
     int xs = x1 - x0;
@@ -154,7 +153,7 @@ int EmptyLevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0,
     }
 }
 
-bool EmptyLevelChunk::testSetBlocksAndData(byteArray data, int x0, int y0,
+bool EmptyLevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
                                            int z0, int x1, int y1, int z1,
                                            int p) {
     return false;

@@ -274,7 +274,7 @@ private:
     static int preLoadedIdx[TN_COUNT];
 
     std::unordered_map<std::wstring, int> idMap;
-    std::unordered_map<std::wstring, intArray> pixelsMap;
+    std::unordered_map<std::wstring, std::vector<int>> pixelsMap;
     std::unordered_map<int, BufferedImage*> loadedImages;
     // IntBuffer *pixels;	// 4J - removed so we don't have a permanent
     // buffer kicking round using up 1MB
@@ -299,12 +299,12 @@ private:
     void loadIndexedTextures();  // 4J Added
 
 public:
-    intArray loadTexturePixels(TEXTURE_NAME texId,
+    std::vector<int> loadTexturePixels(TEXTURE_NAME texId,
                                const std::wstring& resourceName);
 
 private:
-    intArray loadTexturePixels(BufferedImage* img);
-    intArray loadTexturePixels(BufferedImage* img, intArray pixels);
+    std::vector<int> loadTexturePixels(BufferedImage* img);
+    std::vector<int> loadTexturePixels(BufferedImage* img, std::vector<int>& pixels);
     void setTextureFormat(const std::wstring& resourceName);  // 4J added
 
 public:
@@ -334,13 +334,13 @@ public:
     void loadTexture(BufferedImage* img, int id, bool blur, bool clamp);
 
 private:
-    intArray anaglyph(intArray rawPixels);
+    std::vector<int> anaglyph(std::vector<int>& rawPixels);
 
 public:
-    void replaceTexture(intArray rawPixels, int w, int h, int id);
-    void replaceTextureDirect(intArray rawPixels, int w, int h,
+    void replaceTexture(std::vector<int>& rawPixels, int w, int h, int id);
+    void replaceTextureDirect(const std::vector<int>& rawPixels, int w, int h,
                               int id);  // 4J added as optimisation
-    void replaceTextureDirect(shortArray rawPixels, int w, int h,
+    void replaceTextureDirect(const std::vector<short>& rawPixels, int w, int h,
                               int id);  // 4J added as optimisation
     void releaseTexture(int id);
     int loadHttpTexture(const std::wstring& url, const std::wstring& backup);

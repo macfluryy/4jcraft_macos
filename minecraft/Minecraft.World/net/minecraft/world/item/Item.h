@@ -180,7 +180,7 @@ private:
     static const int MAX_STACK_SIZE = Container::LARGE_MAX_STACK_SIZE;
 
 public:
-    static ItemArray items;
+    static std::vector<Item*> items;
 
     static Item* shovel_iron;
     static Item* pickAxe_iron;

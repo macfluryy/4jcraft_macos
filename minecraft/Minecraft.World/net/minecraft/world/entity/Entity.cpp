@@ -1569,9 +1569,9 @@ void Entity::handleEntityEvent(uint8_t eventId) {}
 
 void Entity::animateHurt() {}
 
-arrayWithLength<std::shared_ptr<ItemInstance>> Entity::getEquipmentSlots()  // ItemInstance[]
+std::vector<std::shared_ptr<ItemInstance>> Entity::getEquipmentSlots()  // ItemInstance[]
 {
-    return arrayWithLength<std::shared_ptr<ItemInstance>>();  // Default ctor creates nullptr internal array
+    return std::vector<std::shared_ptr<ItemInstance>>();  // Default ctor creates nullptr internal array
 }
 
 // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer

@@ -36,11 +36,11 @@ int DataInputStream::read() {
 // The first byte read is stored into element b[0], the next one into b[1], and
 // so on. The number of bytes read is, at most, equal to the length of b. Let k
 // be the number of bytes actually read; these bytes will be stored in elements
-// b[0] through b[k-1], leaving elements b[k] through b[b.length-1] unaffected.
+// b[0] through b[k-1], leaving elements b[k] through b[b.size()-1] unaffected.
 //
 // The read(b) method has the same effect as:
 //
-//  read(b, 0, b.length)
+//  read(b, 0, b.size())
 //
 // Overrides:
 // read in class FilterInputStream
@@ -49,14 +49,14 @@ int DataInputStream::read() {
 // Returns:
 // the total number of bytes read into the buffer, or -1 if there is no more
 // data because the end of the stream has been reached.
-int DataInputStream::read(byteArray b) {
+int DataInputStream::read(std::vector<uint8_t>& b) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::read(byteArray) called but underlying stream is "
+            "DataInputStream::read(std::vector<uint8_t>) called but underlying stream is "
             "nullptr\n");
         return -1;
     }
-    return read(b, 0, b.length);
+    return read(b, 0, b.size());
 }
 
 // Reads up to len bytes of data from the contained input stream into an array
@@ -77,7 +77,7 @@ int DataInputStream::read(byteArray b) {
 // b[off+len-1] unaffected.
 //
 // In every case, elements b[0] through b[off] and elements b[off+len] through
-// b[b.length-1] are unaffected.
+// b[b.size()-1] are unaffected.
 //
 // Overrides:
 // read in class FilterInputStream
@@ -88,11 +88,11 @@ int DataInputStream::read(byteArray b) {
 // Returns:
 // the total number of bytes read into the buffer, or -1 if there is no more
 // data because the end of the stream has been reached.
-int DataInputStream::read(byteArray b, unsigned int offset,
+int DataInputStream::read(std::vector<uint8_t>& b, unsigned int offset,
                           unsigned int length) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::read(byteArray,offset,length) called but "
+            "DataInputStream::read(std::vector<uint8_t>,offset,length) called but "
             "underlying stream is nullptr\n");
         return -1;
     }
@@ -168,10 +168,10 @@ wchar_t DataInputStream::readChar() {
 // b. The number of bytes read is equal to the length of b. This method blocks
 // until one of the following conditions occurs:
 //
-// b.length bytes of input data are available, in which case a normal return is
+// b.size() bytes of input data are available, in which case a normal return is
 // made. End of file is detected, in which case an EOFException is thrown. An
 // I/O error occurs, in which case an IOException other than EOFException is
-// thrown. If b is null, a NullPointerException is thrown. If b.length is zero,
+// thrown. If b is null, a NullPointerException is thrown. If b.size() is zero,
 // then no bytes are read. Otherwise, the first byte read is stored into element
 // b[0], the next one into b[1], and so on. If an exception is thrown from this
 // method, then it may be that some but not all bytes of b have been updated
@@ -179,18 +179,18 @@ wchar_t DataInputStream::readChar() {
 //
 // Parameters:
 // b - the buffer into which the data is read.
-bool DataInputStream::readFully(byteArray b) {
+bool DataInputStream::readFully(std::vector<uint8_t>& b) {
     // TODO 4J Stu - I am not entirely sure if this matches the implementation
     // of the Java library
     // TODO 4J Stu - Need to handle exceptions here is we throw them in other
     // InputStreams
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readFully(byteArray) but underlying stream is "
+            "DataInputStream::readFully(std::vector<uint8_t>) but underlying stream is "
             "nullptr\n");
         return false;
     }
-    for (unsigned int i = 0; i < b.length; i++) {
+    for (unsigned int i = 0; i < b.size(); i++) {
         int byteRead = stream->read();
         if (byteRead == -1) {
             return false;
@@ -201,18 +201,18 @@ bool DataInputStream::readFully(byteArray b) {
     return true;
 }
 
-bool DataInputStream::readFully(charArray b) {
+bool DataInputStream::readFully(std::vector<char>& b) {
     // TODO 4J Stu - I am not entirely sure if this matches the implementation
     // of the Java library
     // TODO 4J Stu - Need to handle exceptions here is we throw them in other
     // InputStreams
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readFully(charArray) but underlying stream is "
+            "DataInputStream::readFully(std::vector<char>) but underlying stream is "
             "nullptr\n");
         return false;
     }
-    for (unsigned int i = 0; i < b.length; i++) {
+    for (unsigned int i = 0; i < b.size(); i++) {
         int byteRead = stream->read();
         if (byteRead == -1) {
             return false;

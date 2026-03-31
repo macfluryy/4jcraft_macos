@@ -49,14 +49,14 @@ void Frustum::calculateFrustum() {
     // queries.
     // Camera::prepare() already captures both matrices every frame :)
     // i spent an ungodly amount of time on this simple fix.
-    memcpy(proj.data, RenderManager.MatrixGet(GL_PROJECTION_MATRIX),
+    memcpy(proj.data(), RenderManager.MatrixGet(GL_PROJECTION_MATRIX),
            16 * sizeof(float));
-    memcpy(modl.data, RenderManager.MatrixGet(GL_MODELVIEW_MATRIX),
+    memcpy(modl.data(), RenderManager.MatrixGet(GL_MODELVIEW_MATRIX),
            16 * sizeof(float));
 
-    float* p = proj.data;
-    float* m = modl.data;
-    float* c = clip.data;
+    float* p = proj.data();
+    float* m = modl.data();
+    float* c = clip.data();
 
     c[0] = m[0] * p[0] + m[1] * p[4] + m[2] * p[8] + m[3] * p[12];
     c[1] = m[0] * p[1] + m[1] * p[5] + m[2] * p[9] + m[3] * p[13];

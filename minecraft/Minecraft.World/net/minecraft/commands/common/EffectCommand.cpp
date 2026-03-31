@@ -11,8 +11,8 @@ std::wstring EffectCommand::getUsage(CommandSender* source) {
 }
 
 void EffectCommand::execute(std::shared_ptr<CommandSender> source,
-                            byteArray commandData) {
-    // if (args.length >= 2)
+                            std::vector<uint8_t>& commandData) {
+    // if (args.size() >= 2)
     //{
     //	Player player = convertToPlayer(source, args[0]);
 
@@ -30,12 +30,12 @@ void EffectCommand::execute(std::shared_ptr<CommandSender> source,
     //		int seconds = 30;
     //		int amplifier = 0;
 
-    //		if (effectId < 0 || effectId >= MobEffect.effects.length ||
+    //		if (effectId < 0 || effectId >= MobEffect.effects.size() ||
     // MobEffect.effects[effectId] == null) { 			throw new
     // InvalidNumberException("commands.effect.notFound", effectId);
     //		}
 
-    //		if (args.length >= 3) {
+    //		if (args.size() >= 3) {
     //			seconds = convertArgToInt(source, args[2], 0, 1000000);
     //			if (MobEffect.effects[effectId].isInstantenous()) {
     //				duration = seconds;
@@ -47,7 +47,7 @@ void EffectCommand::execute(std::shared_ptr<CommandSender> source,
     //			duration = 1;
     //		}
 
-    //		if (args.length >= 4) {
+    //		if (args.size() >= 4) {
     //			amplifier = convertArgToInt(source, args[3], 0, 255);
     //		}
 

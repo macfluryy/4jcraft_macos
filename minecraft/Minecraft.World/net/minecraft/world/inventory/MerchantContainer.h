@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../Container.h"
-#include "../../../../ConsoleHelpers/ArrayWithLength.h"
 
 class Merchant;
 class Player;
@@ -10,7 +9,7 @@ class MerchantRecipe;
 class MerchantContainer : public Container {
 private:
     std::shared_ptr<Merchant> merchant;
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
+    std::vector<std::shared_ptr<ItemInstance>> items;
     std::shared_ptr<Player> player;
     MerchantRecipe* activeRecipe;
     int selectionHint;

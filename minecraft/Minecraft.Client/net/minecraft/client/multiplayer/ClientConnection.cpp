@@ -603,7 +603,7 @@ void ClientConnection::handleAddEntity(
             e->getSubEntities();
         if (subEntities != nullptr) {
             int offs = packet->id - e->entityId;
-            // for (int i = 0; i < subEntities.length; i++)
+            // for (int i = 0; i < subEntities.size(); i++)
             for (auto it = subEntities->begin(); it != subEntities->end();
                  ++it) {
                 (*it)->entityId += offs;
@@ -915,7 +915,7 @@ void ClientConnection::handleMoveEntitySmall(
 
 void ClientConnection::handleRemoveEntity(
     std::shared_ptr<RemoveEntitiesPacket> packet) {
-    for (int i = 0; i < packet->ids.length; i++) {
+    for (int i = 0; i < packet->ids.size(); i++) {
         level->removeEntity(packet->ids[i]);
     }
 }
@@ -1087,7 +1087,7 @@ void ClientConnection::handleBlockRegionUpdate(
         int y1 = packet->y + packet->ys;
         if (packet->bIsFullChunk) {
             y1 = Level::maxBuildHeight;
-            if (packet->buffer.length > 0) {
+            if (packet->buffer.size() > 0) {
                 PIXBeginNamedEvent(0, "Reordering to XZY");
                 LevelChunk::reorderBlocksAndDataToXZY(packet->y, packet->xs,
                                                       packet->ys, packet->zs,
@@ -1998,7 +1998,7 @@ void ClientConnection::handleAddMob(std::shared_ptr<AddMobPacket> packet) {
     std::vector<std::shared_ptr<Entity> >* subEntities = mob->getSubEntities();
     if (subEntities != nullptr) {
         int offs = packet->id - mob->entityId;
-        // for (int i = 0; i < subEntities.length; i++)
+        // for (int i = 0; i < subEntities.size(); i++)
         for (auto it = subEntities->begin(); it != subEntities->end(); ++it) {
             // subEntities[i].entityId += offs;
             (*it)->entityId += offs;
@@ -2975,8 +2975,9 @@ void ClientConnection::handleLevelEvent(
 
 void ClientConnection::handleAwardStat(
     std::shared_ptr<AwardStatPacket> packet) {
+    std::vector<uint8_t> paramData = packet->getParamData();
     minecraft->localplayers[m_userIndex]->awardStatFromServer(
-        GenericStats::stat(packet->statId), packet->getParamData());
+        GenericStats::stat(packet->statId), paramData);
 }
 
 void ClientConnection::handleUpdateMobEffect(
@@ -3269,7 +3270,7 @@ void ClientConnection::handleServerSettingsChanged(
     if (packet->action == ServerSettingsChangedPacket::HOST_IN_GAME_SETTINGS) {
         app.SetGameHostOption(eGameHostOption_All, packet->data);
     } else if (packet->action == ServerSettingsChangedPacket::HOST_DIFFICULTY) {
-        for (unsigned int i = 0; i < minecraft->levels.length; ++i) {
+        for (unsigned int i = 0; i < minecraft->levels.size(); ++i) {
             if (minecraft->levels[i] != nullptr) {
                 app.DebugPrintf(
                     "ClientConnection::handleServerSettingsChanged - "
@@ -3306,8 +3307,8 @@ void ClientConnection::handleUpdateGameRuleProgressPacket(
     if (string != nullptr) {
         std::wstring message(string);
         message = GameRuleDefinition::generateDescriptionString(
-            packet->m_definitionType, message, packet->m_data.data,
-            packet->m_data.length);
+            packet->m_definitionType, message, packet->m_data.data(),
+            packet->m_data.size());
         if (minecraft->localgameModes[m_userIndex] != nullptr) {
             minecraft->localgameModes[m_userIndex]->getTutorial()->setMessage(
                 message, packet->m_icon, packet->m_auxValue);
@@ -3322,7 +3323,6 @@ void ClientConnection::handleUpdateGameRuleProgressPacket(
         app.SetSpecialTutorialCompletionFlag(m_userIndex,
                                              packet->m_dataTag - 1);
     }
-    delete[] packet->m_data.data;
 }
 
 // 4J Stu - TU-1 hotfix

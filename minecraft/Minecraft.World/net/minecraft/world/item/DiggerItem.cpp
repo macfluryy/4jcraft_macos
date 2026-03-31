@@ -7,7 +7,7 @@
 #include "DiggerItem.h"
 
 DiggerItem::DiggerItem(int id, float attackDamage, const Tier* tier,
-                       TileArray* tiles)
+                       std::vector<Tile*>* tiles)
     : Item(id), tier(tier) {
     // this->tier = tier;
     this->tiles = tiles;
@@ -19,7 +19,7 @@ DiggerItem::DiggerItem(int id, float attackDamage, const Tier* tier,
 
 float DiggerItem::getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,
                                   Tile* tile) {
-    for (unsigned int i = 0; i < tiles->length; i++)
+    for (unsigned int i = 0; i < tiles->size(); i++)
         if ((*tiles)[i] == tile) return speed;
     return 1;
 }

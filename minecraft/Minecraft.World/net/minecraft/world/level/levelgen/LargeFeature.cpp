@@ -12,7 +12,7 @@ LargeFeature::LargeFeature() {
 LargeFeature::~LargeFeature() { delete random; }
 
 void LargeFeature::apply(ChunkSource* ChunkSource, Level* level, int xOffs,
-                         int zOffs, byteArray blocks) {
+                         int zOffs, std::vector<uint8_t>& blocks) {
     int r = radius;
     this->level = level;
 

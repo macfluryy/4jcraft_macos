@@ -350,7 +350,7 @@ public:
     virtual void lerpMotion(double xd, double yd, double zd);
     virtual void handleEntityEvent(uint8_t eventId);
     virtual void animateHurt();
-    virtual arrayWithLength<std::shared_ptr<ItemInstance>> getEquipmentSlots();  // ItemInstance[]
+    virtual std::vector<std::shared_ptr<ItemInstance>> getEquipmentSlots();  // ItemInstance[]
     virtual void setEquippedSlot(
         int slot, std::shared_ptr<ItemInstance>
                       item);  // 4J Stu - Brought forward change from 1.3 to fix

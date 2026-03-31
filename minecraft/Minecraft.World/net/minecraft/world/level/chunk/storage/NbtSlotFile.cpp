@@ -36,7 +36,7 @@ bool WriteExact(std::FILE* file, const void* buffer, std::size_t size) {
 }
 }  // namespace
 
-byteArray NbtSlotFile::READ_BUFFER(1024 * 1024);
+std::vector<uint8_t> NbtSlotFile::READ_BUFFER(1024 * 1024);
 int64_t NbtSlotFile::largest = 0;
 
 NbtSlotFile::NbtSlotFile(File file) {
@@ -138,7 +138,7 @@ std::vector<CompoundTag*>* NbtSlotFile::readAll(int slot) {
             //            IOException("Wrong slot! Got " + oldSlot + ", expected
             //            " + expectedSlot);	// 4J - TODO
 
-            ReadExact(raf, READ_BUFFER.data + pos, size);
+            ReadExact(raf, READ_BUFFER.data() + pos, size);
 
             if (continuesAt >= 0) {
                 pos += size;
@@ -182,10 +182,10 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
     auto itEndTags = tags->end();
     for (auto it = tags->begin(); it != itEndTags; it++) {
         CompoundTag* tag = *it;  // tags->at(i);
-        byteArray compressed = NbtIo::compress(tag);
-        if (compressed.length > largest) {
+        std::vector<uint8_t> compressed = NbtIo::compress(tag);
+        if (compressed.size() > largest) {
             wchar_t buf[256];
-            largest = compressed.length;
+            largest = compressed.size();
 #ifndef _CONTENT_PACKAGE
             swprintf(buf, 256, L"New largest: %I64d (%ls)\n", largest,
                      tag->getString(L"id").c_str());
@@ -194,7 +194,7 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
         }
 
         int pos = 0;
-        int remaining = compressed.length;
+        int remaining = compressed.size();
         if (remaining == 0) continue;
 
         int nextFileSlot = getFreeSlot();
@@ -224,7 +224,7 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
             WriteExact(raf, &lastFileSlot, sizeof(lastFileSlot));
 
             seekSlot(fileSlot);
-            WriteExact(raf, compressed.data + pos, toWrite);
+            WriteExact(raf, compressed.data() + pos, toWrite);
 
             if (remaining > 0) {
                 lastFileSlot = fileSlot;
@@ -232,7 +232,6 @@ void NbtSlotFile::replaceSlot(int slot, std::vector<CompoundTag*>* tags) {
                 currentSlot = -slot - 1;
             }
         }
-        delete[] compressed.data;
     }
 
     auto itEndToRep = toReplace->end();

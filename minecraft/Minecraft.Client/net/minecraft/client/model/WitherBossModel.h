@@ -4,8 +4,8 @@
 
 class WitherBossModel : public Model {
 private:
-    ModelPartArray upperBodyParts;
-    ModelPartArray heads;
+    std::vector<ModelPart*> upperBodyParts;
+    std::vector<ModelPart*> heads;
 
 public:
     WitherBossModel();

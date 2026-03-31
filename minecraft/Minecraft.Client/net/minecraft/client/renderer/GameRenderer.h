@@ -67,7 +67,7 @@ private:
                                            // lightTexture per level, to support
                                            // split screen
     int getLightTexture(int iPad, Level* level);  // 4J added
-    intArray lightPixels[NUM_LIGHT_TEXTURES];
+    std::vector<int> lightPixels[NUM_LIGHT_TEXTURES];
 
     float fov[4];
     float oFov[4];

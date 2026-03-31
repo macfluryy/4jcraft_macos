@@ -9,7 +9,7 @@ class BiomeSource;
 class Region : public LevelSource {
 private:
     int xc1, zc1;
-    LevelChunk2DArray* chunks;
+    std::vector<std::vector<LevelChunk*>>* chunks;
     Level* level;
     bool allEmpty;
 

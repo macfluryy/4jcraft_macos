@@ -207,11 +207,10 @@ void DLCTexturePack::loadColourTable() {
 
     // Load the text colours
     if (app.hasArchiveFile(L"HTMLColours.col")) {
-        byteArray textColours = app.getArchiveFile(L"HTMLColours.col");
-        m_colourTable->loadColoursFromData(textColours.data,
-                                           textColours.length);
+        std::vector<uint8_t> textColours = app.getArchiveFile(L"HTMLColours.col");
+        m_colourTable->loadColoursFromData(textColours.data(),
+                                           textColours.size());
 
-        delete[] textColours.data;
     }
 }
 

@@ -198,7 +198,7 @@ void IUIScene_AnvilMenu::updateItemName() {
 
     m_repairMenu->setItemName(m_itemName);
 
-    // Convert to byteArray
+    // Convert to std::vector<uint8_t>
     ByteArrayOutputStream baos;
     DataOutputStream dos(&baos);
     dos.writeUTF(m_itemName);

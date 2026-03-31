@@ -16,15 +16,15 @@ private:
 public:
     DataInputStream(InputStream* in);
     virtual int read();
-    virtual int read(byteArray b);
-    virtual int read(byteArray b, unsigned int offset, unsigned int length);
+    virtual int read(std::vector<uint8_t>& b);
+    virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
     virtual void close();
     virtual bool readBoolean();
     virtual uint8_t readByte();
     virtual unsigned char readUnsignedByte();
     virtual wchar_t readChar();
-    virtual bool readFully(byteArray b);
-    virtual bool readFully(charArray b);
+    virtual bool readFully(std::vector<uint8_t>& b);
+    virtual bool readFully(std::vector<char>& b);
     virtual double readDouble();
     virtual float readFloat();
     virtual int readInt();

@@ -32,7 +32,7 @@ const _Tier* _Tier::GOLD = new _Tier(0, 32, 12, 0, 22);
 
 Random* Item::random = new Random();
 
-ItemArray Item::items = ItemArray(ITEM_NUM_COUNT);
+std::vector<Item*> Item::items = std::vector<Item*>(ITEM_NUM_COUNT);
 
 Item* Item::shovel_iron = nullptr;
 Item* Item::pickAxe_iron = nullptr;

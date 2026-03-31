@@ -31,5 +31,5 @@ public:
     std::vector<std::wstring>* getFileList();
     bool hasFile(const std::wstring& filename);
     int getFileSize(const std::wstring& filename);
-    byteArray getFile(const std::wstring& filename);
+    std::vector<uint8_t> getFile(const std::wstring& filename);
 };

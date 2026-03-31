@@ -17,13 +17,14 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
     hasData = new bool[XZSIZE * XZSIZE];
     memset(hasData, 0, sizeof(bool) * XZSIZE * XZSIZE);
 
+    std::vector<uint8_t> emptyBlocks(16 * 16 * Level::maxBuildHeight);
     emptyChunk = new EmptyLevelChunk(
-        level, byteArray(16 * 16 * Level::maxBuildHeight), 0, 0);
+        level, emptyBlocks, 0, 0);
 
     // For normal world dimension, create a chunk that can be used to create the
     // illusion of infinite water at the edge of the world
     if (level->dimension->id == 0) {
-        byteArray bytes = byteArray(16 * 16 * 128);
+        std::vector<uint8_t> bytes = std::vector<uint8_t>(16 * 16 * 128);
 
         // Superflat.... make grass, not water...
         if (level->getLevelData()->getGenerator() == LevelType::lvl_flat) {
@@ -54,7 +55,6 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
 
         waterChunk = new WaterLevelChunk(level, bytes, 0, 0);
 
-        delete[] bytes.data;
 
         if (level->getLevelData()->getGenerator() == LevelType::lvl_flat) {
             for (int x = 0; x < 16; x++)
@@ -189,7 +189,7 @@ LevelChunk* MultiPlayerChunkCache::create(int x, int z) {
             } else {
                 // Passing an empty array into the LevelChunk ctor, which it now
                 // detects and sets up the chunk as compressed & empty
-                byteArray bytes;
+                std::vector<uint8_t> bytes;
 
                 chunk = new LevelChunk(level, bytes, x, z);
 

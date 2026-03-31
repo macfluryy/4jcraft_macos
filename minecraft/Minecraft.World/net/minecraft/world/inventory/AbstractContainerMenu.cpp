@@ -501,8 +501,8 @@ void AbstractContainerMenu::setItem(unsigned int slot,
     getSlot(slot)->set(item);
 }
 
-void AbstractContainerMenu::setAll(arrayWithLength<std::shared_ptr<ItemInstance>>* items) {
-    for (unsigned int i = 0; i < items->length; i++) {
+void AbstractContainerMenu::setAll(std::vector<std::shared_ptr<ItemInstance>>* items) {
+    for (unsigned int i = 0; i < items->size(); i++) {
         getSlot(i)->set((*items)[i]);
     }
 }

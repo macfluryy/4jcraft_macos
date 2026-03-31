@@ -11,7 +11,7 @@ private:
     std::unordered_map<std::wstring, std::wstring> m_stringsMap;
     std::vector<std::wstring> m_stringsVec;
 
-    byteArray src;
+    std::vector<uint8_t> src;
 
 public:
     // 	enum eLocale

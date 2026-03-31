@@ -80,18 +80,18 @@ int FileInputStream::read() {
     return static_cast<int>(byteRead);
 }
 
-// Reads up to b.length bytes of data from this input stream into an array of
+// Reads up to b.size() bytes of data from this input stream into an array of
 // bytes. This method blocks until some input is available. Parameters: b - the
 // buffer into which the data is read. Returns: the total number of bytes read
 // into the buffer, or -1 if there is no more data because the end of the file
 // has been reached.
-int FileInputStream::read(byteArray b) {
+int FileInputStream::read(std::vector<uint8_t>& b) {
     if (m_fileHandle == nullptr) {
         return -1;
     }
 
     const size_t numberOfBytesRead =
-        std::fread(b.data, 1, b.length, m_fileHandle);
+        std::fread(b.data(), 1, b.size(), m_fileHandle);
 
     if (std::ferror(m_fileHandle) != 0) {
         assert(0);
@@ -110,10 +110,10 @@ int FileInputStream::read(byteArray b) {
 // b len - the maximum number of bytes read. Returns: the total number of bytes
 // read into the buffer, or -1 if there is no more data because the end of the
 // file has been reached.
-int FileInputStream::read(byteArray b, unsigned int offset,
+int FileInputStream::read(std::vector<uint8_t>& b, unsigned int offset,
                           unsigned int length) {
     // 4J Stu - We don't want to read any more than the array buffer can hold
-    assert(length <= (b.length - offset));
+    assert(length <= (b.size() - offset));
 
     if (m_fileHandle == nullptr) {
         return -1;

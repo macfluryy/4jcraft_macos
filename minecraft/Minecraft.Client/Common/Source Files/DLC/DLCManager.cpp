@@ -393,8 +393,8 @@ bool DLCManager::readDLCDataFile(unsigned int& dwFilesProcessed,
                                  bool fromArchive) {
     std::wstring wPath = convStringToWstring(path);
     if (fromArchive && app.getArchiveFileSize(wPath) >= 0) {
-        byteArray bytes = app.getArchiveFile(wPath);
-        return processDLCDataFile(dwFilesProcessed, bytes.data, bytes.length,
+        std::vector<uint8_t> bytes = app.getArchiveFile(wPath);
+        return processDLCDataFile(dwFilesProcessed, bytes.data(), bytes.size(),
                                   pack);
     } else if (fromArchive)
         return false;

@@ -5,14 +5,14 @@
 #include "LargeCaveFeature.h"
 
 void LargeCaveFeature::addRoom(int64_t seed, int xOffs, int zOffs,
-                               byteArray blocks, double xRoom, double yRoom,
+                               std::vector<uint8_t>& blocks, double xRoom, double yRoom,
                                double zRoom) {
     addTunnel(seed, xOffs, zOffs, blocks, xRoom, yRoom, zRoom,
               1 + random->nextFloat() * 6, 0, 0, -1, -1, 0.5);
 }
 
 void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
-                                 byteArray blocks, double xCave, double yCave,
+                                 std::vector<uint8_t>& blocks, double xCave, double yCave,
                                  double zCave, float thickness, float yRot,
                                  float xRot, int step, int dist,
                                  double yScale) {
@@ -162,7 +162,7 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 }
 
 void LargeCaveFeature::addFeature(Level* level, int x, int z, int xOffs,
-                                  int zOffs, byteArray blocks) {
+                                  int zOffs, std::vector<uint8_t>& blocks) {
     int caves = random->nextInt(random->nextInt(random->nextInt(40) + 1) + 1);
     if (random->nextInt(15) != 0) caves = 0;
 

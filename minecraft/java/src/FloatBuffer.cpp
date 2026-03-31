@@ -51,11 +51,11 @@ FloatBuffer* FloatBuffer::put(float f) {
 // array. An invocation of this method of the form src.get(a) behaves in exactly
 // the same way as the invocation
 //
-//      src.get(a, 0, a.length)
+//      src.get(a, 0, a.size())
 // Returns:
 // This buffer
-void FloatBuffer::get(floatArray* dst) {
-    assert(dst->length <= m_capacity);
+void FloatBuffer::get(std::vector<float>* dst) {
+    assert(dst->size() <= m_capacity);
 
-    for (unsigned int i = 0; i < dst->length; i++) dst->data[i] = buffer[i];
+    for (unsigned int i = 0; i < dst->size(); i++) (*dst)[i] = buffer[i];
 }

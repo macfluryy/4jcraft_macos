@@ -185,111 +185,111 @@ public:
 
     // STAT PARAMS - STATIC //
 
-    static byteArray param_walk(int distance);
-    static byteArray param_swim(int distance);
-    static byteArray param_fall(int distance);
-    static byteArray param_climb(int distance);
-    static byteArray param_minecart(int distance);
-    static byteArray param_boat(int distance);
-    static byteArray param_pig(int distance);
+    static std::vector<uint8_t> param_walk(int distance);
+    static std::vector<uint8_t> param_swim(int distance);
+    static std::vector<uint8_t> param_fall(int distance);
+    static std::vector<uint8_t> param_climb(int distance);
+    static std::vector<uint8_t> param_minecart(int distance);
+    static std::vector<uint8_t> param_boat(int distance);
+    static std::vector<uint8_t> param_pig(int distance);
 
-    static byteArray param_cowsMilked();
+    static std::vector<uint8_t> param_cowsMilked();
 
-    static byteArray param_blocksPlaced(int id, int data, int count);
-    static byteArray param_blocksMined(int id, int data, int count);
-    static byteArray param_itemsCollected(int id, int aux, int count);
-    static byteArray param_itemsCrafted(int id, int aux, int count);
-    static byteArray param_itemsSmelted(int id, int aux, int cound);
-    static byteArray param_itemsUsed(std::shared_ptr<Player> plr,
+    static std::vector<uint8_t> param_blocksPlaced(int id, int data, int count);
+    static std::vector<uint8_t> param_blocksMined(int id, int data, int count);
+    static std::vector<uint8_t> param_itemsCollected(int id, int aux, int count);
+    static std::vector<uint8_t> param_itemsCrafted(int id, int aux, int count);
+    static std::vector<uint8_t> param_itemsSmelted(int id, int aux, int cound);
+    static std::vector<uint8_t> param_itemsUsed(std::shared_ptr<Player> plr,
                                      std::shared_ptr<ItemInstance> itm);
-    static byteArray param_itemsBought(int id, int aux, int count);
+    static std::vector<uint8_t> param_itemsBought(int id, int aux, int count);
 
-    static byteArray param_mobKill(std::shared_ptr<Player> plr,
+    static std::vector<uint8_t> param_mobKill(std::shared_ptr<Player> plr,
                                    std::shared_ptr<Mob> mob,
                                    DamageSource* dmgSrc);
 
-    static byteArray param_breedEntity(eINSTANCEOF mobType);
-    static byteArray param_tamedEntity(eINSTANCEOF mobType);
-    static byteArray param_curedEntity(eINSTANCEOF mobType);
-    static byteArray param_craftedEntity(eINSTANCEOF mobType);
-    static byteArray param_shearedEntity(eINSTANCEOF mobType);
+    static std::vector<uint8_t> param_breedEntity(eINSTANCEOF mobType);
+    static std::vector<uint8_t> param_tamedEntity(eINSTANCEOF mobType);
+    static std::vector<uint8_t> param_curedEntity(eINSTANCEOF mobType);
+    static std::vector<uint8_t> param_craftedEntity(eINSTANCEOF mobType);
+    static std::vector<uint8_t> param_shearedEntity(eINSTANCEOF mobType);
 
-    static byteArray param_time(int timediff);
+    static std::vector<uint8_t> param_time(int timediff);
 
-    static byteArray param_changedDimension(int from, int to);
-    static byteArray param_enteredBiome(int biomeId);
+    static std::vector<uint8_t> param_changedDimension(int from, int to);
+    static std::vector<uint8_t> param_enteredBiome(int biomeId);
 
-    // static byteArray param_achievement(eAward id);
+    // static std::vector<uint8_t> param_achievement(eAward id);
 
-    // static byteArray param_ach_onARail();
-    // static byteArray param_overkill(int damage); //TODO
-    // static byteArray param_openInventory(int menuId);
-    // static byteArray param_chestfulOfCobblestone();
-    // static byteArray param_musicToMyEars(int recordId);
+    // static std::vector<uint8_t> param_ach_onARail();
+    // static std::vector<uint8_t> param_overkill(int damage); //TODO
+    // static std::vector<uint8_t> param_openInventory(int menuId);
+    // static std::vector<uint8_t> param_chestfulOfCobblestone();
+    // static std::vector<uint8_t> param_musicToMyEars(int recordId);
 
-    static byteArray param_noArgs();
+    static std::vector<uint8_t> param_noArgs();
 
     // STATIC + VIRTUAL - ACHIEVEMENT - PARAMS //
 
-    static byteArray param_openInventory();
-    static byteArray param_mineWood();
-    static byteArray param_buildWorkbench();
-    static byteArray param_buildPickaxe();
-    static byteArray param_buildFurnace();
-    static byteArray param_acquireIron();
-    static byteArray param_buildHoe();
-    static byteArray param_makeBread();
-    static byteArray param_bakeCake();
-    static byteArray param_buildBetterPickaxe();
-    static byteArray param_cookFish();
-    static byteArray param_onARail(int distance);
-    static byteArray param_buildSword();
-    static byteArray param_killEnemy();
-    static byteArray param_killCow();
-    static byteArray param_flyPig();
-    static byteArray param_snipeSkeleton();
-    static byteArray param_diamonds();
-    static byteArray param_ghast();
-    static byteArray param_blazeRod();
-    static byteArray param_potion();
-    static byteArray param_theEnd();
-    static byteArray param_winGame();
-    static byteArray param_enchantments();
-    static byteArray param_overkill(int dmg);
-    static byteArray param_bookcase();
+    static std::vector<uint8_t> param_openInventory();
+    static std::vector<uint8_t> param_mineWood();
+    static std::vector<uint8_t> param_buildWorkbench();
+    static std::vector<uint8_t> param_buildPickaxe();
+    static std::vector<uint8_t> param_buildFurnace();
+    static std::vector<uint8_t> param_acquireIron();
+    static std::vector<uint8_t> param_buildHoe();
+    static std::vector<uint8_t> param_makeBread();
+    static std::vector<uint8_t> param_bakeCake();
+    static std::vector<uint8_t> param_buildBetterPickaxe();
+    static std::vector<uint8_t> param_cookFish();
+    static std::vector<uint8_t> param_onARail(int distance);
+    static std::vector<uint8_t> param_buildSword();
+    static std::vector<uint8_t> param_killEnemy();
+    static std::vector<uint8_t> param_killCow();
+    static std::vector<uint8_t> param_flyPig();
+    static std::vector<uint8_t> param_snipeSkeleton();
+    static std::vector<uint8_t> param_diamonds();
+    static std::vector<uint8_t> param_ghast();
+    static std::vector<uint8_t> param_blazeRod();
+    static std::vector<uint8_t> param_potion();
+    static std::vector<uint8_t> param_theEnd();
+    static std::vector<uint8_t> param_winGame();
+    static std::vector<uint8_t> param_enchantments();
+    static std::vector<uint8_t> param_overkill(int dmg);
+    static std::vector<uint8_t> param_bookcase();
 
-    static byteArray param_leaderOfThePack();
-    static byteArray param_MOARTools();
-    static byteArray param_dispenseWithThis();
-    static byteArray param_InToTheNether();
+    static std::vector<uint8_t> param_leaderOfThePack();
+    static std::vector<uint8_t> param_MOARTools();
+    static std::vector<uint8_t> param_dispenseWithThis();
+    static std::vector<uint8_t> param_InToTheNether();
 
-    static byteArray param_socialPost();
-    static byteArray param_eatPorkChop();
-    static byteArray param_play100Days();
-    static byteArray param_arrowKillCreeper();
-    static byteArray param_mine100Blocks();
-    static byteArray param_kill10Creepers();
+    static std::vector<uint8_t> param_socialPost();
+    static std::vector<uint8_t> param_eatPorkChop();
+    static std::vector<uint8_t> param_play100Days();
+    static std::vector<uint8_t> param_arrowKillCreeper();
+    static std::vector<uint8_t> param_mine100Blocks();
+    static std::vector<uint8_t> param_kill10Creepers();
 
-    static byteArray param_adventuringTime();
-    static byteArray param_repopulation();
-    static byteArray param_porkChop();
-    static byteArray param_diamondsToYou();
-    static byteArray param_passingTheTime();
-    static byteArray param_archer();
-    static byteArray param_theHaggler();
-    static byteArray param_potPlanter();
-    static byteArray param_itsASign();
-    static byteArray param_ironBelly();
-    static byteArray param_haveAShearfulDay();
-    static byteArray param_rainbowCollection();
-    static byteArray param_stayinFrosty();
-    static byteArray param_chestfulOfCobblestone(int cobbleStone);
-    static byteArray param_renewableEnergy();
-    static byteArray param_musicToMyEars(int recordId);
-    static byteArray param_bodyGuard();
-    static byteArray param_ironMan();
-    static byteArray param_zombieDoctor();
-    static byteArray param_lionTamer();
+    static std::vector<uint8_t> param_adventuringTime();
+    static std::vector<uint8_t> param_repopulation();
+    static std::vector<uint8_t> param_porkChop();
+    static std::vector<uint8_t> param_diamondsToYou();
+    static std::vector<uint8_t> param_passingTheTime();
+    static std::vector<uint8_t> param_archer();
+    static std::vector<uint8_t> param_theHaggler();
+    static std::vector<uint8_t> param_potPlanter();
+    static std::vector<uint8_t> param_itsASign();
+    static std::vector<uint8_t> param_ironBelly();
+    static std::vector<uint8_t> param_haveAShearfulDay();
+    static std::vector<uint8_t> param_rainbowCollection();
+    static std::vector<uint8_t> param_stayinFrosty();
+    static std::vector<uint8_t> param_chestfulOfCobblestone(int cobbleStone);
+    static std::vector<uint8_t> param_renewableEnergy();
+    static std::vector<uint8_t> param_musicToMyEars(int recordId);
+    static std::vector<uint8_t> param_bodyGuard();
+    static std::vector<uint8_t> param_ironMan();
+    static std::vector<uint8_t> param_zombieDoctor();
+    static std::vector<uint8_t> param_lionTamer();
 
 protected:
     // ACHIEVEMENTS - VIRTUAL //
@@ -346,49 +346,49 @@ protected:
 
     // STAT PARAMS - VIRTUAL //
 
-    virtual byteArray getParam_walkOneM(int distance);
-    virtual byteArray getParam_swimOneM(int distance);
-    virtual byteArray getParam_fallOneM(int distance);
-    virtual byteArray getParam_climbOneM(int distance);
-    virtual byteArray getParam_minecartOneM(int distance);
-    virtual byteArray getParam_boatOneM(int distance);
-    virtual byteArray getParam_pigOneM(int distance);
+    virtual std::vector<uint8_t> getParam_walkOneM(int distance);
+    virtual std::vector<uint8_t> getParam_swimOneM(int distance);
+    virtual std::vector<uint8_t> getParam_fallOneM(int distance);
+    virtual std::vector<uint8_t> getParam_climbOneM(int distance);
+    virtual std::vector<uint8_t> getParam_minecartOneM(int distance);
+    virtual std::vector<uint8_t> getParam_boatOneM(int distance);
+    virtual std::vector<uint8_t> getParam_pigOneM(int distance);
 
-    virtual byteArray getParam_cowsMilked();
+    virtual std::vector<uint8_t> getParam_cowsMilked();
 
-    virtual byteArray getParam_blocksPlaced(int id, int data, int count);
-    virtual byteArray getParam_blocksMined(int id, int data, int count);
-    virtual byteArray getParam_itemsCollected(int id, int aux, int count);
-    virtual byteArray getParam_itemsCrafted(int id, int aux, int count);
-    virtual byteArray getParam_itemsSmelted(int id, int aux, int count);
-    virtual byteArray getParam_itemsUsed(std::shared_ptr<Player> plr,
+    virtual std::vector<uint8_t> getParam_blocksPlaced(int id, int data, int count);
+    virtual std::vector<uint8_t> getParam_blocksMined(int id, int data, int count);
+    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsSmelted(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsUsed(std::shared_ptr<Player> plr,
                                          std::shared_ptr<ItemInstance> itm);
-    virtual byteArray getParam_itemsBought(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux, int count);
 
-    virtual byteArray getParam_mobKill(std::shared_ptr<Player> plr,
+    virtual std::vector<uint8_t> getParam_mobKill(std::shared_ptr<Player> plr,
                                        std::shared_ptr<Mob> mob,
                                        DamageSource* dmgSrc);
 
-    virtual byteArray getParam_breedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_tamedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_curedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_craftedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_shearedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_breedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_tamedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_curedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_craftedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_shearedEntity(eINSTANCEOF entityId);
 
-    virtual byteArray getParam_time(int timediff);
+    virtual std::vector<uint8_t> getParam_time(int timediff);
 
-    virtual byteArray getParam_changedDimension(int from, int to);
-    virtual byteArray getParam_enteredBiome(int biomeId);
+    virtual std::vector<uint8_t> getParam_changedDimension(int from, int to);
+    virtual std::vector<uint8_t> getParam_enteredBiome(int biomeId);
 
-    virtual byteArray getParam_achievement(eAward id);
+    virtual std::vector<uint8_t> getParam_achievement(eAward id);
 
-    virtual byteArray getParam_onARail(int distance);
-    virtual byteArray getParam_overkill(int damage);
-    virtual byteArray getParam_openInventory(int menuId);
-    virtual byteArray getParam_chestfulOfCobblestone(int cobbleStone);
-    virtual byteArray getParam_musicToMyEars(int recordId);
+    virtual std::vector<uint8_t> getParam_onARail(int distance);
+    virtual std::vector<uint8_t> getParam_overkill(int damage);
+    virtual std::vector<uint8_t> getParam_openInventory(int menuId);
+    virtual std::vector<uint8_t> getParam_chestfulOfCobblestone(int cobbleStone);
+    virtual std::vector<uint8_t> getParam_musicToMyEars(int recordId);
 
-    virtual byteArray getParam_noArgs();
+    virtual std::vector<uint8_t> getParam_noArgs();
 };
 
 // Req Stats

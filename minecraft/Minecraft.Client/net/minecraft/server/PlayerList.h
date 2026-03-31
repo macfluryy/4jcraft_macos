@@ -78,7 +78,7 @@ protected:
                                 std::shared_ptr<ServerPlayer> player);
 
 public:
-    void setLevel(ServerLevelArray levels);
+    void setLevel(std::vector<ServerLevel*>& levels);
     void changeDimension(std::shared_ptr<ServerPlayer> player,
                          ServerLevel* from);
     int getMaxRange();

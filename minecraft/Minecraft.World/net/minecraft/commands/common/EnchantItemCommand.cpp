@@ -10,7 +10,7 @@ EGameCommand EnchantItemCommand::getId() { return eGameCommand_EnchantItem; }
 int EnchantItemCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void EnchantItemCommand::execute(std::shared_ptr<CommandSender> source,
-                                 byteArray commandData) {
+                                 std::vector<uint8_t>& commandData) {
     ByteArrayInputStream bais(commandData);
     DataInputStream dis(&bais);
 

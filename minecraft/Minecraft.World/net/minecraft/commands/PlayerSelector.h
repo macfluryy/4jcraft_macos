@@ -46,17 +46,17 @@ Pattern.compile("\\G(\\w+)=([-!]?[\\w-]*)(?:$|,)");
     public static ServerPlayer getPlayer(CommandSender source, String input) {
         ServerPlayer[] result = getPlayers(source, input);
 
-        if (result == null || result.length != 1) return null;
+        if (result == null || result.size() != 1) return null;
 
         return result[0];
     }
 
     public static String getPlayerNames(CommandSender source, String input) {
         ServerPlayer[] result = getPlayers(source, input);
-        if (result == null || result.length == 0) return null;
-        String[] names = new String[result.length];
+        if (result == null || result.size() == 0) return null;
+        String[] names = new String[result.size()];
 
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < names.size(); i++) {
             names[i] = result[i].getDisplayName();
         }
 

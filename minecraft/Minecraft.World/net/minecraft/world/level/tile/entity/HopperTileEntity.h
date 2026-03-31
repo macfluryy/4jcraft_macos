@@ -14,7 +14,7 @@ public:
     static const int MOVE_ITEM_SPEED = 8;
 
 private:
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
+    std::vector<std::shared_ptr<ItemInstance>> items;
     std::wstring name;
     int cooldownTime;
 

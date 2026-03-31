@@ -21,7 +21,7 @@ StructureFeature::~StructureFeature() {
 }
 
 void StructureFeature::addFeature(Level* level, int x, int z, int xOffs,
-                                  int zOffs, byteArray blocks) {
+                                  int zOffs, std::vector<uint8_t>& blocks) {
     // this method is called for each chunk within 8 chunk's distance from
     // the chunk being generated, but not all chunks are the sources of
     // structures
@@ -177,7 +177,8 @@ TilePos* StructureFeature::getNearestGeneratedFeature(Level* level, int cellX,
     int64_t zz = (cellZ >> 4) * zScale;
     random->setSeed(xx ^ zz ^ level->getSeed());
 
-    addFeature(level, cellX >> 4, cellZ >> 4, 0, 0, byteArray());
+    std::vector<uint8_t> emptyBlocks;
+    addFeature(level, cellX >> 4, cellZ >> 4, 0, 0, emptyBlocks);
 
     double minDistance = DBL_MAX;
     TilePos* selected = nullptr;

@@ -17,7 +17,7 @@ ZoneIo::ZoneIo(std::FILE* channel, int64_t pos) {
     this->pos = pos;
 }
 
-void ZoneIo::write(byteArray bb, int size) {
+void ZoneIo::write(std::vector<uint8_t> bb, int size) {
     ByteBuffer* buff = ByteBuffer::wrap(bb);
     //    if (bb.length != size) throw new IllegalArgumentException("Expected "
     //    + size + " bytes, got " + bb.length);	// 4J - TODO
@@ -35,7 +35,7 @@ void ZoneIo::write(ByteBuffer* bb, int size) {
 }
 
 ByteBuffer* ZoneIo::read(int size) {
-    byteArray bb = byteArray(size);
+    std::vector<uint8_t> bb = std::vector<uint8_t>(size);
     SeekFile(channel, pos);
     ByteBuffer* buff = ByteBuffer::wrap(bb);
     // 4J - to investigate - why is this buffer flipped before anything goes in

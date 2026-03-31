@@ -1679,7 +1679,7 @@ void Tile::staticCtor() {
                                ->setDescriptionId(IDS_TILE_VINE)
                                ->setUseDescriptionId(IDS_DESC_VINE);
     int idsData[3] = {IDS_TILE_SHRUB, IDS_TILE_TALL_GRASS, IDS_TILE_FERN};
-    intArray ids = intArray(idsData, 3);
+    std::vector<int> ids = std::vector<int>(idsData, idsData + 3);
     Item::items[tallgrass_Id] =
         ((ColoredTileItem*)(new ColoredTileItem(Tile::tallgrass_Id - 256, true))
              ->setDescriptionId(IDS_TILE_TALL_GRASS))
@@ -2383,7 +2383,7 @@ bool Tile::isSilkTouchable() { return isCubeShaped() && !_isEntityTile; }
 
 std::shared_ptr<ItemInstance> Tile::getSilkTouchItemInstance(int data) {
     int popData = 0;
-    if (id >= 0 && id < Item::items.length &&
+    if (id >= 0 && id < Item::items.size() &&
         Item::items[id]->isStackedByData()) {
         popData = data;
     }

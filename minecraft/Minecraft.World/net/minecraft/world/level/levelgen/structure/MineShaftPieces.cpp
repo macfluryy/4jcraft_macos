@@ -9,11 +9,11 @@
 #include "../../../../util/WeighedTreasure.h"
 #include "MineShaftPieces.h"
 
-WeighedTreasureArray MineShaftPieces::smallTreasureItems;
+std::vector<WeighedTreasure*> MineShaftPieces::smallTreasureItems;
 ;
 
 void MineShaftPieces::staticCtor() {
-    smallTreasureItems = WeighedTreasureArray(13);
+    smallTreasureItems = std::vector<WeighedTreasure*>(13);
     smallTreasureItems[0] =
         new WeighedTreasure(Item::ironIngot_Id, 0, 1, 5, 10);
     smallTreasureItems[1] = new WeighedTreasure(Item::goldIngot_Id, 0, 1, 3, 5);
@@ -463,7 +463,7 @@ void MineShaftPieces::MineShaftCorridor::addChildren(
 
 bool MineShaftPieces::MineShaftCorridor::createChest(
     Level* level, BoundingBox* chunkBB, Random* random, int x, int y, int z,
-    WeighedTreasureArray treasure, int numRolls) {
+    const std::vector<WeighedTreasure*>& treasure, int numRolls) {
     int worldX = getWorldX(x, z);
     int worldY = getWorldY(y);
     int worldZ = getWorldZ(x, z);

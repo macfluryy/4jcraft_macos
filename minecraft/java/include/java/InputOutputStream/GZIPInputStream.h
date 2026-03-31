@@ -15,8 +15,8 @@ private:
 public:
     GZIPInputStream(InputStream* out) : stream(out) {};
     virtual int read() { return stream->read(); };
-    virtual int read(byteArray b) { return stream->read(b); };
-    virtual int read(byteArray b, unsigned int offset, unsigned int length) {
+    virtual int read(std::vector<uint8_t>& b) { return stream->read(b); };
+    virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length) {
         return stream->read(b, offset, length);
     };
     virtual void close() { return stream->close(); };

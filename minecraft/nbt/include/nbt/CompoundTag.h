@@ -93,11 +93,11 @@ public:
         tags[name] = (new StringTag(name, value));
     }
 
-    void putByteArray(const std::wstring& name, byteArray value) {
+    void putByteArray(const std::wstring& name, std::vector<uint8_t>& value) {
         tags[name] = (new ByteArrayTag(name, value));
     }
 
-    void putIntArray(const std::wstring& name, intArray value) {
+    void putIntArray(const std::wstring& name, std::vector<int>& value) {
         tags[name] = (new IntArrayTag(name, value));
     }
 
@@ -154,13 +154,13 @@ public:
         return ((StringTag*)tags[name])->data;
     }
 
-    byteArray getByteArray(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return byteArray();
+    std::vector<uint8_t> getByteArray(const std::wstring& name) {
+        if (tags.find(name) == tags.end()) return std::vector<uint8_t>();
         return ((ByteArrayTag*)tags[name])->data;
     }
 
-    intArray getIntArray(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return intArray();
+    std::vector<int> getIntArray(const std::wstring& name) {
+        if (tags.find(name) == tags.end()) return std::vector<int>();
         return ((IntArrayTag*)tags[name])->data;
     }
 

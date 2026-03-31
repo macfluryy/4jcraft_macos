@@ -501,7 +501,7 @@ protected:
 public:
     int getArchiveFileSize(const std::wstring& filename);
     bool hasArchiveFile(const std::wstring& filename);
-    byteArray getArchiveFile(const std::wstring& filename);
+    std::vector<uint8_t> getArchiveFile(const std::wstring& filename);
 
 private:
     static int BannedLevelDialogReturned(void* pParam, int iPad,

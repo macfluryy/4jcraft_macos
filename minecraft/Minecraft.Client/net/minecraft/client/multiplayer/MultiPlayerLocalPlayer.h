@@ -70,8 +70,8 @@ public:
     virtual void closeContainer();
     void clientSideCloseContainer();
     virtual void hurtTo(float newHealth, ETelemetryChallenges damageSource);
-    virtual void awardStat(Stat* stat, byteArray param);
-    void awardStatFromServer(Stat* stat, byteArray param);
+    virtual void awardStat(Stat* stat, const std::vector<uint8_t>& param);
+    void awardStatFromServer(Stat* stat, std::vector<uint8_t>& param);
     void onUpdateAbilities();
     bool isLocalPlayer();
 

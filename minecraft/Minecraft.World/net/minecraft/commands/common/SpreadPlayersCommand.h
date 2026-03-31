@@ -39,7 +39,7 @@ public class SpreadPlayersCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender source, String[] args) {
-        if (args.length < 6) throw new
+        if (args.size() < 6) throw new
 UsageException("commands.spreadplayers.usage"); int index = 0; double x =
 convertArgToCoordinate(source, Double.NaN, args[index++]); double z =
 convertArgToCoordinate(source, Double.NaN, args[index++]); double minDist =
@@ -49,13 +49,13 @@ convertArgToBoolean(source, args[index++]);
 
         List<LivingEntity> players = Lists.newArrayList();
 
-        while (index < args.length) {
+        while (index < args.size()) {
             String arg = args[index++];
 
             if (PlayerSelector.isPattern(arg)) {
                 ServerPlayer[] result = PlayerSelector.getPlayers(source, arg);
 
-                if (result != null && result.length != 0) {
+                if (result != null && result.size() != 0) {
                     Collections.addAll(players, result);
                 } else {
                     throw new PlayerNotFoundException();
@@ -97,8 +97,8 @@ maxX, maxZ, positions, respectTeams); double avgDistance =
 setPlayerPositions(players, level, positions, respectTeams);
 
         logAdminAction(source, "commands.spreadplayers.success." + (respectTeams
-? "teams" : "players"), positions.length, center.x, center.z); if
-(positions.length > 1)
+? "teams" : "players"), positions.size(), center.x, center.z); if
+(positions.size() > 1)
 source.sendMessage(ChatMessageComponent.forTranslation("commands.spreadplayers.info."
 + (respectTeams ? "teams" : "players"), String.format("%.2f", avgDistance),
                 iterations));
@@ -126,12 +126,12 @@ positions, bool respectTeams) { bool hasCollisions = true; int iteration;
         for (iteration = 0; iteration < MAX_ITERATION_COUNT && hasCollisions;
 iteration++) { hasCollisions = false; minDistance = Float.MAX_VALUE;
 
-            for (int i = 0; i < positions.length; i++) {
+            for (int i = 0; i < positions.size(); i++) {
                 Position position = positions[i];
                 int neighbourCount = 0;
                 Position averageNeighbourPos = new Position();
 
-                for (int j = 0; j < positions.length; j++) {
+                for (int j = 0; j < positions.size(); j++) {
                     if (i == j) continue;
                     Position neighbour = positions[j];
 
@@ -177,7 +177,7 @@ iteration++) { hasCollisions = false; minDistance = Float.MAX_VALUE;
 
         if (iteration >= MAX_ITERATION_COUNT) {
             throw new CommandException("commands.spreadplayers.failure." +
-(respectTeams ? "teams" : "players"), positions.length, center.x, center.z,
+(respectTeams ? "teams" : "players"), positions.size(), center.x, center.z,
 String.format("%.2f", minDistance));
         }
 
@@ -209,7 +209,7 @@ player).getTeam() : null;
 position.getSpawnY(level), Mth.floor(position.z) + 0.5);
 
             double closest = Double.MAX_VALUE;
-            for (int j = 0; j < positions.length; j++) {
+            for (int j = 0; j < positions.size(); j++) {
                 if (position == positions[j]) continue;
 
                 double dist = position.dist(positions[j]);
@@ -226,7 +226,7 @@ position.getSpawnY(level), Mth.floor(position.z) + 0.5);
 minX, double minZ, double maxX, double maxZ) { Position[] result = new
 Position[count];
 
-        for (int i = 0; i < result.length; i++) {
+        for (int i = 0; i < result.size(); i++) {
             Position position = new Position();
 
             position.randomize(random, minX, minZ, maxX, maxZ);

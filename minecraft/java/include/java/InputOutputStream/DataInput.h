@@ -5,12 +5,12 @@
 class DataInput {
 public:
     virtual int read() = 0;
-    virtual int read(byteArray b) = 0;
-    virtual int read(byteArray b, unsigned int offset, unsigned int length) = 0;
+    virtual int read(std::vector<uint8_t>& b) = 0;
+    virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length) = 0;
     virtual bool readBoolean() = 0;
     virtual uint8_t readByte() = 0;
     virtual unsigned char readUnsignedByte() = 0;
-    virtual bool readFully(byteArray a) = 0;
+    virtual bool readFully(std::vector<uint8_t>& a) = 0;
     virtual double readDouble() = 0;
     virtual float readFloat() = 0;
     virtual int readInt() = 0;

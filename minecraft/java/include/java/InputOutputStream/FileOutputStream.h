@@ -14,8 +14,8 @@ public:
     FileOutputStream(const File& file);
     virtual ~FileOutputStream();
     virtual void write(unsigned int b);
-    virtual void write(byteArray b);
-    virtual void write(byteArray b, unsigned int offset, unsigned int length);
+    virtual void write(const std::vector<uint8_t>& b);
+    virtual void write(const std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
     virtual void close();
     virtual void flush();
 

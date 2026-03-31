@@ -58,8 +58,8 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
             NbtIo::write(tag, &dos);
             delete tag;
 
-            byteArray savedData(bos.size());
-            memcpy(savedData.data, bos.buf.data, bos.size());
+            std::vector<uint8_t> savedData(bos.size());
+            memcpy(savedData.data(), bos.buf.data(), bos.size());
 
             m_entityData[index] = savedData;
         }
@@ -68,9 +68,7 @@ McRegionChunkStorage::McRegionChunkStorage(ConsoleSaveFile* saveFile,
 }
 
 McRegionChunkStorage::~McRegionChunkStorage() {
-    for (auto it = m_entityData.begin(); it != m_entityData.end(); ++it) {
-        delete it->second.data;
-    }
+    // vectors manage their own memory; clearing the map is sufficient
 }
 
 LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
@@ -88,7 +86,6 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
 
         auto it = m_entityData.find(index);
         if (it != m_entityData.end()) {
-            delete it->second.data;
             m_entityData.erase(it);
         }
     }
@@ -257,7 +254,6 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
     uint64_t index = ((uint64_t)(uint32_t)(levelChunk->x) << 32) |
                      (((uint64_t)(uint32_t)(levelChunk->z)));
 
-    delete[] m_entityData[index].data;
 
     CompoundTag* newTag = new CompoundTag();
     bool savedEntities =
@@ -268,8 +264,8 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
         DataOutputStream dos(&bos);
         NbtIo::write(newTag, &dos);
 
-        byteArray savedData(bos.size());
-        memcpy(savedData.data, bos.buf.data, bos.size());
+        std::vector<uint8_t> savedData(bos.size());
+        memcpy(savedData.data(), bos.buf.data(), bos.size());
 
         m_entityData[index] = savedData;
     } else {
@@ -317,7 +313,7 @@ void McRegionChunkStorage::flush() {
 
     for (auto it = m_entityData.begin(); it != m_entityData.end(); ++it) {
         dos.writeLong(it->first);
-        dos.write(it->second, 0, it->second.length);
+        dos.write(it->second, 0, it->second.size());
     }
     bos.flush();
     PIXEndNamedEvent();

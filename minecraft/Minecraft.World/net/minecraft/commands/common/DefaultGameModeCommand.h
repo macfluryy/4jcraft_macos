@@ -8,7 +8,7 @@ class DefaultGameModeCommand : public GameModeCommand {
 public:
     virtual EGameCommand getId();
     virtual void execute(std::shared_ptr<CommandSender> source,
-                         byteArray commandData);
+                         std::vector<uint8_t>& commandData);
 
 protected:
     void doSetGameType(GameType* newGameType);

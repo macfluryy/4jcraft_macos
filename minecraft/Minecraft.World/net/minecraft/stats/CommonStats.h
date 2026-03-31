@@ -52,28 +52,28 @@ protected:
 
     virtual Stat* get_achievement(eAward achievementId);
 
-    virtual byteArray getParam_walkOneM(int distance);
-    virtual byteArray getParam_swimOneM(int distance);
-    virtual byteArray getParam_fallOneM(int distance);
-    virtual byteArray getParam_climbOneM(int distance);
-    virtual byteArray getParam_minecartOneM(int distance);
-    virtual byteArray getParam_boatOneM(int distance);
-    virtual byteArray getParam_pigOneM(int distance);
+    virtual std::vector<uint8_t> getParam_walkOneM(int distance);
+    virtual std::vector<uint8_t> getParam_swimOneM(int distance);
+    virtual std::vector<uint8_t> getParam_fallOneM(int distance);
+    virtual std::vector<uint8_t> getParam_climbOneM(int distance);
+    virtual std::vector<uint8_t> getParam_minecartOneM(int distance);
+    virtual std::vector<uint8_t> getParam_boatOneM(int distance);
+    virtual std::vector<uint8_t> getParam_pigOneM(int distance);
 
-    virtual byteArray getParam_blocksMined(int id, int data, int count);
-    virtual byteArray getParam_itemsCollected(int id, int aux, int count);
-    virtual byteArray getParam_itemsCrafted(int id, int aux, int count);
-    virtual byteArray getParam_itemsSmelted(int id, int aux, int count);
-    virtual byteArray getParam_itemsUsed(int id, int aux, int count);
-    virtual byteArray getParam_itemsBought(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_blocksMined(int id, int data, int count);
+    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsSmelted(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsUsed(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux, int count);
 
-    virtual byteArray getParam_time(int timediff);
+    virtual std::vector<uint8_t> getParam_time(int timediff);
 
-    virtual byteArray getParam_noArgs();
+    virtual std::vector<uint8_t> getParam_noArgs();
 
 protected:
-    static byteArray makeParam(int count = 1);
+    static std::vector<uint8_t> makeParam(int count = 1);
 
 public:
-    static int readParam(byteArray paramBlob);
+    static int readParam(const std::vector<uint8_t>& paramBlob);
 };

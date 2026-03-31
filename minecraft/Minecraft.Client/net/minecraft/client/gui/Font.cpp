@@ -55,7 +55,7 @@ Font::Font(Options* options, const std::wstring& name, Textures* textures,
 
     int w = img->getWidth();
     int h = img->getHeight();
-    intArray rawPixels(w * h);
+    std::vector<int> rawPixels(w * h);
     img->getRGB(0, 0, w, h, rawPixels, 0, w);
 
     for (int i = 0; i < charC; i++) {

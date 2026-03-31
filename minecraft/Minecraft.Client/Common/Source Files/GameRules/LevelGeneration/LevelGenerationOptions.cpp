@@ -360,7 +360,7 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
     }
 
     ConsoleSchematicFile* schematic = nullptr;
-    byteArray data(pbData, dataLength);
+    std::vector<uint8_t> data(pbData, pbData + dataLength);
     ByteArrayInputStream bais(data);
     DataInputStream dis(&bais);
     schematic = new ConsoleSchematicFile();

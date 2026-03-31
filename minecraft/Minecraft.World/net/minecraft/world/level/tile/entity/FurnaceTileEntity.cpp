@@ -14,17 +14,19 @@ int furnaceSlotsForDown[] = {FurnaceTileEntity::SLOT_RESULT,
                              FurnaceTileEntity::SLOT_FUEL};
 int furnaceSlotsForSides[] = {FurnaceTileEntity::SLOT_FUEL};
 
-const intArray FurnaceTileEntity::SLOTS_FOR_UP = intArray(furnaceSlotsForUp, 1);
-const intArray FurnaceTileEntity::SLOTS_FOR_DOWN =
-    intArray(furnaceSlotsForDown, 2);
-const intArray FurnaceTileEntity::SLOTS_FOR_SIDES =
-    intArray(furnaceSlotsForSides, 1);
+const std::vector<int> FurnaceTileEntity::SLOTS_FOR_UP = std::vector<int>(furnaceSlotsForUp, furnaceSlotsForUp + 1);
+const std::vector<int> FurnaceTileEntity::SLOTS_FOR_DOWN =
+    std::vector<int>(furnaceSlotsForDown, furnaceSlotsForDown + 2);
+const std::vector<int> FurnaceTileEntity::SLOTS_FOR_SIDES =
+    std::vector<int>(furnaceSlotsForSides, furnaceSlotsForSides + 1);
 
 const int FurnaceTileEntity::BURN_INTERVAL = 10 * 20;
 
 // 4J Stu - Need a ctor to initialise member variables
+FurnaceTileEntity::~FurnaceTileEntity() {}
+
 FurnaceTileEntity::FurnaceTileEntity() : TileEntity() {
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(3);
+    items = std::vector<std::shared_ptr<ItemInstance>>(3);
 
     litTime = 0;
     litDuration = 0;
@@ -33,9 +35,8 @@ FurnaceTileEntity::FurnaceTileEntity() : TileEntity() {
     name = L"";
 }
 
-FurnaceTileEntity::~FurnaceTileEntity() { delete[] items.data; }
 
-unsigned int FurnaceTileEntity::getContainerSize() { return items.length; }
+unsigned int FurnaceTileEntity::getContainerSize() { return items.size(); }
 
 std::shared_ptr<ItemInstance> FurnaceTileEntity::getItem(unsigned int slot) {
     return items[slot];
@@ -99,12 +100,11 @@ void FurnaceTileEntity::load(CompoundTag* base) {
     TileEntity::load(base);
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
-    delete[] items.data;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
+    items = std::vector<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot");
-        if (slot >= 0 && slot < items.length)
+        if (slot >= 0 && slot < items.size())
             items[slot] = ItemInstance::fromTag(tag);
     }
 
@@ -121,7 +121,7 @@ void FurnaceTileEntity::save(CompoundTag* base) {
     base->putShort(L"CookTime", (short)(tickCount));
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
@@ -305,7 +305,7 @@ bool FurnaceTileEntity::canPlaceItem(int slot,
     return true;
 }
 
-intArray FurnaceTileEntity::getSlotsForFace(int face) {
+std::vector<int> FurnaceTileEntity::getSlotsForFace(int face) {
     if (face == Facing::DOWN) {
         return SLOTS_FOR_DOWN;
     } else if (face == Facing::UP) {
@@ -339,7 +339,7 @@ std::shared_ptr<TileEntity> FurnaceTileEntity::clone() {
     result->tickCount = tickCount;
     result->litDuration = litDuration;
 
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             result->items[i] = ItemInstance::clone(items[i]);
         }

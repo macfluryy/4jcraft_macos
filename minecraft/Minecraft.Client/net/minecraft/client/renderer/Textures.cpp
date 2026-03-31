@@ -330,21 +330,20 @@ void Textures::loadIndexedTextures() {
     }
 }
 
-intArray Textures::loadTexturePixels(TEXTURE_NAME texId,
+std::vector<int> Textures::loadTexturePixels(TEXTURE_NAME texId,
                                      const std::wstring& resourceName) {
     TexturePack* skin = skins->getSelected();
 
     {
-        intArray id = pixelsMap[resourceName];
+        std::vector<int> id = pixelsMap[resourceName];
         // 4J - if resourceName isn't in the map, it should add an element and
-        // as that will use the default constructor, its internal data pointer
-        // will be nullptr
-        if (id.data != nullptr) return id;
+        // as that will use the default constructor, its vector will be empty
+        if (!id.empty()) return id;
     }
 
     // 4J - removed try/catch
     //    try {
-    intArray res;
+    std::vector<int> res;
     // wstring in = skin->getResource(resourceName);
     if (false)  // 4J - removed - was ( in == nullptr)
     {
@@ -368,14 +367,14 @@ intArray Textures::loadTexturePixels(TEXTURE_NAME texId,
             */
 }
 
-intArray Textures::loadTexturePixels(BufferedImage* img) {
+std::vector<int> Textures::loadTexturePixels(BufferedImage* img) {
     int w = img->getWidth();
     int h = img->getHeight();
-    intArray pixels(w * h);
+    std::vector<int> pixels(w * h);
     return loadTexturePixels(img, pixels);
 }
 
-intArray Textures::loadTexturePixels(BufferedImage* img, intArray pixels) {
+std::vector<int> Textures::loadTexturePixels(BufferedImage* img, std::vector<int>& pixels) {
     int w = img->getWidth();
     int h = img->getHeight();
     img->getRGB(0, 0, w, h, pixels, 0, w);
@@ -442,7 +441,7 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
     } else {
         // Cache by layer signature so the merge cost is only paid once per
         // horse texture combination.
-        intArray mergedPixels;
+        std::vector<int> mergedPixels;
         int mergedWidth = 0;
         int mergedHeight = 0;
         bool hasMergedPixels = false;
@@ -461,14 +460,14 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
 
             int width = image->getWidth();
             int height = image->getHeight();
-            intArray layerPixels = loadTexturePixels(image);
+            std::vector<int> layerPixels = loadTexturePixels(image);
             delete image;
 
             if (!hasMergedPixels) {
                 mergedWidth = width;
                 mergedHeight = height;
-                mergedPixels = intArray(width * height);
-                memcpy(mergedPixels.data, layerPixels.data,
+                mergedPixels = std::vector<int>(width * height);
+                memcpy(mergedPixels.data(), layerPixels.data(),
                        width * height * sizeof(int));
                 hasMergedPixels = true;
             } else if (width == mergedWidth && height == mergedHeight) {
@@ -506,15 +505,13 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
                 }
             }
 
-            delete[] layerPixels.data;
         }
 
         if (hasMergedPixels) {
             BufferedImage* mergedImage = new BufferedImage(
                 mergedWidth, mergedHeight, BufferedImage::TYPE_INT_ARGB);
-            memcpy(mergedImage->getData(), mergedPixels.data,
+            memcpy(mergedImage->getData(), mergedPixels.data(),
                    mergedWidth * mergedHeight * sizeof(int));
-            delete[] mergedPixels.data;
             id = getTexture(mergedImage, C4JRender::TEXTURE_FORMAT_RxGyBzAw,
                             false);
         } else {
@@ -699,15 +696,15 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     int w = img->getWidth();
     int h = img->getHeight();
 
-    intArray rawPixels(w * h);
+    std::vector<int> rawPixels(w * h);
     img->getRGB(0, 0, w, h, rawPixels, 0, w);
 
     if (options != nullptr && options->anaglyph3d) {
         rawPixels = anaglyph(rawPixels);
     }
 
-    byteArray newPixels(w * h * 4);
-    for (unsigned int i = 0; i < rawPixels.length; i++) {
+    std::vector<uint8_t> newPixels(w * h * 4);
+    for (unsigned int i = 0; i < rawPixels.size(); i++) {
         int a = (rawPixels[i] >> 24) & 0xff;
         int r = (rawPixels[i] >> 16) & 0xff;
         int g = (rawPixels[i] >> 8) & 0xff;
@@ -722,10 +719,8 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     ByteBuffer* pixels = MemoryTracker::createByteBuffer(w * h * 4);
     pixels->clear();
     pixels->put(newPixels);
-    pixels->position(0)->limit(newPixels.length);
+    pixels->position(0)->limit(newPixels.size());
 
-    delete[] rawPixels.data;
-    delete[] newPixels.data;
 
     if (MIPMAP) {
         // 4J-PB - In the new XDK, the CreateTexture will fail if the number of
@@ -810,9 +805,9 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     MemSect(0);
 }
 
-intArray Textures::anaglyph(intArray rawPixels) {
-    intArray result(rawPixels.length);
-    for (unsigned int i = 0; i < rawPixels.length; i++) {
+std::vector<int> Textures::anaglyph(std::vector<int>& rawPixels) {
+    std::vector<int> result(rawPixels.size());
+    for (unsigned int i = 0; i < rawPixels.size(); i++) {
         int a = (rawPixels[i] >> 24) & 0xff;
         int r = (rawPixels[i] >> 16) & 0xff;
         int g = (rawPixels[i] >> 8) & 0xff;
@@ -825,12 +820,11 @@ intArray Textures::anaglyph(intArray rawPixels) {
         result[i] = a << 24 | rr << 16 | gg << 8 | bb;
     }
 
-    delete[] rawPixels.data;
 
     return result;
 }
 
-void Textures::replaceTexture(intArray rawPixels, int w, int h, int id) {
+void Textures::replaceTexture(std::vector<int>& rawPixels, int w, int h, int id) {
     bind(id);
 
     // Removed in Java
@@ -846,8 +840,8 @@ void Textures::replaceTexture(intArray rawPixels, int w, int h, int id) {
         rawPixels = anaglyph(rawPixels);
     }
 
-    byteArray newPixels(w * h * 4);
-    for (unsigned int i = 0; i < rawPixels.length; i++) {
+    std::vector<uint8_t> newPixels(w * h * 4);
+    for (unsigned int i = 0; i < rawPixels.size(); i++) {
         int a = (rawPixels[i] >> 24) & 0xff;
         int r = (rawPixels[i] >> 16) & 0xff;
         int g = (rawPixels[i] >> 8) & 0xff;
@@ -871,8 +865,7 @@ void Textures::replaceTexture(intArray rawPixels, int w, int h, int id) {
     ByteBuffer* pixels = MemoryTracker::createByteBuffer(
         w * h * 4);  // 4J - now creating dynamically
     pixels->put(newPixels);
-    pixels->position(0)->limit(newPixels.length);
-    delete[] newPixels.data;
+    pixels->position(0)->limit(newPixels.size());
 
     // New
     // glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, w, h, GL12.GL_BGRA,
@@ -887,7 +880,7 @@ void Textures::replaceTexture(intArray rawPixels, int w, int h, int id) {
 // 4J - added. This is a more minimal version of replaceTexture that assumes the
 // texture bytes are already in order, and so doesn't do any of the extra
 // copying round that the original java version does
-void Textures::replaceTextureDirect(intArray rawPixels, int w, int h, int id) {
+void Textures::replaceTextureDirect(const std::vector<int>& rawPixels, int w, int h, int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
     // Remove in Java
@@ -899,13 +892,13 @@ void Textures::replaceTextureDirect(intArray rawPixels, int w, int h, int id) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    RenderManager.TextureDataUpdate(0, 0, w, h, rawPixels.data, 0);
+    RenderManager.TextureDataUpdate(0, 0, w, h, const_cast<int*>(rawPixels.data()), 0);
 }
 
 // 4J - added. This is a more minimal version of replaceTexture that assumes the
 // texture bytes are already in order, and so doesn't do any of the extra
 // copying round that the original java version does
-void Textures::replaceTextureDirect(shortArray rawPixels, int w, int h,
+void Textures::replaceTextureDirect(const std::vector<short>& rawPixels, int w, int h,
                                     int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
@@ -918,7 +911,7 @@ void Textures::replaceTextureDirect(shortArray rawPixels, int w, int h,
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    RenderManager.TextureDataUpdate(0, 0, w, h, rawPixels.data, 0);
+    RenderManager.TextureDataUpdate(0, 0, w, h, const_cast<short*>(rawPixels.data()), 0);
 }
 
 void Textures::releaseTexture(int id) {

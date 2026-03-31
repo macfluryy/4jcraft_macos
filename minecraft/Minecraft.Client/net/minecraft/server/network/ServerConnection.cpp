@@ -156,7 +156,7 @@ void ServerConnection::handleServerSettingsChanged(
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     if (packet->action == ServerSettingsChangedPacket::HOST_DIFFICULTY) {
-        for (unsigned int i = 0; i < pMinecraft->levels.length; ++i) {
+        for (unsigned int i = 0; i < pMinecraft->levels.size(); ++i) {
             if (pMinecraft->levels[i] != nullptr) {
                 app.DebugPrintf(
                     "ClientConnection::handleServerSettingsChanged - "

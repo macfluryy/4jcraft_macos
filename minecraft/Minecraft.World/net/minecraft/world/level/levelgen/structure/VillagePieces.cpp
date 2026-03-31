@@ -15,7 +15,7 @@
 #include "java/JavaMath.h"
 #include "../../biome/BiomeSource.h"
 
-WeighedTreasureArray VillagePieces::Smithy::treasureItems;
+std::vector<WeighedTreasure*> VillagePieces::Smithy::treasureItems;
 
 void VillagePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_BookHouse, BookHouse::Create,
@@ -1705,7 +1705,7 @@ bool VillagePieces::TwoRoomHouse::postProcess(Level* level, Random* random,
 }
 
 void VillagePieces::Smithy::staticCtor() {
-    treasureItems = WeighedTreasureArray(17);
+    treasureItems = std::vector<WeighedTreasure*>(17);
     treasureItems[0] = new WeighedTreasure(Item::diamond_Id, 0, 1, 3, 3);
     treasureItems[1] = new WeighedTreasure(Item::ironIngot_Id, 0, 1, 5, 10);
     treasureItems[2] = new WeighedTreasure(Item::goldIngot_Id, 0, 1, 3, 5);

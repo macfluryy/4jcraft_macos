@@ -267,7 +267,7 @@ void IUIScene_BeaconMenu::handleTick() {
         m_initPowerButtons = false;
         for (int tier = 0; tier <= 2; tier++) {
             int count = BeaconTileEntity::
-                BEACON_EFFECTS_EFFECTS;  // BEACON_EFFECTS[tier].length;
+                BEACON_EFFECTS_EFFECTS;  // BEACON_EFFECTS[tier].size();
             int totalWidth = count * 22 + (count - 1) * 2;
 
             for (int c = 0; c < count; c++) {
@@ -295,7 +295,7 @@ void IUIScene_BeaconMenu::handleTick() {
             int tier = 3;
 
             int count = BeaconTileEntity::BEACON_EFFECTS_EFFECTS +
-                        1;  // BEACON_EFFECTS[tier].length + 1;
+                        1;  // BEACON_EFFECTS[tier].size() + 1;
             int totalWidth = count * 22 + (count - 1) * 2;
 
             for (int c = 0; c < count - 1; c++) {

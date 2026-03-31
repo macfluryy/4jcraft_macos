@@ -10,11 +10,11 @@ DownfallMixerLayer::DownfallMixerLayer(std::shared_ptr<Layer> downfall,
     this->layer = layer;
 }
 
-intArray DownfallMixerLayer::getArea(int xo, int yo, int w, int h) {
-    intArray b = parent->getArea(xo, yo, w, h);
-    intArray d = downfall->getArea(xo, yo, w, h);
+std::vector<int> DownfallMixerLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> b = parent->getArea(xo, yo, w, h);
+    std::vector<int> d = downfall->getArea(xo, yo, w, h);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int i = 0; i < w * h; i++) {
         result[i] =
             d[i] + (Biome::biomes[b[i]]->getDownfallInt() - d[i]) / (layer + 1);

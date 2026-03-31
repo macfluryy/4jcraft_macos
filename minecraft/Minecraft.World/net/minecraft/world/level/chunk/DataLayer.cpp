@@ -3,15 +3,14 @@
 
 DataLayer::DataLayer(int length, int depthBits)
     : depthBits(depthBits), depthBitsPlusFour(depthBits + 4) {
-    data = byteArray(length >> 1);
+    data = std::vector<uint8_t>(length >> 1);
 }
 
-DataLayer::DataLayer(byteArray data, int depthBits)
+DataLayer::DataLayer(std::vector<uint8_t>& data, int depthBits)
     : depthBits(depthBits), depthBitsPlusFour(depthBits + 4) {
     this->data = data;
 }
 
-DataLayer::~DataLayer() { delete[] data.data; }
 
 int DataLayer::get(int x, int y, int z) {
     int pos = (x << depthBitsPlusFour | z << depthBits | y);
@@ -38,11 +37,11 @@ void DataLayer::set(int x, int y, int z, int val) {
     }
 }
 
-bool DataLayer::isValid() { return data.data != nullptr; }
+bool DataLayer::isValid() { return !data.empty(); }
 
 void DataLayer::setAll(int br) {
     uint8_t val = (uint8_t)(br & (br << 4));
-    for (unsigned int i = 0; i < data.length; i++) {
+    for (unsigned int i = 0; i < data.size(); i++) {
         data[i] = val;
     }
 }

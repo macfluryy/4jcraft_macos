@@ -18,12 +18,12 @@ const std::wstring CustomPayloadPacket::SET_ITEM_NAME_PACKET = L"MC|ItemName";
 CustomPayloadPacket::CustomPayloadPacket() {}
 
 CustomPayloadPacket::CustomPayloadPacket(const std::wstring& identifier,
-                                         byteArray data) {
+                                         std::vector<uint8_t> data) {
     this->identifier = identifier;
     this->data = data;
 
-    if (data.data != nullptr) {
-        length = data.length;
+    if (!data.empty()) {
+        length = data.size();
 
         if (length > std::numeric_limits<short>::max()) {
             app.DebugPrintf("Payload may not be larger than 32K\n");
@@ -41,10 +41,7 @@ void CustomPayloadPacket::read(DataInputStream* dis) {
     length = dis->readShort();
 
     if (length > 0 && length < std::numeric_limits<short>::max()) {
-        if (data.data != nullptr) {
-            delete[] data.data;
-        }
-        data = byteArray(length);
+        data = std::vector<uint8_t>(length);
         dis->readFully(data);
     }
 }
@@ -52,7 +49,7 @@ void CustomPayloadPacket::read(DataInputStream* dis) {
 void CustomPayloadPacket::write(DataOutputStream* dos) {
     writeUtf(identifier, dos);
     dos->writeShort((short)length);
-    if (data.data != nullptr) {
+    if (!data.empty()) {
         dos->write(data);
     }
 }

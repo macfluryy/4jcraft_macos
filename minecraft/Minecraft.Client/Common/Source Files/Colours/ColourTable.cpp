@@ -343,7 +343,7 @@ ColourTable::ColourTable(ColourTable* defaultColours, std::uint8_t* pbData,
 }
 void ColourTable::loadColoursFromData(std::uint8_t* pbData,
                                       std::uint32_t dataLength) {
-    byteArray src(pbData, dataLength);
+    std::vector<uint8_t> src(pbData, pbData + dataLength);
 
     ByteArrayInputStream bais(src);
     DataInputStream dis(&bais);

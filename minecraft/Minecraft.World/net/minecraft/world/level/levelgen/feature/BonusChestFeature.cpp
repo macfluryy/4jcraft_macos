@@ -6,7 +6,7 @@
 #include "../../../../util/WeighedTreasure.h"
 #include "../structure/StructurePiece.h"
 
-BonusChestFeature::BonusChestFeature(WeighedTreasureArray treasureList,
+BonusChestFeature::BonusChestFeature(std::vector<WeighedTreasure*>& treasureList,
                                      int numRolls)
     : treasureList(treasureList), numRolls(numRolls) {}
 

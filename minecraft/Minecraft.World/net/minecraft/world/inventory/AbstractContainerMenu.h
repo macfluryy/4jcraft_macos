@@ -90,7 +90,7 @@ public:
                      // but wasn't using it, so removed to simplify things
     bool isPauseScreen();
     void setItem(unsigned int slot, std::shared_ptr<ItemInstance> item);
-    void setAll(arrayWithLength<std::shared_ptr<ItemInstance>>* items);
+    void setAll(std::vector<std::shared_ptr<ItemInstance>>* items);
     virtual void setData(int id, int value);
     short backup(std::shared_ptr<Inventory> inventory);
 

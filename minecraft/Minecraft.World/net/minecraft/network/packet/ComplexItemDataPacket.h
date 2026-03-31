@@ -8,11 +8,11 @@ class ComplexItemDataPacket
 public:
     short itemType;
     short itemId;
-    charArray data;
+    std::vector<char> data;
 
     ComplexItemDataPacket();
     ~ComplexItemDataPacket();
-    ComplexItemDataPacket(short itemType, short itemId, charArray data);
+    ComplexItemDataPacket(short itemType, short itemId, std::vector<char>& data);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

@@ -42,8 +42,8 @@ public:
     int mergeIds(int itemId);
 
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray param);
-    static byteArray createParamBlob(eAcquisitionMethod methodId, int itemId,
+                                 std::vector<uint8_t>& param);
+    static std::vector<uint8_t> createParamBlob(eAcquisitionMethod methodId, int itemId,
                                      int itemAux, int itemCount);
 };
 
@@ -61,8 +61,8 @@ public:
         int mobType, weaponId, distance, damage;
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray param);
-    static byteArray createParamBlob(std::shared_ptr<Player> plr,
+                                 std::vector<uint8_t>& param);
+    static std::vector<uint8_t> createParamBlob(std::shared_ptr<Player> plr,
                                      std::shared_ptr<Mob> mob,
                                      DamageSource* dmgSrc);
 };
@@ -87,8 +87,8 @@ public:
         int interactionType, mobId;
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray param);
-    static byteArray createParamBlob(eInteract interactionId, int entityId);
+                                 std::vector<uint8_t>& param);
+    static std::vector<uint8_t> createParamBlob(eInteract interactionId, int entityId);
 };
 
 class DsTravel : public Stat {
@@ -118,8 +118,8 @@ public:
         int distance;
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray paramBlob);
-    static byteArray createParamBlob(eMethod method, int distance);
+                                 std::vector<uint8_t>& paramBlob);
+    static std::vector<uint8_t> createParamBlob(eMethod method, int distance);
 
     void flush(std::shared_ptr<LocalPlayer> plr);
 
@@ -136,8 +136,8 @@ public:
         int itemId, aux, count, health, hunger;
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray paramBlob);
-    static byteArray createParamBlob(int itemId, int aux, int count, int health,
+                                 std::vector<uint8_t>& paramBlob);
+    static std::vector<uint8_t> createParamBlob(int itemId, int aux, int count, int health,
                                      int hunger);
 };
 
@@ -146,18 +146,18 @@ public:
     DsAchievement(int id, const std::wstring& name);
 
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray paramBlob);
+                                 std::vector<uint8_t>& paramBlob);
 
     typedef struct {
         eAward award;
     } SmallParam;
-    static byteArray createSmallParamBlob(eAward id);
+    static std::vector<uint8_t> createSmallParamBlob(eAward id);
 
     typedef struct {
         eAward award;
         int count;
     } LargeParam;
-    static byteArray createLargeParamBlob(eAward id, int count);
+    static std::vector<uint8_t> createLargeParamBlob(eAward id, int count);
 };
 
 class DsChangedDimension : public Stat {
@@ -167,8 +167,8 @@ public:
         int fromDimId, toDimId;
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray paramBlob);
-    static byteArray createParamBlob(int fromDimId, int toDimId);
+                                 std::vector<uint8_t>& paramBlob);
+    static std::vector<uint8_t> createParamBlob(int fromDimId, int toDimId);
 };
 
 class DsEnteredBiome : public Stat {
@@ -178,8 +178,8 @@ public:
         int biomeId;
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
-                                 byteArray paramBlob);
-    static byteArray createParamBlob(int biomeId);
+                                 std::vector<uint8_t>& paramBlob);
+    static std::vector<uint8_t> createParamBlob(int biomeId);
 };
 
 class DurangoStats : public GenericStats {
@@ -266,46 +266,46 @@ protected:
 
     // Parameters
 
-    virtual byteArray getParam_walkOneM(int distance);
-    virtual byteArray getParam_swimOneM(int distance);
-    virtual byteArray getParam_fallOneM(int distance);
-    virtual byteArray getParam_climbOneM(int distance);
-    virtual byteArray getParam_minecartOneM(int distance);
-    virtual byteArray getParam_boatOneM(int distance);
-    virtual byteArray getParam_pigOneM(int distance);
+    virtual std::vector<uint8_t> getParam_walkOneM(int distance);
+    virtual std::vector<uint8_t> getParam_swimOneM(int distance);
+    virtual std::vector<uint8_t> getParam_fallOneM(int distance);
+    virtual std::vector<uint8_t> getParam_climbOneM(int distance);
+    virtual std::vector<uint8_t> getParam_minecartOneM(int distance);
+    virtual std::vector<uint8_t> getParam_boatOneM(int distance);
+    virtual std::vector<uint8_t> getParam_pigOneM(int distance);
 
-    virtual byteArray getParam_cowsMilked();
+    virtual std::vector<uint8_t> getParam_cowsMilked();
 
-    virtual byteArray getParam_blocksPlaced(int blockId, int data, int count);
-    virtual byteArray getParam_blocksMined(int blockId, int data, int count);
-    virtual byteArray getParam_itemsCollected(int id, int aux, int count);
-    virtual byteArray getParam_itemsCrafted(int id, int aux, int count);
-    virtual byteArray getParam_itemsUsed(std::shared_ptr<Player> plr,
+    virtual std::vector<uint8_t> getParam_blocksPlaced(int blockId, int data, int count);
+    virtual std::vector<uint8_t> getParam_blocksMined(int blockId, int data, int count);
+    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsUsed(std::shared_ptr<Player> plr,
                                          std::shared_ptr<ItemInstance> itm);
-    virtual byteArray getParam_itemsBought(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux, int count);
 
-    virtual byteArray getParam_mobKill(std::shared_ptr<Player> plr,
+    virtual std::vector<uint8_t> getParam_mobKill(std::shared_ptr<Player> plr,
                                        std::shared_ptr<Mob> mob,
                                        DamageSource* dmgSrc);
 
-    virtual byteArray getParam_breedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_tamedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_curedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_craftedEntity(eINSTANCEOF entityId);
-    virtual byteArray getParam_shearedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_breedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_tamedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_curedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_craftedEntity(eINSTANCEOF entityId);
+    virtual std::vector<uint8_t> getParam_shearedEntity(eINSTANCEOF entityId);
 
-    virtual byteArray getParam_time(int timediff);
+    virtual std::vector<uint8_t> getParam_time(int timediff);
 
-    virtual byteArray getParam_changedDimension(int from, int to);
-    virtual byteArray getParam_enteredBiome(int biomeId);
+    virtual std::vector<uint8_t> getParam_changedDimension(int from, int to);
+    virtual std::vector<uint8_t> getParam_enteredBiome(int biomeId);
 
-    virtual byteArray getParam_achievement(eAward id);
+    virtual std::vector<uint8_t> getParam_achievement(eAward id);
 
-    virtual byteArray getParam_onARail(int dist);
-    virtual byteArray getParam_chestfulOfCobblestone(int count);
-    // virtual byteArray getParam_openInventory(
-    virtual byteArray getParam_overkill(int dmg);
-    virtual byteArray getParam_musicToMyEars(int recordId);
+    virtual std::vector<uint8_t> getParam_onARail(int dist);
+    virtual std::vector<uint8_t> getParam_chestfulOfCobblestone(int count);
+    // virtual std::vector<uint8_t> getParam_openInventory(
+    virtual std::vector<uint8_t> getParam_overkill(int dmg);
+    virtual std::vector<uint8_t> getParam_musicToMyEars(int recordId);
 
     // Helpers
 

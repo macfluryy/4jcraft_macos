@@ -10,12 +10,6 @@
 #include "Region.h"
 
 Region::~Region() {
-    for (unsigned int i = 0; i < chunks->length; ++i) {
-        LevelChunkArray* lca = (*chunks)[i];
-        delete[] lca->data;
-        delete lca;
-    }
-    delete[] chunks->data;
     delete chunks;
 
     // AP - added a caching system for Chunk::rebuild to take advantage of
@@ -33,22 +27,20 @@ Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2,
     int xc2 = (x2 + r) >> 4;
     int zc2 = (z2 + r) >> 4;
 
-    chunks = new LevelChunk2DArray(xc2 - xc1 + 1, zc2 - zc1 + 1);
+    chunks = new std::vector<std::vector<LevelChunk*>>(xc2 - xc1 + 1, std::vector<LevelChunk*>(zc2 - zc1 + 1, nullptr));
 
     allEmpty = true;
     for (int xc = xc1; xc <= xc2; xc++) {
         for (int zc = zc1; zc <= zc2; zc++) {
             LevelChunk* chunk = level->getChunk(xc, zc);
             if (chunk != nullptr) {
-                LevelChunkArray* lca = (*chunks)[xc - xc1];
-                lca->data[zc - zc1] = chunk;
+                (*chunks)[xc - xc1][zc - zc1] = chunk;
             }
         }
     }
     for (int xc = (x1 >> 4); xc <= (x2 >> 4); xc++) {
         for (int zc = (z1 >> 4); zc <= (z2 >> 4); zc++) {
-            LevelChunkArray* lca = (*chunks)[xc - xc1];
-            LevelChunk* chunk = lca->data[zc - zc1];
+            LevelChunk* chunk = (*chunks)[xc - xc1][zc - zc1];
             if (chunk != nullptr) {
                 if (!chunk->isYSpaceEmpty(y1, y2)) {
                     allEmpty = false;
@@ -75,12 +67,12 @@ int Region::getTile(int x, int y, int z) {
     xc -= xc1;
     zc -= zc1;
 
-    if (xc < 0 || xc >= (int)chunks->length || zc < 0 ||
-        zc >= (int)(*chunks)[xc]->length) {
+    if (xc < 0 || xc >= (int)chunks->size() || zc < 0 ||
+        zc >= (int)(*chunks)[xc].size()) {
         return 0;
     }
 
-    LevelChunk* lc = (*chunks)[xc]->data[zc];
+    LevelChunk* lc = (*chunks)[xc][zc];
     if (lc == nullptr) return 0;
 
     return lc->getTile(x & 15, y, z & 15);
@@ -104,12 +96,12 @@ LevelChunk* Region::getLevelChunk(int x, int y, int z) {
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
-    if (xc < 0 || xc >= (int)chunks->length || zc < 0 ||
-        zc >= (int)(*chunks)[xc]->length) {
+    if (xc < 0 || xc >= (int)chunks->size() || zc < 0 ||
+        zc >= (int)(*chunks)[xc].size()) {
         return nullptr;
     }
 
-    LevelChunk* lc = (*chunks)[xc]->data[zc];
+    LevelChunk* lc = (*chunks)[xc][zc];
     return lc;
 }
 
@@ -117,7 +109,7 @@ std::shared_ptr<TileEntity> Region::getTileEntity(int x, int y, int z) {
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
-    return (*chunks)[xc]->data[zc]->getTileEntity(x & 15, y, z & 15);
+    return (*chunks)[xc][zc]->getTileEntity(x & 15, y, z & 15);
 }
 
 int Region::getLightColor(int x, int y, int z, int emitt, int tileId /*=-1*/) {
@@ -179,7 +171,7 @@ int Region::getRawBrightness(int x, int y, int z, bool propagate) {
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
-    return (*chunks)[xc]->data[zc]->getRawBrightness(x & 15, y, z & 15,
+    return (*chunks)[xc][zc]->getRawBrightness(x & 15, y, z & 15,
                                                      level->skyDarken);
 }
 
@@ -189,7 +181,7 @@ int Region::getData(int x, int y, int z) {
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
-    return (*chunks)[xc]->data[zc]->getData(x & 15, y, z & 15);
+    return (*chunks)[xc][zc]->getData(x & 15, y, z & 15);
 }
 
 Material* Region::getMaterial(int x, int y, int z) {
@@ -290,7 +282,7 @@ int Region::getBrightnessPropagate(LightLayer::variety layer, int x, int y,
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
-    return (*chunks)[xc]->data[zc]->getBrightness(layer, x & 15, y, z & 15);
+    return (*chunks)[xc][zc]->getBrightness(layer, x & 15, y, z & 15);
 }
 
 // 4J - brought forward from 1.8.2
@@ -309,7 +301,7 @@ int Region::getBrightness(LightLayer::variety layer, int x, int y, int z) {
     int xc = (x >> 4) - xc1;
     int zc = (z >> 4) - zc1;
 
-    return (*chunks)[xc]->data[zc]->getBrightness(layer, x & 15, y, z & 15);
+    return (*chunks)[xc][zc]->getBrightness(layer, x & 15, y, z & 15);
 }
 
 int Region::getMaxBuildHeight() { return Level::maxBuildHeight; }

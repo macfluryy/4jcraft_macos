@@ -2,19 +2,19 @@
 #include "../level/tile/net.minecraft.world.level.tile.h"
 #include "HatchetItem.h"
 
-TileArray* HatchetItem::diggables = nullptr;
+std::vector<Tile*>* HatchetItem::diggables = nullptr;
 
 void HatchetItem::staticCtor() {
-    HatchetItem::diggables = new TileArray(HATCHET_DIGGABLES);
-    diggables->data[0] = Tile::wood;
-    diggables->data[1] = Tile::bookshelf;
-    diggables->data[2] = Tile::treeTrunk;
-    diggables->data[3] = Tile::chest;
+    HatchetItem::diggables = new std::vector<Tile*>(HATCHET_DIGGABLES);
+    (*diggables)[0] = Tile::wood;
+    (*diggables)[1] = Tile::bookshelf;
+    (*diggables)[2] = Tile::treeTrunk;
+    (*diggables)[3] = Tile::chest;
     // 4J - brought forward from 1.2.3
-    diggables->data[4] = Tile::stoneSlab;
-    diggables->data[5] = Tile::stoneSlabHalf;
-    diggables->data[6] = Tile::pumpkin;
-    diggables->data[7] = Tile::litPumpkin;
+    (*diggables)[4] = Tile::stoneSlab;
+    (*diggables)[5] = Tile::stoneSlabHalf;
+    (*diggables)[6] = Tile::pumpkin;
+    (*diggables)[7] = Tile::litPumpkin;
 }
 
 HatchetItem::HatchetItem(int id, const Tier* tier)

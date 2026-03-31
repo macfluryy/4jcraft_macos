@@ -98,7 +98,7 @@ public:
     LevelRenderer* levelRenderer;
     std::shared_ptr<MultiplayerLocalPlayer> player;
 
-    MultiPlayerLevelArray levels;
+    std::vector<MultiPlayerLevel*> levels;
 
     std::shared_ptr<MultiplayerLocalPlayer> localplayers[XUSER_MAX_COUNT];
     MultiPlayerGameMode* localgameModes[XUSER_MAX_COUNT];

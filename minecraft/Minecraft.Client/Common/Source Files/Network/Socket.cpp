@@ -265,13 +265,13 @@ int Socket::SocketInputStreamLocal::read() {
 
 // Try and get an input array of bytes, blocking until enough bytes are
 // available
-int Socket::SocketInputStreamLocal::read(byteArray b) {
-    return read(b, 0, b.length);
+int Socket::SocketInputStreamLocal::read(std::vector<uint8_t>& b) {
+    return read(b, 0, b.size());
 }
 
 // Try and get an input range of bytes, blocking until enough bytes are
 // available
-int Socket::SocketInputStreamLocal::read(byteArray b, unsigned int offset,
+int Socket::SocketInputStreamLocal::read(std::vector<uint8_t>& b, unsigned int offset,
                                          unsigned int length) {
     while (m_streamOpen) {
         {
@@ -318,11 +318,11 @@ void Socket::SocketOutputStreamLocal::write(unsigned int b) {
     }
 }
 
-void Socket::SocketOutputStreamLocal::write(byteArray b) {
-    write(b, 0, b.length);
+void Socket::SocketOutputStreamLocal::write(const std::vector<uint8_t>& b) {
+    write(b, 0, b.size());
 }
 
-void Socket::SocketOutputStreamLocal::write(byteArray b, unsigned int offset,
+void Socket::SocketOutputStreamLocal::write(const std::vector<uint8_t>& b, unsigned int offset,
                                             unsigned int length) {
     if (m_streamOpen != true) {
         return;
@@ -378,13 +378,13 @@ int Socket::SocketInputStreamNetwork::read() {
 
 // Try and get an input array of bytes, blocking until enough bytes are
 // available
-int Socket::SocketInputStreamNetwork::read(byteArray b) {
-    return read(b, 0, b.length);
+int Socket::SocketInputStreamNetwork::read(std::vector<uint8_t>& b) {
+    return read(b, 0, b.size());
 }
 
 // Try and get an input range of bytes, blocking until enough bytes are
 // available
-int Socket::SocketInputStreamNetwork::read(byteArray b, unsigned int offset,
+int Socket::SocketInputStreamNetwork::read(std::vector<uint8_t>& b, unsigned int offset,
                                            unsigned int length) {
     while (m_streamOpen) {
         {
@@ -420,24 +420,21 @@ Socket::SocketOutputStreamNetwork::SocketOutputStreamNetwork(Socket* socket,
 
 void Socket::SocketOutputStreamNetwork::write(unsigned int b) {
     if (m_streamOpen != true) return;
-    byteArray barray;
-    std::uint8_t bb;
-    bb = (std::uint8_t)b;
-    barray.data = &bb;
-    barray.length = 1;
+    std::uint8_t bb = (std::uint8_t)b;
+    std::vector<uint8_t> barray(1, bb);
     write(barray, 0, 1);
 }
 
-void Socket::SocketOutputStreamNetwork::write(byteArray b) {
-    write(b, 0, b.length);
+void Socket::SocketOutputStreamNetwork::write(const std::vector<uint8_t>& b) {
+    write(b, 0, b.size());
 }
 
-void Socket::SocketOutputStreamNetwork::write(byteArray b, unsigned int offset,
+void Socket::SocketOutputStreamNetwork::write(const std::vector<uint8_t>& b, unsigned int offset,
                                               unsigned int length) {
     writeWithFlags(b, offset, length, 0);
 }
 
-void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
+void Socket::SocketOutputStreamNetwork::writeWithFlags(const std::vector<uint8_t>& b,
                                                        unsigned int offset,
                                                        unsigned int length,
                                                        int flags) {
@@ -463,7 +460,7 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(byteArray b,
         }
     } else {
         XRNM_SEND_BUFFER buffer;
-        buffer.pbyData = &b[offset];
+        buffer.pbyData = const_cast<uint8_t*>(&b[offset]);
         buffer.dwDataSize = length;
 
         INetworkPlayer* hostPlayer = g_NetworkManager.GetHostPlayer();

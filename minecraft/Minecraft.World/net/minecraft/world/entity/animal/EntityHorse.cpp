@@ -88,7 +88,7 @@ EntityHorse::EntityHorse(Level* level) : Animal(level) {
 
     layerTextureHashName = L"";
 
-    layerTextureLayers = intArray(3);
+    layerTextureLayers = std::vector<int>(3);
     for (unsigned int i = 0; i < 3; ++i) {
         layerTextureLayers[i] = -1;
     }
@@ -110,7 +110,6 @@ EntityHorse::EntityHorse(Level* level) : Animal(level) {
     createInventory();
 }
 
-EntityHorse::~EntityHorse() { delete[] layerTextureLayers.data; }
 
 void EntityHorse::defineSynchedData() {
     Animal::defineSynchedData();
@@ -631,7 +630,7 @@ std::wstring EntityHorse::getLayeredTextureHashName() {
     return layerTextureHashName;
 }
 
-intArray EntityHorse::getLayeredTextureLayers() {
+std::vector<int> EntityHorse::getLayeredTextureLayers() {
     if (layerTextureHashName.empty()) {
         rebuildLayeredTextureInfo();
     }

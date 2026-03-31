@@ -48,14 +48,14 @@ HellRandomLevelSource::~HellRandomLevelSource() {
 }
 
 void HellRandomLevelSource::prepareHeights(int xOffs, int zOffs,
-                                           byteArray blocks) {
+                                           std::vector<uint8_t>& blocks) {
     int xChunks = 16 / CHUNK_WIDTH;
     int waterHeight = 32;
 
     int xSize = xChunks + 1;
     int ySize = Level::genDepth / CHUNK_HEIGHT + 1;
     int zSize = xChunks + 1;
-    doubleArray buffer;  // 4J - used to be declared with class level scope but
+    std::vector<double> buffer;  // 4J - used to be declared with class level scope but
                          // tidying up for thread safety reasons
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize);
@@ -134,20 +134,19 @@ void HellRandomLevelSource::prepareHeights(int xOffs, int zOffs,
             }
         }
     }
-    delete[] buffer.data;
 }
 
 void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
-                                          byteArray blocks) {
+                                          std::vector<uint8_t>& blocks) {
     int waterHeight = Level::genDepth - 64;
 
     double s = 1 / 32.0;
 
-    doubleArray sandBuffer(16 *
+    std::vector<double> sandBuffer(16 *
                            16);  // 4J - used to be declared with class level
                                  // scope but moved here for thread safety
-    doubleArray gravelBuffer(16 * 16);
-    doubleArray depthBuffer(16 * 16);
+    std::vector<double> gravelBuffer(16 * 16);
+    std::vector<double> depthBuffer(16 * 16);
 
     sandBuffer = perlinNoise2->getRegion(sandBuffer, xOffs * 16, zOffs * 16, 0,
                                          16, 16, 1, s, s, 1);
@@ -276,9 +275,6 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
             }
         }
     }
-    delete[] sandBuffer.data;
-    delete[] gravelBuffer.data;
-    delete[] depthBuffer.data;
 }
 
 LevelChunk* HellRandomLevelSource::create(int x, int z) {
@@ -294,8 +290,8 @@ LevelChunk* HellRandomLevelSource::getChunk(int xOffs, int zOffs) {
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
     XMemSet128(tileData, 0, blocksSize);
-    byteArray blocks = byteArray(tileData, blocksSize);
-    //    byteArray blocks = byteArray(16 * level->depth * 16);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 
     prepareHeights(xOffs, zOffs, blocks);
     buildSurfaces(xOffs, zOffs, blocks);
@@ -325,17 +321,17 @@ void HellRandomLevelSource::lightChunk(LevelChunk* lc) {
     lc->recalcHeightmap();
 }
 
-doubleArray HellRandomLevelSource::getHeights(doubleArray buffer, int x, int y,
+std::vector<double> HellRandomLevelSource::getHeights(std::vector<double>& buffer, int x, int y,
                                               int z, int xSize, int ySize,
                                               int zSize) {
-    if (buffer.data == nullptr) {
-        buffer = doubleArray(xSize * ySize * zSize);
+    if (buffer.empty()) {
+        buffer = std::vector<double>(xSize * ySize * zSize);
     }
 
     double s = 1 * 684.412;
     double hs = 1 * 684.412 * 3;
 
-    doubleArray pnr, ar, br, sr, dr, fi,
+    std::vector<double> pnr, ar, br, sr, dr, fi,
         fis;  // 4J - used to be declared with class level scope but moved here
               // for thread safety
 
@@ -349,7 +345,7 @@ doubleArray HellRandomLevelSource::getHeights(doubleArray buffer, int x, int y,
 
     int p = 0;
     int pp = 0;
-    doubleArray yoffs = doubleArray(ySize);
+    std::vector<double> yoffs = std::vector<double>(ySize);
     for (int yy = 0; yy < ySize; yy++) {
         yoffs[yy] = cos(yy * M_PI * 6 / (double)ySize) * 2;
 
@@ -423,14 +419,6 @@ doubleArray HellRandomLevelSource::getHeights(doubleArray buffer, int x, int y,
         }
     }
 
-    delete[] pnr.data;
-    delete[] ar.data;
-    delete[] br.data;
-    delete[] sr.data;
-    delete[] dr.data;
-    delete[] fi.data;
-    delete[] fis.data;
-    delete[] yoffs.data;
 
     return buffer;
 }
@@ -561,5 +549,6 @@ TilePos* HellRandomLevelSource::findNearestMapFeature(
 
 void HellRandomLevelSource::recreateLogicStructuresForChunk(int chunkX,
                                                             int chunkZ) {
-    netherBridgeFeature->apply(this, level, chunkX, chunkZ, byteArray());
+    std::vector<uint8_t> emptyBlocks;
+    netherBridgeFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
 }

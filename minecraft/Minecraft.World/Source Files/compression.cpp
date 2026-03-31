@@ -370,7 +370,7 @@ int32_t Compression::DecompressWithType(void* pDestination,
                     pbDestSize[3 - i] = pbSource[i];
                 }
 
-                byteArray uncompr = byteArray(*pDestSize);
+                std::vector<uint8_t> uncompr = std::vector<uint8_t>(*pDestSize);
 
                 // Build decompression stream
                 z_stream strm;

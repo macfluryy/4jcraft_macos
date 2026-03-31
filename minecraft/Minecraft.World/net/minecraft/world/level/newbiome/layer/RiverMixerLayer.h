@@ -12,5 +12,5 @@ public:
                     std::shared_ptr<Layer> rivers);
 
     virtual void init(int64_t seed);
-    virtual intArray getArea(int xo, int yo, int w, int h);
+    virtual std::vector<int> getArea(int xo, int yo, int w, int h);
 };

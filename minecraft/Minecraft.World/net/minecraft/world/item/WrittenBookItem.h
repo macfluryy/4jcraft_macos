@@ -57,7 +57,7 @@ player, List<String> lines, bool advanced) {
 
                                 StringTag authorTag = (StringTag)
 itemTag.get(TAG_AUTHOR); if (authorTag != null) { lines.add(ChatFormatting.GRAY
-+ String.format(I18n.get("book.byAuthor", authorTag.data)));
++ String.format(I18n.get("book.byAuthor", authorTag.data())));
                                 }
                         }
         }

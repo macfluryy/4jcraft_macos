@@ -32,7 +32,7 @@ public:
     virtual std::wstring getFeatureName() = 0;
 
     virtual void addFeature(Level* level, int x, int z, int xOffs, int zOffs,
-                            byteArray blocks);
+                            std::vector<uint8_t>& blocks);
 
     bool postProcess(Level* level, Random* random, int chunkX, int chunkZ);
     bool isIntersection(int cellX, int cellZ);

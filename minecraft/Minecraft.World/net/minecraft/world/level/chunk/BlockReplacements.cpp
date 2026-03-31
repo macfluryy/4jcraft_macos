@@ -2,7 +2,7 @@
 #include "BlockReplacements.h"
 #include "../tile/net.minecraft.world.level.tile.h"
 
-byteArray BlockReplacements::replacements = byteArray(256);
+std::vector<uint8_t> BlockReplacements::replacements = std::vector<uint8_t>(256);
 
 void BlockReplacements::staticCtor() {
     for (int i = 0; i < 256; i++) {
@@ -14,8 +14,8 @@ void BlockReplacements::staticCtor() {
     }
 }
 
-void BlockReplacements::replace(byteArray blocks) {
-    for (unsigned int i = 0; i < blocks.length; i++) {
+void BlockReplacements::replace(std::vector<uint8_t>& blocks) {
+    for (unsigned int i = 0; i < blocks.size(); i++) {
         blocks[i] = replacements[blocks[i] & 0xff];
     }
 }

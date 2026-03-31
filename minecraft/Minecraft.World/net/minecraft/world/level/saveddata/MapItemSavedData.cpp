@@ -28,8 +28,8 @@ MapItemSavedData::HoldingPlayer::HoldingPlayer(std::shared_ptr<Player> player,
                                                const MapItemSavedData* parent)
     : parent(parent), player(player) {
     // inited outside of ctor
-    rowsDirtyMin = intArray(MapItem::IMAGE_WIDTH);
-    rowsDirtyMax = intArray(MapItem::IMAGE_WIDTH);
+    rowsDirtyMin = std::vector<int>(MapItem::IMAGE_WIDTH);
+    rowsDirtyMax = std::vector<int>(MapItem::IMAGE_WIDTH);
 
     tick = 0;
     sendPosTick = 0;
@@ -38,22 +38,19 @@ MapItemSavedData::HoldingPlayer::HoldingPlayer(std::shared_ptr<Player> player,
 
     // java ctor
     // this->player = player;
-    for (unsigned int i = 0; i < rowsDirtyMin.length; i++) {
+    for (unsigned int i = 0; i < rowsDirtyMin.size(); i++) {
         rowsDirtyMin[i] = 0;
         rowsDirtyMax[i] = MapItem::IMAGE_HEIGHT - 1;
     }
 }
 
 MapItemSavedData::HoldingPlayer::~HoldingPlayer() {
-    delete rowsDirtyMin.data;
-    delete rowsDirtyMax.data;
-    delete lastSentDecorations.data;
 }
 
-charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
+std::vector<char> MapItemSavedData::HoldingPlayer::nextUpdatePacket(
     std::shared_ptr<ItemInstance> itemInstance) {
     if (!hasSentInitial) {
-        charArray data(2);
+        std::vector<char> data(2);
         data[0] = HEADER_METADATA;
         data[1] = parent->scale;
 
@@ -66,8 +63,8 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
         unsigned int playerDecorationsSize = (int)parent->decorations.size();
         unsigned int nonPlayerDecorationsSize =
             (int)parent->nonPlayerDecorations.size();
-        charArray data =
-            charArray((playerDecorationsSize + nonPlayerDecorationsSize) *
+        std::vector<char> data =
+            std::vector<char>((playerDecorationsSize + nonPlayerDecorationsSize) *
                           DEC_PACKET_BYTES +
                       1);
         data[0] = 1;
@@ -112,11 +109,11 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
             ++dataIndex;
         }
         bool thesame = !itemInstance->isFramed();
-        if (lastSentDecorations.data == nullptr ||
-            lastSentDecorations.length != data.length) {
+        if (lastSentDecorations.empty() ||
+            lastSentDecorations.size() != data.size()) {
             thesame = false;
         } else {
-            for (unsigned int i = 0; i < data.length; i++) {
+            for (unsigned int i = 0; i < data.size(); i++) {
                 if (data[i] != lastSentDecorations[i]) {
                     thesame = false;
                     break;
@@ -125,16 +122,12 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
         }
 
         if (!thesame) {
-            if (lastSentDecorations.data != nullptr) {
-                delete[] lastSentDecorations.data;
-            }
             // Make a copy of data, as the calling function presumes it can
             // destroy the returned data
-            lastSentDecorations = charArray(data.length);
-            memcpy(lastSentDecorations.data, data.data, data.length);
+            lastSentDecorations = std::vector<char>(data.size());
+            memcpy(lastSentDecorations.data(), data.data(), data.size());
             return data;
         }
-        delete[] data.data;  // 4jcraft, changed to []
     }
     std::shared_ptr<ServerPlayer> servPlayer =
         std::dynamic_pointer_cast<ServerPlayer>(player);
@@ -145,11 +138,11 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
             int len = rowsDirtyMax[column] - rowsDirtyMin[column] + 1;
             int min = rowsDirtyMin[column];
 
-            charArray data = charArray(len + 3);
+            std::vector<char> data = std::vector<char>(len + 3);
             data[0] = HEADER_COLOURS;
             data[1] = (char)column;
             data[2] = (char)min;
-            for (unsigned int y = 0; y < data.length - 3; y++) {
+            for (unsigned int y = 0; y < data.size() - 3; y++) {
                 data[y + 3] =
                     parent->colors[(y + min) * MapItem::IMAGE_WIDTH + column];
             }
@@ -158,18 +151,17 @@ charArray MapItemSavedData::HoldingPlayer::nextUpdatePacket(
             return data;
         }
     }
-    return charArray();
+    return std::vector<char>();
 }
 
 MapItemSavedData::MapItemSavedData(const std::wstring& id) : SavedData(id) {
     x = z = 0;
     dimension = 0;
     scale = 0;
-    colors = byteArray(MapItem::IMAGE_WIDTH * MapItem::IMAGE_HEIGHT);
+    colors = std::vector<uint8_t>(MapItem::IMAGE_WIDTH * MapItem::IMAGE_HEIGHT);
 }
 
 MapItemSavedData::~MapItemSavedData() {
-    delete colors.data;
     for (unsigned int i = 0; i < decorations.size(); i++) {
         delete decorations[i];
     }
@@ -188,13 +180,10 @@ void MapItemSavedData::load(CompoundTag* tag) {
     if (width == MapItem::IMAGE_WIDTH && height == MapItem::IMAGE_HEIGHT) {
         colors = tag->getByteArray(L"colors");
     } else {
-        byteArray newColors = tag->getByteArray(L"colors");
-        // 4J
-        if (colors.data != nullptr) {
-            delete[] colors.data;
-        }
+        std::vector<uint8_t> newColors = tag->getByteArray(L"colors");
+        // 4J - vector manages its own memory, no need to delete old colors
         // End4J
-        colors = byteArray(MapItem::IMAGE_WIDTH * MapItem::IMAGE_HEIGHT);
+        colors = std::vector<uint8_t>(MapItem::IMAGE_WIDTH * MapItem::IMAGE_HEIGHT);
         int xo = (MapItem::IMAGE_WIDTH - width) / 2;
         int yo = (MapItem::IMAGE_HEIGHT - height) / 2;
         for (int y = 0; y < height; y++) {
@@ -462,11 +451,11 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
     }
 }
 
-charArray MapItemSavedData::getUpdatePacket(
+std::vector<char> MapItemSavedData::getUpdatePacket(
     std::shared_ptr<ItemInstance> itemInstance, Level* level,
     std::shared_ptr<Player> player) {
     auto it = carriedByPlayers.find(player);
-    if (it == carriedByPlayers.end()) return charArray();
+    if (it == carriedByPlayers.end()) return std::vector<char>();
 
     std::shared_ptr<HoldingPlayer> hp = it->second;
     return hp->nextUpdatePacket(itemInstance);
@@ -485,11 +474,11 @@ void MapItemSavedData::setDirty(int x, int y0, int y1) {
     }
 }
 
-void MapItemSavedData::handleComplexItemData(charArray& data) {
+void MapItemSavedData::handleComplexItemData(std::vector<char>& data) {
     if (data[0] == HEADER_COLOURS) {
         int xx = data[1] & 0xff;
         int yy = data[2] & 0xff;
-        for (unsigned int y = 0; y < data.length - 3; y++) {
+        for (unsigned int y = 0; y < data.size() - 3; y++) {
             colors[(y + yy) * MapItem::IMAGE_WIDTH + xx] = data[y + 3];
         }
         setDirty();
@@ -499,7 +488,7 @@ void MapItemSavedData::handleComplexItemData(charArray& data) {
             delete decorations[i];
         }
         decorations.clear();
-        for (unsigned int i = 0; i < (data.length - 1) / DEC_PACKET_BYTES;
+        for (unsigned int i = 0; i < (data.size() - 1) / DEC_PACKET_BYTES;
              i++) {
 #if defined(_LARGE_WORLDS)
             char img = data[i * DEC_PACKET_BYTES + 1];

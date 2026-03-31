@@ -109,8 +109,8 @@ void FileHeader::WriteHeader(void* saveMem) {
     for (unsigned int i = 0; i < fileTable.size(); ++i) {
         // wprintf(L"File: %ls, Start = %d, Length = %d, End = %d\n",
         // fileTable[i]->data.filename, fileTable[i]->data.startOffset,
-        // fileTable[i]->data.length, fileTable[i]->data.startOffset +
-        // fileTable[i]->data.length);
+        // fileTable[i]->data.size(), fileTable[i]->data.startOffset +
+        // fileTable[i]->data.size());
         memcpy((void*)headerPosition, &fileTable[i]->data,
                sizeof(FileEntrySaveData));
         // assert(numberOfBytesWritten == sizeof(FileEntrySaveData));

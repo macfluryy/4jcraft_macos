@@ -3,11 +3,13 @@
 #include "MerchantMenu.h"
 #include "MerchantContainer.h"
 
+MerchantContainer::~MerchantContainer() {}
+
 MerchantContainer::MerchantContainer(std::shared_ptr<Player> player,
                                      std::shared_ptr<Merchant> villager) {
     this->player = player;
     merchant = villager;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(3);
+    items = std::vector<std::shared_ptr<ItemInstance>>(3);
     items[0] = nullptr;
     items[1] = nullptr;
     items[2] = nullptr;
@@ -15,9 +17,8 @@ MerchantContainer::MerchantContainer(std::shared_ptr<Player> player,
     selectionHint = 0;
 }
 
-MerchantContainer::~MerchantContainer() { delete[] items.data; }
 
-unsigned int MerchantContainer::getContainerSize() { return items.length; }
+unsigned int MerchantContainer::getContainerSize() { return items.size(); }
 
 std::shared_ptr<ItemInstance> MerchantContainer::getItem(unsigned int slot) {
     return items[slot];

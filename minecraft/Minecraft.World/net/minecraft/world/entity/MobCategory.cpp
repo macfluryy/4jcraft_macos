@@ -14,7 +14,7 @@ MobCategory* MobCategory::creature_wolf = nullptr;
 MobCategory* MobCategory::creature_chicken = nullptr;
 MobCategory* MobCategory::creature_mushroomcow = nullptr;
 
-MobCategoryArray MobCategory::values = MobCategoryArray(7);
+std::vector<MobCategory*> MobCategory::values = std::vector<MobCategory*>(7);
 
 void MobCategory::staticCtor() {
     // 4J - adjusted the max levels here for the xbox version, which now

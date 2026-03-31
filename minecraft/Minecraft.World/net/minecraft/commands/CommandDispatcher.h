@@ -10,6 +10,6 @@ private:
 
 public:
     int performCommand(std::shared_ptr<CommandSender> sender,
-                       EGameCommand command, byteArray commandData);
+                       EGameCommand command, std::vector<uint8_t>& commandData);
     Command* addCommand(Command* command);
 };

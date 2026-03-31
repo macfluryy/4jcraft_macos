@@ -357,23 +357,23 @@ std::shared_ptr<Packet> Packet::getPacket(int id) {
     return idToCreateMap[id]();
 }
 
-void Packet::writeBytes(DataOutputStream* dataoutputstream, byteArray bytes) {
-    dataoutputstream->writeShort(bytes.length);
+void Packet::writeBytes(DataOutputStream* dataoutputstream, const std::vector<uint8_t>& bytes) {
+    dataoutputstream->writeShort(bytes.size());
     dataoutputstream->write(bytes);
 }
 
-byteArray Packet::readBytes(DataInputStream* datainputstream) {
+std::vector<uint8_t> Packet::readBytes(DataInputStream* datainputstream) {
     int size = datainputstream->readShort();
     if (size < 0) {
         app.DebugPrintf("Key was smaller than nothing!  Weird key!");
 #if !defined(_CONTENT_PACKAGE)
         __debugbreak();
 #endif
-        return byteArray();
+        return std::vector<uint8_t>();
         // throw new IOException("Key was smaller than nothing!  Weird key!");
     }
 
-    byteArray bytes(size);
+    std::vector<uint8_t> bytes(size);
     datainputstream->readFully(bytes);
 
     return bytes;
@@ -604,10 +604,9 @@ void Packet::writeItem(std::shared_ptr<ItemInstance> item,
 CompoundTag* Packet::readNbt(DataInputStream* dis) {
     int size = dis->readShort();
     if (size < 0) return nullptr;
-    byteArray buff(size);
+    std::vector<uint8_t> buff(size);
     dis->readFully(buff);
     CompoundTag* result = (CompoundTag*)NbtIo::decompress(buff);
-    delete[] buff.data;
     return result;
 }
 
@@ -615,9 +614,8 @@ void Packet::writeNbt(CompoundTag* tag, DataOutputStream* dos) {
     if (tag == nullptr) {
         dos->writeShort(-1);
     } else {
-        byteArray buff = NbtIo::compress(tag);
-        dos->writeShort((short)buff.length);
+        std::vector<uint8_t> buff = NbtIo::compress(tag);
+        dos->writeShort((short)buff.size());
         dos->write(buff);
-        delete[] buff.data;
     }
 }

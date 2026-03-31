@@ -330,7 +330,7 @@ unsigned int LeafTile::getDescriptionId(int iData /*= -1*/) {
 
 void LeafTile::registerIcons(IconRegister* iconRegister) {
     for (int fancy = 0; fancy < 2; fancy++) {
-        // icons[fancy] = new Icon[TEXTURES[fancy].length];
+        // icons[fancy] = new Icon[TEXTURES[fancy].size()];
 
         for (int i = 0; i < 4; i++) {
             icons[fancy][i] = iconRegister->registerIcon(TEXTURES[fancy][i]);

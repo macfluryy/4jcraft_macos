@@ -13,7 +13,7 @@ private:
     static const int MAX_MEMORY_USE = 16 * 1024 * 1024;
     static const int MAX_FLOATS = MAX_MEMORY_USE / 4 / 2;
 
-    intArray* _array;
+    std::vector<int>* _array;
 
     int vertices;
     float u, v;

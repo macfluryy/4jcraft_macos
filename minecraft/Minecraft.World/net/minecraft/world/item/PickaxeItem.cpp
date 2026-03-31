@@ -2,33 +2,33 @@
 #include "../level/tile/net.minecraft.world.level.tile.h"
 #include "PickaxeItem.h"
 
-TileArray PickaxeItem::diggables;
+std::vector<Tile*> PickaxeItem::diggables;
 
 void PickaxeItem::staticCtor() {
-    PickaxeItem::diggables = TileArray(PICKAXE_DIGGABLES);
-    diggables.data[0] = Tile::cobblestone;
-    diggables.data[1] = Tile::stoneSlab;
-    diggables.data[2] = Tile::stoneSlabHalf;
-    diggables.data[3] = Tile::stone;
-    diggables.data[4] = Tile::sandStone;
-    diggables.data[5] = Tile::mossyCobblestone;
-    diggables.data[6] = Tile::ironOre;
-    diggables.data[7] = Tile::ironBlock;
-    diggables.data[8] = Tile::coalOre;
-    diggables.data[9] = Tile::goldBlock;
-    diggables.data[10] = Tile::goldOre;
-    diggables.data[11] = Tile::diamondOre;
-    diggables.data[12] = Tile::diamondBlock;
-    diggables.data[13] = Tile::ice;
-    diggables.data[14] = Tile::netherRack;
-    diggables.data[15] = Tile::lapisOre;
-    diggables.data[16] = Tile::lapisBlock;
-    diggables.data[17] = Tile::redStoneOre;
-    diggables.data[18] = Tile::redStoneOre_lit;
-    diggables.data[19] = Tile::rail;
-    diggables.data[20] = Tile::detectorRail;
-    diggables.data[21] = Tile::goldenRail;
-    diggables.data[21] = Tile::activatorRail;
+    PickaxeItem::diggables = std::vector<Tile*>(PICKAXE_DIGGABLES);
+    diggables[0] = Tile::cobblestone;
+    diggables[1] = Tile::stoneSlab;
+    diggables[2] = Tile::stoneSlabHalf;
+    diggables[3] = Tile::stone;
+    diggables[4] = Tile::sandStone;
+    diggables[5] = Tile::mossyCobblestone;
+    diggables[6] = Tile::ironOre;
+    diggables[7] = Tile::ironBlock;
+    diggables[8] = Tile::coalOre;
+    diggables[9] = Tile::goldBlock;
+    diggables[10] = Tile::goldOre;
+    diggables[11] = Tile::diamondOre;
+    diggables[12] = Tile::diamondBlock;
+    diggables[13] = Tile::ice;
+    diggables[14] = Tile::netherRack;
+    diggables[15] = Tile::lapisOre;
+    diggables[16] = Tile::lapisBlock;
+    diggables[17] = Tile::redStoneOre;
+    diggables[18] = Tile::redStoneOre_lit;
+    diggables[19] = Tile::rail;
+    diggables[20] = Tile::detectorRail;
+    diggables[21] = Tile::goldenRail;
+    diggables[21] = Tile::activatorRail;
 }
 
 PickaxeItem::PickaxeItem(int id, const Tier* tier)

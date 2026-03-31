@@ -104,7 +104,7 @@ double ImprovedNoise::getValue(double x, double y, double z) {
     return noise(x, y, z);
 }
 
-void ImprovedNoise::add(doubleArray buffer, double _x, double _y, double _z,
+void ImprovedNoise::add(std::vector<double>& buffer, double _x, double _y, double _z,
                         int xSize, int ySize, int zSize, double xs, double ys,
                         double zs, double pow) {
     if (ySize == 1) {

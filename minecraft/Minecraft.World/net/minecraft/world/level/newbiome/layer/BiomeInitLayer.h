@@ -6,11 +6,11 @@ class LevelType;
 
 class BiomeInitLayer : public Layer {
 private:
-    BiomeArray startBiomes;
+    std::vector<Biome*> startBiomes;
 
 public:
     BiomeInitLayer(int64_t seed, std::shared_ptr<Layer> parent,
                    LevelType* levelType);
     virtual ~BiomeInitLayer();
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 };

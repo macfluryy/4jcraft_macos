@@ -25,7 +25,7 @@ void NbtIo::writeCompressed(CompoundTag* tag, OutputStream* out) {
 
 // Reads tags from a stream created from the input buffer. Doesn't free the data
 // in the source buffer.
-CompoundTag* NbtIo::decompress(byteArray buffer) {
+CompoundTag* NbtIo::decompress(std::vector<uint8_t> buffer) {
     ByteArrayInputStream bais = ByteArrayInputStream(buffer);
     // 4J - this was using a try/finally block
     DataInputStream in =
@@ -37,15 +37,15 @@ CompoundTag* NbtIo::decompress(byteArray buffer) {
     return ret;
 }
 
-byteArray NbtIo::compress(CompoundTag* tag) {
+std::vector<uint8_t> NbtIo::compress(CompoundTag* tag) {
     // 4J - this was using a try/finally block
     ByteArrayOutputStream baos = ByteArrayOutputStream();
     DataOutputStream dos =
         DataOutputStream(&baos);  // 4J - was new GZIPOutputStream as well
     NbtIo::write(tag, &dos);
 
-    byteArray ret(baos.buf.length);
-    System::arraycopy(baos.buf, 0, &ret, 0, baos.buf.length);
+    std::vector<uint8_t> ret(baos.buf.size());
+    System::arraycopy(baos.buf, 0, &ret, 0, baos.buf.size());
     dos.close();
     return ret;
 }

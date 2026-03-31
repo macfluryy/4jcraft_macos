@@ -47,7 +47,7 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
     m_buttonListItems.init(eControl_Items);
 
     int listId = 0;
-    for (unsigned int i = 0; i < Item::items.length; ++i) {
+    for (unsigned int i = 0; i < Item::items.size(); ++i) {
         if (Item::items[i] != nullptr) {
             m_itemIds.push_back(i);
             m_buttonListItems.addItem(

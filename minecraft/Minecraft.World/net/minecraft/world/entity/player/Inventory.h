@@ -16,8 +16,8 @@ private:
     static const int SELECTION_SIZE;
 
 public:
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
-    arrayWithLength<std::shared_ptr<ItemInstance>> armor;
+    std::vector<std::shared_ptr<ItemInstance>> items;
+    std::vector<std::shared_ptr<ItemInstance>> armor;
 
     int selected;
     Player* player;  // This is owned by shared_ptrs, but we are owned by it

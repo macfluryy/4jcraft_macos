@@ -11,7 +11,7 @@ public:
     using LevelChunk::getEntitiesOfClass;
 
     EmptyLevelChunk(Level* level, int x, int z);
-    EmptyLevelChunk(Level* level, byteArray blocks, int x, int z);
+    EmptyLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z);
     bool isAt(int x, int z);
     int getHeightmap(int x, int z);
     void recalcBlockLights();
@@ -52,14 +52,14 @@ public:
                             EntitySelector* selector);
     int countEntities();
     bool shouldSave(bool force);
-    void setBlocks(byteArray newBlocks, int sub);
+    void setBlocks(std::vector<uint8_t>& newBlocks, int sub);
     int getBlocksAndData(
-        byteArray data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
+        std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
         bool includeLighting = true);  // 4J - added includeLighting parameter
     int setBlocksAndData(
-        byteArray data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
+        std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
         bool includeLighting = true);  // 4J - added includeLighting parameter
-    bool testSetBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
+    bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0, int x1,
                               int y1, int z1, int p);  // 4J added
     Random* getRandom(int64_t l);
     bool isEmpty();

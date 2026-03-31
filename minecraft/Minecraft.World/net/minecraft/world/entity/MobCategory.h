@@ -90,7 +90,7 @@ public:
     // 4J Stu Sometimes we want to access the values by name, other times
     // iterate over all values Added these arrays so we can static initialise a
     // collection which we can iterate over
-    static MobCategoryArray values;
+    static std::vector<MobCategory*> values;
 
 private:
     const int m_max;

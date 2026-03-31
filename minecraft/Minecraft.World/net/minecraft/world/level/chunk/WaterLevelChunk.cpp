@@ -5,7 +5,7 @@
 #include "WaterLevelChunk.h"
 #include "../biome/net.minecraft.world.level.biome.h"
 
-WaterLevelChunk::WaterLevelChunk(Level* level, byteArray blocks, int x, int z)
+WaterLevelChunk::WaterLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z)
     : LevelChunk(level, blocks, x, z) {
     dontSave = true;
     // Set this as fully post-processed, so we don't try and run post-processing
@@ -82,9 +82,9 @@ int WaterLevelChunk::countEntities() { return 0; }
 
 bool WaterLevelChunk::shouldSave(bool force) { return false; }
 
-void WaterLevelChunk::setBlocks(byteArray newBlocks, int sub) {}
+void WaterLevelChunk::setBlocks(std::vector<uint8_t>& newBlocks, int sub) {}
 
-int WaterLevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0,
+int WaterLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
                                       int x1, int y1, int z1, int p,
                                       bool includeLighting /* = true*/) {
     int xs = x1 - x0;
@@ -100,7 +100,7 @@ int WaterLevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0,
     }
 }
 
-bool WaterLevelChunk::testSetBlocksAndData(byteArray data, int x0, int y0,
+bool WaterLevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
                                            int z0, int x1, int y1, int z1,
                                            int p) {
     return false;

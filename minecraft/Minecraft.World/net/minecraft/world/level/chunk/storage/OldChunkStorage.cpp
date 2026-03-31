@@ -16,17 +16,13 @@ OldChunkStorage::ThreadStorage* OldChunkStorage::m_defaultThreadStorage =
     nullptr;
 
 OldChunkStorage::ThreadStorage::ThreadStorage() {
-    blockData = byteArray(Level::CHUNK_TILE_COUNT);
-    dataData = byteArray(Level::HALF_CHUNK_TILE_COUNT);
-    skyLightData = byteArray(Level::HALF_CHUNK_TILE_COUNT);
-    blockLightData = byteArray(Level::HALF_CHUNK_TILE_COUNT);
+    blockData = std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
+    dataData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+    skyLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+    blockLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
 }
 
 OldChunkStorage::ThreadStorage::~ThreadStorage() {
-    delete[] blockData.data;
-    delete[] dataData.data;
-    delete[] skyLightData.data;
-    delete[] blockLightData.data;
 }
 
 void OldChunkStorage::CreateNewThreadStorage() {
@@ -315,20 +311,20 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     ThreadStorage* tls = m_tlsStorage;
 
     PIXBeginNamedEvent(0, "Getting block data");
-    // static byteArray blockData = byteArray(32768);
+    // static std::vector<uint8_t> blockData = std::vector<uint8_t>(32768);
     lc->getBlockData(tls->blockData);
     tag->putByteArray(L"Blocks", tls->blockData);
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Getting data data");
-    // static byteArray dataData = byteArray(16384);
+    // static std::vector<uint8_t> dataData = std::vector<uint8_t>(16384);
     lc->getDataData(tls->dataData);
     tag->putByteArray(L"Data", tls->dataData);
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Getting sky and block light data");
-    // static byteArray skyLightData = byteArray(16384);
-    // static byteArray blockLightData = byteArray(16384);
+    // static std::vector<uint8_t> skyLightData = std::vector<uint8_t>(16384);
+    // static std::vector<uint8_t> blockLightData = std::vector<uint8_t>(16384);
     lc->getSkyLightData(tls->skyLightData);
     lc->getBlockLightData(tls->blockLightData);
     tag->putByteArray(L"SkyLight", tls->skyLightData);
@@ -341,7 +337,8 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
         lc->terrainPopulated);  // 4J - changed from "TerrainPopulated" to
                                 // "TerrainPopulatedFlags" as now stores a
                                 // bitfield, java stores a bool
-    tag->putByteArray(L"Biomes", lc->getBiomes());
+    std::vector<uint8_t> biomeData = lc->getBiomes();
+    tag->putByteArray(L"Biomes", biomeData);
 
     PIXBeginNamedEvent(0, "Saving entities");
 #if !defined(SPLIT_SAVES)
@@ -455,9 +452,8 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
         app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Read the biome data from the stream, but don't use it
-        byteArray dummyBiomes(levelChunk->biomes.length);
+        std::vector<uint8_t> dummyBiomes(levelChunk->biomes.size());
         dis->readFully(dummyBiomes);
-        delete[] dummyBiomes.data;
     } else
 #endif
     {
@@ -501,32 +497,39 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
     // 4J - the original code uses the data in the tag directly, but this is now
     // just used as a source when creating the compressed data, so we need to
     // free up the data in the tag once we are done
-    levelChunk->setBlockData(tag->getByteArray(L"Blocks"));
-    delete[] tag->getByteArray(L"Blocks").data;
+    {
+        auto blocks = tag->getByteArray(L"Blocks");
+        levelChunk->setBlockData(blocks);
+    }
     //	levelChunk->blocks = tag->getByteArray(L"Blocks");
 
     // 4J - the original code uses the data in the tag directly, but this is now
     // just used as a source when creating the compressed data, so we need to
     // free up the data in the tag once we are done
-    levelChunk->setDataData(tag->getByteArray(L"Data"));
-    delete[] tag->getByteArray(L"Data").data;
+    {
+        auto data = tag->getByteArray(L"Data");
+        levelChunk->setDataData(data);
+    }
 
     // 4J - changed to use our new methods for accessing lighting
-    levelChunk->setSkyLightData(tag->getByteArray(L"SkyLight"));
-    levelChunk->setBlockLightData(tag->getByteArray(L"BlockLight"));
+    {
+        auto skyLight = tag->getByteArray(L"SkyLight");
+        levelChunk->setSkyLightData(skyLight);
+    }
+    {
+        auto blockLight = tag->getByteArray(L"BlockLight");
+        levelChunk->setBlockLightData(blockLight);
+    }
 
     // In the original code (commented out below) constructing DataLayers from
     // these arrays uses the data directly and so it doesn't need deleted. The
     // new setSkyLightData/setBlockLightData take a copy of the data so we need
     // to delete the local one now
-    delete[] tag->getByteArray(L"SkyLight").data;
-    delete[] tag->getByteArray(L"BlockLight").data;
 
     //	levelChunk->skyLight = new DataLayer(tag->getByteArray(L"SkyLight"),
     // level->depthBits); 	levelChunk->blockLight = new
     // DataLayer(tag->getByteArray(L"BlockLight"), level->depthBits);
 
-    delete[] levelChunk->heightmap.data;
     levelChunk->heightmap = tag->getByteArray(L"HeightMap");
     // 4J - TerrainPopulated was a bool (java), then changed to be a byte
     // bitfield, then replaced with TerrainPopulatedShort to store a wider
@@ -567,7 +570,8 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
 #endif
     {
         if (tag->contains(L"Biomes")) {
-            levelChunk->setBiomes(tag->getByteArray(L"Biomes"));
+            auto biomes = tag->getByteArray(L"Biomes");
+            levelChunk->setBiomes(biomes);
         }
     }
 

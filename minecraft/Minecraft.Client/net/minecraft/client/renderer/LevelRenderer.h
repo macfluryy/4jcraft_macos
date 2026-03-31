@@ -170,7 +170,7 @@ private:
     Textures* textures;
     //    std::vector<Chunk *> *sortedChunks[4];	// 4J - removed - not
     //    sorting our chunks anymore
-    ClipChunkArray chunks[4];  // 4J - now one per player
+    std::vector<ClipChunk> chunks[4];  // 4J - now one per player
     int lastPlayerCount[4];    // 4J - added
     int xChunks, yChunks, zChunks;
     int chunkLists;

@@ -649,7 +649,7 @@ void StructurePiece::fillColumnDown(Level* level, int tile, int tileData, int x,
 
 bool StructurePiece::createChest(Level* level, BoundingBox* chunkBB,
                                  Random* random, int x, int y, int z,
-                                 WeighedTreasureArray treasure, int numRolls) {
+                                 const std::vector<WeighedTreasure*>& treasure, int numRolls) {
     int worldX = getWorldX(x, z);
     int worldY = getWorldY(y);
     int worldZ = getWorldZ(x, z);
@@ -672,7 +672,7 @@ bool StructurePiece::createChest(Level* level, BoundingBox* chunkBB,
 
 bool StructurePiece::createDispenser(Level* level, BoundingBox* chunkBB,
                                      Random* random, int x, int y, int z,
-                                     int facing, WeighedTreasureArray items,
+                                     int facing, const std::vector<WeighedTreasure*>& items,
                                      int numRolls) {
     int worldX = getWorldX(x, z);
     int worldY = getWorldY(y);

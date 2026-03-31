@@ -10,5 +10,5 @@ private:
 public:
     DownfallMixerLayer(std::shared_ptr<Layer> downfall,
                        std::shared_ptr<Layer> parent, int layer);
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 };

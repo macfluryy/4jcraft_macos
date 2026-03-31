@@ -104,7 +104,7 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
     timer = new Timer(SharedConstants::TICKS_PER_SECOND);
     oldLevel = nullptr;  // 4J Stu added
     level = nullptr;
-    levels = MultiPlayerLevelArray(3);  // 4J Added
+    levels = std::vector<MultiPlayerLevel*>(3);  // 4J Added
     levelRenderer = nullptr;
     player = nullptr;
     cameraTargetPlayer = nullptr;
@@ -1542,7 +1542,7 @@ void Minecraft::run_middle() {
                     // 4J - added - now do the equivalent of level::animateTick,
                     // but taking into account the positions of all our players
 
-                    for (int l = 0; l < levels.length; l++) {
+                    for (int l = 0; l < levels.size(); l++) {
                         if (levels[l]) {
                             levels[l]->animateTickDoWork();
                         }
@@ -3549,7 +3549,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             SparseDataStorage::tick();      // 4J added
         }
 
-        for (unsigned int i = 0; i < levels.length; ++i) {
+        for (unsigned int i = 0; i < levels.size(); ++i) {
             if (player->level != levels[i])
                 continue;  // Don't tick if the current player isn't in this
                            // level
@@ -3722,7 +3722,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     // non-nullptr
     gameRenderer->DisableUpdateThread();
 
-    for (unsigned int i = 0; i < levels.length; ++i) {
+    for (unsigned int i = 0; i < levels.size(); ++i) {
         // 4J We only need to save out in multiplayer is we are setting the
         // level to nullptr If we ever go back to making single player only then
         // this will not work properly!
@@ -4192,9 +4192,9 @@ void Minecraft::main() {
             L"Player" + _toString<int64_t>(System::currentTimeMillis() % 1000);
         sessionId = L"-";
         /* 4J - TODO - get a session ID from somewhere?
-        if (args.length > 0) name = args[0];
+        if (args.size() > 0) name = args[0];
         sessionId = "-";
-        if (args.length > 1) sessionId = args[1];
+        if (args.size() > 1) sessionId = args[1];
         */
     }
 

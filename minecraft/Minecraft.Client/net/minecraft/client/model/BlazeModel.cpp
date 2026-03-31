@@ -4,9 +4,9 @@
 #include "geom/ModelPart.h"
 
 BlazeModel::BlazeModel() : Model() {
-    upperBodyParts = ModelPartArray(12);
+    upperBodyParts = std::vector<ModelPart*>(12);
 
-    for (unsigned int i = 0; i < upperBodyParts.length; i++) {
+    for (unsigned int i = 0; i < upperBodyParts.size(); i++) {
         upperBodyParts[i] = new ModelPart(this, 0, 16);
         upperBodyParts[i]->addBox(0, 0, 0, 2, 8, 2);
     }
@@ -17,7 +17,7 @@ BlazeModel::BlazeModel() : Model() {
     // 4J added - compile now to avoid random performance hit first time cubes
     // are rendered 4J Stu - Not just performance, but alpha+depth tests don't
     // work right unless we compile here
-    for (unsigned int i = 0; i < upperBodyParts.length; i++) {
+    for (unsigned int i = 0; i < upperBodyParts.size(); i++) {
         upperBodyParts[i]->compile(1.0f / 16.0f);
     }
     head->compile(1.0f / 16.0f);
@@ -31,7 +31,7 @@ void BlazeModel::render(std::shared_ptr<Entity> entity, float time, float r,
     setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
     head->render(scale, usecompiled);
-    for (unsigned int i = 0; i < upperBodyParts.length; i++) {
+    for (unsigned int i = 0; i < upperBodyParts.size(); i++) {
         upperBodyParts[i]->render(scale, usecompiled);
     }
 }

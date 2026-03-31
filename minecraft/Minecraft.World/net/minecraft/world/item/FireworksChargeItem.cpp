@@ -18,21 +18,21 @@ int FireworksChargeItem::getColor(std::shared_ptr<ItemInstance> item,
         Tag* colorTag = getExplosionTagField(item, FireworksItem::TAG_E_COLORS);
         if (colorTag != nullptr) {
             IntArrayTag* colors = (IntArrayTag*)colorTag;
-            if (colors->data.length == 1) {
+            if (colors->data.size() == 1) {
                 return colors->data[0];
             }
             int totalRed = 0;
             int totalGreen = 0;
             int totalBlue = 0;
-            for (unsigned int i = 0; i < colors->data.length; ++i) {
+            for (unsigned int i = 0; i < colors->data.size(); ++i) {
                 int c = colors->data[i];
                 totalRed += (c & 0xff0000) >> 16;
                 totalGreen += (c & 0x00ff00) >> 8;
                 totalBlue += (c & 0x0000ff) >> 0;
             }
-            totalRed /= colors->data.length;
-            totalGreen /= colors->data.length;
-            totalBlue /= colors->data.length;
+            totalRed /= colors->data.size();
+            totalGreen /= colors->data.size();
+            totalBlue /= colors->data.size();
             return (totalRed << 16) | (totalGreen << 8) | totalBlue;
         }
         return 0x8a8a8a;
@@ -93,11 +93,11 @@ void FireworksChargeItem::appendHoverText(CompoundTag* expTag,
     }
 
     // colors
-    intArray colorList = expTag->getIntArray(FireworksItem::TAG_E_COLORS);
-    if (colorList.length > 0) {
+    std::vector<int> colorList = expTag->getIntArray(FireworksItem::TAG_E_COLORS);
+    if (colorList.size() > 0) {
         bool first = true;
         std::wstring output = L"";
-        for (unsigned int i = 0; i < colorList.length; ++i) {
+        for (unsigned int i = 0; i < colorList.size(); ++i) {
             int c = colorList[i];
             if (!first) {
                 output +=
@@ -123,12 +123,12 @@ void FireworksChargeItem::appendHoverText(CompoundTag* expTag,
     }
 
     // has fade?
-    intArray fadeList = expTag->getIntArray(FireworksItem::TAG_E_FADECOLORS);
-    if (fadeList.length > 0) {
+    std::vector<int> fadeList = expTag->getIntArray(FireworksItem::TAG_E_FADECOLORS);
+    if (fadeList.size() > 0) {
         bool first = true;
         std::wstring output =
             std::wstring(app.GetString(IDS_FIREWORKS_CHARGE_FADE_TO)) + L" ";
-        for (unsigned int i = 0; i < fadeList.length; ++i) {
+        for (unsigned int i = 0; i < fadeList.size(); ++i) {
             int c = fadeList[i];
             if (!first) {
                 output +=

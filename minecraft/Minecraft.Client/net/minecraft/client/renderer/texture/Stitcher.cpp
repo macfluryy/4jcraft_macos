@@ -72,7 +72,7 @@ void Stitcher::stitch() {
 
     stitchedTexture = nullptr;
 
-    // for (int i = 0; i < textureHolders.length; i++)
+    // for (int i = 0; i < textureHolders.size(); i++)
     for (auto it = texturesToBeStitched.begin();
          it != texturesToBeStitched.end(); ++it) {
         TextureHolder* textureHolder = *it;  // textureHolders[i];

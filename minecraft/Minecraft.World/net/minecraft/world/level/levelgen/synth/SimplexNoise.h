@@ -33,8 +33,8 @@ public:
     // 3D simplex noise
     double getValue(double xin, double yin, double zin);
 
-    void add(doubleArray buffer, double _x, double _y, int xSize, int ySize,
+    void add(std::vector<double>& buffer, double _x, double _y, int xSize, int ySize,
              double xs, double ys, double pow);
-    void add(doubleArray buffer, double _x, double _y, double _z, int xSize,
+    void add(std::vector<double>& buffer, double _x, double _y, double _z, int xSize,
              int ySize, int zSize, double xs, double ys, double zs, double pow);
 };

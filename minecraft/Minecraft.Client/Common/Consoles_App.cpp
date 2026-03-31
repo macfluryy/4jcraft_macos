@@ -2904,9 +2904,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                                 // If there's a non-null level then, for our
                                 // purposes, the game has started
                                 bool gameStarted = false;
-                                for (int j = 0; j < pMinecraft->levels.length;
+                                for (int j = 0; j < pMinecraft->levels.size();
                                      j++) {
-                                    if (pMinecraft->levels.data[j] != nullptr) {
+                                    if (pMinecraft->levels.data()[j] != nullptr) {
                                         gameStarted = true;
                                         break;
                                     }
@@ -3683,9 +3683,8 @@ void CMinecraftApp::loadStringTable() {
     }
     std::wstring localisationFile = L"languages.loc";
     if (m_mediaArchive->hasFile(localisationFile)) {
-        byteArray locFile = m_mediaArchive->getFile(localisationFile);
-        m_stringTable = new StringTable(locFile.data, locFile.length);
-        delete[] locFile.data;
+        std::vector<uint8_t> locFile = m_mediaArchive->getFile(localisationFile);
+        m_stringTable = new StringTable(locFile.data(), locFile.size());
     } else {
         m_stringTable = nullptr;
         assert(false);
@@ -4713,12 +4712,12 @@ void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
 // 	if(fileSize!=0)
 // 	{
 // 		FileInputStream fis(gtsFile);
-// 		byteArray ba((int)fileSize);
+// 		std::vector<uint8_t> ba((int)fileSize);
 // 		fis.read(ba);
 // 		fis.close();
 //
 // 		bRes=StorageManager.WriteTMSFile(iQuadrant,eStorageFacility,(wchar_t
-// *)wsFile->c_str(),ba.data, ba.length);
+// *)wsFile->c_str(),ba.data(), ba.size());
 //
 // 	}
 // #endif
@@ -7266,7 +7265,7 @@ bool CMinecraftApp::hasArchiveFile(const std::wstring& filename) {
         return m_mediaArchive->hasFile(filename);
 }
 
-byteArray CMinecraftApp::getArchiveFile(const std::wstring& filename) {
+std::vector<uint8_t> CMinecraftApp::getArchiveFile(const std::wstring& filename) {
     TexturePack* tPack = nullptr;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft && pMinecraft->skins)

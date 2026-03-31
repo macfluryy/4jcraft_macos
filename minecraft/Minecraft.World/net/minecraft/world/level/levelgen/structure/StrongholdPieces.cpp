@@ -908,9 +908,7 @@ bool StrongholdPieces::ChestCorridor::postProcess(Level* level, Random* random,
             hasPlacedChest = true;
             createChest(
                 level, chunkBB, random, 3, 2, 3,
-                WeighedTreasure::addToTreasure(
-                    WeighedTreasureArray(treasureItems, TREASURE_ITEMS_COUNT),
-                    Item::enchantedBook->createForRandomTreasure(random)),
+                [&]() { auto items = std::vector<WeighedTreasure*>(treasureItems, treasureItems + TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random)); }(),
                 2 + random->nextInt(2));
         }
     }
@@ -1263,10 +1261,7 @@ bool StrongholdPieces::RoomCrossing::postProcess(Level* level, Random* random,
 
             createChest(
                 level, chunkBB, random, 3, 4, 8,
-                WeighedTreasure::addToTreasure(
-                    WeighedTreasureArray(smallTreasureItems,
-                                         SMALL_TREASURE_ITEMS_COUNT),
-                    Item::enchantedBook->createForRandomTreasure(random)),
+                [&]() { auto items = std::vector<WeighedTreasure*>(smallTreasureItems, smallTreasureItems + SMALL_TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random)); }(),
                 1 + random->nextInt(4));
             // System.out.println("Created chest at " + getWorldX(3, 8) +
             // "," + getWorldY(4) + "," + getWorldZ(3, 8));
@@ -1564,19 +1559,13 @@ bool StrongholdPieces::Library::postProcess(Level* level, Random* random,
     // place chests
     createChest(
         level, chunkBB, random, 3, 3, 5,
-        WeighedTreasure::addToTreasure(
-            WeighedTreasureArray(libraryTreasureItems,
-                                 LIBRARY_TREASURE_ITEMS_COUNT),
-            Item::enchantedBook->createForRandomTreasure(random, 1, 5, 2)),
+        [&]() { auto items = std::vector<WeighedTreasure*>(libraryTreasureItems, libraryTreasureItems + LIBRARY_TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random, 1, 5, 2)); }(),
         1 + random->nextInt(4));
     if (isTall) {
         placeBlock(level, 0, 0, width - 2, tallHeight - 2, 1, chunkBB);
         createChest(
             level, chunkBB, random, width - 2, tallHeight - 3, 1,
-            WeighedTreasure::addToTreasure(
-                WeighedTreasureArray(libraryTreasureItems,
-                                     LIBRARY_TREASURE_ITEMS_COUNT),
-                Item::enchantedBook->createForRandomTreasure(random, 1, 5, 2)),
+            [&]() { auto items = std::vector<WeighedTreasure*>(libraryTreasureItems, libraryTreasureItems + LIBRARY_TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random, 1, 5, 2)); }(),
             1 + random->nextInt(4));
     }
 

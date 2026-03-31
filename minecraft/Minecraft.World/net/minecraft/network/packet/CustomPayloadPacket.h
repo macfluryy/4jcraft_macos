@@ -18,10 +18,10 @@ public:
 
     std::wstring identifier;
     int length;
-    byteArray data;
+    std::vector<uint8_t> data;
 
     CustomPayloadPacket();
-    CustomPayloadPacket(const std::wstring& identifier, byteArray data);
+    CustomPayloadPacket(const std::wstring& identifier, std::vector<uint8_t> data);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

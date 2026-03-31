@@ -339,7 +339,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     ProgressRenderer* mcprogress = Minecraft::GetInstance()->progressRenderer;
 
     // 4J TODO - free levels here if there are already some?
-    levels = ServerLevelArray(3);
+    levels = std::vector<ServerLevel*>(3);
 
     int gameTypeId = settings->getInt(
         L"gamemode",
@@ -412,7 +412,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     // ConsoleSaveFile( L"" ), L"", L"", 0); // original
     //    McRegionLevelStorage *storage = new McRegionLevelStorage(File(L"."),
     //    name, true); // TODO
-    for (unsigned int i = 0; i < levels.length; i++) {
+    for (unsigned int i = 0; i < levels.size(); i++) {
         if (s_bServerHalted || !g_NetworkManager.IsInSession()) {
             return false;
         }
@@ -510,19 +510,18 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     ConsoleSaveFile* csf = getLevel(0)->getLevelStorage()->getSaveFile();
     if (csf->doesFileExist(filepath)) {
         unsigned int numberOfBytesRead;
-        byteArray ba_gameRules;
+        std::vector<uint8_t> ba_gameRules;
 
         FileEntry* fe = csf->createFile(filepath);
 
-        ba_gameRules.length = fe->getFileSize();
-        ba_gameRules.data = new std::uint8_t[ba_gameRules.length];
+        ba_gameRules.resize(fe->getFileSize());
 
         csf->setFilePointer(fe, 0, SaveFileSeekOrigin::Begin);
-        csf->readFile(fe, ba_gameRules.data, ba_gameRules.length,
+        csf->readFile(fe, ba_gameRules.data(), ba_gameRules.size(),
                       &numberOfBytesRead);
-        assert(numberOfBytesRead == ba_gameRules.length);
+        assert(numberOfBytesRead == ba_gameRules.size());
 
-        app.m_gameRules.loadGameRules(ba_gameRules.data, ba_gameRules.length);
+        app.m_gameRules.loadGameRules(ba_gameRules.data(), ba_gameRules.size());
         csf->closeHandle(fe);
     }
 
@@ -544,7 +543,7 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
     // 4J Stu - This loop is changed in 1.0.1 to only process the first level
     // (ie the overworld), but I think we still want to do them all
     int i = 0;
-    for (int i = 0; i < levels.length; i++) {
+    for (int i = 0; i < levels.size(); i++) {
         //        logger.info("Preparing start region for level " + i);
         if (i == 0 || settings->getBoolean(L"allow-nether", true)) {
             ServerLevel* level = levels[i];
@@ -773,7 +772,7 @@ void MinecraftServer::endProgress() {
 
 void MinecraftServer::saveAllChunks() {
     //    logger.info("Saving chunks");
-    for (unsigned int i = 0; i < levels.length; i++) {
+    for (unsigned int i = 0; i < levels.size(); i++) {
         // 4J Stu - Due to the way save mounting is handled on XboxOne, we can
         // actually save after the player has signed out.
         if (m_bPrimaryPlayerSignedOut) break;
@@ -781,7 +780,7 @@ void MinecraftServer::saveAllChunks() {
         // level.dat with the data from the nethers leveldata. Fix for #7418 -
         // Functional: Gameplay: Saving after sleeping in a bed will place
         // player at nighttime when restarting.
-        ServerLevel* level = levels[levels.length - 1 - i];
+        ServerLevel* level = levels[levels.size() - 1 - i];
         if (level)  // 4J - added check as level can be nullptr if we end up in
                     // stopServer really early on due to network failure
         {
@@ -790,7 +789,7 @@ void MinecraftServer::saveAllChunks() {
             // Only close the level storage when we have saved the last level,
             // otherwise we need to recreate the region files when saving the
             // next levels
-            if (i == (levels.length - 1)) {
+            if (i == (levels.size() - 1)) {
                 level->closeLevelStorage();
             }
         }
@@ -807,20 +806,20 @@ void MinecraftServer::saveGameRules() {
     } else
 #endif
     {
-        byteArray ba;
-        ba.data = nullptr;
-        app.m_gameRules.saveGameRules(&ba.data, &ba.length);
+        uint8_t* baPtr = nullptr;
+        unsigned int baSize = 0;
+        app.m_gameRules.saveGameRules(&baPtr, &baSize);
 
-        if (ba.data != nullptr) {
+        if (baPtr != nullptr) {
+            std::vector<uint8_t> ba(baPtr, baPtr + baSize);
             ConsoleSaveFile* csf =
                 getLevel(0)->getLevelStorage()->getSaveFile();
             FileEntry* fe =
                 csf->createFile(ConsoleSavePath(GAME_RULE_SAVENAME));
             csf->setFilePointer(fe, 0, SaveFileSeekOrigin::Begin);
             unsigned int length;
-            csf->writeFile(fe, ba.data, ba.length, &length);
+            csf->writeFile(fe, ba.data(), ba.size(), &length);
 
-            delete[] ba.data;
 
             csf->closeHandle(fe);
         }
@@ -842,13 +841,13 @@ void MinecraftServer::Suspend() {
         if (players != nullptr) {
             players->saveAll(nullptr);
         }
-        for (unsigned int j = 0; j < levels.length; j++) {
+        for (unsigned int j = 0; j < levels.size(); j++) {
             if (s_bServerHalted) break;
             // 4J Stu - Save the levels in reverse order so we don't overwrite
             // the level.dat with the data from the nethers leveldata. Fix for
             // #7418 - Functional: Gameplay: Saving after sleeping in a bed will
             // place player at nighttime when restarting.
-            ServerLevel* level = levels[levels.length - 1 - j];
+            ServerLevel* level = levels[levels.size() - 1 - j];
             level->Suspend();
         }
         if (!s_bServerHalted) {
@@ -907,7 +906,7 @@ void MinecraftServer::stopServer(bool didInit) {
             // the level.dat with the data from the nethers leveldata. Fix for
             // #7418 - Functional: Gameplay: Saving after sleeping in a bed will
             // place player at nighttime when restarting.
-            // for (unsigned int i = levels.length - 1; i >= 0; i--)
+            // for (unsigned int i = levels.size() - 1; i >= 0; i--)
             //{
             //	ServerLevel *level = levels[i];
             //	if (level != nullptr)
@@ -937,7 +936,7 @@ void MinecraftServer::stopServer(bool didInit) {
     // files have completed saving.
 
     // 4J-PB remove the server levels
-    unsigned int iServerLevelC = levels.length;
+    unsigned int iServerLevelC = levels.size();
     for (unsigned int i = 0; i < iServerLevelC; i++) {
         if (levels[i] != nullptr) {
             delete levels[i];
@@ -1149,7 +1148,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
             }
             if (MinecraftServer::setTimeAtEndOfTick) {
                 MinecraftServer::setTimeAtEndOfTick = false;
-                for (unsigned int i = 0; i < levels.length; i++) {
+                for (unsigned int i = 0; i < levels.size(); i++) {
                     //					if (i == 0 ||
                     // settings->getBoolean(L"allow-nether", true))
                     //// 4J removed - we always have nether
@@ -1161,7 +1160,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
             }
             if (MinecraftServer::setTimeOfDayAtEndOfTick) {
                 MinecraftServer::setTimeOfDayAtEndOfTick = false;
-                for (unsigned int i = 0; i < levels.length; i++) {
+                for (unsigned int i = 0; i < levels.size(); i++) {
                     if (i == 0 || settings->getBoolean(L"allow-nether", true)) {
                         ServerLevel* level = levels[i];
                         level->setDayTime(MinecraftServer::setTimeOfDay);
@@ -1189,7 +1188,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                             std::shared_ptr<UpdateProgressPacket>(
                                 new UpdateProgressPacket(20)));
 
-                        for (unsigned int j = 0; j < levels.length; j++) {
+                        for (unsigned int j = 0; j < levels.size(); j++) {
                             if (s_bServerHalted) break;
                             // 4J Stu - Save the levels in reverse order so we
                             // don't overwrite the level.dat with the data from
@@ -1197,7 +1196,7 @@ void MinecraftServer::run(int64_t seed, void* lpParameter) {
                             // Functional: Gameplay: Saving after sleeping in a
                             // bed will place player at nighttime when
                             // restarting.
-                            ServerLevel* level = levels[levels.length - 1 - j];
+                            ServerLevel* level = levels[levels.size() - 1 - j];
                             level->save(
                                 true,
                                 Minecraft::GetInstance()->progressRenderer,
@@ -1423,7 +1422,7 @@ void MinecraftServer::tick() {
     pMinecraft->options->difficulty) ) );
     }*/
 
-    for (unsigned int i = 0; i < levels.length; i++) {
+    for (unsigned int i = 0; i < levels.size(); i++) {
         //        if (i == 0 || settings->getBoolean(L"allow-nether", true))
         //        // 4J removed - we always have nether
         {
@@ -1715,7 +1714,7 @@ void MinecraftServer::cycleSlowQueueIndex() {
 // which case it will return false and nothing is set up.
 bool MinecraftServer::flagEntitiesToBeRemoved(unsigned int* flags) {
     bool removedFound = false;
-    for (unsigned int i = 0; i < levels.length; i++) {
+    for (unsigned int i = 0; i < levels.size(); i++) {
         ServerLevel* level = levels[i];
         if (level) {
             level->flagEntitiesToBeRemoved(flags, &removedFound);

@@ -11,26 +11,25 @@
 #include "HopperTileEntity.h"
 
 HopperTileEntity::HopperTileEntity() {
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
+    items = std::vector<std::shared_ptr<ItemInstance>>(5);
     name = L"";
     cooldownTime = -1;
 }
 
-HopperTileEntity::~HopperTileEntity() { delete[] items.data; }
+HopperTileEntity::~HopperTileEntity() {}
 
 void HopperTileEntity::load(CompoundTag* base) {
     TileEntity::load(base);
 
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
-    delete[] items.data;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
+    items = std::vector<std::shared_ptr<ItemInstance>>(getContainerSize());
     if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
     cooldownTime = base->getInt(L"TransferCooldown");
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         int slot = tag->getByte(L"Slot");
-        if (slot >= 0 && slot < items.length)
+        if (slot >= 0 && slot < items.size())
             items[slot] = ItemInstance::fromTag(tag);
     }
 }
@@ -39,7 +38,7 @@ void HopperTileEntity::save(CompoundTag* base) {
     TileEntity::save(base);
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
-    for (int i = 0; i < items.length; i++) {
+    for (int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
@@ -54,7 +53,7 @@ void HopperTileEntity::save(CompoundTag* base) {
 
 void HopperTileEntity::setChanged() { TileEntity::setChanged(); }
 
-unsigned int HopperTileEntity::getContainerSize() { return items.length; }
+unsigned int HopperTileEntity::getContainerSize() { return items.size(); }
 
 std::shared_ptr<ItemInstance> HopperTileEntity::getItem(unsigned int slot) {
     return items[slot];
@@ -187,9 +186,9 @@ bool HopperTileEntity::suckInItems(Hopper* hopper) {
         std::shared_ptr<WorldlyContainer> worldly =
             std::dynamic_pointer_cast<WorldlyContainer>(container);
         if ((worldly != nullptr) && (face > -1)) {
-            intArray slots = worldly->getSlotsForFace(face);
+            std::vector<int> slots = worldly->getSlotsForFace(face);
 
-            for (int i = 0; i < slots.length; i++) {
+            for (int i = 0; i < slots.size(); i++) {
                 if (tryTakeInItemFromSlot(hopper, container.get(), slots[i],
                                           face))
                     return true;
@@ -259,9 +258,9 @@ std::shared_ptr<ItemInstance> HopperTileEntity::addItem(
     Container* container, std::shared_ptr<ItemInstance> item, int face) {
     if (dynamic_cast<WorldlyContainer*>(container) != nullptr && face > -1) {
         WorldlyContainer* worldly = (WorldlyContainer*)container;
-        intArray slots = worldly->getSlotsForFace(face);
+        std::vector<int> slots = worldly->getSlotsForFace(face);
 
-        for (int i = 0; i < slots.length && item != nullptr && item->count > 0;
+        for (int i = 0; i < slots.size() && item != nullptr && item->count > 0;
              i++) {
             item = tryMoveInItem(container, item, slots[i], face);
         }
@@ -428,7 +427,7 @@ std::shared_ptr<TileEntity> HopperTileEntity::clone() {
 
     result->name = name;
     result->cooldownTime = cooldownTime;
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             result->items[i] = ItemInstance::clone(items[i]);
         }

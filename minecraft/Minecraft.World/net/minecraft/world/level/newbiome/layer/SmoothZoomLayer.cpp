@@ -8,14 +8,14 @@ SmoothZoomLayer::SmoothZoomLayer(int64_t seedMixup,
     this->parent = parent;
 }
 
-intArray SmoothZoomLayer::getArea(int xo, int yo, int w, int h) {
+std::vector<int> SmoothZoomLayer::getArea(int xo, int yo, int w, int h) {
     int px = xo >> 1;
     int py = yo >> 1;
     int pw = (w >> 1) + 3;
     int ph = (h >> 1) + 3;
-    intArray p = parent->getArea(px, py, pw, ph);
+    std::vector<int> p = parent->getArea(px, py, pw, ph);
 
-    intArray tmp{static_cast<unsigned int>(pw * ph * 4)};
+    std::vector<int> tmp(pw * ph * 4);
     int ww = (pw << 1);
     for (int y = 0; y < ph - 1; y++) {
         int ry = y << 1;
@@ -40,10 +40,11 @@ intArray SmoothZoomLayer::getArea(int xo, int yo, int w, int h) {
             dl = dr;
         }
     }
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
-        System::arraycopy(tmp, (y + (yo & 1)) * (pw << 1) + (xo & 1), &result,
-                          y * w, w);
+        std::copy(tmp.begin() + (y + (yo & 1)) * (pw << 1) + (xo & 1),
+                  tmp.begin() + (y + (yo & 1)) * (pw << 1) + (xo & 1) + w,
+                  result.begin() + y * w);
     }
     return result;
 }

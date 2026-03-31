@@ -92,7 +92,7 @@ public:
     protected:
         virtual bool createChest(Level* level, BoundingBox* chunkBB,
                                  Random* random, int x, int y, int z,
-                                 WeighedTreasureArray treasure, int numRolls);
+                                 const std::vector<WeighedTreasure*>& treasure, int numRolls);
 
     public:
         virtual bool postProcess(Level* level, Random* random,
@@ -168,7 +168,7 @@ public:
 
     /* @formatter:off */
 private:
-    static WeighedTreasureArray smallTreasureItems;
+    static std::vector<WeighedTreasure*> smallTreasureItems;
     /* @formatter:on */
 
 public:

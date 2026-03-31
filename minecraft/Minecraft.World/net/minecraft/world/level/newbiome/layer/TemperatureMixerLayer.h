@@ -11,5 +11,5 @@ public:
     TemperatureMixerLayer(std::shared_ptr<Layer> temp,
                           std::shared_ptr<Layer> parent, int layer);
 
-    virtual intArray getArea(int xo, int yo, int w, int h);
+    virtual std::vector<int> getArea(int xo, int yo, int w, int h);
 };

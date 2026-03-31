@@ -22,10 +22,10 @@ UpdateGameRuleProgressPacket::UpdateGameRuleProgressPacket(
     m_dataTag = dataTag;
 
     if (dataLength > 0) {
-        m_data = byteArray(dataLength);
-        memcpy(m_data.data, data, dataLength);
+        m_data = std::vector<uint8_t>(dataLength);
+        memcpy(m_data.data(), data, dataLength);
     } else {
-        m_data = byteArray();
+        m_data = std::vector<uint8_t>();
     }
 }
 
@@ -40,10 +40,10 @@ void UpdateGameRuleProgressPacket::read(
     int dataLength = dis->readInt();
 
     if (dataLength > 0) {
-        m_data = byteArray(dataLength);
+        m_data = std::vector<uint8_t>(dataLength);
         dis->readFully(m_data);
     } else {
-        m_data = byteArray();
+        m_data = std::vector<uint8_t>();
     }
 }
 
@@ -55,7 +55,7 @@ void UpdateGameRuleProgressPacket::write(
     dos->writeInt(m_icon);
     dos->writeByte(m_auxValue);
     dos->writeInt(m_dataTag);
-    dos->writeInt(m_data.length);
+    dos->writeInt(m_data.size());
     dos->write(m_data);
 }
 
@@ -64,5 +64,5 @@ void UpdateGameRuleProgressPacket::handle(PacketListener* listener) {
 }
 
 int UpdateGameRuleProgressPacket::getEstimatedSize() {
-    return (int)m_messageId.length() + 4 + m_data.length;
+    return (int)m_messageId.length() + 4 + m_data.size();
 }

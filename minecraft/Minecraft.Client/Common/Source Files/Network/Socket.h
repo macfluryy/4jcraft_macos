@@ -27,7 +27,7 @@ public:
     class SocketOutputStream : public OutputStream {
     public:
         // The flags are those that can be used for the QNet SendData function
-        virtual void writeWithFlags(byteArray b, unsigned int offset,
+        virtual void writeWithFlags(const std::vector<uint8_t>& b, unsigned int offset,
                                     unsigned int length, int flags) {
             write(b, offset, length);
         }
@@ -45,8 +45,8 @@ private:
         SocketInputStreamLocal(int queueIdx);
 
         virtual int read();
-        virtual int read(byteArray b);
-        virtual int read(byteArray b, unsigned int offset, unsigned int length);
+        virtual int read(std::vector<uint8_t>& b);
+        virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
         virtual void close();
         virtual int64_t skip(int64_t n) {
             return n;
@@ -65,8 +65,8 @@ private:
         SocketOutputStreamLocal(int queueIdx);
 
         virtual void write(unsigned int b);
-        virtual void write(byteArray b);
-        virtual void write(byteArray b, unsigned int offset,
+        virtual void write(const std::vector<uint8_t>& b);
+        virtual void write(const std::vector<uint8_t>& b, unsigned int offset,
                            unsigned int length);
         virtual void close();
         virtual void flush() {}
@@ -81,8 +81,8 @@ private:
         SocketInputStreamNetwork(Socket* socket, int queueIdx);
 
         virtual int read();
-        virtual int read(byteArray b);
-        virtual int read(byteArray b, unsigned int offset, unsigned int length);
+        virtual int read(std::vector<uint8_t>& b);
+        virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
         virtual void close();
         virtual int64_t skip(int64_t n) {
             return n;
@@ -98,10 +98,10 @@ private:
         SocketOutputStreamNetwork(Socket* socket, int queueIdx);
 
         virtual void write(unsigned int b);
-        virtual void write(byteArray b);
-        virtual void write(byteArray b, unsigned int offset,
+        virtual void write(const std::vector<uint8_t>& b);
+        virtual void write(const std::vector<uint8_t>& b, unsigned int offset,
                            unsigned int length);
-        virtual void writeWithFlags(byteArray b, unsigned int offset,
+        virtual void writeWithFlags(const std::vector<uint8_t>& b, unsigned int offset,
                                     unsigned int length, int flags);
         virtual void close();
         virtual void flush() {}

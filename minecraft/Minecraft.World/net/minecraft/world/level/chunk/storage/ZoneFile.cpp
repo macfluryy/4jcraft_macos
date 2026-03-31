@@ -51,7 +51,6 @@ ZoneFile::ZoneFile(int64_t key, File file, File entityFile)
     //    }
 }
 
-ZoneFile::~ZoneFile() { delete[] slots.data; }
 
 void ZoneFile::readHeader() {
     ZoneIo* zoneIo = new ZoneIo(channel, 0);
@@ -79,7 +78,7 @@ void ZoneFile::writeHeader() {
     bb->putShort((short)0);
     bb->putShort((short)slotCount);
     bb->putShortArray(slots);
-    bb->position(bb->position() + slots.length * 2);
+    bb->position(bb->position() + slots.size() * 2);
     bb->flip();
     zoneIo->write(bb, FILE_HEADER_SIZE);
 }
