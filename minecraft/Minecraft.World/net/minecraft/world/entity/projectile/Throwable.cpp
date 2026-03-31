@@ -263,7 +263,7 @@ float Throwable::getShadowHeightOffs() { return 0; }
 
 std::shared_ptr<LivingEntity> Throwable::getOwner() {
     if (owner == nullptr && !ownerName.empty()) {
-        owner = std::static_pointer_cast<LivingEntity>(level->getPlayerByName(ownerName));
+        owner = std::dynamic_pointer_cast<LivingEntity>(level->getPlayerByName(ownerName));
     }
     return owner;
 }
