@@ -1,7 +1,6 @@
 #include <ctime>
 #include <cstdint>  // for int64_t
 
-#include "java/System.h"
 #include "java/Random.h"
 
 Random::Random() {

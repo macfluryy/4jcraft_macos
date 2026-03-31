@@ -4,8 +4,8 @@
 #include "java/FileFilter.h"
 #include "java/File.h"
 
-#include "../../../Minecraft.World/ConsoleHelpers/PathHelper.h" // 4jcraft TODO
-#include "../../../Minecraft.World/ConsoleHelpers/StringHelpers.h" // 4jcraft TODO
+#include "../../Minecraft.World/ConsoleHelpers/PathHelper.h" // 4jcraft TODO
+#include "../../Minecraft.World/ConsoleHelpers/StringHelpers.h" // 4jcraft TODO
 
 const wchar_t File::pathSeparator = L'/';
 

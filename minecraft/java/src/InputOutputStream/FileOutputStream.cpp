@@ -1,5 +1,3 @@
-#include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
-
 #include "java/File.h"
 #include "java/InputOutputStream/FileOutputStream.h"
 
