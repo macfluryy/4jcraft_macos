@@ -2,13 +2,6 @@
 
 #include "Minecraft.World/Header Files/SoundTypes.h"
 
-#ifdef _WINDOWS64
-#include "../../../Windows64/Miles Sound System/Include/mss.h"
-#else
-// Linux currently uses the Windows64 Miles headers as the compatible host SDK.
-#include "../../../Windows64/Miles Sound System/Include/mss.h"
-#endif
-
 typedef struct {
     float x, y, z;
 } AUDIO_VECTOR;
