@@ -4,7 +4,7 @@
 #include "../../net.minecraft.world.level.h"
 #include "../../biome/net.minecraft.world.level.biome.h"
 #include "../../dimension/net.minecraft.world.level.dimension.h"
-#include "../../../../util/GameMath.h"
+#include "../../../../util/Mth.h"
 #include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "java/JavaMath.h"
 
@@ -49,14 +49,14 @@ StrongholdFeature::StrongholdFeature(
 
     for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_DISTANCE) == 0) {
-            distance = GameMath::getDouble(it->second, distance, 1);
+            distance = Mth::getDouble(it->second, distance, 1);
         } else if (it->first.compare(OPTION_COUNT) == 0) {
             // 4J-JEV: Removed, we only have the one stronghold.
-            // strongholdPos = new ChunkPos[ GameMath::getInt(it->second,
+            // strongholdPos = new ChunkPos[ Mth::getInt(it->second,
             // strongholdPos_length, 1) ];
             assert(false);
         } else if (it->first.compare(OPTION_SPREAD) == 0) {
-            spread = GameMath::getInt(it->second, spread, 1);
+            spread = Mth::getInt(it->second, spread, 1);
         }
     }
 }

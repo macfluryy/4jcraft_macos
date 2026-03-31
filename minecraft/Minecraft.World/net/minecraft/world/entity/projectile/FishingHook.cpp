@@ -149,7 +149,7 @@ void FishingHook::tick() {
         double yt = y + (ly - y) / lSteps;
         double zt = z + (lz - z) / lSteps;
 
-        double yrd = GameMath::wrapDegrees(lyr - yRot);
+        double yrd = Mth::wrapDegrees(lyr - yRot);
 
         yRot += (float)((yrd) / lSteps);
         xRot += (float)((lxr - xRot) / lSteps);
@@ -299,8 +299,8 @@ void FishingHook::tick() {
             nibble--;
         } else {
             int nibbleOdds = 500;
-            if (level->isRainingAt(GameMath::floor(x), GameMath::floor(y) + 1,
-                                   GameMath::floor(z)))
+            if (level->isRainingAt(Mth::floor(x), Mth::floor(y) + 1,
+                                   Mth::floor(z)))
                 nibbleOdds = 300;
 
             if (random->nextInt(nibbleOdds) == 0) {
@@ -309,7 +309,7 @@ void FishingHook::tick() {
                 playSound(
                     eSoundType_RANDOM_SPLASH, 0.25f,
                     1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
-                float yt = (float)GameMath::floor(bb.y0);
+                float yt = (float)Mth::floor(bb.y0);
                 for (int i = 0; i < 1 + bbWidth * 20; i++) {
                     float xo = (random->nextFloat() * 2 - 1) * bbWidth;
                     float zo = (random->nextFloat() * 2 - 1) * bbWidth;

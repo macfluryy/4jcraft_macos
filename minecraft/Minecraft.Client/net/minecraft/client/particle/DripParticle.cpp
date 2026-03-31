@@ -3,7 +3,7 @@
 #include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "DripParticle.h"
 
 DripParticle::DripParticle(Level* level, double x, double y, double z,
@@ -119,11 +119,11 @@ void DripParticle::tick() {
     }
 
     Material* m =
-        level->getMaterial(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
+        level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z));
     if (m->isLiquid() || m->isSolid()) {
-        double y0 = GameMath::floor(y) + 1 -
+        double y0 = Mth::floor(y) + 1 -
                     LiquidTile::getHeight(level->getData(
-                        GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)));
+                        Mth::floor(x), Mth::floor(y), Mth::floor(z)));
         if (y < y0) {
             remove();
         }

@@ -23,10 +23,10 @@ bool MoveIndoorsGoal::canUse() {
     if (insideX != -1 && mob->distanceToSqr(insideX, mob->y, insideZ) < 2 * 2)
         return false;
     std::shared_ptr<Village> village = mob->level->villages->getClosestVillage(
-        GameMath::floor(mob->x), GameMath::floor(mob->y), GameMath::floor(mob->z), 14);
+        Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z), 14);
     if (village == nullptr) return false;
     std::shared_ptr<DoorInfo> _doorInfo = village->getBestDoorInfo(
-        GameMath::floor(mob->x), GameMath::floor(mob->y), GameMath::floor(mob->z));
+        Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z));
     doorInfo = _doorInfo;
     return _doorInfo != nullptr;
 }

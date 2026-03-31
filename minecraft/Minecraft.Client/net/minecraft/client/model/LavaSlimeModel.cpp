@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "LavaSlimeModel.h"
 #include "geom/ModelPart.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/LavaSlime.h"

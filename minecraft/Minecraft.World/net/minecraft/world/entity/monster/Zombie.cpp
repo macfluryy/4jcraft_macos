@@ -115,8 +115,8 @@ void Zombie::aiStep() {
     if (level->isDay() && !level->isClientSide && !isBaby()) {
         float br = getBrightness(1);
         if (br > 0.5f && random->nextFloat() * 30 < (br - 0.4f) * 2 &&
-            level->canSeeSky(GameMath::floor(x), (int)floor(y + 0.5),
-                             GameMath::floor(z))) {
+            level->canSeeSky(Mth::floor(x), (int)floor(y + 0.5),
+                             Mth::floor(z))) {
             bool burn = true;
 
             std::shared_ptr<ItemInstance> helmet = getCarried(SLOT_HELM);
@@ -155,9 +155,9 @@ bool Zombie::hurt(DamageSource* source, float dmg) {
         if ((target != nullptr) && level->difficulty >= Difficulty::HARD &&
             random->nextFloat() <
                 getAttribute(SPAWN_REINFORCEMENTS_CHANCE)->getValue()) {
-            int x = GameMath::floor(this->x);
-            int y = GameMath::floor(this->y);
-            int z = GameMath::floor(this->z);
+            int x = Mth::floor(this->x);
+            int y = Mth::floor(this->y);
+            int z = Mth::floor(this->z);
             std::shared_ptr<Zombie> reinforcement =
                 std::shared_ptr<Zombie>(new Zombie(level));
 

@@ -206,7 +206,7 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
         settings->getInt(L"max-build-height", Level::maxBuildHeight));
     setMaxBuildHeight(((getMaxBuildHeight() + 8) / 16) * 16);
     setMaxBuildHeight(
-        GameMath::clamp(getMaxBuildHeight(), 64, Level::maxBuildHeight));
+        Mth::clamp(getMaxBuildHeight(), 64, Level::maxBuildHeight));
     // settings->setProperty(L"max-build-height", maxBuildHeight);
 
     //        logger.info("Preparing level \"" + levelName + "\"");
@@ -1014,8 +1014,8 @@ bool MinecraftServer::isUnderSpawnProtection(Level* level, int x, int y, int z,
     if (getSpawnProtectionRadius() <= 0) return false;
 
     Pos* spawnPos = level->getSharedSpawnPos();
-    int xd = GameMath::abs(x - spawnPos->x);
-    int zd = GameMath::abs(z - spawnPos->z);
+    int xd = Mth::abs(x - spawnPos->x);
+    int zd = Mth::abs(z - spawnPos->z);
     int dist = std::max(xd, zd);
 
     return dist <= getSpawnProtectionRadius();

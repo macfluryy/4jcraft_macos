@@ -179,7 +179,7 @@ void ItemFrameRenderer::drawItem(std::shared_ptr<ItemFrame> entity) {
             ct->rota = 0;
             ct->updateFromPosition(
                 entity->level, entity->x, entity->z,
-                GameMath::wrapDegrees((float)(180 + entity->dir * 90)), false, true);
+                Mth::wrapDegrees((float)(180 + entity->dir * 90)), false, true);
             ct->rot = compassRot;
             ct->rota = compassRotA;
         }

@@ -56,7 +56,7 @@ void LookControl::tick() {
         mob->yHeadRot = rotlerp(mob->yHeadRot, mob->yBodyRot, 10);
     }
 
-    float headDiffBody = GameMath::wrapDegrees(mob->yHeadRot - mob->yBodyRot);
+    float headDiffBody = Mth::wrapDegrees(mob->yHeadRot - mob->yBodyRot);
 
     if (!mob->getNavigation()->isDone()) {
         // head clamped to body

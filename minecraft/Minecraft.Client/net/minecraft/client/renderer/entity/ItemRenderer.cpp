@@ -58,7 +58,7 @@ void ItemRenderer::render(std::shared_ptr<Entity> _itemEntity, double x,
         sinf((itemEntity->age + a) / 10.0f + itemEntity->bobOffs) * 0.1f +
         0.1f;
     float spin =
-        ((itemEntity->age + a) / 20.0f + itemEntity->bobOffs) * GameMath::RAD_TO_DEG;
+        ((itemEntity->age + a) / 20.0f + itemEntity->bobOffs) * Mth::RAD_TO_DEG;
 
     int count = 1;
     if (itemEntity->getItem()->count > 1) count = 2;
@@ -211,7 +211,7 @@ void ItemRenderer::renderItemBillboard(std::shared_ptr<ItemEntity> entity,
             glRotatef(180, 0, 1, 0);
         } else {
             glRotatef(
-                ((entity->age + a) / 20.0f + entity->bobOffs) * GameMath::RAD_TO_DEG, 0,
+                ((entity->age + a) / 20.0f + entity->bobOffs) * Mth::RAD_TO_DEG, 0,
                 1, 0);
         }
 

@@ -13,9 +13,9 @@ AddExperienceOrbPacket::AddExperienceOrbPacket() {
 AddExperienceOrbPacket::AddExperienceOrbPacket(
     std::shared_ptr<ExperienceOrb> e) {
     id = e->entityId;
-    x = GameMath::floor(e->x * 32);
-    y = GameMath::floor(e->y * 32);
-    z = GameMath::floor(e->z * 32);
+    x = Mth::floor(e->x * 32);
+    y = Mth::floor(e->y * 32);
+    z = Mth::floor(e->z * 32);
     value = e->getValue();
 }
 

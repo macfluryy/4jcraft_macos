@@ -2,7 +2,7 @@
 #include "BoatRenderer.h"
 #include "../../model/BoatModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 ResourceLocation BoatRenderer::BOAT_LOCATION = ResourceLocation(TN_ITEM_BOAT);
 

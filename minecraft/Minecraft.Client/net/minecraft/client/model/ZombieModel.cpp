@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "ZombieModel.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "geom/ModelPart.h"
 
 ZombieModel::ZombieModel() : HumanoidModel(0, 0, 64, 32) {}

@@ -373,17 +373,17 @@ void PlayerList::validatePlayerSpawnPosition(
 
     double targetX = 0;
     if (player->x < 0)
-        targetX = GameMath::ceil(player->x) - 0.5;
+        targetX = Mth::ceil(player->x) - 0.5;
     else
-        targetX = GameMath::floor(player->x) + 0.5;
+        targetX = Mth::floor(player->x) + 0.5;
 
     double targetY = floor(player->y);
 
     double targetZ = 0;
     if (player->z < 0)
-        targetZ = GameMath::ceil(player->z) - 0.5;
+        targetZ = Mth::ceil(player->z) - 0.5;
     else
-        targetZ = GameMath::floor(player->z) + 0.5;
+        targetZ = Mth::floor(player->z) + 0.5;
 
     player->setPos(targetX, targetY, targetZ);
 
@@ -956,9 +956,9 @@ void PlayerList::repositionAcrossDimension(std::shared_ptr<Entity> entity,
     }
 
     if (lastDimension != 1) {
-        xt = (double)GameMath::clamp((int)xt, -Level::MAX_LEVEL_SIZE + 128,
+        xt = (double)Mth::clamp((int)xt, -Level::MAX_LEVEL_SIZE + 128,
                                 Level::MAX_LEVEL_SIZE - 128);
-        zt = (double)GameMath::clamp((int)zt, -Level::MAX_LEVEL_SIZE + 128,
+        zt = (double)Mth::clamp((int)zt, -Level::MAX_LEVEL_SIZE + 128,
                                 Level::MAX_LEVEL_SIZE - 128);
         if (entity->isAlive()) {
             newLevel->addEntity(entity);

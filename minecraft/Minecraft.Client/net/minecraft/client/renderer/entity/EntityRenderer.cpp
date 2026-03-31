@@ -10,7 +10,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
 
 ResourceLocation EntityRenderer::SHADOW_LOCATION =
@@ -175,12 +175,12 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     }
     double ez = e->zOld + (e->z - e->zOld) * a;
 
-    int x0 = GameMath::floor(ex - r);
-    int x1 = GameMath::floor(ex + r);
-    int y0 = GameMath::floor(ey - r);
-    int y1 = GameMath::floor(ey);
-    int z0 = GameMath::floor(ez - r);
-    int z1 = GameMath::floor(ez + r);
+    int x0 = Mth::floor(ex - r);
+    int x1 = Mth::floor(ex + r);
+    int y0 = Mth::floor(ey - r);
+    int y1 = Mth::floor(ey);
+    int z0 = Mth::floor(ez - r);
+    int z1 = Mth::floor(ez + r);
 
     double xo = x - ex;
     double yo = y - ey;

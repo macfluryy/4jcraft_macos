@@ -16,9 +16,9 @@ TeleportEntityPacket::TeleportEntityPacket() {
 
 TeleportEntityPacket::TeleportEntityPacket(std::shared_ptr<Entity> e) {
     id = e->entityId;
-    x = GameMath::floor(e->x * 32);
-    y = GameMath::floor(e->y * 32);
-    z = GameMath::floor(e->z * 32);
+    x = Mth::floor(e->x * 32);
+    y = Mth::floor(e->y * 32);
+    z = Mth::floor(e->z * 32);
     yRot = (uint8_t)(e->yRot * 256 / 360);
     xRot = (uint8_t)(e->xRot * 256 / 360);
 }

@@ -414,8 +414,8 @@ bool PistonBaseTile::isExtended(int data) { return (data & EXTENDED_BIT) != 0; }
 
 int PistonBaseTile::getNewFacing(Level* level, int x, int y, int z,
                                  std::shared_ptr<LivingEntity> player) {
-    if (GameMath::abs((float)player->x - x) < 2 &&
-        GameMath::abs((float)player->z - z) < 2) {
+    if (Mth::abs((float)player->x - x) < 2 &&
+        Mth::abs((float)player->z - z) < 2) {
         // If the player is above the block, the slot is on the top
         double py = player->y + 1.82 - player->heightOffset;
         if (py - y > 2) {
@@ -427,7 +427,7 @@ int PistonBaseTile::getNewFacing(Level* level, int x, int y, int z,
         }
     }
     // The slot is on the side
-    int i = GameMath::floor(player->yRot * 4.0f / 360.0f + 0.5) & 0x3;
+    int i = Mth::floor(player->yRot * 4.0f / 360.0f + 0.5) & 0x3;
     if (i == 0) return Facing::NORTH;
     if (i == 1) return Facing::EAST;
     if (i == 2) return Facing::SOUTH;

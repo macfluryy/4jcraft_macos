@@ -66,7 +66,7 @@ void MinecartFurnace::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
 
     double sd = xPush * xPush + zPush * zPush;
     if (sd > 0.01 * 0.01 && xd * xd + zd * zd > 0.001) {
-        sd = GameMath::sqrt(sd);
+        sd = Mth::sqrt(sd);
         xPush /= sd;
         zPush /= sd;
 
@@ -84,7 +84,7 @@ void MinecartFurnace::applyNaturalSlowdown() {
     double sd = xPush * xPush + zPush * zPush;
 
     if (sd > 0.01 * 0.01) {
-        sd = GameMath::sqrt(sd);
+        sd = Mth::sqrt(sd);
         xPush /= sd;
         zPush /= sd;
         double speed = 0.05;

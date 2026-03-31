@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "SilverfishModel.h"
 #include "geom/Cube.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "geom/ModelPart.h"
 
 const int SilverfishModel::BODY_SIZES[BODY_COUNT][3] = {

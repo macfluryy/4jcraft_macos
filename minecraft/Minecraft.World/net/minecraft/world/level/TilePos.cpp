@@ -11,9 +11,9 @@ TilePos::TilePos(int x, int y, int z) {
 
 // 4J - brought forward from 1.2.3
 TilePos::TilePos(Vec3* p) {
-    this->x = GameMath::floor(p->x);
-    this->y = GameMath::floor(p->y);
-    this->z = GameMath::floor(p->z);
+    this->x = Mth::floor(p->x);
+    this->y = Mth::floor(p->y);
+    this->z = Mth::floor(p->z);
 }
 
 int TilePos::hash_fnct(const TilePos& k) {

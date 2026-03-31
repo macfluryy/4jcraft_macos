@@ -57,8 +57,8 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     int* zz = new int[playerCount];
     for (int i = 0; i < playerCount; i++) {
         std::shared_ptr<Player> player = level->players[i];
-        xx[i] = GameMath::floor(player->x / 16);
-        zz[i] = GameMath::floor(player->z / 16);
+        xx[i] = Mth::floor(player->x / 16);
+        zz[i] = Mth::floor(player->z / 16);
         chunksToPoll.insert(
             std::pair<ChunkPos, bool>(ChunkPos(xx[i], zz[i]), false));
     }

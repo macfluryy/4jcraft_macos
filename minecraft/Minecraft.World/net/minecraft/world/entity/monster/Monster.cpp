@@ -125,9 +125,9 @@ float Monster::getWalkTargetValue(int x, int y, int z) {
 }
 
 bool Monster::isDarkEnoughToSpawn() {
-    int xt = GameMath::floor(x);
-    int yt = GameMath::floor(bb.y0);
-    int zt = GameMath::floor(z);
+    int xt = Mth::floor(x);
+    int yt = Mth::floor(bb.y0);
+    int zt = Mth::floor(z);
     if (level->getBrightness(LightLayer::Sky, xt, yt, zt) > random->nextInt(32))
         return false;
 

@@ -27,10 +27,10 @@ bool BoatItem::TestUse(std::shared_ptr<ItemInstance> itemInstance, Level* level,
 
     Vec3 from(x, y, z);
 
-    float yCos = cosf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
-    float ySin = sinf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
-    float xCos = -cosf(-xRot * GameMath::DEG_TO_RAD);
-    float xSin = sinf(-xRot * GameMath::DEG_TO_RAD);
+    float yCos = cosf(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
+    float ySin = sinf(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
+    float xCos = -cosf(-xRot * Mth::DEG_TO_RAD);
+    float xSin = sinf(-xRot * Mth::DEG_TO_RAD);
 
     float xa = ySin * xCos;
     float ya = xSin;
@@ -64,10 +64,10 @@ std::shared_ptr<ItemInstance> BoatItem::use(
 
     Vec3 from(x, y, z);
 
-    float yCos = cosf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
-    float ySin = sinf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
-    float xCos = -cosf(-xRot * GameMath::DEG_TO_RAD);
-    float xSin = sinf(-xRot * GameMath::DEG_TO_RAD);
+    float yCos = cosf(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
+    float ySin = sinf(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
+    float xCos = -cosf(-xRot * Mth::DEG_TO_RAD);
+    float xSin = sinf(-xRot * Mth::DEG_TO_RAD);
 
     float xa = ySin * xCos;
     float ya = xSin;
@@ -114,7 +114,7 @@ std::shared_ptr<ItemInstance> BoatItem::use(
             std::shared_ptr<Boat> boat = std::shared_ptr<Boat>(
                 new Boat(level, xt + 0.5f, yt + 1.0f, zt + 0.5f));
             boat->yRot =
-                ((GameMath::floor(player->yRot * 4.0F / 360.0F + 0.5) & 0x3) - 1) *
+                ((Mth::floor(player->yRot * 4.0F / 360.0F + 0.5) & 0x3) - 1) *
                 90;
             AABB grown = boat->bb.grow(-0.1, -0.1, -0.1);
             if (!level->getCubes(boat, &grown)->empty()) {

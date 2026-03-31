@@ -35,14 +35,14 @@ int ProtectionEnchantment::getDamageProtection(int level,
 
     float protect = (6 + level * level) / 3.0f;
 
-    if (type == ALL) return GameMath::floor(protect * 0.75f);
-    if (type == FIRE && source->isFire()) return GameMath::floor(protect * 1.25f);
+    if (type == ALL) return Mth::floor(protect * 0.75f);
+    if (type == FIRE && source->isFire()) return Mth::floor(protect * 1.25f);
     if (type == FALL && source == DamageSource::fall)
-        return GameMath::floor(protect * 2.5f);
+        return Mth::floor(protect * 2.5f);
     if (type == EXPLOSION && source->isExplosion())
-        return GameMath::floor(protect * 1.5f);
+        return Mth::floor(protect * 1.5f);
     if (type == PROJECTILE && source->isProjectile())
-        return GameMath::floor(protect * 1.5f);
+        return Mth::floor(protect * 1.5f);
     return 0;
 }
 
@@ -68,7 +68,7 @@ int ProtectionEnchantment::getFireAfterDampener(std::shared_ptr<Entity> entity,
         Enchantment::fireProtection->id, entity->getEquipmentSlots());
 
     if (level > 0) {
-        time -= GameMath::floor(time * (level * 0.15f));
+        time -= Mth::floor(time * (level * 0.15f));
     }
 
     return time;
@@ -80,7 +80,7 @@ double ProtectionEnchantment::getExplosionKnockbackAfterDampener(
         Enchantment::explosionProtection->id, entity->getEquipmentSlots());
 
     if (level > 0) {
-        power -= GameMath::floor(power * (level * 0.15f));
+        power -= Mth::floor(power * (level * 0.15f));
     }
 
     return power;

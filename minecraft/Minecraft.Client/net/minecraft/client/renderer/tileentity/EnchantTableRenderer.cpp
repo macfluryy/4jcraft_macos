@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "../../model/BookModel.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "EnchantTableRenderer.h"
 
 ResourceLocation EnchantTableRenderer::BOOK_LOCATION =
@@ -36,8 +36,8 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
 
     float ff1 = table->oFlip + (table->flip - table->oFlip) * a + 0.25f;
     float ff2 = table->oFlip + (table->flip - table->oFlip) * a + 0.75f;
-    ff1 = (ff1 - GameMath::fastFloor(ff1)) * 1.6f - 0.3f;
-    ff2 = (ff2 - GameMath::fastFloor(ff2)) * 1.6f - 0.3f;
+    ff1 = (ff1 - Mth::fastFloor(ff1)) * 1.6f - 0.3f;
+    ff2 = (ff2 - Mth::fastFloor(ff2)) * 1.6f - 0.3f;
 
     if (ff1 < 0) ff1 = 0;
     if (ff2 < 0) ff2 = 0;

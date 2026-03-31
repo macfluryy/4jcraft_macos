@@ -119,7 +119,7 @@ void Squid::aiStep() {
             ((-(float)atan2(horizontalMovement, yd) * 180 / std::numbers::pi) - xBodyRot) *
             0.1f;
     } else {
-        tentacleAngle = GameMath::abs(sinf(tentacleMovement)) * std::numbers::pi * 0.25f;
+        tentacleAngle = Mth::abs(sinf(tentacleMovement)) * std::numbers::pi * 0.25f;
 
         if (!level->isClientSide) {
             // unable to move, apply gravity

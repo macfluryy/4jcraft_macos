@@ -26,9 +26,9 @@ void PortalForcer::force(std::shared_ptr<Entity> e, double xOriginal,
                          double yOriginal, double zOriginal,
                          float yRotOriginal) {
     if (level->dimension->id == 1) {
-        int x = GameMath::floor(e->x);
-        int y = GameMath::floor(e->y) - 1;
-        int z = GameMath::floor(e->z);
+        int x = Mth::floor(e->x);
+        int y = Mth::floor(e->y) - 1;
+        int z = Mth::floor(e->z);
 
         int xa = 1;
         int za = 0;
@@ -77,8 +77,8 @@ bool PortalForcer::findPortal(std::shared_ptr<Entity> e, double xOriginal,
     int yTarget = 0;
     int zTarget = 0;
 
-    int xc = GameMath::floor(e->x);
-    int zc = GameMath::floor(e->z);
+    int xc = Mth::floor(e->x);
+    int zc = Mth::floor(e->z);
 
     long hash = ChunkPos::hashCode(xc, zc);
     bool updateCache = true;
@@ -238,9 +238,9 @@ bool PortalForcer::createPortal(std::shared_ptr<Entity> e) {
     int r = 16 * 3;
     double closest = -1;
 
-    int xc = GameMath::floor(e->x);
-    int yc = GameMath::floor(e->y);
-    int zc = GameMath::floor(e->z);
+    int xc = Mth::floor(e->x);
+    int yc = Mth::floor(e->y);
+    int zc = Mth::floor(e->z);
 
     // 4J Stu - Changes to stop Portals being created at the border of the
     // nether inside the bedrock

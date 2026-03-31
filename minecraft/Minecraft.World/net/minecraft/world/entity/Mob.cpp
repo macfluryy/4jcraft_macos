@@ -501,7 +501,7 @@ void Mob::lookAt(std::shared_ptr<Entity> e, float yMax, float xMax) {
         yd = (e->bb.y0 + e->bb.y1) / 2 - (y + getHeadHeight());
     }
 
-    double sd = GameMath::sqrt(xd * xd + zd * zd);
+    double sd = Mth::sqrt(xd * xd + zd * zd);
 
     float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
     float xRotD = (float)-(atan2(yd, sd) * 180 / std::numbers::pi);
@@ -514,7 +514,7 @@ bool Mob::isLookingAtAnEntity() { return lookingAt != nullptr; }
 std::shared_ptr<Entity> Mob::getLookingAt() { return lookingAt; }
 
 float Mob::rotlerp(float a, float b, float max) {
-    float diff = GameMath::wrapDegrees(b - a);
+    float diff = Mth::wrapDegrees(b - a);
     if (diff > max) {
         diff = max;
     }
@@ -886,9 +886,9 @@ void Mob::restoreLeashFromSave() {
 // resolve bug 10327 :Gameplay: NPCs can spawn over chunks that have not yet
 // been streamed and display jitter.
 bool Mob::shouldRender(Vec3* c) {
-    if (!level->reallyHasChunksAt(GameMath::floor(bb.x0), GameMath::floor(bb.y0),
-                                  GameMath::floor(bb.z0), GameMath::floor(bb.x1),
-                                  GameMath::floor(bb.y1), GameMath::floor(bb.z1))) {
+    if (!level->reallyHasChunksAt(Mth::floor(bb.x0), Mth::floor(bb.y0),
+                                  Mth::floor(bb.z0), Mth::floor(bb.x1),
+                                  Mth::floor(bb.y1), Mth::floor(bb.z1))) {
         return false;
     }
     return Entity::shouldRender(c);

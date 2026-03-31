@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "BubbleParticle.h"
 #include "java/Random.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
@@ -35,7 +35,7 @@ void BubbleParticle::tick() {
     yd *= 0.85f;
     zd *= 0.85f;
 
-    if (level->getMaterial(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)) !=
+    if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) !=
         Material::water)
         remove();
 

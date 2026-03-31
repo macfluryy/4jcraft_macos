@@ -18,15 +18,15 @@ Level* MinecartSpawner::MinecartMobSpawner::getLevel() {
 }
 
 int MinecartSpawner::MinecartMobSpawner::getX() {
-    return GameMath::floor(m_parent->x);
+    return Mth::floor(m_parent->x);
 }
 
 int MinecartSpawner::MinecartMobSpawner::getY() {
-    return GameMath::floor(m_parent->y);
+    return Mth::floor(m_parent->y);
 }
 
 int MinecartSpawner::MinecartMobSpawner::getZ() {
-    return GameMath::floor(m_parent->z);
+    return Mth::floor(m_parent->z);
 }
 
 MinecartSpawner::MinecartSpawner(Level* level) : Minecart(level) {

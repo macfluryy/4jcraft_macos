@@ -265,7 +265,7 @@ int EntityHorse::getTemper() { return temper; }
 void EntityHorse::setTemper(int temper) { this->temper = temper; }
 
 int EntityHorse::modifyTemper(int amount) {
-    int temper = GameMath::clamp(getTemper() + amount, 0, getMaxTemper());
+    int temper = Mth::clamp(getTemper() + amount, 0, getMaxTemper());
 
     setTemper(temper);
     return temper;
@@ -297,8 +297,8 @@ bool EntityHorse::isPushable() { return rider.lock() == nullptr; }
 // TODO: [EB]: Explain why this is being done - what side effect does getBiome
 // have?
 bool EntityHorse::checkSpawningBiome() {
-    int x = GameMath::floor(this->x);
-    int z = GameMath::floor(this->z);
+    int x = Mth::floor(this->x);
+    int z = Mth::floor(this->z);
 
     level->getBiome(x, z);
     return true;
@@ -331,7 +331,7 @@ void EntityHorse::causeFallDamage(float fallDistance) {
         playSound(eSoundType_MOB_HORSE_LAND, .4f, 1);
     }
 
-    int dmg = GameMath::ceil(fallDistance * .5f - 3.0f);
+    int dmg = Mth::ceil(fallDistance * .5f - 3.0f);
     if (dmg <= 0) return;
 
     hurt(DamageSource::fall, dmg);
@@ -340,8 +340,8 @@ void EntityHorse::causeFallDamage(float fallDistance) {
         rider.lock()->hurt(DamageSource::fall, dmg);
     }
 
-    int id = level->getTile(GameMath::floor(x), GameMath::floor(y - 0.2 - yRotO),
-                            GameMath::floor(z));
+    int id = level->getTile(Mth::floor(x), Mth::floor(y - 0.2 - yRotO),
+                            Mth::floor(z));
     if (id > 0) {
         const Tile::SoundType* stepsound = Tile::tiles[id]->soundType;
         level->playEntitySound(shared_from_this(), stepsound->getStepSound(),
@@ -906,8 +906,8 @@ void EntityHorse::aiStep() {
 
         if (!isEating() && rider.lock() == nullptr &&
             random->nextInt(300) == 0) {
-            if (level->getTile(GameMath::floor(x), GameMath::floor(y) - 1,
-                               GameMath::floor(z)) == Tile::grass_Id) {
+            if (level->getTile(Mth::floor(x), Mth::floor(y) - 1,
+                               Mth::floor(z)) == Tile::grass_Id) {
                 setEating(true);
             }
         }
@@ -1146,7 +1146,7 @@ void EntityHorse::travel(float xa, float ya) {
     walkAnimSpeedO = walkAnimSpeed;
     double dx = x - xo;
     double dz = z - zo;
-    float wst = GameMath::sqrt(dx * dx + dz * dz) * 4.0f;
+    float wst = Mth::sqrt(dx * dx + dz * dz) * 4.0f;
     if (wst > 1.0f) {
         wst = 1.0f;
     }

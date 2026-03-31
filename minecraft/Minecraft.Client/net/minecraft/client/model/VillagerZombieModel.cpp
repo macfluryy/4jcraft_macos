@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "geom/ModelPart.h"
 #include "VillagerZombieModel.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 void VillagerZombieModel::_init(float g, float yOffset, bool isArmor) {
     delete head;

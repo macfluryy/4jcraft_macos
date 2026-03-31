@@ -39,7 +39,7 @@
 #include "nbt/com.mojang.nbt.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "../gui/achievement/AchievementPopup.h"
 #include "../particle/CritParticle.h"
 
@@ -1094,9 +1094,9 @@ bool LocalPlayer::isSolidBlock(int x, int y, int z) {
 }
 
 bool LocalPlayer::checkInTile(double x, double y, double z) {
-    int xTile = GameMath::floor(x);
-    int yTile = GameMath::floor(y);
-    int zTile = GameMath::floor(z);
+    int xTile = Mth::floor(x);
+    int yTile = Mth::floor(y);
+    int zTile = Mth::floor(z);
 
     double xd = x - xTile;
     double zd = z - zTile;

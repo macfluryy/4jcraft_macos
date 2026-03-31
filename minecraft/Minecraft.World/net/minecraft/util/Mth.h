@@ -2,7 +2,7 @@
 
 class Random;
 
-class GameMath {
+class Mth {
 public:
     static constexpr float DEG_TO_RAD = std::numbers::pi_v<float> / 180.0f;
     static constexpr float RAD_TO_DEG = 180.0f / std::numbers::pi_v<float>;

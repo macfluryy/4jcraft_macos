@@ -57,9 +57,9 @@ void Explosion::explode() {
 
                 float stepSize = 0.3f;
                 while (remainingPower > 0) {
-                    int xt = GameMath::floor(xp);
-                    int yt = GameMath::floor(yp);
-                    int zt = GameMath::floor(zp);
+                    int xt = Mth::floor(xp);
+                    int yt = Mth::floor(yp);
+                    int zt = Mth::floor(zp);
                     int t = level->getTile(xt, yt, zt);
                     if (t > 0) {
                         Tile* tile = Tile::tiles[t];
@@ -88,12 +88,12 @@ void Explosion::explode() {
     }
 
     r *= 2.0f;
-    int x0 = GameMath::floor(x - r - 1);
-    int x1 = GameMath::floor(x + r + 1);
-    int y0 = GameMath::floor(y - r - 1);
-    int y1 = GameMath::floor(y + r + 1);
-    int z0 = GameMath::floor(z - r - 1);
-    int z1 = GameMath::floor(z + r + 1);
+    int x0 = Mth::floor(x - r - 1);
+    int x1 = Mth::floor(x + r + 1);
+    int y0 = Mth::floor(y - r - 1);
+    int y1 = Mth::floor(y + r + 1);
+    int z0 = Mth::floor(z - r - 1);
+    int z1 = Mth::floor(z + r + 1);
 
     // Fix for 360 #123866 - [CRASH] TU13: Code: Compliance: Placing the TNT
     // next to Ender Crystals will crash the title after a certain amount of

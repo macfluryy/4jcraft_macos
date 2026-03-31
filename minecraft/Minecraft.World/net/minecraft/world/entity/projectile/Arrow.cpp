@@ -273,8 +273,8 @@ void Arrow::tick() {
 
     if (res != nullptr) {
         if (res->entity != nullptr) {
-            float pow = GameMath::sqrt(xd * xd + yd * yd + zd * zd);
-            int dmg = (int)GameMath::ceil((float)(pow * baseDamage));
+            float pow = Mth::sqrt(xd * xd + yd * yd + zd * zd);
+            int dmg = (int)Mth::ceil((float)(pow * baseDamage));
 
             if (isCritArrow()) dmg += random->nextInt(dmg / 2 + 2);
 

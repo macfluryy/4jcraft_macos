@@ -5,7 +5,7 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "../Tesselator.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "java/JavaMath.h"
 
 ResourceLocation ExperienceOrbRenderer::XP_ORB_LOCATION =

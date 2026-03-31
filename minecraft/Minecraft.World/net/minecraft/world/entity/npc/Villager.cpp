@@ -100,12 +100,12 @@ bool Villager::useNewAi() { return true; }
 
 void Villager::serverAiMobStep() {
     if (--villageUpdateInterval <= 0) {
-        level->villages->queryUpdateAround(GameMath::floor(x), GameMath::floor(y),
-                                           GameMath::floor(z));
+        level->villages->queryUpdateAround(Mth::floor(x), Mth::floor(y),
+                                           Mth::floor(z));
         villageUpdateInterval = 70 + random->nextInt(50);
 
         std::shared_ptr<Village> _village = level->villages->getClosestVillage(
-            GameMath::floor(x), GameMath::floor(y), GameMath::floor(z), Villages::MaxDoorDist);
+            Mth::floor(x), Mth::floor(y), Mth::floor(z), Villages::MaxDoorDist);
         village = _village;
         if (_village == nullptr)
             clearRestriction();

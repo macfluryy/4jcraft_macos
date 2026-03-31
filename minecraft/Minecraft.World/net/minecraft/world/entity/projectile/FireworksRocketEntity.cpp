@@ -56,7 +56,7 @@ void FireworksRocketEntity::lerpMotion(double xd, double yd, double zd) {
     yd = yd;
     zd = zd;
     if (xRotO == 0 && yRotO == 0) {
-        double sd = GameMath::sqrt(xd * xd + zd * zd);
+        double sd = Mth::sqrt(xd * xd + zd * zd);
         yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
         xRotO = xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
     }
@@ -73,7 +73,7 @@ void FireworksRocketEntity::tick() {
     yd += .04;
     move(xd, yd, zd);
 
-    double sd = GameMath::sqrt(xd * xd + zd * zd);
+    double sd = Mth::sqrt(xd * xd + zd * zd);
     yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
     xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
 

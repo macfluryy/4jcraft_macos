@@ -108,8 +108,8 @@ void MapItem::update(Level* level, std::shared_ptr<Entity> player,
     int xo = data->x;
     int zo = data->z;
 
-    int xp = GameMath::floor(player->x - xo) / scale + w / 2;
-    int zp = GameMath::floor(player->z - zo) / scale + h / 2;
+    int xp = Mth::floor(player->x - xo) / scale + w / 2;
+    int zp = Mth::floor(player->z - zo) / scale + h / 2;
 
     int rad = 128 / scale;
     if (level->dimension->hasCeiling) {

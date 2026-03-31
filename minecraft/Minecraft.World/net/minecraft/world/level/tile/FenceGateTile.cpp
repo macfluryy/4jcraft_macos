@@ -72,7 +72,7 @@ int FenceGateTile::getRenderShape() { return Tile::SHAPE_FENCE_GATE; }
 void FenceGateTile::setPlacedBy(Level* level, int x, int y, int z,
                                 std::shared_ptr<LivingEntity> by,
                                 std::shared_ptr<ItemInstance> itemInstance) {
-    int dir = (((GameMath::floor(by->yRot * 4 / (360) + 0.5)) & 3)) % 4;
+    int dir = (((Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3)) % 4;
     level->setData(x, y, z, dir, Tile::UPDATE_CLIENTS);
 }
 
@@ -95,7 +95,7 @@ bool FenceGateTile::use(Level* level, int x, int y, int z,
         level->setData(x, y, z, data & ~OPEN_BIT, Tile::UPDATE_CLIENTS);
     } else {
         // open the door from the player
-        int dir = (((GameMath::floor(player->yRot * 4 / (360) + 0.5)) & 3)) % 4;
+        int dir = (((Mth::floor(player->yRot * 4 / (360) + 0.5)) & 3)) % 4;
         int current = getDirection(data);
         if (current == ((dir + 2) % 4)) {
             data = dir;

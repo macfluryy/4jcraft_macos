@@ -55,7 +55,7 @@ std::optional<AABB> SkullTile::getAABB(Level* level, int x, int y, int z) {
 
 void SkullTile::setPlacedBy(Level* level, int x, int y, int z,
                             std::shared_ptr<LivingEntity> by) {
-    int dir = GameMath::floor(by->yRot * 4 / (360) + 2.5) & 3;
+    int dir = Mth::floor(by->yRot * 4 / (360) + 2.5) & 3;
     level->setData(x, y, z, dir, Tile::UPDATE_CLIENTS);
 }
 

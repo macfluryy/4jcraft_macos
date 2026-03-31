@@ -35,14 +35,14 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, std::vector<uint8_t>& block
     bool steep = random->nextInt(6) == 0;
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (GameMath::sin(step * std::numbers::pi / dist) * thickness) * 1;
+        double rad = 1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
-        float xc = GameMath::cos(xRot);
-        float xs = GameMath::sin(xRot);
-        xCave += GameMath::cos(yRot) * xc;
+        float xc = Mth::cos(xRot);
+        float xs = Mth::sin(xRot);
+        xCave += Mth::cos(yRot) * xc;
         yCave += xs;
-        zCave += GameMath::sin(yRot) * xc;
+        zCave += Mth::sin(yRot) * xc;
 
         if (steep) {
             xRot *= 0.92f;
@@ -84,14 +84,14 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, std::vector<uint8_t>& block
             xCave > xMid + 16 + rad * 2 || zCave > zMid + 16 + rad * 2)
             continue;
 
-        int x0 = GameMath::floor(xCave - rad) - xOffs * 16 - 1;
-        int x1 = GameMath::floor(xCave + rad) - xOffs * 16 + 1;
+        int x0 = Mth::floor(xCave - rad) - xOffs * 16 - 1;
+        int x1 = Mth::floor(xCave + rad) - xOffs * 16 + 1;
 
-        int y0 = GameMath::floor(yCave - yRad) - 1;
-        int y1 = GameMath::floor(yCave + yRad) + 1;
+        int y0 = Mth::floor(yCave - yRad) - 1;
+        int y1 = Mth::floor(yCave + yRad) + 1;
 
-        int z0 = GameMath::floor(zCave - rad) - zOffs * 16 - 1;
-        int z1 = GameMath::floor(zCave + rad) - zOffs * 16 + 1;
+        int z0 = Mth::floor(zCave - rad) - zOffs * 16 - 1;
+        int z1 = Mth::floor(zCave + rad) - zOffs * 16 + 1;
 
         if (x0 < 0) x0 = 0;
         if (x1 > 16) x1 = 16;

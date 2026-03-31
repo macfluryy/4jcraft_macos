@@ -26,9 +26,9 @@ AddMobPacket::AddMobPacket(std::shared_ptr<LivingEntity> mob, int yRotp,
     type = EntityIO::getId(mob);
     // 4J Stu - We should add entities at their "last sent" position so that the
     // relative update packets put them in the correct place
-    x = xp;  // GameMath::floor(mob->x * 32);
-    y = yp;  // GameMath::floor(mob->y * 32);
-    z = zp;  // GameMath::floor(mob->z * 32);
+    x = xp;  // Mth::floor(mob->x * 32);
+    y = yp;  // Mth::floor(mob->y * 32);
+    z = zp;  // Mth::floor(mob->z * 32);
     // 4J - changed - send current "previously sent" value of rotations to put
     // this in sync with other clients
     yRot = static_cast<uint8_t>(yRotp);

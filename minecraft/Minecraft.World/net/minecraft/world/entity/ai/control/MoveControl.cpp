@@ -58,7 +58,7 @@ void MoveControl::tick() {
 }
 
 float MoveControl::rotlerp(float a, float b, float max) {
-    float diff = GameMath::wrapDegrees(b - a);
+    float diff = Mth::wrapDegrees(b - a);
     if (diff > max) {
         diff = max;
     }

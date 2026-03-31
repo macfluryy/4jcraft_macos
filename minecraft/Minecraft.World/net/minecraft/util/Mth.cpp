@@ -1,5 +1,5 @@
 #include "../../../Header Files/stdafx.h"
-#include "GameMath.h"
+#include "Mth.h"
 #include "java/Random.h"
 #include "../../../ConsoleHelpers/StringHelpers.h"
 
@@ -18,19 +18,19 @@ static std::array<float, SIN_TAB_CNT> makeSinTable() {
 
 static const std::array<float, SIN_TAB_CNT> sinTable = makeSinTable();
 
-float GameMath::sin(float i) {
+float Mth::sin(float i) {
     return sinTable[(int32_t)::fmodf(i * SIN_SCALE, (float)SIN_TAB_CNT) &
                     (SIN_TAB_CNT - 1)];
 }
 
-float GameMath::cos(float i) {
+float Mth::cos(float i) {
     return sinTable[(int32_t)::fmodf(i * SIN_SCALE + (float)SIN_TAB_CNT / 4,
                                      (float)SIN_TAB_CNT) &
                     (SIN_TAB_CNT - 1)];
 }
 
 // 4J Changed this to remove the use of the actual UUID type
-std::wstring GameMath::createInsecureUUID(Random* random) {
+std::wstring Mth::createInsecureUUID(Random* random) {
     wchar_t output[33];
     output[32] = 0;
     int64_t high = (random->nextLong() & ~UUID_VERSION) | UUID_VERSION_TYPE_4;
@@ -50,24 +50,24 @@ std::wstring GameMath::createInsecureUUID(Random* random) {
     return std::wstring(output);
 }
 
-int GameMath::getInt(const std::wstring& input, int def) {
+int Mth::getInt(const std::wstring& input, int def) {
     std::wistringstream stream(input);
     int result;
     return (stream >> result) ? result : def;
 }
 
-int GameMath::getInt(const std::wstring& input, int def, int min) {
+int Mth::getInt(const std::wstring& input, int def, int min) {
     int result = getInt(input, def);
     return result < min ? min : result;
 }
 
-double GameMath::getDouble(const std::wstring& input, double def) {
+double Mth::getDouble(const std::wstring& input, double def) {
     std::wistringstream stream(input);
     double result;
     return (stream >> result) ? result : def;
 }
 
-double GameMath::getDouble(const std::wstring& input, double def, double min) {
+double Mth::getDouble(const std::wstring& input, double def, double min) {
     double result = getDouble(input, def);
     return result < min ? min : result;
 }

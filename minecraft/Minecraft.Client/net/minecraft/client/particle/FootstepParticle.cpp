@@ -2,7 +2,7 @@
 #include "FootstepParticle.h"
 #include "../renderer/Textures.h"
 #include "../renderer/Tesselator.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "../resources/ResourceLocation.h"
 
@@ -38,7 +38,7 @@ void FootstepParticle::render(Tesselator* t, float a, float xa, float ya,
     float zz = (float)(z - zOff);
 
     float br =
-        level->getBrightness(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
+        level->getBrightness(Mth::floor(x), Mth::floor(y), Mth::floor(z));
 
     textures->bindTexture(&FOOTPRINT_LOCATION);
     glEnable(GL_BLEND);

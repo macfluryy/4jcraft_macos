@@ -499,8 +499,8 @@ void LevelRenderer::allChanged(int playerIndex) {
     if (level[playerIndex] != nullptr) {
         std::shared_ptr<Entity> player = mc->cameraTargetPlayer;
         if (player != nullptr) {
-            this->resortChunks(GameMath::floor(player->x), GameMath::floor(player->y),
-                               GameMath::floor(player->z));
+            this->resortChunks(Mth::floor(player->x), Mth::floor(player->y),
+                               Mth::floor(player->z));
             //			sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
             // DistanceChunkSorter(player));	// 4J - removed - not sorting
             // our chunks anymore
@@ -597,8 +597,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
                 !mc->cameraTargetPlayer->isSleeping())
                 continue;
 
-            if (!level[playerIndex]->hasChunkAt(GameMath::floor(entity->x), 0,
-                                                GameMath::floor(entity->z))) {
+            if (!level[playerIndex]->hasChunkAt(Mth::floor(entity->x), 0,
+                                                Mth::floor(entity->z))) {
                 continue;
             }
             renderedEntities++;
@@ -731,8 +731,8 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
         yOld[playerIndex] = player->y;
         zOld[playerIndex] = player->z;
 
-        resortChunks(GameMath::floor(player->x), GameMath::floor(player->y),
-                     GameMath::floor(player->z));
+        resortChunks(Mth::floor(player->x), Mth::floor(player->y),
+                     Mth::floor(player->z));
         //		sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
         // DistanceChunkSorter(player));	// 4J - removed - not sorting
         // our chunks anymore
@@ -1176,8 +1176,8 @@ void LevelRenderer::renderClouds(float alpha) {
     double zo =
         mc->cameraTargetPlayer->zo +
         (mc->cameraTargetPlayer->z - mc->cameraTargetPlayer->zo) * alpha;
-    int xOffs = GameMath::floor(xo / 2048);
-    int zOffs = GameMath::floor(zo / 2048);
+    int xOffs = Mth::floor(xo / 2048);
+    int zOffs = Mth::floor(zo / 2048);
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
@@ -1419,8 +1419,8 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
         0.33f;
     float yy = (float)(level[playerIndex]->dimension->getCloudHeight() - yOffs +
                        0.33f);
-    int xOffs = GameMath::floor(xo / 2048);
-    int zOffs = GameMath::floor(zo / 2048);
+    int xOffs = Mth::floor(xo / 2048);
+    int zOffs = Mth::floor(zo / 2048);
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
@@ -1468,16 +1468,16 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
 
     float scale = 1 / 256.0f;
 
-    uo = (float)(GameMath::floor(xo)) * scale;
-    vo = (float)(GameMath::floor(zo)) * scale;
+    uo = (float)(Mth::floor(xo)) * scale;
+    vo = (float)(Mth::floor(zo)) * scale;
     // 4J - keep our UVs +ve - there's a small bug in the xbox GPU that
     // incorrectly rounds small -ve UVs (between -1/(64*size) and 0) up to 0,
     // which leaves gaps in our clouds...
     while (uo < 1.0f) uo += 1.0f;
     while (vo < 1.0f) vo += 1.0f;
 
-    float xoffs = (float)(xo - GameMath::floor(xo));
-    float zoffs = (float)(zo - GameMath::floor(zo));
+    float xoffs = (float)(xo - Mth::floor(xo));
+    float zoffs = (float)(zo - Mth::floor(zo));
 
     int D = 8;
 
@@ -2278,12 +2278,12 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
     // come from when connection is being ticked outside of normal level tick,
     // and player won't be set up
     if (level == nullptr) level = this->level[mc->player->GetXboxPad()];
-    int _x0 = GameMath::intFloorDiv(x0, CHUNK_XZSIZE);
-    int _y0 = GameMath::intFloorDiv(y0, CHUNK_SIZE);
-    int _z0 = GameMath::intFloorDiv(z0, CHUNK_XZSIZE);
-    int _x1 = GameMath::intFloorDiv(x1, CHUNK_XZSIZE);
-    int _y1 = GameMath::intFloorDiv(y1, CHUNK_SIZE);
-    int _z1 = GameMath::intFloorDiv(z1, CHUNK_XZSIZE);
+    int _x0 = Mth::intFloorDiv(x0, CHUNK_XZSIZE);
+    int _y0 = Mth::intFloorDiv(y0, CHUNK_SIZE);
+    int _z0 = Mth::intFloorDiv(z0, CHUNK_XZSIZE);
+    int _x1 = Mth::intFloorDiv(x1, CHUNK_XZSIZE);
+    int _y1 = Mth::intFloorDiv(y1, CHUNK_SIZE);
+    int _z1 = Mth::intFloorDiv(z1, CHUNK_XZSIZE);
 
     for (int x = _x0; x <= _x1; x++) {
         for (int y = _y0; y <= _y1; y++) {
@@ -3608,10 +3608,10 @@ int LevelRenderer::getGlobalIndexForChunk(int x, int y, int z,
     // int xx = ( x / CHUNK_XZSIZE ) + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
     // int yy = y / CHUNK_SIZE;
     // int zz = ( z / CHUNK_XZSIZE )  + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
-    int xx = (GameMath::intFloorDiv(x, CHUNK_XZSIZE)) +
+    int xx = (Mth::intFloorDiv(x, CHUNK_XZSIZE)) +
              (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
-    int yy = GameMath::intFloorDiv(y, CHUNK_SIZE);
-    int zz = (GameMath::intFloorDiv(z, CHUNK_XZSIZE)) +
+    int yy = Mth::intFloorDiv(y, CHUNK_SIZE);
+    int zz = (Mth::intFloorDiv(z, CHUNK_XZSIZE)) +
              (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
 
     if ((xx < 0) || (xx >= MAX_LEVEL_RENDER_SIZE[dimIdx])) return -1;

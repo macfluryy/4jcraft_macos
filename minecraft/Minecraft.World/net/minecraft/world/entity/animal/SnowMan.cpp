@@ -53,17 +53,17 @@ void SnowMan::aiStep() {
     if (isInWaterOrRain()) hurt(DamageSource::drown, 1);
 
     {
-        int xx = GameMath::floor(x);
-        int zz = GameMath::floor(z);
+        int xx = Mth::floor(x);
+        int zz = Mth::floor(z);
         if (level->getBiome(xx, zz)->getTemperature() > 1) {
             hurt(DamageSource::onFire, 1);
         }
     }
 
     for (int i = 0; i < 4; i++) {
-        int xx = GameMath::floor(x + (i % 2 * 2 - 1) * 0.25f);
-        int yy = GameMath::floor(y);
-        int zz = GameMath::floor(z + ((i / 2) % 2 * 2 - 1) * 0.25f);
+        int xx = Mth::floor(x + (i % 2 * 2 - 1) * 0.25f);
+        int yy = Mth::floor(y);
+        int zz = Mth::floor(z + ((i / 2) % 2 * 2 - 1) * 0.25f);
         if (level->getTile(xx, yy, zz) == 0) {
             if (level->getBiome(xx, zz)->getTemperature() < 0.8f) {
                 if (Tile::topSnow->mayPlace(level, xx, yy, zz)) {
@@ -91,7 +91,7 @@ void SnowMan::performRangedAttack(std::shared_ptr<LivingEntity> target,
     double xd = target->x - x;
     double yd = (target->y + target->getHeadHeight() - 1.1f) - snowball->y;
     double zd = target->z - z;
-    float yo = GameMath::sqrt(xd * xd + zd * zd) * 0.2f;
+    float yo = Mth::sqrt(xd * xd + zd * zd) * 0.2f;
     snowball->shoot(xd, yd + yo, zd, 1.60f, 12);
 
     playSound(eSoundType_RANDOM_BOW, 1.0f,

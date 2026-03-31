@@ -85,9 +85,9 @@ void FallingTile::tick() {
     zd *= 0.98f;
 
     if (!level->isClientSide) {
-        int xt = GameMath::floor(x);
-        int yt = GameMath::floor(y);
-        int zt = GameMath::floor(z);
+        int xt = Mth::floor(x);
+        int yt = Mth::floor(y);
+        int zt = Mth::floor(z);
         if (time == 1) {
             if (level->getTile(xt, yt, zt) == tile) {
                 level->removeTile(xt, yt, zt);
@@ -162,7 +162,7 @@ void FallingTile::tick() {
 
 void FallingTile::causeFallDamage(float distance) {
     if (hurtEntities) {
-        int dmg = GameMath::ceil(distance - 1);
+        int dmg = Mth::ceil(distance - 1);
         if (dmg > 0) {
             // 4J: Copy vector since it might be modified when we hurt the
             // entities (invalidating our iterator)
@@ -174,7 +174,7 @@ void FallingTile::causeFallDamage(float distance) {
                                        : DamageSource::fallingBlock;
             // for (Entity entity : entities)
             for (auto it = entities->begin(); it != entities->end(); ++it) {
-                (*it)->hurt(source, std::min(GameMath::floor(dmg * fallDamageAmount),
+                (*it)->hurt(source, std::min(Mth::floor(dmg * fallDamageAmount),
                                              fallDamageMax));
             }
             delete entities;

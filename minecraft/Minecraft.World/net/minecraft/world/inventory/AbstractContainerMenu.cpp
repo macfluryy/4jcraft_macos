@@ -647,7 +647,7 @@ void AbstractContainerMenu::getQuickCraftSlotCount(
     switch (quickCraftingType) {
         case QUICKCRAFT_TYPE_CHARITABLE:
             item->count =
-                GameMath::floor(item->count / (float)quickCraftSlots->size());
+                Mth::floor(item->count / (float)quickCraftSlots->size());
             break;
         case QUICKCRAFT_TYPE_GREEDY:
             item->count = 1;
@@ -677,7 +677,7 @@ int AbstractContainerMenu::getRedstoneSignalFromContainer(
     }
 
     totalPct /= container->getContainerSize();
-    return GameMath::floor(totalPct * (Redstone::SIGNAL_MAX - 1)) +
+    return Mth::floor(totalPct * (Redstone::SIGNAL_MAX - 1)) +
            (count > 0 ? 1 : 0);
 }
 

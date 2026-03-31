@@ -1048,7 +1048,7 @@ void Player::readAdditionalSaveData(CompoundTag* entityTag) {
     setScore(entityTag->getInt(L"Score"));
 
     if (m_isSleeping) {
-        bedPosition = new Pos(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
+        bedPosition = new Pos(Mth::floor(x), Mth::floor(y), Mth::floor(z));
         stopSleepInBed(true, true, false);
     }
 
@@ -1831,7 +1831,7 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                 int dist = 0;
                 if (minecartAchievementPos == nullptr) {
                     minecartAchievementPos =
-                        new Pos(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
+                        new Pos(Mth::floor(x), Mth::floor(y), Mth::floor(z));
                 }
                 // 4J-PB - changed this because our world isn't big enough to go
                 // 1000m
@@ -1839,7 +1839,7 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                     // 4-JEV, changed slightly to add extra parameters for event
                     // on durango.
                     int dist = minecartAchievementPos->dist(
-                        GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
+                        Mth::floor(x), Mth::floor(y), Mth::floor(z));
                     if ((m_bAwardedOnARail == false) && (dist >= 500)) {
                         awardStat(GenericStats::onARail(),
                                   GenericStats::param_onARail(dist));

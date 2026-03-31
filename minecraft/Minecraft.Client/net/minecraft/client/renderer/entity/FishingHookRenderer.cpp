@@ -5,7 +5,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "../../multiplayer/MultiPlayerLocalPlayer.h"
 
 ResourceLocation FishingHookRenderer::PARTICLE_LOCATION =

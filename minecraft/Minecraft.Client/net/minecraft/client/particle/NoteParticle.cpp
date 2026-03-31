@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "NoteParticle.h"
 
 void NoteParticle::init(Level* level, double x, double y, double z, double xa,

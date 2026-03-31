@@ -214,7 +214,7 @@ int Slime::getDeathLoot() {
 }
 
 bool Slime::canSpawn() {
-    LevelChunk* lc = level->getChunkAt(GameMath::floor(x), GameMath::floor(z));
+    LevelChunk* lc = level->getChunkAt(Mth::floor(x), Mth::floor(z));
     if (level->getLevelData()->getGenerator() == LevelType::lvl_flat &&
         random->nextInt(4) != 1) {
         return false;
@@ -223,13 +223,13 @@ bool Slime::canSpawn() {
         lc->getRandom(987234911l);  // 4J - separated out so we can delete
     if ((getSize() == 1 || level->difficulty > Difficulty::PEACEFUL)) {
         // spawn slime in swamplands at night
-        Biome* biome = level->getBiome(GameMath::floor(x), GameMath::floor(z));
+        Biome* biome = level->getBiome(Mth::floor(x), Mth::floor(z));
 
         if (biome == Biome::swampland && y > 50 && y < 70 &&
             random->nextFloat() < 0.5f) {
             if (random->nextFloat() < level->getMoonBrightness() &&
-                level->getRawBrightness(GameMath::floor(x), GameMath::floor(y),
-                                        GameMath::floor(z)) <= random->nextInt(8)) {
+                level->getRawBrightness(Mth::floor(x), Mth::floor(y),
+                                        Mth::floor(z)) <= random->nextInt(8)) {
                 return Mob::canSpawn();
             }
         }

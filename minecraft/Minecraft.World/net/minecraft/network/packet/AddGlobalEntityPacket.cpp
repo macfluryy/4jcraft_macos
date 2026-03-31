@@ -19,9 +19,9 @@ AddGlobalEntityPacket::AddGlobalEntityPacket() {
 
 AddGlobalEntityPacket::AddGlobalEntityPacket(std::shared_ptr<Entity> e) {
     id = e->entityId;
-    x = GameMath::floor(e->x * 32);
-    y = GameMath::floor(e->y * 32);
-    z = GameMath::floor(e->z * 32);
+    x = Mth::floor(e->x * 32);
+    y = Mth::floor(e->y * 32);
+    z = Mth::floor(e->z * 32);
     if (e->instanceof(eTYPE_LIGHTNINGBOLT)) {
         type = LIGHTNING;
     } else {

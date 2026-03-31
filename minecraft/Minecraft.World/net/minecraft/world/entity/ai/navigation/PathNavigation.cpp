@@ -59,15 +59,15 @@ float PathNavigation::getMaxDist() { return (float)dist->getValue(); }
 
 Path* PathNavigation::createPath(double x, double y, double z) {
     if (!canUpdatePath()) return nullptr;
-    return level->findPath(mob->shared_from_this(), GameMath::floor(x), (int)y,
-                           GameMath::floor(z), getMaxDist(), _canPassDoors,
+    return level->findPath(mob->shared_from_this(), Mth::floor(x), (int)y,
+                           Mth::floor(z), getMaxDist(), _canPassDoors,
                            _canOpenDoors, avoidWater, canFloat);
 }
 
 bool PathNavigation::moveTo(double x, double y, double z,
                             double speedModifier) {
     MemSect(52);
-    Path* newPath = createPath(GameMath::floor(x), (int)y, GameMath::floor(z));
+    Path* newPath = createPath(Mth::floor(x), (int)y, Mth::floor(z));
     MemSect(0);
     // No need to delete newPath here as this will be copied into the member
     // variable path and the class can assume responsibility for it
@@ -193,12 +193,12 @@ int PathNavigation::getSurfaceY() {
 
     int surface = (int)(mob->bb.y0);
     int tileId =
-        level->getTile(GameMath::floor(mob->x), surface, GameMath::floor(mob->z));
+        level->getTile(Mth::floor(mob->x), surface, Mth::floor(mob->z));
     int steps = 0;
     while (tileId == Tile::water_Id || tileId == Tile::calmWater_Id) {
         ++surface;
         tileId =
-            level->getTile(GameMath::floor(mob->x), surface, GameMath::floor(mob->z));
+            level->getTile(Mth::floor(mob->x), surface, Mth::floor(mob->z));
         if (++steps > 16) return (int)(mob->bb.y0);
     }
     return surface;
@@ -213,8 +213,8 @@ bool PathNavigation::isInLiquid() {
 }
 
 void PathNavigation::trimPathFromSun() {
-    if (level->canSeeSky(GameMath::floor(mob->x), (int)(mob->bb.y0 + 0.5),
-                         GameMath::floor(mob->z)))
+    if (level->canSeeSky(Mth::floor(mob->x), (int)(mob->bb.y0 + 0.5),
+                         Mth::floor(mob->z)))
         return;
 
     for (int i = 0; i < path->getSize(); ++i) {
@@ -228,8 +228,8 @@ void PathNavigation::trimPathFromSun() {
 
 bool PathNavigation::canMoveDirectly(Vec3* startPos, Vec3* stopPos, int sx,
                                      int sy, int sz) {
-    int gridPosX = GameMath::floor(startPos->x);
-    int gridPosZ = GameMath::floor(startPos->z);
+    int gridPosX = Mth::floor(startPos->x);
+    int gridPosZ = Mth::floor(startPos->z);
 
     double dirX = stopPos->x - startPos->x;
     double dirZ = stopPos->z - startPos->z;
@@ -260,8 +260,8 @@ bool PathNavigation::canMoveDirectly(Vec3* startPos, Vec3* stopPos, int sx,
 
     int stepX = dirX < 0 ? -1 : 1;
     int stepZ = dirZ < 0 ? -1 : 1;
-    int gridGoalX = GameMath::floor(stopPos->x);
-    int gridGoalZ = GameMath::floor(stopPos->z);
+    int gridGoalX = Mth::floor(stopPos->x);
+    int gridGoalZ = Mth::floor(stopPos->z);
     int currentDirX = gridGoalX - gridPosX;
     int currentDirZ = gridGoalZ - gridPosZ;
     while (currentDirX * stepX > 0 || currentDirZ * stepZ > 0) {

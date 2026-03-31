@@ -4,7 +4,7 @@
 #include "ClientConnection.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/network/net.minecraft.network.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
@@ -61,7 +61,7 @@ void MultiplayerLocalPlayer::tick() {
     );
     }*/
 
-    if (!level->hasChunkAt(GameMath::floor(x), 0, GameMath::floor(z))) return;
+    if (!level->hasChunkAt(Mth::floor(x), 0, Mth::floor(z))) return;
 
     double tempX = x, tempY = y, tempZ = z;
 

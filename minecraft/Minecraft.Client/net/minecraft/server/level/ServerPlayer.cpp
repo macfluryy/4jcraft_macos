@@ -1663,7 +1663,7 @@ int ServerPlayer::getViewDistance() { return viewDistance; }
 // }
 
 Pos* ServerPlayer::getCommandSenderWorldPosition() {
-    return new Pos(GameMath::floor(x), GameMath::floor(y + .5), GameMath::floor(z));
+    return new Pos(Mth::floor(x), Mth::floor(y + .5), Mth::floor(z));
 }
 
 void ServerPlayer::resetLastActionTime() {

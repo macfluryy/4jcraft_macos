@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "SnowManModel.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "geom/ModelPart.h"
 
 SnowManModel::SnowManModel() : Model() {

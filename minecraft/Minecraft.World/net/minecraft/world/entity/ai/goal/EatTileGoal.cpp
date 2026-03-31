@@ -19,9 +19,9 @@ EatTileGoal::EatTileGoal(Mob* mob) {
 bool EatTileGoal::canUse() {
     if (mob->getRandom()->nextInt(mob->isBaby() ? 50 : 1000) != 0) return false;
 
-    int xx = GameMath::floor(mob->x);
-    int yy = GameMath::floor(mob->y);
-    int zz = GameMath::floor(mob->z);
+    int xx = Mth::floor(mob->x);
+    int yy = Mth::floor(mob->y);
+    int zz = Mth::floor(mob->z);
     if (level->getTile(xx, yy, zz) == Tile::tallgrass_Id &&
         level->getData(xx, yy, zz) == TallGrass::TALL_GRASS)
         return true;
@@ -46,9 +46,9 @@ void EatTileGoal::tick() {
     eatAnimationTick = std::max(0, eatAnimationTick - 1);
     if (eatAnimationTick != 4) return;
 
-    int xx = GameMath::floor(mob->x);
-    int yy = GameMath::floor(mob->y);
-    int zz = GameMath::floor(mob->z);
+    int xx = Mth::floor(mob->x);
+    int yy = Mth::floor(mob->y);
+    int zz = Mth::floor(mob->z);
 
     if (level->getTile(xx, yy, zz) == Tile::tallgrass_Id) {
         level->destroyTile(xx, yy, zz, false);

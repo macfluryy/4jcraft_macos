@@ -52,8 +52,8 @@ bool MeleeAttackGoal::canContinueToUse() {
     if (target == nullptr) return false;
     if (!target->isAlive()) return false;
     if (!trackTarget) return !mob->getNavigation()->isDone();
-    if (!mob->isWithinRestriction(GameMath::floor(target->x), GameMath::floor(target->y),
-                                  GameMath::floor(target->z)))
+    if (!mob->isWithinRestriction(Mth::floor(target->x), Mth::floor(target->y),
+                                  Mth::floor(target->z)))
         return false;
     return true;
 }

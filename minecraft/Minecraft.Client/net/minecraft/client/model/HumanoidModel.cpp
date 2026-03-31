@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "HumanoidModel.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "geom/ModelPart.h"
 
@@ -324,7 +324,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             is = is * is * is;
             is = is * is * is;
             float iss = 1 - is;
-            arm0->xRot = -GameMath::abs(cosf(eating_t / 4.0f * std::numbers::pi) * 0.1f) *
+            arm0->xRot = -Mth::abs(cosf(eating_t / 4.0f * std::numbers::pi) * 0.1f) *
                          (eating_swing > 0.2 ? 1.0f : 0.0f) *
                          2.0f;  // This factor is the chomping bit (conditional
                                 // factor is so that he doesn't eat whilst the

@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
 #include "ModelHorse.h"
 #include "geom/ModelPart.h"
@@ -450,7 +450,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     // animations
     {
         // TODO: Magic numbers
-        Head->xRot = standing * ((15 * GameMath::DEG_TO_RAD) + (HeadXRot)) +
+        Head->xRot = standing * ((15 * Mth::DEG_TO_RAD) + (HeadXRot)) +
                      eating * 2.18166f +
                      (1.0f - std::max(standing, eating)) * Head->xRot;
         Head->yRot = standing * (headRotMinusBodyRot / 57.29578f) +
@@ -515,8 +515,8 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     {
         float r90 = std::numbers::pi * .5f;
         float r270 = std::numbers::pi * 1.5f;
-        float r300 = -60 * GameMath::DEG_TO_RAD;
-        float standAngle = 15 * GameMath::DEG_TO_RAD * standing;
+        float r300 = -60 * Mth::DEG_TO_RAD;
+        float standAngle = 15 * Mth::DEG_TO_RAD * standing;
         float bobValue = cosf((bob * 0.6f) + 3.141593f);
 
         Leg3A->y = -2.f * standing + 9.f * iStanding;
@@ -553,14 +553,14 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
 
         Leg1A->xRot = standAngle + (-legAnim1 * 0.5f * ws) * iStanding;
         Leg1B->xRot =
-            (-5 * GameMath::DEG_TO_RAD) * standing +
+            (-5 * Mth::DEG_TO_RAD) * standing +
             ((-legAnim1 * 0.5f * ws) - std::max(0.0f, legAnim1 * .5f * ws)) *
                 iStanding;
         Leg1C->xRot = Leg1B->xRot;
 
         Leg2A->xRot = standAngle + (legAnim1 * 0.5f * ws) * iStanding;
         Leg2B->xRot =
-            (-5 * GameMath::DEG_TO_RAD) * standing +
+            (-5 * Mth::DEG_TO_RAD) * standing +
             ((legAnim1 * 0.5f * ws) - std::max(0.0f, -legAnim1 * .5f * ws)) *
                 iStanding;
         Leg2C->xRot = Leg2B->xRot;

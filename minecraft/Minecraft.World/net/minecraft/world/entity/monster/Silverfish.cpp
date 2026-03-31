@@ -100,9 +100,9 @@ void Silverfish::serverAiStep() {
         lookForFriends--;
         if (lookForFriends == 0) {
             // see if there are any friendly monster eggs nearby
-            int baseX = GameMath::floor(x);
-            int baseY = GameMath::floor(y);
-            int baseZ = GameMath::floor(z);
+            int baseX = Mth::floor(x);
+            int baseY = Mth::floor(y);
+            int baseZ = Mth::floor(z);
             bool doBreak = false;
 
             for (int yOff = 0; !doBreak && yOff <= 5 && yOff >= -5;
@@ -152,8 +152,8 @@ void Silverfish::serverAiStep() {
     if (attackTarget == nullptr && !isPathFinding()) {
         // if the silverfish isn't doing anything special, it will merge
         // with any rock tile it is nearby
-        int tileX = GameMath::floor(x), tileY = GameMath::floor(y + .5f),
-            tileZ = GameMath::floor(z);
+        int tileX = Mth::floor(x), tileY = Mth::floor(y + .5f),
+            tileZ = Mth::floor(z);
         int facing = random->nextInt(6);
 
         int tile = level->getTile(tileX + Facing::STEP_X[facing],

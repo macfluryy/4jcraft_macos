@@ -197,7 +197,7 @@ void Witch::performRangedAttack(std::shared_ptr<LivingEntity> target,
     double xd = (target->x + target->xd) - x;
     double yd = (target->y + target->getHeadHeight() - 1.1f) - y;
     double zd = (target->z + target->zd) - z;
-    float dist = GameMath::sqrt(xd * xd + zd * zd);
+    float dist = Mth::sqrt(xd * xd + zd * zd);
 
     if (dist >= 8 && !target->hasEffect(MobEffect::movementSlowdown)) {
         potion->setPotionValue(PotionBrewing::POTION_ID_SPLASH_SLOWNESS);

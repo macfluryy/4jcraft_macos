@@ -334,7 +334,7 @@ void Entity::_init(bool useSmallId, Level* level) {
     portalEntranceDir = 0;
     invulnerable = false;
     if (useSmallId) {
-        uuid = L"ent" + GameMath::createInsecureUUID(random);
+        uuid = L"ent" + Mth::createInsecureUUID(random);
     }
 
     // 4J Added
@@ -542,9 +542,9 @@ void Entity::baseTick() {
     }
 
     if (isSprinting() && !isInWater() && canCreateParticles()) {
-        int xt = GameMath::floor(x);
-        int yt = GameMath::floor(y - 0.2f - heightOffset);
-        int zt = GameMath::floor(z);
+        int xt = Mth::floor(x);
+        int yt = Mth::floor(y - 0.2f - heightOffset);
+        int zt = Mth::floor(z);
         int t = level->getTile(xt, yt, zt);
         int d = level->getData(xt, yt, zt);
         if (t > 0) {
@@ -725,8 +725,8 @@ void Entity::move(double xa, double ya, double za,
 
     // 4J Stu - Particles (and possibly other entities) don't have xChunk and
     // zChunk set, so calculate the chunk instead
-    int xc = GameMath::floor(x / 16);
-    int zc = GameMath::floor(z / 16);
+    int xc = Mth::floor(x / 16);
+    int zc = Mth::floor(z / 16);
     if (!level->isClientSide || level->reallyHasChunk(xc, zc)) {
         // 4J Stu - It's horrible that the client is doing any movement at all!
         // But if we don't have the chunk data then all the collision info will
@@ -853,9 +853,9 @@ void Entity::move(double xa, double ya, double za,
     double zm = z - zo;
 
     if (makeStepSound() && !isPlayerSneaking && riding == nullptr) {
-        int xt = GameMath::floor(x);
-        int yt = GameMath::floor(y - 0.2f - heightOffset);
-        int zt = GameMath::floor(z);
+        int xt = Mth::floor(x);
+        int yt = Mth::floor(y - 0.2f - heightOffset);
+        int zt = Mth::floor(z);
         int t = level->getTile(xt, yt, zt);
         if (t == 0) {
             int renderShape = level->getTileRenderShape(xt, yt - 1, zt);
@@ -869,14 +869,14 @@ void Entity::move(double xa, double ya, double za,
             ym = 0;
         }
 
-        walkDist += GameMath::sqrt(xm * xm + zm * zm) * 0.6;
-        moveDist += GameMath::sqrt(xm * xm + ym * ym + zm * zm) * 0.6;
+        walkDist += Mth::sqrt(xm * xm + zm * zm) * 0.6;
+        moveDist += Mth::sqrt(xm * xm + ym * ym + zm * zm) * 0.6;
 
         if (moveDist > nextStep && t > 0) {
             nextStep = (int)moveDist + 1;
             if (isInWater()) {
                 float speed =
-                    GameMath::sqrt(xd * xd * 0.2f + yd * yd + zd * zd * 0.2f) *
+                    Mth::sqrt(xd * xd * 0.2f + yd * yd + zd * zd * 0.2f) *
                     0.35f;
                 if (speed > 1) speed = 1;
                 playSound(
@@ -912,12 +912,12 @@ void Entity::move(double xa, double ya, double za,
 }
 
 void Entity::checkInsideTiles() {
-    int x0 = GameMath::floor(bb.x0 + 0.001);
-    int y0 = GameMath::floor(bb.y0 + 0.001);
-    int z0 = GameMath::floor(bb.z0 + 0.001);
-    int x1 = GameMath::floor(bb.x1 - 0.001);
-    int y1 = GameMath::floor(bb.y1 - 0.001);
-    int z1 = GameMath::floor(bb.z1 - 0.001);
+    int x0 = Mth::floor(bb.x0 + 0.001);
+    int y0 = Mth::floor(bb.y0 + 0.001);
+    int z0 = Mth::floor(bb.z0 + 0.001);
+    int x1 = Mth::floor(bb.x1 - 0.001);
+    int y1 = Mth::floor(bb.y1 - 0.001);
+    int z1 = Mth::floor(bb.z1 - 0.001);
 
     if (level->hasChunksAt(x0, y0, z0, x1, y1, z1)) {
         for (int x = x0; x <= x1; x++)
@@ -992,9 +992,9 @@ void Entity::causeFallDamage(float distance) {
 
 bool Entity::isInWaterOrRain() {
     return wasInWater ||
-           (level->isRainingAt(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)) ||
-            level->isRainingAt(GameMath::floor(x), GameMath::floor(y + bbHeight),
-                               GameMath::floor(z)));
+           (level->isRainingAt(Mth::floor(x), Mth::floor(y), Mth::floor(z)) ||
+            level->isRainingAt(Mth::floor(x), Mth::floor(y + bbHeight),
+                               Mth::floor(z)));
 }
 
 bool Entity::isInWater() { return wasInWater; }
@@ -1005,13 +1005,13 @@ bool Entity::updateInWaterState() {
                                    shared_from_this())) {
         if (!wasInWater && !firstTick && canCreateParticles()) {
             float speed =
-                GameMath::sqrt(xd * xd * 0.2f + yd * yd + zd * zd * 0.2f) * 0.2f;
+                Mth::sqrt(xd * xd * 0.2f + yd * yd + zd * zd * 0.2f) * 0.2f;
             if (speed > 1) speed = 1;
             MemSect(31);
             playSound(eSoundType_RANDOM_SPLASH, speed,
                       1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
             MemSect(0);
-            float yt = (float)GameMath::floor(bb.y0);
+            float yt = (float)Mth::floor(bb.y0);
             for (int i = 0; i < 1 + bbWidth * 20; i++) {
                 float xo = (random->nextFloat() * 2 - 1) * bbWidth;
                 float zo = (random->nextFloat() * 2 - 1) * bbWidth;
@@ -1036,10 +1036,10 @@ bool Entity::updateInWaterState() {
 
 bool Entity::isUnderLiquid(Material* material) {
     double yp = y + getHeadHeight();
-    int xt = GameMath::floor(x);
-    int yt = GameMath::floor(
+    int xt = Mth::floor(x);
+    int yt = Mth::floor(
         yp);  // 4J - this used to be a nested pair of floors for some reason
-    int zt = GameMath::floor(z);
+    int zt = Mth::floor(z);
     int t = level->getTile(xt, yt, zt);
     if (t != 0 && Tile::tiles[t]->material == material) {
         float hh = LiquidTile::getHeight(level->getData(xt, yt, zt)) - 1 / 9.0f;
@@ -1075,12 +1075,12 @@ void Entity::moveRelative(float xa, float za, float speed) {
 
 // 4J - change brought forward from 1.8.2
 int Entity::getLightColor(float a) {
-    int xTile = GameMath::floor(x);
-    int zTile = GameMath::floor(z);
+    int xTile = Mth::floor(x);
+    int zTile = Mth::floor(z);
 
     if (level->hasChunkAt(xTile, 0, zTile)) {
         double hh = (bb.y1 - bb.y0) * 0.66;
-        int yTile = GameMath::floor(y - heightOffset + hh);
+        int yTile = Mth::floor(y - heightOffset + hh);
         return level->getLightColor(xTile, yTile, zTile, 0);
     }
     return 0;
@@ -1088,11 +1088,11 @@ int Entity::getLightColor(float a) {
 
 // 4J - changes brought forward from 1.8.2
 float Entity::getBrightness(float a) {
-    int xTile = GameMath::floor(x);
-    int zTile = GameMath::floor(z);
+    int xTile = Mth::floor(x);
+    int zTile = Mth::floor(z);
     if (level->hasChunkAt(xTile, 0, zTile)) {
         double hh = (bb.y1 - bb.y0) * 0.66;
-        int yTile = GameMath::floor(y - heightOffset + hh);
+        int yTile = Mth::floor(y - heightOffset + hh);
         return level->getBrightness(xTile, yTile, zTile);
     }
     return 0;
@@ -1415,9 +1415,9 @@ bool Entity::isInWall() {
         float xo = ((i >> 0) % 2 - 0.5f) * bbWidth * 0.8f;
         float yo = ((i >> 1) % 2 - 0.5f) * 0.1f;
         float zo = ((i >> 2) % 2 - 0.5f) * bbWidth * 0.8f;
-        int xt = GameMath::floor(x + xo);
-        int yt = GameMath::floor(y + getHeadHeight() + yo);
-        int zt = GameMath::floor(z + zo);
+        int xt = Mth::floor(x + xo);
+        int yt = Mth::floor(y + getHeadHeight() + yo);
+        int zt = Mth::floor(z + zo);
         if (level->isSolidBlockingTile(xt, yt, zt)) {
             return true;
         }
@@ -1659,9 +1659,9 @@ void Entity::thunderHit(const LightningBolt* lightningBolt) {
 void Entity::killed(std::shared_ptr<LivingEntity> mob) {}
 
 bool Entity::checkInTile(double x, double y, double z) {
-    int xTile = GameMath::floor(x);
-    int yTile = GameMath::floor(y);
-    int zTile = GameMath::floor(z);
+    int xTile = Mth::floor(x);
+    int yTile = Mth::floor(y);
+    int zTile = Mth::floor(z);
 
     double xd = x - (xTile);
     double yd = y - (yTile);

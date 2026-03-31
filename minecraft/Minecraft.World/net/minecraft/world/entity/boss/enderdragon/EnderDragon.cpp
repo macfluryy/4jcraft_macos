@@ -181,7 +181,7 @@ void EnderDragon::getLatencyPos(std::vector<double>& result, int step, float a) 
     // positions[i][2] is currently always 0
 
     double yr0 = positions[p0][0];
-    double yrd = GameMath::wrapDegrees(positions[p1][0] - yr0);
+    double yrd = Mth::wrapDegrees(positions[p1][0] - yr0);
     result[0] = yr0 + yrd * a;
 
     yr0 = positions[p0][1];
@@ -251,7 +251,7 @@ void EnderDragon::aiStep() {
         flapTime += flapSpeed;
     }
 
-    yRot = GameMath::wrapDegrees(yRot);
+    yRot = Mth::wrapDegrees(yRot);
 
     if (posPointer < 0) {
         for (int i = 0; i < positionsLength; i++) {
@@ -284,7 +284,7 @@ void EnderDragon::aiStep() {
             //}
             // else
             {
-                double yrd = GameMath::wrapDegrees(lyr - yRot);
+                double yrd = Mth::wrapDegrees(lyr - yRot);
 
                 m_headYRot = 0.0;
                 yRot += (yrd) / lSteps;
@@ -496,7 +496,7 @@ void EnderDragon::aiStep() {
                     double zdd = attackTarget->z - head->z;
 
                     double yRotT = (180) - atan2(xdd, zdd) * 180 / std::numbers::pi;
-                    double yRotD = GameMath::wrapDegrees(yRotT - yRot);
+                    double yRotD = Mth::wrapDegrees(yRotT - yRot);
 
                     if (yRotD > 50) yRotD = 50;
                     if (yRotD < -50) yRotD = -50;
@@ -1074,12 +1074,12 @@ float EnderDragon::rotWrap(double d) {
 }
 
 bool EnderDragon::checkWalls(AABB* bb) {
-    int x0 = GameMath::floor(bb->x0);
-    int y0 = GameMath::floor(bb->y0);
-    int z0 = GameMath::floor(bb->z0);
-    int x1 = GameMath::floor(bb->x1);
-    int y1 = GameMath::floor(bb->y1);
-    int z1 = GameMath::floor(bb->z1);
+    int x0 = Mth::floor(bb->x0);
+    int y0 = Mth::floor(bb->y0);
+    int z0 = Mth::floor(bb->z0);
+    int x1 = Mth::floor(bb->x1);
+    int y1 = Mth::floor(bb->y1);
+    int z1 = Mth::floor(bb->z1);
     bool hitWall = false;
     bool destroyedTile = false;
     for (int x = x0; x <= x1; x++) {
@@ -1231,7 +1231,7 @@ void EnderDragon::tickDeath() {
             zo = 0;
         }
         // 4J-PB changed to center this between the pillars
-        spawnExitPortal(0, 0);  // GameMath::floor(x), GameMath::floor(z));
+        spawnExitPortal(0, 0);  // Mth::floor(x), Mth::floor(z));
         remove();
     }
 }

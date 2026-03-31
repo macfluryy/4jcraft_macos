@@ -46,9 +46,9 @@ void EnderCrystal::tick() {
     // removing/adding these fire tiles causing timing glitches from the
     // lighting changes requried.
     if (!level->isClientSide) {
-        int xt = GameMath::floor(x);
-        int yt = GameMath::floor(y);
-        int zt = GameMath::floor(z);
+        int xt = Mth::floor(x);
+        int yt = Mth::floor(y);
+        int zt = Mth::floor(z);
         if (level->getTile(xt, yt, zt) != Tile::fire_Id) {
             level->setTileAndUpdate(xt, yt, zt, Tile::fire_Id);
         }

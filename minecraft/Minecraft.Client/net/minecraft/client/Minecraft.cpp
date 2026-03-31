@@ -3559,9 +3559,9 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             // Level::animateTickDoWork() so we can take into account multiple
             // players in the one level.
             if (!pause && levels[i] != nullptr)
-                levels[i]->animateTick(GameMath::floor(player->x),
-                                       GameMath::floor(player->y),
-                                       GameMath::floor(player->z));
+                levels[i]->animateTick(Mth::floor(player->x),
+                                       Mth::floor(player->y),
+                                       Mth::floor(player->z));
 
             if (levelsTickedFlags & (1 << i))
                 continue;  // Don't tick further if we've already ticked this

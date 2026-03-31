@@ -33,9 +33,9 @@ bool DoorInteractGoal::canUse() {
         return true;
     }
 
-    doorX = GameMath::floor(mob->x);
-    doorY = GameMath::floor(mob->y + 1);
-    doorZ = GameMath::floor(mob->z);
+    doorX = Mth::floor(mob->x);
+    doorY = Mth::floor(mob->y + 1);
+    doorZ = Mth::floor(mob->z);
     doorTile = getDoorTile(doorX, doorY, doorZ);
     return doorTile != nullptr;
 }

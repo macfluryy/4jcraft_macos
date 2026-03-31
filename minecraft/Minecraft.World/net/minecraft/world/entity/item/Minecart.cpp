@@ -244,7 +244,7 @@ void Minecart::tick() {
                 double yt = y + (ly - y) / lSteps;
                 double zt = z + (lz - z) / lSteps;
 
-                double yrd = GameMath::wrapDegrees(lyr - yRot);
+                double yrd = Mth::wrapDegrees(lyr - yRot);
 
                 yRot += (float)((yrd) / lSteps);
                 xRot += (float)((lxr - xRot) / lSteps);
@@ -266,9 +266,9 @@ void Minecart::tick() {
 
         yd -= 0.04f;
 
-        int xt = GameMath::floor(x);
-        int yt = GameMath::floor(y);
-        int zt = GameMath::floor(z);
+        int xt = Mth::floor(x);
+        int yt = Mth::floor(y);
+        int zt = Mth::floor(z);
         if (BaseRailTile::isRail(level, xt, yt - 1, zt)) {
             yt--;
         }
@@ -299,7 +299,7 @@ void Minecart::tick() {
             if (flipped) yRot += 180;
         }
 
-        double rotDiff = GameMath::wrapDegrees(yRot - yRotO);
+        double rotDiff = Mth::wrapDegrees(yRot - yRotO);
 
         if (rotDiff < -170 || rotDiff >= 170) {
             yRot += 180;
@@ -485,11 +485,11 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
 
     move(xdd, 0, zdd);
 
-    if (exits[0][1] != 0 && GameMath::floor(x) - xt == exits[0][0] &&
-        GameMath::floor(z) - zt == exits[0][2]) {
+    if (exits[0][1] != 0 && Mth::floor(x) - xt == exits[0][0] &&
+        Mth::floor(z) - zt == exits[0][2]) {
         setPos(x, y + exits[0][1], z);
-    } else if (exits[1][1] != 0 && GameMath::floor(x) - xt == exits[1][0] &&
-               GameMath::floor(z) - zt == exits[1][2]) {
+    } else if (exits[1][1] != 0 && Mth::floor(x) - xt == exits[1][0] &&
+               Mth::floor(z) - zt == exits[1][2]) {
         setPos(x, y + exits[1][1], z);
     }
 
@@ -507,8 +507,8 @@ void Minecart::moveAlongTrack(int xt, int yt, int zt, double maxSpeed,
         setPos(x, newPos->y, z);
     }
 
-    int xn = GameMath::floor(x);
-    int zn = GameMath::floor(z);
+    int xn = Mth::floor(x);
+    int zn = Mth::floor(z);
     if (xn != xt || zn != zt) {
         pow = sqrt(xd * xd + zd * zd);
 
@@ -557,9 +557,9 @@ void Minecart::applyNaturalSlowdown() {
 
 std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z,
                                          double offs) {
-    int xt = GameMath::floor(x);
-    int yt = GameMath::floor(y);
-    int zt = GameMath::floor(z);
+    int xt = Mth::floor(x);
+    int yt = Mth::floor(y);
+    int zt = Mth::floor(z);
     if (BaseRailTile::isRail(level, xt, yt - 1, zt)) {
         yt--;
     }
@@ -591,11 +591,11 @@ std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z,
         x += xD * offs;
         z += zD * offs;
 
-        if (exits[0][1] != 0 && GameMath::floor(x) - xt == exits[0][0] &&
-            GameMath::floor(z) - zt == exits[0][2]) {
+        if (exits[0][1] != 0 && Mth::floor(x) - xt == exits[0][0] &&
+            Mth::floor(z) - zt == exits[0][2]) {
             y += exits[0][1];
-        } else if (exits[1][1] != 0 && GameMath::floor(x) - xt == exits[1][0] &&
-                   GameMath::floor(z) - zt == exits[1][2]) {
+        } else if (exits[1][1] != 0 && Mth::floor(x) - xt == exits[1][0] &&
+                   Mth::floor(z) - zt == exits[1][2]) {
             y += exits[1][1];
         }
 
@@ -606,9 +606,9 @@ std::optional<Vec3> Minecart::getPosOffs(double x, double y, double z,
 }
 
 std::optional<Vec3> Minecart::getPos(double x, double y, double z) {
-    int xt = GameMath::floor(x);
-    int yt = GameMath::floor(y);
-    int zt = GameMath::floor(z);
+    int xt = Mth::floor(x);
+    int yt = Mth::floor(y);
+    int zt = Mth::floor(z);
     if (BaseRailTile::isRail(level, xt, yt - 1, zt)) {
         yt--;
     }

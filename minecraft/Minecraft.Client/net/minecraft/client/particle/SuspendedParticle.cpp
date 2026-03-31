@@ -3,7 +3,7 @@
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/net/minecraft/util/GameMath.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
 
 SuspendedParticle::SuspendedParticle(Level* level, double x, double y, double z,
@@ -38,7 +38,7 @@ void SuspendedParticle::tick() {
 
     move(xd, yd, zd);
 
-    if (level->getMaterial(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)) !=
+    if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) !=
         Material::water)
         remove();
 

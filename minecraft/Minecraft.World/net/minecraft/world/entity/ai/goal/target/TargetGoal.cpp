@@ -87,8 +87,8 @@ bool TargetGoal::canAttack(std::shared_ptr<LivingEntity> target,
             return false;
     }
 
-    if (!mob->isWithinRestriction(GameMath::floor(target->x), GameMath::floor(target->y),
-                                  GameMath::floor(target->z)))
+    if (!mob->isWithinRestriction(Mth::floor(target->x), Mth::floor(target->y),
+                                  Mth::floor(target->z)))
         return false;
 
     if (mustSee && !mob->getSensing()->canSee(target)) return false;
@@ -112,8 +112,8 @@ bool TargetGoal::canReach(std::shared_ptr<LivingEntity> target) {
         delete path;
         return false;
     }
-    int xx = last->x - GameMath::floor(target->x);
-    int zz = last->z - GameMath::floor(target->z);
+    int xx = last->x - Mth::floor(target->x);
+    int zz = last->z - Mth::floor(target->z);
     delete path;
     return xx * xx + zz * zz <= 1.5 * 1.5;
 }

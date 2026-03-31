@@ -391,7 +391,7 @@ void StairTile::wasExploded(Level* level, int x, int y, int z,
 void StairTile::setPlacedBy(Level* level, int x, int y, int z,
                             std::shared_ptr<LivingEntity> by,
                             std::shared_ptr<ItemInstance> itemInstance) {
-    int dir = (GameMath::floor(by->yRot * 4 / (360) + 0.5)) & 3;
+    int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
     int usd = level->getData(x, y, z) & UPSIDEDOWN_BIT;
 
     if (dir == 0)

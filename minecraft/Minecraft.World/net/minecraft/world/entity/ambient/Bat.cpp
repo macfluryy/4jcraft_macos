@@ -84,7 +84,7 @@ void Bat::tick() {
 
     if (isResting()) {
         xd = yd = zd = 0;
-        y = GameMath::floor(y) + 1.0 - bbHeight;
+        y = Mth::floor(y) + 1.0 - bbHeight;
     } else {
         yd *= .6f;
     }
@@ -96,8 +96,8 @@ void Bat::newServerAiStep() {
     AmbientCreature::newServerAiStep();
 
     if (isResting()) {
-        if (!level->isSolidBlockingTile(GameMath::floor(x), (int)y + 1,
-                                        GameMath::floor(z))) {
+        if (!level->isSolidBlockingTile(Mth::floor(x), (int)y + 1,
+                                        Mth::floor(z))) {
             setResting(false);
             level->levelEvent(nullptr, LevelEvent::SOUND_BAT_LIFTOFF, (int)x,
                               (int)y, (int)z, 0);
@@ -138,13 +138,13 @@ void Bat::newServerAiStep() {
         zd = zd + (signum(dz) * .5f - zd) * .1f;
 
         float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
-        float rotDiff = GameMath::wrapDegrees(yRotD - yRot);
+        float rotDiff = Mth::wrapDegrees(yRotD - yRot);
         yya = .5f;
         yRot += rotDiff;
 
         if (random->nextInt(100) == 0 &&
-            level->isSolidBlockingTile(GameMath::floor(x), (int)y + 1,
-                                       GameMath::floor(z))) {
+            level->isSolidBlockingTile(Mth::floor(x), (int)y + 1,
+                                       Mth::floor(z))) {
             setResting(true);
         }
     }
@@ -185,11 +185,11 @@ void Bat::addAdditonalSaveData(CompoundTag* entityTag) {
 }
 
 bool Bat::canSpawn() {
-    int yt = GameMath::floor(bb.y0);
+    int yt = Mth::floor(bb.y0);
     if (yt >= level->seaLevel) return false;
 
-    int xt = GameMath::floor(x);
-    int zt = GameMath::floor(z);
+    int xt = Mth::floor(x);
+    int zt = Mth::floor(z);
 
     int br = level->getRawBrightness(xt, yt, zt);
     int maxLight = 4;

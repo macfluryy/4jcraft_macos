@@ -202,7 +202,7 @@ void Boat::tick() {
             double yt = y + (ly - y) / lSteps;
             double zt = z + (lz - z) / lSteps;
 
-            double yrd = GameMath::wrapDegrees(lyr - yRot);
+            double yrd = Mth::wrapDegrees(lyr - yRot);
 
             yRot += (float)((yrd) / lSteps);
             xRot += (float)((lxr - xRot) / lSteps);
@@ -304,7 +304,7 @@ void Boat::tick() {
         yRotT = (float)(atan2(zDiff, xDiff) * 180 / std::numbers::pi);
     }
 
-    double rotDiff = GameMath::wrapDegrees(yRotT - yRot);
+    double rotDiff = Mth::wrapDegrees(yRotT - yRot);
 
     if (rotDiff > 20) rotDiff = 20;
     if (rotDiff < -20) rotDiff = -20;
@@ -329,11 +329,11 @@ void Boat::tick() {
     }
 
     for (int i = 0; i < 4; i++) {
-        int xx = GameMath::floor(x + ((i % 2) - 0.5) * 0.8);
-        int zz = GameMath::floor(z + ((i / 2) - 0.5) * 0.8);
+        int xx = Mth::floor(x + ((i % 2) - 0.5) * 0.8);
+        int zz = Mth::floor(z + ((i / 2) - 0.5) * 0.8);
 
         for (int j = 0; j < 2; j++) {
-            int yy = GameMath::floor(y) + j;
+            int yy = Mth::floor(y) + j;
             int tile = level->getTile(xx, yy, zz);
 
             if (tile == Tile::topSnow_Id) {

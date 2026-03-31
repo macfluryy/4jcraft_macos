@@ -212,9 +212,9 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
         mc->cameraTargetPlayer = std::dynamic_pointer_cast<Mob>(mc->player);
     }
 
-    float brr = mc->level->getBrightness(GameMath::floor(mc->cameraTargetPlayer->x),
-                                         GameMath::floor(mc->cameraTargetPlayer->y),
-                                         GameMath::floor(mc->cameraTargetPlayer->z));
+    float brr = mc->level->getBrightness(Mth::floor(mc->cameraTargetPlayer->x),
+                                         Mth::floor(mc->cameraTargetPlayer->y),
+                                         Mth::floor(mc->cameraTargetPlayer->z));
     float whiteness = (3 - mc->options->viewDistance) / 3.0f;
     float fogBrT = brr * (1 - whiteness) + whiteness;
     fogBr += (fogBrT - fogBr) * 0.1f;
@@ -450,12 +450,12 @@ void GameRenderer::moveCameraToPlayer(float a) {
         glTranslatef(0.0f, 0.3f, 0);
         if (!mc->options->fixedCamera) {
             int t =
-                mc->level->getTile(GameMath::floor(player->x), GameMath::floor(player->y),
-                                   GameMath::floor(player->z));
+                mc->level->getTile(Mth::floor(player->x), Mth::floor(player->y),
+                                   Mth::floor(player->z));
             if (t == Tile::bed_Id) {
-                int data = mc->level->getData(GameMath::floor(player->x),
-                                              GameMath::floor(player->y),
-                                              GameMath::floor(player->z));
+                int data = mc->level->getData(Mth::floor(player->x),
+                                              Mth::floor(player->y),
+                                              Mth::floor(player->z));
 
                 int direction = data & 3;
                 glRotatef((float)direction * 90, 0.0f, 1.0f, 0.0f);
@@ -1522,9 +1522,9 @@ void GameRenderer::tickRain() {
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     Level* level = mc->level;
 
-    int x0 = GameMath::floor(player->x);
-    int y0 = GameMath::floor(player->y);
-    int z0 = GameMath::floor(player->z);
+    int x0 = Mth::floor(player->x);
+    int y0 = Mth::floor(player->y);
+    int z0 = Mth::floor(player->z);
 
     int r = 10;
 
@@ -1575,9 +1575,9 @@ void GameRenderer::tickRain() {
         rainSoundTime = 0;
         MemSect(24);
         if (rainPosY > player->y + 1 &&
-            level->getTopRainBlock(GameMath::floor(player->x),
-                                   GameMath::floor(player->z)) >
-                GameMath::floor(player->y)) {
+            level->getTopRainBlock(Mth::floor(player->x),
+                                   Mth::floor(player->z)) >
+                Mth::floor(player->y)) {
             mc->level->playLocalSound(rainPosX, rainPosY, rainPosZ,
                                       eSoundType_AMBIENT_WEATHER_RAIN, 0.1f,
                                       0.5f);
@@ -1608,7 +1608,7 @@ void GameRenderer::renderSnowAndRain(float a) {
             for (int x = 0; x < 32; x++) {
                 float xa = x - 16;
                 float za = z - 16;
-                float d = GameMath::sqrt(xa * xa + za * za);
+                float d = Mth::sqrt(xa * xa + za * za);
                 rainXa[z << 5 | x] = -za / d;
                 rainZa[z << 5 | x] = xa / d;
             }
@@ -1618,9 +1618,9 @@ void GameRenderer::renderSnowAndRain(float a) {
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     Level* level = mc->level;
 
-    int x0 = GameMath::floor(player->x);
-    int y0 = GameMath::floor(player->y);
-    int z0 = GameMath::floor(player->z);
+    int x0 = Mth::floor(player->x);
+    int y0 = Mth::floor(player->y);
+    int z0 = Mth::floor(player->z);
 
     Tesselator* t = Tesselator::getInstance();
     glDisable(GL_CULL_FACE);
@@ -1638,7 +1638,7 @@ void GameRenderer::renderSnowAndRain(float a) {
     double yo = player->yOld + (player->y - player->yOld) * a;
     double zo = player->zOld + (player->z - player->zOld) * a;
 
-    int yMin = GameMath::floor(yo);
+    int yMin = Mth::floor(yo);
 
     int r = 5;
     // 4J - was if(mc.options.fancyGraphics) r = 10;
@@ -1703,7 +1703,7 @@ void GameRenderer::renderSnowAndRain(float a) {
 
             double xd = (x + 0.5f) - player->x;
             double zd = (z + 0.5f) - player->z;
-            float dd = (float)GameMath::sqrt(xd * xd + zd * zd) / r;
+            float dd = (float)Mth::sqrt(xd * xd + zd * zd) / r;
 
             float br = 1.0f;
             float s = 1.0f;

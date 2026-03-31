@@ -31,7 +31,7 @@ RandomScatteredLargeFeature::RandomScatteredLargeFeature(
 
     for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_SPACING) == 0) {
-            spacing = GameMath::getInt(it->second, spacing, minSeparation + 1);
+            spacing = Mth::getInt(it->second, spacing, minSeparation + 1);
         }
     }
 }

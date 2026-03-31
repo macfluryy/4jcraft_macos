@@ -87,17 +87,17 @@ void RangedAttackGoal::tick() {
     if (--attackTime == 0) {
         if (targetDistSqr > attackRadiusSqr || !canSee) return;
 
-        float dist = GameMath::sqrt(targetDistSqr) / attackRadius;
+        float dist = Mth::sqrt(targetDistSqr) / attackRadius;
         float power = dist;
         if (power < 0.1f) power = 0.1f;
         if (power > 1) power = 1;
 
         rangedAttackMob->performRangedAttack(target.lock(), power);
-        attackTime = GameMath::floor(dist * (attackIntervalMax - attackIntervalMin) +
+        attackTime = Mth::floor(dist * (attackIntervalMax - attackIntervalMin) +
                                 attackIntervalMin);
     } else if (attackTime < 0) {
-        float dist = GameMath::sqrt(targetDistSqr) / attackRadius;
-        attackTime = GameMath::floor(dist * (attackIntervalMax - attackIntervalMin) +
+        float dist = Mth::sqrt(targetDistSqr) / attackRadius;
+        attackTime = Mth::floor(dist * (attackIntervalMax - attackIntervalMin) +
                                 attackIntervalMin);
     }
 }

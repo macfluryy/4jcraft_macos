@@ -77,7 +77,7 @@ void ItemEntity::tick() {
     bool moved = (int)xo != (int)x || (int)yo != (int)y || (int)zo != (int)z;
 
     if (moved || tickCount % 25 == 0) {
-        if (level->getMaterial(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)) ==
+        if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) ==
             Material::lava) {
             yd = 0.2f;
             xd = (random->nextFloat() - random->nextFloat()) * 0.2f;
@@ -97,7 +97,7 @@ void ItemEntity::tick() {
     if (onGround) {
         friction = 0.6f * 0.98f;
         int t =
-            level->getTile(GameMath::floor(x), GameMath::floor(bb.y0) - 1, GameMath::floor(z));
+            level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1, Mth::floor(z));
         if (t > 0) {
             friction = Tile::tiles[t]->friction * 0.98f;
         }
