@@ -13,6 +13,8 @@ struct SAVE_DETAILS;
 using PSAVE_DETAILS = SAVE_DETAILS*;
 class C4JStringTable;
 
+// TODO: migrate C-style callbacks (int (*Func)(void*, ...), void* lpParam)
+// to std::function or std::function_ref (C++26).
 class IPlatformStorage {
 public:
     // Enums live here so both the interface consumer and the concrete

@@ -2,6 +2,8 @@
 
 #include "PlatformTypes.h"
 
+// TODO: migrate C-style callbacks (int (*Func)(void*, ...), void* lpParam)
+// to std::function or std::function_ref (C++26).
 class IPlatformInput {
 public:
     enum EKeyboardMode {
