@@ -283,7 +283,6 @@ uint32_t XEnableGuestSignin(bool fEnable) { return 0; }
 /////////////////////////////////////////////// Profile library
 #if defined(_WINDOWS64)
 static void* profileData[4];
-static bool s_bProfileIsFullVersion;
 void C_4JProfile::Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
                              unsigned short usProfileVersion,
                              unsigned int uiProfileValuesC,
@@ -427,7 +426,6 @@ int C_4JProfile::GetPrimaryPad() { return 0; }
 void C_4JProfile::SetPrimaryPad(int iPad) {}
 char* C_4JProfile::GetGamertag(int iPad) { return "PlayerName"; }
 std::wstring C_4JProfile::GetDisplayName(int iPad) { return L"PlayerName"; }
-bool C_4JProfile::IsFullVersion() { return s_bProfileIsFullVersion; }
 void C_4JProfile::SetSignInChangeCallback(void (*Func)(void*, bool,
                                                        unsigned int),
                                           void* lpParam) {}
@@ -505,7 +503,6 @@ void C_4JProfile::SetUpsellCallback(void (*Func)(void* lpParam,
                                                  int iUserData),
                                     void* lpParam) {}
 void C_4JProfile::SetDebugFullOverride(bool bVal) {
-    s_bProfileIsFullVersion = bVal;
 }
 void C_4JProfile::ShowProfileCard(int iPad, PlayerUID targetUid) {}
 

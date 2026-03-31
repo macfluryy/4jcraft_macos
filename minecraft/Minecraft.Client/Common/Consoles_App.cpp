@@ -2243,23 +2243,9 @@ void CMinecraftApp::HandleXuiActions(void) {
                 case eAppAction_SaveGame:
                     SetAction(i, eAppAction_Idle);
                     if (!GetChangingSessionType()) {
-                        // If this is the trial game, do an upsell
-                        if (ProfileManager.IsFullVersion()) {
-                            // flag the render to capture the screenshot for the
-                            // save
-                            SetAction(i, eAppAction_SaveGameCapturedThumbnail);
-                        } else {
-                            // ask the player if they would like to upgrade, or
-                            // they'll lose the level
-
-                            unsigned int uiIDA[2];
-                            uiIDA[0] = IDS_CONFIRM_OK;
-                            uiIDA[1] = IDS_CONFIRM_CANCEL;
-                            ui.RequestErrorMessage(
-                                IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA,
-                                2, i, &CMinecraftApp::UnlockFullSaveReturned,
-                                this);
-                        }
+                        // flag the render to capture the screenshot for the
+                        // save
+                        SetAction(i, eAppAction_SaveGameCapturedThumbnail);
                     }
 
                     break;
@@ -2573,32 +2559,21 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // queued with LIVE
                     // InputManager.CancelAllVerifyInProgress();
 
-                    if (ProfileManager.IsFullVersion()) {
-                        // In a split screen, only the primary player actually
-                        // quits the game, others just remove their players
-                        if (i != ProfileManager.GetPrimaryPad()) {
-                            // Make sure we've not got this player selected as
-                            // current - this shouldn't be the case anyway
-                            pMinecraft->setLocalPlayerIdx(
-                                ProfileManager.GetPrimaryPad());
-                            pMinecraft->removeLocalPlayerIdx(i);
+                    // In a split screen, only the primary player actually
+                    // quits the game, others just remove their players
+                    if (i != ProfileManager.GetPrimaryPad()) {
+                        // Make sure we've not got this player selected as
+                        // current - this shouldn't be the case anyway
+                        pMinecraft->setLocalPlayerIdx(
+                            ProfileManager.GetPrimaryPad());
+                        pMinecraft->removeLocalPlayerIdx(i);
 
-                            SetAction(i, eAppAction_Idle);
-                            return;
-                        }
-                        // flag to capture the save thumbnail
-                        SetAction(i, eAppAction_ExitWorldCapturedThumbnail,
-                                  param);
-                    } else {
-                        // ask the player if they would like to upgrade, or
-                        // they'll lose the level
-                        unsigned int uiIDA[2];
-                        uiIDA[0] = IDS_CONFIRM_OK;
-                        uiIDA[1] = IDS_CONFIRM_CANCEL;
-                        ui.RequestErrorMessage(
-                            IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT, uiIDA, 2,
-                            i, &CMinecraftApp::UnlockFullExitReturned, this);
+                        SetAction(i, eAppAction_Idle);
+                        return;
                     }
+                    // flag to capture the save thumbnail
+                    SetAction(i, eAppAction_ExitWorldCapturedThumbnail,
+                              param);
 
                     // Change the presence info
                     // Are we offline or online, and how many players are there
@@ -3081,8 +3056,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     SetAction(i, eAppAction_Idle);
                     // Check the player really wants to do this
 
-                    if (ProfileManager.IsFullVersion() &&
-                        !StorageManager.GetSaveDisabled() &&
+                    if (!StorageManager.GetSaveDisabled() &&
                         i == ProfileManager.GetPrimaryPad() &&
                         g_NetworkManager.IsHost() && GetGameStarted()) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -3096,22 +3070,12 @@ void CMinecraftApp::HandleXuiActions(void) {
                                 ExitAndJoinFromInviteSaveDialogReturned,
                             this);
                     } else {
-                        if (!ProfileManager.IsFullVersion()) {
-                            // upsell
-                            uiIDA[0] = IDS_CONFIRM_OK;
-                            uiIDA[1] = IDS_CONFIRM_CANCEL;
-                            ui.RequestErrorMessage(
-                                IDS_UNLOCK_TITLE, IDS_UNLOCK_ACCEPT_INVITE,
-                                uiIDA, 2, i,
-                                &CMinecraftApp::UnlockFullInviteReturned, this);
-                        } else {
-                            uiIDA[0] = IDS_CONFIRM_CANCEL;
-                            uiIDA[1] = IDS_CONFIRM_OK;
-                            ui.RequestAlertMessage(
-                                IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE,
-                                uiIDA, 2, i,
-                                &CMinecraftApp::ExitAndJoinFromInvite, this);
-                        }
+                        uiIDA[0] = IDS_CONFIRM_CANCEL;
+                        uiIDA[1] = IDS_CONFIRM_OK;
+                        ui.RequestAlertMessage(
+                            IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE,
+                            uiIDA, 2, i,
+                            &CMinecraftApp::ExitAndJoinFromInvite, this);
                     }
                 } break;
                 case eAppAction_ExitAndJoinFromInviteConfirmed: {
@@ -4960,12 +4924,11 @@ void CMinecraftApp::InitialiseTips() {
 
 int CMinecraftApp::GetNextTip() {
     static bool bShowSkinDLCTip = true;
-    // don't display the DLC tip in the trial game
-    if (ProfileManager.IsFullVersion() && app.GetNewDLCAvailable() &&
+    if (app.GetNewDLCAvailable() &&
         app.DisplayNewDLCTip()) {
         return IDS_TIPS_GAMETIP_NEWDLC;
     } else {
-        if (bShowSkinDLCTip && ProfileManager.IsFullVersion()) {
+        if (bShowSkinDLCTip) {
             bShowSkinDLCTip = false;
             if (app.DLCInstallProcessCompleted()) {
                 if (app.m_dlcManager.getPackCount(DLCManager::e_DLCType_Skin) ==

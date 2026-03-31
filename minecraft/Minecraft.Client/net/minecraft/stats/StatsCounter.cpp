@@ -110,14 +110,6 @@ void StatsCounter::clear() {
 }
 
 void StatsCounter::parse(void* data) {
-    // 4J-PB - If this is the trial game, let's just make sure all the stats are
-    // empty 4J-PB - removing - someone can have the full game, and then remove
-    // it and go back to the trial
-    // 	if(!ProfileManager.IsFullVersion())
-    // 	{
-    // 		stats.clear();
-    // 		return;
-    // 	}
     // Check that we don't already have any stats
     assert(stats.size() == 0);
 
@@ -177,11 +169,6 @@ void StatsCounter::parse(void* data) {
 }
 
 void StatsCounter::save(int player, bool force) {
-    // 4J-PB - If this is the trial game, don't save any stats
-    if (!ProfileManager.IsFullVersion()) {
-        return;
-    }
-
     // Check we're going to have enough room to store all possible stats
     unsigned int uiTotalStatsSize =
         (Stats::all->size() * 4 * sizeof(unsigned short)) -
@@ -270,11 +257,6 @@ void StatsCounter::flushLeaderboards() {
 }
 
 void StatsCounter::saveLeaderboards() {
-    // 4J-PB - If this is the trial game, no writing leaderboards
-    if (!ProfileManager.IsFullVersion()) {
-        return;
-    }
-
     if (LeaderboardManager::Instance()->OpenSession()) {
         writeStats();
         LeaderboardManager::Instance()->CloseSession();
@@ -291,10 +273,6 @@ void StatsCounter::saveLeaderboards() {
 }
 
 void StatsCounter::writeStats() {
-    // 4J-PB - If this is the trial game, no writing
-    if (!ProfileManager.IsFullVersion()) {
-        return;
-    }
     // unsigned int locale = XGetLocale();
 
     int viewCount = 0;

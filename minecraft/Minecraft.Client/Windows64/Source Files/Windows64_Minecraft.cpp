@@ -846,24 +846,10 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         // Any threading type things to deal with from the xui side?
         app.HandleXuiActions();
 
-        // 4J-PB - Update the trial timer display if we are in the trial version
-        if (!ProfileManager.IsFullVersion()) {
-            // display the trial timer
-            if (app.GetGameStarted()) {
-                // 4J-PB - if the game is paused, add the elapsed time to the
-                // trial timer count so it doesn't tick down
-                if (app.IsAppPaused()) {
-                    app.UpdateTrialPausedTimer();
-                }
-                ui.UpdateTrialTimer(ProfileManager.GetPrimaryPad());
-            }
-        } else {
-            // need to turn off the trial timer if it was on , and we've
-            // unlocked the full version
-            if (bTrialTimerDisplayed) {
-                ui.ShowTrialTimer(false);
-                bTrialTimerDisplayed = false;
-            }
+        // need to turn off the trial timer if it was on
+        if (bTrialTimerDisplayed) {
+            ui.ShowTrialTimer(false);
+            bTrialTimerDisplayed = false;
         }
 
         // Fix for #7318 - Title crashes after short soak in the leaderboards

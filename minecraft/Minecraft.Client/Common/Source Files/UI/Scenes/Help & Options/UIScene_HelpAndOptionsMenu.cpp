@@ -57,11 +57,6 @@ UIScene_HelpAndOptionsMenu::UIScene_HelpAndOptionsMenu(int iPad, void* initData,
         }
     }
 
-    if (!ProfileManager.IsFullVersion())  //|| ProfileManager.IsGuest(m_iPad))
-    {
-        removeControl(&m_buttons[BUTTON_HAO_CHANGESKIN], false);
-    }
-
     // 4J-TomK Moved horizontal resize check to the end to prevent horizontal
     // scaling for buttons that might get removed anyways (debug options for
     // example)
@@ -130,22 +125,6 @@ void UIScene_HelpAndOptionsMenu::handleReload() {
         if (ProfileManager.GetPrimaryPad() != m_iPad) {
             removeControl(&m_buttons[BUTTON_HAO_REINSTALL], false);
         }
-    }
-
-    if (!ProfileManager.IsFullVersion())  //|| ProfileManager.IsGuest(m_iPad))
-    {
-#if TO_BE_IMPLEMENTED
-        m_Buttons[BUTTON_HAO_CHANGESKIN].SetEnable(false);
-        m_Buttons[BUTTON_HAO_CHANGESKIN].EnableInput(false);
-        // set the focus to the second button
-
-        XuiElementSetUserFocus(m_Buttons[BUTTON_HAO_HOWTOPLAY].m_hObj, m_iPad);
-#endif
-    }
-
-    if (!ProfileManager.IsFullVersion())  //|| ProfileManager.IsGuest(m_iPad))
-    {
-        removeControl(&m_buttons[BUTTON_HAO_CHANGESKIN], false);
     }
 
     doHorizontalResizeCheck();

@@ -114,9 +114,7 @@ void UIScene_InGameSaveManagementMenu::updateTooltips() {
 void UIScene_InGameSaveManagementMenu::Initialise() {
     m_iSaveListIndex = 0;
 
-    // Check if we're in the trial version
-    if (ProfileManager.IsFullVersion() == false) {
-    } else if (StorageManager.GetSaveDisabled()) {
+    if (StorageManager.GetSaveDisabled()) {
         GetSaveInfo();
     } else {
         // 4J-PB - we need to check that there is enough space left to create a

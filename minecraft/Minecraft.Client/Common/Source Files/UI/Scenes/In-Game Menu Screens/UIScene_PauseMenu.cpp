@@ -29,11 +29,6 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
     m_buttons[BUTTON_PAUSE_EXITGAME].init(app.GetString(IDS_EXIT_GAME),
                                           BUTTON_PAUSE_EXITGAME);
 
-    if (!ProfileManager.IsFullVersion()) {
-        // hide the trial timer
-        ui.ShowTrialTimer(false);
-    }
-
     updateControlsVisibility();
 
     doHorizontalResizeCheck();
@@ -100,23 +95,6 @@ void UIScene_PauseMenu::updateTooltips() {
     int iRB = -1;
     int iX = -1;
 
-    // if (ProfileManager.IsFullVersion()) {
-    //     if (StorageManager.GetSaveDisabled()) {
-    //         iX = bIsisPrimaryHost ? IDS_TOOLTIPS_SELECTDEVICE : -1;
-    //         if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
-    //             CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
-    //             bUserisClientSide) {
-    //             iY = IDS_TOOLTIPS_SHARE;
-    //         }
-    //     } else {
-    //         iX = bIsisPrimaryHost ? IDS_TOOLTIPS_CHANGEDEVICE : -1;
-    //         if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
-    //             CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
-    //             bUserisClientSide) {
-    //             iY = IDS_TOOLTIPS_SHARE;
-    //         }
-    //     }
-    // }
     ui.SetTooltips(m_iPad, IDS_TOOLTIPS_SELECT, IDS_TOOLTIPS_BACK, iX, iY, -1,
                    -1, -1, iRB);
 }
@@ -203,9 +181,6 @@ void UIScene_PauseMenu::handleInput(int iPad, int key, bool repeat,
 
                 ui.PlayUISFX(eSFX_Back);
                 navigateBack();
-                if (!ProfileManager.IsFullVersion()) {
-                    ui.ShowTrialTimer(true);
-                }
             }
             break;
         case ACTION_MENU_OK:
@@ -327,83 +302,17 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
             break;
         case BUTTON_PAUSE_EXITGAME: {
             Minecraft* pMinecraft = Minecraft::GetInstance();
-            // Check if it's the trial version
-            if (ProfileManager.IsFullVersion()) {
-                unsigned int uiIDA[3];
+            unsigned int uiIDA[3];
 
-                // is it the primary player exiting?
-                if (m_iPad == ProfileManager.GetPrimaryPad()) {
-                    int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
-                        playTime = (int)pMinecraft->localplayers[m_iPad]
-                                       ->getSessionTimer();
-                    }
-
-                    if (StorageManager.GetSaveDisabled()) {
-                        uiIDA[0] = IDS_CONFIRM_CANCEL;
-                        uiIDA[1] = IDS_CONFIRM_OK;
-                        ui.RequestAlertMessage(
-                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
-                            uiIDA, 2, m_iPad,
-                            &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (void*)GetCallbackUniqueId());
-                    } else {
-                        if (g_NetworkManager.IsHost()) {
-                            uiIDA[0] = IDS_CONFIRM_CANCEL;
-                            uiIDA[1] = IDS_EXIT_GAME_SAVE;
-                            uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
-
-                            if (g_NetworkManager.GetPlayerCount() > 1) {
-                                ui.RequestAlertMessage(
-                                    IDS_EXIT_GAME,
-                                    IDS_CONFIRM_EXIT_GAME_CONFIRM_DISCONNECT_SAVE,
-                                    uiIDA, 3, m_iPad,
-                                    &UIScene_PauseMenu::
-                                        ExitGameSaveDialogReturned,
-                                    (void*)GetCallbackUniqueId());
-                            } else {
-                                ui.RequestAlertMessage(
-                                    IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA,
-                                    3, m_iPad,
-                                    &UIScene_PauseMenu::
-                                        ExitGameSaveDialogReturned,
-                                    (void*)GetCallbackUniqueId());
-                            }
-                        } else {
-                            uiIDA[0] = IDS_CONFIRM_CANCEL;
-                            uiIDA[1] = IDS_CONFIRM_OK;
-
-                            ui.RequestAlertMessage(
-                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                                m_iPad,
-                                &IUIScene_PauseMenu::ExitGameDialogReturned,
-                                (void*)GetCallbackUniqueId());
-                        }
-                    }
-                } else {
-                    int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
-                        playTime = (int)pMinecraft->localplayers[m_iPad]
-                                       ->getSessionTimer();
-                    }
-
-                    // just exit the player
-                    app.SetAction(m_iPad, eAppAction_ExitPlayer);
+            // is it the primary player exiting?
+            if (m_iPad == ProfileManager.GetPrimaryPad()) {
+                int playTime = -1;
+                if (pMinecraft->localplayers[m_iPad] != nullptr) {
+                    playTime = (int)pMinecraft->localplayers[m_iPad]
+                                   ->getSessionTimer();
                 }
-            } else {
-                // is it the primary player exiting?
-                if (m_iPad == ProfileManager.GetPrimaryPad()) {
-                    int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
-                        playTime = (int)pMinecraft->localplayers[m_iPad]
-                                       ->getSessionTimer();
-                    }
 
-                    // adjust the trial time played
-                    ui.ReduceTrialTimerValue();
-
-                    // exit the level
-                    unsigned int uiIDA[2];
+                if (StorageManager.GetSaveDisabled()) {
                     uiIDA[0] = IDS_CONFIRM_CANCEL;
                     uiIDA[1] = IDS_CONFIRM_OK;
                     ui.RequestAlertMessage(
@@ -411,40 +320,54 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                         uiIDA, 2, m_iPad,
                         &IUIScene_PauseMenu::ExitGameDialogReturned,
                         (void*)GetCallbackUniqueId());
-
                 } else {
-                    int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
-                        playTime = (int)pMinecraft->localplayers[m_iPad]
-                                       ->getSessionTimer();
-                    }
+                    if (g_NetworkManager.IsHost()) {
+                        uiIDA[0] = IDS_CONFIRM_CANCEL;
+                        uiIDA[1] = IDS_EXIT_GAME_SAVE;
+                        uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
 
-                    // just exit the player
-                    app.SetAction(m_iPad, eAppAction_ExitPlayer);
+                        if (g_NetworkManager.GetPlayerCount() > 1) {
+                            ui.RequestAlertMessage(
+                                IDS_EXIT_GAME,
+                                IDS_CONFIRM_EXIT_GAME_CONFIRM_DISCONNECT_SAVE,
+                                uiIDA, 3, m_iPad,
+                                &UIScene_PauseMenu::
+                                    ExitGameSaveDialogReturned,
+                                (void*)GetCallbackUniqueId());
+                        } else {
+                            ui.RequestAlertMessage(
+                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA,
+                                3, m_iPad,
+                                &UIScene_PauseMenu::
+                                    ExitGameSaveDialogReturned,
+                                (void*)GetCallbackUniqueId());
+                        }
+                    } else {
+                        uiIDA[0] = IDS_CONFIRM_CANCEL;
+                        uiIDA[1] = IDS_CONFIRM_OK;
+
+                        ui.RequestAlertMessage(
+                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
+                            m_iPad,
+                            &IUIScene_PauseMenu::ExitGameDialogReturned,
+                            (void*)GetCallbackUniqueId());
+                    }
                 }
+            } else {
+                int playTime = -1;
+                if (pMinecraft->localplayers[m_iPad] != nullptr) {
+                    playTime = (int)pMinecraft->localplayers[m_iPad]
+                                   ->getSessionTimer();
+                }
+
+                // just exit the player
+                app.SetAction(m_iPad, eAppAction_ExitPlayer);
             }
         } break;
     }
 }
 
 void UIScene_PauseMenu::PerformActionSaveGame() {
-    // is the player trying to save in the trial version?
-    if (!ProfileManager.IsFullVersion()) {
-        // Unlock the full version?
-        if (!ProfileManager.IsSignedInLive(m_iPad)) {
-        } else {
-            unsigned int uiIDA[2];
-            uiIDA[0] = IDS_CONFIRM_OK;
-            uiIDA[1] = IDS_CONFIRM_CANCEL;
-            ui.RequestAlertMessage(IDS_UNLOCK_TITLE, IDS_UNLOCK_TOSAVE_TEXT,
-                                   uiIDA, 2, m_iPad,
-                                   &UIScene_PauseMenu::UnlockFullSaveReturned,
-                                   (void*)GetCallbackUniqueId());
-        }
-
-        return;
-    }
-
     // 4J-PB - Is the player trying to save but they are using a trial
     // texturepack ?
     if (!Minecraft::GetInstance()->skins->isUsingDefaultSkin()) {
@@ -527,17 +450,6 @@ void UIScene_PauseMenu::HandleDLCMountingComplete() {
     app.DebugPrintf(
         "UIScene_PauseMenu::HandleDLCMountingComplete - m_bIgnoreInput false "
         "\n");
-
-    // 	if(ProfileManager.IsFullVersion())
-    // 	{
-    // 		bool bIsisPrimaryHost=g_NetworkManager.IsHost() &&
-    // (ProfileManager.GetPrimaryPad()==m_iPad);
-    //
-    // 		if(bIsisPrimaryHost)
-    // 		{
-    // 			m_buttons[BUTTON_PAUSE_SAVEGAME].setEnable(true);
-    // 		}
-    // 	}
 }
 
 int UIScene_PauseMenu::UnlockFullSaveReturned(

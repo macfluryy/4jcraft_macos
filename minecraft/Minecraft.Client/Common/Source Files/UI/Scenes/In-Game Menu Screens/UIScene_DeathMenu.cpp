@@ -83,60 +83,16 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
             // 4J-PB - fix for #8333 - BLOCKER: If player decides to exit game,
             // then cancels the exit player becomes stuck at game over screen
             // m_bIgnoreInput = true;
-            // Check if it's the trial version
-            if (ProfileManager.IsFullVersion()) {
-                // is it the primary player exiting?
-                if (m_iPad == ProfileManager.GetPrimaryPad()) {
-                    unsigned int uiIDA[3];
-                    int playTime = -1;
-                    if (pMinecraft->localplayers[m_iPad] != nullptr) {
-                        playTime = (int)pMinecraft->localplayers[m_iPad]
-                                       ->getSessionTimer();
-                    }
-
-                    if (StorageManager.GetSaveDisabled()) {
-                        uiIDA[0] = IDS_CONFIRM_CANCEL;
-                        uiIDA[1] = IDS_CONFIRM_OK;
-                        ui.RequestAlertMessage(
-                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME_PROGRESS_LOST,
-                            uiIDA, 2, m_iPad,
-                            &IUIScene_PauseMenu::ExitGameDialogReturned,
-                            (void*)GetCallbackUniqueId());
-                    } else {
-                        if (g_NetworkManager.IsHost()) {
-                            uiIDA[0] = IDS_CONFIRM_CANCEL;
-                            uiIDA[1] = IDS_EXIT_GAME_SAVE;
-                            uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
-
-                            ui.RequestAlertMessage(
-                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
-                                m_iPad,
-                                &IUIScene_PauseMenu::ExitGameSaveDialogReturned,
-                                (void*)GetCallbackUniqueId());
-                        } else {
-                            uiIDA[0] = IDS_CONFIRM_CANCEL;
-                            uiIDA[1] = IDS_CONFIRM_OK;
-
-                            ui.RequestAlertMessage(
-                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                                m_iPad,
-                                &IUIScene_PauseMenu::ExitGameDialogReturned,
-                                (void*)GetCallbackUniqueId());
-                        }
-                    }
-                } else {
-                    // just exit the player
-                    app.SetAction(m_iPad, eAppAction_ExitPlayer);
+            // is it the primary player exiting?
+            if (m_iPad == ProfileManager.GetPrimaryPad()) {
+                unsigned int uiIDA[3];
+                int playTime = -1;
+                if (pMinecraft->localplayers[m_iPad] != nullptr) {
+                    playTime = (int)pMinecraft->localplayers[m_iPad]
+                                   ->getSessionTimer();
                 }
-            } else {
-                // is it the primary player exiting?
-                if (m_iPad == ProfileManager.GetPrimaryPad()) {
 
-                    // adjust the trial time played
-                    ui.ReduceTrialTimerValue();
-
-                    // exit the level
-                    unsigned int uiIDA[2];
+                if (StorageManager.GetSaveDisabled()) {
                     uiIDA[0] = IDS_CONFIRM_CANCEL;
                     uiIDA[1] = IDS_CONFIRM_OK;
                     ui.RequestAlertMessage(
@@ -145,9 +101,30 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                         &IUIScene_PauseMenu::ExitGameDialogReturned,
                         (void*)GetCallbackUniqueId());
                 } else {
-                    // just exit the player
-                    app.SetAction(m_iPad, eAppAction_ExitPlayer);
+                    if (g_NetworkManager.IsHost()) {
+                        uiIDA[0] = IDS_CONFIRM_CANCEL;
+                        uiIDA[1] = IDS_EXIT_GAME_SAVE;
+                        uiIDA[2] = IDS_EXIT_GAME_NO_SAVE;
+
+                        ui.RequestAlertMessage(
+                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
+                            m_iPad,
+                            &IUIScene_PauseMenu::ExitGameSaveDialogReturned,
+                            (void*)GetCallbackUniqueId());
+                    } else {
+                        uiIDA[0] = IDS_CONFIRM_CANCEL;
+                        uiIDA[1] = IDS_CONFIRM_OK;
+
+                        ui.RequestAlertMessage(
+                            IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
+                            m_iPad,
+                            &IUIScene_PauseMenu::ExitGameDialogReturned,
+                            (void*)GetCallbackUniqueId());
+                    }
                 }
+            } else {
+                // just exit the player
+                app.SetAction(m_iPad, eAppAction_ExitPlayer);
             }
         } break;
     }

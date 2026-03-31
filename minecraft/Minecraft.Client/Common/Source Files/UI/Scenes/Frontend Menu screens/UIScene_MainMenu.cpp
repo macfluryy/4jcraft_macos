@@ -34,15 +34,9 @@ UIScene_MainMenu::UIScene_MainMenu(int iPad, void* initData,
                                                eControl_Achievements);
     m_buttons[(int)eControl_HelpAndOptions].init(IDS_HELP_AND_OPTIONS,
                                                  eControl_HelpAndOptions);
-    if (ProfileManager.IsFullVersion()) {
-        m_bTrialVersion = false;
-        m_buttons[(int)eControl_UnlockOrDLC].init(IDS_DOWNLOADABLECONTENT,
-                                                  eControl_UnlockOrDLC);
-    } else {
-        m_bTrialVersion = true;
-        m_buttons[(int)eControl_UnlockOrDLC].init(IDS_UNLOCK_FULL_GAME,
-                                                  eControl_UnlockOrDLC);
-    }
+    m_bTrialVersion = false;
+    m_buttons[(int)eControl_UnlockOrDLC].init(IDS_DOWNLOADABLECONTENT,
+                                              eControl_UnlockOrDLC);
 
     m_buttons[(int)eControl_Exit].init(app.GetString(IDS_EXIT_GAME),
                                        eControl_Exit);
@@ -130,7 +124,7 @@ void UIScene_MainMenu::handleGainFocus(bool navBack) {
     m_bIgnorePress = false;
     updateTooltips();
 
-    if (navBack && ProfileManager.IsFullVersion()) {
+    if (navBack) {
         // Replace the Unlock Full Game with Downloadable Content
         m_buttons[(int)eControl_UnlockOrDLC].setLabel(IDS_DOWNLOADABLECONTENT);
     }
@@ -243,18 +237,14 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
             signInReturnedFunc =
                 &UIScene_MainMenu::UnlockFullGame_SignInReturned;
             break;
-        case eControl_Exit:
-            if (ProfileManager.IsFullVersion()) {
+        case eControl_Exit: {
                 unsigned int uiIDA[2];
                 uiIDA[0] = IDS_CONFIRM_CANCEL;
                 uiIDA[1] = IDS_CONFIRM_OK;
                 ui.RequestErrorMessage(
                     IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
                     XUSER_INDEX_ANY, &UIScene_MainMenu::ExitGameReturned, this);
-            } else {
-                ui.NavigateToScene(primaryPad, eUIScene_TrialExitUpsell);
-            }
-            break;
+            } break;
 
         default:
             __debugbreak();
@@ -497,7 +487,7 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
             Minecraft::GetInstance()->user->name = convStringToWstring(
                 ProfileManager.GetGamertag(ProfileManager.GetPrimaryPad()));
 
-            if (ProfileManager.IsFullVersion()) {
+            {
                 bool bSignedInLive = ProfileManager.IsSignedInLive(iPad);
 
                 // Check if we're signed in to LIVE
@@ -578,18 +568,6 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
                     proceedToScene(ProfileManager.GetPrimaryPad(),
                                    eUIScene_LoadOrJoinMenu);
 #endif
-                }
-            } else {
-                // 4J-PB - if this is the trial game, we can't have any
-                // networking Can't apply the player's settings here - they
-                // haven't come back from the QuerySignInStatud call above yet.
-                // Need to let them action in the main loop when they come in
-                // ensure we've applied this player's settings
-                // app.ApplyGameSettingsChanged(iPad);
-
-                {
-                    // go straight in to the trial level
-                    LoadTrial();
                 }
             }
         }
@@ -758,7 +736,7 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
         // 4J-PB - Need to check for installed DLC
         if (!app.DLCInstallProcessCompleted()) app.StartInstallDLCProcess(iPad);
 
-        if (ProfileManager.IsFullVersion()) {
+        {
             // are we offline?
             bool bSignedInLive = ProfileManager.IsSignedInLive(iPad);
 
@@ -820,22 +798,6 @@ void UIScene_MainMenu::RunPlayGame(int iPad) {
                                eUIScene_LoadOrJoinMenu);
 #endif
             }
-        } else {
-            // 4J-PB - if this is the trial game, we can't have any networking
-            // go straight in to the trial level
-            // change the minecraft player name
-            Minecraft::GetInstance()->user->name = convStringToWstring(
-                ProfileManager.GetGamertag(ProfileManager.GetPrimaryPad()));
-
-            // Can't apply the player's settings here - they haven't come back
-            // from the QuerySignInStatud call above yet. Need to let them
-            // action in the main loop when they come in ensure we've applied
-            // this player's settings
-            // app.ApplyGameSettingsChanged(iPad);
-
-            {
-                LoadTrial();
-            }
         }
     }
 }
@@ -888,79 +850,52 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
     unsigned int uiIDA[1];
     uiIDA[0] = IDS_OK;
 
-    // Check if this means downloadable content
-    if (ProfileManager.IsFullVersion()) {
-        // downloadable content
-        if (ProfileManager.IsSignedInLive(iPad)) {
-            if (ProfileManager.IsGuest(iPad)) {
-                m_bIgnorePress = false;
-                ui.RequestErrorMessage(IDS_PRO_GUESTPROFILE_TITLE,
-                                       IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
-            } else {
-                // If the player was signed in before selecting play, we'll not
-                // have read the profile yet, so query the sign-in status to get
-                // this to happen
-                ProfileManager.QuerySigninStatus();
-
-                {
-                    bool bContentRestricted = false;
-                    if (bContentRestricted) {
-                        m_bIgnorePress = false;
-#if !defined(_WINDOWS64)
-                        // we check this for other platforms
-                        // you can't see the store
-                        unsigned int uiIDA[1];
-                        uiIDA[0] = IDS_CONFIRM_OK;
-                        ui.RequestErrorMessage(
-                            IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION,
-                            uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr,
-                            this);
-#endif
-                    } else {
-                        ProfileManager.SetLockedProfile(iPad);
-                        proceedToScene(ProfileManager.GetPrimaryPad(),
-                                       eUIScene_DLCMainMenu);
-                    }
-                }
-
-                // read the DLC info from TMS
-                /*app.ReadDLCFileFromTMS(iPad);*/
-
-                // We want to navigate to the DLC scene, but block input until
-                // we get the DLC file in from TMS Don't navigate - we might
-                // have an uplink disconnect
-                // app.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_DLCMainMenu);
-            }
-        } else {
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_OK;
-            ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
-        }
-    } else {
-        // guests can't buy the game
+    // downloadable content
+    if (ProfileManager.IsSignedInLive(iPad)) {
         if (ProfileManager.IsGuest(iPad)) {
             m_bIgnorePress = false;
-            ui.RequestErrorMessage(IDS_UNLOCK_TITLE, IDS_UNLOCK_GUEST_TEXT,
-                                   uiIDA, 1, iPad);
-        } else if (!ProfileManager.IsSignedInLive(iPad)) {
-            unsigned int uiIDA[1];
-            uiIDA[0] = IDS_OK;
-            ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                                   IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
-
+            ui.RequestErrorMessage(IDS_PRO_GUESTPROFILE_TITLE,
+                                   IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1);
         } else {
-            // If the player was signed in before selecting play, we'll not have
-            // read the profile yet, so query the sign-in status to get this to
-            // happen
+            // If the player was signed in before selecting play, we'll not
+            // have read the profile yet, so query the sign-in status to get
+            // this to happen
             ProfileManager.QuerySigninStatus();
 
-            // check that the commerce is in the right state to be able to
-            // display the full version purchase - if the user is fast with the
-            // trial version, it can still be retrieving the product list
-            ProfileManager.DisplayFullVersionPurchase(
-                false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
+            {
+                bool bContentRestricted = false;
+                if (bContentRestricted) {
+                    m_bIgnorePress = false;
+#if !defined(_WINDOWS64)
+                    // we check this for other platforms
+                    // you can't see the store
+                    unsigned int uiIDA[1];
+                    uiIDA[0] = IDS_CONFIRM_OK;
+                    ui.RequestErrorMessage(
+                        IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION,
+                        uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr,
+                        this);
+#endif
+                } else {
+                    ProfileManager.SetLockedProfile(iPad);
+                    proceedToScene(ProfileManager.GetPrimaryPad(),
+                                   eUIScene_DLCMainMenu);
+                }
+            }
+
+            // read the DLC info from TMS
+            /*app.ReadDLCFileFromTMS(iPad);*/
+
+            // We want to navigate to the DLC scene, but block input until
+            // we get the DLC file in from TMS Don't navigate - we might
+            // have an uplink disconnect
+            // app.NavigateToScene(ProfileManager.GetPrimaryPad(),eUIScene_DLCMainMenu);
         }
+    } else {
+        unsigned int uiIDA[1];
+        uiIDA[0] = IDS_OK;
+        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
+                               IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
     }
 }
 

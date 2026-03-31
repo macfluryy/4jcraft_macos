@@ -216,9 +216,7 @@ void UIScene_LoadOrJoinMenu::updateTooltips() {
             iLB = IDS_TOOLTIPS_PARTY_GAMES;
     }
 
-    if (ProfileManager.IsFullVersion() == false) {
-        iRB = -1;
-    } else if (StorageManager.GetSaveDisabled()) {
+    if (StorageManager.GetSaveDisabled()) {
     } else {
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
         // Is there a save from PS3 or PSVita available?
@@ -249,14 +247,7 @@ void UIScene_LoadOrJoinMenu::Initialise() {
     m_iDefaultButtonsC = 0;
     m_iMashUpButtonsC = 0;
 
-    // Check if we're in the trial version
-    if (ProfileManager.IsFullVersion() == false) {
-        AddDefaultButtons();
-
-#if TO_BE_IMPLEMENTED
-        m_pSavesList->SetCurSelVisible(0);
-#endif
-    } else if (StorageManager.GetSaveDisabled()) {
+    if (StorageManager.GetSaveDisabled()) {
 #if TO_BE_IMPLEMENTED
         if (StorageManager.GetSaveDeviceSelected(m_iPad))
 #endif

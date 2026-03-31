@@ -835,7 +835,7 @@ void MinecraftServer::Suspend() {
     float fSecsPerTick = 1.0f / (float)qwTicksPerSec.QuadPart;
     // Save the start time
     QueryPerformanceCounter(&qwTime);
-    if (m_bLoaded && ProfileManager.IsFullVersion() &&
+    if (m_bLoaded &&
         (!StorageManager.GetSaveDisabled())) {
         if (players != nullptr) {
             players->saveAll(nullptr);
@@ -887,7 +887,7 @@ void MinecraftServer::stopServer(bool didInit) {
         // if trial version or saving is disabled, then don't save anything.
         // Also don't save anything if we didn't actually get through the server
         // initialisation.
-        if (m_saveOnExit && ProfileManager.IsFullVersion() &&
+        if (m_saveOnExit &&
             (!StorageManager.GetSaveDisabled()) && didInit) {
             if (players != nullptr) {
                 players->saveAll(Minecraft::GetInstance()->progressRenderer,

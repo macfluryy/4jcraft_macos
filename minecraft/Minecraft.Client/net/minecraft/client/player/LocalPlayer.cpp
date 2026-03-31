@@ -837,8 +837,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
                                         << ach->getAchievementID();
             if (!(achBit & m_awardedThisSession)) {
                 ProfileManager.Award(m_iPad, ach->getAchievementID());
-                if (ProfileManager.IsFullVersion())
-                    m_awardedThisSession |= achBit;
+                m_awardedThisSession |= achBit;
             }
         }
         minecraft->stats[m_iPad]->award(stat, level->difficulty, count);

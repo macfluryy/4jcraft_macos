@@ -47,7 +47,6 @@ C_4JProfile::PROFILESETTINGS s_dashboardSettings[XUSER_MAX_COUNT] = {};
 char s_gamertags[XUSER_MAX_COUNT][16] = {};
 std::wstring s_displayNames[XUSER_MAX_COUNT];
 int s_lockedProfile = 0;
-bool s_profileIsFullVersion = true;
 int (*s_defaultOptionsCallback)(void*, C_4JProfile::PROFILESETTINGS*,
                                 const int iPad) = nullptr;
 void* s_defaultOptionsCallbackParam = nullptr;
@@ -158,8 +157,6 @@ std::wstring C_4JProfile::GetDisplayName(int iPad) {
     ensureFakeIdentity(p);
     return s_displayNames[p];
 }
-
-bool C_4JProfile::IsFullVersion() { return s_profileIsFullVersion; }
 
 int C_4JProfile::SetDefaultOptionsCallback(
     int (*Func)(void*, PROFILESETTINGS*, const int iPad), void* lpParam) {

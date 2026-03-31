@@ -191,11 +191,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         if (app.GetTutorialMode()) {
             minecraft->gameMode = new FullTutorialMode(
                 InputManager.GetPrimaryPad(), minecraft, this);
-        }
-        // check if we're in the trial version
-        else if (ProfileManager.IsFullVersion() == false) {
-            minecraft->gameMode =
-                new TrialMode(InputManager.GetPrimaryPad(), minecraft, this);
         } else {
             minecraft->gameMode = new ConsoleGameMode(
                 InputManager.GetPrimaryPad(), minecraft, this);

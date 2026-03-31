@@ -109,15 +109,7 @@ void SelectWorldScreen::buttonClicked(Button* button) {
     } else if (button->id == BUTTON_SELECT_ID) {
         worldSelected(selectedWorld);
     } else if (button->id == BUTTON_CREATE_ID) {
-        if (ProfileManager.IsFullVersion()) {
-            minecraft->setScreen(new CreateWorldScreen(this));
-        } else {
-            // create demo world
-            minecraft->setScreen(nullptr);
-            if (done) return;
-            done = true;
-            // 4J Stu - Not used, so commenting to stop the build failing
-        }
+        minecraft->setScreen(new CreateWorldScreen(this));
     } else if (button->id == BUTTON_RENAME_ID) {
         minecraft->setScreen(
             new RenameWorldScreen(this, getWorldId(selectedWorld)));

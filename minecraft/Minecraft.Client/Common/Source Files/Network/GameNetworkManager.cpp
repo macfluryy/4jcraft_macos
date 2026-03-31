@@ -95,12 +95,6 @@ bool CGameNetworkManager::_RunNetworkGame(void* lpParameter) {
 
     app.SetGameStarted(true);
 
-    // 4J-PB - if this is the trial game, start the trial timer
-    if (!ProfileManager.IsFullVersion()) {
-        ui.SetTrialTimerLimitSecs(
-            /*DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME*/ 2400);
-        app.SetTrialTimerStart();
-    }
     // app.CloseXuiScenes(ProfileManager.GetPrimaryPad());
 
     return success;
@@ -1362,13 +1356,7 @@ void CGameNetworkManager::HandleInviteWhenInMenus(
     int userIndex, const INVITE_INFO* pInviteInfo) {
     // We are in the root menus somewhere
 
-    // if this is the trial game, then we need the user to unlock the full game
-    if (!ProfileManager.IsFullVersion()) {
-        // The marketplace will fail with the primary player set to -1
-        ProfileManager.SetPrimaryPad(userIndex);
-
-        app.SetAction(userIndex, eAppAction_DashboardTrialJoinFromInvite);
-    } else {
+    {
         ProfileManager.SetPrimaryPad(userIndex);
 
         // 4J Stu - If we accept an invite from the main menu before going to

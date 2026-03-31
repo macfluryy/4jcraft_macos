@@ -212,18 +212,16 @@ int IUIScene_PauseMenu::SaveWorldThreadProc(void* lpParameter) {
 
     // wprintf(L"Loading world on thread\n");
 
-    if (ProfileManager.IsFullVersion()) {
-        app.SetGameStarted(false);
+    app.SetGameStarted(false);
 
-        while (app.GetXuiServerAction(ProfileManager.GetPrimaryPad()) !=
-                   eXuiServerAction_Idle &&
-               !MinecraftServer::serverHalted()) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        }
-
-        if (!MinecraftServer::serverHalted() && !app.GetChangingSessionType())
-            app.SetGameStarted(true);
+    while (app.GetXuiServerAction(ProfileManager.GetPrimaryPad()) !=
+               eXuiServerAction_Idle &&
+           !MinecraftServer::serverHalted()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
+
+    if (!MinecraftServer::serverHalted() && !app.GetChangingSessionType())
+        app.SetGameStarted(true);
 
     int32_t hr = S_OK;
     if (app.GetChangingSessionType()) {

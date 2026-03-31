@@ -812,10 +812,6 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(
         if (app.GetTutorialMode()) {
             localgameModes[idx] =
                 new FullTutorialMode(idx, this, clientConnection);
-        }
-        // check if we're in the trial version
-        else if (ProfileManager.IsFullVersion() == false) {
-            localgameModes[idx] = new TrialMode(idx, this, clientConnection);
         } else {
             localgameModes[idx] =
                 new ConsoleGameMode(idx, this, clientConnection);
@@ -1003,9 +999,8 @@ void Minecraft::run_middle() {
                 //                stop();
                 //            }
 
-                // 4J-PB - AUTOSAVE TIMER - only in the full game and if the
-                // player is the host
-                if (level != nullptr && ProfileManager.IsFullVersion() &&
+                // 4J-PB - AUTOSAVE TIMER - if the player is the host
+                if (level != nullptr &&
                     g_NetworkManager.IsHost()) {
                     /*if(!bAutosaveTimerSet)
                     {
@@ -4092,9 +4087,6 @@ void Minecraft::startAndConnectTo(const std::wstring& name,
     */
     minecraft->serverDomain = L"www.minecraft.net";
 
-    // 4J Stu - We never want the player to be DemoUser, we always want them to
-    // have their gamertag displayed
-    // if (ProfileManager.IsFullVersion())
     {
         if (userName != L"" &&
             sid != L"")  // 4J - username & side were compared with nullptr
@@ -4172,7 +4164,6 @@ void Minecraft::main() {
     // 4J Stu - This block generates XML for the game rules schema
 
     // 4J-PB - Can't call this for the first 5 seconds of a game - MS rule
-    // if (ProfileManager.IsFullVersion())
     {
         name =
             L"Player" + _toString<int64_t>(System::currentTimeMillis() % 1000);

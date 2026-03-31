@@ -57,7 +57,6 @@ public:
                                        bool* pbContentRestricted, int* piAge);
     char* GetGamertag(int iPad);
     std::wstring GetDisplayName(int iPad);
-    bool IsFullVersion();
     int SetDefaultOptionsCallback(int (*Func)(void*, PROFILESETTINGS*,
                                               const int iPad),
                                   void* lpParam);

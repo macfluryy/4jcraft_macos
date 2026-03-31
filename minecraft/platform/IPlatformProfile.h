@@ -81,7 +81,6 @@ public:
     virtual void SetPrimaryPad(int iPad) = 0;
     virtual char* GetGamertag(int iPad) = 0;
     virtual std::wstring GetDisplayName(int iPad) = 0;
-    virtual bool IsFullVersion() = 0;
     virtual void SetSignInChangeCallback(
         void (*Func)(void*, bool, unsigned int), void* lpParam) = 0;
     virtual void SetNotificationsCallback(
