@@ -81,7 +81,6 @@ std::vector<Texture*>* TextureManager::createTextures(
     int minFilter = Texture::TFLT_NEAREST;
     int magFilter = Texture::TFLT_NEAREST;
 
-    MemSect(32);
     std::wstring drive = L"";
 
     if (texturePack->hasFile(L"res/" + filename, false)) {
@@ -99,7 +98,6 @@ std::vector<Texture*>* TextureManager::createTextures(
 
     BufferedImage* image =
         texturePack->getImageResource(filename, false, true, drive);
-    MemSect(0);
     int height = image->getHeight();
     int width = image->getWidth();
 

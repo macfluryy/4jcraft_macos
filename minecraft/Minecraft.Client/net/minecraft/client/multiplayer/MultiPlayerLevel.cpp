@@ -701,9 +701,7 @@ void MultiPlayerLevel::animateTickDoWork() {
     // be based on the current player.
     Minecraft::GetInstance()->animateTickLevel = this;
 
-    MemSect(31);
     Random* animateRandom = new Random();
-    MemSect(0);
 
     for (int i = 0; i < ticksPerChunk; i++) {
         for (auto it = chunksToAnimate.begin(); it != chunksToAnimate.end();

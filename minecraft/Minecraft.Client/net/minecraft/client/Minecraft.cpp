@@ -282,9 +282,7 @@ void Minecraft::init() {
     // Keyboard::create();
     Mouse::create();
 
-    MemSect(31);
     checkGlError(L"Pre startup");
-    MemSect(0);
 
     // width = Display.getDisplayMode().getWidth();
     // height = Display.getDisplayMode().getHeight();
@@ -301,9 +299,7 @@ void Minecraft::init() {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glMatrixMode(GL_MODELVIEW);
-    MemSect(31);
     checkGlError(L"Startup");
-    MemSect(0);
 
     //    openGLCapabilities = new OpenGLCapabilities();	// 4J - removed
 
@@ -323,9 +319,7 @@ void Minecraft::init() {
     //    } catch (Exception e) {
     //    }
 
-    MemSect(31);
     checkGlError(L"Post startup");
-    MemSect(0);
     gui = new Gui(this);
 
     if (connectToIp != L"")  // 4J - was nullptr comparison
@@ -1560,9 +1554,7 @@ void Minecraft::run_middle() {
                     // // 4J added
                 }
                 // int64_t tickDuraction = System::nanoTime() - beforeTickTime;
-                MemSect(31);
                 checkGlError(L"Pre render");
-                MemSect(0);
 
                 TileRenderer::fancy = options->fancyGraphics;
 
@@ -1719,9 +1711,7 @@ void Minecraft::run_middle() {
                 }
                 }
                 */
-                MemSect(31);
                 checkGlError(L"Post render");
-                MemSect(0);
                 frames++;
                 // pause = !isClientSide() && screen != nullptr &&
                 // screen->isPauseScreen();
@@ -1735,11 +1725,9 @@ void Minecraft::run_middle() {
 
 #if !defined(_CONTENT_PACKAGE)
                 while (System::nanoTime() >= lastTime + 1000000000) {
-                    MemSect(31);
                     fpsString = _toString<int>(frames) + L" fps, " +
                                 _toString<int>(Chunk::updates) +
                                 L" chunk updates";
-                    MemSect(0);
                     Chunk::updates = 0;
                     lastTime += 1000000000;
                     frames = 0;
@@ -1978,10 +1966,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     // soundEngine.playMusicTick();
 
     if (!pause && level != nullptr) gameMode->tick();
-    MemSect(31);
     glBindTexture(GL_TEXTURE_2D,
                   textures->loadTexture(TN_TERRAIN));  // L"/terrain.png"));
-    MemSect(0);
     if (bFirst) {
         PIXBeginNamedEvent(0, "Texture tick");
         if (!pause) textures->tick(bUpdateTextures);

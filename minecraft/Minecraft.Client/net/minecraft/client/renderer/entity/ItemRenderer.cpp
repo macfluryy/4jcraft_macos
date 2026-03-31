@@ -342,9 +342,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
     if (item->getIconType() == Icon::TYPE_TERRAIN &&
         TileRenderer::canRender(Tile::tiles[itemId]->getRenderShape())) {
         PIXBeginNamedEvent(0, "3D gui item render %d\n", itemId);
-        MemSect(31);
         textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
-        MemSect(0);
 
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
@@ -397,7 +395,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
     } else {
         PIXBeginNamedEvent(0, "2D gui item render %d\n", itemIcon);
         glDisable(GL_LIGHTING);
-        MemSect(31);
         if (item->getIconType() == Icon::TYPE_TERRAIN) {
             textures->bindTexture(
                 &TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
@@ -405,7 +402,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
             textures->bindTexture(
                 &TextureAtlas::LOCATION_ITEMS);  // L"/gui/items.png"));
         }
-        MemSect(0);
 
         if (itemIcon == nullptr) {
             itemIcon = textures->getMissingIcon(item->getIconType());
@@ -583,7 +579,6 @@ void ItemRenderer::renderGuiItemDecorations(Font* font, Textures* textures,
 
     if (item->count > 1 || !countText.empty() ||
         item->GetForceNumberDisplay()) {
-        MemSect(31);
         std::wstring amount = countText;
         if (amount.empty()) {
             int count = item->count;
@@ -593,7 +588,6 @@ void ItemRenderer::renderGuiItemDecorations(Font* font, Textures* textures,
                 amount = _toString<int>(item->count);
             }
         }
-        MemSect(0);
         glDisable(GL_LIGHTING);
         glDisable(GL_DEPTH_TEST);
         font->drawShadow(amount, x + 19 - 2 - font->width(amount), y + 6 + 3,

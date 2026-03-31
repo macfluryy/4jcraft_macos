@@ -24,9 +24,7 @@ int SheepRenderer::prepareArmor(std::shared_ptr<LivingEntity> _sheep, int layer,
                 ->player))  // 4J-JEV: Todo, merge with java fix (for invisible
                             // sheep armour) in '1.7.5'.
     {
-        MemSect(31);
         bindTexture(&SHEEP_FUR_LOCATION);
-        MemSect(0);
 
         if (sheep->hasCustomName() &&
             sheep->getCustomName().compare(L"jeb_") == 0) {

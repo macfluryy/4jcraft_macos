@@ -31,9 +31,7 @@ bool Settings::getBoolean(const std::wstring& key, bool defaultValue) {
         properties[key] = _toString<bool>(defaultValue);
         saveProperties();
     }
-    MemSect(35);
     bool retval = _fromString<bool>(properties[key]);
-    MemSect(0);
     return retval;
 }
 

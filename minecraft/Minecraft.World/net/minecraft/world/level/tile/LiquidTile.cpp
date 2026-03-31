@@ -352,12 +352,10 @@ void LiquidTile::updateLiquid(Level* level, int x, int y, int z) {
 }
 
 void LiquidTile::fizz(Level* level, int x, int y, int z) {
-    MemSect(31);
     level->playSound(
         x + 0.5f, y + 0.5f, z + 0.5f, eSoundType_RANDOM_FIZZ, 0.5f,
         2.6f +
             (level->random->nextFloat() - level->random->nextFloat()) * 0.8f);
-    MemSect(0);
     for (int i = 0; i < 8; i++) {
         level->addParticle(eParticleType_largesmoke, x + Math::random(),
                            y + 1.2, z + Math::random(), 0, 0, 0);

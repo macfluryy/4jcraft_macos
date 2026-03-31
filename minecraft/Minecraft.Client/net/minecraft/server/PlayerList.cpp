@@ -245,9 +245,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     broadcastAll(std::shared_ptr<ChatPacket>(
         new ChatPacket(player->name, ChatPacket::e_ChatPlayerJoinedGame)));
 
-    MemSect(14);
     add(player);
-    MemSect(0);
 
     player->doTick(
         true, true,

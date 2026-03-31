@@ -85,9 +85,7 @@ void AddPlayerPacket::read(DataInputStream* dis)  // throws IOException
     m_capeId = *(uint32_t*)&capeId;
     int32_t privileges = dis->readInt();
     m_uiGamePrivileges = *(unsigned int*)&privileges;
-    MemSect(1);
     unpack = SynchedEntityData::unpack(dis);
-    MemSect(0);
 }
 
 void AddPlayerPacket::write(DataOutputStream* dos)  // throws IOException

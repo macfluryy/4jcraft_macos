@@ -253,9 +253,7 @@ void GameRenderer::pick(float a) {
 
     double range = mc->gameMode->getPickRange();
     delete mc->hitResult;
-    MemSect(31);
     mc->hitResult = mc->cameraTargetPlayer->pick(range, a);
-    MemSect(0);
 
     // 4J - added - stop blocks right at the edge of the world from being
     // pickable so we shouldn't be able to directly destroy or create anything
@@ -1253,11 +1251,9 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         }
 
         PIXBeginNamedEvent(0, "Culling");
-        MemSect(31);
         //		Culler *frustum = new FrustumCuller();
         FrustumCuller frustObj;
         Culler* frustum = &frustObj;
-        MemSect(0);
         frustum->prepare(xOff, yOff, zOff);
 
         {
@@ -1300,10 +1296,8 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 
         setupFog(0, a);
         glEnable(GL_FOG);
-        MemSect(31);
         mc->textures->bindTexture(
             &TextureAtlas::LOCATION_BLOCKS);  // 4J was L"/terrain.png"
-        MemSect(0);
         Lighting::turnOff();
         PIXBeginNamedEvent(0, "Level render");
         levelRenderer->render(cameraEntity, 0, a, updateChunks);
@@ -1372,10 +1366,8 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         setupFog(0, a);
         glEnable(GL_BLEND);
         glDisable(GL_CULL_FACE);
-        MemSect(31);
         mc->textures->bindTexture(
             &TextureAtlas::LOCATION_BLOCKS);  // 4J was L"/terrain.png"
-        MemSect(0);
         // 4J - have changed this fancy rendering option to work with our
         // command buffers. The original used to use frame buffer flags to
         // disable writing to colour when doing the z-only pass, but that value
@@ -1573,7 +1565,6 @@ void GameRenderer::tickRain() {
 
     if (rainPosSamples > 0 && random->nextInt(3) < rainSoundTime++) {
         rainSoundTime = 0;
-        MemSect(24);
         if (rainPosY > player->y + 1 &&
             level->getTopRainBlock(Mth::floor(player->x),
                                    Mth::floor(player->z)) >
@@ -1586,7 +1577,6 @@ void GameRenderer::tickRain() {
                                       eSoundType_AMBIENT_WEATHER_RAIN, 0.2f,
                                       1.0f);
         }
-        MemSect(0);
     }
 }
 
@@ -1629,10 +1619,8 @@ void GameRenderer::renderSnowAndRain(float a) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glAlphaFunc(GL_GREATER, 0.01f);
 
-    MemSect(31);
     mc->textures->bindTexture(
         &SNOW_LOCATION);  // 4J was L"/environment/snow.png"
-    MemSect(0);
 
     double xo = player->xOld + (player->x - player->xOld) * a;
     double yo = player->yOld + (player->y - player->yOld) * a;

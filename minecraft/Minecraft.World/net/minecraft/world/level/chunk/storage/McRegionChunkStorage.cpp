@@ -96,19 +96,15 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
     if (m_saveFile->getOriginalSaveVersion() >=
         SAVE_FILE_VERSION_COMPRESSED_CHUNK_STORAGE) {
         if (regionChunkInputStream != nullptr) {
-            MemSect(9);
             levelChunk = OldChunkStorage::load(level, regionChunkInputStream);
             loadEntities(level, levelChunk);
-            MemSect(0);
             regionChunkInputStream->deleteChildStream();
             delete regionChunkInputStream;
         }
     } else {
         CompoundTag* chunkData;
         if (regionChunkInputStream != nullptr) {
-            MemSect(8);
             chunkData = NbtIo::read((DataInput*)regionChunkInputStream);
-            MemSect(0);
         } else {
             return nullptr;
         }
@@ -134,10 +130,8 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
             delete chunkData;
             return nullptr;
         }
-        MemSect(9);
         levelChunk =
             OldChunkStorage::load(level, chunkData->getCompound(L"Level"));
-        MemSect(0);
         if (!levelChunk->isAt(x, z)) {
             char buf[256];
             sprintf(buf,
@@ -153,9 +147,7 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
             // can never reload from it
             // chunkData->putInt(L"xPos", x);
             // chunkData->putInt(L"zPos", z);
-            // MemSect(10);
             // levelChunk = OldChunkStorage::load(level,
-            // chunkData->getCompound(L"Level")); MemSect(0);
         }
 #if defined(SPLIT_SAVES)
         loadEntities(level, levelChunk);
@@ -184,7 +176,6 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     // running saves on multiple threads these sections have a lot of
     // contention. Better to let each thread have its turn at a higher level of
     // granularity.
-    MemSect(30);
     PIXBeginNamedEvent(0, "Getting output stream\n");
     DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(
         m_saveFile, m_prefix, levelChunk->x, levelChunk->z);
@@ -232,7 +223,6 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
         }
         PIXEndNamedEvent();
     }
-    MemSect(0);
 
     LevelData* levelInfo = level->getLevelData();
 

@@ -341,9 +341,7 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer* renderer, double x,
 
     if (ws > 1) ws = 1;
 
-    MemSect(31);
     bindTexture(m_customTextureUrl, m_backupTexture);
-    MemSect(0);
     glEnable(GL_ALPHA_TEST);
 
     // model->prepareMobModel(mob, wp, ws, a);
@@ -458,9 +456,7 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer* renderer, double x,
 
     glPopMatrix();
 
-    MemSect(31);
     // renderName(mob, x, y, z);
-    MemSect(0);
 
     // Reset the model values to stop the changes we made here affecting
     // anything in game (like the player hand render)

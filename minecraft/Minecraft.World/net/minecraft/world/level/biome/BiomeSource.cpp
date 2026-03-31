@@ -317,7 +317,6 @@ TilePos* BiomeSource::findBiome(int x, int z, int r,
 
     int w = x1 - x0 + 1;
     int h = z1 - z0 + 1;
-    MemSect(50);
     std::vector<int> biomes = layer->getArea(x0, z0, w, h);
     TilePos* res = nullptr;
     int found = 0;
@@ -333,7 +332,6 @@ TilePos* BiomeSource::findBiome(int x, int z, int r,
             }
         }
     }
-    MemSect(0);
 
     return res;
 }

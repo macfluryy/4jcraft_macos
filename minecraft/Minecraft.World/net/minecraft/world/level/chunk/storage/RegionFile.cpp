@@ -231,10 +231,8 @@ DataInputStream* RegionFile::getChunkDataInputStream(
         return nullptr;
     }
 
-    MemSect(50);
     std::uint8_t* data = new std::uint8_t[length];
     std::uint8_t* decomp = new std::uint8_t[decompLength];
-    MemSect(0);
     readDecompLength = decompLength;
     m_saveFile->readFile(fileEntry, data, length, &numberOfBytesRead);
 

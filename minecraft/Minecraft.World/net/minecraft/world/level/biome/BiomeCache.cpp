@@ -83,11 +83,9 @@ BiomeCache::Block* BiomeCache::getBlockAt(int x, int z) {
     auto it = cached.find(slot);
     Block* block = nullptr;
     if (it == cached.end()) {
-        MemSect(48);
         block = new Block(x, z, this);
         cached[slot] = block;
         all.push_back(block);
-        MemSect(0);
     } else {
         block = it->second;
     }

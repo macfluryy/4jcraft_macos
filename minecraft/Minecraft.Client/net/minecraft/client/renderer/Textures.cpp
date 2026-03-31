@@ -662,7 +662,6 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     //	printf("Textures::loadTexture BufferedImage with blur and clamp
     //%d\n",id);
     int iMipLevels = 1;
-    MemSect(33);
     glBindTexture(GL_TEXTURE_2D, id);
 
     if (MIPMAP) {
@@ -802,7 +801,6 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
      * GL_RGBA, GL_UNSIGNED_BYTE, pixels); } else { }
      */
     delete pixels;  // 4J - now creating this dynamically
-    MemSect(0);
 }
 
 std::vector<int> Textures::anaglyph(std::vector<int>& rawPixels) {
@@ -1122,7 +1120,6 @@ void Textures::tick(
     bool updateTextures,
     bool tickDynamics)  // 4J added updateTextures parameter & tickDynamics
 {
-    MemSect(22);
     if (tickDynamics) {
         // 4J - added - if we aren't updating the final renderer textures, just
         // tick each of the dynamic textures instead. This is used so that in
@@ -1130,7 +1127,6 @@ void Textures::tick(
         // that we don't lock the renderer textures twice needlessly and force
         // the CPU to sync with the GPU.
         if (!updateTextures) {
-            MemSect(0);
             return;
         }
 
@@ -1159,7 +1155,6 @@ void Textures::tick(
             it++;
         }
     }
-    MemSect(0);
 }
 
 void Textures::reloadAll() {
@@ -1208,7 +1203,6 @@ BufferedImage* Textures::readImage(
     TEXTURE_NAME texId, const std::wstring& name)  // 4J was InputStream *in
 {
     BufferedImage* img = nullptr;
-    MemSect(32);
     // is this image one of the Title Update ones?
     bool isTu = IsTUImage(texId, name);
     std::wstring drive = L"";
@@ -1239,7 +1233,6 @@ BufferedImage* Textures::readImage(
         }
     }
 
-    MemSect(0);
     return img;
 }
 

@@ -110,14 +110,12 @@ void ParticleEngine::render(std::shared_ptr<Entity> player, float a, int list) {
                     break;
             }
 
-            MemSect(31);
             if (tt == MISC_TEXTURE || tt == DRAGON_BREATH_TEXTURE)
                 textures->bindTexture(&PARTICLES_LOCATION);
             if (tt == TERRAIN_TEXTURE)
                 textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
             if (tt == ITEM_TEXTURE)
                 textures->bindTexture(&TextureAtlas::LOCATION_ITEMS);
-            MemSect(0);
             Tesselator* t = Tesselator::getInstance();
             glColor4f(1.0f, 1.0f, 1.0f, 1);
 

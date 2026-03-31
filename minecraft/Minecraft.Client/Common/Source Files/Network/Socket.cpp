@@ -327,14 +327,12 @@ void Socket::SocketOutputStreamLocal::write(const std::vector<uint8_t>& b, unsig
     if (m_streamOpen != true) {
         return;
     }
-    // MemSect(12);
     {
         std::lock_guard<std::mutex> lock(s_hostQueueLock[m_queueIdx]);
         for (unsigned int i = 0; i < length; i++) {
             s_hostQueue[m_queueIdx].push(b[offset + i]);
         }
     }
-    // MemSect(0);
 }
 
 void Socket::SocketOutputStreamLocal::close() {

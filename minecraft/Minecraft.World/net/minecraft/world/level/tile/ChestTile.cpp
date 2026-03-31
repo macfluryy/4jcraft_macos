@@ -317,10 +317,8 @@ std::shared_ptr<Container> ChestTile::getContainer(Level* level, int x, int y,
 }
 
 std::shared_ptr<TileEntity> ChestTile::newTileEntity(Level* level) {
-    MemSect(50);
     std::shared_ptr<TileEntity> retval =
         std::shared_ptr<TileEntity>(new ChestTileEntity());
-    MemSect(0);
     return retval;
 }
 

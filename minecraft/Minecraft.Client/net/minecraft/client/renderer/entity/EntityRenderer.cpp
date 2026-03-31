@@ -82,9 +82,7 @@ void EntityRenderer::renderFlame(std::shared_ptr<Entity> e, double x, double y,
 
     float s = e->bbWidth * 1.4f;
     glScalef(s, s, s);
-    MemSect(31);
     bindTexture(&TextureAtlas::LOCATION_BLOCKS);
-    MemSect(0);
     Tesselator* t = Tesselator::getInstance();
 
     float r = 0.5f;
@@ -142,9 +140,7 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    MemSect(31);
     entityRenderDispatcher->textures->bindTexture(&SHADOW_LOCATION);
-    MemSect(0);
 
     Level* level = getLevel();
 

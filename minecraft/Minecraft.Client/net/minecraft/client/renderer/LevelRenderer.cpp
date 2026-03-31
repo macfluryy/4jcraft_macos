@@ -989,9 +989,7 @@ void LevelRenderer::renderSky(float alpha) {
         glRotatef(level[playerIndex]->getTimeOfDay(alpha) * 360, 1, 0, 0);
         float ss = 30;
 
-        MemSect(31);
         textures->bindTexture(&SUN_LOCATION);
-        MemSect(0);
         t->begin();
         t->vertexUV((float)(-ss), (float)(100), (float)(-ss), (float)(0),
                     (float)(0));
@@ -1441,10 +1439,8 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
         glEnable(GL_CULL_FACE);
     }
 
-    MemSect(31);
     textures->bindTexture(
         &CLOUDS_LOCATION);  // 4J was L"/environment/clouds.png"
-    MemSect(0);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -25,9 +25,7 @@ void FireballRenderer::render(std::shared_ptr<Entity> _fireball, double x,
     glScalef(s / 1.0f, s / 1.0f, s / 1.0f);
     Icon* icon = Item::fireball->getIcon(
         fireball->GetType() == eTYPE_DRAGON_FIREBALL ? 1 : 0);  // 14 + 2 * 16;
-    MemSect(31);
     bindTexture(fireball);
-    MemSect(0);
     Tesselator* t = Tesselator::getInstance();
 
     float u0 = icon->getU0();
@@ -68,9 +66,7 @@ void FireballRenderer::renderFlame(std::shared_ptr<Entity> e, double x,
 
     float s = e->bbWidth * 1.4f;
     glScalef(s, s, s);
-    MemSect(31);
     bindTexture(&TextureAtlas::LOCATION_BLOCKS);
-    MemSect(0);
     Tesselator* t = Tesselator::getInstance();
 
     float r = 1.0f;

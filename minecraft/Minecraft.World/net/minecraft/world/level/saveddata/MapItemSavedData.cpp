@@ -414,12 +414,10 @@ void MapItemSavedData::tickCarriedBy(std::shared_ptr<Player> player,
                         }
 #endif
 
-                        MemSect(45);
                         decorations.push_back(new MapDecoration(
                             imgIndex, x, y, rot, decorationPlayer->entityId,
                             (decorationPlayer == hp->player ||
                              decorationPlayer->canShowOnMaps())));
-                        MemSect(0);
                     }
                 }
             }

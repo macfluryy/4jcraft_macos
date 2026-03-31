@@ -99,9 +99,7 @@ void LivingEntity::_init() {
 }
 
 LivingEntity::LivingEntity(Level* level) : Entity(level) {
-    MemSect(56);
     _init();
-    MemSect(0);
 
     // 4J Stu - This will not call the correct derived function, so moving to
     // each derived class
@@ -775,7 +773,6 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
         }
     }
 
-    MemSect(31);
     if (getHealth() <= 0) {
         if (sound)
             playSound(getDeathSound(), getSoundVolume(), getVoicePitch());
@@ -783,7 +780,6 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
     } else {
         if (sound) playSound(getHurtSound(), getSoundVolume(), getVoicePitch());
     }
-    MemSect(0);
 
     return true;
 }
@@ -930,10 +926,8 @@ void LivingEntity::causeFallDamage(float distance) {
                                Mth::floor(z));
         if (t > 0) {
             const Tile::SoundType* soundType = Tile::tiles[t]->soundType;
-            MemSect(31);
             playSound(soundType->getStepSound(), soundType->getVolume() * 0.5f,
                       soundType->getPitch() * 0.75f);
-            MemSect(0);
         }
     }
 }
@@ -1080,7 +1074,6 @@ void LivingEntity::handleEntityEvent(uint8_t id) {
         hurtTime = hurtDuration = 10;
         hurtDir = 0;
 
-        MemSect(31);
         // 4J-PB -added because villagers have no sounds
         int iHurtSound = getHurtSound();
         if (iHurtSound != -1) {
@@ -1088,10 +1081,8 @@ void LivingEntity::handleEntityEvent(uint8_t id) {
                 iHurtSound, getSoundVolume(),
                 (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
         }
-        MemSect(0);
         hurt(DamageSource::genericSource, 0);
     } else if (id == EntityEvent::DEATH) {
-        MemSect(31);
         // 4J-PB -added because villagers have no sounds
         int iDeathSound = getDeathSound();
         if (iDeathSound != -1) {
@@ -1099,7 +1090,6 @@ void LivingEntity::handleEntityEvent(uint8_t id) {
                 iDeathSound, getSoundVolume(),
                 (random->nextFloat() - random->nextFloat()) * 0.2f + 1.0f);
         }
-        MemSect(0);
         setHealth(0);
         die(DamageSource::genericSource);
     } else {
@@ -1539,7 +1529,6 @@ void LivingEntity::aiStep() {
         yya = 0;
         yRotA = 0;
     } else {
-        MemSect(25);
         if (isEffectiveAi()) {
             if (useNewAi()) {
                 newServerAiStep();
@@ -1548,7 +1537,6 @@ void LivingEntity::aiStep() {
                 yHeadRot = yRot;
             }
         }
-        MemSect(0);
     }
 
     if (jumping) {

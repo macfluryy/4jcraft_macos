@@ -59,15 +59,11 @@ void Mob::_init() {
 }
 
 Mob::Mob(Level* level) : LivingEntity(level) {
-    MemSect(57);
     _init();
-    MemSect(0);
 
-    MemSect(58);
     // 4J Stu - We call this again in the derived classes, but need to do it
     // here for some internal members
     registerAttributes();
-    MemSect(0);
 
     lookControl = new LookControl(this);
     moveControl = new MoveControl(this);
@@ -133,12 +129,10 @@ void Mob::defineSynchedData() {
 int Mob::getAmbientSoundInterval() { return 20 * 4; }
 
 void Mob::playAmbientSound() {
-    MemSect(31);
     int ambient = getAmbientSound();
     if (ambient != -1) {
         playSound(ambient, getSoundVolume(), getVoicePitch());
     }
-    MemSect(0);
 }
 
 void Mob::baseTick() {
@@ -406,7 +400,6 @@ void Mob::checkDespawn() {
 
 void Mob::newServerAiStep() {
     PIXBeginNamedEvent(0, "Tick target selector for %d", GetType());
-    MemSect(51);
     noActionTime++;
     PIXBeginNamedEvent(0, "Check despawn");
     checkDespawn();
@@ -442,7 +435,6 @@ void Mob::newServerAiStep() {
     PIXBeginNamedEvent(0, "Consider extra wandering");
     considerForExtraWandering(isDespawnProtected());
     PIXEndNamedEvent();
-    MemSect(0);
     PIXEndNamedEvent();
 }
 

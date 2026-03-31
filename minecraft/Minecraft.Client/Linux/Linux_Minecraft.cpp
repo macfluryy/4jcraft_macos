@@ -405,16 +405,6 @@ void DefineActions(void) {
                                    _360_JOY_BUTTON_DPAD_DOWN);
 }
 
-// #define MEMORY_TRACKING
-
-#if defined(MEMORY_TRACKING)
-void ResetMem();
-void DumpMem();
-void MemPixStuff();
-#else
-void MemSect(int sect) {}
-#endif
-
 #if !defined(__linux__)
 HINSTANCE g_hInst = nullptr;
 HWND g_hWnd = nullptr;
@@ -690,14 +680,6 @@ int main(int argc, const char* argv[]) {
 
     static bool bTrialTimerDisplayed = true;
 
-#if defined(MEMORY_TRACKING)
-    ResetMem();
-    MEMORYSTATUS memStat;
-    GlobalMemoryStatus(&memStat);
-    printf("RESETMEM start: Avail. phys %d\n",
-           memStat.dwAvailPhys / (1024 * 1024));
-#endif
-
     RenderManager.Initialise();
 
     // Read the file containing the product codes
@@ -797,9 +779,7 @@ int main(int argc, const char* argv[]) {
 
         // Tick sentient.
         PIXBeginNamedEvent(0, "Sentient tick");
-        MemSect(37);
         //		SentientManager.Tick();
-        MemSect(0);
         PIXEndNamedEvent();
 
         PIXBeginNamedEvent(0, "Network manager do work #1");
@@ -823,9 +803,7 @@ int main(int argc, const char* argv[]) {
                 g_NetworkManager.GetPlayerCount() == 1 &&
                 ui.IsPauseMenuDisplayed(ProfileManager.GetPrimaryPad()));
         } else {
-            MemSect(28);
             pMinecraft->soundEngine->tick(nullptr, 0.0f);
-            MemSect(0);
             pMinecraft->textures->tick(true, false);
             if (app.GetReallyChangingSessionType()) {
                 pMinecraft
@@ -842,31 +820,6 @@ int main(int argc, const char* argv[]) {
             g_NetworkManager.Initialise();
         }
 
-#if defined(MEMORY_TRACKING)
-        static bool bResetMemTrack = false;
-        static bool bDumpMemTrack = false;
-
-        MemPixStuff();
-
-        if (bResetMemTrack) {
-            ResetMem();
-            MEMORYSTATUS memStat;
-            GlobalMemoryStatus(&memStat);
-            printf("RESETMEM: Avail. phys %d\n",
-                   memStat.dwAvailPhys / (1024 * 1024));
-            bResetMemTrack = false;
-        }
-
-        if (bDumpMemTrack) {
-            DumpMem();
-            bDumpMemTrack = false;
-            MEMORYSTATUS memStat;
-            GlobalMemoryStatus(&memStat);
-            printf("DUMPMEM: Avail. phys %d\n",
-                   memStat.dwAvailPhys / (1024 * 1024));
-            printf("Renderer used: %d\n", RenderManager.CBuffSize(-1));
-        }
-#endif
         ui.tick();
         ui.render();
 
@@ -1031,172 +984,3 @@ void FreeRichPresenceStrings() {
     }
     vRichPresenceStrings.clear();
 }
-
-#if 0  // #ifdef MEMORY_TRACKING
-
-int totalAllocGen = 0;
-std::unordered_map<int, int> allocCounts;
-bool trackEnable = false;
-bool trackStarted = false;
-volatile size_t sizeCheckMin = 1160;
-volatile size_t sizeCheckMax = 1160;
-volatile int sectCheck = 48;
-std::mutex memCS;
-uint32_t tlsIdx;
-
-void* XMemAlloc(size_t dwSize, uint32_t dwAllocAttributes) {
-    if (!trackStarted) {
-        void* p = XMemAllocDefault(dwSize, dwAllocAttributes);
-        size_t realSize = XMemSizeDefault(p, dwAllocAttributes);
-        totalAllocGen += realSize;
-        return p;
-    }
-
-    void* p;
-    {
-        std::lock_guard<std::mutex> lock(memCS);
-
-        p = XMemAllocDefault(dwSize + 16, dwAllocAttributes);
-        size_t realSize = XMemSizeDefault(p, dwAllocAttributes) - 16;
-
-        if (trackEnable) {
-            int sect = ((int)TlsGetValue(tlsIdx)) & 0x3f;
-            *(((unsigned char*)p) + realSize) = sect;
-
-            if ((realSize >= sizeCheckMin) && (realSize <= sizeCheckMax) &&
-                ((sect == sectCheck) || (sectCheck == -1))) {
-                app.DebugPrintf("Found one\n");
-            }
-
-            if (p) {
-                totalAllocGen += realSize;
-                trackEnable = false;
-                int key = (sect << 26) | realSize;
-                int oldCount = allocCounts[key];
-                allocCounts[key] = oldCount + 1;
-
-                trackEnable = true;
-            }
-        }
-    }
-
-    return p;
-}
-
-void* operator new(size_t size) {
-    return (unsigned char*)XMemAlloc(
-        size, MAKE_XALLOC_ATTRIBUTES(
-                  0, false, true, false, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
-                  XALLOC_MEMPROTECT_READWRITE, false, XALLOC_MEMTYPE_HEAP));
-}
-
-void operator delete(void* p) {
-    XMemFree(p, MAKE_XALLOC_ATTRIBUTES(
-                    0, false, true, false, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
-                    XALLOC_MEMPROTECT_READWRITE, false, XALLOC_MEMTYPE_HEAP));
-}
-
-void WINAPI XMemFree(void* pAddress, uint32_t dwAllocAttributes) {
-    bool special = false;
-    if (dwAllocAttributes == 0) {
-        dwAllocAttributes = MAKE_XALLOC_ATTRIBUTES(
-            0, false, true, false, 0, XALLOC_PHYSICAL_ALIGNMENT_DEFAULT,
-            XALLOC_MEMPROTECT_READWRITE, false, XALLOC_MEMTYPE_HEAP);
-        special = true;
-    }
-    if (!trackStarted) {
-        size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes);
-        XMemFreeDefault(pAddress, dwAllocAttributes);
-        totalAllocGen -= realSize;
-        return;
-    }
-    {
-        std::lock_guard<std::mutex> lock(memCS);
-        if (pAddress) {
-            size_t realSize = XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
-
-            if (trackEnable) {
-                int sect = *(((unsigned char*)pAddress) + realSize);
-                totalAllocGen -= realSize;
-                trackEnable = false;
-                int key = (sect << 26) | realSize;
-                int oldCount = allocCounts[key];
-                allocCounts[key] = oldCount - 1;
-                trackEnable = true;
-            }
-            XMemFreeDefault(pAddress, dwAllocAttributes);
-        }
-    }
-}
-
-size_t WINAPI XMemSize(void* pAddress, uint32_t dwAllocAttributes) {
-    if (trackStarted) {
-        return XMemSizeDefault(pAddress, dwAllocAttributes) - 16;
-    } else {
-        return XMemSizeDefault(pAddress, dwAllocAttributes);
-    }
-}
-
-void DumpMem() {
-    int totalLeak = 0;
-    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
-        if (it->second > 0) {
-            app.DebugPrintf("%d %d %d %d\n", (it->first >> 26) & 0x3f,
-                            it->first & 0x03ffffff, it->second,
-                            (it->first & 0x03ffffff) * it->second);
-            totalLeak += (it->first & 0x03ffffff) * it->second;
-        }
-    }
-    app.DebugPrintf("Total %d\n", totalLeak);
-}
-
-void ResetMem() {
-    if (!trackStarted) {
-        trackEnable = true;
-        trackStarted = true;
-        totalAllocGen = 0;
-        tlsIdx = TlsAlloc();
-    }
-    {
-        std::lock_guard<std::mutex> lock(memCS);
-        trackEnable = false;
-        allocCounts.clear();
-        trackEnable = true;
-    }
-}
-
-void MemSect(int section) {
-    unsigned int value = (unsigned int)TlsGetValue(tlsIdx);
-    if (section == 0)  // pop
-    {
-        value = (value >> 6) & 0x03ffffff;
-    } else {
-        value = (value << 6) | section;
-    }
-    TlsSetValue(tlsIdx, (void*)value);
-}
-
-void MemPixStuff() {
-    const int MAX_SECT = 46;
-
-    int totals[MAX_SECT] = {0};
-
-    for (auto it = allocCounts.begin(); it != allocCounts.end(); it++) {
-        if (it->second > 0) {
-            int sect = (it->first >> 26) & 0x3f;
-            int bytes = it->first & 0x03ffffff;
-            totals[sect] += bytes * it->second;
-        }
-    }
-
-    unsigned int allSectsTotal = 0;
-    for (int i = 0; i < MAX_SECT; i++) {
-        allSectsTotal += totals[i];
-        PIXAddNamedCounter(((float)totals[i]) / 1024.0f, "MemSect%d", i);
-    }
-
-    PIXAddNamedCounter(((float)allSectsTotal) / (4096.0f),
-                       "MemSect total pages");
-}
-
-#endif

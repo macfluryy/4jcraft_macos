@@ -165,7 +165,6 @@ void Fireball::tick() {
         flightTime++;
     }
 
-    MemSect(41);
     Vec3 from(x, y, z);
     Vec3 to(x + xd, y + yd, z + zd);
     HitResult* res = level->clip(&from, &to);
@@ -204,7 +203,6 @@ void Fireball::tick() {
         delete res;
         res = new HitResult(hitEntity);
     }
-    MemSect(0);
 
     if (res != nullptr) {
         onHit(res);

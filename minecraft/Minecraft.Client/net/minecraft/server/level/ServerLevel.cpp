@@ -315,18 +315,14 @@ void ServerLevel::tick() {
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Tick tiles");
-    MemSect(18);
     tickTiles();
-    MemSect(0);
     PIXEndNamedEvent();
 
     chunkMap->tick();
 
     PIXBeginNamedEvent(0, "Tick villages");
-    // MemSect(18);
     villages->tick();
     villageSiege->tick();
-    // MemSect(0);
     PIXEndNamedEvent();
 
     PIXBeginNamedEvent(0, "Tick portal forcer");
@@ -577,7 +573,6 @@ void ServerLevel::addToTickNextTick(int x, int y, int z, int tileId,
 
 void ServerLevel::addToTickNextTick(int x, int y, int z, int tileId,
                                     int tickDelay, int priorityTilt) {
-    MemSect(27);
     TickNextTickData td = TickNextTickData(x, y, z, tileId);
     int r = 0;
     if (getInstaTick() && tileId > 0) {
@@ -590,7 +585,6 @@ void ServerLevel::addToTickNextTick(int x, int y, int z, int tileId,
                     Tile::tiles[id]->tick(this, td.x, td.y, td.z, random);
                 }
             }
-            MemSect(0);
             return;
         } else {
             tickDelay = 1;
@@ -610,7 +604,6 @@ void ServerLevel::addToTickNextTick(int x, int y, int z, int tileId,
             }
         }
     }
-    MemSect(0);
 }
 
 void ServerLevel::forceAddTileTick(int x, int y, int z, int tileId,

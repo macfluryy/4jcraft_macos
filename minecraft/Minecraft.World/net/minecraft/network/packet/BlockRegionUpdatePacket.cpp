@@ -56,9 +56,7 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         rawBuffer = lc->getReorderedBlocksAndData(x & 0xF, y, z & 0xF, xs,
                                                   this->ys, zs);
     } else {
-        MemSect(50);
         rawBuffer = level->getBlocksAndData(x, y, z, xs, ys, zs, false);
-        MemSect(0);
     }
 
     if (rawBuffer.size() == 0) {

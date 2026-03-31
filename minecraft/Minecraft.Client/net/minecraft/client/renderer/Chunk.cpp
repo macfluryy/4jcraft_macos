@@ -463,9 +463,7 @@ void Chunk::rebuild() {
                         if (!started) {
                             started = true;
 
-                            MemSect(31);
                             glNewList(lists + currentLayer, GL_COMPILE);
-                            MemSect(0);
                             glDepthMask(true);            // 4J added
                             t->useCompactVertices(true);  // 4J added
                             t->begin();

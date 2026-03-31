@@ -17,9 +17,7 @@ int PigRenderer::prepareArmor(std::shared_ptr<LivingEntity> _pig, int layer,
     std::shared_ptr<Pig> pig = std::dynamic_pointer_cast<Pig>(_pig);
 
     if (layer == 0 && pig->hasSaddle()) {
-        MemSect(31);
         bindTexture(&SADDLE_LOCATION);
-        MemSect(0);
 
         return 1;
     }

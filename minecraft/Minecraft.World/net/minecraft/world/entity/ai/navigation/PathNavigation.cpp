@@ -66,9 +66,7 @@ Path* PathNavigation::createPath(double x, double y, double z) {
 
 bool PathNavigation::moveTo(double x, double y, double z,
                             double speedModifier) {
-    MemSect(52);
     Path* newPath = createPath(Mth::floor(x), (int)y, Mth::floor(z));
-    MemSect(0);
     // No need to delete newPath here as this will be copied into the member
     // variable path and the class can assume responsibility for it
     return moveTo(newPath, speedModifier);
@@ -82,9 +80,7 @@ Path* PathNavigation::createPath(std::shared_ptr<Entity> target) {
 
 bool PathNavigation::moveTo(std::shared_ptr<Entity> target,
                             double speedModifier) {
-    MemSect(53);
     Path* newPath = createPath(target);
-    MemSect(0);
     // No need to delete newPath here as this will be copied into the member
     // variable path and the class can assume responsibility for it
     if (newPath != nullptr)

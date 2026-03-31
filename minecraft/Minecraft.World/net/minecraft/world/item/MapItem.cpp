@@ -42,10 +42,8 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
 
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
     std::shared_ptr<ItemInstance> itemInstance, Level* level) {
-    MemSect(31);
     std::wstring id =
         std::wstring(L"map_") + _toString(itemInstance->getAuxValue());
-    MemSect(0);
     std::shared_ptr<MapItemSavedData> mapItemSavedData =
         std::dynamic_pointer_cast<MapItemSavedData>(
             level->getSavedData(typeid(MapItemSavedData), id));

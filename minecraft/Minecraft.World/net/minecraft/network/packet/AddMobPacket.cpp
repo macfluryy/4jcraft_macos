@@ -78,9 +78,7 @@ void AddMobPacket::read(DataInputStream* dis)  // throws IOException
     xd = dis->readShort();
     yd = dis->readShort();
     zd = dis->readShort();
-    MemSect(1);
     unpack = SynchedEntityData::unpack(dis);
-    MemSect(0);
 }
 
 void AddMobPacket::write(DataOutputStream* dos)  // throws IOException

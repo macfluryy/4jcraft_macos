@@ -140,4 +140,3 @@ using namespace DirectX;
 #define OutputDebugStringW BREAKTHECOMPILE
 #endif
 
-void MemSect(int sect);

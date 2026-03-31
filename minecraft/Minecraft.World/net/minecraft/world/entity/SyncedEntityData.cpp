@@ -12,68 +12,56 @@ SynchedEntityData::SynchedEntityData() {
 }
 
 void SynchedEntityData::define(int id, int value) {
-    MemSect(17);
     checkId(id);
     int type = TYPE_INT;
     std::shared_ptr<DataItem> dataItem =
         std::shared_ptr<DataItem>(new DataItem(type, id, value));
     itemsById[id] = dataItem;
-    MemSect(0);
     m_isEmpty = false;
 }
 
 void SynchedEntityData::define(int id, uint8_t value) {
-    MemSect(17);
     checkId(id);
     int type = TYPE_BYTE;
     std::shared_ptr<DataItem> dataItem =
         std::shared_ptr<DataItem>(new DataItem(type, id, value));
     itemsById[id] = dataItem;
-    MemSect(0);
     m_isEmpty = false;
 }
 
 void SynchedEntityData::define(int id, short value) {
-    MemSect(17);
     checkId(id);
     int type = TYPE_SHORT;
     std::shared_ptr<DataItem> dataItem =
         std::shared_ptr<DataItem>(new DataItem(type, id, value));
     itemsById[id] = dataItem;
-    MemSect(0);
     m_isEmpty = false;
 }
 
 void SynchedEntityData::define(int id, float value) {
-    MemSect(17);
     checkId(id);
     int type = TYPE_FLOAT;
     std::shared_ptr<DataItem> dataItem =
         std::shared_ptr<DataItem>(new DataItem(type, id, value));
     itemsById[id] = dataItem;
-    MemSect(0);
     m_isEmpty = false;
 }
 
 void SynchedEntityData::define(int id, const std::wstring& value) {
-    MemSect(17);
     checkId(id);
     int type = TYPE_STRING;
     std::shared_ptr<DataItem> dataItem =
         std::shared_ptr<DataItem>(new DataItem(type, id, value));
     itemsById[id] = dataItem;
-    MemSect(0);
     m_isEmpty = false;
 }
 
 void SynchedEntityData::defineNULL(int id, void* pVal) {
-    MemSect(17);
     checkId(id);
     int type = TYPE_ITEMINSTANCE;
     std::shared_ptr<DataItem> dataItem = std::shared_ptr<DataItem>(
         new DataItem(type, id, std::shared_ptr<ItemInstance>()));
     itemsById[id] = dataItem;
-    MemSect(0);
     m_isEmpty = false;
 }
 

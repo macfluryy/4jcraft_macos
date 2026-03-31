@@ -115,9 +115,7 @@ Player::Player(Level* level, const std::wstring& name) : LivingEntity(level) {
     this->name = name;
 
     _init();
-    MemSect(11);
     inventoryMenu = new InventoryMenu(inventory, !level->isClientSide, this);
-    MemSect(0);
 
     containerMenu = inventoryMenu;
 

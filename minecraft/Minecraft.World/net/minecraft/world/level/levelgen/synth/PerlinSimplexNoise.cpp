@@ -12,13 +12,11 @@ PerlinSimplexNoise::PerlinSimplexNoise(Random* random, int levels) {
 }
 
 void PerlinSimplexNoise::init(Random* random, int levels) {
-    MemSect(3);
     this->levels = levels;
     noiseLevels = new SimplexNoise*[levels];
     for (int i = 0; i < levels; i++) {
         noiseLevels[i] = new SimplexNoise(random);
     }
-    MemSect(0);
 }
 
 PerlinSimplexNoise::~PerlinSimplexNoise() {

@@ -2,13 +2,11 @@
 #include "nbt/NbtIo.h"
 
 CompoundTag* NbtIo::readCompressed(InputStream* in) {
-    // MemSect(26);
     // 4J - this was using a try/finally block
     DataInputStream dis =
         DataInputStream(in);  // 4J - was new GZIPInputStream as well
     CompoundTag* ret = NbtIo::read((DataInput*)&dis);
     dis.close();
-    // MemSect(0);
     return ret;
 }
 

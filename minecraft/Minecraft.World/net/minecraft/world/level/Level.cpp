@@ -1611,18 +1611,12 @@ bool Level::addEntity(std::shared_ptr<Entity> e) {
 
             updateSleepingPlayerList();
         }
-        MemSect(42);
         getChunk(xc, zc)->addEntity(e);
-        MemSect(0);
         {
             std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
-            MemSect(43);
             entities.push_back(e);
-            MemSect(0);
         }
-        MemSect(44);
         entityAdded(e);
-        MemSect(0);
         return true;
     }
     return false;
@@ -2305,9 +2299,7 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
 
         if (hasChunk(xcn, zcn)) {
             e->inChunk = true;
-            MemSect(39);
             getChunk(xcn, zcn)->addEntity(e);
-            MemSect(0);
         } else {
             e->inChunk = false;
             // e.remove();
@@ -3372,7 +3364,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     std::shared_ptr<Entity> except, AABB* bb, const EntitySelector* selector) {
-    MemSect(40);
     es.clear();
     int xc0 = Mth::floor((bb->x0 - 2) / 16);
     int xc1 = Mth::floor((bb->x1 + 2) / 16);
@@ -3385,7 +3376,6 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
                 getChunk(xc, zc)->getEntities(except, bb, es, selector);
             }
         }
-    MemSect(0);
 
     return &es;
 }
@@ -3694,7 +3684,6 @@ std::shared_ptr<Player> Level::getNearestPlayer(std::shared_ptr<Entity> source,
 std::shared_ptr<Player> Level::getNearestPlayer(double x, double y, double z,
                                                 double maxDist,
                                                 double maxYDist /*= -1*/) {
-    MemSect(21);
     double best = -1;
     std::shared_ptr<Player> result = nullptr;
     auto itEnd = players.end();
@@ -3712,7 +3701,6 @@ std::shared_ptr<Player> Level::getNearestPlayer(double x, double y, double z,
             result = p;
         }
     }
-    MemSect(0);
     return result;
 }
 

@@ -381,9 +381,7 @@ void Texture::transferFromImage(BufferedImage* image) {
         }
     }
 
-    MemSect(51);
     data[0] = ByteBuffer::allocateDirect(tempBytes.size());
-    MemSect(0);
     data[0]->clear();
     data[0]->put(tempBytes);
     data[0]->limit(tempBytes.size());
@@ -465,9 +463,7 @@ void Texture::transferFromImage(BufferedImage* image) {
                     }
             }
 
-            MemSect(51);
             data[level] = ByteBuffer::allocateDirect(tempBytes.size());
-            MemSect(0);
             data[level]->clear();
             data[level]->put(tempBytes);
             data[level]->limit(tempBytes.size());

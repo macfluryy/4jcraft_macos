@@ -92,9 +92,7 @@ StructurePiece* MineShaftPieces::generateAndAddPiece(
     StructurePiece* newPiece = createRandomShaftPiece(
         pieces, random, footX, footY, footZ, direction, depth + 1);
     if (newPiece != nullptr) {
-        MemSect(50);
         pieces->push_back(newPiece);
-        MemSect(0);
         newPiece->addChildren(startPiece, pieces, random);
     }
     return newPiece;

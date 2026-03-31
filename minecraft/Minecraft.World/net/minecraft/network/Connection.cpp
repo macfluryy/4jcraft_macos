@@ -139,7 +139,6 @@ void Connection::setListener(PacketListener* packetListener) {
 void Connection::send(std::shared_ptr<Packet> packet) {
     if (quitting) return;
 
-    MemSect(15);
     // 4J Jev, synchronized (&writeLock)
     {
         std::lock_guard<std::mutex> lock(writeLock);
@@ -156,7 +155,6 @@ void Connection::send(std::shared_ptr<Packet> packet) {
     }
 
     // 4J Jev, end synchronized.
-    MemSect(0);
 }
 
 void Connection::queueSend(std::shared_ptr<Packet> packet) {
@@ -549,7 +547,6 @@ int Connection::runRead(void* lpParam) {
 
     // try {
 
-    MemSect(19);
     while (
         con->running && !con->quitting &&
         ShutdownManager::ShouldRun(ShutdownManager::eConnectionReadThreads)) {
@@ -561,7 +558,6 @@ int Connection::runRead(void* lpParam) {
         // whether we should do that as well
         con->m_hWakeReadThread->waitForSignal(100L);
     }
-    MemSect(0);
 
     /* 4J JEV, removed try/catch
     } catch (InterruptedException e) {

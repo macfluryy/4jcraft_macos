@@ -88,7 +88,6 @@ void PreStitchedTextureMap::stitch() {
     int minFilter = Texture::TFLT_NEAREST;
     int magFilter = Texture::TFLT_NEAREST;
 
-    MemSect(32);
     std::wstring drive = L"";
 
     // 4J-PB - need to check for BD patched files
@@ -104,7 +103,6 @@ void PreStitchedTextureMap::stitch() {
     // //ImageIO::read(texturePack->getResource(L"/" + filename));
     BufferedImage* image =
         texturePack->getImageResource(filename, false, true, drive);
-    MemSect(0);
     int height = image->getHeight();
     int width = image->getWidth();
 
@@ -130,13 +128,11 @@ void PreStitchedTextureMap::stitch() {
         preStitched->init(stitchResult, nullptr, x, y, width, height, false);
     }
 
-    MemSect(52);
     for (auto it = texturesByName.begin(); it != texturesByName.end(); ++it) {
         StitchedTexture* preStitched = (StitchedTexture*)(it->second);
 
         makeTextureAnimated(texturePack, preStitched);
     }
-    MemSect(0);
     // missingPosition = (StitchedTexture
     // *)texturesByName.find(NAME_MISSING_TEXTURE)->second;
 

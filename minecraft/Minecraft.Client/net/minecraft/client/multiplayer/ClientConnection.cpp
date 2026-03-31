@@ -197,10 +197,8 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
             minecraft->gameMode =
                 new TrialMode(ProfileManager.GetPrimaryPad(), minecraft, this);
         } else {
-            MemSect(13);
             minecraft->gameMode = new ConsoleGameMode(
                 ProfileManager.GetPrimaryPad(), minecraft, this);
-            MemSect(0);
         }
 
         Level* dimensionLevel = minecraft->getLevel(packet->dimension);

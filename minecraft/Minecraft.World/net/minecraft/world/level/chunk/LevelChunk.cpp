@@ -57,7 +57,6 @@ void LevelChunk::init(Level* level, int x, int z) {
     this->level = level;
     this->x = x;
     this->z = z;
-    MemSect(1);
     heightmap = std::vector<uint8_t>(16 * 16);
     {
         std::lock_guard<std::recursive_mutex> lock(m_csEntities);
@@ -66,7 +65,6 @@ void LevelChunk::init(Level* level, int x, int z) {
         }
     }
 
-    MemSect(0);
 
     lowestHeightmap = 256;
     inhabitedTime = 0;
@@ -251,7 +249,6 @@ void LevelChunk::stopSharingTilesAndData() {
             return;
         }
 
-        MemSect(47);
 
         // Changed to used compressed storage - these CTORs make deep copies of
         // the storage passed as a parameter
@@ -281,7 +278,6 @@ void LevelChunk::stopSharingTilesAndData() {
         */
 
         sharingTilesAndData = false;
-        MemSect(0);
     }
 #endif
 }
@@ -1176,9 +1172,7 @@ void LevelChunk::removeEntity(std::shared_ptr<Entity> e, int yc) {
             entityBlocks[yc]->erase(it);
             // 4J - we don't want storage creeping up here as thinkgs move round
             // the world accumulating up spare space
-            MemSect(31);
             entityBlocks[yc]->shrink_to_fit();
-            MemSect(0);
         }
     }
 }

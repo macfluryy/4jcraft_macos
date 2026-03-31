@@ -190,9 +190,7 @@ Node* PathFinder::getNode(Entity* entity, int x, int y, int z, Node* size,
     Node* node;
     auto it = nodes.find(i);
     if (it == nodes.end()) {
-        MemSect(54);
         node = new Node(x, y, z);
-        MemSect(0);
         nodes.insert(std::unordered_map<int, Node*>::value_type(i, node));
     } else {
         node = (*it).second;

@@ -23,9 +23,7 @@ int SpiderRenderer::prepareArmor(std::shared_ptr<LivingEntity> _spider,
     std::shared_ptr<Spider> spider = std::dynamic_pointer_cast<Spider>(_spider);
 
     if (layer != 0) return -1;
-    MemSect(31);
     bindTexture(&SPIDER_EYES_LOCATION);
-    MemSect(0);
     // 4J - changes brought forward from 1.8.2
     float br = 1.0f;  // was (1-spider->getBrightness(1))*0.5f;
     glEnable(GL_BLEND);

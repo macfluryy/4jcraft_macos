@@ -27,7 +27,6 @@ RegionFile* RegionFileCache::_getRegionFile(
 
     // File file(regionDir, wstring(L"r.") + _toString(chunkX>>5) + L"." +
     // _toString(chunkZ>>5) + L".mcr" );
-    MemSect(31);
     File file;
     if (useSplitSaves(saveFile->getSavePlatform())) {
         file = File(prefix + std::wstring(L"r.") + _toString(chunkX >> 4) +
@@ -36,7 +35,6 @@ RegionFile* RegionFileCache::_getRegionFile(
         file = File(prefix + std::wstring(L"r.") + _toString(chunkX >> 5) +
                     L"." + _toString(chunkZ >> 5) + L".mcr");
     }
-    MemSect(0);
 
     RegionFile* ref = nullptr;
     auto it = cache.find(file);

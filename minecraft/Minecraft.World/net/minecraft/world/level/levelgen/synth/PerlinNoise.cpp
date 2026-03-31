@@ -10,13 +10,11 @@ PerlinNoise::PerlinNoise(int levels) {
 PerlinNoise::PerlinNoise(Random* random, int levels) { init(random, levels); }
 
 void PerlinNoise::init(Random* random, int levels) {
-    MemSect(2);
     this->levels = levels;
     noiseLevels = new ImprovedNoise*[levels];
     for (int i = 0; i < levels; i++) {
         noiseLevels[i] = new ImprovedNoise(random);
     }
-    MemSect(0);
 }
 
 PerlinNoise::~PerlinNoise() {

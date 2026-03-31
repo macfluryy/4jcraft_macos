@@ -244,10 +244,8 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
     Tile* tile = Tile::tiles[item->id];
     if (item->getIconType() == Icon::TYPE_TERRAIN && tile != nullptr &&
         TileRenderer::canRender(tile->getRenderShape())) {
-        MemSect(31);
         minecraft->textures->bindTexture(
             minecraft->textures->getTextureLocation(Icon::TYPE_TERRAIN));
-        MemSect(0);
         tileRenderer->renderTile(
             Tile::tiles[item->id], item->getAuxValue(),
             SharedConstants::TEXTURE_LIGHTING
@@ -255,11 +253,9 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
                 : mob->getBrightness(
                       1));  // 4J - change brought forward from 1.8.2
     } else {
-        MemSect(31);
         Icon* icon = mob->getItemInHandIcon(item, layer);
         if (icon == nullptr) {
             glPopMatrix();
-            MemSect(0);
             return;
         }
 
@@ -267,7 +263,6 @@ void ItemInHandRenderer::renderItem(std::shared_ptr<LivingEntity> mob,
         minecraft->textures->bindTexture(
             minecraft->textures->getTextureLocation(item->getIconType()));
 
-        MemSect(0);
         Tesselator* t = Tesselator::getInstance();
 
         // Consider forcing the mipmap LOD level to use, if this is to be
@@ -555,10 +550,8 @@ void ItemInHandRenderer::render(float a) {
         float s = 2 / 128.0f;
         glScalef(s, s, s);
 
-        MemSect(31);
         minecraft->textures->bindTexture(
             &MAP_BACKGROUND_LOCATION);  // 4J was L"/misc/mapbg.png"
-        MemSect(0);
         Tesselator* t = Tesselator::getInstance();
 
         //        glNormal3f(0, 0, -1);	// 4J - changed to use tesselator
@@ -725,11 +718,9 @@ void ItemInHandRenderer::render(float a) {
         // minecraft->textures->loadHttpTexture(minecraft->player->customTextureUrl,
         // minecraft->player->getTexture()));
 
-        MemSect(31);
         glBindTexture(GL_TEXTURE_2D, minecraft->textures->loadMemTexture(
                                          minecraft->player->customTextureUrl,
                                          minecraft->player->getTexture()));
-        MemSect(0);
         minecraft->textures->clearLastBoundId();
         glTranslatef(-1.0f, +3.6f, +3.5f);
         glRotatef(120, 0, 0, 1);
@@ -743,7 +734,6 @@ void ItemInHandRenderer::render(float a) {
         PlayerRenderer* playerRenderer = (PlayerRenderer*)er;
         float ss = 1;
         glScalef(ss, ss, ss);
-        MemSect(31);
         // Can't turn off the hand if the player is holding a map
         std::shared_ptr<ItemInstance> itemInstance =
             player->inventory->getSelected();
@@ -753,7 +743,6 @@ void ItemInHandRenderer::render(float a) {
                                 eGameSetting_DisplayHand) != 0) {
             playerRenderer->renderHand();
         }
-        MemSect(0);
         glPopMatrix();
     }
 
@@ -798,10 +787,8 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
     }
 
     if (minecraft->player->isUnderLiquid(Material::water)) {
-        MemSect(31);
         minecraft->textures->bindTexture(
             &UNDERWATER_LOCATION);  // 4J was L"/misc/water.png"
-        MemSect(0);
         renderWater(a);
     }
     glEnable(GL_ALPHA_TEST);

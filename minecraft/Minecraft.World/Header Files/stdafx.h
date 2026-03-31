@@ -65,7 +65,6 @@
 #define OutputDebugStringW BREAKTHECOMPILE
 #endif
 
-void MemSect(int sect);
 
 #ifdef _WINDOWS64
 #include "Minecraft.Client/Platform/Windows64/4JLibs/inc/4J_Profile.h"

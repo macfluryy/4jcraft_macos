@@ -82,10 +82,8 @@ void ItemEntity::tick() {
             yd = 0.2f;
             xd = (random->nextFloat() - random->nextFloat()) * 0.2f;
             zd = (random->nextFloat() - random->nextFloat()) * 0.2f;
-            MemSect(31);
             playSound(eSoundType_RANDOM_FIZZ, 0.4f,
                       2.0f + random->nextFloat() * 0.4f);
-            MemSect(0);
         }
 
         if (!level->isClientSide) {

@@ -69,10 +69,8 @@ void InventoryMenu::slotsChanged()  // 4J used to take a shared_ptr<Container>
                                     // but wasn't using it, so removed to
                                     // simplify things
 {
-    MemSect(23);
     resultSlots->setItem(
         0, Recipes::getInstance()->getItemFor(craftSlots, owner->level));
-    MemSect(0);
 }
 
 void InventoryMenu::removed(std::shared_ptr<Player> player) {

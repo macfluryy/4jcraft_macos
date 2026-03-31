@@ -138,9 +138,7 @@ void BiomeDecorator::decorate() {
         int x = xo + random->nextInt(16) + 8;
         int y = random->nextInt(Level::genDepth);
         int z = zo + random->nextInt(16) + 8;
-        MemSect(50);
         Feature* grassFeature = biome->getGrassFeature(random);
-        MemSect(0);
         grassFeature->place(level, random, x, y, z);
         delete grassFeature;
     }

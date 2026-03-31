@@ -8,9 +8,7 @@ void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
                               std::vector<uint8_t>& blocks, double xCave, double yCave,
                               double zCave, float thickness, float yRot,
                               float xRot, int step, int dist, double yScale) {
-    MemSect(49);
     Random* random = new Random(seed);
-    MemSect(0);
     double xMid = xOffs * 16 + 8;
     double zMid = zOffs * 16 + 8;
 

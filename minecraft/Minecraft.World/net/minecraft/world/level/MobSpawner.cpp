@@ -44,7 +44,6 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     if (!spawnEnemies && !spawnFriendlies && !spawnPersistent) {
         return 0;
     }
-    MemSect(20);
     chunksToPoll.clear();
 
     // 4J - rewritten to add chunks interleaved by player, and to add them from
@@ -103,11 +102,8 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     }
     delete[] xx;
     delete[] zz;
-    MemSect(0);
     int count = 0;
-    MemSect(31);
     Pos* spawnPos = level->getSharedSpawnPos();
-    MemSect(0);
 
     for (unsigned int i = 0; i < MobCategory::values.size(); i++) {
         MobCategory* mobCategory = MobCategory::values[i];
@@ -210,13 +206,11 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                         // 4J - removed try/catch
                         //						   try
                         //						   {
-                        MemSect(29);
                         // mob =
                         // type.mobClass.getConstructor(Level.class).newInstance(level);
                         mob = std::dynamic_pointer_cast<Mob>(
                             EntityIO::newByEnumType(currentMobType->mobClass,
                                                     level));
-                        MemSect(0);
                         //						   }
                         //						   catch
                         //(exception e)

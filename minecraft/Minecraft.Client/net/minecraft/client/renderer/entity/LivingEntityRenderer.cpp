@@ -219,9 +219,7 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
 
     glPopMatrix();
 
-    MemSect(31);
     renderName(mob, x, y, z);
-    MemSect(0);
 }
 
 void LivingEntityRenderer::renderModel(std::shared_ptr<LivingEntity> mob,

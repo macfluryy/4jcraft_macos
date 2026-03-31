@@ -32,9 +32,7 @@ void ServerLevelListener::addParticle(ePARTICLE_TYPE name, double x, double y,
 void ServerLevelListener::allChanged() {}
 
 void ServerLevelListener::entityAdded(std::shared_ptr<Entity> entity) {
-    MemSect(10);
     level->getTracker()->addEntity(entity);
-    MemSect(0);
 }
 
 void ServerLevelListener::entityRemoved(std::shared_ptr<Entity> entity) {

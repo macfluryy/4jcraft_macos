@@ -69,9 +69,7 @@ void FixedBiomeSource::getDownfallBlock(std::vector<double>& downfalls, int x, i
 // arrays output if pointers are passed in (_temperatures, _downfalls)
 void FixedBiomeSource::getBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w,
                                      int h, bool useCache) const {
-    MemSect(36);
     biomes = std::vector<Biome*>(w * h);
-    MemSect(0);
 
     Arrays::fill(biomes, 0, w * h, biome);
 }
@@ -80,9 +78,7 @@ void FixedBiomeSource::getBiomeBlock(std::vector<Biome*>& biomes, int x, int z, 
 // arrays output if pointers are passed in (_temperatures, _downfalls)
 void FixedBiomeSource::getBiomeIndexBlock(std::vector<uint8_t>& biomeIndices, int x, int z,
                                           int w, int h, bool useCache) const {
-    MemSect(36);
     biomeIndices = std::vector<uint8_t>(w * h);
-    MemSect(0);
     int biomeIndex = biome->id;
     Arrays::fill(biomeIndices, 0, w * h, biomeIndex);
 }
@@ -92,9 +88,7 @@ void FixedBiomeSource::getBiomeIndexBlock(std::vector<uint8_t>& biomeIndices, in
 // arrays output if pointers are passed in (_temperatures, _downfalls)
 void FixedBiomeSource::getRawBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w,
                                         int h) const {
-    MemSect(36);
     biomes = std::vector<Biome*>(w * h);
-    MemSect(0);
 
     Arrays::fill(biomes, 0, w * h, biome);
 }

@@ -342,10 +342,8 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
         // the crosshair
         /////////////////////////////////////////////////////////////////////////////////////
         if (bDisplayGui) {
-            MemSect(31);
             minecraft->textures->bindTexture(
                 &GUI_GUI_LOCATION);  // 4J was L"/gui/gui.png"
-            MemSect(0);
 
             std::shared_ptr<Inventory> inventory = minecraft->player->inventory;
             if (bTwoPlayerSplitscreen) {
@@ -380,10 +378,8 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                      0, 22, 24, 22);
             }
 
-            MemSect(31);
             minecraft->textures->bindTexture(
                 &GUI_ICONS_LOCATION);  // L"/gui/icons.png"));
-            MemSect(0);
             glEnable(GL_BLEND);
             RenderManager.StateSetBlendFactor(0xffffff |
                                               (((unsigned int)fVal) << 24));
@@ -923,7 +919,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
     //        }
 
 #if !defined(_FINAL_BUILD)
-    MemSect(31);
     if (minecraft->options->renderDebug) {
         glPushMatrix();
         if (Minecraft::warezTime > 0) glTranslatef(0, 32, 0);
@@ -1032,7 +1027,6 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
 
         glPopMatrix();
     }
-    MemSect(0);
 #endif
 
     lastTickA = a;
@@ -1191,9 +1185,7 @@ void Gui::renderPumpkin(int w, int h) {
     glColor4f(1, 1, 1, 1);
     glDisable(GL_ALPHA_TEST);
 
-    MemSect(31);
     minecraft->textures->bindTexture(&PUMPKIN_BLUR_LOCATION);
-    MemSect(0);
     Tesselator* t = Tesselator::getInstance();
     t->begin();
     t->vertexUV((float)(0), (float)(h), (float)(-90), (float)(0), (float)(1));
@@ -1250,10 +1242,8 @@ void Gui::renderTp(float br, int w, int h) {
     glDepthMask(false);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glColor4f(1, 1, 1, br);
-    MemSect(31);
     minecraft->textures->bindTexture(
         &TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
-    MemSect(0);
 
     Icon* slot = Tile::portalTile->getTexture(Facing::UP);
     float u0 = slot->getU0();

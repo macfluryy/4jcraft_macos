@@ -41,7 +41,6 @@ void BaseRailTile::Rail::updateConnections(int direction) {
             delete connections[i];
         }
         connections.clear();
-        MemSect(50);
         if (direction == DIR_FLAT_Z) {
             connections.push_back(new TilePos(x, y, z - 1));
             connections.push_back(new TilePos(x, y, z + 1));
@@ -73,7 +72,6 @@ void BaseRailTile::Rail::updateConnections(int direction) {
             connections.push_back(new TilePos(x + 1, y, z));
             connections.push_back(new TilePos(x, y, z - 1));
         }
-        MemSect(0);
     }
 }
 
@@ -87,9 +85,7 @@ void BaseRailTile::Rail::removeSoftConnections() {
                 i--;
             } else {
                 delete connections[i];
-                MemSect(50);
                 connections[i] = new TilePos(rail->x, rail->y, rail->z);
-                MemSect(0);
             }
             delete rail;
         }
@@ -169,9 +165,7 @@ bool BaseRailTile::Rail::canConnectTo(Rail* rail) {
 
 void BaseRailTile::Rail::connectTo(Rail* rail) {
     if (m_bValidRail) {
-        MemSect(50);
         connections.push_back(new TilePos(rail->x, rail->y, rail->z));
-        MemSect(0);
 
         bool n = hasConnection(x, y, z - 1);
         bool s = hasConnection(x, y, z + 1);
