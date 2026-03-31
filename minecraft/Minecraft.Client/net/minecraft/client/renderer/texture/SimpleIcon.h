@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "StitchedTexture.h"
 
 // 4J Added this class to store the uv data that we have pre-calculated and

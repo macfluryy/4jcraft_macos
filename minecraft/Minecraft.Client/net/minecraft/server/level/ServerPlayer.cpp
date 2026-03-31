@@ -1,4 +1,5 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include <cfloat>
+
 #include "ServerPlayer.h"
 #include "ServerPlayerGameMode.h"
 #include "ServerLevel.h"

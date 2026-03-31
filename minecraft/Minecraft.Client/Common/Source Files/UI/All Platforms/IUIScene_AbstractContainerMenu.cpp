@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 
 #include "IUIScene_AbstractContainerMenu.h"
 

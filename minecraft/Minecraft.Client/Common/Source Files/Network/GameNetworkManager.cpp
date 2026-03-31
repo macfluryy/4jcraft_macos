@@ -1,9 +1,10 @@
+#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include <thread>
 #include <chrono>
 #include <fstream>
 #include <filesystem>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"

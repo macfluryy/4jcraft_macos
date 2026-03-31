@@ -1,4 +1,8 @@
+
 #include "Minecraft.Client/Header Files/stdafx.h"
+
+#include "4J_Profile.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_MessageBox.h"
 

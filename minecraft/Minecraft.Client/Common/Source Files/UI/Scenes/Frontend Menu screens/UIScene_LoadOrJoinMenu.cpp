@@ -1,7 +1,7 @@
 #include <thread>
 #include <chrono>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_LoadOrJoinMenu.h"
 

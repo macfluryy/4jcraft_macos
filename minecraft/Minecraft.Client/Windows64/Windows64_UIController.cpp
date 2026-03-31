@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Windows64_UIController.h"
 
 // Temp

@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "GameMode.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"

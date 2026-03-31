@@ -3,9 +3,14 @@
 #include "Minecraft.World/ConsoleHelpers/HashExtension.h"
 #include "java/JavaIntHash.h"
 
+#include <unordered_set>
+#include <unordered_map>
+#include <memory>
+
 class Entity;
 class ServerLevel;
 class ServerPlayer;
+class LevelChunk;
 class TrackedEntity;
 class MinecraftServer;
 class Packet;

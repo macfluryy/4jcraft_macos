@@ -1,5 +1,6 @@
 #pragma once
 
+#include "java/File.h"
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class LevelGenerationOptions;

@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include <cstdint>
 #include "PlayerList.h"
 #include "Minecraft.Client/net/minecraft/server/level/PlayerChunkMap.h"

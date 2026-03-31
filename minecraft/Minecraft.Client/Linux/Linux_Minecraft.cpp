@@ -1,8 +1,6 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
-
 #include "Minecraft.Client/Header Files/stdafx.h"
-
 #include <assert.h>
 #include <mutex>
 // #include <system_service.h>
@@ -66,7 +64,12 @@ static void sigsegv_handler(int sig) {
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/App_Defines.h"
+
 #include "4J_Input.h"
+#include "4J_Profile.h"
+#include "4J.Common/4J_InputActions.h"
+
 // #include "../Orbis/Leaderboards/OrbisLeaderboardManager.h"
 
 // #include "../Orbis/Network/Orbis_NPToolkit.h"

@@ -10,10 +10,12 @@
 #include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
 #endif
 
+#include "4J_Storage.h"
 #include "4J.Common/4J_InputActions.h"
 
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIController.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
 #include "UIGroup.h"
 
 class UIAbstractBitmapFont;

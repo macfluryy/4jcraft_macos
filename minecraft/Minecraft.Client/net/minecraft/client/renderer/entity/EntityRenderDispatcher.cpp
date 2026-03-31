@@ -1,4 +1,5 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include <cmath>
+
 #include "EntityRenderDispatcher.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
@@ -194,7 +195,8 @@ EntityRenderer* EntityRenderDispatcher::getRenderer(eINSTANCEOF e) {
     if (it == renderers.end()) {
         app.DebugPrintf("Couldn't find renderer for entity of type %d\n", e);
         // New renderer mapping required in above table
-        __debugbreak();
+        // __debugbreak();
+        assert(0);
     }
     /* 4J - not doing this hierarchical search anymore. We need to explicitly
     add renderers for any eINSTANCEOF type that we want to be able to render if

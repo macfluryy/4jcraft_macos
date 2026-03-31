@@ -1,7 +1,7 @@
 #include <thread>
 #include <chrono>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "IUIScene_PauseMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

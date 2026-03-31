@@ -1,4 +1,5 @@
 #include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_InGameInfoMenu.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"

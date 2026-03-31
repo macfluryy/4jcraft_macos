@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "WitherBossRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/model/WitherBossModel.h"
 #include "MobRenderer.h"

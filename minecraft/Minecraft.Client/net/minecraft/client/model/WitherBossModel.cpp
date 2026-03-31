@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "WitherBossModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"

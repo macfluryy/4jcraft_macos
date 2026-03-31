@@ -1,68 +1,40 @@
 #pragma once
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
-
-#define HAS_LANGUAGE_SYSTEM(exp) exp,
-
-#define HAS_LANGUAGE_EN_US(exp) exp,
-#define HAS_LANGUAGE_DE_DE(exp) exp,
-#define HAS_LANGUAGE_ES_ES(exp) exp,
-#define HAS_LANGUAGE_ES_MX(exp) exp,
-#define HAS_LANGUAGE_FR_FR(exp) exp,
-#define HAS_LANGUAGE_IT_IT(exp) exp,
-#define HAS_LANGUAGE_PT_PT(exp) exp,
-#define HAS_LANGUAGE_PT_BR(exp) exp,
-#define HAS_LANGUAGE_JA_JP(exp) exp,
-#define HAS_LANGUAGE_KO_KR(exp) exp,
-#define HAS_LANGUAGE_CN_TW(exp) exp,
-
-#define HAS_LANGUAGE_CN_CN(exp)
-#define HAS_LANGUAGE_SK_SK(exp)
-#define HAS_LANGUAGE_CZ_CZ(exp)
-
-#define HAS_LANGUAGE_DA_DK(exp) exp,
-#define HAS_LANGUAGE_FI_FI(exp) exp,
-#define HAS_LANGUAGE_NL_NL(exp) exp,
-#define HAS_LANGUAGE_PL_PL(exp) exp,
-#define HAS_LANGUAGE_RU_RU(exp) exp,
-#define HAS_LANGUAGE_SV_SE(exp) exp,
-#define HAS_LANGUAGE_NB_NO(exp) exp,
-#define HAS_LANGUAGE_EL_GR(exp) exp,
-
-#define HAS_LANGUAGE_TR_TR(exp)
+#include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 class UIScene_LanguageSelector : public UIScene {
 public:
-    enum ELangButtons {
-        eLanguageSelector_LabelNone = -1,
-        HAS_LANGUAGE_SYSTEM(eLanguageSelector_system) HAS_LANGUAGE_EN_US(
-            eLanguageSelector_EN_US) HAS_LANGUAGE_DE_DE(eLanguageSelector_DE_DE)
-            HAS_LANGUAGE_ES_ES(eLanguageSelector_ES_ES) HAS_LANGUAGE_ES_MX(
-                eLanguageSelector_ES_MX) HAS_LANGUAGE_FR_FR(eLanguageSelector_FR_FR)
-                HAS_LANGUAGE_IT_IT(eLanguageSelector_IT_IT) HAS_LANGUAGE_PT_PT(
-                    eLanguageSelector_PT_PT) HAS_LANGUAGE_PT_BR(eLanguageSelector_PT_BR)
-                    HAS_LANGUAGE_JA_JP(eLanguageSelector_JA_JP) HAS_LANGUAGE_KO_KR(
-                        eLanguageSelector_KO_KR) HAS_LANGUAGE_CN_TW(eLanguageSelector_CN_TW)
-                        HAS_LANGUAGE_CN_CN(eLanguageSelector_CN_CN) HAS_LANGUAGE_DA_DK(
-                            eLanguageSelector_DA_DK)
-                            HAS_LANGUAGE_FI_FI(eLanguageSelector_FI_FI) HAS_LANGUAGE_NL_NL(
-                                eLanguageSelector_NL_NL)
-                                HAS_LANGUAGE_PL_PL(eLanguageSelector_PL_PL)
-                                    HAS_LANGUAGE_RU_RU(eLanguageSelector_RU_RU)
-                                        HAS_LANGUAGE_SV_SE(
-                                            eLanguageSelector_SV_SE)
-                                            HAS_LANGUAGE_NB_NO(
-                                                eLanguageSelector_NB_NO)
-                                                HAS_LANGUAGE_SK_SK(
-                                                    eLanguageSelector_SK_SK)
-                                                    HAS_LANGUAGE_CZ_CZ(
-                                                        eLanguageSelector_CZ_CZ)
-                                                        HAS_LANGUAGE_EL_GR(
-                                                            eLanguageSelector_EL_GR)
-                                                            HAS_LANGUAGE_TR_TR(
-                                                                eLanguageSelector_TR_TR)
-                                                                eLanguageSelector_MAX
-    };
+	enum ELangButtons
+	{
+		eLanguageSelector_LabelNone	= -1,
+		eLanguageSelector_system,
+		eLanguageSelector_EN_US,
+		eLanguageSelector_DE_DE,
+		eLanguageSelector_ES_ES,
+		eLanguageSelector_ES_MX,
+		eLanguageSelector_FR_FR,
+		eLanguageSelector_IT_IT,
+		eLanguageSelector_PT_PT,
+		eLanguageSelector_PT_BR,
+		eLanguageSelector_JA_JP,
+		eLanguageSelector_KO_KR,
+		eLanguageSelector_CN_TW,
+		eLanguageSelector_CN_CN,
+		eLanguageSelector_DA_DK,
+		eLanguageSelector_FI_FI,
+		eLanguageSelector_NL_NL,
+		eLanguageSelector_PL_PL,
+		eLanguageSelector_RU_RU,
+		eLanguageSelector_SV_SE,
+		eLanguageSelector_NB_NO,
+		eLanguageSelector_SK_SK,
+		eLanguageSelector_CZ_CZ,
+		eLanguageSelector_EL_GR,
+		eLanguageSelector_TR_TR,
+		eLanguageSelector_MAX
+	};
 
 private:
     enum EControls {
@@ -99,54 +71,58 @@ protected:
     void handlePress(F64 controlId, F64 childId);
 };
 
-const int uiLangMap[UIScene_LanguageSelector::eLanguageSelector_MAX] = {
-    HAS_LANGUAGE_SYSTEM(MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_EN_US(
-        XC_LANGUAGE_ENGLISH) HAS_LANGUAGE_DE_DE(XC_LANGUAGE_GERMAN)
-        HAS_LANGUAGE_ES_ES(XC_LANGUAGE_SPANISH) HAS_LANGUAGE_ES_MX(
-            XC_LANGUAGE_SPANISH) HAS_LANGUAGE_FR_FR(XC_LANGUAGE_FRENCH)
-            HAS_LANGUAGE_IT_IT(XC_LANGUAGE_ITALIAN) HAS_LANGUAGE_PT_PT(
-                XC_LANGUAGE_PORTUGUESE) HAS_LANGUAGE_PT_BR(XC_LANGUAGE_PORTUGUESE)
-                HAS_LANGUAGE_JA_JP(XC_LANGUAGE_JAPANESE) HAS_LANGUAGE_KO_KR(
-                    XC_LANGUAGE_KOREAN) HAS_LANGUAGE_CN_TW(XC_LANGUAGE_TCHINESE)
-                    HAS_LANGUAGE_CN_CN(XC_LANGUAGE_SCHINESE) HAS_LANGUAGE_DA_DK(
-                        XC_LANGUAGE_DANISH) HAS_LANGUAGE_FI_FI(XC_LANGUAGE_FINISH)
-                        HAS_LANGUAGE_NL_NL(XC_LANGUAGE_DUTCH) HAS_LANGUAGE_PL_PL(
-                            XC_LANGUAGE_POLISH)
-                            HAS_LANGUAGE_RU_RU(XC_LANGUAGE_RUSSIAN)
-                                HAS_LANGUAGE_SV_SE(XC_LANGUAGE_SWEDISH)
-                                    HAS_LANGUAGE_NB_NO(XC_LANGUAGE_BNORWEGIAN)
-                                        HAS_LANGUAGE_SK_SK(XC_LANGUAGE_SLOVAK)
-                                            HAS_LANGUAGE_CZ_CZ(
-                                                XC_LANGUAGE_CZECH)
-                                                HAS_LANGUAGE_EL_GR(
-                                                    XC_LANGUAGE_GREEK)
-                                                    HAS_LANGUAGE_TR_TR(
-                                                        XC_LANGUAGE_TURKISH)};
+const int uiLangMap[UIScene_LanguageSelector::eLanguageSelector_MAX] =
+{
+	MINECRAFT_LANGUAGE_DEFAULT,
+	XC_LANGUAGE_ENGLISH,
+	XC_LANGUAGE_GERMAN,    
+	XC_LANGUAGE_SPANISH,
+	XC_LANGUAGE_SPANISH,
+	XC_LANGUAGE_FRENCH,  
+	XC_LANGUAGE_ITALIAN,   
+	XC_LANGUAGE_PORTUGUESE,
+	XC_LANGUAGE_PORTUGUESE,
+	XC_LANGUAGE_JAPANESE,  
+	XC_LANGUAGE_KOREAN,    
+	XC_LANGUAGE_TCHINESE,  
+	XC_LANGUAGE_SCHINESE,
+	XC_LANGUAGE_DANISH,
+	XC_LANGUAGE_FINISH,
+	XC_LANGUAGE_DUTCH,     
+	XC_LANGUAGE_POLISH,   
+	XC_LANGUAGE_RUSSIAN,   
+	XC_LANGUAGE_SWEDISH,   
+	XC_LANGUAGE_BNORWEGIAN,
+	XC_LANGUAGE_SLOVAK,
+	XC_LANGUAGE_CZECH,	
+	XC_LANGUAGE_GREEK,
+	XC_LANGUAGE_TURKISH,
+};
 
-const int uiLocaleMap[UIScene_LanguageSelector::eLanguageSelector_MAX] = {
-    HAS_LANGUAGE_SYSTEM(MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_EN_US(
-        MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_DE_DE(MINECRAFT_LANGUAGE_DEFAULT)
-        HAS_LANGUAGE_ES_ES(XC_LOCALE_SPAIN) HAS_LANGUAGE_ES_MX(
-            XC_LOCALE_LATIN_AMERICA) HAS_LANGUAGE_FR_FR(MINECRAFT_LANGUAGE_DEFAULT)
-            HAS_LANGUAGE_IT_IT(MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_PT_PT(
-                XC_LOCALE_PORTUGAL) HAS_LANGUAGE_PT_BR(XC_LOCALE_BRAZIL)
-                HAS_LANGUAGE_JA_JP(MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_KO_KR(
-                    MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_CN_TW(MINECRAFT_LANGUAGE_DEFAULT)
-                    HAS_LANGUAGE_CN_CN(MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_DA_DK(
-                        MINECRAFT_LANGUAGE_DEFAULT)
-                        HAS_LANGUAGE_FI_FI(MINECRAFT_LANGUAGE_DEFAULT) HAS_LANGUAGE_NL_NL(
-                            MINECRAFT_LANGUAGE_DEFAULT)
-                            HAS_LANGUAGE_PL_PL(MINECRAFT_LANGUAGE_DEFAULT)
-                                HAS_LANGUAGE_RU_RU(MINECRAFT_LANGUAGE_DEFAULT)
-                                    HAS_LANGUAGE_SV_SE(
-                                        MINECRAFT_LANGUAGE_DEFAULT)
-                                        HAS_LANGUAGE_NB_NO(
-                                            MINECRAFT_LANGUAGE_DEFAULT)
-                                            HAS_LANGUAGE_SK_SK(
-                                                MINECRAFT_LANGUAGE_DEFAULT)
-                                                HAS_LANGUAGE_CZ_CZ(
-                                                    MINECRAFT_LANGUAGE_DEFAULT)
-                                                    HAS_LANGUAGE_EL_GR(
-                                                        MINECRAFT_LANGUAGE_DEFAULT)
-                                                        HAS_LANGUAGE_TR_TR(
-                                                            MINECRAFT_LANGUAGE_DEFAULT)};
+const int uiLocaleMap[UIScene_LanguageSelector::eLanguageSelector_MAX] = 
+{
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	XC_LOCALE_SPAIN,  
+	XC_LOCALE_LATIN_AMERICA,  
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	XC_LOCALE_PORTUGAL,					
+	XC_LOCALE_BRAZIL,					
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+	MINECRAFT_LANGUAGE_DEFAULT,
+};

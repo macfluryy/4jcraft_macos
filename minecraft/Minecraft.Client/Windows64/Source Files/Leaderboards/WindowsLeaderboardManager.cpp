@@ -1,5 +1,3 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
-
 #include "WindowsLeaderboardManager.h"
 
 LeaderboardManager* LeaderboardManager::m_instance =

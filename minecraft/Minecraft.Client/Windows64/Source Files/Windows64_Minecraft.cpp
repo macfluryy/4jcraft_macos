@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 
 #include <assert.h>
 #include <mutex>

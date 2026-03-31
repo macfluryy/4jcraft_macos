@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "IUIScene_AnvilMenu.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "java/InputOutputStream/InputOutputStream.h"

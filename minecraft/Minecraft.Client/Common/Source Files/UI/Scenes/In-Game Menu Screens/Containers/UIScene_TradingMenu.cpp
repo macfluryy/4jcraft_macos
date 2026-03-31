@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.World/net/minecraft/util/HtmlString.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"

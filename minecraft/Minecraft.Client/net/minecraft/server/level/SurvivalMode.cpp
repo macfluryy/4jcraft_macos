@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "SurvivalMode.h"
 #include "DemoMode.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"

@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "TexturePackRepository.h"
 #include "DefaultTexturePack.h"
 #include "FileTexturePack.h"

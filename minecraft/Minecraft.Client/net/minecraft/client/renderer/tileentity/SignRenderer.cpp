@@ -1,4 +1,5 @@
 #include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "SignRenderer.h"
 
 #include "Minecraft.Client/net/minecraft/client/model/SignModel.h"

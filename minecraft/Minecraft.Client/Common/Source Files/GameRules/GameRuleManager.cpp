@@ -1,4 +1,5 @@
 #include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "java/File.h"

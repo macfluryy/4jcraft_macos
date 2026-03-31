@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/AnvilMenu.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"

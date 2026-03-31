@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IUIScene_StartGame.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 class UIScene_CreateWorldMenu : public IUIScene_StartGame {
 private:

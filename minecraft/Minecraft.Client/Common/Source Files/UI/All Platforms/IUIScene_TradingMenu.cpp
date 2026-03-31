@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.World/net/minecraft/world/item/trading/net.minecraft.world.item.trading.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"

@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "CreativeMode.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"

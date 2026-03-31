@@ -1,4 +1,5 @@
 #include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIComponent_TutorialPopup.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"

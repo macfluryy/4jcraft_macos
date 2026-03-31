@@ -2,7 +2,7 @@
 #include <chrono>
 #include <mutex>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "ServerChunkCache.h"

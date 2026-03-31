@@ -16,7 +16,6 @@
 //  Copyright (C) Microsoft Corporation. All rights reserved.
 //-------------------------------------------------------------------------------------
 
-#include "Minecraft.Client/Header Files/stdafx.h"
 #include "ATGXmlParser.h"
 
 #include <cstring>

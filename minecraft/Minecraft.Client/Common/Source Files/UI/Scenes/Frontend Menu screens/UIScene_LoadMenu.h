@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "IUIScene_StartGame.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 class UIScene_LoadMenu : public IUIScene_StartGame {
 private:

@@ -1,32 +1,35 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_LanguageSelector.h"
 
 // strings for buttons in the list
-const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[] = {
-    HAS_LANGUAGE_SYSTEM(IDS_LANG_SYSTEM) HAS_LANGUAGE_EN_US(
-        IDS_LANG_ENGLISH) HAS_LANGUAGE_DE_DE(IDS_LANG_GERMAN)
-        HAS_LANGUAGE_ES_ES(IDS_LANG_SPANISH_SPAIN) HAS_LANGUAGE_ES_MX(
-            IDS_LANG_SPANISH_LATIN_AMERICA) HAS_LANGUAGE_FR_FR(IDS_LANG_FRENCH)
-            HAS_LANGUAGE_IT_IT(IDS_LANG_ITALIAN) HAS_LANGUAGE_PT_PT(
-                IDS_LANG_PORTUGUESE_PORTUGAL)
-                HAS_LANGUAGE_PT_BR(IDS_LANG_PORTUGUESE_BRAZIL) HAS_LANGUAGE_JA_JP(
-                    IDS_LANG_JAPANESE) HAS_LANGUAGE_KO_KR(IDS_LANG_KOREAN)
-                    HAS_LANGUAGE_CN_TW(IDS_LANG_CHINESE_TRADITIONAL) HAS_LANGUAGE_CN_CN(
-                        IDS_LANG_CHINESE_SIMPLIFIED)
-                        HAS_LANGUAGE_DA_DK(IDS_LANG_DANISH) HAS_LANGUAGE_FI_FI(
-                            IDS_LANG_FINISH) HAS_LANGUAGE_NL_NL(IDS_LANG_DUTCH)
-                            HAS_LANGUAGE_PL_PL(IDS_LANG_POLISH)
-                                HAS_LANGUAGE_RU_RU(IDS_LANG_RUSSIAN)
-                                    HAS_LANGUAGE_SV_SE(IDS_LANG_SWEDISH)
-                                        HAS_LANGUAGE_NB_NO(IDS_LANG_NORWEGIAN)
-                                            HAS_LANGUAGE_SK_SK(IDS_LANG_SLOVAK)
-                                                HAS_LANGUAGE_CZ_CZ(
-                                                    IDS_LANG_CZECH)
-                                                    HAS_LANGUAGE_EL_GR(
-                                                        IDS_LANG_GREEK)
-                                                        HAS_LANGUAGE_TR_TR(
-                                                            IDS_LANG_TURKISH)};
+const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[]=
+{
+	IDS_LANG_SYSTEM,
+	IDS_LANG_ENGLISH,
+	IDS_LANG_GERMAN,
+	IDS_LANG_SPANISH_SPAIN,
+	IDS_LANG_SPANISH_LATIN_AMERICA,
+	IDS_LANG_FRENCH,
+	IDS_LANG_ITALIAN,
+	IDS_LANG_PORTUGUESE_PORTUGAL,
+	IDS_LANG_PORTUGUESE_BRAZIL,
+	IDS_LANG_JAPANESE,
+	IDS_LANG_KOREAN,
+	IDS_LANG_CHINESE_TRADITIONAL,
+	IDS_LANG_CHINESE_SIMPLIFIED,
+	IDS_LANG_DANISH,
+	IDS_LANG_FINISH,
+	IDS_LANG_DUTCH,
+	IDS_LANG_POLISH,
+	IDS_LANG_RUSSIAN,
+	IDS_LANG_SWEDISH,
+	IDS_LANG_NORWEGIAN,
+	// IDS_LANG_SLOVAK,
+	// IDS_LANG_CZECH,
+	IDS_LANG_GREEK,
+	IDS_LANG_TURKISH,
+};
 
 UIScene_LanguageSelector::UIScene_LanguageSelector(int iPad, void* initData,
                                                    UILayer* parentLayer)

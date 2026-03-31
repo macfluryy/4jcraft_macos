@@ -1,4 +1,5 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include <unordered_set>
+
 #include "EntityTracker.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"

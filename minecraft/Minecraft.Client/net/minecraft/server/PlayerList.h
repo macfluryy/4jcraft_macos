@@ -3,6 +3,8 @@
 #include <deque>
 #include <mutex>
 
+#include "4J.Common/4J_Compat.h"
+
 class ServerPlayer;
 class PlayerChunkMap;
 class MinecraftServer;

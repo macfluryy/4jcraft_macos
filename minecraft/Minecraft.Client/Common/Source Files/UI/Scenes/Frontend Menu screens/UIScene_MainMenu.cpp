@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "java/Random.h"

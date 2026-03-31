@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "UIScene_Credits.h"

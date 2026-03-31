@@ -456,9 +456,9 @@ void GameRenderer::bobView(float a) {
     float bob = player->oBob + (player->bob - player->oBob) * a;
     float tilt = player->oTilt + (player->tilt - player->oTilt) * a;
     glTranslatef((float)sinf(b * std::numbers::pi) * bob * 0.5f,
-                 -(float)abs(cosf(b * std::numbers::pi) * bob), 0);
+                 -(float)std::abs(cosf(b * std::numbers::pi) * bob), 0);
     glRotatef((float)sinf(b * std::numbers::pi) * bob * 3, 0, 0, 1);
-    glRotatef((float)abs(cosf(b * std::numbers::pi - 0.2f) * bob) * 5, 1, 0, 0);
+    glRotatef((float)std::abs(cosf(b * std::numbers::pi - 0.2f) * bob) * 5, 1, 0, 0);
     glRotatef((float)tilt, 1, 0, 0);
 }
 

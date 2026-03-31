@@ -1,6 +1,8 @@
 #pragma once
 
 #include "UIEnums.h"
+#include "UIStructs.h"
+#include "4J_Storage.h"
 #include "Minecraft.World/Header Files/SoundTypes.h"
 
 // 4J Stu - An interface class that defines all the public functions that we use

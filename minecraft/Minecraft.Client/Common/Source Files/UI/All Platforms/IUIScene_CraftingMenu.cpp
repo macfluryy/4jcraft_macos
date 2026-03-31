@@ -1,4 +1,6 @@
 #include "Minecraft.Client/Header Files/stdafx.h"
+#include "4J.Common/4J_InputActions.h"
+
 
 #include "Minecraft.World/net/minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
