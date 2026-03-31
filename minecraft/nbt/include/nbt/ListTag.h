@@ -1,12 +1,13 @@
 #pragma once
 #include "Tag.h"
 
+#include <memory>
 #include <vector>
 
 template <class T>
 class ListTag : public Tag {
 private:
-    std::vector<Tag*> list;
+    std::vector<std::unique_ptr<Tag>> list;
     uint8_t type;
 
 public:
@@ -15,15 +16,14 @@ public:
 
     void write(DataOutput* dos) {
         if (list.size() > 0)
-            type = (list[0])->getId();
+            type = list[0]->getId();
         else
             type = static_cast<uint8_t>(1);
 
         dos->writeByte(type);
         dos->writeInt((int)list.size());
 
-        auto itEnd = list.end();
-        for (auto it = list.begin(); it != itEnd; it++) (*it)->write(dos);
+        for (auto& tag : list) tag->write(dos);
     }
 
     void load(DataInput* dis, int tagDepth) {
@@ -39,9 +39,9 @@ public:
 
         list.clear();
         for (int i = 0; i < size; i++) {
-            Tag* tag = Tag::newTag(type, L"");
+            std::unique_ptr<Tag> tag(Tag::newTag(type, L""));
             tag->load(dis, tagDepth);
-            list.push_back(tag);
+            list.push_back(std::move(tag));
         }
     }
 
@@ -49,7 +49,7 @@ public:
 
     std::wstring toString() {
         static wchar_t buf[64];
-        swprintf(buf, 64, L"%d entries of type %ls", list.size(),
+        swprintf(buf, 64, L"%zu entries of type %ls", list.size(),
                  Tag::getTagName(type));
         return std::wstring(buf);
     }
@@ -62,9 +62,8 @@ public:
         char* newPrefix = new char[strlen(prefix) + 4];
         strcpy(newPrefix, prefix);
         strcat(newPrefix, "   ");
-        auto itEnd = list.end();
-        for (auto it = list.begin(); it != itEnd; it++) {
-            (*it)->print(newPrefix, out);
+        for (auto& tag : list) {
+            tag->print(newPrefix, out);
         }
         delete[] newPrefix;
         out << prefix << "}" << std::endl;
@@ -78,27 +77,20 @@ public:
         // other items that also use list tags and require equality checks to
         // work) considering we can't change the write/load functions.
         tag->setName(L"");
-        list.push_back(tag);
+        list.push_back(std::unique_ptr<Tag>(tag));
     }
 
-    T* get(int index) { return (T*)list[index]; }
+    T* get(int index) { return static_cast<T*>(list[index].get()); }
 
     int size() { return (int)list.size(); }
 
-    virtual ~ListTag() {
-        auto itEnd = list.end();
-        for (auto it = list.begin(); it != itEnd; it++) {
-            delete *it;
-        }
-    }
+    virtual ~ListTag() = default;
 
     virtual Tag* copy() {
         ListTag<T>* res = new ListTag<T>(getName());
         res->type = type;
-        auto itEnd = list.end();
-        for (auto it = list.begin(); it != itEnd; it++) {
-            T* copy = (T*)(*it)->copy();
-            res->list.push_back(copy);
+        for (auto& tag : list) {
+            res->list.push_back(std::unique_ptr<Tag>(tag->copy()));
         }
         return res;
     }
@@ -110,15 +102,13 @@ public:
                 bool equal = false;
                 if (list.size() == o->list.size()) {
                     equal = true;
-                    auto itEnd = list.end();
                     // 4J Stu - Pretty inefficient method, but I think we can
                     // live with it give how often it will happen, and the small
                     // sizes of the data sets
-                    for (auto it = list.begin(); it != itEnd; ++it) {
+                    for (auto& tag : list) {
                         bool thisMatches = false;
-                        for (auto it2 = o->list.begin(); it2 != o->list.end();
-                             ++it2) {
-                            if ((*it)->equals(*it2)) {
+                        for (auto& otherTag : o->list) {
+                            if (tag->equals(otherTag.get())) {
                                 thisMatches = true;
                                 break;
                             }

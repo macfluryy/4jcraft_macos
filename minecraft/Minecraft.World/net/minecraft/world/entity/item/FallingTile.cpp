@@ -122,9 +122,9 @@ void FallingTile::tick() {
                         if (tileEntity != nullptr) {
                             CompoundTag* swap = new CompoundTag();
                             tileEntity->save(swap);
-                            std::vector<Tag*>* allTags = tileData->getAllTags();
-                            for (auto it = allTags->begin();
-                                 it != allTags->end(); ++it) {
+                            std::vector<Tag*> allTags = tileData->getAllTags();
+                            for (auto it = allTags.begin();
+                                 it != allTags.end(); ++it) {
                                 Tag* tag = *it;
                                 if (tag->getName().compare(L"x") == 0 ||
                                     tag->getName().compare(L"y") == 0 ||
@@ -132,7 +132,6 @@ void FallingTile::tick() {
                                     continue;
                                 swap->put(tag->getName(), tag->copy());
                             }
-                            delete allTags;
                             tileEntity->load(swap);
                             tileEntity->setChanged();
                         }

@@ -11,21 +11,20 @@
 #include "ByteArrayTag.h"
 #include "IntArrayTag.h"
 
+#include <memory>
 #include <unordered_map>
 
 class CompoundTag : public Tag {
 private:
-    std::unordered_map<std::wstring, Tag*> tags;
+    std::unordered_map<std::wstring, std::unique_ptr<Tag>> tags;
 
 public:
     CompoundTag() : Tag(L"") {}
     CompoundTag(const std::wstring& name) : Tag(name) {}
 
     void write(DataOutput* dos) {
-        auto itEnd = tags.end();
-        for (std::unordered_map<std::wstring, Tag*>::iterator it = tags.begin();
-             it != itEnd; it++) {
-            Tag::writeNamedTag(it->second, dos);
+        for (auto& [key, value] : tags) {
+            Tag::writeNamedTag(value.get(), dos);
         }
         dos->writeByte(Tag::TAG_End);
     }
@@ -39,22 +38,19 @@ public:
             return;
         }
         tags.clear();
-        Tag* tag;
-        while ((tag = Tag::readNamedTag(dis))->getId() != Tag::TAG_End) {
-            tags[tag->getName()] = tag;
+        for (;;) {
+            std::unique_ptr<Tag> tag(Tag::readNamedTag(dis));
+            if (tag->getId() == Tag::TAG_End) break;
+            auto name = tag->getName();
+            tags[name] = std::move(tag);
         }
-        delete tag;
     }
 
-    std::vector<Tag*>* getAllTags()  // 4J - was collection
-    {
-        // 4J - was return tags.values();
-        std::vector<Tag*>* ret = new std::vector<Tag*>;
-
-        auto itEnd = tags.end();
-        for (std::unordered_map<std::wstring, Tag*>::iterator it = tags.begin();
-             it != itEnd; it++) {
-            ret->push_back(it->second);
+    std::vector<Tag*> getAllTags() {
+        std::vector<Tag*> ret;
+        ret.reserve(tags.size());
+        for (auto& [key, value] : tags) {
+            ret.push_back(value.get());
         }
         return ret;
     }
@@ -62,47 +58,49 @@ public:
     uint8_t getId() { return TAG_Compound; }
 
     void put(const std::wstring& name, Tag* tag) {
-        tags[name] = tag->setName(name);
+        tag->setName(name);
+        tags[name] = std::unique_ptr<Tag>(tag);
     }
 
     void putByte(const std::wstring& name, uint8_t value) {
-        tags[name] = (new ByteTag(name, value));
+        tags[name] = std::make_unique<ByteTag>(name, value);
     }
 
     void putShort(const std::wstring& name, short value) {
-        tags[name] = (new ShortTag(name, value));
+        tags[name] = std::make_unique<ShortTag>(name, value);
     }
 
     void putInt(const std::wstring& name, int value) {
-        tags[name] = (new IntTag(name, value));
+        tags[name] = std::make_unique<IntTag>(name, value);
     }
 
     void putLong(const std::wstring& name, int64_t value) {
-        tags[name] = (new LongTag(name, value));
+        tags[name] = std::make_unique<LongTag>(name, value);
     }
 
     void putFloat(const std::wstring& name, float value) {
-        tags[name] = (new FloatTag(name, value));
+        tags[name] = std::make_unique<FloatTag>(name, value);
     }
 
     void putDouble(const std::wstring& name, double value) {
-        tags[name] = (new DoubleTag(name, value));
+        tags[name] = std::make_unique<DoubleTag>(name, value);
     }
 
     void putString(const std::wstring& name, const std::wstring& value) {
-        tags[name] = (new StringTag(name, value));
+        tags[name] = std::make_unique<StringTag>(name, value);
     }
 
     void putByteArray(const std::wstring& name, std::vector<uint8_t>& value) {
-        tags[name] = (new ByteArrayTag(name, value));
+        tags[name] = std::make_unique<ByteArrayTag>(name, value);
     }
 
     void putIntArray(const std::wstring& name, std::vector<int>& value) {
-        tags[name] = (new IntArrayTag(name, value));
+        tags[name] = std::make_unique<IntArrayTag>(name, value);
     }
 
     void putCompound(const std::wstring& name, CompoundTag* value) {
-        tags[name] = value->setName(std::wstring(name));
+        value->setName(name);
+        tags[name] = std::unique_ptr<Tag>(value);
     }
 
     void putBoolean(const std::wstring& name, bool val) {
@@ -111,7 +109,7 @@ public:
 
     Tag* get(const std::wstring& name) {
         auto it = tags.find(name);
-        if (it != tags.end()) return it->second;
+        if (it != tags.end()) return it->second.get();
         return nullptr;
     }
 
@@ -120,72 +118,87 @@ public:
     }
 
     uint8_t getByte(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return (uint8_t)0;
-        return ((ByteTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return 0;
+        return static_cast<ByteTag*>(it->second.get())->data;
     }
 
     short getShort(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return (short)0;
-        return ((ShortTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return 0;
+        return static_cast<ShortTag*>(it->second.get())->data;
     }
 
     int getInt(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return (int)0;
-        return ((IntTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return 0;
+        return static_cast<IntTag*>(it->second.get())->data;
     }
 
     int64_t getLong(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return (int64_t)0;
-        return ((LongTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return 0;
+        return static_cast<LongTag*>(it->second.get())->data;
     }
 
     float getFloat(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return (float)0;
-        return ((FloatTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return 0;
+        return static_cast<FloatTag*>(it->second.get())->data;
     }
 
     double getDouble(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return (double)0;
-        return ((DoubleTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return 0;
+        return static_cast<DoubleTag*>(it->second.get())->data;
     }
 
     std::wstring getString(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return std::wstring(L"");
-        return ((StringTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return std::wstring(L"");
+        return static_cast<StringTag*>(it->second.get())->data;
     }
 
     std::vector<uint8_t> getByteArray(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return std::vector<uint8_t>();
-        return ((ByteArrayTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return std::vector<uint8_t>();
+        return static_cast<ByteArrayTag*>(it->second.get())->data;
     }
 
     std::vector<int> getIntArray(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return std::vector<int>();
-        return ((IntArrayTag*)tags[name])->data;
+        auto it = tags.find(name);
+        if (it == tags.end()) return std::vector<int>();
+        return static_cast<IntArrayTag*>(it->second.get())->data;
     }
 
     CompoundTag* getCompound(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return new CompoundTag(name);
-        return (CompoundTag*)tags[name];
+        auto it = tags.find(name);
+        if (it == tags.end()) {
+            auto [it2, inserted] = tags.emplace(name, std::make_unique<CompoundTag>(name));
+            return static_cast<CompoundTag*>(it2->second.get());
+        }
+        return static_cast<CompoundTag*>(it->second.get());
     }
 
     ListTag<Tag>* getList(const std::wstring& name) {
-        if (tags.find(name) == tags.end()) return new ListTag<Tag>(name);
-        return (ListTag<Tag>*)tags[name];
+        auto it = tags.find(name);
+        if (it == tags.end()) {
+            auto [it2, inserted] = tags.emplace(name, std::make_unique<ListTag<Tag>>(name));
+            return static_cast<ListTag<Tag>*>(it2->second.get());
+        }
+        return static_cast<ListTag<Tag>*>(it->second.get());
     }
 
     bool getBoolean(const std::wstring& string) { return getByte(string) != 0; }
 
     void remove(const std::wstring& name) {
-        auto it = tags.find(name);
-        if (it != tags.end()) tags.erase(it);
-        // tags.remove(name);
+        tags.erase(name);
     }
 
     std::wstring toString() {
         static const int bufSize = 32;
         static wchar_t buf[bufSize];
-        swprintf(buf, bufSize, L"%d entries", tags.size());
+        swprintf(buf, bufSize, L"%zu entries", tags.size());
         return std::wstring(buf);
     }
 
@@ -211,19 +224,12 @@ public:
 
     bool isEmpty() { return tags.empty(); }
 
-    virtual ~CompoundTag() {
-        auto itEnd = tags.end();
-        for (auto it = tags.begin(); it != itEnd; it++) {
-            delete it->second;
-        }
-    }
+    virtual ~CompoundTag() = default;
 
     Tag* copy() {
         CompoundTag* tag = new CompoundTag(getName());
-
-        auto itEnd = tags.end();
-        for (auto it = tags.begin(); it != itEnd; it++) {
-            tag->put((wchar_t*)it->first.c_str(), it->second->copy());
+        for (auto& [key, value] : tags) {
+            tag->put(key, value->copy());
         }
         return tag;
     }
@@ -233,18 +239,14 @@ public:
             CompoundTag* o = (CompoundTag*)obj;
 
             if (tags.size() == o->tags.size()) {
-                bool equal = true;
-                auto itEnd = tags.end();
-                for (auto it = tags.begin(); it != itEnd; it++) {
-                    auto itFind = o->tags.find(it->first);
+                for (auto& [key, value] : tags) {
+                    auto itFind = o->tags.find(key);
                     if (itFind == o->tags.end() ||
-                        !it->second->equals(itFind->second)) {
-                        equal = false;
-                        break;
+                        !value->equals(itFind->second.get())) {
+                        return false;
                     }
                 }
-                return equal;
-                // return tags.entrySet().equals(o.tags.entrySet());
+                return true;
             }
         }
         return false;

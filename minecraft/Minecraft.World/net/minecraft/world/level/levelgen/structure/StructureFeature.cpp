@@ -252,8 +252,8 @@ void StructureFeature::restoreSavedData(Level* level) {
         } else {
             CompoundTag* fullTag = savedData->getFullTag();
 
-            std::vector<Tag*>* allTags = fullTag->getAllTags();
-            for (auto it = allTags->begin(); it != allTags->end(); ++it) {
+            std::vector<Tag*> allTags = fullTag->getAllTags();
+            for (auto it = allTags.begin(); it != allTags.end(); ++it) {
                 Tag* featureTag = *it;
                 if (featureTag->getId() == Tag::TAG_Compound) {
                     CompoundTag* ct = (CompoundTag*)featureTag;
