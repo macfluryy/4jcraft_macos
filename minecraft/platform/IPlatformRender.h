@@ -1,36 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include <cstdlib>
 
-class ImageFileBuffer {
-public:
-    enum EImageType { e_typePNG, e_typeJPG };
-    EImageType m_type;
-    void* m_pBuffer;
-    int m_bufferSize;
-    int GetType() { return m_type; }
-    void* GetBufferPointer() { return m_pBuffer; }
-    int GetBufferSize() { return m_bufferSize; }
-    void Release() {
-        std::free(m_pBuffer);
-        m_pBuffer = nullptr;
-    }
-    bool Allocated() { return m_pBuffer != nullptr; }
-};
-
-struct D3DXIMAGE_INFO {
-    int Width;
-    int Height;
-};
-
-struct XSOCIAL_PREVIEWIMAGE {
-    std::uint8_t* pBytes;
-    std::uint32_t Pitch;
-    std::uint32_t Width;
-    std::uint32_t Height;
-};
-using PXSOCIAL_PREVIEWIMAGE = XSOCIAL_PREVIEWIMAGE*;
+#include "PlatformTypes.h"
 
 class IPlatformRender {
 public:
@@ -88,16 +60,16 @@ public:
     virtual void SetClearColour(const float colourRGBA[4]) = 0;
     virtual void Shutdown() = 0;
     virtual void Suspend() = 0;
-    virtual bool Suspended() = 0;
+    [[nodiscard]] virtual bool Suspended() = 0;
     virtual void Resume() = 0;
 
     // Window
     virtual void SetWindowSize(int w, int h) = 0;
     virtual void SetFullscreen(bool fs) = 0;
-    virtual bool IsWidescreen() = 0;
-    virtual bool IsHiDef() = 0;
+    [[nodiscard]] virtual bool IsWidescreen() = 0;
+    [[nodiscard]] virtual bool IsHiDef() = 0;
     virtual void GetFramebufferSize(int& width, int& height) = 0;
-    virtual bool ShouldClose() = 0;
+    [[nodiscard]] virtual bool ShouldClose() = 0;
     virtual void Close() = 0;
     virtual void UpdateGamma(unsigned short usGamma) = 0;
 
@@ -114,7 +86,7 @@ public:
     virtual void MatrixPop() = 0;
     virtual void MatrixPush() = 0;
     virtual void MatrixMult(float* mat) = 0;
-    virtual const float* MatrixGet(int type) = 0;
+    [[nodiscard]] virtual const float* MatrixGet(int type) = 0;
     virtual void Set_matrixDirty() = 0;
 
     // Draw calls
@@ -124,24 +96,24 @@ public:
 
     // Command buffers
     virtual void CBuffLockStaticCreations() = 0;
-    virtual int CBuffCreate(int count) = 0;
+    [[nodiscard]] virtual int CBuffCreate(int count) = 0;
     virtual void CBuffDelete(int first, int count) = 0;
     virtual void CBuffStart(int index, bool full = false) = 0;
     virtual void CBuffClear(int index) = 0;
-    virtual int CBuffSize(int index) = 0;
+    [[nodiscard]] virtual int CBuffSize(int index) = 0;
     virtual void CBuffEnd() = 0;
-    virtual bool CBuffCall(int index, bool full = true) = 0;
+    [[nodiscard]] virtual bool CBuffCall(int index, bool full = true) = 0;
     virtual void CBuffTick() = 0;
     virtual void CBuffDeferredModeStart() = 0;
     virtual void CBuffDeferredModeEnd() = 0;
 
     // Textures
-    virtual int TextureCreate() = 0;
+    [[nodiscard]] virtual int TextureCreate() = 0;
     virtual void TextureFree(int idx) = 0;
     virtual void TextureBind(int idx) = 0;
     virtual void TextureBindVertex(int idx, bool scaleLight = false) = 0;
     virtual void TextureSetTextureLevels(int levels) = 0;
-    virtual int TextureGetTextureLevels() = 0;
+    [[nodiscard]] virtual int TextureGetTextureLevels() = 0;
     virtual void TextureData(int width, int height, void* data, int level,
                               eTextureFormat format = TEXTURE_FORMAT_RxGyBzAw) = 0;
     virtual void TextureDataUpdate(int xoffset, int yoffset, int width,
@@ -149,21 +121,24 @@ public:
     virtual void TextureSetParam(int param, int value) = 0;
     virtual void TextureDynamicUpdateStart() = 0;
     virtual void TextureDynamicUpdateEnd() = 0;
-    virtual int LoadTextureData(const char* szFilename,
-                                 D3DXIMAGE_INFO* pSrcInfo,
-                                 int** ppDataOut) = 0;
-    virtual int LoadTextureData(std::uint8_t* pbData, std::uint32_t byteCount,
-                                 D3DXIMAGE_INFO* pSrcInfo,
-                                 int** ppDataOut) = 0;
-    virtual int SaveTextureData(const char* szFilename,
-                                 D3DXIMAGE_INFO* pSrcInfo,
-                                 int* ppDataOut) = 0;
-    virtual int SaveTextureDataToMemory(void* pOutput, int outputCapacity,
-                                         int* outputLength, int width,
-                                         int height, int* ppDataIn) = 0;
+    [[nodiscard]] virtual int LoadTextureData(const char* szFilename,
+                                               D3DXIMAGE_INFO* pSrcInfo,
+                                               int** ppDataOut) = 0;
+    [[nodiscard]] virtual int LoadTextureData(std::uint8_t* pbData,
+                                               std::uint32_t byteCount,
+                                               D3DXIMAGE_INFO* pSrcInfo,
+                                               int** ppDataOut) = 0;
+    [[nodiscard]] virtual int SaveTextureData(const char* szFilename,
+                                               D3DXIMAGE_INFO* pSrcInfo,
+                                               int* ppDataOut) = 0;
+    [[nodiscard]] virtual int SaveTextureDataToMemory(void* pOutput,
+                                                       int outputCapacity,
+                                                       int* outputLength,
+                                                       int width, int height,
+                                                       int* ppDataIn) = 0;
     virtual void ReadPixels(int x, int y, int w, int h, void* buf) = 0;
     virtual void TextureGetStats() = 0;
-    virtual void* TextureGetTexture(int idx) = 0;
+    [[nodiscard]] virtual void* TextureGetTexture(int idx) = 0;
 
     // Render state
     virtual void StateSetColour(float r, float g, float b, float a) = 0;

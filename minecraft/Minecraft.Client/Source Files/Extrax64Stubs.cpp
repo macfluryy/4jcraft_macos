@@ -370,7 +370,7 @@ void C_4JProfile::Initialise(std::uint32_t dwTitleID, std::uint32_t dwOfferID,
 }
 void C_4JProfile::SetTrialTextStringTable(CXuiStringTable* pStringTable,
                                           int iAccept, int iReject) {}
-void C_4JProfile::SetTrialAwardText(eAwardType AwardType, int iTitle,
+void C_4JProfile::SetTrialAwardText(EAwardType AwardType, int iTitle,
                                     int iText) {}
 int C_4JProfile::GetLockedProfile() { return 0; }
 void C_4JProfile::SetLockedProfile(int iProf) {}
@@ -476,12 +476,12 @@ void* C_4JProfile::GetGameDefinedProfileData(int iQuadrant) {
 void C_4JProfile::ResetProfileProcessState() {}
 void C_4JProfile::Tick(void) {}
 void C_4JProfile::RegisterAward(int iAwardNumber, int iGamerconfigID,
-                                eAwardType eType, bool bLeaderboardAffected,
+                                EAwardType eType, bool bLeaderboardAffected,
                                 CXuiStringTable* pStringTable, int iTitleStr,
                                 int iTextStr, int iAcceptStr,
                                 char* pszThemeName, unsigned int ulThemeSize) {}
 int C_4JProfile::GetAwardId(int iAwardNumber) { return 0; }
-eAwardType C_4JProfile::GetAwardType(int iAwardNumber) {
+EAwardType C_4JProfile::GetAwardType(int iAwardNumber) {
     return eAwardType_Achievement;
 }
 bool C_4JProfile::CanBeAwarded(int iQuadrant, int iAwardNumber) {
@@ -498,8 +498,8 @@ void C_4JProfile::SetCurrentGameActivity(int iPad, int iNewPresence,
 void C_4JProfile::DisplayFullVersionPurchase(bool bRequired, int iQuadrant,
                                              int iUpsellParam) {}
 void C_4JProfile::SetUpsellCallback(void (*Func)(void* lpParam,
-                                                 eUpsellType type,
-                                                 eUpsellResponse response,
+                                                 EUpsellType type,
+                                                 EUpsellResponse response,
                                                  int iUserData),
                                     void* lpParam) {}
 void C_4JProfile::SetDebugFullOverride(bool bVal) {

@@ -71,7 +71,7 @@ public:
 
     void Tick() {}
     void SetTrialTextStringTable(CXuiStringTable*, int, int) {}
-    void SetTrialAwardText(eAwardType, int, int) {}
+    void SetTrialAwardText(EAwardType, int, int) {}
     void StartTrialGame() {}
     unsigned int RequestSignInUI(bool, bool, bool, bool, bool,
                                  int (*)(void*, const bool, const int),
@@ -100,11 +100,11 @@ public:
     void WriteToProfile(int, bool = false, bool = false) {}
     void ForceQueuedProfileWrites(int = XUSER_INDEX_ANY) {}
     void ResetProfileProcessState() {}
-    void RegisterAward(int, int, eAwardType, bool = false,
+    void RegisterAward(int, int, EAwardType, bool = false,
                        CXuiStringTable* = nullptr, int = -1, int = -1,
                        int = -1, char* = nullptr, unsigned int = 0L) {}
     int GetAwardId(int) { return 0; }
-    eAwardType GetAwardType(int) { return eAwardType_Achievement; }
+    EAwardType GetAwardType(int) { return eAwardType_Achievement; }
     bool CanBeAwarded(int, int) { return false; }
     void Award(int, int, bool = false) {}
     bool IsAwardsFlagSet(int, int) { return false; }
@@ -113,7 +113,7 @@ public:
     void SetRichPresenceContextValue(int, int, int) {}
     void SetCurrentGameActivity(int, int, bool = false) {}
     void DisplayFullVersionPurchase(bool, int, int = -1) {}
-    void SetUpsellCallback(void (*)(void*, eUpsellType, eUpsellResponse, int),
+    void SetUpsellCallback(void (*)(void*, EUpsellType, EUpsellResponse, int),
                            void*) {}
     void SetDebugFullOverride(bool) {}
 

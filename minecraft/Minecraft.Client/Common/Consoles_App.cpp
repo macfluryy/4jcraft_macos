@@ -4128,8 +4128,8 @@ void CMinecraftApp::NotificationsCallback(void* pParam,
     pClass->m_vNotifications.push_back(pNotification);
 }
 
-void CMinecraftApp::UpsellReturnedCallback(void* pParam, eUpsellType type,
-                                           eUpsellResponse result,
+void CMinecraftApp::UpsellReturnedCallback(void* pParam, EUpsellType type,
+                                           EUpsellResponse result,
                                            int iUserData) {
     // 4jcraft: nuked
 }
