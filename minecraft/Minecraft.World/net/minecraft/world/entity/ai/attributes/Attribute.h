@@ -1,6 +1,8 @@
 #pragma once
 class AttributeModifier;
 
+#include <unordered_map>
+
 // 4J: This ID is serialised into save data so new attributes must always be
 // added after existing ones
 enum eATTRIBUTE_ID {

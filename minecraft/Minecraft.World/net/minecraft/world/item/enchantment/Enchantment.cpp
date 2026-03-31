@@ -88,7 +88,7 @@ void Enchantment::_init(int id) {
     if (enchantments[id] != nullptr) {
         app.DebugPrintf("Duplicate enchantment id!");
 #ifndef _CONTENT_PACKAGE
-        __debugbreak();
+        assert(0);
 #endif
         // throw new IllegalArgumentException("Duplicate enchantment id!");
     }

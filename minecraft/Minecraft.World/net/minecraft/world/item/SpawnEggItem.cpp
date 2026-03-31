@@ -10,6 +10,8 @@
 #include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 #include "SpawnEggItem.h"
 #include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll

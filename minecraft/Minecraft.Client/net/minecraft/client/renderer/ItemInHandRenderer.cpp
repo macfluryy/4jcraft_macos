@@ -452,13 +452,13 @@ void ItemInHandRenderer::render(float a) {
     std::shared_ptr<ItemInstance> item = selectedItem;
 
     float br = minecraft->level->getBrightness(
-        Mth::floor(player->x), Mth::floor(player->y), Mth::floor(player->z));
+        std::floor(player->x), std::floor(player->y), std::floor(player->z));
     // 4J - change brought forward from 1.8.2
     if (SharedConstants::TEXTURE_LIGHTING) {
         br = 1;
-        int col = minecraft->level->getLightColor(Mth::floor(player->x),
-                                                  Mth::floor(player->y),
-                                                  Mth::floor(player->z), 0);
+        int col = minecraft->level->getLightColor(std::floor(player->x),
+                                                  std::floor(player->y),
+                                                  std::floor(player->z), 0);
         int u = col % 65536;
         int v = col / 65536;
 #if defined(__linux__)
@@ -621,7 +621,7 @@ void ItemInHandRenderer::render(float a) {
                 is = is * is * is;
                 float iss = 1 - is;
                 glTranslatef(0,
-                             Mth::abs(cosf(t / 4 * std::numbers::pi) * 0.1f) *
+                             std::abs(cosf(t / 4 * std::numbers::pi) * 0.1f) *
                                  (swing > 0.2 ? 1 : 0),
                              0);
                 glTranslatef(iss * 0.6f, -iss * 0.5f, 0);
@@ -783,9 +783,9 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
 
     if (minecraft->player->isInWall())  // Inside a tile
     {
-        int x = Mth::floor(minecraft->player->x);
-        int y = Mth::floor(minecraft->player->y);
-        int z = Mth::floor(minecraft->player->z);
+        int x = std::floor(minecraft->player->x);
+        int y = std::floor(minecraft->player->y);
+        int z = std::floor(minecraft->player->z);
 
         int tile = minecraft->level->getTile(x, y, z);
         if (minecraft->level->isSolidBlockingTile(x, y, z)) {
@@ -798,9 +798,9 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
                     ((i >> 1) % 2 - 0.5f) * minecraft->player->bbHeight * 0.2f;
                 float zo =
                     ((i >> 2) % 2 - 0.5f) * minecraft->player->bbWidth * 0.9f;
-                int xt = Mth::floor(x + xo);
-                int yt = Mth::floor(y + yo);
-                int zt = Mth::floor(z + zo);
+                int xt = std::floor(x + xo);
+                int yt = std::floor(y + yo);
+                int zt = std::floor(z + zo);
                 if (minecraft->level->isSolidBlockingTile(xt, yt, zt)) {
                     tile = minecraft->level->getTile(xt, yt, zt);
                 }

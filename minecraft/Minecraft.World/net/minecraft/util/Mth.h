@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <algorithm>
+#include <string>
 
 class Random;
 

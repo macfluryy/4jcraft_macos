@@ -3,9 +3,13 @@
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "Minecraft.Client/Common/App_enums.h"
 
+#include <unordered_map>
+
 class Mob;
 class MobEffectInstance;
 class Attribute;
+class LivingEntity;
+class BaseAttributeMap;
 
 class MobEffect {
 public:

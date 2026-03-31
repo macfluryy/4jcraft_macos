@@ -10,6 +10,7 @@
 #include "Minecraft.World/net/minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "Minecraft.Client/Common/Potion_Macros.h"
 #include "java/JavaMath.h"
 
 // 4J JEV - Images for each tab.

@@ -1,8 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "EnchantmentCategory.h"
+#include "Minecraft.World/net/minecraft/util/HtmlString.h"
 
 class DamageSource;
+class LivingEntity;
+class ItemInstance;
 class Mob;
 
 class Enchantment  // implements Descriptive<Enchantment> {

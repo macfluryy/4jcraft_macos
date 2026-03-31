@@ -6,6 +6,7 @@
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "SkullItem.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 const unsigned int SkullItem::NAMES[SKULL_COUNT] = {
     IDS_ITEM_SKULL_SKELETON, IDS_ITEM_SKULL_WITHER, IDS_ITEM_SKULL_ZOMBIE,

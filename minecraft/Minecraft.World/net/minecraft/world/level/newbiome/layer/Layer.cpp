@@ -23,6 +23,7 @@
 #include "Minecraft.World/net/minecraft/world/level/newbiome/layer/SwampRiversLayer.h"
 #include "Minecraft.World/net/minecraft/world/level/newbiome/layer/VoronoiZoom.h"
 #include "Minecraft.World/net/minecraft/world/level/newbiome/layer/ZoomLayer.h"
+#include "platform/PlatformServices.h"
 
 std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     // 4J - Some changes moved here from 1.2.3. Temperature & downfall layers

@@ -104,6 +104,7 @@
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "Minecraft.Client/Header Files/stubs.h"
 #include "4J_Input.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 class Icon;
 class ItemInstance;
@@ -540,8 +541,8 @@ void LevelRenderer::allChanged(int playerIndex) {
     if (level[playerIndex] != nullptr) {
         std::shared_ptr<Entity> player = mc->cameraTargetPlayer;
         if (player != nullptr) {
-            this->resortChunks(Mth::floor(player->x), Mth::floor(player->y),
-                               Mth::floor(player->z));
+            this->resortChunks(std::floor(player->x), std::floor(player->y),
+                               std::floor(player->z));
             //			sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
             // DistanceChunkSorter(player));	// 4J - removed - not sorting
             // our chunks anymore
@@ -638,8 +639,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
                 !mc->cameraTargetPlayer->isSleeping())
                 continue;
 
-            if (!level[playerIndex]->hasChunkAt(Mth::floor(entity->x), 0,
-                                                Mth::floor(entity->z))) {
+            if (!level[playerIndex]->hasChunkAt(std::floor(entity->x), 0,
+                                                std::floor(entity->z))) {
                 continue;
             }
             renderedEntities++;
@@ -772,8 +773,8 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
         yOld[playerIndex] = player->y;
         zOld[playerIndex] = player->z;
 
-        resortChunks(Mth::floor(player->x), Mth::floor(player->y),
-                     Mth::floor(player->z));
+        resortChunks(std::floor(player->x), std::floor(player->y),
+                     std::floor(player->z));
         //		sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
         // DistanceChunkSorter(player));	// 4J - removed - not sorting
         // our chunks anymore
@@ -1215,8 +1216,8 @@ void LevelRenderer::renderClouds(float alpha) {
     double zo =
         mc->cameraTargetPlayer->zo +
         (mc->cameraTargetPlayer->z - mc->cameraTargetPlayer->zo) * alpha;
-    int xOffs = Mth::floor(xo / 2048);
-    int zOffs = Mth::floor(zo / 2048);
+    int xOffs = std::floor(xo / 2048);
+    int zOffs = std::floor(zo / 2048);
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
@@ -1458,8 +1459,8 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
         0.33f;
     float yy = (float)(level[playerIndex]->dimension->getCloudHeight() - yOffs +
                        0.33f);
-    int xOffs = Mth::floor(xo / 2048);
-    int zOffs = Mth::floor(zo / 2048);
+    int xOffs = std::floor(xo / 2048);
+    int zOffs = std::floor(zo / 2048);
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
@@ -1505,16 +1506,16 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
 
     float scale = 1 / 256.0f;
 
-    uo = (float)(Mth::floor(xo)) * scale;
-    vo = (float)(Mth::floor(zo)) * scale;
+    uo = (float)(std::floor(xo)) * scale;
+    vo = (float)(std::floor(zo)) * scale;
     // 4J - keep our UVs +ve - there's a small bug in the xbox GPU that
     // incorrectly rounds small -ve UVs (between -1/(64*size) and 0) up to 0,
     // which leaves gaps in our clouds...
     while (uo < 1.0f) uo += 1.0f;
     while (vo < 1.0f) vo += 1.0f;
 
-    float xoffs = (float)(xo - Mth::floor(xo));
-    float zoffs = (float)(zo - Mth::floor(zo));
+    float xoffs = (float)(xo - std::floor(xo));
+    float zoffs = (float)(zo - std::floor(zo));
 
     int D = 8;
 

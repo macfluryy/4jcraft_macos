@@ -10,6 +10,7 @@
 #include "Minecraft.Client/Common/Source Files/Tutorial/Hints/AreaHint.h"
 #include "FullTutorial.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraints.h"
+#include "Minecraft.Client/Common/Potion_Macros.h"
 
 FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     : Tutorial(iPad, true) {

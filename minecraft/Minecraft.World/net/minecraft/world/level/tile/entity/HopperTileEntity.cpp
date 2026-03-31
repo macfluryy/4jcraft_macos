@@ -9,6 +9,7 @@
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "HopperTileEntity.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 HopperTileEntity::HopperTileEntity() {
     items = std::vector<std::shared_ptr<ItemInstance>>(5);

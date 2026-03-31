@@ -4,6 +4,7 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "ItemInstance.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "BoatItem.h"

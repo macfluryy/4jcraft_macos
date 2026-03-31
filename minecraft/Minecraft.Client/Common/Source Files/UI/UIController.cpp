@@ -12,6 +12,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/EnderDragonRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/title/TitleScreen.h"
+#include "Minecraft.World/ConsoleHelpers/PerformanceTimer.h"
 #include "UIFontData.h"
 #include "4J_Input.h"
 

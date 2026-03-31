@@ -1,5 +1,9 @@
 #pragma once
 
+#include <unordered_map>
+
+#include "nbt/CompoundTag.h"
+
 class StructurePiece;
 class StructureStart;
 

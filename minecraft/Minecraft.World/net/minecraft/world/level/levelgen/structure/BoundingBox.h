@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
+#include "nbt/IntArrayTag.h"
 
 class BoundingBox {
 public:

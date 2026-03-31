@@ -1,14 +1,17 @@
 #pragma once
 
+#include <list>
 #include <set>
 #include <mutex>
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "java/JavaIntHash.h"
+
 class ServerChunkCache;
 class MinecraftServer;
 class Node;
 class EntityTracker;
 class PlayerChunkMap;
+class WeighedTreasure;
 
 class ServerLevel : public Level {
 private:

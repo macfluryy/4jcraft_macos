@@ -29,6 +29,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 class ResourceLocation;
 

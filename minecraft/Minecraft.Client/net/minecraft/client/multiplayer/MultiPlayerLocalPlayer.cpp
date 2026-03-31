@@ -80,7 +80,7 @@ void MultiplayerLocalPlayer::tick() {
     );
     }*/
 
-    if (!level->hasChunkAt(Mth::floor(x), 0, Mth::floor(z))) return;
+    if (!level->hasChunkAt(std::floor(x), 0, std::floor(z))) return;
 
     double tempX = x, tempY = y, tempZ = z;
 

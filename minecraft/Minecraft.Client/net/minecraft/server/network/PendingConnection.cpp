@@ -19,6 +19,7 @@
 #include "Minecraft.World/net/minecraft/network/packet/LoginPacket.h"
 #include "Minecraft.World/net/minecraft/network/packet/PreLoginPacket.h"
 #include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
 #include "java/Random.h"
 
 class Packet;

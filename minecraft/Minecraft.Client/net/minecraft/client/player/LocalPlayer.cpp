@@ -1097,9 +1097,9 @@ bool LocalPlayer::isSolidBlock(int x, int y, int z) {
 }
 
 bool LocalPlayer::checkInTile(double x, double y, double z) {
-    int xTile = Mth::floor(x);
-    int yTile = Mth::floor(y);
-    int zTile = Mth::floor(z);
+    int xTile = std::floor(x);
+    int yTile = std::floor(y);
+    int zTile = std::floor(z);
 
     double xd = x - xTile;
     double zd = z - zTile;

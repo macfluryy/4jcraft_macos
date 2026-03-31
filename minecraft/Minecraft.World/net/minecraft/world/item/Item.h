@@ -22,6 +22,8 @@ class EnchantedBookItem;
 class EmptyMapItem;
 class LivingEntity;
 class HtmlString;
+class Tile;
+class Entity;
 
 #define ITEM_ICON_COLUMNS 16
 

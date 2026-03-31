@@ -23,6 +23,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 #if defined(__linux__)
 #define STB_VORBIS_HEADER_ONLY

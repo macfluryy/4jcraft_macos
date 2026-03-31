@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
+class Level;
 class MultiEntityMobPart;
+class DamageSource;
 
 class MultiEntityMob {
 public:

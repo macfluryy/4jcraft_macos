@@ -8,6 +8,7 @@
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
 
 PreLoginPacket::PreLoginPacket() {
     loginKey = L"";

@@ -178,12 +178,12 @@ void EntityRenderer::renderShadow(std::shared_ptr<Entity> e, double x, double y,
     }
     double ez = e->zOld + (e->z - e->zOld) * a;
 
-    int x0 = Mth::floor(ex - r);
-    int x1 = Mth::floor(ex + r);
-    int y0 = Mth::floor(ey - r);
-    int y1 = Mth::floor(ey);
-    int z0 = Mth::floor(ez - r);
-    int z1 = Mth::floor(ez + r);
+    int x0 = std::floor(ex - r);
+    int x1 = std::floor(ex + r);
+    int y0 = std::floor(ey - r);
+    int y1 = std::floor(ey);
+    int z0 = std::floor(ez - r);
+    int z1 = std::floor(ez + r);
 
     double xo = x - ex;
     double yo = y - ey;

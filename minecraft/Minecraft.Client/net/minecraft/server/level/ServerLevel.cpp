@@ -43,6 +43,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "PlayerChunkMap.h"
 #include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 #include "4J_Input.h"
 
 std::vector<WeighedTreasure*> ServerLevel::RANDOM_BONUS_ITEMS;

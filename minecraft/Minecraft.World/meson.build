@@ -40,9 +40,7 @@ lib_world = static_library('Minecraft.World',
     simdutf_dep,
   ],
   include_directories : include_directories('Header Files', '..'),
-  cpp_args : global_cpp_args + global_cpp_defs + [
-    '-include', 'Header Files/stdafx.h',
-  ],
+  cpp_args : global_cpp_args + global_cpp_defs,
 )
 
 zlib_dep = dependency('zlib')

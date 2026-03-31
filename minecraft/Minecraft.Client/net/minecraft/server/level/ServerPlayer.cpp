@@ -8,6 +8,7 @@
 #include "Minecraft.Client/net/minecraft/server/Settings.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
@@ -1663,7 +1664,7 @@ int ServerPlayer::getViewDistance() { return viewDistance; }
 // }
 
 Pos* ServerPlayer::getCommandSenderWorldPosition() {
-    return new Pos(Mth::floor(x), Mth::floor(y + .5), Mth::floor(z));
+    return new Pos(std::floor(x), std::floor(y + .5), std::floor(z));
 }
 
 void ServerPlayer::resetLastActionTime() {

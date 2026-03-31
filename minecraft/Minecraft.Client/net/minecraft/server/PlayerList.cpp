@@ -27,6 +27,7 @@
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 
 // 4J - this class is fairly substantially altered as there didn't seem any
@@ -374,17 +375,17 @@ void PlayerList::validatePlayerSpawnPosition(
 
     double targetX = 0;
     if (player->x < 0)
-        targetX = Mth::ceil(player->x) - 0.5;
+        targetX = std::ceil(player->x) - 0.5;
     else
-        targetX = Mth::floor(player->x) + 0.5;
+        targetX = std::floor(player->x) + 0.5;
 
     double targetY = floor(player->y);
 
     double targetZ = 0;
     if (player->z < 0)
-        targetZ = Mth::ceil(player->z) - 0.5;
+        targetZ = std::ceil(player->z) - 0.5;
     else
-        targetZ = Mth::floor(player->z) + 0.5;
+        targetZ = std::floor(player->z) + 0.5;
 
     player->setPos(targetX, targetY, targetZ);
 
@@ -957,9 +958,9 @@ void PlayerList::repositionAcrossDimension(std::shared_ptr<Entity> entity,
     }
 
     if (lastDimension != 1) {
-        xt = (double)Mth::clamp((int)xt, -Level::MAX_LEVEL_SIZE + 128,
+        xt = (double)std::clamp((int)xt, -Level::MAX_LEVEL_SIZE + 128,
                                 Level::MAX_LEVEL_SIZE - 128);
-        zt = (double)Mth::clamp((int)zt, -Level::MAX_LEVEL_SIZE + 128,
+        zt = (double)std::clamp((int)zt, -Level::MAX_LEVEL_SIZE + 128,
                                 Level::MAX_LEVEL_SIZE - 128);
         if (entity->isAlive()) {
             newLevel->addEntity(entity);

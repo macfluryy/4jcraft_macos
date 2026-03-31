@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "java/Class.h"
 
 class SharedConstants {

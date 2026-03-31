@@ -74,33 +74,33 @@ public:
     using lightCache_t = unsigned int;
 #endif
 
-    static const int MAX_TICK_TILES_PER_TICK = 1000;
+    static constexpr int MAX_TICK_TILES_PER_TICK = 1000;
 
     // 4J Added
-    static const int MAX_GRASS_TICKS = 100;
-    static const int MAX_LAVA_TICKS = 100;
+    static constexpr int MAX_GRASS_TICKS = 100;
+    static constexpr int MAX_LAVA_TICKS = 100;
 
 public:
-    static const int MAX_XBOX_BOATS = 40;  // Max number of boats
-    static const int MAX_CONSOLE_MINECARTS = 40;
-    static const int MAX_DISPENSABLE_FIREBALLS = 200;
-    static const int MAX_DISPENSABLE_PROJECTILES = 300;
+    static constexpr int MAX_XBOX_BOATS = 40;  // Max number of boats
+    static constexpr int MAX_CONSOLE_MINECARTS = 40;
+    static constexpr int MAX_DISPENSABLE_FIREBALLS = 200;
+    static constexpr int MAX_DISPENSABLE_PROJECTILES = 300;
 
-    static const int MAX_LEVEL_SIZE = 30000000;
-    static const int maxMovementHeight = 512;  // 4J added
+    static constexpr int MAX_LEVEL_SIZE = 30000000;
+    static constexpr int maxMovementHeight = 512;  // 4J added
 
-    static const int minBuildHeight = 0;    // 4J - brought forward from 1.2.3
-    static const int maxBuildHeight = 256;  // 4J - brought forward from 1.2.3
-    static const int genDepthBits = 7;
-    static const int genDepthBitsPlusFour = genDepthBits + 4;
-    static const int genDepth = 1 << genDepthBits;
-    static const int genDepthMinusOne = genDepth - 1;
-    static const int constSeaLevel = genDepth / 2 - 1;
+    static constexpr int minBuildHeight = 0;    // 4J - brought forward from 1.2.3
+    static constexpr int maxBuildHeight = 256;  // 4J - brought forward from 1.2.3
+    static constexpr int genDepthBits = 7;
+    static constexpr int genDepthBitsPlusFour = genDepthBits + 4;
+    static constexpr int genDepth = 1 << genDepthBits;
+    static constexpr int genDepthMinusOne = genDepth - 1;
+    static constexpr int constSeaLevel = genDepth / 2 - 1;
 
-    static const int CHUNK_TILE_COUNT = maxBuildHeight * 16 * 16;
-    static const int HALF_CHUNK_TILE_COUNT = CHUNK_TILE_COUNT / 2;
-    static const int COMPRESSED_CHUNK_SECTION_HEIGHT = 128;
-    static const int COMPRESSED_CHUNK_SECTION_TILES =
+    static constexpr int CHUNK_TILE_COUNT = maxBuildHeight * 16 * 16;
+    static constexpr int HALF_CHUNK_TILE_COUNT = CHUNK_TILE_COUNT / 2;
+    static constexpr int COMPRESSED_CHUNK_SECTION_HEIGHT = 128;
+    static constexpr int COMPRESSED_CHUNK_SECTION_TILES =
         COMPRESSED_CHUNK_SECTION_HEIGHT * 16 * 16;  // 4J Stu - Fixed size
 
     int seaLevel;
@@ -116,8 +116,8 @@ public:
     static void setInstaTick(bool enable);
     //	bool instaTick;		// 4J - removed
 
-    static const int MAX_BRIGHTNESS = 15;
-    static const int TICKS_PER_DAY = 20 * 60 * 20;  // ORG:20*60*20
+    static constexpr int MAX_BRIGHTNESS = 15;
+    static constexpr int TICKS_PER_DAY = 20 * 60 * 20;  // ORG:20*60*20
 
 public:
     std::recursive_mutex m_entitiesCS;  // 4J added
@@ -307,21 +307,21 @@ public:
                     LightLayer::variety layer);
 
     bool cachewritten;
-    static const int LIGHTING_SHIFT = 24;
-    static const int BLOCKING_SHIFT = 20;
-    static const int EMISSION_SHIFT = 16;
+    static constexpr int LIGHTING_SHIFT = 24;
+    static constexpr int BLOCKING_SHIFT = 20;
+    static constexpr int EMISSION_SHIFT = 16;
 #if defined(_LARGE_WORLDS)
-    static const int64_t LIGHTING_WRITEBACK = 0x80000000LL;
-    static const int64_t EMISSION_VALID = 0x40000000LL;
-    static const int64_t BLOCKING_VALID = 0x20000000LL;
-    static const int64_t LIGHTING_VALID = 0x10000000LL;
-    static const lightCache_t POSITION_MASK = 0xffffffff0000ffffLL;
+    static constexpr int64_t LIGHTING_WRITEBACK = 0x80000000LL;
+    static constexpr int64_t EMISSION_VALID = 0x40000000LL;
+    static constexpr int64_t BLOCKING_VALID = 0x20000000LL;
+    static constexpr int64_t LIGHTING_VALID = 0x10000000LL;
+    static constexpr lightCache_t POSITION_MASK = 0xffffffff0000ffffLL;
 #else
-    static const int LIGHTING_WRITEBACK = 0x80000000;
-    static const int EMISSION_VALID = 0x40000000;
-    static const int BLOCKING_VALID = 0x20000000;
-    static const int LIGHTING_VALID = 0x10000000;
-    static const lightCache_t POSITION_MASK = 0x0000ffff;
+    static constexpr int LIGHTING_WRITEBACK = 0x80000000;
+    static constexpr int EMISSION_VALID = 0x40000000;
+    static constexpr int BLOCKING_VALID = 0x20000000;
+    static constexpr int LIGHTING_VALID = 0x10000000;
+    static constexpr lightCache_t POSITION_MASK = 0x0000ffff;
 #endif
 
     int cacheminx, cachemaxx, cacheminy, cachemaxy, cacheminz, cachemaxz;
@@ -472,9 +472,9 @@ protected:
 
 private:
     int delayUntilNextMoodSound;
-    static const int CHUNK_POLL_RANGE = 9;
-    static const int CHUNK_TILE_TICK_COUNT = 80;
-    static const int CHUNK_SECTION_TILE_TICK_COUNT =
+    static constexpr int CHUNK_POLL_RANGE = 9;
+    static constexpr int CHUNK_TILE_TICK_COUNT = 80;
+    static constexpr int CHUNK_SECTION_TILE_TICK_COUNT =
         (CHUNK_TILE_TICK_COUNT / 8) + 1;
 
 protected:

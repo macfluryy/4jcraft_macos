@@ -15,6 +15,7 @@
 #include "java/Class.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 class Model;
 

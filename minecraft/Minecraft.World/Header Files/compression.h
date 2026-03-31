@@ -66,8 +66,8 @@ private:
     int32_t DecompressWithType(void* pDestination, unsigned int* pDestSize,
                                void* pSource, unsigned int SrcSize);
 
-    XMEMCOMPRESSION_CONTEXT compressionContext;
-    XMEMDECOMPRESSION_CONTEXT decompressionContext;
+    void* compressionContext;
+    void* decompressionContext;
     std::mutex rleCompressLock;
     std::mutex rleDecompressLock;
 

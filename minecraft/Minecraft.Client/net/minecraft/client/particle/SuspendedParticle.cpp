@@ -41,7 +41,7 @@ void SuspendedParticle::tick() {
 
     move(xd, yd, zd);
 
-    if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) !=
+    if (level->getMaterial(std::floor(x), std::floor(y), std::floor(z)) !=
         Material::water)
         remove();
 

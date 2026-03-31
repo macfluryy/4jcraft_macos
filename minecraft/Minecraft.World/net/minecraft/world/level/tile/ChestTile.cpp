@@ -10,6 +10,7 @@
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "ChestTile.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 ChestTile::ChestTile(int id, int type)
     : BaseEntityTile(id, Material::wood, false) {

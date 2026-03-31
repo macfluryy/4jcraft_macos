@@ -5,6 +5,7 @@
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "IUIScene_CraftingMenu.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 
 Recipy::_eGroupType IUIScene_CraftingMenu::m_GroupTypeMapping4GridA
     [IUIScene_CraftingMenu::m_iMaxGroup2x2] = {

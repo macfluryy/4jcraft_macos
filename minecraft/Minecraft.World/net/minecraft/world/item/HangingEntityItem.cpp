@@ -101,7 +101,7 @@ void HangingEntityItem::appendHoverText(
         int motive = itemInstance->getAuxValue() - 1;
 
         wchar_t formatted[256];
-        ZeroMemory(formatted, 256 * sizeof(wchar_t));
+        memset(formatted, 0, 256 * sizeof(wchar_t));
         swprintf(formatted, 256, L"** %ls %dx%d",
                  Painting::Motive::values[motive]->name.c_str(),
                  Painting::Motive::values[motive]->w / 16,

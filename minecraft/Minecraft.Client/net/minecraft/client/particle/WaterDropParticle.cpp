@@ -45,11 +45,11 @@ void WaterDropParticle::tick() {
     }
 
     Material* m =
-        level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+        level->getMaterial(std::floor(x), std::floor(y), std::floor(z));
     if (m->isLiquid() || m->isSolid()) {
-        double y0 = Mth::floor(y) + 1 -
+        double y0 = std::floor(y) + 1 -
                     LiquidTile::getHeight(level->getData(
-                        Mth::floor(x), Mth::floor(y), Mth::floor(z)));
+                        std::floor(x), std::floor(y), std::floor(z)));
         if (y < y0) {
             remove();
         }

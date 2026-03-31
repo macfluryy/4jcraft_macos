@@ -22,6 +22,7 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/flat/FlatGeneratorInfo.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "platform/PlatformServices.h"
 
 class Pos;
 

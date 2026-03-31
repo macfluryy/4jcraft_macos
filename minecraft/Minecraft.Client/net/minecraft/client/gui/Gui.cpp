@@ -34,6 +34,7 @@
 #include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
 #include "Minecraft.Client/net/minecraft/client/ClientConstants.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 ResourceLocation Gui::PUMPKIN_BLUR_LOCATION =
     ResourceLocation(TN__BLUR__MISC_PUMPKINBLUR);

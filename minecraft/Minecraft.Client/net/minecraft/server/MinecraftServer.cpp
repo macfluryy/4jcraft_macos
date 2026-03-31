@@ -44,12 +44,14 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseLightStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseDataStorage.h"
 #include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/net/minecraft/server/commands/ServerCommandDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "Minecraft.Client/net/minecraft/server/level/PlayerChunkMap.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "4J_Input.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 
@@ -208,7 +210,7 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
         settings->getInt(L"max-build-height", Level::maxBuildHeight));
     setMaxBuildHeight(((getMaxBuildHeight() + 8) / 16) * 16);
     setMaxBuildHeight(
-        Mth::clamp(getMaxBuildHeight(), 64, Level::maxBuildHeight));
+        std::clamp(getMaxBuildHeight(), 64, Level::maxBuildHeight));
     // settings->setProperty(L"max-build-height", maxBuildHeight);
 
     //        logger.info("Preparing level \"" + levelName + "\"");
@@ -1012,8 +1014,8 @@ bool MinecraftServer::isUnderSpawnProtection(Level* level, int x, int y, int z,
     if (getSpawnProtectionRadius() <= 0) return false;
 
     Pos* spawnPos = level->getSharedSpawnPos();
-    int xd = Mth::abs(x - spawnPos->x);
-    int zd = Mth::abs(z - spawnPos->z);
+    int xd = std::abs(x - spawnPos->x);
+    int zd = std::abs(z - spawnPos->z);
     int dist = std::max(xd, zd);
 
     return dist <= getSpawnProtectionRadius();

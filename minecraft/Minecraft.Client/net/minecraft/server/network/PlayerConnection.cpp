@@ -292,7 +292,7 @@ void PlayerConnection::handleMovePlayer(
                 //                stance: " + yd);
                 return;
             }
-            if (abs(packet->x) > 32000000 || abs(packet->z) > 32000000) {
+            if (std::abs(packet->x) > 32000000 || std::abs(packet->z) > 32000000) {
                 disconnect(DisconnectPacket::eDisconnect_IllegalPosition);
                 return;
             }

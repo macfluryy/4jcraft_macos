@@ -46,6 +46,7 @@
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "platform/PlatformServices.h"
 
 const double Ocelot::SNEAK_SPEED_MOD = 0.6;
 const double Ocelot::WALK_SPEED_MOD = 0.8;

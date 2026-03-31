@@ -30,7 +30,7 @@ void BodyControl::clientTick() {
 
     // Body will align to head after looking long enough in a direction
     float clampAngle = maxClampAngle;
-    if (abs(mob->yHeadRot - lastHeadY) > 15) {
+    if (std::abs(mob->yHeadRot - lastHeadY) > 15) {
         timeStill = 0;
         lastHeadY = mob->yHeadRot;
     } else {

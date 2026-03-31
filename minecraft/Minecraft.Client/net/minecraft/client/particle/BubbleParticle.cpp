@@ -35,7 +35,7 @@ void BubbleParticle::tick() {
     yd *= 0.85f;
     zd *= 0.85f;
 
-    if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) !=
+    if (level->getMaterial(std::floor(x), std::floor(y), std::floor(z)) !=
         Material::water)
         remove();
 

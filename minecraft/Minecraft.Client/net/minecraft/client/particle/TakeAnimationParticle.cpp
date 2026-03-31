@@ -45,9 +45,9 @@ void TakeAnimationParticle::render(Tesselator* t, float a, float xa, float ya,
     double yy = yo + (yt - yo) * time;
     double zz = zo + (zt - zo) * time;
 
-    int xTile = Mth::floor(xx);
-    int yTile = Mth::floor(yy + heightOffset / 2.0f);
-    int zTile = Mth::floor(zz);
+    int xTile = std::floor(xx);
+    int yTile = std::floor(yy + heightOffset / 2.0f);
+    int zTile = std::floor(zz);
 
     // 4J - change brought forward from 1.8.2
     if (SharedConstants::TEXTURE_LIGHTING) {

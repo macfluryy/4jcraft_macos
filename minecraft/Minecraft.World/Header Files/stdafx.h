@@ -5,96 +5,9 @@
 #pragma once
 
 #ifdef _WINDOWS64
-#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
-#include <windows.h>
-#include <malloc.h>
-#include <tchar.h>
-#include <d3d11.h>
-#endif
-
-#ifdef __linux__
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
-#include "Minecraft.Client/Linux/Stubs/LinuxStubs.h"
-#else
-#include <unordered_map>
-#include <unordered_set>
-#include <sal.h>
-#include <vector>
-#endif
-
-#include <memory>
-
-#include "Minecraft.World/x64headers/extraX64.h"
-
-#include <list>
-#include <map>
-#include <set>
-#include <queue>
-#include <deque>
-#include <algorithm>
-#include <math.h>
-#include <numbers>
-#include <limits>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <exception>
-
-#include <assert.h>
-
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
-#include "java/Class.h"
-#include "java/Exceptions.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
-#include "java/Random.h"
-#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
-#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
-#include "Minecraft.World/Header Files/compression.h"
-#include "Minecraft.World/ConsoleHelpers/PerformanceTimer.h"
-
-#ifdef _FINAL_BUILD
-#define printf BREAKTHECOMPILE
-#define wprintf BREAKTHECOMPILE
-#undef OutputDebugString
-#define OutputDebugString BREAKTHECOMPILE
-#define OutputDebugStringA BREAKTHECOMPILE
-#define OutputDebugStringW BREAKTHECOMPILE
-#endif
-
-
-#include "platform/PlatformServices.h"
-
-#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
-
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
-#include "Minecraft.Client/Common/App_Defines.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
-#include "Minecraft.Client/Common/App_structs.h"
-
-#include "Minecraft.Client/Common/Consoles_App.h"
-#include "Minecraft.Client/Common/Minecraft_Macros.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
-
-#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
-
-// This is generated at build time via scripts/pack_loc.py
-#include "strings.h"
-
-#ifdef _WINDOWS64
 #include "Minecraft.Client/Windows64/Windows64_App.h"
 #else
 // Use the Linux runtime path with supported metadata/config headers only.
 #include "Minecraft.Client/Linux/Linux_App.h"
+// #include "Minecraft.Client/Linux/Stubs/LinuxStubs.h"
 #endif
-
-#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
-#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
-#include "Minecraft.Client/Common/Potion_Macros.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"

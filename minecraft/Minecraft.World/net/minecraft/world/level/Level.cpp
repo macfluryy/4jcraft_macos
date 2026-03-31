@@ -65,6 +65,7 @@
 #include "net/minecraft/world/phys/Vec3.h"
 #include "net/minecraft/world/scores/Scoreboard.h"
 #include "Minecraft.World/x64headers/extraX64.h"
+#include "platform/PlatformServices.h"
 
 class CompoundTag;
 class ItemInstance;

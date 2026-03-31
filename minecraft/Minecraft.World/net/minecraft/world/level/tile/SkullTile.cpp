@@ -7,6 +7,8 @@
 #include "Minecraft.World/net/minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "SkullTile.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 SkullTile::SkullTile(int id) : BaseEntityTile(id, Material::decoration, false) {
     setShape(4.0f / 16.0f, 0, 4.0f / 16.0f, 12.0f / 16.0f, .5f, 12.0f / 16.0f);

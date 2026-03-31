@@ -4,6 +4,7 @@
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "PotionBrewing.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 
 const int PotionBrewing::DEFAULT_APPEARANCES[] = {
     IDS_POTION_PREFIX_MUNDANE,  IDS_POTION_PREFIX_UNINTERESTING,

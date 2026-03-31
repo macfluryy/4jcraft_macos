@@ -54,7 +54,7 @@ void RemotePlayer::tick() {
     walkAnimSpeedO = walkAnimSpeed;
     double xxd = x - xo;
     double zzd = z - zo;
-    float wst = Mth::sqrt(xxd * xxd + zzd * zzd) * 4;
+    float wst = std::sqrt(xxd * xxd + zzd * zzd) * 4;
     if (wst > 1) wst = 1;
     walkAnimSpeed += (wst - walkAnimSpeed) * 0.4f;
     walkAnimPos += walkAnimSpeed;
@@ -106,7 +106,7 @@ void RemotePlayer::aiStep() {
     }
     oBob = bob;
 
-    float tBob = (float)Mth::sqrt(xd * xd + zd * zd);
+    float tBob = (float)std::sqrt(xd * xd + zd * zd);
     float tTilt = (float)atan(-yd * 0.2f) * 15.0f;
     if (tBob > 0.1f) tBob = 0.1f;
     if (!onGround || getHealth() <= 0) tBob = 0;

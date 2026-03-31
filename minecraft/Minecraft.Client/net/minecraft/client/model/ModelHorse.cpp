@@ -11,6 +11,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 ModelHorse::ModelHorse() {
     texWidth = 128;

@@ -14,6 +14,7 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/HellRandomLevelSource.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "platform/PlatformServices.h"
 
 void HellDimension::init() {
     biomeSource = new FixedBiomeSource(Biome::hell, 1, 0);

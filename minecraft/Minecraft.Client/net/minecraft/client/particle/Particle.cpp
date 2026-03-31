@@ -64,7 +64,7 @@ Particle::Particle(Level* level, double x, double y, double z, double xa,
     zd = za + (float)(Math::random() * 2 - 1) * 0.4f;
     float speed = (float)(Math::random() + Math::random() + 1) * 0.15f;
 
-    float dd = (float)(Mth::sqrt(xd * xd + yd * yd + zd * zd));
+    float dd = (float)(std::sqrt(xd * xd + yd * yd + zd * zd));
     xd = xd / dd * speed * 0.4f;
     yd = yd / dd * speed * 0.4f + 0.1f;
     zd = zd / dd * speed * 0.4f;

@@ -1,6 +1,8 @@
 #pragma once
 #include "AttributeModifier.h"
 
+#include <unordered_set>
+
 class AttributeInstance {
 public:
     virtual ~AttributeInstance() {}

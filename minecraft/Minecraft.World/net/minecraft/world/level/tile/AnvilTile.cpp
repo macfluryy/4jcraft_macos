@@ -6,6 +6,7 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "AnvilTile.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 const unsigned int AnvilTile::ANVIL_NAMES[ANVIL_NAMES_LENGTH] = {
     IDS_TILE_ANVIL_INTACT,

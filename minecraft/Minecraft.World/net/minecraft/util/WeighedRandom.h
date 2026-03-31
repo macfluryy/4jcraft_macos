@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "java/Random.h"
 
 // 4J - this WeighedRandomItem class was a nested static class within

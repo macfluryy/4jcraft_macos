@@ -5,6 +5,8 @@
 #include "Minecraft.World/Header Files/SoundTypes.h"
 #include <cstdint>
 #include <optional>
+#include <memory>
+#include <vector>
 
 class GrassTile;
 class LeafTile;
@@ -40,8 +42,11 @@ class TileEntity;
 class HalfSlabTile;
 class Icon;
 class IconRegister;
-
+class Explosion;
 class ChunkRebuildData;
+class Entity;
+class ItemInstance;
+class LivingEntity;
 
 class Tile {
     // 4J Stu - Stair tile accesses the protected members of a Tile object

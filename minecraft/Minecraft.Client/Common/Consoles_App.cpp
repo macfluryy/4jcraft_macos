@@ -48,6 +48,8 @@
 #include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 
 #include "4J_Input.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
@@ -63,7 +65,6 @@
 #include <thread>
 #include <chrono>
 
-#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
 
 // CMinecraftApp app;
 unsigned int CMinecraftApp::m_uiLastSignInData = 0;

@@ -48,8 +48,8 @@ bool TemptGoal::canContinueToUse() {
         if (mob->distanceToSqr(player.lock()) < 6 * 6) {
             if (player.lock()->distanceToSqr(px, py, pz) > 0.1 * 0.1)
                 return false;
-            if (abs(player.lock()->xRot - pRotX) > 5 ||
-                abs(player.lock()->yRot - pRotY) > 5)
+            if (std::abs(player.lock()->xRot - pRotX) > 5 ||
+                std::abs(player.lock()->yRot - pRotY) > 5)
                 return false;
         } else {
             px = player.lock()->x;

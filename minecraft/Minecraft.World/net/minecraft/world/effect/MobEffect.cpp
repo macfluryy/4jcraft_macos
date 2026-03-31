@@ -366,7 +366,7 @@ std::wstring MobEffect::formatDuration(MobEffectInstance* instance) {
     seconds %= 60;
 
     wchar_t temp[8];
-    ZeroMemory(&temp, 8 * (sizeof(wchar_t)));
+    memset(&temp, 0, 8 * (sizeof(wchar_t)));
 
     if (seconds < 10) {
         swprintf(temp, 8, L"%d:0%d", minutes, seconds);

@@ -16,6 +16,7 @@
 #include "HangingEntityItem.h"
 #include "Minecraft.World/net/minecraft/util/HtmlString.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 typedef Item::Tier _Tier;
 

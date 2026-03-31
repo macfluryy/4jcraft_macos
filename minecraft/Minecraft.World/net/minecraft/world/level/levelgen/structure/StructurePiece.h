@@ -5,6 +5,7 @@
 #include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
 #include "BoundingBox.h"
 #include "StructureFeatureIO.h"
+#include "nbt/CompoundTag.h"
 
 class Level;
 class Random;

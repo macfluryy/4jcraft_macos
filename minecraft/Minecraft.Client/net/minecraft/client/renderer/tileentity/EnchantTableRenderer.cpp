@@ -11,6 +11,7 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 ResourceLocation EnchantTableRenderer::BOOK_LOCATION =
     ResourceLocation(TN_ITEM_BOOK);

@@ -83,6 +83,10 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/Source Files/ConsoleGameMode.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Potion_Macros.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 #include "4J_Input.h"
 
 // #define DISABLE_SPU_CODE
@@ -3557,9 +3561,9 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             // Level::animateTickDoWork() so we can take into account multiple
             // players in the one level.
             if (!pause && levels[i] != nullptr)
-                levels[i]->animateTick(Mth::floor(player->x),
-                                       Mth::floor(player->y),
-                                       Mth::floor(player->z));
+                levels[i]->animateTick(std::floor(player->x),
+                                       std::floor(player->y),
+                                       std::floor(player->z));
 
             if (levelsTickedFlags & (1 << i))
                 continue;  // Don't tick further if we've already ticked this

@@ -6,6 +6,7 @@
 #include "StructurePiece.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "nbt/CompoundTag.h"
 
 class BoundingBox;
 class Random;

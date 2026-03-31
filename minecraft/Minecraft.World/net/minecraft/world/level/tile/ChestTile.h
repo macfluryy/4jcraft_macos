@@ -4,6 +4,7 @@
 
 class Player;
 class Random;
+class Container;
 
 class ChestTile : public BaseEntityTile {
     friend class Tile;

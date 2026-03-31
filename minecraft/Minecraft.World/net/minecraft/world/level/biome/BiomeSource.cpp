@@ -7,6 +7,8 @@
 #include "BiomeSource.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "platform/PlatformServices.h"
 
 // 4J - removal of separate temperature & downfall layers brought forward
 // from 1.2.3
@@ -151,7 +153,7 @@ void BiomeSource::getRawBiomeBlock(std::vector<Biome*>& biomes, int x, int z, in
 #if !defined(_CONTENT_PACKAGE)
         if (biomes[i] == nullptr) {
             app.DebugPrintf("Tried to assign null biome %d\n", result[i]);
-            __debugbreak();
+            assert(0);
         }
 #endif
     }

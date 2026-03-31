@@ -82,18 +82,18 @@ void ApplySchematicRuleDefinition::addAttribute(
         }
     } else if (attributeName.compare(L"x") == 0) {
         m_location.x = _fromString<int>(attributeValue);
-        if (((int)abs(m_location.x)) % 2 != 0) m_location.x -= 1;
+        if (((int)std::abs(m_location.x)) % 2 != 0) m_location.x -= 1;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // x=%f\n",m_location->x);
     } else if (attributeName.compare(L"y") == 0) {
         m_location.y = _fromString<int>(attributeValue);
-        if (((int)abs(m_location.y)) % 2 != 0) m_location.y -= 1;
+        if (((int)std::abs(m_location.y)) % 2 != 0) m_location.y -= 1;
         if (m_location.y < 0) m_location.y = 0;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // y=%f\n",m_location->y);
     } else if (attributeName.compare(L"z") == 0) {
         m_location.z = _fromString<int>(attributeValue);
-        if (((int)abs(m_location.z)) % 2 != 0) m_location.z -= 1;
+        if (((int)std::abs(m_location.z)) % 2 != 0) m_location.z -= 1;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // z=%f\n",m_location->z);
     } else if (attributeName.compare(L"rot") == 0) {

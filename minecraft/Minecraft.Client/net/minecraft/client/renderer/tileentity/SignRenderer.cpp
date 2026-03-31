@@ -11,7 +11,7 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
-
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 
 ResourceLocation SignRenderer::SIGN_LOCATION = ResourceLocation(TN_ITEM_SIGN);
 

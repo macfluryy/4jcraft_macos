@@ -42,7 +42,7 @@ void FootstepParticle::render(Tesselator* t, float a, float xa, float ya,
     float zz = (float)(z - zOff);
 
     float br =
-        level->getBrightness(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+        level->getBrightness(std::floor(x), std::floor(y), std::floor(z));
 
     textures->bindTexture(&FOOTPRINT_LOCATION);
     glEnable(GL_BLEND);

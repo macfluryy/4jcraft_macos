@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 class BiomeSource;
 class Material;
 class TileEntity;
+class Biome;
 
 #include "LightLayer.h"
 

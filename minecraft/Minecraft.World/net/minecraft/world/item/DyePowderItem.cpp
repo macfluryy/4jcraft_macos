@@ -12,6 +12,7 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 DyePowderItem::DyePowderItem(int id) : Item(id) {
     setStackedByData(true);

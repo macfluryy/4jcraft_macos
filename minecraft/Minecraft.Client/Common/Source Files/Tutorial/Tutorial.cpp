@@ -18,6 +18,7 @@
 #include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTasks.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraints.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHints.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 std::vector<int> Tutorial::s_completableTasks;
 

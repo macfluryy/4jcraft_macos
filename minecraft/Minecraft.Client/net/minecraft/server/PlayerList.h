@@ -15,6 +15,7 @@ class TileEntity;
 class ProgressListener;
 class GameType;
 class LoginPacket;
+class Connection;
 class ServerScoreboard;
 
 class PlayerList {

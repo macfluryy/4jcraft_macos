@@ -124,13 +124,13 @@ void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
 
 void PaintingRenderer::setBrightness(std::shared_ptr<Painting> painting,
                                      float ss, float ya) {
-    int x = Mth::floor(painting->x);
-    int y = Mth::floor(painting->y + ya / 16.0f);
-    int z = Mth::floor(painting->z);
-    if (painting->dir == 0) x = Mth::floor(painting->x + ss / 16.0f);
-    if (painting->dir == 1) z = Mth::floor(painting->z - ss / 16.0f);
-    if (painting->dir == 2) x = Mth::floor(painting->x - ss / 16.0f);
-    if (painting->dir == 3) z = Mth::floor(painting->z + ss / 16.0f);
+    int x = std::floor(painting->x);
+    int y = std::floor(painting->y + ya / 16.0f);
+    int z = std::floor(painting->z);
+    if (painting->dir == 0) x = std::floor(painting->x + ss / 16.0f);
+    if (painting->dir == 1) z = std::floor(painting->z - ss / 16.0f);
+    if (painting->dir == 2) x = std::floor(painting->x - ss / 16.0f);
+    if (painting->dir == 3) z = std::floor(painting->z + ss / 16.0f);
 
     int col = this->entityRenderDispatcher->level->getLightColor(x, y, z, 0);
     int u = col % 65536;
