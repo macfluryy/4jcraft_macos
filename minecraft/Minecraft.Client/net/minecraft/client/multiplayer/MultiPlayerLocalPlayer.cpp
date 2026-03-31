@@ -352,8 +352,6 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
                     break;
             };
         }
-        TelemetryManager->RecordEnemyKilledOrOvercome(GetXboxPad(), 0, y, 0, 0,
-                                                      0, 0, eventType);
     }
 
     updateRichPresence();

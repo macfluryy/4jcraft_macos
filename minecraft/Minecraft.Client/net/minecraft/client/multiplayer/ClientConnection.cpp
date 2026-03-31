@@ -353,12 +353,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
     if (iUserID != -1) {
         ui.UpdateSelectedItemPos(iUserID);
     }
-
-    TelemetryManager->RecordLevelStart(
-        m_userIndex, eSen_FriendOrMatch_Playing_With_Invited_Friends,
-        eSen_CompeteOrCoop_Coop_and_Competitive,
-        Minecraft::GetInstance()->getLevel(packet->dimension)->difficulty,
-        app.GetLocalPlayerCount(), g_NetworkManager.GetOnlinePlayerCount());
 }
 
 void ClientConnection::handleAddEntity(
@@ -1801,11 +1795,6 @@ void ClientConnection::handleEntityActionAtPosition(
     if (packet->action == EntityActionAtPositionPacket::START_SLEEP) {
         std::shared_ptr<Player> player = std::dynamic_pointer_cast<Player>(e);
         player->startSleepInBed(packet->x, packet->y, packet->z);
-
-        if (player == minecraft->localplayers[m_userIndex]) {
-            TelemetryManager->RecordEnemyKilledOrOvercome(
-                m_userIndex, 0, player->y, 0, 0, 0, 0, eTelemetryInGame_UseBed);
-        }
     }
 }
 
@@ -2403,9 +2392,6 @@ void ClientConnection::handleRespawn(std::shared_ptr<RespawnPacket> packet) {
         minecraft->player = minecraft->localplayers[m_userIndex];
         minecraft->setLevel(dimensionLevel);
         minecraft->player = lastPlayer;
-
-        TelemetryManager->RecordLevelExit(m_userIndex,
-                                          eSen_LevelExitStatus_Succeeded);
 
         // minecraft->player->dimension = packet->dimension;
         minecraft->localplayers[m_userIndex]->dimension = packet->dimension;

@@ -1227,9 +1227,6 @@ void CMinecraftApp::SetPlayerSkin(int iPad, std::uint32_t dwSkinId) {
     GameSettingsA[iPad]->dwSelectedSkin = dwSkinId;
     GameSettingsA[iPad]->bSettingsChanged = true;
 
-    TelemetryManager->RecordSkinChanged(iPad,
-                                        GameSettingsA[iPad]->dwSelectedSkin);
-
     if (Minecraft::GetInstance()->localplayers[iPad] != nullptr)
         Minecraft::GetInstance()->localplayers[iPad]->setAndBroadcastCustomSkin(
             dwSkinId);
@@ -2622,8 +2619,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                                     ProfileManager.SetCurrentGameActivity(
                                         j, CONTEXT_PRESENCE_MULTIPLAYER, false);
                                 }
-                                TelemetryManager->RecordLevelExit(
-                                    j, eSen_LevelExitStatus_Exited);
                             }
                         }
                     } else {
@@ -2636,8 +2631,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                             ProfileManager.SetCurrentGameActivity(
                                 i, CONTEXT_PRESENCE_MULTIPLAYER_1P, false);
                         }
-                        TelemetryManager->RecordLevelExit(
-                            i, eSen_LevelExitStatus_Exited);
                     }
                     break;
                 case eAppAction_ExitWorldCapturedThumbnail: {
@@ -3074,9 +3067,6 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     // INVITES
                 case eAppAction_DashboardTrialJoinFromInvite: {
-                    TelemetryManager->RecordUpsellPresented(
-                        i, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID);
-
                     SetAction(i, eAppAction_Idle);
                     unsigned int uiIDA[2];
                     uiIDA[0] = IDS_CONFIRM_OK;
@@ -3108,10 +3098,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                             this);
                     } else {
                         if (!ProfileManager.IsFullVersion()) {
-                            TelemetryManager->RecordUpsellPresented(
-                                i, eSen_UpsellID_Full_Version_Of_Game,
-                                app.m_dwOfferID);
-
                             // upsell
                             uiIDA[0] = IDS_CONFIRM_OK;
                             uiIDA[1] = IDS_CONFIRM_CANCEL;
@@ -3427,7 +3413,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // can't ban the level at that point
                     if (g_NetworkManager.IsInGameplay() &&
                         !g_NetworkManager.IsLeavingGame()) {
-                        TelemetryManager->RecordBanLevel(i);
 
                         // primary player would exit the world, secondary would
                         // exit the player
@@ -3863,10 +3848,6 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
                     false, iPad, eSen_UpsellID_Full_Version_Of_Game);
             }
         }
-    } else {
-        TelemetryManager->RecordUpsellResponded(
-            iPad, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID,
-            eSen_UpsellOutcome_Declined);
     }
 
     return 0;
@@ -3886,10 +3867,6 @@ int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
                     eSen_UpsellID_Full_Version_Of_Game);
             }
         }
-    } else {
-        TelemetryManager->RecordUpsellResponded(
-            iPad, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID,
-            eSen_UpsellOutcome_Declined);
     }
 
     return 0;
@@ -3910,9 +3887,6 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
             }
         }
     } else {
-        TelemetryManager->RecordUpsellResponded(
-            iPad, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID,
-            eSen_UpsellOutcome_Declined);
         pApp->SetAction(pMinecraft->player->GetXboxPad(),
                         eAppAction_ExitWorldTrial);
     }
@@ -3939,10 +3913,6 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
                             eAppAction_ExitTrial);
         }
     } else {
-        TelemetryManager->RecordUpsellResponded(
-            iPad, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID,
-            eSen_UpsellOutcome_Declined);
-
         pApp->SetAction(pMinecraft->player->GetXboxPad(), eAppAction_ExitTrial);
     }
 
@@ -4224,11 +4194,6 @@ void CMinecraftApp::UpsellReturnedCallback(void* pParam, eUpsellType type,
             senType = eSen_UpsellID_Undefined;
             break;
     };
-
-    // Always the primary pad that gets an upsell
-    TelemetryManager->RecordUpsellResponded(ProfileManager.GetPrimaryPad(),
-                                            eSen_UpsellID_Full_Version_Of_Game,
-                                            app.m_dwOfferID, senResponse);
 }
 
 #if defined(_DEBUG_MENUS_ENABLED)
@@ -5851,7 +5816,6 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
         if (pBannedListData != nullptr) {
             if (IsEqualXUID(pBannedListData->xuid, xuid) &&
                 (strcmp(pBannedListData->pszLevelName, pszLevelName) == 0)) {
-                TelemetryManager->RecordUnBanLevel(iPad);
 
                 // match found, so remove this entry
                 it = m_vBannedListA[iPad]->erase(it);

@@ -119,8 +119,5 @@ void InfoTask::sendTelemetry() {
             default:
                 break;
         };
-        TelemetryManager->RecordEnemyKilledOrOvercome(
-            pMinecraft->player->GetXboxPad(), 0, 0, 0, 0, 0, 0,
-            m_eTelemetryEvent);
     }
 }

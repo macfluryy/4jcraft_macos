@@ -19,8 +19,6 @@ UIScene_DLCMainMenu::UIScene_DLCMainMenu(int iPad, void* initData,
     if (m_loadedResolution == eSceneResolution_1080) {
         m_labelXboxStore.init(L"");
     }
-
-    TelemetryManager->RecordMenuShown(iPad, eUIScene_DLCMainMenu, 0);
 }
 
 UIScene_DLCMainMenu::~UIScene_DLCMainMenu() {

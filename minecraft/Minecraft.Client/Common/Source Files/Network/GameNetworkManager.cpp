@@ -333,13 +333,8 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
     if (!g_NetworkManager.IsHost()) {
         Minecraft::GetInstance()->progressRenderer->progressStart(
             IDS_PROGRESS_CONNECTING);
-    } else {
-        // 4J Stu - Host needs to generate a unique multiplayer id for sentient
-        // telemetry reporting
-        int multiplayerInstanceId =
-            TelemetryManager->GenerateMultiplayerInstanceId();
-        TelemetryManager->SetMultiplayerInstanceId(multiplayerInstanceId);
     }
+
     TexturePack* tPack = Minecraft::GetInstance()->skins->getSelected();
     do {
         app.DebugPrintf("ticking connection A\n");
@@ -1268,20 +1263,12 @@ void CGameNetworkManager::PlayerJoining(INetworkPlayer* pNetworkPlayer) {
             }
         }
     }
-
-    if (pNetworkPlayer->IsLocal()) {
-        TelemetryManager->RecordPlayerSessionStart(
-            pNetworkPlayer->GetUserIndex());
-    }
 }
 
 void CGameNetworkManager::PlayerLeaving(INetworkPlayer* pNetworkPlayer) {
     if (pNetworkPlayer->IsLocal()) {
         ProfileManager.SetCurrentGameActivity(pNetworkPlayer->GetUserIndex(),
                                               CONTEXT_PRESENCE_IDLE, false);
-
-        TelemetryManager->RecordPlayerSessionExit(
-            pNetworkPlayer->GetUserIndex(), app.GetDisconnectReason());
     }
 }
 

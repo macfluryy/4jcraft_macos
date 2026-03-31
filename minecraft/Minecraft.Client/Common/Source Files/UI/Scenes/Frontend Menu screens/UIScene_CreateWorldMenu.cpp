@@ -150,8 +150,6 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void* initData,
                 CHECKFORAVAILABLETEXTUREPACKS_TIMER_TIME);
 #endif
 
-    TelemetryManager->RecordMenuShown(m_iPad, eUIScene_CreateWorldMenu, 0);
-
     // block input if we're waiting for DLC to install, and wipe the saves list.
     // The end of dlc mounting custom message will fill the list again
     if (app.StartInstallDLCProcess(m_iPad) == true) {
@@ -389,9 +387,6 @@ void UIScene_CreateWorldMenu::StartSharedLaunchFlow() {
             app.GetDLCFullOfferIDForPackID(m_MoreOptionsParams.dwTexturePack,
                                            &ullOfferID_Full);
 
-            TelemetryManager->RecordUpsellPresented(
-                ProfileManager.GetPrimaryPad(), eSet_UpsellID_Texture_DLC,
-                ullOfferID_Full & 0xFFFFFFFF);
 #endif
 
             unsigned int uiIDA[2];

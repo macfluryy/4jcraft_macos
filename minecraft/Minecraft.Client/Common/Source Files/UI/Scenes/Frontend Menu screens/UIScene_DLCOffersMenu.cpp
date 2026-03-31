@@ -27,7 +27,6 @@ UIScene_DLCOffersMenu::UIScene_DLCOffersMenu(int iPad, void* initData,
     m_buttonListOffers.init(eControl_OffersList);
     m_labelHTMLSellText.init(L" ");
     m_labelPriceTag.init(L" ");
-    TelemetryManager->RecordMenuShown(m_iPad, eUIScene_DLCOffersMenu, 0);
 
     m_bHasPurchased = false;
     m_bIsSelected = false;

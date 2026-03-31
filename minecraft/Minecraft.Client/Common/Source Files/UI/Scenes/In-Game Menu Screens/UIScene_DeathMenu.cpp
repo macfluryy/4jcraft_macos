@@ -93,8 +93,6 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                         playTime = (int)pMinecraft->localplayers[m_iPad]
                                        ->getSessionTimer();
                     }
-                    TelemetryManager->RecordLevelExit(
-                        m_iPad, eSen_LevelExitStatus_Failed);
 
                     if (StorageManager.GetSaveDisabled()) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
@@ -127,17 +125,12 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                         }
                     }
                 } else {
-                    TelemetryManager->RecordLevelExit(
-                        m_iPad, eSen_LevelExitStatus_Failed);
-
                     // just exit the player
                     app.SetAction(m_iPad, eAppAction_ExitPlayer);
                 }
             } else {
                 // is it the primary player exiting?
                 if (m_iPad == ProfileManager.GetPrimaryPad()) {
-                    TelemetryManager->RecordLevelExit(
-                        m_iPad, eSen_LevelExitStatus_Failed);
 
                     // adjust the trial time played
                     ui.ReduceTrialTimerValue();
@@ -152,9 +145,6 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
                         &IUIScene_PauseMenu::ExitGameDialogReturned,
                         (void*)GetCallbackUniqueId());
                 } else {
-                    TelemetryManager->RecordLevelExit(
-                        m_iPad, eSen_LevelExitStatus_Failed);
-
                     // just exit the player
                     app.SetAction(m_iPad, eAppAction_ExitPlayer);
                 }

@@ -54,9 +54,6 @@ UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                eXuiServerAction_PauseServer, (void*)true);
     }
 
-    TelemetryManager->RecordMenuShown(m_iPad, eUIScene_PauseMenu, 0);
-    TelemetryManager->RecordPauseOrInactive(m_iPad);
-
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft != nullptr && pMinecraft->localgameModes[iPad] != nullptr) {
         TutorialMode* gameMode =
@@ -390,9 +387,6 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        ->getSessionTimer();
                     }
 
-                    TelemetryManager->RecordLevelExit(
-                        m_iPad, eSen_LevelExitStatus_Exited);
-
                     // just exit the player
                     app.SetAction(m_iPad, eAppAction_ExitPlayer);
                 }
@@ -424,9 +418,6 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                         playTime = (int)pMinecraft->localplayers[m_iPad]
                                        ->getSessionTimer();
                     }
-
-                    TelemetryManager->RecordLevelExit(
-                        m_iPad, eSen_LevelExitStatus_Exited);
 
                     // just exit the player
                     app.SetAction(m_iPad, eAppAction_ExitPlayer);

@@ -205,10 +205,6 @@ void IUIScene_StartGame::UpdateCurrentTexturePack(int iSlot) {
         uint64_t ullOfferID_Full;
         app.GetDLCFullOfferIDForPackID(ListItem.iData, &ullOfferID_Full);
 
-        TelemetryManager->RecordUpsellPresented(ProfileManager.GetPrimaryPad(),
-                                                eSet_UpsellID_Texture_DLC,
-                                                ullOfferID_Full & 0xFFFFFFFF);
-
         unsigned int uiIDA[3];
 
         uiIDA[0] = IDS_TEXTUREPACK_FULLVERSION;

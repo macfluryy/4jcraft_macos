@@ -145,8 +145,6 @@ void UIScene_JoinMenu::tick() {
         // Alert the app the we want to be informed of ethernet connections
         app.SetLiveLinkRequired(true);
 
-        TelemetryManager->RecordMenuShown(m_iPad, eUIScene_JoinMenu, 0);
-
         addTimer(UPDATE_PLAYERS_TIMER_ID, UPDATE_PLAYERS_TIMER_TIME);
     }
 

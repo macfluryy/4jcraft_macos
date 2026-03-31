@@ -860,14 +860,6 @@ void MinecraftServer::Suspend() {
     qwDeltaTime.QuadPart = qwNewTime.QuadPart - qwTime.QuadPart;
     fElapsedTime = fSecsPerTick * static_cast<float>(qwDeltaTime.QuadPart);
 
-    // 4J-JEV: Flush stats and call PlayerSessionExit.
-    for (int iPad = 0; iPad < XUSER_MAX_COUNT; iPad++) {
-        if (ProfileManager.IsSignedIn(iPad)) {
-            TelemetryManager->RecordPlayerSessionExit(
-                iPad, DisconnectPacket::eDisconnect_Quitting);
-        }
-    }
-
     m_suspending = false;
     app.DebugPrintf("Suspend server: Elapsed time %f\n", fElapsedTime);
     PIXEndNamedEvent();

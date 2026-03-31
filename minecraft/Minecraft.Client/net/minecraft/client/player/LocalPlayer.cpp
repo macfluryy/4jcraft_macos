@@ -774,8 +774,6 @@ void LocalPlayer::hurtTo(float newHealth, ETelemetryChallenges damageSource) {
         int carriedId = inventory->getSelected() == nullptr
                             ? 0
                             : inventory->getSelected()->id;
-        TelemetryManager->RecordPlayerDiedOrFailed(GetXboxPad(), 0, y, 0, 0,
-                                                   carriedId, 0, damageSource);
 
         // if there are any xuiscenes up for this player, close them
         if (ui.GetMenuDisplayed(GetXboxPad())) {
@@ -820,10 +818,6 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             // players cannot get theme/avatar/gamerpic and Trial players cannot
             // get any This causes some extreme flooding of some awards
             if (ProfileManager.CanBeAwarded(m_iPad, ach->getAchievementID())) {
-                // 4J Stu - We don't (currently) care about the gamerscore, so
-                // setting to a default of 0 points
-                TelemetryManager->RecordAchievementUnlocked(
-                    m_iPad, ach->getAchievementID(), 0);
 
                 // 4J Stu - Some awards cause a menu to popup. This can be bad,
                 // especially if you are surrounded by mobs! We cannot pause the

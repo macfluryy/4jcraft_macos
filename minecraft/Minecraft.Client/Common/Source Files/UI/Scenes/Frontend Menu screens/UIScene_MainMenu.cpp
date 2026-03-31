@@ -958,8 +958,6 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
             // check that the commerce is in the right state to be able to
             // display the full version purchase - if the user is fast with the
             // trial version, it can still be retrieving the product list
-            TelemetryManager->RecordUpsellPresented(
-                iPad, eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID);
             ProfileManager.DisplayFullVersionPurchase(
                 false, iPad, eSen_UpsellID_Full_Version_Of_Game);
         }
