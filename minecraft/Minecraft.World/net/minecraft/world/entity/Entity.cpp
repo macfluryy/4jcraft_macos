@@ -346,9 +346,7 @@ void Entity::_init(bool useSmallId, Level* level) {
 Entity::Entity(Level* level,
                bool useSmallId)  // 4J - added useSmallId parameter
 {
-    MemSect(16);
     _init(useSmallId, level);
-    MemSect(0);
 
     this->level = level;
     // resetPos();
@@ -934,7 +932,6 @@ void Entity::checkInsideTiles() {
 
 void Entity::playStepSound(int xt, int yt, int zt, int t) {
     const Tile::SoundType* soundType = Tile::tiles[t]->soundType;
-    MemSect(31);
 
     if (GetType() == eTYPE_PLAYER) {
         // should we turn off step sounds?
@@ -955,8 +952,6 @@ void Entity::playStepSound(int xt, int yt, int zt, int t) {
         playSound(soundType->getStepSound(), soundType->getVolume() * 0.15f,
                   soundType->getPitch());
     }
-
-    MemSect(0);
 }
 
 void Entity::playSound(int iSound, float volume, float pitch) {
@@ -1007,10 +1002,8 @@ bool Entity::updateInWaterState() {
             float speed =
                 Mth::sqrt(xd * xd * 0.2f + yd * yd + zd * zd * 0.2f) * 0.2f;
             if (speed > 1) speed = 1;
-            MemSect(31);
             playSound(eSoundType_RANDOM_SPLASH, speed,
                       1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
-            MemSect(0);
             float yt = (float)Mth::floor(bb.y0);
             for (int i = 0; i < 1 + bbWidth * 20; i++) {
                 float xo = (random->nextFloat() * 2 - 1) * bbWidth;
