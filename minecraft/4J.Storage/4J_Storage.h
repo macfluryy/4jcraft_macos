@@ -7,6 +7,7 @@
 // #include <xtms.h>
 
 #include "../4J.Common/4J_Compat.h"
+#include "../platform/IPlatformStorage.h"
 
 class C4JStringTable;
 
@@ -14,23 +15,25 @@ class C4JStringTable;
 #define MAX_DETAILS_LENGTH 128      // CELL_SAVEDATA_SYSP_SUBTITLE_SIZE on PS3
 #define MAX_SAVEFILENAME_LENGTH 32  // CELL_SAVEDATA_DIRNAME_SIZE
 
-typedef struct {
+struct CONTAINER_METADATA {
     time_t modifiedTime;
     unsigned int dataSize;
     unsigned int thumbnailSize;
-} CONTAINER_METADATA;
+};
 
-typedef struct {
+struct SAVE_INFO {
     char UTF8SaveFilename[MAX_SAVEFILENAME_LENGTH];
     char UTF8SaveTitle[MAX_DISPLAYNAME_LENGTH];
     CONTAINER_METADATA metaData;
     std::uint8_t* thumbnailData;
-} SAVE_INFO, *PSAVE_INFO;
+};
+using PSAVE_INFO = SAVE_INFO*;
 
-typedef struct {
+struct SAVE_DETAILS {
     int iSaveC;
     PSAVE_INFO SaveInfoA;
-} SAVE_DETAILS, *PSAVE_DETAILS;
+};
+using PSAVE_DETAILS = SAVE_DETAILS*;
 
 typedef std::vector<PXMARKETPLACE_CONTENTOFFER_INFO> OfferDataArray;
 typedef std::vector<PXCONTENT_DATA> XContentDataArray;
@@ -39,89 +42,32 @@ typedef std::vector<PXCONTENT_DATA> XContentDataArray;
 // Current version of the dlc data creator
 #define CURRENT_DLC_VERSION_NUM 3
 
-class C4JStorage {
+class C4JStorage : public IPlatformStorage {
 public:
-    // Structs defined in the DLC_Creator, but added here to be used in the app
-    typedef struct {
+    struct DLC_FILE_DETAILS {
         unsigned int uiFileSize;
         std::uint32_t dwType;
-        std::uint32_t dwWchCount;  // count of wchar_t in next array
+        std::uint32_t dwWchCount;
         wchar_t wchFile[1];
-    } DLC_FILE_DETAILS, *PDLC_FILE_DETAILS;
+    };
+    using PDLC_FILE_DETAILS = DLC_FILE_DETAILS*;
 
-    typedef struct {
+    struct DLC_FILE_PARAM {
         std::uint32_t dwType;
-        std::uint32_t dwWchCount;  // count of wchar_t in next array;
-        wchar_t wchData[1];        // will be an array of size dwBytes
-    } DLC_FILE_PARAM, *PDLC_FILE_PARAM;
-    // End of DLC_Creator structs
+        std::uint32_t dwWchCount;
+        wchar_t wchData[1];
+    };
+    using PDLC_FILE_PARAM = DLC_FILE_PARAM*;
 
-    typedef struct {
+    struct CACHEINFOSTRUCT {
         wchar_t wchDisplayName[XCONTENT_MAX_DISPLAYNAME_LENGTH];
         char szFileName[XCONTENT_MAX_FILENAME_LENGTH];
         std::uint32_t dwImageOffset;
         std::uint32_t dwImageBytes;
-    } CACHEINFOSTRUCT;
-
-    // structure to hold DLC info in TMS
-    typedef struct {
-        std::uint32_t dwVersion;
-        std::uint32_t dwNewOffers;
-        std::uint32_t dwTotalOffers;
-        std::uint32_t dwInstalledTotalOffers;
-        std::uint8_t bPadding[1024 - sizeof(std::uint32_t) * 4];
-        // future expansion
-    } DLC_TMS_DETAILS;
+    };
 
     enum eGTS_FileTypes { eGTS_Type_Skin = 0, eGTS_Type_Cape, eGTS_Type_MAX };
 
-    enum eGlobalStorage {
-        // eGlobalStorage_GameClip=0,
-        eGlobalStorage_Title = 0,
-        eGlobalStorage_TitleUser,
-        eGlobalStorage_Max
-    };
-
-    enum EMessageResult {
-        EMessage_Undefined = 0,
-        EMessage_Busy,
-        EMessage_Pending,
-        EMessage_Cancelled,
-        EMessage_ResultAccept,
-        EMessage_ResultDecline,
-        EMessage_ResultThirdOption,
-        EMessage_ResultFourthOption
-    };
-
-    enum ESaveGameControlState {
-        ESaveGameControl_Idle = 0,
-        ESaveGameControl_Save,
-        ESaveGameControl_InternalRequestingDevice,
-        ESaveGameControl_InternalGetSaveName,
-        ESaveGameControl_InternalSaving,
-        ESaveGameControl_CopySave,
-        ESaveGameControl_CopyingSave,
-    };
-
-    enum ESaveGameState {
-        ESaveGame_Idle = 0,
-        ESaveGame_Save,
-        ESaveGame_InternalRequestingDevice,
-        ESaveGame_InternalGetSaveName,
-        ESaveGame_InternalSaving,
-        ESaveGame_CopySave,
-        ESaveGame_CopyingSave,
-        ESaveGame_Load,
-        ESaveGame_GetSavesInfo,
-        ESaveGame_Rename,
-        ESaveGame_Delete,
-
-        ESaveGame_GetSaveThumbnail  // Not used as an actual state in the PS4,
-                                    // but the game expects this to be returned
-                                    // to indicate success when getting a
-                                    // thumbnail
-
-    };
     enum ELoadGameStatus {
         ELoadGame_Idle = 0,
         ELoadGame_InProgress,
@@ -142,60 +88,20 @@ public:
         ESGIStatus_NoSaves,
     };
 
-    enum EDLCStatus {
-        EDLC_Error = 0,
-        EDLC_Idle,
-        EDLC_NoOffers,
-        EDLC_AlreadyEnumeratedAllOffers,
-        EDLC_NoInstalledDLC,
-        EDLC_Pending,
-        EDLC_LoadInProgress,
-        EDLC_Loaded,
-        EDLC_ChangedDevice
-    };
-
-    enum ESavingMessage {
-        ESavingMessage_None = 0,
-        ESavingMessage_Short,
-        ESavingMessage_Long
-    };
-
-    enum ETMSStatus {
-        ETMSStatus_Idle = 0,
-        ETMSStatus_Fail,
-        ETMSStatus_Fail_ReadInProgress,
-        ETMSStatus_Fail_WriteInProgress,
-        ETMSStatus_Pending,
-    };
-
-    enum eTMS_FileType {
-        eTMS_FileType_Normal = 0,
-        eTMS_FileType_Graphic,
-    };
-
-    enum eTMS_FILETYPEVAL {
-        TMS_FILETYPE_BINARY,
-        TMS_FILETYPE_CONFIG,
-        TMS_FILETYPE_JSON,
-        TMS_FILETYPE_MAX
-    };
     enum eTMS_UGCTYPE { TMS_UGCTYPE_NONE, TMS_UGCTYPE_IMAGE, TMS_UGCTYPE_MAX };
 
-    typedef struct {
+    struct TMSPP_FILE_DETAILS {
         char szFilename[256];
         int iFileSize;
         eTMS_FILETYPEVAL eFileTypeVal;
-    } TMSPP_FILE_DETAILS, *PTMSPP_FILE_DETAILS;
+    };
+    using PTMSPP_FILE_DETAILS = TMSPP_FILE_DETAILS*;
 
-    typedef struct {
+    struct TMSPP_FILE_LIST {
         int iCount;
         PTMSPP_FILE_DETAILS FileDetailsA;
-    } TMSPP_FILE_LIST, *PTMSPP_FILE_LIST;
-
-    typedef struct {
-        unsigned int size;
-        std::uint8_t* pbData;
-    } TMSPP_FILEDATA, *PTMSPP_FILEDATA;
+    };
+    using PTMSPP_FILE_LIST = TMSPP_FILE_LIST*;
 
     C4JStorage();
 

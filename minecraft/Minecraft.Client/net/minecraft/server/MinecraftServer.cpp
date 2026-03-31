@@ -799,7 +799,7 @@ void MinecraftServer::saveAllChunks() {
 void MinecraftServer::saveGameRules() {
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_DistributableSave)) {
         // Do nothing
     } else
@@ -883,7 +883,7 @@ void MinecraftServer::stopServer(bool didInit) {
     // also need to check for a profile switch here - primary player signs out,
     // and another player signs in before dismissing the dash
     if ((m_bPrimaryPlayerSignedOut == false) &&
-        ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
+        ProfileManager.IsSignedIn(InputManager.GetPrimaryPad())) {
         // if trial version or saving is disabled, then don't save anything.
         // Also don't save anything if we didn't actually get through the server
         // initialisation.

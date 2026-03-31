@@ -218,7 +218,7 @@ void DLCTexturePack::loadData() {
     int mountIndex = m_dlcInfoPack->GetDLCMountIndex();
 
     if (mountIndex > -1) {
-        if (StorageManager.MountInstalledDLC(ProfileManager.GetPrimaryPad(),
+        if (StorageManager.MountInstalledDLC(InputManager.GetPrimaryPad(),
                                              mountIndex,
                                              &DLCTexturePack::packMounted, this,
                                              "TPACK") != ERROR_IO_PENDING) {
@@ -227,7 +227,7 @@ void DLCTexturePack::loadData() {
             if (app.getLevelGenerationOptions())
                 app.getLevelGenerationOptions()->setLoadedData();
             app.DebugPrintf("Failed to mount texture pack DLC %d for pad %d\n",
-                            mountIndex, ProfileManager.GetPrimaryPad());
+                            mountIndex, InputManager.GetPrimaryPad());
         } else {
             m_bLoadingData = true;
             app.DebugPrintf("Attempted to mount DLC data for texture pack %d\n",
@@ -237,7 +237,7 @@ void DLCTexturePack::loadData() {
         m_bHasLoadedData = true;
         if (app.getLevelGenerationOptions())
             app.getLevelGenerationOptions()->setLoadedData();
-        app.SetAction(ProfileManager.GetPrimaryPad(),
+        app.SetAction(InputManager.GetPrimaryPad(),
                       eAppAction_ReloadTexturePack);
     }
 }
@@ -382,7 +382,7 @@ int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
     texturePack->m_bHasLoadedData = true;
     if (app.getLevelGenerationOptions())
         app.getLevelGenerationOptions()->setLoadedData();
-    app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ReloadTexturePack);
+    app.SetAction(InputManager.GetPrimaryPad(), eAppAction_ReloadTexturePack);
 
     return 0;
 }

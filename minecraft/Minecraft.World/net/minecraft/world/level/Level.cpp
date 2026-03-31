@@ -2826,7 +2826,7 @@ void Level::tickWeather() {
 #if !defined(_FINAL_BUILD)
     // debug setting added to disable weather
     if (app.DebugSettingsOn()) {
-        if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        if (app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_DisableWeather)) {
             levelData->setThundering(false);
             levelData->setThunderTime(random->nextInt(TICKS_PER_DAY * 7) +

@@ -1,10 +1,5 @@
 profile_sources = files(
   '4J_Profile.cpp',
-  'PRO_AwardManager.cpp',
-  'PRO_Data.cpp',
-  'PRO_Main.cpp',
-  'PRO_RichPresence.cpp',
-  'PRO_Sys.cpp',
   'stdafx.cpp',
 )
 # 4jprofile stink

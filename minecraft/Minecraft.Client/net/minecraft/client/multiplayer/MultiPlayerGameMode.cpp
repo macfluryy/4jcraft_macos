@@ -135,7 +135,7 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
             (Tile::tiles[t]->getDestroyProgress(
                  minecraft->player, minecraft->player->level, x, y, z) >= 1
              // ||(app.DebugSettingsOn() &&
-             // app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad())&(1L<<eDebugSetting_InstantDestroy))
+             // app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad())&(1L<<eDebugSetting_InstantDestroy))
              )) {
             destroyBlock(x, y, z, face);
         } else {

@@ -658,3 +658,8 @@ void C_4JInput::CancelQueuedVerifyStrings(int (*)(void*,
                                                   STRING_VERIFY_RESPONSE*),
                                           void*) {}
 void C_4JInput::CancelAllVerifyInProgress() {}
+
+// Primary pad (moved from Profile)
+namespace { int s_inputPrimaryPad = 0; }
+int C_4JInput::GetPrimaryPad() { return s_inputPrimaryPad; }
+void C_4JInput::SetPrimaryPad(int iPad) { s_inputPrimaryPad = iPad; }

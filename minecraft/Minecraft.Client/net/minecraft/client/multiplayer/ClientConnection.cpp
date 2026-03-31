@@ -69,7 +69,7 @@ ClientConnection::ClientConnection(Minecraft* minecraft, Socket* socket,
     this->minecraft = minecraft;
 
     if (iUserIndex < 0) {
-        m_userIndex = ProfileManager.GetPrimaryPad();
+        m_userIndex = InputManager.GetPrimaryPad();
     } else {
         m_userIndex = iUserIndex;
     }
@@ -131,7 +131,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
     INetworkPlayer* networkPlayer = connection->getSocket()->getPlayer();
     int iUserID = -1;
 
-    if (m_userIndex == ProfileManager.GetPrimaryPad()) {
+    if (m_userIndex == InputManager.GetPrimaryPad()) {
         iUserID = m_userIndex;
     } else {
         if (!networkPlayer->IsGuest() && networkPlayer->IsLocal()) {
@@ -187,18 +187,18 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         app.SetBanListCheck(iUserID, false);
     }
 
-    if (m_userIndex == ProfileManager.GetPrimaryPad()) {
+    if (m_userIndex == InputManager.GetPrimaryPad()) {
         if (app.GetTutorialMode()) {
             minecraft->gameMode = new FullTutorialMode(
-                ProfileManager.GetPrimaryPad(), minecraft, this);
+                InputManager.GetPrimaryPad(), minecraft, this);
         }
         // check if we're in the trial version
         else if (ProfileManager.IsFullVersion() == false) {
             minecraft->gameMode =
-                new TrialMode(ProfileManager.GetPrimaryPad(), minecraft, this);
+                new TrialMode(InputManager.GetPrimaryPad(), minecraft, this);
         } else {
             minecraft->gameMode = new ConsoleGameMode(
-                ProfileManager.GetPrimaryPad(), minecraft, this);
+                InputManager.GetPrimaryPad(), minecraft, this);
         }
 
         Level* dimensionLevel = minecraft->getLevel(packet->dimension);
@@ -233,7 +233,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         minecraft->player->setCustomSkin(app.GetPlayerSkinId(m_userIndex));
         minecraft->player->setCustomCape(app.GetPlayerCapeId(m_userIndex));
 
-        minecraft->createPrimaryLocalPlayer(ProfileManager.GetPrimaryPad());
+        minecraft->createPrimaryLocalPlayer(InputManager.GetPrimaryPad());
 
         minecraft->player->dimension = packet->dimension;
         minecraft->setScreen(new ReceivingLevelScreen(this));
@@ -258,7 +258,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         displayPrivilegeChanges(minecraft->player, startingPrivileges);
 
         // update the debugoptions
-        app.SetGameSettingsDebugMask(ProfileManager.GetPrimaryPad(),
+        app.SetGameSettingsDebugMask(InputManager.GetPrimaryPad(),
                                      app.GetGameSettingsDebugMask(-1, true));
     } else {
         // 4J-PB - this isn't the level we want
@@ -1238,12 +1238,12 @@ void ClientConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
     if (g_NetworkManager.IsHost() &&
         (reason == DisconnectPacket::eDisconnect_TimeOut ||
          reason == DisconnectPacket::eDisconnect_Overflow) &&
-        m_userIndex == ProfileManager.GetPrimaryPad() &&
+        m_userIndex == InputManager.GetPrimaryPad() &&
         !MinecraftServer::saveOnExitAnswered()) {
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_CONFIRM_OK;
         ui.RequestErrorMessage(IDS_EXITING_GAME, IDS_GENERIC_ERROR, uiIDA, 1,
-                               ProfileManager.GetPrimaryPad(),
+                               InputManager.GetPrimaryPad(),
                                &ClientConnection::HostDisconnectReturned,
                                nullptr);
     } else {
@@ -1812,7 +1812,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
         // 4J-PB - if we go straight in from the menus via an invite, we won't
         // have the DLC info
         if (app.GetTMSGlobalFileListRead() == false) {
-            app.SetTMSAction(ProfileManager.GetPrimaryPad(),
+            app.SetTMSAction(InputManager.GetPrimaryPad(),
                              eTMSAction_TMSPP_RetrieveFiles_RunPlayGame);
         }
     }
@@ -1827,7 +1827,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
         cantPlayContentRestricted) {
         DisconnectPacket::eDisconnectReason reason =
             DisconnectPacket::eDisconnect_NoUGC_Remote;
-        if (m_userIndex == ProfileManager.GetPrimaryPad()) {
+        if (m_userIndex == InputManager.GetPrimaryPad()) {
             if (!isFriendsWithHost)
                 reason = DisconnectPacket::eDisconnect_NotFriendsWithHost;
             else if (!isAtLeastOneFriend)
@@ -1843,7 +1843,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                 "privileges: %d\n",
                 reason);
             app.SetDisconnectReason(reason);
-            app.SetAction(ProfileManager.GetPrimaryPad(), eAppAction_ExitWorld,
+            app.SetAction(InputManager.GetPrimaryPad(), eAppAction_ExitWorld,
                           (void*)true);
         } else {
             if (!isFriendsWithHost)
@@ -1890,7 +1890,7 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
         // send this before the LoginPacket so that it gets handled first, as
         // once the LoginPacket is received on the client the game is close to
         // starting
-        if (m_userIndex == ProfileManager.GetPrimaryPad()) {
+        if (m_userIndex == InputManager.GetPrimaryPad()) {
             Minecraft* pMinecraft = Minecraft::GetInstance();
             if (pMinecraft->skins->selectTexturePackById(
                     packet->m_texturePackId)) {
@@ -2890,12 +2890,12 @@ void ClientConnection::handleGameEvent(
         app.DebugPrintf("handleGameEvent packet for WIN_GAME - %d\n",
                         m_userIndex);
         // This just allows it to be shown
-        if (minecraft->localgameModes[ProfileManager.GetPrimaryPad()] !=
+        if (minecraft->localgameModes[InputManager.GetPrimaryPad()] !=
             nullptr)
-            minecraft->localgameModes[ProfileManager.GetPrimaryPad()]
+            minecraft->localgameModes[InputManager.GetPrimaryPad()]
                 ->getTutorial()
                 ->showTutorialPopup(false);
-        ui.NavigateToScene(ProfileManager.GetPrimaryPad(), eUIScene_EndPoem,
+        ui.NavigateToScene(InputManager.GetPrimaryPad(), eUIScene_EndPoem,
                            nullptr, eUILayer_Scene, eUIGroup_Fullscreen);
     } else if (event == GameEventPacket::START_SAVING) {
         if (!g_NetworkManager.IsHost()) {
@@ -2903,7 +2903,7 @@ void ClientConnection::handleGameEvent(
             // back-to-back START/STOP packets leave the client stuck in the
             // loading screen
             app.SetGameStarted(false);
-            app.SetAction(ProfileManager.GetPrimaryPad(),
+            app.SetAction(InputManager.GetPrimaryPad(),
                           eAppAction_RemoteServerSave);
         }
     } else if (event == GameEventPacket::STOP_SAVING) {
@@ -3338,7 +3338,7 @@ int ClientConnection::HostDisconnectReturned(
         uiIDA[0] = IDS_CONFIRM_CANCEL;
         uiIDA[1] = IDS_CONFIRM_OK;
         ui.RequestErrorMessage(IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME,
-                               uiIDA, 2, ProfileManager.GetPrimaryPad(),
+                               uiIDA, 2, InputManager.GetPrimaryPad(),
                                &ClientConnection::ExitGameAndSaveReturned,
                                nullptr);
     } else {
@@ -3357,7 +3357,7 @@ int ClientConnection::ExitGameAndSaveReturned(
         // int32_t saveOrCheckpointId = 0;
         // bool validSave =
         // StorageManager.GetSaveUniqueNumber(&saveOrCheckpointId);
-        // SentientManager.RecordLevelSaveOrCheckpoint(ProfileManager.GetPrimaryPad(),
+        // SentientManager.RecordLevelSaveOrCheckpoint(InputManager.GetPrimaryPad(),
         // saveOrCheckpointId);
         MinecraftServer::getInstance()->setSaveOnExit(true);
     } else {

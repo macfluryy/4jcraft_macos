@@ -3,40 +3,14 @@
 #include <cstdint>
 #include <cstdlib>
 
+#include "../platform/IPlatformRender.h"
+
 #ifdef __linux__
 #include <GL/gl.h>
 #include <GL/glu.h>
 #endif
 
-class ImageFileBuffer {
-public:
-    enum EImageType { e_typePNG, e_typeJPG };
-    EImageType m_type;
-    void* m_pBuffer;
-    int m_bufferSize;
-    int GetType() { return m_type; }
-    void* GetBufferPointer() { return m_pBuffer; }
-    int GetBufferSize() { return m_bufferSize; }
-    void Release() {
-        std::free(m_pBuffer);
-        m_pBuffer = nullptr;
-    }
-    bool Allocated() { return m_pBuffer != nullptr; }
-};
-
-typedef struct {
-    int Width;
-    int Height;
-} D3DXIMAGE_INFO;
-
-typedef struct _XSOCIAL_PREVIEWIMAGE {
-    std::uint8_t* pBytes;
-    std::uint32_t Pitch;
-    std::uint32_t Width;
-    std::uint32_t Height;
-} XSOCIAL_PREVIEWIMAGE, *PXSOCIAL_PREVIEWIMAGE;
-
-class C4JRender {
+class C4JRender : public IPlatformRender {
 public:
     void Tick();
     void UpdateGamma(unsigned short usGamma);
@@ -78,55 +52,8 @@ public:
     void BeginConditionalRendering(int identifier);
     void EndConditionalRendering();
 
-    // Vertex data handling
-    typedef enum {
-        VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,  // Position 3 x float, texture 2 x
-                                          // float, colour 4 x byte, normal 4 x
-                                          // byte, padding 1 32-bit word
-        VERTEX_TYPE_COMPRESSED,  // Compressed format - see comment at top of
-                                 // VS_PS3_TS2_CS1.hlsl for description of
-                                 // layout
-        VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1_LIT,  // as
-                                              // VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1
-                                              // with lighting applied,
-        VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1_TEXGEN,  // as
-                                                 // VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1
-                                                 // with tex gen
-        VERTEX_TYPE_COUNT
-    } eVertexType;
-
-    // Pixel shader
-    typedef enum {
-        PIXEL_SHADER_TYPE_STANDARD,
-        PIXEL_SHADER_TYPE_PROJECTION,
-        PIXEL_SHADER_TYPE_FORCELOD,
-        PIXEL_SHADER_COUNT
-    } ePixelShaderType;
-
-    typedef enum {
-        VIEWPORT_TYPE_FULLSCREEN,
-        VIEWPORT_TYPE_SPLIT_TOP,
-        VIEWPORT_TYPE_SPLIT_BOTTOM,
-        VIEWPORT_TYPE_SPLIT_LEFT,
-        VIEWPORT_TYPE_SPLIT_RIGHT,
-        VIEWPORT_TYPE_QUADRANT_TOP_LEFT,
-        VIEWPORT_TYPE_QUADRANT_TOP_RIGHT,
-        VIEWPORT_TYPE_QUADRANT_BOTTOM_LEFT,
-        VIEWPORT_TYPE_QUADRANT_BOTTOM_RIGHT,
-    } eViewportType;
-
-    typedef enum {
-        PRIMITIVE_TYPE_TRIANGLE_LIST,
-        PRIMITIVE_TYPE_TRIANGLE_STRIP,
-        PRIMITIVE_TYPE_TRIANGLE_FAN,
-        PRIMITIVE_TYPE_QUAD_LIST,
-        PRIMITIVE_TYPE_LINE_LIST,
-        PRIMITIVE_TYPE_LINE_STRIP,
-        PRIMITIVE_TYPE_COUNT
-    } ePrimitiveType;
-
     void DrawVertices(ePrimitiveType PrimitiveType, int count, void* dataIn,
-                      eVertexType vType, C4JRender::ePixelShaderType psType);
+                      eVertexType vType, ePixelShaderType psType);
 
     // Command buffers
     void CBuffLockStaticCreations();
@@ -140,18 +67,6 @@ public:
     void CBuffTick();
     void CBuffDeferredModeStart();
     void CBuffDeferredModeEnd();
-
-    typedef enum {
-        TEXTURE_FORMAT_RxGyBzAw,  // Normal 32-bit RGBA texture, 8 bits per
-                                  // component
-        /* Don't think these are all directly available on D3D 11 - leaving for
-        now TEXTURE_FORMAT_R0G0B0Ax,		// One 8-bit component mapped to
-        alpha channel, R=G=B=0 TEXTURE_FORMAT_R1G1B1Ax,		// One 8-bit
-        component mapped to alpha channel, R=G=B=1 TEXTURE_FORMAT_RxGxBxAx,
-        // One 8-bit component mapped to all channels
-        */
-        MAX_TEXTURE_FORMATS
-    } eTextureFormat;
 
     // Textures
     int TextureCreate();

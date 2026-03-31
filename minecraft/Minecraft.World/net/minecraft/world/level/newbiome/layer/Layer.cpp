@@ -113,7 +113,7 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
 #if !defined(_CONTENT_PACKAGE)
 #if defined(_BIOME_OVERRIDE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeLayer =
             std::shared_ptr<BiomeOverrideLayer>(new BiomeOverrideLayer(1));

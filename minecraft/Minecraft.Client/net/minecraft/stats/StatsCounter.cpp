@@ -249,7 +249,6 @@ void StatsCounter::save(int player, bool force) {
         }
     }
 
-    ProfileManager.WriteToProfile(player, true, force);
 
     saveCounter = SAVE_DELAY;
 }

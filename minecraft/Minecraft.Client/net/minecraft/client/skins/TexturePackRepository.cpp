@@ -149,7 +149,7 @@ bool TexturePackRepository::selectTexturePackById(std::uint32_t id) {
             selectSkin(newPack);
 
             if (newPack->hasData()) {
-                app.SetAction(ProfileManager.GetPrimaryPad(),
+                app.SetAction(InputManager.GetPrimaryPad(),
                               eAppAction_ReloadTexturePack);
             } else {
                 newPack->loadData();
@@ -169,7 +169,7 @@ bool TexturePackRepository::selectTexturePackById(std::uint32_t id) {
 #endif
         // Fail safely
         if (selectSkin(DEFAULT_TEXTURE_PACK)) {
-            app.SetAction(ProfileManager.GetPrimaryPad(),
+            app.SetAction(InputManager.GetPrimaryPad(),
                           eAppAction_ReloadTexturePack);
         }
     }

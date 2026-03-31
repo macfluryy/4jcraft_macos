@@ -306,7 +306,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
         // 4J - this is where to set the blend factor for gui things
         // use the primary player's settings
         unsigned char ucAlpha = app.GetGameSettings(
-            ProfileManager.GetPrimaryPad(), eGameSetting_InterfaceOpacity);
+            InputManager.GetPrimaryPad(), eGameSetting_InterfaceOpacity);
 
         // If the user has started to navigate their quickselect bar, ignore the
         // alpha setting, and display at default value

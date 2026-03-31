@@ -51,7 +51,7 @@ void Dimension::init() {
     // 4J Stu - Added to enable overriding the heightmap from a loaded in data
     // file
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeSource = new BiomeSource(level);
     } else
@@ -86,7 +86,7 @@ ChunkSource* Dimension::createRandomLevelSource() const {
     // 4J Stu - Added to enable overriding the heightmap from a loaded in data
     // file
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableHeightWaterOverride)) {
         return new CustomLevelSource(
             level, level->getSeed(),

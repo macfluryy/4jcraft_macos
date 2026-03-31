@@ -349,7 +349,7 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Do nothing
     } else

@@ -180,7 +180,7 @@ LevelChunk* McRegionChunkStorage::load(Level* level, int x, int z) {
     }
 #if !defined(_CONTENT_PACKAGE)
     if (levelChunk && app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // 4J Stu - This will force an update of the chunk's biome array
         levelChunk->reloadBiomes();

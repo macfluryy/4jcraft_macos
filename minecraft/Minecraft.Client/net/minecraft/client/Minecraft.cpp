@@ -655,7 +655,7 @@ void Minecraft::updatePlayerViewportAssignments() {
         for (int i = 0; i < XUSER_MAX_COUNT; i++) {
             if (localplayers[i] != nullptr) {
                 // Primary player settings decide what the mode is
-                if (app.GetGameSettings(ProfileManager.GetPrimaryPad(),
+                if (app.GetGameSettings(InputManager.GetPrimaryPad(),
                                         eGameSetting_SplitScreenVertical)) {
                     localplayers[i]->m_iScreenSection =
                         C4JRender::VIEWPORT_TYPE_SPLIT_LEFT + found;
@@ -926,7 +926,7 @@ void Minecraft::removeLocalPlayerIdx(int idx) {
     }
     localplayers[idx] = nullptr;
 
-    if (idx == ProfileManager.GetPrimaryPad()) {
+    if (idx == InputManager.GetPrimaryPad()) {
         // We should never try to remove the Primary player in this way
         assert(false);
         /*
@@ -957,9 +957,9 @@ void Minecraft::createPrimaryLocalPlayer(int iPad) {
     localplayers[iPad] = player;
     // gameRenderer->itemInHandRenderer = localitemInHandRenderers[iPad];
     //  Give them the gamertag if they're signed in
-    if (ProfileManager.IsSignedIn(ProfileManager.GetPrimaryPad())) {
+    if (ProfileManager.IsSignedIn(InputManager.GetPrimaryPad())) {
         user->name = convStringToWstring(
-            ProfileManager.GetGamertag(ProfileManager.GetPrimaryPad()));
+            ProfileManager.GetGamertag(InputManager.GetPrimaryPad()));
     }
 }
 
@@ -1021,17 +1021,17 @@ void Minecraft::run_middle() {
                         // player has a app action running , or has any crafting
                         // or containers open, don't autosave
                         if (!StorageManager.GetSaveDisabled() &&
-                            (app.GetXuiAction(ProfileManager.GetPrimaryPad()) ==
+                            (app.GetXuiAction(InputManager.GetPrimaryPad()) ==
                              eAppAction_Idle)) {
                             if (!ui.IsPauseMenuDisplayed(
-                                    ProfileManager.GetPrimaryPad()) &&
+                                    InputManager.GetPrimaryPad()) &&
                                 !ui.IsIgnoreAutosaveMenuDisplayed(
-                                    ProfileManager.GetPrimaryPad())) {
+                                    InputManager.GetPrimaryPad())) {
                                 // check if the autotimer countdown has reached
                                 // zero
                                 unsigned char ucAutosaveVal =
                                     app.GetGameSettings(
-                                        ProfileManager.GetPrimaryPad(),
+                                        InputManager.GetPrimaryPad(),
                                         eGameSetting_Autosave);
                                 bool bTrialTexturepack = false;
                                 if (!Minecraft::GetInstance()
@@ -1068,7 +1068,7 @@ void Minecraft::run_middle() {
                                         app.DebugPrintf("+++Autosave\n");
                                         app.DebugPrintf("+++++++++++\n");
                                         app.SetAction(
-                                            ProfileManager.GetPrimaryPad(),
+                                            InputManager.GetPrimaryPad(),
                                             eAppAction_AutosaveSaveGame);
                                         // app.SetAutosaveTimerTime();
 #if !defined(_CONTENT_PACKAGE)
@@ -1320,7 +1320,7 @@ void Minecraft::run_middle() {
                         // exist? They'll be wanting to join the game then
                         bool tryJoin = !pause &&
                                        !ui.IsIgnorePlayerJoinMenuDisplayed(
-                                           ProfileManager.GetPrimaryPad()) &&
+                                           InputManager.GetPrimaryPad()) &&
                                        g_NetworkManager.SessionHasSpace() &&
                                        RenderManager.IsHiDef() &&
                                        InputManager.ButtonPressed(i);
@@ -1531,7 +1531,7 @@ void Minecraft::run_middle() {
 
                     ui.HandleGameTick();
 
-                    setLocalPlayerIdx(ProfileManager.GetPrimaryPad());
+                    setLocalPlayerIdx(InputManager.GetPrimaryPad());
 
                     // 4J - added - now do the equivalent of level::animateTick,
                     // but taking into account the positions of all our players
@@ -1583,7 +1583,7 @@ void Minecraft::run_middle() {
 
                 if (!noRender) {
                     bool bFirst = true;
-                    int iPrimaryPad = ProfileManager.GetPrimaryPad();
+                    int iPrimaryPad = InputManager.GetPrimaryPad();
                     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
                         if (setLocalPlayerIdx(i)) {
                             PIXBeginNamedEvent(0, "Game render player idx %d",
@@ -3320,7 +3320,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 #if defined(_DEBUG_MENUS_ENABLED)
         if (app.DebugSettingsOn()) {
             // 4J-PB - debugoverlay for primary player only
-            if (iPad == ProfileManager.GetPrimaryPad()) {
+            if (iPad == InputManager.GetPrimaryPad()) {
                 if ((player->ullButtonsPressed &
                      (1LL << MINECRAFT_ACTION_RENDER_DEBUG))) {
 #if !defined(_CONTENT_PACKAGE)
@@ -3793,7 +3793,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         // If no player has been set, then this is the first level to be set
         // this game, so set up a primary player & initialise some other things
         if (player == nullptr) {
-            int iPrimaryPlayer = ProfileManager.GetPrimaryPad();
+            int iPrimaryPlayer = InputManager.GetPrimaryPad();
 
             player = gameMode->createPlayer(level);
 
@@ -4007,11 +4007,11 @@ void Minecraft::respawnPlayer(int iPad, int dimension, int newEntityId) {
     cameraTargetPlayer = player;
 
     // 4J-PB - are we the primary player or a local player?
-    if (iPad == ProfileManager.GetPrimaryPad()) {
+    if (iPad == InputManager.GetPrimaryPad()) {
         createPrimaryLocalPlayer(iPad);
 
         // update the debugoptions
-        app.SetGameSettingsDebugMask(ProfileManager.GetPrimaryPad(),
+        app.SetGameSettingsDebugMask(InputManager.GetPrimaryPad(),
                                      app.GetGameSettingsDebugMask(-1, true));
     } else {
         storeExtraLocalPlayer(iPad);
@@ -4456,7 +4456,7 @@ int Minecraft::InGame_SignInReturned(void* pParam, bool bContinue, int iPad) {
                     }
                 }
             } else if (ProfileManager.IsSignedInLive(
-                           ProfileManager.GetPrimaryPad()) &&
+                           InputManager.GetPrimaryPad()) &&
                        !ProfileManager.AllowedToPlayMultiplayer(iPad)) {
                 // 4J Stu - Don't allow converting to guests as we don't allow
                 // any guest sign-in while in the game Fix for #66516 - TCR

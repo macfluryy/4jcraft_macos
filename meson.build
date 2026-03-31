@@ -65,6 +65,7 @@ miniaudio_dep = dependency('miniaudio')
 
 subdir('minecraft/java')
 subdir('minecraft/nbt')
+subdir('minecraft/platform')
 
 subdir('minecraft/4J.Render')
 subdir('minecraft/4J.Input')

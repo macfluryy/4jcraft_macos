@@ -389,7 +389,7 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel* level) {
         // tile entities in the world dissappear We should only do this when
         // actually exiting the game, so only when the primary player sets there
         // level to nullptr
-        if (playerIndex == ProfileManager.GetPrimaryPad()) {
+        if (playerIndex == InputManager.GetPrimaryPad()) {
             {
                 std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
                 renderableTileEntities.clear();
@@ -1117,7 +1117,7 @@ void LevelRenderer::renderClouds(float alpha) {
     int playerIndex = mc->player->GetXboxPad();
 
     // if the primary player has clouds off, so do all players on this machine
-    if (app.GetGameSettings(ProfileManager.GetPrimaryPad(),
+    if (app.GetGameSettings(InputManager.GetPrimaryPad(),
                             eGameSetting_Clouds) == 0) {
         return;
     }
@@ -1131,7 +1131,7 @@ void LevelRenderer::renderClouds(float alpha) {
     }
 
     if (app.DebugSettingsOn()) {
-        if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        if (app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_FreezeTime)) {
             iTicks = m_freezeticks;
         }
@@ -1209,7 +1209,7 @@ void LevelRenderer::renderClouds(float alpha) {
     glEnable(GL_CULL_FACE);
 
     if (app.DebugSettingsOn()) {
-        if (!(app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        if (!(app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
               (1L << eDebugSetting_FreezeTime))) {
             m_freezeticks = iTicks;
         }
@@ -1395,7 +1395,7 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
     int iTicks = ticks;
 
     if (app.DebugSettingsOn()) {
-        if (app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        if (app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_FreezeTime)) {
             iTicks = m_freezeticks;
         }
@@ -1642,7 +1642,7 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
     glEnable(GL_CULL_FACE);
 
     if (app.DebugSettingsOn()) {
-        if (!(app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        if (!(app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
               (1L << eDebugSetting_FreezeTime))) {
             m_freezeticks = iTicks;
         }

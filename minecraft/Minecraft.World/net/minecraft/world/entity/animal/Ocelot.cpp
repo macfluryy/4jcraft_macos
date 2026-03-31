@@ -308,7 +308,7 @@ MobGroupData* Ocelot::finalizeMobSpawn(
         setTame(true);
         setCatType(extraData - 1);
         setOwnerUUID(Minecraft::GetInstance()
-                         ->localplayers[ProfileManager.GetPrimaryPad()]
+                         ->localplayers[InputManager.GetPrimaryPad()]
                          ->getUUID());
     } else
 #endif

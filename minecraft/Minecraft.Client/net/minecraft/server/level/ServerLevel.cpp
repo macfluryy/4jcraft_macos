@@ -300,7 +300,7 @@ void ServerLevel::tick() {
 #if !defined(_FINAL_BUILD)
         bool freezeTime =
             app.DebugSettingsOn() &&
-            app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+            app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
                 (1L << eDebugSetting_FreezeTime);
         if (!freezeTime)
 #endif

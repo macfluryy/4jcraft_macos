@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "../platform/IPlatformInput.h"
+
 #define MAP_STYLE_0 0
 #define MAP_STYLE_1 1
 #define MAP_STYLE_2 2
@@ -47,30 +49,8 @@
 #define TRIGGER_MAP_0 0
 #define TRIGGER_MAP_1 1
 
-enum EKeyboardResult {
-    EKeyboard_Pending,
-    EKeyboard_Cancelled,
-    EKeyboard_ResultAccept,
-    EKeyboard_ResultDecline,
-};
-
-typedef struct _STRING_VERIFY_RESPONSE {
-    std::uint16_t wNumStrings;
-    int* pStringResult;
-} STRING_VERIFY_RESPONSE;
-
-class C_4JInput {
+class C_4JInput : public IPlatformInput {
 public:
-    enum EKeyboardMode {
-        EKeyboardMode_Default,
-        EKeyboardMode_Numeric,
-        EKeyboardMode_Password,
-        EKeyboardMode_Alphabet,
-        EKeyboardMode_Full,
-        EKeyboardMode_Alphabet_Extended,
-        EKeyboardMode_IP_Address,
-        EKeyboardMode_Phone
-    };
 
     void Initialise(int iInputStateC, unsigned char ucMapC,
                     unsigned char ucActionC, unsigned char ucMenuActionC);
@@ -156,6 +136,10 @@ public:
 
     int GetMouseX();
     int GetMouseY();
+
+    // Primary pad (moved from Profile)
+    int GetPrimaryPad();
+    void SetPrimaryPad(int iPad);
 
     // bool InputDetected(int userIndex, wchar_t* inputText);
 };

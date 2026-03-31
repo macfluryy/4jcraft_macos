@@ -18,8 +18,6 @@ CConsoleMinecraftApp app;
 CConsoleMinecraftApp::CConsoleMinecraftApp() : CMinecraftApp() {}
 
 void CConsoleMinecraftApp::SetRichPresenceContext(int iPad, int contextId) {
-    ProfileManager.SetRichPresenceContextValue(iPad, CONTEXT_GAME_STATE,
-                                               contextId);
 }
 
 void CConsoleMinecraftApp::StoreLaunchData() {}

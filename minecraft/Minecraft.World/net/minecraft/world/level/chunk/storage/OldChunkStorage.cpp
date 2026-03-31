@@ -470,7 +470,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Read the biome data from the stream, but don't use it
         std::vector<uint8_t> dummyBiomes(levelChunk->biomes.size());
@@ -584,7 +584,7 @@ LevelChunk* OldChunkStorage::load(Level* level, CompoundTag* tag) {
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         // Do nothing
     } else

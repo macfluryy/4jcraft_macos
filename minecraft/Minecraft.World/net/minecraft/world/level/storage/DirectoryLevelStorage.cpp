@@ -454,7 +454,7 @@ void DirectoryLevelStorage::clearOldPlayerFiles() {
     if (playerFiles != nullptr) {
 #if !defined(_FINAL_BUILD)
         if (app.DebugSettingsOn() &&
-            app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+            app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
                 (1L << eDebugSetting_DistributableSave)) {
             for (unsigned int i = 0; i < playerFiles->size(); ++i) {
                 FileEntry* file = playerFiles->at(i);
@@ -500,7 +500,7 @@ std::wstring DirectoryLevelStorage::getLevelId() { return levelId; }
 void DirectoryLevelStorage::flushSaveFile(bool autosave) {
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&
-        app.GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
+        app.GetGameSettingsDebugMask(InputManager.GetPrimaryPad()) &
             (1L << eDebugSetting_DistributableSave)) {
         // Delete gamerules files if it exists
         ConsoleSavePath gameRulesFiles(GAME_RULE_SAVENAME);

@@ -238,7 +238,7 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
             1.0f / ((float)SharedConstants::TICKS_PER_SECOND * 4);
     }
 
-    if (mc->player != mc->localplayers[ProfileManager.GetPrimaryPad()])
+    if (mc->player != mc->localplayers[InputManager.GetPrimaryPad()])
         return;  // 4J added for split screen - only do rest of processing for
                  // once per frame
 
@@ -1192,7 +1192,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
     // view whatever they have loaded in - we're sharing render data between
     // players.
     bool updateChunks =
-        (mc->player == mc->localplayers[ProfileManager.GetPrimaryPad()]);
+        (mc->player == mc->localplayers[InputManager.GetPrimaryPad()]);
 
     //	if (mc->cameraTargetPlayer == nullptr)	// 4J - removed condition as we
     // want to update this is mc->player changes for different local players
