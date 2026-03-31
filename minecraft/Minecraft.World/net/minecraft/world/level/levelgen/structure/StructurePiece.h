@@ -1,4 +1,7 @@
 #pragma once
+
+#include <list>
+
 #include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
 #include "BoundingBox.h"
 #include "StructureFeatureIO.h"

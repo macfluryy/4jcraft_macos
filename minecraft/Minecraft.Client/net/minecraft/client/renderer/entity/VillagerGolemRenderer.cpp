@@ -44,7 +44,7 @@ void VillagerGolemRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
     float p = 13;
     float wp = mob->walkAnimPos - mob->walkAnimSpeed * (1 - a) + 6;
     float triangleWave =
-        (abs(fmod(wp, p) - p * 0.5f) - p * 0.25f) / (p * 0.25f);
+        (std::abs(std::fmod(wp, p) - p * 0.5f) - p * 0.25f) / (p * 0.25f);
     glRotatef(6.5f * triangleWave, 0, 0, 1);
 }
 

@@ -3,6 +3,7 @@
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 class ProgressListener;
 class TilePos;
+class LevelChunk;
 
 // The maximum number of chunks that we can store
 #ifdef _LARGE_WORLDS

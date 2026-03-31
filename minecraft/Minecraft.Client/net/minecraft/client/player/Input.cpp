@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "LocalPlayer.h"
 #include "4J_Input.h"
+#include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
@@ -112,7 +113,7 @@ void Input::tick(LocalPlayer* player) {
         }
         tx = ty = 0.0f;
     }
-    player->interpolateTurn(tx * abs(tx) * turnSpeed, ty * abs(ty) * turnSpeed);
+    player->interpolateTurn(tx * std::abs(tx) * turnSpeed, ty * std::abs(ty) * turnSpeed);
 
     // jumping = controller.isButtonPressed(0);
 

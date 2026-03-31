@@ -6,6 +6,9 @@
 #include "nbt/ListTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/FloatTag.h"
+
+#include "java/Class.h"
+
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
@@ -22,6 +25,9 @@ class Level;
 class CompoundTag;
 class DamageSource;
 class Explosion;
+class Tesselator;
+class Tile;
+class ItemInstance;
 
 // 4J Stu Added this mainly to allow is to record telemetry for player deaths
 enum EEntityDamageType {

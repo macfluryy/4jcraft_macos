@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <string>
+#include <vector>
 
 std::wstring toLower(const std::wstring& a);
 std::wstring trimString(const std::wstring& a);

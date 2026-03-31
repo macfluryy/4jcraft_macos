@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 class Random;
 
 class Mth {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
 #include "UseAnim.h"
 #include "Rarity.h"
 
@@ -19,6 +20,8 @@ class BowItem;
 class FishingRodItem;
 class EnchantedBookItem;
 class EmptyMapItem;
+class LivingEntity;
+class HtmlString;
 
 #define ITEM_ICON_COLUMNS 16
 

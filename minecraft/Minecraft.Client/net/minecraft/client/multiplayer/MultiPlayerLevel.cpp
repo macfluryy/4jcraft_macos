@@ -17,6 +17,7 @@
 #include "java/JavaMath.h"
 #include "4J.Common/4J_Compat.h"
 #include "4J_Profile.h"
+#include "4J_Input.h"
 #include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"

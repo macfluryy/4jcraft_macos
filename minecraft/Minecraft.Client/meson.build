@@ -112,7 +112,7 @@ client = executable(
   + [
     '-DUNICODE',
     '-D_UNICODE',
-    '-include', meson.current_source_dir() / 'Header Files/stdafx.h',
+    # '-include', meson.current_source_dir() / 'Header Files/stdafx.h',
   ],
   c_args: global_cpp_defs + ['-DUNICODE', '-D_UNICODE'],
   install: true,

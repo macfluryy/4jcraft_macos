@@ -3,6 +3,7 @@
 #include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 #include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+#include "Minecraft.Client/Common/App_enums.h"
 
 class Feature;
 class MobCategory;

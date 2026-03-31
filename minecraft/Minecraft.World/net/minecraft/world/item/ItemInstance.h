@@ -19,6 +19,8 @@ class MapItem;
 class ItemFrame;
 class Icon;
 class HtmlString;
+class Tile;
+class Item;
 
 // 4J Stu - While this is not really an abstract class, we don't want to make
 // new instances of it, mainly because there are too many ctors and that doesn't

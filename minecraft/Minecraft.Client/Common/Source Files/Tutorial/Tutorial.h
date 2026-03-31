@@ -7,6 +7,7 @@
 #include "TutorialEnum.h"
 
 #include <cstdint>
+#include <unordered_map>
 
 // #define TUTORIAL_HINT_DELAY_TIME 14000 // How long we should wait from
 // displaying one hint to the next #define TUTORIAL_DISPLAY_MESSAGE_TIME 7000
@@ -17,8 +18,10 @@
 // // 0-24000
 // #define TUTORIAL_FREEZE_TIME_VALUE 8000
 
+class UIScene;
 class Level;
 class CXuiScene;
+class Player;
 
 class Tutorial {
 public:

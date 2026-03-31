@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <unordered_map>
 
 #include "Entity.h"
 #include "MobType.h"
@@ -17,6 +18,7 @@ class Attribute;
 class MobEffect;
 class HitResult;
 class Vec3;
+class Icon;
 
 class LivingEntity : public Entity {
     friend class MobSpawner;

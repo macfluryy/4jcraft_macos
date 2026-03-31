@@ -11,6 +11,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "4J_Profile.h"
+#include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

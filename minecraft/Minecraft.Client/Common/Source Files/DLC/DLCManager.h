@@ -2,6 +2,7 @@
 // using namespace std;
 #include <cstdint>
 #include <vector>
+#include <string>
 class DLCPack;
 class DLCSkinFile;
 

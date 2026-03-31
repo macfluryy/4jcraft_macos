@@ -19,6 +19,7 @@ class Sensing;
 class Icon;
 class Pos;
 class MobGroupData;
+class Item;
 
 class Mob : public LivingEntity {
     friend class MobSpawner;

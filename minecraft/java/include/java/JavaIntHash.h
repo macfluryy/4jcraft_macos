@@ -1,5 +1,7 @@
 #pragma once
 
+#include "java/Class.h"
+
 // Java doesn't have a default hash value for ints, however, the hashmap itself
 // does some "supplemental" hashing, so our ints actually get hashed by code as
 // implemented below. std templates *do* have a standard hash for ints, but it

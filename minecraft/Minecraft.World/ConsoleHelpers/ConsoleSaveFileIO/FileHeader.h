@@ -1,6 +1,9 @@
 #pragma once
 
 #include "java/System.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+
+#include <cstring>
 
 // The first 4 bytes is the location of the header (the header itself is at the
 // end of the file) Then 4 bytes for the size of the header Then 2 bytes for the
@@ -106,7 +109,7 @@ public:
 
     unsigned int currentFilePointer;
 
-    FileEntry() { ZeroMemory(&data, sizeof(FileEntrySaveData)); }
+    FileEntry() { memset(&data, 0, sizeof(FileEntrySaveData)); }
 
     FileEntry(wchar_t name[64], unsigned int length, unsigned int startOffset) {
         data.length = length;

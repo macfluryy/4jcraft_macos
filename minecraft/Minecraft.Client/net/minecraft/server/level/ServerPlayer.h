@@ -1,7 +1,11 @@
 #pragma once
+
+#include <list>
+
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 #include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+
 class PlayerConnection;
 class MinecraftServer;
 class ServerPlayerGameMode;
@@ -15,6 +19,7 @@ class MinecartHopper;
 class BeaconTileEntity;
 class EntityHorse;
 class Merchant;
+class ServerLevel;
 
 class ServerPlayer : public Player,
                      public net_minecraft_world_inventory::ContainerListener {

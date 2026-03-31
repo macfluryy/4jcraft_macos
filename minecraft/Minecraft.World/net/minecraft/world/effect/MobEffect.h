@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "Minecraft.Client/Common/App_enums.h"
 
 class Mob;
 class MobEffectInstance;

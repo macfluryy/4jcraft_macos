@@ -3,9 +3,11 @@
 // #pragma message("UIStructs.h")
 
 #include <cstdint>
+#include <cstring>
 
 #include "UIEnums.h"
 #include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "4J.Storage/4J_Storage.h"
 
 class Container;
@@ -21,6 +23,8 @@ class EntityHorse;
 class BeaconTileEntity;
 class Slot;
 class AbstractContainerMenu;
+class Level;
+class FriendSessionInfo;
 
 // 4J Stu - Structs shared by Iggy and Xui scenes.
 typedef struct _UIVec2D {
@@ -218,8 +222,8 @@ typedef struct _SaveListDetails {
         saveId = 0;
         pbThumbnailData = nullptr;
         dwThumbnailSize = 0;
-        ZeroMemory(UTF8SaveName, 128);
-        ZeroMemory(UTF8SaveFilename, MAX_SAVEFILENAME_LENGTH);
+        std::memset(UTF8SaveName, 0, 128);
+        std::memset(UTF8SaveFilename, 0, MAX_SAVEFILENAME_LENGTH);
     }
 
 } SaveListDetails;

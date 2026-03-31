@@ -54,9 +54,9 @@ zPlayerOffs = position->get(2);
     // this is just working out how to get a (0,0,0) point in clip space to pass
     // into the inverted combined model/view/projection matrix, so we just need
     // to get this matrix and get its translation as an equivalent.
-    XMMATRIX _modelview, _proj, _final, _invert;
-    XMVECTOR _det;
-    XMFLOAT4 trans;
+    DirectX::XMMATRIX _modelview, _proj, _final, _invert;
+    DirectX::XMVECTOR _det;
+    DirectX::XMFLOAT4 trans;
 
     memcpy(&_modelview, modelview->_getDataPointer(), 64);
     memcpy(&_proj, projection->_getDataPointer(), 64);

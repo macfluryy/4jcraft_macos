@@ -5,7 +5,10 @@
 
 #include <cassert>
 #include <cstdarg>
+#include <fcntl.h>
+#include <unistd.h>
 #include <sys/mman.h>
+#include <sys/stat.h>
 
 #define TRUE true
 #define FALSE false
@@ -208,13 +211,6 @@ typedef enum _GET_FILEEX_INFO_LEVELS {
 typedef void* XMEMCOMPRESSION_CONTEXT;
 typedef void* XMEMDECOMPRESSION_CONTEXT;
 
-// internal search state for FindFirstFile/FindNextFile
-typedef struct _LINUXSTUBS_FIND_HANDLE {
-    DIR* dir;
-    char dirpath[MAX_PATH];
-    char pattern[MAX_PATH];
-} _LINUXSTUBS_FIND_HANDLE;
-
 // https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime
 typedef struct _SYSTEMTIME {
     WORD wYear;
@@ -284,23 +280,6 @@ static inline FILETIME _TimeToFileTime(time_t t) {
     ft.dwLowDateTime = (DWORD)(val & 0xFFFFFFFF);
     ft.dwHighDateTime = (DWORD)(val >> 32);
     return ft;
-}
-
-// internal helper: fill WIN32_FIND_DATAA from stat + name
-static inline void _FillFindData(const char* name, const struct stat* st,
-                                 WIN32_FIND_DATAA* out) {
-    memset(out, 0, sizeof(*out));
-    out->dwFileAttributes =
-        S_ISDIR(st->st_mode) ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL;
-    if (!(st->st_mode & S_IWUSR))
-        out->dwFileAttributes |= FILE_ATTRIBUTE_READONLY;
-    if (name[0] == '.') out->dwFileAttributes |= FILE_ATTRIBUTE_HIDDEN;
-    out->ftCreationTime = _TimeToFileTime(st->st_mtime);
-    out->ftLastAccessTime = _TimeToFileTime(st->st_atime);
-    out->ftLastWriteTime = _TimeToFileTime(st->st_mtime);
-    out->nFileSizeHigh = (DWORD)((st->st_size >> 32) & 0xFFFFFFFF);
-    out->nFileSizeLow = (DWORD)(st->st_size & 0xFFFFFFFF);
-    strncpy(out->cFileName, name, MAX_PATH - 1);
 }
 
 static inline HANDLE CreateFileA(const char* lpFileName, DWORD dwDesiredAccess,
@@ -430,46 +409,6 @@ static inline DWORD SetFilePointer(HANDLE hFile, LONG lDistanceToMove,
     return (DWORD)(result & 0xFFFFFFFF);
 }
 
-static inline DWORD GetFileAttributesA(const char* lpFileName) {
-    struct stat st{};
-    if (stat(lpFileName, &st) != 0) return INVALID_FILE_ATTRIBUTES;
-    DWORD attrs =
-        S_ISDIR(st.st_mode) ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL;
-    if (!(st.st_mode & S_IWUSR)) attrs |= FILE_ATTRIBUTE_READONLY;
-    const char* base = strrchr(lpFileName, '/');
-    base = base ? base + 1 : lpFileName;
-    if (base[0] == '.') attrs |= FILE_ATTRIBUTE_HIDDEN;
-    return attrs;
-}
-
-static inline DWORD GetFileAttributes(const char* lpFileName) {
-    return GetFileAttributesA(lpFileName);
-}
-
-static inline bool GetFileAttributesExA(const char* lpFileName,
-                                        GET_FILEEX_INFO_LEVELS fInfoLevelId,
-                                        void* lpFileInformation) {
-    if (fInfoLevelId != GetFileExInfoStandard || !lpFileInformation)
-        return FALSE;
-    struct stat st{};
-    if (stat(lpFileName, &st) != 0) return FALSE;
-    WIN32_FILE_ATTRIBUTE_DATA* out =
-        (WIN32_FILE_ATTRIBUTE_DATA*)lpFileInformation;
-    out->dwFileAttributes = GetFileAttributesA(lpFileName);
-    out->ftCreationTime = _TimeToFileTime(st.st_mtime);
-    out->ftLastAccessTime = _TimeToFileTime(st.st_atime);
-    out->ftLastWriteTime = _TimeToFileTime(st.st_mtime);
-    out->nFileSizeHigh = (DWORD)((st.st_size >> 32) & 0xFFFFFFFF);
-    out->nFileSizeLow = (DWORD)(st.st_size & 0xFFFFFFFF);
-    return TRUE;
-}
-
-static inline bool GetFileAttributesEx(const char* lpFileName,
-                                       GET_FILEEX_INFO_LEVELS fInfoLevelId,
-                                       void* lpFileInformation) {
-    return GetFileAttributesExA(lpFileName, fInfoLevelId, lpFileInformation);
-}
-
 static inline bool CreateDirectoryA(const char* lpPathName,
                                     void* lpSecurityAttributes) {
     return mkdir(lpPathName, 0755) == 0;
@@ -496,107 +435,6 @@ static inline bool MoveFileA(const char* lpExistingFileName,
 static inline bool MoveFile(const char* lpExistingFileName,
                             const char* lpNewFileName) {
     return MoveFileA(lpExistingFileName, lpNewFileName);
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea
-static inline HANDLE FindFirstFileA(const char* lpFileName,
-                                    WIN32_FIND_DATAA* lpFindFileData) {
-    if (!lpFileName || !lpFindFileData) return INVALID_HANDLE_VALUE;
-
-    char dirpath[MAX_PATH], pattern[MAX_PATH];
-    const char* sep = strrchr(lpFileName, '/');
-    if (sep) {
-        size_t len = sep - lpFileName;
-        if (len >= MAX_PATH) return INVALID_HANDLE_VALUE;
-        strncpy(dirpath, lpFileName, len);
-        dirpath[len] = '\0';
-        strncpy(pattern, sep + 1, MAX_PATH - 1);
-    } else {
-        strncpy(dirpath, ".", MAX_PATH - 1);
-        strncpy(pattern, lpFileName, MAX_PATH - 1);
-    }
-
-    DIR* dir = opendir(dirpath);
-    if (!dir) return INVALID_HANDLE_VALUE;
-
-    _LINUXSTUBS_FIND_HANDLE* fh =
-        (_LINUXSTUBS_FIND_HANDLE*)malloc(sizeof(_LINUXSTUBS_FIND_HANDLE));
-    if (!fh) {
-        closedir(dir);
-        return INVALID_HANDLE_VALUE;
-    }
-    fh->dir = dir;
-    strncpy(fh->dirpath, dirpath, MAX_PATH - 1);
-    strncpy(fh->pattern, pattern, MAX_PATH - 1);
-
-    struct dirent* ent;
-    while ((ent = readdir(fh->dir)) != nullptr) {
-        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
-            continue;
-        if (fnmatch(fh->pattern, ent->d_name, 0) == 0) {
-            char fullpath[MAX_PATH * 2];
-            snprintf(fullpath, sizeof(fullpath), "%s/%s", fh->dirpath,
-                     ent->d_name);
-            struct stat st{};
-            if (stat(fullpath, &st) == 0)
-                _FillFindData(ent->d_name, &st, lpFindFileData);
-            else {
-                memset(lpFindFileData, 0, sizeof(*lpFindFileData));
-                strncpy(lpFindFileData->cFileName, ent->d_name, MAX_PATH - 1);
-            }
-            return (HANDLE)fh;
-        }
-    }
-
-    closedir(fh->dir);
-    free(fh);
-    return INVALID_HANDLE_VALUE;
-}
-
-static inline HANDLE FindFirstFile(const char* lpFileName,
-                                   WIN32_FIND_DATAA* lpFindFileData) {
-    return FindFirstFileA(lpFileName, lpFindFileData);
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findnextfilea
-static inline bool FindNextFileA(HANDLE hFindFile,
-                                 WIN32_FIND_DATAA* lpFindFileData) {
-    if (hFindFile == INVALID_HANDLE_VALUE || !lpFindFileData) return FALSE;
-    _LINUXSTUBS_FIND_HANDLE* fh = (_LINUXSTUBS_FIND_HANDLE*)hFindFile;
-
-    struct dirent* ent;
-    while ((ent = readdir(fh->dir)) != nullptr) {
-        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0)
-            continue;
-        if (fnmatch(fh->pattern, ent->d_name, 0) == 0) {
-            char fullpath[MAX_PATH * 2];
-            snprintf(fullpath, sizeof(fullpath), "%s/%s", fh->dirpath,
-                     ent->d_name);
-            struct stat st{};
-            if (stat(fullpath, &st) == 0)
-                _FillFindData(ent->d_name, &st, lpFindFileData);
-            else {
-                memset(lpFindFileData, 0, sizeof(*lpFindFileData));
-                strncpy(lpFindFileData->cFileName, ent->d_name, MAX_PATH - 1);
-            }
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
-static inline bool FindNextFile(HANDLE hFindFile,
-                                WIN32_FIND_DATAA* lpFindFileData) {
-    return FindNextFileA(hFindFile, lpFindFileData);
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findclose
-static inline bool FindClose(HANDLE hFindFile) {
-    if (hFindFile == INVALID_HANDLE_VALUE) return FALSE;
-    _LINUXSTUBS_FIND_HANDLE* fh = (_LINUXSTUBS_FIND_HANDLE*)hFindFile;
-    closedir(fh->dir);
-    free(fh);
-    return TRUE;
 }
 
 // internal helper: convert FILETIME (100ns since 1601) to time_t (seconds since

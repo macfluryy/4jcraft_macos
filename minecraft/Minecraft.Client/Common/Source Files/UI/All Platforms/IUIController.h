@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIEnums.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
 
 // 4J Stu - An interface class that defines all the public functions that we use
 // within the game code. This allows us to build the Xbox 360 version without

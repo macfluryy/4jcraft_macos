@@ -1,5 +1,11 @@
 #pragma once
 
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "UIStructs.h"
+
+class HtmlString;
+class ItemInstance;
+
 // Uncomment to enable tap input detection to jump 1 slot. Doesn't work
 // particularly well yet, and I feel the system does not need it. Would probably
 // be required if we decide to slow down the pointer movement. 4J Stu - There

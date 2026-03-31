@@ -180,18 +180,6 @@ typedef struct _XSESSION_SEARCHRESULT_HEADER {
     XSESSION_SEARCHRESULT* pResults;
 } XSESSION_SEARCHRESULT_HEADER, *PXSESSION_SEARCHRESULT_HEADER;
 
-typedef struct _XONLINE_FRIEND {
-    PlayerUID xuid;
-    char szGamertag[XUSER_NAME_SIZE];
-    uint32_t dwFriendState;
-    SessionID sessionID;
-    uint32_t dwTitleID;
-    FILETIME ftUserTime;
-    SessionID xnkidInvite;
-    FILETIME gameinviteTime;
-    uint32_t cchRichPresence;
-} XONLINE_FRIEND, *PXONLINE_FRIEND;
-
 class IQNetCallbacks {};
 class IQNetGameSearch {};
 
@@ -300,30 +288,6 @@ typedef struct _XMEMCODEC_PARAMETERS_LZX {
 
 void XMemDestroyCompressionContext(XMEMCOMPRESSION_CONTEXT Context);
 void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context);
-
-typedef struct {
-    uint8_t type;
-    union {
-        int32_t nData;
-        int64_t i64Data;
-        double dblData;
-        struct {
-            uint32_t cbData;
-            wchar_t* pwszData;
-        } string;
-        float fData;
-        struct {
-            uint32_t cbData;
-            uint8_t* pbData;
-        } binary;
-        FILETIME ftData;
-    };
-} XUSER_DATA, *PXUSER_DATA;
-
-typedef struct {
-    uint32_t dwPropertyId;
-    XUSER_DATA value;
-} XUSER_PROPERTY, *PXUSER_PROPERTY;
 
 const int XC_LANGUAGE_ENGLISH = 0x01;
 const int XC_LANGUAGE_JAPANESE = 0x02;

@@ -1,5 +1,6 @@
 #pragma once
 #include <mutex>
+
 class Timer;
 class MultiPlayerLevel;
 class LevelRenderer;
@@ -37,10 +38,13 @@ class ItemInHandRenderer;
 class LevelSettings;
 class ColourTable;
 class MultiPlayerGameMode;
+class LivingEntity;
+
 #include "java/File.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+#include "4J.Common/4J_Compat.h"
 
 #if defined(linux)
 #undef linux

@@ -6,6 +6,8 @@
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class ServerConnection;
 class Settings;
@@ -14,12 +16,12 @@ class EntityTracker;
 class ConsoleInput;
 class ConsoleCommands;
 class LevelStorageSource;
-class ChunkSource;
 class INetworkPlayer;
 class LevelRuleset;
 class LevelType;
 class ProgressRenderer;
 class CommandDispatcher;
+class LevelGenerationOptions;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 

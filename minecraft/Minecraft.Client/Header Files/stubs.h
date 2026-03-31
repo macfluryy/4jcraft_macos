@@ -12,6 +12,7 @@ static const int GL_FLAT = 0x1D00;
 class FloatBuffer;
 class IntBuffer;
 class ByteBuffer;
+class Minecraft;
 
 void glGenTextures(IntBuffer*);
 int glGenTextures();

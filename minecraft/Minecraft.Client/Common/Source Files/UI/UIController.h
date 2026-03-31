@@ -3,6 +3,15 @@
 #include <cstdint>
 #include <mutex>
 
+#ifdef __linux__
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Stubs/d3d11_stubs.h"
+#elif defined(_WINDOWS64)
+#include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
+#endif
+
+#include "4J.Common/4J_InputActions.h"
+
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIController.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
 #include "UIGroup.h"

@@ -14,6 +14,7 @@
 #include "Minecraft.Client/Common/Source Files/DLC/DLCAudioFile.h"
 #include "4J_Profile.h"
 #include "4J_Storage.h"
+#include "4J_Input.h"
 #include "Minecraft.Client/Header Files/BufferedImage.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"

@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "4J.Storage/4J_Storage.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 typedef struct {
     wchar_t* wchFilename;
