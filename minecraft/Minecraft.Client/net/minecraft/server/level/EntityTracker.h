@@ -1,7 +1,10 @@
 #pragma once
+
 #include "Minecraft.World/ConsoleHelpers/HashExtension.h"
 #include "java/JavaIntHash.h"
+
 class Entity;
+class ServerLevel;
 class ServerPlayer;
 class TrackedEntity;
 class MinecraftServer;

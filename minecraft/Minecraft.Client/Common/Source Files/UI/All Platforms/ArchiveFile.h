@@ -7,7 +7,6 @@
 #include <string>
 
 #include "java/File.h"
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
 class DataInputStream;
 

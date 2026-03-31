@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "4J.Render/4J_Render.h"
 
 class Icon;

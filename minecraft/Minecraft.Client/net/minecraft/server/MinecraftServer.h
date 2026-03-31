@@ -3,7 +3,6 @@
 #include <mutex>
 
 #include "ConsoleInputSource.h"
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
@@ -22,6 +21,7 @@ class LevelType;
 class ProgressRenderer;
 class CommandDispatcher;
 class LevelGenerationOptions;
+class ServerLevel;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 

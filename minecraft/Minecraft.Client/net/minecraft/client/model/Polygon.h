@@ -5,7 +5,6 @@
 
 #include "Vertex.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
 class Tesselator;
 

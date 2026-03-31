@@ -6,6 +6,7 @@
 
 class StructurePiece;
 class StructureStart;
+class Level;
 
 typedef StructurePiece* (*structurePieceCreateFn)();
 typedef StructureStart* (*structureStartCreateFn)();

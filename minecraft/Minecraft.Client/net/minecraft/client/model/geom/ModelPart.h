@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "Minecraft.Client/net/minecraft/client/model/Vertex.h"
 #include "Minecraft.Client/net/minecraft/client/model/Polygon.h"
 #include "Model.h"

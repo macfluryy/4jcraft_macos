@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"

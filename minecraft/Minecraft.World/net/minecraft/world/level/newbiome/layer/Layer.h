@@ -5,7 +5,6 @@
 #include <memory>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
 class LevelType;
 

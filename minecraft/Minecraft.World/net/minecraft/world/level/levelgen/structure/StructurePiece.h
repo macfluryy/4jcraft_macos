@@ -12,6 +12,7 @@ class Random;
 class ChunkPos;
 class BlockSelector;
 class ChestTileEntity;
+class WeighedTreasure;
 class TilePos;
 
 /**
