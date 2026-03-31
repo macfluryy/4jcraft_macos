@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "ItemInstance.h"
 #include "DyePowderItem.h"

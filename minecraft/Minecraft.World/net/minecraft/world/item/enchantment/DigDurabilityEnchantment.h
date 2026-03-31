@@ -2,6 +2,8 @@
 
 #include "Enchantment.h"
 
+#include "java/Random.h"
+
 class DigDurabilityEnchantment : public Enchantment {
 public:
     DigDurabilityEnchantment(int id, int frequency);

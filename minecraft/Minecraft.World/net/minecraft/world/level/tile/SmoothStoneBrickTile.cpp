@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SmoothStoneBrickTile.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 

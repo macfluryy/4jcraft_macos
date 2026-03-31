@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/File.h"
 #include "NbtSlotFile.h"
 

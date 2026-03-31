@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"

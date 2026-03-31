@@ -6,7 +6,6 @@
 #include <memory>
 #include <string>
 
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/System.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

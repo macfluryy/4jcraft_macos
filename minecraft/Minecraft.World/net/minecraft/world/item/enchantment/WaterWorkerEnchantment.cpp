@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "WaterWorkerEnchantment.h"
 
 WaterWorkerEnchantment::WaterWorkerEnchantment(int id, int frequency)

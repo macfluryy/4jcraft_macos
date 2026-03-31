@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"

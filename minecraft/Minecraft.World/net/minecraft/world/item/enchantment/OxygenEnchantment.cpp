@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "OxygenEnchantment.h"
 
 OxygenEnchantment::OxygenEnchantment(int id, int frequency)

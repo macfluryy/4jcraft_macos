@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "WoodTile.h"
 #include "TreeTile.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"

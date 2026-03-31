@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include <mutex>
 #include "java/File.h"
 #include "java/ByteBuffer.h"

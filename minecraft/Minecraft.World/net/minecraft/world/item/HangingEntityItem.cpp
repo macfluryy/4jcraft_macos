@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"

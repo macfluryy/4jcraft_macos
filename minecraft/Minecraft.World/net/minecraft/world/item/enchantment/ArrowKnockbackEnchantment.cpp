@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ArrowKnockbackEnchantment.h"
 
 ArrowKnockbackEnchantment::ArrowKnockbackEnchantment(int id, int frequency)

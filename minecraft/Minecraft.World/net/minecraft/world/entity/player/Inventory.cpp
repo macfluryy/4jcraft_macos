@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "nbt/com.mojang.nbt.h"
 #include "net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"

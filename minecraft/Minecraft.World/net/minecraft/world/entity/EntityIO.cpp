@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/Class.h"
 #include "Painting.h"
 #include "java/System.h"

@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include <string>
 
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Language.h"
 
 class Language;

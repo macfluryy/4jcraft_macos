@@ -1,5 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "KnockbackEnchantment.h"
+
+#include "strings.h"
 
 KnockbackEnchantment::KnockbackEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::weapon) {

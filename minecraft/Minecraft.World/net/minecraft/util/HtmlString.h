@@ -2,6 +2,7 @@
 
 #include <format>
 #include <string>
+#include <vector>
 
 #include "Minecraft.Client/Common/App_enums.h"
 

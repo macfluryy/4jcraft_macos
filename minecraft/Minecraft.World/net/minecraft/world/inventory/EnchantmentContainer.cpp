@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "net.minecraft.world.inventory.h"
 #include "EnchantmentContainer.h"
 

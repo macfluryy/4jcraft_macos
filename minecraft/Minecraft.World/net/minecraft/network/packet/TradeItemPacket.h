@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "Packet.h"
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "PacketListener.h"
 #include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 

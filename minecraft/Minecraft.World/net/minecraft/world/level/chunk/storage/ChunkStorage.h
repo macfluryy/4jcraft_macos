@@ -1,6 +1,7 @@
 #pragma once
 
 class Level;
+class LevelChunk;
 
 class ChunkStorage {
 public:

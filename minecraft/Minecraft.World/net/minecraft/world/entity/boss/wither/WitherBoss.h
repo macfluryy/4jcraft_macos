@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Minecraft.World/Header Files/stdafx.h"
+
 #include "Minecraft.World/net/minecraft/world/entity/monster/Monster.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/RangedAttackMob.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/BossMob.h"

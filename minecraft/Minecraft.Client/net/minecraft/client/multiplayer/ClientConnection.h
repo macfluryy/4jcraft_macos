@@ -1,5 +1,7 @@
 #pragma once
 #include "Minecraft.World/net/minecraft/network/net.minecraft.network.h"
+#include "4J_Storage.h"
+
 class Minecraft;
 class MultiPlayerLevel;
 class SavedDataStorage;

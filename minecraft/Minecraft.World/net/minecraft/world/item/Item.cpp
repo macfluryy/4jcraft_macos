@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"

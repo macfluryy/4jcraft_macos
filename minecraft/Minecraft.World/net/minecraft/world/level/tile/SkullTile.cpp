@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"

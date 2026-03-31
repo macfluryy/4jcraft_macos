@@ -1,5 +1,4 @@
 
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "nbt/com.mojang.nbt.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"

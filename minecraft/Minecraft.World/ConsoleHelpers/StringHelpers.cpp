@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "simdutf.h"
 
 std::wstring toLower(const std::wstring& a) {

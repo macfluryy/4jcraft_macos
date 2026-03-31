@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Node.h"
 #include "java/System.h"
 

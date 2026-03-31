@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "WoodSlabTile.h"
 #include "WoodTile.h"
 #include "TreeTile.h"

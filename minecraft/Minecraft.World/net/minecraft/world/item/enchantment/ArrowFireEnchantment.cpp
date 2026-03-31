@@ -1,5 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ArrowFireEnchantment.h"
+
+#include "strings.h"
 
 ArrowFireEnchantment::ArrowFireEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::bow) {

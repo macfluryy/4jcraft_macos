@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
