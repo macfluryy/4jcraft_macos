@@ -66,7 +66,7 @@ void ChestTile::setPlacedBy(Level* level, int x, int y, int z,
     int e = level->getTile(x + 1, y, z);  // face = 5
 
     int facing = 0;
-    int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
+    int dir = (GameMath::floor(by->yRot * 4 / (360) + 0.5)) & 3;
 
     if (dir == 0) facing = Facing::NORTH;
     if (dir == 1) facing = Facing::EAST;
@@ -332,7 +332,7 @@ int ChestTile::getSignal(LevelSource* level, int x, int y, int z, int dir) {
     int openCount = std::dynamic_pointer_cast<ChestTileEntity>(
                         level->getTileEntity(x, y, z))
                         ->openCount;
-    return Mth::clamp(openCount, Redstone::SIGNAL_NONE, Redstone::SIGNAL_MAX);
+    return GameMath::clamp(openCount, Redstone::SIGNAL_NONE, Redstone::SIGNAL_MAX);
 }
 
 int ChestTile::getDirectSignal(LevelSource* level, int x, int y, int z,

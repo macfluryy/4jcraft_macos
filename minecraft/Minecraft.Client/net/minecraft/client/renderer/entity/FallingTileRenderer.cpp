@@ -39,28 +39,28 @@ void FallingTileRenderer::render(std::shared_ptr<Entity> _tile, double x,
             tileRenderer->level = level;
             Tesselator* t = Tesselator::getInstance();
             t->begin();
-            t->offset(-Mth::floor(tile->x) - 0.5f, -Mth::floor(tile->y) - 0.5f,
-                      -Mth::floor(tile->z) - 0.5f);
+            t->offset(-GameMath::floor(tile->x) - 0.5f, -GameMath::floor(tile->y) - 0.5f,
+                      -GameMath::floor(tile->z) - 0.5f);
             tileRenderer->tesselateAnvilInWorld(
-                (AnvilTile*)tt, Mth::floor(tile->x), Mth::floor(tile->y),
-                Mth::floor(tile->z), tile->data);
+                (AnvilTile*)tt, GameMath::floor(tile->x), GameMath::floor(tile->y),
+                GameMath::floor(tile->z), tile->data);
             t->offset(0, 0, 0);
             t->end();
         } else if (tt == Tile::dragonEgg) {
             tileRenderer->level = level;
             Tesselator* t = Tesselator::getInstance();
             t->begin();
-            t->offset(-Mth::floor(tile->x) - 0.5f, -Mth::floor(tile->y) - 0.5f,
-                      -Mth::floor(tile->z) - 0.5f);
-            tileRenderer->tesselateInWorld(tt, Mth::floor(tile->x),
-                                           Mth::floor(tile->y),
-                                           Mth::floor(tile->z));
+            t->offset(-GameMath::floor(tile->x) - 0.5f, -GameMath::floor(tile->y) - 0.5f,
+                      -GameMath::floor(tile->z) - 0.5f);
+            tileRenderer->tesselateInWorld(tt, GameMath::floor(tile->x),
+                                           GameMath::floor(tile->y),
+                                           GameMath::floor(tile->z));
             t->offset(0, 0, 0);
             t->end();
         } else if (tt != nullptr) {
             tileRenderer->setShape(tt);
-            tileRenderer->renderBlock(tt, level, Mth::floor(tile->x),
-                                      Mth::floor(tile->y), Mth::floor(tile->z),
+            tileRenderer->renderBlock(tt, level, GameMath::floor(tile->x),
+                                      GameMath::floor(tile->y), GameMath::floor(tile->z),
                                       tile->data);
         }
         glEnable(GL_LIGHTING);

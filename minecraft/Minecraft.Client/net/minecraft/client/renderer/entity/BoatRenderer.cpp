@@ -2,7 +2,7 @@
 #include "BoatRenderer.h"
 #include "../../model/BoatModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 ResourceLocation BoatRenderer::BOAT_LOCATION = ResourceLocation(TN_ITEM_BOAT);
 
@@ -27,7 +27,7 @@ void BoatRenderer::render(std::shared_ptr<Entity> _boat, double x, double y,
     float dmg = boat->getDamage() - a;
     if (dmg < 0) dmg = 0;
     if (hurt > 0) {
-        glRotatef(Mth::sin(hurt) * hurt * dmg / 10 * boat->getHurtDir(), 1, 0,
+        glRotatef(sinf(hurt) * hurt * dmg / 10 * boat->getHurtDir(), 1, 0,
                   0);
     }
 

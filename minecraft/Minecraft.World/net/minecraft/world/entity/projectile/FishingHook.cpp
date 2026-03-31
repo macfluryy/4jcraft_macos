@@ -71,16 +71,16 @@ FishingHook::FishingHook(Level* level, std::shared_ptr<Player> mob)
     moveTo(mob->x, mob->y + 1.62 - mob->heightOffset, mob->z, mob->yRot,
            mob->xRot);
 
-    x -= Mth::cos(yRot / 180 * M_PI) * 0.16f;
+    x -= cosf(yRot / 180 * std::numbers::pi) * 0.16f;
     y -= 0.1f;
-    z -= Mth::sin(yRot / 180 * M_PI) * 0.16f;
+    z -= sinf(yRot / 180 * std::numbers::pi) * 0.16f;
     setPos(x, y, z);
     heightOffset = 0;
 
     float speed = 0.4f;
-    xd = (-Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI)) * speed;
-    zd = (Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI)) * speed;
-    yd = (-Mth::sin(xRot / 180 * M_PI)) * speed;
+    xd = (-sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi)) * speed;
+    zd = (cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi)) * speed;
+    yd = (-sinf(xRot / 180 * std::numbers::pi)) * speed;
 
     shoot(xd, yd, zd, 1.5f, 1);
 }
@@ -115,8 +115,8 @@ void FishingHook::shoot(double xd, double yd, double zd, float pow,
 
     double sd = sqrt(xd * xd + zd * zd);
 
-    yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-    xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+    xRotO = xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
     life = 0;
 }
 
@@ -149,7 +149,7 @@ void FishingHook::tick() {
         double yt = y + (ly - y) / lSteps;
         double zt = z + (lz - z) / lSteps;
 
-        double yrd = Mth::wrapDegrees(lyr - yRot);
+        double yrd = GameMath::wrapDegrees(lyr - yRot);
 
         yRot += (float)((yrd) / lSteps);
         xRot += (float)((lxr - xRot) / lSteps);
@@ -263,8 +263,8 @@ void FishingHook::tick() {
     move(xd, yd, zd);
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-    xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+    yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+    xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;
@@ -299,8 +299,8 @@ void FishingHook::tick() {
             nibble--;
         } else {
             int nibbleOdds = 500;
-            if (level->isRainingAt(Mth::floor(x), Mth::floor(y) + 1,
-                                   Mth::floor(z)))
+            if (level->isRainingAt(GameMath::floor(x), GameMath::floor(y) + 1,
+                                   GameMath::floor(z)))
                 nibbleOdds = 300;
 
             if (random->nextInt(nibbleOdds) == 0) {
@@ -309,7 +309,7 @@ void FishingHook::tick() {
                 playSound(
                     eSoundType_RANDOM_SPLASH, 0.25f,
                     1 + (random->nextFloat() - random->nextFloat()) * 0.4f);
-                float yt = (float)Mth::floor(bb.y0);
+                float yt = (float)GameMath::floor(bb.y0);
                 for (int i = 0; i < 1 + bbWidth * 20; i++) {
                     float xo = (random->nextFloat() * 2 - 1) * bbWidth;
                     float zo = (random->nextFloat() * 2 - 1) * bbWidth;

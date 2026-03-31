@@ -6,7 +6,7 @@
 #include "EntityRenderDispatcher.h"
 #include "../../multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 ResourceLocation LivingEntityRenderer::ENCHANT_GLINT_LOCATION =
@@ -53,7 +53,7 @@ void LivingEntityRenderer::render(std::shared_ptr<Entity> _mob, double x,
                 std::dynamic_pointer_cast<LivingEntity>(mob->riding);
             bodyRot = rotlerp(riding->yBodyRotO, riding->yBodyRot, a);
 
-            float headDiff = Mth::wrapDegrees(headRot - bodyRot);
+            float headDiff = GameMath::wrapDegrees(headRot - bodyRot);
             if (headDiff < -85) headDiff = -85;
             if (headDiff >= 85) headDiff = +85;
             bodyRot = headRot - headDiff;
@@ -319,8 +319,8 @@ void LivingEntityRenderer::renderArrows(std::shared_ptr<LivingEntity> mob,
                 zd *= -1;
             }
             float sd = (float)sqrt(xd * xd + zd * zd);
-            arrow->yRotO = arrow->yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-            arrow->xRotO = arrow->xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+            arrow->yRotO = arrow->yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+            arrow->xRotO = arrow->xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
             double x = 0;
             double y = 0;
             double z = 0;

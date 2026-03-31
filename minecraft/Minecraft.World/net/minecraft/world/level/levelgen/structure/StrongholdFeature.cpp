@@ -4,7 +4,7 @@
 #include "../../net.minecraft.world.level.h"
 #include "../../biome/net.minecraft.world.level.biome.h"
 #include "../../dimension/net.minecraft.world.level.dimension.h"
-#include "../../../../util/Mth.h"
+#include "../../../../util/GameMath.h"
 #include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "java/JavaMath.h"
 
@@ -49,14 +49,14 @@ StrongholdFeature::StrongholdFeature(
 
     for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_DISTANCE) == 0) {
-            distance = Mth::getDouble(it->second, distance, 1);
+            distance = GameMath::getDouble(it->second, distance, 1);
         } else if (it->first.compare(OPTION_COUNT) == 0) {
             // 4J-JEV: Removed, we only have the one stronghold.
-            // strongholdPos = new ChunkPos[ Mth::getInt(it->second,
+            // strongholdPos = new ChunkPos[ GameMath::getInt(it->second,
             // strongholdPos_length, 1) ];
             assert(false);
         } else if (it->first.compare(OPTION_SPREAD) == 0) {
-            spread = Mth::getInt(it->second, spread, 1);
+            spread = GameMath::getInt(it->second, spread, 1);
         }
     }
 }
@@ -76,7 +76,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
         Random random;
 
         random.setSeed(level->getSeed());
-        double angle = random.nextDouble() * M_PI * 2.0;
+        double angle = random.nextDouble() * std::numbers::pi * 2.0;
         int circle = 1;
 
         // 4J Stu - Changed so that we keep trying more until we have found
@@ -158,7 +158,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
                 delete strongholdPos[i];
                 strongholdPos[i] = new ChunkPos(selectedX, selectedZ);
 
-                angle += M_PI * 2.0 / (double)strongholdPos_length;
+                angle += std::numbers::pi * 2.0 / (double)strongholdPos_length;
             }
 
             // 4J Stu - We want to make sure that we have at least one
@@ -167,7 +167,7 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 
             // 4J Stu - Randomise the angles for retries as well
 #ifdef _LARGE_WORLDS
-            angle = random.nextDouble() * M_PI * 2.0 * circle / (double)spread;
+            angle = random.nextDouble() * std::numbers::pi * 2.0 * circle / (double)spread;
 #endif
         } while (!hasFoundValidPos && findAttempts < MAX_STRONGHOLD_ATTEMPTS);
 

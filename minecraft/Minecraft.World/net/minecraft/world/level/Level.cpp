@@ -1372,13 +1372,13 @@ HitResult* Level::clip(Vec3* a, Vec3* b, bool liquid, bool solidOnly) {
     if (std::isnan(b->x) || std::isnan(b->y) || std::isnan(b->z))
         return nullptr;
 
-    int xTile1 = Mth::floor(b->x);
-    int yTile1 = Mth::floor(b->y);
-    int zTile1 = Mth::floor(b->z);
+    int xTile1 = GameMath::floor(b->x);
+    int yTile1 = GameMath::floor(b->y);
+    int zTile1 = GameMath::floor(b->z);
 
-    int xTile0 = Mth::floor(a->x);
-    int yTile0 = Mth::floor(a->y);
-    int zTile0 = Mth::floor(a->z);
+    int xTile0 = GameMath::floor(a->x);
+    int yTile0 = GameMath::floor(a->y);
+    int zTile0 = GameMath::floor(a->z);
 
     {
         int t = getTile(xTile0, yTile0, zTile0);
@@ -1586,8 +1586,8 @@ bool Level::addGlobalEntity(std::shared_ptr<Entity> e) {
 #pragma optimize("", off)
 
 bool Level::addEntity(std::shared_ptr<Entity> e) {
-    int xc = Mth::floor(e->x / 16);
-    int zc = Mth::floor(e->z / 16);
+    int xc = GameMath::floor(e->x / 16);
+    int zc = GameMath::floor(e->z / 16);
 
     if (e == nullptr) {
         return false;
@@ -1730,12 +1730,12 @@ std::vector<AABB>* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
                           bool noEntities /* = false*/,
                           bool blockAtEdge /* = false*/) {
     boxes.clear();
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     int maxxz = (dimension->getXZSize() * 16) / 2;
     int minxz = -maxxz;
@@ -1817,12 +1817,12 @@ std::vector<AABB>* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
 std::vector<AABB>* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
     return getCubes(nullptr, box, true, blockAtEdge);
     // boxes.clear();
-    // int x0 = Mth::floor(box->x0);
-    // int x1 = Mth::floor(box->x1 + 1);
-    // int y0 = Mth::floor(box->y0);
-    // int y1 = Mth::floor(box->y1 + 1);
-    // int z0 = Mth::floor(box->z0);
-    // int z1 = Mth::floor(box->z1 + 1);
+    // int x0 = GameMath::floor(box->x0);
+    // int x1 = GameMath::floor(box->x1 + 1);
+    // int y0 = GameMath::floor(box->y0);
+    // int y1 = GameMath::floor(box->y1 + 1);
+    // int z0 = GameMath::floor(box->z0);
+    // int z1 = GameMath::floor(box->z1 + 1);
 
     // for (int x = x0; x < x1; x++)
     //{
@@ -1851,7 +1851,7 @@ std::vector<AABB>* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */
 int Level::getOldSkyDarken(float a) {
     float td = getTimeOfDay(a);
 
-    float br = 1 - (Mth::cos(td * M_PI * 2) * 2 + 0.5f);
+    float br = 1 - (cosf(td * std::numbers::pi * 2) * 2 + 0.5f);
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -1867,7 +1867,7 @@ int Level::getOldSkyDarken(float a) {
 float Level::getSkyDarken(float a) {
     float td = getTimeOfDay(a);
 
-    float br = 1 - (Mth::cos(td * M_PI * 2) * 2 + 0.2f);
+    float br = 1 - (cosf(td * std::numbers::pi * 2) * 2 + 0.2f);
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -1883,12 +1883,12 @@ float Level::getSkyDarken(float a) {
 Vec3 Level::getSkyColor(std::shared_ptr<Entity> source, float a) {
     float td = getTimeOfDay(a);
 
-    float br = Mth::cos(td * M_PI * 2) * 2 + 0.5f;
+    float br = cosf(td * std::numbers::pi * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
-    int xx = Mth::floor(source->x);
-    int zz = Mth::floor(source->z);
+    int xx = GameMath::floor(source->x);
+    int zz = GameMath::floor(source->z);
     Biome* biome = getBiome(xx, zz);
     float temp = biome->getTemperature();
     int skyColor = biome->getSkyColor(temp);
@@ -1956,13 +1956,13 @@ float Level::getMoonBrightness() {
 
 float Level::getSunAngle(float a) {
     float td = getTimeOfDay(a);
-    return td * M_PI * 2;
+    return td * std::numbers::pi * 2;
 }
 
 Vec3 Level::getCloudColor(float a) {
     float td = getTimeOfDay(a);
 
-    float br = Mth::cos(td * M_PI * 2) * 2.0f + 0.5f;
+    float br = cosf(td * std::numbers::pi * 2) * 2.0f + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -2048,7 +2048,7 @@ int Level::getLightDepth(int x, int z) {
 float Level::getStarBrightness(float a) {
     float td = getTimeOfDay(a);
 
-    float br = 1 - (Mth::cos(td * M_PI * 2) * 2 + 0.25f);
+    float br = 1 - (cosf(td * std::numbers::pi * 2) * 2 + 0.25f);
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 
@@ -2263,8 +2263,8 @@ void Level::addAllPendingTileEntities(
 void Level::tick(std::shared_ptr<Entity> e) { tick(e, true); }
 
 void Level::tick(std::shared_ptr<Entity> e, bool actual) {
-    int xc = Mth::floor(e->x);
-    int zc = Mth::floor(e->z);
+    int xc = GameMath::floor(e->x);
+    int zc = GameMath::floor(e->z);
     int r = 32;
     if (actual && !hasChunksAt(xc - r, 0, zc - r, xc + r, 0, zc + r)) {
         return;
@@ -2293,9 +2293,9 @@ void Level::tick(std::shared_ptr<Entity> e, bool actual) {
     if (!std::isfinite(e->xRot)) e->xRot = e->xRotO;
     if (!std::isfinite(e->yRot)) e->yRot = e->yRotO;
 
-    int xcn = Mth::floor(e->x / 16);
-    int ycn = Mth::floor(e->y / 16);
-    int zcn = Mth::floor(e->z / 16);
+    int xcn = GameMath::floor(e->x / 16);
+    int ycn = GameMath::floor(e->y / 16);
+    int zcn = GameMath::floor(e->z / 16);
 
     if (!e->inChunk ||
         (e->xChunk != xcn || e->yChunk != ycn || e->zChunk != zcn)) {
@@ -2339,12 +2339,12 @@ bool Level::isUnobstructed(AABB* aabb, std::shared_ptr<Entity> ignore) {
 }
 
 bool Level::containsAnyBlocks(AABB* box) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     if (box->x0 < 0) x0--;
     if (box->y0 < 0) y0--;
@@ -2362,12 +2362,12 @@ bool Level::containsAnyBlocks(AABB* box) {
 }
 
 bool Level::containsAnyLiquid(AABB* box) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     if (box->x0 < 0) x0--;
     if (box->y0 < 0) y0--;
@@ -2390,12 +2390,12 @@ bool Level::containsAnyLiquid(AABB* box) {
 // aim is to not load or create any chunk we haven't already got, and be
 // cautious about placing the mob's.
 bool Level::containsAnyLiquid_NoLoad(AABB* box) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     if (box->x0 < 0) x0--;
     if (box->y0 < 0) y0--;
@@ -2415,12 +2415,12 @@ bool Level::containsAnyLiquid_NoLoad(AABB* box) {
 }
 
 bool Level::containsFireTile(AABB* box) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     if (hasChunksAt(x0, y0, z0, x1, y1, z1)) {
         for (int x = x0; x < x1; x++)
@@ -2438,14 +2438,14 @@ bool Level::containsFireTile(AABB* box) {
 
 bool Level::checkAndHandleWater(AABB* box, Material* material,
                                 std::shared_ptr<Entity> e) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
 
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
 
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     if (!hasChunksAt(x0, y0, z0, x1, y1, z1)) {
         return false;
@@ -2479,12 +2479,12 @@ bool Level::checkAndHandleWater(AABB* box, Material* material,
 }
 
 bool Level::containsMaterial(AABB* box, Material* material) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     for (int x = x0; x < x1; x++) {
         for (int y = y0; y < y1; y++) {
@@ -2500,12 +2500,12 @@ bool Level::containsMaterial(AABB* box, Material* material) {
 }
 
 bool Level::containsLiquid(AABB* box, Material* material) {
-    int x0 = Mth::floor(box->x0);
-    int x1 = Mth::floor(box->x1 + 1);
-    int y0 = Mth::floor(box->y0);
-    int y1 = Mth::floor(box->y1 + 1);
-    int z0 = Mth::floor(box->z0);
-    int z1 = Mth::floor(box->z1 + 1);
+    int x0 = GameMath::floor(box->x0);
+    int x1 = GameMath::floor(box->x1 + 1);
+    int y0 = GameMath::floor(box->y0);
+    int y1 = GameMath::floor(box->y1 + 1);
+    int z0 = GameMath::floor(box->z0);
+    int z1 = GameMath::floor(box->z1 + 1);
 
     for (int x = x0; x < x1; x++) {
         for (int y = y0; y < y1; y++) {
@@ -2928,8 +2928,8 @@ void Level::buildAndPrepareChunksToPoll() {
     int* zz = new int[playerCount];
     for (int i = 0; i < playerCount; i++) {
         std::shared_ptr<Player> player = players[i];
-        xx[i] = Mth::floor(player->x / 16);
-        zz[i] = Mth::floor(player->z / 16);
+        xx[i] = GameMath::floor(player->x / 16);
+        zz[i] = GameMath::floor(player->z / 16);
         chunksToPoll.insert(ChunkPos(xx[i], zz[i]));
     }
 
@@ -3187,9 +3187,9 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                             // cexp--;		// 4J - removed, change
                             // from 1.2.3
                             if (expected > 0) {
-                                int xd = Mth::abs(x - xc);
-                                int yd = Mth::abs(y - yc);
-                                int zd = Mth::abs(z - zc);
+                                int xd = GameMath::abs(x - xc);
+                                int yd = GameMath::abs(y - yc);
+                                int zd = GameMath::abs(z - zc);
                                 if (xd + yd + zd < 17) {
                                     bool edge = false;
                                     for (int face = 0; face < 6; face++) {
@@ -3374,10 +3374,10 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntities(
     std::shared_ptr<Entity> except, AABB* bb, const EntitySelector* selector) {
     MemSect(40);
     es.clear();
-    int xc0 = Mth::floor((bb->x0 - 2) / 16);
-    int xc1 = Mth::floor((bb->x1 + 2) / 16);
-    int zc0 = Mth::floor((bb->z0 - 2) / 16);
-    int zc1 = Mth::floor((bb->z1 + 2) / 16);
+    int xc0 = GameMath::floor((bb->x0 - 2) / 16);
+    int xc1 = GameMath::floor((bb->x1 + 2) / 16);
+    int zc0 = GameMath::floor((bb->z0 - 2) / 16);
+    int zc1 = GameMath::floor((bb->z1 + 2) / 16);
 
     for (int xc = xc0; xc <= xc1; xc++)
         for (int zc = zc0; zc <= zc1; zc++) {
@@ -3397,10 +3397,10 @@ std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
 
 std::vector<std::shared_ptr<Entity> >* Level::getEntitiesOfClass(
     const std::type_info& baseClass, AABB* bb, const EntitySelector* selector) {
-    int xc0 = Mth::floor((bb->x0 - 2) / 16);
-    int xc1 = Mth::floor((bb->x1 + 2) / 16);
-    int zc0 = Mth::floor((bb->z0 - 2) / 16);
-    int zc1 = Mth::floor((bb->z1 + 2) / 16);
+    int xc0 = GameMath::floor((bb->x0 - 2) / 16);
+    int xc1 = GameMath::floor((bb->x1 + 2) / 16);
+    int zc0 = GameMath::floor((bb->z0 - 2) / 16);
+    int zc1 = GameMath::floor((bb->z1 + 2) / 16);
     std::vector<std::shared_ptr<Entity> >* es =
         new std::vector<std::shared_ptr<Entity> >();
 
@@ -3584,9 +3584,9 @@ int Level::getSeaLevel() { return seaLevel; }
 Path* Level::findPath(std::shared_ptr<Entity> from, std::shared_ptr<Entity> to,
                       float maxDist, bool canPassDoors, bool canOpenDoors,
                       bool avoidWater, bool canFloat) {
-    int x = Mth::floor(from->x);
-    int y = Mth::floor(from->y + 1);
-    int z = Mth::floor(from->z);
+    int x = GameMath::floor(from->x);
+    int y = GameMath::floor(from->y + 1);
+    int z = GameMath::floor(from->z);
 
     int r = (int)(maxDist + 16);
     int x1 = x - r;
@@ -3605,9 +3605,9 @@ Path* Level::findPath(std::shared_ptr<Entity> from, std::shared_ptr<Entity> to,
 Path* Level::findPath(std::shared_ptr<Entity> from, int xBest, int yBest,
                       int zBest, float maxDist, bool canPassDoors,
                       bool canOpenDoors, bool avoidWater, bool canFloat) {
-    int x = Mth::floor(from->x);
-    int y = Mth::floor(from->y);
-    int z = Mth::floor(from->z);
+    int x = GameMath::floor(from->x);
+    int y = GameMath::floor(from->y);
+    int z = GameMath::floor(from->z);
 
     int r = (int)(maxDist + 8);
     int x1 = x - r;
@@ -3948,8 +3948,8 @@ void Level::setSpawnPos(Pos* spawnPos) {
 }
 
 void Level::ensureAdded(std::shared_ptr<Entity> entity) {
-    int xc = Mth::floor(entity->x / 16);
-    int zc = Mth::floor(entity->z / 16);
+    int xc = GameMath::floor(entity->x / 16);
+    int zc = GameMath::floor(entity->z / 16);
     int r = 2;
     for (int x = xc - r; x <= xc + r; x++) {
         for (int z = zc - r; z <= zc + r; z++) {
@@ -4129,7 +4129,7 @@ void Level::updateNeighbourForOutputSignal(int x, int y, int z, int source) {
 }
 
 float Level::getDifficulty(double x, double y, double z) {
-    return getDifficulty(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+    return getDifficulty(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
 }
 
 /**
@@ -4143,7 +4143,7 @@ float Level::getDifficulty(int x, int y, int z) {
     if (hasChunkAt(x, y, z)) {
         float moonBrightness = getMoonBrightness();
 
-        result += Mth::clamp(getChunkAt(x, z)->inhabitedTime /
+        result += GameMath::clamp(getChunkAt(x, z)->inhabitedTime /
                                  (TICKS_PER_DAY * 150.0f),
                              0.0f, 1.0f) *
                   (isHard ? 1.0f : 0.75f);
@@ -4154,7 +4154,7 @@ float Level::getDifficulty(int x, int y, int z) {
         result *= difficulty / 2.0f;
     }
 
-    return Mth::clamp(result, 0.0f, isHard ? 1.5f : 1.0f);
+    return GameMath::clamp(result, 0.0f, isHard ? 1.5f : 1.0f);
     ;
 }
 

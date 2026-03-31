@@ -1,6 +1,6 @@
 #include "../../../../Header Files/stdafx.h"
 #include "java/JavaMath.h"
-#include "../../util/Mth.h"
+#include "../../util/GameMath.h"
 #include "../../network/packet/net.minecraft.network.packet.h"
 #include "../level/net.minecraft.world.level.h"
 #include "../level/tile/net.minecraft.world.level.tile.h"
@@ -113,7 +113,7 @@ LivingEntity::LivingEntity(Level* level) : Entity(level) {
     rotA = (float)(Math::random() + 1) * 0.01f;
     setPos(x, y, z);
     timeOffs = (float)Math::random() * 12398;
-    yRot = (float)(Math::random() * M_PI * 2);
+    yRot = (float)(Math::random() * std::numbers::pi * 2);
     yHeadRot = yRot;
 
     footSize = 0.5f;
@@ -155,9 +155,9 @@ void LivingEntity::checkFallDamage(double ya, bool onGround) {
     }
 
     if (onGround && fallDistance > 0) {
-        int xt = Mth::floor(x);
-        int yt = Mth::floor(y - 0.2f - heightOffset);
-        int zt = Mth::floor(z);
+        int xt = GameMath::floor(x);
+        int yt = GameMath::floor(y - 0.2f - heightOffset);
+        int zt = GameMath::floor(z);
         int t = level->getTile(xt, yt, zt);
         if (t == 0) {
             int renderShape = level->getTileRenderShape(xt, yt - 1, zt);
@@ -671,7 +671,7 @@ void LivingEntity::heal(float heal) {
 float LivingEntity::getHealth() { return entityData->getFloat(DATA_HEALTH_ID); }
 
 void LivingEntity::setHealth(float health) {
-    entityData->set(DATA_HEALTH_ID, Mth::clamp(health, 0.0f, getMaxHealth()));
+    entityData->set(DATA_HEALTH_ID, GameMath::clamp(health, 0.0f, getMaxHealth()));
 }
 
 bool LivingEntity::hurt(DamageSource* source, float dmg) {
@@ -767,7 +767,7 @@ bool LivingEntity::hurt(DamageSource* source, float dmg) {
                 xd = (Math::random() - Math::random()) * 0.01;
                 zd = (Math::random() - Math::random()) * 0.01;
             }
-            hurtDir = (float)(atan2(zd, xd) * 180 / M_PI) - yRot;
+            hurtDir = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - yRot;
             knockback(sourceEntity, dmg, xd, zd);
         } else {
             hurtDir = (float)(int)((Math::random() * 2) *
@@ -795,13 +795,13 @@ void LivingEntity::breakItem(std::shared_ptr<ItemInstance> itemInstance) {
     for (int i = 0; i < 5; i++) {
         Vec3 d = Vec3((random->nextFloat() - 0.5) * 0.1,
                       Math::random() * 0.1 + 0.1, 0);
-        d.xRot(-xRot * M_PI / 180);
-        d.yRot(-yRot * M_PI / 180);
+        d.xRot(-xRot * std::numbers::pi / 180);
+        d.yRot(-yRot * std::numbers::pi / 180);
 
         Vec3 p = Vec3((random->nextFloat() - 0.5) * 0.3,
                       -random->nextFloat() * 0.6 - 0.3, 0.6);
-        p.xRot(-xRot * M_PI / 180);
-        p.yRot(-yRot * M_PI / 180);
+        p.xRot(-xRot * std::numbers::pi / 180);
+        p.yRot(-yRot * std::numbers::pi / 180);
         p = p.add(x, y + getHeadHeight(), z);
         level->addParticle(PARTICLE_ICONCRACK(itemInstance->getItem()->id, 0),
                            p.x, p.y, p.z, d.x, d.y + 0.05, d.z);
@@ -867,7 +867,7 @@ void LivingEntity::knockback(std::shared_ptr<Entity> source, float dmg,
     }
 
     hasImpulse = true;
-    float dd = Mth::sqrt(xd * xd + zd * zd);
+    float dd = GameMath::sqrt(xd * xd + zd * zd);
     float pow = 0.4f;
 
     this->xd /= 2;
@@ -897,9 +897,9 @@ void LivingEntity::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
 }
 
 bool LivingEntity::onLadder() {
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(bb.y0);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(bb.y0);
+    int zt = GameMath::floor(z);
 
     // 4J-PB - TU9 - add climbable vines
     int iTile = level->getTile(xt, yt, zt);
@@ -925,9 +925,9 @@ void LivingEntity::causeFallDamage(float distance) {
         }
         hurt(DamageSource::fall, dmg);
 
-        int t = level->getTile(Mth::floor(x),
-                               Mth::floor(y - 0.2f - this->heightOffset),
-                               Mth::floor(z));
+        int t = level->getTile(GameMath::floor(x),
+                               GameMath::floor(y - 0.2f - this->heightOffset),
+                               GameMath::floor(z));
         if (t > 0) {
             const Tile::SoundType* soundType = Tile::tiles[t]->soundType;
             MemSect(31);
@@ -1214,10 +1214,10 @@ void LivingEntity::jumpFromGround() {
         yd += (getEffect(MobEffect::jump)->getAmplifier() + 1) * .1f;
     }
     if (isSprinting()) {
-        float rr = yRot * Mth::RAD_TO_GRAD;
+        float rr = yRot * GameMath::DEG_TO_RAD;
 
-        xd -= Mth::sin(rr) * 0.2f;
-        zd += Mth::cos(rr) * 0.2f;
+        xd -= sinf(rr) * 0.2f;
+        zd += cosf(rr) * 0.2f;
     }
     this->hasImpulse = true;
 }
@@ -1254,8 +1254,8 @@ void LivingEntity::travel(float xa, float ya) {
         float friction = 0.91f;
         if (onGround) {
             friction = 0.6f * 0.91f;
-            int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
-                                   Mth::floor(z));
+            int t = level->getTile(GameMath::floor(x), GameMath::floor(bb.y0) - 1,
+                                   GameMath::floor(z));
             if (t > 0) {
                 friction = Tile::tiles[t]->friction * 0.91f;
             }
@@ -1276,8 +1276,8 @@ void LivingEntity::travel(float xa, float ya) {
         friction = 0.91f;
         if (onGround) {
             friction = 0.6f * 0.91f;
-            int t = level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1,
-                                   Mth::floor(z));
+            int t = level->getTile(GameMath::floor(x), GameMath::floor(bb.y0) - 1,
+                                   GameMath::floor(z));
             if (t > 0) {
                 friction = Tile::tiles[t]->friction * 0.91f;
             }
@@ -1319,7 +1319,7 @@ void LivingEntity::travel(float xa, float ya) {
     walkAnimSpeedO = walkAnimSpeed;
     double xxd = x - xo;
     double zzd = z - zo;
-    float wst = Mth::sqrt(xxd * xxd + zzd * zzd) * 4;
+    float wst = GameMath::sqrt(xxd * xxd + zzd * zzd) * 4;
     if (wst > 1) wst = 1;
     walkAnimSpeed += (wst - walkAnimSpeed) * 0.4f;
     walkAnimPos += walkAnimSpeed;
@@ -1333,12 +1333,12 @@ void LivingEntity::travel(float xa, float ya) {
 int LivingEntity::getLightColor(float a) {
     float accum[2] = {0, 0};
     float totVol = (bb.x1 - bb.x0) * (bb.y1 - bb.y0) * (bb.z1 - bb.z0);
-    int xmin = Mth::floor(bb.x0);
-    int xmax = Mth::floor(bb.x1);
-    int ymin = Mth::floor(bb.y0);
-    int ymax = Mth::floor(bb.y1);
-    int zmin = Mth::floor(bb.z0);
-    int zmax = Mth::floor(bb.z1);
+    int xmin = GameMath::floor(bb.x0);
+    int xmax = GameMath::floor(bb.x1);
+    int ymin = GameMath::floor(bb.y0);
+    int ymax = GameMath::floor(bb.y1);
+    int zmin = GameMath::floor(bb.z0);
+    int zmax = GameMath::floor(bb.z1);
     for (int xt = xmin; xt <= xmax; xt++)
         for (int yt = ymin; yt <= ymax; yt++)
             for (int zt = zmin; zt <= zmax; zt++) {
@@ -1438,7 +1438,7 @@ void LivingEntity::tick() {
     if (sideDist > 0.05f * 0.05f) {
         tRun = 1;
         walkSpeed = sqrt(sideDist) * 3;
-        yBodyRotT = ((float)atan2(zd, xd) * 180 / (float)M_PI - 90);
+        yBodyRotT = ((float)atan2(zd, xd) * 180 / (float)std::numbers::pi - 90);
     }
     if (attackAnim > 0) {
         yBodyRotT = yRot;
@@ -1466,10 +1466,10 @@ void LivingEntity::tick() {
 }
 
 float LivingEntity::tickHeadTurn(float yBodyRotT, float walkSpeed) {
-    float yBodyRotD = Mth::wrapDegrees(yBodyRotT - yBodyRot);
+    float yBodyRotD = GameMath::wrapDegrees(yBodyRotT - yBodyRot);
     yBodyRot += yBodyRotD * 0.3f;
 
-    float headDiff = Mth::wrapDegrees(yRot - yBodyRot);
+    float headDiff = GameMath::wrapDegrees(yRot - yBodyRot);
     bool behind = headDiff < -90 || headDiff >= 90;
     if (headDiff < -75) headDiff = -75;
     if (headDiff >= 75) headDiff = +75;
@@ -1492,8 +1492,8 @@ void LivingEntity::aiStep() {
         double yt = y + (ly - y) / lSteps;
         double zt = z + (lz - z) / lSteps;
 
-        double yrd = Mth::wrapDegrees(lyr - yRot);
-        double xrd = Mth::wrapDegrees(lxr - xRot);
+        double yrd = GameMath::wrapDegrees(lyr - yRot);
+        double xrd = GameMath::wrapDegrees(lxr - xRot);
 
         yRot += (float)((yrd) / lSteps);
         xRot += (float)((xrd) / lSteps);
@@ -1652,20 +1652,20 @@ std::optional<Vec3> LivingEntity::getLookAngle() { return getViewVector(1); }
 
 Vec3 LivingEntity::getViewVector(float a) {
     if (a == 1) {
-        float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
-        float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
-        float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
-        float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
+        float yCos = cosf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+        float ySin = sinf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+        float xCos = -cosf(-xRot * GameMath::DEG_TO_RAD);
+        float xSin = sinf(-xRot * GameMath::DEG_TO_RAD);
 
         return Vec3(ySin * xCos, xSin, yCos * xCos);
     }
     float xRot = xRotO + (this->xRot - xRotO) * a;
     float yRot = yRotO + (this->yRot - yRotO) * a;
 
-    float yCos = Mth::cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
-    float ySin = Mth::sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
-    float xCos = -Mth::cos(-xRot * Mth::RAD_TO_GRAD);
-    float xSin = Mth::sin(-xRot * Mth::RAD_TO_GRAD);
+    float yCos = cosf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+    float ySin = sinf(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+    float xCos = -cosf(-xRot * GameMath::DEG_TO_RAD);
+    float xSin = sinf(-xRot * GameMath::DEG_TO_RAD);
 
     return Vec3(ySin * xCos, xSin, yCos * xCos);
 }

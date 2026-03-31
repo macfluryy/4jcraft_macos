@@ -1138,14 +1138,14 @@ int LevelChunk::getRawBrightness(int x, int y, int z, int skyDampen) {
 void LevelChunk::addEntity(std::shared_ptr<Entity> e) {
     lastSaveHadEntities = true;
 
-    int xc = Mth::floor(e->x / 16);
-    int zc = Mth::floor(e->z / 16);
+    int xc = GameMath::floor(e->x / 16);
+    int zc = GameMath::floor(e->z / 16);
     if (xc != this->x || zc != this->z) {
         app.DebugPrintf("Wrong location!");
         //        System.out.println("Wrong location! " + e);
         //        Thread.dumpStack();
     }
-    int yc = Mth::floor(e->y / 16);
+    int yc = GameMath::floor(e->y / 16);
     if (yc < 0) yc = 0;
     if (yc >= ENTITY_BLOCKS_LENGTH) yc = ENTITY_BLOCKS_LENGTH - 1;
     e->inChunk = true;
@@ -1506,8 +1506,8 @@ void LevelChunk::markUnsaved() { this->setUnsaved(true); }
 void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
                              std::vector<std::shared_ptr<Entity> >& es,
                              const EntitySelector* selector) {
-    int yc0 = Mth::floor((bb->y0 - 2) / 16);
-    int yc1 = Mth::floor((bb->y1 + 2) / 16);
+    int yc0 = GameMath::floor((bb->y0 - 2) / 16);
+    int yc1 = GameMath::floor((bb->y1 + 2) / 16);
     if (yc0 < 0) yc0 = 0;
     if (yc1 >= ENTITY_BLOCKS_LENGTH) yc1 = ENTITY_BLOCKS_LENGTH - 1;
 
@@ -1544,8 +1544,8 @@ void LevelChunk::getEntities(std::shared_ptr<Entity> except, AABB* bb,
 void LevelChunk::getEntitiesOfClass(const std::type_info& ec, AABB* bb,
                                     std::vector<std::shared_ptr<Entity> >& es,
                                     const EntitySelector* selector) {
-    int yc0 = Mth::floor((bb->y0 - 2) / 16);
-    int yc1 = Mth::floor((bb->y1 + 2) / 16);
+    int yc0 = GameMath::floor((bb->y0 - 2) / 16);
+    int yc1 = GameMath::floor((bb->y1 + 2) / 16);
 
     if (yc0 < 0) {
         yc0 = 0;

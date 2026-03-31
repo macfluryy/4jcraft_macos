@@ -80,17 +80,17 @@ void Squid::aiStep() {
     oldTentacleAngle = tentacleAngle;
 
     tentacleMovement += tentacleSpeed;
-    if (tentacleMovement > (float)M_PI * 2.0f) {
-        tentacleMovement -= (float)M_PI * 2.0f;
+    if (tentacleMovement > (float)std::numbers::pi * 2.0f) {
+        tentacleMovement -= (float)std::numbers::pi * 2.0f;
         if (random->nextInt(10) == 0)
             tentacleSpeed = 1 / (random->nextFloat() + 1) * 0.2f;
     }
 
     if (isInWater()) {
-        if (tentacleMovement < M_PI) {
-            float tentacleScale = tentacleMovement / M_PI;
+        if (tentacleMovement < std::numbers::pi) {
+            float tentacleScale = tentacleMovement / std::numbers::pi;
             tentacleAngle =
-                Mth::sin(tentacleScale * tentacleScale * M_PI) * M_PI * 0.25f;
+                sinf(tentacleScale * tentacleScale * std::numbers::pi) * std::numbers::pi * 0.25f;
 
             if (tentacleScale > .75) {
                 speed = 1.0f;
@@ -112,14 +112,14 @@ void Squid::aiStep() {
 
         double horizontalMovement = sqrt(xd * xd + zd * zd);
 
-        yBodyRot += ((-(float)atan2(xd, zd) * 180 / M_PI) - yBodyRot) * 0.1f;
+        yBodyRot += ((-(float)atan2(xd, zd) * 180 / std::numbers::pi) - yBodyRot) * 0.1f;
         yRot = yBodyRot;
-        zBodyRot = zBodyRot + (float)M_PI * rotateSpeed * 1.5f;
+        zBodyRot = zBodyRot + (float)std::numbers::pi * rotateSpeed * 1.5f;
         xBodyRot +=
-            ((-(float)atan2(horizontalMovement, yd) * 180 / M_PI) - xBodyRot) *
+            ((-(float)atan2(horizontalMovement, yd) * 180 / std::numbers::pi) - xBodyRot) *
             0.1f;
     } else {
-        tentacleAngle = Mth::abs(Mth::sin(tentacleMovement)) * M_PI * 0.25f;
+        tentacleAngle = GameMath::abs(sinf(tentacleMovement)) * std::numbers::pi * 0.25f;
 
         if (!level->isClientSide) {
             // unable to move, apply gravity
@@ -144,10 +144,10 @@ void Squid::serverAiStep() {
         tx = ty = tz = 0;
     } else if (random->nextInt(50) == 0 || !wasInWater ||
                (tx == 0 && ty == 0 && tz == 0)) {
-        float angle = random->nextFloat() * M_PI * 2.0f;
-        tx = Mth::cos(angle) * 0.2f;
+        float angle = random->nextFloat() * std::numbers::pi * 2.0f;
+        tx = cosf(angle) * 0.2f;
         ty = -0.1f + random->nextFloat() * 0.2f;
-        tz = Mth::sin(angle) * 0.2f;
+        tz = sinf(angle) * 0.2f;
     }
     checkDespawn();  // 4J - 1.7.0 fix
 }

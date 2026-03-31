@@ -4,13 +4,13 @@
 #include "../../tile/net.minecraft.world.level.tile.h"
 
 bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
-    float dir = random->nextFloat() * M_PI;
+    float dir = random->nextFloat() * std::numbers::pi;
     double rd = 8;
 
-    double x0 = x + 8 + Mth::sin(dir) * rd;
-    double x1 = x + 8 - Mth::sin(dir) * rd;
-    double z0 = z + 8 + Mth::cos(dir) * rd;
-    double z1 = z + 8 - Mth::cos(dir) * rd;
+    double x0 = x + 8 + GameMath::sin(dir) * rd;
+    double x1 = x + 8 - GameMath::sin(dir) * rd;
+    double z0 = z + 8 + GameMath::cos(dir) * rd;
+    double z1 = z + 8 - GameMath::cos(dir) * rd;
 
     double y0 = y + random->nextInt(8) + 2;
     double y1 = y + random->nextInt(8) + 2;
@@ -28,8 +28,8 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
         double zz = z0 + (z1 - z0) * d / 16;
 
         double ss = random->nextDouble();
-        double r = (Mth::sin(d / 16.0f * M_PI) * radius + 1) * ss + 1;
-        double hr = (Mth::sin(d / 16.0f * M_PI) * radius + 1) * ss + 1;
+        double r = (GameMath::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
+        double hr = (GameMath::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
 
         // 4J Stu Added to stop cave features generating areas previously place
         // by game rule generation

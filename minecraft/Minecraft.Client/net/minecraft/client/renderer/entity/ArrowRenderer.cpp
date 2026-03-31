@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "ArrowRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 ResourceLocation ArrowRenderer::ARROW_LOCATION =
     ResourceLocation(TN_ITEM_ARROWS);
@@ -49,7 +49,7 @@ void ArrowRenderer::render(std::shared_ptr<Entity> _arrow, double x, double y,
     glEnable(GL_RESCALE_NORMAL);
     float shake = arrow->shakeTime - a;
     if (shake > 0) {
-        float pow = -Mth::sin(shake * 3) * shake;
+        float pow = -sinf(shake * 3) * shake;
         glRotatef(pow, 0, 0, 1);
     }
     glRotatef(45, 1, 0, 0);

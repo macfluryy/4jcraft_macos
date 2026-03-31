@@ -66,9 +66,9 @@ bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
 // now spawn on mycelium as well as grass - seems a bit odd that they don't
 // already really
 bool MushroomCow::canSpawn() {
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(bb.y0);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(bb.y0);
+    int zt = GameMath::floor(z);
     return (level->getTile(xt, yt - 1, zt) == Tile::grass_Id ||
             level->getTile(xt, yt - 1, zt) == Tile::mycel_Id) &&
            level->getDaytimeRawBrightness(xt, yt, zt) > 8 &&

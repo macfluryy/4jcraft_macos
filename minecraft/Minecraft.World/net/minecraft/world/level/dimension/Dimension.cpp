@@ -115,7 +115,7 @@ float Dimension::getTimeOfDay(int64_t time, float a) const {
     if (td < 0) td += 1;
     if (td > 1) td -= 1;
     float tdo = td;
-    td = 1 - (float)((cos(td * M_PI) + 1) / 2);
+    td = 1 - (float)((cos(td * std::numbers::pi) + 1) / 2);
     td = tdo + (td - tdo) / 3.0f;
     return td;
 }
@@ -138,11 +138,11 @@ float* Dimension::getSunriseColor(float td, float a) {
            g2 = ((clr2 >> 8) & 0xFF) / 255.0, b2 = (clr2 & 0xFF) / 255.0;
 
     float span = 0.4f;
-    float tt = Mth::cos(td * M_PI * 2) - 0.0f;
+    float tt = cosf(td * std::numbers::pi * 2) - 0.0f;
     float mid = -0.0f;
     if (tt >= mid - span && tt <= mid + span) {
         float aa = ((tt - mid) / span) * 0.5f + 0.5f;
-        float mix = 1 - (((1 - sin(aa * M_PI))) * 0.99f);
+        float mix = 1 - (((1 - sin(aa * std::numbers::pi))) * 0.99f);
         mix = mix * mix;
         // sunriseCol[0] = (aa * 0.3f + 0.7f);
         // sunriseCol[1] = (aa * aa * 0.7f + 0.2f);
@@ -158,7 +158,7 @@ float* Dimension::getSunriseColor(float td, float a) {
 }
 
 Vec3 Dimension::getFogColor(float td, float a) const {
-    float br = Mth::cos(td * M_PI * 2) * 2 + 0.5f;
+    float br = cosf(td * std::numbers::pi * 2) * 2 + 0.5f;
     if (br < 0.0f) br = 0.0f;
     if (br > 1.0f) br = 1.0f;
 

@@ -46,24 +46,24 @@ void ControlledByPlayerGoal::tick() {
         std::dynamic_pointer_cast<Player>(mob->rider.lock());
     PathfinderMob* pig = (PathfinderMob*)mob;
 
-    float yrd = Mth::wrapDegrees(player->yRot - mob->yRot) * 0.5f;
+    float yrd = GameMath::wrapDegrees(player->yRot - mob->yRot) * 0.5f;
     if (yrd > 5) yrd = 5;
     if (yrd < -5) yrd = -5;
 
-    mob->yRot = Mth::wrapDegrees(mob->yRot + yrd);
+    mob->yRot = GameMath::wrapDegrees(mob->yRot + yrd);
     if (speed < maxSpeed) speed += (maxSpeed - speed) * 0.01f;
     if (speed > maxSpeed) speed = maxSpeed;
 
-    int x = Mth::floor(mob->x);
-    int y = Mth::floor(mob->y);
-    int z = Mth::floor(mob->z);
+    int x = GameMath::floor(mob->x);
+    int y = GameMath::floor(mob->y);
+    int z = GameMath::floor(mob->z);
     float moveSpeed = speed;
     if (boosting) {
         if (boostTime++ > boostTimeTotal) {
             boosting = false;
         }
         moveSpeed += moveSpeed * 1.15f *
-                     Mth::sin((float)boostTime / boostTimeTotal * M_PI);
+                     sinf((float)boostTime / boostTimeTotal * std::numbers::pi);
     }
 
     float friction = 0.91f;
@@ -76,8 +76,8 @@ void ControlledByPlayerGoal::tick() {
     }
     float friction2 = (0.6f * 0.6f * 0.91f * 0.91f * 0.6f * 0.91f) /
                       (friction * friction * friction);
-    float sin = Mth::sin(pig->yRot * M_PI / 180);
-    float cos = Mth::cos(pig->yRot * M_PI / 180);
+    float sin = sinf(pig->yRot * std::numbers::pi / 180);
+    float cos = cosf(pig->yRot * std::numbers::pi / 180);
     float aproxSpeed = pig->getSpeed() * friction2;
     float dist = std::max((int)moveSpeed, 1);
     dist = aproxSpeed / dist;
@@ -85,7 +85,7 @@ void ControlledByPlayerGoal::tick() {
     float xa = -(normMoveSpeed * sin);
     float za = normMoveSpeed * cos;
 
-    if (Mth::abs(xa) > Mth::abs(za)) {
+    if (GameMath::abs(xa) > GameMath::abs(za)) {
         if (xa < 0) xa -= mob->bbWidth / 2.0f;
         if (xa > 0) xa += mob->bbWidth / 2.0f;
         za = 0;
@@ -95,12 +95,12 @@ void ControlledByPlayerGoal::tick() {
         if (za > 0) za += mob->bbWidth / 2.0f;
     }
 
-    int xt = Mth::floor(mob->x + xa);
-    int zt = Mth::floor(mob->z + za);
+    int xt = GameMath::floor(mob->x + xa);
+    int zt = GameMath::floor(mob->z + za);
 
-    Node* size = new Node(Mth::floor(mob->bbWidth + 1),
-                          Mth::floor(mob->bbHeight + player->bbHeight + 1),
-                          Mth::floor(mob->bbWidth + 1));
+    Node* size = new Node(GameMath::floor(mob->bbWidth + 1),
+                          GameMath::floor(mob->bbHeight + player->bbHeight + 1),
+                          GameMath::floor(mob->bbWidth + 1));
 
     if (x != xt || z != zt) {
         if (PathFinder::isFree(mob, xt, y, zt, size, false, false, true) ==

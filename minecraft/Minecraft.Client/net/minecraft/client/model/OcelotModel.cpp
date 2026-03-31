@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "geom/ModelPart.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "OcelotModel.h"
 
 const float OcelotModel::xo = 0;
@@ -147,29 +147,29 @@ void OcelotModel::setupAnim(float time, float r, float bob, float yRot,
                             float xRot, float scale,
                             std::shared_ptr<Entity> entity,
                             unsigned int uiBitmaskOverrideAnim) {
-    head->xRot = xRot / (float)(180 / M_PI);
-    head->yRot = yRot / (float)(180 / M_PI);
+    head->xRot = xRot / (float)(180 / std::numbers::pi);
+    head->yRot = yRot / (float)(180 / std::numbers::pi);
 
     if (state == SITTING_STATE) {
     } else {
-        body->xRot = 90 / (float)(180 / M_PI);
+        body->xRot = 90 / (float)(180 / std::numbers::pi);
         if (state == SPRINT_STATE) {
-            backLegL->xRot = ((float)Mth::cos(time * 0.6662f) * 1.f) * r;
-            backLegR->xRot = ((float)Mth::cos(time * 0.6662f + 0.3f) * 1.f) * r;
+            backLegL->xRot = ((float)cosf(time * 0.6662f) * 1.f) * r;
+            backLegR->xRot = ((float)cosf(time * 0.6662f + 0.3f) * 1.f) * r;
             frontLegL->xRot =
-                ((float)Mth::cos(time * 0.6662f + M_PI + 0.3f) * 1.f) * r;
-            frontLegR->xRot = ((float)Mth::cos(time * 0.6662f + M_PI) * 1.f) * r;
-            tail2->xRot = 0.55f * M_PI + 0.1f * M_PI * Mth::cos(time) * r;
+                ((float)cosf(time * 0.6662f + std::numbers::pi + 0.3f) * 1.f) * r;
+            frontLegR->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
+            tail2->xRot = 0.55f * std::numbers::pi + 0.1f * std::numbers::pi * cosf(time) * r;
         } else {
-            backLegL->xRot = ((float)Mth::cos(time * 0.6662f) * 1.f) * r;
-            backLegR->xRot = ((float)Mth::cos(time * 0.6662f + M_PI) * 1.f) * r;
-            frontLegL->xRot = ((float)Mth::cos(time * 0.6662f + M_PI) * 1.f) * r;
-            frontLegR->xRot = ((float)Mth::cos(time * 0.6662f) * 1.f) * r;
+            backLegL->xRot = ((float)cosf(time * 0.6662f) * 1.f) * r;
+            backLegR->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
+            frontLegL->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
+            frontLegR->xRot = ((float)cosf(time * 0.6662f) * 1.f) * r;
 
             if (state == WALK_STATE)
-                tail2->xRot = 0.55f * M_PI + 0.25f * M_PI * Mth::cos(time) * r;
+                tail2->xRot = 0.55f * std::numbers::pi + 0.25f * std::numbers::pi * cosf(time) * r;
             else
-                tail2->xRot = 0.55f * M_PI + 0.15f * M_PI * Mth::cos(time) * r;
+                tail2->xRot = 0.55f * std::numbers::pi + 0.15f * std::numbers::pi * cosf(time) * r;
         }
     }
 }
@@ -198,17 +198,17 @@ void OcelotModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
         tail1->y += 1;
         tail2->y += -4;
         tail2->z += 2;
-        tail1->xRot = 0.5f * M_PI;
-        tail2->xRot = 0.5f * M_PI;
+        tail1->xRot = 0.5f * std::numbers::pi;
+        tail2->xRot = 0.5f * std::numbers::pi;
         state = SNEAK_STATE;
     } else if (ozelot->isSprinting()) {
         tail2->y = tail1->y;
         tail2->z += 2;
-        tail1->xRot = 0.5f * M_PI;
-        tail2->xRot = 0.5f * M_PI;
+        tail1->xRot = 0.5f * std::numbers::pi;
+        tail2->xRot = 0.5f * std::numbers::pi;
         state = SPRINT_STATE;
     } else if (ozelot->isSitting()) {
-        body->xRot = 45 / (float)(180 / M_PI);
+        body->xRot = 45 / (float)(180 / std::numbers::pi);
         body->y += -4;
         body->z += 5;
         head->y += -3.3f;
@@ -218,14 +218,14 @@ void OcelotModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
         tail1->z += -2;
         tail2->y += 2;
         tail2->z += -0.8f;
-        tail1->xRot = M_PI * 0.55f;
-        tail2->xRot = M_PI * 0.85f;
+        tail1->xRot = std::numbers::pi * 0.55f;
+        tail2->xRot = std::numbers::pi * 0.85f;
 
-        frontLegL->xRot = frontLegR->xRot = -M_PI  * 0.05f;
+        frontLegL->xRot = frontLegR->xRot = -std::numbers::pi  * 0.05f;
         frontLegL->y = frontLegR->y = frontLegY + 2;
         frontLegL->z = frontLegR->z = -7;
 
-        backLegL->xRot = backLegR->xRot = -M_PI  * 0.5f;
+        backLegL->xRot = backLegR->xRot = -std::numbers::pi  * 0.5f;
         backLegL->y = backLegR->y = backLegY + 3;
         backLegL->z = backLegR->z = backLegZ - 4;
         state = SITTING_STATE;

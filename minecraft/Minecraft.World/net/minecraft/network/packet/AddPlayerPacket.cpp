@@ -36,9 +36,9 @@ AddPlayerPacket::AddPlayerPacket(std::shared_ptr<Player> player, PlayerUID xuid,
 
     // 4J Stu - Send "previously sent" value of position as well so that we stay
     // in sync
-    x = xp;  // Mth::floor(player->x * 32);
-    y = yp;  // Mth::floor(player->y * 32);
-    z = zp;  // Mth::floor(player->z * 32);
+    x = xp;  // GameMath::floor(player->x * 32);
+    y = yp;  // GameMath::floor(player->y * 32);
+    z = zp;  // GameMath::floor(player->z * 32);
     // 4J - changed - send current "previously sent" value of rotations to put
     // this in sync with other clients
     yRot = yRotp;

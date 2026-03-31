@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "ChickenModel.h"
 #include "geom/ModelPart.h"
 
@@ -86,8 +86,8 @@ void ChickenModel::setupAnim(float time, float r, float bob, float yRot,
                              float xRot, float scale,
                              std::shared_ptr<Entity> entity,
                              unsigned int uiBitmaskOverrideAnim) {
-    head->xRot = xRot / (float)(180 / M_PI);
-    head->yRot = yRot / (float)(180 / M_PI);
+    head->xRot = xRot / (float)(180 / std::numbers::pi);
+    head->yRot = yRot / (float)(180 / std::numbers::pi);
 
     beak->xRot = head->xRot;
     beak->yRot = head->yRot;
@@ -95,10 +95,10 @@ void ChickenModel::setupAnim(float time, float r, float bob, float yRot,
     redThing->xRot = head->xRot;
     redThing->yRot = head->yRot;
 
-    body->xRot = 90 / (float)(180 / M_PI);
+    body->xRot = 90 / (float)(180 / std::numbers::pi);
 
-    leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-    leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
+    leg0->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
+    leg1->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r;
     wing0->zRot = bob;
     wing1->zRot = -bob;
 }

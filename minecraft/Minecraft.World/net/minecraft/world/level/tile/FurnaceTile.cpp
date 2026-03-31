@@ -135,7 +135,7 @@ std::shared_ptr<TileEntity> FurnaceTile::newTileEntity(Level* level) {
 void FurnaceTile::setPlacedBy(Level* level, int x, int y, int z,
                               std::shared_ptr<LivingEntity> by,
                               std::shared_ptr<ItemInstance> itemInstance) {
-    int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
+    int dir = (GameMath::floor(by->yRot * 4 / (360) + 0.5)) & 3;
 
     if (dir == 0) level->setData(x, y, z, Facing::NORTH, Tile::UPDATE_CLIENTS);
     if (dir == 1) level->setData(x, y, z, Facing::EAST, Tile::UPDATE_CLIENTS);

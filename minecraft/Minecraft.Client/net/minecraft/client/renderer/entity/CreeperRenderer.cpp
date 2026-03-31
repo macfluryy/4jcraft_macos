@@ -2,7 +2,7 @@
 #include "CreeperRenderer.h"
 #include "../../model/CreeperModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 ResourceLocation CreeperRenderer::POWER_LOCATION =
     ResourceLocation(TN_POWERED_CREEPER);
@@ -18,7 +18,7 @@ void CreeperRenderer::scale(std::shared_ptr<LivingEntity> mob, float a) {
 
     float g = creeper->getSwelling(a);
 
-    float wobble = 1.0f + Mth::sin(g * 100) * g * 0.01f;
+    float wobble = 1.0f + sinf(g * 100) * g * 0.01f;
     if (g < 0) g = 0;
     if (g > 1) g = 1;
     g = g * g;

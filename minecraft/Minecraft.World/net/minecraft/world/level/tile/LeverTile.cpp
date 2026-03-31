@@ -85,13 +85,13 @@ void LeverTile::setPlacedBy(Level* level, int x, int y, int z,
     int flip = data & 8;
 
     if (dir == getLeverFacing(Facing::UP)) {
-        if ((Mth::floor(by->yRot * 4 / (360) + 0.5) & 1) == 0) {
+        if ((GameMath::floor(by->yRot * 4 / (360) + 0.5) & 1) == 0) {
             level->setData(x, y, z, 5 | flip, Tile::UPDATE_CLIENTS);
         } else {
             level->setData(x, y, z, 6 | flip, Tile::UPDATE_CLIENTS);
         }
     } else if (dir == getLeverFacing(Facing::DOWN)) {
-        if ((Mth::floor(by->yRot * 4 / (360) + 0.5) & 1) == 0) {
+        if ((GameMath::floor(by->yRot * 4 / (360) + 0.5) & 1) == 0) {
             level->setData(x, y, z, 7 | flip, Tile::UPDATE_CLIENTS);
         } else {
             level->setData(x, y, z, 0 | flip, Tile::UPDATE_CLIENTS);

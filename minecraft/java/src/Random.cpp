@@ -82,6 +82,21 @@ int Random::nextInt(int n) {
 
 float Random::nextFloat() { return next(24) / ((float)(1 << 24)); }
 
+float Random::nextFloat(float min, float max) {
+    if (min >= max) return min;
+    return (nextFloat() * (max - min)) + min;
+}
+
+int Random::nextInt(int minInclusive, int maxInclusive) {
+    if (minInclusive >= maxInclusive) return minInclusive;
+    return nextInt(maxInclusive - minInclusive + 1) + minInclusive;
+}
+
+double Random::nextDouble(double min, double max) {
+    if (min >= max) return min;
+    return (nextDouble() * (max - min)) + min;
+}
+
 int64_t Random::nextLong() {
     // 4jcraft added casts to unsigned
     return (int64_t)((uint64_t)next(32) << 32) + next(32);

@@ -77,8 +77,8 @@ void BasicTree::prepare() {
             double radius =
                 widthScale * (shapefac * (rnd->nextFloat() + 0.328));
             double angle = rnd->nextFloat() * 2.0 * 3.14159;
-            int x = Mth::floor(radius * sin(angle) + origin[0] + originOffset);
-            int z = Mth::floor(radius * cos(angle) + origin[2] + originOffset);
+            int x = GameMath::floor(radius * sin(angle) + origin[0] + originOffset);
+            int z = GameMath::floor(radius * cos(angle) + origin[2] + originOffset);
             int checkStart[] = {x, y, z};
             int checkEnd[] = {x, y + foliageHeight, z};
             // check the center column of the cluster for obstructions.
@@ -272,11 +272,11 @@ void BasicTree::limb(int* start, int* end, int material) {
     int primoffset = 0;
     int endoffset = delta[primidx] + primsign;
     while (primoffset != endoffset) {
-        coordinate[primidx] = Mth::floor(start[primidx] + primoffset + 0.5);
+        coordinate[primidx] = GameMath::floor(start[primidx] + primoffset + 0.5);
         coordinate[secidx1] =
-            Mth::floor(start[secidx1] + (primoffset * secfac1) + 0.5);
+            GameMath::floor(start[secidx1] + (primoffset * secfac1) + 0.5);
         coordinate[secidx2] =
-            Mth::floor(start[secidx2] + (primoffset * secfac2) + 0.5);
+            GameMath::floor(start[secidx2] + (primoffset * secfac2) + 0.5);
 
         int dir = TreeTile::FACING_Y;
         int xdiff = abs(coordinate[0] - start[0]);
@@ -408,9 +408,9 @@ int BasicTree::checkLine(int* start, int* end) {
     while (primoffset != endoffset) {
         coordinate[primidx] = start[primidx] + primoffset;
         coordinate[secidx1] =
-            Mth::floor(start[secidx1] + (primoffset * secfac1));
+            GameMath::floor(start[secidx1] + (primoffset * secfac1));
         coordinate[secidx2] =
-            Mth::floor(start[secidx2] + (primoffset * secfac2));
+            GameMath::floor(start[secidx2] + (primoffset * secfac2));
         thismat =
             thisLevel->getTile(coordinate[0], coordinate[1], coordinate[2]);
         if (!((thismat == 0) || (thismat == Tile::leaves_Id))) {

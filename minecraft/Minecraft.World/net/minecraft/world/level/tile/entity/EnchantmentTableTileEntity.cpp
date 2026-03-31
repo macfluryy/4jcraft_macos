@@ -58,13 +58,13 @@ void EnchantmentTableEntity::tick() {
         open -= 0.1f;
     }
 
-    while (rot >= M_PI) rot -= M_PI * 2;
-    while (rot < -M_PI ) rot += M_PI * 2;
-    while (tRot >= M_PI) tRot -= M_PI * 2;
-    while (tRot < -M_PI ) tRot += M_PI * 2;
+    while (rot >= std::numbers::pi) rot -= std::numbers::pi * 2;
+    while (rot < -std::numbers::pi ) rot += std::numbers::pi * 2;
+    while (tRot >= std::numbers::pi) tRot -= std::numbers::pi * 2;
+    while (tRot < -std::numbers::pi ) tRot += std::numbers::pi * 2;
     float rotDir = tRot - rot;
-    while (rotDir >= M_PI) rotDir -= M_PI * 2;
-    while (rotDir < -M_PI ) rotDir += M_PI * 2;
+    while (rotDir >= std::numbers::pi) rotDir -= std::numbers::pi * 2;
+    while (rotDir < -std::numbers::pi ) rotDir += std::numbers::pi * 2;
 
     rot += rotDir * 0.4f;
 

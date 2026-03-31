@@ -38,14 +38,14 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
     bool steep = random.nextInt(6) == 0;
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (Mth::sin(step * M_PI / dist) * thickness) * 1;
+        double rad = 1.5 + (GameMath::sin(step * std::numbers::pi / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
-        float xc = Mth::cos(xRot);
-        float xs = Mth::sin(xRot);
-        xCave += Mth::cos(yRot) * xc;
+        float xc = GameMath::cos(xRot);
+        float xs = GameMath::sin(xRot);
+        xCave += GameMath::cos(yRot) * xc;
         yCave += xs;
-        zCave += Mth::sin(yRot) * xc;
+        zCave += GameMath::sin(yRot) * xc;
 
         if (steep) {
             xRot *= 0.92f;
@@ -64,10 +64,10 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 
         if (!singleStep && step == splitPoint && thickness > 1 && dist > 0) {
             addTunnel(random.nextLong(), xOffs, zOffs, blocks, xCave, yCave,
-                      zCave, random.nextFloat() * 0.5f + 0.5f, yRot - M_PI / 2,
+                      zCave, random.nextFloat() * 0.5f + 0.5f, yRot - std::numbers::pi / 2,
                       xRot / 3, step, dist, 1.0);
             addTunnel(random.nextLong(), xOffs, zOffs, blocks, xCave, yCave,
-                      zCave, random.nextFloat() * 0.5f + 0.5f, yRot + M_PI / 2,
+                      zCave, random.nextFloat() * 0.5f + 0.5f, yRot + std::numbers::pi / 2,
                       xRot / 3, step, dist, 1.0);
             return;
         }
@@ -86,14 +86,14 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
             xCave > xMid + 16 + rad * 2 || zCave > zMid + 16 + rad * 2)
             continue;
 
-        int x0 = Mth::floor(xCave - rad) - xOffs * 16 - 1;
-        int x1 = Mth::floor(xCave + rad) - xOffs * 16 + 1;
+        int x0 = GameMath::floor(xCave - rad) - xOffs * 16 - 1;
+        int x1 = GameMath::floor(xCave + rad) - xOffs * 16 + 1;
 
-        int y0 = Mth::floor(yCave - yRad) - 1;
-        int y1 = Mth::floor(yCave + yRad) + 1;
+        int y0 = GameMath::floor(yCave - yRad) - 1;
+        int y1 = GameMath::floor(yCave + yRad) + 1;
 
-        int z0 = Mth::floor(zCave - rad) - zOffs * 16 - 1;
-        int z1 = Mth::floor(zCave + rad) - zOffs * 16 + 1;
+        int z0 = GameMath::floor(zCave - rad) - zOffs * 16 - 1;
+        int z1 = GameMath::floor(zCave + rad) - zOffs * 16 + 1;
 
         if (x0 < 0) x0 = 0;
         if (x1 > 16) x1 = 16;
@@ -180,7 +180,7 @@ void LargeCaveFeature::addFeature(Level* level, int x, int z, int xOffs,
         }
 
         for (int i = 0; i < tunnels; i++) {
-            float yRot = random->nextFloat() * M_PI * 2;
+            float yRot = random->nextFloat() * std::numbers::pi * 2;
             float xRot = ((random->nextFloat() - 0.5f) * 2) / 8;
             float thickness = random->nextFloat() * 2 + random->nextFloat();
             if (random->nextInt(10) == 0)

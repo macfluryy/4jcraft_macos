@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "ViewportCuller.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 ViewportCuller::Face::Face(double x, double y, double z, float yRot,
                            float xRot) {
@@ -8,9 +8,9 @@ ViewportCuller::Face::Face(double x, double y, double z, float yRot,
     this->yc = y;
     this->zc = z;
 
-    xd = Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
-    zd = -Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
-    yd = -Mth::sin(xRot / 180 * M_PI);
+    xd = sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    zd = -cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    yd = -sinf(xRot / 180 * std::numbers::pi);
 
     cullOffs = xc * xd + yc * yd + zc * zd;
 }
@@ -56,9 +56,9 @@ ViewportCuller::ViewportCuller(std::shared_ptr<LivingEntity> mob,
     double y = mob->yOld + (mob->y - mob->yOld) * a;
     double z = mob->zOld + (mob->z - mob->zOld) * a;
 
-    double xd = Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
-    double zd = -Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
-    double yd = -Mth::sin(xRot / 180 * M_PI);
+    double xd = sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    double zd = -cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    double yd = -sinf(xRot / 180 * std::numbers::pi);
 
     float xFov = 30;
     float yFov = 45;

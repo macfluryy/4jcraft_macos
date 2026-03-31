@@ -40,7 +40,7 @@ void CropTile::tick(Level* level, int x, int y, int z, Random* random) {
 }
 
 void CropTile::growCrops(Level* level, int x, int y, int z) {
-    int stage = level->getData(x, y, z) + Mth::nextInt(level->random, 2, 5);
+    int stage = level->getData(x, y, z) + level->random->nextInt(2, 5);
     if (stage > 7) stage = 7;
     level->setData(x, y, z, stage, Tile::UPDATE_CLIENTS);
 }

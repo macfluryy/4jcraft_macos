@@ -155,13 +155,13 @@ void ParticleEngine::renderLit(std::shared_ptr<Entity> player, float a,
     Particle::yOff = (player->yOld + (player->y - player->yOld) * a);
     Particle::zOff = (player->zOld + (player->z - player->zOld) * a);
 
-    float RAD = M_PI / 180;
-    float xa = (float)Mth::cos(player->yRot * RAD);
-    float za = (float)Mth::sin(player->yRot * RAD);
+    float RAD = std::numbers::pi / 180;
+    float xa = (float)cosf(player->yRot * RAD);
+    float za = (float)sinf(player->yRot * RAD);
 
-    float xa2 = -za * (float)Mth::sin(player->xRot * RAD);
-    float za2 = xa * (float)Mth::sin(player->xRot * RAD);
-    float ya = (float)Mth::cos(player->xRot * RAD);
+    float xa2 = -za * (float)sinf(player->xRot * RAD);
+    float za2 = xa * (float)sinf(player->xRot * RAD);
+    float ya = (float)cosf(player->xRot * RAD);
 
     int l =
         level->dimension->id == 0 ? 0 : (level->dimension->id == -1 ? 1 : 2);

@@ -489,7 +489,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 double totalAbsorption =
                     minecraft->localplayers[iPad]->getAbsorptionAmount();
                 int NUM_HEARTS_PER_ROW = 10;  // 4jcraft: missing definition
-                int numHealthRows = Mth::ceil((maxHealth + totalAbsorption) /
+                int numHealthRows = GameMath::ceil((maxHealth + totalAbsorption) /
                                               2 / (float)NUM_HEARTS_PER_ROW);
                 int healthRowHeight = max(10 - (numHealthRows - 2), 3);
                 yLine2 = yLine1 - (numHealthRows - 1) * healthRowHeight - 10;
@@ -516,7 +516,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 }
 
                 // minecraft.profiler.popPush("health");
-                for (int i = Mth::ceil((maxHealth + totalAbsorption) / 2) - 1;
+                for (int i = GameMath::ceil((maxHealth + totalAbsorption) / 2) - 1;
                      i >= 0; i--) {
                     int healthTexBaseX = 16;
                     if (minecraft->player->hasEffect(MobEffect::poison)) {
@@ -529,7 +529,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                     int bg = 0;
                     if (blink) bg = 1;
                     int rowIndex =
-                        Mth::ceil((i + 1) / (float)NUM_HEARTS_PER_ROW) - 1;
+                        GameMath::ceil((i + 1) / (float)NUM_HEARTS_PER_ROW) - 1;
                     int xo = xLeft + (i % NUM_HEARTS_PER_ROW) * 8;
                     int yo = yLine1 - rowIndex * healthRowHeight;
                     if (currentHealth <= 4) {
@@ -1010,15 +1010,15 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
             font,
             L"f: " +
                 _toString<double>(
-                    Mth::floor(minecraft->player->yRot * 4.0f / 360.0f + 0.5) &
+                    GameMath::floor(minecraft->player->yRot * 4.0f / 360.0f + 0.5) &
                     0x3) +
                 L"/ yRot: " + _toString<double>(minecraft->player->yRot),
             iSafezoneXHalf + 2, iYPos + 8 * 3, 0xe0e0e0);
         iYPos += 8 * 4;
 
-        int px = Mth::floor(minecraft->player->x);
-        int py = Mth::floor(minecraft->player->y);
-        int pz = Mth::floor(minecraft->player->z);
+        int px = GameMath::floor(minecraft->player->x);
+        int py = GameMath::floor(minecraft->player->y);
+        int pz = GameMath::floor(minecraft->player->z);
         if (minecraft->level != nullptr &&
             minecraft->level->hasChunkAt(px, py, pz)) {
             LevelChunk* chunkAt = minecraft->level->getChunkAt(px, pz);

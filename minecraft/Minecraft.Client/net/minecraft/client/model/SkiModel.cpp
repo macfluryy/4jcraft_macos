@@ -36,10 +36,10 @@ void SkiModel::render(std::shared_ptr<Entity> entity, float time, float r,
 void SkiModel::setupAnim(float time, float r, float bob, float yRot, float xRot,
                          float scale, std::shared_ptr<Entity> entity) {
     cubes[0]->y = 24.2f;
-    cubes[0]->xRot = M_PI * .5f;
+    cubes[0]->xRot = std::numbers::pi * .5f;
 
     cubes[1]->y = 24.2f;
-    cubes[1]->xRot = M_PI * .5f;
+    cubes[1]->xRot = std::numbers::pi * .5f;
 
     if (leftSki) {
         cubes[0]->z = -26 - 12 * (cos(time * 0.6662f) * 0.7f) * r;

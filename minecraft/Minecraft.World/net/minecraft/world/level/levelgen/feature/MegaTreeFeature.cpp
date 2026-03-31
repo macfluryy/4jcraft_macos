@@ -74,14 +74,14 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     PIXBeginNamedEvent(0, "MegaTree placing branches");
     int branchHeight = y + treeHeight - 2 - random->nextInt(4);
     while (branchHeight > y + treeHeight / 2) {
-        float angle = random->nextFloat() * M_PI * 2.0f;
-        int bx = x + (int)(0.5f + Mth::cos(angle) * 4.0f);
-        int bz = z + (int)(0.5f + Mth::sin(angle) * 4.0f);
+        float angle = random->nextFloat() * std::numbers::pi * 2.0f;
+        int bx = x + (int)(0.5f + GameMath::cos(angle) * 4.0f);
+        int bz = z + (int)(0.5f + GameMath::sin(angle) * 4.0f);
         placeLeaves(level, bx, bz, branchHeight, 0, random);
 
         for (int b = 0; b < 5; b++) {
-            bx = x + (int)(1.5f + Mth::cos(angle) * b);
-            bz = z + (int)(1.5f + Mth::sin(angle) * b);
+            bx = x + (int)(1.5f + GameMath::cos(angle) * b);
+            bz = z + (int)(1.5f + GameMath::sin(angle) * b);
             placeBlock(level, bx, branchHeight - 3 + b / 2, bz,
                        Tile::treeTrunk_Id, trunkType);
         }

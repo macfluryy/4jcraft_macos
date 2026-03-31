@@ -36,7 +36,7 @@ bool SignItem::useOn(std::shared_ptr<ItemInstance> instance,
 
     if (!bTestUseOnOnly) {
         if (face == 1) {
-            int rot = Mth::floor(((player->yRot + 180) * 16) / 360 + 0.5) & 15;
+            int rot = GameMath::floor(((player->yRot + 180) * 16) / 360 + 0.5) & 15;
             level->setTileAndData(x, y, z, Tile::sign_Id, rot,
                                   Tile::UPDATE_ALL);
         } else {

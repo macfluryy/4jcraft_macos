@@ -43,7 +43,7 @@ bool DoorItem::useOn(std::shared_ptr<ItemInstance> instance,
         GenericStats::blocksPlaced(tile->id),
         GenericStats::param_blocksPlaced(tile->id, instance->getAuxValue(), 1));
 
-    int dir = Mth::floor(((player->yRot + 180) * 4) / 360 - 0.5) & 3;
+    int dir = GameMath::floor(((player->yRot + 180) * 4) / 360 - 0.5) & 3;
     place(level, x, y, z, dir, tile);
 
     instance->count--;

@@ -67,31 +67,31 @@ std::list<VillagePieces::PieceWeight*>* VillagePieces::createPieceSet(
 
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_SimpleHouse, 4,
-        Mth::nextInt(random, 2 + villageSize, 4 + villageSize * 2)));
+        random->nextInt(2 + villageSize, 4 + villageSize * 2)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_SmallTemple, 20,
-        Mth::nextInt(random, 0 + villageSize, 1 + villageSize)));
+        random->nextInt(0 + villageSize, 1 + villageSize)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_BookHouse, 20,
-        Mth::nextInt(random, 0 + villageSize, 2 + villageSize)));
+        random->nextInt(0 + villageSize, 2 + villageSize)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_SmallHut, 3,
-        Mth::nextInt(random, 2 + villageSize, 5 + villageSize * 3)));
+        random->nextInt(2 + villageSize, 5 + villageSize * 3)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_PigHouse, 15,
-        Mth::nextInt(random, 0 + villageSize, 2 + villageSize)));
+        random->nextInt(0 + villageSize, 2 + villageSize)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_DoubleFarmland, 3,
-        Mth::nextInt(random, 1 + villageSize, 4 + villageSize)));
+        random->nextInt(1 + villageSize, 4 + villageSize)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_Farmland, 3,
-        Mth::nextInt(random, 2 + villageSize, 4 + villageSize * 2)));
+        random->nextInt(2 + villageSize, 4 + villageSize * 2)));
     newPieces->push_back(
         new PieceWeight(VillagePieces::EPieceClass_Smithy, 15,
-                        Mth::nextInt(random, 0, 1 + villageSize)));
+                        random->nextInt(0, 1 + villageSize)));
     newPieces->push_back(new PieceWeight(
         VillagePieces::EPieceClass_TwoRoomHouse, 8,
-        Mth::nextInt(random, 0 + villageSize, 3 + villageSize * 2)));
+        random->nextInt(0 + villageSize, 3 + villageSize * 2)));
 
     // silly way of filtering "infinite" buildings
     auto it = newPieces->begin();
@@ -733,7 +733,7 @@ void VillagePieces::StraightRoad::addChildren(
 BoundingBox* VillagePieces::StraightRoad::findPieceBox(
     StartPiece* startPiece, std::list<StructurePiece*>* pieces, Random* random,
     int footX, int footY, int footZ, int direction) {
-    int length = 7 * (Mth::nextInt(random, 3, 5));
+    int length = 7 * (random->nextInt(3, 5));
 
     while (length >= 7) {
         BoundingBox* box = BoundingBox::orientBox(footX, footY, footZ, 0, 0, 0,
@@ -1970,10 +1970,10 @@ bool VillagePieces::Farmland::postProcess(Level* level, Random* random,
                 Tile::water_Id, false);
     // crops
     for (int d = 1; d <= 7; d++) {
-        placeBlock(level, cropsA, Mth::nextInt(random, 2, 7), 1, 1, d, chunkBB);
-        placeBlock(level, cropsA, Mth::nextInt(random, 2, 7), 2, 1, d, chunkBB);
-        placeBlock(level, cropsB, Mth::nextInt(random, 2, 7), 4, 1, d, chunkBB);
-        placeBlock(level, cropsB, Mth::nextInt(random, 2, 7), 5, 1, d, chunkBB);
+        placeBlock(level, cropsA, random->nextInt(2, 7), 1, 1, d, chunkBB);
+        placeBlock(level, cropsA, random->nextInt(2, 7), 2, 1, d, chunkBB);
+        placeBlock(level, cropsB, random->nextInt(2, 7), 4, 1, d, chunkBB);
+        placeBlock(level, cropsB, random->nextInt(2, 7), 5, 1, d, chunkBB);
     }
 
     for (int z = 0; z < depth; z++) {
@@ -2091,15 +2091,15 @@ bool VillagePieces::DoubleFarmland::postProcess(Level* level, Random* random,
                 Tile::water_Id, false);
     // crops
     for (int d = 1; d <= 7; d++) {
-        placeBlock(level, cropsA, Mth::nextInt(random, 2, 7), 1, 1, d, chunkBB);
-        placeBlock(level, cropsA, Mth::nextInt(random, 2, 7), 2, 1, d, chunkBB);
-        placeBlock(level, cropsB, Mth::nextInt(random, 2, 7), 4, 1, d, chunkBB);
-        placeBlock(level, cropsB, Mth::nextInt(random, 2, 7), 5, 1, d, chunkBB);
-        placeBlock(level, cropsC, Mth::nextInt(random, 2, 7), 7, 1, d, chunkBB);
-        placeBlock(level, cropsC, Mth::nextInt(random, 2, 7), 8, 1, d, chunkBB);
-        placeBlock(level, cropsD, Mth::nextInt(random, 2, 7), 10, 1, d,
+        placeBlock(level, cropsA, random->nextInt(2, 7), 1, 1, d, chunkBB);
+        placeBlock(level, cropsA, random->nextInt(2, 7), 2, 1, d, chunkBB);
+        placeBlock(level, cropsB, random->nextInt(2, 7), 4, 1, d, chunkBB);
+        placeBlock(level, cropsB, random->nextInt(2, 7), 5, 1, d, chunkBB);
+        placeBlock(level, cropsC, random->nextInt(2, 7), 7, 1, d, chunkBB);
+        placeBlock(level, cropsC, random->nextInt(2, 7), 8, 1, d, chunkBB);
+        placeBlock(level, cropsD, random->nextInt(2, 7), 10, 1, d,
                    chunkBB);
-        placeBlock(level, cropsD, Mth::nextInt(random, 2, 7), 11, 1, d,
+        placeBlock(level, cropsD, random->nextInt(2, 7), 11, 1, d,
                    chunkBB);
     }
 

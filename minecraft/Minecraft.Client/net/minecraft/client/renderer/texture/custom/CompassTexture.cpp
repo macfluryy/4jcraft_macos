@@ -51,9 +51,9 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         double za = spawnPos->z - z;
         delete spawnPos;
         yRot = (int)yRot % 360;
-        rott = -((yRot - 90) * M_PI / 180 - atan2(za, xa));
+        rott = -((yRot - 90) * std::numbers::pi / 180 - atan2(za, xa));
         if (!level->dimension->isNaturalDimension()) {
-            rott = Math::random() * M_PI * 2;
+            rott = Math::random() * std::numbers::pi * 2;
         }
     }
 
@@ -61,8 +61,8 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         rot = rott;
     } else {
         double rotd = rott - rot;
-        while (rotd < -M_PI ) rotd += M_PI * 2;
-        while (rotd >= M_PI) rotd -= M_PI * 2;
+        while (rotd < -std::numbers::pi ) rotd += std::numbers::pi * 2;
+        while (rotd >= std::numbers::pi) rotd -= std::numbers::pi * 2;
         if (rotd < -1) rotd = -1;
         if (rotd > 1) rotd = 1;
         rota += rotd * 0.1;
@@ -73,7 +73,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
     // 4J Stu - We share data with another texture
     if (m_dataTexture != nullptr) {
         int newFrame =
-            (int)(((rot / (M_PI * 2)) + 1.0) * m_dataTexture->frames->size()) %
+            (int)(((rot / (std::numbers::pi * 2)) + 1.0) * m_dataTexture->frames->size()) %
             m_dataTexture->frames->size();
         while (newFrame < 0) {
             newFrame = (newFrame + m_dataTexture->frames->size()) %
@@ -87,7 +87,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         }
     } else {
         int newFrame =
-            (int)(((rot / (M_PI * 2)) + 1.0) * frames->size()) % frames->size();
+            (int)(((rot / (std::numbers::pi * 2)) + 1.0) * frames->size()) % frames->size();
         while (newFrame < 0) {
             newFrame = (newFrame + frames->size()) % frames->size();
         }

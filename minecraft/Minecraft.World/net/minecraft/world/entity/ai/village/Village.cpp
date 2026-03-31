@@ -345,7 +345,7 @@ int Village::getStanding(const std::wstring& playerName) {
 
 int Village::modifyStanding(const std::wstring& playerName, int delta) {
     int current = getStanding(playerName);
-    int newValue = Mth::clamp(current + delta, -30, 10);
+    int newValue = GameMath::clamp(current + delta, -30, 10);
     playerStanding.insert(std::pair<std::wstring, int>(playerName, newValue));
     return newValue;
 }

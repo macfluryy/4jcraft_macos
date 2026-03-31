@@ -2579,9 +2579,9 @@ void ClientConnection::handleContainerOpen(
             }
         } break;
         case ContainerOpenPacket::WORKBENCH: {
-            if (player->startCrafting(Mth::floor(player->x),
-                                      Mth::floor(player->y),
-                                      Mth::floor(player->z))) {
+            if (player->startCrafting(GameMath::floor(player->x),
+                                      GameMath::floor(player->y),
+                                      GameMath::floor(player->z))) {
                 player->containerMenu->containerId = packet->containerId;
             } else {
                 failed = true;
@@ -2589,8 +2589,8 @@ void ClientConnection::handleContainerOpen(
         } break;
         case ContainerOpenPacket::ENCHANTMENT: {
             if (player->startEnchanting(
-                    Mth::floor(player->x), Mth::floor(player->y),
-                    Mth::floor(player->z),
+                    GameMath::floor(player->x), GameMath::floor(player->y),
+                    GameMath::floor(player->z),
                     packet->customName ? packet->title : L"")) {
                 player->containerMenu->containerId = packet->containerId;
             } else {
@@ -2621,9 +2621,9 @@ void ClientConnection::handleContainerOpen(
             }
         } break;
         case ContainerOpenPacket::REPAIR_TABLE: {
-            if (player->startRepairing(Mth::floor(player->x),
-                                       Mth::floor(player->y),
-                                       Mth::floor(player->z))) {
+            if (player->startRepairing(GameMath::floor(player->x),
+                                       GameMath::floor(player->y),
+                                       GameMath::floor(player->z))) {
                 player->containerMenu->containerId = packet->containerId;
             } else {
                 failed = true;
@@ -2655,9 +2655,9 @@ void ClientConnection::handleContainerOpen(
             }
         } break;
         case ContainerOpenPacket::FIREWORKS: {
-            if (player->openFireworks(Mth::floor(player->x),
-                                      Mth::floor(player->y),
-                                      Mth::floor(player->z))) {
+            if (player->openFireworks(GameMath::floor(player->x),
+                                      GameMath::floor(player->y),
+                                      GameMath::floor(player->z))) {
                 player->containerMenu->containerId = packet->containerId;
             } else {
                 failed = true;

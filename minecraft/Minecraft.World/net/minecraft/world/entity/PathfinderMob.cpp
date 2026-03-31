@@ -110,7 +110,7 @@ void PathfinderMob::serverAiStep() {
     // protected.
     considerForExtraWandering(isDespawnProtected());
 
-    int yFloor = Mth::floor(bb.y0 + 0.5f);
+    int yFloor = GameMath::floor(bb.y0 + 0.5f);
 
     bool inWater = isInWater();
     bool inLava = isInLava();
@@ -139,8 +139,8 @@ void PathfinderMob::serverAiStep() {
         double xd = target->x - x;
         double zd = target->z - z;
         double yd = target->y - yFloor;
-        float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
-        float rotDiff = Mth::wrapDegrees(yRotD - yRot);
+        float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
+        float rotDiff = GameMath::wrapDegrees(yRotD - yRot);
         yya = (float)getAttribute(SharedMonsterAttributes::MOVEMENT_SPEED)
                   ->getValue();
         if (rotDiff > MAX_TURN) {
@@ -157,11 +157,11 @@ void PathfinderMob::serverAiStep() {
                 double zd2 = attackTarget->z - z;
 
                 float oldyRot = yRot;
-                yRot = (float)(atan2(zd2, xd2) * 180 / M_PI) - 90;
+                yRot = (float)(atan2(zd2, xd2) * 180 / std::numbers::pi) - 90;
 
-                rotDiff = ((oldyRot - yRot) + 90) * M_PI / 180;
-                xxa = -Mth::sin(rotDiff) * yya * 1.0f;
-                yya = Mth::cos(rotDiff) * yya * 1.0f;
+                rotDiff = ((oldyRot - yRot) + 90) * std::numbers::pi / 180;
+                xxa = -sinf(rotDiff) * yya * 1.0f;
+                yya = cosf(rotDiff) * yya * 1.0f;
             }
         }
         if (yd > 0) {
@@ -191,15 +191,15 @@ void PathfinderMob::findRandomStrollLocation(
         // request that only stroll locations in one quadrant be found. If -1 is
         // passed then behaviour is the same as the java game
         int xt, zt;
-        int yt = Mth::floor(y + random->nextInt(7) - 3);
+        int yt = GameMath::floor(y + random->nextInt(7) - 3);
         if (quadrant == -1) {
-            xt = Mth::floor(x + random->nextInt(13) - 6);
-            zt = Mth::floor(z + random->nextInt(13) - 6);
+            xt = GameMath::floor(x + random->nextInt(13) - 6);
+            zt = GameMath::floor(z + random->nextInt(13) - 6);
         } else {
             int sx = ((quadrant & 1) ? -1 : 1);
             int sz = ((quadrant & 2) ? -1 : 1);
-            xt = Mth::floor(x + random->nextInt(7) * sx);
-            zt = Mth::floor(z + random->nextInt(7) * sz);
+            xt = GameMath::floor(x + random->nextInt(7) * sx);
+            zt = GameMath::floor(z + random->nextInt(7) * sz);
         }
         float value = getWalkTargetValue(xt, yt, zt);
         if (value > best) {
@@ -226,9 +226,9 @@ std::shared_ptr<Entity> PathfinderMob::findAttackTarget() {
 }
 
 bool PathfinderMob::canSpawn() {
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(bb.y0);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(bb.y0);
+    int zt = GameMath::floor(z);
     return this->Mob::canSpawn() && getWalkTargetValue(xt, yt, zt) >= 0;
 }
 
@@ -249,7 +249,7 @@ void PathfinderMob::setAttackTarget(std::shared_ptr<Entity> attacker) {
 
 // might move to navigation, might make area
 bool PathfinderMob::isWithinRestriction() {
-    return isWithinRestriction(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+    return isWithinRestriction(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
 }
 
 bool PathfinderMob::isWithinRestriction(int x, int y, int z) {

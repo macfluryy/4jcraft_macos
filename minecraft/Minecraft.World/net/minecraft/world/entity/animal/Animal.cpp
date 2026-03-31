@@ -65,7 +65,7 @@ void Animal::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
         if (d < 3) {
             double xd = target->x - x;
             double zd = target->z - z;
-            yRot = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
+            yRot = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
 
             holdGround = true;
         }
@@ -267,9 +267,9 @@ std::shared_ptr<Entity> Animal::findAttackTarget() {
 }
 
 bool Animal::canSpawn() {
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(bb.y0);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(bb.y0);
+    int zt = GameMath::floor(z);
     return level->getTile(xt, yt - 1, zt) == Tile::grass_Id &&
            level->getDaytimeRawBrightness(xt, yt, zt) > 8 &&
            AgableMob::canSpawn();
@@ -403,8 +403,8 @@ void Animal::updateDespawnProtectedState() {
     if (level->isClientSide) return;
 
     if (m_isDespawnProtected) {
-        int xt = Mth::floor(x);
-        int zt = Mth::floor(z);
+        int xt = GameMath::floor(x);
+        int zt = GameMath::floor(z);
 
         if (xt > m_maxWanderX) m_maxWanderX = xt;
         if (xt < m_minWanderX) m_minWanderX = xt;
@@ -433,8 +433,8 @@ bool Animal::isDespawnProtected() { return m_isDespawnProtected; }
 void Animal::setDespawnProtected() {
     if (level && level->isClientSide) return;
 
-    int xt = Mth::floor(x);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int zt = GameMath::floor(z);
 
     m_minWanderX = xt;
     m_maxWanderX = xt;

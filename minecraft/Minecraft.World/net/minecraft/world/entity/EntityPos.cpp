@@ -36,11 +36,11 @@ EntityPos* EntityPos::lerp(std::shared_ptr<Entity> e, float f) {
     double yd = e->y + (y - e->y) * f;
     double zd = e->z + (z - e->z) * f;
 
-    float yrdd = Mth::wrapDegrees(yRot - e->yRot);
-    float xrdd = Mth::wrapDegrees(xRot - e->xRot);
+    float yrdd = GameMath::wrapDegrees(yRot - e->yRot);
+    float xrdd = GameMath::wrapDegrees(xRot - e->xRot);
 
-    float yrd = Mth::wrapDegrees(e->yRot + yrdd * f);
-    float xrd = Mth::wrapDegrees(e->xRot + xrdd * f);
+    float yrd = GameMath::wrapDegrees(e->yRot + yrdd * f);
+    float xrd = GameMath::wrapDegrees(e->xRot + xrdd * f);
 
     if (rot && move) {
         return new EntityPos(xd, yd, zd, yrd, xrd);

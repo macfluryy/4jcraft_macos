@@ -15,7 +15,7 @@ int HealthCriteria::getScoreModifier(
 
     if (players->size() > 0) health /= players->size();
 
-    return Mth::ceil(health);
+    return GameMath::ceil(health);
 }
 
 bool HealthCriteria::isReadOnly() { return true; }

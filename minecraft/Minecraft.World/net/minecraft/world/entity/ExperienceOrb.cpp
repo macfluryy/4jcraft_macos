@@ -76,7 +76,7 @@ void ExperienceOrb::tick() {
     zo = z;
 
     yd -= 0.03f;
-    if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) ==
+    if (level->getMaterial(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)) ==
         Material::lava) {
         yd = 0.2f;
         xd = (random->nextFloat() - random->nextFloat()) * 0.2f;
@@ -122,7 +122,7 @@ void ExperienceOrb::tick() {
     if (onGround) {
         friction = 0.6f * 0.98f;
         int t =
-            level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1, Mth::floor(z));
+            level->getTile(GameMath::floor(x), GameMath::floor(bb.y0) - 1, GameMath::floor(z));
         if (t > 0) {
             friction = Tile::tiles[t]->friction * 0.98f;
         }

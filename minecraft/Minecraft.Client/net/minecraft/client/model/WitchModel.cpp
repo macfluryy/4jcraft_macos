@@ -2,7 +2,7 @@
 #include "geom/ModelPart.h"
 #include "WitchModel.h"
 #include "VillagerModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 WitchModel::WitchModel(float g) : VillagerModel(g, 0, 64, 128) {
     mole = (new ModelPart(this))->setTexSize(64, 128);
@@ -19,24 +19,24 @@ WitchModel::WitchModel(float g) : VillagerModel(g, 0, 64, 128) {
     hat2->setTexSize(64, 128);
     hat2->setPos(1.75f, -4, 2.f);
     hat2->texOffs(0, 76)->addBox(0, 0, 0, 7, 4, 7);
-    hat2->xRot = -3.f * Mth::RAD_TO_GRAD;
-    hat2->zRot = 1.5f * Mth::RAD_TO_GRAD;
+    hat2->xRot = -3.f * GameMath::DEG_TO_RAD;
+    hat2->zRot = 1.5f * GameMath::DEG_TO_RAD;
     hat->addChild(hat2);
 
     ModelPart* hat3 = new ModelPart(this);
     hat3->setTexSize(64, 128);
     hat3->setPos(1.75f, -4, 2.f);
     hat3->texOffs(0, 87)->addBox(0, 0, 0, 4, 4, 4);
-    hat3->xRot = -6.f * Mth::RAD_TO_GRAD;
-    hat3->zRot = 3.f * Mth::RAD_TO_GRAD;
+    hat3->xRot = -6.f * GameMath::DEG_TO_RAD;
+    hat3->zRot = 3.f * GameMath::DEG_TO_RAD;
     hat2->addChild(hat3);
 
     ModelPart* hat4 = new ModelPart(this);
     hat4->setTexSize(64, 128);
     hat4->setPos(1.75f, -2, 2.f);
     hat4->texOffs(0, 95)->addBox(0, 0, 0, 1, 2, 1, 0.25f);
-    hat4->xRot = -12.f * Mth::RAD_TO_GRAD;
-    hat4->zRot = 6.f * Mth::RAD_TO_GRAD;
+    hat4->xRot = -12.f * GameMath::DEG_TO_RAD;
+    hat4->zRot = 6.f * GameMath::DEG_TO_RAD;
     hat3->addChild(hat4);
 
     // 4J added - compile now to avoid random performance hit first time cubes
@@ -57,9 +57,9 @@ void WitchModel::setupAnim(float time, float r, float bob, float yRot,
     nose->translateX = nose->translateY = nose->translateZ = 0;
 
     float speed = 0.01f * (entity->entityId % 10);
-    nose->xRot = (sin(entity->tickCount * speed) * 4.5f) * M_PI / 180;
+    nose->xRot = (sin(entity->tickCount * speed) * 4.5f) * std::numbers::pi / 180;
     nose->yRot = 0;
-    nose->zRot = (cos(entity->tickCount * speed) * 2.5f) * M_PI / 180;
+    nose->zRot = (cos(entity->tickCount * speed) * 2.5f) * std::numbers::pi / 180;
 
     if (holdingItem) {
         nose->xRot = -0.9f;

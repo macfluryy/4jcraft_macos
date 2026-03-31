@@ -425,13 +425,13 @@ void Player::spawnEatParticles(std::shared_ptr<ItemInstance> useItem,
             Vec3 d{(random->nextFloat() - 0.5) * 0.1,
                    Math::random() * 0.1 + 0.1, 0};
 
-            d.xRot(-xRot * M_PI / 180);
-            d.yRot(-yRot * M_PI / 180);
+            d.xRot(-xRot * std::numbers::pi / 180);
+            d.yRot(-yRot * std::numbers::pi / 180);
 
             Vec3 p{(random->nextFloat() - 0.5) * 0.3,
                    -random->nextFloat() * 0.6 - 0.3, 0.6};
-            p.xRot(-xRot * M_PI / 180);
-            p.yRot(-yRot * M_PI / 180);
+            p.xRot(-xRot * std::numbers::pi / 180);
+            p.yRot(-yRot * std::numbers::pi / 180);
             p = p.add(x, y + getHeadHeight(), z);
 
             level->addParticle(PARTICLE_ICONCRACK(useItem->getItem()->id, 0),
@@ -899,8 +899,8 @@ void Player::die(DamageSource* source) {
     }
 
     if (source != nullptr) {
-        xd = -Mth::cos((hurtDir + yRot) * M_PI / 180) * 0.1f;
-        zd = -Mth::sin((hurtDir + yRot) * M_PI / 180) * 0.1f;
+        xd = -cosf((hurtDir + yRot) * std::numbers::pi / 180) * 0.1f;
+        zd = -sinf((hurtDir + yRot) * std::numbers::pi / 180) * 0.1f;
     } else {
         xd = zd = 0;
     }
@@ -962,19 +962,19 @@ std::shared_ptr<ItemEntity> Player::drop(std::shared_ptr<ItemInstance> item,
     float pow = 0.1f;
     if (randomly) {
         float _pow = random->nextFloat() * 0.5f;
-        float dir = random->nextFloat() * M_PI * 2;
+        float dir = random->nextFloat() * std::numbers::pi * 2;
         thrownItem->xd = -sin(dir) * _pow;
         thrownItem->zd = cos(dir) * _pow;
         thrownItem->yd = 0.2f;
 
     } else {
         pow = 0.3f;
-        thrownItem->xd = -sin(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI) * pow;
-        thrownItem->zd = cos(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI) * pow;
-        thrownItem->yd = -sin(xRot / 180 * M_PI) * pow + 0.1f;
+        thrownItem->xd = -sin(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi) * pow;
+        thrownItem->zd = cos(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi) * pow;
+        thrownItem->yd = -sin(xRot / 180 * std::numbers::pi) * pow + 0.1f;
         pow = 0.02f;
 
-        float dir = random->nextFloat() * M_PI * 2;
+        float dir = random->nextFloat() * std::numbers::pi * 2;
         pow *= random->nextFloat();
         thrownItem->xd += cos(dir) * pow;
         thrownItem->yd += (random->nextFloat() - random->nextFloat()) * 0.1f;
@@ -1048,7 +1048,7 @@ void Player::readAdditionalSaveData(CompoundTag* entityTag) {
     setScore(entityTag->getInt(L"Score"));
 
     if (m_isSleeping) {
-        bedPosition = new Pos(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+        bedPosition = new Pos(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
         stopSleepInBed(true, true, false);
     }
 
@@ -1353,8 +1353,8 @@ void Player::attack(std::shared_ptr<Entity> entity) {
         delete damageSource;
         if (wasHurt) {
             if (knockback > 0) {
-                entity->push(-Mth::sin(yRot * M_PI / 180) * knockback * .5f, 0.1,
-                             Mth::cos(yRot * M_PI / 180) * knockback * .5f);
+                entity->push(-sinf(yRot * std::numbers::pi / 180) * knockback * .5f, 0.1,
+                             cosf(yRot * std::numbers::pi / 180) * knockback * .5f);
                 xd *= 0.6;
                 zd *= 0.6;
                 setSprinting(false);
@@ -1429,9 +1429,9 @@ void Player::respawn() { deathFadeCounter = 0; }
 
 void Player::animateRespawn(std::shared_ptr<Player> player, Level* level) {
     for (int i = 0; i < 45; i++) {
-        float angle = i * M_PI * 4.0f / 25.0f;
-        float xo = Mth::cos(angle) * 0.7f;
-        float zo = Mth::sin(angle) * 0.7f;
+        float angle = i * std::numbers::pi * 4.0f / 25.0f;
+        float xo = cosf(angle) * 0.7f;
+        float zo = sinf(angle) * 0.7f;
 
         level->addParticle(eParticleType_netherportal, player->x + xo,
                            player->y - player->heightOffset + 1.62f - i * .05f,
@@ -1831,7 +1831,7 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                 int dist = 0;
                 if (minecartAchievementPos == nullptr) {
                     minecartAchievementPos =
-                        new Pos(Mth::floor(x), Mth::floor(y), Mth::floor(z));
+                        new Pos(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
                 }
                 // 4J-PB - changed this because our world isn't big enough to go
                 // 1000m
@@ -1839,7 +1839,7 @@ void Player::checkRidingStatistiscs(double dx, double dy, double dz) {
                     // 4-JEV, changed slightly to add extra parameters for event
                     // on durango.
                     int dist = minecartAchievementPos->dist(
-                        Mth::floor(x), Mth::floor(y), Mth::floor(z));
+                        GameMath::floor(x), GameMath::floor(y), GameMath::floor(z));
                     if ((m_bAwardedOnARail == false) && (dist >= 500)) {
                         awardStat(GenericStats::onARail(),
                                   GenericStats::param_onARail(dist));

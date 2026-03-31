@@ -69,8 +69,8 @@ Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob,
     double sd = sqrt(xd * xd + zd * zd);
     if (sd < 0.0000001) return;
 
-    float yRot = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
-    float xRot = (float)-(atan2(yd, sd) * 180 / M_PI);
+    float yRot = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
+    float xRot = (float)-(atan2(yd, sd) * 180 / std::numbers::pi);
 
     double xdn = xd / sd;
     double zdn = zd / sd;
@@ -103,15 +103,15 @@ Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob, float power)
 
     moveTo(mob->x, mob->y + mob->getHeadHeight(), mob->z, mob->yRot, mob->xRot);
 
-    x -= Mth::cos(yRot / 180 * M_PI) * 0.16f;
+    x -= cosf(yRot / 180 * std::numbers::pi) * 0.16f;
     y -= 0.1f;
-    z -= Mth::sin(yRot / 180 * M_PI) * 0.16f;
+    z -= sinf(yRot / 180 * std::numbers::pi) * 0.16f;
     setPos(x, y, z);
     heightOffset = 0;
 
-    xd = -Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
-    zd = Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI);
-    yd = -Mth::sin(xRot / 180 * M_PI);
+    xd = -sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    zd = cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    yd = -sinf(xRot / 180 * std::numbers::pi);
 
     shoot(xd, yd, zd, power * 1.5f, 1);
 }
@@ -143,8 +143,8 @@ void Arrow::shoot(double xd, double yd, double zd, float pow,
 
     double sd = sqrt(xd * xd + zd * zd);
 
-    yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-    xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+    xRotO = xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
     life = 0;
 }
 
@@ -160,8 +160,8 @@ void Arrow::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         double sd = sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-        xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+        xRotO = xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
         xRotO = xRot;
         yRotO = yRot;
         app.DebugPrintf("%f %f : 0x%x\n", xRot, yRot, &yRot);
@@ -175,8 +175,8 @@ void Arrow::tick() {
 
     if (xRotO == 0 && yRotO == 0) {
         double sd = sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-        xRotO = xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+        xRotO = xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
     }
 
     {
@@ -273,8 +273,8 @@ void Arrow::tick() {
 
     if (res != nullptr) {
         if (res->entity != nullptr) {
-            float pow = Mth::sqrt(xd * xd + yd * yd + zd * zd);
-            int dmg = (int)Mth::ceil((float)(pow * baseDamage));
+            float pow = GameMath::sqrt(xd * xd + yd * yd + zd * zd);
+            int dmg = (int)GameMath::ceil((float)(pow * baseDamage));
 
             if (isCritArrow()) dmg += random->nextInt(dmg / 2 + 2);
 
@@ -401,8 +401,8 @@ void Arrow::tick() {
     z += zd;
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-    xRot = (float)(atan2(yd, sd) * 180 / M_PI);
+    yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+    xRot = (float)(atan2(yd, sd) * 180 / std::numbers::pi);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

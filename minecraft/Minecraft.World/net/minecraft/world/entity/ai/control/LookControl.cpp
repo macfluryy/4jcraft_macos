@@ -48,15 +48,15 @@ void LookControl::tick() {
         double zd = wantedZ - mob->z;
         double sd = sqrt(xd * xd + zd * zd);
 
-        float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
-        float xRotD = (float)-(atan2(yd, sd) * 180 / M_PI);
+        float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
+        float xRotD = (float)-(atan2(yd, sd) * 180 / std::numbers::pi);
         mob->xRot = rotlerp(mob->xRot, xRotD, xMax);
         mob->yHeadRot = rotlerp(mob->yHeadRot, yRotD, yMax);
     } else {
         mob->yHeadRot = rotlerp(mob->yHeadRot, mob->yBodyRot, 10);
     }
 
-    float headDiffBody = Mth::wrapDegrees(mob->yHeadRot - mob->yBodyRot);
+    float headDiffBody = GameMath::wrapDegrees(mob->yHeadRot - mob->yBodyRot);
 
     if (!mob->getNavigation()->isDone()) {
         // head clamped to body

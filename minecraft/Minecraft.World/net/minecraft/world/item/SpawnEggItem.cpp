@@ -290,7 +290,7 @@ std::shared_ptr<Entity> SpawnEggItem::spawnMobAt(Level* level, int auxVal,
             std::shared_ptr<Mob> mob =
                 std::dynamic_pointer_cast<Mob>(newEntity);
             newEntity->moveTo(
-                x, y, z, Mth::wrapDegrees(level->random->nextFloat() * 360), 0);
+                x, y, z, GameMath::wrapDegrees(level->random->nextFloat() * 360), 0);
             newEntity->setDespawnProtected();  // 4J added, default to being
                                                // protected against despawning
                                                // (has to be done after initial

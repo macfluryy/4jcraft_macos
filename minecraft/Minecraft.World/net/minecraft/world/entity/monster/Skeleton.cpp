@@ -96,8 +96,8 @@ void Skeleton::aiStep() {
     if (level->isDay() && !level->isClientSide) {
         float br = getBrightness(1);
         if (br > 0.5f && random->nextFloat() * 30 < (br - 0.4f) * 2 &&
-            level->canSeeSky(Mth::floor(x), (int)floor(y + 0.5),
-                             Mth::floor(z))) {
+            level->canSeeSky(GameMath::floor(x), (int)floor(y + 0.5),
+                             GameMath::floor(z))) {
             bool burn = true;
 
             std::shared_ptr<ItemInstance> helmet = getCarried(SLOT_HELM);

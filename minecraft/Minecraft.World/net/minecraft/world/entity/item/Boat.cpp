@@ -175,8 +175,8 @@ void Boat::tick() {
 
     double lastSpeed = sqrt(xd * xd + zd * zd);
     if (lastSpeed > MAX_COLLISION_SPEED) {
-        double xa = cos(yRot * M_PI / 180);
-        double za = sin(yRot * M_PI / 180);
+        double xa = cos(yRot * std::numbers::pi / 180);
+        double za = sin(yRot * std::numbers::pi / 180);
 
         for (int i = 0; i < 1 + lastSpeed * 60; i++) {
             double side = (random->nextFloat() * 2 - 1);
@@ -202,7 +202,7 @@ void Boat::tick() {
             double yt = y + (ly - y) / lSteps;
             double zt = z + (lz - z) / lSteps;
 
-            double yrd = Mth::wrapDegrees(lyr - yRot);
+            double yrd = GameMath::wrapDegrees(lyr - yRot);
 
             yRot += (float)((yrd) / lSteps);
             xRot += (float)((lxr - xRot) / lSteps);
@@ -248,8 +248,8 @@ void Boat::tick() {
         double forward = livingRider->yya;
 
         if (forward > 0) {
-            double riderXd = -sin(livingRider->yRot * M_PI / 180);
-            double riderZd = cos(livingRider->yRot * M_PI / 180);
+            double riderXd = -sin(livingRider->yRot * std::numbers::pi / 180);
+            double riderZd = cos(livingRider->yRot * std::numbers::pi / 180);
             xd += riderXd * acceleration * 0.05f;
             zd += riderZd * acceleration * 0.05f;
         }
@@ -301,10 +301,10 @@ void Boat::tick() {
     double xDiff = xo - x;
     double zDiff = zo - z;
     if (xDiff * xDiff + zDiff * zDiff > 0.001) {
-        yRotT = (float)(atan2(zDiff, xDiff) * 180 / M_PI);
+        yRotT = (float)(atan2(zDiff, xDiff) * 180 / std::numbers::pi);
     }
 
-    double rotDiff = Mth::wrapDegrees(yRotT - yRot);
+    double rotDiff = GameMath::wrapDegrees(yRotT - yRot);
 
     if (rotDiff > 20) rotDiff = 20;
     if (rotDiff < -20) rotDiff = -20;
@@ -329,11 +329,11 @@ void Boat::tick() {
     }
 
     for (int i = 0; i < 4; i++) {
-        int xx = Mth::floor(x + ((i % 2) - 0.5) * 0.8);
-        int zz = Mth::floor(z + ((i / 2) - 0.5) * 0.8);
+        int xx = GameMath::floor(x + ((i % 2) - 0.5) * 0.8);
+        int zz = GameMath::floor(z + ((i / 2) - 0.5) * 0.8);
 
         for (int j = 0; j < 2; j++) {
-            int yy = Mth::floor(y) + j;
+            int yy = GameMath::floor(y) + j;
             int tile = level->getTile(xx, yy, zz);
 
             if (tile == Tile::topSnow_Id) {
@@ -352,8 +352,8 @@ void Boat::tick() {
 void Boat::positionRider() {
     if (rider.lock() == nullptr) return;
 
-    double xa = cos(yRot * M_PI / 180) * 0.4;
-    double za = sin(yRot * M_PI / 180) * 0.4;
+    double xa = cos(yRot * std::numbers::pi / 180) * 0.4;
+    double za = sin(yRot * std::numbers::pi / 180) * 0.4;
     rider.lock()->setPos(
         x + xa, y + getRideHeight() + rider.lock()->getRidingHeight(), z + za);
 }

@@ -55,7 +55,7 @@ void VillagerGolemRenderer::additionalRendering(
     glPushMatrix();
 
     // dont ask me how I got the flower into his hand.
-    glRotatef(5 + 180 * golemModel->arm0->xRot / M_PI, 1, 0, 0);
+    glRotatef(5 + 180 * golemModel->arm0->xRot / std::numbers::pi, 1, 0, 0);
     glTranslatef(-11 / 16.0f, 20 / 16.0f, -15 / 16.0f);
     glRotatef(90, 1, 0, 0);
     float s = 0.8f;

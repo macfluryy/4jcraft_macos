@@ -12,7 +12,7 @@
 #include "../../../level/net.minecraft.world.level.h"
 #include "../../../level/tile/net.minecraft.world.level.tile.h"
 #include "../../../phys/net.minecraft.world.phys.h"
-#include "../../../../util/Mth.h"
+#include "../../../../util/GameMath.h"
 
 #include "../../../../../../Header Files/SoundTypes.h"
 
@@ -124,14 +124,14 @@ void WitherBoss::aiStep() {
             double zdist = e->z - z;
             double distSqr = xdist * xdist + zdist * zdist;
             if (distSqr > 9) {
-                double sd = Mth::sqrt(distSqr);
+                double sd = GameMath::sqrt(distSqr);
                 xd += ((xdist / sd) * .5f - xd) * .6f;
                 zd += ((zdist / sd) * .5f - zd) * .6f;
             }
         }
     }
     if ((xd * xd + zd * zd) > .05f) {
-        yRot = (float)atan2(zd, xd) * Mth::RADDEG - 90;
+        yRot = (float)atan2(zd, xd) * GameMath::RAD_TO_DEG - 90;
     }
     Monster::aiStep();
 
@@ -154,10 +154,10 @@ void WitherBoss::aiStep() {
             double xd = e->x - hx;
             double yd = e->y + e->getHeadHeight() - hy;
             double zd = e->z - hz;
-            double sd = Mth::sqrt(xd * xd + zd * zd);
+            double sd = GameMath::sqrt(xd * xd + zd * zd);
 
-            float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
-            float xRotD = (float)-(atan2(yd, sd) * 180 / M_PI);
+            float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
+            float xRotD = (float)-(atan2(yd, sd) * 180 / std::numbers::pi);
             xRotHeads[i] = rotlerp(xRotHeads[i], xRotD, 40);
             yRotHeads[i] = rotlerp(yRotHeads[i], yRotD, 10);
 
@@ -224,9 +224,9 @@ void WitherBoss::newServerAiStep() {
                 idleHeadUpdates[i - 1]++ > 15) {
                 float hrange = 10;
                 float vrange = 5;
-                double xt = Mth::nextDouble(random, x - hrange, x + hrange);
-                double yt = Mth::nextDouble(random, y - vrange, y + vrange);
-                double zt = Mth::nextDouble(random, z - hrange, z + hrange);
+                double xt = random->nextDouble(x - hrange, x + hrange);
+                double yt = random->nextDouble(y - vrange, y + vrange);
+                double zt = random->nextDouble(z - hrange, z + hrange);
                 performRangedAttack(i + 1, xt, yt, zt, true);
                 idleHeadUpdates[i - 1] = 0;
             }
@@ -302,9 +302,9 @@ void WitherBoss::newServerAiStep() {
             // destroy all blocks that are within 1 range, counting from
             // feet and 3 blocks up
 
-            int feet = Mth::floor(y);
-            int ox = Mth::floor(x);
-            int oz = Mth::floor(z);
+            int feet = GameMath::floor(y);
+            int ox = GameMath::floor(x);
+            int oz = GameMath::floor(z);
             bool destroyed = false;
 
             for (int xStep = -1; xStep <= 1; xStep++) {
@@ -348,8 +348,8 @@ double WitherBoss::getHeadX(int index) {
     if (index <= 0) {
         return x;
     }
-    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * M_PI;
-    float cos = Mth::cos(headAngle);
+    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * std::numbers::pi;
+    float cos = cosf(headAngle);
     return x + cos * 1.3;
 }
 
@@ -365,13 +365,13 @@ double WitherBoss::getHeadZ(int index) {
     if (index <= 0) {
         return z;
     }
-    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * M_PI;
-    float sin = Mth::sin(headAngle);
+    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * std::numbers::pi;
+    float sin = sinf(headAngle);
     return z + sin * 1.3;
 }
 
 float WitherBoss::rotlerp(float a, float b, float max) {
-    float diff = Mth::wrapDegrees(b - a);
+    float diff = GameMath::wrapDegrees(b - a);
     if (diff > max) {
         diff = max;
     }

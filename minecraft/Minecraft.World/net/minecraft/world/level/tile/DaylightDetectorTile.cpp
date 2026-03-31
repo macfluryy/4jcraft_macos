@@ -53,13 +53,13 @@ void DaylightDetectorTile::updateSignalStrength(Level* level, int x, int y,
 
     // tilt sunAngle towards zenith (to make the transition to night
     // smoother)
-    if (sunAngle < M_PI) {
+    if (sunAngle < std::numbers::pi) {
         sunAngle = sunAngle + (0 - sunAngle) * .2f;
     } else {
-        sunAngle = sunAngle + (M_PI * 2.0f - sunAngle) * .2f;
+        sunAngle = sunAngle + (std::numbers::pi * 2.0f - sunAngle) * .2f;
     }
 
-    target = Math::round((float)target * Mth::cos(sunAngle));
+    target = Math::round((float)target * cosf(sunAngle));
     if (target < 0) {
         target = 0;
     }

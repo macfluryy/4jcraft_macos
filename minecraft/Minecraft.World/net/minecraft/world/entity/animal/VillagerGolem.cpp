@@ -62,7 +62,7 @@ void VillagerGolem::serverAiMobStep() {
     if (--villageUpdateInterval <= 0) {
         villageUpdateInterval = 70 + random->nextInt(50);
         std::shared_ptr<Village> _village = level->villages->getClosestVillage(
-            Mth::floor(x), Mth::floor(y), Mth::floor(z), Villages::MaxDoorDist);
+            GameMath::floor(x), GameMath::floor(y), GameMath::floor(z), Villages::MaxDoorDist);
         village = _village;
         if (_village == nullptr)
             clearRestriction();
@@ -105,9 +105,9 @@ void VillagerGolem::aiStep() {
 
     if (xd * xd + zd * zd > MoveControl::MIN_SPEED_SQR &&
         random->nextInt(5) == 0) {
-        int xt = Mth::floor(x);
-        int yt = Mth::floor(y - 0.2f - heightOffset);
-        int zt = Mth::floor(z);
+        int xt = GameMath::floor(x);
+        int yt = GameMath::floor(y - 0.2f - heightOffset);
+        int zt = GameMath::floor(z);
         int t = level->getTile(xt, yt, zt);
         int d = level->getData(xt, yt, zt);
         if (t > 0) {

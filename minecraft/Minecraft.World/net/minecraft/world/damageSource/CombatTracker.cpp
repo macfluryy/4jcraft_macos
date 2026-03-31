@@ -19,7 +19,7 @@ void CombatTracker::prepareForDamage() {
 
     if (mob->onLadder()) {
         int type = mob->level->getTile(
-            Mth::floor(mob->x), Mth::floor(mob->bb.y0), Mth::floor(mob->z));
+            GameMath::floor(mob->x), GameMath::floor(mob->bb.y0), GameMath::floor(mob->z));
 
         if (type == Tile::ladder->id) {
             nextLocation = eLocation_LADDER;
