@@ -112,4 +112,3 @@ void MemSect(int sect);
 #include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
-#include "Minecraft.Client/Common/Source Files/Telemetry/TelemetryManager.h"

@@ -9,11 +9,11 @@ SetHealthPacket::SetHealthPacket() {
     this->food = 0;
     this->saturation = 0;
 
-    this->damageSource = eTelemetryChallenges_Unknown;
+    this->damageSource = 0; // 4jcraft: previously eTelemetryChallenges_Unknown
 }
 
 SetHealthPacket::SetHealthPacket(float health, int food, float saturation,
-                                 ETelemetryChallenges damageSource) {
+                                 uint8_t damageSource) {
     this->health = health;
     this->food = food;
     this->saturation = saturation;
@@ -27,9 +27,8 @@ void SetHealthPacket::read(DataInputStream* dis)  // throws IOException
     health = dis->readFloat();
     food = dis->readShort();
     saturation = dis->readFloat();
-    //        exhaustion = dis.readFloat();
 
-    damageSource = (ETelemetryChallenges)dis->readByte();
+    damageSource = (uint8_t)dis->readByte();
 }
 
 void SetHealthPacket::write(DataOutputStream* dos)  // throws IOException
@@ -37,7 +36,6 @@ void SetHealthPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeFloat(health);
     dos->writeShort(food);
     dos->writeFloat(saturation);
-    //        dos.writeFloat(exhaustion);
 
     dos->writeByte(damageSource);
 }

@@ -416,8 +416,6 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
     }
     pMinecraft->setLevel(nullptr, exitReasonStringId, nullptr, saveStats);
 
-    TelemetryManager->Flush();
-
     app.m_gameRules.unloadCurrentGameRules();
     // app.m_Audio.unloadCurrentAudioDetails();
 

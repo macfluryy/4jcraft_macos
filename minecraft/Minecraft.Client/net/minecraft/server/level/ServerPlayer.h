@@ -201,5 +201,6 @@ public:
 protected:
     // 4J Added to record telemetry of player deaths, this should store the last
     // source of damage
-    ETelemetryChallenges m_lastDamageSource;
+    // 4jcraft: fuck you 4J
+    uint8_t m_lastDamageSource;
 };

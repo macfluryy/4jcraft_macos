@@ -35,16 +35,14 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                 new ChoiceTask(this, IDS_TUTORIAL_TASK_OVERVIEW,
                                IDS_TUTORIAL_PROMPT_START_TUTORIAL, true,
                                ACTION_MENU_A, ACTION_MENU_B,
-                               e_Tutorial_Completion_Jump_To_Last_Task,
-                               eTelemetryTutorial_TrialStart));
+                               e_Tutorial_Completion_Jump_To_Last_Task));
     } else {
         if (getCompleted(eTutorial_Telemetry_Halfway)) {
             addTask(e_Tutorial_State_Gameplay,
                     new ChoiceTask(this, IDS_TUTORIAL_TASK_OVERVIEW,
                                    IDS_TUTORIAL_PROMPT_START_TUTORIAL, true,
                                    ACTION_MENU_A, ACTION_MENU_B,
-                                   e_Tutorial_Completion_Jump_To_Last_Task,
-                                   eTelemetryTutorial_TrialStart));
+                                   e_Tutorial_Completion_Jump_To_Last_Task));
         } else {
             addTask(e_Tutorial_State_Gameplay,
                     new InfoTask(this, IDS_TUTORIAL_TASK_OVERVIEW,
@@ -182,12 +180,11 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
 
     // END OF BASIC TUTORIAL
 
-    addTask(
-        e_Tutorial_State_Gameplay,
-        new ChoiceTask(this, IDS_TUTORIAL_TASK_BASIC_COMPLETE,
-                       IDS_TUTORIAL_PROMPT_BASIC_COMPLETE, true, ACTION_MENU_A,
-                       ACTION_MENU_B, e_Tutorial_Completion_Jump_To_Last_Task,
-                       eTelemetryTutorial_Halfway));
+    addTask(e_Tutorial_State_Gameplay,
+            new ChoiceTask(this, IDS_TUTORIAL_TASK_BASIC_COMPLETE,
+                           IDS_TUTORIAL_PROMPT_BASIC_COMPLETE, true,
+                           ACTION_MENU_A, ACTION_MENU_B,
+                           e_Tutorial_Completion_Jump_To_Last_Task));
 
     // START OF FULL TUTORIAL
 
@@ -286,9 +283,9 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     // of the earlier tasks will skip to the last task when complete, and this
     // is the one that we want the player to see.
     ProcedureCompoundTask* finalTask = new ProcedureCompoundTask(this);
-    finalTask->AddTask(new InfoTask(
-        this, IDS_TUTORIAL_COMPLETED, IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE,
-        true, ACTION_MENU_A, eTelemetryTutorial_Complete));
+    finalTask->AddTask(new InfoTask(this, IDS_TUTORIAL_COMPLETED,
+                                    IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE,
+                                    true, ACTION_MENU_A));
     // 4J Stu - Remove this string as it refers to things that don't exist in
     // the current tutorial world!
     // finalTask->AddTask( new InfoTask(this,
@@ -574,8 +571,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_REDSTONE_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_REDSTONE_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Redstone_And_Pistons));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
             addTask(e_Tutorial_State_Redstone_And_Piston,
                     new InfoTask(this, IDS_TUTORIAL_TASK_REDSTONE_POWER_SOURCES,
                                  IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -628,8 +624,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_PORTAL_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_PORTAL_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Portal));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
             addTask(e_Tutorial_State_Portal,
                     new InfoTask(this, IDS_TUTORIAL_TASK_BUILD_PORTAL,
                                  IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -673,8 +668,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     new ChoiceTask(this, IDS_TUTORIAL_CREATIVE_OVERVIEW,
                                    IDS_TUTORIAL_PROMPT_CREATIVE_OVERVIEW, true,
                                    ACTION_MENU_A, ACTION_MENU_B,
-                                   e_Tutorial_Completion_Jump_To_Last_Task,
-                                   eTelemetryTutorial_CreativeMode));
+                                   e_Tutorial_Completion_Jump_To_Last_Task));
             addTask(e_Tutorial_State_CreativeMode,
                     new InfoTask(this, IDS_TUTORIAL_TASK_CREATIVE_MODE,
                                  IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -751,8 +745,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_BREWING_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_BREWING_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Brewing));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             ProcedureCompoundTask* fillWaterBottleTask =
                 new ProcedureCompoundTask(this);
@@ -815,8 +808,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_ENCHANTING_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_ENCHANTING_OVERVIEW, true,
                     ACTION_MENU_A, ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Enchanting));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Enchanting,
                     new InfoTask(this, IDS_TUTORIAL_TASK_ENCHANTING_SUMMARY,
@@ -866,8 +858,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_ANVIL_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_ANVIL_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Anvil));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Anvil,
                     new InfoTask(this, IDS_TUTORIAL_TASK_ANVIL_SUMMARY,
@@ -916,8 +907,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_TRADING_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_TRADING_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Trading));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Trading,
                     new InfoTask(this, IDS_TUTORIAL_TASK_TRADING_SUMMARY,
@@ -965,8 +955,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_FIREWORK_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_FIREWORK_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Trading));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Fireworks,
                     new InfoTask(this, IDS_TUTORIAL_TASK_FIREWORK_PURPOSE,
@@ -1003,8 +992,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_BEACON_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_BEACON_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Beacon));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Beacon,
                     new InfoTask(this, IDS_TUTORIAL_TASK_BEACON_PURPOSE,
@@ -1041,8 +1029,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_HOPPER_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_HOPPER_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Hopper));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Hopper,
                     new InfoTask(this, IDS_TUTORIAL_TASK_HOPPER_PURPOSE,
@@ -1092,8 +1079,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_TASK_ENDERCHEST_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_ENDERCHEST_OVERVIEW, true,
                     ACTION_MENU_A, ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Enderchest));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Enderchests,
                     new InfoTask(this, IDS_TUTORIAL_TASK_ENDERCHEST_SUMMARY,
@@ -1130,8 +1116,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_FARMING_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_FARMING_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Farming));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Farming,
                     new InfoTask(this, IDS_TUTORIAL_TASK_FARMING_SEEDS,
@@ -1199,8 +1184,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_BREEDING_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_BREEDING_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Breeding));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Breeding,
                     new InfoTask(this, IDS_TUTORIAL_TASK_BREEDING_FEED,
@@ -1261,8 +1245,7 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
                     this, IDS_TUTORIAL_GOLEM_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_GOLEM_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Golem));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
             addTask(e_Tutorial_State_Golem,
                     new InfoTask(this, IDS_TUTORIAL_TASK_GOLEM_PUMPKIN,

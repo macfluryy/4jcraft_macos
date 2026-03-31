@@ -221,8 +221,9 @@ void PlayerList::placeNewPlayer(Connection* connection,
         level->getSeed(), player->gameMode->getGameModeForPlayer()->getId(),
         (uint8_t)level->dimension->id, (uint8_t)level->getMaxBuildHeight(),
         (uint8_t)getMaxPlayers(), level->difficulty,
-        TelemetryManager->GetMultiplayerInstanceID(), (uint8_t)playerIndex,
-        level->useNewSeaLevel(), player->getAllPlayerGamePrivileges(),
+        0 /*TelemetryManager->GetMultiplayerInstanceID()*/,
+        (uint8_t)playerIndex, level->useNewSeaLevel(),
+        player->getAllPlayerGamePrivileges(),
         level->getLevelData()->getXZSize(),
         level->getLevelData()->getHellScale())));
     playerConnection->send(std::shared_ptr<SetSpawnPositionPacket>(

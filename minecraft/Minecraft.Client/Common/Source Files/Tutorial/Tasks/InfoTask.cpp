@@ -10,8 +10,7 @@
 
 InfoTask::InfoTask(
     Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
-    bool requiresUserInput /*= false*/, int iMapping /*= 0*/,
-    ETelemetryChallenges telemetryEvent /*= eTelemetryTutorial_NoEvent*/)
+    bool requiresUserInput /*= false*/, int iMapping /*= 0*/)
     : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
                    false) {
     if (requiresUserInput == true) {
@@ -21,8 +20,6 @@ InfoTask::InfoTask(
 
     m_promptId = promptId;
     tutorial->addMessage(m_promptId);
-
-    m_eTelemetryEvent = telemetryEvent;
 }
 
 bool InfoTask::isCompleted() {
@@ -74,7 +71,6 @@ bool InfoTask::isCompleted() {
     }
 
     if (bAllComplete == true) {
-        sendTelemetry();
         enableConstraints(false, true);
     }
     bIsCompleted = bAllComplete;
@@ -101,23 +97,5 @@ void InfoTask::handleUIInput(int iAction) {
                 (*it).second = true;
             }
         }
-    }
-}
-
-void InfoTask::sendTelemetry() {
-    Minecraft* pMinecraft = Minecraft::GetInstance();
-
-    if (m_eTelemetryEvent != eTelemetryChallenges_Unknown) {
-        bool firstPlay = true;
-        // We only store first play for some of the events
-        switch (m_eTelemetryEvent) {
-            case eTelemetryTutorial_Complete:
-                firstPlay =
-                    !tutorial->getCompleted(eTutorial_Telemetry_Complete);
-                tutorial->setCompleted(eTutorial_Telemetry_Complete);
-                break;
-            default:
-                break;
-        };
     }
 }

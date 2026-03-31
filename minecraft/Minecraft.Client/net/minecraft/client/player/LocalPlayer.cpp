@@ -753,7 +753,7 @@ void LocalPlayer::chat(const std::wstring& message) {}
 
 bool LocalPlayer::isSneaking() { return input->sneaking && !m_isSleeping; }
 
-void LocalPlayer::hurtTo(float newHealth, ETelemetryChallenges damageSource) {
+void LocalPlayer::hurtTo(float newHealth, uint8_t damageSource) {
     float dmg = getHealth() - newHealth;
     if (dmg <= 0) {
         setHealth(newHealth);

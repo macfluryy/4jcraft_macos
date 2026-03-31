@@ -139,7 +139,7 @@ public:
     virtual void chat(const std::wstring& message);
     virtual bool isSneaking();
     // virtual bool isIdle();
-    virtual void hurtTo(float newHealth, ETelemetryChallenges damageSource);
+    virtual void hurtTo(float newHealth, uint8_t damageSource);
     virtual void respawn();
     virtual void animateRespawn();
     virtual void displayClientMessage(int messageId);

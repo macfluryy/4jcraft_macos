@@ -48,7 +48,6 @@
 #include "commands/ServerCommandDispatcher.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "level/PlayerChunkMap.h"
-#include "../../../Common/Source Files/Telemetry/TelemetryManager.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 

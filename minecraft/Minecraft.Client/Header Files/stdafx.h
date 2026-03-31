@@ -135,7 +135,6 @@ using namespace DirectX;
 #include "../Common/Source Files/DLC/DLCSkinFile.h"
 #include "../Common/Source Files/DLC/DLCManager.h"
 #include "../Common/Source Files/DLC/DLCPack.h"
-#include "../Common/Source Files/Telemetry/TelemetryManager.h"
 
 #include "extraX64client.h"
 

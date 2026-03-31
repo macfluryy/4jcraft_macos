@@ -69,7 +69,7 @@ protected:
 public:
     virtual void closeContainer();
     void clientSideCloseContainer();
-    virtual void hurtTo(float newHealth, ETelemetryChallenges damageSource);
+    virtual void hurtTo(float newHealth, uint8_t damageSource);
     virtual void awardStat(Stat* stat, const std::vector<uint8_t>& param);
     void awardStatFromServer(Stat* stat, std::vector<uint8_t>& param);
     void onUpdateAbilities();

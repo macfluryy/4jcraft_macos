@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+#include <memory>
+
 #include "Packet.h"
 
 class SetHealthPacket : public Packet,
@@ -9,11 +12,11 @@ public:
     int food;
     float saturation;
 
-    ETelemetryChallenges damageSource;  // 4J Added
+    uint8_t damageSource;  // 4J Added
 
     SetHealthPacket();
     SetHealthPacket(float health, int food, float saturation,
-                    ETelemetryChallenges damageSource);
+                    uint8_t damageSource);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

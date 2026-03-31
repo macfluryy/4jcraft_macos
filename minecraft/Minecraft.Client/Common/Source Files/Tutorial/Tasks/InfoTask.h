@@ -8,20 +8,14 @@ class InfoTask : public TutorialTask {
 private:
     std::unordered_map<int, bool> completedMappings;
 
-    ETelemetryChallenges m_eTelemetryEvent;
-
     bool CompletionMaskIsValid();
 
 public:
     InfoTask(
         Tutorial* tutorial, int descriptionId, int promptId = -1,
-        bool requiresUserInput = false, int iMapping = 0,
-        ETelemetryChallenges telemetryEvent = eTelemetryChallenges_Unknown);
+        bool requiresUserInput = false, int iMapping = 0);
     virtual bool isCompleted();
     virtual int getPromptId();
     virtual void setAsCurrentTask(bool active = true);
     virtual void handleUIInput(int iAction);
-
-private:
-    void sendTelemetry();
 };

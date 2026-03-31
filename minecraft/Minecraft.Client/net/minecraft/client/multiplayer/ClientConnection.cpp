@@ -133,9 +133,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
 
     if (m_userIndex == ProfileManager.GetPrimaryPad()) {
         iUserID = m_userIndex;
-
-        TelemetryManager->SetMultiplayerInstanceId(
-            packet->m_multiplayerInstanceId);
     } else {
         if (!networkPlayer->IsGuest() && networkPlayer->IsLocal()) {
             // find the pad number of this local player

@@ -12,8 +12,7 @@ ChoiceTask::ChoiceTask(
     Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
     bool requiresUserInput /*= false*/, int iConfirmMapping /*= 0*/,
     int iCancelMapping /*= 0*/,
-    eTutorial_CompletionAction cancelAction /*= e_Tutorial_Completion_None*/,
-    ETelemetryChallenges telemetryEvent /*= eTelemetryTutorial_NoEvent*/)
+    eTutorial_CompletionAction cancelAction /*= e_Tutorial_Completion_None*/)
     : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
                    false) {
     if (requiresUserInput == true) {
@@ -29,15 +28,12 @@ ChoiceTask::ChoiceTask(
 
     m_promptId = promptId;
     tutorial->addMessage(m_promptId);
-
-    m_eTelemetryEvent = telemetryEvent;
 }
 
 bool ChoiceTask::isCompleted() {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     if (m_bConfirmMappingComplete || m_bCancelMappingComplete) {
-        sendTelemetry();
         enableConstraints(false, true);
         return true;
     }
@@ -65,7 +61,6 @@ bool ChoiceTask::isCompleted() {
     }
 
     if (m_bConfirmMappingComplete || m_bCancelMappingComplete) {
-        sendTelemetry();
         enableConstraints(false, true);
     }
     return m_bConfirmMappingComplete || m_bCancelMappingComplete;
@@ -98,28 +93,5 @@ void ChoiceTask::handleUIInput(int iAction) {
         } else if (iAction == m_iCancelMapping) {
             m_bCancelMappingComplete = true;
         }
-    }
-}
-
-void ChoiceTask::sendTelemetry() {
-    Minecraft* pMinecraft = Minecraft::GetInstance();
-
-    if (m_eTelemetryEvent != eTelemetryChallenges_Unknown) {
-        bool firstPlay = true;
-        // We only store first play for some of the events
-        switch (m_eTelemetryEvent) {
-            case eTelemetryTutorial_TrialStart:
-                firstPlay =
-                    !tutorial->getCompleted(eTutorial_Telemetry_TrialStart);
-                tutorial->setCompleted(eTutorial_Telemetry_TrialStart);
-                break;
-            case eTelemetryTutorial_Halfway:
-                firstPlay =
-                    !tutorial->getCompleted(eTutorial_Telemetry_Halfway);
-                tutorial->setCompleted(eTutorial_Telemetry_Halfway);
-                break;
-            default:
-                break;
-        };
     }
 }

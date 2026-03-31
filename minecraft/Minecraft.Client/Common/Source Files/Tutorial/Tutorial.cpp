@@ -1382,8 +1382,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         inventoryOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_INV_OVERVIEW,
             IDS_TUTORIAL_PROMPT_INV_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_Inventory));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         inventoryOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_INV_PICK_UP,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1412,8 +1411,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         creativeInventoryOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_CREATIVE_INV_OVERVIEW,
             IDS_TUTORIAL_PROMPT_CREATIVE_INV_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_CreativeInventory));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         creativeInventoryOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_CREATIVE_INV_PICK_UP,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1446,8 +1444,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         craftingOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_CRAFT_OVERVIEW,
             IDS_TUTORIAL_PROMPT_CRAFT_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_Crafting));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         craftingOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_CRAFT_NAV,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1495,8 +1492,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         furnaceOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_FURNACE_OVERVIEW,
             IDS_TUTORIAL_PROMPT_FURNACE_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_Furnace));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         furnaceOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_FURNACE_METHOD,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1522,8 +1518,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         brewingOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_BREWING_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_BREWING_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_BrewingMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         brewingOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_BREWING_MENU_METHOD,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1552,8 +1547,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         enchantingOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_ENCHANTING_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_ENCHANTING_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_EnchantingMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         enchantingOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_ENCHANTING_MENU_START,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1585,8 +1579,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         anvilOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_ANVIL_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_ANVIL_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_AnvilMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         anvilOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_ANVIL_MENU_START,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1624,8 +1617,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         tradingOverviewTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_TRADING_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_TRADING_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_TradingMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         tradingOverviewTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_TRADING_MENU_START,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1659,8 +1651,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                     IDS_TUTORIAL_TASK_MULE_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_HORSE_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Horse));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
 
         addTask(e_Tutorial_State_Horse,
                 new InfoTask(this, IDS_TUTORIAL_TASK_HORSE_INTRO,
@@ -1716,8 +1707,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         horseMenuTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_HORSE_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_HORSE_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_HorseMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         horseMenuTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_HORSE_MENU_LAYOUT,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1742,8 +1732,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         fireworksMenuTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_FIREWORK_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_FIREWORK_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_FireworksMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         fireworksMenuTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_FIREWORK_MENU_BASIC_START,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1785,8 +1774,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
         beaconMenuTask->AddTask(new ChoiceTask(
             this, IDS_TUTORIAL_TASK_BEACON_MENU_OVERVIEW,
             IDS_TUTORIAL_PROMPT_BEACON_MENU_OVERVIEW, true, ACTION_MENU_A,
-            ACTION_MENU_B, e_Tutorial_Completion_Complete_State,
-            eTelemetryTutorial_BeaconMenu));
+            ACTION_MENU_B, e_Tutorial_Completion_Complete_State));
         beaconMenuTask->AddTask(new InfoTask(
             this, IDS_TUTORIAL_TASK_BEACON_MENU_PRIMARY_POWERS,
             IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true, ACTION_MENU_A));
@@ -1811,8 +1799,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                     this, IDS_TUTORIAL_TASK_MINECART_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_MINECART_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Minecart));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
         addTask(e_Tutorial_State_Riding_Minecart,
                 new InfoTask(this, IDS_TUTORIAL_TASK_MINECART_RAILS,
                              IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -1839,8 +1826,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                     this, IDS_TUTORIAL_TASK_BOAT_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_BOAT_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Boat));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
         addTask(e_Tutorial_State_Riding_Boat,
                 new InfoTask(this, IDS_TUTORIAL_TASK_BOAT_STEER,
                              IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -1859,8 +1845,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                     this, IDS_TUTORIAL_TASK_FISHING_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_FISHING_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Fishing));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
         addTask(e_Tutorial_State_Fishing,
                 new InfoTask(this, IDS_TUTORIAL_TASK_FISHING_CAST,
                              IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -1887,8 +1872,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                     this, IDS_TUTORIAL_TASK_BED_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_BED_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_Bed));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
         addTask(e_Tutorial_State_Bed,
                 new InfoTask(this, IDS_TUTORIAL_TASK_BED_PLACEMENT,
                              IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,
@@ -1911,8 +1895,7 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
                     this, IDS_TUTORIAL_TASK_FOOD_BAR_OVERVIEW,
                     IDS_TUTORIAL_PROMPT_FOOD_BAR_OVERVIEW, true, ACTION_MENU_A,
                     ACTION_MENU_B,
-                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints,
-                    eTelemetryTutorial_FoodBar));
+                    e_Tutorial_Completion_Complete_State_Gameplay_Constraints));
         addTask(e_Tutorial_State_Food_Bar,
                 new InfoTask(this, IDS_TUTORIAL_TASK_FOOD_BAR_DEPLETE,
                              IDS_TUTORIAL_PROMPT_PRESS_A_TO_CONTINUE, true,

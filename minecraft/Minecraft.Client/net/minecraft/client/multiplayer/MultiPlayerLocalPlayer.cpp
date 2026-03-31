@@ -277,7 +277,7 @@ void MultiplayerLocalPlayer::clientSideCloseContainer() {
 }
 
 void MultiplayerLocalPlayer::hurtTo(float newHealth,
-                                    ETelemetryChallenges damageSource) {
+                                    uint8_t damageSource) {
     if (flashOnSetHealth) {
         LocalPlayer::hurtTo(newHealth, damageSource);
     } else {
@@ -333,25 +333,6 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
     if (wasRiding && !isRiding) {
         setSneaking(false);
         input->sneaking = false;
-    }
-
-    if (isRiding) {
-        ETelemetryChallenges eventType = eTelemetryChallenges_Unknown;
-        if (this->riding != nullptr) {
-            switch (riding->GetType()) {
-                case eTYPE_BOAT:
-                    eventType = eTelemetryInGame_Ride_Boat;
-                    break;
-                case eTYPE_MINECART:
-                    eventType = eTelemetryInGame_Ride_Minecart;
-                    break;
-                case eTYPE_PIG:
-                    eventType = eTelemetryInGame_Ride_Pig;
-                    break;
-                default:
-                    break;
-            };
-        }
     }
 
     updateRichPresence();

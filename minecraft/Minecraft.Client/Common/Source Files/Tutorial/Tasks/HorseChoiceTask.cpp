@@ -13,11 +13,10 @@ HorseChoiceTask::HorseChoiceTask(Tutorial* tutorial, int iDescHorse,
                                  int iDescDonkey, int iDescMule, int iPromptId,
                                  bool requiresUserInput, int iConfirmMapping,
                                  int iCancelMapping,
-                                 eTutorial_CompletionAction cancelAction,
-                                 ETelemetryChallenges telemetryEvent)
+                                 eTutorial_CompletionAction cancelAction)
 
     : ChoiceTask(tutorial, -1, iPromptId, requiresUserInput, iConfirmMapping,
-                 iCancelMapping, cancelAction, telemetryEvent) {
+                 iCancelMapping, cancelAction) {
     m_eHorseType = -1;
     m_iDescMule = iDescMule;
     m_iDescDonkey = iDescDonkey;
