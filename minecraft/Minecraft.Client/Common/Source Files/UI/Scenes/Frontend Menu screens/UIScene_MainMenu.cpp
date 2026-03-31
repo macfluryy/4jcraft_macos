@@ -959,7 +959,7 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
             // display the full version purchase - if the user is fast with the
             // trial version, it can still be retrieving the product list
             ProfileManager.DisplayFullVersionPurchase(
-                false, iPad, eSen_UpsellID_Full_Version_Of_Game);
+                false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
         }
     }
 }

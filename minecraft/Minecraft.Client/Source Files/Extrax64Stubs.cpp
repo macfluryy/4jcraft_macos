@@ -2,7 +2,6 @@
 // #include <compressapi.h>
 
 #if defined(_WINDOWS64)
-#include "../Windows64/Source Files/Sentient/SentientManager.h"
 #include "../net/minecraft/stats/StatsCounter.h"
 #include "../Windows64/Source Files/Social/SocialManager.h"
 #include "../Windows64/Source Files/Sentient/DynamicConfigurations.h"
@@ -11,7 +10,6 @@
 // via #pragma once. Pull in SentientManager for CSentientManager class
 // declaration and StatsCounter; CSocialManager is provided as inline stubs via
 // Linux/Social/SocialManager.h.
-#include "../Linux/Sentient/SentientManager.h"
 #include "../net/minecraft/stats/StatsCounter.h"
 #else
 #include "../net/minecraft/stats/StatsCounter.h"
@@ -21,7 +19,7 @@
 // C4JStorage StorageManager;
 C_4JProfile ProfileManager;
 #endif
-CSentientManager SentientManager;
+
 #if !defined(__linux__)
 // On Linux this global shadows the project's StringTable class name in unity
 // builds
@@ -196,10 +194,6 @@ int32_t IQNet::JoinGameFromInviteInfo(uint32_t dwUserIndex, uint32_t dwUserMask,
 }
 void IQNet::HostGame() { _bQNetStubGameRunning = true; }
 void IQNet::EndGame() { _bQNetStubGameRunning = false; }
-
-uint32_t MinecraftDynamicConfigurations::GetTrialTime() {
-    return DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
-}
 
 void XSetThreadProcessor(void* a, int b) {}
 // #if !(0) && !(0)
@@ -705,92 +699,6 @@ C4JStorage::ETMSStatus C4JStorage::TMSPP_ReadFile(
 #endif
 
 #endif
-
-/////////////////////////////////////////////////////// Sentient manager
-
-int32_t CSentientManager::Init() { return S_OK; }
-int32_t CSentientManager::Tick() { return S_OK; }
-int32_t CSentientManager::Flush() { return S_OK; }
-bool CSentientManager::RecordPlayerSessionStart(uint32_t dwUserId) {
-    return true;
-}
-bool CSentientManager::RecordPlayerSessionExit(uint32_t dwUserId,
-                                               int exitStatus) {
-    return true;
-}
-bool CSentientManager::RecordHeartBeat(uint32_t dwUserId) { return true; }
-bool CSentientManager::RecordLevelStart(uint32_t dwUserId,
-                                        ESen_FriendOrMatch friendsOrMatch,
-                                        ESen_CompeteOrCoop competeOrCoop,
-                                        int difficulty,
-                                        uint32_t numberOfLocalPlayers,
-                                        uint32_t numberOfOnlinePlayers) {
-    return true;
-}
-bool CSentientManager::RecordLevelExit(uint32_t dwUserId,
-                                       ESen_LevelExitStatus levelExitStatus) {
-    return true;
-}
-bool CSentientManager::RecordLevelSaveOrCheckpoint(uint32_t dwUserId,
-                                                   int32_t saveOrCheckPointID,
-                                                   int32_t saveSizeInBytes) {
-    return true;
-}
-bool CSentientManager::RecordLevelResume(uint32_t dwUserId,
-                                         ESen_FriendOrMatch friendsOrMatch,
-                                         ESen_CompeteOrCoop competeOrCoop,
-                                         int difficulty,
-                                         uint32_t numberOfLocalPlayers,
-                                         uint32_t numberOfOnlinePlayers,
-                                         int32_t saveOrCheckPointID) {
-    return true;
-}
-bool CSentientManager::RecordPauseOrInactive(uint32_t dwUserId) { return true; }
-bool CSentientManager::RecordUnpauseOrActive(uint32_t dwUserId) { return true; }
-bool CSentientManager::RecordMenuShown(uint32_t dwUserId, int32_t menuID,
-                                       int32_t optionalMenuSubID) {
-    return true;
-}
-bool CSentientManager::RecordAchievementUnlocked(
-    uint32_t dwUserId, int32_t achievementID, int32_t achievementGamerscore) {
-    return true;
-}
-bool CSentientManager::RecordMediaShareUpload(
-    uint32_t dwUserId, ESen_MediaDestination mediaDestination,
-    ESen_MediaType mediaType) {
-    return true;
-}
-bool CSentientManager::RecordUpsellPresented(uint32_t dwUserId,
-                                             ESen_UpsellID upsellId,
-                                             int32_t marketplaceOfferID) {
-    return true;
-}
-bool CSentientManager::RecordUpsellResponded(uint32_t dwUserId,
-                                             ESen_UpsellID upsellId,
-                                             int32_t marketplaceOfferID,
-                                             ESen_UpsellOutcome upsellOutcome) {
-    return true;
-}
-bool CSentientManager::RecordPlayerDiedOrFailed(
-    uint32_t dwUserId, int32_t lowResMapX, int32_t lowResMapY,
-    int32_t lowResMapZ, int32_t mapID, int32_t playerWeaponID,
-    int32_t enemyWeaponID, ETelemetryChallenges enemyTypeID) {
-    return true;
-}
-bool CSentientManager::RecordEnemyKilledOrOvercome(
-    uint32_t dwUserId, int32_t lowResMapX, int32_t lowResMapY,
-    int32_t lowResMapZ, int32_t mapID, int32_t playerWeaponID,
-    int32_t enemyWeaponID, ETelemetryChallenges enemyTypeID) {
-    return true;
-}
-bool CSentientManager::RecordSkinChanged(uint32_t dwUserId, uint32_t dwSkinId) {
-    return true;
-}
-bool CSentientManager::RecordBanLevel(uint32_t dwUserId) { return true; }
-bool CSentientManager::RecordUnBanLevel(uint32_t dwUserId) { return true; }
-int32_t CSentientManager::GetMultiplayerInstanceID() { return 0; }
-int32_t CSentientManager::GenerateMultiplayerInstanceId() { return 0; }
-void CSentientManager::SetMultiplayerInstanceId(int32_t value) {}
 
 ////////////////////////////////////////////////////////  Stats counter
 

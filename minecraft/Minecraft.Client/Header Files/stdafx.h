@@ -100,10 +100,7 @@ using namespace DirectX;
 #include "strings.h"
 
 #ifdef _WINDOWS64
-#include "../Windows64/Source Files/Sentient/MinecraftTelemetry.h"
 #include "../Windows64/Windows64_App.h"
-#include "../Windows64/Source Files/Sentient/DynamicConfigurations.h"
-#include "../Windows64/Source Files/Sentient/SentientTelemetryCommon.h"
 #include "Minecraft.spa.h"
 #include "../Windows64/XML/ATGXmlParser.h"
 #include "../Windows64/Source Files/Social/SocialManager.h"
@@ -114,8 +111,6 @@ using namespace DirectX;
 #else
 #include "../Linux/Linux_App.h"
 #include "../Linux/Iggy/include/iggy.h"
-#include "../Linux/Sentient/SentientTelemetryCommon.h"
-#include "../Linux/Sentient/DynamicConfigurations.h"
 #include "Minecraft.spa.h"
 #include "../Common/Source Files/Audio/SoundEngine.h"
 #include "../Linux/Linux_UIController.h"

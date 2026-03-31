@@ -64,7 +64,6 @@ static void sigsegv_handler(int sig) {
 // #include "NetworkManager.h"
 #include "../net/minecraft/client/renderer/Tesselator.h"
 #include "../net/minecraft/client/Options.h"
-#include "Sentient/SentientManager.h"
 #include "../net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"

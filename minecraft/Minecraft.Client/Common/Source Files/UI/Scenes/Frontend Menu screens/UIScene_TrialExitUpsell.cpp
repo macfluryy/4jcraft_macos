@@ -46,7 +46,7 @@ void UIScene_TrialExitUpsell::handleInput(int iPad, int key, bool repeat,
                 // 4J-PB - need to check this user can access the store
                 {
                     ProfileManager.DisplayFullVersionPurchase(
-                        false, iPad, eSen_UpsellID_Full_Version_Of_Game);
+                        false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
                 }
             }
             break;

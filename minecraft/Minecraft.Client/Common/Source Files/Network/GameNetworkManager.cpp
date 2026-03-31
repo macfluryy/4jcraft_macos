@@ -98,7 +98,7 @@ bool CGameNetworkManager::_RunNetworkGame(void* lpParameter) {
     // 4J-PB - if this is the trial game, start the trial timer
     if (!ProfileManager.IsFullVersion()) {
         ui.SetTrialTimerLimitSecs(
-            MinecraftDynamicConfigurations::GetTrialTime());
+            /*DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME*/ 2400);
         app.SetTrialTimerStart();
     }
     // app.CloseXuiScenes(ProfileManager.GetPrimaryPad());

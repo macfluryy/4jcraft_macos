@@ -38,7 +38,7 @@ std::mutex UIController::ms_reloadSkinCS;
 bool UIController::ms_bReloadSkinCSInitialised = false;
 
 std::uint32_t UIController::m_dwTrialTimerLimitSecs =
-    DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME;
+    /*DYNAMIC_CONFIG_DEFAULT_TRIAL_TIME*/ 2400;
 
 static void RADLINK WarningCallback(void* user_callback_data, Iggy* player,
                                     IggyResult code, const char* message) {

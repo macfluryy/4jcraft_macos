@@ -3845,7 +3845,7 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
             // 4J-PB - need to check this user can access the store
             {
                 ProfileManager.DisplayFullVersionPurchase(
-                    false, iPad, eSen_UpsellID_Full_Version_Of_Game);
+                    false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
         }
     }
@@ -3864,7 +3864,7 @@ int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
             {
                 ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
-                    eSen_UpsellID_Full_Version_Of_Game);
+                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
         }
     }
@@ -3883,7 +3883,7 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
             {
                 ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
-                    eSen_UpsellID_Full_Version_Of_Game);
+                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
         }
     } else {
@@ -3906,7 +3906,7 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
             {
                 ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
-                    eSen_UpsellID_Full_Version_Of_Game);
+                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
         } else {
             pApp->SetAction(pMinecraft->player->GetXboxPad(),
@@ -4168,32 +4168,7 @@ void CMinecraftApp::NotificationsCallback(void* pParam,
 void CMinecraftApp::UpsellReturnedCallback(void* pParam, eUpsellType type,
                                            eUpsellResponse result,
                                            int iUserData) {
-    ESen_UpsellID senType;
-    ESen_UpsellOutcome senResponse;
-
-    // Map the eUpsellResponse to the enum we use for sentient
-    switch (result) {
-        case eUpsellResponse_Accepted_NoPurchase:
-            senResponse = eSen_UpsellOutcome_Went_To_Guide;
-            break;
-        case eUpsellResponse_Accepted_Purchase:
-            senResponse = eSen_UpsellOutcome_Accepted;
-            break;
-        case eUpsellResponse_Declined:
-        default:
-            senResponse = eSen_UpsellOutcome_Declined;
-            break;
-    };
-
-    // Map the eUpsellType to the enum we use for sentient
-    switch (type) {
-        case eUpsellType_Custom:
-            senType = eSen_UpsellID_Full_Version_Of_Game;
-            break;
-        default:
-            senType = eSen_UpsellID_Undefined;
-            break;
-    };
+    // 4jcraft: nuked
 }
 
 #if defined(_DEBUG_MENUS_ENABLED)

@@ -97,13 +97,9 @@ void MemSect(int sect);
 
 #ifdef _WINDOWS64
 #include "Minecraft.Client/Windows64/Windows64_App.h"
-#include "Minecraft.Client/Windows64/Source Files/Sentient/SentientTelemetryCommon.h"
-#include "Minecraft.Client/Windows64/Source Files/Sentient/MinecraftTelemetry.h"
 #else
 // Use the Linux runtime path with supported metadata/config headers only.
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Sentient/SentientTelemetryCommon.h"
-#include "Minecraft.Client/Linux/Sentient/DynamicConfigurations.h"
 #endif
 
 #include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"

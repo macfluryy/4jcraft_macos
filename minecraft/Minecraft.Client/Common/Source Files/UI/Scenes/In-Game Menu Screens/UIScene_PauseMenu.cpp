@@ -550,7 +550,7 @@ int UIScene_PauseMenu::UnlockFullSaveReturned(
             {
                 ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
-                    eSen_UpsellID_Full_Version_Of_Game);
+                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
         }
     } else {
