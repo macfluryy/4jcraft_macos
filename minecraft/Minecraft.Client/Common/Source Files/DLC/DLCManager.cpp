@@ -1,10 +1,13 @@
 #include "Minecraft.Client/Header Files/stdafx.h"
+
+#include <cassert>
 #include <algorithm>
 #include "DLCManager.h"
 #include "DLCPack.h"
 #include "DLCFile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/Header Files/PortableFileIO.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIController.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include <cstring>
@@ -250,7 +253,7 @@ DLCPack* DLCManager::getPack(unsigned int index,
             app.DebugPrintf(
                 "DLCManager: Trying to access a DLC pack beyond the range of "
                 "valid packs\n");
-            __debugbreak();
+            assert(0);
         }
         pack = m_packs[index];
     }

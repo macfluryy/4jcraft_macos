@@ -26,6 +26,9 @@
 #include "Minecraft.World/net/minecraft/world/level/saveddata/net.minecraft.world.level.saveddata.h"
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+
 // 4J - this class is fairly substantially altered as there didn't seem any
 // point in porting code for banning, whitelisting, ops etc.
 

@@ -7,6 +7,8 @@
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                      UILayer* parentLayer)
@@ -290,7 +292,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                        IDS_PRO_GUESTPROFILE_TEXT, uiIDA, 1,
                                        ProfileManager.GetPrimaryPad());
             } else {
-                XShowAchievementsUI(m_iPad);
+                // XShowAchievementsUI(m_iPad);
             }
             break;
 

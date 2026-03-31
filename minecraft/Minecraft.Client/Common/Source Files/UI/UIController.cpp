@@ -13,6 +13,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/title/TitleScreen.h"
 #include "UIFontData.h"
+#include "4J_Input.h"
 
 // 4J Stu - Enable this to override the Iggy Allocator
 // #define ENABLE_IGGY_ALLOCATOR

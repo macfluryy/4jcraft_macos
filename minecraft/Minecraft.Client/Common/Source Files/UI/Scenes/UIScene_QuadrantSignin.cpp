@@ -2,6 +2,7 @@
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_QuadrantSignin.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "4J_Input.h"
 
 UIScene_QuadrantSignin::UIScene_QuadrantSignin(int iPad, void* _initData,
                                                UILayer* parentLayer)

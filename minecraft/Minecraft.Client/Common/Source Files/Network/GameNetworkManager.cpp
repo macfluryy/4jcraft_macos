@@ -35,6 +35,7 @@
 
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
+#include "4J_Input.h"
 
 // Global instance
 CGameNetworkManager g_NetworkManager;

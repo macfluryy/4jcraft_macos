@@ -4,6 +4,7 @@
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_BeaconMenu.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
 
 UIScene_BeaconMenu::UIScene_BeaconMenu(int iPad, void* _initData,
                                        UILayer* parentLayer)

@@ -5,6 +5,7 @@
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void* initData,
                                                UILayer* parentLayer)
@@ -81,11 +82,11 @@ void UIScene_InGameInfoMenu::updateTooltips() {
     int keyX = IDS_TOOLTIPS_INVITE_FRIENDS;
     int ikeyY = -1;
 
-    XPARTY_USER_LIST partyList;
-    if ((XPartyGetUserList(&partyList) != XPARTY_E_NOT_IN_PARTY) &&
-        (partyList.dwUserCount > 1)) {
-        keyX = IDS_TOOLTIPS_INVITE_PARTY;
-    }
+    // XPARTY_USER_LIST partyList;
+    // if ((XPartyGetUserList(&partyList) != XPARTY_E_NOT_IN_PARTY) &&
+    //     (partyList.dwUserCount > 1)) {
+    //     keyX = IDS_TOOLTIPS_INVITE_PARTY;
+    // }
 
     if (g_NetworkManager.IsLocalGame()) keyX = -1;
 

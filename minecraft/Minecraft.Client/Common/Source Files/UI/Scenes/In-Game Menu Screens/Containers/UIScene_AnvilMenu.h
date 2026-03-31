@@ -3,6 +3,8 @@
 #include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_AnvilMenu.h"
 #include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "4J_Input.h"
 
 class InventoryMenu;
 

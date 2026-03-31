@@ -11,6 +11,7 @@
 #include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelType.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 #if defined(_WINDOWS64)
 

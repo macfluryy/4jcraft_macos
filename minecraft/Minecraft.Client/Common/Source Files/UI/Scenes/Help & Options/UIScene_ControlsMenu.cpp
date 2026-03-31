@@ -3,6 +3,8 @@
 #include "UIScene_ControlsMenu.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
+#include "4J_Input.h"
 
 UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
                                            UILayer* parentLayer)

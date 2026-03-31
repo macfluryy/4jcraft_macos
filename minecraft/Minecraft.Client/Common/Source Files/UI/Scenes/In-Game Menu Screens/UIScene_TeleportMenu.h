@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
 
 class UIScene_TeleportMenu : public UIScene {
 private:

@@ -50,6 +50,12 @@
 #include "Minecraft.Client/net/minecraft/client/gui/MerchantScreen.h"
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/Common/Source Files/ConsoleGameMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/FullTutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "4J_Input.h"
 
 ClientConnection::ClientConnection(Minecraft* minecraft, const std::wstring& ip,
                                    int port) {

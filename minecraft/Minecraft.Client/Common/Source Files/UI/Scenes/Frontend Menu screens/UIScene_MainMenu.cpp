@@ -5,7 +5,10 @@
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
 #include "UIScene_MainMenu.h"
+
 
 Random* UIScene_MainMenu::random = new Random();
 
@@ -654,7 +657,7 @@ int UIScene_MainMenu::Achievements_SignInReturned(void* pParam, bool bContinue,
         ProfileManager.SetCurrentGameActivity(iPad, CONTEXT_PRESENCE_MENUS,
                                               false);
 
-        XShowAchievementsUI(ProfileManager.GetPrimaryPad());
+        // XShowAchievementsUI(ProfileManager.GetPrimaryPad());
     } else {
         pClass->m_bIgnorePress = false;
         // unlock the profile

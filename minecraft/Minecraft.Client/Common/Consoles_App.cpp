@@ -1,6 +1,3 @@
-
-#include "Minecraft.Client/Header Files/stdafx.h"
-
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
@@ -51,6 +48,11 @@
 #include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+
+#include "4J_Input.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+
 #if defined(__linux__)
 #include <unistd.h>
 #include <climits>

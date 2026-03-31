@@ -2,6 +2,9 @@
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_SkinSelectMenu.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
 
 #define SKIN_SELECT_PACK_DEFAULT 0
 #define SKIN_SELECT_PACK_FAVORITES 1

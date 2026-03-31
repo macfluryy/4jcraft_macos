@@ -73,6 +73,17 @@
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/UIFontData.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/FullTutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/Source Files/ConsoleGameMode.h"
+#include "4J_Input.h"
 
 // #define DISABLE_SPU_CODE
 // 4J Turning this on will change the graph at the bottom of the debug overlay

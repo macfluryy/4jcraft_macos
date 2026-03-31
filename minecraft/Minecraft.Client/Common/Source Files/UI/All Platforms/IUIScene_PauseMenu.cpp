@@ -14,6 +14,9 @@
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
 
 int IUIScene_PauseMenu::ExitGameDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
@@ -256,60 +259,59 @@ void IUIScene_PauseMenu::_ExitWorld(void* lpParameter) {
     if (pMinecraft->isClientSide() || g_NetworkManager.IsInSession()) {
         if (lpParameter != nullptr) {
             // 4J-PB - check if we have lost connection to Live
-            if (ProfileManager.GetLiveConnectionStatus() !=
-                XONLINE_S_LOGON_CONNECTION_ESTABLISHED) {
-                exitReasonStringId = IDS_CONNECTION_LOST_LIVE;
-            } else {
-                switch (app.GetDisconnectReason()) {
-                    case DisconnectPacket::eDisconnect_Kicked:
-                        exitReasonStringId = IDS_DISCONNECTED_KICKED;
-                        break;
-                    case DisconnectPacket::eDisconnect_NoUGC_AllLocal:
-                        exitReasonStringId =
-                            IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
-                        exitReasonTitleId = IDS_CONNECTION_FAILED;
-                        break;
-                    case DisconnectPacket::eDisconnect_NoUGC_Single_Local:
-                        exitReasonStringId =
-                            IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
-                        exitReasonTitleId = IDS_CONNECTION_FAILED;
-                        break;
-                    case DisconnectPacket::eDisconnect_NoFlying:
-                        exitReasonStringId = IDS_DISCONNECTED_FLYING;
-                        break;
-                    case DisconnectPacket::eDisconnect_Quitting:
-                        exitReasonStringId = IDS_DISCONNECTED_SERVER_QUIT;
-                        break;
-                    case DisconnectPacket::eDisconnect_NoFriendsInGame:
-                        exitReasonStringId =
-                            IDS_DISCONNECTED_NO_FRIENDS_IN_GAME;
-                        exitReasonTitleId = IDS_CANTJOIN_TITLE;
-                        break;
-                    case DisconnectPacket::eDisconnect_Banned:
-                        exitReasonStringId = IDS_DISCONNECTED_BANNED;
-                        exitReasonTitleId = IDS_CANTJOIN_TITLE;
-                        break;
-                    case DisconnectPacket::eDisconnect_NotFriendsWithHost:
-                        exitReasonStringId = IDS_NOTALLOWED_FRIENDSOFFRIENDS;
-                        exitReasonTitleId = IDS_CANTJOIN_TITLE;
-                        break;
-                    case DisconnectPacket::eDisconnect_OutdatedServer:
-                        exitReasonStringId = IDS_DISCONNECTED_SERVER_OLD;
-                        exitReasonTitleId = IDS_CANTJOIN_TITLE;
-                        break;
-                    case DisconnectPacket::eDisconnect_OutdatedClient:
-                        exitReasonStringId = IDS_DISCONNECTED_CLIENT_OLD;
-                        exitReasonTitleId = IDS_CANTJOIN_TITLE;
-                        break;
-                    case DisconnectPacket::eDisconnect_ServerFull:
-                        exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
-                        exitReasonTitleId = IDS_CANTJOIN_TITLE;
-                        break;
+            // if (ProfileManager.GetLiveConnectionStatus() !=
+            //     XONLINE_S_LOGON_CONNECTION_ESTABLISHED) {
+            //     exitReasonStringId = IDS_CONNECTION_LOST_LIVE;
+            // } else {
+            switch (app.GetDisconnectReason()) {
+                case DisconnectPacket::eDisconnect_Kicked:
+                    exitReasonStringId = IDS_DISCONNECTED_KICKED;
+                    break;
+                case DisconnectPacket::eDisconnect_NoUGC_AllLocal:
+                    exitReasonStringId =
+                        IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_ALL_LOCAL;
+                    exitReasonTitleId = IDS_CONNECTION_FAILED;
+                    break;
+                case DisconnectPacket::eDisconnect_NoUGC_Single_Local:
+                    exitReasonStringId =
+                        IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_SINGLE_LOCAL;
+                    exitReasonTitleId = IDS_CONNECTION_FAILED;
+                    break;
+                case DisconnectPacket::eDisconnect_NoFlying:
+                    exitReasonStringId = IDS_DISCONNECTED_FLYING;
+                    break;
+                case DisconnectPacket::eDisconnect_Quitting:
+                    exitReasonStringId = IDS_DISCONNECTED_SERVER_QUIT;
+                    break;
+                case DisconnectPacket::eDisconnect_NoFriendsInGame:
+                    exitReasonStringId = IDS_DISCONNECTED_NO_FRIENDS_IN_GAME;
+                    exitReasonTitleId = IDS_CANTJOIN_TITLE;
+                    break;
+                case DisconnectPacket::eDisconnect_Banned:
+                    exitReasonStringId = IDS_DISCONNECTED_BANNED;
+                    exitReasonTitleId = IDS_CANTJOIN_TITLE;
+                    break;
+                case DisconnectPacket::eDisconnect_NotFriendsWithHost:
+                    exitReasonStringId = IDS_NOTALLOWED_FRIENDSOFFRIENDS;
+                    exitReasonTitleId = IDS_CANTJOIN_TITLE;
+                    break;
+                case DisconnectPacket::eDisconnect_OutdatedServer:
+                    exitReasonStringId = IDS_DISCONNECTED_SERVER_OLD;
+                    exitReasonTitleId = IDS_CANTJOIN_TITLE;
+                    break;
+                case DisconnectPacket::eDisconnect_OutdatedClient:
+                    exitReasonStringId = IDS_DISCONNECTED_CLIENT_OLD;
+                    exitReasonTitleId = IDS_CANTJOIN_TITLE;
+                    break;
+                case DisconnectPacket::eDisconnect_ServerFull:
+                    exitReasonStringId = IDS_DISCONNECTED_SERVER_FULL;
+                    exitReasonTitleId = IDS_CANTJOIN_TITLE;
+                    break;
 
-                    default:
-                        exitReasonStringId = IDS_CONNECTION_LOST_SERVER;
-                }
+                default:
+                    exitReasonStringId = IDS_CONNECTION_LOST_SERVER;
             }
+            // }
             // pMinecraft->progressRenderer->progressStartNoAbort(
             // exitReasonStringId );
 

@@ -1,4 +1,6 @@
 #pragma once
+
+#include <set>
 #include <mutex>
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "java/JavaIntHash.h"

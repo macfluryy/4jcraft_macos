@@ -1,6 +1,8 @@
 #pragma once
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
 #include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 class LocalPlayer;
 

@@ -65,6 +65,8 @@ static void sigsegv_handler(int sig) {
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "4J_Input.h"
 // #include "../Orbis/Leaderboards/OrbisLeaderboardManager.h"
 
 // #include "../Orbis/Network/Orbis_NPToolkit.h"

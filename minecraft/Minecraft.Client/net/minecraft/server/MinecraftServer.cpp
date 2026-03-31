@@ -49,6 +49,7 @@
 #include "Minecraft.Client/net/minecraft/server/commands/ServerCommandDispatcher.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "Minecraft.Client/net/minecraft/server/level/PlayerChunkMap.h"
+#include "4J_Input.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 

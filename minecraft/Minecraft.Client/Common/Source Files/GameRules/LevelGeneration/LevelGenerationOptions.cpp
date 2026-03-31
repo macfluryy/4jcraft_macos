@@ -12,6 +12,7 @@
 #include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
 #include "LevelGenerationOptions.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 JustGrSource::JustGrSource() {
     m_displayName = L"Default_DisplayName";

@@ -8,6 +8,7 @@
 #include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
 #define GAME_CREATE_ONLINE_TIMER_TIME 100

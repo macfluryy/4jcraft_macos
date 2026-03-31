@@ -1535,7 +1535,7 @@ int UIScene_LoadOrJoinMenu::TexturePackDialogReturned(
     // Exit with or without saving
     if (result == C4JStorage::EMessage_ResultAccept) {
         // we need to enable background downloading for the DLC
-        XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
+        // XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE_ALWAYS_ALLOW);
     }
     pClass->m_bIgnoreInput = false;
     return 0;

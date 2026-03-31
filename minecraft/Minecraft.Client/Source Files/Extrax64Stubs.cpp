@@ -7,7 +7,6 @@
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.World/x64headers/extraX64.h"
-#include "extraX64client.h"
 
 class INVITE_INFO;
 #if defined(_WINDOWS64)
@@ -34,15 +33,11 @@ void ATG::XMLParser::RegisterSAXCallbackInterface(ISAXCallback* pISAXCallback) {
 
 uint32_t XShowPartyUI(uint32_t dwUserIndex) { return 0; }
 uint32_t XShowFriendsUI(uint32_t dwUserIndex) { return 0; }
-int32_t XPartyGetUserList(XPARTY_USER_LIST* pUserList) { return S_OK; }
+int32_t XPartyGetUserList(void* pUserList) { return S_OK; }
 uint32_t XContentGetThumbnail(uint32_t dwUserIndex,
                               const XCONTENT_DATA* pContentData,
                               uint8_t* pbThumbnail, uint32_t* pcbThumbnail,
                               PXOVERLAPPED* pOverlapped) {
-    return 0;
-}
-void XShowAchievementsUI(int i) {}
-uint32_t XBackgroundDownloadSetMode(XBACKGROUND_DOWNLOAD_MODE Mode) {
     return 0;
 }
 

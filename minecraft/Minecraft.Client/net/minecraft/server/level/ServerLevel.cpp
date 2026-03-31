@@ -40,7 +40,10 @@
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "PlayerChunkMap.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "4J_Input.h"
 
 std::vector<WeighedTreasure*> ServerLevel::RANDOM_BONUS_ITEMS;
 

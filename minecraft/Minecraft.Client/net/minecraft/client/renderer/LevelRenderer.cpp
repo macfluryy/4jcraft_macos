@@ -103,6 +103,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/culling/FrustumData.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "Minecraft.Client/Header Files/stubs.h"
+#include "4J_Input.h"
 
 class Icon;
 class ItemInstance;

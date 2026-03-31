@@ -30,6 +30,10 @@
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
+#include "Minecraft.Client/net/minecraft/client/ClientConstants.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 ResourceLocation Gui::PUMPKIN_BLUR_LOCATION =
     ResourceLocation(TN__BLUR__MISC_PUMPKINBLUR);

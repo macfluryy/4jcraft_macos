@@ -1,4 +1,4 @@
-﻿#include "Minecraft.Client/Header Files/stdafx.h"
+﻿
 #include "Minecraft.Client/Common/Consoles_App.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

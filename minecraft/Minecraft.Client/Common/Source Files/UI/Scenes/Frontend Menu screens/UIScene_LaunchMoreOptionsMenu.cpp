@@ -2,6 +2,7 @@
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "UIScene_LaunchMoreOptionsMenu.h"
+#include "4J_Input.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
 #define GAME_CREATE_ONLINE_TIMER_TIME 100
