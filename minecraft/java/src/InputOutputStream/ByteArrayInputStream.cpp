@@ -1,4 +1,3 @@
-#include "java/InputOutputStream/InputOutputStream.h"
 
 // Creates ByteArrayInputStream that uses buf as its buffer array. The initial
 // value of pos is offset and the initial value of count is the minimum of
@@ -6,6 +5,13 @@
 // mark is set to the specified offset. Parameters: buf - the input buffer.
 // offset - the offset in the buffer of the first byte to read.
 // length - the maximum number of bytes to read from the buffer.
+#include <stdint.h>
+#include <algorithm>
+#include <cstring>
+#include <vector>
+
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+
 ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf, unsigned int offset,
                                            unsigned int length)
     : pos(offset), count(std::min(offset + length, (unsigned int)buf.size())), mark(offset) {

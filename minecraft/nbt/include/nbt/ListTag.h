@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <cstring>
 
 template <class T>
 class ListTag : public Tag {

@@ -1,5 +1,11 @@
 #include "java/IntBuffer.h"
 
+#include <assert.h>
+#include <string.h>
+#include <algorithm>
+
+#include "java/Buffer.h"
+
 // Allocates a new int buffer.
 // The new buffer's position will be zero, its limit will be its capacity, and
 // its mark will be undefined. It will have a backing array, and its array

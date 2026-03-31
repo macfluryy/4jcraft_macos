@@ -1,5 +1,10 @@
 #include "java/FloatBuffer.h"
 
+#include <assert.h>
+#include <string.h>
+
+#include "java/Buffer.h"
+
 // Allocates a new float buffer.
 // The new buffer's position will be zero, its limit will be its capacity, and
 // its mark will be undefined. It will have a backing array, and its array

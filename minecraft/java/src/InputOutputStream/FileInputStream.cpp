@@ -1,8 +1,14 @@
 
+#include <assert.h>
+#include <sys/types.h>
+#include <algorithm>
+#include <cstdint>
+#include <cstdio>
+#include <string>
+#include <vector>
+
 #include "java/File.h"
 #include "java/InputOutputStream/FileInputStream.h"
-#include <algorithm>
-
 #include "../../../Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 namespace {

@@ -1,8 +1,10 @@
 #pragma once
 // 4J Stu - Represents Java standard library class
 
+#include <vector>
+#include <cstdint>
+
 #include "InputStream.h"
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 
 class ByteArrayInputStream : public InputStream {
 protected:

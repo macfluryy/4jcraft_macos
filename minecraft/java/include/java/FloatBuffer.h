@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "Buffer.h"
 #include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 

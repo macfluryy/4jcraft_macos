@@ -3,8 +3,6 @@
 
 #include <cstdio>
 
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
-
 #include "OutputStream.h"
 
 class File;

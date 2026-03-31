@@ -1,7 +1,11 @@
+#include <stdio.h>
 #include <bit>
 #include <cstdint>
+#include <string>
+#include <vector>
 
 #include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/InputStream.h"
 
 // Creates a DataInputStream that uses the specified underlying InputStream.
 // Parameters:

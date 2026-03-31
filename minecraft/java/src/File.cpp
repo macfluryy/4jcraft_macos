@@ -1,9 +1,14 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <unistd.h>
 #include <chrono>
 #include <filesystem>
+#include <string>
+#include <system_error>
+#include <vector>
 
 #include "java/FileFilter.h"
 #include "java/File.h"
-
 #include "../../Minecraft.World/ConsoleHelpers/PathHelper.h" // 4jcraft TODO
 #include "../../Minecraft.World/ConsoleHelpers/StringHelpers.h" // 4jcraft TODO
 

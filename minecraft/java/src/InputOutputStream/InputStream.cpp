@@ -1,6 +1,8 @@
+#include <string>
+
 #include "java/File.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "java/InputOutputStream/InputStream.h"
+#include "java/InputOutputStream/FileInputStream.h"
 
 InputStream* InputStream::getResourceAsStream(const std::wstring& fileName) {
     File file(fileName);

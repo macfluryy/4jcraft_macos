@@ -1,10 +1,18 @@
 #if defined(__linux__)
 #include <sys/time.h>
 #include <time.h>
-#include <ctime>
 #endif
 
+#include <assert.h>
+#include <stdint.h>
+#include <string.h>
+#include <algorithm>
+#include <vector>
+
 #include "java/System.h"
+
+class Biome;
+class Node;
 
 template <class T>
 void System::arraycopy(const std::vector<T>& src, unsigned int srcPos,

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
+#include <vector>
 
+#include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 #include "Buffer.h"
 
 class IntBuffer : public Buffer {

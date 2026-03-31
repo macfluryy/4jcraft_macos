@@ -4,8 +4,6 @@
 
 #include <cstdint>
 
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
-
 #include "InputStream.h"
 
 class GZIPInputStream : public InputStream {

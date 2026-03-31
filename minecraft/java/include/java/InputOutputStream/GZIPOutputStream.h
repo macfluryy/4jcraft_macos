@@ -2,8 +2,6 @@
 // 4J Stu - We are not using GZIP compression, so this is just a pass through
 // class
 
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
-
 #include "OutputStream.h"
 
 class GZIPOutputStream : public OutputStream {

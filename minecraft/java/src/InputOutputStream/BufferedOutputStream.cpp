@@ -1,5 +1,9 @@
 #include "java/InputOutputStream/BufferedOutputStream.h"
 
+#include <stdio.h>
+
+#include "java/InputOutputStream/OutputStream.h"
+
 // Creates a new buffered output stream to write data to the specified
 // underlying output stream with the specified buffer size. Parameters: out -
 // the underlying output stream. size - the buffer size.

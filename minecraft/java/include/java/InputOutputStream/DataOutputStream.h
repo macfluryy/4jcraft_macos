@@ -4,9 +4,6 @@
 
 #include <string>
 
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
-
-
 #include "OutputStream.h"
 #include "DataOutput.h"
 

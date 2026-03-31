@@ -1,6 +1,7 @@
-#include "java/InputOutputStream/InputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
+
+class InputStream;
 
 // Creates an InputStreamReader that uses the default charset.
 // Parameters:

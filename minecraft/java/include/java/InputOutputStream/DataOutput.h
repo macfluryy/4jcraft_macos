@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
+#include <vector>
+#include <string>
+#include <cstdint>
 
 class DataOutput {
 public:

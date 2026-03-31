@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
-
 // 4J Stu - Represents Java standard lib abstract
 
 class OutputStream {

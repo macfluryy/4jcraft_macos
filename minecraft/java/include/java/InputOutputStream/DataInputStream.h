@@ -3,11 +3,10 @@
 // intermediate inheritance class that we don't care about)
 
 #include <string>
+#include <cstdint>
 
 #include "InputStream.h"
 #include "DataInput.h"
-
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 
 class DataInputStream : public InputStream, public DataInput {
 private:

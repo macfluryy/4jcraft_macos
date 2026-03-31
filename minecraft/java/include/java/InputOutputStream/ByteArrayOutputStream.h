@@ -1,7 +1,9 @@
 #pragma once
 
 #include "OutputStream.h"
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
+
+#include <vector>
+#include <cstdint>
 
 class ByteArrayOutputStream : public OutputStream {
     // Note - when actually implementing, std::vector<uint8_t> will need to grow as data is

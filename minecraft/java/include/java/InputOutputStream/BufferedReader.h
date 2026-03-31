@@ -2,6 +2,8 @@
 
 #include "Reader.h"
 
+#include <string>
+
 class BufferedReader : public Reader {
 private:
     Reader* reader;

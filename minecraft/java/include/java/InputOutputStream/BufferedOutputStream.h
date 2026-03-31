@@ -1,7 +1,11 @@
 #pragma once
 
+#include <stdint.h>
+#include <vector>
+#include <cstdint>
+#include <vector>
+
 #include "OutputStream.h"
-#include "../../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 
 class BufferedOutputStream : public OutputStream {
 private:
