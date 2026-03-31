@@ -29,12 +29,12 @@ public class WeatherCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender source, String[] args) {
-        if (args.length < 1 || args.length > 2) {
+        if (args.size() < 1 || args.size() > 2) {
             throw new UsageException("commands.weather.usage");
         }
 
         int duration = (300 + new Random().nextInt(600)) *
-SharedConstants.TICKS_PER_SECOND; if (args.length >= 2) { duration =
+SharedConstants.TICKS_PER_SECOND; if (args.size() >= 2) { duration =
 convertArgToInt(source, args[1], 1, 1000000) * SharedConstants.TICKS_PER_SECOND;
         }
 
@@ -62,7 +62,7 @@ convertArgToInt(source, args[1], 1, 1000000) * SharedConstants.TICKS_PER_SECOND;
 
     @Override
     public List<String> matchArguments(CommandSender source, String[] args) {
-        if (args.length == 1) {
+        if (args.size() == 1) {
             return matchArguments(args, "clear", "rain", "thunder");
         }
 

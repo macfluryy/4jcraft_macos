@@ -6,5 +6,5 @@ class SmoothLayer : public Layer {
 public:
     SmoothLayer(int64_t seedMixup, std::shared_ptr<Layer> parent);
 
-    virtual intArray getArea(int xo, int yo, int w, int h);
+    virtual std::vector<int> getArea(int xo, int yo, int w, int h);
 };

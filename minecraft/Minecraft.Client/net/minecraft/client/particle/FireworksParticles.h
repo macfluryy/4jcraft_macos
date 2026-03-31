@@ -25,14 +25,14 @@ public:
         virtual void tick();
         bool isFarAwayFromCamera();
         void createParticle(double x, double y, double z, double xa, double ya,
-                            double za, intArray rgbColors, intArray fadeColors,
+                            double za, const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
                             bool trail, bool flicker);
-        void createParticleBall(double baseSpeed, int steps, intArray rgbColors,
-                                intArray fadeColors, bool trail, bool flicker);
-        void createParticleShape(double baseSpeed, coords2DArray coords,
-                                 intArray rgbColors, intArray fadeColors,
+        void createParticleBall(double baseSpeed, int steps, const std::vector<int>& rgbColors,
+                                const std::vector<int>& fadeColors, bool trail, bool flicker);
+        void createParticleShape(double baseSpeed, std::vector<std::vector<double>> coords,
+                                 const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
                                  bool trail, bool flicker, bool flat);
-        void createParticleBurst(intArray rgbColors, intArray fadeColors,
+        void createParticleBurst(const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
                                  bool trail, bool flicker);
 
     public:

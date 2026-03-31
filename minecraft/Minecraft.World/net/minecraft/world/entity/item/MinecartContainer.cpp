@@ -7,7 +7,7 @@
 #include "MinecartContainer.h"
 
 void MinecartContainer::_init() {
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(9 * 4);
+    items = std::vector<std::shared_ptr<ItemInstance>>(9 * 4);
     dropEquipment = true;
 
     // 4J Stu - This function call had to be moved here from the Entity ctor to
@@ -164,7 +164,7 @@ void MinecartContainer::addAdditonalSaveData(CompoundTag* base) {
 
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
-    for (int i = 0; i < items.length; i++) {
+    for (int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
@@ -180,12 +180,11 @@ void MinecartContainer::readAdditionalSaveData(CompoundTag* base) {
 
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
-    delete[] items.data;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
+    items = std::vector<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         int slot = tag->getByte(L"Slot") & 0xff;
-        if (slot >= 0 && slot < items.length)
+        if (slot >= 0 && slot < (int)items.size())
             items[slot] = ItemInstance::fromTag(tag);
     }
 }

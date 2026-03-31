@@ -29,10 +29,10 @@ public:
     ~HellFlatLevelSource();
 
 private:
-    void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+    void prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks);
 
 public:
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks);
+    void buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks);
 
     LevelChunk* create(int x, int z);
     LevelChunk* getChunk(int xOffs, int zOffs);

@@ -134,12 +134,12 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     float rotScale = 1.5f;
 
     double startComponents[3];
-    doubleArray start = doubleArray(startComponents, 3);
+    std::vector<double> start = std::vector<double>(startComponents, startComponents + 3);
     dragon->getLatencyPos(start, 6, a);
 
     double latencyPosAComponents[3], latencyPosBComponents[3];
-    doubleArray latencyPosA = doubleArray(latencyPosAComponents, 3);
-    doubleArray latencyPosB = doubleArray(latencyPosBComponents, 3);
+    std::vector<double> latencyPosA = std::vector<double>(latencyPosAComponents, latencyPosAComponents + 3);
+    std::vector<double> latencyPosB = std::vector<double>(latencyPosBComponents, latencyPosBComponents + 3);
     dragon->getLatencyPos(latencyPosA, 5, a);
     dragon->getLatencyPos(latencyPosB, 10, a);
     float rot2 = rotWrap(latencyPosA[0] - latencyPosB[0]);
@@ -152,7 +152,7 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     yy = 20.0f;
     zz = -12.0f;
     double pComponents[3];
-    doubleArray p = doubleArray(pComponents, 3);
+    std::vector<double> p = std::vector<double>(pComponents, pComponents + 3);
 
     for (int i = 0; i < 5; i++) {
         dragon->getLatencyPos(p, 5 - i, a);

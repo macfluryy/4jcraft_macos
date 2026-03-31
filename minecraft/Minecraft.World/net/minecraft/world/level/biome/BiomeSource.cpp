@@ -30,11 +30,10 @@ void BiomeSource::_init() {
 void BiomeSource::_init(int64_t seed, LevelType* generator) {
     _init();
 
-    LayerArray layers = Layer::getDefaultLayers(seed, generator);
+    std::vector<std::shared_ptr<Layer>> layers = Layer::getDefaultLayers(seed, generator);
     layer = layers[0];
     zoomedLayer = layers[1];
 
-    delete[] layers.data;
 }
 
 BiomeSource::BiomeSource() { _init(); }
@@ -64,8 +63,8 @@ float BiomeSource::getDownfall(int x, int z) const {
 
 // 4J - note that caller is responsible for deleting returned array.
 // temperatures array is for output only.
-floatArray BiomeSource::getDownfallBlock(int x, int z, int w, int h) const {
-    floatArray downfalls;
+std::vector<float> BiomeSource::getDownfallBlock(int x, int z, int w, int h) const {
+    std::vector<float> downfalls;
     getDownfallBlock(downfalls, x, z, w, h);
     return downfalls;
 }
@@ -73,15 +72,14 @@ floatArray BiomeSource::getDownfallBlock(int x, int z, int w, int h) const {
 // 4J - note that caller is responsible for deleting returned array.
 // temperatures array is for output only. 4J - removal of separate temperature &
 // downfall layers brought forward from 1.2.3
-void BiomeSource::getDownfallBlock(floatArray& downfalls, int x, int z, int w,
+void BiomeSource::getDownfallBlock(std::vector<float>& downfalls, int x, int z, int w,
                                    int h) const {
     // if (downfalls == nullptr || downfalls->length < w * h)
-    if (downfalls.data == nullptr || downfalls.length < w * h) {
-        if (downfalls.data != nullptr) delete[] downfalls.data;
-        downfalls = floatArray(w * h);
+    if (downfalls.empty() || downfalls.size() < (unsigned int)(w * h)) {
+        downfalls = std::vector<float>(w * h);
     }
 
-    intArray result = zoomedLayer->getArea(x, z, w, h);
+    std::vector<int> result = zoomedLayer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         float d = (float)Biome::biomes[result[i]]->getDownfallInt() / 65536.0f;
         if (d > 1) d = 1;
@@ -100,8 +98,8 @@ float BiomeSource::getTemperature(int x, int y, int z) const {
 // 4J - brought forward from 1.2.3
 float BiomeSource::scaleTemp(float temp, int y) const { return temp; }
 
-floatArray BiomeSource::getTemperatureBlock(int x, int z, int w, int h) const {
-    floatArray temperatures;
+std::vector<float> BiomeSource::getTemperatureBlock(int x, int z, int w, int h) const {
+    std::vector<float> temperatures;
     getTemperatureBlock(temperatures, x, z, w, h);
     return temperatures;
 }
@@ -109,15 +107,14 @@ floatArray BiomeSource::getTemperatureBlock(int x, int z, int w, int h) const {
 // 4J - note that caller is responsible for deleting returned array.
 // temperatures array is for output only. 4J - removal of separate temperature &
 // downfall layers brought forward from 1.2.3
-void BiomeSource::getTemperatureBlock(floatArray& temperatures, int x, int z,
+void BiomeSource::getTemperatureBlock(std::vector<float>& temperatures, int x, int z,
                                       int w, int h) const {
-    // if (temperatures == null || temperatures.length < w * h) {
-    if (temperatures.data == nullptr || temperatures.length < w * h) {
-        if (temperatures.data != nullptr) delete[] temperatures.data;
-        temperatures = floatArray(w * h);
+    // if (temperatures == null || temperatures.size() < w * h) {
+    if (temperatures.empty() || temperatures.size() < (unsigned int)(w * h)) {
+        temperatures = std::vector<float>(w * h);
     }
 
-    intArray result = zoomedLayer->getArea(x, z, w, h);
+    std::vector<int> result = zoomedLayer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         float t =
             (float)Biome::biomes[result[i]]->getTemperatureInt() / 65536.0f;
@@ -126,30 +123,29 @@ void BiomeSource::getTemperatureBlock(floatArray& temperatures, int x, int z,
     }
 }
 
-BiomeArray BiomeSource::getRawBiomeBlock(int x, int z, int w, int h) const {
-    BiomeArray biomes;
+std::vector<Biome*> BiomeSource::getRawBiomeBlock(int x, int z, int w, int h) const {
+    std::vector<Biome*> biomes;
     getRawBiomeBlock(biomes, x, z, w, h);
     return biomes;
 }
 
 // 4J added
-void BiomeSource::getRawBiomeIndices(intArray& biomes, int x, int z, int w,
+void BiomeSource::getRawBiomeIndices(std::vector<int>& biomes, int x, int z, int w,
                                      int h) const {
-    intArray result = layer->getArea(x, z, w, h);
+    std::vector<int> result = layer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         biomes[i] = result[i];
     }
 }
 
-void BiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
+void BiomeSource::getRawBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w,
                                    int h) const {
-    // if (biomes == null || biomes.length < w * h)
-    if (biomes.data == nullptr || biomes.length < w * h) {
-        if (biomes.data != nullptr) delete[] biomes.data;
-        biomes = BiomeArray(w * h);
+    // if (biomes == null || biomes.size() < w * h)
+    if (biomes.empty() || biomes.size() < (unsigned int)(w * h)) {
+        biomes = std::vector<Biome*>(w * h);
     }
 
-    intArray result = layer->getArea(x, z, w, h);
+    std::vector<int> result = layer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         biomes[i] = Biome::biomes[result[i]];
 #if !defined(_CONTENT_PACKAGE)
@@ -161,63 +157,60 @@ void BiomeSource::getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
     }
 }
 
-BiomeArray BiomeSource::getBiomeBlock(int x, int z, int w, int h) const {
+std::vector<Biome*> BiomeSource::getBiomeBlock(int x, int z, int w, int h) const {
     if (w == 16 && h == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) {
         return cache->getBiomeBlockAt(x, z);
     }
-    BiomeArray biomes;
+    std::vector<Biome*> biomes;
     getBiomeBlock(biomes, x, z, w, h, true);
     return biomes;
 }
 
 // 4J - caller is responsible for deleting biomes array
-void BiomeSource::getBiomeBlock(BiomeArray& biomes, int x, int z, int w, int h,
+void BiomeSource::getBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w, int h,
                                 bool useCache) const {
-    // if (biomes == null || biomes.length < w * h)
-    if (biomes.data == nullptr || biomes.length < w * h) {
-        if (biomes.data != nullptr) delete[] biomes.data;
-        biomes = BiomeArray(w * h);
+    // if (biomes == null || biomes.size() < w * h)
+    if (biomes.empty() || biomes.size() < w * h) {
+        biomes = std::vector<Biome*>(w * h);
     }
 
     if (useCache && w == 16 && h == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) {
-        BiomeArray tmp = cache->getBiomeBlockAt(x, z);
-        System::arraycopy(tmp, 0, &biomes, 0, w * h);
-        delete[] tmp.data;  // MGH - added, the caching creates this array from
+        std::vector<Biome*> tmp = cache->getBiomeBlockAt(x, z);
+        std::copy(tmp.begin(), tmp.begin() + w * h, biomes.begin());
                             // the indices now. //4jcraft made it array delete
                             // return biomes;
     }
 
-    intArray result = zoomedLayer->getArea(x, z, w, h);
+    std::vector<int> result = zoomedLayer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         biomes[i] = Biome::biomes[result[i]];
     }
 }
 
-byteArray BiomeSource::getBiomeIndexBlock(int x, int z, int w, int h) const {
+std::vector<uint8_t> BiomeSource::getBiomeIndexBlock(int x, int z, int w, int h) const {
     if (w == 16 && h == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) {
         return cache->getBiomeIndexBlockAt(x, z);
     }
-    byteArray biomeIndices;
+    std::vector<uint8_t> biomeIndices;
     getBiomeIndexBlock(biomeIndices, x, z, w, h, true);
     return biomeIndices;
 }
 
 // 4J - caller is responsible for deleting biomes array
-void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
+void BiomeSource::getBiomeIndexBlock(std::vector<uint8_t>& biomeIndices, int x, int z,
                                      int w, int h, bool useCache) const {
-    // if (biomes == null || biomes.length < w * h)
-    if (biomeIndices.data == nullptr || biomeIndices.length < w * h) {
-        if (biomeIndices.data != nullptr) delete[] biomeIndices.data;
-        biomeIndices = byteArray(w * h);
+    // if (biomes == null || biomes.size() < w * h)
+    if (biomeIndices.empty() || biomeIndices.size() < w * h) {
+        biomeIndices = std::vector<uint8_t>(w * h);
     }
 
     if (useCache && w == 16 && h == 16 && (x & 0xf) == 0 && (z & 0xf) == 0) {
-        byteArray tmp = cache->getBiomeIndexBlockAt(x, z);
-        System::arraycopy(tmp, 0, &biomeIndices, 0, w * h);
+        std::vector<uint8_t> tmp = cache->getBiomeIndexBlockAt(x, z);
+        std::copy(tmp.begin(), tmp.begin() + w * h, biomeIndices.begin());
         // return biomes;
     }
 
-    intArray result = zoomedLayer->getArea(x, z, w, h);
+    std::vector<int> result = zoomedLayer->getArea(x, z, w, h);
     for (int i = 0; i < w * h; i++) {
         biomeIndices[i] = (uint8_t)result[i];
     }
@@ -231,7 +224,7 @@ void BiomeSource::getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
  * NO other biomes, add a margin of at least four blocks to the radius
  */
 bool BiomeSource::containsOnly(int x, int z, int r,
-                               std::vector<Biome*> allowed) {
+                               const std::vector<Biome*>& allowed) {
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -240,7 +233,7 @@ bool BiomeSource::containsOnly(int x, int z, int r,
     int w = x1 - x0 + 1;
     int h = z1 - z0 + 1;
 
-    intArray biomes = layer->getArea(x0, z0, w, h);
+    std::vector<int> biomes = layer->getArea(x0, z0, w, h);
     for (int i = 0; i < w * h; i++) {
         Biome* b = Biome::biomes[biomes[i]];
         if (find(allowed.begin(), allowed.end(), b) == allowed.end())
@@ -266,7 +259,7 @@ bool BiomeSource::containsOnly(int x, int z, int r, Biome* allowed) {
     int w = x1 - x0;
     int h = z1 - z0;
     int biomesCount = w * h;
-    intArray biomes = layer->getArea(x0, z0, w, h);
+    std::vector<int> biomes = layer->getArea(x0, z0, w, h);
     for (unsigned int i = 0; i < biomesCount; i++) {
         Biome* b = Biome::biomes[biomes[i]];
         if (allowed != b) return false;
@@ -290,7 +283,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
 
     int w = x1 - x0 + 1;
     int h = z1 - z0 + 1;
-    intArray biomes = layer->getArea(x0, z0, w, h);
+    std::vector<int> biomes = layer->getArea(x0, z0, w, h);
     TilePos* res = nullptr;
     int found = 0;
     int biomesCount = w * h;
@@ -316,7 +309,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r, Biome* toFind,
  * Returns null if the biome wasn't found
  */
 TilePos* BiomeSource::findBiome(int x, int z, int r,
-                                std::vector<Biome*> allowed, Random* random) {
+                                const std::vector<Biome*>& allowed, Random* random) {
     int x0 = ((x - r) >> 2);
     int z0 = ((z - r) >> 2);
     int x1 = ((x + r) >> 2);
@@ -325,7 +318,7 @@ TilePos* BiomeSource::findBiome(int x, int z, int r,
     int w = x1 - x0 + 1;
     int h = z1 - z0 + 1;
     MemSect(50);
-    intArray biomes = layer->getArea(x0, z0, w, h);
+    std::vector<int> biomes = layer->getArea(x0, z0, w, h);
     TilePos* res = nullptr;
     int found = 0;
     for (unsigned int i = 0; i < w * h; i++) {
@@ -381,7 +374,7 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
             static const int biomeOffset = -(biomeWidth / 2);
 
             // Storage for our biome indices
-            intArray indices = intArray(biomeWidth * biomeWidth);
+            std::vector<int> indices = std::vector<int>(biomeWidth * biomeWidth);
 
             // Storage for the fractional amounts of each biome that will be
             // calculated
@@ -412,14 +405,13 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
 
             // Clean up
             delete pr;
-            delete[] indices.data;
 
 #if defined(DEBUG_SEEDS)
             app.DebugPrintf("%d: %d tries taken, seed used is %lld\n", k,
                             tryCount, bestSeed);
 
             BiomeSource* biomeSource = new BiomeSource(bestSeed);
-            BiomeArray biomes = biomeSource->getBiomeBlock(-27 * 16, -27 * 16,
+            std::vector<Biome*> biomes = biomeSource->getBiomeBlock(-27 * 16, -27 * 16,
                                                            54 * 16, 54 * 16);
 
             unsigned int* pixels = new unsigned int[54 * 16 * 54 * 16];
@@ -469,7 +461,6 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
             RenderManager.SaveTextureData(buf, &srcInfo, (int*)pixels);
 
             delete[] pixels;
-            delete biomes.data;
             delete biomeSource;
 #endif
         }
@@ -479,17 +470,17 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
 }
 
 // 4J added - get the fractional amounts of each biome type in the given indices
-void BiomeSource::getFracs(intArray indices, float* fracs) {
+void BiomeSource::getFracs(std::vector<int>& indices, float* fracs) {
     for (int i = 0; i < Biome::BIOME_COUNT; i++) {
         fracs[i] = 0.0f;
     }
 
-    for (int i = 0; i < indices.length; i++) {
+    for (int i = 0; i < indices.size(); i++) {
         fracs[indices[i]] += 1.0f;
     }
 
     for (int i = 0; i < Biome::BIOME_COUNT; i++) {
-        fracs[i] /= (float)(indices.length);
+        fracs[i] /= (float)(indices.size());
     }
 }
 

@@ -36,9 +36,9 @@ TheEndLevelRandomLevelSource::~TheEndLevelRandomLevelSource() {
 }
 
 void TheEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs,
-                                                  byteArray blocks,
-                                                  BiomeArray biomes) {
-    doubleArray buffer;  // 4J - used to be declared with class level scope but
+                                                  std::vector<uint8_t>& blocks,
+                                                  std::vector<Biome*>& biomes) {
+    std::vector<double> buffer;  // 4J - used to be declared with class level scope but
                          // tidying up for thread safety reasons
 
     int xChunks = 16 / CHUNK_WIDTH;
@@ -121,12 +121,11 @@ void TheEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs,
             }
         }
     }
-    delete[] buffer.data;
 }
 
 void TheEndLevelRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
-                                                 byteArray blocks,
-                                                 BiomeArray biomes) {
+                                                 std::vector<uint8_t>& blocks,
+                                                 std::vector<Biome*>& biomes) {
     for (int x = 0; x < 16; x++) {
         for (int z = 0; z < 16; z++) {
             int runDepth = 1;
@@ -171,15 +170,15 @@ LevelChunk* TheEndLevelRandomLevelSource::create(int x, int z) {
 LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
-    BiomeArray biomes;
+    std::vector<Biome*> biomes;
     // 4J - now allocating this with a physical alloc & bypassing general memory
     // management so that it will get cleanly freed
     unsigned int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
     XMemSet128(tileData, 0, blocksSize);
-    byteArray blocks = byteArray(tileData, blocksSize);
-    //    byteArray blocks = byteArray(16 * level->depth * 16);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 
     //    LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     //    // 4J moved below
@@ -198,24 +197,23 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
 
     levelChunk->recalcHeightmap();
 
-    // delete blocks.data; // Don't delete the blocks as the array data is
+    // delete blocks.data(); // Don't delete the blocks as the array data is
     // actually owned by the chunk now
-    delete biomes.data;
 
     return levelChunk;
 }
 
-doubleArray TheEndLevelRandomLevelSource::getHeights(doubleArray buffer, int x,
+std::vector<double> TheEndLevelRandomLevelSource::getHeights(std::vector<double>& buffer, int x,
                                                      int y, int z, int xSize,
                                                      int ySize, int zSize) {
-    if (buffer.data == nullptr) {
-        buffer = doubleArray(xSize * ySize * zSize);
+    if (buffer.empty()) {
+        buffer = std::vector<double>(xSize * ySize * zSize);
     }
 
     double s = 1 * 684.412;
     double hs = 1 * 684.412;
 
-    doubleArray pnr, ar, br, sr, dr, fi,
+    std::vector<double> pnr, ar, br, sr, dr, fi,
         fis;  // 4J - used to be declared with class level scope but moved here
               // for thread safety
 
@@ -296,13 +294,6 @@ doubleArray TheEndLevelRandomLevelSource::getHeights(doubleArray buffer, int x,
         }
     }
 
-    delete[] pnr.data;
-    delete[] ar.data;
-    delete[] br.data;
-    delete[] sr.data;
-    delete[] dr.data;
-    delete[] fi.data;
-    delete[] fis.data;
 
     return buffer;
 }

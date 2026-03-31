@@ -30,7 +30,7 @@ void EnderDragonRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
 
     // 4J - reorganised a bit so we can free allocations
     double lpComponents[3];
-    doubleArray lp = doubleArray(lpComponents, 3);
+    std::vector<double> lp = std::vector<double>(lpComponents, lpComponents + 3);
     mob->getLatencyPos(lp, 7, a);
     float yr = lp[0];
     // mob->getLatencyPos(lp, 5, a);

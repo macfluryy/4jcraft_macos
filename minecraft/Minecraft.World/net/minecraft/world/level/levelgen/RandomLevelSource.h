@@ -42,7 +42,7 @@ private:
     Level* level;
     const bool generateStructures;
 
-    floatArray pows;
+    std::vector<float> pows;
 
 public:
     RandomLevelSource(Level* level, int64_t seed, bool generateStructures);
@@ -55,11 +55,11 @@ public:
 
 #endif
     float getHeightFalloff(int xxx, int zzz, int* pEMin);
-    void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+    void prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks);
 
 public:
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks,
-                       BiomeArray biomes);
+    void buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+                       std::vector<Biome*>& biomes);
 
 private:
     LargeFeature* caveFeature;
@@ -77,8 +77,8 @@ public:
     virtual void lightChunk(LevelChunk* lc);  // 4J added
 
 private:
-    doubleArray getHeights(doubleArray buffer, int x, int y, int z, int xSize,
-                           int ySize, int zSize, BiomeArray& biomes);
+    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y, int z, int xSize,
+                           int ySize, int zSize, std::vector<Biome*>& biomes);
 
 public:
     virtual bool hasChunk(int x, int y);

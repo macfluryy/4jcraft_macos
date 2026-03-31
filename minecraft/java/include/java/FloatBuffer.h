@@ -13,6 +13,6 @@ public:
 
     FloatBuffer* flip();
     FloatBuffer* put(float f);
-    void get(arrayWithLength<float>* dst);
+    void get(std::vector<float>* dst);
     float* _getDataPointer() { return buffer; }
 };

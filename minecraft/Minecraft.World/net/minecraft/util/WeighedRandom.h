@@ -21,10 +21,10 @@ public:
         int totalWeight);
     static WeighedRandomItem* getRandomItem(
         Random* random, std::vector<WeighedRandomItem*>* items);
-    static int getTotalWeight(WeighedRandomItemArray items);
+    static int getTotalWeight(const std::vector<WeighedRandomItem*>& items);
     static WeighedRandomItem* getRandomItem(Random* random,
-                                            WeighedRandomItemArray items,
+                                            const std::vector<WeighedRandomItem*>& items,
                                             int totalWeight);
     static WeighedRandomItem* getRandomItem(Random* random,
-                                            WeighedRandomItemArray items);
+                                            const std::vector<WeighedRandomItem*>& items);
 };

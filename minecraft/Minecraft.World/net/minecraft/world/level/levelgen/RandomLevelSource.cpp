@@ -78,7 +78,6 @@ RandomLevelSource::~RandomLevelSource() {
 
     delete forestNoise;
 
-    if (pows.data != nullptr) delete[] pows.data;
 }
 
 int g_numPrepareHeightCalls = 0;
@@ -221,7 +220,7 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
 
 #endif
 
-void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
+void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks) {
     LARGE_INTEGER startTime;
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::genDepth / CHUNK_HEIGHT;
@@ -231,14 +230,14 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
     int ySize = Level::genDepth / CHUNK_HEIGHT + 1;
     int zSize = xChunks + 1;
 
-    BiomeArray biomes;  // 4J created locally here for thread safety, java has
+    std::vector<Biome*> biomes;  // 4J created locally here for thread safety, java has
                         // this as a class member
 
     level->getBiomeSource()->getRawBiomeBlock(biomes, xOffs * CHUNK_WIDTH - 2,
                                               zOffs * CHUNK_WIDTH - 2,
                                               xSize + 5, zSize + 5);
 
-    doubleArray buffer;  // 4J - used to be declared with class level scope but
+    std::vector<double> buffer;  // 4J - used to be declared with class level scope but
                          // tidying up for thread safety reasons
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize, biomes);
@@ -364,17 +363,15 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, byteArray blocks) {
     g_averagePrepareHeightsTime.QuadPart =
         g_totalPrepareHeightsTime.QuadPart / g_numPrepareHeightCalls;
 
-    delete[] buffer.data;
-    delete[] biomes.data;
 }
 
-void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
-                                      BiomeArray biomes) {
+void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+                                      std::vector<Biome*>& biomes) {
     int waterHeight = level->seaLevel;
 
     double s = 1 / 32.0;
 
-    doubleArray depthBuffer(16 *
+    std::vector<double> depthBuffer(16 *
                             16);  // 4J - used to be declared with class level
                                   // scope but moved here for thread safety
 
@@ -455,7 +452,6 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, byteArray blocks,
         }
     }
 
-    delete[] depthBuffer.data;
 }
 
 LevelChunk* RandomLevelSource::create(int x, int z) { return getChunk(x, z); }
@@ -469,8 +465,8 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
     XMemSet128(tileData, 0, blocksSize);
-    byteArray blocks = byteArray(tileData, blocksSize);
-    //    byteArray blocks = byteArray(16 * level->depth * 16);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 
     // LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     // // 4J - moved to below
@@ -479,13 +475,12 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 
     // 4J - Some changes made here to how biomes, temperatures and downfalls are
     // passed around for thread safety
-    BiomeArray biomes;
+    std::vector<Biome*> biomes;
     level->getBiomeSource()->getBiomeBlock(biomes, xOffs * 16, zOffs * 16, 16,
                                            16, true);
 
     buildSurfaces(xOffs, zOffs, blocks, biomes);
 
-    delete[] biomes.data;
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
     // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
@@ -526,14 +521,14 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 // does the same.
 void RandomLevelSource::lightChunk(LevelChunk* lc) { lc->recalcHeightmap(); }
 
-doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
+std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer, int x, int y,
                                           int z, int xSize, int ySize,
-                                          int zSize, BiomeArray& biomes) {
-    if (buffer.data == nullptr) {
-        buffer = doubleArray(xSize * ySize * zSize);
+                                          int zSize, std::vector<Biome*>& biomes) {
+    if (buffer.empty()) {
+        buffer = std::vector<double>(xSize * ySize * zSize);
     }
-    if (pows.data == nullptr) {
-        pows = floatArray(5 * 5);
+    if (pows.empty()) {
+        pows = std::vector<float>(5 * 5);
         for (int xb = -2; xb <= 2; xb++) {
             for (int zb = -2; zb <= 2; zb++) {
                 float ppp = 10.0f / Mth::sqrt(xb * xb + zb * zb + 0.2f);
@@ -545,7 +540,7 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
     double s = 1 * 684.412;
     double hs = 1 * 684.412;
 
-    doubleArray pnr, ar, br, sr, dr, fi,
+    std::vector<double> pnr, ar, br, sr, dr, fi,
         fis;  // 4J - used to be declared with class level scope but moved here
               // for thread safety
 
@@ -651,13 +646,6 @@ doubleArray RandomLevelSource::getHeights(doubleArray buffer, int x, int y,
         }
     }
 
-    delete[] pnr.data;
-    delete[] ar.data;
-    delete[] br.data;
-    delete[] sr.data;
-    delete[] dr.data;
-    delete[] fi.data;
-    delete[] fis.data;
 
     return buffer;
 }
@@ -869,9 +857,10 @@ TilePos* RandomLevelSource::findNearestMapFeature(
 void RandomLevelSource::recreateLogicStructuresForChunk(int chunkX,
                                                         int chunkZ) {
     if (generateStructures) {
-        mineShaftFeature->apply(this, level, chunkX, chunkZ, byteArray());
-        villageFeature->apply(this, level, chunkX, chunkZ, byteArray());
-        strongholdFeature->apply(this, level, chunkX, chunkZ, byteArray());
-        scatteredFeature->apply(this, level, chunkX, chunkZ, byteArray());
+        std::vector<uint8_t> emptyBlocks;
+        mineShaftFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
+        villageFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
+        strongholdFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
+        scatteredFeature->apply(this, level, chunkX, chunkZ, emptyBlocks);
     }
 }

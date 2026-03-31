@@ -11,7 +11,7 @@ EGameCommand GiveItemCommand::getId() { return eGameCommand_Give; }
 int GiveItemCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void GiveItemCommand::execute(std::shared_ptr<CommandSender> source,
-                              byteArray commandData) {
+                              std::vector<uint8_t>& commandData) {
     ByteArrayInputStream bais(commandData);
     DataInputStream dis(&bais);
 

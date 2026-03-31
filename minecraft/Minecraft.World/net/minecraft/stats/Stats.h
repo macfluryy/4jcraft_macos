@@ -56,13 +56,13 @@ public:
                      // per day! Stored as large stat so it doesn't max out
                      // before reaching 100 days ( 2,400,000 ticks ).
 
-    // static StatArray mobsKilled;
-    static StatArray blocksMined;
-    static StatArray itemsCollected;
-    static StatArray itemsCrafted;
+    // static std::vector<Stat*> mobsKilled;
+    static std::vector<Stat*> blocksMined;
+    static std::vector<Stat*> itemsCollected;
+    static std::vector<Stat*> itemsCrafted;
 
 #if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
-    static StatArray blocksPlaced;
+    static std::vector<Stat*> blocksPlaced;
 #endif
 
     // Added TU9
@@ -72,8 +72,8 @@ public:
                                     // present when the Enderdragon has died
 
 #if (defined _EXTENDED_ACHIEVEMENTS) && (!0)
-    static StatArray biomesVisisted;
-    static StatArray rainbowCollection;
+    static std::vector<Stat*> biomesVisisted;
+    static std::vector<Stat*> rainbowCollection;
 #endif
 
     static void staticCtor();

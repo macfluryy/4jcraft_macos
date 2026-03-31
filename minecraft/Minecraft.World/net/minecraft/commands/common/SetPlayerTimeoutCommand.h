@@ -23,7 +23,7 @@ public class SetPlayerTimeoutCommand extends BaseCommand {
     }
 
     public void execute(CommandSender source, String[] args) {
-        if (args.length == 1) {
+        if (args.size() == 1) {
             int timeout = convertArgToInt(source, args[0], 0);
             MinecraftServer.getInstance().setPlayerIdleTimeout(timeout);
             logAdminAction(source, "commands.setidletimeout.success", timeout);

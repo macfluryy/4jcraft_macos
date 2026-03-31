@@ -19,7 +19,7 @@ public:
                                 std::shared_ptr<ItemInstance> item);
 
     static int getEnchantmentLevel(int enchantmentId,
-                                   arrayWithLength<std::shared_ptr<ItemInstance>> inventory);
+                                   std::vector<std::shared_ptr<ItemInstance>> inventory);
 
 private:
     class EnchantmentIterationMethod {
@@ -30,7 +30,7 @@ private:
     static void runIterationOnItem(EnchantmentIterationMethod& method,
                                    std::shared_ptr<ItemInstance> piece);
     static void runIterationOnInventory(EnchantmentIterationMethod& method,
-                                        arrayWithLength<std::shared_ptr<ItemInstance>> inventory);
+                                        std::vector<std::shared_ptr<ItemInstance>> inventory);
 
     class GetDamageProtectionIteration : public EnchantmentIterationMethod {
     public:
@@ -50,7 +50,7 @@ private:
      * @return
      */
 public:
-    static int getDamageProtection(arrayWithLength<std::shared_ptr<ItemInstance>> armor,
+    static int getDamageProtection(std::vector<std::shared_ptr<ItemInstance>> armor,
                                    DamageSource* source);
 
 private:

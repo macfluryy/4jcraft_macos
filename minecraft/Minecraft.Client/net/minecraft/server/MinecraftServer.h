@@ -77,7 +77,7 @@ private:
 public:
     ServerConnection* connection;
     Settings* settings;
-    ServerLevelArray levels;
+    std::vector<ServerLevel*> levels;
 
 private:
     PlayerList* players;

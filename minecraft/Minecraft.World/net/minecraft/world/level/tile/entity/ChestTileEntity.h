@@ -26,7 +26,7 @@ public:
     virtual ~ChestTileEntity();
 
 private:
-    arrayWithLength<std::shared_ptr<ItemInstance>>* items;
+    std::vector<std::shared_ptr<ItemInstance>>* items;
 
 public:
     bool isBonusChest;  // 4J added

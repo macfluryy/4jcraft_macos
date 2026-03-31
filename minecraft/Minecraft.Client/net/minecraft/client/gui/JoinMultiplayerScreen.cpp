@@ -66,7 +66,7 @@ void JoinMultiplayerScreen::buttonClicked(Button* button) {
 
         // 4J - TODO
         //        minecraft->setScreen(new ConnectScreen(minecraft, parts[0],
-        //        parts.length > 1 ? parseInt(parts[1], 25565) : 25565));
+        //        parts.size() > 1 ? parseInt(parts[1], 25565) : 25565));
     }
 }
 

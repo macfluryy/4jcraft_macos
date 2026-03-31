@@ -13,10 +13,10 @@ private:
     // 4J added so we can have separate storage arrays for different threads
     class ThreadStorage {
     public:
-        byteArray blockData;
-        byteArray dataData;
-        byteArray skyLightData;
-        byteArray blockLightData;
+        std::vector<uint8_t> blockData;
+        std::vector<uint8_t> dataData;
+        std::vector<uint8_t> skyLightData;
+        std::vector<uint8_t> blockLightData;
 
         ThreadStorage();
         ~ThreadStorage();

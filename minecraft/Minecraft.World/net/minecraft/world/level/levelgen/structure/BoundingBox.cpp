@@ -13,8 +13,8 @@ BoundingBox::BoundingBox() {
     z1 = 0;
 }
 
-BoundingBox::BoundingBox(intArray sourceData) {
-    if (sourceData.length == 6) {
+BoundingBox::BoundingBox(const std::vector<int>& sourceData) {
+    if (sourceData.size() == 6) {
         x0 = sourceData[0];
         y0 = sourceData[1];
         z0 = sourceData[2];
@@ -175,5 +175,5 @@ IntArrayTag* BoundingBox::createTag(const std::wstring& name) {
     data[4] = y1;
     data[5] = z1;
 
-    return new IntArrayTag(name, intArray(data, 6));
+    return new IntArrayTag(name, std::vector<int>(data, data + 6));
 }

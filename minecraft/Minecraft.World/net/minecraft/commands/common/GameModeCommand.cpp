@@ -7,10 +7,10 @@ EGameCommand GameModeCommand::getId() { return eGameCommand_GameMode; }
 int GameModeCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void GameModeCommand::execute(std::shared_ptr<CommandSender> source,
-                              byteArray commandData) {
-    // if (args.length > 0) {
+                              std::vector<uint8_t>& commandData) {
+    // if (args.size() > 0) {
     //	GameType newMode = getModeForString(source, args[0]);
-    //	Player player = args.length >= 2 ? convertToPlayer(source, args[1]) :
+    //	Player player = args.size() >= 2 ? convertToPlayer(source, args[1]) :
     // convertSourceToPlayer(source);
 
     //	player.setGameMode(newMode);
@@ -46,6 +46,6 @@ GameType* GameModeCommand::getModeForString(
     // name.equalsIgnoreCase("a")) { 	return GameType.ADVENTURE; } else {
     // return
     // LevelSettings.validateGameType(convertArgToInt(source, name, 0,
-    // GameType.values().length - 2));
+    // GameType.values().size() - 2));
     // }
 }

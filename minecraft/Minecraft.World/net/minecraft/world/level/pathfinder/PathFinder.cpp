@@ -11,7 +11,7 @@
 
 PathFinder::PathFinder(LevelSource* level, bool canPassDoors, bool canOpenDoors,
                        bool avoidWater, bool canFloat) {
-    neighbors = new NodeArray(32);
+    neighbors = new std::vector<Node*>(32);
 
     this->canPassDoors = canPassDoors;
     this->canOpenDoors = canOpenDoors;
@@ -24,7 +24,6 @@ PathFinder::~PathFinder() {
     // All the nodes should be uniquely referenced in the nodes map, and
     // everything else should just be duplicate references to the same things,
     // so just need to destroy their containers
-    delete[] neighbors->data;
     delete neighbors;
     auto itEnd = nodes.end();
     for (auto it = nodes.begin(); it != itEnd; it++) {
@@ -101,7 +100,7 @@ Path* PathFinder::findPath(Entity* e, Node* from, Node* to, Node* size,
 
         int neighborCount = getNeighbors(e, x, size, to, maxDist);
         for (int i = 0; i < neighborCount; i++) {
-            Node* y = neighbors->data[i];
+            Node* y = (*neighbors)[i];
 
             float tentative_g_score = x->g + x->distanceToSqr(y);
             if (!y->inOpenSet() || tentative_g_score < y->g) {
@@ -136,13 +135,13 @@ int PathFinder::getNeighbors(Entity* entity, Node* pos, Node* size,
     Node* s = getNode(entity, pos->x, pos->y, pos->z - 1, size, jumpSize);
 
     if (n != nullptr && !n->closed && n->distanceTo(target) < maxDist)
-        neighbors->data[p++] = n;
+        (*neighbors)[p++] = n;
     if (w != nullptr && !w->closed && w->distanceTo(target) < maxDist)
-        neighbors->data[p++] = w;
+        (*neighbors)[p++] = w;
     if (e != nullptr && !e->closed && e->distanceTo(target) < maxDist)
-        neighbors->data[p++] = e;
+        (*neighbors)[p++] = e;
     if (s != nullptr && !s->closed && s->distanceTo(target) < maxDist)
-        neighbors->data[p++] = s;
+        (*neighbors)[p++] = s;
 
     return p;
 }
@@ -274,14 +273,13 @@ Path* PathFinder::reconstruct_path(Node* from, Node* to) {
         n = n->cameFrom;
     }
 
-    NodeArray nodes = NodeArray(count);
+    std::vector<Node*> nodes = std::vector<Node*>(count);
     n = to;
-    nodes.data[--count] = n;
+    nodes[--count] = n;
     while (n->cameFrom != nullptr) {
         n = n->cameFrom;
-        nodes.data[--count] = n;
+        nodes[--count] = n;
     }
     Path* ret = new Path(nodes);
-    delete[] nodes.data;
     return ret;
 }

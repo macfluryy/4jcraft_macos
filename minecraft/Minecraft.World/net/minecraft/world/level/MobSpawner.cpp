@@ -109,7 +109,7 @@ const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
     Pos* spawnPos = level->getSharedSpawnPos();
     MemSect(0);
 
-    for (unsigned int i = 0; i < MobCategory::values.length; i++) {
+    for (unsigned int i = 0; i < MobCategory::values.size(); i++) {
         MobCategory* mobCategory = MobCategory::values[i];
         if ((mobCategory->isFriendly() && !spawnFriendlies) ||
             (!mobCategory->isFriendly() && !spawnEnemies) ||

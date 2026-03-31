@@ -8,14 +8,12 @@
 #include "DispenserTileEntity.h"
 
 DispenserTileEntity::DispenserTileEntity() : TileEntity() {
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(9);
+    items = std::vector<std::shared_ptr<ItemInstance>>(9);
     random = new Random();
     name = L"";
 }
 
 DispenserTileEntity::~DispenserTileEntity() {
-    delete[] items.data;
-
     delete random;
 }
 
@@ -81,7 +79,7 @@ void DispenserTileEntity::AddItemBack(std::shared_ptr<ItemInstance> item,
  * @return
  */
 bool DispenserTileEntity::removeProjectile(int itemId) {
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr && items[i]->id == itemId) {
             std::shared_ptr<ItemInstance> removedItem = removeItem(i, 1);
             return removedItem != nullptr;
@@ -93,7 +91,7 @@ bool DispenserTileEntity::removeProjectile(int itemId) {
 int DispenserTileEntity::getRandomSlot() {
     int replaceSlot = -1;
     int replaceOdds = 1;
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr && random->nextInt(replaceOdds++) == 0) {
             replaceSlot = i;
         }
@@ -111,7 +109,7 @@ void DispenserTileEntity::setItem(unsigned int slot,
 }
 
 int DispenserTileEntity::addItem(std::shared_ptr<ItemInstance> item) {
-    for (int i = 0; i < items.length; i++) {
+    for (int i = 0; i < items.size(); i++) {
         if (items[i] == nullptr || items[i]->id == 0) {
             setItem(i, item);
             return i;
@@ -139,12 +137,11 @@ void DispenserTileEntity::load(CompoundTag* base) {
     TileEntity::load(base);
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
-    delete[] items.data;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
+    items = std::vector<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot") & 0xff;
-        if (slot >= 0 && slot < items.length)
+        if (slot >= 0 && slot < items.size())
             items[slot] = ItemInstance::fromTag(tag);
     }
     if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
@@ -154,7 +151,7 @@ void DispenserTileEntity::save(CompoundTag* base) {
     TileEntity::save(base);
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>;
 
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
@@ -193,7 +190,7 @@ std::shared_ptr<TileEntity> DispenserTileEntity::clone() {
         std::shared_ptr<DispenserTileEntity>(new DispenserTileEntity());
     TileEntity::clone(result);
 
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             result->items[i] = ItemInstance::clone(items[i]);
         }

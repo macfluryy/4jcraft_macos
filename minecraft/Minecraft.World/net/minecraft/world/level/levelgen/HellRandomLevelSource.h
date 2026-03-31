@@ -42,10 +42,10 @@ public:
     NetherBridgeFeature* netherBridgeFeature;
 
 private:
-    void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+    void prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks);
 
 public:
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks);
+    void buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks);
 
 private:
     LargeFeature* caveFeature;
@@ -56,7 +56,7 @@ public:
     virtual void lightChunk(LevelChunk* lc);  // 4J added
 
 private:
-    doubleArray getHeights(doubleArray buffer, int x, int y, int z, int xSize,
+    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y, int z, int xSize,
                            int ySize, int zSize);
 
 public:

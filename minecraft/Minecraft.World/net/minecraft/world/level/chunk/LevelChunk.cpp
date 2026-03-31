@@ -31,7 +31,7 @@ bool LevelChunk::touchedSky = false;
 void LevelChunk::staticCtor() {}
 
 void LevelChunk::init(Level* level, int x, int z) {
-    biomes = byteArray(16 * 16);
+    biomes = std::vector<uint8_t>(16 * 16);
     for (int i = 0; i < 16 * 16; i++) {
         biomes[i] = 0xff;
     }
@@ -58,7 +58,7 @@ void LevelChunk::init(Level* level, int x, int z) {
     this->x = x;
     this->z = z;
     MemSect(1);
-    heightmap = byteArray(16 * 16);
+    heightmap = std::vector<uint8_t>(16 * 16);
     {
         std::lock_guard<std::recursive_mutex> lock(m_csEntities);
         for (int i = 0; i < ENTITY_BLOCKS_LENGTH; i++) {
@@ -127,7 +127,7 @@ LevelChunk::LevelChunk(Level* level, int x, int z)
 // 4J - note that since we now compress the block storage, the parameter blocks
 // is used as a source of data, but doesn't get used As the source data so needs
 // to be deleted after calling this ctor.
-LevelChunk::LevelChunk(Level* level, byteArray blocks, int x, int z)
+LevelChunk::LevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z)
     : ENTITY_BLOCKS_LENGTH(Level::maxBuildHeight / 16) {
     init(level, x, z);
 
@@ -137,7 +137,7 @@ LevelChunk::LevelChunk(Level* level, byteArray blocks, int x, int z)
     // all data as empty/compressed as possible. On the client we get the full
     // data for the chunk as a single update in a block region update packet,
     // and so there is a single point where it is good to compress the data.
-    bool createEmpty = (blocks.data == nullptr);
+    bool createEmpty = blocks.empty();
 
     if (createEmpty) {
         lowerBlocks = new CompressedTileStorage(true);
@@ -153,11 +153,11 @@ LevelChunk::LevelChunk(Level* level, byteArray blocks, int x, int z)
         lowerSkyLight = new SparseLightStorage(true);
         lowerBlockLight = new SparseLightStorage(false);
     }
-    //    skyLight = new DataLayer(blocks.length, level->depthBits);
-    //    blockLight = new DataLayer(blocks.length, level->depthBits);
+    //    skyLight = new DataLayer(blocks.size(), level->depthBits);
+    //    blockLight = new DataLayer(blocks.size(), level->depthBits);
 
     if (Level::maxBuildHeight > Level::COMPRESSED_CHUNK_SECTION_HEIGHT) {
-        if (blocks.length > Level::COMPRESSED_CHUNK_SECTION_TILES)
+        if (blocks.size() > Level::COMPRESSED_CHUNK_SECTION_TILES)
             upperBlocks = new CompressedTileStorage(
                 blocks, Level::COMPRESSED_CHUNK_SECTION_TILES);
         else
@@ -187,7 +187,7 @@ LevelChunk::LevelChunk(Level* level, int x, int z, LevelChunk* lc)
     init(level, x, z);
 
     // 4J Stu - Copy over the biome data
-    memcpy(biomes.data, lc->biomes.data, biomes.length);
+    memcpy(biomes.data(), lc->biomes.data(), biomes.size());
 
 #if defined(SHARING_ENABLED)
     lowerBlocks = lc->lowerBlocks;
@@ -270,13 +270,13 @@ void LevelChunk::stopSharingTilesAndData() {
         }
 
         /*
-        newDataLayer = new DataLayer(skyLight->data.length*2, level->depthBits);
-        XMemCpy(newDataLayer->data.data, skyLight->data.data,
-        skyLight->data.length); skyLight = newDataLayer;
+        newDataLayer = new DataLayer(skyLight->data.size()*2, level->depthBits);
+        XMemCpy(newDataLayer->data.data(), skyLight->data.data(),
+        skyLight->data.size()); skyLight = newDataLayer;
 
-        newDataLayer = new DataLayer(blockLight->data.length*2,
-        level->depthBits); XMemCpy(newDataLayer->data.data,
-        blockLight->data.data, blockLight->data.length); blockLight =
+        newDataLayer = new DataLayer(blockLight->data.size()*2,
+        level->depthBits); XMemCpy(newDataLayer->data.data(),
+        blockLight->data.data(), blockLight->data.size()); blockLight =
         newDataLayer;
         */
 
@@ -417,12 +417,10 @@ LevelChunk::~LevelChunk() {
     if (upperSkyLight) delete upperSkyLight;
     if (upperBlockLight) delete upperBlockLight;
 
-    delete[] heightmap.data;
 
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; ++i) delete entityBlocks[i];
     delete[] entityBlocks;
 
-    delete[] biomes.data;
 
 #if defined(_LARGE_WORLDS)
     delete m_unloadedEntitiesTag;
@@ -438,7 +436,7 @@ int LevelChunk::getHeightmap(int x, int z) {
 int LevelChunk::getHighestSectionPosition() {
     return Level::maxBuildHeight - 16;
     // 4J Stu - Unused
-    // for (int i = sections.length - 1; i >= 0; i--) {
+    // for (int i = sections.size() - 1; i >= 0; i--) {
     //	if (sections[i] != null) { // && !sections[i].isEmpty()) {
     //		return sections[i].getYPosition();
     //	}
@@ -1633,7 +1631,7 @@ bool LevelChunk::shouldSave(bool force) {
     return m_unsaved;
 }
 
-int LevelChunk::getBlocksAndData(byteArray* data, int x0, int y0, int z0,
+int LevelChunk::getBlocksAndData(std::vector<uint8_t>* data, int x0, int y0, int z0,
                                  int x1, int y1, int z1, int p,
                                  bool includeLighting /* = true*/) {
     int xs = x1 - x0;
@@ -1704,7 +1702,7 @@ int LevelChunk::getBlocksAndData(byteArray* data, int x0, int y0, int z0,
 }
 
 // 4J added - return true if setBlocksAndData would change any blocks
-bool LevelChunk::testSetBlocksAndData(byteArray data, int x0, int y0, int z0,
+bool LevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
                                       int x1, int y1, int z1, int p) {
     bool changed = false;
 
@@ -1733,7 +1731,7 @@ void LevelChunk::tileUpdatedCallback(int x, int y, int z, void* param,
     lc->level->checkLight(xx, yy, zz);
 }
 
-int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
+int LevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0, int x1,
                                  int y1, int z1, int p,
                                  bool includeLighting /* = true*/) {
     // If includeLighting is set, then this is a full chunk's worth of data that
@@ -1744,7 +1742,7 @@ int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
     // in anyway.
     if (includeLighting) {
         GameRenderer::AddForDelete(lowerBlocks);
-        byteArray emptyByteArray;
+        std::vector<uint8_t> emptyByteArray;
         lowerBlocks = new CompressedTileStorage(emptyByteArray, 0);
         GameRenderer::FinishedReassigning();
 
@@ -1819,8 +1817,8 @@ int LevelChunk::setBlocksAndData(byteArray data, int x0, int y0, int z0, int x1,
                 data, x0, std::max(y0 - compressedHeight, 0), z0, x1,
                 y1 - Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p);
 
-        memcpy(biomes.data, &data.data[p], biomes.length);
-        p += biomes.length;
+        memcpy(biomes.data(), &data.data()[p], biomes.size());
+        p += biomes.size();
     } else {
         // Because the host's local client shares data with it, the lighting
         // updates that are done via callbacks in the setDataRegion calls above
@@ -1991,10 +1989,9 @@ Biome* LevelChunk::getBiome(int x, int z, BiomeSource* biomeSource) {
     return Biome::biomes[value];
 }
 
-byteArray LevelChunk::getBiomes() { return biomes; }
+std::vector<uint8_t> LevelChunk::getBiomes() { return biomes; }
 
-void LevelChunk::setBiomes(byteArray biomes) {
-    if (this->biomes.data != nullptr) delete[] this->biomes.data;
+void LevelChunk::setBiomes(std::vector<uint8_t>& biomes) {
     this->biomes = biomes;
 }
 
@@ -2050,7 +2047,7 @@ void LevelChunk::updateBiomeFlags(int x, int z) {
     if ((columnFlags[slot] & (eColumnFlag_biomeOk << shift)) == 0) {
         int xOffs = (this->x * 16) + x;
         int zOffs = (this->z * 16) + z;
-        BiomeArray biomes;
+        std::vector<Biome*> biomes;
         level->getBiomeSource()->getBiomeBlock(biomes, xOffs, zOffs, 1, 1,
                                                true);
         if (biomes[0]->hasRain())
@@ -2058,65 +2055,64 @@ void LevelChunk::updateBiomeFlags(int x, int z) {
         if (biomes[0]->hasSnow())
             columnFlags[slot] |= (eColumnFlag_biomeHasSnow << shift);
         columnFlags[slot] |= (eColumnFlag_biomeOk << shift);
-        delete biomes.data;
     }
 }
 
 // Get a byte array of length 16384 ( 128 x 16 x 16 x 0.5 ), containing data.
 // Ordering same as java version if originalOrder set;
-void LevelChunk::getDataData(byteArray data) {
+void LevelChunk::getDataData(std::vector<uint8_t>& data) {
     lowerData->getData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
         upperData->getData(data, Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
 }
 
 // Set data to data passed in input byte array of length 16384. This data must
 // be in original (java version) order if originalOrder set.
-void LevelChunk::setDataData(byteArray data) {
+void LevelChunk::setDataData(std::vector<uint8_t>& data) {
     if (lowerData == nullptr) lowerData = new SparseDataStorage();
     if (upperData == nullptr) upperData = new SparseDataStorage(true);
     lowerData->setData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
         upperData->setData(data, Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
 }
 
 // Get a byte array of length 16384 ( 128 x 16 x 16 x 0.5 ), containing sky
 // light data. Ordering same as java version if originalOrder set;
-void LevelChunk::getSkyLightData(byteArray data) {
+void LevelChunk::getSkyLightData(std::vector<uint8_t>& data) {
     lowerSkyLight->getData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
         upperSkyLight->getData(data, Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
 }
 
 // Get a byte array of length 16384 ( 128 x 16 x 16 x 0.5 ), containing block
 // light data. Ordering same as java version if originalOrder set;
-void LevelChunk::getBlockLightData(byteArray data) {
+void LevelChunk::getBlockLightData(std::vector<uint8_t>& data) {
     lowerBlockLight->getData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
         upperBlockLight->getData(data,
                                  Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
 }
 
 // Set sky light data to data passed in input byte array of length 16384. This
 // data must be in original (java version) order if originalOrder set.
-void LevelChunk::setSkyLightData(byteArray data) {
+void LevelChunk::setSkyLightData(std::vector<uint8_t>& data) {
     if (lowerSkyLight == nullptr) lowerSkyLight = new SparseLightStorage(true);
     if (upperSkyLight == nullptr)
         upperSkyLight = new SparseLightStorage(true, true);
     lowerSkyLight->setData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
         upperSkyLight->setData(data, Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
 }
 
 // Set block light data to data passed in input byte array of length 16384. This
 // data must be in original (java version) order if originalOrder set.
-void LevelChunk::setBlockLightData(byteArray data) {
+void LevelChunk::setBlockLightData(std::vector<uint8_t>& data) {
     if (lowerBlockLight == nullptr)
         lowerBlockLight = new SparseLightStorage(false);
     if (upperBlockLight == nullptr)
         upperBlockLight = new SparseLightStorage(false, true);
     lowerBlockLight->setData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES / 2)
         upperBlockLight->setData(data,
                                  Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
 }
@@ -2291,16 +2287,16 @@ bool LevelChunk::isRenderChunkEmpty(int y) {
 }
 
 // Set block data to that passed in in the input array of size 32768
-void LevelChunk::setBlockData(byteArray data) {
+void LevelChunk::setBlockData(std::vector<uint8_t>& data) {
     lowerBlocks->setData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES)
         upperBlocks->setData(data, Level::COMPRESSED_CHUNK_SECTION_TILES);
 }
 
 // Sets data in passed in array of size 32768, from the block data in this chunk
-void LevelChunk::getBlockData(byteArray data) {
+void LevelChunk::getBlockData(std::vector<uint8_t>& data) {
     lowerBlocks->getData(data, 0);
-    if (data.length > Level::COMPRESSED_CHUNK_SECTION_TILES)
+    if (data.size() > Level::COMPRESSED_CHUNK_SECTION_TILES)
         upperBlocks->getData(data, Level::COMPRESSED_CHUNK_SECTION_TILES);
 }
 
@@ -2326,7 +2322,7 @@ int LevelChunk::getHighestNonEmptyY() {
     return highestNonEmptyY;
 }
 
-byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
+std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
                                                 int& ys, int zs) {
     int highestNonEmpty = getHighestNonEmptyY();
 
@@ -2340,7 +2336,7 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
     unsigned int tileCount = xs * ys * zs;
     unsigned int halfTileCount = tileCount / 2;
 
-    byteArray data = byteArray(tileCount + (3 * halfTileCount) + biomes.length);
+    std::vector<uint8_t> data = std::vector<uint8_t>(tileCount + (3 * halfTileCount) + biomes.size());
     for (int x = 0; x < xs; x++) {
         for (int z = 0; z < zs; z++) {
             for (int y = 0; y < ys; y++) {
@@ -2384,11 +2380,11 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
             data, x0, std::max(y0 - compressedHeight, 0), z0, x1,
             y1 - Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z1, p);
 
-    memcpy(&data.data[p], biomes.data, biomes.length);
+    memcpy(&data.data()[p], biomes.data(), biomes.size());
 
     return data;
 
-    // byteArray rawBuffer = byteArray( Level::CHUNK_TILE_COUNT + (3*
+    // std::vector<uint8_t> rawBuffer = std::vector<uint8_t>( Level::CHUNK_TILE_COUNT + (3*
     // Level::HALF_CHUNK_TILE_COUNT) ); for( int x = 0; x < 16; x++ )
     //{
     //	for( int z = 0; z < 16; z++ )
@@ -2405,19 +2401,19 @@ byteArray LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
     // unsigned int offset = Level::CHUNK_TILE_COUNT;
     //// Don't bother reordering block data, block light or sky light as they
     /// don't seem to make much difference
-    // byteArray dataData = byteArray(rawBuffer.data+offset,
+    // std::vector<uint8_t> dataData = std::vector<uint8_t>(rawBuffer.data()+offset,
     // Level::HALF_CHUNK_TILE_COUNT); lc->getDataData(dataData); offset +=
-    // Level::HALF_CHUNK_TILE_COUNT; byteArray blockLightData =
-    // byteArray(rawBuffer.data + offset, Level::HALF_CHUNK_TILE_COUNT); offset
-    // += Level::HALF_CHUNK_TILE_COUNT; byteArray skyLightData =
-    // byteArray(rawBuffer.data + offset, Level::HALF_CHUNK_TILE_COUNT);
+    // Level::HALF_CHUNK_TILE_COUNT; std::vector<uint8_t> blockLightData =
+    // std::vector<uint8_t>(rawBuffer.data() + offset, Level::HALF_CHUNK_TILE_COUNT); offset
+    // += Level::HALF_CHUNK_TILE_COUNT; std::vector<uint8_t> skyLightData =
+    // std::vector<uint8_t>(rawBuffer.data() + offset, Level::HALF_CHUNK_TILE_COUNT);
     // lc->getBlockLightData(blockLightData);
     // lc->getSkyLightData(skyLightData);
     // return rawBuffer;
 }
 
 void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
-                                           byteArray* data) {
+                                           std::vector<uint8_t>* data) {
     int y1 = y0 + ys;
     unsigned int tileCount = xs * ys * zs;
     unsigned int halfTileCount = tileCount / 2;
@@ -2428,8 +2424,8 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
     int upperSlotOffset = xs * zs * lowerYSpan;
 
     int biomesLength = 16 * 16;
-    byteArray newBuffer =
-        byteArray(tileCount + (3 * halfTileCount) + biomesLength);
+    std::vector<uint8_t> newBuffer =
+        std::vector<uint8_t>(tileCount + (3 * halfTileCount) + biomesLength);
     for (int x = 0; x < xs; x++) {
         for (int z = 0; z < zs; z++) {
             for (int y = 0; y < ys; y++) {
@@ -2444,15 +2440,14 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
                 int slot = (x * zs * ySpan) + (z * ySpan) + slotY;
                 int slot2 = (y * xs * zs) + (z * xs) + x;
 
-                newBuffer[slot + targetSlotOffset] = data->data[slot2];
+                newBuffer[slot + targetSlotOffset] = (*data)[slot2];
             }
         }
     }
     // Copy over block data, block light, skylight and biomes as-is
-    memcpy(newBuffer.data + tileCount, data->data + tileCount,
+    memcpy(newBuffer.data() + tileCount, data->data() + tileCount,
            3 * halfTileCount + biomesLength);
-    delete[] data->data;
-    data->data = newBuffer.data;
+    *data = std::move(newBuffer);
 
     // int p = 0;
     // setBlocksAndData(*data, x0, y0, z0, x1, y1, z1, p);
@@ -2462,7 +2457,7 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
     // if( xs == 16 && ys == 128 && zs == 16 && ( ( x & 15 ) == 0 ) && ( y == 0
     // ) && ( ( z & 15 ) == 0 ) )
     //{
-    //	byteArray newBuffer = byteArray(81920);
+    //	std::vector<uint8_t> newBuffer = std::vector<uint8_t>(81920);
     //	for( int x = 0; x < 16; x++ )
     //	{
     //		for( int z = 0; z < 16; z++ )
@@ -2477,8 +2472,8 @@ void LevelChunk::reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
     //		}
     //	}
     //	// Copy over block data, block light & skylight as-is
-    //	memcpy(newBuffer.data + 32768, buffer.data + 32768, 49152);
-    //	delete buffer.data;
-    //	buffer.data = newBuffer.data;
+    //	memcpy(newBuffer.data() + 32768, buffer.data() + 32768, 49152);
+    //	delete buffer.data();
+    //	buffer.data() = newBuffer.data();
     //}
 }

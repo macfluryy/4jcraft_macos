@@ -7,37 +7,37 @@
 #include "java/System.h"
 
 template <class T>
-void System::arraycopy(arrayWithLength<T> src, unsigned int srcPos,
-                       arrayWithLength<T>* dst, unsigned int dstPos,
+void System::arraycopy(const std::vector<T>& src, unsigned int srcPos,
+                       std::vector<T>* dst, unsigned int dstPos,
                        unsigned int length) {
-    assert(srcPos >= 0 && srcPos <= src.length);
-    assert(srcPos + length <= src.length);
-    assert(dstPos + length <= dst->length);
+    assert(srcPos >= 0 && srcPos <= src.size());
+    assert(srcPos + length <= src.size());
+    assert(dstPos + length <= dst->size());
 
-    std::copy(src.data + srcPos, src.data + srcPos + length,
-              dst->data + dstPos);
+    std::copy(src.data() + srcPos, src.data() + srcPos + length,
+              dst->data() + dstPos);
 }
 
 ArrayCopyFunctionDefinition(Node*) ArrayCopyFunctionDefinition(Biome*)
 
-    void System::arraycopy(arrayWithLength<uint8_t> src, unsigned int srcPos,
-                           arrayWithLength<uint8_t>* dst, unsigned int dstPos,
+    void System::arraycopy(const std::vector<uint8_t>& src, unsigned int srcPos,
+                           std::vector<uint8_t>* dst, unsigned int dstPos,
                            unsigned int length) {
-    assert(srcPos >= 0 && srcPos <= src.length);
-    assert(srcPos + length <= src.length);
-    assert(dstPos + length <= dst->length);
+    assert(srcPos >= 0 && srcPos <= src.size());
+    assert(srcPos + length <= src.size());
+    assert(dstPos + length <= dst->size());
 
-    memcpy(dst->data + dstPos, src.data + srcPos, length);
+    memcpy(dst->data() + dstPos, src.data() + srcPos, length);
 }
 
-void System::arraycopy(arrayWithLength<int> src, unsigned int srcPos,
-                       arrayWithLength<int>* dst, unsigned int dstPos,
+void System::arraycopy(const std::vector<int>& src, unsigned int srcPos,
+                       std::vector<int>* dst, unsigned int dstPos,
                        unsigned int length) {
-    assert(srcPos >= 0 && srcPos <= src.length);
-    assert(srcPos + length <= src.length);
-    assert(dstPos + length <= dst->length);
+    assert(srcPos >= 0 && srcPos <= src.size());
+    assert(srcPos + length <= src.size());
+    assert(dstPos + length <= dst->size());
 
-    memcpy(dst->data + dstPos, src.data + srcPos, length * sizeof(int));
+    memcpy(dst->data() + dstPos, src.data() + srcPos, length * sizeof(int));
 }
 
 // TODO 4J Stu - These time functions may suffer from accuracy and we might have

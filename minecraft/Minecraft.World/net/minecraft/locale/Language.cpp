@@ -25,10 +25,10 @@ Language::Language() {
                 // InputStreamReader reader(stream);
                 // BufferedReader bufferedReader(&reader);
                 // std::wstring line;
-                byteArray buffer((unsigned int)fileSize);
+                std::vector<uint8_t> buffer((unsigned int)fileSize);
                 int bytesRead = stream->read(buffer, 0, (unsigned int)fileSize);
                 if (bytesRead > 0) {
-                    std::string content(reinterpret_cast<char*>(buffer.data),
+                    std::string content(reinterpret_cast<char*>(buffer.data()),
                                         bytesRead);
                     std::istringstream iss(content);
                     std::string line;

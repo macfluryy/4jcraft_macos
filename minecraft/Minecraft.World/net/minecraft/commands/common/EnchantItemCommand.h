@@ -9,7 +9,7 @@ public:
     virtual EGameCommand getId();
     int getPermissionLevel();
     virtual void execute(std::shared_ptr<CommandSender> source,
-                         byteArray commandData);
+                         std::vector<uint8_t>& commandData);
 
     static std::shared_ptr<GameCommandPacket> preparePacket(
         std::shared_ptr<Player> player, int enchantmentId,

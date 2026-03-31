@@ -90,8 +90,8 @@ void FireworksParticles::FireworksStarter::tick() {
         int type = compoundTag->getByte(FireworksItem::TAG_E_TYPE);
         bool trail = compoundTag->getBoolean(FireworksItem::TAG_E_TRAIL);
         bool flicker = compoundTag->getBoolean(FireworksItem::TAG_E_FLICKER);
-        intArray colors = compoundTag->getIntArray(FireworksItem::TAG_E_COLORS);
-        intArray fadeColors =
+        std::vector<int> colors = compoundTag->getIntArray(FireworksItem::TAG_E_COLORS);
+        std::vector<int> fadeColors =
             compoundTag->getIntArray(FireworksItem::TAG_E_FADECOLORS);
 
         if (type == FireworksItem::TYPE_BIG) {
@@ -106,10 +106,10 @@ void FireworksParticles::FireworksStarter::tick() {
                 150.0 / 245.0, -197.0 / 245.0,
                 0.0,           -88.0 / 245.0,
             };
-            coords2DArray coordsArray(6, 2);
-            for (unsigned int i = 0; i < coordsArray.length; ++i) {
-                for (unsigned int j = 0; j < coordsArray[i]->length; ++j) {
-                    coordsArray[i]->data[j] = coords[i][j];
+            std::vector<std::vector<double>> coordsArray(6, std::vector<double>(2));
+            for (unsigned int i = 0; i < coordsArray.size(); ++i) {
+                for (unsigned int j = 0; j < coordsArray[i].size(); ++j) {
+                    coordsArray[i][j] = coords[i][j];
                 }
             }
 
@@ -117,19 +117,16 @@ void FireworksParticles::FireworksStarter::tick() {
             createParticleShape(.5, coordsArray, colors, fadeColors, trail,
                                 flicker, false);
 
-            for (unsigned int i = 0; i < coordsArray.length; ++i) {
-                delete[] coordsArray[i]->data;
-            }
-            delete[] coordsArray.data;
+            // vector cleans up automatically
         } else if (type == FireworksItem::TYPE_CREEPER) {
             double coords[12][2] = {
                 0.0, 0.2, 0.2, 0.2, 0.2, 0.6,  0.6, 0.6,  0.6, 0.2,  0.2, 0.2,
                 0.2, 0.0, 0.4, 0.0, 0.4, -0.6, 0.2, -0.6, 0.2, -0.4, 0.0, -0.4,
             };
-            coords2DArray coordsArray(12, 2);
-            for (unsigned int i = 0; i < coordsArray.length; ++i) {
-                for (unsigned int j = 0; j < coordsArray[i]->length; ++j) {
-                    coordsArray[i]->data[j] = coords[i][j];
+            std::vector<std::vector<double>> coordsArray(12, std::vector<double>(2));
+            for (unsigned int i = 0; i < coordsArray.size(); ++i) {
+                for (unsigned int j = 0; j < coordsArray[i].size(); ++j) {
+                    coordsArray[i][j] = coords[i][j];
                 }
             }
 
@@ -137,10 +134,7 @@ void FireworksParticles::FireworksStarter::tick() {
             createParticleShape(.5, coordsArray, colors, fadeColors, trail,
                                 flicker, true);
 
-            for (unsigned int i = 0; i < coordsArray.length; ++i) {
-                delete[] coordsArray[i]->data;
-            }
-            delete[] coordsArray.data;
+            // vector cleans up automatically
         } else if (type == FireworksItem::TYPE_BURST) {
             createParticleBurst(colors, fadeColors, trail, flicker);
         } else {
@@ -187,7 +181,7 @@ bool FireworksParticles::FireworksStarter::isFarAwayFromCamera() {
 
 void FireworksParticles::FireworksStarter::createParticle(
     double x, double y, double z, double xa, double ya, double za,
-    intArray rgbColors, intArray fadeColors, bool trail, bool flicker) {
+    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors, bool trail, bool flicker) {
     std::shared_ptr<FireworksSparkParticle> fireworksSparkParticle =
         std::shared_ptr<FireworksSparkParticle>(
             new FireworksSparkParticle(level, x, y, z, xa, ya, za, engine));
@@ -195,17 +189,17 @@ void FireworksParticles::FireworksStarter::createParticle(
     fireworksSparkParticle->setTrail(trail);
     fireworksSparkParticle->setFlicker(flicker);
 
-    int color = random->nextInt(rgbColors.length);
+    int color = random->nextInt(rgbColors.size());
     fireworksSparkParticle->setColor(rgbColors[color]);
-    if (/*fadeColors != nullptr &&*/ fadeColors.length > 0) {
+    if (/*fadeColors != nullptr &&*/ fadeColors.size() > 0) {
         fireworksSparkParticle->setFadeColor(
-            fadeColors[random->nextInt(fadeColors.length)]);
+            fadeColors[random->nextInt(fadeColors.size())]);
     }
     engine->add(fireworksSparkParticle);
 }
 
 void FireworksParticles::FireworksStarter::createParticleBall(
-    double baseSpeed, int steps, intArray rgbColors, intArray fadeColors,
+    double baseSpeed, int steps, const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
     bool trail, bool flicker) {
     double xx = x;
     double yy = y;
@@ -236,10 +230,10 @@ void FireworksParticles::FireworksStarter::createParticleBall(
 }
 
 void FireworksParticles::FireworksStarter::createParticleShape(
-    double baseSpeed, coords2DArray coords, intArray rgbColors,
-    intArray fadeColors, bool trail, bool flicker, bool flat) {
-    double sx = coords[0]->data[0];
-    double sy = coords[0]->data[1];
+    double baseSpeed, std::vector<std::vector<double>> coords, const std::vector<int>& rgbColors,
+    const std::vector<int>& fadeColors, bool trail, bool flicker, bool flat) {
+    double sx = coords[0][0];
+    double sy = coords[0][1];
 
     {
         createParticle(x, y, z, sx * baseSpeed, sy * baseSpeed, 0, rgbColors,
@@ -254,9 +248,9 @@ void FireworksParticles::FireworksStarter::createParticleShape(
         double ox = sx;
         double oy = sy;
 
-        for (int c = 1; c < coords.length; c++) {
-            double tx = coords[c]->data[0];
-            double ty = coords[c]->data[1];
+        for (int c = 1; c < coords.size(); c++) {
+            double tx = coords[c][0];
+            double ty = coords[c][1];
 
             for (double subStep = .25; subStep <= 1.0; subStep += .25) {
                 double xa = (ox + (tx - ox) * subStep) * baseSpeed;
@@ -277,7 +271,7 @@ void FireworksParticles::FireworksStarter::createParticleShape(
 }
 
 void FireworksParticles::FireworksStarter::createParticleBurst(
-    intArray rgbColors, intArray fadeColors, bool trail, bool flicker) {
+    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors, bool trail, bool flicker) {
     double baseOffX = random->nextGaussian() * .05;
     double baseOffZ = random->nextGaussian() * .05;
 

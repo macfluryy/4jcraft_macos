@@ -4,7 +4,7 @@
 #define SHOVEL_DIGGABLES 10
 class ShovelItem : public DiggerItem {
 private:
-    static TileArray* diggables;
+    static std::vector<Tile*>* diggables;
 
 public:
     static void staticCtor();

@@ -12,7 +12,7 @@ private:
     // 4J Jev, was a IntHashMap, thought this was close enough.
     std::unordered_map<int, Node*, IntKeyHash, IntKeyEq> nodes;
 
-    NodeArray* neighbors;
+    std::vector<Node*>* neighbors;
 
     bool canPassDoors;
     bool canOpenDoors;

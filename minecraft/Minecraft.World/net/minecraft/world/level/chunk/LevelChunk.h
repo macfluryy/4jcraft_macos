@@ -24,7 +24,7 @@ class LevelChunk {
     friend class LevelRenderer;
 
 public:
-    byteArray biomes;  // 4J Stu - Made public
+    std::vector<uint8_t> biomes;  // 4J Stu - Made public
 
     // 4J Stu - No longer static in 1.8.2
     const int ENTITY_BLOCKS_LENGTH;
@@ -39,7 +39,7 @@ public:
         eColumnFlag_biomeHasRain = 8,
     };
 
-    //    byteArray blocks;
+    //    std::vector<uint8_t> blocks;
     // 4J - actual storage for blocks is now private with public methods to
     // access it
 private:
@@ -47,10 +47,10 @@ private:
     CompressedTileStorage* upperBlocks;  // 128 - 255
 public:
     bool isRenderChunkEmpty(int y);
-    void setBlockData(byteArray data);  // Set block data to that passed in in
+    void setBlockData(std::vector<uint8_t>& data);  // Set block data to that passed in in
                                         // the input array of size 32768
     void getBlockData(
-        byteArray data);  // Sets data in passed in array of size 32768, from
+        std::vector<uint8_t>& data);  // Sets data in passed in array of size 32768, from
                           // the block data in this chunk
     int getBlocksAllocatedSize(int* count0, int* count1, int* count2,
                                int* count4, int* count8);
@@ -71,9 +71,9 @@ private:
     SparseDataStorage* lowerData;  // 0 - 127
     SparseDataStorage* upperData;  // 128 - 255
 public:
-    void setDataData(byteArray data);  // Set data to that passed in in the
+    void setDataData(std::vector<uint8_t>& data);  // Set data to that passed in in the
                                        // input array of size 32768
-    void getDataData(byteArray data);  // Sets data in passed in array of size
+    void getDataData(std::vector<uint8_t>& data);  // Sets data in passed in array of size
                                        // 16384, from the data in this chunk
 
     //    DataLayer *data;
@@ -87,19 +87,19 @@ private:
     SparseLightStorage* upperBlockLight;  // 128 - 255
 public:
     void getSkyLightData(
-        byteArray
+        std::vector<uint8_t>&
             data);  // Get a byte array of length 16384 ( 128 x 16 x 16 x 0.5 ),
                     // containing sky light data. Ordering same as java version.
     void getBlockLightData(
-        byteArray data);  // Get a byte array of length 16384 ( 128 x 16 x 16 x
+        std::vector<uint8_t>& data);  // Get a byte array of length 16384 ( 128 x 16 x 16 x
                           // 0.5 ), containing block light data. Ordering same
                           // as java version.
     void setSkyLightData(
-        byteArray data);  // Set sky light data to data passed in input byte
+        std::vector<uint8_t>& data);  // Set sky light data to data passed in input byte
                           // array of length 16384. This data must be in
                           // original (java version) order
     void setBlockLightData(
-        byteArray data);  // Set block light data to data passed in input byte
+        std::vector<uint8_t>& data);  // Set block light data to data passed in input byte
                           // array of length 16384. This data must be in
                           // original (java version) order
     void setSkyLightDataAllBright();  // Set sky light data to be all fully lit
@@ -117,7 +117,7 @@ public:
     void readCompressedSkyLightData(DataInputStream* dis);
     void readCompressedBlockLightData(DataInputStream* dis);
 
-    byteArray heightmap;
+    std::vector<uint8_t> heightmap;
     int minHeight;
     int x, z;
 
@@ -185,7 +185,7 @@ private:
 public:
     virtual void init(Level* level, int x, int z);
     LevelChunk(Level* level, int x, int z);
-    LevelChunk(Level* level, byteArray blocks, int x, int z);
+    LevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z);
     LevelChunk(Level* level, int x, int z, LevelChunk* lc);
     virtual ~LevelChunk();
 
@@ -253,14 +253,14 @@ public:
     virtual int countEntities();
     virtual bool shouldSave(bool force);
     virtual int getBlocksAndData(
-        byteArray* data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
+        std::vector<uint8_t>* data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
         bool includeLighting = true);  // 4J - added includeLighting parameter
     static void tileUpdatedCallback(int x, int y, int z, void* param,
                                     int yparam);  // 4J added
     virtual int setBlocksAndData(
-        byteArray data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
+        std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
         bool includeLighting = true);  // 4J - added includeLighting parameter
-    virtual bool testSetBlocksAndData(byteArray data, int x0, int y0, int z0,
+    virtual bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
                                       int x1, int y1, int z1,
                                       int p);  // 4J added
     virtual void setCheckAllLight();
@@ -286,8 +286,8 @@ public:
     bool isYSpaceEmpty(int y1, int y2);
     void reloadBiomes();  // 4J added
     virtual Biome* getBiome(int x, int z, BiomeSource* biomeSource);
-    byteArray getBiomes();
-    void setBiomes(byteArray biomes);
+    std::vector<uint8_t> getBiomes();
+    void setBiomes(std::vector<uint8_t>& biomes);
     bool biomeHasRain(int x, int z);  // 4J added
     bool biomeHasSnow(int x, int z);  // 4J added
 private:
@@ -297,10 +297,10 @@ public:
     void compressBlocks();    // 4J added
     void compressData();      // 4J added
     int getHighestNonEmptyY();
-    byteArray getReorderedBlocksAndData(int x, int y, int z, int xs, int& ys,
+    std::vector<uint8_t> getReorderedBlocksAndData(int x, int y, int z, int xs, int& ys,
                                         int zs);
     static void reorderBlocksAndDataToXZY(int y0, int xs, int ys, int zs,
-                                          byteArray* data);
+                                          std::vector<uint8_t>* data);
 #if defined(LIGHT_COMPRESSION_STATS)
     int getBlockLightPlanesLower() { return lowerBlockLight->count; }
     int getSkyLightPlanesLower() { return lowerSkyLight->count; }

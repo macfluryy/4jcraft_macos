@@ -30,7 +30,7 @@ public class GameRuleCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender source, String[] args) {
-        if (args.length == 2) {
+        if (args.size() == 2) {
             String rule = args[0];
             String value = args[1];
 
@@ -44,7 +44,7 @@ public class GameRuleCommand extends BaseCommand {
             }
 
             return;
-        } else if (args.length == 1) {
+        } else if (args.size() == 1) {
             String rule = args[0];
             GameRules rules = getRules();
 
@@ -56,7 +56,7 @@ public class GameRuleCommand extends BaseCommand {
             }
 
             return;
-        } else if (args.length == 0) {
+        } else if (args.size() == 0) {
             GameRules rules = getRules();
             source.sendMessage(ChatMessageComponent.forPlainText(joinStrings(rules.getRuleNames())));
             return;
@@ -67,9 +67,9 @@ public class GameRuleCommand extends BaseCommand {
 
     @Override
     public List<String> matchArguments(CommandSender source, String[] args) {
-        if (args.length == 1) {
+        if (args.size() == 1) {
             return matchArguments(args, getRules().getRuleNames());
-        } else if (args.length == 2) {
+        } else if (args.size() == 2) {
             return matchArguments(args, "true", "false");
         }
 

@@ -4,7 +4,7 @@
 
 int CommandDispatcher::performCommand(std::shared_ptr<CommandSender> sender,
                                       EGameCommand command,
-                                      byteArray commandData) {
+                                      std::vector<uint8_t>& commandData) {
     auto it = commandsById.find(command);
 
     if (it != commandsById.end()) {

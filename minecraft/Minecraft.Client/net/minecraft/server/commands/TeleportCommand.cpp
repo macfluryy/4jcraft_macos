@@ -12,7 +12,7 @@
 EGameCommand TeleportCommand::getId() { return eGameCommand_Teleport; }
 
 void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
-                              byteArray commandData) {
+                              std::vector<uint8_t>& commandData) {
     ByteArrayInputStream bais(commandData);
     DataInputStream dis(&bais);
 
@@ -49,20 +49,20 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
         }
     }
 
-    // if (args.length >= 1) {
+    // if (args.size() >= 1) {
     //	MinecraftServer server = MinecraftServer.getInstance();
     //	ServerPlayer victim;
 
-    //	if (args.length == 2 || args.length == 4) {
+    //	if (args.size() == 2 || args.size() == 4) {
     //		victim = server.getPlayers().getPlayer(args[0]);
     //		if (victim == null) throw new PlayerNotFoundException();
     //	} else {
     //		victim = (ServerPlayer) convertSourceToPlayer(source);
     //	}
 
-    //	if (args.length == 3 || args.length == 4) {
+    //	if (args.size() == 3 || args.size() == 4) {
     //		if (victim.level != null) {
-    //			int pos = args.length - 3;
+    //			int pos = args.size() - 3;
     //			int maxPos = Level.MAX_LEVEL_SIZE;
     //			int x = convertArgToInt(source, args[pos++], -maxPos,
     // maxPos); 			int y = convertArgToInt(source,
@@ -73,9 +73,9 @@ void TeleportCommand::execute(std::shared_ptr<CommandSender> source,
     //			logAdminAction(source, "commands.tp.coordinates",
     // victim.getAName(), x, y, z);
     //		}
-    //	} else if (args.length == 1 || args.length == 2) {
+    //	} else if (args.size() == 1 || args.size() == 2) {
     //		ServerPlayer destination =
-    // server.getPlayers().getPlayer(args[args.length - 1]); 		if
+    // server.getPlayers().getPlayer(args[args.size() - 1]); 		if
     // (destination == null) throw new PlayerNotFoundException();
 
     //		victim.connection.teleport(destination.x, destination.y,

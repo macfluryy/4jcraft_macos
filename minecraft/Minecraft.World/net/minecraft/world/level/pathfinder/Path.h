@@ -4,12 +4,12 @@ class Path {
     friend class PathFinder;
 
 private:
-    NodeArray nodes;
+    std::vector<Node*> nodes;
     int index;
     int length;
 
 public:
-    Path(NodeArray nodes);
+    Path(std::vector<Node*>& nodes);
     ~Path();
 
     void next();
@@ -21,7 +21,7 @@ public:
     int getIndex();
     void setIndex(int index);
     Vec3 getPos(std::shared_ptr<Entity> e, int index);
-    NodeArray Getarray();
+    std::vector<Node*> Getarray();
     Vec3 currentPos(std::shared_ptr<Entity> e);
     Vec3 currentPos();
     bool sameAs(Path* path);

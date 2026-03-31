@@ -50,7 +50,7 @@ void ModelPart::construct(Model* model, int xTexOffs, int yTexOffs) {
 }
 
 void ModelPart::addChild(ModelPart* child) {
-    // if (children == nullptr) children = new ModelPartArray;
+    // if (children == nullptr) children = new std::vector<ModelPart*>;
     children.push_back(child);
 }
 

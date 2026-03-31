@@ -169,15 +169,14 @@ void AbstractTexturePack::loadDefaultColourTable() {
 
     if (coloursFile.exists()) {
         uint32_t dataLength = coloursFile.length();
-        byteArray data(dataLength);
+        std::vector<uint8_t> data(dataLength);
 
         FileInputStream fis(coloursFile);
         fis.read(data, 0, dataLength);
         fis.close();
         if (m_colourTable != nullptr) delete m_colourTable;
-        m_colourTable = new ColourTable(data.data, dataLength);
+        m_colourTable = new ColourTable(data.data(), dataLength);
 
-        delete[] data.data;
     } else {
         app.DebugPrintf("Failed to load the default colours table\n");
         app.FatalLoadError();
@@ -186,11 +185,10 @@ void AbstractTexturePack::loadDefaultColourTable() {
 
 void AbstractTexturePack::loadDefaultHTMLColourTable() {
     if (app.hasArchiveFile(L"HTMLColours.col")) {
-        byteArray textColours = app.getArchiveFile(L"HTMLColours.col");
-        m_colourTable->loadColoursFromData(textColours.data,
-                                           textColours.length);
+        std::vector<uint8_t> textColours = app.getArchiveFile(L"HTMLColours.col");
+        m_colourTable->loadColoursFromData(textColours.data(),
+                                           textColours.size());
 
-        delete[] textColours.data;
     }
 }
 

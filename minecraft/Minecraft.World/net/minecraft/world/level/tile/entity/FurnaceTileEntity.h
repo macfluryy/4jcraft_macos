@@ -19,12 +19,12 @@ public:
     static const int SLOT_RESULT = 2;
 
 private:
-    static const intArray SLOTS_FOR_UP;
-    static const intArray SLOTS_FOR_DOWN;
-    static const intArray SLOTS_FOR_SIDES;
+    static const std::vector<int> SLOTS_FOR_UP;
+    static const std::vector<int> SLOTS_FOR_DOWN;
+    static const std::vector<int> SLOTS_FOR_SIDES;
 
     static const int BURN_INTERVAL;
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
+    std::vector<std::shared_ptr<ItemInstance>> items;
 
     // 4J-JEV: Added for 'Renewable Energy' achievement.
     // Should be true iff characoal was consumed whilst cooking the current
@@ -79,7 +79,7 @@ public:
     void stopOpen();
 
     virtual bool canPlaceItem(int slot, std::shared_ptr<ItemInstance> item);
-    virtual intArray getSlotsForFace(int face);
+    virtual std::vector<int> getSlotsForFace(int face);
     virtual bool canPlaceItemThroughFace(int slot,
                                          std::shared_ptr<ItemInstance> item,
                                          int face);

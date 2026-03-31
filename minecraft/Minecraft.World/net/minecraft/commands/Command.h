@@ -29,7 +29,7 @@ public:
     virtual EGameCommand getId() = 0;
     virtual int getPermissionLevel();
     virtual void execute(std::shared_ptr<CommandSender> source,
-                         byteArray commandData) = 0;
+                         std::vector<uint8_t>& commandData) = 0;
     virtual bool canExecute(std::shared_ptr<CommandSender> source);
 
     static void logAdminAction(std::shared_ptr<CommandSender> source,

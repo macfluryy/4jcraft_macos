@@ -797,9 +797,8 @@ void LocalPlayer::displayClientMessage(int messageId) {
     minecraft->gui->displayClientMessage(messageId, GetXboxPad());
 }
 
-void LocalPlayer::awardStat(Stat* stat, byteArray param) {
+void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
     int count = CommonStats::readParam(param);
-    delete[] param.data;
 
     if (!app.CanRecordStatsAndAchievements()) return;
     if (stat == nullptr) return;
@@ -1596,7 +1595,7 @@ void LocalPlayer::handleCollectItem(std::shared_ptr<ItemInstance> item) {
     if (item != nullptr) {
         unsigned int itemCountAnyAux = 0;
         unsigned int itemCountThisAux = 0;
-        for (unsigned int k = 0; k < inventory->items.length; ++k) {
+        for (unsigned int k = 0; k < inventory->items.size(); ++k) {
             if (inventory->items[k] != nullptr) {
                 // do they have the item
                 if (inventory->items[k]->id == item->id) {
@@ -1623,6 +1622,6 @@ void LocalPlayer::handleCollectItem(std::shared_ptr<ItemInstance> item) {
 }
 
 void LocalPlayer::SetPlayerAdditionalModelParts(
-    std::vector<ModelPart*> pAdditionalModelParts) {
+    std::vector<ModelPart*>& pAdditionalModelParts) {
     m_pAdditionalModelParts = pAdditionalModelParts;
 }

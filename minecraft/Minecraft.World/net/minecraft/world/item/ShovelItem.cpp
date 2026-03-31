@@ -3,20 +3,20 @@
 #include "../level/tile/net.minecraft.world.level.tile.h"
 #include "ShovelItem.h"
 
-TileArray* ShovelItem::diggables = nullptr;
+std::vector<Tile*>* ShovelItem::diggables = nullptr;
 
 void ShovelItem::staticCtor() {
-    ShovelItem::diggables = new TileArray(SHOVEL_DIGGABLES);
-    diggables->data[0] = Tile::grass;
-    diggables->data[1] = Tile::dirt;
-    diggables->data[2] = Tile::sand;
-    diggables->data[3] = Tile::gravel;
-    diggables->data[4] = Tile::topSnow;
-    diggables->data[5] = Tile::snow;
-    diggables->data[6] = Tile::clay;
-    diggables->data[7] = Tile::farmland;
-    diggables->data[8] = Tile::soulsand;
-    diggables->data[9] = Tile::mycel;
+    ShovelItem::diggables = new std::vector<Tile*>(SHOVEL_DIGGABLES);
+    (*diggables)[0] = Tile::grass;
+    (*diggables)[1] = Tile::dirt;
+    (*diggables)[2] = Tile::sand;
+    (*diggables)[3] = Tile::gravel;
+    (*diggables)[4] = Tile::topSnow;
+    (*diggables)[5] = Tile::snow;
+    (*diggables)[6] = Tile::clay;
+    (*diggables)[7] = Tile::farmland;
+    (*diggables)[8] = Tile::soulsand;
+    (*diggables)[9] = Tile::mycel;
 }
 
 ShovelItem::ShovelItem(int id, const Tier* tier)

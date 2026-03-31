@@ -16,8 +16,8 @@ public:
     virtual IntBuffer* flip();
     int get(unsigned int index);
     int* getBuffer();
-    IntBuffer* put(intArray* inputArray, unsigned int offset,
+    IntBuffer* put(std::vector<int>* inputArray, unsigned int offset,
                    unsigned int length);
-    IntBuffer* put(intArray inputArray);
+    IntBuffer* put(std::vector<int>& inputArray);
     IntBuffer* put(int i);
 };

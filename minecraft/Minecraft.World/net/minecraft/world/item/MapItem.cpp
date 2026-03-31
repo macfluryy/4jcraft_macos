@@ -292,15 +292,14 @@ void MapItem::inventoryTick(std::shared_ptr<ItemInstance> itemInstance,
 std::shared_ptr<Packet> MapItem::getUpdatePacket(
     std::shared_ptr<ItemInstance> itemInstance, Level* level,
     std::shared_ptr<Player> player) {
-    charArray data = MapItem::getSavedData(itemInstance, level)
+    std::vector<char> data = MapItem::getSavedData(itemInstance, level)
                          ->getUpdatePacket(itemInstance, level, player);
 
-    if (data.data == nullptr || data.length == 0) return nullptr;
+    if (data.empty()) return nullptr;
 
     std::shared_ptr<Packet> retval =
         std::shared_ptr<Packet>(new ComplexItemDataPacket(
             (short)Item::map->id, (short)itemInstance->getAuxValue(), data));
-    delete data.data;
     return retval;
 }
 

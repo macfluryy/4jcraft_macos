@@ -4,29 +4,27 @@
 
 class ByteArrayTag : public Tag {
 public:
-    byteArray data;
+    std::vector<uint8_t> data;
     bool m_ownData;
 
     ByteArrayTag(const std::wstring& name) : Tag(name) { m_ownData = false; }
-    ByteArrayTag(const std::wstring& name, byteArray data, bool ownData = false)
+    ByteArrayTag(const std::wstring& name, std::vector<uint8_t>& data, bool ownData = false)
         : Tag(name) {
         this->data = data;
         m_ownData = ownData;
     }  // 4J - added ownData param
     ~ByteArrayTag() {
-        if (m_ownData) delete[] data.data;
     }
 
     void write(DataOutput* dos) {
-        dos->writeInt(data.length);
+        dos->writeInt(data.size());
         dos->write(data);
     }
 
     void load(DataInput* dis, int tagDepth) {
         int length = dis->readInt();
 
-        if (data.data) delete[] data.data;
-        data = byteArray(length);
+        data = std::vector<uint8_t>(length);
         dis->readFully(data);
     }
 
@@ -34,23 +32,23 @@ public:
 
     std::wstring toString() {
         static wchar_t buf[32];
-        swprintf(buf, 32, L"[%d bytes]", data.length);
+        swprintf(buf, 32, L"[%d bytes]", data.size());
         return std::wstring(buf);
     }
 
     bool equals(Tag* obj) {
         if (Tag::equals(obj)) {
             ByteArrayTag* o = (ByteArrayTag*)obj;
-            return ((data.data == nullptr && o->data.data == nullptr) ||
-                    (data.data != nullptr && data.length == o->data.length &&
-                     memcmp(data.data, o->data.data, data.length) == 0));
+            return ((data.empty() && o->data.empty()) ||
+                    (!data.empty() && data.size() == o->data.size() &&
+                     memcmp(data.data(), o->data.data(), data.size()) == 0));
         }
         return false;
     }
 
     Tag* copy() {
-        byteArray cp = byteArray(data.length);
-        System::arraycopy(data, 0, &cp, 0, data.length);
+        std::vector<uint8_t> cp(data.size());
+        std::copy(data.begin(), data.end(), cp.begin());
         return new ByteArrayTag(getName(), cp, true);
     }
 };

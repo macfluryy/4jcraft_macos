@@ -5,7 +5,7 @@
 class FuzzyZoomLayer : public Layer {
 public:
     FuzzyZoomLayer(int64_t seedMixup, std::shared_ptr<Layer> parent);
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 
 protected:
     int random(int a, int b);

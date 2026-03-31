@@ -9,7 +9,7 @@ class Enchantment  // implements Descriptive<Enchantment> {
 {
 public:
     // static Enchantment *enchantments[256];
-    static EnchantmentArray enchantments;
+    static std::vector<Enchantment*> enchantments;
     static std::vector<Enchantment*> validEnchantments;
 
     static const int FREQ_COMMON = 10;

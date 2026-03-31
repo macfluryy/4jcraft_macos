@@ -35,8 +35,8 @@ private:
     Level* level;
 #endif
 
-    byteArray m_heightmapOverride;
-    byteArray m_waterheightOverride;
+    std::vector<uint8_t> m_heightmapOverride;
+    std::vector<uint8_t> m_waterheightOverride;
 
 private:
     const bool generateStructures;
@@ -46,11 +46,11 @@ public:
     ~CustomLevelSource();
 
 public:
-    void prepareHeights(int xOffs, int zOffs, byteArray blocks);
+    void prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks);
 
 public:
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks,
-                       BiomeArray biomes);
+    void buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+                       std::vector<Biome*>& biomes);
 
 private:
     virtual LevelChunk* create(int x, int z);

@@ -156,8 +156,8 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
                 type = FireworksItem::TYPE_CREEPER;
             }
         }
-        intArray colorArray(colors.size());
-        for (int i = 0; i < colorArray.length; i++) {
+        std::vector<int> colorArray(colors.size());
+        for (int i = 0; i < colorArray.size(); i++) {
             colorArray[i] = colors.at(i);
         }
         expTag->putIntArray(FireworksItem::TAG_E_COLORS, colorArray);
@@ -185,22 +185,20 @@ bool FireworksRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
                 resultItem->count = 1;
             }
         }
-        intArray colorArray(colors.size());
-        for (int i = 0; i < colorArray.length; i++) {
+        std::vector<int> colorArray(colors.size());
+        for (int i = 0; i < colorArray.size(); i++) {
             colorArray[i] = colors.at(i);
         }
         if (resultItem != nullptr && resultItem->hasTag()) {
             CompoundTag* compound =
                 resultItem->getTag()->getCompound(FireworksItem::TAG_EXPLOSION);
             if (compound == nullptr) {
-                delete colorArray.data;
 
                 setResultItem(resultItem);
                 return false;
             }
             compound->putIntArray(FireworksItem::TAG_E_FADECOLORS, colorArray);
         } else {
-            delete colorArray.data;
 
             setResultItem(resultItem);
             return false;

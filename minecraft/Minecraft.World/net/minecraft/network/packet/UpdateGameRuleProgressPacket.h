@@ -10,7 +10,7 @@ public:
     std::wstring m_messageId;
     int m_icon, m_auxValue;
     int m_dataTag;
-    byteArray m_data;
+    std::vector<uint8_t> m_data;
 
     UpdateGameRuleProgressPacket();
     UpdateGameRuleProgressPacket(ConsoleGameRules::EGameRuleType definitionType,

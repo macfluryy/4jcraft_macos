@@ -412,7 +412,7 @@ public:
 
         bool hasPlacedChest;
 
-        static WeighedTreasureArray treasureItems;
+        static std::vector<WeighedTreasure*> treasureItems;
 
     public:
         static void staticCtor();

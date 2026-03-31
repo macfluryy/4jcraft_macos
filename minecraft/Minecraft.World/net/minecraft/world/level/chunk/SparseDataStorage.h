@@ -77,10 +77,10 @@ public:
     ~SparseDataStorage();
 
     void setData(
-        byteArray dataIn,
+        std::vector<uint8_t>& dataIn,
         unsigned int inOffset);  // Set all data values from a data array of
                                  // length 16384 (128 x 16 x 16 x 0.5).
-    void getData(byteArray retArray,
+    void getData(std::vector<uint8_t>& retArray,
                  unsigned int retOffset);  // Gets all data values into an array
                                            // of length 16384.
     int get(int x, int y, int z);          // Get an individual data value
@@ -88,13 +88,13 @@ public:
     typedef void (*tileUpdatedCallback)(int x, int y, int z, void* param,
                                         int yparam);
     int setDataRegion(
-        byteArray dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
         int offset, tileUpdatedCallback callback, void* param,
         int yparam);  // Sets a region of data values with the data at offset
                       // position in the array dataIn - external ordering
                       // compatible with java DataLayer
     int getDataRegion(
-        byteArray dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
         int offset);  // Updates the data at offset position dataInOut with a
                       // region of data information - external ordering
                       // compatible with java DataLayer

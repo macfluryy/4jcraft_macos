@@ -30,8 +30,8 @@ FlatLevelSource::~FlatLevelSource() {
     delete villageFeature;
 }
 
-void FlatLevelSource::prepareHeights(byteArray blocks) {
-    int height = blocks.length / (16 * 16);
+void FlatLevelSource::prepareHeights(std::vector<uint8_t>& blocks) {
+    int height = blocks.size() / (16 * 16);
 
     for (int xc = 0; xc < 16; xc++) {
         for (int zc = 0; zc < 16; zc++) {
@@ -59,8 +59,8 @@ LevelChunk* FlatLevelSource::getChunk(int xOffs, int zOffs) {
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(chunksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
     XMemSet128(tileData, 0, chunksSize);
-    byteArray blocks = byteArray(tileData, chunksSize);
-    //	byteArray blocks = byteArray(16 * level->depth * 16);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + chunksSize);
+    //	std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
     prepareHeights(blocks);
 
     //	LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);

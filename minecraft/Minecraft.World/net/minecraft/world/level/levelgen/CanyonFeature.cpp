@@ -5,7 +5,7 @@
 #include "../biome/net.minecraft.world.level.biome.h"
 
 void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
-                              byteArray blocks, double xCave, double yCave,
+                              std::vector<uint8_t>& blocks, double xCave, double yCave,
                               double zCave, float thickness, float yRot,
                               float xRot, int step, int dist, double yScale) {
     MemSect(49);
@@ -157,7 +157,7 @@ void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 }
 
 void CanyonFeature::addFeature(Level* level, int x, int z, int xOffs, int zOffs,
-                               byteArray blocks) {
+                               std::vector<uint8_t>& blocks) {
     if (random->nextInt(50) != 0) return;
 
     double xCave = x * 16 + random->nextInt(16);

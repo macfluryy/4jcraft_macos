@@ -3,11 +3,11 @@
 #include "FoliageColor.h"
 
 // 4J Stu - Don't use this any more
-// intArray FoliageColor::pixels;
+// std::vector<int> FoliageColor::pixels;
 //
-// void FoliageColor::init(intArray pixels)
+// void FoliageColor::init(std::vector<int>& pixels)
 //{
-//	int *oldData = FoliageColor::pixels.data;
+//	int *oldData = FoliageColor::pixels.data();
 //	FoliageColor::pixels = pixels;
 //	delete[] oldData;
 //}

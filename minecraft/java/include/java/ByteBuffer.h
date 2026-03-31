@@ -20,7 +20,7 @@ public:
     ByteBuffer(unsigned int capacity, uint8_t* backingArray);
     virtual ~ByteBuffer();
 
-    static ByteBuffer* wrap(byteArray& b);
+    static ByteBuffer* wrap(std::vector<uint8_t>& b);
     static ByteBuffer* allocate(unsigned int capacity);
     void order(ByteOrder a);
     ByteBuffer* flip();
@@ -28,19 +28,19 @@ public:
     int getSize();
     int getInt();
     int getInt(unsigned int index);
-    void get(byteArray) {}  // 4J - TODO
+    void get(std::vector<uint8_t>) {}  // 4J - TODO
     uint8_t get(int index);
     int64_t getLong();
     short getShort();
-    void getShortArray(shortArray& s);
+    void getShortArray(std::vector<short>& s);
     ByteBuffer* put(int index, uint8_t b);
     ByteBuffer* putInt(int value);
     ByteBuffer* putInt(unsigned int index, int value);
     ByteBuffer* putShort(short value);
-    ByteBuffer* putShortArray(shortArray& s);
+    ByteBuffer* putShortArray(std::vector<short>& s);
     ByteBuffer* putLong(int64_t value);
-    ByteBuffer* put(byteArray inputArray);
-    byteArray array();
+    ByteBuffer* put(std::vector<uint8_t>& inputArray);
+    std::vector<uint8_t> array();
     IntBuffer* asIntBuffer();
     FloatBuffer* asFloatBuffer();
 };

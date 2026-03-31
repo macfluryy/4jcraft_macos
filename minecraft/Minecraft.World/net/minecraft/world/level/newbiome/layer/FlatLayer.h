@@ -8,5 +8,5 @@ private:
 
 public:
     FlatLayer(int val);
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 };

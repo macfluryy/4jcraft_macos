@@ -6,7 +6,7 @@
 
 class BinaryHeap {
 private:
-    NodeArray heap;
+    std::vector<Node*> heap;
     int sizeVar;
 
     // 4J Jev, add common ctor code.

@@ -451,7 +451,6 @@ void UIController::tick() {
     int64_t currentTime = System::currentTimeMillis();
     for (auto it = m_cachedMovieData.begin(); it != m_cachedMovieData.end();) {
         if (it->second.m_expiry < currentTime) {
-            delete[] it->second.m_ba.data;
             it = m_cachedMovieData.erase(it);
         } else {
             ++it;
@@ -535,13 +534,12 @@ IggyLibrary UIController::loadSkin(const std::wstring& skinPath,
     // 4J Stu - We need to load the platformskin before the normal skin, as the
     // normal skin requires some elements from the platform skin
     if (!skinPath.empty() && app.hasArchiveFile(skinPath)) {
-        byteArray baFile = app.getArchiveFile(skinPath);
+        std::vector<uint8_t> baFile = app.getArchiveFile(skinPath);
         const std::u16string convSkinName = wstring_to_u16string(skinName);
 
         lib = IggyLibraryCreateFromMemoryUTF16(
-            convSkinName.data(), (void*)baFile.data, baFile.length, nullptr);
+            convSkinName.data(), (void*)baFile.data(), baFile.size(), nullptr);
 
-        delete[] baFile.data;
 #if defined(_DEBUG)
         IggyMemoryUseInfo memoryInfo;
         rrbool res;
@@ -675,12 +673,12 @@ void UIController::CleanUpSkinReload() {
     m_queuedMessageBoxData.clear();
 }
 
-byteArray UIController::getMovieData(const std::wstring& filename) {
+std::vector<uint8_t> UIController::getMovieData(const std::wstring& filename) {
     // Cache everything we load in the current tick
     int64_t targetTime = System::currentTimeMillis() + (1000LL * 60);
     auto it = m_cachedMovieData.find(filename);
     if (it == m_cachedMovieData.end()) {
-        byteArray baFile = app.getArchiveFile(filename);
+        std::vector<uint8_t> baFile = app.getArchiveFile(filename);
         CachedMovieData cmd;
         cmd.m_ba = baFile;
         cmd.m_expiry = targetTime;
@@ -1092,9 +1090,9 @@ GDrawTexture* RADLINK UIController::TextureSubstitutionCreateCallback(
 
     if (it != uiController->m_substitutionTextures.end()) {
         app.DebugPrintf("Found substitution texture %ls, with %d bytes\n",
-                        (wchar_t*)texture_name, it->second.length);
+                        (wchar_t*)texture_name, it->second.size());
 
-        BufferedImage image(it->second.data, it->second.length);
+        BufferedImage image(it->second.data(), it->second.size());
         if (image.getData() != nullptr) {
             image.preMultiplyAlpha();
             Textures* t = Minecraft::GetInstance()->textures;
@@ -1145,7 +1143,7 @@ void UIController::registerSubstitutionTexture(const std::wstring& textureName,
     // Remove it if it already exists
     unregisterSubstitutionTexture(textureName, false);
 
-    m_substitutionTextures[textureName] = byteArray(pbData, dwLength);
+    m_substitutionTextures[textureName] = std::vector<uint8_t>(pbData, pbData + dwLength);
 }
 
 void UIController::unregisterSubstitutionTexture(
@@ -1153,7 +1151,6 @@ void UIController::unregisterSubstitutionTexture(
     auto it = m_substitutionTextures.find(textureName);
 
     if (it != m_substitutionTextures.end()) {
-        if (deleteData) delete[] it->second.data;
         m_substitutionTextures.erase(it);
     }
 }

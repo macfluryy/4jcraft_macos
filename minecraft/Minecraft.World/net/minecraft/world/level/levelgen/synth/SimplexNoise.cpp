@@ -240,7 +240,7 @@ double SimplexNoise::getValue(double xin, double yin, double zin) {
     return 32.0 * (n0 + n1 + n2 + n3);
 }
 
-void SimplexNoise::add(doubleArray buffer, double _x, double _y, int xSize,
+void SimplexNoise::add(std::vector<double>& buffer, double _x, double _y, int xSize,
                        int ySize, double xs, double ys, double pow) {
     int pp = 0;
     for (int xx = 0; xx < xSize; xx++) {
@@ -316,7 +316,7 @@ void SimplexNoise::add(doubleArray buffer, double _x, double _y, int xSize,
         }
     }
 }
-void SimplexNoise::add(doubleArray buffer, double _x, double _y, double _z,
+void SimplexNoise::add(std::vector<double>& buffer, double _x, double _y, double _z,
                        int xSize, int ySize, int zSize, double xs, double ys,
                        double zs, double pow) {
     int pp = 0;

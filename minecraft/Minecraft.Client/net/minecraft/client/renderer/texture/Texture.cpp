@@ -88,33 +88,31 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
         if (width == -1 || height == -1) {
             valid = false;
         } else {
-            byteArray tempBytes = byteArray(width * height * depth * 4);
-            for (int index = 0; index < tempBytes.length; index++) {
+            std::vector<uint8_t> tempBytes = std::vector<uint8_t>(width * height * depth * 4);
+            for (int index = 0; index < tempBytes.size(); index++) {
                 tempBytes[index] = 0;
             }
-            data[0] = ByteBuffer::allocateDirect(tempBytes.length);
+            data[0] = ByteBuffer::allocateDirect(tempBytes.size());
             data[0]->clear();
             data[0]->put(tempBytes);
-            data[0]->position(0)->limit(tempBytes.length);
+            data[0]->position(0)->limit(tempBytes.size());
 
-            delete[] tempBytes.data;
 
             if (mipmapped) {
                 for (unsigned int level = 1; level < m_iMipLevels; ++level) {
                     int ww = width >> level;
                     int hh = height >> level;
 
-                    byteArray tempBytes = byteArray(ww * hh * depth * 4);
-                    for (int index = 0; index < tempBytes.length; index++) {
+                    std::vector<uint8_t> tempBytes = std::vector<uint8_t>(ww * hh * depth * 4);
+                    for (int index = 0; index < tempBytes.size(); index++) {
                         tempBytes[index] = 0;
                     }
 
-                    data[level] = ByteBuffer::allocateDirect(tempBytes.length);
+                    data[level] = ByteBuffer::allocateDirect(tempBytes.size());
                     data[level]->clear();
                     data[level]->put(tempBytes);
-                    data[level]->position(0)->limit(tempBytes.length);
+                    data[level]->position(0)->limit(tempBytes.size());
 
-                    delete[] tempBytes.data;
                 }
             }
 
@@ -265,7 +263,7 @@ void Texture::blit(int x, int y, Texture* source, bool rotated) {
     }
 }
 
-void Texture::transferFromBuffer(intArray buffer) {
+void Texture::transferFromBuffer(const std::vector<int>& buffer) {
     // if (depth == 1) {
     //     return;
     // }
@@ -353,11 +351,11 @@ void Texture::transferFromImage(BufferedImage* image) {
     // #endif
     int* byteRemap = ((format == TFMT_BGRA) ? byteRemapBGRA : byteRemapRGBA);
 
-    intArray tempPixels = intArray(width * height);
+    std::vector<int> tempPixels = std::vector<int>(width * height);
     int transparency = image->getTransparency();
     image->getRGB(0, 0, width, height, tempPixels, 0, imgWidth);
 
-    byteArray tempBytes = byteArray(width * height * 4);
+    std::vector<uint8_t> tempBytes = std::vector<uint8_t>(width * height * 4);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             int intIndex = y * width + x;
@@ -384,13 +382,12 @@ void Texture::transferFromImage(BufferedImage* image) {
     }
 
     MemSect(51);
-    data[0] = ByteBuffer::allocateDirect(tempBytes.length);
+    data[0] = ByteBuffer::allocateDirect(tempBytes.size());
     MemSect(0);
     data[0]->clear();
     data[0]->put(tempBytes);
-    data[0]->limit(tempBytes.length);
+    data[0]->limit(tempBytes.size());
 
-    delete[] tempBytes.data;
 
     if (mipmapped || image->getData(1) != nullptr) {
         mipmapped = true;
@@ -398,7 +395,7 @@ void Texture::transferFromImage(BufferedImage* image) {
             int ww = width >> level;
             int hh = height >> level;
 
-            byteArray tempBytes = byteArray(ww * hh * 4);
+            std::vector<uint8_t> tempBytes = std::vector<uint8_t>(ww * hh * 4);
             unsigned int* tempData = new unsigned int[ww * hh];
 
             if (image->getData(level)) {
@@ -469,17 +466,15 @@ void Texture::transferFromImage(BufferedImage* image) {
             }
 
             MemSect(51);
-            data[level] = ByteBuffer::allocateDirect(tempBytes.length);
+            data[level] = ByteBuffer::allocateDirect(tempBytes.size());
             MemSect(0);
             data[level]->clear();
             data[level]->put(tempBytes);
-            data[level]->limit(tempBytes.length);
-            delete[] tempBytes.data;
+            data[level]->limit(tempBytes.size());
             delete[] tempData;
         }
     }
 
-    delete[] tempPixels.data;
 
     if (immediateUpdate) {
         updateOnGPU();

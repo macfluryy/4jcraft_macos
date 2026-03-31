@@ -51,7 +51,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
 #endif
 }
 
-CompressedTileStorage::CompressedTileStorage(byteArray initFrom,
+CompressedTileStorage::CompressedTileStorage(std::vector<uint8_t>& initFrom,
                                              unsigned int initOffset) {
     indicesAndData = nullptr;
     allocatedSize = 0;
@@ -68,7 +68,7 @@ CompressedTileStorage::CompressedTileStorage(byteArray initFrom,
     for (int i = 0; i < 512; i++) {
         indices[i] = INDEX_TYPE_0_OR_8_BIT | (offset << 1);
 
-        if (initFrom.data) {
+        if (!initFrom.empty()) {
             for (int j = 0; j < 64; j++) {
                 *data++ = initFrom[getIndex(i, j) + initOffset];
             }
@@ -236,11 +236,11 @@ inline void CompressedTileStorage::getBlock(int* block, int x, int y, int z) {
 }
 
 // Set all tile values from a data array of length 32768 (128 x 16 x 16).
-void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
+void CompressedTileStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOffset) {
     unsigned short _blockIndices[512];
 
     std::lock_guard<std::recursive_mutex> lock(cs_write);
-    unsigned char* data = dataIn.data + inOffset;
+    unsigned char* data = dataIn.data() + inOffset;
 
     // Is the destination fully uncompressed? If so just write our data in -
     // this happens when writing schematics and we don't want this setting of
@@ -407,13 +407,13 @@ void CompressedTileStorage::setData(byteArray dataIn, unsigned int inOffset) {
 // AP - When called in pairs from LevelChunk::getBlockData this version of
 // getData reduces the time from ~5.2ms to ~1.6ms on the Vita Gets all tile
 // values into an array of length 32768.
-void CompressedTileStorage::getData(byteArray retArray,
+void CompressedTileStorage::getData(std::vector<uint8_t>& retArray,
                                     unsigned int retOffset) {
     unsigned short* blockIndices = (unsigned short*)indicesAndData;
     unsigned char* data = indicesAndData + 1024;
 
     int k = 0;
-    unsigned char* Array = &retArray.data[retOffset];
+    unsigned char* Array = &retArray.data()[retOffset];
     int* Table = CompressedTile_StorageIndexTable;
     for (int i = 0; i < 512; i++) {
         int indexType = blockIndices[i] & INDEX_TYPE_MASK;
@@ -478,7 +478,7 @@ void CompressedTileStorage::getData(byteArray retArray,
 #else
 
 // Gets all tile values into an array of length 32768.
-void CompressedTileStorage::getData(byteArray retArray,
+void CompressedTileStorage::getData(std::vector<uint8_t>& retArray,
                                     unsigned int retOffset) {
     unsigned short* blockIndices = (unsigned short*)indicesAndData;
     unsigned char* data = indicesAndData + 1024;
@@ -663,12 +663,12 @@ void CompressedTileStorage::set(int x, int y, int z, int val) {
 
 // Sets a region of tile values with the data at offset position in the array
 // dataIn - external ordering compatible with java DataLayer
-int CompressedTileStorage::setDataRegion(byteArray dataIn, int x0, int y0,
+int CompressedTileStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0,
                                          int z0, int x1, int y1, int z1,
                                          int offset,
                                          tileUpdatedCallback callback,
                                          void* param, int yparam) {
-    unsigned char* pucIn = &dataIn.data[offset];
+    unsigned char* pucIn = &dataIn.data()[offset];
 
     if (callback) {
         for (int x = x0; x < x1; x++) {
@@ -691,16 +691,16 @@ int CompressedTileStorage::setDataRegion(byteArray dataIn, int x0, int y0,
             }
         }
     }
-    ptrdiff_t count = pucIn - &dataIn.data[offset];
+    ptrdiff_t count = pucIn - &dataIn.data()[offset];
 
     return (int)count;
 }
 
 // Tests whether setting data would actually change anything
-bool CompressedTileStorage::testSetDataRegion(byteArray dataIn, int x0, int y0,
+bool CompressedTileStorage::testSetDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0,
                                               int z0, int x1, int y1, int z1,
                                               int offset) {
-    unsigned char* pucIn = &dataIn.data[offset];
+    unsigned char* pucIn = &dataIn.data()[offset];
     for (int x = x0; x < x1; x++) {
         for (int z = z0; z < z1; z++) {
             for (int y = y0; y < y1; y++) {
@@ -715,10 +715,10 @@ bool CompressedTileStorage::testSetDataRegion(byteArray dataIn, int x0, int y0,
 
 // Updates the data at offset position dataInOut with a region of tile
 // information - external ordering compatible with java DataLayer
-int CompressedTileStorage::getDataRegion(byteArray dataInOut, int x0, int y0,
+int CompressedTileStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0, int y0,
                                          int z0, int x1, int y1, int z1,
                                          int offset) {
-    unsigned char* pucOut = &dataInOut.data[offset];
+    unsigned char* pucOut = &dataInOut.data()[offset];
     for (int x = x0; x < x1; x++) {
         for (int z = z0; z < z1; z++) {
             for (int y = y0; y < y1; y++) {
@@ -726,7 +726,7 @@ int CompressedTileStorage::getDataRegion(byteArray dataInOut, int x0, int y0,
             }
         }
     }
-    ptrdiff_t count = pucOut - &dataInOut.data[offset];
+    ptrdiff_t count = pucOut - &dataInOut.data()[offset];
 
     return (int)count;
 }
@@ -1194,20 +1194,19 @@ void CompressedTileStorage::write(DataOutputStream* dos) {
         if (LOCALSYTEM_ENDIAN == BIGENDIAN) {
             // The first 1024 bytes are an array of shorts, so we need to
             // reverse the endianness
-            byteArray indicesCopy(1024);
-            memcpy(indicesCopy.data, indicesAndData, 1024);
-            reverseIndices(indicesCopy.data);
+            std::vector<uint8_t> indicesCopy(1024);
+            memcpy(indicesCopy.data(), indicesAndData, 1024);
+            reverseIndices(indicesCopy.data());
             dos->write(indicesCopy);
-            delete[] indicesCopy.data;
 
             // Write the rest of the data
             if (allocatedSize > 1024) {
-                byteArray dataWrapper(indicesAndData + 1024,
-                                      allocatedSize - 1024);
+                std::vector<uint8_t> dataWrapper(indicesAndData + 1024,
+                                      indicesAndData + allocatedSize);
                 dos->write(dataWrapper);
             }
         } else {
-            byteArray wrapper(indicesAndData, allocatedSize);
+            std::vector<uint8_t> wrapper(indicesAndData, indicesAndData + allocatedSize);
             dos->write(wrapper);
         }
     }
@@ -1225,8 +1224,9 @@ void CompressedTileStorage::read(DataInputStream* dis) {
         indicesAndData = (unsigned char*)XPhysicalAlloc(
             allocatedSize, MAXULONG_PTR, 4096, PAGE_READWRITE);
 
-        byteArray wrapper(indicesAndData, allocatedSize);
+        std::vector<uint8_t> wrapper(allocatedSize);
         dis->readFully(wrapper);
+        memcpy(indicesAndData, wrapper.data(), allocatedSize);
         if (LOCALSYTEM_ENDIAN == BIGENDIAN) {
             reverseIndices(indicesAndData);
         }

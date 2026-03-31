@@ -10,7 +10,7 @@ class ReadOnlyChunkCache : public ChunkSource {
 private:
     static const int LEN = 16;
     static const int LEN_MASK = LEN - 1;
-    LevelChunkArray chunks;
+    std::vector<LevelChunk*> chunks;
     Level* level;
     ChunkStorage* storage;
 
@@ -19,7 +19,7 @@ public:
     virtual ~ReadOnlyChunkCache();
 
     virtual bool hasChunk(int x, int z);
-    byteArray emptyPixels;
+    std::vector<uint8_t> emptyPixels;
     virtual LevelChunk* create(int x, int z);
     virtual LevelChunk* getChunk(int x, int z);
 

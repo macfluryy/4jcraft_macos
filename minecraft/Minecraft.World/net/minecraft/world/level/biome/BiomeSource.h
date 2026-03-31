@@ -34,7 +34,7 @@ public:
 
 private:
     static bool getIsMatch(float* frac);                   // 4J added
-    static void getFracs(intArray indices, float* fracs);  // 4J added
+    static void getFracs(std::vector<int>& indices, float* fracs);  // 4J added
 public:
     static int64_t findSeed(LevelType* generator);  // 4J added
     virtual ~BiomeSource();
@@ -46,8 +46,8 @@ public:
 
     // 4J - changed the interface for these methods, mainly for thread safety
     virtual float getDownfall(int x, int z) const;
-    virtual floatArray getDownfallBlock(int x, int z, int w, int h) const;
-    virtual void getDownfallBlock(floatArray& downfalls, int x, int z, int w,
+    virtual std::vector<float> getDownfallBlock(int x, int z, int w, int h) const;
+    virtual void getDownfallBlock(std::vector<float>& downfalls, int x, int z, int w,
                                   int h) const;
 
     // 4J - changed the interface for these methods, mainly for thread safety
@@ -55,21 +55,21 @@ public:
     virtual float getTemperature(int x, int y, int z) const;
     float scaleTemp(float temp,
                     int y) const;  // 4J - brought forward from 1.2.3
-    virtual floatArray getTemperatureBlock(int x, int z, int w, int h) const;
-    virtual void getTemperatureBlock(floatArray& temperatures, int x, int z,
+    virtual std::vector<float> getTemperatureBlock(int x, int z, int w, int h) const;
+    virtual void getTemperatureBlock(std::vector<float>& temperatures, int x, int z,
                                      int w, int h) const;
 
-    virtual BiomeArray getRawBiomeBlock(int x, int z, int w, int h) const;
-    virtual void getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
+    virtual std::vector<Biome*> getRawBiomeBlock(int x, int z, int w, int h) const;
+    virtual void getRawBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w,
                                   int h) const;
-    virtual void getRawBiomeIndices(intArray& biomes, int x, int z, int w,
+    virtual void getRawBiomeIndices(std::vector<int>& biomes, int x, int z, int w,
                                     int h) const;  // 4J added
-    virtual BiomeArray getBiomeBlock(int x, int z, int w, int h) const;
-    virtual void getBiomeBlock(BiomeArray& biomes, int x, int z, int w, int h,
+    virtual std::vector<Biome*> getBiomeBlock(int x, int z, int w, int h) const;
+    virtual void getBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w, int h,
                                bool useCache) const;
 
-    virtual byteArray getBiomeIndexBlock(int x, int z, int w, int h) const;
-    virtual void getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
+    virtual std::vector<uint8_t> getBiomeIndexBlock(int x, int z, int w, int h) const;
+    virtual void getBiomeIndexBlock(std::vector<uint8_t>& biomeIndices, int x, int z,
                                     int w, int h, bool useCache) const;
 
     /**
@@ -79,7 +79,7 @@ public:
      * This is a bit of a rough check, to make it as fast as possible. To ensure
      * NO other biomes, add a margin of at least four blocks to the radius
      */
-    virtual bool containsOnly(int x, int z, int r, std::vector<Biome*> allowed);
+    virtual bool containsOnly(int x, int z, int r, const std::vector<Biome*>& allowed);
 
     /**
      * Checks if an area around a block contains only the specified biome.
@@ -105,7 +105,7 @@ public:
      *
      * Returns null if the biome wasn't found
      */
-    virtual TilePos* findBiome(int x, int z, int r, std::vector<Biome*> allowed,
+    virtual TilePos* findBiome(int x, int z, int r, const std::vector<Biome*>& allowed,
                                Random* random);
 
     void update();

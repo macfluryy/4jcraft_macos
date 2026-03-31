@@ -6,10 +6,10 @@ RiverInitLayer::RiverInitLayer(int64_t seed, std::shared_ptr<Layer> parent)
     this->parent = parent;
 }
 
-intArray RiverInitLayer::getArea(int xo, int yo, int w, int h) {
-    intArray b = parent->getArea(xo, yo, w, h);
+std::vector<int> RiverInitLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> b = parent->getArea(xo, yo, w, h);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             initRandom(x + xo, y + yo);

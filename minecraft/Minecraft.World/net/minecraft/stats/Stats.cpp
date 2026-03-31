@@ -55,14 +55,14 @@ Stat* Stats::befriendsWolf = nullptr;
 Stat* Stats::totalBlocksMined = nullptr;
 Stat* Stats::timePlayed = nullptr;
 
-StatArray Stats::blocksMined;
-StatArray Stats::itemsCollected;
-StatArray Stats::itemsCrafted;
+std::vector<Stat*> Stats::blocksMined;
+std::vector<Stat*> Stats::itemsCollected;
+std::vector<Stat*> Stats::itemsCrafted;
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
-StatArray Stats::blocksPlaced;
-StatArray Stats::rainbowCollection;
-StatArray Stats::biomesVisisted;
+std::vector<Stat*> Stats::blocksPlaced;
+std::vector<Stat*> Stats::rainbowCollection;
+std::vector<Stat*> Stats::biomesVisisted;
 #endif
 
 Stat* Stats::killsEnderdragon =
@@ -162,7 +162,7 @@ bool Stats::blockStatsLoaded = false;
 // These stats are directly followed by the achievemnts in the profile data, so
 // cannot be changed without migrating the profile data
 void Stats::buildBlockStats() {
-    blocksMined = StatArray(32000);
+    blocksMined = std::vector<Stat*>(32000);
 
     ItemStat* newStat = new ItemStat(BLOCKS_MINED_OFFSET + 0, L"mineBlock.dirt",
                                      Tile::dirt->id);
@@ -300,7 +300,7 @@ void Stats::buildCraftableStats() {
 
     // Collected stats
 
-    itemsCollected = StatArray(32000);
+    itemsCollected = std::vector<Stat*>(32000);
 
     ItemStat* newStat = new ItemStat(ITEMS_COLLECTED_OFFSET + 0,
                                      L"collectItem.egg", Item::egg->id);
@@ -338,7 +338,7 @@ void Stats::buildCraftableStats() {
 
     // Crafted stats
 
-    itemsCrafted = StatArray(32000);
+    itemsCrafted = std::vector<Stat*>(32000);
 
     newStat = new ItemStat(ITEMS_CRAFTED_OFFSET + 0, L"craftItem.plank",
                            Tile::wood->id);
@@ -582,7 +582,7 @@ void Stats::buildAdditionalStats() {
 
         // 4J-JEV: We don't need itemsCollected(emerald) so I'm using it to
         // stor itemsBought(emerald) so I don't have to make yet another massive
-        // StatArray for Items Bought.
+        // std::vector<Stat*>& for Items Bought.
         itemStat =
             new ItemStat(offset++, L"itemsBought.emerald", Item::emerald_Id);
         itemsCollectedStats->push_back(itemStat);
@@ -593,7 +593,7 @@ void Stats::buildAdditionalStats() {
         // LARGE WHEN THEY ARE GOING TO BE MOSTLY EMPTY!!!
         //			Either way, I'm making this one smaller because
         // we don't need those record items (and we only need 2).
-        blocksPlaced = StatArray(1000);
+        blocksPlaced = std::vector<Stat*>(1000);
 
         itemStat = new ItemStat(offset++, L"blockPlaced.flowerPot",
                                 Tile::flowerPot_Id);
@@ -614,7 +614,7 @@ void Stats::buildAdditionalStats() {
 
         GeneralStat* generalStat = nullptr;
 
-        rainbowCollection = StatArray(16);
+        rainbowCollection = std::vector<Stat*>(16);
         for (unsigned int i = 0; i < 16; i++) {
             generalStat = new GeneralStat(
                 offset++, L"rainbowCollection." + _toString<unsigned int>(i));
@@ -623,7 +623,7 @@ void Stats::buildAdditionalStats() {
             generalStat->postConstruct();
         }
 
-        biomesVisisted = StatArray(23);
+        biomesVisisted = std::vector<Stat*>(23);
         for (unsigned int i = 0; i < 23; i++) {
             generalStat = new GeneralStat(
                 offset++, L"biomesVisited." + _toString<unsigned int>(i));

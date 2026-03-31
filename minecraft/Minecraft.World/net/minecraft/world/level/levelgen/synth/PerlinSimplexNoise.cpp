@@ -52,7 +52,7 @@ double PerlinSimplexNoise::getValue(double x, double y, double z) {
     return value;
 }
 
-doubleArray PerlinSimplexNoise::getRegion(doubleArray buffer, double x,
+std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, double x,
                                           double y, int xSize, int ySize,
                                           double xScale, double yScale,
                                           double sizeScale) {
@@ -60,18 +60,17 @@ doubleArray PerlinSimplexNoise::getRegion(doubleArray buffer, double x,
                      0.5);
 }
 
-doubleArray PerlinSimplexNoise::getRegion(doubleArray buffer, double x,
+std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, double x,
                                           double y, int xSize, int ySize,
                                           double xScale, double yScale,
                                           double sizeScale, double powScale) {
     xScale /= 1.5;
     yScale /= 1.5;
 
-    if (buffer.data == nullptr || (int)buffer.length < xSize * ySize) {
-        if (buffer.data) delete[] buffer.data;
-        buffer = doubleArray(xSize * ySize);
+    if (buffer.empty() || (int)buffer.size() < xSize * ySize) {
+        buffer = std::vector<double>(xSize * ySize);
     } else
-        for (unsigned int i = 0; i < buffer.length; i++) buffer[i] = 0;
+        for (unsigned int i = 0; i < buffer.size(); i++) buffer[i] = 0;
 
     double pow = 1;
     double scale = 1;
@@ -85,17 +84,17 @@ doubleArray PerlinSimplexNoise::getRegion(doubleArray buffer, double x,
     return buffer;
 }
 
-doubleArray PerlinSimplexNoise::getRegion(doubleArray buffer, double x,
+std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, double x,
                                           double y, double z, int xSize,
                                           int ySize, int zSize, double xScale,
                                           double yScale, double zScale) {
     xScale /= 1.5;
     yScale /= 1.5;
 
-    if (buffer.data == nullptr)
-        buffer = doubleArray(xSize * ySize * zSize);
+    if (buffer.empty())
+        buffer = std::vector<double>(xSize * ySize * zSize);
     else
-        for (unsigned int i = 0; i < buffer.length; i++) buffer[i] = 0;
+        for (unsigned int i = 0; i < buffer.size(); i++) buffer[i] = 0;
 
     double pow = 1;
 

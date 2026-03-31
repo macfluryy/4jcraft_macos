@@ -3,8 +3,8 @@
 
 IslandLayer::IslandLayer(int64_t seedMixup) : Layer(seedMixup) {}
 
-intArray IslandLayer::getArea(int xo, int yo, int w, int h) {
-    intArray result{static_cast<unsigned int>(w * h)};
+std::vector<int> IslandLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             initRandom(xo + x, yo + y);

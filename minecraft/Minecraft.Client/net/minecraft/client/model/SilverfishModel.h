@@ -7,8 +7,8 @@ private:
     static const int BODY_COUNT = 7;
 
 private:
-    ModelPartArray bodyParts;
-    ModelPartArray bodyLayers;
+    std::vector<ModelPart*> bodyParts;
+    std::vector<ModelPart*> bodyLayers;
     float zPlacement[BODY_COUNT];
 
     static const int BODY_SIZES[BODY_COUNT][3];

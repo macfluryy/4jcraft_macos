@@ -40,20 +40,20 @@ void DataOutputStream::flush() {
     stream->flush();
 }
 
-// Writes b.length bytes from the specified byte array to this output stream.
+// Writes b.size() bytes from the specified byte array to this output stream.
 // The general contract for write(b) is that it should have exactly the same
-// effect as the call write(b, 0, b.length). Parameters: b - the data.
-void DataOutputStream::write(byteArray b) { write(b, 0, b.length); }
+// effect as the call write(b, 0, b.size()). Parameters: b - the data.
+void DataOutputStream::write(const std::vector<uint8_t>& b) { write(b, 0, b.size()); }
 
 // Writes len bytes from the specified byte array starting at offset off to the
 // underlying output stream. If no exception is thrown, the counter written is
 // incremented by len. Parameters: b - the data. off - the start offset in the
 // data. len - the number of bytes to write.
-void DataOutputStream::write(byteArray b, unsigned int offset,
+void DataOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
                              unsigned int length) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataOutputStream::write(byteArray,...) called but underlying "
+            "DataOutputStream::write(std::vector<uint8_t>,...) called but underlying "
             "stream is nullptr\n");
         return;
     }
@@ -224,7 +224,7 @@ void DataOutputStream::writeUTF(const std::wstring& str) {
     //	throw new UTFDataFormatException(
     //	"encoded string too long: " + utflen + " bytes");
 
-    byteArray bytearr(utflen + 2);
+    std::vector<uint8_t> bytearr(utflen + 2);
 
     bytearr[count++] = (uint8_t)((utflen >> 8) & 0xFF);
     bytearr[count++] = (uint8_t)((utflen >> 0) & 0xFF);
@@ -251,7 +251,6 @@ void DataOutputStream::writeUTF(const std::wstring& str) {
         }
     }
     write(bytearr, 0, utflen + 2);
-    delete[] bytearr.data;
 }
 
 // 4J Added

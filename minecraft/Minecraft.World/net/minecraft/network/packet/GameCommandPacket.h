@@ -9,10 +9,10 @@ class GameCommandPacket
 public:
     EGameCommand command;
     int length;
-    byteArray data;
+    std::vector<uint8_t> data;
 
     GameCommandPacket();
-    GameCommandPacket(EGameCommand command, byteArray data);
+    GameCommandPacket(EGameCommand command, std::vector<uint8_t> data);
     ~GameCommandPacket();
 
     virtual void read(DataInputStream* dis);

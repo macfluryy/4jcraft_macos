@@ -12,8 +12,6 @@ ColoredTileItem::ColoredTileItem(int id, bool stackedByData) : TileItem(id) {
 }
 
 ColoredTileItem::~ColoredTileItem() {
-    if (descriptionPostfixes.data != nullptr)
-        delete[] descriptionPostfixes.data;
 }
 
 int ColoredTileItem::getColor(std::shared_ptr<ItemInstance> item,
@@ -28,11 +26,10 @@ Icon* ColoredTileItem::getIcon(int auxValue) {
 int ColoredTileItem::getLevelDataForAuxValue(int auxValue) { return auxValue; }
 
 ColoredTileItem* ColoredTileItem::setDescriptionPostfixes(
-    intArray descriptionPostfixes) {
-    if (this->descriptionPostfixes.data != nullptr)
-        delete this->descriptionPostfixes.data;
-    this->descriptionPostfixes = intArray(descriptionPostfixes.length);
-    for (unsigned int i = 0; i < descriptionPostfixes.length; ++i) {
+    std::vector<int>& descriptionPostfixes) {
+    this->descriptionPostfixes.clear();
+    this->descriptionPostfixes = std::vector<int>(descriptionPostfixes.size());
+    for (unsigned int i = 0; i < descriptionPostfixes.size(); ++i) {
         this->descriptionPostfixes[i] = descriptionPostfixes[i];
     }
 
@@ -41,11 +38,11 @@ ColoredTileItem* ColoredTileItem::setDescriptionPostfixes(
 
 unsigned int ColoredTileItem::getDescriptionId(
     std::shared_ptr<ItemInstance> instance) {
-    if (descriptionPostfixes.data == nullptr) {
+    if (descriptionPostfixes.empty()) {
         return TileItem::getDescriptionId(instance);
     }
     int id = instance->getAuxValue();
-    if (id >= 0 && id < descriptionPostfixes.length) {
+    if (id >= 0 && id < descriptionPostfixes.size()) {
         return descriptionPostfixes
             [id];  // TileItem::getDescriptionId(instance)
                    // + "." + descriptionPostfixes[id];

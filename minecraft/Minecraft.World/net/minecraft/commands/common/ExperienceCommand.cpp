@@ -10,8 +10,8 @@ EGameCommand ExperienceCommand::getId() { return eGameCommand_Experience; }
 int ExperienceCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void ExperienceCommand::execute(std::shared_ptr<CommandSender> source,
-                                byteArray commandData) {
-    //	if (args.length > 0) {
+                                std::vector<uint8_t>& commandData) {
+    //	if (args.size() > 0) {
     //		Player player;
     //		String inputAmount = args[0];
     //
@@ -25,7 +25,7 @@ void ExperienceCommand::execute(std::shared_ptr<CommandSender> source,
     //
     //		if (take) amount *= -1;
     //
-    //		if (args.length > 1) {
+    //		if (args.size() > 1) {
     //			player = convertToPlayer(source, args[1]);
     //		} else {
     //			player = convertSourceToPlayer(source);

@@ -16,13 +16,13 @@ public:
     virtual double getValue(double x, double y);
     double getValue(double x, double y, double z);
 
-    doubleArray getRegion(doubleArray buffer, double x, double y, int xSize,
+    std::vector<double> getRegion(std::vector<double>& buffer, double x, double y, int xSize,
                           int ySize, double xScale, double yScale,
                           double sizeScale);
-    doubleArray getRegion(doubleArray buffer, double x, double y, int xSize,
+    std::vector<double> getRegion(std::vector<double>& buffer, double x, double y, int xSize,
                           int ySize, double xScale, double yScale,
                           double sizeScale, double powScale);
-    doubleArray getRegion(doubleArray buffer, double x, double y, double z,
+    std::vector<double> getRegion(std::vector<double>& buffer, double x, double y, double z,
                           int xSize, int ySize, int zSize, double xScale,
                           double yScale, double zScale);
 };

@@ -2,7 +2,7 @@
 
 class DataLayer {
 public:
-    byteArray data;
+    std::vector<uint8_t> data;
 
 private:
     const int depthBits;
@@ -10,7 +10,7 @@ private:
 
 public:
     DataLayer(int length, int depthBits);
-    DataLayer(byteArray data, int depthBits);
+    DataLayer(std::vector<uint8_t>& data, int depthBits);
     ~DataLayer();
 
     int get(int x, int y, int z);

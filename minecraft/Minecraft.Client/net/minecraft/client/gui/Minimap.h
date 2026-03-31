@@ -14,7 +14,7 @@ private:
     static bool genLUT;   // 4J added
     int renderCount;      // 4J added
     bool m_optimised;     // 4J Added
-    intArray pixels;
+    std::vector<int> pixels;
     int mapTexture;
     Options* options;
     Font* font;

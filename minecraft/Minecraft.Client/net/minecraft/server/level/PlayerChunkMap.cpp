@@ -17,7 +17,7 @@ PlayerChunkMap::PlayerChunk::PlayerChunk(int x, int z, PlayerChunkMap* pcm)
     : pos(x, z) {
     // 4J - added initialisers
     changes = 0;
-    changedTiles = shortArray(MAX_CHANGES_BEFORE_RESEND);
+    changedTiles = std::vector<short>(MAX_CHANGES_BEFORE_RESEND);
     xChangeMin = xChangeMax = 0;
     yChangeMin = yChangeMax = 0;
     zChangeMin = zChangeMax = 0;
@@ -29,7 +29,7 @@ PlayerChunkMap::PlayerChunk::PlayerChunk(int x, int z, PlayerChunkMap* pcm)
     parent->getLevel()->cache->create(x, z);
 }
 
-PlayerChunkMap::PlayerChunk::~PlayerChunk() { delete changedTiles.data; }
+PlayerChunkMap::PlayerChunk::~PlayerChunk() {}
 
 // 4J added - construct an an array of flags that indicate which entities are
 // still waiting to have network packets sent out to say that they have been

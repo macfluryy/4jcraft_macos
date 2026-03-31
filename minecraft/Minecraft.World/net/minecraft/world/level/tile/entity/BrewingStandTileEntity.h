@@ -10,9 +10,9 @@ public:
     static const int INGREDIENT_SLOT = 3;
 
 private:
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
-    static intArray SLOTS_FOR_UP;
-    static intArray SLOTS_FOR_OTHER_FACES;
+    std::vector<std::shared_ptr<ItemInstance>> items;
+    static std::vector<int> SLOTS_FOR_UP;
+    static std::vector<int> SLOTS_FOR_OTHER_FACES;
 
     int brewTime;
     int lastPotionCount;
@@ -53,7 +53,7 @@ public:
     virtual void setBrewTime(int value);
     virtual void setChanged() { TileEntity::setChanged(); }  // 4J added
     int getPotionBits();
-    virtual intArray getSlotsForFace(int face);
+    virtual std::vector<int> getSlotsForFace(int face);
     virtual bool canPlaceItemThroughFace(int slot,
                                          std::shared_ptr<ItemInstance> item,
                                          int face);

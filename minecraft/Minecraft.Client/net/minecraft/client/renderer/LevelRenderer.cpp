@@ -160,7 +160,7 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
         //		sortedChunks[i] = nullptr;	// 4J - removed - not
         // sorting
         // our chunks anymore
-        chunks[i] = ClipChunkArray();
+        chunks[i] = std::vector<ClipChunk>();
         lastPlayerCount[i] = 0;
     }
 
@@ -373,14 +373,12 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel* level) {
     } else {
         //		printf("NULLing player %d, chunks @
         // 0x%x\n",playerIndex,chunks[playerIndex]);
-        if (chunks[playerIndex].data != nullptr) {
-            for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+        if (!chunks[playerIndex].empty()) {
+            for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
                 chunks[playerIndex][i].chunk->_delete();
                 delete chunks[playerIndex][i].chunk;
             }
-            delete chunks[playerIndex].data;
-            chunks[playerIndex].data = nullptr;
-            chunks[playerIndex].length = 0;
+            chunks[playerIndex].clear();
             //			delete sortedChunks[playerIndex];	// 4J -
             // removed - not sorting our chunks anymore
             // sortedChunks[playerIndex] = nullptr;	// 4J - removed - not
@@ -447,17 +445,16 @@ void LevelRenderer::allChanged(int playerIndex) {
     yChunks = Level::maxBuildHeight / CHUNK_SIZE;
     zChunks = dist;
 
-    if (chunks[playerIndex].data != nullptr) {
-        for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+    if (!chunks[playerIndex].empty()) {
+        for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
             chunks[playerIndex][i].chunk->_delete();
             delete chunks[playerIndex][i].chunk;
         }
-        delete chunks[playerIndex].data;
         //		delete sortedChunks[playerIndex];	// 4J - removed
         //- not sorting our chunks anymore
     }
 
-    chunks[playerIndex] = ClipChunkArray(xChunks * yChunks * zChunks);
+    chunks[playerIndex] = std::vector<ClipChunk>(xChunks * yChunks * zChunks);
     //	sortedChunks[playerIndex] = new vector<Chunk *>(xChunks * yChunks *
     // zChunks);		// 4J - removed - not sorting our chunks anymore
     int id = 0;
@@ -744,14 +741,14 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
     glColor4f(1, 1, 1, 1);
     mc->gameRenderer->turnOnLightLayer(alpha);
 
-    int count = renderChunks(0, (int)chunks[playerIndex].length, layer, alpha);
+    int count = renderChunks(0, (int)chunks[playerIndex].size(), layer, alpha);
     mc->gameRenderer->turnOffLightLayer(alpha);
     return count;
 }
 
 int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
     int playerIndex = mc->player->GetXboxPad();
-    if (chunks[playerIndex].data == nullptr) return 0;
+    if (chunks[playerIndex].empty()) return 0;
     mc->gameRenderer->turnOnLightLayer(alpha);
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     double xOff = player->xOld + (player->x - player->xOld) * alpha;
@@ -764,16 +761,16 @@ int LevelRenderer::renderChunks(int from, int to, int layer, double alpha) {
 
     bool first = true;
     int count = 0;
-    ClipChunk* pClipChunk = chunks[playerIndex].data;
+    ClipChunk* pClipChunk = chunks[playerIndex].data();
     unsigned char emptyFlag = LevelRenderer::CHUNK_FLAG_EMPTY0 << layer;
     static thread_local std::vector<ClipChunk*> sortList;
     sortList.clear();
-    if (sortList.capacity() < (size_t)chunks[playerIndex].length) {
-        sortList.reserve(chunks[playerIndex].length);
+    if (sortList.capacity() < (size_t)chunks[playerIndex].size()) {
+        sortList.reserve(chunks[playerIndex].size());
     }
     {
         FRAME_PROFILE_SCOPE(ChunkCollect);
-        for (int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++) {
+        for (int i = 0; i < chunks[playerIndex].size(); i++, pClipChunk++) {
             if (!pClipChunk->visible)
                 continue;  // This will be set if the chunk isn't visible, or
                            // isn't compiled, or has both empty flags set
@@ -1775,9 +1772,9 @@ bool LevelRenderer::updateDirtyChunks() {
                 // shared_ptr it should live as long as we need it
                 std::shared_ptr<LocalPlayer> player = mc->localplayers[p];
                 if (player == nullptr) continue;
-                if (chunks[p].data == nullptr) continue;
+                if (chunks[p].empty()) continue;
                 if (level[p] == nullptr) continue;
-                if (chunks[p].length != xChunks * zChunks * CHUNK_Y_COUNT)
+                if (chunks[p].size() != xChunks * zChunks * CHUNK_Y_COUNT)
                     continue;
                 int px = (int)player->x;
                 int py = (int)player->y;
@@ -2432,7 +2429,7 @@ bool inline clip(float* bb, float* frustum) {
 // gives better performances but mostly breaks chunk rendering
 void LevelRenderer::cull(Culler* culler, float a) {
     int playerIndex = mc->player->GetXboxPad();
-    if (chunks[playerIndex].data == nullptr) return;
+    if (chunks[playerIndex].empty()) return;
 
     FrustumCuller* fc = (FrustumCuller*)culler;
     FrustumData* fd = fc->frustum;
@@ -2450,7 +2447,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
 
 #if defined(OCCLUSION_MODE_NONE)
     // just check if chunk is compiled and non-empty
-    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+    for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
         ClipChunk* cc = &chunks[playerIndex][i];
         if (cc->globalIdx < 0) {
             cc->visible = false;
@@ -2467,7 +2464,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
 
 #elif defined(OCCLUSION_MODE_FRUSTUM)
     // Just ~~monika~~ frustum culling
-    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+    for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
         ClipChunk* cc = &chunks[playerIndex][i];
         if (cc->globalIdx < 0) {
             cc->visible = false;
@@ -2497,7 +2494,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
 // For now, fall back to frustum culling
 #warning \
     "OCCLUSION_MODE_HARDWARE is not implemented yet, falling back to frustum culling"
-    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+    for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
         ClipChunk* cc = &chunks[playerIndex][i];
         if (cc->globalIdx < 0) {
             cc->visible = false;
@@ -2547,7 +2544,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
     int minCx = INT_MAX, minCy = INT_MAX, minCz = INT_MAX;
     int maxCx = INT_MIN, maxCy = INT_MIN, maxCz = INT_MIN;
 
-    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+    for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
         ClipChunk* cc = &chunks[playerIndex][i];
         cc->visible = false;
         if (cc->globalIdx < 0) continue;
@@ -2576,7 +2573,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
     }
 
     memset(m_bfsGrid.data(), 0, gridSize * sizeof(ClipChunk*));
-    for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+    for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
         ClipChunk* cc = &chunks[playerIndex][i];
         if (cc->globalIdx < 0) continue;
         int lx = intFloorDiv(cc->chunk->x, CHUNK_XZSIZE) - minCx;
@@ -2617,7 +2614,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
 
     if (!startChunk) {
         float minDist = 1e30f;
-        for (unsigned int i = 0; i < chunks[playerIndex].length; i++) {
+        for (unsigned int i = 0; i < chunks[playerIndex].size(); i++) {
             ClipChunk* cc = &chunks[playerIndex][i];
             if (cc->globalIdx < 0) continue;
             float midX = cc->chunk->x + CHUNK_XZSIZE * 0.5f;
@@ -2642,17 +2639,17 @@ void LevelRenderer::cull(Culler* culler, float a) {
 
     static thread_local std::vector<BFSNode> q;
     q.clear();
-    q.reserve(chunks[playerIndex].length);
+    q.reserve(chunks[playerIndex].size());
     int qHead = 0;
 
-    int visitedSize = chunks[playerIndex].length;
+    int visitedSize = chunks[playerIndex].size();
     if (m_bfsVisitedFaces[playerIndex].size() < visitedSize) {
         m_bfsVisitedFaces[playerIndex].resize(visitedSize, 0);
     }
     memset(m_bfsVisitedFaces[playerIndex].data(), 0, visitedSize);
 
     q.push_back({startChunk, -1});
-    m_bfsVisitedFaces[playerIndex][startChunk - chunks[playerIndex].data] =
+    m_bfsVisitedFaces[playerIndex][startChunk - chunks[playerIndex].data()] =
         0x3F;
 
     static const int OFFSETS[6][3] = {
@@ -2725,7 +2722,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
             ClipChunk* neighbor = getChunkAt(nx, ny, nz);
             if (!neighbor) continue;
 
-            int nIdx = neighbor - chunks[playerIndex].data;
+            int nIdx = neighbor - chunks[playerIndex].data();
             int nextIncFace = outFace ^ 1;
 
             if ((m_bfsVisitedFaces[playerIndex][nIdx] & (1 << nextIncFace)) !=
@@ -4058,8 +4055,8 @@ int LevelRenderer::checkAllPresentChunks(bool* faultFound) {
     int playerIndex = mc->player->GetXboxPad();  // 4J added
 
     int presentCount = 0;
-    ClipChunk* pClipChunk = chunks[playerIndex].data;
-    for (int i = 0; i < chunks[playerIndex].length; i++, pClipChunk++) {
+    ClipChunk* pClipChunk = chunks[playerIndex].data();
+    for (int i = 0; i < chunks[playerIndex].size(); i++, pClipChunk++) {
         if (pClipChunk->chunk->y == 0) {
             bool chunkPresent = level[0]->reallyHasChunk(
                 pClipChunk->chunk->x >> 4, pClipChunk->chunk->z >> 4);

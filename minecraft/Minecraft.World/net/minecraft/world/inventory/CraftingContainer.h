@@ -6,7 +6,7 @@ class AbstractContainerMenu;
 
 class CraftingContainer : public Container {
 private:
-    arrayWithLength<std::shared_ptr<ItemInstance>>* items;
+    std::vector<std::shared_ptr<ItemInstance>>* items;
     unsigned int width;
     AbstractContainerMenu* menu;
 

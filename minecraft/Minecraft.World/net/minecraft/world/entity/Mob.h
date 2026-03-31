@@ -59,10 +59,10 @@ private:
     std::shared_ptr<LivingEntity> target;
     Sensing* sensing;
 
-    arrayWithLength<std::shared_ptr<ItemInstance>> equipment;
+    std::vector<std::shared_ptr<ItemInstance>> equipment;
 
 protected:
-    floatArray dropChances;
+    std::vector<float> dropChances;
 
 private:
     bool _canPickUpLoot;
@@ -158,7 +158,7 @@ public:
     virtual std::shared_ptr<ItemInstance> getCarried(int slot);
     virtual std::shared_ptr<ItemInstance> getArmor(int pos);
     virtual void setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item);
-    virtual arrayWithLength<std::shared_ptr<ItemInstance>> getEquipmentSlots();
+    virtual std::vector<std::shared_ptr<ItemInstance>> getEquipmentSlots();
 
 protected:
     virtual void dropEquipment(bool byPlayer, int playerBonusLevel);

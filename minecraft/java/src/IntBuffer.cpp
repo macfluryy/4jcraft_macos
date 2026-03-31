@@ -64,14 +64,14 @@ int IntBuffer::get(unsigned int index) {
 // except that it first checks that there is sufficient space in this buffer and
 // it is potentially much more efficient. Parameters: src - The array from which
 // ints are to be read offset - The offset within the array of the first int to
-// be read; must be non-negative and no larger than array.length length - The
+// be read; must be non-negative and no larger than array.size() length - The
 // number of ints to be read from the given array; must be non-negative and no
-// larger than array.length - offset Returns: This buffer
-IntBuffer* IntBuffer::put(intArray* inputArray, unsigned int offset,
+// larger than array.size() - offset Returns: This buffer
+IntBuffer* IntBuffer::put(std::vector<int>* inputArray, unsigned int offset,
                           unsigned int length) {
-    assert(offset + length < inputArray->length);
+    assert(offset + length < inputArray->size());
 
-    std::copy(inputArray->data + offset, inputArray->data + offset + length,
+    std::copy(inputArray->data() + offset, inputArray->data() + offset + length,
               buffer + m_position);
 
     m_position += length;
@@ -79,14 +79,14 @@ IntBuffer* IntBuffer::put(intArray* inputArray, unsigned int offset,
     return this;
 }
 
-IntBuffer* IntBuffer::put(intArray inputArray) {
-    if (inputArray.length > remaining())
+IntBuffer* IntBuffer::put(std::vector<int>& inputArray) {
+    if (inputArray.size() > remaining())
         assert(false);  // TODO 4J Stu - Some kind of exception?
 
-    std::copy(inputArray.data, inputArray.data + inputArray.length,
+    std::copy(inputArray.data(), inputArray.data() + inputArray.size(),
               buffer + m_position);
 
-    m_position += inputArray.length;
+    m_position += inputArray.size();
 
     return this;
 }

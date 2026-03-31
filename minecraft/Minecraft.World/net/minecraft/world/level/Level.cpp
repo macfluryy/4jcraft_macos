@@ -3219,7 +3219,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                                             (toCheckCount <
                                              (32 * 32 *
                                               32)))  // 4J - 32 * 32 * 32
-                                                     // was toCheck.length
+                                                     // was toCheck.size()
                                         {
                                             toCheck[toCheckCount++] =
                                                 (xx - xc + 32) |
@@ -3297,7 +3297,7 @@ void Level::checkLight(LightLayer::variety layer, int xc, int yc, int zc,
                     bool withinBounds =
                         toCheckCount <
                         (32 * 32 * 32) -
-                            6;  // 4J - 32 * 32 * 32 was toCheck.length
+                            6;  // 4J - 32 * 32 * 32 was toCheck.size()
                     if (xd + yd + zd < 17 && withinBounds) {
                         // 4J - added extra checks here to stop lighting updates
                         // moving out of the actual fixed world and into the
@@ -3800,9 +3800,9 @@ std::shared_ptr<Player> Level::getPlayerByUUID(const std::wstring& name) {
 }
 
 // 4J Stu - Removed in 1.2.3 ?
-byteArray Level::getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
+std::vector<uint8_t> Level::getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
                                   bool includeLighting /* = true*/) {
-    byteArray result(xs * ys * zs * 5 / 2);
+    std::vector<uint8_t> result(xs * ys * zs * 5 / 2);
     int xc0 = x >> 4;
     int zc0 = z >> 4;
     int xc1 = (x + xs - 1) >> 4;
@@ -3834,7 +3834,7 @@ byteArray Level::getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
 
 // 4J Stu - Removed in 1.2.3 ?
 void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
-                             byteArray data, bool includeLighting /* = true*/) {
+                             std::vector<uint8_t>& data, bool includeLighting /* = true*/) {
     int xc0 = x >> 4;
     int zc0 = z >> 4;
     int xc1 = (x + xs - 1) >> 4;
@@ -3873,7 +3873,7 @@ void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
                 lc->stopSharingTilesAndData();
                 PIXEndNamedEvent();
             }
-            if (p < data.length)
+            if (p < data.size())
                 p = lc->setBlocksAndData(data, x0, y0, z0, x1, y1, z1, p,
                                          includeLighting);
             setTilesDirty(xc * 16 + x0, y0, zc * 16 + z0, xc * 16 + x1, y1,

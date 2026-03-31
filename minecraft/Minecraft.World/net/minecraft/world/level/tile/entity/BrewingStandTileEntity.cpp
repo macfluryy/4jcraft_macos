@@ -10,17 +10,17 @@
 int slotsForUp[] = {BrewingStandTileEntity::INGREDIENT_SLOT};
 int slotsForOtherFaces[] = {0, 1, 2};
 
-intArray BrewingStandTileEntity::SLOTS_FOR_UP = intArray(slotsForUp, 1);
-intArray BrewingStandTileEntity::SLOTS_FOR_OTHER_FACES =
-    intArray(slotsForOtherFaces, 3);
+std::vector<int> BrewingStandTileEntity::SLOTS_FOR_UP = std::vector<int>(slotsForUp, slotsForUp + 1);
+std::vector<int> BrewingStandTileEntity::SLOTS_FOR_OTHER_FACES =
+    std::vector<int>(slotsForOtherFaces, slotsForOtherFaces + 3);
 
 BrewingStandTileEntity::BrewingStandTileEntity() {
     brewTime = 0;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(4);
+    items = std::vector<std::shared_ptr<ItemInstance>>(4);
     name = L"";
 }
 
-BrewingStandTileEntity::~BrewingStandTileEntity() { delete[] items.data; }
+BrewingStandTileEntity::~BrewingStandTileEntity() {}
 
 std::wstring BrewingStandTileEntity::getName() {
     return hasCustomName() ? name : app.GetString(IDS_TILE_BREWINGSTAND);
@@ -36,7 +36,7 @@ void BrewingStandTileEntity::setCustomName(const std::wstring& name) {
     this->name = name;
 }
 
-unsigned int BrewingStandTileEntity::getContainerSize() { return items.length; }
+unsigned int BrewingStandTileEntity::getContainerSize() { return items.size(); }
 
 void BrewingStandTileEntity::tick() {
     if (brewTime > 0) {
@@ -260,12 +260,11 @@ void BrewingStandTileEntity::load(CompoundTag* base) {
 
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
-    delete[] items.data;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
+    items = std::vector<std::shared_ptr<ItemInstance>>(getContainerSize());
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         int slot = tag->getByte(L"Slot");
-        if (slot >= 0 && slot < items.length)
+        if (slot >= 0 && slot < items.size())
             items[slot] = ItemInstance::fromTag(tag);
     }
 
@@ -279,7 +278,7 @@ void BrewingStandTileEntity::save(CompoundTag* base) {
     base->putShort(L"BrewTime", (short)(brewTime));
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>();
 
-    for (int i = 0; i < items.length; i++) {
+    for (int i = 0; i < items.size(); i++) {
         if (items[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
@@ -293,7 +292,7 @@ void BrewingStandTileEntity::save(CompoundTag* base) {
 
 std::shared_ptr<ItemInstance> BrewingStandTileEntity::getItem(
     unsigned int slot) {
-    if (slot >= 0 && slot < items.length) {
+    if (slot >= 0 && slot < items.size()) {
         return items[slot];
     }
     return nullptr;
@@ -306,7 +305,7 @@ std::shared_ptr<ItemInstance> BrewingStandTileEntity::removeItem(
     // slot Fix for #65373 - TU8: Content: UI: Command "Take Half" in the
     // Brewing Stand interface doesn't work as intended.
 
-    if (slot >= 0 && slot < items.length && items[slot] != nullptr) {
+    if (slot >= 0 && slot < items.size() && items[slot] != nullptr) {
         if (items[slot]->count <= count) {
             std::shared_ptr<ItemInstance> item = items[slot];
             items[slot] = nullptr;
@@ -328,7 +327,7 @@ std::shared_ptr<ItemInstance> BrewingStandTileEntity::removeItem(
 
 std::shared_ptr<ItemInstance> BrewingStandTileEntity::removeItemNoUpdate(
     int slot) {
-    if (slot >= 0 && slot < items.length) {
+    if (slot >= 0 && slot < items.size()) {
         std::shared_ptr<ItemInstance> item = items[slot];
         items[slot] = nullptr;
         return item;
@@ -338,7 +337,7 @@ std::shared_ptr<ItemInstance> BrewingStandTileEntity::removeItemNoUpdate(
 
 void BrewingStandTileEntity::setItem(unsigned int slot,
                                      std::shared_ptr<ItemInstance> item) {
-    if (slot >= 0 && slot < items.length) {
+    if (slot >= 0 && slot < items.size()) {
         items[slot] = item;
     }
 }
@@ -385,7 +384,7 @@ int BrewingStandTileEntity::getPotionBits() {
     return newCount;
 }
 
-intArray BrewingStandTileEntity::getSlotsForFace(int face) {
+std::vector<int> BrewingStandTileEntity::getSlotsForFace(int face) {
     if (face == Facing::UP) {
         return SLOTS_FOR_UP;
     }
@@ -413,9 +412,9 @@ std::shared_ptr<TileEntity> BrewingStandTileEntity::clone() {
     result->lastPotionCount = lastPotionCount;
     result->ingredientId = ingredientId;
 
-    for (unsigned int i = 0; i < items.length; i++) {
-        if (items.data[i] != nullptr) {
-            result->items.data[i] = ItemInstance::clone(items.data[i]);
+    for (unsigned int i = 0; i < items.size(); i++) {
+        if (items[i] != nullptr) {
+            result->items[i] = ItemInstance::clone(items[i]);
         }
     }
     return result;

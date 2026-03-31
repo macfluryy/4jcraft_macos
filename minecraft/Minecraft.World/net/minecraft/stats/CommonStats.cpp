@@ -97,7 +97,7 @@ Stat* CommonStats::get_blocksMined(int blockId) {
 Stat* CommonStats::get_itemsCollected(int itemId, int itemAux) {
     // 4J-JEV: We don't need itemsCollected(emerald) so I'm using it to
     // stor itemsBought(emerald) so I don't have to make yet another massive
-    // StatArray for Items Bought.
+    // std::vector<Stat*>& for Items Bought.
 #if defined(_EXTENDED_ACHIEVEMENTS)
     if (itemId == Tile::wool_Id) return Stats::rainbowCollection[itemAux];
 #endif
@@ -128,7 +128,7 @@ Stat* CommonStats::get_itemsUsed(int itemId) {
 Stat* CommonStats::get_itemsBought(int itemId) {
     // 4J-JEV: We don't need itemsCollected(emerald) so I'm using it to
     // stor itemsBought(emerald) so I don't have to make yet another massive
-    // StatArray for Items Bought.
+    // std::vector<Stat*>& for Items Bought.
 
     if (itemId == Item::emerald_Id)
         return Stats::itemsCollected[itemId];
@@ -272,73 +272,73 @@ Stat* CommonStats::get_achievement(eAward achievementId) {
     }
 }
 
-byteArray CommonStats::getParam_walkOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_walkOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_swimOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_swimOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_fallOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_fallOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_climbOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_climbOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_minecartOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_minecartOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_boatOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_boatOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_pigOneM(int distance) {
+std::vector<uint8_t> CommonStats::getParam_pigOneM(int distance) {
     return makeParam(distance);
 }
 
-byteArray CommonStats::getParam_blocksMined(int id, int data, int count) {
+std::vector<uint8_t> CommonStats::getParam_blocksMined(int id, int data, int count) {
     return makeParam(count);
 }
 
-byteArray CommonStats::getParam_itemsCollected(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsCollected(int id, int aux, int count) {
     return makeParam(count);
 }
 
-byteArray CommonStats::getParam_itemsCrafted(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsCrafted(int id, int aux, int count) {
     return makeParam(count);
 }
 
-byteArray CommonStats::getParam_itemsSmelted(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsSmelted(int id, int aux, int count) {
     return makeParam(count);
 }
 
-byteArray CommonStats::getParam_itemsUsed(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsUsed(int id, int aux, int count) {
     return makeParam(count);
 }
 
-byteArray CommonStats::getParam_itemsBought(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsBought(int id, int aux, int count) {
     return makeParam(count);
 }
 
-byteArray CommonStats::getParam_time(int timediff) {
+std::vector<uint8_t> CommonStats::getParam_time(int timediff) {
     return makeParam(timediff);
 }
 
-byteArray CommonStats::getParam_noArgs() { return makeParam(); }
+std::vector<uint8_t> CommonStats::getParam_noArgs() { return makeParam(); }
 
-byteArray CommonStats::makeParam(int count) {
-    byteArray out(sizeof(int));
-    memcpy(out.data, &count, sizeof(int));
+std::vector<uint8_t> CommonStats::makeParam(int count) {
+    std::vector<uint8_t> out(sizeof(int));
+    memcpy(out.data(), &count, sizeof(int));
     return out;
 }
 
-int CommonStats::readParam(byteArray paramBlob) {
-    if (paramBlob.length == sizeof(int))
-        return *((int*)paramBlob.data);
+int CommonStats::readParam(const std::vector<uint8_t>& paramBlob) {
+    if (paramBlob.size() == sizeof(int))
+        return *((int*)paramBlob.data());
     else
         return 1;
 }

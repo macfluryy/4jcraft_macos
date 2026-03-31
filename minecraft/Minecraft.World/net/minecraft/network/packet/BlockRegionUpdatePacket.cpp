@@ -15,7 +15,7 @@
     0x02  // added so we can still send a byte for ys, which really needs the
           // range 0-256
 
-BlockRegionUpdatePacket::~BlockRegionUpdatePacket() { delete[] buffer.data; }
+BlockRegionUpdatePacket::~BlockRegionUpdatePacket() {}
 
 BlockRegionUpdatePacket::BlockRegionUpdatePacket() {
     shouldDelay = true;
@@ -46,7 +46,7 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
     // compress better
     // TODO - we should be using compressed data directly here rather than
     // decompressing first and then recompressing...
-    byteArray rawBuffer;
+    std::vector<uint8_t> rawBuffer;
 
     if (xs == 16 && ys == Level::maxBuildHeight && zs == 16 &&
         ((x & 15) == 0) && (y == 0) && ((z & 15) == 0)) {
@@ -61,9 +61,9 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         MemSect(0);
     }
 
-    if (rawBuffer.length == 0) {
+    if (rawBuffer.size() == 0) {
         size = 0;
-        buffer = byteArray();
+        buffer = std::vector<uint8_t>();
     } else {
         // We don't know how this will compress - just make a fixed length
         // buffer to initially decompress into Some small sets of blocks can end
@@ -72,14 +72,14 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         unsigned int inputSize = (256 * 16 * 16 * 5) / 2;
 
         Compression::getCompression()->CompressLZXRLE(
-            ucTemp, &inputSize, rawBuffer.data, (unsigned int)rawBuffer.length);
+            ucTemp, &inputSize, rawBuffer.data(), (unsigned int)rawBuffer.size());
         // app.DebugPrintf("Chunk (%d,%d) compressed from %d to size %d\n",
-        // x>>4, z>>4, rawBuffer.length, inputSize);
+        // x>>4, z>>4, rawBuffer.size(), inputSize);
         unsigned char* ucTemp2 = new unsigned char[inputSize];
         memcpy(ucTemp2, ucTemp, inputSize);
         delete[] ucTemp;
-        buffer = byteArray(ucTemp2, inputSize);
-        delete[] rawBuffer.data;
+        buffer = std::vector<uint8_t>(ucTemp2, ucTemp2 + inputSize);
+        delete[] ucTemp2;
         size = inputSize;
     }
 }
@@ -102,20 +102,20 @@ void BlockRegionUpdatePacket::read(DataInputStream* dis)  // throws IOException
     size &= 0x3fffffff;
 
     if (size == 0) {
-        buffer = byteArray();
+        buffer = std::vector<uint8_t>();
     } else {
-        byteArray compressedBuffer(size);
+        std::vector<uint8_t> compressedBuffer(size);
         bool success = dis->readFully(compressedBuffer);
 
         int bufferSize = xs * ys * zs * 5 / 2;
         // Add the size of the biome data if it's a full chunk
         if (bIsFullChunk) bufferSize += (16 * 16);
-        buffer = byteArray(bufferSize);
-        unsigned int outputSize = buffer.length;
+        buffer = std::vector<uint8_t>(bufferSize);
+        unsigned int outputSize = buffer.size();
 
         if (success) {
             Compression::getCompression()->DecompressLZXRLE(
-                buffer.data, &outputSize, compressedBuffer.data, size);
+                buffer.data(), &outputSize, compressedBuffer.data(), size);
         } else {
             app.DebugPrintf(
                 "Not decompressing packet that wasn't fully read\n");
@@ -124,8 +124,7 @@ void BlockRegionUpdatePacket::read(DataInputStream* dis)  // throws IOException
         //	printf("Block (%d %d %d), (%d %d %d) coming in decomp from %d to
         //%d\n",x,y,z,xs,ys,zs,size,outputSize);
 
-        delete[] compressedBuffer.data;
-        assert(buffer.length == outputSize);
+        assert(buffer.size() == outputSize);
     }
 }
 

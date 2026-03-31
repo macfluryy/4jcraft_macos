@@ -9,12 +9,12 @@ SquidModel::SquidModel() : Model() {
     body->addBox(-6, -8, -6, 12, 16, 12);
     body->y += (8 + 16) + yoffs;
 
-    for (int i = 0; i < TENTACLES_LENGTH; i++)  // 4J - 8 was tentacles.length
+    for (int i = 0; i < TENTACLES_LENGTH; i++)  // 4J - 8 was tentacles.size()
     {
         tentacles[i] = new ModelPart(this, 48, 0);
 
         double angle = i * M_PI * 2.0 /
-                       (double)TENTACLES_LENGTH;  // 4J - 8 was tentacles.length
+                       (double)TENTACLES_LENGTH;  // 4J - 8 was tentacles.size()
         float xo = Mth::cos((float)angle) * 5;
         float yo = Mth::sin((float)angle) * 5;
         tentacles[i]->addBox(-1, 0, -1, 2, 18, 2);
@@ -24,7 +24,7 @@ SquidModel::SquidModel() : Model() {
         tentacles[i]->y = (float)(31 + yoffs);
 
         angle = i * M_PI * -2.0 / (double)TENTACLES_LENGTH +
-                M_PI * .5;  // 4J - 8 was tentacles.length
+                M_PI * .5;  // 4J - 8 was tentacles.size()
         tentacles[i]->yRot = (float)angle;
 
         // 4J added - compile now to avoid random performance hit first time
@@ -38,7 +38,7 @@ void SquidModel::setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
                            std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim) {
-    for (int i = 0; i < TENTACLES_LENGTH; i++)  // 4J - 8 was tentacles.length
+    for (int i = 0; i < TENTACLES_LENGTH; i++)  // 4J - 8 was tentacles.size()
     {
         // tentacle angle is calculated in SquidRenderer
         tentacles[i]->xRot = bob;
@@ -52,7 +52,7 @@ void SquidModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
     body->render(scale, usecompiled);
     for (int i = 0; i < TENTACLES_LENGTH;
-         i++)  // 4J - 8 was tentacles.length // 4J Stu - Was 9 but I made it 8
+         i++)  // 4J - 8 was tentacles.size() // 4J Stu - Was 9 but I made it 8
                // as the array is [0,8)
     {
         tentacles[i]->render(scale, usecompiled);

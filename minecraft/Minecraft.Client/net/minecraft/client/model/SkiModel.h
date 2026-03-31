@@ -4,7 +4,7 @@
 
 class SkiModel : public Model {
 public:
-    ModelPartArray cubes;
+    std::vector<ModelPart*> cubes;
 
 private:
     bool leftSki;

@@ -36,7 +36,7 @@ public class GameDifficultyCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender source, String[] args) {
-        if (args.length > 0) {
+        if (args.size() > 0) {
             int newDiff = getDifficultyForString(source, args[0]);
 
             MinecraftServer.getInstance().setDifficulty(newDiff);
@@ -63,7 +63,7 @@ convertArgToInt(source, name, 0, 3);
 
     @Override
     public List<String> matchArguments(CommandSender source, String[] args) {
-        if (args.length == 1) {
+        if (args.size() == 1) {
             return matchArguments(args, "peaceful", "easy", "normal", "hard");
         }
 

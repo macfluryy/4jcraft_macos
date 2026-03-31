@@ -80,22 +80,22 @@ public:
     ~SparseLightStorage();
 
     void setData(
-        byteArray dataIn,
+        std::vector<uint8_t>& dataIn,
         unsigned int inOffset);  // Set all lighting values from a data array of
                                  // length 16384 (128 x 16 x 16 x 0.5).
-    void getData(byteArray retArray,
+    void getData(std::vector<uint8_t>& retArray,
                  unsigned int retOffset);    // Gets all lighting values into an
                                              // array of length 16384.
     int get(int x, int y, int z);            // Get an individual lighting value
     void set(int x, int y, int z, int val);  // Set an individual lighting value
     void setAllBright();  // Set all lighting values to fully bright
     int setDataRegion(
-        byteArray dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
         int offset);  // Sets a region of lighting values with the data at
                       // offset position in the array dataIn - external ordering
                       // compatible with java DataLayer
     int getDataRegion(
-        byteArray dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
         int offset);  // Updates the data at offset position dataInOut with a
                       // region of lighting information - external ordering
                       // compatible with java DataLayer

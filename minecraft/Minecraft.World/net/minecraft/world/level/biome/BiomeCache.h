@@ -17,10 +17,10 @@ public:
     public:
         // MGH - changed this to just cache biome indices, as we have direct
         // access to the data if we know the index.
-        // 		floatArray temps;
-        // 		floatArray downfall;
-        // 		BiomeArray biomes;
-        byteArray biomeIndices;
+        // 		std::vector<float> temps;
+        // 		std::vector<float> downfall;
+        // 		std::vector<Biome*> biomes;
+        std::vector<uint8_t> biomeIndices;
         int x, z;
         int64_t lastUse;
 
@@ -45,8 +45,8 @@ public:
     float getTemperature(int x, int z);
     float getDownfall(int x, int z);
     void update();
-    BiomeArray getBiomeBlockAt(int x, int z);
-    byteArray getBiomeIndexBlockAt(int x, int z);
+    std::vector<Biome*> getBiomeBlockAt(int x, int z);
+    std::vector<uint8_t> getBiomeIndexBlockAt(int x, int z);
 
 private:
     std::mutex m_CS;

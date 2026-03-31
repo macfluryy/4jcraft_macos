@@ -5,15 +5,15 @@
 #include "PacketListener.h"
 #include "ContainerSetContentPacket.h"
 
-ContainerSetContentPacket::~ContainerSetContentPacket() { delete[] items.data; }
+ContainerSetContentPacket::~ContainerSetContentPacket() {}
 
 ContainerSetContentPacket::ContainerSetContentPacket() { containerId = 0; }
 
 ContainerSetContentPacket::ContainerSetContentPacket(
     int containerId, std::vector<std::shared_ptr<ItemInstance> >* newItems) {
     this->containerId = containerId;
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>((int)newItems->size());
-    for (unsigned int i = 0; i < items.length; i++) {
+    items = std::vector<std::shared_ptr<ItemInstance>>((int)newItems->size());
+    for (unsigned int i = 0; i < items.size(); i++) {
         std::shared_ptr<ItemInstance> item = newItems->at(i);
         items[i] = item == nullptr ? nullptr : item->copy();
     }
@@ -24,7 +24,7 @@ void ContainerSetContentPacket::read(
 {
     containerId = (int)dis->readByte();
     int count = dis->readShort();
-    items = arrayWithLength<std::shared_ptr<ItemInstance>>(count);
+    items = std::vector<std::shared_ptr<ItemInstance>>(count);
     for (int i = 0; i < count; i++) {
         items[i] = readItem(dis);
     }
@@ -34,8 +34,8 @@ void ContainerSetContentPacket::write(
     DataOutputStream* dos)  // throws IOException
 {
     dos->writeByte((uint8_t)containerId);
-    dos->writeShort(items.length);
-    for (unsigned int i = 0; i < items.length; i++) {
+    dos->writeShort(items.size());
+    for (unsigned int i = 0; i < items.size(); i++) {
         writeItem(items[i], dos);
     }
 }
@@ -45,5 +45,5 @@ void ContainerSetContentPacket::handle(PacketListener* listener) {
 }
 
 int ContainerSetContentPacket::getEstimatedSize() {
-    return 3 + items.length * 5;
+    return 3 + items.size() * 5;
 }

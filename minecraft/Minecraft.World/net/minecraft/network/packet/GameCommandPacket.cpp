@@ -6,13 +6,15 @@
 
 GameCommandPacket::GameCommandPacket() { length = 0; }
 
-GameCommandPacket::GameCommandPacket(EGameCommand command, byteArray data) {
+GameCommandPacket::~GameCommandPacket() {}
+
+GameCommandPacket::GameCommandPacket(EGameCommand command, std::vector<uint8_t> data) {
     this->command = command;
     this->data = data;
     length = 0;
 
-    if (data.data != nullptr) {
-        length = data.length;
+    if (!data.empty()) {
+        length = data.size();
 
         if (length > std::numeric_limits<short>::max()) {
             app.DebugPrintf("Payload may not be larger than 32K\n");
@@ -25,17 +27,13 @@ GameCommandPacket::GameCommandPacket(EGameCommand command, byteArray data) {
     }
 }
 
-GameCommandPacket::~GameCommandPacket() { delete[] data.data; }
 
 void GameCommandPacket::read(DataInputStream* dis) {
     command = (EGameCommand)dis->readInt();
     length = dis->readShort();
 
     if (length > 0 && length < std::numeric_limits<short>::max()) {
-        if (data.data != nullptr) {
-            delete[] data.data;
-        }
-        data = byteArray(length);
+        data = std::vector<uint8_t>(length);
         dis->readFully(data);
     }
 }
@@ -43,7 +41,7 @@ void GameCommandPacket::read(DataInputStream* dis) {
 void GameCommandPacket::write(DataOutputStream* dos) {
     dos->writeInt(command);
     dos->writeShort((short)length);
-    if (data.data != nullptr) {
+    if (!data.empty()) {
         dos->write(data);
     }
 }

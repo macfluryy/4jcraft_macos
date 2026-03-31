@@ -2,21 +2,21 @@
 
 // Creates ByteArrayInputStream that uses buf as its buffer array. The initial
 // value of pos is offset and the initial value of count is the minimum of
-// offset+length and buf.length. The buffer array is not copied. The buffer's
+// offset+length and buf.size(). The buffer array is not copied. The buffer's
 // mark is set to the specified offset. Parameters: buf - the input buffer.
 // offset - the offset in the buffer of the first byte to read.
 // length - the maximum number of bytes to read from the buffer.
-ByteArrayInputStream::ByteArrayInputStream(byteArray buf, unsigned int offset,
+ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf, unsigned int offset,
                                            unsigned int length)
-    : pos(offset), count(std::min(offset + length, buf.length)), mark(offset) {
+    : pos(offset), count(std::min(offset + length, (unsigned int)buf.size())), mark(offset) {
     this->buf = buf;
 }
 
 // Creates a ByteArrayInputStream so that it uses buf as its buffer array. The
 // buffer array is not copied. The initial value of pos is 0 and the initial
 // value of count is the length of buf. Parameters: buf - the input buffer.
-ByteArrayInputStream::ByteArrayInputStream(byteArray buf)
-    : pos(0), count(buf.length), mark(0) {
+ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf)
+    : pos(0), count(buf.size()), mark(0) {
     this->buf = buf;
 }
 
@@ -43,17 +43,17 @@ int ByteArrayInputStream::read() {
 // The first byte read is stored into element b[0], the next one into b[1], and
 // so on. The number of bytes read is, at most, equal to the length of b. Let k
 // be the number of bytes actually read; these bytes will be stored in elements
-// b[0] through b[k-1], leaving elements b[k] through b[b.length-1] unaffected.
+// b[0] through b[k-1], leaving elements b[k] through b[b.size()-1] unaffected.
 //
 // The read(b) method for class InputStream has the same effect as:
 //
-//  read(b, 0, b.length)
+//  read(b, 0, b.size())
 // Parameters:
 // b - the buffer into which the data is read.
 // Returns:
 // the total number of bytes read into the buffer, or -1 is there is no more
 // data because the end of the stream has been reached.
-int ByteArrayInputStream::read(byteArray b) { return read(b, 0, b.length); }
+int ByteArrayInputStream::read(std::vector<uint8_t>& b) { return read(b, 0, b.size()); }
 
 // Reads up to len bytes of data into an array of bytes from this input stream.
 // If pos equals count, then -1 is returned to indicate end of file. Otherwise,
@@ -68,7 +68,7 @@ int ByteArrayInputStream::read(byteArray b) { return read(b, 0, b.length); }
 // Returns:
 // the total number of bytes read into the buffer, or -1 if there is no more
 // data because the end of the stream has been reached.
-int ByteArrayInputStream::read(byteArray b, unsigned int offset,
+int ByteArrayInputStream::read(std::vector<uint8_t>& b, unsigned int offset,
                                unsigned int length) {
     if (pos == count) return -1;
 
@@ -105,5 +105,4 @@ int64_t ByteArrayInputStream::skip(int64_t n) {
 }
 
 ByteArrayInputStream::~ByteArrayInputStream() {
-    if (buf.data != nullptr) delete[] buf.data;
 }

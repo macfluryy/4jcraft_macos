@@ -13,7 +13,7 @@ bool Minimap::genLUT = true;  // 4J added
 
 Minimap::Minimap(Font* font, Options* options, Textures* textures,
                  bool optimised) {
-    this->pixels = intArray(w * h);
+    this->pixels = std::vector<int>(w * h);
     this->options = options;
     this->font = font;
     BufferedImage* img = new BufferedImage(w, h, BufferedImage::TYPE_INT_ARGB);

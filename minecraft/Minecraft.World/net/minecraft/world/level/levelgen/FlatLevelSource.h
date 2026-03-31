@@ -27,7 +27,7 @@ public:
     ~FlatLevelSource();
 
 private:
-    void prepareHeights(byteArray blocks);
+    void prepareHeights(std::vector<uint8_t>& blocks);
 
 public:
     virtual LevelChunk* create(int x, int z);

@@ -55,21 +55,21 @@ void ConsoleSaveFileOutputStream::write(unsigned int b) {
     }
 }
 
-// Writes b.length bytes from the specified byte array to this file output
+// Writes b.size() bytes from the specified byte array to this file output
 // stream. Parameters: b - the data.
-void ConsoleSaveFileOutputStream::write(byteArray b) {
+void ConsoleSaveFileOutputStream::write(const std::vector<uint8_t>& b) {
     unsigned int numberOfBytesWritten;
 
     bool result =
         m_saveFile->writeFile(m_file,
-                              &b.data,               // data buffer
-                              b.length,              // number of bytes to write
+                              b.data(),                // data buffer
+                              b.size(),              // number of bytes to write
                               &numberOfBytesWritten  // number of bytes written
         );
 
     if (!result) {
         // TODO 4J Stu - Some kind of error handling
-    } else if (numberOfBytesWritten == 0 || numberOfBytesWritten != b.length) {
+    } else if (numberOfBytesWritten == 0 || numberOfBytesWritten != b.size()) {
         // File pointer is past the end of the file
     }
 }
@@ -77,10 +77,10 @@ void ConsoleSaveFileOutputStream::write(byteArray b) {
 // Writes len bytes from the specified byte array starting at offset off to this
 // file output stream. Parameters: b - the data. off - the start offset in the
 // data. len - the number of bytes to write.
-void ConsoleSaveFileOutputStream::write(byteArray b, unsigned int offset,
+void ConsoleSaveFileOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
                                         unsigned int length) {
     // 4J Stu - We don't want to write any more than the array buffer holds
-    assert(length <= (b.length - offset));
+    assert(length <= (b.size() - offset));
 
     unsigned int numberOfBytesWritten;
 

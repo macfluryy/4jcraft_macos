@@ -14,9 +14,9 @@ DefaultTexturePack::DefaultTexturePack()
 
 void DefaultTexturePack::loadIcon() {
     if (app.hasArchiveFile(L"Graphics\\TexturePackIcon.png")) {
-        byteArray ba = app.getArchiveFile(L"Graphics\\TexturePackIcon.png");
-        m_iconData = ba.data;
-        m_iconSize = static_cast<std::uint32_t>(ba.length);
+        std::vector<uint8_t> ba = app.getArchiveFile(L"Graphics\\TexturePackIcon.png");
+        m_iconData = ba.data();
+        m_iconSize = static_cast<std::uint32_t>(ba.size());
     }
 }
 

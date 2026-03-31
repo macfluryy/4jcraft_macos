@@ -19,9 +19,9 @@ public:
     static const int D = 3;  // The distance the plane is from the origin
 
     float** m_Frustum;
-    floatArray proj;
-    floatArray modl;
-    floatArray clip;
+    std::vector<float> proj;
+    std::vector<float> modl;
+    std::vector<float> clip;
 
     FrustumData();
     ~FrustumData();

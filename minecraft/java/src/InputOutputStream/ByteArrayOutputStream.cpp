@@ -4,18 +4,17 @@
 // bytes, though its size increases if necessary.
 ByteArrayOutputStream::ByteArrayOutputStream() {
     count = 0;
-    buf = byteArray(32);
+    buf = std::vector<uint8_t>(32);
 }
 
 // Creates a new byte array output stream, with a buffer capacity of the
 // specified size, in bytes. Parameters: size - the initial size.
 ByteArrayOutputStream::ByteArrayOutputStream(unsigned int size) {
     count = 0;
-    buf = byteArray(size);
+    buf = std::vector<uint8_t>(size);
 }
 
 ByteArrayOutputStream::~ByteArrayOutputStream() {
-    if (buf.data != nullptr) delete[] buf.data;
 }
 
 // Writes the specified byte to this byte array output stream.
@@ -23,27 +22,27 @@ ByteArrayOutputStream::~ByteArrayOutputStream() {
 // b - the byte to be written.
 void ByteArrayOutputStream::write(unsigned int b) {
     // If we will fill the buffer we need to make it bigger
-    if (count + 1 >= buf.length) buf.resize(buf.length * 2);
+    if (count + 1 >= buf.size()) buf.resize(buf.size() * 2);
 
     buf[count] = (uint8_t)b;
     count++;
 }
 
-// Writes b.length bytes from the specified byte array to this output stream.
+// Writes b.size() bytes from the specified byte array to this output stream.
 // The general contract for write(b) is that it should have exactly the same
-// effect as the call write(b, 0, b.length).
-void ByteArrayOutputStream::write(byteArray b) { write(b, 0, b.length); }
+// effect as the call write(b, 0, b.size()).
+void ByteArrayOutputStream::write(const std::vector<uint8_t>& b) { write(b, 0, b.size()); }
 
 // Writes len bytes from the specified byte array starting at offset off to this
 // byte array output stream. Parameters: b - the data. off - the start offset in
 // the data. len - the number of bytes to write.
-void ByteArrayOutputStream::write(byteArray b, unsigned int offset,
+void ByteArrayOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
                                   unsigned int length) {
-    assert(b.length >= offset + length);
+    assert(b.size() >= offset + length);
 
     // If we will fill the buffer we need to make it bigger
-    if (count + length >= buf.length)
-        buf.resize(std::max(count + length + 1, buf.length * 2));
+    if (count + length >= buf.size())
+        buf.resize(std::max(count + length + 1, (unsigned int)(buf.size() * 2)));
 
     std::memcpy(&buf[count], &b[offset], length);
     // std::copy( b->data+offset, b->data+offset+length, buf->data + count ); //
@@ -61,8 +60,8 @@ void ByteArrayOutputStream::close() {}
 // output stream and the valid contents of the buffer have been copied into it.
 // Returns:
 // the current contents of this output stream, as a byte array.
-byteArray ByteArrayOutputStream::toByteArray() {
-    byteArray out(count);
-    memcpy(out.data, buf.data, count);
+std::vector<uint8_t> ByteArrayOutputStream::toByteArray() {
+    std::vector<uint8_t> out(count);
+    memcpy(out.data(), buf.data(), count);
     return out;
 }

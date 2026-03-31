@@ -52,7 +52,7 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
     latency = 0;
     wonGame = false;
     m_enteredEndExitPortal = false;
-    // lastCarried = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
+    // lastCarried = std::vector<std::shared_ptr<ItemInstance>>(5);
     lastActionTime = 0;
 
     viewDistance = server->getPlayers()->getViewDistance();
@@ -133,7 +133,6 @@ ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
 }
 
 ServerPlayer::~ServerPlayer() {
-    // delete [] lastCarried.data;
 }
 
 // 4J added - add bits to a flag array that is passed in, to represent those
@@ -185,13 +184,12 @@ void ServerPlayer::readAdditionalSaveData(CompoundTag* entityTag) {
 
     GameRulesInstance* grs = gameMode->getGameRules();
     if (entityTag->contains(L"GameRules") && grs != nullptr) {
-        byteArray ba = entityTag->getByteArray(L"GameRules");
+        std::vector<uint8_t> ba = entityTag->getByteArray(L"GameRules");
         ByteArrayInputStream bais(ba);
         DataInputStream dis(&bais);
         grs->read(&dis);
         dis.close();
         bais.close();
-        // delete [] ba.data;
     }
 }
 
@@ -204,7 +202,7 @@ void ServerPlayer::addAdditonalSaveData(CompoundTag* entityTag) {
         DataOutputStream dos(&baos);
         grs->write(&dos);
         entityTag->putByteArray(L"GameRules", baos.buf);
-        baos.buf.data = nullptr;
+        baos.buf.clear();
         dos.close();
         baos.close();
     }
@@ -256,7 +254,7 @@ void ServerPlayer::flushEntitiesToRemove() {
     while (!entitiesToRemove.empty()) {
         int sz = entitiesToRemove.size();
         int amount = std::min(sz, RemoveEntitiesPacket::MAX_PER_PACKET);
-        intArray ids(amount);
+        std::vector<int> ids(amount);
         int pos = 0;
 
         auto it = entitiesToRemove.begin();
@@ -1310,20 +1308,17 @@ void ServerPlayer::setPlayerInput(float xxa, float yya, bool jumping,
     }
 }
 
-void ServerPlayer::awardStat(Stat* stat, byteArray param) {
+void ServerPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
     if (stat == nullptr) {
-        delete[] param.data;
         return;
     }
 
     if (!stat->awardLocallyOnly) {
-        int count = *((int*)param.data);
-        delete[] param.data;
+        int count = *((int*)param.data());
 
         connection->send(std::shared_ptr<AwardStatPacket>(
             new AwardStatPacket(stat->id, count)));
-    } else
-        delete[] param.data;
+    }
 }
 
 void ServerPlayer::disconnect() {

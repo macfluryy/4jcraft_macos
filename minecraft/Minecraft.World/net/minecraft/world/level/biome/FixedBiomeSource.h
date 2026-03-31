@@ -14,32 +14,32 @@ public:
     virtual Biome* getBiome(ChunkPos* cp);
     virtual Biome* getBiome(int x, int z);
     virtual float getTemperature(int x, int z);
-    virtual void getTemperatureBlock(floatArray& temperatures, int x, int z,
+    virtual void getTemperatureBlock(std::vector<float>& temperatures, int x, int z,
                                      int w, int h) const;
-    virtual floatArray getTemperatureBlock(int x, int z, int w, int h) const;
-    virtual void getTemperatureBlock(doubleArray& temperatures, int x, int z,
+    virtual std::vector<float> getTemperatureBlock(int x, int z, int w, int h) const;
+    virtual void getTemperatureBlock(std::vector<double>& temperatures, int x, int z,
                                      int w, int h) const;
-    virtual void getDownfallBlock(floatArray& downfalls, int x, int z, int w,
+    virtual void getDownfallBlock(std::vector<float>& downfalls, int x, int z, int w,
                                   int h) const;
-    virtual floatArray getDownfallBlock(int x, int z, int w, int h) const;
+    virtual std::vector<float> getDownfallBlock(int x, int z, int w, int h) const;
     virtual float getDownfall(int x, int z) const;
-    virtual void getDownfallBlock(doubleArray downfalls, int x, int z, int w,
+    virtual void getDownfallBlock(std::vector<double>& downfalls, int x, int z, int w,
                                   int h);
-    virtual void getBiomeBlock(BiomeArray& biomes, int x, int z, int w, int h,
+    virtual void getBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w, int h,
                                bool useCache) const;
-    virtual void getBiomeIndexBlock(byteArray& biomeIndices, int x, int z,
+    virtual void getBiomeIndexBlock(std::vector<uint8_t>& biomeIndices, int x, int z,
                                     int w, int h, bool useCache) const;
 
     // 4J-PB added in from beyond 1.8.2
-    virtual BiomeArray getRawBiomeBlock(int x, int z, int w, int h) const;
-    virtual void getRawBiomeBlock(BiomeArray& biomes, int x, int z, int w,
+    virtual std::vector<Biome*> getRawBiomeBlock(int x, int z, int w, int h) const;
+    virtual void getRawBiomeBlock(std::vector<Biome*>& biomes, int x, int z, int w,
                                   int h) const;
 
     ////////////////////////////////////
     virtual TilePos* findBiome(int x, int z, int r, Biome* toFind,
                                Random* random);
-    virtual TilePos* findBiome(int x, int z, int r, std::vector<Biome*> allowed,
+    virtual TilePos* findBiome(int x, int z, int r, const std::vector<Biome*>& allowed,
                                Random* random);
     virtual bool containsOnly(int x, int z, int r, Biome* allowed);
-    virtual bool containsOnly(int x, int z, int r, std::vector<Biome*> allowed);
+    virtual bool containsOnly(int x, int z, int r, const std::vector<Biome*>& allowed);
 };

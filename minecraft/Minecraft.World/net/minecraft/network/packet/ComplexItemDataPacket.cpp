@@ -4,7 +4,8 @@
 #include "PacketListener.h"
 #include "ComplexItemDataPacket.h"
 
-ComplexItemDataPacket::~ComplexItemDataPacket() { delete[] data.data; }
+
+ComplexItemDataPacket::~ComplexItemDataPacket() {}
 
 ComplexItemDataPacket::ComplexItemDataPacket() {
     shouldDelay = true;
@@ -12,14 +13,14 @@ ComplexItemDataPacket::ComplexItemDataPacket() {
 }
 
 ComplexItemDataPacket::ComplexItemDataPacket(short itemType, short itemId,
-                                             charArray data) {
+                                             std::vector<char>& data) {
     shouldDelay = true;
     this->itemType = itemType;
     this->itemId = itemId;
     // Take copy of array passed in as we want the packets to have full
     // ownership of any data they reference
-    this->data = charArray(data.length);
-    memcpy(this->data.data, data.data, data.length);
+    this->data = std::vector<char>(data.size());
+    memcpy(this->data.data(), data.data(), data.size());
 }
 
 void ComplexItemDataPacket::read(DataInputStream* dis)  // throws IOException
@@ -27,7 +28,7 @@ void ComplexItemDataPacket::read(DataInputStream* dis)  // throws IOException
     itemType = dis->readShort();
     itemId = dis->readShort();
 
-    data = charArray(dis->readUnsignedShort() & 0xffff);
+    data = std::vector<char>(dis->readUnsignedShort() & 0xffff);
     dis->readFully(data);
 }
 
@@ -35,9 +36,9 @@ void ComplexItemDataPacket::write(DataOutputStream* dos)  // throws IOException
 {
     dos->writeShort(itemType);
     dos->writeShort(itemId);
-    dos->writeUnsignedShort(data.length);
+    dos->writeUnsignedShort(data.size());
 
-    byteArray ba((uint8_t*)data.data, data.length);
+    std::vector<uint8_t> ba((uint8_t*)data.data(), (uint8_t*)data.data() + data.size());
     dos->write(ba);
 }
 
@@ -46,5 +47,5 @@ void ComplexItemDataPacket::handle(PacketListener* listener) {
 }
 
 int ComplexItemDataPacket::getEstimatedSize() {
-    return 2 + 2 + 2 + data.length;
+    return 2 + 2 + 2 + data.size();
 }

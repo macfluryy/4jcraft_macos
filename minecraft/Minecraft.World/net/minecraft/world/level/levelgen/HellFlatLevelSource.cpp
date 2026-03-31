@@ -21,8 +21,8 @@ HellFlatLevelSource::~HellFlatLevelSource() {
 }
 
 void HellFlatLevelSource::prepareHeights(int xOffs, int zOffs,
-                                         byteArray blocks) {
-    int height = blocks.length / (16 * 16);
+                                         std::vector<uint8_t>& blocks) {
+    int height = blocks.size() / (16 * 16);
 
     for (int xc = 0; xc < 16; xc++) {
         for (int zc = 0; zc < 16; zc++) {
@@ -39,7 +39,7 @@ void HellFlatLevelSource::prepareHeights(int xOffs, int zOffs,
 }
 
 void HellFlatLevelSource::buildSurfaces(int xOffs, int zOffs,
-                                        byteArray blocks) {
+                                        std::vector<uint8_t>& blocks) {
     for (int x = 0; x < 16; x++) {
         for (int z = 0; z < 16; z++) {
             for (int y = Level::genDepthMinusOne; y >= 0; y--) {
@@ -99,8 +99,8 @@ LevelChunk* HellFlatLevelSource::getChunk(int xOffs, int zOffs) {
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(chunksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
     XMemSet128(tileData, 0, chunksSize);
-    byteArray blocks = byteArray(tileData, chunksSize);
-    //    byteArray blocks = byteArray(16 * level->depth * 16);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + chunksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 
     prepareHeights(xOffs, zOffs, blocks);
     buildSurfaces(xOffs, zOffs, blocks);

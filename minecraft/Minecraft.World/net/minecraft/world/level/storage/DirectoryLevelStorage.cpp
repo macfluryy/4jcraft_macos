@@ -165,7 +165,7 @@ DirectoryLevelStorage::DirectoryLevelStorage(ConsoleSaveFile* saveFile,
     m_bHasLoadedMapDataMappings = false;
 
 #if defined(_LARGE_WORLDS)
-    m_usedMappings = byteArray(MAXIMUM_MAP_SAVE_DATA / 8);
+    m_usedMappings = std::vector<uint8_t>(MAXIMUM_MAP_SAVE_DATA / 8);
 #endif
 }
 
@@ -178,7 +178,6 @@ DirectoryLevelStorage::~DirectoryLevelStorage() {
     }
 
 #if defined(_LARGE_WORLDS)
-    delete m_usedMappings.data;
 #endif
 }
 
@@ -239,8 +238,8 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
                                           SaveFileSeekOrigin::Begin);
 
 #if defined(_LARGE_WORLDS)
-            byteArray data(fileEntry->getFileSize());
-            getSaveFile()->readFile(fileEntry, data.data,
+            std::vector<uint8_t> data(fileEntry->getFileSize());
+            getSaveFile()->readFile(fileEntry, data.data(),
                                     fileEntry->getFileSize(),
                                     &NumberOfBytesRead);
             assert(NumberOfBytesRead == fileEntry->getFileSize());
@@ -541,7 +540,7 @@ int DirectoryLevelStorage::getAuxValueForMap(PlayerUID xuid, int dimension,
     }
 
     if (!foundMapping) {
-        for (unsigned int i = 0; i < m_usedMappings.length; ++i) {
+        for (unsigned int i = 0; i < m_usedMappings.size(); ++i) {
             if (m_usedMappings[i] < 0xFF) {
                 unsigned int offset = 0;
                 for (; offset < 8; ++offset) {
@@ -625,7 +624,7 @@ void DirectoryLevelStorage::saveMapIdLookup() {
         }
         dos.write(m_usedMappings);
         m_saveFile->writeFile(fileEntry,
-                              baos.buf.data,         // data buffer
+                              baos.buf.data(),         // data buffer
                               baos.size(),           // number of bytes to write
                               &NumberOfBytesWritten  // number of bytes written
         );

@@ -505,7 +505,7 @@ void IUIScene_CreativeMenu::staticCtor() {
     ITEM(Item::horseArmorGold_Id)
     ITEM(Item::horseArmorMetal_Id)
 
-    for (unsigned int i = 0; i < Enchantment::enchantments.length; ++i) {
+    for (unsigned int i = 0; i < Enchantment::enchantments.size(); ++i) {
         Enchantment* enchantment = Enchantment::enchantments[i];
         if (enchantment == nullptr || enchantment->category == nullptr)
             continue;
@@ -1450,12 +1450,12 @@ void IUIScene_CreativeMenu::BuildFirework(
     // diamonds give trails
     if (trail) expTag->putBoolean(FireworksItem::TAG_E_TRAIL, true);
 
-    intArray colorArray(colors.size());
-    for (int i = 0; i < colorArray.length; i++) {
+    std::vector<int> colorArray(colors.size());
+    for (int i = 0; i < colorArray.size(); i++) {
         colorArray[i] = colors.at(i);
     }
     expTag->putIntArray(FireworksItem::TAG_E_COLORS, colorArray);
-    // delete colorArray.data;
+    // delete colorArray.data();
 
     expTag->putByte(FireworksItem::TAG_E_TYPE, type);
 
@@ -1467,8 +1467,8 @@ void IUIScene_CreativeMenu::BuildFirework(
         std::vector<int> colors;
         colors.push_back(DyePowderItem::COLOR_RGB[fadeColor]);
 
-        intArray colorArray(colors.size());
-        for (int i = 0; i < colorArray.length; i++) {
+        std::vector<int> colorArray(colors.size());
+        for (int i = 0; i < colorArray.size(); i++) {
             colorArray[i] = colors.at(i);
         }
         expTag->putIntArray(FireworksItem::TAG_E_FADECOLORS, colorArray);

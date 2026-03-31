@@ -9,9 +9,9 @@ private:
     static const unsigned int width = 216;
     static const unsigned int height = 216;
 
-    byteArray m_biomeOverride;
+    std::vector<uint8_t> m_biomeOverride;
 
 public:
     BiomeOverrideLayer(int seedMixup);
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 };

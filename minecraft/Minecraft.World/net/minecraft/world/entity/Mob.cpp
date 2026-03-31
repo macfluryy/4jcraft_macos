@@ -43,8 +43,8 @@ void Mob::_init() {
     target = nullptr;
     sensing = nullptr;
 
-    equipment = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
-    dropChances = floatArray(5);
+    equipment = std::vector<std::shared_ptr<ItemInstance>>(5);
+    dropChances = std::vector<float>(5);
     for (unsigned int i = 0; i < 5; ++i) {
         equipment[i] = nullptr;
         dropChances[i] = 0.0f;
@@ -91,8 +91,6 @@ Mob::~Mob() {
 
     if (leashInfoTag != nullptr) delete leashInfoTag;
 
-    if (equipment.data != nullptr) delete[] equipment.data;
-    delete[] dropChances.data;
 }
 
 void Mob::registerAttributes() {
@@ -157,8 +155,8 @@ int Mob::getExperienceReward(std::shared_ptr<Player> killedBy) {
     if (xpReward > 0) {
         int result = xpReward;
 
-        arrayWithLength<std::shared_ptr<ItemInstance>> slots = getEquipmentSlots();
-        for (int i = 0; i < slots.length; i++) {
+        std::vector<std::shared_ptr<ItemInstance>> slots = getEquipmentSlots();
+        for (int i = 0; i < (int)slots.size(); i++) {
             if (slots[i] != nullptr && dropChances[i] <= 1) {
                 result += 1 + random->nextInt(3);
             }
@@ -222,7 +220,7 @@ void Mob::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->putBoolean(L"PersistenceRequired", persistenceRequired);
 
     ListTag<CompoundTag>* gear = new ListTag<CompoundTag>();
-    for (int i = 0; i < equipment.length; i++) {
+    for (int i = 0; i < equipment.size(); i++) {
         CompoundTag* tag = new CompoundTag();
         if (equipment[i] != nullptr) equipment[i]->save(tag);
         gear->add(tag);
@@ -230,7 +228,7 @@ void Mob::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->put(L"Equipment", gear);
 
     ListTag<FloatTag>* dropChanceList = new ListTag<FloatTag>();
-    for (int i = 0; i < dropChances.length; i++) {
+    for (int i = 0; i < dropChances.size(); i++) {
         dropChanceList->add(new FloatTag(_toString(i), dropChances[i]));
     }
     entityTag->put(L"DropChances", dropChanceList);
@@ -270,7 +268,7 @@ void Mob::readAdditionalSaveData(CompoundTag* tag) {
         ListTag<CompoundTag>* gear =
             (ListTag<CompoundTag>*)tag->getList(L"Equipment");
 
-        for (int i = 0; i < equipment.length; i++) {
+        for (int i = 0; i < equipment.size(); i++) {
             equipment[i] = ItemInstance::fromTag(gear->get(i));
         }
     }
@@ -563,10 +561,10 @@ void Mob::setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item) {
     equipment[slot] = item;
 }
 
-arrayWithLength<std::shared_ptr<ItemInstance>> Mob::getEquipmentSlots() { return equipment; }
+std::vector<std::shared_ptr<ItemInstance>> Mob::getEquipmentSlots() { return equipment; }
 
 void Mob::dropEquipment(bool byPlayer, int playerBonusLevel) {
-    for (int slot = 0; slot < getEquipmentSlots().length; slot++) {
+    for (int slot = 0; slot < (int)getEquipmentSlots().size(); slot++) {
         std::shared_ptr<ItemInstance> item = getCarried(slot);
         bool preserve = dropChances[slot] > 1;
 

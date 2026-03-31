@@ -3,7 +3,7 @@
 #include "../../net.minecraft.world.level.h"
 #include "BiomeOverrideLayer.h"
 
-LayerArray Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
+std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     // 4J - Some changes moved here from 1.2.3. Temperature & downfall layers
     // are no longer created & returned, and a debug layer is isn't. For
     // reference with regard to future merging, things NOT brought forward from
@@ -107,7 +107,7 @@ LayerArray Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     biomeLayer->init(seed);
     zoomedLayer->init(seed);
 
-    LayerArray result(3);
+    std::vector<std::shared_ptr<Layer>> result(3);
     result[0] = biomeLayer;
     result[1] = zoomedLayer;
     result[2] = debugLayer;

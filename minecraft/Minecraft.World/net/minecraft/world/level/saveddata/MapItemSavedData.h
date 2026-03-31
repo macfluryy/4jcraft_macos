@@ -32,13 +32,13 @@ public:
     class HoldingPlayer {
     public:
         const std::shared_ptr<Player> player;
-        intArray rowsDirtyMin;
-        intArray rowsDirtyMax;
+        std::vector<int> rowsDirtyMin;
+        std::vector<int> rowsDirtyMax;
 
     private:
         int tick;
         int sendPosTick;
-        charArray lastSentDecorations;
+        std::vector<char> lastSentDecorations;
 
     public:
         int step;
@@ -55,14 +55,14 @@ public:
         HoldingPlayer(std::shared_ptr<Player> player,
                       const MapItemSavedData* parent);
         ~HoldingPlayer();
-        charArray nextUpdatePacket(std::shared_ptr<ItemInstance> itemInstance);
+        std::vector<char> nextUpdatePacket(std::shared_ptr<ItemInstance> itemInstance);
     };
 
 public:
     int x, z;
     char dimension;
     uint8_t scale;
-    byteArray colors;
+    std::vector<uint8_t> colors;
     std::vector<std::shared_ptr<HoldingPlayer> > carriedBy;
 
 private:
@@ -90,12 +90,12 @@ public:
     void tickCarriedBy(std::shared_ptr<Player> player,
                        std::shared_ptr<ItemInstance> item);
 
-    charArray getUpdatePacket(std::shared_ptr<ItemInstance> itemInstance,
+    std::vector<char> getUpdatePacket(std::shared_ptr<ItemInstance> itemInstance,
                               Level* level, std::shared_ptr<Player> player);
 
     using SavedData::setDirty;
     void setDirty(int x, int y0, int y1);
-    void handleComplexItemData(charArray& data);
+    void handleComplexItemData(std::vector<char>& data);
     std::shared_ptr<HoldingPlayer> getHoldingPlayer(
         std::shared_ptr<Player> player);
 

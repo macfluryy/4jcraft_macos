@@ -17,7 +17,7 @@ public:
     using TileEntity::setChanged;
 
 private:
-    arrayWithLength<std::shared_ptr<ItemInstance>> items;
+    std::vector<std::shared_ptr<ItemInstance>> items;
     Random* random;
 
 protected:

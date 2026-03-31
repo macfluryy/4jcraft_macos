@@ -15,11 +15,11 @@ void RiverMixerLayer::init(int64_t seed) {
     Layer::init(seed);
 }
 
-intArray RiverMixerLayer::getArea(int xo, int yo, int w, int h) {
-    intArray b = biomes->getArea(xo, yo, w, h);
-    intArray r = rivers->getArea(xo, yo, w, h);
+std::vector<int> RiverMixerLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> b = biomes->getArea(xo, yo, w, h);
+    std::vector<int> r = rivers->getArea(xo, yo, w, h);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int i = 0; i < w * h; i++) {
         if (b[i] == Biome::ocean->id) {
             result[i] = b[i];

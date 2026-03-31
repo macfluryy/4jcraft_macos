@@ -7,7 +7,7 @@ VoronoiZoom::VoronoiZoom(int64_t seedMixup, std::shared_ptr<Layer> parent)
     this->parent = parent;
 }
 
-intArray VoronoiZoom::getArea(int xo, int yo, int w, int h) {
+std::vector<int> VoronoiZoom::getArea(int xo, int yo, int w, int h) {
     xo -= 2;
     yo -= 2;
     int bits = 2;
@@ -16,12 +16,12 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h) {
     int py = yo >> bits;
     int pw = (w >> bits) + 3;
     int ph = (h >> bits) + 3;
-    intArray p = parent->getArea(px, py, pw, ph);
+    std::vector<int> p = parent->getArea(px, py, pw, ph);
 
     // 4jcraft added all those casts to unsigned
     int ww = (unsigned)pw << bits;
     int hh = (unsigned)ph << bits;
-    intArray tmp{static_cast<unsigned int>(ww * hh)};
+    std::vector<int> tmp(ww * hh);
     for (int y = 0; y < ph - 1; y++) {
         int ul = p[(0 + 0) + (y + 0) * pw];
         int dl = p[(0 + 0) + (y + 1) * pw];
@@ -71,12 +71,11 @@ intArray VoronoiZoom::getArea(int xo, int yo, int w, int h) {
             dl = dr;
         }
     }
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
-        System::arraycopy(
-            tmp,
-            (y + (yo & (ss - 1))) * ((unsigned)pw << bits) + (xo & (ss - 1)),
-            &result, y * w, w);
+        std::copy(tmp.begin() + (y + (yo & (ss - 1))) * ((unsigned)pw << bits) + (xo & (ss - 1)),
+                  tmp.begin() + (y + (yo & (ss - 1))) * ((unsigned)pw << bits) + (xo & (ss - 1)) + w,
+                  result.begin() + y * w);
     }
     return result;
 }

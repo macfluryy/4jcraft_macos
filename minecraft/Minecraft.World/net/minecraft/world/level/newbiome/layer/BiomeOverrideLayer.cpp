@@ -5,7 +5,7 @@
 #include "BiomeOverrideLayer.h"
 
 BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
-    m_biomeOverride = byteArray(width * height);
+    m_biomeOverride = std::vector<uint8_t>(width * height);
 
 #if defined(_UNICODE)
     std::wstring path = L"GAME:\\GameRules\\biomemap.bin";
@@ -25,14 +25,14 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
         // assert(false);
         app.DebugPrintf("Biome override not found, using plains as default\n");
 
-        memset(m_biomeOverride.data, Biome::plains->id, m_biomeOverride.length);
+        memset(m_biomeOverride.data(), Biome::plains->id, m_biomeOverride.size());
     } else {
         uint32_t bytesRead, dwFileSize = GetFileSize(file, nullptr);
-        if (dwFileSize > m_biomeOverride.length) {
+        if (dwFileSize > m_biomeOverride.size()) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
             __debugbreak();
         }
-        bool bSuccess = ReadFile(file, m_biomeOverride.data, dwFileSize,
+        bool bSuccess = ReadFile(file, m_biomeOverride.data(), dwFileSize,
                                  &bytesRead, nullptr);
 
         if (bSuccess == false) {
@@ -43,8 +43,8 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
     }
 }
 
-intArray BiomeOverrideLayer::getArea(int xo, int yo, int w, int h) {
-    intArray result{static_cast<unsigned int>(w * h)};
+std::vector<int> BiomeOverrideLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> result(w * h);
 
     int xOrigin = xo + width / 2;
     int yOrigin = yo + height / 2;

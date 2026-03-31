@@ -36,7 +36,7 @@ ByteBuffer::~ByteBuffer() {
 // Wraps a byte array into a buffer.
 // The new buffer will be backed by the given uint8_t array; that is,
 // modifications to the buffer will cause the array to be modified and vice
-// versa. The new buffer's capacity and limit will be array.length, its position
+// versa. The new buffer's capacity and limit will be array.size(), its position
 // will be zero, and its mark will be undefined. Its backing array will be the
 // given array, and its array offset will be zero.
 //
@@ -44,8 +44,8 @@ ByteBuffer::~ByteBuffer() {
 // array - The array that will back this buffer
 // Returns:
 // The new byte buffer
-ByteBuffer* ByteBuffer::wrap(byteArray& b) {
-    return new ByteBuffer(b.length, b.data);
+ByteBuffer* ByteBuffer::wrap(std::vector<uint8_t>& b) {
+    return new ByteBuffer(b.size(), b.data());
 }
 
 // Allocates a new byte buffer.
@@ -211,13 +211,13 @@ short ByteBuffer::getShort() {
     return value;
 }
 
-void ByteBuffer::getShortArray(shortArray& s) {
+void ByteBuffer::getShortArray(std::vector<short>& s) {
     // TODO 4J Stu - Should this function be writing from the start of the
     // buffer, or from position? And should it update position?
-    assert(s.length >= m_limit / 2);
+    assert(s.size() >= m_limit / 2);
 
     // 4J Stu - Assumes big endian
-    memcpy(s.data, buffer, (m_limit - m_position));
+    memcpy(s.data(), buffer, (m_limit - m_position));
 }
 
 // Absolute put method  (optional operation).
@@ -320,13 +320,13 @@ ByteBuffer* ByteBuffer::putShort(short value) {
     return this;
 }
 
-ByteBuffer* ByteBuffer::putShortArray(shortArray& s) {
+ByteBuffer* ByteBuffer::putShortArray(std::vector<short>& s) {
     // TODO 4J Stu - Should this function be writing from the start of the
     // buffer, or from position? And should it update position?
-    assert(s.length * 2 <= m_limit);
+    assert(s.size() * 2 <= m_limit);
 
     // 4J Stu - Assumes big endian
-    memcpy(buffer, s.data, s.length * 2);
+    memcpy(buffer, s.data(), s.size() * 2);
 
     return this;
 }
@@ -371,22 +371,22 @@ ByteBuffer* ByteBuffer::putLong(int64_t value) {
 // this buffer. An invocation of this method of the form dst.put(a) behaves in
 // exactly the same way as the invocation
 //
-//      dst.put(a, 0, a.length)
+//      dst.put(a, 0, a.size())
 // Returns:
 // This buffer
-ByteBuffer* ByteBuffer::put(byteArray inputArray) {
-    if (inputArray.length > remaining())
+ByteBuffer* ByteBuffer::put(std::vector<uint8_t>& inputArray) {
+    if (inputArray.size() > remaining())
         assert(false);  // TODO 4J Stu - Some kind of exception?
 
-    std::copy(inputArray.data, inputArray.data + inputArray.length,
+    std::copy(inputArray.data(), inputArray.data() + inputArray.size(),
               buffer + m_position);
 
-    m_position += inputArray.length;
+    m_position += inputArray.size();
 
     return this;
 }
 
-byteArray ByteBuffer::array() { return byteArray(buffer, m_capacity); }
+std::vector<uint8_t> ByteBuffer::array() { return std::vector<uint8_t>(buffer, buffer + m_capacity); }
 
 // Creates a view of this byte buffer as an int buffer.
 // The content of the new buffer will start at this buffer's current position.

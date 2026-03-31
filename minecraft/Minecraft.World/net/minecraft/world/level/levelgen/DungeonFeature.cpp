@@ -3,13 +3,13 @@
 #include "DungeonFeature.h"
 #include "../tile/net.minecraft.world.level.tile.h"
 
-void DungeonFeature::addRoom(int xOffs, int zOffs, byteArray blocks,
+void DungeonFeature::addRoom(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
                              double xRoom, double yRoom, double zRoom) {
     addTunnel(xOffs, zOffs, blocks, xRoom, yRoom, zRoom,
               1 + random->nextFloat() * 6, 0, 0, -1, -1, 0.5);
 }
 
-void DungeonFeature::addTunnel(int xOffs, int zOffs, byteArray blocks,
+void DungeonFeature::addTunnel(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
                                double xCave, double yCave, double zCave,
                                float thickness, float yRot, float xRot,
                                int step, int dist, double yScale) {
@@ -152,7 +152,7 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, byteArray blocks,
 }
 
 void DungeonFeature::addFeature(Level* level, int x, int z, int xOffs,
-                                int zOffs, byteArray blocks) {
+                                int zOffs, std::vector<uint8_t>& blocks) {
     int caves = random->nextInt(random->nextInt(random->nextInt(40) + 1) + 1);
     if (random->nextInt(15) != 0) caves = 0;
 

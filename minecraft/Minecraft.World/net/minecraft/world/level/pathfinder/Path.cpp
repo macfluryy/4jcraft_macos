@@ -4,26 +4,23 @@
 #include "Path.h"
 
 Path::~Path() {
-    if (nodes.data) {
-        for (int i = 0; i < nodes.length; i++) delete nodes.data[i];
-        delete[] nodes.data;
-    }
+    for (size_t i = 0; i < nodes.size(); i++) delete nodes[i];
 }
 
-Path::Path(NodeArray nodes) {
+Path::Path(std::vector<Node*>& nodes) {
     index = 0;
 
-    length = nodes.length;
-    // 4J - copying these nodes over from a NodeArray (which is an array of Node
+    length = nodes.size();
+    // 4J - copying these nodes over from a std::vector<Node*> (which is an array of Node
     // * references) to just a straight array of Nodes, so that this Path is no
     // longer dependent of Nodes allocated elsewhere and can handle its own
     // destruction Note: cameFrom pointer will be useless now but that isn't
     // used once this is just a path
-    this->nodes = NodeArray(length);
+    this->nodes = std::vector<Node*>(length);
 
     for (int i = 0; i < length; i++) {
-        this->nodes.data[i] = new Node();
-        memcpy(this->nodes.data[i], nodes[i], sizeof(Node));
+        this->nodes[i] = new Node();
+        memcpy(this->nodes[i], nodes[i], sizeof(Node));
     }
 }
 
@@ -63,8 +60,8 @@ Vec3 Path::currentPos() {
 
 bool Path::sameAs(Path* path) {
     if (path == nullptr) return false;
-    if (path->nodes.length != nodes.length) return false;
-    for (int i = 0; i < nodes.length; ++i)
+    if (path->nodes.size() != nodes.size()) return false;
+    for (int i = 0; i < nodes.size(); ++i)
         if (nodes[i]->x != path->nodes[i]->x ||
             nodes[i]->y != path->nodes[i]->y ||
             nodes[i]->z != path->nodes[i]->z)

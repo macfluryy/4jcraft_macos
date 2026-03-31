@@ -6,5 +6,5 @@ class IslandLayer : public Layer {
 public:
     IslandLayer(int64_t seedMixup);
 
-    intArray getArea(int xo, int yo, int w, int h);
+    std::vector<int> getArea(int xo, int yo, int w, int h);
 };

@@ -3,11 +3,11 @@
 #include "WaterColor.h"
 
 // 4J Stu - Not using this any more
-// intArray WaterColor::pixels;
+// std::vector<int> WaterColor::pixels;
 //
-// void WaterColor::init(intArray pixels)
+// void WaterColor::init(std::vector<int>& pixels)
 //{
-//	int *oldData = WaterColor::pixels.data;
+//	int *oldData = WaterColor::pixels.data();
 //	WaterColor::pixels = pixels;
 //	delete [] oldData;
 //}

@@ -45,13 +45,13 @@ ArchiveFile::ArchiveFile(File file) {
     FileInputStream fis(file);
 
 #if defined(_WINDOWS64)
-    byteArray readArray(file.length());
+    std::vector<uint8_t> readArray(file.length());
     fis.read(readArray, 0, file.length());
 
     ByteArrayInputStream bais(readArray);
     DataInputStream dis(&bais);
 
-    m_cachedData = readArray.data;
+    m_cachedData = readArray.data();
 #else
     DataInputStream dis(&fis);
 #endif
@@ -86,8 +86,8 @@ int ArchiveFile::getFileSize(const std::wstring& filename) {
     return hasFile(filename) ? m_index.at(filename)->filesize : -1;
 }
 
-byteArray ArchiveFile::getFile(const std::wstring& filename) {
-    byteArray out;
+std::vector<uint8_t> ArchiveFile::getFile(const std::wstring& filename) {
+    std::vector<uint8_t> out;
     auto it = m_index.find(filename);
 
     if (it == m_index.end()) {
@@ -102,17 +102,17 @@ byteArray ArchiveFile::getFile(const std::wstring& filename) {
         PMetaData data = it->second;
 
 #if defined(_WINDOWS64)
-        out = byteArray(data->filesize);
+        out = std::vector<uint8_t>(data->filesize);
 
-        memcpy(out.data, m_cachedData + data->ptr, data->filesize);
+        memcpy(out.data(), m_cachedData + data->ptr, data->filesize);
 #else
         const unsigned int fileSize = static_cast<unsigned int>(data->filesize);
         std::uint8_t* pbData = new std::uint8_t[fileSize == 0 ? 1 : fileSize];
-        out = byteArray(pbData, fileSize);
+        out = std::vector<uint8_t>(pbData, pbData + fileSize);
         const PortableFileIO::BinaryReadResult readResult =
             PortableFileIO::ReadBinaryFileSegment(
                 m_sourcefile.getPath(), static_cast<std::size_t>(data->ptr),
-                out.data, static_cast<std::size_t>(data->filesize));
+                out.data(), static_cast<std::size_t>(data->filesize));
 
         if (readResult.status != PortableFileIO::BinaryReadStatus::ok) {
             app.DebugPrintf("Failed to read archive file segment\n");
@@ -121,7 +121,7 @@ byteArray ArchiveFile::getFile(const std::wstring& filename) {
 #endif
 
         // Compressed filenames are preceeded with an asterisk.
-        if (data->isCompressed && out.data != nullptr) {
+        if (data->isCompressed && !out.empty()) {
             /* 4J-JEV:
              * If a compressed file is accessed before compression object is
              * initialized it will crash here (Compression::getCompression).
@@ -136,16 +136,15 @@ byteArray ArchiveFile::getFile(const std::wstring& filename) {
             std::uint8_t* uncompressedBuffer =
                 new std::uint8_t[decompressedSize];
             Compression::getCompression()->Decompress(
-                uncompressedBuffer, &decompressedSize, out.data + 4,
-                out.length - 4);
+                uncompressedBuffer, &decompressedSize, out.data() + 4,
+                out.size() - 4);
 
-            delete[] out.data;
 
-            out.data = uncompressedBuffer;
-            out.length = decompressedSize;
+            out = std::vector<uint8_t>(uncompressedBuffer, uncompressedBuffer + decompressedSize);
+            delete[] uncompressedBuffer;
         }
 
-        assert(out.data != nullptr);  // THERE IS NO FILE WITH THIS NAME!
+        assert(!out.empty());  // THERE IS NO FILE WITH THIS NAME!
     }
 
     return out;

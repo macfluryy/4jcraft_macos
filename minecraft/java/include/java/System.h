@@ -1,24 +1,28 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+#include <cassert>
 #include "../../../Minecraft.World/ConsoleHelpers/ArrayWithLength.h" // 4jcraft TODO
 
 // 4J Jev, just thought it would be easier this way.
-#define ArrayCopyFunctionDeclaration(x)                                 \
-    static void arraycopy(arrayWithLength<x> src, unsigned int srcPos,  \
-                          arrayWithLength<x>* dst, unsigned int dstPos, \
+#define ArrayCopyFunctionDeclaration(x)                                      \
+    static void arraycopy(const std::vector<x>& src, unsigned int srcPos,    \
+                          std::vector<x>* dst, unsigned int dstPos,          \
                           unsigned int length);
-#define ArrayCopyFunctionDefinition(x)                                   \
-    void System::arraycopy(arrayWithLength<x> src, unsigned int srcPos,  \
-                           arrayWithLength<x>* dst, unsigned int dstPos, \
-                           unsigned int length) {                        \
-        arraycopy<x>(src, srcPos, dst, dstPos, length);                  \
+#define ArrayCopyFunctionDefinition(x)                                        \
+    void System::arraycopy(const std::vector<x>& src, unsigned int srcPos,    \
+                           std::vector<x>* dst, unsigned int dstPos,          \
+                           unsigned int length) {                             \
+        arraycopy<x>(src, srcPos, dst, dstPos, length);                       \
     }
 
 class System {
     template <class T>
-    static void arraycopy(arrayWithLength<T> src, unsigned int srcPos,
-                          arrayWithLength<T>* dst, unsigned int dstPos,
+    static void arraycopy(const std::vector<T>& src, unsigned int srcPos,
+                          std::vector<T>* dst, unsigned int dstPos,
                           unsigned int length);
 
 public:

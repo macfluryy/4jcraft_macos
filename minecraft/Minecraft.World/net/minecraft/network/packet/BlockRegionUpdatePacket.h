@@ -10,7 +10,7 @@ class BlockRegionUpdatePacket
 public:
     int x, y, z;
     int xs, ys, zs;
-    byteArray buffer;
+    std::vector<uint8_t> buffer;
     int levelIdx;
     bool bIsFullChunk;  // 4J Added
 

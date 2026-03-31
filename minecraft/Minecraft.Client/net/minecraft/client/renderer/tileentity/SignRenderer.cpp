@@ -64,7 +64,7 @@ void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y,
     // Get the current language setting from the console
     std::uint32_t dwLanguage = XGetLanguage();
 
-    for (int i = 0; i < MAX_SIGN_LINES; i++)  // 4J - was sign.messages.length
+    for (int i = 0; i < MAX_SIGN_LINES; i++)  // 4J - was sign.messages.size()
     {
         if (sign->IsVerified()) {
             if (sign->IsCensored()) {
@@ -99,11 +99,11 @@ void SignRenderer::render(std::shared_ptr<TileEntity> _sign, double x, double y,
             msg = L"> " + msg + L" <";
             font->draw(msg, -font->width(msg) / 2,
                        i * 10 - (MAX_SIGN_LINES) * 5,
-                       col);  // 4J - (MAX_SIGN_LINES) was sign.messages.length
+                       col);  // 4J - (MAX_SIGN_LINES) was sign.messages.size()
         } else {
             font->draw(msg, -font->width(msg) / 2,
                        i * 10 - (MAX_SIGN_LINES) * 5,
-                       col);  // 4J - (MAX_SIGN_LINES) was sign.messages.length
+                       col);  // 4J - (MAX_SIGN_LINES) was sign.messages.size()
         }
     }
     glDepthMask(true);

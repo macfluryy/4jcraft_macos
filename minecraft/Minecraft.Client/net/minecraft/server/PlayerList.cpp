@@ -328,7 +328,7 @@ void PlayerList::updateEntireScoreboard(ServerScoreboard* scoreboard,
     //}
 }
 
-void PlayerList::setLevel(ServerLevelArray levels) {
+void PlayerList::setLevel(std::vector<ServerLevel*>& levels) {
     playerIo = levels[0]->getLevelStorage()->getPlayerIO();
 }
 

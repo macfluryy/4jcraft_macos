@@ -24,13 +24,13 @@ FastNoise::~FastNoise() {
     delete[] noiseMaps;
 }
 
-doubleArray FastNoise::getRegion(doubleArray buffer, double x, double y,
+std::vector<double> FastNoise::getRegion(std::vector<double>& buffer, double x, double y,
                                  double z, int xSize, int ySize, int zSize,
                                  double xScale, double yScale, double zScale) {
-    if (buffer.data == nullptr)
-        buffer = doubleArray(xSize * ySize * zSize);
+    if (buffer.empty())
+        buffer = std::vector<double>(xSize * ySize * zSize);
     else
-        for (unsigned int i = 0; i < buffer.length; i++) buffer[i] = 0;
+        for (unsigned int i = 0; i < buffer.size(); i++) buffer[i] = 0;
 
     double pow = 1;
     int AA = 487211441;

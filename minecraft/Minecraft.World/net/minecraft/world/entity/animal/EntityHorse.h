@@ -123,7 +123,7 @@ private:
 
 public:
     EntityHorse(Level* world);
-    ~EntityHorse();
+    ~EntityHorse() = default;
 
 protected:
     virtual void defineSynchedData();
@@ -231,7 +231,7 @@ public:
 
 private:
     std::wstring layerTextureHashName;
-    intArray layerTextureLayers;
+    std::vector<int> layerTextureLayers;
 
 private:
     virtual void clearLayeredTextureInfo();
@@ -239,7 +239,7 @@ private:
 
 public:
     virtual std::wstring getLayeredTextureHashName();
-    virtual intArray getLayeredTextureLayers();
+    virtual std::vector<int> getLayeredTextureLayers();
     virtual void openInventory(std::shared_ptr<Player> player);
     virtual bool mobInteract(std::shared_ptr<Player> player);
 

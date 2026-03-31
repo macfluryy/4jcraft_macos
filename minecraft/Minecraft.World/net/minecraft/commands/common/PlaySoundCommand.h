@@ -28,7 +28,7 @@ public class PlaySoundCommand extends BaseCommand {
 
     @Override
     public void execute(CommandSender source, String[] args) {
-        if (args.length < 2) {
+        if (args.size() < 2) {
             throw new UsageException(getUsage(source));
         }
 
@@ -42,14 +42,14 @@ public class PlaySoundCommand extends BaseCommand {
         double pitch = 1;
         double minVolume = 0;
 
-        if (args.length > index) x = convertArgToCoordinate(source, x,
-args[index++]); if (args.length > index) y = convertArgToCoordinate(source, y,
-args[index++], 0, 0); if (args.length > index) z =
+        if (args.size() > index) x = convertArgToCoordinate(source, x,
+args[index++]); if (args.size() > index) y = convertArgToCoordinate(source, y,
+args[index++], 0, 0); if (args.size() > index) z =
 convertArgToCoordinate(source, z, args[index++]);
 
-        if (args.length > index) volume = convertArgToDouble(source,
-args[index++], 0, Float.MAX_VALUE); if (args.length > index) pitch =
-convertArgToDouble(source, args[index++], 0, 2); if (args.length > index)
+        if (args.size() > index) volume = convertArgToDouble(source,
+args[index++], 0, Float.MAX_VALUE); if (args.size() > index) pitch =
+convertArgToDouble(source, args[index++], 0, 2); if (args.size() > index)
 minVolume = convertArgToDouble(source, args[index++], 0, 1);
 
         double maxDist = volume > 1 ? volume * 16 : 16;

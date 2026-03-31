@@ -31,23 +31,23 @@ WeighedRandomItem* WeighedRandom::getRandomItem(
     return getRandomItem(random, items, getTotalWeight(items));
 }
 
-int WeighedRandom::getTotalWeight(WeighedRandomItemArray items) {
+int WeighedRandom::getTotalWeight(const std::vector<WeighedRandomItem*>& items) {
     int totalWeight = 0;
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         totalWeight += items[i]->randomWeight;
     }
     return totalWeight;
 }
 
 WeighedRandomItem* WeighedRandom::getRandomItem(Random* random,
-                                                WeighedRandomItemArray items,
+                                                const std::vector<WeighedRandomItem*>& items,
                                                 int totalWeight) {
     if (totalWeight <= 0) {
         __debugbreak();
     }
 
     int selection = random->nextInt(totalWeight);
-    for (unsigned int i = 0; i < items.length; i++) {
+    for (unsigned int i = 0; i < items.size(); i++) {
         selection -= items[i]->randomWeight;
         if (selection < 0) {
             return items[i];
@@ -57,6 +57,6 @@ WeighedRandomItem* WeighedRandom::getRandomItem(Random* random,
 }
 
 WeighedRandomItem* WeighedRandom::getRandomItem(Random* random,
-                                                WeighedRandomItemArray items) {
+                                                const std::vector<WeighedRandomItem*>& items) {
     return getRandomItem(random, items, getTotalWeight(items));
 }

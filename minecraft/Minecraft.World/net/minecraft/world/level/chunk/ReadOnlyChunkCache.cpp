@@ -4,19 +4,17 @@
 #include "../biome/Biome.h"
 
 ReadOnlyChunkCache::ReadOnlyChunkCache(Level* level, ChunkStorage* storage) {
-    chunks = LevelChunkArray(LEN * LEN);
-    emptyPixels = byteArray(Level::CHUNK_TILE_COUNT);
+    chunks = std::vector<LevelChunk*>(LEN * LEN);
+    emptyPixels = std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
 
     this->level = level;
     this->storage = storage;
 }
 
 ReadOnlyChunkCache::~ReadOnlyChunkCache() {
-    for (unsigned int i = 0; i < chunks.length; ++i) delete chunks[i];
+    for (unsigned int i = 0; i < chunks.size(); ++i) delete chunks[i];
 
-    delete[] chunks.data;
 
-    delete[] emptyPixels.data;
 }
 
 bool ReadOnlyChunkCache::hasChunk(int x, int z) {

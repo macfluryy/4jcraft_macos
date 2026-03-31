@@ -44,7 +44,7 @@ AttributeModifier* LivingEntity::SPEED_MODIFIER_SPRINTING =
 void LivingEntity::_init() {
     attributes = nullptr;
     combatTracker = new CombatTracker(this);
-    lastEquipment = arrayWithLength<std::shared_ptr<ItemInstance>>(5);
+    lastEquipment = std::vector<std::shared_ptr<ItemInstance>>(5);
 
     swinging = false;
     swingTime = 0;
@@ -127,7 +127,6 @@ LivingEntity::~LivingEntity() {
     delete attributes;
     delete combatTracker;
 
-    if (lastEquipment.data != nullptr) delete[] lastEquipment.data;
 }
 
 void LivingEntity::defineSynchedData() {
@@ -357,8 +356,8 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->putShort(L"AttackTime", (short)attackTime);
     entityTag->putFloat(L"AbsorptionAmount", getAbsorptionAmount());
 
-    arrayWithLength<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
-    for (unsigned int i = 0; i < items.length; ++i) {
+    std::vector<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
+    for (unsigned int i = 0; i < items.size(); ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
         if (item != nullptr) {
             attributes->removeItemModifiers(item);
@@ -368,7 +367,7 @@ void LivingEntity::addAdditonalSaveData(CompoundTag* entityTag) {
     entityTag->put(L"Attributes",
                    SharedMonsterAttributes::saveAttributes(getAttributes()));
 
-    for (unsigned int i = 0; i < items.length; ++i) {
+    for (unsigned int i = 0; i < items.size(); ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
         if (item != nullptr) {
             attributes->addItemModifiers(item);
@@ -951,8 +950,8 @@ void LivingEntity::animateHurt() {
  */
 int LivingEntity::getArmorValue() {
     int val = 0;
-    arrayWithLength<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
-    for (unsigned int i = 0; i < items.length; ++i) {
+    std::vector<std::shared_ptr<ItemInstance>> items = getEquipmentSlots();
+    for (unsigned int i = 0; i < items.size(); ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
         if (item != nullptr &&
             dynamic_cast<ArmorItem*>(item->getItem()) != nullptr) {

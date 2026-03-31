@@ -349,7 +349,7 @@ public:
     virtual Pos* getRespawnPosition();
     virtual bool isRespawnForced();
     virtual void setRespawnPosition(Pos* respawnPosition, bool forced);
-    virtual void awardStat(Stat* stat, byteArray param);
+    virtual void awardStat(Stat* stat, const std::vector<uint8_t>& param);
 
 protected:
     void jumpFromGround();
@@ -414,7 +414,7 @@ public:
     virtual std::shared_ptr<ItemInstance> getCarriedItem();
     virtual void setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item);
     virtual bool isInvisibleTo(std::shared_ptr<Player> player);
-    virtual arrayWithLength<std::shared_ptr<ItemInstance>> getEquipmentSlots();
+    virtual std::vector<std::shared_ptr<ItemInstance>> getEquipmentSlots();
     virtual bool isCapeHidden();
     virtual bool isPushedByWater();
     virtual Scoreboard* getScoreboard();

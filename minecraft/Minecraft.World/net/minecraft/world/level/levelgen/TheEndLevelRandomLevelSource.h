@@ -33,17 +33,17 @@ public:
     TheEndLevelRandomLevelSource(Level* level, int64_t seed);
     ~TheEndLevelRandomLevelSource();
 
-    void prepareHeights(int xOffs, int zOffs, byteArray blocks,
-                        BiomeArray biomes);
-    void buildSurfaces(int xOffs, int zOffs, byteArray blocks,
-                       BiomeArray biomes);
+    void prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+                        std::vector<Biome*>& biomes);
+    void buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+                       std::vector<Biome*>& biomes);
 
 public:
     virtual LevelChunk* create(int x, int z);
     virtual LevelChunk* getChunk(int xOffs, int zOffs);
 
 private:
-    doubleArray getHeights(doubleArray buffer, int x, int y, int z, int xSize,
+    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y, int z, int xSize,
                            int ySize, int zSize);
 
 public:

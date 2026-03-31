@@ -41,7 +41,7 @@ private:
     MobSpawner* mobSpawner;
     int emptyTime;
     bool m_bAtLeastOnePlayerSleeping;  // 4J Added
-    static WeighedTreasureArray
+    static std::vector<WeighedTreasure*>
         RANDOM_BONUS_ITEMS;  // 4J - brought forward from 1.3.2
 
     std::vector<TileEventData> tileEvents[2];

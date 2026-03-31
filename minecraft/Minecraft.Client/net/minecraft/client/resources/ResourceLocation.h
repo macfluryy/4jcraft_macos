@@ -1,7 +1,7 @@
 #pragma once
 #include "../renderer/Textures.h"
 
-typedef arrayWithLength<_TEXTURE_NAME> textureNameArray;
+typedef std::vector<_TEXTURE_NAME> textureNameArray;
 class ResourceLocation {
 private:
     textureNameArray m_texture;
@@ -15,8 +15,7 @@ public:
     }
 
     ResourceLocation(_TEXTURE_NAME texture) {
-        m_texture = textureNameArray(1);
-        m_texture[0] = texture;
+        m_texture = {texture};
         m_preloaded = true;
     }
 
@@ -25,21 +24,21 @@ public:
         m_preloaded = false;
     }
 
-    ResourceLocation(intArray textures) {
-        m_texture = textureNameArray(textures.length);
-        for (unsigned int i = 0; i < textures.length; ++i) {
+    ResourceLocation(std::vector<int> textures) {
+        m_texture.resize(textures.size());
+        for (unsigned int i = 0; i < textures.size(); ++i) {
             m_texture[i] = (_TEXTURE_NAME)textures[i];
         }
         m_preloaded = true;
     }
 
-    ~ResourceLocation() { delete m_texture.data; }
+    ~ResourceLocation() = default;
 
     _TEXTURE_NAME getTexture() { return m_texture[0]; }
 
     _TEXTURE_NAME getTexture(int idx) { return m_texture[idx]; }
 
-    int getTextureCount() { return m_texture.length; }
+    int getTextureCount() { return m_texture.size(); }
 
     std::wstring getPath() { return m_path; }
 

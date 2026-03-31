@@ -140,7 +140,7 @@ public:
     void doCloseContainer();
     void setPlayerInput(float xa, float ya, bool jumping, bool sneaking);
 
-    virtual void awardStat(Stat* stat, byteArray param);
+    virtual void awardStat(Stat* stat, const std::vector<uint8_t>& param);
 
     void disconnect();
     void resetSentInfo();

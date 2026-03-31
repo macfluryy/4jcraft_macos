@@ -9,12 +9,12 @@ public:
 
     // 4J-JEV: Changed to allow for Durango events.
 protected:
-    byteArray m_paramData;
+    std::vector<uint8_t> m_paramData;
 
 public:
     AwardStatPacket();
     AwardStatPacket(int statId, int count);
-    AwardStatPacket(int statId, byteArray paramData);
+    AwardStatPacket(int statId, std::vector<uint8_t>& paramData);
     ~AwardStatPacket();
 
     virtual void handle(PacketListener* listener);
@@ -31,5 +31,5 @@ public:
 public:
     // 4J-JEV: New getters to help prevent unsafe access
     int getCount();
-    byteArray getParamData();
+    std::vector<uint8_t> getParamData();
 };

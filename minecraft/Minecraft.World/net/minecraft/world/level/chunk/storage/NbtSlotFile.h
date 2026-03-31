@@ -7,7 +7,7 @@
 
 class NbtSlotFile {
 private:
-    static byteArray READ_BUFFER;
+    static std::vector<uint8_t> READ_BUFFER;
 
     static const int FILE_HEADER_SIZE = 1024;
     static const int MAGIC_NUMBER = 0x13737001;

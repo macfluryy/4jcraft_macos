@@ -11,7 +11,7 @@ GhastModel::GhastModel() : Model() {
     body->y += (8 + 16) + yoffs;
 
     Random* random = new Random(1660);
-    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.length
+    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
     {
         tentacles[i] = new ModelPart(this, 0, 0);
 
@@ -37,7 +37,7 @@ void GhastModel::setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
                            std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim) {
-    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.length
+    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
     {
         tentacles[i]->xRot = 0.2f * Mth::sin(bob * 0.3f + i) + 0.4f;
     }
@@ -52,7 +52,7 @@ void GhastModel::render(std::shared_ptr<Entity> entity, float time, float r,
     glTranslatef(0, .6f, 0);
 
     body->render(scale, usecompiled);
-    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.length
+    for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
     {
         tentacles[i]->render(scale, usecompiled);
     }

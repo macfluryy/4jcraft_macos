@@ -21,7 +21,7 @@ int ChestTileEntity::getContainerType() {
 }
 
 void ChestTileEntity::_init(bool isBonusChest) {
-    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(9 * 4);
+    items = new std::vector<std::shared_ptr<ItemInstance>>(9 * 4);
 
     hasCheckedNeighbors = false;
     this->isBonusChest = isBonusChest;
@@ -48,29 +48,28 @@ ChestTileEntity::ChestTileEntity(int type, bool isBonusChest /* = false*/)
 }
 
 ChestTileEntity::~ChestTileEntity() {
-    delete[] items->data;
     delete items;
 }
 
 unsigned int ChestTileEntity::getContainerSize() { return 9 * 3; }
 
 std::shared_ptr<ItemInstance> ChestTileEntity::getItem(unsigned int slot) {
-    return items->data[slot];
+    return (*items)[slot];
 }
 
 std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot,
                                                           int count) {
-    if (items->data[slot] != nullptr) {
-        if (items->data[slot]->count <= count) {
-            std::shared_ptr<ItemInstance> item = items->data[slot];
-            items->data[slot] = nullptr;
+    if ((*items)[slot] != nullptr) {
+        if ((*items)[slot]->count <= count) {
+            std::shared_ptr<ItemInstance> item = (*items)[slot];
+            (*items)[slot] = nullptr;
             setChanged();
             // 4J Stu - Fix for duplication glitch
             if (item->count <= 0) return nullptr;
             return item;
         } else {
-            std::shared_ptr<ItemInstance> i = items->data[slot]->remove(count);
-            if (items->data[slot]->count == 0) items->data[slot] = nullptr;
+            std::shared_ptr<ItemInstance> i = (*items)[slot]->remove(count);
+            if ((*items)[slot]->count == 0) (*items)[slot] = nullptr;
             setChanged();
             // 4J Stu - Fix for duplication glitch
             if (i->count <= 0) return nullptr;
@@ -81,9 +80,9 @@ std::shared_ptr<ItemInstance> ChestTileEntity::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> ChestTileEntity::removeItemNoUpdate(int slot) {
-    if (items->data[slot] != nullptr) {
-        std::shared_ptr<ItemInstance> item = items->data[slot];
-        items->data[slot] = nullptr;
+    if ((*items)[slot] != nullptr) {
+        std::shared_ptr<ItemInstance> item = (*items)[slot];
+        (*items)[slot] = nullptr;
         return item;
     }
     return nullptr;
@@ -91,7 +90,7 @@ std::shared_ptr<ItemInstance> ChestTileEntity::removeItemNoUpdate(int slot) {
 
 void ChestTileEntity::setItem(unsigned int slot,
                               std::shared_ptr<ItemInstance> item) {
-    items->data[slot] = item;
+    (*items)[slot] = item;
     if (item != nullptr && item->count > getMaxStackSize())
         item->count = getMaxStackSize();
     this->setChanged();
@@ -116,15 +115,14 @@ void ChestTileEntity::load(CompoundTag* base) {
     ListTag<CompoundTag>* inventoryList =
         (ListTag<CompoundTag>*)base->getList(L"Items");
     if (items) {
-        delete[] items->data;
         delete items;
     }
-    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(getContainerSize());
+    items = new std::vector<std::shared_ptr<ItemInstance>>(getContainerSize());
     if (base->contains(L"CustomName")) name = base->getString(L"CustomName");
     for (int i = 0; i < inventoryList->size(); i++) {
         CompoundTag* tag = inventoryList->get(i);
         unsigned int slot = tag->getByte(L"Slot") & 0xff;
-        if (slot >= 0 && slot < items->length)
+        if (slot >= 0 && slot < items->size())
             (*items)[slot] = ItemInstance::fromTag(tag);
     }
     isBonusChest = base->getBoolean(L"bonus");
@@ -134,11 +132,11 @@ void ChestTileEntity::save(CompoundTag* base) {
     TileEntity::save(base);
     ListTag<CompoundTag>* listTag = new ListTag<CompoundTag>;
 
-    for (unsigned int i = 0; i < items->length; i++) {
-        if (items->data[i] != nullptr) {
+    for (unsigned int i = 0; i < items->size(); i++) {
+        if ((*items)[i] != nullptr) {
             CompoundTag* tag = new CompoundTag();
             tag->putByte(L"Slot", (uint8_t)i);
-            items->data[i]->save(tag);
+            (*items)[i]->save(tag);
             listTag->add(tag);
         }
     }
@@ -381,9 +379,9 @@ std::shared_ptr<TileEntity> ChestTileEntity::clone() {
         std::shared_ptr<ChestTileEntity>(new ChestTileEntity());
     TileEntity::clone(result);
 
-    for (unsigned int i = 0; i < items->length; i++) {
-        if (items->data[i] != nullptr) {
-            result->items->data[i] = ItemInstance::clone(items->data[i]);
+    for (unsigned int i = 0; i < items->size(); i++) {
+        if ((*items)[i] != nullptr) {
+            (*result->items)[i] = ItemInstance::clone((*items)[i]);
         }
     }
     return result;

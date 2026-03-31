@@ -87,7 +87,7 @@ public:
     void writeAsPNG(const std::wstring& filename);
     void blit(int x, int y, Texture* source);
     void blit(int x, int y, Texture* source, bool rotated);
-    void transferFromBuffer(intArray buffer);
+    void transferFromBuffer(const std::vector<int>& buffer);
     void transferFromImage(BufferedImage* image);
     int getManagerId();
     int getGlId();

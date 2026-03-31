@@ -21,13 +21,13 @@ WeighedTreasure::WeighedTreasure(std::shared_ptr<ItemInstance> item,
     this->maxCount = maxCount;
 }
 
-void WeighedTreasure::addChestItems(Random* random, WeighedTreasureArray items,
+void WeighedTreasure::addChestItems(Random* random, const std::vector<WeighedTreasure*>& items,
                                     std::shared_ptr<Container> dest,
                                     int numRolls) {
     for (int r = 0; r < numRolls; r++) {
         WeighedTreasure* treasure =
             (WeighedTreasure*)WeighedRandom::getRandomItem(
-                random, *((WeighedRandomItemArray*)&items));
+                random, *((std::vector<WeighedRandomItem*>*)&items));
 
         int count =
             treasure->minCount +
@@ -48,12 +48,12 @@ void WeighedTreasure::addChestItems(Random* random, WeighedTreasureArray items,
 }
 
 void WeighedTreasure::addDispenserItems(
-    Random* random, WeighedTreasureArray items,
+    Random* random, const std::vector<WeighedTreasure*>& items,
     std::shared_ptr<DispenserTileEntity> dest, int numRolls) {
     for (int r = 0; r < numRolls; r++) {
         WeighedTreasure* treasure =
             (WeighedTreasure*)WeighedRandom::getRandomItem(
-                random, *((WeighedRandomItemArray*)&items));
+                random, *((std::vector<WeighedRandomItem*>*)&items));
 
         int count =
             treasure->minCount +
@@ -73,12 +73,12 @@ void WeighedTreasure::addDispenserItems(
     }
 }
 
-WeighedTreasureArray WeighedTreasure::addToTreasure(WeighedTreasureArray items,
+std::vector<WeighedTreasure*> WeighedTreasure::addToTreasure(std::vector<WeighedTreasure*>& items,
                                                     WeighedTreasure* extra) {
-    WeighedTreasureArray result(items.length + 1);
+    std::vector<WeighedTreasure*> result(items.size() + 1);
     int i = 0;
 
-    for (int j = 0; j < items.length; j++) {
+    for (int j = 0; j < items.size(); j++) {
         result[i++] = items[j];
     }
 

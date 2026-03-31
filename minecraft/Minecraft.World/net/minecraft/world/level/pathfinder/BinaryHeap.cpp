@@ -7,25 +7,24 @@
 
 // 4J Jev, add common ctor code.
 void BinaryHeap::_init() {
-    heap = NodeArray(1024);
+    heap = std::vector<Node*>(1024);
     sizeVar = 0;
 }
 
 BinaryHeap::BinaryHeap() { _init(); }
 
-BinaryHeap::~BinaryHeap() { delete[] heap.data; }
+BinaryHeap::~BinaryHeap() {}
 
 Node* BinaryHeap::insert(Node* node) {
     /* if (node->heapIdx >=0) throw new IllegalStateException("OW KNOWS!"); 4J
      * Jev, removed try/catch */
 
     // Expand if necessary.
-    if (sizeVar == heap.length) {
-        NodeArray newHeap = NodeArray(sizeVar << 1);
+    if (sizeVar == heap.size()) {
+        std::vector<Node*> newHeap = std::vector<Node*>(sizeVar << 1);
 
-        System::arraycopy(heap, 0, &newHeap, 0, sizeVar);
+        std::copy(heap.begin(), heap.begin() + sizeVar, newHeap.begin());
 
-        delete[] heap.data;
         heap = newHeap;
     }
 

@@ -163,7 +163,7 @@ GameRenderer::GameRenderer(Minecraft* mc) {
     }
     delete img;
     for (int i = 0; i < NUM_LIGHT_TEXTURES; i++)
-        lightPixels[i] = intArray(16 * 16);
+        lightPixels[i] = std::vector<int>(16 * 16);
 
 #if defined(MULTITHREAD_ENABLE)
     m_updateEvents = new C4JThread::EventArray(

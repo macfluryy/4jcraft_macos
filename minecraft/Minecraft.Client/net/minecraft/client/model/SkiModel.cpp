@@ -14,7 +14,7 @@ void SkiModel::_init(bool leftSki) {
         xOffTex = 14;
     }
 
-    cubes = ModelPartArray(2);
+    cubes = std::vector<ModelPart*>(2);
     cubes[0] = new ModelPart(this, xOffTex, 0);
     cubes[1] = new ModelPart(this, xOffTex, 5);
 
@@ -28,7 +28,7 @@ void SkiModel::_init(bool leftSki) {
 void SkiModel::render(std::shared_ptr<Entity> entity, float time, float r,
                       float bob, float yRot, float xRot, float scale,
                       bool usecompiled) {
-    for (int i = 0; i < cubes.length; i++) {
+    for (int i = 0; i < cubes.size(); i++) {
         cubes[i]->render(scale, usecompiled);
     }
 }

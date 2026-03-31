@@ -6,7 +6,7 @@
 
 class PickaxeItem : public DiggerItem {
 private:
-    static TileArray diggables;
+    static std::vector<Tile*> diggables;
 
 public:  //
     static void staticCtor();

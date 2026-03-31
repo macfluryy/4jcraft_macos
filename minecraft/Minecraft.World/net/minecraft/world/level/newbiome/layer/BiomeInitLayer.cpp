@@ -4,13 +4,15 @@
 #include "../../net.minecraft.world.level.h"
 #include "BiomeInitLayer.h"
 
+BiomeInitLayer::~BiomeInitLayer() {}
+
 BiomeInitLayer::BiomeInitLayer(int64_t seed, std::shared_ptr<Layer> parent,
                                LevelType* levelType)
     : Layer(seed) {
     this->parent = parent;
 
     if (levelType == LevelType::lvl_normal_1_1) {
-        startBiomes = BiomeArray(6);
+        startBiomes = std::vector<Biome*>(6);
         startBiomes[0] = Biome::desert;
         startBiomes[1] = Biome::forest;
         startBiomes[2] = Biome::extremeHills;
@@ -18,7 +20,7 @@ BiomeInitLayer::BiomeInitLayer(int64_t seed, std::shared_ptr<Layer> parent,
         startBiomes[4] = Biome::plains;
         startBiomes[5] = Biome::taiga;
     } else {
-        startBiomes = BiomeArray(7);
+        startBiomes = std::vector<Biome*>(7);
         startBiomes[0] = Biome::desert;
         startBiomes[1] = Biome::forest;
         startBiomes[2] = Biome::extremeHills;
@@ -29,12 +31,11 @@ BiomeInitLayer::BiomeInitLayer(int64_t seed, std::shared_ptr<Layer> parent,
     }
 }
 
-BiomeInitLayer::~BiomeInitLayer() { delete[] startBiomes.data; }
 
-intArray BiomeInitLayer::getArea(int xo, int yo, int w, int h) {
-    intArray b = parent->getArea(xo, yo, w, h);
+std::vector<int> BiomeInitLayer::getArea(int xo, int yo, int w, int h) {
+    std::vector<int> b = parent->getArea(xo, yo, w, h);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             initRandom(x + xo, y + yo);
@@ -45,9 +46,9 @@ intArray BiomeInitLayer::getArea(int xo, int yo, int w, int h) {
                 result[x + y * w] = old;
             } else if (old == 1) {
                 result[x + y * w] =
-                    startBiomes[nextRandom(startBiomes.length)]->id;
+                    startBiomes[nextRandom(startBiomes.size())]->id;
             } else {
-                int isTaiga = startBiomes[nextRandom(startBiomes.length)]->id;
+                int isTaiga = startBiomes[nextRandom(startBiomes.size())]->id;
                 if (isTaiga == Biome::taiga->id) {
                     result[x + y * w] = isTaiga;
                 } else {

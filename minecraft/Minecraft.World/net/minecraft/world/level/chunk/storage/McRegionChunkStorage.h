@@ -16,7 +16,7 @@ private:
     ConsoleSaveFile* m_saveFile;
     static std::mutex cs_memory;
 
-    std::unordered_map<int64_t, byteArray> m_entityData;
+    std::unordered_map<int64_t, std::vector<uint8_t>> m_entityData;
 
     static std::deque<DataOutputStream*> s_chunkDataQueue;
     static int s_runningThreadCount;

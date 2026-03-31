@@ -7,14 +7,14 @@ RiverLayer::RiverLayer(int64_t seedMixup, std::shared_ptr<Layer> parent)
     this->parent = parent;
 }
 
-intArray RiverLayer::getArea(int xo, int yo, int w, int h) {
+std::vector<int> RiverLayer::getArea(int xo, int yo, int w, int h) {
     int px = xo - 1;
     int py = yo - 1;
     int pw = w + 2;
     int ph = h + 2;
-    intArray p = parent->getArea(px, py, pw, ph);
+    std::vector<int> p = parent->getArea(px, py, pw, ph);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             int l = p[(x + 0) + (y + 1) * pw];

@@ -56,20 +56,20 @@ void FileOutputStream::write(unsigned int b) {
     }
 }
 
-// Writes b.length bytes from the specified byte array to this file output
+// Writes b.size() bytes from the specified byte array to this file output
 // stream. Parameters: b - the data.
-void FileOutputStream::write(byteArray b) {
+void FileOutputStream::write(const std::vector<uint8_t>& b) {
     if (m_fileHandle == nullptr) {
         return;
     }
 
     const size_t numberOfBytesWritten =
-        std::fwrite(b.data, 1, b.length, m_fileHandle);
+        std::fwrite(b.data(), 1, b.size(), m_fileHandle);
     const int result = std::ferror(m_fileHandle);
 
     if (result != 0) {
         // TODO 4J Stu - Some kind of error handling
-    } else if (numberOfBytesWritten == 0 || numberOfBytesWritten != b.length) {
+    } else if (numberOfBytesWritten == 0 || numberOfBytesWritten != b.size()) {
         // File pointer is past the end of the file
     }
 }
@@ -77,10 +77,10 @@ void FileOutputStream::write(byteArray b) {
 // Writes len bytes from the specified byte array starting at offset off to this
 // file output stream. Parameters: b - the data. off - the start offset in the
 // data. len - the number of bytes to write.
-void FileOutputStream::write(byteArray b, unsigned int offset,
+void FileOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
                              unsigned int length) {
     // 4J Stu - We don't want to write any more than the array buffer holds
-    assert(length <= (b.length - offset));
+    assert(length <= (b.size() - offset));
 
     if (m_fileHandle == nullptr) {
         return;

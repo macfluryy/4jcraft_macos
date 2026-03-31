@@ -91,7 +91,7 @@ void Tag::writeNamedTag(Tag* tag, DataOutput* dos) {
     if (tag->getId() == Tag::TAG_End) return;
 
     //        byte[] bytes = tag.getName().getBytes("UTF-8");
-    //        dos.writeShort(bytes.length);
+    //        dos.writeShort(bytes.size());
     //        dos.write(bytes);
     dos->writeUTF(tag->getName());
 

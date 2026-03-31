@@ -37,7 +37,7 @@ public:
         // int x, z;
         ChunkPos pos;
 
-        shortArray changedTiles;
+        std::vector<short> changedTiles;
         int changes;
         int xChangeMin, xChangeMax;
         int yChangeMin, yChangeMax;

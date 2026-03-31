@@ -8,14 +8,14 @@ AddMushroomIslandLayer::AddMushroomIslandLayer(int64_t seedMixup,
     this->parent = parent;
 }
 
-intArray AddMushroomIslandLayer::getArea(int xo, int yo, int w, int h) {
+std::vector<int> AddMushroomIslandLayer::getArea(int xo, int yo, int w, int h) {
     int px = xo - 1;
     int py = yo - 1;
     int pw = w + 2;
     int ph = h + 2;
-    intArray p = parent->getArea(px, py, pw, ph);
+    std::vector<int> p = parent->getArea(px, py, pw, ph);
 
-    intArray result{static_cast<unsigned int>(w * h)};
+    std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
             int n1 = p[(x + 0) + (y + 0) * pw];

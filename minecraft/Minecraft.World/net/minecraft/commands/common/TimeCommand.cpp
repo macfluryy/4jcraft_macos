@@ -10,7 +10,7 @@ EGameCommand TimeCommand::getId() { return eGameCommand_Time; }
 int TimeCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void TimeCommand::execute(std::shared_ptr<CommandSender> source,
-                          byteArray commandData) {
+                          std::vector<uint8_t>& commandData) {
     ByteArrayInputStream bais(commandData);
     DataInputStream dis(&bais);
 
@@ -24,7 +24,7 @@ void TimeCommand::execute(std::shared_ptr<CommandSender> source,
     // logAdminAction(source, "commands.time.set", amount);
     logAdminAction(source, ChatPacket::e_ChatCustom, L"commands.time.set");
 
-    // if (args.length > 1) {
+    // if (args.size() > 1) {
     //	if (args[0].equals("set")) {
     //		int amount;
 
@@ -52,13 +52,13 @@ void TimeCommand::execute(std::shared_ptr<CommandSender> source,
 }
 
 void TimeCommand::doSetTime(std::shared_ptr<CommandSender> source, int value) {
-    for (int i = 0; i < MinecraftServer::getInstance()->levels.length; i++) {
+    for (int i = 0; i < MinecraftServer::getInstance()->levels.size(); i++) {
         MinecraftServer::getInstance()->levels[i]->setDayTime(value);
     }
 }
 
 void TimeCommand::doAddTime(std::shared_ptr<CommandSender> source, int value) {
-    for (int i = 0; i < MinecraftServer::getInstance()->levels.length; i++) {
+    for (int i = 0; i < MinecraftServer::getInstance()->levels.size(); i++) {
         ServerLevel* level = MinecraftServer::getInstance()->levels[i];
         level->setDayTime(level->getDayTime() + value);
     }

@@ -12,7 +12,7 @@ public:
     void init(Random* random, int levels);
     ~FastNoise();
 
-    doubleArray getRegion(doubleArray buffer, double x, double y, double z,
+    std::vector<double> getRegion(std::vector<double>& buffer, double x, double y, double z,
                           int xSize, int ySize, int zSize, double xScale,
                           double yScale, double zScale);
 };

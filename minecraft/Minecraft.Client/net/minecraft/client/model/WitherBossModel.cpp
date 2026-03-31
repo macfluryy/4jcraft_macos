@@ -7,7 +7,7 @@ WitherBossModel::WitherBossModel() {
     texWidth = 64;
     texHeight = 64;
 
-    upperBodyParts = ModelPartArray(3);
+    upperBodyParts = std::vector<ModelPart*>(3);
 
     upperBodyParts[0] = new ModelPart(this, 0, 16);
     upperBodyParts[0]->addBox(-10, 3.9f, -.5f, 20, 3, 3);
@@ -23,7 +23,7 @@ WitherBossModel::WitherBossModel() {
     upperBodyParts[2] = new ModelPart(this, 12, 22);
     upperBodyParts[2]->addBox(0, 0, 0, 3, 6, 3);
 
-    heads = ModelPartArray(3);
+    heads = std::vector<ModelPart*>(3);
     heads[0] = new ModelPart(this, 0, 0);
     heads[0]->addBox(-4, -4, -4, 8, 8, 8);
     heads[1] = new ModelPart(this, 32, 0);
@@ -43,10 +43,10 @@ void WitherBossModel::render(std::shared_ptr<Entity> entity, float time,
                              float scale, bool usecompiled) {
     setupAnim(time, r, bob, yRot, xRot, scale, entity);
 
-    for (int i = 0; i < heads.length; i++) {
+    for (int i = 0; i < heads.size(); i++) {
         heads[i]->render(scale, usecompiled);
     }
-    for (int i = 0; i < upperBodyParts.length; i++) {
+    for (int i = 0; i < upperBodyParts.size(); i++) {
         upperBodyParts[i]->render(scale, usecompiled);
     }
 }

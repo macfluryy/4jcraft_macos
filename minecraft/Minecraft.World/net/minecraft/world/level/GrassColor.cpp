@@ -2,11 +2,11 @@
 #include "GrassColor.h"
 
 // 4J Stu - Don't want to do this any more
-// intArray GrassColor::pixels;
+// std::vector<int> GrassColor::pixels;
 //
-// void GrassColor::init(intArray pixels)
+// void GrassColor::init(std::vector<int>& pixels)
 //{
-//	int *oldData = GrassColor::pixels.data;
+//	int *oldData = GrassColor::pixels.data();
 //	GrassColor::pixels = pixels;
 //	delete [] oldData;
 //}

@@ -30,7 +30,7 @@ TitleScreen::TitleScreen() {
 
     std::wstring filename = L"splashes.txt";
     if (app.hasArchiveFile(filename)) {
-        byteArray splashesArray = app.getArchiveFile(filename);
+        std::vector<uint8_t> splashesArray = app.getArchiveFile(filename);
         ByteArrayInputStream bais(splashesArray);
         InputStreamReader isr(&bais);
         BufferedReader br(&isr);

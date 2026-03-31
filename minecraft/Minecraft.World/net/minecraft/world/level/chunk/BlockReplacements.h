@@ -5,8 +5,8 @@ public:
     static void staticCtor();
 
 private:
-    static byteArray replacements;
+    static std::vector<uint8_t> replacements;
 
 public:
-    static void replace(byteArray blocks);
+    static void replace(std::vector<uint8_t>& blocks);
 };

@@ -23,8 +23,9 @@ ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
 
     autoCreate = false;  // 4J added
 
+    std::vector<uint8_t> emptyBlocks(Level::CHUNK_TILE_COUNT);
     emptyChunk =
-        new EmptyLevelChunk(level, byteArray(Level::CHUNK_TILE_COUNT), 0, 0);
+        new EmptyLevelChunk(level, emptyBlocks, 0, 0);
 
     this->level = level;
     this->storage = storage;

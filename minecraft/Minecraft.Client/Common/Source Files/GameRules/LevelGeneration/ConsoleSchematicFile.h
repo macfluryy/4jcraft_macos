@@ -57,7 +57,7 @@ private:
     std::vector<std::pair<Vec3, CompoundTag*> > m_entities;
 
 public:
-    byteArray m_data;
+    std::vector<uint8_t> m_data;
 
 public:
     ConsoleSchematicFile();
@@ -82,8 +82,8 @@ public:
                                       int xEnd, int yEnd, int zEnd,
                                       bool bSaveMobs,
                                       Compression::ECompressionTypes);
-    static void setBlocksAndData(LevelChunk* chunk, byteArray blockData,
-                                 byteArray dataData, byteArray data, int x0,
+    static void setBlocksAndData(LevelChunk* chunk, std::vector<uint8_t>& blockData,
+                                 std::vector<uint8_t>& dataData, std::vector<uint8_t> data, int x0,
                                  int y0, int z0, int x1, int y1, int z1,
                                  int& blocksP, int& dataP, int& blockLightP,
                                  int& skyLightP);
@@ -92,7 +92,7 @@ private:
     void save_tags(DataOutputStream* dos);
     void load_tags(DataInputStream* dis);
 
-    static void getBlocksAndData(LevelChunk* chunk, byteArray* data, int x0,
+    static void getBlocksAndData(LevelChunk* chunk, std::vector<uint8_t>* data, int x0,
                                  int y0, int z0, int x1, int y1, int z1,
                                  int& blocksP, int& dataP, int& blockLightP,
                                  int& skyLightP);

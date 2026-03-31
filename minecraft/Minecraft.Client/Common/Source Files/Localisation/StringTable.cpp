@@ -6,7 +6,7 @@ StringTable::StringTable(void) {}
 // Load string table from a binary blob, filling out with the current
 // localisation data only
 StringTable::StringTable(std::uint8_t* pbData, unsigned int dataSize) {
-    src = byteArray(pbData, dataSize);
+    src = std::vector<uint8_t>(pbData, pbData + dataSize);
 
     ProcessStringTableData();
 }
@@ -67,7 +67,7 @@ void StringTable::ProcessStringTableData(void) {
     if (foundLang) {
         dis.skip(bytesToSkip);
 
-        byteArray langData(dataSize);
+        std::vector<uint8_t> langData(dataSize);
         dis.read(langData);
 
         dis.close();
@@ -119,12 +119,12 @@ void StringTable::ProcessStringTableData(void) {
 }
 
 StringTable::~StringTable(void) {
-    // delete src.data; TODO 4J-JEV: ?
+    // delete src.data(); TODO 4J-JEV: ?
 }
 
 void StringTable::getData(std::uint8_t** ppData, unsigned int* pSize) {
-    *ppData = src.data;
-    *pSize = src.length;
+    *ppData = src.data();
+    *pSize = src.size();
 }
 
 const wchar_t* StringTable::getString(const std::wstring& id) {

@@ -3,7 +3,7 @@
 #include "../../net.minecraft.world.level.h"
 #include "BlockGenMethods.h"
 
-void BlockGenMethods::generateBox(Level* level, byteArray blocks, int sx,
+void BlockGenMethods::generateBox(Level* level, std::vector<uint8_t>& blocks, int sx,
                                   int sy, int sz, int ex, int ey, int ez,
                                   std::uint8_t edge, std::uint8_t filling) {
     sx = Mth::clamp(sx, 0, 15);
@@ -29,7 +29,7 @@ void BlockGenMethods::generateBox(Level* level, byteArray blocks, int sx,
     }
 }
 
-void BlockGenMethods::generateFrame(Level* level, byteArray blocks, int sx,
+void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks, int sx,
                                     int sy, int ex, int ey, int flatZ,
                                     int direction, std::uint8_t edge,
                                     std::uint8_t filling) {
@@ -84,7 +84,7 @@ void BlockGenMethods::generateFrame(Level* level, byteArray blocks, int sx,
     }
 }
 
-void BlockGenMethods::generateDirectionLine(Level* level, byteArray blocks,
+void BlockGenMethods::generateDirectionLine(Level* level, std::vector<uint8_t>& blocks,
                                             int sx, int sy, int sz, int ex,
                                             int ey, int ez, int startDirection,
                                             int endDirection,
@@ -182,7 +182,7 @@ void BlockGenMethods::generateDirectionLine(Level* level, byteArray blocks,
     }
 }
 
-void BlockGenMethods::generateLine(Level* level, byteArray blocks, int sx,
+void BlockGenMethods::generateLine(Level* level, std::vector<uint8_t>& blocks, int sx,
                                    int sy, int sz, int ex, int ey, int ez,
                                    std::uint8_t block) {
     generateDirectionLine(level, blocks, sx, sy, sz, ex, ey, ez, 0, 0, block);

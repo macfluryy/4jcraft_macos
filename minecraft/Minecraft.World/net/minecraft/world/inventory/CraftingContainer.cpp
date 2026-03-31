@@ -9,12 +9,12 @@ CraftingContainer::~CraftingContainer() {}
 CraftingContainer::CraftingContainer(AbstractContainerMenu* menu,
                                      unsigned int w, unsigned int h) {
     unsigned int size = w * h;
-    items = new arrayWithLength<std::shared_ptr<ItemInstance>>(size);
+    items = new std::vector<std::shared_ptr<ItemInstance>>(size);
     this->menu = menu;
     this->width = w;
 }
 
-unsigned int CraftingContainer::getContainerSize() { return items->length; }
+unsigned int CraftingContainer::getContainerSize() { return items->size(); }
 
 std::shared_ptr<ItemInstance> CraftingContainer::getItem(unsigned int slot) {
     if (slot >= getContainerSize()) {

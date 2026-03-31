@@ -286,25 +286,22 @@ void MultiplayerLocalPlayer::hurtTo(float newHealth,
     }
 }
 
-void MultiplayerLocalPlayer::awardStat(Stat* stat, byteArray param) {
+void MultiplayerLocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
     if (stat == nullptr) {
-        delete[] param.data;
         return;
     }
 
     if (stat->awardLocallyOnly) {
         LocalPlayer::awardStat(stat, param);
     } else {
-        delete[] param.data;
         return;
     }
 }
 
-void MultiplayerLocalPlayer::awardStatFromServer(Stat* stat, byteArray param) {
+void MultiplayerLocalPlayer::awardStatFromServer(Stat* stat, std::vector<uint8_t>& param) {
     if (stat != nullptr && !stat->awardLocallyOnly) {
         LocalPlayer::awardStat(stat, param);
-    } else
-        delete[] param.data;
+    }
 }
 
 void MultiplayerLocalPlayer::onUpdateAbilities() {

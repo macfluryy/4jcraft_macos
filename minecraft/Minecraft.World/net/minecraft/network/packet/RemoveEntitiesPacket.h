@@ -9,10 +9,10 @@ class RemoveEntitiesPacket
 public:
     static const int MAX_PER_PACKET = std::numeric_limits<char>::max();
 
-    intArray ids;
+    std::vector<int> ids;
 
     RemoveEntitiesPacket();
-    RemoveEntitiesPacket(intArray ids);
+    RemoveEntitiesPacket(std::vector<int>& ids);
     ~RemoveEntitiesPacket();
 
     virtual void read(DataInputStream* dis);

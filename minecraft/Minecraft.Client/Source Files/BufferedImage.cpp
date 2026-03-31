@@ -92,8 +92,8 @@ BufferedImage::BufferedImage(const std::wstring& File,
         } else {
             std::wstring archiveKey = L"res/" + fileName;
             if (app.hasArchiveFile(archiveKey)) {
-                byteArray ba = app.getArchiveFile(archiveKey);
-                hr = RenderManager.LoadTextureData(ba.data, ba.length,
+                std::vector<uint8_t> ba = app.getArchiveFile(archiveKey);
+                hr = RenderManager.LoadTextureData(ba.data(), ba.size(),
                                                    &ImageInfo, &data[l]);
             }
         }
@@ -182,7 +182,7 @@ int BufferedImage::getWidth() { return width; }
 
 int BufferedImage::getHeight() { return height; }
 
-void BufferedImage::getRGB(int startX, int startY, int w, int h, intArray out,
+void BufferedImage::getRGB(int startX, int startY, int w, int h, std::vector<int>& out,
                            int offset, int scansize, int level) {
     int ww = width >> level;
     for (int y = 0; y < h; y++) {
@@ -219,7 +219,7 @@ BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
     // TODO - 4J Implement
 
     BufferedImage* img = new BufferedImage(w, h, 0);
-    intArray arrayWrapper(img->data[0], w * h);
+    std::vector<int> arrayWrapper(img->data[0], img->data[0] + w * h);
     this->getRGB(x, y, w, h, arrayWrapper, 0, w);
 
     int level = 1;
@@ -230,7 +230,7 @@ BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
         int xx = x >> level;
         int yy = y >> level;
         img->data[level] = new int[ww * hh];
-        intArray levelWrapper(img->data[level], ww * hh);
+        std::vector<int> levelWrapper(img->data[level], img->data[level] + ww * hh);
         this->getRGB(xx, yy, ww, hh, levelWrapper, 0, ww, level);
 
         ++level;

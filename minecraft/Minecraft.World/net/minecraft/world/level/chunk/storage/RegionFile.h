@@ -19,7 +19,7 @@ private:
     static const int SECTOR_INTS = SECTOR_BYTES / 4;
 
     static const int CHUNK_HEADER_SIZE = 8;
-    static byteArray emptySector;
+    static std::vector<uint8_t> emptySector;
 
     File* fileName;
     // void* file;
@@ -61,7 +61,7 @@ public:
             this->x = x;
             this->z = z;
         }
-        void close() { rf->write(x, z, buf.data, count); }
+        void close() { rf->write(x, z, buf.data(), count); }
     };
 
     /* write a chunk at (x,z) with length bytes of data to disk */
