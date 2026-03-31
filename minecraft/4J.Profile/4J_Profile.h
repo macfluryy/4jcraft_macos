@@ -70,9 +70,6 @@ public:
     // --- Dead stubs (inline no-ops, kept for call-site compat) ---
 
     void Tick() {}
-    void SetTrialTextStringTable(CXuiStringTable*, int, int) {}
-    void SetTrialAwardText(EAwardType, int, int) {}
-    void StartTrialGame() {}
     unsigned int RequestSignInUI(bool, bool, bool, bool, bool,
                                  int (*)(void*, const bool, const int),
                                  void*, int = XUSER_INDEX_ANY) { return 0; }
@@ -112,9 +109,6 @@ public:
     void RegisterRichPresenceContext(int) {}
     void SetRichPresenceContextValue(int, int, int) {}
     void SetCurrentGameActivity(int, int, bool = false) {}
-    void DisplayFullVersionPurchase(bool, int, int = -1) {}
-    void SetUpsellCallback(void (*)(void*, EUpsellType, EUpsellResponse, int),
-                           void*) {}
     void SetDebugFullOverride(bool) {}
 
     // GetPrimaryPad/SetPrimaryPad moved to InputManager

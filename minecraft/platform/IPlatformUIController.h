@@ -92,12 +92,6 @@ public:
     virtual void HideAllGameUIElements() = 0;
     virtual void ShowOtherPlayersBaseScene(unsigned int iPad, bool show) = 0;
 
-    // Trial timer
-    virtual void ShowTrialTimer(bool show) = 0;
-    virtual void SetTrialTimerLimitSecs(unsigned int uiSeconds) = 0;
-    virtual void UpdateTrialTimer(unsigned int iPad) = 0;
-    virtual void ReduceTrialTimerValue() = 0;
-
     // Autosave
     virtual void ShowAutosaveCountdownTimer(bool show) = 0;
     virtual void UpdateAutosaveCountdownTimer(unsigned int uiSeconds) = 0;

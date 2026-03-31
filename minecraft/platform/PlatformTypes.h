@@ -55,19 +55,6 @@ enum class EAwardType {
     AvatarItem,
 };
 
-enum class EUpsellType {
-    Custom = 0,
-    Achievement,
-    GamerPic,
-    Theme,
-    AvatarItem,
-};
-
-enum class EUpsellResponse {
-    Declined,
-    Accepted_NoPurchase,
-    Accepted_Purchase,
-};
 
 // Backwards-compatible aliases for call sites still using the old
 // unscoped names. Remove these as call sites are migrated.
@@ -81,12 +68,3 @@ inline constexpr auto eAwardType_GamerPic = EAwardType::GamerPic;
 inline constexpr auto eAwardType_Theme = EAwardType::Theme;
 inline constexpr auto eAwardType_AvatarItem = EAwardType::AvatarItem;
 
-inline constexpr auto eUpsellType_Custom = EUpsellType::Custom;
-inline constexpr auto eUpsellType_Achievement = EUpsellType::Achievement;
-inline constexpr auto eUpsellType_GamerPic = EUpsellType::GamerPic;
-inline constexpr auto eUpsellType_Theme = EUpsellType::Theme;
-inline constexpr auto eUpsellType_AvatarItem = EUpsellType::AvatarItem;
-
-inline constexpr auto eUpsellResponse_Declined = EUpsellResponse::Declined;
-inline constexpr auto eUpsellResponse_Accepted_NoPurchase = EUpsellResponse::Accepted_NoPurchase;
-inline constexpr auto eUpsellResponse_Accepted_Purchase = EUpsellResponse::Accepted_Purchase;

@@ -363,9 +363,6 @@ public:
     bool GetLiveLinkRequired() { return m_bLiveLinkRequired; }
     void SetLiveLinkRequired(bool required) { m_bLiveLinkRequired = required; }
 
-    static void UpsellReturnedCallback(void* pParam, EUpsellType type,
-                                       EUpsellResponse result, int iUserData);
-
 #if defined(_DEBUG_MENUS_ENABLED)
     bool DebugSettingsOn() { return m_bDebugOptions; }
     bool DebugArtToolsOn();

@@ -91,13 +91,6 @@ public:
     [[nodiscard]] virtual void* GetGameDefinedProfileData(int iQuadrant) = 0;
     virtual void ResetProfileProcessState() = 0;
 
-    // Trial
-    virtual void StartTrialGame() = 0;
-    virtual void SetTrialTextStringTable(CXuiStringTable* pStringTable,
-                                          int iAccept, int iReject) = 0;
-    virtual void SetTrialAwardText(EAwardType AwardType, int iTitle,
-                                    int iText) = 0;
-
     // Content
     virtual void AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
                                               bool* allAllowed,
@@ -136,14 +129,6 @@ public:
                                               int iVal) = 0;
     virtual void SetCurrentGameActivity(int iPad, int iNewPresence,
                                          bool bSetOthersToIdle = false) = 0;
-
-    // Purchase
-    virtual void DisplayFullVersionPurchase(bool bRequired, int iQuadrant,
-                                             int iUpsellParam = -1) = 0;
-    virtual void SetUpsellCallback(
-        void (*Func)(void* lpParam, EUpsellType type, EUpsellResponse response,
-                     int iUserData),
-        void* lpParam) = 0;
 
     // Debug
     virtual void SetDebugFullOverride(bool bVal) = 0;
