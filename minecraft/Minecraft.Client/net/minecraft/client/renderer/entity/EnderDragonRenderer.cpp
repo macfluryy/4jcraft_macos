@@ -123,8 +123,8 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
 
         glPushMatrix();
         glTranslatef((float)x, (float)y + 2, (float)z);
-        glRotatef((float)(-atan2(zd, xd)) * 180.0f / M_PI - 90.0f, 0, 1, 0);
-        glRotatef((float)(-atan2(sdd, yd)) * 180.0f / M_PI - 90.0f, 1, 0, 0);
+        glRotatef((float)(-atan2(zd, xd)) * 180.0f / std::numbers::pi - 90.0f, 0, 1, 0);
+        glRotatef((float)(-atan2(sdd, yd)) * 180.0f / std::numbers::pi - 90.0f, 1, 0, 0);
 
         // 4J-PB - Rotating the healing beam too
         static float fRot = 0.0f;
@@ -157,9 +157,9 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
 
         int steps = 8;
         for (int i = 0; i <= steps; i++) {
-            double d = i % steps * M_PI * 2 / steps;
-            float s = sin(i % steps * M_PI * 2 / steps) * 0.75f;
-            float c = cos(i % steps * M_PI * 2 / steps) * 0.75f;
+            double d = i % steps * std::numbers::pi * 2 / steps;
+            float s = sin(i % steps * std::numbers::pi * 2 / steps) * 0.75f;
+            float c = cos(i % steps * std::numbers::pi * 2 / steps) * 0.75f;
             float u = i % steps * 1.0f / steps;
             // t->color(0x000000);
             t->vertexUV(s * 0.2f, c * 0.2f, 0, u, v1);

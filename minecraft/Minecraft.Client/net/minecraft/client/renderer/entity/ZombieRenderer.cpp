@@ -99,7 +99,7 @@ void ZombieRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
                                     float bob, float bodyRot, float a) {
     std::shared_ptr<Zombie> mob = std::dynamic_pointer_cast<Zombie>(_mob);
     if (mob->isConverting()) {
-        bodyRot += (float)(cos(mob->tickCount * 3.25) * M_PI * .25f);
+        bodyRot += (float)(cos(mob->tickCount * 3.25) * std::numbers::pi * .25f);
     }
     HumanoidMobRenderer::setupRotations(mob, bob, bodyRot, a);
 }

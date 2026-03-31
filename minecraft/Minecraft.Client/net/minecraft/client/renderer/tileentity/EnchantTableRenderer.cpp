@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "../../model/BookModel.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "EnchantTableRenderer.h"
 
 ResourceLocation EnchantTableRenderer::BOOK_LOCATION =
@@ -25,19 +25,19 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
 
     glTranslatef(0, 0.1f + sin(tt * 0.1f) * 0.01f, 0);
     float orot = (table->rot - table->oRot);
-    while (orot >= M_PI) orot -= M_PI * 2;
-    while (orot < -M_PI ) orot += M_PI * 2;
+    while (orot >= std::numbers::pi) orot -= std::numbers::pi * 2;
+    while (orot < -std::numbers::pi ) orot += std::numbers::pi * 2;
 
     float yRot = table->oRot + orot * a;
 
-    glRotatef(-yRot * 180 / M_PI, 0, 1, 0);
+    glRotatef(-yRot * 180 / std::numbers::pi, 0, 1, 0);
     glRotatef(80, 0, 0, 1);
     bindTexture(&BOOK_LOCATION);  // 4J was "/item/book.png"
 
     float ff1 = table->oFlip + (table->flip - table->oFlip) * a + 0.25f;
     float ff2 = table->oFlip + (table->flip - table->oFlip) * a + 0.75f;
-    ff1 = (ff1 - Mth::fastFloor(ff1)) * 1.6f - 0.3f;
-    ff2 = (ff2 - Mth::fastFloor(ff2)) * 1.6f - 0.3f;
+    ff1 = (ff1 - GameMath::fastFloor(ff1)) * 1.6f - 0.3f;
+    ff2 = (ff2 - GameMath::fastFloor(ff2)) * 1.6f - 0.3f;
 
     if (ff1 < 0) ff1 = 0;
     if (ff2 < 0) ff2 = 0;

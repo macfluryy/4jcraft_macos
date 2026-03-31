@@ -347,7 +347,7 @@ std::vector<double> HellRandomLevelSource::getHeights(std::vector<double>& buffe
     int pp = 0;
     std::vector<double> yoffs = std::vector<double>(ySize);
     for (int yy = 0; yy < ySize; yy++) {
-        yoffs[yy] = cos(yy * M_PI * 6 / (double)ySize) * 2;
+        yoffs[yy] = cos(yy * std::numbers::pi * 6 / (double)ySize) * 2;
 
         double dd = yy;
         if (yy > ySize / 2) {

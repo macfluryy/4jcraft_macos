@@ -45,20 +45,20 @@ Path* PathFinder::findPath(Entity* e, double xt, double yt, double zt,
     nodes.clear();
 
     bool resetAvoidWater = avoidWater;
-    int startY = Mth::floor(e->bb.y0 + 0.5f);
+    int startY = GameMath::floor(e->bb.y0 + 0.5f);
     if (canFloat && e->isInWater()) {
         startY = (int)(e->bb.y0);
-        int tileId = level->getTile((int)Mth::floor(e->x), startY,
-                                    (int)Mth::floor(e->z));
+        int tileId = level->getTile((int)GameMath::floor(e->x), startY,
+                                    (int)GameMath::floor(e->z));
         while (tileId == Tile::water_Id || tileId == Tile::calmWater_Id) {
             ++startY;
-            tileId = level->getTile((int)Mth::floor(e->x), startY,
-                                    (int)Mth::floor(e->z));
+            tileId = level->getTile((int)GameMath::floor(e->x), startY,
+                                    (int)GameMath::floor(e->z));
         }
         resetAvoidWater = avoidWater;
         avoidWater = false;
     } else
-        startY = Mth::floor(e->bb.y0 + 0.5f);
+        startY = GameMath::floor(e->bb.y0 + 0.5f);
 
     Node* from = getNode((int)floor(e->bb.x0), startY, (int)floor(e->bb.z0));
     Node* to = getNode((int)floor(xt - e->bbWidth / 2), (int)floor(yt),
@@ -231,9 +231,9 @@ int PathFinder::isFree(Entity* entity, int x, int y, int z, Node* size,
                 // have already got
                 if (entity->level->getTileRenderShape(tileId) ==
                     Tile::SHAPE_RAIL) {
-                    int xt = Mth::floor(entity->x);
-                    int yt = Mth::floor(entity->y);
-                    int zt = Mth::floor(entity->z);
+                    int xt = GameMath::floor(entity->x);
+                    int yt = GameMath::floor(entity->y);
+                    int zt = GameMath::floor(entity->z);
                     if (entity->level->getTileRenderShape(xt, yt, zt) ==
                             Tile::SHAPE_RAIL ||
                         entity->level->getTileRenderShape(xt, yt - 1, zt) ==

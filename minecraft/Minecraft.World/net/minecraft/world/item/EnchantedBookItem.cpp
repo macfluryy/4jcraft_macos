@@ -121,7 +121,7 @@ std::shared_ptr<ItemInstance> EnchantedBookItem::createForRandomLoot(
         Enchantment::validEnchantments.size())];
     std::shared_ptr<ItemInstance> book =
         std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, 0));
-    int level = Mth::nextInt(random, enchantment->getMinLevel(),
+    int level = random->nextInt(enchantment->getMinLevel(),
                              enchantment->getMaxLevel());
 
     addEnchantment(book, new EnchantmentInstance(enchantment, level));
@@ -141,7 +141,7 @@ WeighedTreasure* EnchantedBookItem::createForRandomTreasure(Random* random,
         Enchantment::validEnchantments.size())];
     std::shared_ptr<ItemInstance> book =
         std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, 0));
-    int level = Mth::nextInt(random, enchantment->getMinLevel(),
+    int level = random->nextInt(enchantment->getMinLevel(),
                              enchantment->getMaxLevel());
 
     addEnchantment(book, new EnchantmentInstance(enchantment, level));

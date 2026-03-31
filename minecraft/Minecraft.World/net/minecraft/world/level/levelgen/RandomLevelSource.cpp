@@ -531,7 +531,7 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer, i
         pows = std::vector<float>(5 * 5);
         for (int xb = -2; xb <= 2; xb++) {
             for (int zb = -2; zb <= 2; zb++) {
-                float ppp = 10.0f / Mth::sqrt(xb * xb + zb * zb + 0.2f);
+                float ppp = 10.0f / GameMath::sqrt(xb * xb + zb * zb + 0.2f);
                 pows[xb + 2 + (zb + 2) * 5] = ppp;
             }
         }

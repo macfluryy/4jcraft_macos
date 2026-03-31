@@ -19,7 +19,7 @@ bool RandomLookAroundGoal::canUse() {
 bool RandomLookAroundGoal::canContinueToUse() { return lookTime >= 0; }
 
 void RandomLookAroundGoal::start() {
-    double rnd = 2 * M_PI * mob->getRandom()->nextDouble();
+    double rnd = 2 * std::numbers::pi * mob->getRandom()->nextDouble();
     relX = cos(rnd);
     relZ = sin(rnd);
     lookTime = 20 + mob->getRandom()->nextInt(20);

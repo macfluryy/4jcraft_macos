@@ -5,7 +5,7 @@
 #include "TrackedEntity.h"
 #include "ServerPlayer.h"
 #include "ServerLevel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"

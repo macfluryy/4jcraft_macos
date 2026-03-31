@@ -318,8 +318,8 @@ bool b2 = !mob->isCapeHidden();*/
 
         float yr = mob->yBodyRotO + (mob->yBodyRot - mob->yBodyRotO) * a;
 
-        double xa = Mth::sin(yr * M_PI / 180);
-        double za = -Mth::cos(yr * M_PI / 180);
+        double xa = sinf(yr * std::numbers::pi / 180);
+        double za = -cosf(yr * std::numbers::pi / 180);
 
         float flap = (float)yd * 10;
         if (flap < -6) flap = -6;

@@ -36,7 +36,7 @@ void EnderChestTile::setPlacedBy(Level* level, int x, int y, int z,
                                  std::shared_ptr<LivingEntity> by,
                                  std::shared_ptr<ItemInstance> itemInstance) {
     int facing = 0;
-    int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5f)) & 3;
+    int dir = (GameMath::floor(by->yRot * 4 / (360) + 0.5f)) & 3;
 
     if (dir == 0) facing = Facing::NORTH;
     if (dir == 1) facing = Facing::EAST;

@@ -56,14 +56,14 @@ void WitherBossModel::setupAnim(float time, float r, float bob, float yRot,
                                 std::shared_ptr<Entity> entity,
                                 unsigned int uiBitmaskOverrideAnim) {
     float anim = cos(bob * .1f);
-    upperBodyParts[1]->xRot = (.065f + .05f * anim) * M_PI;
+    upperBodyParts[1]->xRot = (.065f + .05f * anim) * std::numbers::pi;
 
     upperBodyParts[2]->setPos(-2.f, 6.9f + cos(upperBodyParts[1]->xRot) * 10.f,
                               -.5f + sin(upperBodyParts[1]->xRot) * 10.f);
-    upperBodyParts[2]->xRot = (.265f + .1f * anim) * M_PI;
+    upperBodyParts[2]->xRot = (.265f + .1f * anim) * std::numbers::pi;
 
-    heads[0]->yRot = yRot / (180 / M_PI);
-    heads[0]->xRot = xRot / (180 / M_PI);
+    heads[0]->yRot = yRot / (180 / std::numbers::pi);
+    heads[0]->xRot = xRot / (180 / std::numbers::pi);
 }
 
 void WitherBossModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
@@ -73,7 +73,7 @@ void WitherBossModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
 
     for (int i = 1; i < 3; i++) {
         heads[i]->yRot =
-            (boss->getHeadYRot(i - 1) - mob->yBodyRot) / (180 / M_PI);
-        heads[i]->xRot = boss->getHeadXRot(i - 1) / (180 / M_PI);
+            (boss->getHeadYRot(i - 1) - mob->yBodyRot) / (180 / std::numbers::pi);
+        heads[i]->xRot = boss->getHeadXRot(i - 1) / (180 / std::numbers::pi);
     }
 }

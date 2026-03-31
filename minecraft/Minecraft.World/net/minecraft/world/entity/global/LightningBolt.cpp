@@ -26,11 +26,11 @@ LightningBolt::LightningBolt(Level* level, double x, double y, double z)
     if (!level->isClientSide &&
         level->getGameRules()->getBoolean(GameRules::RULE_DOFIRETICK) &&
         level->difficulty >= 2 &&
-        level->hasChunksAt(Mth::floor(x), Mth::floor(y), Mth::floor(z), 10)) {
+        level->hasChunksAt(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z), 10)) {
         {
-            int xt = Mth::floor(x);
-            int yt = Mth::floor(y);
-            int zt = Mth::floor(z);
+            int xt = GameMath::floor(x);
+            int yt = GameMath::floor(y);
+            int zt = GameMath::floor(z);
             // 4J added - don't go setting tiles if we aren't tracking them for
             // network synchronisation
             if (MinecraftServer::getInstance()->getPlayers()->isTrackingTile(
@@ -42,9 +42,9 @@ LightningBolt::LightningBolt(Level* level, double x, double y, double z)
         }
 
         for (int i = 0; i < 4; i++) {
-            int xt = Mth::floor(x) + random->nextInt(3) - 1;
-            int yt = Mth::floor(y) + random->nextInt(3) - 1;
-            int zt = Mth::floor(z) + random->nextInt(3) - 1;
+            int xt = GameMath::floor(x) + random->nextInt(3) - 1;
+            int yt = GameMath::floor(y) + random->nextInt(3) - 1;
+            int zt = GameMath::floor(z) + random->nextInt(3) - 1;
             // 4J added - don't go setting tiles if we aren't tracking them for
             // network synchronisation
             if (MinecraftServer::getInstance()->getPlayers()->isTrackingTile(

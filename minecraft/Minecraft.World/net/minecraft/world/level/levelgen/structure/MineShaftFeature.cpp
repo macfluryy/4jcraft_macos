@@ -1,7 +1,7 @@
 #include "../../../../../../Header Files/stdafx.h"
 #include "net.minecraft.world.level.levelgen.structure.h"
 #include "java/JavaMath.h"
-#include "../../../../util/Mth.h"
+#include "../../../../util/GameMath.h"
 
 const std::wstring MineShaftFeature::OPTION_CHANCE = L"chance";
 
@@ -15,7 +15,7 @@ MineShaftFeature::MineShaftFeature(
 
     for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_CHANCE) == 0) {
-            chance = Mth::getDouble(it->second, chance);
+            chance = GameMath::getDouble(it->second, chance);
         }
     }
 }

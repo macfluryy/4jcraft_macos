@@ -121,7 +121,7 @@ void Ghast::serverAiStep() {
         double ydd =
             (target->bb.y0 + target->bbHeight / 2) - (y + bbHeight / 2);
         double zdd = target->z - z;
-        yBodyRot = yRot = -(float)atan2(xdd, zdd) * 180 / M_PI;
+        yBodyRot = yRot = -(float)atan2(xdd, zdd) * 180 / std::numbers::pi;
 
         if (canSee(target)) {
             if (charge == 10) {
@@ -152,7 +152,7 @@ void Ghast::serverAiStep() {
             if (charge > 0) charge--;
         }
     } else {
-        yBodyRot = yRot = -(float)atan2(this->xd, this->zd) * 180 / M_PI;
+        yBodyRot = yRot = -(float)atan2(this->xd, this->zd) * 180 / std::numbers::pi;
         if (charge > 0) charge--;
     }
 

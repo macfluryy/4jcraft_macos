@@ -19,12 +19,12 @@ OreFeature::OreFeature(int tile, int count, int targetTile) {
 
 bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
     PIXBeginNamedEvent(0, "Place Ore Feature");
-    float dir = random->nextFloat() * M_PI;
+    float dir = random->nextFloat() * std::numbers::pi;
 
-    double x0 = x + 8 + Mth::sin(dir) * count / 8;
-    double x1 = x + 8 - Mth::sin(dir) * count / 8;
-    double z0 = z + 8 + Mth::cos(dir) * count / 8;
-    double z1 = z + 8 - Mth::cos(dir) * count / 8;
+    double x0 = x + 8 + GameMath::sin(dir) * count / 8;
+    double x1 = x + 8 - GameMath::sin(dir) * count / 8;
+    double z0 = z + 8 + GameMath::cos(dir) * count / 8;
+    double z1 = z + 8 - GameMath::cos(dir) * count / 8;
 
     double y0 = y + random->nextInt(3) - 2;
     double y1 = y + random->nextInt(3) - 2;
@@ -42,11 +42,11 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
         int minZ = z0 - 1;
 
         double maxss = count / 16;
-        double maxr = (Mth::sin(M_PI) + 1) * maxss + 1;
-        double maxhr = (Mth::sin(M_PI) + 1) * maxss + 1;
-        int maxX = Mth::floor(x1 + maxr / 2);
-        int maxY = Mth::floor(y1 + maxhr / 2);
-        int maxZ = Mth::floor(z1 + maxr / 2);
+        double maxr = (GameMath::sin(std::numbers::pi) + 1) * maxss + 1;
+        double maxhr = (GameMath::sin(std::numbers::pi) + 1) * maxss + 1;
+        int maxX = GameMath::floor(x1 + maxr / 2);
+        int maxY = GameMath::floor(y1 + maxhr / 2);
+        int maxZ = GameMath::floor(z1 + maxr / 2);
 
         collisionsExpected = levelGenOptions->checkIntersects(minX, minY, minZ,
                                                               maxX, maxY, maxZ);
@@ -63,19 +63,19 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
         double zz = z0 + (z1 - z0) * d / count;
 
         double ss = random->nextDouble() * count / 16;
-        double r = (Mth::sin(d * M_PI / count) + 1) * ss + 1;
-        double hr = r;  //(Mth::sin(d * M_PI / count) + 1) * ss + 1;
+        double r = (GameMath::sin(d * std::numbers::pi / count) + 1) * ss + 1;
+        double hr = r;  //(GameMath::sin(d * std::numbers::pi / count) + 1) * ss + 1;
 
         double halfR = r / 2;
         double halfHR = halfR;  // hr/2;
 
-        int xt0 = Mth::floor(xx - halfR);
-        int yt0 = Mth::floor(yy - halfHR);
-        int zt0 = Mth::floor(zz - halfR);
+        int xt0 = GameMath::floor(xx - halfR);
+        int yt0 = GameMath::floor(yy - halfHR);
+        int zt0 = GameMath::floor(zz - halfR);
 
-        int xt1 = Mth::floor(xx + halfR);
-        int yt1 = Mth::floor(yy + halfHR);
-        int zt1 = Mth::floor(zz + halfR);
+        int xt1 = GameMath::floor(xx + halfR);
+        int yt1 = GameMath::floor(yy + halfHR);
+        int zt1 = GameMath::floor(zz + halfR);
 
         // 4J Stu Added to stop ore features generating areas previously place
         // by game rule generation

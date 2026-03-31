@@ -45,7 +45,7 @@ std::optional<Vec3> RandomPos::generateRandomPos(
     if (mob->hasRestriction()) {
         double restDist =
             mob->getRestrictCenter()->distSqr(
-                Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z)) +
+                GameMath::floor(mob->x), GameMath::floor(mob->y), GameMath::floor(mob->z)) +
             4;
         double radius = mob->getRestrictRadius() + xzDist;
         bRestrict = restDist < radius * radius;
@@ -70,9 +70,9 @@ std::optional<Vec3> RandomPos::generateRandomPos(
 
         if (dir != nullptr && xt * dir->x + zt * dir->z < 0) continue;
 
-        xt += Mth::floor(mob->x);
-        yt += Mth::floor(mob->y);
-        zt += Mth::floor(mob->z);
+        xt += GameMath::floor(mob->x);
+        yt += GameMath::floor(mob->y);
+        zt += GameMath::floor(mob->z);
 
         if (bRestrict && !mob->isWithinRestriction(xt, yt, zt)) continue;
         float value = mob->getWalkTargetValue(xt, yt, zt);

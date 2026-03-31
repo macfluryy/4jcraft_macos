@@ -748,7 +748,7 @@ bool TileRenderer::tesselateBrewingStandInWorld(BrewingStandTile* tt, int x,
     int data = level->getData(x, y, z);
 
     for (int arm = 0; arm < 3; arm++) {
-        float angle = arm * M_PI * 2.0f / 3.0f + M_PI * 0.5f;
+        float angle = arm * std::numbers::pi * 2.0f / 3.0f + std::numbers::pi * 0.5f;
 
         float u0 = tex->getU(8, true);
         float u1 = tex->getU1(true);
@@ -1832,26 +1832,26 @@ bool TileRenderer::tesselateLeverInWorld(Tile* tt, int x, int y, int z) {
     for (int i = 0; i < 8; i++) {
         if (flipped) {
             corners[i].z -= 1 / 16.0f;
-            corners[i].xRot(40 * M_PI / 180);
+            corners[i].xRot(40 * std::numbers::pi / 180);
         } else {
             corners[i].z += 1 / 16.0f;
-            corners[i].xRot(-40 * M_PI / 180);
+            corners[i].xRot(-40 * std::numbers::pi / 180);
         }
         if (dir == 0 || dir == 7) {
-            corners[i].zRot(180 * M_PI / 180);
+            corners[i].zRot(180 * std::numbers::pi / 180);
         }
         if (dir == 6 || dir == 0) {
-            corners[i].yRot(90 * M_PI / 180);
+            corners[i].yRot(90 * std::numbers::pi / 180);
         }
 
         if (dir > 0 && dir < 5) {
             corners[i].y -= 6 / 16.0f;
-            corners[i].xRot(90 * M_PI / 180);
+            corners[i].xRot(90 * std::numbers::pi / 180);
 
-            if (dir == 4) corners[i].yRot(0 * M_PI / 180);
-            if (dir == 3) corners[i].yRot(180 * M_PI / 180);
-            if (dir == 2) corners[i].yRot(90 * M_PI / 180);
-            if (dir == 1) corners[i].yRot(-90 * M_PI / 180);
+            if (dir == 4) corners[i].yRot(0 * std::numbers::pi / 180);
+            if (dir == 3) corners[i].yRot(180 * std::numbers::pi / 180);
+            if (dir == 2) corners[i].yRot(90 * std::numbers::pi / 180);
+            if (dir == 1) corners[i].yRot(-90 * std::numbers::pi / 180);
 
             corners[i].x += x + 0.5;
             corners[i].y += y + 8 / 16.0f;
@@ -1992,22 +1992,22 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
         corners[i].z += 1 / 16.0f;
 
         if (powered) {
-            corners[i].xRot(30 * M_PI / 180);
+            corners[i].xRot(30 * std::numbers::pi / 180);
             corners[i].y -= 7 / 16.0f;
         } else if (attached) {
-            corners[i].xRot(5 * M_PI / 180);
+            corners[i].xRot(5 * std::numbers::pi / 180);
             corners[i].y -= 7 / 16.0f;
         } else {
-            corners[i].xRot(-40 * M_PI / 180);
+            corners[i].xRot(-40 * std::numbers::pi / 180);
             corners[i].y -= 6 / 16.0f;
         }
 
-        corners[i].xRot(90 * M_PI / 180);
+        corners[i].xRot(90 * std::numbers::pi / 180);
 
-        if (dir == Direction::NORTH) corners[i].yRot(0 * M_PI / 180);
-        if (dir == Direction::SOUTH) corners[i].yRot(180 * M_PI / 180);
-        if (dir == Direction::WEST) corners[i].yRot(90 * M_PI / 180);
-        if (dir == Direction::EAST) corners[i].yRot(-90 * M_PI / 180);
+        if (dir == Direction::NORTH) corners[i].yRot(0 * std::numbers::pi / 180);
+        if (dir == Direction::SOUTH) corners[i].yRot(180 * std::numbers::pi / 180);
+        if (dir == Direction::WEST) corners[i].yRot(90 * std::numbers::pi / 180);
+        if (dir == Direction::EAST) corners[i].yRot(-90 * std::numbers::pi / 180);
 
         corners[i].x += x + 0.5;
         corners[i].y += y + 5 / 16.0f;
@@ -2084,19 +2084,19 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
         if (powered) {
             corners[i].y -= 1.5 / 16.0f;
             corners[i].z -= 2.6 / 16.0f;
-            corners[i].xRot(0 * M_PI / 180);
+            corners[i].xRot(0 * std::numbers::pi / 180);
         } else if (attached) {
             corners[i].y += 0.25 / 16.0f;
             corners[i].z -= 2.75 / 16.0f;
-            corners[i].xRot(10 * M_PI / 180);
+            corners[i].xRot(10 * std::numbers::pi / 180);
         } else {
-            corners[i].xRot(50 * M_PI / 180);
+            corners[i].xRot(50 * std::numbers::pi / 180);
         }
 
-        if (dir == Direction::NORTH) corners[i].yRot(0 * M_PI / 180);
-        if (dir == Direction::SOUTH) corners[i].yRot(180 * M_PI / 180);
-        if (dir == Direction::WEST) corners[i].yRot(90 * M_PI / 180);
-        if (dir == Direction::EAST) corners[i].yRot(-90 * M_PI / 180);
+        if (dir == Direction::NORTH) corners[i].yRot(0 * std::numbers::pi / 180);
+        if (dir == Direction::SOUTH) corners[i].yRot(180 * std::numbers::pi / 180);
+        if (dir == Direction::WEST) corners[i].yRot(90 * std::numbers::pi / 180);
+        if (dir == Direction::EAST) corners[i].yRot(-90 * std::numbers::pi / 180);
 
         corners[i].x += x + 0.5;
         corners[i].y += y + 5 / 16.0f;
@@ -4585,8 +4585,8 @@ bool TileRenderer::tesselateWaterInWorld(Tile* tt, int x, int y, int z) {
             u11 = u10;
             v11 = v00;
         } else {
-            float s = Mth::sin(angle) * .25f;
-            float c = Mth::cos(angle) * .25f;
+            float s = sinf(angle) * .25f;
+            float c = cosf(angle) * .25f;
             float cc = SharedConstants::WORLD_RESOLUTION * .5f;
             u00 = tex->getU(cc + (-c - s) * SharedConstants::WORLD_RESOLUTION);
             v00 = tex->getV(cc + (-c + s) * SharedConstants::WORLD_RESOLUTION);

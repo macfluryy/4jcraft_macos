@@ -149,9 +149,9 @@ void EnderMan::aiStep() {
         if (level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING)) {
             if (getCarryingTile() == 0) {
                 if (random->nextInt(20) == 0) {
-                    int xt = Mth::floor(x - 2 + random->nextDouble() * 4);
-                    int yt = Mth::floor(y + random->nextDouble() * 3);
-                    int zt = Mth::floor(z - 2 + random->nextDouble() * 4);
+                    int xt = GameMath::floor(x - 2 + random->nextDouble() * 4);
+                    int yt = GameMath::floor(y + random->nextDouble() * 3);
+                    int zt = GameMath::floor(z - 2 + random->nextDouble() * 4);
                     int t = level->getTile(xt, yt, zt);
                     if (MAY_TAKE[t]) {
                         setCarryingTile(level->getTile(xt, yt, zt));
@@ -161,9 +161,9 @@ void EnderMan::aiStep() {
                 }
             } else {
                 if (random->nextInt(2000) == 0) {
-                    int xt = Mth::floor(x - 1 + random->nextDouble() * 2);
-                    int yt = Mth::floor(y + random->nextDouble() * 2);
-                    int zt = Mth::floor(z - 1 + random->nextDouble() * 2);
+                    int xt = GameMath::floor(x - 1 + random->nextDouble() * 2);
+                    int yt = GameMath::floor(y + random->nextDouble() * 2);
+                    int zt = GameMath::floor(z - 1 + random->nextDouble() * 2);
                     int t = level->getTile(xt, yt, zt);
                     int bt = level->getTile(xt, yt - 1, zt);
                     if (t == 0 && bt > 0 && Tile::tiles[bt]->isCubeShaped()) {
@@ -189,8 +189,8 @@ void EnderMan::aiStep() {
     if (level->isDay() && !level->isClientSide) {
         float br = getBrightness(1);
         if (br > 0.5f) {
-            if (level->canSeeSky(Mth::floor(x), (int)floor(y + 0.5),
-                                 Mth::floor(z)) &&
+            if (level->canSeeSky(GameMath::floor(x), (int)floor(y + 0.5),
+                                 GameMath::floor(z)) &&
                 random->nextFloat() * 30 < (br - 0.4f) * 2) {
                 attackTarget = nullptr;
                 setCreepy(false);
@@ -269,9 +269,9 @@ bool EnderMan::teleport(double xx, double yy, double zz) {
     y = yy;
     z = zz;
     bool ok = false;
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(y);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(y);
+    int zt = GameMath::floor(z);
 
     if (level->hasChunkAt(xt, yt, zt)) {
         bool landed = false;

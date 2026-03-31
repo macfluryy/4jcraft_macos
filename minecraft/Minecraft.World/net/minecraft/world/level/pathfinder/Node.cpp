@@ -34,7 +34,7 @@ float Node::distanceTo(Node* to) {
     float xd = (float)(to->x - x);
     float yd = (float)(to->y - y);
     float zd = (float)(to->z - z);
-    return Mth::sqrt(xd * xd + yd * yd + zd * zd);
+    return GameMath::sqrt(xd * xd + yd * yd + zd * zd);
 }
 
 float Node::distanceToSqr(Node* to) {

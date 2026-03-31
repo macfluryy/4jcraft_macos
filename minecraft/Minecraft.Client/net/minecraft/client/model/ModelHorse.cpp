@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
 #include "ModelHorse.h"
 #include "geom/ModelPart.h"
@@ -450,7 +450,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     // animations
     {
         // TODO: Magic numbers
-        Head->xRot = standing * ((15 * Mth::DEGRAD) + (HeadXRot)) +
+        Head->xRot = standing * ((15 * GameMath::DEG_TO_RAD) + (HeadXRot)) +
                      eating * 2.18166f +
                      (1.0f - std::max(standing, eating)) * Head->xRot;
         Head->yRot = standing * (headRotMinusBodyRot / 57.29578f) +
@@ -491,8 +491,8 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     MuleEarL->xRot = Head->xRot;
     MuleEarR->xRot = Head->xRot;
     Neck->xRot = Head->xRot;
-    UMouth->xRot = 0 - (M_PI * .03f) * openMouth;
-    LMouth->xRot = 0 + (M_PI * .05f) * openMouth;
+    UMouth->xRot = 0 - (std::numbers::pi * .03f) * openMouth;
+    LMouth->xRot = 0 + (std::numbers::pi * .05f) * openMouth;
 
     Mane->xRot = Head->xRot;
 
@@ -513,11 +513,11 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
      * knee joints Leg1 and Leg4 use LLegXRot Leg2 and Leg3 use RLegXRot
      */
     {
-        float r90 = M_PI * .5f;
-        float r270 = M_PI * 1.5f;
-        float r300 = -60 * Mth::DEGRAD;
-        float standAngle = 15 * Mth::DEGRAD * standing;
-        float bobValue = Mth::cos((bob * 0.6f) + 3.141593f);
+        float r90 = std::numbers::pi * .5f;
+        float r270 = std::numbers::pi * 1.5f;
+        float r300 = -60 * GameMath::DEG_TO_RAD;
+        float standAngle = 15 * GameMath::DEG_TO_RAD * standing;
+        float bobValue = cosf((bob * 0.6f) + 3.141593f);
 
         Leg3A->y = -2.f * standing + 9.f * iStanding;
         Leg3A->z = -2.f * standing + -8.f * iStanding;
@@ -526,55 +526,55 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
 
         Leg1B->y =
             Leg1A->y +
-            (Mth::sin(r90 + standAngle + iStanding * (-legAnim1 * 0.5f * ws)) *
+            (sinf(r90 + standAngle + iStanding * (-legAnim1 * 0.5f * ws)) *
              7.f);
         Leg1B->z =
             Leg1A->z +
-            (Mth::cos(r270 + standAngle + iStanding * (-legAnim1 * 0.5f * ws)) *
+            (cosf(r270 + standAngle + iStanding * (-legAnim1 * 0.5f * ws)) *
              7.f);
 
         Leg2B->y =
             Leg2A->y +
-            (Mth::sin(r90 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) *
+            (sinf(r90 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) *
              7.f);
         Leg2B->z =
             Leg2A->z +
-            (Mth::cos(r270 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) *
+            (cosf(r270 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) *
              7.f);
 
         float rlegRot = (r300 + bobValue) * standing + legXRotAnim * iStanding;
         float llegRot =
             (r300 + -bobValue) * standing + -legXRotAnim * iStanding;
-        Leg3B->y = Leg3A->y + (Mth::sin(r90 + rlegRot) * 7.f);
-        Leg3B->z = Leg3A->z + (Mth::cos(r270 + rlegRot) * 7.f);
+        Leg3B->y = Leg3A->y + (sinf(r90 + rlegRot) * 7.f);
+        Leg3B->z = Leg3A->z + (cosf(r270 + rlegRot) * 7.f);
 
-        Leg4B->y = Leg4A->y + (Mth::sin(r90 + llegRot) * 7.f);
-        Leg4B->z = Leg4A->z + (Mth::cos(r270 + llegRot) * 7.f);
+        Leg4B->y = Leg4A->y + (sinf(r90 + llegRot) * 7.f);
+        Leg4B->z = Leg4A->z + (cosf(r270 + llegRot) * 7.f);
 
         Leg1A->xRot = standAngle + (-legAnim1 * 0.5f * ws) * iStanding;
         Leg1B->xRot =
-            (-5 * Mth::DEGRAD) * standing +
+            (-5 * GameMath::DEG_TO_RAD) * standing +
             ((-legAnim1 * 0.5f * ws) - std::max(0.0f, legAnim1 * .5f * ws)) *
                 iStanding;
         Leg1C->xRot = Leg1B->xRot;
 
         Leg2A->xRot = standAngle + (legAnim1 * 0.5f * ws) * iStanding;
         Leg2B->xRot =
-            (-5 * Mth::DEGRAD) * standing +
+            (-5 * GameMath::DEG_TO_RAD) * standing +
             ((legAnim1 * 0.5f * ws) - std::max(0.0f, -legAnim1 * .5f * ws)) *
                 iStanding;
         Leg2C->xRot = Leg2B->xRot;
 
         Leg3A->xRot = rlegRot;
         Leg3B->xRot =
-            (Leg3A->xRot + M_PI * std::max(0.0f, (.2f + bobValue * .2f))) *
+            (Leg3A->xRot + std::numbers::pi * std::max(0.0f, (.2f + bobValue * .2f))) *
                 standing +
             (legXRotAnim + std::max(0.0f, legAnim1 * 0.5f * ws)) * iStanding;
         Leg3C->xRot = Leg3B->xRot;
 
         Leg4A->xRot = llegRot;
         Leg4B->xRot =
-            (Leg4A->xRot + M_PI * std::max(0.0f, (.2f - bobValue * .2f))) *
+            (Leg4A->xRot + std::numbers::pi * std::max(0.0f, (.2f - bobValue * .2f))) *
                 standing +
             (-legXRotAnim + std::max(0.0f, -legAnim1 * 0.5f * ws)) * iStanding;
         Leg4C->xRot = Leg4B->xRot;
@@ -667,7 +667,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
     }
 
     if (tail) {
-        TailA->yRot = Mth::cos(bob * 0.7f);
+        TailA->yRot = cosf(bob * 0.7f);
         tailMov = 0;
     } else {
         TailA->yRot = 0.f;

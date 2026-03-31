@@ -65,13 +65,13 @@ const int DyePowderItem::ORANGE = 14;
 const int DyePowderItem::WHITE = 15;
 
 Icon* DyePowderItem::getIcon(int itemAuxValue) {
-    int colorValue = Mth::clamp(itemAuxValue, 0, 15);
+    int colorValue = GameMath::clamp(itemAuxValue, 0, 15);
     return icons[colorValue];
 }
 
 unsigned int DyePowderItem::getDescriptionId(
     std::shared_ptr<ItemInstance> itemInstance) {
-    int colorValue = Mth::clamp(itemInstance->getAuxValue(), 0, 15);
+    int colorValue = GameMath::clamp(itemInstance->getAuxValue(), 0, 15);
     return COLOR_DESCS[colorValue];
 }
 

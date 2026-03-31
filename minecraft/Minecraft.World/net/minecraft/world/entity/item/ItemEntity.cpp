@@ -17,7 +17,7 @@ void ItemEntity::_init() {
     age = 0;
     throwTime = 0;
     health = 5;
-    bobOffs = (float)(Math::random() * M_PI * 2);
+    bobOffs = (float)(Math::random() * std::numbers::pi * 2);
 
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
@@ -77,7 +77,7 @@ void ItemEntity::tick() {
     bool moved = (int)xo != (int)x || (int)yo != (int)y || (int)zo != (int)z;
 
     if (moved || tickCount % 25 == 0) {
-        if (level->getMaterial(Mth::floor(x), Mth::floor(y), Mth::floor(z)) ==
+        if (level->getMaterial(GameMath::floor(x), GameMath::floor(y), GameMath::floor(z)) ==
             Material::lava) {
             yd = 0.2f;
             xd = (random->nextFloat() - random->nextFloat()) * 0.2f;
@@ -97,7 +97,7 @@ void ItemEntity::tick() {
     if (onGround) {
         friction = 0.6f * 0.98f;
         int t =
-            level->getTile(Mth::floor(x), Mth::floor(bb.y0) - 1, Mth::floor(z));
+            level->getTile(GameMath::floor(x), GameMath::floor(bb.y0) - 1, GameMath::floor(z));
         if (t > 0) {
             friction = Tile::tiles[t]->friction * 0.98f;
         }

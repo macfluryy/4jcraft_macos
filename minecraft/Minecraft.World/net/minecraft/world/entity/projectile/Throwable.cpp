@@ -41,16 +41,16 @@ Throwable::Throwable(Level* level, std::shared_ptr<LivingEntity> mob)
 
     moveTo(mob->x, mob->y + mob->getHeadHeight(), mob->z, mob->yRot, mob->xRot);
 
-    x -= cos(yRot / 180 * M_PI) * 0.16f;
+    x -= cos(yRot / 180 * std::numbers::pi) * 0.16f;
     y -= 0.1f;
-    z -= sin(yRot / 180 * M_PI) * 0.16f;
+    z -= sin(yRot / 180 * std::numbers::pi) * 0.16f;
     setPos(x, y, z);
     heightOffset = 0;
 
     float speed = 0.4f;
-    xd = (-sin(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI)) * speed;
-    zd = (cos(yRot / 180 * M_PI) * cos(xRot / 180 * M_PI)) * speed;
-    yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * M_PI)) * speed;
+    xd = (-sin(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi)) * speed;
+    zd = (cos(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi)) * speed;
+    yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * std::numbers::pi)) * speed;
 
     shoot(xd, yd, zd, getThrowPower(), 1);
 }
@@ -92,8 +92,8 @@ void Throwable::shoot(double xd, double yd, double zd, float pow,
 
     float sd = (float)sqrt(xd * xd + zd * zd);
 
-    yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-    xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
+    yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+    xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / std::numbers::pi);
     life = 0;
 }
 
@@ -103,8 +103,8 @@ void Throwable::lerpMotion(double xd, double yd, double zd) {
     this->zd = zd;
     if (xRotO == 0 && yRotO == 0) {
         float sd = (float)sqrt(xd * xd + zd * zd);
-        yRotO = yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
+        yRotO = yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+        xRotO = xRot = (float)(atan2(yd, (double)sd) * 180 / std::numbers::pi);
     }
 }
 
@@ -189,8 +189,8 @@ void Throwable::tick() {
     z += zd;
 
     float sd = (float)sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(xd, zd) * 180 / M_PI);
-    xRot = (float)(atan2(yd, (double)sd) * 180 / M_PI);
+    yRot = (float)(atan2(xd, zd) * 180 / std::numbers::pi);
+    xRot = (float)(atan2(yd, (double)sd) * 180 / std::numbers::pi);
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

@@ -1,6 +1,6 @@
 #include "../../../../../../Header Files/stdafx.h"
 #include "PerlinNoise.h"
-#include "../../../../util/Mth.h"
+#include "../../../../util/GameMath.h"
 
 PerlinNoise::PerlinNoise(int levels) {
     Random random;
@@ -67,8 +67,8 @@ std::vector<double> PerlinNoise::getRegion(std::vector<double>& buffer, int x, i
         double xx = x * pow * xScale;
         double yy = y * pow * yScale;
         double zz = z * pow * zScale;
-        int64_t xb = Mth::lfloor(xx);
-        int64_t zb = Mth::lfloor(zz);
+        int64_t xb = GameMath::lfloor(xx);
+        int64_t zb = GameMath::lfloor(zz);
         xx -= xb;
         zz -= zb;
         xb %= 16777216;

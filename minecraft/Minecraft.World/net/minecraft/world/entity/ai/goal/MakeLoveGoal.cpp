@@ -23,9 +23,9 @@ bool MakeLoveGoal::canUse() {
     if (villager->getAge() != 0) return false;
     if (villager->getRandom()->nextInt(500) != 0) return false;
 
-    village = level->villages->getClosestVillage(Mth::floor(villager->x),
-                                                 Mth::floor(villager->y),
-                                                 Mth::floor(villager->z), 0);
+    village = level->villages->getClosestVillage(GameMath::floor(villager->x),
+                                                 GameMath::floor(villager->y),
+                                                 GameMath::floor(villager->z), 0);
     if (village.lock() == nullptr) return false;
     if (!villageNeedsMoreVillagers()) return false;
 

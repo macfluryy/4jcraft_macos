@@ -60,7 +60,7 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
         if (dir.length() == 0) {
         } else {
             dir = dir.normalize();
-            rot = (float)(atan2(dir.z, dir.x) * 180 / M_PI);
+            rot = (float)(atan2(dir.z, dir.x) * 180 / std::numbers::pi);
             xRot = (float)(atan(dir.y) * 73);
         }
     }
@@ -72,7 +72,7 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
     float dmg = cart->getDamage() - a;
     if (dmg < 0) dmg = 0;
     if (hurt > 0) {
-        glRotatef(Mth::sin(hurt) * hurt * dmg / 10 * cart->getHurtDir(), 1, 0,
+        glRotatef(sinf(hurt) * hurt * dmg / 10 * cart->getHurtDir(), 1, 0,
                   0);
     }
 

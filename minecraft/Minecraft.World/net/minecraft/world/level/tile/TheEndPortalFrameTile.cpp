@@ -64,7 +64,7 @@ int TheEndPortalFrameTile::getResource(int data, Random* random,
 void TheEndPortalFrameTile::setPlacedBy(
     Level* level, int x, int y, int z, std::shared_ptr<LivingEntity> by,
     std::shared_ptr<ItemInstance> itemInstance) {
-    int dir = (((Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3) + 2) % 4;
+    int dir = (((GameMath::floor(by->yRot * 4 / (360) + 0.5)) & 3) + 2) % 4;
     level->setData(x, y, z, dir, Tile::UPDATE_CLIENTS);
 }
 

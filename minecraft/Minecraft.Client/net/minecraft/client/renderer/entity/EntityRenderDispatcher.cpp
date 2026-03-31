@@ -224,12 +224,12 @@ void EntityRenderDispatcher::prepare(
     this->crosshairPickMob = crosshairPickMob;
 
     if (player->isSleeping()) {
-        int t = level->getTile(Mth::floor(player->x), Mth::floor(player->y),
-                               Mth::floor(player->z));
+        int t = level->getTile(GameMath::floor(player->x), GameMath::floor(player->y),
+                               GameMath::floor(player->z));
         if (t == Tile::bed_Id) {
             int data =
-                level->getData(Mth::floor(player->x), Mth::floor(player->y),
-                               Mth::floor(player->z));
+                level->getData(GameMath::floor(player->x), GameMath::floor(player->y),
+                               GameMath::floor(player->z));
 
             int direction = data & 3;
             playerRotY = (float)(direction * 90 + 180);

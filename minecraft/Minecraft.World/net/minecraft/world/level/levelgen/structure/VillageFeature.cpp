@@ -32,10 +32,10 @@ VillageFeature::VillageFeature(
     for (auto it = options.begin(); it != options.end(); ++it) {
         if (it->first.compare(OPTION_SIZE_MODIFIER) == 0) {
             villageSizeModifier =
-                Mth::getInt(it->second, villageSizeModifier, 0);
+                GameMath::getInt(it->second, villageSizeModifier, 0);
         } else if (it->first.compare(OPTION_SPACING) == 0) {
             townSpacing =
-                Mth::getInt(it->second, townSpacing, minTownSeparation + 1);
+                GameMath::getInt(it->second, townSpacing, minTownSeparation + 1);
         }
     }
 }

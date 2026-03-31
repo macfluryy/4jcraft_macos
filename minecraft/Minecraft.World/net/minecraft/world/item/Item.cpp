@@ -1607,10 +1607,10 @@ HitResult* Item::getPlayerPOVHitResult(Level* level,
 
     Vec3 from(x, y, z);
 
-    float yCos = (float)cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
-    float ySin = (float)sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
-    float xCos = (float)-cos(-xRot * Mth::RAD_TO_GRAD);
-    float xSin = (float)sin(-xRot * Mth::RAD_TO_GRAD);
+    float yCos = (float)cos(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+    float ySin = (float)sin(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+    float xCos = (float)-cos(-xRot * GameMath::DEG_TO_RAD);
+    float xSin = (float)sin(-xRot * GameMath::DEG_TO_RAD);
 
     float xa = ySin * xCos;
     float ya = xSin;

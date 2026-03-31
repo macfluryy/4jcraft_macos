@@ -135,12 +135,12 @@ float Sheep::getHeadEatAngleScale(float a) {
     if (eatAnimationTick > 4 && eatAnimationTick <= (EAT_ANIMATION_TICKS - 4)) {
         float scale = ((float)(eatAnimationTick - 4) - a) /
                       (float)(EAT_ANIMATION_TICKS - 8);
-        return M_PI * .20f + M_PI * .07f * Mth::sin(scale * 28.7f);
+        return std::numbers::pi * .20f + std::numbers::pi * .07f * sinf(scale * 28.7f);
     }
     if (eatAnimationTick > 0) {
-        return M_PI * .20f;
+        return std::numbers::pi * .20f;
     }
-    return ((xRot / (180.0f / M_PI)));
+    return ((xRot / (180.0f / std::numbers::pi)));
 }
 
 bool Sheep::mobInteract(std::shared_ptr<Player> player) {

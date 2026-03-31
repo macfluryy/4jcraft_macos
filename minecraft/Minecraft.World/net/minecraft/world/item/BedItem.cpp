@@ -25,7 +25,7 @@ bool BedItem::useOn(std::shared_ptr<ItemInstance> itemInstance,
 
     BedTile* tile = (BedTile*)Tile::bed;
 
-    int dir = (Mth::floor(player->yRot * 4 / (360) + 0.5f)) & 3;
+    int dir = (GameMath::floor(player->yRot * 4 / (360) + 0.5f)) & 3;
     int xra = 0;
     int zra = 0;
 

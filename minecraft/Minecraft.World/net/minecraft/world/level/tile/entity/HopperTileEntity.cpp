@@ -366,9 +366,9 @@ std::shared_ptr<Container> HopperTileEntity::getContainerAt(Level* level,
                                                             double z) {
     std::shared_ptr<Container> result = nullptr;
 
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(y);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(y);
+    int zt = GameMath::floor(z);
 
     std::shared_ptr<TileEntity> entity = level->getTileEntity(xt, yt, zt);
 

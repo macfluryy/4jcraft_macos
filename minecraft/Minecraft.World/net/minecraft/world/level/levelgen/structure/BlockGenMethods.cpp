@@ -6,12 +6,12 @@
 void BlockGenMethods::generateBox(Level* level, std::vector<uint8_t>& blocks, int sx,
                                   int sy, int sz, int ex, int ey, int ez,
                                   std::uint8_t edge, std::uint8_t filling) {
-    sx = Mth::clamp(sx, 0, 15);
-    sy = Mth::clamp(sy, 0, Level::genDepthMinusOne);
-    sz = Mth::clamp(sz, 0, 15);
-    ex = Mth::clamp(ex, 0, 15);
-    ey = Mth::clamp(ey, 0, Level::genDepthMinusOne);
-    ez = Mth::clamp(ez, 0, 15);
+    sx = GameMath::clamp(sx, 0, 15);
+    sy = GameMath::clamp(sy, 0, Level::genDepthMinusOne);
+    sz = GameMath::clamp(sz, 0, 15);
+    ex = GameMath::clamp(ex, 0, 15);
+    ey = GameMath::clamp(ey, 0, Level::genDepthMinusOne);
+    ez = GameMath::clamp(ez, 0, 15);
 
     for (int x = sx; x <= ex; x++) {
         for (int y = sy; y <= ey; y++) {
@@ -33,11 +33,11 @@ void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks, 
                                     int sy, int ex, int ey, int flatZ,
                                     int direction, std::uint8_t edge,
                                     std::uint8_t filling) {
-    sx = Mth::clamp(sx, 0, 15);
-    sy = Mth::clamp(sy, 0, Level::genDepthMinusOne);
-    ex = Mth::clamp(ex, 0, 15);
-    ey = Mth::clamp(ey, 0, Level::genDepthMinusOne);
-    int sz = Mth::clamp(flatZ, 0, 15);
+    sx = GameMath::clamp(sx, 0, 15);
+    sy = GameMath::clamp(sy, 0, Level::genDepthMinusOne);
+    ex = GameMath::clamp(ex, 0, 15);
+    ey = GameMath::clamp(ey, 0, Level::genDepthMinusOne);
+    int sz = GameMath::clamp(flatZ, 0, 15);
     int ez = sz;
 
     bool alongX = true;
@@ -89,12 +89,12 @@ void BlockGenMethods::generateDirectionLine(Level* level, std::vector<uint8_t>& 
                                             int ey, int ez, int startDirection,
                                             int endDirection,
                                             std::uint8_t block) {
-    sx = Mth::clamp(sx, 0, 15);
-    sy = Mth::clamp(sy, 0, Level::genDepthMinusOne);
-    sz = Mth::clamp(sz, 0, 15);
-    ex = Mth::clamp(ex, 0, 15);
-    ey = Mth::clamp(ey, 0, Level::genDepthMinusOne);
-    ez = Mth::clamp(ez, 0, 15);
+    sx = GameMath::clamp(sx, 0, 15);
+    sy = GameMath::clamp(sy, 0, Level::genDepthMinusOne);
+    sz = GameMath::clamp(sz, 0, 15);
+    ex = GameMath::clamp(ex, 0, 15);
+    ey = GameMath::clamp(ey, 0, Level::genDepthMinusOne);
+    ez = GameMath::clamp(ez, 0, 15);
 
     switch (startDirection) {
         case Direction::WEST: {
@@ -136,9 +136,9 @@ void BlockGenMethods::generateDirectionLine(Level* level, std::vector<uint8_t>& 
         } break;
     }
 
-    int dx = Mth::abs(ex - sx);
-    int dz = Mth::abs(ez - sz);
-    int dy = Mth::abs(ey - sy);
+    int dx = GameMath::abs(ex - sx);
+    int dz = GameMath::abs(ez - sz);
+    int dy = GameMath::abs(ey - sy);
 
     int slopeX = sx < ex ? 1 : -1;
     int slopeZ = sz < ez ? 1 : -1;

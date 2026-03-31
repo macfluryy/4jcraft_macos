@@ -215,8 +215,8 @@ void Fireball::tick() {
     z += zd;
 
     double sd = sqrt(xd * xd + zd * zd);
-    yRot = (float)(atan2(zd, xd) * 180 / M_PI) + 90;
-    xRot = (float)(atan2(sd, yd) * 180 / M_PI) - 90;
+    yRot = (float)(atan2(zd, xd) * 180 / std::numbers::pi) + 90;
+    xRot = (float)(atan2(sd, yd) * 180 / std::numbers::pi) - 90;
 
     while (xRot - xRotO < -180) xRotO -= 360;
     while (xRot - xRotO >= 180) xRotO += 360;

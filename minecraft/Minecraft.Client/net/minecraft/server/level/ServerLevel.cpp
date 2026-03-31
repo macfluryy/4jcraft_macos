@@ -32,7 +32,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/item/PrimedTnt.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/FallingTile.h"
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "ServerLevelListener.h"
 #include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"

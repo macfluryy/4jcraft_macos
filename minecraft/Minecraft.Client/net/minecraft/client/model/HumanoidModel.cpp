@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "HumanoidModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "geom/ModelPart.h"
 
@@ -196,8 +196,8 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
     // bool bIsAttacking = (attackTime > -9990.0f);
 
     {
-        head->yRot = yRot / (float)(180.0f / M_PI);
-        head->xRot = xRot / (float)(180.0f / M_PI);
+        head->yRot = yRot / (float)(180.0f / std::numbers::pi);
+        head->xRot = xRot / (float)(180.0f / std::numbers::pi);
         hair->yRot = head->yRot;
         hair->xRot = head->xRot;
         body->z = 0.0f;
@@ -216,8 +216,8 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         } else if (uiBitmaskOverrideAnim & (1 << eAnim_SingleArms)) {
-            arm0->xRot = (Mth::cos(time * 0.6662f + M_PI) * 2.0f) * r * 0.5f;
-            arm1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 2.0f) * r * 0.5f;
+            arm0->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
+            arm1->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         }
@@ -225,13 +225,13 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         // that's up
         else if ((uiBitmaskOverrideAnim & (1 << eAnim_StatueOfLiberty)) &&
                  (holdingRightHand == 0) && (attackTime == 0.0f)) {
-            arm0->xRot = -M_PI ;
+            arm0->xRot = -std::numbers::pi ;
             arm0->zRot = -0.3f;
-            arm1->xRot = (Mth::cos(time * 0.6662f) * 2.0f) * r * 0.5f;
+            arm1->xRot = (cosf(time * 0.6662f) * 2.0f) * r * 0.5f;
             arm1->zRot = 0.0f;
         } else {
-            arm0->xRot = (Mth::cos(time * 0.6662f + M_PI) * 2.0f) * r * 0.5f;
-            arm1->xRot = (Mth::cos(time * 0.6662f) * 2.0f) * r * 0.5f;
+            arm0->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
+            arm1->xRot = (cosf(time * 0.6662f) * 2.0f) * r * 0.5f;
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         }
@@ -271,11 +271,11 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             leg0->yRot = 0.0f;
             leg1->yRot = 0.0f;
         } else if (uiBitmaskOverrideAnim & (1 << eAnim_SingleLegs)) {
-            leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-            leg1->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
+            leg0->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
+            leg1->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
         } else {
-            leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-            leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
+            leg0->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
+            leg1->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r;
         }
 
         if (holdingLeftHand != 0) {
@@ -289,11 +289,11 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         arm1->yRot = 0.0f;
         if (attackTime > -9990.0f) {
             float swing = attackTime;
-            body->yRot = Mth::sin(sqrt(swing) * M_PI * 2.0f) * 0.2f;
-            arm0->z = Mth::sin(body->yRot) * 5.0f;
-            arm0->x = -Mth::cos(body->yRot) * 5.0f;
-            arm1->z = -Mth::sin(body->yRot) * 5.0f;
-            arm1->x = Mth::cos(body->yRot) * 5.0f;
+            body->yRot = sinf(sqrt(swing) * std::numbers::pi * 2.0f) * 0.2f;
+            arm0->z = sinf(body->yRot) * 5.0f;
+            arm0->x = -cosf(body->yRot) * 5.0f;
+            arm1->z = -sinf(body->yRot) * 5.0f;
+            arm1->x = cosf(body->yRot) * 5.0f;
             arm0->yRot += body->yRot;
             arm1->yRot += body->yRot;
             arm1->xRot += body->yRot;
@@ -302,16 +302,16 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             swing *= swing;
             swing *= swing;
             swing = 1.0f - swing;
-            float aa = Mth::sin(swing * M_PI);
-            float bb = Mth::sin(attackTime * M_PI) * -(head->xRot - 0.7f) * 0.75f;
+            float aa = sinf(swing * std::numbers::pi);
+            float bb = sinf(attackTime * std::numbers::pi) * -(head->xRot - 0.7f) * 0.75f;
             arm0->xRot -= aa * 1.2f + bb;  // 4J - changed 1.2 -> 1.2f
             arm0->yRot += body->yRot * 2.0f;
 
             if ((uiBitmaskOverrideAnim & (1 << eAnim_StatueOfLiberty)) &&
                 (holdingRightHand == 0) && (attackTime == 0.0f)) {
-                arm0->zRot -= Mth::sin(attackTime * M_PI) * -0.4f;
+                arm0->zRot -= sinf(attackTime * std::numbers::pi) * -0.4f;
             } else {
-                arm0->zRot = Mth::sin(attackTime * M_PI) * -0.4f;
+                arm0->zRot = sinf(attackTime * std::numbers::pi) * -0.4f;
             }
         }
 
@@ -324,7 +324,7 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             is = is * is * is;
             is = is * is * is;
             float iss = 1 - is;
-            arm0->xRot = -Mth::abs(Mth::cos(eating_t / 4.0f * M_PI) * 0.1f) *
+            arm0->xRot = -GameMath::abs(cosf(eating_t / 4.0f * std::numbers::pi) * 0.1f) *
                          (eating_swing > 0.2 ? 1.0f : 0.0f) *
                          2.0f;  // This factor is the chomping bit (conditional
                                 // factor is so that he doesn't eat whilst the
@@ -400,10 +400,10 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             }
         }
 
-        arm0->zRot += ((Mth::cos(bob * 0.09f)) * 0.05f + 0.05f);
-        arm1->zRot -= ((Mth::cos(bob * 0.09f)) * 0.05f + 0.05f);
-        arm0->xRot += ((Mth::sin(bob * 0.067f)) * 0.05f);
-        arm1->xRot -= ((Mth::sin(bob * 0.067f)) * 0.05f);
+        arm0->zRot += ((cosf(bob * 0.09f)) * 0.05f + 0.05f);
+        arm1->zRot -= ((cosf(bob * 0.09f)) * 0.05f + 0.05f);
+        arm0->xRot += ((sinf(bob * 0.067f)) * 0.05f);
+        arm1->xRot -= ((sinf(bob * 0.067f)) * 0.05f);
 
         if (bowAndArrow) {
             float attack2 = 0.0f;
@@ -417,10 +417,10 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             arm1->xRot = -M_PI_2 + head->xRot;
             arm0->xRot -= attack2 * 1.2f - attack * 0.4f;
             arm1->xRot -= attack2 * 1.2f - attack * 0.4f;
-            arm0->zRot += ((float)(Mth::cos(bob * 0.09f)) * 0.05f + 0.05f);
-            arm1->zRot -= ((float)(Mth::cos(bob * 0.09f)) * 0.05f + 0.05f);
-            arm0->xRot += ((float)(Mth::sin(bob * 0.067f)) * 0.05f);
-            arm1->xRot -= ((float)(Mth::sin(bob * 0.067f)) * 0.05f);
+            arm0->zRot += ((float)(cosf(bob * 0.09f)) * 0.05f + 0.05f);
+            arm1->zRot -= ((float)(cosf(bob * 0.09f)) * 0.05f + 0.05f);
+            arm0->xRot += ((float)(sinf(bob * 0.067f)) * 0.05f);
+            arm1->xRot -= ((float)(sinf(bob * 0.067f)) * 0.05f);
         }
     }
 }

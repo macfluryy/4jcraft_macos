@@ -63,12 +63,12 @@ zPlayerOffs = position->get(2);
     float xRot = player->xRot;
     float yRot = player->yRot;
 
-    xa = cosf(yRot * M_PI / 180.0f) * (1 - flipCamera * 2);
-    za = sinf(yRot * M_PI / 180.0f) * (1 - flipCamera * 2);
+    xa = cosf(yRot * std::numbers::pi / 180.0f) * (1 - flipCamera * 2);
+    za = sinf(yRot * std::numbers::pi / 180.0f) * (1 - flipCamera * 2);
 
-    xa2 = -za * sinf(xRot * M_PI / 180.0f) * (1 - flipCamera * 2);
-    za2 = xa * sinf(xRot * M_PI / 180.0f) * (1 - flipCamera * 2);
-    ya = cosf(xRot * M_PI / 180.0f);
+    xa2 = -za * sinf(xRot * std::numbers::pi / 180.0f) * (1 - flipCamera * 2);
+    za2 = xa * sinf(xRot * std::numbers::pi / 180.0f) * (1 - flipCamera * 2);
+    ya = cosf(xRot * std::numbers::pi / 180.0f);
 }
 
 TilePos* Camera::getCameraTilePos(std::shared_ptr<LivingEntity> player,

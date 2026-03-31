@@ -212,9 +212,9 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
         mc->cameraTargetPlayer = std::dynamic_pointer_cast<Mob>(mc->player);
     }
 
-    float brr = mc->level->getBrightness(Mth::floor(mc->cameraTargetPlayer->x),
-                                         Mth::floor(mc->cameraTargetPlayer->y),
-                                         Mth::floor(mc->cameraTargetPlayer->z));
+    float brr = mc->level->getBrightness(GameMath::floor(mc->cameraTargetPlayer->x),
+                                         GameMath::floor(mc->cameraTargetPlayer->y),
+                                         GameMath::floor(mc->cameraTargetPlayer->z));
     float whiteness = (3 - mc->options->viewDistance) / 3.0f;
     float fogBrT = brr * (1 - whiteness) + whiteness;
     fogBr += (fogBrT - fogBr) * 0.1f;
@@ -407,7 +407,7 @@ void GameRenderer::bobHurt(float a) {
 
     if (hurt < 0) return;
     hurt /= player->hurtDuration;
-    hurt = (float)Mth::sin(hurt * hurt * hurt * hurt * M_PI);
+    hurt = (float)sinf(hurt * hurt * hurt * hurt * std::numbers::pi);
 
     float rr = player->hurtDir;
 
@@ -426,10 +426,10 @@ void GameRenderer::bobView(float a) {
     float b = -(player->walkDist + wda * a);
     float bob = player->oBob + (player->bob - player->oBob) * a;
     float tilt = player->oTilt + (player->tilt - player->oTilt) * a;
-    glTranslatef((float)Mth::sin(b * M_PI) * bob * 0.5f,
-                 -(float)abs(Mth::cos(b * M_PI) * bob), 0);
-    glRotatef((float)Mth::sin(b * M_PI) * bob * 3, 0, 0, 1);
-    glRotatef((float)abs(Mth::cos(b * M_PI - 0.2f) * bob) * 5, 1, 0, 0);
+    glTranslatef((float)sinf(b * std::numbers::pi) * bob * 0.5f,
+                 -(float)abs(cosf(b * std::numbers::pi) * bob), 0);
+    glRotatef((float)sinf(b * std::numbers::pi) * bob * 3, 0, 0, 1);
+    glRotatef((float)abs(cosf(b * std::numbers::pi - 0.2f) * bob) * 5, 1, 0, 0);
     glRotatef((float)tilt, 1, 0, 0);
 }
 
@@ -450,12 +450,12 @@ void GameRenderer::moveCameraToPlayer(float a) {
         glTranslatef(0.0f, 0.3f, 0);
         if (!mc->options->fixedCamera) {
             int t =
-                mc->level->getTile(Mth::floor(player->x), Mth::floor(player->y),
-                                   Mth::floor(player->z));
+                mc->level->getTile(GameMath::floor(player->x), GameMath::floor(player->y),
+                                   GameMath::floor(player->z));
             if (t == Tile::bed_Id) {
-                int data = mc->level->getData(Mth::floor(player->x),
-                                              Mth::floor(player->y),
-                                              Mth::floor(player->z));
+                int data = mc->level->getData(GameMath::floor(player->x),
+                                              GameMath::floor(player->y),
+                                              GameMath::floor(player->z));
 
                 int direction = data & 3;
                 glRotatef((float)direction * 90, 0.0f, 1.0f, 0.0f);
@@ -500,11 +500,11 @@ void GameRenderer::moveCameraToPlayer(float a) {
                 xRot += 180.0f;
             }
 
-            double xd = -Mth::sin(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI) *
+            double xd = -sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi) *
                         cameraDist;
-            double zd = Mth::cos(yRot / 180 * M_PI) * Mth::cos(xRot / 180 * M_PI) *
+            double zd = cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi) *
                         cameraDist;
-            double yd = -Mth::sin(xRot / 180 * M_PI) * cameraDist;
+            double yd = -sinf(xRot / 180 * std::numbers::pi) * cameraDist;
 
             for (int i = 0; i < 8; i++) {
                 float xo = (float)((i & 1) * 2 - 1);
@@ -961,7 +961,7 @@ float GameRenderer::getNightVisionScale(std::shared_ptr<Player> player,
         return 1.0f;
     } else {
         float flash = std::max(0.0f, (float)duration - a);
-        return .7f + Mth::sin(flash * M_PI * .05f) *
+        return .7f + sinf(flash * std::numbers::pi * .05f) *
                          .3f;  // was:  .7 + sin(flash*pi*0.2) * .3
     }
 }
@@ -1522,9 +1522,9 @@ void GameRenderer::tickRain() {
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     Level* level = mc->level;
 
-    int x0 = Mth::floor(player->x);
-    int y0 = Mth::floor(player->y);
-    int z0 = Mth::floor(player->z);
+    int x0 = GameMath::floor(player->x);
+    int y0 = GameMath::floor(player->y);
+    int z0 = GameMath::floor(player->z);
 
     int r = 10;
 
@@ -1575,9 +1575,9 @@ void GameRenderer::tickRain() {
         rainSoundTime = 0;
         MemSect(24);
         if (rainPosY > player->y + 1 &&
-            level->getTopRainBlock(Mth::floor(player->x),
-                                   Mth::floor(player->z)) >
-                Mth::floor(player->y)) {
+            level->getTopRainBlock(GameMath::floor(player->x),
+                                   GameMath::floor(player->z)) >
+                GameMath::floor(player->y)) {
             mc->level->playLocalSound(rainPosX, rainPosY, rainPosZ,
                                       eSoundType_AMBIENT_WEATHER_RAIN, 0.1f,
                                       0.5f);
@@ -1608,7 +1608,7 @@ void GameRenderer::renderSnowAndRain(float a) {
             for (int x = 0; x < 32; x++) {
                 float xa = x - 16;
                 float za = z - 16;
-                float d = Mth::sqrt(xa * xa + za * za);
+                float d = GameMath::sqrt(xa * xa + za * za);
                 rainXa[z << 5 | x] = -za / d;
                 rainZa[z << 5 | x] = xa / d;
             }
@@ -1618,9 +1618,9 @@ void GameRenderer::renderSnowAndRain(float a) {
     std::shared_ptr<LivingEntity> player = mc->cameraTargetPlayer;
     Level* level = mc->level;
 
-    int x0 = Mth::floor(player->x);
-    int y0 = Mth::floor(player->y);
-    int z0 = Mth::floor(player->z);
+    int x0 = GameMath::floor(player->x);
+    int y0 = GameMath::floor(player->y);
+    int z0 = GameMath::floor(player->z);
 
     Tesselator* t = Tesselator::getInstance();
     glDisable(GL_CULL_FACE);
@@ -1638,7 +1638,7 @@ void GameRenderer::renderSnowAndRain(float a) {
     double yo = player->yOld + (player->y - player->yOld) * a;
     double zo = player->zOld + (player->z - player->zOld) * a;
 
-    int yMin = Mth::floor(yo);
+    int yMin = GameMath::floor(yo);
 
     int r = 5;
     // 4J - was if(mc.options.fancyGraphics) r = 10;
@@ -1703,7 +1703,7 @@ void GameRenderer::renderSnowAndRain(float a) {
 
             double xd = (x + 0.5f) - player->x;
             double zd = (z + 0.5f) - player->z;
-            float dd = (float)Mth::sqrt(xd * xd + zd * zd) / r;
+            float dd = (float)GameMath::sqrt(xd * xd + zd * zd) / r;
 
             float br = 1.0f;
             float s = 1.0f;
@@ -1865,7 +1865,7 @@ void GameRenderer::setupClearColor(float a) {
     fb = (float)fogColor.z;
 
     if (mc->options->viewDistance < 2) {
-        Vec3 sunAngle = Mth::sin(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0)
+        Vec3 sunAngle = sinf(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0)
                                                             : Vec3(1, 0, 0);
         float d = (float)player->getViewVector(a).dot(sunAngle);
         if (d < 0) d = 0;

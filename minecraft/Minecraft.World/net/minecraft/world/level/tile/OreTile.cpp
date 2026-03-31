@@ -38,15 +38,15 @@ void OreTile::spawnResources(Level* level, int x, int y, int z, int data,
     if (getResource(data, level->random, playerBonusLevel) != id) {
         int magicCount = 0;
         if (id == Tile::coalOre_Id) {
-            magicCount = Mth::nextInt(level->random, 0, 2);
+            magicCount = level->random->nextInt(0, 2);
         } else if (id == Tile::diamondOre_Id) {
-            magicCount = Mth::nextInt(level->random, 3, 7);
+            magicCount = level->random->nextInt(3, 7);
         } else if (id == Tile::emeraldOre_Id) {
-            magicCount = Mth::nextInt(level->random, 3, 7);
+            magicCount = level->random->nextInt(3, 7);
         } else if (id == Tile::lapisOre_Id) {
-            magicCount = Mth::nextInt(level->random, 2, 5);
+            magicCount = level->random->nextInt(2, 5);
         } else if (id == Tile::netherQuartz_Id) {
-            magicCount = Mth::nextInt(level->random, 2, 5);
+            magicCount = level->random->nextInt(2, 5);
         }
         popExperience(level, x, y, z, magicCount);
     }

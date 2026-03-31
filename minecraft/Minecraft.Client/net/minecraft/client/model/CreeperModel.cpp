@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "CreeperModel.h"
 #include "geom/ModelPart.h"
 
@@ -67,11 +67,11 @@ void CreeperModel::setupAnim(float time, float r, float bob, float yRot,
                              float xRot, float scale,
                              std::shared_ptr<Entity> entity,
                              unsigned int uiBitmaskOverrideAnim) {
-    head->yRot = yRot / (float)(180 / M_PI);
-    head->xRot = xRot / (float)(180 / M_PI);
+    head->yRot = yRot / (float)(180 / std::numbers::pi);
+    head->xRot = xRot / (float)(180 / std::numbers::pi);
 
-    leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-    leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
-    leg2->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
-    leg3->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
+    leg0->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
+    leg1->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r;
+    leg2->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r;
+    leg3->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
 }

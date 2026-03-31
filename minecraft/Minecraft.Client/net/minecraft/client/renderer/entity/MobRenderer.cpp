@@ -6,7 +6,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "EntityRenderDispatcher.h"
 
 MobRenderer::MobRenderer(Model* model, float shadow)
@@ -37,9 +37,9 @@ void MobRenderer::renderLeash(std::shared_ptr<Mob> entity, double x, double y,
         y -= (1.6 - entity->bbHeight) * .5;
         Tesselator* tessellator = Tesselator::getInstance();
         double roperYRot =
-            lerp(roper->yRotO, roper->yRot, a * .5f) * Mth::RAD_TO_GRAD;
+            lerp(roper->yRotO, roper->yRot, a * .5f) * GameMath::DEG_TO_RAD;
         double roperXRot =
-            lerp(roper->xRotO, roper->xRot, a * .5f) * Mth::RAD_TO_GRAD;
+            lerp(roper->xRotO, roper->xRot, a * .5f) * GameMath::DEG_TO_RAD;
         double rotOffCos = cos(roperYRot);
         double rotOffSin = sin(roperYRot);
         double yOff = sin(roperXRot);
@@ -58,8 +58,8 @@ void MobRenderer::renderLeash(std::shared_ptr<Mob> entity, double x, double y,
                       (rotOffCos * 0.5 * swingOff);
 
         double entityYRot =
-            lerp(entity->yBodyRotO, entity->yBodyRot, a) * Mth::RAD_TO_GRAD +
-            M_PI * .5;
+            lerp(entity->yBodyRotO, entity->yBodyRot, a) * GameMath::DEG_TO_RAD +
+            std::numbers::pi * .5;
         rotOffCos = cos(entityYRot) * entity->bbWidth * .4;
         rotOffSin = sin(entityYRot) * entity->bbWidth * .4;
         double startX = lerp(entity->xo, entity->x, a) + rotOffCos;

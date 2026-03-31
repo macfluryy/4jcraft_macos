@@ -43,7 +43,7 @@ void BodyControl::clientTick() {
 }
 
 float BodyControl::clamp(float clampTo, float clampFrom, float clampAngle) {
-    float headDiffBody = Mth::wrapDegrees(clampTo - clampFrom);
+    float headDiffBody = GameMath::wrapDegrees(clampTo - clampFrom);
     if (headDiffBody < -clampAngle) headDiffBody = -clampAngle;
     if (headDiffBody >= clampAngle) headDiffBody = +clampAngle;
     return clampTo - headDiffBody;

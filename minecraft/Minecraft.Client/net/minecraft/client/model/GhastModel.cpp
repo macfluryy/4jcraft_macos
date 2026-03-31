@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "java/Random.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "GhastModel.h"
 #include "geom/ModelPart.h"
 
@@ -39,7 +39,7 @@ void GhastModel::setupAnim(float time, float r, float bob, float yRot,
                            unsigned int uiBitmaskOverrideAnim) {
     for (int i = 0; i < TENTACLESLENGTH; i++)  // 4J - 9 was  tentacles.size()
     {
-        tentacles[i]->xRot = 0.2f * Mth::sin(bob * 0.3f + i) + 0.4f;
+        tentacles[i]->xRot = 0.2f * sinf(bob * 0.3f + i) + 0.4f;
     }
 }
 

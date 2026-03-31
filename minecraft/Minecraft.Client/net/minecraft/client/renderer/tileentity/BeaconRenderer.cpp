@@ -44,15 +44,15 @@ void BeaconRenderer::render(std::shared_ptr<TileEntity> _beacon, double x,
 
             double rr1 = r * 0.2;
 
-            double wnx = .5 + cos(rot + M_PI * .75) * rr1;
-            double wnz = .5 + sin(rot + M_PI * .75) * rr1;
-            double enx = .5 + cos(rot + M_PI * .25) * rr1;
-            double enz = .5 + sin(rot + M_PI * .25) * rr1;
+            double wnx = .5 + cos(rot + std::numbers::pi * .75) * rr1;
+            double wnz = .5 + sin(rot + std::numbers::pi * .75) * rr1;
+            double enx = .5 + cos(rot + std::numbers::pi * .25) * rr1;
+            double enz = .5 + sin(rot + std::numbers::pi * .25) * rr1;
 
-            double wsx = .5 + cos(rot + M_PI * 1.25) * rr1;
-            double wsz = .5 + sin(rot + M_PI * 1.25) * rr1;
-            double esx = .5 + cos(rot + M_PI * 1.75) * rr1;
-            double esz = .5 + sin(rot + M_PI * 1.75) * rr1;
+            double wsx = .5 + cos(rot + std::numbers::pi * 1.25) * rr1;
+            double wsz = .5 + sin(rot + std::numbers::pi * 1.25) * rr1;
+            double esx = .5 + cos(rot + std::numbers::pi * 1.75) * rr1;
+            double esz = .5 + sin(rot + std::numbers::pi * 1.75) * rr1;
 
             double top = 256 * scale;
 

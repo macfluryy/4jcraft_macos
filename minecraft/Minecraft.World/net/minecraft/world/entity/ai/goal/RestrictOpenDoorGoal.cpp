@@ -12,15 +12,15 @@ RestrictOpenDoorGoal::RestrictOpenDoorGoal(PathfinderMob* mob) {
 bool RestrictOpenDoorGoal::canUse() {
     if (mob->level->isDay()) return false;
     std::shared_ptr<Village> village = mob->level->villages->getClosestVillage(
-        Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z), 16);
+        GameMath::floor(mob->x), GameMath::floor(mob->y), GameMath::floor(mob->z), 16);
     if (village == nullptr) return false;
     std::shared_ptr<DoorInfo> _doorInfo = village->getClosestDoorInfo(
-        Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z));
+        GameMath::floor(mob->x), GameMath::floor(mob->y), GameMath::floor(mob->z));
     if (_doorInfo == nullptr) return false;
     doorInfo = _doorInfo;
-    return _doorInfo->distanceToInsideSqr(Mth::floor(mob->x),
-                                          Mth::floor(mob->y),
-                                          Mth::floor(mob->z)) < 1.5 * 1.5;
+    return _doorInfo->distanceToInsideSqr(GameMath::floor(mob->x),
+                                          GameMath::floor(mob->y),
+                                          GameMath::floor(mob->z)) < 1.5 * 1.5;
 }
 
 bool RestrictOpenDoorGoal::canContinueToUse() {
@@ -28,7 +28,7 @@ bool RestrictOpenDoorGoal::canContinueToUse() {
     std::shared_ptr<DoorInfo> _doorInfo = doorInfo.lock();
     if (_doorInfo == nullptr) return false;
     return !_doorInfo->removed &&
-           _doorInfo->isInsideSide(Mth::floor(mob->x), Mth::floor(mob->z));
+           _doorInfo->isInsideSide(GameMath::floor(mob->x), GameMath::floor(mob->z));
 }
 
 void RestrictOpenDoorGoal::start() {

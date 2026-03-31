@@ -3,7 +3,7 @@
 #include "ModelPart.h"
 #include "Cube.h"
 
-const float ModelPart::RAD = (180.0f / M_PI);
+const float ModelPart::RAD = (180.0f / std::numbers::pi);
 
 void ModelPart::_init() {
     xTexSize = 64.0f;

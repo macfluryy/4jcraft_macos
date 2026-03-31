@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "WolfModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/Wolf.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "geom/ModelPart.h"
 
 WolfModel::WolfModel() {
@@ -99,31 +99,31 @@ void WolfModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
     if (wolf->isAngry()) {
         tail->yRot = 0;
     } else {
-        tail->yRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
+        tail->yRot = (cosf(time * 0.6662f) * 1.4f) * r;
     }
 
     if (wolf->isSitting()) {
         upperBody->setPos(-1.0f, 11 + 13.0f - 8, -3);
-        upperBody->xRot = .40f * M_PI;
-        upperBody->yRot = .0f * M_PI;
+        upperBody->xRot = .40f * std::numbers::pi;
+        upperBody->yRot = .0f * std::numbers::pi;
 
         body->setPos(0, 11 + 15 - legSize, 0);
-        body->xRot = .25f * M_PI;
+        body->xRot = .25f * std::numbers::pi;
 
         tail->setPos(-1, 11 + 18 - legSize, 6);
 
         leg0->setPos(-2.5f, 18 + 12 - legSize, 2);
-        leg0->xRot = 1.5f * M_PI;
+        leg0->xRot = 1.5f * std::numbers::pi;
         leg1->setPos(.5f, 18 + 12 - legSize, 2);
-        leg1->xRot = 1.5f * M_PI;
+        leg1->xRot = 1.5f * std::numbers::pi;
 
-        leg2->xRot = 1.85f * M_PI;
+        leg2->xRot = 1.85f * std::numbers::pi;
         leg2->setPos(-2.49f, 18 + 7.0f - legSize, -4);
-        leg3->xRot = 1.85f * M_PI;
+        leg3->xRot = 1.85f * std::numbers::pi;
         leg3->setPos(.51f, 18 + 7.0f - legSize, -4);
     } else {
         body->setPos(0, 11 + 11 - legSize, 2);
-        body->xRot = 90 / (float)(180 / M_PI);
+        body->xRot = 90 / (float)(180 / std::numbers::pi);
 
         upperBody->setPos(-1.0f, 11 + 11.0f - legSize, -3);
         upperBody->xRot = body->xRot;
@@ -135,10 +135,10 @@ void WolfModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
         leg2->setPos(-2.5f, 18 + 6 - legSize, -4);
         leg3->setPos(.5f, 18 + 6 - legSize, -4);
 
-        leg0->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
-        leg1->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
-        leg2->xRot = (Mth::cos(time * 0.6662f + M_PI) * 1.4f) * r;
-        leg3->xRot = (Mth::cos(time * 0.6662f) * 1.4f) * r;
+        leg0->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
+        leg1->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r;
+        leg2->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r;
+        leg3->xRot = (cosf(time * 0.6662f) * 1.4f) * r;
     }
 
     float angle = wolf->getHeadRollAngle(a) + wolf->getBodyRollAngle(a, 0);
@@ -154,7 +154,7 @@ void WolfModel::setupAnim(float time, float r, float bob, float yRot,
                           std::shared_ptr<Entity> entity,
                           unsigned int uiBitmaskOverrideAnim) {
     Model::setupAnim(time, r, bob, yRot, xRot, scale, entity);
-    head->xRot = xRot / (float)(180 / M_PI);
-    head->yRot = yRot / (float)(180 / M_PI);
+    head->xRot = xRot / (float)(180 / std::numbers::pi);
+    head->yRot = yRot / (float)(180 / std::numbers::pi);
     tail->xRot = bob;
 }

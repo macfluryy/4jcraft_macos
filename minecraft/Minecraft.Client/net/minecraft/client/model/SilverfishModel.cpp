@@ -1,7 +1,7 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "SilverfishModel.h"
 #include "geom/Cube.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "geom/ModelPart.h"
 
 const int SilverfishModel::BODY_SIZES[BODY_COUNT][3] = {
@@ -71,10 +71,10 @@ void SilverfishModel::setupAnim(float time, float r, float bob, float yRot,
                                 std::shared_ptr<Entity> entity,
                                 unsigned int uiBitmaskOverrideAnim) {
     for (unsigned int i = 0; i < bodyParts.size(); i++) {
-        bodyParts[i]->yRot = Mth::cos(bob * .9f + i * .15f * M_PI) * M_PI * .05f *
+        bodyParts[i]->yRot = cosf(bob * .9f + i * .15f * std::numbers::pi) * std::numbers::pi * .05f *
                              (1 + abs((int)i - 2));
         bodyParts[i]->x =
-            Mth::sin(bob * .9f + i * .15f * M_PI) * M_PI * .2f * abs((int)i - 2);
+            sinf(bob * .9f + i * .15f * std::numbers::pi) * std::numbers::pi * .2f * abs((int)i - 2);
     }
 
     bodyLayers[0]->yRot = bodyParts[2]->yRot;

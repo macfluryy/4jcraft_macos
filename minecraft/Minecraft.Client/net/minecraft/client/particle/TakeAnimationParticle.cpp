@@ -3,7 +3,7 @@
 #include "../renderer/entity/EntityRenderDispatcher.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 TakeAnimationParticle::TakeAnimationParticle(Level* level,
                                              std::shared_ptr<Entity> item,
@@ -40,9 +40,9 @@ void TakeAnimationParticle::render(Tesselator* t, float a, float xa, float ya,
     double yy = yo + (yt - yo) * time;
     double zz = zo + (zt - zo) * time;
 
-    int xTile = Mth::floor(xx);
-    int yTile = Mth::floor(yy + heightOffset / 2.0f);
-    int zTile = Mth::floor(zz);
+    int xTile = GameMath::floor(xx);
+    int yTile = GameMath::floor(yy + heightOffset / 2.0f);
+    int zTile = GameMath::floor(zz);
 
     // 4J - change brought forward from 1.8.2
     if (SharedConstants::TEXTURE_LIGHTING) {

@@ -100,12 +100,12 @@ bool Villager::useNewAi() { return true; }
 
 void Villager::serverAiMobStep() {
     if (--villageUpdateInterval <= 0) {
-        level->villages->queryUpdateAround(Mth::floor(x), Mth::floor(y),
-                                           Mth::floor(z));
+        level->villages->queryUpdateAround(GameMath::floor(x), GameMath::floor(y),
+                                           GameMath::floor(z));
         villageUpdateInterval = 70 + random->nextInt(50);
 
         std::shared_ptr<Village> _village = level->villages->getClosestVillage(
-            Mth::floor(x), Mth::floor(y), Mth::floor(z), Villages::MaxDoorDist);
+            GameMath::floor(x), GameMath::floor(y), GameMath::floor(z), Villages::MaxDoorDist);
         village = _village;
         if (_village == nullptr)
             clearRestriction();
@@ -471,7 +471,7 @@ void Villager::addOffers(int addCount) {
                 Enchantment* enchantment =
                     Enchantment::validEnchantments[random->nextInt(
                         Enchantment::validEnchantments.size())];
-                int level = Mth::nextInt(random, enchantment->getMinLevel(),
+                int level = random->nextInt(enchantment->getMinLevel(),
                                          enchantment->getMaxLevel());
                 std::shared_ptr<ItemInstance> book =
                     Item::enchantedBook->createForEnchantment(

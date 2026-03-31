@@ -4,7 +4,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "java/Random.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 
 ResourceLocation PaintingRenderer::PAINTING_LOCATION(TN_ART_KZ);
 
@@ -118,13 +118,13 @@ void PaintingRenderer::renderPainting(std::shared_ptr<Painting> painting, int w,
 
 void PaintingRenderer::setBrightness(std::shared_ptr<Painting> painting,
                                      float ss, float ya) {
-    int x = Mth::floor(painting->x);
-    int y = Mth::floor(painting->y + ya / 16.0f);
-    int z = Mth::floor(painting->z);
-    if (painting->dir == 0) x = Mth::floor(painting->x + ss / 16.0f);
-    if (painting->dir == 1) z = Mth::floor(painting->z - ss / 16.0f);
-    if (painting->dir == 2) x = Mth::floor(painting->x - ss / 16.0f);
-    if (painting->dir == 3) z = Mth::floor(painting->z + ss / 16.0f);
+    int x = GameMath::floor(painting->x);
+    int y = GameMath::floor(painting->y + ya / 16.0f);
+    int z = GameMath::floor(painting->z);
+    if (painting->dir == 0) x = GameMath::floor(painting->x + ss / 16.0f);
+    if (painting->dir == 1) z = GameMath::floor(painting->z - ss / 16.0f);
+    if (painting->dir == 2) x = GameMath::floor(painting->x - ss / 16.0f);
+    if (painting->dir == 3) z = GameMath::floor(painting->z + ss / 16.0f);
 
     int col = this->entityRenderDispatcher->level->getLightColor(x, y, z, 0);
     int u = col % 65536;

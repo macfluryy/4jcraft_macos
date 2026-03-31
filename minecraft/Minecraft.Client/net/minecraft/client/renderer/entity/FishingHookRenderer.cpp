@@ -5,7 +5,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "../../multiplayer/MultiPlayerLocalPlayer.h"
 
 ResourceLocation FishingHookRenderer::PARTICLE_LOCATION =
@@ -56,15 +56,15 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
 
     if (hook->owner != nullptr) {
         float swing = hook->owner->getAttackAnim(a);
-        float swing2 = (float)Mth::sin(sqrt(swing) * M_PI);
+        float swing2 = (float)sinf(sqrt(swing) * std::numbers::pi);
 
         Vec3 vv(-0.5, 0.03, 0.8);
         vv.xRot(-(hook->owner->xRotO +
                   (hook->owner->xRot - hook->owner->xRotO) * a) *
-                M_PI / 180);
+                std::numbers::pi / 180);
         vv.yRot(-(hook->owner->yRotO +
                   (hook->owner->yRot - hook->owner->yRotO) * a) *
-                M_PI / 180);
+                std::numbers::pi / 180);
         vv.yRot(swing2 * 0.5f);
         vv.xRot(-swing2 * 0.7f);
 
@@ -85,9 +85,9 @@ void FishingHookRenderer::render(std::shared_ptr<Entity> _hook, double x,
             float rr =
                 (float)(hook->owner->yBodyRotO +
                         (hook->owner->yBodyRot - hook->owner->yBodyRotO) * a) *
-                M_PI / 180;
-            double ss = Mth::sin((float)rr);
-            double cc = Mth::cos((float)rr);
+                std::numbers::pi / 180;
+            double ss = sinf((float)rr);
+            double cc = cosf((float)rr);
             xp = hook->owner->xo + (hook->owner->x - hook->owner->xo) * a -
                  cc * 0.35 - ss * 0.85;
             yp = hook->owner->yo + yOffset +

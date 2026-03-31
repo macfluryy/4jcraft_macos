@@ -184,7 +184,7 @@ void Wolf::tick() {
             if (shakeAnim > 0.4f) {
                 float yt = (float)bb.y0;
                 int shakeCount =
-                    (int)(Mth::sin((shakeAnim - 0.4f) * M_PI) * 7.0f);
+                    (int)(sinf((shakeAnim - 0.4f) * std::numbers::pi) * 7.0f);
                 for (int i = 0; i < shakeCount; i++) {
                     float xo = (random->nextFloat() * 2 - 1) * bbWidth * 0.5f;
                     float zo = (random->nextFloat() * 2 - 1) * bbWidth * 0.5f;
@@ -210,13 +210,13 @@ float Wolf::getBodyRollAngle(float a, float offset) {
     } else if (progress > 1) {
         progress = 1;
     }
-    return Mth::sin(progress * M_PI) * Mth::sin(progress * M_PI * 11.0f) * 0.15f *
-           M_PI;
+    return sinf(progress * std::numbers::pi) * sinf(progress * std::numbers::pi * 11.0f) * 0.15f *
+           std::numbers::pi;
 }
 
 float Wolf::getHeadRollAngle(float a) {
     return (interestedAngleO + (interestedAngle - interestedAngleO) * a) *
-           0.15f * M_PI;
+           0.15f * std::numbers::pi;
 }
 
 float Wolf::getHeadHeight() { return bbHeight * 0.8f; }
@@ -382,13 +382,13 @@ void Wolf::handleEntityEvent(uint8_t id) {
 
 float Wolf::getTailAngle() {
     if (isAngry()) {
-        return 0.49f * M_PI;
+        return 0.49f * std::numbers::pi;
     } else if (isTame()) {
         return (0.55f -
                 (MAX_HEALTH - entityData->getFloat(DATA_HEALTH_ID)) * 0.02f) *
-               M_PI;
+               std::numbers::pi;
     }
-    return 0.20f * M_PI;
+    return 0.20f * std::numbers::pi;
 }
 
 bool Wolf::isFood(std::shared_ptr<ItemInstance> item) {

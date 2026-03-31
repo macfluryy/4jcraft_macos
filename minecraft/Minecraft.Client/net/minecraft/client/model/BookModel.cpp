@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "BookModel.h"
 #include "geom/ModelPart.h"
 
@@ -30,7 +30,7 @@ BookModel::BookModel() {
     leftLid->setPos(0, 0, -1);
     rightLid->setPos(0, 0, 1);
 
-    seam->yRot = M_PI / 2;
+    seam->yRot = std::numbers::pi / 2;
 
     // 4J added - compile now to avoid random performance hit first time cubes
     // are rendered
@@ -63,9 +63,9 @@ void BookModel::setupAnim(float time, float r, float bob, float yRot,
                           float xRot, float scale,
                           std::shared_ptr<Entity> entity,
                           unsigned int uiBitmaskOverrideAnim) {
-    float openness = (Mth::sin(time * 0.02f) * 0.10f + 1.25f) * yRot;
+    float openness = (sinf(time * 0.02f) * 0.10f + 1.25f) * yRot;
 
-    leftLid->yRot = M_PI + openness;
+    leftLid->yRot = std::numbers::pi + openness;
     rightLid->yRot = -openness;
     leftPages->yRot = +openness;
     rightPages->yRot = -openness;
@@ -73,8 +73,8 @@ void BookModel::setupAnim(float time, float r, float bob, float yRot,
     flipPage1->yRot = +openness - openness * 2 * r;
     flipPage2->yRot = +openness - openness * 2 * bob;
 
-    leftPages->x = Mth::sin(openness);
-    rightPages->x = Mth::sin(openness);
-    flipPage1->x = Mth::sin(openness);
-    flipPage2->x = Mth::sin(openness);
+    leftPages->x = sinf(openness);
+    rightPages->x = sinf(openness);
+    flipPage1->x = sinf(openness);
+    flipPage2->x = sinf(openness);
 }

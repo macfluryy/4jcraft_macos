@@ -108,11 +108,11 @@ bool HangingEntity::survives() {
         int xt = xTile;
         int yt = yTile;
         int zt = zTile;
-        if (dir == Direction::NORTH) xt = Mth::floor(x - getWidth() / 32.0f);
-        if (dir == Direction::WEST) zt = Mth::floor(z - getWidth() / 32.0f);
-        if (dir == Direction::SOUTH) xt = Mth::floor(x - getWidth() / 32.0f);
-        if (dir == Direction::EAST) zt = Mth::floor(z - getWidth() / 32.0f);
-        yt = Mth::floor(y - getHeight() / 32.0f);
+        if (dir == Direction::NORTH) xt = GameMath::floor(x - getWidth() / 32.0f);
+        if (dir == Direction::WEST) zt = GameMath::floor(z - getWidth() / 32.0f);
+        if (dir == Direction::SOUTH) xt = GameMath::floor(x - getWidth() / 32.0f);
+        if (dir == Direction::EAST) zt = GameMath::floor(z - getWidth() / 32.0f);
+        yt = GameMath::floor(y - getHeight() / 32.0f);
 
         for (int ss = 0; ss < ws; ss++) {
             for (int yy = 0; yy < hs; yy++) {

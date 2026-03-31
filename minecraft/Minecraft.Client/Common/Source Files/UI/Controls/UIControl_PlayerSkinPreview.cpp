@@ -373,8 +373,8 @@ void UIControl_PlayerSkinPreview::render(EntityRenderer* renderer, double x,
 
         float yr = 1;  // mob->yBodyRotO + (mob->yBodyRot - mob->yBodyRotO) * a;
 
-        double xa = sin(yr * M_PI / 180);
-        double za = -cos(yr * M_PI / 180);
+        double xa = sin(yr * std::numbers::pi / 180);
+        double za = -cos(yr * std::numbers::pi / 180);
 
         float flap = (float)yd * 10;
         if (flap < -6) flap = -6;

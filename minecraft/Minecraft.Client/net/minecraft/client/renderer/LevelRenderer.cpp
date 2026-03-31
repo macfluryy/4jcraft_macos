@@ -239,7 +239,7 @@ LevelRenderer::LevelRenderer(Minecraft* mc, Textures* textures) {
             1000;  // How much we raise the circle origin to make the circle
                    // curve back towards us
         const int WIDTH = 10;
-        const float ARC_RADIANS = 2.0f * M_PI / ARC_SEGMENTS;
+        const float ARC_RADIANS = 2.0f * std::numbers::pi / ARC_SEGMENTS;
         const float HALF_ARC_SEG = ARC_SEGMENTS / 2;
         const float WIDE_ARC_SEGS = ARC_SEGMENTS / 8;
         const float WIDE_ARC_SEGS_SQR = WIDE_ARC_SEGS * WIDE_ARC_SEGS;
@@ -307,7 +307,7 @@ void LevelRenderer::renderStars() {
             double xSin = sin(xRot);
             double xCos = cos(xRot);
 
-            double zRot = random.nextDouble() * M_PI * 2;
+            double zRot = random.nextDouble() * std::numbers::pi * 2;
             double zSin = sin(zRot);
             double zCos = cos(zRot);
 
@@ -499,8 +499,8 @@ void LevelRenderer::allChanged(int playerIndex) {
     if (level[playerIndex] != nullptr) {
         std::shared_ptr<Entity> player = mc->cameraTargetPlayer;
         if (player != nullptr) {
-            this->resortChunks(Mth::floor(player->x), Mth::floor(player->y),
-                               Mth::floor(player->z));
+            this->resortChunks(GameMath::floor(player->x), GameMath::floor(player->y),
+                               GameMath::floor(player->z));
             //			sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
             // DistanceChunkSorter(player));	// 4J - removed - not sorting
             // our chunks anymore
@@ -597,8 +597,8 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
                 !mc->cameraTargetPlayer->isSleeping())
                 continue;
 
-            if (!level[playerIndex]->hasChunkAt(Mth::floor(entity->x), 0,
-                                                Mth::floor(entity->z))) {
+            if (!level[playerIndex]->hasChunkAt(GameMath::floor(entity->x), 0,
+                                                GameMath::floor(entity->z))) {
                 continue;
             }
             renderedEntities++;
@@ -731,8 +731,8 @@ int LevelRenderer::render(std::shared_ptr<LivingEntity> player, int layer,
         yOld[playerIndex] = player->y;
         zOld[playerIndex] = player->z;
 
-        resortChunks(Mth::floor(player->x), Mth::floor(player->y),
-                     Mth::floor(player->z));
+        resortChunks(GameMath::floor(player->x), GameMath::floor(player->y),
+                     GameMath::floor(player->z));
         //		sort(sortedChunks[playerIndex]->begin(),sortedChunks[playerIndex]->end(),
         // DistanceChunkSorter(player));	// 4J - removed - not sorting
         // our chunks anymore
@@ -939,7 +939,7 @@ void LevelRenderer::renderSky(float alpha) {
         {
             glRotatef(90, 1, 0, 0);
             glRotatef(
-                Mth::sin(level[playerIndex]->getSunAngle(alpha)) < 0 ? 180 : 0,
+                sinf(level[playerIndex]->getSunAngle(alpha)) < 0 ? 180 : 0,
                 0, 0, 1);
             glRotatef(90, 0, 0, 1);
 
@@ -963,9 +963,9 @@ void LevelRenderer::renderSky(float alpha) {
             int steps = 16;
             t->color(c[0], c[1], c[2], 0.0f);
             for (int i = 0; i <= steps; i++) {
-                float a = i * M_PI * 2 / steps;
-                float _sin = Mth::sin(a);
-                float _cos = Mth::cos(a);
+                float a = i * std::numbers::pi * 2 / steps;
+                float _sin = sinf(a);
+                float _cos = cosf(a);
                 t->vertex((float)(_sin * 120), (float)(_cos * 120),
                           (float)(-_cos * 40 * c[3]));
             }
@@ -1176,8 +1176,8 @@ void LevelRenderer::renderClouds(float alpha) {
     double zo =
         mc->cameraTargetPlayer->zo +
         (mc->cameraTargetPlayer->z - mc->cameraTargetPlayer->zo) * alpha;
-    int xOffs = Mth::floor(xo / 2048);
-    int zOffs = Mth::floor(zo / 2048);
+    int xOffs = GameMath::floor(xo / 2048);
+    int zOffs = GameMath::floor(zo / 2048);
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
@@ -1419,8 +1419,8 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
         0.33f;
     float yy = (float)(level[playerIndex]->dimension->getCloudHeight() - yOffs +
                        0.33f);
-    int xOffs = Mth::floor(xo / 2048);
-    int zOffs = Mth::floor(zo / 2048);
+    int xOffs = GameMath::floor(xo / 2048);
+    int zOffs = GameMath::floor(zo / 2048);
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
@@ -1468,16 +1468,16 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
 
     float scale = 1 / 256.0f;
 
-    uo = (float)(Mth::floor(xo)) * scale;
-    vo = (float)(Mth::floor(zo)) * scale;
+    uo = (float)(GameMath::floor(xo)) * scale;
+    vo = (float)(GameMath::floor(zo)) * scale;
     // 4J - keep our UVs +ve - there's a small bug in the xbox GPU that
     // incorrectly rounds small -ve UVs (between -1/(64*size) and 0) up to 0,
     // which leaves gaps in our clouds...
     while (uo < 1.0f) uo += 1.0f;
     while (vo < 1.0f) vo += 1.0f;
 
-    float xoffs = (float)(xo - Mth::floor(xo));
-    float zoffs = (float)(zo - Mth::floor(zo));
+    float xoffs = (float)(xo - GameMath::floor(xo));
+    float zoffs = (float)(zo - GameMath::floor(zo));
 
     int D = 8;
 
@@ -2094,16 +2094,16 @@ void LevelRenderer::renderHit(std::shared_ptr<Player> player, HitResult* h,
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glColor4f(
         1, 1, 1,
-        ((float)(Mth::sin(Minecraft::currentTimeMillis() / 100.0f)) * 0.2f +
+        ((float)(sinf(Minecraft::currentTimeMillis() / 100.0f)) * 0.2f +
          0.4f) *
             0.5f);
     if (mode != 0 && inventoryItem != nullptr) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         float br =
-            (Mth::sin(Minecraft::currentTimeMillis() / 100.0f) * 0.2f + 0.8f);
+            (sinf(Minecraft::currentTimeMillis() / 100.0f) * 0.2f + 0.8f);
         glColor4f(
             br, br, br,
-            (Mth::sin(Minecraft::currentTimeMillis() / 200.0f) * 0.2f + 0.5f));
+            (sinf(Minecraft::currentTimeMillis() / 200.0f) * 0.2f + 0.5f));
 
         textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
     }
@@ -2278,12 +2278,12 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
     // come from when connection is being ticked outside of normal level tick,
     // and player won't be set up
     if (level == nullptr) level = this->level[mc->player->GetXboxPad()];
-    int _x0 = Mth::intFloorDiv(x0, CHUNK_XZSIZE);
-    int _y0 = Mth::intFloorDiv(y0, CHUNK_SIZE);
-    int _z0 = Mth::intFloorDiv(z0, CHUNK_XZSIZE);
-    int _x1 = Mth::intFloorDiv(x1, CHUNK_XZSIZE);
-    int _y1 = Mth::intFloorDiv(y1, CHUNK_SIZE);
-    int _z1 = Mth::intFloorDiv(z1, CHUNK_XZSIZE);
+    int _x0 = GameMath::intFloorDiv(x0, CHUNK_XZSIZE);
+    int _y0 = GameMath::intFloorDiv(y0, CHUNK_SIZE);
+    int _z0 = GameMath::intFloorDiv(z0, CHUNK_XZSIZE);
+    int _x1 = GameMath::intFloorDiv(x1, CHUNK_XZSIZE);
+    int _y1 = GameMath::intFloorDiv(y1, CHUNK_SIZE);
+    int _z1 = GameMath::intFloorDiv(z1, CHUNK_XZSIZE);
 
     for (int x = _x0; x <= _x1; x++) {
         for (int y = _y0; y <= _y1; y++) {
@@ -3318,7 +3318,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
                             random->nextDouble() * 0.2,
                             random->nextGaussian() * .15);
             }
-            for (double a = 0; a < M_PI * 2.0; a += M_PI * 0.05) {
+            for (double a = 0; a < std::numbers::pi * 2.0; a += std::numbers::pi * 0.05) {
                 addParticle(eParticleType_ender, xp + cos(a) * 5, yp - .4,
                             zp + sin(a) * 5, cos(a) * -5, 0, sin(a) * -5);
                 addParticle(eParticleType_ender, xp + cos(a) * 5, yp - .4,
@@ -3352,7 +3352,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
 
             for (int i = 0; i < 100; i++) {
                 double dist = random->nextDouble() * ThrownPotion::SPLASH_RANGE;
-                double angle = random->nextDouble() * M_PI * 2;
+                double angle = random->nextDouble() * std::numbers::pi * 2;
                 double xs = cos(angle) * dist;
                 double ys = 0.01 + random->nextDouble() * 0.5;
                 double zs = sin(angle) * dist;
@@ -3382,7 +3382,7 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
             for (int i = 0; i < 200; i++) {
                 double dist =
                     random->nextDouble() * DragonFireball::SPLASH_RANGE;
-                double angle = random->nextDouble() * M_PI * 2;
+                double angle = random->nextDouble() * std::numbers::pi * 2;
                 double xs = cos(angle) * dist;
                 double ys = 0.01 + random->nextDouble() * 0.5;
                 double zs = sin(angle) * dist;
@@ -3608,10 +3608,10 @@ int LevelRenderer::getGlobalIndexForChunk(int x, int y, int z,
     // int xx = ( x / CHUNK_XZSIZE ) + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
     // int yy = y / CHUNK_SIZE;
     // int zz = ( z / CHUNK_XZSIZE )  + ( MAX_LEVEL_RENDER_SIZE[dimIdx] / 2 );
-    int xx = (Mth::intFloorDiv(x, CHUNK_XZSIZE)) +
+    int xx = (GameMath::intFloorDiv(x, CHUNK_XZSIZE)) +
              (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
-    int yy = Mth::intFloorDiv(y, CHUNK_SIZE);
-    int zz = (Mth::intFloorDiv(z, CHUNK_XZSIZE)) +
+    int yy = GameMath::intFloorDiv(y, CHUNK_SIZE);
+    int zz = (GameMath::intFloorDiv(z, CHUNK_XZSIZE)) +
              (MAX_LEVEL_RENDER_SIZE[dimIdx] / 2);
 
     if ((xx < 0) || (xx >= MAX_LEVEL_RENDER_SIZE[dimIdx])) return -1;

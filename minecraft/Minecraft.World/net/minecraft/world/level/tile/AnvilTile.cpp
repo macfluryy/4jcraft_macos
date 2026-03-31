@@ -46,7 +46,7 @@ void AnvilTile::registerIcons(IconRegister* iconRegister) {
 void AnvilTile::setPlacedBy(Level* level, int x, int y, int z,
                             std::shared_ptr<LivingEntity> by,
                             std::shared_ptr<ItemInstance> itemInstance) {
-    int dir = (Mth::floor(by->yRot * 4 / (360) + 0.5)) & 3;
+    int dir = (GameMath::floor(by->yRot * 4 / (360) + 0.5)) & 3;
     int dmg = level->getData(x, y, z) >> 2;
 
     dir = ++dir % 4;

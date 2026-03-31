@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "SquidModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "geom/ModelPart.h"
 
 SquidModel::SquidModel() : Model() {
@@ -13,18 +13,18 @@ SquidModel::SquidModel() : Model() {
     {
         tentacles[i] = new ModelPart(this, 48, 0);
 
-        double angle = i * M_PI * 2.0 /
+        double angle = i * std::numbers::pi * 2.0 /
                        (double)TENTACLES_LENGTH;  // 4J - 8 was tentacles.size()
-        float xo = Mth::cos((float)angle) * 5;
-        float yo = Mth::sin((float)angle) * 5;
+        float xo = cosf((float)angle) * 5;
+        float yo = sinf((float)angle) * 5;
         tentacles[i]->addBox(-1, 0, -1, 2, 18, 2);
 
         tentacles[i]->x = xo;
         tentacles[i]->z = yo;
         tentacles[i]->y = (float)(31 + yoffs);
 
-        angle = i * M_PI * -2.0 / (double)TENTACLES_LENGTH +
-                M_PI * .5;  // 4J - 8 was tentacles.size()
+        angle = i * std::numbers::pi * -2.0 / (double)TENTACLES_LENGTH +
+                std::numbers::pi * .5;  // 4J - 8 was tentacles.size()
         tentacles[i]->yRot = (float)angle;
 
         // 4J added - compile now to avoid random performance hit first time

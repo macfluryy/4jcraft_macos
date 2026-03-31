@@ -2,7 +2,7 @@
 #include "Particle.h"
 #include "../renderer/Tesselator.h"
 #include "java/Random.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 
@@ -56,7 +56,7 @@ Particle::Particle(Level* level, double x, double y, double z, double xa,
     zd = za + (float)(Math::random() * 2 - 1) * 0.4f;
     float speed = (float)(Math::random() + Math::random() + 1) * 0.15f;
 
-    float dd = (float)(Mth::sqrt(xd * xd + yd * yd + zd * zd));
+    float dd = (float)(GameMath::sqrt(xd * xd + yd * yd + zd * zd));
     xd = xd / dd * speed * 0.4f;
     yd = yd / dd * speed * 0.4f + 0.1f;
     zd = zd / dd * speed * 0.4f;

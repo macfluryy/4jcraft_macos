@@ -6,7 +6,7 @@ Glowstonetile::Glowstonetile(int id, Material* material) : Tile(id, material) {}
 
 int Glowstonetile::getResourceCountForLootBonus(int bonusLevel,
                                                 Random* random) {
-    return Mth::clamp(
+    return GameMath::clamp(
         getResourceCount(random) + random->nextInt(bonusLevel + 1), 1, 4);
 }
 

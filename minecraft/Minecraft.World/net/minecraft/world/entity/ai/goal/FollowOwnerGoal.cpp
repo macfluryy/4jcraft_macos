@@ -67,9 +67,9 @@ void FollowOwnerGoal::tick() {
         return;
 
     // find a good spawn position nearby the owner
-    int sx = Mth::floor(owner.lock()->x) - 2;
-    int sz = Mth::floor(owner.lock()->z) - 2;
-    int y = Mth::floor(owner.lock()->bb.y0);
+    int sx = GameMath::floor(owner.lock()->x) - 2;
+    int sz = GameMath::floor(owner.lock()->z) - 2;
+    int y = GameMath::floor(owner.lock()->bb.y0);
     for (int x = 0; x <= 4; x++) {
         for (int z = 0; z <= 4; z++) {
             if (x >= 1 && z >= 1 && x <= 3 && z <= 3) {

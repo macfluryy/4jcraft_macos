@@ -432,13 +432,13 @@ void ItemInHandRenderer::render(float a) {
     std::shared_ptr<ItemInstance> item = selectedItem;
 
     float br = minecraft->level->getBrightness(
-        Mth::floor(player->x), Mth::floor(player->y), Mth::floor(player->z));
+        GameMath::floor(player->x), GameMath::floor(player->y), GameMath::floor(player->z));
     // 4J - change brought forward from 1.8.2
     if (SharedConstants::TEXTURE_LIGHTING) {
         br = 1;
-        int col = minecraft->level->getLightColor(Mth::floor(player->x),
-                                                  Mth::floor(player->y),
-                                                  Mth::floor(player->z), 0);
+        int col = minecraft->level->getLightColor(GameMath::floor(player->x),
+                                                  GameMath::floor(player->y),
+                                                  GameMath::floor(player->z), 0);
         int u = col % 65536;
         int v = col / 65536;
 #if defined(__linux__)
@@ -477,16 +477,16 @@ void ItemInHandRenderer::render(float a) {
         {
             float swing = player->getAttackAnim(a);
 
-            float swing1 = Mth::sin(swing * M_PI);
-            float swing2 = Mth::sin((sqrt(swing)) * M_PI);
-            glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * M_PI * 2) * 0.2f,
+            float swing1 = sinf(swing * std::numbers::pi);
+            float swing2 = sinf((sqrt(swing)) * std::numbers::pi);
+            glTranslatef(-swing2 * 0.4f, sinf(sqrt(swing) * std::numbers::pi * 2) * 0.2f,
                          -swing1 * 0.2f);
         }
 
         float tilt = 1 - xr / 45.0f + 0.1f;
         if (tilt < 0) tilt = 0;
         if (tilt > 1) tilt = 1;
-        tilt = -Mth::cos(tilt * M_PI) * 0.5f + 0.5f;
+        tilt = -cosf(tilt * std::numbers::pi) * 0.5f + 0.5f;
 
         glTranslatef(0.0f, 0.0f * d - (1 - h) * 1.2f - tilt * 0.5f + 0.04f,
                      -0.9f * d);
@@ -537,8 +537,8 @@ void ItemInHandRenderer::render(float a) {
 
         {
             float swing = player->getAttackAnim(a);
-            float swing3 = Mth::sin(swing * swing * M_PI);
-            float swing2 = Mth::sin(sqrt(swing) * M_PI);
+            float swing3 = sinf(swing * swing * std::numbers::pi);
+            float swing2 = sinf(sqrt(swing) * std::numbers::pi);
             glRotatef(-swing3 * 20, 0, 1, 0);
             glRotatef(-swing2 * 20, 0, 0, 1);
             glRotatef(-swing2 * 80, 1, 0, 0);
@@ -603,7 +603,7 @@ void ItemInHandRenderer::render(float a) {
                 is = is * is * is;
                 float iss = 1 - is;
                 glTranslatef(0,
-                             Mth::abs(Mth::cos(t / 4 * M_PI) * 0.1f) *
+                             GameMath::abs(cosf(t / 4 * std::numbers::pi) * 0.1f) *
                                  (swing > 0.2 ? 1 : 0),
                              0);
                 glTranslatef(iss * 0.6f, -iss * 0.5f, 0);
@@ -614,9 +614,9 @@ void ItemInHandRenderer::render(float a) {
         } else {
             float swing = powf(player->getAttackAnim(a), swingPowFactor);
 
-            float swing1 = Mth::sin(swing * M_PI);
-            float swing2 = Mth::sin((sqrt(swing)) * M_PI);
-            glTranslatef(-swing2 * 0.4f, Mth::sin(sqrt(swing) * M_PI * 2) * 0.2f,
+            float swing1 = sinf(swing * std::numbers::pi);
+            float swing2 = sinf((sqrt(swing)) * std::numbers::pi);
+            glTranslatef(-swing2 * 0.4f, sinf(sqrt(swing) * std::numbers::pi * 2) * 0.2f,
                          -swing1 * 0.2f);
         }
 
@@ -627,8 +627,8 @@ void ItemInHandRenderer::render(float a) {
         glEnable(GL_RESCALE_NORMAL);
 
         float swing = powf(player->getAttackAnim(a), swingPowFactor);
-        float swing3 = Mth::sin(swing * swing * M_PI);
-        float swing2 = Mth::sin(sqrt(swing) * M_PI);
+        float swing3 = sinf(swing * swing * std::numbers::pi);
+        float swing2 = sinf(sqrt(swing) * std::numbers::pi);
         glRotatef(-swing3 * 20, 0, 1, 0);
         glRotatef(-swing2 * 20, 0, 0, 1);
         glRotatef(-swing2 * 80, 1, 0, 0);
@@ -655,7 +655,7 @@ void ItemInHandRenderer::render(float a) {
                 if (pow > 1) pow = 1;
                 if (pow > 0.1f) {
                     glTranslatef(0,
-                                 Mth::sin((timeHeld - 0.1f) * 1.3f) * 0.01f *
+                                 sinf((timeHeld - 0.1f) * 1.3f) * 0.01f *
                                      (pow - 0.1f),
                                  0);
                 }
@@ -700,9 +700,9 @@ void ItemInHandRenderer::render(float a) {
         {
             float swing = player->getAttackAnim(a);
 
-            float swing1 = Mth::sin(swing * M_PI);
-            float swing2 = Mth::sin((sqrt(swing)) * M_PI);
-            glTranslatef(-swing2 * 0.3f, Mth::sin(sqrt(swing) * M_PI * 2) * 0.4f,
+            float swing1 = sinf(swing * std::numbers::pi);
+            float swing2 = sinf((sqrt(swing)) * std::numbers::pi);
+            glTranslatef(-swing2 * 0.3f, sinf(sqrt(swing) * std::numbers::pi * 2) * 0.4f,
                          -swing1 * 0.4f);
         }
 
@@ -713,8 +713,8 @@ void ItemInHandRenderer::render(float a) {
         glEnable(GL_RESCALE_NORMAL);
         {
             float swing = player->getAttackAnim(a);
-            float swing3 = Mth::sin(swing * swing * M_PI);
-            float swing2 = Mth::sin(sqrt(swing) * M_PI);
+            float swing3 = sinf(swing * swing * std::numbers::pi);
+            float swing2 = sinf(sqrt(swing) * std::numbers::pi);
             glRotatef(swing2 * 70, 0, 1, 0);
             glRotatef(-swing3 * 20, 0, 0, 1);
         }
@@ -769,9 +769,9 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
 
     if (minecraft->player->isInWall())  // Inside a tile
     {
-        int x = Mth::floor(minecraft->player->x);
-        int y = Mth::floor(minecraft->player->y);
-        int z = Mth::floor(minecraft->player->z);
+        int x = GameMath::floor(minecraft->player->x);
+        int y = GameMath::floor(minecraft->player->y);
+        int z = GameMath::floor(minecraft->player->z);
 
         int tile = minecraft->level->getTile(x, y, z);
         if (minecraft->level->isSolidBlockingTile(x, y, z)) {
@@ -784,9 +784,9 @@ void ItemInHandRenderer::renderScreenEffect(float a) {
                     ((i >> 1) % 2 - 0.5f) * minecraft->player->bbHeight * 0.2f;
                 float zo =
                     ((i >> 2) % 2 - 0.5f) * minecraft->player->bbWidth * 0.9f;
-                int xt = Mth::floor(x + xo);
-                int yt = Mth::floor(y + yo);
-                int zt = Mth::floor(z + zo);
+                int xt = GameMath::floor(x + xo);
+                int yt = GameMath::floor(y + yo);
+                int zt = GameMath::floor(z + zo);
                 if (minecraft->level->isSolidBlockingTile(xt, yt, zt)) {
                     tile = minecraft->level->getTile(xt, yt, zt);
                 }

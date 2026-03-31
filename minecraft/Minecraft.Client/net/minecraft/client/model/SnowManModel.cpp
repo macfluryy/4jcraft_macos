@@ -1,6 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "SnowManModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "geom/ModelPart.h"
 
 SnowManModel::SnowManModel() : Model() {
@@ -41,17 +41,17 @@ void SnowManModel::setupAnim(float time, float r, float bob, float yRot,
                              std::shared_ptr<Entity> entity,
                              unsigned int uiBitmaskOverrideAnim) {
     Model::setupAnim(time, r, bob, yRot, xRot, scale, entity);
-    head->yRot = yRot / (float)(180 / M_PI);
-    head->xRot = xRot / (float)(180 / M_PI);
-    piece1->yRot = (yRot / (float)(180 / M_PI)) * 0.25f;
+    head->yRot = yRot / (float)(180 / std::numbers::pi);
+    head->xRot = xRot / (float)(180 / std::numbers::pi);
+    piece1->yRot = (yRot / (float)(180 / std::numbers::pi)) * 0.25f;
 
-    float s = Mth::sin(piece1->yRot);
-    float c = Mth::cos(piece1->yRot);
+    float s = sinf(piece1->yRot);
+    float c = cosf(piece1->yRot);
 
     arm1->zRot = 1;
     arm2->zRot = -1;
     arm1->yRot = 0 + piece1->yRot;
-    arm2->yRot = M_PI + piece1->yRot;
+    arm2->yRot = std::numbers::pi + piece1->yRot;
 
     arm1->x = (c) * 5;
     arm1->z = (-s) * 5;

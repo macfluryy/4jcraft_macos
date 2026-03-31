@@ -5,7 +5,7 @@
 #include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "../../../net/minecraft/client/skins/TexturePackRepository.h"
 #include "../../../net/minecraft/client/skins/DLCTexturePack.h"
 #include "../DLC/DLCAudioFile.h"
@@ -733,8 +733,8 @@ void SoundEngine::tick(shared_ptr<Mob>* players, float a) {
 
                 float yRot = players[i]->yRotO +
                              (players[i]->yRot - players[i]->yRotO) * a;
-                float yCos = (float)cos(yRot * Mth::RAD_TO_GRAD);
-                float ySin = (float)sin(yRot * Mth::RAD_TO_GRAD);
+                float yCos = (float)cos(yRot * GameMath::DEG_TO_RAD);
+                float ySin = (float)sin(yRot * GameMath::DEG_TO_RAD);
 
                 // store the listener positions for splitscreen
                 m_ListenerA[i].vPosition.x = x;
@@ -1111,8 +1111,8 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
 
                 float yRot = players[i]->yRotO +
                              (players[i]->yRot - players[i]->yRotO) * a;
-                float yCos = (float)cos(-yRot * Mth::RAD_TO_GRAD - M_PI);
-                float ySin = (float)sin(-yRot * Mth::RAD_TO_GRAD - M_PI);
+                float yCos = (float)cos(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
+                float ySin = (float)sin(-yRot * GameMath::DEG_TO_RAD - std::numbers::pi);
 
                 // store the listener positions for splitscreen
                 m_ListenerA[i].vPosition.x = x;

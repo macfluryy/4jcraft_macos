@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "ChickenRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
 
@@ -22,7 +22,7 @@ float ChickenRenderer::getBob(std::shared_ptr<LivingEntity> _mob, float a) {
     float flap = mob->oFlap + (mob->flap - mob->oFlap) * a;
     float flapSpeed = mob->oFlapSpeed + (mob->flapSpeed - mob->oFlapSpeed) * a;
 
-    return (Mth::sin(flap) + 1) * flapSpeed;
+    return (sinf(flap) + 1) * flapSpeed;
 }
 
 ResourceLocation* ChickenRenderer::getTextureLocation(

@@ -89,8 +89,8 @@ bool Monster::doHurtTarget(std::shared_ptr<Entity> target) {
 
     if (wasHurt) {
         if (knockback > 0) {
-            target->push(-Mth::sin(yRot * M_PI / 180) * knockback * .5f, 0.1,
-                         Mth::cos(yRot * M_PI / 180) * knockback * .5f);
+            target->push(-sinf(yRot * std::numbers::pi / 180) * knockback * .5f, 0.1,
+                         cosf(yRot * std::numbers::pi / 180) * knockback * .5f);
             xd *= 0.6;
             zd *= 0.6;
         }
@@ -125,9 +125,9 @@ float Monster::getWalkTargetValue(int x, int y, int z) {
 }
 
 bool Monster::isDarkEnoughToSpawn() {
-    int xt = Mth::floor(x);
-    int yt = Mth::floor(bb.y0);
-    int zt = Mth::floor(z);
+    int xt = GameMath::floor(x);
+    int yt = GameMath::floor(bb.y0);
+    int zt = GameMath::floor(z);
     if (level->getBrightness(LightLayer::Sky, xt, yt, zt) > random->nextInt(32))
         return false;
 

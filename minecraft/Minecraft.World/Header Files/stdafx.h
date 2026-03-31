@@ -35,6 +35,7 @@
 #include <deque>
 #include <algorithm>
 #include <math.h>
+#include <numbers>
 #include <limits>
 #include <string>
 #include <sstream>
@@ -46,7 +47,7 @@
 #include "../ConsoleHelpers/Definitions.h"
 #include "java/Class.h"
 #include "java/Exceptions.h"
-#include "../net/minecraft/util/Mth.h"
+#include "../net/minecraft/util/GameMath.h"
 #include "../ConsoleHelpers/StringHelpers.h"
 #include "../ConsoleHelpers/ArrayWithLength.h"
 #include "java/Random.h"

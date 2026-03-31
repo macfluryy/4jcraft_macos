@@ -30,7 +30,7 @@ PrimedTnt::PrimedTnt(Level* level, double x, double y, double z,
 
     setPos(x, y, z);
 
-    float rot = (float)(Math::random() * M_PI * 2);
+    float rot = (float)(Math::random() * std::numbers::pi * 2);
     xd = -sin(rot) * 0.02f;
     yd = +0.2f;
     zd = -cos(rot) * 0.02f;

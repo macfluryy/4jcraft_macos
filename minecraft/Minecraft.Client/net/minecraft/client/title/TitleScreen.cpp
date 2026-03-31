@@ -391,8 +391,8 @@ void TitleScreen::render(int xm, int ym, float a) {
     glTranslatef((float)width / 2 + 90, 70, 0);
 
     glRotatef(-20, 0, 0, 1);
-    float sss = 1.8f - Mth::abs(Mth::sin(System::currentTimeMillis() % 1000 /
-                                         1000.0f * M_PI * 2) *
+    float sss = 1.8f - GameMath::abs(sinf(System::currentTimeMillis() % 1000 /
+                                         1000.0f * std::numbers::pi * 2) *
                                 0.1f);
 
     sss = sss * 100 / (font->width(splash) + 8 * 4);

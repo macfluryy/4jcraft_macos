@@ -1,5 +1,5 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "BlazeModel.h"
 #include "geom/ModelPart.h"
 
@@ -40,29 +40,29 @@ void BlazeModel::setupAnim(float time, float r, float bob, float yRot,
                            float xRot, float scale,
                            std::shared_ptr<Entity> entity,
                            unsigned int uiBitmaskOverrideAnim) {
-    float angle = bob * M_PI * -.1f;
+    float angle = bob * std::numbers::pi * -.1f;
     for (int i = 0; i < 4; i++) {
-        upperBodyParts[i]->y = -2 + Mth::cos((i * 2 + bob) * .25f);
-        upperBodyParts[i]->x = Mth::cos(angle) * 9.0f;
-        upperBodyParts[i]->z = Mth::sin(angle) * 9.0f;
-        angle += M_PI * 0.5f;
+        upperBodyParts[i]->y = -2 + cosf((i * 2 + bob) * .25f);
+        upperBodyParts[i]->x = cosf(angle) * 9.0f;
+        upperBodyParts[i]->z = sinf(angle) * 9.0f;
+        angle += std::numbers::pi * 0.5f;
     }
-    angle = .25f * M_PI + bob * M_PI * .03f;
+    angle = .25f * std::numbers::pi + bob * std::numbers::pi * .03f;
     for (int i = 4; i < 8; i++) {
-        upperBodyParts[i]->y = 2 + Mth::cos((i * 2 + bob) * .25f);
-        upperBodyParts[i]->x = Mth::cos(angle) * 7.0f;
-        upperBodyParts[i]->z = Mth::sin(angle) * 7.0f;
-        angle += M_PI * 0.5f;
+        upperBodyParts[i]->y = 2 + cosf((i * 2 + bob) * .25f);
+        upperBodyParts[i]->x = cosf(angle) * 7.0f;
+        upperBodyParts[i]->z = sinf(angle) * 7.0f;
+        angle += std::numbers::pi * 0.5f;
     }
 
-    angle = .15f * M_PI + bob * M_PI * -.05f;
+    angle = .15f * std::numbers::pi + bob * std::numbers::pi * -.05f;
     for (int i = 8; i < 12; i++) {
-        upperBodyParts[i]->y = 11 + Mth::cos((i * 1.5f + bob) * .5f);
-        upperBodyParts[i]->x = Mth::cos(angle) * 5.0f;
-        upperBodyParts[i]->z = Mth::sin(angle) * 5.0f;
-        angle += M_PI * 0.5f;
+        upperBodyParts[i]->y = 11 + cosf((i * 1.5f + bob) * .5f);
+        upperBodyParts[i]->x = cosf(angle) * 5.0f;
+        upperBodyParts[i]->z = sinf(angle) * 5.0f;
+        angle += std::numbers::pi * 0.5f;
     }
 
-    head->yRot = yRot / (float)(180 / M_PI);
-    head->xRot = xRot / (float)(180 / M_PI);
+    head->yRot = yRot / (float)(180 / std::numbers::pi);
+    head->xRot = xRot / (float)(180 / std::numbers::pi);
 }

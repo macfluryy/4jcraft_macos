@@ -31,7 +31,7 @@ bool MoveThroughVillageGoal::canUse() {
     if (onlyAtNight && mob->level->isDay()) return false;
 
     std::shared_ptr<Village> village = mob->level->villages->getClosestVillage(
-        Mth::floor(mob->x), Mth::floor(mob->y), Mth::floor(mob->z), 0);
+        GameMath::floor(mob->x), GameMath::floor(mob->y), GameMath::floor(mob->z), 0);
     if (village == nullptr) return false;
 
     std::shared_ptr<DoorInfo> _doorInfo = getNextDoorInfo(village);
@@ -93,8 +93,8 @@ std::shared_ptr<DoorInfo> MoveThroughVillageGoal::getNextDoorInfo(
     // for (DoorInfo di : doorInfos)
     for (auto it = doorInfos->begin(); it != doorInfos->end(); ++it) {
         std::shared_ptr<DoorInfo> di = *it;
-        int distSqr = di->distanceToSqr(Mth::floor(mob->x), Mth::floor(mob->y),
-                                        Mth::floor(mob->z));
+        int distSqr = di->distanceToSqr(GameMath::floor(mob->x), GameMath::floor(mob->y),
+                                        GameMath::floor(mob->z));
         if (distSqr < closestDistSqr) {
             if (hasVisited(di)) continue;
             closest = di;

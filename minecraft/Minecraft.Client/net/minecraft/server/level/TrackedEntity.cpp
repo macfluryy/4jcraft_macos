@@ -2,7 +2,7 @@
 #include "TrackedEntity.h"
 #include "ServerPlayer.h"
 #include "../network/PlayerConnection.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/util/GameMath.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
@@ -39,13 +39,13 @@ TrackedEntity::TrackedEntity(std::shared_ptr<Entity> e, int range,
     this->updateInterval = updateInterval;
     this->trackDelta = trackDelta;
 
-    xp = Mth::floor(e->x * 32);
-    yp = Mth::floor(e->y * 32);
-    zp = Mth::floor(e->z * 32);
+    xp = GameMath::floor(e->x * 32);
+    yp = GameMath::floor(e->y * 32);
+    zp = GameMath::floor(e->z * 32);
 
-    yRotp = Mth::floor(e->yRot * 256 / 360);
-    xRotp = Mth::floor(e->xRot * 256 / 360);
-    yHeadRotp = Mth::floor(e->getYHeadRot() * 256 / 360);
+    yRotp = GameMath::floor(e->yRot * 256 / 360);
+    xRotp = GameMath::floor(e->xRot * 256 / 360);
+    yHeadRotp = GameMath::floor(e->getYHeadRot() * 256 / 360);
 }
 
 int c0a = 0, c0b = 0, c1a = 0, c1b = 0, c1c = 0, c2a = 0, c2b = 0;
@@ -102,8 +102,8 @@ void TrackedEntity::tick(EntityTracker* tracker,
     } else if (tickCount % updateInterval == 0 || e->hasImpulse ||
                e->getEntityData()->isDirty()) {
         // 4J: Moved this as it's shared
-        int yRotn = Mth::floor(e->yRot * 256 / 360);
-        int xRotn = Mth::floor(e->xRot * 256 / 360);
+        int yRotn = GameMath::floor(e->yRot * 256 / 360);
+        int xRotn = GameMath::floor(e->xRot * 256 / 360);
 
         // 4J: Changed rotation to be generally sent as a delta as well as
         // position
@@ -113,9 +113,9 @@ void TrackedEntity::tick(EntityTracker* tracker,
         if (e->riding == nullptr) {
             teleportDelay++;
 
-            int xn = Mth::floor(e->x * 32.0);
-            int yn = Mth::floor(e->y * 32.0);
-            int zn = Mth::floor(e->z * 32.0);
+            int xn = GameMath::floor(e->x * 32.0);
+            int yn = GameMath::floor(e->y * 32.0);
+            int zn = GameMath::floor(e->z * 32.0);
 
             int xa = xn - xp;
             int ya = yn - yp;
@@ -310,16 +310,16 @@ void TrackedEntity::tick(EntityTracker* tracker,
                 xRotp = xRotn;
             }
 
-            xp = Mth::floor(e->x * 32.0);
-            yp = Mth::floor(e->y * 32.0);
-            zp = Mth::floor(e->z * 32.0);
+            xp = GameMath::floor(e->x * 32.0);
+            yp = GameMath::floor(e->y * 32.0);
+            zp = GameMath::floor(e->z * 32.0);
 
             sendDirtyEntityData();
 
             wasRiding = true;
         }
 
-        int yHeadRot = Mth::floor(e->getYHeadRot() * 256 / 360);
+        int yHeadRot = GameMath::floor(e->getYHeadRot() * 256 / 360);
         if (abs(yHeadRot - yHeadRotp) >= TOLERANCE_LEVEL) {
             broadcast(std::shared_ptr<RotateHeadPacket>(
                 new RotateHeadPacket(e->entityId, (uint8_t)yHeadRot)));
@@ -625,8 +625,8 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
                     std::shared_ptr<EntityActionAtPositionPacket>(
                         new EntityActionAtPositionPacket(
                             e, EntityActionAtPositionPacket::START_SLEEP,
-                            Mth::floor(e->x), Mth::floor(e->y),
-                            Mth::floor(e->z))));
+                            GameMath::floor(e->x), GameMath::floor(e->y),
+                            GameMath::floor(e->z))));
             }
         }
 
@@ -681,7 +681,7 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
 
     // 4J-PB - replacing with a switch, rather than tons of ifs
     if (std::dynamic_pointer_cast<Creature>(e) != nullptr) {
-        yHeadRotp = Mth::floor(e->getYHeadRot() * 256 / 360);
+        yHeadRotp = GameMath::floor(e->getYHeadRot() * 256 / 360);
         return std::shared_ptr<AddMobPacket>(
             new AddMobPacket(std::dynamic_pointer_cast<Mob>(e), yRotp, xRotp,
                              xp, yp, zp, yHeadRotp));
@@ -717,7 +717,7 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
         return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
             e, AddEntityPacket::BOAT, yRotp, xRotp, xp, yp, zp));
     } else if (e->instanceof(eTYPE_ENDERDRAGON)) {
-        yHeadRotp = Mth::floor(e->getYHeadRot() * 256 / 360);
+        yHeadRotp = GameMath::floor(e->getYHeadRot() * 256 / 360);
         return std::shared_ptr<AddMobPacket>(
             new AddMobPacket(std::dynamic_pointer_cast<LivingEntity>(e), yRotp,
                              xRotp, xp, yp, zp, yHeadRotp));
@@ -812,9 +812,9 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
             std::shared_ptr<AddEntityPacket>(
                 new AddEntityPacket(e, AddEntityPacket::ITEM_FRAME, frame->dir,
                                     yRotp, xRotp, xp, yp, zp));
-        packet->x = Mth::floor(frame->xTile * 32.0f);
-        packet->y = Mth::floor(frame->yTile * 32.0f);
-        packet->z = Mth::floor(frame->zTile * 32.0f);
+        packet->x = GameMath::floor(frame->xTile * 32.0f);
+        packet->y = GameMath::floor(frame->yTile * 32.0f);
+        packet->z = GameMath::floor(frame->zTile * 32.0f);
         return packet;
     } else if (e->instanceof(eTYPE_LEASHFENCEKNOT)) {
         std::shared_ptr<LeashFenceKnotEntity> knot =
@@ -822,9 +822,9 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
         std::shared_ptr<AddEntityPacket> packet =
             std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
                 e, AddEntityPacket::LEASH_KNOT, yRotp, xRotp, xp, yp, zp));
-        packet->x = Mth::floor((float)knot->xTile * 32);
-        packet->y = Mth::floor((float)knot->yTile * 32);
-        packet->z = Mth::floor((float)knot->zTile * 32);
+        packet->x = GameMath::floor((float)knot->xTile * 32);
+        packet->y = GameMath::floor((float)knot->yTile * 32);
+        packet->z = GameMath::floor((float)knot->zTile * 32);
         return packet;
     } else if (e->instanceof(eTYPE_EXPERIENCEORB)) {
         return std::shared_ptr<AddExperienceOrbPacket>(

@@ -46,7 +46,7 @@ void MoveControl::tick() {
     double dd = xd * xd + yd * yd + zd * zd;
     if (dd < MIN_SPEED_SQR) return;
 
-    float yRotD = (float)(atan2(zd, xd) * 180 / M_PI) - 90;
+    float yRotD = (float)(atan2(zd, xd) * 180 / std::numbers::pi) - 90;
 
     mob->yRot = rotlerp(mob->yRot, yRotD, MAX_TURN);
     mob->setSpeed(
@@ -58,7 +58,7 @@ void MoveControl::tick() {
 }
 
 float MoveControl::rotlerp(float a, float b, float max) {
-    float diff = Mth::wrapDegrees(b - a);
+    float diff = GameMath::wrapDegrees(b - a);
     if (diff > max) {
         diff = max;
     }

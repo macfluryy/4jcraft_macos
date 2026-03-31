@@ -18,7 +18,10 @@ public:
     double nextGaussian();
     int nextInt();
     int nextInt(int to);
+    int nextInt(int minInclusive, int maxInclusive);
     float nextFloat();
+    float nextFloat(float min, float max);
+    double nextDouble(double min, double max);
     int64_t nextLong();
     bool nextBoolean();
 };

@@ -47,7 +47,7 @@ bool SkullItem::useOn(
 
         int rot = 0;
         if (face == Facing::UP) {
-            rot = Mth::floor(((player->yRot) * 16) / 360 + 0.5) & 15;
+            rot = GameMath::floor(((player->yRot) * 16) / 360 + 0.5) & 15;
         }
 
         std::shared_ptr<TileEntity> skullTE = level->getTileEntity(x, y, z);
