@@ -20,6 +20,7 @@
       flake = false;
     };
 
+    # patches only get applied if they follow <subproject_to_patch>-patch naming
     miniaudio-patch = {
       url = "https://wrapdb.mesonbuild.com/v2/miniaudio_0.11.22-2/get_patch";
       flake = false;
@@ -37,16 +38,51 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      ...
-    }@inputs:
+    { self, nixpkgs, flake-utils, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        lib = pkgs.lib;
+
+        subprojectNames = [
+          "shiggy"
+          "4jlibs"
+          "stb"
+          "simdutf"
+          "miniaudio"
+        ];
+
+        # helper: copy all subproject sources
+        copySubprojects = ''
+          mkdir -p $sourceRoot/subprojects
+          ${lib.concatMapStringsSep "\n" (name: "cp -r ${inputs.${name}} $sourceRoot/subprojects/${name}") subprojectNames}
+          chmod -R u+w $sourceRoot/subprojects
+        '';
+
+        # helper: copy packagefiles
+        copyPackagefiles = ''
+          for proj in ${builtins.toString subprojectNames}; do
+            if [ -d "subprojects/packagefiles/$proj" ]; then
+              cp -r subprojects/packagefiles/$proj/* subprojects/$proj/
+            fi
+          done
+        '';
+
+        # helper: apply patches from '-patch' inputs
+        applyPatches = lib.concatMapStringsSep "\n" (name: ''
+          patch_input="${inputs.${name + "-patch"} or ""}"
+          if [ -n "$patch_input" ]; then
+            unzip "$patch_input" -d ${name}-patch-tmp
+            if [ $(ls -1 ${name}-patch-tmp | wc -l) -eq 1 ] && [ -d ${name}-patch-tmp/* ]; then
+              cp -r ${name}-patch-tmp/*/* subprojects/${name}/
+            else
+              cp -r ${name}-patch-tmp/* subprojects/${name}/
+            fi
+            rm -rf ${name}-patch-tmp
+          fi
+        '') subprojectNames;
+
       in
       {
         packages.default = pkgs.clangStdenv.mkDerivation {
@@ -57,34 +93,21 @@
           dontFixup = true;
           dontUseCmakeConfigure = true;
 
-          # 4jcraft - Meson expects this subprojects structure
+          # Disable fortify to prevent buffer overflow detection
+          hardeningDisable = [ "fortify3" "fortify" ];
+
           postUnpack = ''
-            mkdir -p $sourceRoot/subprojects
-
-            cp -r ${inputs.shiggy} $sourceRoot/subprojects/shiggy
-            cp -r ${inputs."4jlibs"} $sourceRoot/subprojects/4jlibs
-            cp -r ${inputs.stb} $sourceRoot/subprojects/stb
-            cp -r ${inputs.simdutf} $sourceRoot/subprojects/simdutf
-            cp -r ${inputs.miniaudio} $sourceRoot/subprojects/miniaudio
-
-            chmod -R u+w $sourceRoot/subprojects
+            ${copySubprojects}
           '';
 
-          # 4jcraft - `stb` and `simdutf` patches
           postPatch = ''
-            cp subprojects/packagefiles/stb/meson.build subprojects/stb/meson.build
-            cp subprojects/packagefiles/simdutf/meson.build subprojects/simdutf/meson.build
-            cp subprojects/packagefiles/simdutf/meson.options subprojects/simdutf/meson.options
+            # Remove wrap files so Meson doesn't try to download them
+            for proj in ${builtins.toString subprojectNames}; do
+              rm -f subprojects/$proj.wrap
+            done
 
-            unzip ${inputs.miniaudio-patch} -d miniaudio-patch-tmp
-            cp -r miniaudio-patch-tmp/*/. subprojects/miniaudio/
-
-            cat > subprojects/miniaudio.wrap <<EOF
-            [wrap-file]
-            directory = miniaudio
-            [provide]
-            dependency_names = miniaudio
-            EOF
+            ${copyPackagefiles}
+            ${applyPatches}
           '';
 
           nativeBuildInputs = with pkgs; [
@@ -117,7 +140,7 @@
 
           meta = {
             description = "4JCraft";
-            platforms = pkgs.lib.platforms.unix;
+            platforms = lib.platforms.unix;
           };
         };
 
