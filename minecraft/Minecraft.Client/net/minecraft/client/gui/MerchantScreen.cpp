@@ -171,9 +171,9 @@ void MerchantScreen::tick() {
             DataOutputStream output(&rawOutput);
             output.writeInt(currentRecipeIndex);
             minecraft->player->connection->send(
-                std::shared_ptr<CustomPayloadPacket>(new CustomPayloadPacket(
+                std::make_shared<CustomPayloadPacket>(
                     CustomPayloadPacket::TRADER_SELECTION_PACKET,
-                    rawOutput.toByteArray())));
+                    rawOutput.toByteArray()));
         }
     } else {
         nextRecipeButton->active = false;
@@ -200,8 +200,8 @@ void MerchantScreen::buttonClicked(Button* button) {
         DataOutputStream output(&rawOutput);
         output.writeInt(currentRecipeIndex);
         minecraft->player->connection->send(
-            std::shared_ptr<CustomPayloadPacket>(new CustomPayloadPacket(
+            std::make_shared<CustomPayloadPacket>(
                 CustomPayloadPacket::TRADER_SELECTION_PACKET,
-                rawOutput.toByteArray())));
+                rawOutput.toByteArray()));
     }
 }

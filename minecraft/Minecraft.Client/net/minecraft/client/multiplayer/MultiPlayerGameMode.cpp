@@ -113,20 +113,20 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
 
     if (localPlayerMode->isCreative()) {
         connection->send(
-            std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
-                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face)));
+            std::make_shared<PlayerActionPacket>(
+                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         creativeDestroyBlock(minecraft, this, x, y, z, face);
         destroyDelay = 5;
     } else if (!isDestroying || !sameDestroyTarget(x, y, z)) {
         if (isDestroying) {
             connection->send(
-                std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
+                std::make_shared<PlayerActionPacket>(
                     PlayerActionPacket::ABORT_DESTROY_BLOCK, xDestroyBlock,
-                    yDestroyBlock, zDestroyBlock, face)));
+                    yDestroyBlock, zDestroyBlock, face));
         }
         connection->send(
-            std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
-                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face)));
+            std::make_shared<PlayerActionPacket>(
+                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         int t = minecraft->level->getTile(x, y, z);
         if (t > 0 && destroyProgress == 0)
             Tile::tiles[t]->attack(minecraft->level, x, y, z,
@@ -156,9 +156,9 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
 void MultiPlayerGameMode::stopDestroyBlock() {
     if (isDestroying) {
         connection->send(
-            std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
+            std::make_shared<PlayerActionPacket>(
                 PlayerActionPacket::ABORT_DESTROY_BLOCK, xDestroyBlock,
-                yDestroyBlock, zDestroyBlock, -1)));
+                yDestroyBlock, zDestroyBlock, -1));
     }
 
     isDestroying = false;
@@ -183,8 +183,8 @@ void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face) {
     if (localPlayerMode->isCreative()) {
         destroyDelay = 5;
         connection->send(
-            std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
-                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face)));
+            std::make_shared<PlayerActionPacket>(
+                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         creativeDestroyBlock(minecraft, this, x, y, z, face);
         return;
     }
@@ -216,8 +216,8 @@ void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face) {
         if (destroyProgress >= 1) {
             isDestroying = false;
             connection->send(
-                std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
-                    PlayerActionPacket::STOP_DESTROY_BLOCK, x, y, z, face)));
+                std::make_shared<PlayerActionPacket>(
+                    PlayerActionPacket::STOP_DESTROY_BLOCK, x, y, z, face));
             destroyBlock(x, y, z, face);
             destroyProgress = 0;
             destroyTicks = 0;
@@ -406,31 +406,31 @@ bool MultiPlayerGameMode::useItem(std::shared_ptr<Player> player, Level* level,
     }
 
     if (!bTestUseOnly) {
-        connection->send(std::shared_ptr<UseItemPacket>(new UseItemPacket(
-            -1, -1, -1, 255, player->inventory->getSelected(), 0, 0, 0)));
+        connection->send(std::make_shared<UseItemPacket>(
+            -1, -1, -1, 255, player->inventory->getSelected(), 0, 0, 0));
     }
     return result;
 }
 
 std::shared_ptr<MultiplayerLocalPlayer> MultiPlayerGameMode::createPlayer(
     Level* level) {
-    return std::shared_ptr<MultiplayerLocalPlayer>(new MultiplayerLocalPlayer(
-        minecraft, level, minecraft->user, connection));
+    return std::make_shared<MultiplayerLocalPlayer>(
+        minecraft, level, minecraft->user, connection);
 }
 
 void MultiPlayerGameMode::attack(std::shared_ptr<Player> player,
                                  std::shared_ptr<Entity> entity) {
     ensureHasSentCarriedItem();
-    connection->send(std::shared_ptr<InteractPacket>(new InteractPacket(
-        player->entityId, entity->entityId, InteractPacket::ATTACK)));
+    connection->send(std::make_shared<InteractPacket>(
+        player->entityId, entity->entityId, InteractPacket::ATTACK));
     player->attack(entity);
 }
 
 bool MultiPlayerGameMode::interact(std::shared_ptr<Player> player,
                                    std::shared_ptr<Entity> entity) {
     ensureHasSentCarriedItem();
-    connection->send(std::shared_ptr<InteractPacket>(new InteractPacket(
-        player->entityId, entity->entityId, InteractPacket::INTERACT)));
+    connection->send(std::make_shared<InteractPacket>(
+        player->entityId, entity->entityId, InteractPacket::INTERACT));
     return player->interact(entity);
 }
 
@@ -475,8 +475,8 @@ void MultiPlayerGameMode::handleCreativeModeItemDrop(
 
 void MultiPlayerGameMode::releaseUsingItem(std::shared_ptr<Player> player) {
     ensureHasSentCarriedItem();
-    connection->send(std::shared_ptr<PlayerActionPacket>(new PlayerActionPacket(
-        PlayerActionPacket::RELEASE_USE_ITEM, 0, 0, 0, 255)));
+    connection->send(std::make_shared<PlayerActionPacket>(
+        PlayerActionPacket::RELEASE_USE_ITEM, 0, 0, 0, 255));
     player->releaseUsingItem();
 }
 
@@ -517,5 +517,5 @@ void MultiPlayerGameMode::handleDebugOptions(unsigned int uiVal,
                                              std::shared_ptr<Player> player) {
     player->SetDebugOptions(uiVal);
     connection->send(
-        std::shared_ptr<DebugOptionsPacket>(new DebugOptionsPacket(uiVal)));
+        std::make_shared<DebugOptionsPacket>(uiVal));
 }

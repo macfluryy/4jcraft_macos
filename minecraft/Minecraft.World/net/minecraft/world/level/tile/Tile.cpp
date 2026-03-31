@@ -2081,8 +2081,8 @@ void Tile::spawnResources(Level* level, int x, int y, int z, int data,
         if (type <= 0) continue;
 
         popResource(level, x, y, z,
-                    std::shared_ptr<ItemInstance>(new ItemInstance(
-                        type, 1, getSpawnResourcesAuxValue(data))));
+                    std::make_shared<ItemInstance>(
+                        type, 1, getSpawnResourcesAuxValue(data)));
     }
 }
 
@@ -2387,7 +2387,7 @@ std::shared_ptr<ItemInstance> Tile::getSilkTouchItemInstance(int data) {
         Item::items[id]->isStackedByData()) {
         popData = data;
     }
-    return std::shared_ptr<ItemInstance>(new ItemInstance(id, 1, popData));
+    return std::make_shared<ItemInstance>(id, 1, popData);
 }
 
 int Tile::getResourceCountForLootBonus(int bonusLevel, Random* random) {

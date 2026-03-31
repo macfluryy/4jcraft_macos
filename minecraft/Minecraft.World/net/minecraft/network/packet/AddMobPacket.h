@@ -39,7 +39,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new AddMobPacket());
+        return std::make_shared<AddMobPacket>();
     }
     virtual int getId() { return 24; }
 };

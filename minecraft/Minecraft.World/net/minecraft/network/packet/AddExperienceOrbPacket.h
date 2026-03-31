@@ -24,7 +24,7 @@ public:
     virtual int getEstimatedSize();
 
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new AddExperienceOrbPacket());
+        return std::make_shared<AddExperienceOrbPacket>();
     }
     virtual int getId() { return 26; }
 };

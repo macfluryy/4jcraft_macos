@@ -160,7 +160,7 @@ MobGroupData* Spider::finalizeMobSpawn(
 #endif
     {
         std::shared_ptr<Skeleton> skeleton =
-            std::shared_ptr<Skeleton>(new Skeleton(level));
+            std::make_shared<Skeleton>(level);
         skeleton->moveTo(x, y, z, yRot, 0);
         skeleton->finalizeMobSpawn(nullptr);
         level->addEntity(skeleton);

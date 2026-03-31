@@ -60,7 +60,7 @@ void SkullTile::setPlacedBy(Level* level, int x, int y, int z,
 }
 
 std::shared_ptr<TileEntity> SkullTile::newTileEntity(Level* level) {
-    return std::shared_ptr<SkullTileEntity>(new SkullTileEntity());
+    return std::make_shared<SkullTileEntity>();
 }
 
 int SkullTile::cloneTileId(Level* level, int x, int y, int z) {
@@ -164,7 +164,7 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                     // 4J: Removed !isClientSide check because there's one
                     // earlier on
                     std::shared_ptr<WitherBoss> witherBoss =
-                        std::shared_ptr<WitherBoss>(new WitherBoss(level));
+                        std::make_shared<WitherBoss>(level);
                     witherBoss->moveTo(x + 0.5, y - 1.45, z + zo + 1.5, 90, 0);
                     witherBoss->yBodyRot = 90;
                     witherBoss->makeInvulnerable();
@@ -181,11 +181,11 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                         level, x, y - 1, z + zo + 2, 0, 0);
 
                     std::shared_ptr<ItemInstance> itemInstance =
-                        std::shared_ptr<ItemInstance>(new ItemInstance(
-                            Item::skull_Id, 3, SkullTileEntity::TYPE_WITHER));
+                        std::make_shared<ItemInstance>(
+                            Item::skull_Id, 3, SkullTileEntity::TYPE_WITHER);
                     std::shared_ptr<ItemEntity> itemEntity =
-                        std::shared_ptr<ItemEntity>(new ItemEntity(
-                            level, x, y, z + zo + 1, itemInstance));
+                        std::make_shared<ItemEntity>(
+                            level, x, y, z + zo + 1, itemInstance);
                     level->addEntity(itemEntity);
                 }
 
@@ -246,7 +246,7 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                     // 4J: Removed !isClientSide check because there's one
                     // earlier on
                     std::shared_ptr<WitherBoss> witherBoss =
-                        std::shared_ptr<WitherBoss>(new WitherBoss(level));
+                        std::make_shared<WitherBoss>(level);
                     witherBoss->moveTo(x + xo + 1.5, y - 1.45, z + .5, 0, 0);
                     witherBoss->makeInvulnerable();
                     level->addEntity(witherBoss);
@@ -262,11 +262,11 @@ void SkullTile::checkMobSpawn(Level* level, int x, int y, int z,
                         level, x + xo + 2, y - 1, z, 0, 0);
 
                     std::shared_ptr<ItemInstance> itemInstance =
-                        std::shared_ptr<ItemInstance>(new ItemInstance(
-                            Item::skull_Id, 3, SkullTileEntity::TYPE_WITHER));
+                        std::make_shared<ItemInstance>(
+                            Item::skull_Id, 3, SkullTileEntity::TYPE_WITHER);
                     std::shared_ptr<ItemEntity> itemEntity =
-                        std::shared_ptr<ItemEntity>(new ItemEntity(
-                            level, x + xo + 1, y, z, itemInstance));
+                        std::make_shared<ItemEntity>(
+                            level, x + xo + 1, y, z, itemInstance);
                     level->addEntity(itemEntity);
                 }
 

@@ -150,10 +150,10 @@ void FallingTile::tick() {
                 } else {
                     if (dropItem && !cancelDrop)
                         spawnAtLocation(
-                            std::shared_ptr<ItemInstance>(new ItemInstance(
+                            std::make_shared<ItemInstance>(
                                 tile, 1,
                                 Tile::tiles[tile]->getSpawnResourcesAuxValue(
-                                    data))),
+                                    data)),
                             0);
                 }
             }
@@ -162,9 +162,9 @@ void FallingTile::tick() {
                    (time > 20 * 30)) {
             if (dropItem)
                 spawnAtLocation(
-                    std::shared_ptr<ItemInstance>(new ItemInstance(
+                    std::make_shared<ItemInstance>(
                         tile, 1,
-                        Tile::tiles[tile]->getSpawnResourcesAuxValue(data))),
+                        Tile::tiles[tile]->getSpawnResourcesAuxValue(data)),
                     0);
             remove();
         }

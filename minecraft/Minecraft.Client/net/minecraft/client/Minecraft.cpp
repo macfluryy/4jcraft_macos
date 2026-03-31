@@ -3337,7 +3337,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                     // std::dynamic_pointer_cast<Mob>(Wolf::_class->newInstance(
                     // level ));
                     std::shared_ptr<Mob> mob = std::dynamic_pointer_cast<Mob>(
-                        std::shared_ptr<Spider>(new Spider(level)));
+                        std::make_shared<Spider>(level));
                     mob->moveTo(player->x + 1, player->y, player->z + 1,
                                 level->random->nextFloat() * 360, 0);
                     level->addEntity(mob);

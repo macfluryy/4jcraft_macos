@@ -59,7 +59,7 @@ std::shared_ptr<Layer> SmoothZoomLayer::zoom(int64_t seed,
                                              int count) {
     std::shared_ptr<Layer> result = sup;
     for (int i = 0; i < count; i++) {
-        result = std::shared_ptr<Layer>(new SmoothZoomLayer(seed + i, result));
+        result = std::make_shared<SmoothZoomLayer>(seed + i, result);
     }
     return result;
 }

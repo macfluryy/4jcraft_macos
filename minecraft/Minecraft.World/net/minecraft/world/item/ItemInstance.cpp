@@ -90,7 +90,7 @@ ItemInstance::~ItemInstance() {
 
 std::shared_ptr<ItemInstance> ItemInstance::remove(int count) {
     std::shared_ptr<ItemInstance> ii =
-        std::shared_ptr<ItemInstance>(new ItemInstance(id, count, auxValue));
+        std::make_shared<ItemInstance>(id, count, auxValue);
     if (tag != nullptr) ii->tag = (CompoundTag*)tag->copy();
     this->count -= count;
 
@@ -260,7 +260,7 @@ bool ItemInstance::interactEnemy(std::shared_ptr<Player> player,
 
 std::shared_ptr<ItemInstance> ItemInstance::copy() const {
     std::shared_ptr<ItemInstance> copy =
-        std::shared_ptr<ItemInstance>(new ItemInstance(id, count, auxValue));
+        std::make_shared<ItemInstance>(id, count, auxValue);
     if (tag != nullptr) {
         copy->tag = (CompoundTag*)tag->copy();
     }

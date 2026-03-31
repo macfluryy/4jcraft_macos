@@ -462,7 +462,7 @@ std::shared_ptr<AgableMob> Wolf::getBreedOffspring(
     // 4J - added limit to wolves that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Wolf> pBabyWolf =
-            std::shared_ptr<Wolf>(new Wolf(level));
+            std::make_shared<Wolf>(level);
 
         if (!getOwnerUUID().empty()) {
             // set the baby wolf to be tame, and assign the owner

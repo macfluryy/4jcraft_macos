@@ -24,7 +24,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetCreativeModeSlotPacket());
+        return std::make_shared<SetCreativeModeSlotPacket>();
     }
     virtual int getId() { return 107; }
 };

@@ -495,7 +495,6 @@ void C_4JProfile::SetRichPresenceContextValue(int iPad, int iContextID,
                                               int iVal) {}
 void C_4JProfile::SetCurrentGameActivity(int iPad, int iNewPresence,
                                          bool bSetOthersToIdle) {}
-void C_4JProfile::DisplayFullVersionPurchase(bool bRequired, int iQuadrant,
                                              int iUpsellParam) {}
 void C_4JProfile::SetUpsellCallback(void (*Func)(void* lpParam,
                                                  EUpsellType type,

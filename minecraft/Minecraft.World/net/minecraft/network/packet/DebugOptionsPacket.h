@@ -24,7 +24,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new DebugOptionsPacket());
+        return std::make_shared<DebugOptionsPacket>();
     }
     virtual int getId() { return 152; }
 };

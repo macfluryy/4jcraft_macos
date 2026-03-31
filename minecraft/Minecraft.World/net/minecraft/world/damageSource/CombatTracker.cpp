@@ -105,16 +105,16 @@ std::shared_ptr<ChatPacket> CombatTracker::getDeathMessagePacket() {
                     : nullptr;
 
             if (attackerItem != nullptr && attackerItem->hasCustomHoverName()) {
-                result = std::shared_ptr<ChatPacket>(new ChatPacket(
+                result = std::make_shared<ChatPacket>(
                     mob->getNetworkName(),
                     ChatPacket::e_ChatDeathFellAssistItem,
                     attackerEntity->GetType(), attackerEntity->getNetworkName(),
-                    attackerItem->getHoverName()));
+                    attackerItem->getHoverName());
             } else {
-                result = std::shared_ptr<ChatPacket>(new ChatPacket(
+                result = std::make_shared<ChatPacket>(
                     mob->getNetworkName(), ChatPacket::e_ChatDeathFellAssist,
                     attackerEntity->GetType(),
-                    attackerEntity->getNetworkName()));
+                    attackerEntity->getNetworkName());
             }
         } else if (killingEntity != nullptr) {
             std::shared_ptr<ItemInstance> killerItem =
@@ -123,19 +123,19 @@ std::shared_ptr<ChatPacket> CombatTracker::getDeathMessagePacket() {
                           ->getCarriedItem()
                     : nullptr;
             if (killerItem != nullptr && killerItem->hasCustomHoverName()) {
-                result = std::shared_ptr<ChatPacket>(new ChatPacket(
+                result = std::make_shared<ChatPacket>(
                     mob->getNetworkName(),
                     ChatPacket::e_ChatDeathFellFinishItem,
                     killingEntity->GetType(), killingEntity->getNetworkName(),
-                    killerItem->getHoverName()));
+                    killerItem->getHoverName());
             } else {
-                result = std::shared_ptr<ChatPacket>(new ChatPacket(
+                result = std::make_shared<ChatPacket>(
                     mob->getNetworkName(), ChatPacket::e_ChatDeathFellFinish,
-                    killingEntity->GetType(), killingEntity->getNetworkName()));
+                    killingEntity->GetType(), killingEntity->getNetworkName());
             }
         } else {
-            result = std::shared_ptr<ChatPacket>(new ChatPacket(
-                mob->getNetworkName(), ChatPacket::e_ChatDeathFellKiller));
+            result = std::make_shared<ChatPacket>(
+                mob->getNetworkName(), ChatPacket::e_ChatDeathFellKiller);
         }
     } else {
         result = killingBlow->getSource()->getDeathMessagePacket(

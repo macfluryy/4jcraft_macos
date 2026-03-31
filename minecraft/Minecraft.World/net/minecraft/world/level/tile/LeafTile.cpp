@@ -242,8 +242,8 @@ void LeafTile::spawnResources(Level* level, int x, int y, int z, int data,
         if (level->random->nextInt(chance) == 0) {
             int type = getResource(data, level->random, playerBonusLevel);
             popResource(level, x, y, z,
-                        std::shared_ptr<ItemInstance>(new ItemInstance(
-                            type, 1, getSpawnResourcesAuxValue(data))));
+                        std::make_shared<ItemInstance>(
+                            type, 1, getSpawnResourcesAuxValue(data)));
         }
 
         chance = 200;
@@ -271,8 +271,8 @@ void LeafTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
 
         // drop leaf block instead of sapling
         popResource(level, x, y, z,
-                    std::shared_ptr<ItemInstance>(new ItemInstance(
-                        Tile::leaves_Id, 1, data & LEAF_TYPE_MASK)));
+                    std::make_shared<ItemInstance>(
+                        Tile::leaves_Id, 1, data & LEAF_TYPE_MASK));
     } else {
         TransparentTile::playerDestroy(level, player, x, y, z, data);
     }

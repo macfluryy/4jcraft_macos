@@ -26,7 +26,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new RotateHeadPacket());
+        return std::make_shared<RotateHeadPacket>();
     }
     virtual int getId() { return 35; }
 };

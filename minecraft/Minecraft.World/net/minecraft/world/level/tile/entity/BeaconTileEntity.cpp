@@ -10,7 +10,7 @@
 
 std::shared_ptr<TileEntity> BeaconTileEntity::clone() {
     std::shared_ptr<BeaconTileEntity> result =
-        std::shared_ptr<BeaconTileEntity>(new BeaconTileEntity());
+        std::make_shared<BeaconTileEntity>();
     TileEntity::clone(result);
 
     result->primaryPower = primaryPower;
@@ -204,8 +204,8 @@ void BeaconTileEntity::setSecondaryPower(int secondaryPower) {
 std::shared_ptr<Packet> BeaconTileEntity::getUpdatePacket() {
     CompoundTag* tag = new CompoundTag();
     save(tag);
-    return std::shared_ptr<TileEntityDataPacket>(new TileEntityDataPacket(
-        x, y, z, TileEntityDataPacket::TYPE_BEACON, tag));
+    return std::make_shared<TileEntityDataPacket>(
+        x, y, z, TileEntityDataPacket::TYPE_BEACON, tag);
 }
 
 double BeaconTileEntity::getViewDistance() { return 256 * 256; }
@@ -245,8 +245,8 @@ std::shared_ptr<ItemInstance> BeaconTileEntity::removeItem(unsigned int slot,
             return returnItem;
         } else {
             paymentItem->count -= count;
-            return std::shared_ptr<ItemInstance>(new ItemInstance(
-                paymentItem->id, count, paymentItem->getAuxValue()));
+            return std::make_shared<ItemInstance>(
+                paymentItem->id, count, paymentItem->getAuxValue());
         }
     }
     return nullptr;

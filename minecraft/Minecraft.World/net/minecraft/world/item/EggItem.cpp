@@ -23,6 +23,6 @@ std::shared_ptr<ItemInstance> EggItem::use(
                            0.4f / (random->nextFloat() * 0.4f + 0.8f));
     if (!level->isClientSide)
         level->addEntity(
-            std::shared_ptr<ThrownEgg>(new ThrownEgg(level, player)));
+            std::make_shared<ThrownEgg>(level, player));
     return instance;
 }

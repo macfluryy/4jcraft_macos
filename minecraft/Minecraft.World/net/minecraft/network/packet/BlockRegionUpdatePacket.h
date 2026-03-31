@@ -35,7 +35,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new BlockRegionUpdatePacket());
+        return std::make_shared<BlockRegionUpdatePacket>();
     }
     virtual int getId() { return 51; }
 };

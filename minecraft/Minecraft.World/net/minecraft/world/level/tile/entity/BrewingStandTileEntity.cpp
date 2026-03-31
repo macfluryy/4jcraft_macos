@@ -220,8 +220,8 @@ void BrewingStandTileEntity::doBrew() {
     }
 
     if (Item::items[ingredient->id]->hasCraftingRemainingItem()) {
-        items[INGREDIENT_SLOT] = std::shared_ptr<ItemInstance>(new ItemInstance(
-            Item::items[ingredient->id]->getCraftingRemainingItem()));
+        items[INGREDIENT_SLOT] = std::make_shared<ItemInstance>(
+            Item::items[ingredient->id]->getCraftingRemainingItem());
     } else {
         items[INGREDIENT_SLOT]->count--;
         if (items[INGREDIENT_SLOT]->count <= 0) {
@@ -405,7 +405,7 @@ bool BrewingStandTileEntity::canTakeItemThroughFace(
 // 4J Added
 std::shared_ptr<TileEntity> BrewingStandTileEntity::clone() {
     std::shared_ptr<BrewingStandTileEntity> result =
-        std::shared_ptr<BrewingStandTileEntity>(new BrewingStandTileEntity());
+        std::make_shared<BrewingStandTileEntity>();
     TileEntity::clone(result);
 
     result->brewTime = brewTime;

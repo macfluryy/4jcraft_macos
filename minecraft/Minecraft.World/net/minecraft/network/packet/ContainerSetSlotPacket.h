@@ -30,7 +30,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new ContainerSetSlotPacket());
+        return std::make_shared<ContainerSetSlotPacket>();
     }
     virtual int getId() { return 103; }
 };

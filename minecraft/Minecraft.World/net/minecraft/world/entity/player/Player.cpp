@@ -92,7 +92,7 @@ void Player::_init() {
     registerAttributes();
     setHealth(getMaxHealth());
 
-    inventory = std::shared_ptr<Inventory>(new Inventory(this));
+    inventory = std::make_shared<Inventory>(this);
 
     userType = 0;
     oBob = bob = 0.0f;
@@ -932,7 +932,7 @@ void Player::die(DamageSource* source) {
 
     // 4J - TODO need to use a xuid
     if (app.isXuidNotch(m_xuid)) {
-        drop(std::shared_ptr<ItemInstance>(new ItemInstance(Item::apple, 1)),
+        drop(std::make_shared<ItemInstance>(Item::apple, 1),
              true);
     }
     if (!level->getGameRules()->getBoolean(GameRules::RULE_KEEPINVENTORY)) {

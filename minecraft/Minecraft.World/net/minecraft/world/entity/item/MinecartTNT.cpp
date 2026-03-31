@@ -58,7 +58,7 @@ void MinecartTNT::destroy(DamageSource* source) {
 
     if (!source->isExplosion()) {
         spawnAtLocation(
-            std::shared_ptr<ItemInstance>(new ItemInstance(Tile::tnt, 1)), 0);
+            std::make_shared<ItemInstance>(Tile::tnt, 1), 0);
     }
 
     if (source->isFire() || source->isExplosion() || speedSqr >= 0.01f) {

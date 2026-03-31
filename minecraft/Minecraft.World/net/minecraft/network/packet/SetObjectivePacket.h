@@ -29,7 +29,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetObjectivePacket());
+        return std::make_shared<SetObjectivePacket>();
     }
     virtual int getId() { return 206; }
 };

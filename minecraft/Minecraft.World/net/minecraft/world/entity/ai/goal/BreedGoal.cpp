@@ -128,6 +128,6 @@ void BreedGoal::breed() {
     }
     // 4J-PB - Fix for 106869- Customer Encountered: TU12: Content: Gameplay:
     // Breeding animals does not give any Experience Orbs.
-    level->addEntity(std::shared_ptr<ExperienceOrb>(new ExperienceOrb(
-        level, animal->x, animal->y, animal->z, random->nextInt(7) + 1)));
+    level->addEntity(std::make_shared<ExperienceOrb>(
+        level, animal->x, animal->y, animal->z, random->nextInt(7) + 1));
 }

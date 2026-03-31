@@ -332,7 +332,7 @@ bool FurnaceTileEntity::canTakeItemThroughFace(
 // 4J Added
 std::shared_ptr<TileEntity> FurnaceTileEntity::clone() {
     std::shared_ptr<FurnaceTileEntity> result =
-        std::shared_ptr<FurnaceTileEntity>(new FurnaceTileEntity());
+        std::make_shared<FurnaceTileEntity>();
     TileEntity::clone(result);
 
     result->litTime = litTime;

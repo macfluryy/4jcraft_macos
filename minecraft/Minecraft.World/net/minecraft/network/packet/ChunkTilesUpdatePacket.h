@@ -33,7 +33,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new ChunkTilesUpdatePacket());
+        return std::make_shared<ChunkTilesUpdatePacket>();
     }
     virtual int getId() { return 52; }
 };

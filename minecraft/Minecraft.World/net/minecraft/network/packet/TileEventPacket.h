@@ -20,7 +20,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new TileEventPacket());
+        return std::make_shared<TileEventPacket>();
     }
     virtual int getId() { return 54; }
 };

@@ -1051,7 +1051,7 @@ std::shared_ptr<Explosion> ServerLevel::explode(std::shared_ptr<Entity> source,
     // instead of calling super, we run the same explosion code here except
     // we don't generate any particles
     std::shared_ptr<Explosion> explosion =
-        std::shared_ptr<Explosion>(new Explosion(this, source, x, y, z, r));
+        std::make_shared<Explosion>(this, source, x, y, z, r);
     explosion->fire = fire;
     explosion->destroyBlocks = destroyBlocks;
     explosion->explode();
@@ -1130,9 +1130,9 @@ void ServerLevel::runTileEvents() {
                 TileEventData te = *it;
                 server->getPlayers()->broadcast(
                     te.getX(), te.getY(), te.getZ(), 64, dimension->id,
-                    std::shared_ptr<TileEventPacket>(new TileEventPacket(
+                    std::make_shared<TileEventPacket>(
                         te.getX(), te.getY(), te.getZ(), te.getTile(),
-                        te.getParamA(), te.getParamB())));
+                        te.getParamA(), te.getParamB()));
             }
         }
         tileEvents[runList].clear();
@@ -1203,9 +1203,9 @@ void ServerLevel::sendParticles(const std::wstring& name, double x, double y,
                                 double z, int count, double xDist, double yDist,
                                 double zDist, double speed) {
     std::shared_ptr<Packet> packet =
-        std::shared_ptr<LevelParticlesPacket>(new LevelParticlesPacket(
+        std::make_shared<LevelParticlesPacket>(
             name, (float)x, (float)y, (float)z, (float)xDist, (float)yDist,
-            (float)zDist, (float)speed, count));
+            (float)zDist, (float)speed, count);
 
     for (auto it = players.begin(); it != players.end(); ++it) {
         std::shared_ptr<ServerPlayer> player =

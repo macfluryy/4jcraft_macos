@@ -370,8 +370,8 @@ void Villager::addOffers(int addCount) {
                         new ItemInstance(Tile::gravel, 10)),
                     std::shared_ptr<ItemInstance>(
                         new ItemInstance(Item::emerald)),
-                    std::shared_ptr<ItemInstance>(new ItemInstance(
-                        Item::flint_Id, 4 + random->nextInt(2), 0))));
+                    std::make_shared<ItemInstance>(
+                        Item::flint_Id, 4 + random->nextInt(2), 0)));
             }
             break;
         case PROFESSION_BUTCHER:
@@ -479,7 +479,7 @@ void Villager::addOffers(int addCount) {
                 int cost = 2 + random->nextInt(5 + (level * 10)) + 3 * level;
 
                 newOffers->push_back(new MerchantRecipe(
-                    std::shared_ptr<ItemInstance>(new ItemInstance(Item::book)),
+                    std::make_shared<ItemInstance>(Item::book),
                     std::shared_ptr<ItemInstance>(
                         new ItemInstance(Item::emerald, cost)),
                     book));
@@ -506,8 +506,8 @@ void Villager::addOffers(int addCount) {
                         newOffers->push_back(new MerchantRecipe(
                             std::shared_ptr<ItemInstance>(
                                 new ItemInstance(id, 1, 0)),
-                            std::shared_ptr<ItemInstance>(new ItemInstance(
-                                Item::emerald, 2 + random->nextInt(3), 0)),
+                            std::make_shared<ItemInstance>(
+                                Item::emerald, 2 + random->nextInt(3), 0),
                             EnchantmentHelper::enchantItem(
                                 random,
                                 std::shared_ptr<ItemInstance>(
@@ -667,7 +667,7 @@ void Villager::addItemForPurchase(MerchantRecipeList* list, int itemId,
             rubyItem = std::shared_ptr<ItemInstance>(
                 new ItemInstance(Item::emerald_Id, purchaseCost, 0));
             resultItem =
-                std::shared_ptr<ItemInstance>(new ItemInstance(itemId, 1, 0));
+                std::make_shared<ItemInstance>(itemId, 1, 0);
         }
         list->push_back(new MerchantRecipe(rubyItem, resultItem));
     }
@@ -728,7 +728,7 @@ std::shared_ptr<AgableMob> Villager::getBreedOffspring(
     // 4J - added limit to villagers that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Villager> villager =
-            std::shared_ptr<Villager>(new Villager(level));
+            std::make_shared<Villager>(level);
         villager->finalizeMobSpawn(nullptr);
         return villager;
     } else {

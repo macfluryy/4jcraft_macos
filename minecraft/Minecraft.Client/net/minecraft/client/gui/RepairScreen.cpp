@@ -160,8 +160,8 @@ void RepairScreen::updateItemName() {
     DataOutputStream dos(&baos);
     dos.writeUTF(itemName);
     Minecraft::GetInstance()->player->connection->send(
-        std::shared_ptr<CustomPayloadPacket>(new CustomPayloadPacket(
-            CustomPayloadPacket::SET_ITEM_NAME_PACKET, baos.toByteArray())));
+        std::make_shared<CustomPayloadPacket>(
+            CustomPayloadPacket::SET_ITEM_NAME_PACKET, baos.toByteArray()));
 }
 
 // 4jcraft: these 3 are to implement Containerlistener (see IUIScene_AnvilMenu

@@ -53,7 +53,7 @@ std::shared_ptr<SavedData> SavedDataStorage::get(const std::type_info& clazz,
                         new MapItemSavedData(id)));
             } else if (clazz == typeid(Villages)) {
                 data = std::dynamic_pointer_cast<SavedData>(
-                    std::shared_ptr<Villages>(new Villages(id)));
+                    std::make_shared<Villages>(id));
             } else if (clazz == typeid(StructureFeatureSavedData)) {
                 data = std::dynamic_pointer_cast<SavedData>(
                     std::shared_ptr<StructureFeatureSavedData>(

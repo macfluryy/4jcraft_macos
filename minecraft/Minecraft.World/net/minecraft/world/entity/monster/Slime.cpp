@@ -159,7 +159,7 @@ void Slime::decreaseSquish() { targetSquish = targetSquish * 0.6f; }
 int Slime::getJumpDelay() { return random->nextInt(20) + 10; }
 
 std::shared_ptr<Slime> Slime::createChild() {
-    return std::shared_ptr<Slime>(new Slime(level));
+    return std::make_shared<Slime>(level);
 }
 
 void Slime::remove() {

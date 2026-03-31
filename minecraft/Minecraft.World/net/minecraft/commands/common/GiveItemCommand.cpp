@@ -34,7 +34,7 @@ void GiveItemCommand::execute(std::shared_ptr<CommandSender> source,
     std::shared_ptr<ServerPlayer> player = getPlayer(uid);
     if (player != nullptr && item > 0 && Item::items[item] != nullptr) {
         std::shared_ptr<ItemInstance> itemInstance =
-            std::shared_ptr<ItemInstance>(new ItemInstance(item, amount, aux));
+            std::make_shared<ItemInstance>(item, amount, aux);
         std::shared_ptr<ItemEntity> drop = player->drop(itemInstance);
         drop->throwTime = 0;
         // logAdminAction(source, L"commands.give.success",

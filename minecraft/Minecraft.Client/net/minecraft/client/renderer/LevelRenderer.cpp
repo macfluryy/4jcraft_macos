@@ -3079,7 +3079,7 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
             break;
         case eParticleType_lava:
             particle =
-                std::shared_ptr<Particle>(new LavaParticle(lev, x, y, z));
+                std::make_shared<LavaParticle>(lev, x, y, z);
             break;
         case eParticleType_footstep:
             particle = std::shared_ptr<Particle>(
@@ -3094,12 +3094,12 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
                 new SmokeParticle(lev, x, y, z, xa, ya, za, 2.5f));
             break;
         case eParticleType_reddust:
-            particle = std::shared_ptr<Particle>(new RedDustParticle(
-                lev, x, y, z, (float)xa, (float)ya, (float)za));
+            particle = std::make_shared<RedDustParticle>(
+                lev, x, y, z, (float)xa, (float)ya, (float)za);
             break;
         case eParticleType_snowballpoof:
-            particle = std::shared_ptr<Particle>(new BreakingItemParticle(
-                lev, x, y, z, Item::snowBall, textures));
+            particle = std::make_shared<BreakingItemParticle>(
+                lev, x, y, z, Item::snowBall, textures);
             break;
         case eParticleType_dripWater:
             particle = std::shared_ptr<Particle>(
@@ -3114,8 +3114,8 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
                 new SnowShovelParticle(lev, x, y, z, xa, ya, za));
             break;
         case eParticleType_slime:
-            particle = std::shared_ptr<Particle>(new BreakingItemParticle(
-                lev, x, y, z, Item::slimeBall, textures));
+            particle = std::make_shared<BreakingItemParticle>(
+                lev, x, y, z, Item::slimeBall, textures);
             break;
         case eParticleType_heart:
             particle = std::shared_ptr<Particle>(
@@ -3142,8 +3142,8 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
                 (eParticleType <= eParticleType_iconcrack_last)) {
                 int id = PARTICLE_CRACK_ID(eParticleType),
                     data = PARTICLE_CRACK_DATA(eParticleType);
-                particle = std::shared_ptr<Particle>(new BreakingItemParticle(
-                    lev, x, y, z, xa, ya, za, Item::items[id], textures, data));
+                particle = std::make_shared<BreakingItemParticle>(
+                    lev, x, y, z, xa, ya, za, Item::items[id], textures, data);
             } else if ((eParticleType >= eParticleType_tilecrack_base) &&
                        (eParticleType <= eParticleType_tilecrack_last)) {
                 int id = PARTICLE_CRACK_ID(eParticleType),

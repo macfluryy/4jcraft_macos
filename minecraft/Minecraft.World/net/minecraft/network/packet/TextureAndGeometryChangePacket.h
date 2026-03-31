@@ -27,7 +27,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new TextureAndGeometryChangePacket());
+        return std::make_shared<TextureAndGeometryChangePacket>();
     }
     virtual int getId() { return 161; }
 };

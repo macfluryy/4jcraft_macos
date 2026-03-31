@@ -29,7 +29,7 @@ MultiPlayerLevel::ResetInfo::ResetInfo(int x, int y, int z, int tile,
 MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
                                    LevelSettings* levelSettings, int dimension,
                                    int difficulty)
-    : Level(std::shared_ptr<MockedLevelStorage>(new MockedLevelStorage()),
+    : Level(std::make_shared<MockedLevelStorage>(),
             L"MpServer", Dimension::getNew(dimension), levelSettings, false) {
     minecraft = Minecraft::GetInstance();
 

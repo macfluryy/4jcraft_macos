@@ -51,7 +51,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new PreLoginPacket());
+        return std::make_shared<PreLoginPacket>();
     }
     virtual int getId() { return 2; }
 };

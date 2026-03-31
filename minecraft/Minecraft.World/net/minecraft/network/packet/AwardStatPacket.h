@@ -30,7 +30,7 @@ public:
     virtual bool isAync();
 
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new AwardStatPacket());
+        return std::make_shared<AwardStatPacket>();
     }
     virtual int getId() { return 200; }
 

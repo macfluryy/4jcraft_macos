@@ -38,7 +38,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new LevelSoundPacket());
+        return std::make_shared<LevelSoundPacket>();
     }
     virtual int getId() { return 62; }
 };

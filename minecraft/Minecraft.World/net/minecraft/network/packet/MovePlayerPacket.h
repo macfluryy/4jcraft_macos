@@ -30,7 +30,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new MovePlayerPacket());
+        return std::make_shared<MovePlayerPacket>();
     }
     virtual int getId() { return 10; }
 };
@@ -47,7 +47,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new MovePlayerPacket::PosRot());
+        return std::make_shared<MovePlayerPacket::PosRot>();
     }
     virtual int getId() { return 13; }
 };
@@ -64,7 +64,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new MovePlayerPacket::Pos());
+        return std::make_shared<MovePlayerPacket::Pos>();
     }
     virtual int getId() { return 11; }
 };
@@ -80,7 +80,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new MovePlayerPacket::Rot());
+        return std::make_shared<MovePlayerPacket::Rot>();
     }
     virtual int getId() { return 12; }
 };

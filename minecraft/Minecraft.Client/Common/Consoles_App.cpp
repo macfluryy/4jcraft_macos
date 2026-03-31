@@ -3807,7 +3807,6 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
         if (ProfileManager.IsSignedInLive(iPad)) {
             // 4J-PB - need to check this user can access the store
             {
-                ProfileManager.DisplayFullVersionPurchase(
                     false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
         }
@@ -3825,7 +3824,6 @@ int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
         if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
             // 4J-PB - need to check this user can access the store
             {
-                ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
                     /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
@@ -3844,7 +3842,6 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
         if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
             // 4J-PB - need to check this user can access the store
             {
-                ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
                     /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
@@ -3867,7 +3864,6 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
         if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
             // 4J-PB - need to check this user can access the store
             {
-                ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
                     /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }
@@ -4126,12 +4122,6 @@ void CMinecraftApp::NotificationsCallback(void* pParam,
     }
 
     pClass->m_vNotifications.push_back(pNotification);
-}
-
-void CMinecraftApp::UpsellReturnedCallback(void* pParam, EUpsellType type,
-                                           EUpsellResponse result,
-                                           int iUserData) {
-    // 4jcraft: nuked
 }
 
 #if defined(_DEBUG_MENUS_ENABLED)

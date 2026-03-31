@@ -31,18 +31,18 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
     // the 1.2.3 version are new layer types that we don't have yet (shores,
     // swamprivers, region hills etc.)
     std::shared_ptr<Layer> islandLayer =
-        std::shared_ptr<Layer>(new IslandLayer(1));
-    islandLayer = std::shared_ptr<Layer>(new FuzzyZoomLayer(2000, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new AddIslandLayer(1, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new ZoomLayer(2001, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new AddIslandLayer(2, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new AddSnowLayer(2, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new ZoomLayer(2002, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new AddIslandLayer(3, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new ZoomLayer(2003, islandLayer));
-    islandLayer = std::shared_ptr<Layer>(new AddIslandLayer(4, islandLayer));
-    //	islandLayer = std::shared_ptr<Layer>(new AddMushroomIslandLayer(5,
-    // islandLayer));		// 4J - old position of mushroom island layer
+        std::make_shared<IslandLayer>(1);
+    islandLayer = std::make_shared<FuzzyZoomLayer>(2000, islandLayer);
+    islandLayer = std::make_shared<AddIslandLayer>(1, islandLayer);
+    islandLayer = std::make_shared<ZoomLayer>(2001, islandLayer);
+    islandLayer = std::make_shared<AddIslandLayer>(2, islandLayer);
+    islandLayer = std::make_shared<AddSnowLayer>(2, islandLayer);
+    islandLayer = std::make_shared<ZoomLayer>(2002, islandLayer);
+    islandLayer = std::make_shared<AddIslandLayer>(3, islandLayer);
+    islandLayer = std::make_shared<ZoomLayer>(2003, islandLayer);
+    islandLayer = std::make_shared<AddIslandLayer>(4, islandLayer);
+    //	islandLayer = std::make_shared<AddMushroomIslandLayer>(5,
+    // islandLayer);		// 4J - old position of mushroom island layer
 
     int zoomLevel = 4;
     if (levelType == LevelType::lvl_largeBiomes) {
@@ -51,26 +51,26 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
 
     std::shared_ptr<Layer> riverLayer = islandLayer;
     riverLayer = ZoomLayer::zoom(1000, riverLayer, 0);
-    riverLayer = std::shared_ptr<Layer>(new RiverInitLayer(100, riverLayer));
+    riverLayer = std::make_shared<RiverInitLayer>(100, riverLayer);
     riverLayer = ZoomLayer::zoom(1000, riverLayer, zoomLevel + 2);
-    riverLayer = std::shared_ptr<Layer>(new RiverLayer(1, riverLayer));
-    riverLayer = std::shared_ptr<Layer>(new SmoothLayer(1000, riverLayer));
+    riverLayer = std::make_shared<RiverLayer>(1, riverLayer);
+    riverLayer = std::make_shared<SmoothLayer>(1000, riverLayer);
 
     std::shared_ptr<Layer> biomeLayer = islandLayer;
     biomeLayer = ZoomLayer::zoom(1000, biomeLayer, 0);
     biomeLayer =
-        std::shared_ptr<Layer>(new BiomeInitLayer(200, biomeLayer, levelType));
+        std::make_shared<BiomeInitLayer>(200, biomeLayer, levelType);
 
     biomeLayer = ZoomLayer::zoom(1000, biomeLayer, 2);
-    biomeLayer = std::shared_ptr<Layer>(new RegionHillsLayer(1000, biomeLayer));
+    biomeLayer = std::make_shared<RegionHillsLayer>(1000, biomeLayer);
 
     for (int i = 0; i < zoomLevel; i++) {
         biomeLayer =
-            std::shared_ptr<Layer>(new ZoomLayer(1000 + i, biomeLayer));
+            std::make_shared<ZoomLayer>(1000 + i, biomeLayer);
 
         if (i == 0)
             biomeLayer =
-                std::shared_ptr<Layer>(new AddIslandLayer(3, biomeLayer));
+                std::make_shared<AddIslandLayer>(3, biomeLayer);
 
         if (i == 0) {
             // 4J - moved mushroom islands to here. This skips 3 zooms that the
@@ -97,14 +97,14 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
             // edges into shores. We are doing this at i == 1 rather than i == 0
             // as the original does
             biomeLayer =
-                std::shared_ptr<Layer>(new ShoreLayer(1000, biomeLayer));
+                std::make_shared<ShoreLayer>(1000, biomeLayer);
 
             biomeLayer =
-                std::shared_ptr<Layer>(new SwampRiversLayer(1000, biomeLayer));
+                std::make_shared<SwampRiversLayer>(1000, biomeLayer);
         }
     }
 
-    biomeLayer = std::shared_ptr<Layer>(new SmoothLayer(1000, biomeLayer));
+    biomeLayer = std::make_shared<SmoothLayer>(1000, biomeLayer);
 
     biomeLayer = std::shared_ptr<Layer>(
         new RiverMixerLayer(100, biomeLayer, riverLayer));
@@ -115,7 +115,7 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
         biomeLayer =
-            std::shared_ptr<BiomeOverrideLayer>(new BiomeOverrideLayer(1));
+            std::make_shared<BiomeOverrideLayer>(1);
     }
 #endif
 #endif
@@ -123,7 +123,7 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
     std::shared_ptr<Layer> debugLayer = biomeLayer;
 
     std::shared_ptr<Layer> zoomedLayer =
-        std::shared_ptr<Layer>(new VoronoiZoom(10, biomeLayer));
+        std::make_shared<VoronoiZoom>(10, biomeLayer);
 
     biomeLayer->init(seed);
     zoomedLayer->init(seed);

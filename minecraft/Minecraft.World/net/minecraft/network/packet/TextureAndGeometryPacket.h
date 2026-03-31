@@ -42,7 +42,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new TextureAndGeometryPacket());
+        return std::make_shared<TextureAndGeometryPacket>();
     }
     virtual int getId() { return 160; }
 };

@@ -59,7 +59,7 @@ void NoteBlockTile::attack(Level* level, int x, int y, int z,
 }
 
 std::shared_ptr<TileEntity> NoteBlockTile::newTileEntity(Level* level) {
-    return std::shared_ptr<MusicTileEntity>(new MusicTileEntity());
+    return std::make_shared<MusicTileEntity>();
 }
 
 bool NoteBlockTile::triggerEvent(Level* level, int x, int y, int z, int i,

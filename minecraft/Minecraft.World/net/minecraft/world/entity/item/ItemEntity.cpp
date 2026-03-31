@@ -280,7 +280,7 @@ std::shared_ptr<ItemInstance> ItemEntity::getItem() {
             // level.getLogger().severe("Item entity " + entityId + " has no
             // item?!");
         }
-        return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::stone));
+        return std::make_shared<ItemInstance>(Tile::stone);
     }
 
     return result;

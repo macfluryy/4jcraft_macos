@@ -30,7 +30,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new TeleportEntityPacket());
+        return std::make_shared<TeleportEntityPacket>();
     }
     virtual int getId() { return 34; }
 };

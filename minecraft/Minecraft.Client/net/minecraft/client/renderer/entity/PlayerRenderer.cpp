@@ -358,7 +358,7 @@ bool b2 = !mob->isCapeHidden();*/
         glTranslatef(-1 / 16.0f, 7 / 16.0f, 1 / 16.0f);
 
         if (mob->fishing != nullptr) {
-            item = std::shared_ptr<ItemInstance>(new ItemInstance(Item::stick));
+            item = std::make_shared<ItemInstance>(Item::stick);
         }
 
         UseAnim anim = UseAnim_none;  // null;

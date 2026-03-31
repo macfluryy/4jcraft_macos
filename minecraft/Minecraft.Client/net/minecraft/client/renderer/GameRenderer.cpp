@@ -1544,10 +1544,10 @@ void GameRenderer::tickRain() {
             if (t > 0) {
                 if (Tile::tiles[t]->material == Material::lava) {
                     mc->particleEngine->add(
-                        std::shared_ptr<SmokeParticle>(new SmokeParticle(
+                        std::make_shared<SmokeParticle>(
                             level, x + xa,
                             y + 0.1f - Tile::tiles[t]->getShapeY0(), z + za, 0,
-                            0, 0)));
+                            0, 0));
                 } else {
                     if (random->nextInt(++rainPosSamples) == 0) {
                         rainPosX = x + xa;

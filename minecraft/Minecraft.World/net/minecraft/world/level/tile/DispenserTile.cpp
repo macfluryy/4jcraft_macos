@@ -163,7 +163,7 @@ void DispenserTile::tick(Level* level, int x, int y, int z, Random* random) {
 }
 
 std::shared_ptr<TileEntity> DispenserTile::newTileEntity(Level* level) {
-    return std::shared_ptr<DispenserTileEntity>(new DispenserTileEntity());
+    return std::make_shared<DispenserTileEntity>();
 }
 
 void DispenserTile::setPlacedBy(Level* level, int x, int y, int z,
@@ -199,12 +199,12 @@ void DispenserTile::onRemove(Level* level, int x, int y, int z, int id,
                     item->count -= count;
 
                     std::shared_ptr<ItemInstance> newItem =
-                        std::shared_ptr<ItemInstance>(new ItemInstance(
-                            item->id, count, item->getAuxValue()));
+                        std::make_shared<ItemInstance>(
+                            item->id, count, item->getAuxValue());
                     newItem->set4JData(item->get4JData());
                     std::shared_ptr<ItemEntity> itemEntity =
-                        std::shared_ptr<ItemEntity>(new ItemEntity(
-                            level, x + xo, y + yo, z + zo, newItem));
+                        std::make_shared<ItemEntity>(
+                            level, x + xo, y + yo, z + zo, newItem);
                     float pow = 0.05f;
                     itemEntity->xd = (float)random->nextGaussian() * pow;
                     itemEntity->yd = (float)random->nextGaussian() * pow + 0.2f;

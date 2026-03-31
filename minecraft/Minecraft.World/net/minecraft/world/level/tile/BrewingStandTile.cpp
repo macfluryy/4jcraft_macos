@@ -33,7 +33,7 @@ bool BrewingStandTile::isSolidRender(bool isServerLevel) { return false; }
 int BrewingStandTile::getRenderShape() { return SHAPE_BREWING_STAND; }
 
 std::shared_ptr<TileEntity> BrewingStandTile::newTileEntity(Level* level) {
-    return std::shared_ptr<TileEntity>(new BrewingStandTileEntity());
+    return std::make_shared<BrewingStandTileEntity>();
 }
 
 bool BrewingStandTile::isCubeShaped() { return false; }
@@ -110,10 +110,10 @@ void BrewingStandTile::onRemove(Level* level, int x, int y, int z, int id,
                     item->count -= count;
 
                     std::shared_ptr<ItemEntity> itemEntity =
-                        std::shared_ptr<ItemEntity>(new ItemEntity(
+                        std::make_shared<ItemEntity>(
                             level, x + xo, y + yo, z + zo,
-                            std::shared_ptr<ItemInstance>(new ItemInstance(
-                                item->id, count, item->getAuxValue()))));
+                            std::make_shared<ItemInstance>(
+                                item->id, count, item->getAuxValue()));
                     float pow = 0.05f;
                     itemEntity->xd = (float)random->nextGaussian() * pow;
                     itemEntity->yd = (float)random->nextGaussian() * pow + 0.2f;

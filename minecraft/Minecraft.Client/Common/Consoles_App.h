@@ -487,7 +487,6 @@ public:
     bool m_bChangingSessionType;
     bool m_bReallyChangingSessionType;
 
-    bool m_bDisplayFullVersionPurchase;  // for after signing in during the
                                          // trial, and trying to unlock full
                                          // version on an upsell
 

@@ -945,7 +945,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
             spawnedWitch = true;
 
             std::shared_ptr<Witch> witch =
-                std::shared_ptr<Witch>(new Witch(level));
+                std::make_shared<Witch>(level);
             witch->moveTo(wx + .5, wy, wz + .5, 0, 0);
             witch->finalizeMobSpawn(nullptr);
             level->addEntity(witch);

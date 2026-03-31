@@ -208,9 +208,9 @@ std::shared_ptr<ItemInstance> EnderEyeItem::use(
         if ((level->dimension->id == LevelData::DIMENSION_OVERWORLD) &&
             level->getLevelData()->getHasStronghold()) {
             std::shared_ptr<EyeOfEnderSignal> eyeOfEnderSignal =
-                std::shared_ptr<EyeOfEnderSignal>(new EyeOfEnderSignal(
+                std::make_shared<EyeOfEnderSignal>(
                     level, player->x, player->y + 1.62 - player->heightOffset,
-                    player->z));
+                    player->z);
             eyeOfEnderSignal->signalTo(
                 level->getLevelData()->getXStronghold() << 4,
                 player->y + 1.62 - player->heightOffset,

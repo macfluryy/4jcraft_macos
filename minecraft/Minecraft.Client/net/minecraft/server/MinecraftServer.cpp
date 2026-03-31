@@ -402,8 +402,8 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
             new McRegionLevelStorage(newFormatSave, File(L"."), name, true));
 #else
         storage =
-            std::shared_ptr<McRegionLevelStorage>(new McRegionLevelStorage(
-                new ConsoleSaveFileOriginal(L""), File(L"."), name, true));
+            std::make_shared<McRegionLevelStorage>(
+                new ConsoleSaveFileOriginal(L""), File(L"."), name, true);
 #endif
     }
 
@@ -1434,10 +1434,10 @@ void MinecraftServer::tick() {
 
             if (tickCount % 20 == 0) {
                 players->broadcastAll(
-                    std::shared_ptr<SetTimePacket>(new SetTimePacket(
+                    std::make_shared<SetTimePacket>(
                         level->getGameTime(), level->getDayTime(),
                         level->getGameRules()->getBoolean(
-                            GameRules::RULE_DAYLIGHT))),
+                            GameRules::RULE_DAYLIGHT)),
                     level->dimension->id);
             }
             // #ifndef 0

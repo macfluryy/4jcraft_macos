@@ -29,7 +29,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new UpdateMobEffectPacket());
+        return std::make_shared<UpdateMobEffectPacket>();
     }
     virtual int getId() { return 41; }
 };

@@ -28,7 +28,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetHealthPacket());
+        return std::make_shared<SetHealthPacket>();
     }
     virtual int getId() { return 8; }
 };

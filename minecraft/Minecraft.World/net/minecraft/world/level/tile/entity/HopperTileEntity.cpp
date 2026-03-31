@@ -422,7 +422,7 @@ bool HopperTileEntity::isOnCooldown() { return cooldownTime > 0; }
 // 4J Added
 std::shared_ptr<TileEntity> HopperTileEntity::clone() {
     std::shared_ptr<HopperTileEntity> result =
-        std::shared_ptr<HopperTileEntity>(new HopperTileEntity());
+        std::make_shared<HopperTileEntity>();
     TileEntity::clone(result);
 
     result->name = name;

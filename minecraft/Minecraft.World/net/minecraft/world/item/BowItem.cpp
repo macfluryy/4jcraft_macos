@@ -41,7 +41,7 @@ void BowItem::releaseUsing(std::shared_ptr<ItemInstance> itemInstance,
         if (pow > 1) pow = 1;
 
         std::shared_ptr<Arrow> arrow =
-            std::shared_ptr<Arrow>(new Arrow(level, player, pow * 2.0f));
+            std::make_shared<Arrow>(level, player, pow * 2.0f);
         if (pow == 1) arrow->setCritArrow(true);
         int damageBonus = EnchantmentHelper::getEnchantmentLevel(
             Enchantment::arrowBonus->id, itemInstance);

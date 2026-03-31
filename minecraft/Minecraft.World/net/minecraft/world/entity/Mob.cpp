@@ -830,8 +830,8 @@ void Mob::dropLeash(bool synch, bool createItemDrop) {
         if (!level->isClientSide && synch && serverLevel != nullptr) {
             serverLevel->getTracker()->broadcast(
                 shared_from_this(),
-                std::shared_ptr<SetEntityLinkPacket>(new SetEntityLinkPacket(
-                    SetEntityLinkPacket::LEASH, shared_from_this(), nullptr)));
+                std::make_shared<SetEntityLinkPacket>(
+                    SetEntityLinkPacket::LEASH, shared_from_this(), nullptr));
         }
     }
 }
@@ -852,8 +852,8 @@ void Mob::setLeashedTo(std::shared_ptr<Entity> holder, bool synch) {
     if (!level->isClientSide && synch && serverLevel) {
         serverLevel->getTracker()->broadcast(
             shared_from_this(),
-            std::shared_ptr<SetEntityLinkPacket>(new SetEntityLinkPacket(
-                SetEntityLinkPacket::LEASH, shared_from_this(), leashHolder)));
+            std::make_shared<SetEntityLinkPacket>(
+                SetEntityLinkPacket::LEASH, shared_from_this(), leashHolder));
     }
 }
 

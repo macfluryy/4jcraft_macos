@@ -207,9 +207,9 @@ void ParticleEngine::destroy(int x, int y, int z, int tid, int data) {
                 double yp = y + (yy + 0.5) / SD;
                 double zp = z + (zz + 0.5) / SD;
                 int face = random->nextInt(6);
-                add((std::shared_ptr<TerrainParticle>(new TerrainParticle(
+                add((std::make_shared<TerrainParticle>(
                          level, xp, yp, zp, xp - x - 0.5f, yp - y - 0.5f,
-                         zp - z - 0.5f, tile, face, data, textures)))
+                         zp - z - 0.5f, tile, face, data, textures))
                         ->init(x, y, z, data));
             }
 }

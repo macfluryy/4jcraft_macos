@@ -15,5 +15,5 @@ std::shared_ptr<ItemInstance> BowlFoodItem::useTimeDepleted(
     std::shared_ptr<Player> player) {
     FoodItem::useTimeDepleted(instance, level, player);
 
-    return std::shared_ptr<ItemInstance>(new ItemInstance(Item::bowl));
+    return std::make_shared<ItemInstance>(Item::bowl);
 }

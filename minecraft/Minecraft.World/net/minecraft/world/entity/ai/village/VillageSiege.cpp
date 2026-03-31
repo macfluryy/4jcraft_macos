@@ -133,7 +133,7 @@ bool VillageSiege::trySpawn() {
     std::shared_ptr<Zombie> mob;
     // try
     {
-        mob = std::shared_ptr<Zombie>(new Zombie(level));
+        mob = std::make_shared<Zombie>(level);
         mob->finalizeMobSpawn(nullptr);
         mob->setVillager(false);
     }

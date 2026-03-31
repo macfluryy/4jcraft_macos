@@ -38,7 +38,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new GameEventPacket());
+        return std::make_shared<GameEventPacket>();
     }
     virtual int getId() { return 70; }
 };

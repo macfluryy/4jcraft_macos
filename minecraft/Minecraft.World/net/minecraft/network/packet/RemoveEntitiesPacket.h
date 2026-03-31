@@ -27,7 +27,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new RemoveEntitiesPacket());
+        return std::make_shared<RemoveEntitiesPacket>();
     }
     virtual int getId() { return 29; }
 };

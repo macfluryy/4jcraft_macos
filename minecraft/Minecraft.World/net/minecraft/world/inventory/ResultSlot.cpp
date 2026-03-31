@@ -88,8 +88,8 @@ void ResultSlot::onTake(std::shared_ptr<Player> player,
 
             if (item->getItem()->hasCraftingRemainingItem()) {
                 std::shared_ptr<ItemInstance> craftResult =
-                    std::shared_ptr<ItemInstance>(new ItemInstance(
-                        item->getItem()->getCraftingRemainingItem()));
+                    std::make_shared<ItemInstance>(
+                        item->getItem()->getCraftingRemainingItem());
 
                 /*
                  * Try to place this in the player's inventory (See we.java for

@@ -111,7 +111,7 @@ std::shared_ptr<AgableMob> Cow::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
     // 4J - added limit to number of animals that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
-        return std::shared_ptr<Cow>(new Cow(level));
+        return std::make_shared<Cow>(level);
     } else {
         return nullptr;
     }

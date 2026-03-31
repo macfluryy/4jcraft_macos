@@ -66,8 +66,8 @@ void TrackedEntity::tick(EntityTracker* tracker,
         (e->riding != nullptr &&
          tickCount % (SharedConstants::TICKS_PER_SECOND * 3) == 0)) {
         lastRidingEntity = e->riding;
-        broadcast(std::shared_ptr<SetEntityLinkPacket>(new SetEntityLinkPacket(
-            SetEntityLinkPacket::RIDING, e, e->riding)));
+        broadcast(std::make_shared<SetEntityLinkPacket>(
+            SetEntityLinkPacket::RIDING, e, e->riding));
     }
 
     // Moving forward  special case for item frames
@@ -304,8 +304,8 @@ void TrackedEntity::tick(EntityTracker* tracker,
             if (rot) {
                 // 4J: Changed this to use deltas
                 broadcast(
-                    std::shared_ptr<MoveEntityPacket>(new MoveEntityPacket::Rot(
-                        e->entityId, (uint8_t)yRota, (uint8_t)xRota)));
+                    std::make_shared<MoveEntityPacket::Rot>(
+                        e->entityId, (uint8_t)yRota, (uint8_t)xRota));
                 yRotp = yRotn;
                 xRotp = xRotn;
             }
@@ -571,8 +571,8 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
         // 4J Stu brought forward to fix when Item Frames
         if (!e->getEntityData()->isEmpty() && !isAddMobPacket) {
             sp->connection->send(
-                std::shared_ptr<SetEntityDataPacket>(new SetEntityDataPacket(
-                    e->entityId, e->getEntityData(), true)));
+                std::make_shared<SetEntityDataPacket>(
+                    e->entityId, e->getEntityData(), true));
         }
 
         if (e->instanceof(eTYPE_LIVINGENTITY)) {
@@ -597,15 +597,15 @@ void TrackedEntity::updatePlayer(EntityTracker* tracker,
 
         if (e->riding != nullptr) {
             sp->connection->send(
-                std::shared_ptr<SetEntityLinkPacket>(new SetEntityLinkPacket(
-                    SetEntityLinkPacket::RIDING, e, e->riding)));
+                std::make_shared<SetEntityLinkPacket>(
+                    SetEntityLinkPacket::RIDING, e, e->riding));
         }
         if (e->instanceof(eTYPE_MOB) &&
             std::dynamic_pointer_cast<Mob>(e)->getLeashHolder() != nullptr) {
             sp->connection->send(
-                std::shared_ptr<SetEntityLinkPacket>(new SetEntityLinkPacket(
+                std::make_shared<SetEntityLinkPacket>(
                     SetEntityLinkPacket::LEASH, e,
-                    std::dynamic_pointer_cast<Mob>(e)->getLeashHolder())));
+                    std::dynamic_pointer_cast<Mob>(e)->getLeashHolder()));
         }
 
         if (e->instanceof(eTYPE_LIVINGENTITY)) {
@@ -689,8 +689,8 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
 
     if (e->instanceof(eTYPE_ITEMENTITY)) {
         std::shared_ptr<AddEntityPacket> packet =
-            std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-                e, AddEntityPacket::ITEM, 1, yRotp, xRotp, xp, yp, zp));
+            std::make_shared<AddEntityPacket>(
+                e, AddEntityPacket::ITEM, 1, yRotp, xRotp, xp, yp, zp);
         return packet;
     } else if (e->instanceof(eTYPE_SERVERPLAYER)) {
         std::shared_ptr<ServerPlayer> player =
@@ -705,8 +705,8 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
         // 4J Added yHeadRotp param to fix #102563 - TU12: Content: Gameplay:
         // When one of the Players is idle for a few minutes his head turns 180
         // degrees.
-        return std::shared_ptr<AddPlayerPacket>(new AddPlayerPacket(
-            player, xuid, OnlineXuid, xp, yp, zp, yRotp, xRotp, yHeadRotp));
+        return std::make_shared<AddPlayerPacket>(
+            player, xuid, OnlineXuid, xp, yp, zp, yRotp, xRotp, yHeadRotp);
     } else if (e->instanceof(eTYPE_MINECART)) {
         std::shared_ptr<Minecart> minecart =
             std::dynamic_pointer_cast<Minecart>(e);
@@ -714,8 +714,8 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
             new AddEntityPacket(e, AddEntityPacket::MINECART,
                                 minecart->getType(), yRotp, xRotp, xp, yp, zp));
     } else if (e->instanceof(eTYPE_BOAT)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::BOAT, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::BOAT, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_ENDERDRAGON)) {
         yHeadRotp = Mth::floor(e->getYHeadRot() * 256 / 360);
         return std::shared_ptr<AddMobPacket>(
@@ -724,37 +724,37 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
     } else if (e->instanceof(eTYPE_FISHINGHOOK)) {
         std::shared_ptr<Entity> owner =
             std::dynamic_pointer_cast<FishingHook>(e)->owner;
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
+        return std::make_shared<AddEntityPacket>(
             e, AddEntityPacket::FISH_HOOK,
             owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp,
-            yp, zp));
+            yp, zp);
     } else if (e->instanceof(eTYPE_ARROW)) {
         std::shared_ptr<Entity> owner =
             (std::dynamic_pointer_cast<Arrow>(e))->owner;
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
+        return std::make_shared<AddEntityPacket>(
             e, AddEntityPacket::ARROW,
             owner != nullptr ? owner->entityId : e->entityId, yRotp, xRotp, xp,
-            yp, zp));
+            yp, zp);
     } else if (e->instanceof(eTYPE_SNOWBALL)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::SNOWBALL, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::SNOWBALL, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_THROWNPOTION)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
+        return std::make_shared<AddEntityPacket>(
             e, AddEntityPacket::THROWN_POTION,
             ((std::dynamic_pointer_cast<ThrownPotion>(e))->getPotionValue()),
-            yRotp, xRotp, xp, yp, zp));
+            yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_THROWNEXPBOTTLE)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::THROWN_EXPBOTTLE, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::THROWN_EXPBOTTLE, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_THROWNENDERPEARL)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::THROWN_ENDERPEARL, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::THROWN_ENDERPEARL, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_EYEOFENDERSIGNAL)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::EYEOFENDERSIGNAL, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::EYEOFENDERSIGNAL, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_FIREWORKS_ROCKET)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::FIREWORKS, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::FIREWORKS, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_FIREBALL)) {
         eINSTANCEOF classType = e->GetType();
         int type = AddEntityPacket::FIREBALL;
@@ -769,8 +769,8 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
         std::shared_ptr<Fireball> fb = std::dynamic_pointer_cast<Fireball>(e);
         std::shared_ptr<AddEntityPacket> aep = nullptr;
         if (fb->owner != nullptr) {
-            aep = std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-                e, type, fb->owner->entityId, yRotp, xRotp, xp, yp, zp));
+            aep = std::make_shared<AddEntityPacket>(
+                e, type, fb->owner->entityId, yRotp, xRotp, xp, yp, zp);
         } else {
             aep = std::shared_ptr<AddEntityPacket>(
                 new AddEntityPacket(e, type, 0, yRotp, xRotp, xp, yp, zp));
@@ -780,20 +780,20 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
         aep->za = (int)(fb->zPower * 8000);
         return aep;
     } else if (e->instanceof(eTYPE_THROWNEGG)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::EGG, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::EGG, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_PRIMEDTNT)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::PRIMED_TNT, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::PRIMED_TNT, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_ENDER_CRYSTAL)) {
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-            e, AddEntityPacket::ENDER_CRYSTAL, yRotp, xRotp, xp, yp, zp));
+        return std::make_shared<AddEntityPacket>(
+            e, AddEntityPacket::ENDER_CRYSTAL, yRotp, xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_FALLINGTILE)) {
         std::shared_ptr<FallingTile> ft =
             std::dynamic_pointer_cast<FallingTile>(e);
-        return std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
+        return std::make_shared<AddEntityPacket>(
             e, AddEntityPacket::FALLING, ft->tile | (ft->data << 16), yRotp,
-            xRotp, xp, yp, zp));
+            xRotp, xp, yp, zp);
     } else if (e->instanceof(eTYPE_PAINTING)) {
         return std::shared_ptr<AddPaintingPacket>(
             new AddPaintingPacket(std::dynamic_pointer_cast<Painting>(e)));
@@ -820,8 +820,8 @@ std::shared_ptr<Packet> TrackedEntity::getAddEntityPacket() {
         std::shared_ptr<LeashFenceKnotEntity> knot =
             std::dynamic_pointer_cast<LeashFenceKnotEntity>(e);
         std::shared_ptr<AddEntityPacket> packet =
-            std::shared_ptr<AddEntityPacket>(new AddEntityPacket(
-                e, AddEntityPacket::LEASH_KNOT, yRotp, xRotp, xp, yp, zp));
+            std::make_shared<AddEntityPacket>(
+                e, AddEntityPacket::LEASH_KNOT, yRotp, xRotp, xp, yp, zp);
         packet->x = Mth::floor((float)knot->xTile * 32);
         packet->y = Mth::floor((float)knot->yTile * 32);
         packet->z = Mth::floor((float)knot->zTile * 32);

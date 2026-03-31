@@ -148,7 +148,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new ChatPacket());
+        return std::make_shared<ChatPacket>();
     }
     virtual int getId() { return 3; }
 };

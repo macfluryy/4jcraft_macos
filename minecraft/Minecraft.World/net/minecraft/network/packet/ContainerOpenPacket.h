@@ -54,7 +54,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new ContainerOpenPacket());
+        return std::make_shared<ContainerOpenPacket>();
     }
     virtual int getId() { return 100; }
 };

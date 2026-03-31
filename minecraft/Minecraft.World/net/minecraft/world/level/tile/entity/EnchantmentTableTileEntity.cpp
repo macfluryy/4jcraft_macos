@@ -99,7 +99,7 @@ void EnchantmentTableEntity::setCustomName(const std::wstring& name) {
 
 std::shared_ptr<TileEntity> EnchantmentTableEntity::clone() {
     std::shared_ptr<EnchantmentTableEntity> result =
-        std::shared_ptr<EnchantmentTableEntity>(new EnchantmentTableEntity());
+        std::make_shared<EnchantmentTableEntity>();
     TileEntity::clone(result);
 
     result->time = time;

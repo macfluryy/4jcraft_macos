@@ -16,7 +16,7 @@ CommandBlock::CommandBlock(int id)
     : BaseEntityTile(id, Material::metal, false) {}
 
 std::shared_ptr<TileEntity> CommandBlock::newTileEntity(Level* level) {
-    return std::shared_ptr<CommandBlockEntity>(new CommandBlockEntity());
+    return std::make_shared<CommandBlockEntity>();
 }
 
 void CommandBlock::neighborChanged(Level* level, int x, int y, int z,

@@ -29,8 +29,8 @@ void SkullTileEntity::load(CompoundTag* tag) {
 std::shared_ptr<Packet> SkullTileEntity::getUpdatePacket() {
     CompoundTag* tag = new CompoundTag();
     save(tag);
-    return std::shared_ptr<TileEntityDataPacket>(new TileEntityDataPacket(
-        x, y, z, TileEntityDataPacket::TYPE_SKULL, tag));
+    return std::make_shared<TileEntityDataPacket>(
+        x, y, z, TileEntityDataPacket::TYPE_SKULL, tag);
 }
 
 void SkullTileEntity::setSkullType(int skullType, const std::wstring& extra) {
@@ -49,7 +49,7 @@ std::wstring SkullTileEntity::getExtraType() { return extraType; }
 // 4J Added
 std::shared_ptr<TileEntity> SkullTileEntity::clone() {
     std::shared_ptr<SkullTileEntity> result =
-        std::shared_ptr<SkullTileEntity>(new SkullTileEntity());
+        std::make_shared<SkullTileEntity>();
     TileEntity::clone(result);
 
     result->skullType = skullType;

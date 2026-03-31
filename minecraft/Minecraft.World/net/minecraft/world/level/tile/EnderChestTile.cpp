@@ -79,7 +79,7 @@ bool EnderChestTile::use(Level* level, int x, int y, int z,
 }
 
 std::shared_ptr<TileEntity> EnderChestTile::newTileEntity(Level* level) {
-    return std::shared_ptr<EnderChestTileEntity>(new EnderChestTileEntity());
+    return std::make_shared<EnderChestTileEntity>();
 }
 
 void EnderChestTile::animateTick(Level* level, int xt, int yt, int zt,

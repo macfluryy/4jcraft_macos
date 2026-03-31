@@ -229,7 +229,7 @@ std::shared_ptr<AgableMob> Ocelot::getBreedOffspring(
     // 4J - added limit to number of animals that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Ocelot> offspring =
-            std::shared_ptr<Ocelot>(new Ocelot(level));
+            std::make_shared<Ocelot>(level);
         if (isTame()) {
             offspring->setOwnerUUID(getOwnerUUID());
             offspring->setTame(true);
@@ -314,7 +314,7 @@ MobGroupData* Ocelot::finalizeMobSpawn(
         if (level->random->nextInt(7) == 0) {
         for (int kitten = 0; kitten < 2; kitten++) {
             std::shared_ptr<Ocelot> ocelot =
-                std::shared_ptr<Ocelot>(new Ocelot(level));
+                std::make_shared<Ocelot>(level);
             ocelot->moveTo(x, y, z, yRot, 0);
             ocelot->setAge(-20 * 60 * 20);
             level->addEntity(ocelot);

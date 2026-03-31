@@ -16,7 +16,7 @@ void ReceivingLevelScreen::tick() {
     tickCount++;
     if (tickCount % 20 == 0) {
         connection->send(
-            std::shared_ptr<KeepAlivePacket>(new KeepAlivePacket()));
+            std::make_shared<KeepAlivePacket>());
     }
     if (connection != nullptr) {
         connection->tick();

@@ -108,7 +108,7 @@ int FlowerPotTile::getResource(int data, Random* random, int playerBonusLevel) {
 std::shared_ptr<ItemInstance> FlowerPotTile::getItemFromType(int type) {
     switch (type) {
         case TYPE_FLOWER_RED:
-            return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::rose));
+            return std::make_shared<ItemInstance>(Tile::rose);
         case TYPE_FLOWER_YELLOW:
             return std::shared_ptr<ItemInstance>(
                 new ItemInstance(Tile::flower));

@@ -51,7 +51,7 @@ void PumpkinTile::onPlace(Level* level, int x, int y, int z) {
                 level->setTileAndData(x, y - 1, z, 0, 0, Tile::UPDATE_CLIENTS);
                 level->setTileAndData(x, y - 2, z, 0, 0, Tile::UPDATE_CLIENTS);
                 std::shared_ptr<SnowMan> snowMan =
-                    std::shared_ptr<SnowMan>(new SnowMan(level));
+                    std::make_shared<SnowMan>(level);
                 snowMan->moveTo(x + 0.5, y - 1.95, z + 0.5, 0, 0);
                 level->addEntity(snowMan);
 

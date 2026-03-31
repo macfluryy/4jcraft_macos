@@ -259,7 +259,7 @@ std::shared_ptr<AgableMob> Sheep::getBreedOffspring(
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
         std::shared_ptr<Sheep> otherSheep =
             std::dynamic_pointer_cast<Sheep>(target);
-        std::shared_ptr<Sheep> sheep = std::shared_ptr<Sheep>(new Sheep(level));
+        std::shared_ptr<Sheep> sheep = std::make_shared<Sheep>(level);
         int color = getOffspringColor(
             std::dynamic_pointer_cast<Animal>(shared_from_this()), otherSheep);
         sheep->setColor(15 - color);

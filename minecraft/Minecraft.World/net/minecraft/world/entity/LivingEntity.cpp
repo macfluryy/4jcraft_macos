@@ -1094,8 +1094,8 @@ void LivingEntity::swing() {
             ((ServerLevel*)level)
                 ->getTracker()
                 ->broadcast(shared_from_this(),
-                            std::shared_ptr<AnimatePacket>(new AnimatePacket(
-                                shared_from_this(), AnimatePacket::SWING)));
+                            std::make_shared<AnimatePacket>(
+                                shared_from_this(), AnimatePacket::SWING));
         }
     }
 }

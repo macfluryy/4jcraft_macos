@@ -35,7 +35,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new TileDestructionPacket());
+        return std::make_shared<TileDestructionPacket>();
     }
     virtual int getId() { return 55; }
 };

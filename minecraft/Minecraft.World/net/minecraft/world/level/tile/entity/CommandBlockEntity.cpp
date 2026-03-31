@@ -64,8 +64,8 @@ Level* CommandBlockEntity::getCommandSenderWorld() { return getLevel(); }
 std::shared_ptr<Packet> CommandBlockEntity::getUpdatePacket() {
     CompoundTag* tag = new CompoundTag();
     save(tag);
-    return std::shared_ptr<TileEntityDataPacket>(new TileEntityDataPacket(
-        x, y, z, TileEntityDataPacket::TYPE_ADV_COMMAND, tag));
+    return std::make_shared<TileEntityDataPacket>(
+        x, y, z, TileEntityDataPacket::TYPE_ADV_COMMAND, tag);
 }
 
 int CommandBlockEntity::getSuccessCount() { return successCount; }
@@ -77,7 +77,7 @@ void CommandBlockEntity::setSuccessCount(int successCount) {
 // 4J Added
 std::shared_ptr<TileEntity> CommandBlockEntity::clone() {
     std::shared_ptr<CommandBlockEntity> result =
-        std::shared_ptr<CommandBlockEntity>(new CommandBlockEntity());
+        std::make_shared<CommandBlockEntity>();
     TileEntity::clone(result);
 
     result->successCount = successCount;

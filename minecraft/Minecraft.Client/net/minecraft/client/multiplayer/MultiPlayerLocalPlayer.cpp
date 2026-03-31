@@ -81,11 +81,11 @@ void MultiplayerLocalPlayer::tick() {
             tempX, tempY, tempZ, x, y, z)) {
         if (isRiding()) {
             connection->send(
-                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Rot(
-                    yRot, xRot, onGround, abilities.flying)));
+                std::make_shared<MovePlayerPacket::Rot>(
+                    yRot, xRot, onGround, abilities.flying));
             connection->send(
-                std::shared_ptr<PlayerInputPacket>(new PlayerInputPacket(
-                    xxa, yya, input->jumping, input->sneaking)));
+                std::make_shared<PlayerInputPacket>(
+                    xxa, yya, input->jumping, input->sneaking));
         } else {
             sendPosition();
         }
@@ -101,12 +101,12 @@ void MultiplayerLocalPlayer::sendPosition() {
     if (sprinting != lastSprinting) {
         if (sprinting)
             connection->send(
-                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-                    shared_from_this(), PlayerCommandPacket::START_SPRINTING)));
+                std::make_shared<PlayerCommandPacket>(
+                    shared_from_this(), PlayerCommandPacket::START_SPRINTING));
         else
             connection->send(
-                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-                    shared_from_this(), PlayerCommandPacket::STOP_SPRINTING)));
+                std::make_shared<PlayerCommandPacket>(
+                    shared_from_this(), PlayerCommandPacket::STOP_SPRINTING));
 
         lastSprinting = sprinting;
     }
@@ -115,12 +115,12 @@ void MultiplayerLocalPlayer::sendPosition() {
     if (sneaking != lastSneaked) {
         if (sneaking)
             connection->send(
-                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-                    shared_from_this(), PlayerCommandPacket::START_SNEAKING)));
+                std::make_shared<PlayerCommandPacket>(
+                    shared_from_this(), PlayerCommandPacket::START_SNEAKING));
         else
             connection->send(
-                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-                    shared_from_this(), PlayerCommandPacket::STOP_SNEAKING)));
+                std::make_shared<PlayerCommandPacket>(
+                    shared_from_this(), PlayerCommandPacket::STOP_SNEAKING));
 
         lastSneaked = sneaking;
     }
@@ -129,12 +129,12 @@ void MultiplayerLocalPlayer::sendPosition() {
     if (idle != lastIdle) {
         if (idle)
             connection->send(
-                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-                    shared_from_this(), PlayerCommandPacket::START_IDLEANIM)));
+                std::make_shared<PlayerCommandPacket>(
+                    shared_from_this(), PlayerCommandPacket::START_IDLEANIM));
         else
             connection->send(
-                std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-                    shared_from_this(), PlayerCommandPacket::STOP_IDLEANIM)));
+                std::make_shared<PlayerCommandPacket>(
+                    shared_from_this(), PlayerCommandPacket::STOP_IDLEANIM));
 
         lastIdle = idle;
     }
@@ -151,22 +151,22 @@ void MultiplayerLocalPlayer::sendPosition() {
     bool rot = rydd != 0 || rxdd != 0;
     if (riding != nullptr) {
         connection->send(
-            std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::PosRot(
-                xd, -999, -999, zd, yRot, xRot, onGround, abilities.flying)));
+            std::make_shared<MovePlayerPacket::PosRot>(
+                xd, -999, -999, zd, yRot, xRot, onGround, abilities.flying));
         move = false;
     } else {
         if (move && rot) {
             connection->send(
-                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::PosRot(
-                    x, bb.y0, y, z, yRot, xRot, onGround, abilities.flying)));
+                std::make_shared<MovePlayerPacket::PosRot>(
+                    x, bb.y0, y, z, yRot, xRot, onGround, abilities.flying));
         } else if (move) {
             connection->send(
-                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Pos(
-                    x, bb.y0, y, z, onGround, abilities.flying)));
+                std::make_shared<MovePlayerPacket::Pos>(
+                    x, bb.y0, y, z, onGround, abilities.flying));
         } else if (rot) {
             connection->send(
-                std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::Rot(
-                    yRot, xRot, onGround, abilities.flying)));
+                std::make_shared<MovePlayerPacket::Rot>(
+                    yRot, xRot, onGround, abilities.flying));
         } else {
             connection->send(std::shared_ptr<MovePlayerPacket>(
                 new MovePlayerPacket(onGround, abilities.flying)));
@@ -199,7 +199,7 @@ void MultiplayerLocalPlayer::reallyDrop(
     std::shared_ptr<ItemEntity> itemEntity) {}
 
 void MultiplayerLocalPlayer::chat(const std::wstring& message) {
-    connection->send(std::shared_ptr<ChatPacket>(new ChatPacket(message)));
+    connection->send(std::make_shared<ChatPacket>(message));
 }
 
 void MultiplayerLocalPlayer::swing() {
@@ -313,15 +313,15 @@ bool MultiplayerLocalPlayer::isLocalPlayer() { return true; }
 
 void MultiplayerLocalPlayer::sendRidingJump() {
     connection->send(
-        std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
+        std::make_shared<PlayerCommandPacket>(
             shared_from_this(), PlayerCommandPacket::RIDING_JUMP,
-            (int)(getJumpRidingScale() * 100.0f))));
+            (int)(getJumpRidingScale() * 100.0f)));
 }
 
 void MultiplayerLocalPlayer::sendOpenInventory() {
     connection->send(
-        std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-            shared_from_this(), PlayerCommandPacket::OPEN_INVENTORY)));
+        std::make_shared<PlayerCommandPacket>(
+            shared_from_this(), PlayerCommandPacket::OPEN_INVENTORY));
 }
 
 void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
@@ -353,8 +353,8 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
 
 void MultiplayerLocalPlayer::StopSleeping() {
     connection->send(
-        std::shared_ptr<PlayerCommandPacket>(new PlayerCommandPacket(
-            shared_from_this(), PlayerCommandPacket::STOP_SLEEPING)));
+        std::make_shared<PlayerCommandPacket>(
+            shared_from_this(), PlayerCommandPacket::STOP_SLEEPING));
 }
 
 // 4J Added
@@ -380,9 +380,9 @@ void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
 #endif
     if (getCustomCape() != oldCapeIndex)
         connection->send(
-            std::shared_ptr<TextureChangePacket>(new TextureChangePacket(
+            std::make_shared<TextureChangePacket>(
                 shared_from_this(), TextureChangePacket::e_TextureChange_Cape,
-                app.GetPlayerCapeName(GetXboxPad()))));
+                app.GetPlayerCapeName(GetXboxPad())));
 }
 
 // 4J added for testing. This moves the player in a repeated sequence of 2

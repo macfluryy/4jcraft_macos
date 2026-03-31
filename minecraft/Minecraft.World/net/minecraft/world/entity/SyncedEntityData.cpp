@@ -17,7 +17,7 @@ void SynchedEntityData::define(int id, int value) {
     checkId(id);
     int type = TYPE_INT;
     std::shared_ptr<DataItem> dataItem =
-        std::shared_ptr<DataItem>(new DataItem(type, id, value));
+        std::make_shared<DataItem>(type, id, value);
     itemsById[id] = dataItem;
     m_isEmpty = false;
 }
@@ -26,7 +26,7 @@ void SynchedEntityData::define(int id, uint8_t value) {
     checkId(id);
     int type = TYPE_BYTE;
     std::shared_ptr<DataItem> dataItem =
-        std::shared_ptr<DataItem>(new DataItem(type, id, value));
+        std::make_shared<DataItem>(type, id, value);
     itemsById[id] = dataItem;
     m_isEmpty = false;
 }
@@ -35,7 +35,7 @@ void SynchedEntityData::define(int id, short value) {
     checkId(id);
     int type = TYPE_SHORT;
     std::shared_ptr<DataItem> dataItem =
-        std::shared_ptr<DataItem>(new DataItem(type, id, value));
+        std::make_shared<DataItem>(type, id, value);
     itemsById[id] = dataItem;
     m_isEmpty = false;
 }
@@ -44,7 +44,7 @@ void SynchedEntityData::define(int id, float value) {
     checkId(id);
     int type = TYPE_FLOAT;
     std::shared_ptr<DataItem> dataItem =
-        std::shared_ptr<DataItem>(new DataItem(type, id, value));
+        std::make_shared<DataItem>(type, id, value);
     itemsById[id] = dataItem;
     m_isEmpty = false;
 }
@@ -53,7 +53,7 @@ void SynchedEntityData::define(int id, const std::wstring& value) {
     checkId(id);
     int type = TYPE_STRING;
     std::shared_ptr<DataItem> dataItem =
-        std::shared_ptr<DataItem>(new DataItem(type, id, value));
+        std::make_shared<DataItem>(type, id, value);
     itemsById[id] = dataItem;
     m_isEmpty = false;
 }
@@ -320,9 +320,9 @@ SynchedEntityData::unpack(DataInputStream* input)  // throws IOException
 
             } break;
             case TYPE_STRING:
-                item = std::shared_ptr<DataItem>(new DataItem(
+                item = std::make_shared<DataItem>(
                     itemType, itemId,
-                    Packet::readUtf(input, MAX_STRING_DATA_LENGTH)));
+                    Packet::readUtf(input, MAX_STRING_DATA_LENGTH));
                 break;
             case TYPE_ITEMINSTANCE: {
                 item = std::shared_ptr<DataItem>(

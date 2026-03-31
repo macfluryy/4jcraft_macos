@@ -31,7 +31,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new PlayerInputPacket());
+        return std::make_shared<PlayerInputPacket>();
     }
     virtual int getId() { return 27; }
 };

@@ -162,11 +162,11 @@ void BeaconScreen::renderBg(float a) {
     // Render payment item icons
     itemRenderer->renderGuiItem(
         font, minecraft->textures,
-        std::shared_ptr<ItemInstance>(new ItemInstance(Item::emerald_Id, 1, 0)),
+        std::make_shared<ItemInstance>(Item::emerald_Id, 1, 0),
         xo + 42, yo + 109);
     itemRenderer->renderGuiItem(
         font, minecraft->textures,
-        std::shared_ptr<ItemInstance>(new ItemInstance(Item::diamond_Id, 1, 0)),
+        std::make_shared<ItemInstance>(Item::diamond_Id, 1, 0),
         xo + 42 + 22, yo + 109);
     itemRenderer->renderGuiItem(font, minecraft->textures,
                                 std::shared_ptr<ItemInstance>(
@@ -206,8 +206,8 @@ void BeaconScreen::buttonClicked(Button* button) {
         dos.writeInt(beacon->getSecondaryPower());
 
         minecraft->player->connection->send(
-            std::shared_ptr<CustomPayloadPacket>(new CustomPayloadPacket(
-                CustomPayloadPacket::SET_BEACON_PACKET, baos.toByteArray())));
+            std::make_shared<CustomPayloadPacket>(
+                CustomPayloadPacket::SET_BEACON_PACKET, baos.toByteArray()));
         minecraft->player->closeContainer();
     } else if (dynamic_cast<BeaconPowerButton*>(button)) {
         int effectId = button->id & 255;

@@ -194,7 +194,7 @@ bool Minecart::hurt(DamageSource* source, float hurtDamage) {
 void Minecart::destroy(DamageSource* source) {
     remove();
     std::shared_ptr<ItemInstance> item =
-        std::shared_ptr<ItemInstance>(new ItemInstance(Item::minecart, 1));
+        std::make_shared<ItemInstance>(Item::minecart, 1);
     if (!name.empty()) item->setHoverName(name);
     spawnAtLocation(item, 0);
 }

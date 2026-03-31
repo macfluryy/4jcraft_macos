@@ -112,7 +112,7 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
     // 4J Stu - Need to remove the player from the receiving list before their
     // socket is NULLed so that we can find another player on their system
     server->getPlayers()->removePlayerFromReceiving(player);
-    send(std::shared_ptr<DisconnectPacket>(new DisconnectPacket(reason)));
+    send(std::make_shared<DisconnectPacket>(reason));
     connection->sendAndQuit();
     // 4J-PB - removed, since it needs to be localised in the language the
     // client is in
@@ -120,8 +120,8 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
     // ChatPacket(L"§e" + player->name + L" left the game.") ) );
     if (getWasKicked()) {
         server->getPlayers()->broadcastAll(
-            std::shared_ptr<ChatPacket>(new ChatPacket(
-                player->name, ChatPacket::e_ChatPlayerKickedFromGame)));
+            std::make_shared<ChatPacket>(
+                player->name, ChatPacket::e_ChatPlayerKickedFromGame));
     } else {
         server->getPlayers()->broadcastAll(std::shared_ptr<ChatPacket>(
             new ChatPacket(player->name, ChatPacket::e_ChatPlayerLeftGame)));
@@ -365,8 +365,8 @@ void PlayerConnection::teleport(double x, double y, double z, float yRot,
     // where it represents the bottom of the player bounding volume
     if (sendPacket)
         player->connection->send(
-            std::shared_ptr<MovePlayerPacket>(new MovePlayerPacket::PosRot(
-                x, y + 1.62f, y, z, yRot, xRot, false, false)));
+            std::make_shared<MovePlayerPacket::PosRot>(
+                x, y + 1.62f, y, z, yRot, xRot, false, false));
 }
 
 void PlayerConnection::handlePlayerAction(
@@ -553,8 +553,8 @@ void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
     // ChatPacket(L"§e" + player->name + L" left the game.") ) );
     if (getWasKicked()) {
         server->getPlayers()->broadcastAll(
-            std::shared_ptr<ChatPacket>(new ChatPacket(
-                player->name, ChatPacket::e_ChatPlayerKickedFromGame)));
+            std::make_shared<ChatPacket>(
+                player->name, ChatPacket::e_ChatPlayerKickedFromGame));
     } else {
         server->getPlayers()->broadcastAll(std::shared_ptr<ChatPacket>(
             new ChatPacket(player->name, ChatPacket::e_ChatPlayerLeftGame)));
@@ -1132,8 +1132,8 @@ void PlayerConnection::handleContainerClick(
         if (ItemInstance::matches(packet->item, clicked)) {
             // Yep, you sure did click what you claimed to click!
             player->connection->send(
-                std::shared_ptr<ContainerAckPacket>(new ContainerAckPacket(
-                    packet->containerId, packet->uid, true)));
+                std::make_shared<ContainerAckPacket>(
+                    packet->containerId, packet->uid, true));
             player->ignoreSlotUpdateHack = true;
             player->containerMenu->broadcastChanges();
             player->broadcastCarriedItem();
@@ -1142,8 +1142,8 @@ void PlayerConnection::handleContainerClick(
             // No, you clicked the wrong thing!
             expectedAcks[player->containerMenu->containerId] = packet->uid;
             player->connection->send(
-                std::shared_ptr<ContainerAckPacket>(new ContainerAckPacket(
-                    packet->containerId, packet->uid, false)));
+                std::make_shared<ContainerAckPacket>(
+                    packet->containerId, packet->uid, false));
             player->containerMenu->setSynched(player, false);
 
             std::vector<std::shared_ptr<ItemInstance> > items;
@@ -1199,7 +1199,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
             std::wstring id = std::wstring(buf);
             if (data == nullptr) {
                 data =
-                    std::shared_ptr<MapItemSavedData>(new MapItemSavedData(id));
+                    std::make_shared<MapItemSavedData>(id);
             }
             player->level->setSavedData(id, (std::shared_ptr<SavedData>)data);
 
@@ -1364,9 +1364,9 @@ void PlayerConnection::handlePlayerInfo(
                             Player::ePlayerGamePrivilege_CreativeMode));
                     serverPlayer->gameMode->setGameModeForPlayer(gameType);
                     serverPlayer->connection->send(
-                        std::shared_ptr<GameEventPacket>(new GameEventPacket(
+                        std::make_shared<GameEventPacket>(
                             GameEventPacket::CHANGE_GAME_MODE,
-                            gameType->getId())));
+                            gameType->getId()));
                 } else {
 #if !defined(_CONTENT_PACKAGE)
                     wprintf(L"%ls already has game mode %d\n",
@@ -1673,9 +1673,9 @@ void PlayerConnection::handleCraftItem(
                     if (ingItemInst->getItem()->hasCraftingRemainingItem()) {
                         // replace item with remaining result
                         player->inventory->add(
-                            std::shared_ptr<ItemInstance>(new ItemInstance(
+                            std::make_shared<ItemInstance>(
                                 ingItemInst->getItem()
-                                    ->getCraftingRemainingItem())));
+                                    ->getCraftingRemainingItem()));
                     }
                 }
             }

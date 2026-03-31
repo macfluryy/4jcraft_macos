@@ -25,6 +25,6 @@ std::shared_ptr<ItemInstance> SnowballItem::use(
                            0.4f / (random->nextFloat() * 0.4f + 0.8f));
     if (!level->isClientSide)
         level->addEntity(
-            std::shared_ptr<Snowball>(new Snowball(level, player)));
+            std::make_shared<Snowball>(level, player));
     return instance;
 }

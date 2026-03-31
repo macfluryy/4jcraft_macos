@@ -41,7 +41,7 @@ void JukeboxTile::Entity::save(CompoundTag* tag) {
 // 4J Added
 std::shared_ptr<TileEntity> JukeboxTile::Entity::clone() {
     std::shared_ptr<JukeboxTile::Entity> result =
-        std::shared_ptr<JukeboxTile::Entity>(new JukeboxTile::Entity());
+        std::make_shared<JukeboxTile::Entity>();
     TileEntity::clone(result);
 
     result->record = record;
@@ -145,7 +145,7 @@ void JukeboxTile::spawnResources(Level* level, int x, int y, int z, int data,
 }
 
 std::shared_ptr<TileEntity> JukeboxTile::newTileEntity(Level* level) {
-    return std::shared_ptr<JukeboxTile::Entity>(new JukeboxTile::Entity());
+    return std::make_shared<JukeboxTile::Entity>();
 }
 
 void JukeboxTile::registerIcons(IconRegister* iconRegister) {

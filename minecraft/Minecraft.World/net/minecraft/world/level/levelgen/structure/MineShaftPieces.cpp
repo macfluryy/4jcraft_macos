@@ -490,8 +490,8 @@ bool MineShaftPieces::MineShaftCorridor::createChest(
                                                       : RailTile::DIR_FLAT_Z),
                 Tile::UPDATE_CLIENTS);
             std::shared_ptr<MinecartChest> chest =
-                std::shared_ptr<MinecartChest>(new MinecartChest(
-                    level, worldX + 0.5f, worldY + 0.5f, worldZ + 0.5f));
+                std::make_shared<MinecartChest>(
+                    level, worldX + 0.5f, worldY + 0.5f, worldZ + 0.5f);
             WeighedTreasure::addChestItems(random, treasure, chest, numRolls);
             level->addEntity(chest);
             return true;

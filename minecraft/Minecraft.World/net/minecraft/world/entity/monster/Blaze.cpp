@@ -134,11 +134,11 @@ void Blaze::checkHurtTarget(std::shared_ptr<Entity> target, float d) {
                 //                    * 0.2f + 1.0f);
                 for (int i = 0; i < 1; i++) {
                     std::shared_ptr<SmallFireball> ie =
-                        std::shared_ptr<SmallFireball>(new SmallFireball(
+                        std::make_shared<SmallFireball>(
                             level,
                             std::dynamic_pointer_cast<Mob>(shared_from_this()),
                             xd + random->nextGaussian() * sqd, yd,
-                            zd + random->nextGaussian() * sqd));
+                            zd + random->nextGaussian() * sqd);
                     //                        Vec3 v = getViewVector(1);
                     //                        ie.x = x + v.x * 1.5;
                     ie->y = y + bbHeight / 2 + 0.5f;

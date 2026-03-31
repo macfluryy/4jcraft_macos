@@ -78,14 +78,14 @@ float ThrownPotion::getThrowUpAngleOffset() { return -20; }
 void ThrownPotion::setPotionValue(int potionValue) {
     if (potionItem == nullptr)
         potionItem =
-            std::shared_ptr<ItemInstance>(new ItemInstance(Item::potion, 1, 0));
+            std::make_shared<ItemInstance>(Item::potion, 1, 0);
     potionItem->setAuxValue(potionValue);
 }
 
 int ThrownPotion::getPotionValue() {
     if (potionItem == nullptr)
         potionItem =
-            std::shared_ptr<ItemInstance>(new ItemInstance(Item::potion, 1, 0));
+            std::make_shared<ItemInstance>(Item::potion, 1, 0);
     return potionItem->getAuxValue();
 }
 

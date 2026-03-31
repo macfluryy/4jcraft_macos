@@ -24,7 +24,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new CraftItemPacket());
+        return std::make_shared<CraftItemPacket>();
     }
     virtual int getId() { return 150; }
 };

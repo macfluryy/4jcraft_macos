@@ -460,7 +460,6 @@ int UIScene_PauseMenu::UnlockFullSaveReturned(
         if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
             // 4J-PB - need to check this user can access the store
             {
-                ProfileManager.DisplayFullVersionPurchase(
                     false, pMinecraft->player->GetXboxPad(),
                     /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
             }

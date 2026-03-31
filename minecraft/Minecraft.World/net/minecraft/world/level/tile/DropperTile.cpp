@@ -36,7 +36,7 @@ DispenseItemBehavior* DropperTile::getDispenseMethod(
 }
 
 std::shared_ptr<TileEntity> DropperTile::newTileEntity(Level* level) {
-    return std::shared_ptr<DropperTileEntity>(new DropperTileEntity());
+    return std::make_shared<DropperTileEntity>();
 }
 
 void DropperTile::dispenseFrom(Level* level, int x, int y, int z) {

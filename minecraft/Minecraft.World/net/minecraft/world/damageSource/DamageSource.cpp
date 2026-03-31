@@ -214,11 +214,11 @@ std::shared_ptr<ChatPacket> DamageSource::getDeathMessagePacket(
     std::shared_ptr<LivingEntity> player) {
     std::shared_ptr<LivingEntity> source = player->getKillCredit();
     if (source != nullptr) {
-        return std::shared_ptr<ChatPacket>(new ChatPacket(
+        return std::make_shared<ChatPacket>(
             player->getNetworkName(),
             m_msgWithItemId != ChatPacket::e_ChatCustom ? m_msgWithItemId
                                                         : m_msgId,
-            source->GetType(), source->getNetworkName()));
+            source->GetType(), source->getNetworkName());
     } else {
         return std::shared_ptr<ChatPacket>(
             new ChatPacket(player->getNetworkName(), m_msgId));

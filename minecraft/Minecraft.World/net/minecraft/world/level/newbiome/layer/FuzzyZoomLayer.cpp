@@ -67,7 +67,7 @@ std::shared_ptr<Layer> FuzzyZoomLayer::zoom(int64_t seed,
                                             int count) {
     std::shared_ptr<Layer> result = sup;
     for (int i = 0; i < count; i++) {
-        result = std::shared_ptr<Layer>(new FuzzyZoomLayer(seed + i, result));
+        result = std::make_shared<FuzzyZoomLayer>(seed + i, result);
     }
     return result;
 }

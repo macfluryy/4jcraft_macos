@@ -218,7 +218,7 @@ bool ComparatorTile::triggerEvent(Level* level, int x, int y, int z, int b0,
 }
 
 std::shared_ptr<TileEntity> ComparatorTile::newTileEntity(Level* level) {
-    return std::shared_ptr<ComparatorTileEntity>(new ComparatorTileEntity());
+    return std::make_shared<ComparatorTileEntity>();
 }
 
 bool ComparatorTile::TestUse() { return true; }

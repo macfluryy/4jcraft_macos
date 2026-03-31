@@ -43,7 +43,7 @@ bool SpikeFeature::place(Level* level, Random* random, int x, int y, int z) {
     }
 
     std::shared_ptr<EnderCrystal> enderCrystal =
-        std::shared_ptr<EnderCrystal>(new EnderCrystal(level));
+        std::make_shared<EnderCrystal>(level);
     enderCrystal->moveTo(x + 0.5f, y + hh, z + 0.5f, random->nextFloat() * 360,
                          0);
     level->addEntity(enderCrystal);
@@ -146,7 +146,7 @@ bool SpikeFeature::placeWithIndex(Level* level, Random* random, int x, int y,
     }
 
     std::shared_ptr<EnderCrystal> enderCrystal =
-        std::shared_ptr<EnderCrystal>(new EnderCrystal(level));
+        std::make_shared<EnderCrystal>(level);
     enderCrystal->moveTo(x + 0.5f, y + hh, z + 0.5f, random->nextFloat() * 360,
                          0);
     level->addEntity(enderCrystal);

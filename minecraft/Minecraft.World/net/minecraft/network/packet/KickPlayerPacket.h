@@ -21,7 +21,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new KickPlayerPacket());
+        return std::make_shared<KickPlayerPacket>();
     }
     virtual int getId() { return 159; }
 };

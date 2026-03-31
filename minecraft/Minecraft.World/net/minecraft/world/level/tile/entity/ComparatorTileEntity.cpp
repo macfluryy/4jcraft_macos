@@ -22,7 +22,7 @@ void ComparatorTileEntity::setOutputSignal(int value) { output = value; }
 // 4J Added
 std::shared_ptr<TileEntity> ComparatorTileEntity::clone() {
     std::shared_ptr<ComparatorTileEntity> result =
-        std::shared_ptr<ComparatorTileEntity>(new ComparatorTileEntity());
+        std::make_shared<ComparatorTileEntity>();
     TileEntity::clone(result);
 
     result->output = output;

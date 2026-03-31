@@ -26,7 +26,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new XZPacket());
+        return std::make_shared<XZPacket>();
     }
     virtual int getId() { return 166; }
 };

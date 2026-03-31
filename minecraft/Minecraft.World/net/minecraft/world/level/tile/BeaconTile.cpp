@@ -14,7 +14,7 @@ BeaconTile::BeaconTile(int id) : BaseEntityTile(id, Material::glass, false) {
 }
 
 std::shared_ptr<TileEntity> BeaconTile::newTileEntity(Level* level) {
-    return std::shared_ptr<BeaconTileEntity>(new BeaconTileEntity());
+    return std::make_shared<BeaconTileEntity>();
 }
 
 bool BeaconTile::use(Level* level, int x, int y, int z,

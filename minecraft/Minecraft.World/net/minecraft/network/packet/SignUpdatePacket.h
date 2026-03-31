@@ -26,7 +26,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SignUpdatePacket());
+        return std::make_shared<SignUpdatePacket>();
     }
     virtual int getId() { return 130; }
 };

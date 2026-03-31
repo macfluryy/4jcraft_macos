@@ -24,7 +24,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new LevelEventPacket());
+        return std::make_shared<LevelEventPacket>();
     }
     virtual int getId() { return 61; }
 };

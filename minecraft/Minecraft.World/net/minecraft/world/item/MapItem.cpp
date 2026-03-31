@@ -45,7 +45,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
 
         id = std::wstring(L"map_") + _toString(aux);
         mapItemSavedData =
-            std::shared_ptr<MapItemSavedData>(new MapItemSavedData(id));
+            std::make_shared<MapItemSavedData>(id);
 
         level->setSavedData(id, (std::shared_ptr<SavedData>)mapItemSavedData);
     }
@@ -70,7 +70,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
 
         id = std::wstring(L"map_") + _toString(itemInstance->getAuxValue());
         mapItemSavedData =
-            std::shared_ptr<MapItemSavedData>(new MapItemSavedData(id));
+            std::make_shared<MapItemSavedData>(id);
 
         newData = true;
     }
@@ -309,8 +309,8 @@ std::shared_ptr<Packet> MapItem::getUpdatePacket(
     if (data.empty()) return nullptr;
 
     std::shared_ptr<Packet> retval =
-        std::shared_ptr<Packet>(new ComplexItemDataPacket(
-            (short)Item::map->id, (short)itemInstance->getAuxValue(), data));
+        std::make_shared<ComplexItemDataPacket>(
+            (short)Item::map->id, (short)itemInstance->getAuxValue(), data);
     return retval;
 }
 
@@ -341,7 +341,7 @@ void MapItem::onCraftedBy(std::shared_ptr<ItemInstance> itemInstance,
     // 4J Stu - We only have one map per player per dimension, so don't reset
     // the one that they have when a new one is created
     if (data == nullptr) {
-        data = std::shared_ptr<MapItemSavedData>(new MapItemSavedData(id));
+        data = std::make_shared<MapItemSavedData>(id);
     }
     level->setSavedData(id, (std::shared_ptr<SavedData>)data);
 

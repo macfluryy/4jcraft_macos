@@ -22,7 +22,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new ContainerButtonClickPacket());
+        return std::make_shared<ContainerButtonClickPacket>();
     }
     virtual int getId() { return 108; }
 };

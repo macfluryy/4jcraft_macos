@@ -390,10 +390,10 @@ void ClientConnection::handleAddEntity(
             packet->data = 0;
         } break;
         case AddEntityPacket::ARROW:
-            e = std::shared_ptr<Entity>(new Arrow(level, x, y, z));
+            e = std::make_shared<Arrow>(level, x, y, z);
             break;
         case AddEntityPacket::SNOWBALL:
-            e = std::shared_ptr<Entity>(new Snowball(level, x, y, z));
+            e = std::make_shared<Snowball>(level, x, y, z);
             break;
         case AddEntityPacket::ITEM_FRAME: {
             int ix = (int)x;
@@ -408,10 +408,10 @@ void ClientConnection::handleAddEntity(
             setRot = false;
             break;
         case AddEntityPacket::THROWN_ENDERPEARL:
-            e = std::shared_ptr<Entity>(new ThrownEnderpearl(level, x, y, z));
+            e = std::make_shared<ThrownEnderpearl>(level, x, y, z);
             break;
         case AddEntityPacket::EYEOFENDERSIGNAL:
-            e = std::shared_ptr<Entity>(new EyeOfEnderSignal(level, x, y, z));
+            e = std::make_shared<EyeOfEnderSignal>(level, x, y, z);
             break;
         case AddEntityPacket::FIREBALL:
             e = std::shared_ptr<Entity>(
@@ -432,7 +432,7 @@ void ClientConnection::handleAddEntity(
             packet->data = 0;
             break;
         case AddEntityPacket::EGG:
-            e = std::shared_ptr<Entity>(new ThrownEgg(level, x, y, z));
+            e = std::make_shared<ThrownEgg>(level, x, y, z);
             break;
         case AddEntityPacket::THROWN_POTION:
             e = std::shared_ptr<Entity>(
@@ -440,24 +440,24 @@ void ClientConnection::handleAddEntity(
             packet->data = 0;
             break;
         case AddEntityPacket::THROWN_EXPBOTTLE:
-            e = std::shared_ptr<Entity>(new ThrownExpBottle(level, x, y, z));
+            e = std::make_shared<ThrownExpBottle>(level, x, y, z);
             packet->data = 0;
             break;
         case AddEntityPacket::BOAT:
-            e = std::shared_ptr<Entity>(new Boat(level, x, y, z));
+            e = std::make_shared<Boat>(level, x, y, z);
             break;
         case AddEntityPacket::PRIMED_TNT:
-            e = std::shared_ptr<Entity>(new PrimedTnt(level, x, y, z, nullptr));
+            e = std::make_shared<PrimedTnt>(level, x, y, z, nullptr);
             break;
         case AddEntityPacket::ENDER_CRYSTAL:
-            e = std::shared_ptr<Entity>(new EnderCrystal(level, x, y, z));
+            e = std::make_shared<EnderCrystal>(level, x, y, z);
             break;
         case AddEntityPacket::ITEM:
-            e = std::shared_ptr<Entity>(new ItemEntity(level, x, y, z));
+            e = std::make_shared<ItemEntity>(level, x, y, z);
             break;
         case AddEntityPacket::FALLING:
-            e = std::shared_ptr<Entity>(new FallingTile(
-                level, x, y, z, packet->data & 0xFFFF, packet->data >> 16));
+            e = std::make_shared<FallingTile>(
+                level, x, y, z, packet->data & 0xFFFF, packet->data >> 16);
             packet->data = 0;
             break;
         case AddEntityPacket::WITHER_SKULL:
@@ -667,7 +667,7 @@ void ClientConnection::handleAddGlobalEntity(
     double z = packet->z / 32.0;
     std::shared_ptr<Entity> e;  // = nullptr;
     if (packet->type == AddGlobalEntityPacket::LIGHTNING)
-        e = std::shared_ptr<LightningBolt>(new LightningBolt(level, x, y, z));
+        e = std::make_shared<LightningBolt>(level, x, y, z);
     if (e != nullptr) {
         e->xp = packet->x;
         e->yp = packet->y;
@@ -681,8 +681,8 @@ void ClientConnection::handleAddGlobalEntity(
 
 void ClientConnection::handleAddPainting(
     std::shared_ptr<AddPaintingPacket> packet) {
-    std::shared_ptr<Painting> painting = std::shared_ptr<Painting>(new Painting(
-        level, packet->x, packet->y, packet->z, packet->dir, packet->motive));
+    std::shared_ptr<Painting> painting = std::make_shared<Painting>(
+        level, packet->x, packet->y, packet->z, packet->dir, packet->motive);
     level->putEntity(packet->id, painting);
 }
 
@@ -749,7 +749,7 @@ void ClientConnection::handleAddPlayer(
             std::shared_ptr<ItemInstance>();  // nullptr;
     } else {
         player->inventory->items[player->inventory->selected] =
-            std::shared_ptr<ItemInstance>(new ItemInstance(item, 1, 0));
+            std::make_shared<ItemInstance>(item, 1, 0);
     }
     player->absMoveTo(x, y, z, yRot, xRot);
 
@@ -1934,12 +1934,12 @@ void ClientConnection::handlePreLogin(std::shared_ptr<PreLoginPacket> packet) {
                 minecraft->user->name.c_str(),
                 SharedConstants::NETWORK_PROTOCOL_VERSION, m_userIndex,
                 (int)g_NetworkManager.IsHost());
-        send(std::shared_ptr<LoginPacket>(new LoginPacket(
+        send(std::make_shared<LoginPacket>(
             minecraft->user->name, SharedConstants::NETWORK_PROTOCOL_VERSION,
             offlineXUID, onlineXUID, (!allAllowed && friendsAllowed),
             packet->m_ugcPlayersVersion, app.GetPlayerSkinId(m_userIndex),
             app.GetPlayerCapeId(m_userIndex),
-            ProfileManager.IsGuest(m_userIndex))));
+            ProfileManager.IsGuest(m_userIndex)));
         fprintf(stderr, "[LOGIN] LoginPacket sent successfully\n");
 
         if (!g_NetworkManager.IsHost()) {
@@ -2519,7 +2519,7 @@ void ClientConnection::handleContainerOpen(
         } break;
         case ContainerOpenPacket::HOPPER: {
             std::shared_ptr<HopperTileEntity> hopper =
-                std::shared_ptr<HopperTileEntity>(new HopperTileEntity());
+                std::make_shared<HopperTileEntity>();
             if (packet->customName) hopper->setCustomName(packet->title);
             if (player->openHopper(hopper)) {
                 player->containerMenu->containerId = packet->containerId;
@@ -2529,7 +2529,7 @@ void ClientConnection::handleContainerOpen(
         } break;
         case ContainerOpenPacket::FURNACE: {
             std::shared_ptr<FurnaceTileEntity> furnace =
-                std::shared_ptr<FurnaceTileEntity>(new FurnaceTileEntity());
+                std::make_shared<FurnaceTileEntity>();
             if (packet->customName) furnace->setCustomName(packet->title);
             if (player->openFurnace(furnace)) {
                 player->containerMenu->containerId = packet->containerId;
@@ -2551,7 +2551,7 @@ void ClientConnection::handleContainerOpen(
         } break;
         case ContainerOpenPacket::DROPPER: {
             std::shared_ptr<DropperTileEntity> dropper =
-                std::shared_ptr<DropperTileEntity>(new DropperTileEntity());
+                std::make_shared<DropperTileEntity>();
             if (packet->customName) dropper->setCustomName(packet->title);
 
             if (player->openTrap(dropper)) {
@@ -2562,7 +2562,7 @@ void ClientConnection::handleContainerOpen(
         } break;
         case ContainerOpenPacket::TRAP: {
             std::shared_ptr<DispenserTileEntity> dispenser =
-                std::shared_ptr<DispenserTileEntity>(new DispenserTileEntity());
+                std::make_shared<DispenserTileEntity>();
             if (packet->customName) dispenser->setCustomName(packet->title);
 
             if (player->openTrap(dispenser)) {
@@ -2604,7 +2604,7 @@ void ClientConnection::handleContainerOpen(
         } break;
         case ContainerOpenPacket::BEACON: {
             std::shared_ptr<BeaconTileEntity> beacon =
-                std::shared_ptr<BeaconTileEntity>(new BeaconTileEntity());
+                std::make_shared<BeaconTileEntity>();
             if (packet->customName) beacon->setCustomName(packet->title);
 
             if (player->openBeacon(beacon)) {
@@ -2715,8 +2715,8 @@ void ClientConnection::handleContainerAck(
     }
     if (menu != nullptr) {
         if (!packet->accepted) {
-            send(std::shared_ptr<ContainerAckPacket>(new ContainerAckPacket(
-                packet->containerId, packet->uid, true)));
+            send(std::make_shared<ContainerAckPacket>(
+                packet->containerId, packet->uid, true));
         }
     }
 }
@@ -2740,7 +2740,7 @@ void ClientConnection::handleTileEditorOpen(
         minecraft->localplayers[m_userIndex]->openTextEdit(tileEntity);
     } else if (packet->editorType == TileEditorOpenPacket::SIGN) {
         std::shared_ptr<SignTileEntity> localSignDummy =
-            std::shared_ptr<SignTileEntity>(new SignTileEntity());
+            std::make_shared<SignTileEntity>();
         localSignDummy->setLevel(level);
         localSignDummy->x = packet->x;
         localSignDummy->y = packet->y;
@@ -3183,7 +3183,7 @@ void ClientConnection::displayPrivilegeChanges(
 
 void ClientConnection::handleKeepAlive(
     std::shared_ptr<KeepAlivePacket> packet) {
-    send(std::shared_ptr<KeepAlivePacket>(new KeepAlivePacket(packet->id)));
+    send(std::make_shared<KeepAlivePacket>(packet->id));
 }
 
 void ClientConnection::handlePlayerAbilities(

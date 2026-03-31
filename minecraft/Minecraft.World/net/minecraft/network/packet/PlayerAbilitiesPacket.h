@@ -49,7 +49,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new PlayerAbilitiesPacket());
+        return std::make_shared<PlayerAbilitiesPacket>();
     }
     virtual int getId() { return 202; }
 };

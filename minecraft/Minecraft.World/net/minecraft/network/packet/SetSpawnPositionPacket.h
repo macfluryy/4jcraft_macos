@@ -24,7 +24,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetSpawnPositionPacket());
+        return std::make_shared<SetSpawnPositionPacket>();
     }
     virtual int getId() { return 6; }
 };

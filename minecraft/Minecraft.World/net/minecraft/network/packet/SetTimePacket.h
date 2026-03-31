@@ -25,7 +25,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetTimePacket());
+        return std::make_shared<SetTimePacket>();
     }
     virtual int getId() { return 4; }
 };

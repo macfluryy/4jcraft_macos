@@ -51,7 +51,7 @@ bool MushroomCow::mobInteract(std::shared_ptr<Player> player) {
                            0, 0, 0);
         if (!level->isClientSide) {
             remove();
-            std::shared_ptr<Cow> cow = std::shared_ptr<Cow>(new Cow(level));
+            std::shared_ptr<Cow> cow = std::make_shared<Cow>(level);
             cow->moveTo(x, y, z, yRot, xRot);
             cow->setHealth(getHealth());
             cow->yBodyRot = yBodyRot;
@@ -86,7 +86,7 @@ std::shared_ptr<AgableMob> MushroomCow::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
     // 4J - added limit to number of animals that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
-        return std::shared_ptr<MushroomCow>(new MushroomCow(level));
+        return std::make_shared<MushroomCow>(level);
     } else {
         return nullptr;
     }

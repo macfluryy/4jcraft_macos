@@ -147,10 +147,10 @@ void Ghast::serverAiStep() {
                 level->levelEvent(nullptr, LevelEvent::SOUND_GHAST_FIREBALL,
                                   (int)x, (int)y, (int)z, 0);
                 std::shared_ptr<LargeFireball> ie =
-                    std::shared_ptr<LargeFireball>(new LargeFireball(
+                    std::make_shared<LargeFireball>(
                         level,
                         std::dynamic_pointer_cast<Mob>(shared_from_this()), xdd,
-                        ydd, zdd));
+                        ydd, zdd);
                 ie->explosionPower = explosionPower;
                 double d = 4;
                 Vec3 v = getViewVector(1);

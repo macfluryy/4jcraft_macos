@@ -25,7 +25,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetDisplayObjectivePacket());
+        return std::make_shared<SetDisplayObjectivePacket>();
     }
     virtual int getId() { return 208; }
 };

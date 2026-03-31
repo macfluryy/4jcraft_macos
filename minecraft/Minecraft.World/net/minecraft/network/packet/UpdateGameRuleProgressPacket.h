@@ -32,7 +32,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new UpdateGameRuleProgressPacket());
+        return std::make_shared<UpdateGameRuleProgressPacket>();
     }
     virtual int getId() { return 158; }
 };

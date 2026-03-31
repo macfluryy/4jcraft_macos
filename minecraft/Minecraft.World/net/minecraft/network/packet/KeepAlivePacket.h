@@ -23,7 +23,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new KeepAlivePacket());
+        return std::make_shared<KeepAlivePacket>();
     }
     virtual int getId() { return 0; }
 };

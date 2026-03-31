@@ -1287,7 +1287,7 @@ void EntityHorse::readAdditionalSaveData(CompoundTag* tag) {
     } else if (tag->getBoolean(L"Saddle")) {
         inventory->setItem(
             INV_SLOT_SADDLE,
-            std::shared_ptr<ItemInstance>(new ItemInstance(Item::saddle)));
+            std::make_shared<ItemInstance>(Item::saddle));
     }
     updateEquipment();
 }
@@ -1314,7 +1314,7 @@ std::shared_ptr<AgableMob> EntityHorse::getBreedOffspring(
     std::shared_ptr<EntityHorse> horsePartner =
         std::dynamic_pointer_cast<EntityHorse>(partner);
     std::shared_ptr<EntityHorse> baby =
-        std::shared_ptr<EntityHorse>(new EntityHorse(level));
+        std::make_shared<EntityHorse>(level);
 
     int type = getType();
     int partnerType = horsePartner->getType();

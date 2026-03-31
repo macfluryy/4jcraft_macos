@@ -22,9 +22,9 @@ ServerConnection::~ServerConnection() {}
 // used to have
 void ServerConnection::NewIncomingSocket(Socket* socket) {
     std::shared_ptr<PendingConnection> unconnectedClient =
-        std::shared_ptr<PendingConnection>(new PendingConnection(
+        std::make_shared<PendingConnection>(
             server, socket,
-            L"Connection #" + _toString<int>(connectionCounter++)));
+            L"Connection #" + _toString<int>(connectionCounter++));
     handleConnection(unconnectedClient);
 }
 

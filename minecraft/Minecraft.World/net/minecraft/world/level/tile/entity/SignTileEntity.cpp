@@ -172,7 +172,7 @@ int SignTileEntity::StringVerifyCallback(void* lpParam,
 // 4J Added
 std::shared_ptr<TileEntity> SignTileEntity::clone() {
     std::shared_ptr<SignTileEntity> result =
-        std::shared_ptr<SignTileEntity>(new SignTileEntity());
+        std::make_shared<SignTileEntity>();
     TileEntity::clone(result);
 
     result->m_wsmessages[0] = m_wsmessages[0];

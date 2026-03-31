@@ -77,7 +77,7 @@ void Village::tick(int tick) {
             findRandomSpawnPos(center->x, center->y, center->z, 2, 4, 2);
         if (spawnPos.has_value()) {
             std::shared_ptr<VillagerGolem> vg =
-                std::shared_ptr<VillagerGolem>(new VillagerGolem(level));
+                std::make_shared<VillagerGolem>(level);
             vg->setPos(spawnPos->x, spawnPos->y, spawnPos->z);
             level->addEntity(vg);
             ++golemCount;
@@ -393,9 +393,9 @@ void Village::readAdditionalSaveData(CompoundTag* tag) {
     for (int i = 0; i < doorTags->size(); i++) {
         CompoundTag* dTag = doorTags->get(i);
 
-        std::shared_ptr<DoorInfo> door = std::shared_ptr<DoorInfo>(new DoorInfo(
+        std::shared_ptr<DoorInfo> door = std::make_shared<DoorInfo>(
             dTag->getInt(L"X"), dTag->getInt(L"Y"), dTag->getInt(L"Z"),
-            dTag->getInt(L"IDX"), dTag->getInt(L"IDZ"), dTag->getInt(L"TS")));
+            dTag->getInt(L"IDX"), dTag->getInt(L"IDZ"), dTag->getInt(L"TS"));
         doorInfos.push_back(door);
     }
 

@@ -69,7 +69,7 @@ Icon* EnchantmentTableTile::getTexture(int face, int data) {
 }
 
 std::shared_ptr<TileEntity> EnchantmentTableTile::newTileEntity(Level* level) {
-    return std::shared_ptr<TileEntity>(new EnchantmentTableEntity());
+    return std::make_shared<EnchantmentTableEntity>();
 }
 
 bool EnchantmentTableTile::use(

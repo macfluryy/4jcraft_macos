@@ -37,7 +37,7 @@ std::shared_ptr<ItemInstance> FishingRodItem::use(
             // 4J Stu - Move the player->fishing out of the ctor as we cannot
             // reference 'this'
             std::shared_ptr<FishingHook> hook =
-                std::shared_ptr<FishingHook>(new FishingHook(level, player));
+                std::make_shared<FishingHook>(level, player);
             player->fishing = hook;
             level->addEntity(std::shared_ptr<FishingHook>(hook));
         }

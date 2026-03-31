@@ -26,7 +26,7 @@ public:
 
 public:
     static std::shared_ptr<Packet> create() {
-        return std::shared_ptr<Packet>(new SetExperiencePacket());
+        return std::make_shared<SetExperiencePacket>();
     }
     virtual int getId() { return 43; }
 };

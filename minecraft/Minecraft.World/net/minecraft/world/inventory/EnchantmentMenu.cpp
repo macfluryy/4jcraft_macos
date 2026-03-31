@@ -22,7 +22,7 @@
 EnchantmentMenu::EnchantmentMenu(std::shared_ptr<Inventory> inventory,
                                  Level* level, int xt, int yt, int zt) {
     enchantSlots =
-        std::shared_ptr<EnchantmentContainer>(new EnchantmentContainer(this));
+        std::make_shared<EnchantmentContainer>(this);
 
     for (int i = 0; i < 3; ++i) {
         costs[i] = 0;

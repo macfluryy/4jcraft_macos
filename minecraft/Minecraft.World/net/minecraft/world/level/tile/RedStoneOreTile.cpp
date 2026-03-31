@@ -117,5 +117,5 @@ bool RedStoneOreTile::shouldTileTick(Level* level, int x, int y, int z) {
 
 std::shared_ptr<ItemInstance> RedStoneOreTile::getSilkTouchItemInstance(
     int data) {
-    return std::shared_ptr<ItemInstance>(new ItemInstance(Tile::redStoneOre));
+    return std::make_shared<ItemInstance>(Tile::redStoneOre);
 }

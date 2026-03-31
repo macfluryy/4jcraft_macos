@@ -94,7 +94,7 @@ void TopSnowTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
     int height = data & HEIGHT_MASK;
     popResource(
         level, x, y, z,
-        std::shared_ptr<ItemInstance>(new ItemInstance(type, height + 1, 0)));
+        std::make_shared<ItemInstance>(type, height + 1, 0));
     level->removeTile(x, y, z);
 }
 

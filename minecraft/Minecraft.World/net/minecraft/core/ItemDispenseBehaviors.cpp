@@ -50,24 +50,24 @@ std::shared_ptr<Projectile> ArrowDispenseBehavior::getProjectile(
 
 std::shared_ptr<Projectile> EggDispenseBehavior::getProjectile(
     Level* world, Position* position) {
-    return std::shared_ptr<Projectile>(new ThrownEgg(
-        world, position->getX(), position->getY(), position->getZ()));
+    return std::make_shared<ThrownEgg>(
+        world, position->getX(), position->getY(), position->getZ());
 }
 
 /* Snowball */
 
 std::shared_ptr<Projectile> SnowballDispenseBehavior::getProjectile(
     Level* world, Position* position) {
-    return std::shared_ptr<Projectile>(new Snowball(
-        world, position->getX(), position->getY(), position->getZ()));
+    return std::make_shared<Snowball>(
+        world, position->getX(), position->getY(), position->getZ());
 }
 
 /* Exp Bottle */
 
 std::shared_ptr<Projectile> ExpBottleDispenseBehavior::getProjectile(
     Level* world, Position* position) {
-    return std::shared_ptr<Projectile>(new ThrownExpBottle(
-        world, position->getX(), position->getY(), position->getZ()));
+    return std::make_shared<ThrownExpBottle>(
+        world, position->getX(), position->getY(), position->getZ());
 }
 
 float ExpBottleDispenseBehavior::getUncertainty() {
@@ -164,8 +164,8 @@ std::shared_ptr<ItemInstance> FireworksDispenseBehavior::execute(
     double spawnZ = source->getZ() + facing->getStepZ();
 
     std::shared_ptr<FireworksRocketEntity> firework =
-        std::shared_ptr<FireworksRocketEntity>(new FireworksRocketEntity(
-            world, spawnX, spawnY, spawnZ, dispensed));
+        std::make_shared<FireworksRocketEntity>(
+            world, spawnX, spawnY, spawnZ, dispensed);
     source->getWorld()->addEntity(firework);
 
     outcome = ACTIVATED_ITEM;
@@ -348,7 +348,7 @@ std::shared_ptr<ItemInstance> EmptyBucketDispenseBehavior::execute(
                        new ItemInstance(targetType))) < 0) {
         DefaultDispenseItemBehavior::dispense(
             source,
-            std::shared_ptr<ItemInstance>(new ItemInstance(targetType)));
+            std::make_shared<ItemInstance>(targetType));
     }
 
     outcome = ACTIVATED_ITEM;

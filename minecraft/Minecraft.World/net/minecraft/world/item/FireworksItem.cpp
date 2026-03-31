@@ -27,8 +27,8 @@ bool FireworksItem::useOn(std::shared_ptr<ItemInstance> instance,
 
     if (!level->isClientSide) {
         std::shared_ptr<FireworksRocketEntity> f =
-            std::shared_ptr<FireworksRocketEntity>(new FireworksRocketEntity(
-                level, x + clickX, y + clickY, z + clickZ, instance));
+            std::make_shared<FireworksRocketEntity>(
+                level, x + clickX, y + clickY, z + clickZ, instance);
         level->addEntity(f);
 
         if (!player->abilities.instabuild) {

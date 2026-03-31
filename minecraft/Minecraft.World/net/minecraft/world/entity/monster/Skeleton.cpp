@@ -205,8 +205,8 @@ void Skeleton::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
 
 void Skeleton::dropRareDeathLoot(int rareLootLevel) {
     if (getSkeletonType() == TYPE_WITHER) {
-        spawnAtLocation(std::shared_ptr<ItemInstance>(new ItemInstance(
-                            Item::skull_Id, 1, SkullTileEntity::TYPE_WITHER)),
+        spawnAtLocation(std::make_shared<ItemInstance>(
+                            Item::skull_Id, 1, SkullTileEntity::TYPE_WITHER),
                         0);
     }
 }
@@ -215,7 +215,7 @@ void Skeleton::populateDefaultEquipmentSlots() {
     Monster::populateDefaultEquipmentSlots();
 
     setEquippedSlot(SLOT_WEAPON,
-                    std::shared_ptr<ItemInstance>(new ItemInstance(Item::bow)));
+                    std::make_shared<ItemInstance>(Item::bow));
 }
 
 MobGroupData* Skeleton::finalizeMobSpawn(
@@ -247,9 +247,9 @@ MobGroupData* Skeleton::finalizeMobSpawn(
             // Halloween! OooOOo! 25% of all skeletons/zombies can wear pumpkins
             // on their heads.
             setEquippedSlot(SLOT_HELM,
-                            std::shared_ptr<ItemInstance>(new ItemInstance(
+                            std::make_shared<ItemInstance>(
                                 random->nextFloat() < 0.1f ? Tile::litPumpkin
-                                                           : Tile::pumpkin)));
+                                                           : Tile::pumpkin));
             dropChances[SLOT_HELM] = 0;
         }
     }
@@ -271,9 +271,9 @@ void Skeleton::reassessWeaponGoal() {
 
 void Skeleton::performRangedAttack(std::shared_ptr<LivingEntity> target,
                                    float power) {
-    std::shared_ptr<Arrow> arrow = std::shared_ptr<Arrow>(new Arrow(
+    std::shared_ptr<Arrow> arrow = std::make_shared<Arrow>(
         level, std::dynamic_pointer_cast<LivingEntity>(shared_from_this()),
-        target, 1.60f, 14 - (level->difficulty * 4)));
+        target, 1.60f, 14 - (level->difficulty * 4));
     int damageBonus = EnchantmentHelper::getEnchantmentLevel(
         Enchantment::arrowBonus->id, getCarriedItem());
     int knockbackBonus = EnchantmentHelper::getEnchantmentLevel(

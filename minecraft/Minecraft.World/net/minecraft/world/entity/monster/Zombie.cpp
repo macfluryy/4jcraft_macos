@@ -189,7 +189,7 @@ bool Zombie::hurt(DamageSource* source, float dmg) {
             int y = Mth::floor(this->y);
             int z = Mth::floor(this->z);
             std::shared_ptr<Zombie> reinforcement =
-                std::shared_ptr<Zombie>(new Zombie(level));
+                std::make_shared<Zombie>(level);
 
             for (int i = 0; i < REINFORCEMENT_ATTEMPTS; i++) {
                 int xt = x + random->nextInt(REINFORCEMENT_RANGE_MIN,
@@ -335,7 +335,7 @@ void Zombie::killed(std::shared_ptr<LivingEntity> mob) {
             return;
 
         std::shared_ptr<Zombie> zombie =
-            std::shared_ptr<Zombie>(new Zombie(level));
+            std::make_shared<Zombie>(level);
         zombie->copyPosition(mob);
         level->removeEntity(mob);
         zombie->finalizeMobSpawn(nullptr);
@@ -384,9 +384,9 @@ MobGroupData* Zombie::finalizeMobSpawn(
             // Halloween! OooOOo! 25% of all skeletons/zombies can wear
             // pumpkins on their heads.
             setEquippedSlot(SLOT_HELM,
-                            std::shared_ptr<ItemInstance>(new ItemInstance(
+                            std::make_shared<ItemInstance>(
                                 random->nextFloat() < 0.1f ? Tile::litPumpkin
-                                                           : Tile::pumpkin)));
+                                                           : Tile::pumpkin));
             dropChances[SLOT_HELM] = 0;
         }
     }
@@ -474,7 +474,7 @@ bool Zombie::isConverting() {
 
 void Zombie::finishConversion() {
     std::shared_ptr<Villager> villager =
-        std::shared_ptr<Villager>(new Villager(level));
+        std::make_shared<Villager>(level);
     villager->copyPosition(shared_from_this());
     villager->finalizeMobSpawn(nullptr);
     villager->setRewardPlayersInVillage();
