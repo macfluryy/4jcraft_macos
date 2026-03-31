@@ -127,8 +127,8 @@ CompoundTag *GameRules::createTag()
 
 void GameRules::loadFromTag(CompoundTag *tag)
 {
-        vector<Tag *> *allTags = tag->getAllTags();
-        for (auto it = allTags->begin(); it != allTags->end(); ++it)
+        vector<Tag *> allTags = tag->getAllTags();
+        for (auto it = allTags.begin(); it != allTags.end(); ++it)
         {
                 Tag *ruleTag = *it;
                 std::wstring ruleName = ruleTag->getName();
@@ -136,7 +136,6 @@ void GameRules::loadFromTag(CompoundTag *tag)
 
                 set(ruleName, value);
         }
-        delete allTags;
 }
 
 // Need to delete returned vector.

@@ -134,10 +134,10 @@ void SavedDataStorage::loadAuxValues() {
         dis.close();
 
         Tag* tag;
-        std::vector<Tag*>* allTags = tags->getAllTags();
-        auto itEnd = allTags->end();
-        for (auto it = allTags->begin(); it != itEnd; it++) {
-            tag = *it;  // tags->getAllTags()->at(i);
+        std::vector<Tag*> allTags = tags->getAllTags();
+        auto itEnd = allTags.end();
+        for (auto it = allTags.begin(); it != itEnd; it++) {
+            tag = *it;
 
             if (dynamic_cast<ShortTag*>(tag) != nullptr) {
                 ShortTag* sTag = (ShortTag*)tag;
@@ -146,7 +146,6 @@ void SavedDataStorage::loadAuxValues() {
                 usedAuxIds.insert(uaiMapType::value_type(id, val));
             }
         }
-        delete allTags;
     }
 }
 

@@ -133,12 +133,11 @@ std::shared_ptr<Entity> BaseMobSpawner::loadDataAndAddEntity(
         CompoundTag* data = new CompoundTag();
         entity->save(data);
 
-        std::vector<Tag*>* tags = getNextSpawnData()->tag->getAllTags();
-        for (auto it = tags->begin(); it != tags->end(); ++it) {
+        std::vector<Tag*> tags = getNextSpawnData()->tag->getAllTags();
+        for (auto it = tags.begin(); it != tags.end(); ++it) {
             Tag* tag = *it;
             data->put(tag->getName(), tag->copy());
         }
-        delete tags;
 
         entity->load(data);
         if (entity->level != nullptr) entity->level->addEntity(entity);
@@ -153,13 +152,12 @@ std::shared_ptr<Entity> BaseMobSpawner::loadDataAndAddEntity(
                 CompoundTag* mountData = new CompoundTag();
                 mount->save(mountData);
 
-                std::vector<Tag*>* ridingTags = ridingTag->getAllTags();
-                for (auto it = ridingTags->begin(); it != ridingTags->end();
+                std::vector<Tag*> ridingTags = ridingTag->getAllTags();
+                for (auto it = ridingTags.begin(); it != ridingTags.end();
                      ++it) {
                     Tag* tag = *it;
                     mountData->put(tag->getName(), tag->copy());
                 }
-                delete ridingTags;
                 mount->load(mountData);
                 mount->moveTo(rider->x, rider->y, rider->z, rider->yRot,
                               rider->xRot);
