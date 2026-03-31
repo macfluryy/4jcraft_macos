@@ -1,19 +1,6 @@
 #include "Minecraft.World/Header Files/stdafx.h"
-// #include <compressapi.h>
 
-#if defined(_WINDOWS64)
 #include "../net/minecraft/stats/StatsCounter.h"
-#include "../Windows64/Source Files/Social/SocialManager.h"
-#include "../Windows64/Source Files/Sentient/DynamicConfigurations.h"
-#elif defined(__linux__)
-// On Linux, stdafx.h already provides Orbis-compatible Sentient/Dynamic headers
-// via #pragma once. Pull in SentientManager for CSentientManager class
-// declaration and StatsCounter; CSocialManager is provided as inline stubs via
-// Linux/Social/SocialManager.h.
-#include "../net/minecraft/stats/StatsCounter.h"
-#else
-#include "../net/minecraft/stats/StatsCounter.h"
-#endif
 
 #if defined(_WINDOWS64)
 // C4JStorage StorageManager;
@@ -35,28 +22,6 @@ int32_t ATG::XMLParser::ParseXMLBuffer(const char* strBuffer,
 }
 void ATG::XMLParser::RegisterSAXCallbackInterface(ISAXCallback* pISAXCallback) {
 }
-#endif
-
-#if !defined(__linux__)
-bool CSocialManager::IsTitleAllowedToPostAnything() { return false; }
-bool CSocialManager::AreAllUsersAllowedToPostImages() { return false; }
-bool CSocialManager::IsTitleAllowedToPostImages() { return false; }
-
-bool CSocialManager::PostLinkToSocialNetwork(ESocialNetwork eSocialNetwork,
-                                             uint32_t dwUserIndex,
-                                             bool bUsingKinect) {
-    return false;
-}
-bool CSocialManager::PostImageToSocialNetwork(ESocialNetwork eSocialNetwork,
-                                              uint32_t dwUserIndex,
-                                              bool bUsingKinect) {
-    return false;
-}
-
-CSocialManager* CSocialManager::Instance() { return nullptr; }
-void CSocialManager::SetSocialPostText(const wchar_t* Title,
-                                       const wchar_t* Caption,
-                                       const wchar_t* Desc) {};
 #endif
 
 uint32_t XShowPartyUI(uint32_t dwUserIndex) { return 0; }

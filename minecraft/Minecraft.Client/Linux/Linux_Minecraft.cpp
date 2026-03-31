@@ -58,7 +58,6 @@ static void sigsegv_handler(int sig) {
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "../net/minecraft/stats/StatsCounter.h"
 #include "../net/minecraft/client/multiplayer/ConnectScreen.h"
-// #include "../../Windows64/Source Files/Social/SocialManager.h"
 // #include "../../Common/Source Files/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"

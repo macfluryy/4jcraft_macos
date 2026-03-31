@@ -26,7 +26,6 @@
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "../net/minecraft/stats/StatsCounter.h"
 #include "../net/minecraft/server/level/GameMode.h"
-#include "../Windows64/Source Files/Social/SocialManager.h"
 #include "Source Files/Tutorial/TutorialMode.h"
 #if defined(_WINDOWS64)
 #include "../Windows64/XML/ATGXmlParser.h"
@@ -2199,48 +2198,48 @@ void CMinecraftApp::HandleXuiActions(void) {
 
         if (eAction != eAppAction_Idle) {
             switch (eAction) {
-                    // the renderer will capture a screenshot
-                case eAppAction_SocialPost:
-                    if (ProfileManager.IsFullVersion()) {
-                        // Facebook Share
-                        if (CSocialManager::Instance()
-                                ->IsTitleAllowedToPostImages() &&
-                            CSocialManager::Instance()
-                                ->AreAllUsersAllowedToPostImages()) {
-                            // disable character name tags for the shot
-                            // m_bwasHidingGui = pMinecraft->options->hideGui;
-                            // // 4J Stu - Removed 1.8.2 bug fix (TU6) as don't
-                            // need this
-                            pMinecraft->options->hideGui = true;
+                //     // the renderer will capture a screenshot
+                // case eAppAction_SocialPost:
+                //     if (ProfileManager.IsFullVersion()) {
+                //         // Facebook Share
+                //         if (CSocialManager::Instance()
+                //                 ->IsTitleAllowedToPostImages() &&
+                //             CSocialManager::Instance()
+                //                 ->AreAllUsersAllowedToPostImages()) {
+                //             // disable character name tags for the shot
+                //             // m_bwasHidingGui = pMinecraft->options->hideGui;
+                //             // // 4J Stu - Removed 1.8.2 bug fix (TU6) as don't
+                //             // need this
+                //             pMinecraft->options->hideGui = true;
 
-                            SetAction(i, eAppAction_SocialPostScreenshot);
-                        } else {
-                            SetAction(i, eAppAction_Idle);
-                        }
-                    } else {
-                        SetAction(i, eAppAction_Idle);
-                    }
-                    break;
-                case eAppAction_SocialPostScreenshot: {
-                    SetAction(i, eAppAction_Idle);
-                    bool bKeepHiding = false;
-                    for (int j = 0; j < XUSER_MAX_COUNT; ++j) {
-                        if (app.GetXuiAction(j) ==
-                            eAppAction_SocialPostScreenshot) {
-                            bKeepHiding = true;
-                            break;
-                        }
-                    }
-                    pMinecraft->options->hideGui = bKeepHiding;
+                //             SetAction(i, eAppAction_SocialPostScreenshot);
+                //         } else {
+                //             SetAction(i, eAppAction_Idle);
+                //         }
+                //     } else {
+                //         SetAction(i, eAppAction_Idle);
+                //     }
+                //     break;
+                // case eAppAction_SocialPostScreenshot: {
+                //     SetAction(i, eAppAction_Idle);
+                //     bool bKeepHiding = false;
+                //     for (int j = 0; j < XUSER_MAX_COUNT; ++j) {
+                //         if (app.GetXuiAction(j) ==
+                //             eAppAction_SocialPostScreenshot) {
+                //             bKeepHiding = true;
+                //             break;
+                //         }
+                //     }
+                //     pMinecraft->options->hideGui = bKeepHiding;
 
-                    // Facebook Share
+                //     // Facebook Share
 
-                    if (app.GetLocalPlayerCount() > 1) {
-                        ui.NavigateToScene(i, eUIScene_SocialPost);
-                    } else {
-                        ui.NavigateToScene(i, eUIScene_SocialPost);
-                    }
-                } break;
+                //     if (app.GetLocalPlayerCount() > 1) {
+                //         ui.NavigateToScene(i, eUIScene_SocialPost);
+                //     } else {
+                //         ui.NavigateToScene(i, eUIScene_SocialPost);
+                //     }
+                // } break;
                 case eAppAction_SaveGame:
                     SetAction(i, eAppAction_Idle);
                     if (!GetChangingSessionType()) {

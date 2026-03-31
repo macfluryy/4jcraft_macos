@@ -92,31 +92,31 @@ std::wstring UIScene_PauseMenu::getMoviePath() {
 void UIScene_PauseMenu::tick() { UIScene::tick(); }
 
 void UIScene_PauseMenu::updateTooltips() {
-    bool bUserisClientSide = ProfileManager.IsSignedInLive(m_iPad);
-    bool bIsisPrimaryHost =
-        g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == m_iPad);
+    // bool bUserisClientSide = ProfileManager.IsSignedInLive(m_iPad);
+    // bool bIsisPrimaryHost =
+    //     g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == m_iPad);
 
     int iY = -1;
     int iRB = -1;
     int iX = -1;
 
-    if (ProfileManager.IsFullVersion()) {
-        if (StorageManager.GetSaveDisabled()) {
-            iX = bIsisPrimaryHost ? IDS_TOOLTIPS_SELECTDEVICE : -1;
-            if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
-                CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
-                bUserisClientSide) {
-                iY = IDS_TOOLTIPS_SHARE;
-            }
-        } else {
-            iX = bIsisPrimaryHost ? IDS_TOOLTIPS_CHANGEDEVICE : -1;
-            if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
-                CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
-                bUserisClientSide) {
-                iY = IDS_TOOLTIPS_SHARE;
-            }
-        }
-    }
+    // if (ProfileManager.IsFullVersion()) {
+    //     if (StorageManager.GetSaveDisabled()) {
+    //         iX = bIsisPrimaryHost ? IDS_TOOLTIPS_SELECTDEVICE : -1;
+    //         if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
+    //             CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
+    //             bUserisClientSide) {
+    //             iY = IDS_TOOLTIPS_SHARE;
+    //         }
+    //     } else {
+    //         iX = bIsisPrimaryHost ? IDS_TOOLTIPS_CHANGEDEVICE : -1;
+    //         if (CSocialManager::Instance()->IsTitleAllowedToPostImages() &&
+    //             CSocialManager::Instance()->AreAllUsersAllowedToPostImages() &&
+    //             bUserisClientSide) {
+    //             iY = IDS_TOOLTIPS_SHARE;
+    //         }
+    //     }
+    // }
     ui.SetTooltips(m_iPad, IDS_TOOLTIPS_SELECT, IDS_TOOLTIPS_BACK, iX, iY, -1,
                    -1, -1, iRB);
 }

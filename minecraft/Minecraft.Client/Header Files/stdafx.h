@@ -103,7 +103,6 @@ using namespace DirectX;
 #include "../Windows64/Windows64_App.h"
 #include "Minecraft.spa.h"
 #include "../Windows64/XML/ATGXmlParser.h"
-#include "../Windows64/Source Files/Social/SocialManager.h"
 #include "../Common/Source Files/Audio/SoundEngine.h"
 #include "../Windows64/Iggy/include/iggy.h"
 #include "../Windows64/Iggy/gdraw/gdraw_d3d11.h"
@@ -114,7 +113,6 @@ using namespace DirectX;
 #include "Minecraft.spa.h"
 #include "../Common/Source Files/Audio/SoundEngine.h"
 #include "../Linux/Linux_UIController.h"
-#include "../Linux/Social/SocialManager.h"
 #endif
 
 #include "../Common/Source Files/ConsoleGameMode.h"
