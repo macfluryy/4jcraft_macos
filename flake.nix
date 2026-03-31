@@ -93,9 +93,6 @@
           dontFixup = true;
           dontUseCmakeConfigure = true;
 
-          # Disable fortify to prevent buffer overflow detection
-          hardeningDisable = [ "fortify3" "fortify" ];
-
           postUnpack = ''
             ${copySubprojects}
           '';
