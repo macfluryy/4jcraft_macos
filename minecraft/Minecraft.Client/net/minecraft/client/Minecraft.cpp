@@ -471,7 +471,6 @@ void Minecraft::setScreen(Screen* screen) {
     }
     stats->forceSave();*/
 
-    this->screen = screen;
     if (screen == nullptr && level == nullptr) {
         screen = new TitleScreen();
     } else if (player != nullptr &&
@@ -492,6 +491,7 @@ void Minecraft::setScreen(Screen* screen) {
         }
 #endif
     }
+    this->screen = screen;
 
     if (dynamic_cast<TitleScreen*>(screen) != nullptr) {
         options->renderDebug = false;
