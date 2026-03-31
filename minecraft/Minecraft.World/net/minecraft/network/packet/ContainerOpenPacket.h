@@ -10,24 +10,24 @@ class ContainerOpenPacket
     : public Packet,
       public std::enable_shared_from_this<ContainerOpenPacket> {
 public:
-    static const int CONTAINER = 0;
-    static const int WORKBENCH = 1;
-    static const int FURNACE = 2;
-    static const int TRAP = 3;
-    static const int ENCHANTMENT = 4;
-    static const int BREWING_STAND = 5;
-    static const int TRADER_NPC = 6;
-    static const int BEACON = 7;
-    static const int REPAIR_TABLE = 8;
-    static const int HOPPER = 9;
-    static const int DROPPER = 10;
-    static const int HORSE = 11;
-    static const int FIREWORKS = 12;        // 4J Added
-    static const int BONUS_CHEST = 13;      // 4J Added
-    static const int LARGE_CHEST = 14;      // 4J Added
-    static const int ENDER_CHEST = 15;      // 4J Added
-    static const int MINECART_CHEST = 16;   // 4J Added
-    static const int MINECART_HOPPER = 17;  // 4J Added
+    static inline constexpr int CONTAINER = 0;
+    static inline constexpr int WORKBENCH = 1;
+    static inline constexpr int FURNACE = 2;
+    static inline constexpr int TRAP = 3;
+    static inline constexpr int ENCHANTMENT = 4;
+    static inline constexpr int BREWING_STAND = 5;
+    static inline constexpr int TRADER_NPC = 6;
+    static inline constexpr int BEACON = 7;
+    static inline constexpr int REPAIR_TABLE = 8;
+    static inline constexpr int HOPPER = 9;
+    static inline constexpr int DROPPER = 10;
+    static inline constexpr int HORSE = 11;
+    static inline constexpr int FIREWORKS = 12;        // 4J Added
+    static inline constexpr int BONUS_CHEST = 13;      // 4J Added
+    static inline constexpr int LARGE_CHEST = 14;      // 4J Added
+    static inline constexpr int ENDER_CHEST = 15;      // 4J Added
+    static inline constexpr int MINECART_CHEST = 16;   // 4J Added
+    static inline constexpr int MINECART_HOPPER = 17;  // 4J Added
 
     int containerId;
     int type;

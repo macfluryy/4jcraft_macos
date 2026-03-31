@@ -8,7 +8,6 @@
 #include "java/IntBuffer.h"
 #include "java/FloatBuffer.h"
 #include "java/ByteBuffer.h"
-#include "/home/tropical/Documents/GitHub/4jcraft/minecraft/Minecraft.World/ConsoleHelpers/Definitions.h"
 #include "java/Buffer.h"
 
 ByteBuffer::ByteBuffer(unsigned int capacity) : Buffer(capacity) {

@@ -11,8 +11,8 @@ class SetEntityLinkPacket
     : public Packet,
       public std::enable_shared_from_this<SetEntityLinkPacket> {
 public:
-    static const int RIDING = 0;
-    static const int LEASH = 1;
+    static inline constexpr int RIDING = 0;
+    static inline constexpr int LEASH = 1;
 
     int type;
     int sourceId, destId;

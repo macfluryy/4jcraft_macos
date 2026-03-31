@@ -10,13 +10,13 @@ class Entity;
 class AnimatePacket : public Packet,
                       public std::enable_shared_from_this<AnimatePacket> {
 public:
-    static const int SWING = 1;
-    static const int HURT = 2;
-    static const int WAKE_UP = 3;
-    static const int RESPAWN = 4;
-    static const int EAT = 5;  // 1.8.2
-    static const int CRITICAL_HIT = 6;
-    static const int MAGIC_CRITICAL_HIT = 7;
+    static inline constexpr int SWING = 1;
+    static inline constexpr int HURT = 2;
+    static inline constexpr int WAKE_UP = 3;
+    static inline constexpr int RESPAWN = 4;
+    static inline constexpr int EAT = 5;  // 1.8.2
+    static inline constexpr int CRITICAL_HIT = 6;
+    static inline constexpr int MAGIC_CRITICAL_HIT = 7;
 
     int id;
     int action;

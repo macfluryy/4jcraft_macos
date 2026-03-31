@@ -43,10 +43,6 @@ void UIScene_TrialExitUpsell::handleInput(int iPad, int key, bool repeat,
                 // CD - Added for audio
                 ui.PlayUISFX(eSFX_Press);
 
-                // 4J-PB - need to check this user can access the store
-                {
-                        false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
-                }
             }
             break;
     }

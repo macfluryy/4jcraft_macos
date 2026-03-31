@@ -4,22 +4,22 @@ class MobEffectInstance;
 
 class PotionBrewing {
 public:
-    static const int POTION_ID_SPLASH_DAMAGE = 32732;
-    static const int POTION_ID_SPLASH_WEAKNESS = 32696;
-    static const int POTION_ID_SPLASH_SLOWNESS = 32698;
-    static const int POTION_ID_SPLASH_POISON = 32660;
-    static const int POTION_ID_HEAL = 16341;
-    static const int POTION_ID_SWIFTNESS = 16274;
-    static const int POTION_ID_FIRE_RESISTANCE = 16307;
+    static inline constexpr int POTION_ID_SPLASH_DAMAGE = 32732;
+    static inline constexpr int POTION_ID_SPLASH_WEAKNESS = 32696;
+    static inline constexpr int POTION_ID_SPLASH_SLOWNESS = 32698;
+    static inline constexpr int POTION_ID_SPLASH_POISON = 32660;
+    static inline constexpr int POTION_ID_HEAL = 16341;
+    static inline constexpr int POTION_ID_SWIFTNESS = 16274;
+    static inline constexpr int POTION_ID_FIRE_RESISTANCE = 16307;
 
     static const bool SIMPLIFIED_BREWING = true;
     // 4J Stu - Made #define so we can use it to select const initialisation
 #define _SIMPLIFIED_BREWING 1
 
-    static const int BREWING_TIME_SECONDS = 20;
+    static inline constexpr int BREWING_TIME_SECONDS = 20;
 
-    static const int THROWABLE_BIT = 14;
-    static const int THROWABLE_MASK = (1 << THROWABLE_BIT);
+    static inline constexpr int THROWABLE_BIT = 14;
+    static inline constexpr int THROWABLE_MASK = (1 << THROWABLE_BIT);
 
     static const std::wstring MOD_WATER;
     static const std::wstring MOD_SUGAR;
@@ -35,11 +35,11 @@ public:
     static const std::wstring MOD_GUNPOWDER;
     static const std::wstring MOD_GOLDENCARROT;
 
-    static const int BITS_FOR_MAX_NORMAL_EFFECT = 0xF;
-    static const int BITS_FOR_DURATION = (1 << 5);
-    static const int BITS_FOR_EXTENDED = (1 << 6);
-    static const int BITS_FOR_NORMAL = (1 << 13);
-    static const int BITS_FOR_SPLASH = (1 << 14);
+    static inline constexpr int BITS_FOR_MAX_NORMAL_EFFECT = 0xF;
+    static inline constexpr int BITS_FOR_DURATION = (1 << 5);
+    static inline constexpr int BITS_FOR_EXTENDED = (1 << 6);
+    static inline constexpr int BITS_FOR_NORMAL = (1 << 13);
+    static inline constexpr int BITS_FOR_SPLASH = (1 << 14);
 
 private:
     typedef std::unordered_map<int, std::wstring> intStringMap;
@@ -49,13 +49,13 @@ private:
 public:
     static void staticCtor();
 
-    static const int NUM_BITS = 15;
+    static inline constexpr int NUM_BITS = 15;
 
     // 4J Stu - Made public
-    static const int BREW_MASK = 0x7fff;
+    static inline constexpr int BREW_MASK = 0x7fff;
 
 private:
-    static const int TOP_BIT = 0x4000;
+    static inline constexpr int TOP_BIT = 0x4000;
 
     static bool isWrappedLit(int brew, int position);
 
@@ -85,10 +85,10 @@ public:
     static int getAppearanceName(int brew);
 
 private:
-    static const int NO_COUNT = -1;
-    static const int EQUAL_COUNT = 0;
-    static const int GREATER_COUNT = 1;
-    static const int LESS_COUNT = 2;
+    static inline constexpr int NO_COUNT = -1;
+    static inline constexpr int EQUAL_COUNT = 0;
+    static inline constexpr int GREATER_COUNT = 1;
+    static inline constexpr int LESS_COUNT = 2;
 
     static int constructParsedValue(bool isNot, bool hasMultiplier, bool isNeg,
                                     int countCompare, int valuePart,

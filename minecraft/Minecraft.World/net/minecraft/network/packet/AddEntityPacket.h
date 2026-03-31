@@ -11,30 +11,30 @@ class Entity;
 class AddEntityPacket : public Packet,
                         public std::enable_shared_from_this<AddEntityPacket> {
 public:
-    static const int BOAT = 1;
-    static const int ITEM = 2;
-    static const int MINECART = 10;
-    static const int PRIMED_TNT = 50;
-    static const int ENDER_CRYSTAL = 51;
-    static const int ARROW = 60;
-    static const int SNOWBALL = 61;
-    static const int EGG = 62;
-    static const int FIREBALL = 63;
-    static const int SMALL_FIREBALL = 64;
-    static const int THROWN_ENDERPEARL = 65;
-    static const int WITHER_SKULL = 66;
-    static const int FALLING = 70;
-    static const int ITEM_FRAME = 71;
-    static const int EYEOFENDERSIGNAL = 72;
-    static const int THROWN_POTION = 73;
-    static const int FALLING_EGG = 74;
-    static const int THROWN_EXPBOTTLE = 75;
-    static const int FIREWORKS = 76;
-    static const int LEASH_KNOT = 77;
-    static const int FISH_HOOK = 90;
+    static inline constexpr int BOAT = 1;
+    static inline constexpr int ITEM = 2;
+    static inline constexpr int MINECART = 10;
+    static inline constexpr int PRIMED_TNT = 50;
+    static inline constexpr int ENDER_CRYSTAL = 51;
+    static inline constexpr int ARROW = 60;
+    static inline constexpr int SNOWBALL = 61;
+    static inline constexpr int EGG = 62;
+    static inline constexpr int FIREBALL = 63;
+    static inline constexpr int SMALL_FIREBALL = 64;
+    static inline constexpr int THROWN_ENDERPEARL = 65;
+    static inline constexpr int WITHER_SKULL = 66;
+    static inline constexpr int FALLING = 70;
+    static inline constexpr int ITEM_FRAME = 71;
+    static inline constexpr int EYEOFENDERSIGNAL = 72;
+    static inline constexpr int THROWN_POTION = 73;
+    static inline constexpr int FALLING_EGG = 74;
+    static inline constexpr int THROWN_EXPBOTTLE = 75;
+    static inline constexpr int FIREWORKS = 76;
+    static inline constexpr int LEASH_KNOT = 77;
+    static inline constexpr int FISH_HOOK = 90;
 
     // 4J Added TU9
-    static const int DRAGON_FIRE_BALL = 200;
+    static inline constexpr int DRAGON_FIRE_BALL = 200;
 
     int id;
     int x, y, z;

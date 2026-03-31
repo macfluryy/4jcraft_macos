@@ -9,8 +9,8 @@ class TileEditorOpenPacket
     : public Packet,
       public std::enable_shared_from_this<TileEditorOpenPacket> {
 public:
-    static const int SIGN = 0;
-    static const int COMMAND_BLOCK = 1;
+    static inline constexpr int SIGN = 0;
+    static inline constexpr int COMMAND_BLOCK = 1;
 
     int editorType;
     int x, y, z;

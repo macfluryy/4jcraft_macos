@@ -12,7 +12,7 @@ public:
 
 public:
     static const int TYPE_SKELETON = 0;
-    static const int TYPE_WITHER = 1;
+    static inline constexpr int TYPE_WITHER = 1;
     static const int TYPE_ZOMBIE = 2;
     static const int TYPE_CHAR = 3;
     static const int TYPE_CREEPER = 4;

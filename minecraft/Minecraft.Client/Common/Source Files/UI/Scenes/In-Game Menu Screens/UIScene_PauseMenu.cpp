@@ -456,20 +456,6 @@ int UIScene_PauseMenu::UnlockFullSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
-            // 4J-PB - need to check this user can access the store
-            {
-                    false, pMinecraft->player->GetXboxPad(),
-                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
-            }
-        }
-    } else {
-        // SentientManager.RecordUpsellResponded(iPad,
-        // eSen_UpsellID_Full_Version_Of_Game, app.m_dwOfferID,
-        // eSen_UpsellOutcome_Declined);
-    }
-
     return 0;
 }
 

@@ -999,9 +999,6 @@ void UIScene_MainMenu::LoadTrial(void) {
 
     StorageManager.ResetSaveData();
 
-    // Need to set the mode as trial
-    ProfileManager.StartTrialGame();
-
     // No saving in the trial
     StorageManager.SetSaveDisabled(true);
     app.SetGameHostOption(eGameHostOption_WasntSaveOwner, false);

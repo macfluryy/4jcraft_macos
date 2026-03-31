@@ -3803,33 +3803,11 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
         bNoPlayer = true;
     }
 
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedInLive(iPad)) {
-            // 4J-PB - need to check this user can access the store
-            {
-                    false, iPad, /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
-            }
-        }
-    }
-
     return 0;
 }
 
 int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
                                           C4JStorage::EMessageResult result) {
-    // CMinecraftApp* pApp = (CMinecraftApp*)pParam;
-    Minecraft* pMinecraft = Minecraft::GetInstance();
-
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
-            // 4J-PB - need to check this user can access the store
-            {
-                    false, pMinecraft->player->GetXboxPad(),
-                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
-            }
-        }
-    }
-
     return 0;
 }
 
@@ -3838,15 +3816,7 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
     CMinecraftApp* pApp = (CMinecraftApp*)pParam;
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
-            // 4J-PB - need to check this user can access the store
-            {
-                    false, pMinecraft->player->GetXboxPad(),
-                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
-            }
-        }
-    } else {
+    if (result != C4JStorage::EMessage_ResultAccept) {
         pApp->SetAction(pMinecraft->player->GetXboxPad(),
                         eAppAction_ExitWorldTrial);
     }
@@ -3859,19 +3829,7 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
     CMinecraftApp* pApp = (CMinecraftApp*)pParam;
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
-    if (result == C4JStorage::EMessage_ResultAccept) {
-        // we need a signed in user for the unlock
-        if (ProfileManager.IsSignedInLive(pMinecraft->player->GetXboxPad())) {
-            // 4J-PB - need to check this user can access the store
-            {
-                    false, pMinecraft->player->GetXboxPad(),
-                    /*eSen_UpsellID_Full_Version_Of_Game*/ 0);
-            }
-        } else {
-            pApp->SetAction(pMinecraft->player->GetXboxPad(),
-                            eAppAction_ExitTrial);
-        }
-    } else {
+    if (result != C4JStorage::EMessage_ResultAccept) {
         pApp->SetAction(pMinecraft->player->GetXboxPad(), eAppAction_ExitTrial);
     }
 
