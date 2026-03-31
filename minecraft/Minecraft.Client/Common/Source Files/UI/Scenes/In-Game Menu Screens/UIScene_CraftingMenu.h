@@ -3,6 +3,7 @@
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 #include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
 #include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_HTMLLabel.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CraftingMenu.h"
 
 #define CRAFTING_INVENTORY_SLOT_START 0

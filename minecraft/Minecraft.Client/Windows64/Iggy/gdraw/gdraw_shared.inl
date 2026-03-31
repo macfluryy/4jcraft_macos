@@ -9,6 +9,8 @@
 #include <assert.h>
 #endif
 
+#include <stdbool.h>
+
 #if !defined(GDRAW_MAYBE_UNUSED)
 #define GDRAW_MAYBE_UNUSED
 #endif

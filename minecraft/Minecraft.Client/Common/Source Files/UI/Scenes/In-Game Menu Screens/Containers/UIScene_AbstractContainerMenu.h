@@ -2,6 +2,9 @@
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Cursor.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
 
 class AbstractContainerMenu;
 

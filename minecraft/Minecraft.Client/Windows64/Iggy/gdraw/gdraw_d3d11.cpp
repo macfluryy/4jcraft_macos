@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"  // 4J
+#include "Minecraft.World/Header Files/stdafx.h"  // 4J
 
 // gdraw_d3d11.cpp - author: Fabian Giesen - copyright 2011 RAD Game Tools
 //
@@ -43,8 +43,8 @@
 
 #include <windows.h>
 #include <d3d11.h>
-#include "Minecraft.Client/Windows64/Iggy/include/gdraw.h"
-#include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
+#include "../include/gdraw.h"
+#include "../include/iggy.h"
 #include <string.h>
 #include <math.h>
 
