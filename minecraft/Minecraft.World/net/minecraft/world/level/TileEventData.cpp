@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "TileEventData.h"
 
 TileEventData::TileEventData(int x, int y, int z, int tile, int paramA,

@@ -1,9 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "Node.h"
-#include "java/System.h"
-#include "BinaryHeap.h"
-
 #include <limits>
+#include <algorithm>
+
+#include "Node.h"
+#include "BinaryHeap.h"
 
 // 4J Jev, add common ctor code.
 void BinaryHeap::_init() {

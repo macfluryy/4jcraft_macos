@@ -1,6 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "ClientCommandPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 ClientCommandPacket::ClientCommandPacket() { action = 0; }
 

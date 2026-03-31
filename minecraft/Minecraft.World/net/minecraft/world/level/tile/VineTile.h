@@ -1,6 +1,9 @@
 #pragma once
+#include <memory>
+
 #include "Tile.h"
-#include "../../../Direction.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+
 class Level;
 class LevelSource;
 

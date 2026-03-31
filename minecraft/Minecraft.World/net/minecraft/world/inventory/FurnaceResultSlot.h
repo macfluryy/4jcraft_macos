@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Slot.h"
+
+class Container;
+class Player;
 
 class FurnaceResultSlot : public Slot {
 private:

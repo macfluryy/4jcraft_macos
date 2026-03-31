@@ -1,8 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "CompassItem.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+
+class Icon;
 
 const std::wstring CompassItem::TEXTURE_PLAYER_ICON[XUSER_MAX_COUNT] = {
     L"compassP0", L"compassP1", L"compassP2", L"compassP3"};

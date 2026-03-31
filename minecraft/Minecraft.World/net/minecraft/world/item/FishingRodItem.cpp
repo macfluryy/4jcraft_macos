@@ -1,17 +1,17 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/chunk/net.minecraft.world.level.chunk.h"
-#include "../level/material/net.minecraft.world.level.material.h"
-#include "../level/saveddata/net.minecraft.world.level.saveddata.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "../net.minecraft.world.h"
-#include "ItemInstance.h"
+#include <memory>
+#include <string>
+
 #include "FishingRodItem.h"
-#include "../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/FishingHook.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+
+class Icon;
 
 FishingRodItem::FishingRodItem(int id) : Item(id) {
     setMaxDamage(64);

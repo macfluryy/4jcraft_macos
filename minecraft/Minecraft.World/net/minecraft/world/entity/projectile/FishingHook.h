@@ -1,8 +1,13 @@
 #pragma once
 
-#include "../Entity.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class Player;
+class Level;
 
 class FishingHook : public Entity {
 public:

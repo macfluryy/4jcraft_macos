@@ -1,10 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../DyePowderItem.h"
-#include "../../level/tile/Tile.h"
-#include "Recipy.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Recipes.h"
 #include "FoodRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 void FoodRecipies::addRecipes(Recipes* r) {
     // 4J-JEV: Bumped up in the list to avoid a colision with the title.

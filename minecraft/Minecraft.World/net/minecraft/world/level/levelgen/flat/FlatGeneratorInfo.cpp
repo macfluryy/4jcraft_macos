@@ -1,8 +1,8 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../../../../ConsoleHelpers/StringHelpers.h"
-#include "net.minecraft.world.level.levelgen.flat.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
 #include "FlatGeneratorInfo.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/flat/FlatLayerInfo.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const std::wstring FlatGeneratorInfo::STRUCTURE_VILLAGE = L"village";
 const std::wstring FlatGeneratorInfo::STRUCTURE_BIOME_SPECIFIC = L"biome_1";

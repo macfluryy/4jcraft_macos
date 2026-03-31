@@ -1,6 +1,12 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
+class Entity;
 
 class TeleportEntityPacket
     : public Packet,

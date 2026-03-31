@@ -1,10 +1,16 @@
 #pragma once
 
-#include "../Container.h"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 
 class Merchant;
 class Player;
 class MerchantRecipe;
+class ItemInstance;
 
 class MerchantContainer : public Container {
 private:

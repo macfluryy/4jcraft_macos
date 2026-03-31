@@ -1,8 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../world/scores/net.minecraft.world.scores.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
+#include <unordered_set>
+
 #include "PacketListener.h"
 #include "SetPlayerTeamPacket.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/scores/Objective.h"
+#include "Minecraft.World/net/minecraft/world/scores/PlayerTeam.h"
 
 SetPlayerTeamPacket::SetPlayerTeamPacket() {
     name = L"";

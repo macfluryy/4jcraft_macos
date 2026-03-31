@@ -1,13 +1,15 @@
-#include "../../../../Header Files/stdafx.h"
-#include "biome/net.minecraft.world.level.biome.h"
-#include "chunk/net.minecraft.world.level.chunk.h"
-#include "dimension/net.minecraft.world.level.dimension.h"
-#include "tile/net.minecraft.world.level.tile.h"
-#include "redstone/net.minecraft.world.level.redstone.h"
-#include "material/Material.h"
-#include "Level.h"
+#include <stdlib.h>
+#include <string.h>
+#include <memory>
+#include <vector>
 
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Level.h"
 #include "Region.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 Region::~Region() {
     delete chunks;

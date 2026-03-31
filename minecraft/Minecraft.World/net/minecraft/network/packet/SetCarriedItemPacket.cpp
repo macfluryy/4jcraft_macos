@@ -1,8 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetCarriedItemPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 SetCarriedItemPacket::SetCarriedItemPacket() { slot = 0; }
 

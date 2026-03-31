@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
 /*
 4J - Both modifier uuid and name have been replaced by an id enum. Note that we
 have special value "eModifierId_ANONYMOUS" for attribute modifiers that

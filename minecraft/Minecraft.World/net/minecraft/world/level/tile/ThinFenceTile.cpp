@@ -1,7 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "ThinFenceTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 ThinFenceTile::ThinFenceTile(int id, const std::wstring& tex,
                              const std::wstring& edgeTex, Material* material,

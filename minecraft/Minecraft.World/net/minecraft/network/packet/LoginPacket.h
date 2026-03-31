@@ -1,8 +1,13 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
+#include <string>
 
 #include "Packet.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
 class LevelType;
 
 class LoginPacket : public Packet,

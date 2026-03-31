@@ -1,7 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../world/scores/net.minecraft.world.scores.h"
 #include "PacketListener.h"
 #include "SetObjectivePacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/scores/Objective.h"
 
 SetObjectivePacket::SetObjectivePacket() {
     objectiveName = L"";

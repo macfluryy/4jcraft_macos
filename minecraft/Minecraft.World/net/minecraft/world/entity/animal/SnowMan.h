@@ -1,7 +1,11 @@
 #pragma once
 
 #include "Golem.h"
-#include "../monster/RangedAttackMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/RangedAttackMob.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
 
 class SnowMan : public Golem, public RangedAttackMob {
 public:

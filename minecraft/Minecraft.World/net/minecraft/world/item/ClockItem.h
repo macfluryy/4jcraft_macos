@@ -2,7 +2,12 @@
 // 4J Added so that we can override the icon id used to calculate the texture
 // UV's for each player
 
+#include <string>
+
 #include "Item.h"
+#include "4J.Common/4J_Compat.h"
+
+class Icon;
 
 class ClockItem : public Item {
 private:

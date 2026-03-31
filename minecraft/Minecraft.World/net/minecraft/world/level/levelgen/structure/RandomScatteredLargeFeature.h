@@ -1,7 +1,18 @@
 #pragma once
 
+#include <format>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "StructureFeature.h"
 #include "StructureStart.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+
+class Level;
+class Random;
 
 class RandomScatteredLargeFeature : public StructureFeature {
 public:

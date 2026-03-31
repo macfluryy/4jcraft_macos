@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TileEntity.h"
+#include "java/Class.h"
 
 class ComparatorTileEntity : public TileEntity {
 public:

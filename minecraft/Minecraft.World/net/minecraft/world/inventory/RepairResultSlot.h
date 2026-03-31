@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Slot.h"
 
 class AnvilMenu;
+class Container;
 
 class RepairResultSlot : public Slot {
 private:

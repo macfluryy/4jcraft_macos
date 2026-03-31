@@ -2,6 +2,8 @@
 
 #include "Goal.h"
 
+class TamableAnimal;
+
 class SitGoal : public Goal {
 private:
     TamableAnimal* mob;

@@ -1,8 +1,17 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
+#include <math.h>
+#include <memory>
+#include <string>
+
 #include "MinecartTNT.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 void MinecartTNT::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

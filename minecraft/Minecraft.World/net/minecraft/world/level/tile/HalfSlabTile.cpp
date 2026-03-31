@@ -1,10 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "HalfSlabTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../../Facing.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Material;
 
 HalfSlabTile::HalfSlabTile(int id, bool fullSize, Material* material)
     : Tile(id, material, fullSize) {

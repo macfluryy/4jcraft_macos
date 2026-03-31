@@ -1,8 +1,15 @@
 #pragma once
 
+#include <memory>
+
 #include "Fireball.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
 
 class HitResult;
+class Entity;
+class Level;
+class LivingEntity;
 
 class DragonFireball : public Fireball {
 public:

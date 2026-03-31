@@ -1,6 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <algorithm>
+#include <vector>
+
 #include "java/Arrays.h"
 #include "FixedBiomeSource.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 
 FixedBiomeSource::FixedBiomeSource(Biome* fixed, float temperature,
                                    float downfall) {

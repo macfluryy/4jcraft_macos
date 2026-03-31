@@ -1,10 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "Slot.h"
 
 class MerchantContainer;
 class Player;
 class Merchant;
+class ItemInstance;
+class MerchantRecipe;
 
 class MerchantResultSlot : public Slot {
 private:

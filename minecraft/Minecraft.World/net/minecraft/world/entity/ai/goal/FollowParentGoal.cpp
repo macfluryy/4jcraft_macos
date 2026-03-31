@@ -1,10 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "FollowParentGoal.h"
 #include <limits>
+#include <format>
+#include <vector>
+
+#include "FollowParentGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Animal.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 FollowParentGoal::FollowParentGoal(Animal* animal, double speedModifier) {
     timeToRecalcPath = 0;

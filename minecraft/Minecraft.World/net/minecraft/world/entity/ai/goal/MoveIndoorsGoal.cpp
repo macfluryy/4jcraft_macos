@@ -1,12 +1,18 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../util/net.minecraft.world.entity.ai.util.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../village/net.minecraft.world.entity.ai.village.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/dimension/net.minecraft.world.level.dimension.h"
+#include <optional>
+
 #include "MoveIndoorsGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/util/RandomPos.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/DoorInfo.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Village.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Villages.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 MoveIndoorsGoal::MoveIndoorsGoal(PathfinderMob* mob) {
     insideX = insideZ = -1;

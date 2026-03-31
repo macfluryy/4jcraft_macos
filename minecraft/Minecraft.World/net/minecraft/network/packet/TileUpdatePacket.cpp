@@ -1,10 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/level/net.minecraft.world.level.h"
+#include <cstdint>
+
 #include "PacketListener.h"
 #include "TileUpdatePacket.h"
-#include "../../world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 TileUpdatePacket::TileUpdatePacket() { shouldDelay = true; }
 

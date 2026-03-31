@@ -3,6 +3,8 @@
 
 class IconRegister;
 class ChunkRebuildData;
+class Icon;
+class Random;
 
 class BrewingStandTile : public BaseEntityTile {
     friend ChunkRebuildData;

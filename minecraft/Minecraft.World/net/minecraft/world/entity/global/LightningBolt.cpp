@@ -1,12 +1,22 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
+#include <math.h>
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "LightningBolt.h"
-#include "../../../../../Header Files/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "../../level/dimension/net.minecraft.world.level.dimension.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/global/GlobalEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FireTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 LightningBolt::LightningBolt(Level* level, double x, double y, double z)
     : life(0), seed(0), flashes(0), GlobalEntity(level) {

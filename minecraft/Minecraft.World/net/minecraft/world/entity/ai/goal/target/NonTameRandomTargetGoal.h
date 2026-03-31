@@ -1,5 +1,7 @@
 #pragma once
 
+#include <typeinfo>
+
 #include "NearestAttackableTargetGoal.h"
 
 class TamableAnimal;

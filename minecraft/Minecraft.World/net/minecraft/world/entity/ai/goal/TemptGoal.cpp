@@ -1,10 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../player/net.minecraft.world.entity.player.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
+#include <cstdlib>
+
 #include "TemptGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 TemptGoal::TemptGoal(PathfinderMob* mob, double speedModifier, int itemId,
                      bool canScare) {

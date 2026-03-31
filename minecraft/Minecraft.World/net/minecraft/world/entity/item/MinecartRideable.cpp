@@ -1,8 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.entity.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../level/net.minecraft.world.level.h"
+#include <memory>
+
 #include "MinecartRideable.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 MinecartRideable::MinecartRideable(Level* level) : Minecart(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

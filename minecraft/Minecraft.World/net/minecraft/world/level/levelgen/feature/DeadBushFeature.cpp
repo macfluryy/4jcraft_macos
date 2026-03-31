@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
 #include "DeadBushFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DeadBushFeature::DeadBushFeature(int tile) { this->tile = tile; }
 

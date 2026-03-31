@@ -1,9 +1,14 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+
 #include "Golem.h"
+#include "java/Class.h"
 
 class Village;
 class Level;
+class Entity;
 
 class VillagerGolem : public Golem {
 public:

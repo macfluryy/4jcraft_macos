@@ -1,14 +1,23 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../../net.minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include <memory>
+
 #include "Silverfish.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/EntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Monster.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneMonsterTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 Silverfish::Silverfish(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

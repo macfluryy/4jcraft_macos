@@ -2,6 +2,8 @@
 
 #include "TargetGoal.h"
 
+class PathfinderMob;
+
 class HurtByTargetGoal : public TargetGoal {
 private:
     bool alertSameType;

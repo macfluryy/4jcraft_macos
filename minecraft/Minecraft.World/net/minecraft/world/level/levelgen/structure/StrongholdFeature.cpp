@@ -1,12 +1,28 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <assert.h>
+#include <math.h>
+#include <list>
+#include <numbers>
+#include <utility>
+#include <vector>
+
 #include "StrongholdFeature.h"
 #include "StrongholdPieces.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
-#include "../../../../util/Mth.h"
-#include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "java/JavaMath.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/LargeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureStart.h"
 
 const std::wstring StrongholdFeature::OPTION_DISTANCE = L"distance";
 const std::wstring StrongholdFeature::OPTION_COUNT = L"count";

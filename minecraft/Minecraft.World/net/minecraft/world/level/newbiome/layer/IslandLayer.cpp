@@ -1,5 +1,9 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
+
+#include <stdint.h>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/IslandLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 IslandLayer::IslandLayer(int64_t seedMixup) : Layer(seedMixup) {}
 

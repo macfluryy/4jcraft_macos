@@ -1,8 +1,8 @@
 #pragma once
-#include "../material/Material.h"
-#include "../../phys/Vec3.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
 #include <cstdint>
 #include <optional>
 

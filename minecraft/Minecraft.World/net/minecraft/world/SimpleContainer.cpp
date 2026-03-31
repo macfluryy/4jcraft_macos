@@ -1,9 +1,9 @@
-#include "../../../Header Files/stdafx.h"
+#include <vector>
 
 #include "net.minecraft.world.ContainerListener.h"
-#include "item/net.minecraft.world.item.h"
-
 #include "SimpleContainer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 SimpleContainer::SimpleContainer(int name, std::wstring stringName,
                                  bool customName, int size) {

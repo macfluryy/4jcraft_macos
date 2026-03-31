@@ -1,6 +1,12 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class AwardStatPacket : public Packet,
                         public std::enable_shared_from_this<AwardStatPacket> {

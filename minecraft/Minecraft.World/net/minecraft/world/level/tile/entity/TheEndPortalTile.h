@@ -1,9 +1,12 @@
 #pragma once
-#include "../EntityTile.h"
-#include "../BaseEntityTile.h"
 #include <cstdint>
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/EntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
 
 class IconRegister;
+class Material;
 
 class TheEndPortal : public BaseEntityTile {
 public:

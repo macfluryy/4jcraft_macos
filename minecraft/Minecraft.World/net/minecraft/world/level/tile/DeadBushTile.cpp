@@ -1,9 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
+#include <memory>
+
 #include "DeadBushTile.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DeadBushTile::DeadBushTile(int id) : Bush(id, Material::replaceable_plant) {
     updateDefaultShape();

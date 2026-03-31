@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+
+class Feature;
 
 class ExtremeHillsBiome : public Biome {
     friend class Biome;

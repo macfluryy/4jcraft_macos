@@ -1,10 +1,19 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "ItemInstance.h"
+#include <memory>
+#include <string>
+
 #include "MinecartItem.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/core/BehaviorRegistry.h"
+#include "Minecraft.World/net/minecraft/core/BlockSource.h"
+#include "Minecraft.World/net/minecraft/core/DefaultDispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/core/FacingEnum.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DispenserTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
 
 std::shared_ptr<ItemInstance> MinecartItem::MinecartDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,

@@ -1,6 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "AttackDamageMobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
 
 AttackDamageMobEffect::AttackDamageMobEffect(int id, bool isHarmful,
                                              eMinecraftColour color)

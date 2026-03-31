@@ -1,8 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "EggTile.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/FallingTile.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HeavyTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 EggTile::EggTile(int id) : Tile(id, Material::egg, false) {}
 

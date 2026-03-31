@@ -1,8 +1,9 @@
 #pragma once
 
-class LivingEntity;
-
 #include "MobEffect.h"
+#include "Minecraft.Client/Common/App_enums.h"
+
+class LivingEntity;
 
 class AbsoptionMobEffect : public MobEffect {
 public:

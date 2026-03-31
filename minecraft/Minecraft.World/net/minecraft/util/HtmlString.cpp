@@ -1,6 +1,10 @@
-#include "../../../Header Files/stdafx.h"
-#include "HtmlString.h"
 #include <iomanip>
+#include <sstream>
+#include <vector>
+
+#include "HtmlString.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 HtmlString::HtmlString(std::wstring text, eMinecraftColour hexColor,
                        bool italics, bool indent) {

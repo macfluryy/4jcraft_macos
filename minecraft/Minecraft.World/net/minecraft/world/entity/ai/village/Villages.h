@@ -1,6 +1,18 @@
 #pragma once
 
-#include "../../../level/saveddata/SavedData.h"
+#include <deque>
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/DoorInfo.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Village.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
+
+class Level;
+class Pos;
 
 class Villages : public SavedData {
 public:

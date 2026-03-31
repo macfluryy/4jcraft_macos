@@ -1,6 +1,6 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../net.minecraft.world.level.chunk.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "MemoryChunkStorage.h"
 
 LevelChunk* MemoryChunkStorage::load(Level* level, int x,

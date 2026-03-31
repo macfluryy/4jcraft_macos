@@ -1,14 +1,20 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/crafting/net.minecraft.world.item.crafting.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
+#include <vector>
+
 #include "ResultSlot.h"
 #include "ArmorSlot.h"
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
 #include "InventoryMenu.h"
-#include "../level/tile/Tile.h"
-#include "../../stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ArmorRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
 
 const int InventoryMenu::RESULT_SLOT = 0;
 const int InventoryMenu::CRAFT_SLOT_START = 1;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 class ProgressListener;
 class TilePos;
 

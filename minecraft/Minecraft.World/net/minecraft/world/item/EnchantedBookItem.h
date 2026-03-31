@@ -1,8 +1,18 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <string>
+
 #include "Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class EnchantmentInstance;
+class CompoundTag;
+class Enchantment;
+class Random;
+class WeighedTreasure;
+template <class T> class ListTag;
 
 class EnchantedBookItem : public Item {
 public:

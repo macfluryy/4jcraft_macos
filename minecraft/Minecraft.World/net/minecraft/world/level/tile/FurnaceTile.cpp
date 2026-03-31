@@ -1,14 +1,27 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
-#include "entity/net.minecraft.world.level.tile.entity.h"
-#include "../../net.minecraft.world.h"
+#include <stdio.h>
+#include <memory>
+#include <string>
+
 #include "FurnaceTile.h"
-#include "../../entity/Mob.h"
-#include "../../../Facing.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "FurnaceTile.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/FurnaceTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 bool FurnaceTile::noDrop = false;
 

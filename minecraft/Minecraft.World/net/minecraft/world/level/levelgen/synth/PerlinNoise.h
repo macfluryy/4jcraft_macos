@@ -1,6 +1,12 @@
 #pragma once
+#include <format>
+#include <vector>
+
 #include "Synth.h"
 #include "ImprovedNoise.h"
+
+class ImprovedNoise;
+class Random;
 
 class PerlinNoise : public Synth {
     friend class PerlinNoise_SPU;

@@ -1,7 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "BookshelfTile.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../../net.minecraft.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 BookshelfTile::BookshelfTile(int id) : Tile(id, Material::wood) {}
 

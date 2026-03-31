@@ -1,9 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/item/net.minecraft.world.item.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "ContainerClickPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 ContainerClickPacket::~ContainerClickPacket() {}
 

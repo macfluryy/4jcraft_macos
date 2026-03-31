@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "DirectionalTile.h"
 
 class FenceGateTile : public DirectionalTile {

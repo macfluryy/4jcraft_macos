@@ -1,6 +1,12 @@
 #pragma once
 
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
 class Container;
+class Icon;
+class Player;
 
 class Slot {
 private:

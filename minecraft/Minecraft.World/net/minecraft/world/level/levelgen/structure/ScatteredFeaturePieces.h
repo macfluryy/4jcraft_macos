@@ -1,6 +1,13 @@
 #pragma once
 
 #include "StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+
+class BoundingBox;
+class Level;
+class Random;
+class WeighedTreasure;
 
 class ScatteredFeaturePieces {
 public:

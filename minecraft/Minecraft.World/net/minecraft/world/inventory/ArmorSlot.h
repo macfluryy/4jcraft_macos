@@ -3,6 +3,8 @@
 // In InventoryMenu.java they create an anoymous class while creating some slot.
 // I have moved the content of that anonymous class to here
 
+#include <memory>
+
 #include "Slot.h"
 
 class Container;

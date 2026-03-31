@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "Rarity.h"
 
 const Rarity* Rarity::common = new Rarity(eHTMLColor_f, L"Common");

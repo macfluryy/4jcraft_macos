@@ -1,6 +1,14 @@
 #pragma once
+#include <stdint.h>
 #include <mutex>
+#include <format>
+#include <unordered_map>
+#include <vector>
+
 #include "java/JavaIntHash.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+
+class BiomeSource;
 
 class BiomeCache {
 private:

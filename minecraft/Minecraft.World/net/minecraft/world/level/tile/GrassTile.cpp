@@ -1,14 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "GrassTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
-// AP - included for PSVita Alpha cut out optimisation
-#include "java/IntBuffer.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+class Icon;
 
 GrassTile::GrassTile(int id) : Tile(id, Material::grass) {
     iconTop = nullptr;

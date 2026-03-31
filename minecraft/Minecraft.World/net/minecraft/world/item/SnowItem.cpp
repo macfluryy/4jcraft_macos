@@ -1,9 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/net.minecraft.world.level.h"
+#include <memory>
+#include <optional>
+
 #include "SnowItem.h"
-#include "../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/AuxDataTileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TopSnowTile.h"
 
 SnowItem::SnowItem(int id, Tile* parentTile)
     : AuxDataTileItem(id, parentTile) {}

@@ -1,6 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../item/net.minecraft.world.item.h"
+#include <vector>
+
 #include "AbstractContainerMenu.h"
 #include "CraftingContainer.h"
 

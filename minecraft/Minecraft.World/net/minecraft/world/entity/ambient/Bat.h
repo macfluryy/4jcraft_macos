@@ -1,6 +1,11 @@
 #pragma once
 
 #include "AmbientCreature.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
+class Pos;
 
 class Bat : public AmbientCreature {
 public:

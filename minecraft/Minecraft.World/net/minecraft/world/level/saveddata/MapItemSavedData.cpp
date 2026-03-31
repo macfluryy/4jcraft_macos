@@ -1,14 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
+#include <string.h>
+#include <algorithm>
+#include <utility>
+
 #include "MapItemSavedData.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
-#include "../net.minecraft.world.level.h"
-#include "../storage/net.minecraft.world.level.storage.h"
-#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/ItemFrame.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 
 const int MapItemSavedData::END_PORTAL_DECORATION_KEY = -1;
 

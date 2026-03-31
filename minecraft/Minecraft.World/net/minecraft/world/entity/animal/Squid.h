@@ -1,8 +1,11 @@
 #pragma once
 
 #include "WaterAnimal.h"
+#include "java/Class.h"
 
 class Player;
+class Entity;
+class Level;
 
 class Squid : public WaterAnimal {
 public:

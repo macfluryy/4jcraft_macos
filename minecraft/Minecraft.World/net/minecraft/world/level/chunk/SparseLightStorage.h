@@ -1,4 +1,6 @@
 #pragma once
+#include <stdint.h>
+#include <format>
 #if !defined(__linux__)
 #include "../../../../../x64headers/xmcore.h"
 #endif
@@ -58,6 +60,9 @@
 
 // #define LIGHT_COMPRESSION_STATS
 class TileCompressData_SPU;
+class DataInputStream;
+class DataOutputStream;
+template <typename T> class XLockFreeStack;
 
 class SparseLightStorage {
     friend class TileCompressData_SPU;

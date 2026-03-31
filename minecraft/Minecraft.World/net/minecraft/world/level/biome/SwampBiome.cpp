@@ -1,7 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.biome.h"
-#include "../levelgen/feature/SwampTreeFeature.h"
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/SwampTreeFeature.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/SwampBiome.h"
 
 SwampBiome::SwampBiome(int id) : Biome(id) {
     decorator->treeCount = 2;

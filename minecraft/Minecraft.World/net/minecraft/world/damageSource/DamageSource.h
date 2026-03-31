@@ -1,13 +1,15 @@
 #pragma once
 
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+
 class LivingEntity;
 class Entity;
 class Arrow;
 class Fireball;
 class Player;
 class Explosion;
-
-#include "../../network/packet/ChatPacket.h"
 
 class DamageSource {
 public:

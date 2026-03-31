@@ -1,12 +1,24 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "CauldronTile.h"
-#include "../../../Facing.h"
-#include "../net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/PotionItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 const std::wstring CauldronTile::TEXTURE_INSIDE = L"cauldron_inner";
 const std::wstring CauldronTile::TEXTURE_BOTTOM = L"cauldron_bottom";

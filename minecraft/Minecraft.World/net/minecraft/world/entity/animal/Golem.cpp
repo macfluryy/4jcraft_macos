@@ -1,6 +1,5 @@
-#include "../../../../../Header Files/stdafx.h"
-
 #include "Golem.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
 
 Golem::Golem(Level* level) : PathfinderMob(level) {}
 

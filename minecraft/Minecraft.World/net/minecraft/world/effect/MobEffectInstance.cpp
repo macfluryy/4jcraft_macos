@@ -1,5 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.effect.h"
+
+#include <stdint.h>
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
+
+class LivingEntity;
 
 void MobEffectInstance::_init(int id, int duration, int amplifier) {
     this->id = id;

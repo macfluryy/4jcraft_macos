@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 
 class HopperMenu : public AbstractContainerMenu {
 private:

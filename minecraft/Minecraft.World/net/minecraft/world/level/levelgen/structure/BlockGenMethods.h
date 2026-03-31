@@ -1,7 +1,10 @@
 #pragma once
 #include <cstdint>
+#include <format>
 
-#include "../../../../../../ConsoleHelpers/ArrayWithLength.h"
+#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
+
+class Level;
 
 class BlockGenMethods {
 public:

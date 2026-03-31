@@ -1,4 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
 #include "BlockDestructionProgress.h"
 
 BlockDestructionProgress::BlockDestructionProgress(int id, int x, int y,

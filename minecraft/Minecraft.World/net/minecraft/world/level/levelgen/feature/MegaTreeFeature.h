@@ -2,6 +2,9 @@
 
 #include "Feature.h"
 
+class Level;
+class Random;
+
 class MegaTreeFeature : public Feature {
 private:
     const int baseHeight;

@@ -1,9 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../net.minecraft.world.h"
-#include "../../../net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "WallTile.h"
 
 const float WallTile::WALL_WIDTH = 3.0f / 16.0f;

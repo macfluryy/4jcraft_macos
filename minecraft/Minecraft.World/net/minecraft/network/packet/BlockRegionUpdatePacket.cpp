@@ -1,14 +1,15 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include <exception>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/level/net.minecraft.world.level.h"
-#include "../../../../Header Files/compression.h"
+#include <assert.h>
+#include <string.h>
+
 #include "PacketListener.h"
 #include "BlockRegionUpdatePacket.h"
-#include "../../world/level/chunk/LevelChunk.h"
-#include "../../world/level/chunk/DataLayer.h"
-#include "../../world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "compression.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 #define BLOCK_REGION_UPDATE_FULLCHUNK 0x01
 #define BLOCK_REGION_UPDATE_ZEROHEIGHT \

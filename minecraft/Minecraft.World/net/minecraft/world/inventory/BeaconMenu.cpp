@@ -1,7 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include <vector>
+
 #include "BeaconMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BeaconTileEntity.h"
+
+class Container;
 
 BeaconMenu::BeaconMenu(std::shared_ptr<Container> inventory,
                        std::shared_ptr<BeaconTileEntity> beacon) {

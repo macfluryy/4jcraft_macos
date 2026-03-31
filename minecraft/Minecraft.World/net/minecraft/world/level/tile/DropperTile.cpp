@@ -1,11 +1,21 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
-#include "../../../core/net.minecraft.core.h"
+#include <memory>
+#include <string>
+
 #include "DropperTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/core/BlockSourceImpl.h"
+#include "Minecraft.World/net/minecraft/core/DefaultDispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/core/DispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DispenserTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/DropperTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/HopperTileEntity.h"
+
+class Container;
 
 DropperTile::DropperTile(int id) : DispenserTile(id) {
     DISPENSE_BEHAVIOUR = new DefaultDispenseItemBehavior();

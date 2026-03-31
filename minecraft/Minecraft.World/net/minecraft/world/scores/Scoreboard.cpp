@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "Scoreboard.h"
+
+class Player;
 
 Objective* Scoreboard::getObjective(const std::wstring& name) {
     return nullptr;

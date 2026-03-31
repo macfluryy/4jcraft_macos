@@ -1,5 +1,9 @@
 #pragma once
+#include <format>
+
 #include "DiggerItem.h"
+
+class Tile;
 
 #define SHOVEL_DIGGABLES 10
 class ShovelItem : public DiggerItem {

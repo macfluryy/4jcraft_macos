@@ -1,5 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
+
+#include <list>
+
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/MineShaftPieces.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/MineShaftStart.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureStart.h"
+
+class Level;
+class Random;
 
 MineShaftStart::MineShaftStart() {
     // for reflection

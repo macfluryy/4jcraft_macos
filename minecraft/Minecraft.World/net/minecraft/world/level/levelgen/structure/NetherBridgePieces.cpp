@@ -1,14 +1,20 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../net.minecraft.world.level.levelgen.h"
-#include "../../storage/net.minecraft.world.level.storage.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../../../util/WeighedTreasure.h"
+#include <stdlib.h>
+#include <algorithm>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
 #include "NetherBridgePieces.h"
-#include "../../../../Direction.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 void NetherBridgePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_BridgeCrossing,

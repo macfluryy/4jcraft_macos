@@ -1,7 +1,18 @@
 #pragma once
 
-#include "../../entity/player/Player.h"
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "SavedData.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
+
+class ItemInstance;
+class Level;
 
 class MapItemSavedData : public SavedData {
 private:

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+
 class BlockReplacements {
 public:
     static void staticCtor();

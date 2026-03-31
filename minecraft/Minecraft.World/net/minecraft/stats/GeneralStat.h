@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "Stat.h"
+
+class StatFormatter;
 
 class GeneralStat : public Stat {
 public:

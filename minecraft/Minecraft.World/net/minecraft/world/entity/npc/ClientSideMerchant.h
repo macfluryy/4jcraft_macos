@@ -1,10 +1,15 @@
 #pragma once
 
-#include "../../item/trading/Merchant.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/item/trading/Merchant.h"
 
 class MerchantContainer;
 class MerchantRecipeList;
 class MerchantRecipe;
+class Container;
+class Player;
 
 class ClientSideMerchant
     : public Merchant,

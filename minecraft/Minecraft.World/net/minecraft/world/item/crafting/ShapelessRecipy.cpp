@@ -4,13 +4,18 @@
 //
 // import net.minecraft.world.inventory.CraftingContainer;
 // import net.minecraft.world.item.ItemInstance;
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
-#include "../../level/tile/Tile.h"
+#include <string.h>
+#include <algorithm>
+#include <memory>
+#include <vector>
+
 #include "Recipy.h"
 #include "Recipes.h"
 #include "ShapelessRecipy.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 ShapelessRecipy::ShapelessRecipy(ItemInstance* result,
                                  std::vector<ItemInstance*>* ingredients,

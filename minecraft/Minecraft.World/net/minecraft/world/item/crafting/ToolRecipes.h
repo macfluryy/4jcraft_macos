@@ -4,9 +4,13 @@
 // import net.minecraft.world.level.tile.Tile;
 #pragma once
 
+#include <format>
+#include <string>
+
 #define MAX_TOOL_RECIPES 5
 
 class Recipes;
+class Object;
 
 class ToolRecipies {
 public:

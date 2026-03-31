@@ -1,8 +1,13 @@
 #pragma once
 
+#include <format>
+#include <string>
+#include <vector>
+
 #include "DirectoryLevelStorageSource.h"
 #include "java/FileFilter.h"
 #include "java/FilenameFilter.h"
+#include "java/File.h"
 
 class ProgressListener;
 class LevelStorage;

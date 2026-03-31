@@ -1,9 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/level/net.minecraft.world.level.h"
 #include "PacketListener.h"
 #include "ChunkVisibilityAreaPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 ChunkVisibilityAreaPacket::ChunkVisibilityAreaPacket() {
     m_minX = 0;

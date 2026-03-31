@@ -1,11 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../biome/Biome.h"
+#include <list>
+#include <unordered_map>
+
 #include "NetherBridgeFeature.h"
 #include "NetherBridgePieces.h"
-#include "../../MobSpawner.h"
-#include "../../../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureStart.h"
 
 NetherBridgeFeature::NetherBridgeFeature() : StructureFeature() {
     bridgeEnemies.push_back(new Biome::MobSpawnerData(eTYPE_BLAZE, 10, 2, 3));

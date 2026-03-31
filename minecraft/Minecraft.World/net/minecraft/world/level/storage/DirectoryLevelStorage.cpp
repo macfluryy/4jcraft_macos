@@ -1,16 +1,44 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <assert.h>
+#include <float.h>
+#include <stdio.h>
+#include <algorithm>
+#include <format>
+#include <memory>
+#include <utility>
+
 #include "java/System.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../net.minecraft.world.level.h"
-#include "../chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "nbt/com.mojang.nbt.h"
 #include "java/File.h"
 #include "java/InputOutputStream/DataInputStream.h"
-#include "java/InputOutputStream/FileInputStream.h"
 #include "LevelData.h"
 #include "DirectoryLevelStorage.h"
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
+#include "4J_Profile.h"
+#include "4J_Storage.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "java/InputOutputStream/FileOutputStream.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/NbtIo.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/HellDimension.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/TheEndDimension.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/PlayerIO.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 
@@ -176,9 +204,6 @@ DirectoryLevelStorage::~DirectoryLevelStorage() {
          ++it) {
         delete it->second;
     }
-
-#if defined(_LARGE_WORLDS)
-#endif
 }
 
 void DirectoryLevelStorage::initiateSession() {

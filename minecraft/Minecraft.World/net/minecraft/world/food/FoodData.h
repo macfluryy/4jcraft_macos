@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 class FoodItem;
 class Player;
 class CompoundTag;

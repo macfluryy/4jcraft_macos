@@ -1,7 +1,17 @@
 #pragma once
 
-#include "../chunk/ChunkSource.h"
+#include <stdint.h>
+#include <format>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+
 class PerlinNoise;
+class Level;
+class Random;
 
 class TheEndLevelRandomLevelSource : public ChunkSource {
 public:

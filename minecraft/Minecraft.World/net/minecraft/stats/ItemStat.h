@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Stat.h"
 
 class ItemStat : public Stat {

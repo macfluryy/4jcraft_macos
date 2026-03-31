@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Goal.h"
-#include "../../../../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 
 class Mob;
 

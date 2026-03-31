@@ -1,6 +1,7 @@
 #pragma once
 
 class Level;
+class Random;
 
 class Feature {
 private:

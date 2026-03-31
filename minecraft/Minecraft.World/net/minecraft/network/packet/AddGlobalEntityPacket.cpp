@@ -1,11 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include <exception>
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
-#include "../../world/entity/global/net.minecraft.world.entity.global.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "AddGlobalEntityPacket.h"
+#include "java/Class.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 const int AddGlobalEntityPacket::LIGHTNING = 1;
 

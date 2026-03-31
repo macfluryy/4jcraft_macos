@@ -1,9 +1,15 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+#include <string>
+
 #include "NetherWartTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 NetherWartTile::NetherWartTile(int id) : Bush(id) {
     setTicking(true);

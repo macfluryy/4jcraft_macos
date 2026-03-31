@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "TargetGoal.h"
 
 class TamableAnimal;
+class LivingEntity;
 
 class OwnerHurtByTargetGoal : public TargetGoal {
 private:

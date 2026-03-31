@@ -1,5 +1,9 @@
 #pragma once
+#include <format>
+
 #include "Synth.h"
+
+class Random;
 
 class ImprovedNoise : public Synth {
     friend class PerlinNoise_SPU;

@@ -5,12 +5,15 @@
 
 // TODO: use brace initialization everywhere
 
-#include "../../../../Header Files/stdafx.h"
-#include "AABB.h"
 #include <format>
 #include <optional>
+#include <algorithm>
+#include <string>
+
 #include "HitResult.h"
-#include "Vec3.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 AABB::AABB(double x0, double y0, double z0, double x1, double y1, double z1) {
     this->x0 = x0;

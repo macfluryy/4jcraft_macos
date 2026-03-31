@@ -1,6 +1,11 @@
 #pragma once
 
-#include "../../../../../../ConsoleHelpers/ArrayWithLength.h"
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
 class LevelType;
 

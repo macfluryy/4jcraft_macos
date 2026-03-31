@@ -1,8 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "TakeItemEntityPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 TakeItemEntityPacket::TakeItemEntityPacket() {
     itemId = -1;

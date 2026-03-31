@@ -3,6 +3,7 @@
 #include "EntityTile.h"
 
 class TileEntity;
+class Material;
 
 class BaseEntityTile : public Tile, public EntityTile {
 protected:

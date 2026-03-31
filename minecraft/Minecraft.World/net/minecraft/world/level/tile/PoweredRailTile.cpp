@@ -1,7 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../net.minecraft.world.level.h"
+#include <string>
+
 #include "PoweredRailTile.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 PoweredRailTile::PoweredRailTile(int id) : BaseRailTile(id, true) {}
 

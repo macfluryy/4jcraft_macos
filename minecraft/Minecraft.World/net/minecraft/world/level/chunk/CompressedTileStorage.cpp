@@ -1,5 +1,15 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <assert.h>
+#include <stddef.h>
+#include <string.h>
+#include <vector>
+
 #include "CompressedTileStorage.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "java/System.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 // Note: See header for an overview of this class
 

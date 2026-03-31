@@ -1,5 +1,12 @@
 #pragma once
-#include "../Entity.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+
+class Level;
 
 class PrimedTnt : public Entity {
 public:

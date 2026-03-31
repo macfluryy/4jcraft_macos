@@ -1,11 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.item.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
+#include <memory>
+
 #include "WeaponItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 WeaponItem::WeaponItem(int id, const Tier* tier) : Item(id), tier(tier) {
     maxStackSize = 1;

@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "Team.h"
 
 bool Team::isAlliedTo(Team* other) {

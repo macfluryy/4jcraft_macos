@@ -1,7 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "PacketListener.h"
 #include "TileEditorOpenPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 TileEditorOpenPacket::TileEditorOpenPacket() {
     editorType = 0;

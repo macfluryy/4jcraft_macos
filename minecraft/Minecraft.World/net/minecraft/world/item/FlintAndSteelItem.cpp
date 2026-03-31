@@ -1,13 +1,15 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../../stats/net.minecraft.stats.h"
-#include "../level/material/Material.h"
-#include "ItemInstance.h"
+#include <memory>
+
 #include "FlintAndSteelItem.h"
-#include "../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PortalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 FlintAndSteelItem::FlintAndSteelItem(int id) : Item(id) {
     maxStackSize = 1;

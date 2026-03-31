@@ -1,9 +1,15 @@
 #pragma once
 
+#include <memory>
+#include <typeinfo>
+
 #include "TargetGoal.h"
-#include "../../../EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
 
 class NearestAttackableTargetGoal;
+class Entity;
+class LivingEntity;
+class PathfinderMob;
 
 // Anonymous class from NearestAttackableTargetGoal
 class SubselectEntitySelector : public EntitySelector {

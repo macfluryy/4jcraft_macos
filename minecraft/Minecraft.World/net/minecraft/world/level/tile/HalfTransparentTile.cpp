@@ -1,7 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
 #include "HalfTransparentTile.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Material;
 
 HalfTransparentTile::HalfTransparentTile(int id, const std::wstring& tex,
                                          Material* material, bool allowSame)

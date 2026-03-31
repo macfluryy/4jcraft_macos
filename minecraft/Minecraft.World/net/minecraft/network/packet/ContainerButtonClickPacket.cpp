@@ -1,9 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "ContainerButtonClickPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 ContainerButtonClickPacket::ContainerButtonClickPacket() {}
 

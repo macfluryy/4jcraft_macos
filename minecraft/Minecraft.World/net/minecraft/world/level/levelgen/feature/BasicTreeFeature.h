@@ -1,7 +1,10 @@
 #pragma once
+#include <stdint.h>
+
 #include "Feature.h"
 
 class Level;
+class Random;
 
 class BasicTree : public Feature {
 private:

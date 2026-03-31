@@ -1,18 +1,38 @@
-#include "../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../locale/net.minecraft.locale.h"
-#include "../../stats/net.minecraft.stats.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
-#include "enchantment/net.minecraft.world.item.enchantment.h"
+#include <assert.h>
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "Item.h"
-#include "ItemInstance.h"
-#include "../../util/HtmlString.h"
+#include "Minecraft.World/net/minecraft/util/HtmlString.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Potion_Macros.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/BowItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+#include "Minecraft.World/net/minecraft/world/item/UseAnim.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/DigDurabilityEnchantment.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Tag;
 
 const std::wstring ItemInstance::ATTRIBUTE_MODIFIER_FORMAT = L"#.###";
 

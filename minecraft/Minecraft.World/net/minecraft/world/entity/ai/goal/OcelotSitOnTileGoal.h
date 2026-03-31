@@ -3,6 +3,7 @@
 #include "Goal.h"
 
 class Ocelot;
+class Level;
 
 class OcelotSitOnTileGoal : public Goal {
 private:

@@ -1,6 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
 #include "Sensing.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+
+class Entity;
 
 Sensing::Sensing(Mob* mob) { this->mob = mob; }
 

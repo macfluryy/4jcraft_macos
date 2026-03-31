@@ -1,7 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
 #include "LiquidTileStatic.h"
-#include "FireTile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LiquidTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 LiquidTileStatic::LiquidTileStatic(int id, Material* material)
     : LiquidTile(id, material) {

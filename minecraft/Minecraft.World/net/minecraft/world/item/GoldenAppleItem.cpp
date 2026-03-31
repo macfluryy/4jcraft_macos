@@ -1,8 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../effect/net.minecraft.world.effect.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../../SharedConstants.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "GoldenAppleItem.h"
 
 GoldenAppleItem::GoldenAppleItem(int id, int nutrition, float saturationMod,

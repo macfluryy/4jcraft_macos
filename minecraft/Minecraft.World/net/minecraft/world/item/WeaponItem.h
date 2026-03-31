@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Item.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
+#include "Minecraft.World/net/minecraft/world/item/UseAnim.h"
 
 class WeaponItem : public Item {
 private:

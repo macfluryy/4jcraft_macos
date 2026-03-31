@@ -1,11 +1,22 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.entity.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../monster/net.minecraft.world.entity.monster.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <string>
+
 #include "Bat.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ambient/AmbientCreature.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/level/Calendar.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 Bat::Bat(Level* level) : AmbientCreature(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

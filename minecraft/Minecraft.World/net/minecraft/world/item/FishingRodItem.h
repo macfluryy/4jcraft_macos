@@ -4,6 +4,7 @@
 
 class Player;
 class Level;
+class Icon;
 
 class FishingRodItem : public Item {
 private:

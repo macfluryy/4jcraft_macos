@@ -1,7 +1,6 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
 #include "HellSpringFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 HellSpringFeature::HellSpringFeature(int tile, bool insideRock) {
     this->tile = tile;

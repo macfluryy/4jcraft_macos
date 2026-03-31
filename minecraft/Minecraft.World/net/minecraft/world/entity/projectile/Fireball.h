@@ -1,9 +1,15 @@
 #pragma once
 
-#include "../Entity.h"
-#include "../../../../../Header Files/ParticleTypes.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class HitResult;
+class Level;
+class LivingEntity;
 
 class Fireball : public Entity {
 public:

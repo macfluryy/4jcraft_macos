@@ -1,20 +1,38 @@
 #pragma once
 
+#include <stdint.h>
 #include <mutex>
+#include <format>
+#include <memory>
+#include <typeinfo>
+#include <unordered_map>
+#include <vector>
+
+#include "SparseLightStorage.h"
+#include "CompressedTileStorage.h"
+#include "SparseDataStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
 
 class DataLayer;
 class TileEntity;
 class Random;
 class ChunkSource;
 class EntitySelector;
-
-#include "SparseLightStorage.h"
-#include "CompressedTileStorage.h"
-#include "SparseDataStorage.h"
-
-#include "../LightLayer.h"
-#include "../../entity/Entity.h"
-#include "../Level.h"
+class AABB;
+class Biome;
+class BiomeSource;
+class ChunkPos;
+class CompoundTag;
+class CompressedTileStorage;
+class DataInputStream;
+class DataOutputStream;
+class Entity;
+class SparseDataStorage;
+class SparseLightStorage;
 
 #define SHARING_ENABLED
 class TileCompressData_SPU;

@@ -1,18 +1,25 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../item/net.minecraft.world.entity.item.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../effect/net.minecraft.world.effect.h"
-#include "../net.minecraft.world.entity.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "nbt/com.mojang.nbt.h"
-#include "Spider.h"
+#include <math.h>
+#include <stdint.h>
 #include <limits>
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include <memory>
+
+#include "Spider.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobGroupData.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Monster.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Skeleton.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 Spider::Spider(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

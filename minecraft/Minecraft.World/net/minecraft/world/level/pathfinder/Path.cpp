@@ -1,7 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "net.minecraft.world.level.pathfinder.h"
+#include <string.h>
+
 #include "Path.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 Path::~Path() {
     for (size_t i = 0; i < nodes.size(); i++) delete nodes[i];

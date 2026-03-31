@@ -1,13 +1,28 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../entity/item/net.minecraft.world.entity.item.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "java/JavaMath.h"
-#include "../../../../util/WeighedTreasure.h"
+#include <stdlib.h>
+#include <algorithm>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
 #include "MineShaftPieces.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntArrayTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartChest.h"
+#include "Minecraft.World/net/minecraft/world/item/CoalItem.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/RailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 std::vector<WeighedTreasure*> MineShaftPieces::smallTreasureItems;
 ;

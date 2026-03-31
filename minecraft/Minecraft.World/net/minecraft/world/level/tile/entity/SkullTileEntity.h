@@ -1,6 +1,9 @@
 #pragma once
 
+#include <string>
+
 #include "TileEntity.h"
+#include "java/Class.h"
 
 class SkullTileEntity : public TileEntity {
 public:

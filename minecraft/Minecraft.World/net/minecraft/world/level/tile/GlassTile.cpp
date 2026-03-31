@@ -1,5 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "GlassTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfTransparentTile.h"
+
+class Material;
 
 GlassTile::GlassTile(int id, Material* material, bool allowSame)
     : HalfTransparentTile(id, L"glass", material, allowSame) {}

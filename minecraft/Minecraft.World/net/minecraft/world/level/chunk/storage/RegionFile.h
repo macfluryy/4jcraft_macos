@@ -1,9 +1,17 @@
 #pragma once
-#include "../../../../../../Header Files/compression.h"
+#include <stdint.h>
+#include <format>
+#include <vector>
+
+#include "Minecraft.World/Header Files/compression.h"
 #include "java/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
 
 class FileEntry;
 class ConsoleSaveFile;
+class DataInputStream;
+class DataOutputStream;
+class File;
 
 class RegionFile {
     // 4J Stu TEMP FOR TESTING

@@ -2,6 +2,7 @@
 #include "MaterialColor.h"
 
 class ChunkRebuildData;
+class MaterialColor;
 
 class Material {
     friend class ChunkRebuildData;

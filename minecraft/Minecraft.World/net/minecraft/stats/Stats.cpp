@@ -1,14 +1,20 @@
-#include "../../../Header Files/stdafx.h"
-#include "../locale/net.minecraft.locale.h"
-#include "../world/level/tile/net.minecraft.world.level.tile.h"
-#include "../world/item/net.minecraft.world.item.h"
-#include "../world/entity/item/net.minecraft.world.entity.item.h"
-#include "../world/item/crafting/net.minecraft.world.item.crafting.h"
+#include <string>
+#include <vector>
+
 #include "Achievements.h"
 #include "ItemStat.h"
 #include "GeneralStat.h"
 #include "Stats.h"
 #include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/stats/Stat.h"
+#include "Minecraft.World/net/minecraft/world/item/FishingRodItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/GrassTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class StatFormatter;
 
 const int Stats::BLOCKS_MINED_OFFSET = 0x1000000;
 const int Stats::ITEMS_COLLECTED_OFFSET = 0x1010000;

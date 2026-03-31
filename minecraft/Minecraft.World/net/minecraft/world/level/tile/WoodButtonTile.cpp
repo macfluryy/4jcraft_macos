@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
 #include "WoodButtonTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ButtonTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 WoodButtonTile::WoodButtonTile(int id) : ButtonTile(id, true) {}
 

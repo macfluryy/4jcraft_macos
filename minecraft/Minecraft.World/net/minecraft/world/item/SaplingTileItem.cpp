@@ -1,7 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "TileItem.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
 #include "SaplingTileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SaplingPlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 SaplingTileItem::SaplingTileItem(int id) : TileItem(id) {
     setMaxDamage(0);

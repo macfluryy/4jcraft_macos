@@ -1,8 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "entity/net.minecraft.world.level.tile.entity.h"
+#include <cmath>
+#include <memory>
+
 #include "NoteBlockTile.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MusicTileEntity.h"
 
 NoteBlockTile::NoteBlockTile(int id) : BaseEntityTile(id, Material::wood) {}
 

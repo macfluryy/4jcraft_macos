@@ -1,11 +1,28 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "feature/net.minecraft.world.level.levelgen.feature.h"
-#include "../storage/net.minecraft.world.level.storage.h"
-#include "../biome/BiomeSource.h"
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+
 #include "HellRandomLevelSource.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/LargeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/LargeHellCaveFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/FlowerFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HellFireFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HellPortalFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HellSpringFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/LightGemFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/OreFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/NetherBridgeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/PerlinNoise.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HeavyTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 HellRandomLevelSource::HellRandomLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();

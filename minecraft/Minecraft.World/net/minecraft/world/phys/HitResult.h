@@ -1,5 +1,10 @@
 #pragma once
+#include <memory>
+
 #include "Vec3.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
+class Entity;
 
 class HitResult {
 public:

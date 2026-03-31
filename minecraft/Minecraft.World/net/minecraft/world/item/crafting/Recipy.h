@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "../../inventory/CraftingContainer.h"
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingContainer.h"
 
 #define RECIPE_TYPE_2x2 0
 #define RECIPE_TYPE_3x3 1

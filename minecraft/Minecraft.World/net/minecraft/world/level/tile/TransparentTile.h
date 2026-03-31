@@ -1,6 +1,8 @@
 #pragma once
 #include "Tile.h"
 
+class Material;
+
 class TransparentTile : public Tile {
 protected:
     bool allowSame;

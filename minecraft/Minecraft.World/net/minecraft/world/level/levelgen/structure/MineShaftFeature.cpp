@@ -1,7 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "java/JavaMath.h"
-#include "../../../../util/Mth.h"
+
+#include <stdlib.h>
+#include <algorithm>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/MineShaftFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/MineShaftStart.h"
 
 const std::wstring MineShaftFeature::OPTION_CHANCE = L"chance";
 

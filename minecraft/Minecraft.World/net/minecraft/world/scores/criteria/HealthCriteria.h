@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "DummyCriteria.h"
 
 class HealthCriteria : public DummyCriteria {

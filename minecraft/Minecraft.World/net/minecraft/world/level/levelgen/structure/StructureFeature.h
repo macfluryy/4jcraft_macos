@@ -1,5 +1,5 @@
 #pragma once
-#include "../LargeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/LargeFeature.h"
 #include "StructureFeatureSavedData.h"
 
 class StructureStart;

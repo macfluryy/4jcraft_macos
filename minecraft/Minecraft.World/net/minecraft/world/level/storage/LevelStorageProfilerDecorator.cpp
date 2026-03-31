@@ -1,11 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../net.minecraft.world.level.h"
-#include "../chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
 #include "LevelStorageProfilerDecorator.h"
-
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/ChunkStorageProfileDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelStorage.h"
 
 LevelStorageProfilerDecorator::LevelStorageProfilerDecorator(
     LevelStorage* capsulated)

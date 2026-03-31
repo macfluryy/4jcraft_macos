@@ -1,10 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "Goal.h"
 
 class PathfinderMob;
 class Path;
 class DoorInfo;
+class Village;
 
 class MoveThroughVillageGoal : public Goal {
 private:

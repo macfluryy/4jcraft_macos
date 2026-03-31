@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class EnderCrystal : public Entity {
 public:

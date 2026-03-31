@@ -1,7 +1,10 @@
 #pragma once
+#include <string>
+
 #include "Tile.h"
 
 class IconRegister;
+class Icon;
 
 class CauldronTile : public Tile {
 public:

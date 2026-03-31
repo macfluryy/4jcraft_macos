@@ -1,5 +1,11 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <vector>
+
+class Random;
+
 class FastNoise {
 private:
     uint8_t** noiseMaps;

@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../SimpleContainer.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
 
 class AnvilMenu;
 

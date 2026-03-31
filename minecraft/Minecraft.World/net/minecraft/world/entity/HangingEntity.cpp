@@ -1,11 +1,20 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "net.minecraft.world.entity.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <stdint.h>
+#include <algorithm>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "HangingEntity.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/EntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void HangingEntity::_init(Level* level) {
     checkInterval = 0;

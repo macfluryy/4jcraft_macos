@@ -1,8 +1,10 @@
-#include "../../../Header Files/stdafx.h"
-
-#include "../world/entity/monster/Monster.h"
-
 #include "GenericStats.h"
+
+class DamageSource;
+class ItemInstance;
+class Mob;
+class Player;
+class Stat;
 
 GenericStats* GenericStats::instance = nullptr;
 

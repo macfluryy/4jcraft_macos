@@ -1,13 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../net.minecraft.world.level.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "PortalTile.h"
 #include <optional>
+#include <string>
 
-#include "../../phys/AABB.h"
-#include "FireTile.h"
+#include "PortalTile.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/item/SpawnEggItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfTransparentTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 PortalTile::PortalTile(int id)
     : HalfTransparentTile(id, L"portal", Material::portal, false) {

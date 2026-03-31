@@ -1,15 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.entity.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../monster/net.minecraft.world.entity.monster.h"
-#include "../../../SharedConstants.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+
 #include "Squid.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/WaterAnimal.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void Squid::_init() {
     xBodyRot = xBodyRotO = 0.0f;

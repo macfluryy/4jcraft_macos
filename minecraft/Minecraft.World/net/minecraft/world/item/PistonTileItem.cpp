@@ -1,7 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
 #include "PistonTileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/TileItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/piston/PistonBaseTile.h"
 
 PistonTileItem::PistonTileItem(int id) : TileItem(id) {}
 

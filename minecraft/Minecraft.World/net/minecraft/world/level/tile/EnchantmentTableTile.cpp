@@ -1,9 +1,17 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "EnchantmentTableTile.h"
-#include "entity/EnchantmentTableTileEntity.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const std::wstring EnchantmentTableTile::TEXTURE_SIDE = L"enchantment_side";
 const std::wstring EnchantmentTableTile::TEXTURE_TOP = L"enchantment_top";

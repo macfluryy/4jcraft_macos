@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 #include "Slot.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 
 class HorseInventoryMenu;
+class EntityHorse;
 
 class HorseSaddleSlot : public Slot {
 public:

@@ -1,6 +1,16 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+
+class Container;
+class DispenserTileEntity;
+class ItemInstance;
+class Random;
 
 class WeighedTreasure : public WeighedRandomItem {
 private:

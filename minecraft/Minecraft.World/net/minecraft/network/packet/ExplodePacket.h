@@ -1,7 +1,15 @@
 #pragma once
 
-#include "../../world/level/TilePos.h"
+#include <memory>
+#include <unordered_set>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+
+class Vec3;
 
 class ExplodePacket : public Packet,
                       public std::enable_shared_from_this<ExplodePacket> {

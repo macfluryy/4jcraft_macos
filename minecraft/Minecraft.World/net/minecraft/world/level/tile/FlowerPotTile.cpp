@@ -1,9 +1,15 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
 #include "FlowerPotTile.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DeadBushTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SaplingPlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TallGrassPlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 FlowerPotTile::FlowerPotTile(int id) : Tile(id, Material::decoration, false) {
     updateDefaultShape();

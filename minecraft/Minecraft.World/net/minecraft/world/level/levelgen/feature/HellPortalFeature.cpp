@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
 #include "HellPortalFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool HellPortalFeature::place(Level* level, Random* random, int x, int y,
                               int z) {

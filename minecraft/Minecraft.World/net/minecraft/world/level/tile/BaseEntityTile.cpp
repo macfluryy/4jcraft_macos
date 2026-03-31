@@ -1,8 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "entity/TileEntity.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 #include "BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Material;
 
 BaseEntityTile::BaseEntityTile(int id, Material* material,
                                bool isSolidRender /*= true*/)

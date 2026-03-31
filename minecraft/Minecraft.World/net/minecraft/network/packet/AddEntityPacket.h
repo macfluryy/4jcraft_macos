@@ -1,6 +1,12 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
+class Entity;
 
 class AddEntityPacket : public Packet,
                         public std::enable_shared_from_this<AddEntityPacket> {

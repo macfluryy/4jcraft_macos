@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "DirectoryLevelStorage.h"
+#include "java/File.h"
+
+class ConsoleSaveFile;
 
 class McRegionLevelStorage : public DirectoryLevelStorage {
     //    private static final Logger logger = Logger.getLogger("Minecraft");

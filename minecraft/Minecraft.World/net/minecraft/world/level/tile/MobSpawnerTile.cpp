@@ -1,7 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "entity/net.minecraft.world.level.tile.entity.h"
+#include <memory>
+
 #include "MobSpawnerTile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 MobSpawnerTile::MobSpawnerTile(int id)
     : BaseEntityTile(id, Material::stone, false) {}

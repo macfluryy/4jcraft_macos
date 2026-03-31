@@ -1,7 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 class Scoreboard;
 class Objective;
+class Player;
 
 class Score {
 public:

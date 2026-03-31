@@ -1,5 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "Enemy.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+
+class EntitySelector;
 
 EntitySelector* Enemy::ENEMY_SELECTOR = new Enemy::EnemyEntitySelector();
 

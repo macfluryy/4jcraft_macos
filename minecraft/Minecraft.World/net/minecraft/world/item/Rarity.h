@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+#include "Minecraft.Client/Common/App_enums.h"
+
 class Rarity {
 public:
     static const Rarity* common;

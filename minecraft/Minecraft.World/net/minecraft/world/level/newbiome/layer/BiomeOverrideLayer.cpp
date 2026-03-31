@@ -1,8 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
-#include "../../net.minecraft.world.level.h"
+#include <string.h>
+#include <string>
+
 #include "BiomeOverrideLayer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
     m_biomeOverride = std::vector<uint8_t>(width * height);

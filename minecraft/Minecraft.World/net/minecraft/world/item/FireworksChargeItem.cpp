@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "net.minecraft.world.item.h"
-#include "../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "FireworksChargeItem.h"
 
 FireworksChargeItem::FireworksChargeItem(int id) : Item(id) {}

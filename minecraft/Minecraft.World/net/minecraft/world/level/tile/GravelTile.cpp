@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "GravelTile.h"
-#include "../../item/net.minecraft.world.item.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HeavyTile.h"
 
 GravelTile::GravelTile(int type) : HeavyTile(type) {}
 

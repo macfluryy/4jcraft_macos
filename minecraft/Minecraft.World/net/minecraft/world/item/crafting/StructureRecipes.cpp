@@ -1,9 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "Recipy.h"
 #include "Recipes.h"
 #include "StructureRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BeaconTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ChestTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/QuartzBlockTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SandStoneTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 void StructureRecipies::addRecipes(Recipes* r) {
     r->addShapedRecipy(new ItemInstance(Tile::sandStone),  //

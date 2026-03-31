@@ -1,8 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
 #include "ComplexItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+
+class ItemInstance;
 
 ComplexItem::ComplexItem(int id) : Item(id) {}
 

@@ -1,11 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../phys/net.minecraft.world.phys.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "ItemInstance.h"
-#include "../phys/Vec3.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "BoatItem.h"
 
 BoatItem::BoatItem(int id) : Item(id) { maxStackSize = 1; }

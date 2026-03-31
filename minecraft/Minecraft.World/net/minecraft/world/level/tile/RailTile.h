@@ -2,6 +2,8 @@
 
 #include "BaseRailTile.h"
 
+class Icon;
+
 class RailTile : public BaseRailTile {
     friend class ChunkRebuildData;
 

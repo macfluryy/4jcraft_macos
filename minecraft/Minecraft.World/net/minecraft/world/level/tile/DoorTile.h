@@ -1,10 +1,17 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Player;
 class HitResult;
 class ChunkRebuildData;
+class Icon;
+class Level;
+class LevelSource;
+class Material;
 
 class DoorTile : public Tile {
     friend class Tile;

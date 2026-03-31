@@ -3,13 +3,17 @@
 // import net.minecraft.world.inventory.CraftingContainer;
 // import net.minecraft.world.item.ItemInstance;
 
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
-#include "../../level/tile/Tile.h"
+#include <string.h>
+
 #include "Recipy.h"
 #include "Recipes.h"
 #include "ShapedRecipy.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 // 4J-PB - for new crafting - Adding group to define type of item that the
 // recipe produces

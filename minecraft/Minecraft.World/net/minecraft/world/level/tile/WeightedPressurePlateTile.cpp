@@ -1,11 +1,16 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../entity/Entity.h"
+#include <algorithm>
+#include <vector>
+
 #include "WeightedPressurePlateTile.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BasePressurePlateTile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Material;
 
 WeightedPressurePlateTile::WeightedPressurePlateTile(int id,
                                                      const std::wstring& tex,

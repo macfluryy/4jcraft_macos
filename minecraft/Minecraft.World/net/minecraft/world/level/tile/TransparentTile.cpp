@@ -1,6 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
 #include "TransparentTile.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Material;
 
 TransparentTile::TransparentTile(int id, Material* material, bool allowSame,
                                  bool isSolidRender)

@@ -1,8 +1,9 @@
 #pragma once
-#include "../PathfinderMob.h"
-#include "../Creature.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/Creature.h"
 
 class Player;
+class Level;
 
 class WaterAnimal : public PathfinderMob, public Creature {
 public:

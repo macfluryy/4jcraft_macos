@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
 #include "StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
 
 class MineShaftFeature : public StructureFeature {
 public:

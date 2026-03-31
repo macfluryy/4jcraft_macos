@@ -1,6 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Fireball.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
+class LivingEntity;
 
 class WitherSkull : public Fireball {
 public:

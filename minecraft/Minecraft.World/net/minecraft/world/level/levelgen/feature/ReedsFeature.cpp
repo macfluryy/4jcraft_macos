@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
 #include "ReedsFeature.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool ReedsFeature::place(Level* level, Random* random, int x, int y, int z) {
     for (int i = 0; i < 20; i++) {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Minecart.h"
-#include "../../Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 
 class MinecartContainer : public Minecart, public virtual Container {
 private:

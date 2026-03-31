@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Recipy.h"
+
+class CraftingContainer;
+class ItemInstance;
 
 class FireworksRecipe : public Recipy {
 private:

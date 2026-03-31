@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
 #include "OpenDoorGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/DoorInteractGoal.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DoorTile.h"
 
 OpenDoorGoal::OpenDoorGoal(Mob* mob, bool closeDoorAfter)
     : DoorInteractGoal(mob) {

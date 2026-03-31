@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../saveddata/SavedData.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
 
 class StructureFeatureSavedData : public SavedData {
 private:

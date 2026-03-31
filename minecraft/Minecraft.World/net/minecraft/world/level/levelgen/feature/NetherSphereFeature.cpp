@@ -1,5 +1,6 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "NetherSphereFeature.h"
+
+class Level;
 
 NetherSphere::NetherSphere(Level* level) : Entity(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

@@ -1,9 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
+#include <sstream>
+
 #include "PacketListener.h"
 #include "TextureAndGeometryChangePacket.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 TextureAndGeometryChangePacket::TextureAndGeometryChangePacket() {
     id = -1;

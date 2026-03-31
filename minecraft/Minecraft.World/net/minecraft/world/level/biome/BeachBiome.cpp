@@ -1,7 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../tile/net.minecraft.world.level.tile.h"
+#include <stdint.h>
+#include <vector>
+
 #include "BiomeDecorator.h"
 #include "BeachBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 BeachBiome::BeachBiome(int id) : Biome(id) {
     // remove default mob spawn settings

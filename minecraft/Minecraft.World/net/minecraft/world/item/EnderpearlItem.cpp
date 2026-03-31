@@ -1,9 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
+#include <memory>
+
 #include "EnderpearlItem.h"
-#include "../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/ThrownEnderpearl.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 EnderpearlItem::EnderpearlItem(int id) : Item(id) { maxStackSize = 16; }
 

@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Item.h"
 
 class Player;
 class Level;
+class Icon;
+class ItemInstance;
 
 class TileItem : public Item {
 public:

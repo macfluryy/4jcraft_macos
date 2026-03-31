@@ -1,8 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../net.minecraft.world.level.h"
-#include "entity/net.minecraft.world.level.tile.entity.h"
+#include <memory>
+#include <string>
+
 #include "BeaconTile.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BeaconTileEntity.h"
 
 BeaconTile::BeaconTile(int id) : BaseEntityTile(id, Material::glass, false) {
     setDestroyTime(3.0f);

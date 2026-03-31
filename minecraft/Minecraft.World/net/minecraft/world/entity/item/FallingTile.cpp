@@ -1,10 +1,21 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.entity.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <stdint.h>
+#include <algorithm>
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "FallingTile.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/Tag.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HeavyTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 // 4J - added for common ctor code
 void FallingTile::_init() {

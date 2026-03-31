@@ -1,8 +1,13 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <vector>
+
 #include "Layer.h"
 
 class LevelType;
+class Biome;
 
 class BiomeInitLayer : public Layer {
 private:

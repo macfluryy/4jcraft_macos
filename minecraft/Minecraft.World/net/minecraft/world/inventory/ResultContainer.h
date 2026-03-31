@@ -1,6 +1,12 @@
 #pragma once
 
-#include "../Container.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+
+class ItemInstance;
 
 class ResultContainer : public Container {
 private:

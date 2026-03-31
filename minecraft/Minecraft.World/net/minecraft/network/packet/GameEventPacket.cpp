@@ -1,4 +1,4 @@
-#include "../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include <iostream>
 #include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"

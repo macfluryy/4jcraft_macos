@@ -1,7 +1,14 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "Monster.h"
 #include "RangedAttackMob.h"
+#include "java/Class.h"
+
+class AttributeModifier;
+class Entity;
+class Level;
 
 class Witch : public Monster, public RangedAttackMob {
 public:

@@ -1,8 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <stdint.h>
+#include <string.h>
+
 #include "PacketListener.h"
 #include "ComplexItemDataPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 
 ComplexItemDataPacket::~ComplexItemDataPacket() {}

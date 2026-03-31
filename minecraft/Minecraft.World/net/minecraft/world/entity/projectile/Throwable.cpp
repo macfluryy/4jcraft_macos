@@ -1,10 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.entity.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "nbt/com.mojang.nbt.h"
+#include <math.h>
+#include <stdint.h>
+#include <format>
+#include <numbers>
+#include <vector>
+
 #include "Throwable.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 void Throwable::_throwableInit() {
     xTile = -1;
@@ -254,7 +263,7 @@ float Throwable::getShadowHeightOffs() { return 0; }
 
 std::shared_ptr<LivingEntity> Throwable::getOwner() {
     if (owner == nullptr && !ownerName.empty()) {
-        owner = level->getPlayerByName(ownerName);
+        owner = std::static_pointer_cast<LivingEntity>(level->getPlayerByName(ownerName));
     }
     return owner;
 }

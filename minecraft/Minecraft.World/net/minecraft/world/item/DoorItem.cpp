@@ -1,15 +1,16 @@
 
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "net.minecraft.world.item.h"
-#include "../../Facing.h"
-#include "../level/material/Material.h"
-#include "../../stats/GenericStats.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "DoorItem.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DoorItem::DoorItem(int id, Material* material) : Item(id) {
     this->material = material;

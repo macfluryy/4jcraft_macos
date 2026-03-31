@@ -1,8 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../net.minecraft.world.h"
+#include <string>
+
 #include "RedlightTile.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 RedlightTile::RedlightTile(int id, bool isLit)
     : Tile(id, Material::buildable_glass) {

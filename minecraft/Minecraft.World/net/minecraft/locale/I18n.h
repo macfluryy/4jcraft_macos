@@ -1,7 +1,12 @@
 #pragma once
 
-#include "../../../Header Files/stdafx.h"
+#include <stdarg.h>
+#include <string>
+
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "Language.h"
+
+class Language;
 
 class I18n {
 private:

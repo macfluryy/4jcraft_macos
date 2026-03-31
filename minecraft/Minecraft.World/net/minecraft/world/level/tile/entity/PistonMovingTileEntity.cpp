@@ -1,11 +1,15 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "PistonMovingTileEntity.h"
 #include <optional>
+#include <string>
+
+#include "PistonMovingTileEntity.h"
 #include "PistonPieceTileEntity.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../../net.minecraft.world.h"
-#include "../../../../Facing.h"
-#include "../../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 PistonMovingPiece::PistonMovingPiece(int id)
     : BaseEntityTile(id, Material::piston, false) {

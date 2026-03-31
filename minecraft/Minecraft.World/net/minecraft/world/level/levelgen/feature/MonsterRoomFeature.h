@@ -1,8 +1,11 @@
 #pragma once
+#include <string>
+
 #include "Feature.h"
-#include "../../material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 
 class WeighedTreasure;
+class Random;
 
 class MonsterRoomFeature : public Feature {
 private:

@@ -1,9 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "net.minecraft.world.entity.item.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/redstone/net.minecraft.world.level.redstone.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/net.minecraft.world.level.redstone.h"
 #include "MinecartContainer.h"
 
 void MinecartContainer::_init() {

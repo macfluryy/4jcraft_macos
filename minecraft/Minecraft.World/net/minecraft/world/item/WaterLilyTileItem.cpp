@@ -1,10 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/material/net.minecraft.world.level.material.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
+#include <memory>
+
 #include "WaterLilyTileItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ColoredTileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 
 WaterLilyTileItem::WaterLilyTileItem(int id) : ColoredTileItem(id, false) {}
 

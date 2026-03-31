@@ -1,7 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.inventory.h"
-#include "../item/trading/net.minecraft.world.item.trading.h"
+#include <algorithm>
+
 #include "MerchantResultSlot.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/MerchantContainer.h"
+#include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/Merchant.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipe.h"
 
 MerchantResultSlot::MerchantResultSlot(Player* player,
                                        std::shared_ptr<Merchant> merchant,

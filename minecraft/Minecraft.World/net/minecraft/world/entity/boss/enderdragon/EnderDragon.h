@@ -1,7 +1,7 @@
 #pragma once
-#include "../BossMob.h"
-#include "../MultiEntityMob.h"
-#include "../../monster/Enemy.h"
+#include "Minecraft.World/net/minecraft/world/entity/boss/BossMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/boss/MultiEntityMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Enemy.h"
 
 class MultiEntityMobPart;
 class EnderCrystal;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Icon.h"
 
 class FlippedIcon : public Icon {

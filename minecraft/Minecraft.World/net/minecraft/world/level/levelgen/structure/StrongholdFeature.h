@@ -1,11 +1,20 @@
 #pragma once
 
-class Biome;
+#include <format>
+#include <string>
+#include <unordered_map>
+
 #include "StructureFeature.h"
-
 #include "StructureStart.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
-#include "../../ChunkPos.h"
+class Biome;
+class ChunkPos;
+class Level;
+class Random;
+class TilePos;
 
 // 4J Stu Added
 // We can get away with a few more attempts on new-gen consoles

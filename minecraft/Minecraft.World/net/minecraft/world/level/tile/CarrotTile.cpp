@@ -1,7 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../../item/net.minecraft.world.item.h"
+#include <string>
+
 #include "CarrotTile.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/CropTile.h"
 
 CarrotTile::CarrotTile(int id) : CropTile(id) {}
 

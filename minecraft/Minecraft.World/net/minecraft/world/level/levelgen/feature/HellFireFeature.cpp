@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
 #include "HellFireFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool HellFireFeature::place(Level* level, Random* random, int x, int y, int z) {
     for (int i = 0; i < 64; i++) {

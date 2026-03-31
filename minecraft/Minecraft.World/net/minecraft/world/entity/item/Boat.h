@@ -1,6 +1,10 @@
 #pragma once
 
-#include "../Entity.h"
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class Player;
 class Level;

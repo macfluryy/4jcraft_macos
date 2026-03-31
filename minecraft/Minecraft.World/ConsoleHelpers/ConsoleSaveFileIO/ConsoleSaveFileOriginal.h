@@ -1,9 +1,12 @@
 #pragma once
 #include <mutex>
+#include <string>
 
 #include "FileHeader.h"
 #include "ConsoleSavePath.h"
 #include "ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class ConsoleSaveFileOriginal : public ConsoleSaveFile {
 private:

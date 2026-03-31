@@ -3,6 +3,7 @@
 #include "Goal.h"
 
 class DoorTile;
+class Mob;
 
 class DoorInteractGoal : public Goal {
 protected:

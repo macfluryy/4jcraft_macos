@@ -1,8 +1,12 @@
 #pragma once
 
+#include <format>
+
 #include "Item.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
 
 class Mob;
+class Tile;
 
 class DiggerItem : public Item {
 private:

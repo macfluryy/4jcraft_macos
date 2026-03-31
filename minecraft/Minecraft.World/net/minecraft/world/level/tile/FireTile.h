@@ -1,9 +1,15 @@
 #pragma once
+#include <string>
+
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Random;
 class ChunkRebuildData;
+class Icon;
+class Level;
+class LevelSource;
+
 class FireTile : public Tile {
     friend class Tile;
     friend class ChunkRebuildData;

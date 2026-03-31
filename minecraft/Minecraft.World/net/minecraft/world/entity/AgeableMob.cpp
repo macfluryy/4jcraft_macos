@@ -1,11 +1,21 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.entity.h"
-#include "player/net.minecraft.world.entity.player.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../level/net.minecraft.world.level.h"
+#include <string>
+
 #include "SyncedEntityData.h"
-#include "../../stats/GenericStats.h"
 #include "AgeableMob.h"
+#include "java/Class.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/SpawnEggItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+
+class Entity;
 
 AgableMob::AgableMob(Level* level) : PathfinderMob(level) {
     registeredBBWidth = -1;

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include <vector>
+
 #include "Layer.h"
 
 class LevelType;

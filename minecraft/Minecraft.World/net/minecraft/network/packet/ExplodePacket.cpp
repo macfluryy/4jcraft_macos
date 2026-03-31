@@ -1,9 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/level/net.minecraft.world.level.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "ExplodePacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 ExplodePacket::ExplodePacket() {
     x = 0;

@@ -1,13 +1,24 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../net.minecraft.world.h"
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "DetectorRailTile.h"
-#include "../../../net.minecraft.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Icon;
 
 DetectorRailTile::DetectorRailTile(int id) : BaseRailTile(id, true) {
     setTicking(true);

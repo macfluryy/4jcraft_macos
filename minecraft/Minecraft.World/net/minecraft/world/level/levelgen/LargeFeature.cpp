@@ -1,6 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
+
+#include <stdint.h>
+#include <format>
+#include <string>
+
 #include "LargeFeature.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/LargeFeature.h"
+
+class ChunkSource;
 
 const std::wstring LargeFeature::STRONGHOLD = L"StrongHold";
 

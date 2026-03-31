@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Monster.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobType.h"
+
+class Entity;
+class Level;
 
 class Silverfish : public Monster {
 public:

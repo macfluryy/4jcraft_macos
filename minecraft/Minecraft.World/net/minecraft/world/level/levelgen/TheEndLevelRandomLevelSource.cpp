@@ -1,13 +1,16 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "net.minecraft.world.level.levelgen.h"
-#include "feature/net.minecraft.world.level.levelgen.feature.h"
-#include "structure/net.minecraft.world.level.levelgen.structure.h"
-#include "synth/net.minecraft.world.level.levelgen.synth.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../storage/net.minecraft.world.level.storage.h"
+#include <cmath>
+
 #include "TheEndLevelRandomLevelSource.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/PerlinNoise.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HeavyTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 TheEndLevelRandomLevelSource::TheEndLevelRandomLevelSource(Level* level,
                                                            int64_t seed) {

@@ -1,4 +1,3 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "Synth.h"
 
 std::vector<double> Synth::create(int width, int height) {

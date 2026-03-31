@@ -1,5 +1,12 @@
 #pragma once
 
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
+
+class CraftingContainer;
+class ItemInstance;
+
 class ShapedRecipy : public Recipy {
 private:
     int width, height, group;

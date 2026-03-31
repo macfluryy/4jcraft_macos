@@ -1,13 +1,25 @@
-#include <thread>
-#include <chrono>
+#include <stdio.h>
+#include <unistd.h>
+#include <vector>
 
-#include "../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Connection.h"
-#include "../../../ConsoleHelpers/ThreadName.h"
-#include "../../../Header Files/compression.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "compression.h"
+#include "java/InputOutputStream/BufferedOutputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "java/System.h"
+#include "Minecraft.World/net/minecraft/network/packet/KeepAlivePacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+class SocketAddress;
 
 // This should always be enabled, except for debugging use
 #if !defined(_DEBUG)

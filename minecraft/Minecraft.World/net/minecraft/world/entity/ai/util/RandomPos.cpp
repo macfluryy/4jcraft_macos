@@ -1,8 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "RandomPos.h"
 #include <optional>
+
+#include "RandomPos.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
 
 Vec3 RandomPos::tempDir = Vec3(0, 0, 0);
 

@@ -1,10 +1,19 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.entity.ai.village.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../monster/net.minecraft.world.entity.monster.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "VillageSiege.h"
+#include <math.h>
 #include <optional>
+#include <format>
+#include <numbers>
+#include <vector>
+
+#include "VillageSiege.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Village.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Villages.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Zombie.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/MobSpawner.h"
 
 VillageSiege::VillageSiege(Level* level) {
     hasSetupSiege = false;

@@ -1,17 +1,25 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.entity.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../projectile/net.minecraft.world.entity.projectile.h"
-#include "../../../SharedConstants.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include <stdint.h>
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "Blaze.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Monster.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/SmallFireball.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 Blaze::Blaze(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

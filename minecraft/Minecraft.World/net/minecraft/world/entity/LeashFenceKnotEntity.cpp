@@ -1,9 +1,19 @@
-#include "../../../../Header Files/stdafx.h"
-#include "player/net.minecraft.world.entity.player.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../phys/net.minecraft.world.phys.h"
+#include <format>
+#include <vector>
+
 #include "LeashFenceKnotEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/HangingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class CompoundTag;
+class Entity;
 
 void LeashFenceKnotEntity::_init() { defineSynchedData(); }
 

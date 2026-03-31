@@ -1,8 +1,11 @@
 #pragma once
+#include <memory>
+
 #include "DefaultDispenseItemBehavior.h"
 
 class Projectile;
 class Position;
+class Level;
 
 class AbstractProjectileDispenseBehavior : public DefaultDispenseItemBehavior {
 public:

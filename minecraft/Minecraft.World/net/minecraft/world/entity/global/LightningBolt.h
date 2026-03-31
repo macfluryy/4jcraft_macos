@@ -1,7 +1,12 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "GlobalEntity.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "java/Class.h"
+
+class Level;
 
 // class LightningBolt : public GlobalEntity
 class LightningBolt : public GlobalEntity {

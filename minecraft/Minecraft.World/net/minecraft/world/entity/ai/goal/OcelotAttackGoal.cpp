@@ -1,10 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../../../phys/net.minecraft.world.phys.h"
+#include <algorithm>
+
 #include "OcelotAttackGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Ocelot.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 OcelotAttackGoal::OcelotAttackGoal(Mob* mob) {
     target = std::weak_ptr<LivingEntity>();

@@ -1,6 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
+#include <assert.h>
 
 #include "GameRules.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 // 4J: GameRules isn't in use anymore, just routes any requests to app game host
 // options, kept things commented out for context

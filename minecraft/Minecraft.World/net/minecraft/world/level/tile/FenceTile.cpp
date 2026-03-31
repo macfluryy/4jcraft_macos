@@ -1,8 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
 #include "FenceTile.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/LeashItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 FenceTile::FenceTile(int id, const std::wstring& texture, Material* material)
     : Tile(id, material, false) {

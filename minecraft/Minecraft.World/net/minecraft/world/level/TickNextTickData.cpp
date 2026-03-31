@@ -1,6 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include "tile/net.minecraft.world.level.tile.h"
+#include <cstdint>
+
 #include "TickNextTickData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 int64_t TickNextTickData::C = 0;
 

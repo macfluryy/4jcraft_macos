@@ -1,5 +1,15 @@
 #pragma once
+#include <list>
+#include <vector>
+
 #include "StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+
+class BoundingBox;
+class Level;
+class Random;
+class WeighedTreasure;
 
 class StrongholdPieces {
 private:
@@ -76,6 +86,7 @@ public:
 
 private:
     class StrongholdPiece;
+
     static bool updatePieceWeight();
     static StrongholdPiece* findAndCreatePieceFactory(
         EPieceClass pieceClass, std::list<StructurePiece*>* pieces,

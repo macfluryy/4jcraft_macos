@@ -2,6 +2,8 @@
 
 #include "DoorInteractGoal.h"
 
+class Mob;
+
 class OpenDoorGoal : public DoorInteractGoal {
 private:
     bool closeDoor;

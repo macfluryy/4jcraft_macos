@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
+
+class LivingEntity;
+class PathfinderMob;
 
 class MoveTowardsTargetGoal : public Goal {
 private:

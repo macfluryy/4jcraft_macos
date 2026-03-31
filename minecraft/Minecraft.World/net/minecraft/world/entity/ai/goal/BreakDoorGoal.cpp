@@ -1,10 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../net.minecraft.world.h"
-#include "../../../../SharedConstants.h"
 #include "BreakDoorGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/DoorInteractGoal.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DoorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
 
 BreakDoorGoal::BreakDoorGoal(Mob* mob) : DoorInteractGoal(mob) {
     breakTime = 0;

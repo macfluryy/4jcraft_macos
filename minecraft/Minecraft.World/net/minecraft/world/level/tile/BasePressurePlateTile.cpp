@@ -1,13 +1,16 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
-#include "BasePressurePlateTile.h"
 #include <optional>
-#include "../../phys/AABB.h"
+
+#include "BasePressurePlateTile.h"
+#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FenceTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 BasePressurePlateTile::BasePressurePlateTile(int id, const std::wstring& tex,
                                              Material* material)

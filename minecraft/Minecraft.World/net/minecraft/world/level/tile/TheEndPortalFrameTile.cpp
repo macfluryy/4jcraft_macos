@@ -1,9 +1,16 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "TheEndPortalFrameTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "../../net.minecraft.world.h"
-#include "../../../Facing.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 const std::wstring TheEndPortalFrameTile::TEXTURE_EYE = L"endframe_eye";
 

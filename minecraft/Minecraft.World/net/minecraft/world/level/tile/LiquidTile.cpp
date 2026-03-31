@@ -1,15 +1,24 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <optional>
+
 #include "java/JavaMath.h"
-#include "../net.minecraft.world.level.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../../net.minecraft.world.h"
 #include "LiquidTile.h"
-#include <cstddef>
-#include "../../../Facing.h"
-#include "../../../../../Header Files/SoundTypes.h"
-#include "../material/Material.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Icon;
 
 const std::wstring LiquidTile::TEXTURE_LAVA_STILL = L"lava";
 const std::wstring LiquidTile::TEXTURE_WATER_STILL = L"water";

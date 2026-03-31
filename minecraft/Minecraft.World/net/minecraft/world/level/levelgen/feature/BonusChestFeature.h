@@ -1,8 +1,12 @@
 #pragma once
+#include <format>
+#include <vector>
+
 #include "Feature.h"
 
 class Random;
 class Level;
+class WeighedTreasure;
 
 class BonusChestFeature : public Feature {
 private:

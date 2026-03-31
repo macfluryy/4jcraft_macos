@@ -1,9 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
-#include "BaseRailTile.h"
 #include <optional>
+
+#include "BaseRailTile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 BaseRailTile::Rail::Rail(Level* level, int x, int y, int z) {
     this->level = level;

@@ -1,6 +1,10 @@
 #pragma once
 
+#include <format>
+
 #include "DiggerItem.h"
+
+class Tile;
 
 #define HATCHET_DIGGABLES 8
 class HatchetItem : public DiggerItem {

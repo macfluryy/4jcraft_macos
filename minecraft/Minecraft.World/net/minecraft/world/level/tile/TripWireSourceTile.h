@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
+
+class Level;
 
 class TripWireSourceTile : public Tile {
 public:

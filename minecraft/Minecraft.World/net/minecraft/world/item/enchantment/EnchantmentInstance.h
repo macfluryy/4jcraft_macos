@@ -1,6 +1,9 @@
 #pragma once
 
-#include "../../../util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+
+class Enchantment;
 
 class EnchantmentInstance : public WeighedRandomItem {
 public:

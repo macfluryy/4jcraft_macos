@@ -1,10 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../net.minecraft.h"
-#include "../net.minecraft.world.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "SkullItem.h"
 
 const unsigned int SkullItem::NAMES[SKULL_COUNT] = {

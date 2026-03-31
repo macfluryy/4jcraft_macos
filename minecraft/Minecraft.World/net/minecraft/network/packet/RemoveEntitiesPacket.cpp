@@ -1,9 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "../../../../ConsoleHelpers/ArrayWithLength.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "RemoveEntitiesPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 RemoveEntitiesPacket::RemoveEntitiesPacket() {}
 

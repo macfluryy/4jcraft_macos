@@ -1,8 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "UpdateProgressPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 UpdateProgressPacket::UpdateProgressPacket() { this->m_percentage = 0; }
 

@@ -1,7 +1,14 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "Minecart.h"
-#include "../../level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+
+class Entity;
+class Level;
 
 class MinecartSpawner : public Minecart {
 public:

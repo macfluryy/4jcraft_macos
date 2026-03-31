@@ -1,21 +1,42 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/dimension/net.minecraft.world.level.dimension.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.entity.h"
-#include "net.minecraft.world.entity.item.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../animal/net.minecraft.world.entity.animal.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <optional>
+#include <cmath>
+#include <format>
+#include <memory>
+#include <numbers>
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "nbt/com.mojang.nbt.h"
 #include "Minecart.h"
-#include <cstddef>
-#include <optional>
-#include "../../../SharedConstants.h"
+#include "java/Class.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/EntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartChest.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartFurnace.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartHopper.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartRideable.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartSpawner.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartTNT.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 const int Minecart::EXITS[][2][3] = {
     //

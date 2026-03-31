@@ -4,6 +4,7 @@
 class Player;
 class Random;
 class Level;
+class LevelSource;
 
 class DiodeTile : public DirectionalTile {
     friend class Tile;

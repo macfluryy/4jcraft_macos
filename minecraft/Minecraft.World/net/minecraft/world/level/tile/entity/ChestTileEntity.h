@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TileEntity.h"
-#include "../../../Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 
 #include "nbt/ListTag.h"
 

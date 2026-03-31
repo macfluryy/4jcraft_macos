@@ -1,8 +1,12 @@
 #pragma once
 
+#include <format>
+#include <vector>
+
 #include "TileItem.h"
 
 class ItemInstance;
+class Tile;
 
 class ColoredTileItem : public TileItem {
 private:

@@ -1,22 +1,26 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.level.h"
-#include "biome/net.minecraft.world.level.biome.h"
-#include "material/net.minecraft.world.level.material.h"
-#include "pathfinder/net.minecraft.world.level.pathfinder.h"
-#include "tile/net.minecraft.world.level.tile.h"
-#include "../Difficulty.h"
-#include "../../util/WeighedRandom.h"
+#include <utility>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
 #include "Level.h"
-#include "ChunkPos.h"
-#include "TilePos.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "MobSpawner.h"
-#include "dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class MobGroupData;
 
 const int MobSpawner::MIN_SPAWN_DISTANCE = 24;
 
@@ -37,9 +41,6 @@ std::unordered_map<ChunkPos, bool, ChunkPosKeyHash, ChunkPosKeyEq>
 
 const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                            bool spawnFriendlies, bool spawnPersistent) {
-#if !defined(_CONTENT_PACKAGE)
-
-#endif
 
     if (!spawnEnemies && !spawnFriendlies && !spawnPersistent) {
         return 0;

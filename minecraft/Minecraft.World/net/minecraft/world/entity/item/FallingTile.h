@@ -1,7 +1,10 @@
 #pragma once
-#include "../Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class Level;
+class CompoundTag;
 
 class FallingTile : public Entity {
 public:

@@ -1,7 +1,17 @@
 #pragma once
 
-#include "../entity/player/Player.h"
+#include <format>
+#include <memory>
+#include <unordered_set>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "net.minecraft.world.inventory.ContainerListener.h"
+
+namespace net_minecraft_world_inventory {
+class ContainerListener;
+}  // namespace net_minecraft_world_inventory
+
 using net_minecraft_world_inventory::ContainerListener;
 
 class Inventory;

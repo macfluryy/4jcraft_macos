@@ -1,9 +1,14 @@
-#include "../../../Header Files/stdafx.h"
-#include "../locale/net.minecraft.locale.h"
-#include "../world/item/ItemInstance.h"
+#include <vector>
+
 #include "Achievements.h"
 #include "DescFormatter.h"
 #include "Achievement.h"
+#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "Minecraft.World/net/minecraft/stats/Stat.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
+class Item;
+class Tile;
 
 /**
  * @class Achievement

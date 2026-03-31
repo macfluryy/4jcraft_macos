@@ -1,8 +1,8 @@
-#include "../../../Header Files/stdafx.h"
-#include "../world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../world/item/net.minecraft.world.item.h"
-#include "WeighedRandom.h"
 #include "WeighedTreasure.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
 
 WeighedTreasure::WeighedTreasure(int itemId, int auxValue, int minCount,
                                  int maxCount, int weight)

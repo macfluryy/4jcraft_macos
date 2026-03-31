@@ -2,6 +2,8 @@
 
 #include "AuxDataTileItem.h"
 
+class Tile;
+
 class SnowItem : public AuxDataTileItem {
 public:
     SnowItem(int id, Tile* parentTile);

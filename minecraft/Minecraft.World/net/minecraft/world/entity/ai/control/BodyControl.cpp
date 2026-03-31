@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "net.minecraft.world.entity.ai.control.h"
+#include <algorithm>
+#include <cstdlib>
+
 #include "BodyControl.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/MoveControl.h"
 
 const float BodyControl::maxClampAngle = 75.0f;
 

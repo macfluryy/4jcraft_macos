@@ -1,12 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
+#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
 #ifndef __linux__
 #include <qnet.h>
 #endif  // __linux__
-#include "PacketListener.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PlayerInfoPacket.h"
 
 PlayerInfoPacket::PlayerInfoPacket() {

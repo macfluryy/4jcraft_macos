@@ -1,6 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.item.trading.h"
+#include <stdint.h>
+#include <string>
+
 #include "MerchantRecipeList.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipe.h"
 
 MerchantRecipeList::MerchantRecipeList() {}
 

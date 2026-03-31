@@ -1,5 +1,6 @@
 #pragma once
 #include "TileEntity.h"
+#include "java/Class.h"
 
 class TheEndPortalTileEntity : public TileEntity {
 public:

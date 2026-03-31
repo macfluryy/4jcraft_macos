@@ -1,11 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../animal/net.minecraft.world.entity.animal.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
 #include "ThrownEgg.h"
-#include "../MobCategory.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Chicken.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Throwable.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 
 void ThrownEgg::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

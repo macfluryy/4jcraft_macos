@@ -1,12 +1,18 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "net.minecraft.world.entity.ai.goal.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../npc/net.minecraft.world.entity.npc.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../phys/net.minecraft.world.phys.h"
+#include <format>
+#include <vector>
+
 #include "TakeFlowerGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/OfferFlowerGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/VillagerGolem.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 TakeFlowerGoal::TakeFlowerGoal(Villager* villager) {
     takeFlower = false;

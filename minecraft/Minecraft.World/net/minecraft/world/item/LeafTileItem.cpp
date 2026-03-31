@@ -1,8 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
+#include <memory>
+
 #include "LeafTileItem.h"
-#include "../level/FoliageColor.h"
+#include "Minecraft.World/net/minecraft/world/level/FoliageColor.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/TileItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LeafTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 LeafTileItem::LeafTileItem(int id) : TileItem(id) {
     setMaxDamage(0);

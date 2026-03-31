@@ -1,9 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
 #include "SetEntityLinkPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 SetEntityLinkPacket::SetEntityLinkPacket() {
     sourceId = -1;

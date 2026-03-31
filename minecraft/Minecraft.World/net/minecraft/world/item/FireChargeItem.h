@@ -5,6 +5,7 @@
 class ItemInstance;
 class Player;
 class Level;
+class Icon;
 
 class FireChargeItem : public Item {
 private:

@@ -1,6 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
+
+#include <stdint.h>
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/RiverMixerLayer.h"
 
 RiverMixerLayer::RiverMixerLayer(int64_t seed, std::shared_ptr<Layer> biomes,
                                  std::shared_ptr<Layer> rivers)

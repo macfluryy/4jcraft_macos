@@ -1,8 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "Throwable.h"
+#include "java/Class.h"
 
 class HitResult;
+class Entity;
+class Level;
+class LivingEntity;
 
 class Snowball : public Throwable {
 public:

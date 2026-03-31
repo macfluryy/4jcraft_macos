@@ -1,7 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../../item/net.minecraft.world.item.h"
+#include <string>
+
 #include "StainedGlassPaneBlock.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ThinFenceTile.h"
+
+class Icon;
 
 Icon* StainedGlassPaneBlock::ICONS[StainedGlassPaneBlock::ICONS_COUNT];
 Icon* StainedGlassPaneBlock::EDGE_ICONS[StainedGlassPaneBlock::ICONS_COUNT];

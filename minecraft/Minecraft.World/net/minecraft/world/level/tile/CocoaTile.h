@@ -1,6 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "DirectionalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 class CocoaTile : public DirectionalTile {
 public:

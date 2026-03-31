@@ -1,11 +1,23 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../net.minecraft.world.entity.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../../network/packet/net.minecraft.network.packet.h"
+#include <stdint.h>
+#include <memory>
+#include <string>
+
 #include "MinecartFurnace.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/network/packet/ContainerOpenPacket.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 MinecartFurnace::MinecartFurnace(Level* level) : Minecart(level) {
     defineSynchedData();

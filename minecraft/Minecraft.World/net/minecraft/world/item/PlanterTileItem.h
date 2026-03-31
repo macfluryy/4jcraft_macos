@@ -2,6 +2,8 @@
 
 #include "Item.h"
 
+class Tile;
+
 class TilePlanterItem : public Item {
 private:
     int tileId;

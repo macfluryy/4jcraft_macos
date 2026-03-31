@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class Animal;

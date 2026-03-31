@@ -1,6 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
+#include <memory>
+
 #include "RotatedPillarTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
+class Material;
 
 RotatedPillarTile::RotatedPillarTile(int id, Material* material)
     : Tile(id, material) {}

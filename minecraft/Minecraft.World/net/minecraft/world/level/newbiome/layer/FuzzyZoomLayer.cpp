@@ -1,6 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "java/System.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
+
+#include <stdint.h>
+#include <algorithm>
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/FuzzyZoomLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 FuzzyZoomLayer::FuzzyZoomLayer(int64_t seedMixup, std::shared_ptr<Layer> parent)
     : Layer(seedMixup) {

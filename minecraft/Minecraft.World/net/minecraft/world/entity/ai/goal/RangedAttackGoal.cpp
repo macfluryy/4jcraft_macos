@@ -1,11 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../sensing/net.minecraft.world.entity.ai.sensing.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../monster/net.minecraft.world.entity.monster.h"
-#include "../../../phys/net.minecraft.world.phys.h"
 #include "RangedAttackGoal.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/sensing/Sensing.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/RangedAttackMob.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void RangedAttackGoal::_init(RangedAttackMob* rangedMob, Mob* mob,
                              double speedModifier, int attackIntervalMin,

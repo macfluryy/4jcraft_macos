@@ -2,7 +2,7 @@
 
 #include "nbt/com.mojang.nbt.h"
 #include "TileEntity.h"
-#include "../../../Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 
 class Player;
 class Random;

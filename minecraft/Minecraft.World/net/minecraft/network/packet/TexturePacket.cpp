@@ -1,8 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "TexturePacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 TexturePacket::TexturePacket() {
     this->textureName = L"";

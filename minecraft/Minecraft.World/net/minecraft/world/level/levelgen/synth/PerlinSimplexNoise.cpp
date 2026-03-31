@@ -1,5 +1,6 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "PerlinSimplexNoise.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/SimplexNoise.h"
 
 PerlinSimplexNoise::PerlinSimplexNoise(int levels) {
     Random random;

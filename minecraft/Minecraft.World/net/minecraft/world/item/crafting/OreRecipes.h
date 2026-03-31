@@ -1,5 +1,10 @@
 #pragma once
 
+#include <vector>
+
+class Object;
+class Recipes;
+
 #define MAX_ORE_RECIPES 8
 
 class OreRecipies {

@@ -1,7 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
+
 class ChunkRebuildData;
+class Icon;
+class Level;
+class LivingEntity;
+
 class TntTile : public Tile {
     friend class ChunkRebuildData;
 

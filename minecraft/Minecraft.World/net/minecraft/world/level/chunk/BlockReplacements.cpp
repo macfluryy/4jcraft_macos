@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <vector>
+
 #include "BlockReplacements.h"
-#include "../tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 std::vector<uint8_t> BlockReplacements::replacements = std::vector<uint8_t>(256);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class MemoryChunkStorage : public ChunkStorage {
 public:

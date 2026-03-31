@@ -1,8 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "piston/net.minecraft.world.level.tile.piston.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/piston/net.minecraft.world.level.tile.piston.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "LeafTile.h"
 
 #include "TreeTile.h"

@@ -1,10 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.inventory.h"
-#include "../item/crafting/net.minecraft.world.item.crafting.h"
 #include "ArmorSlot.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ArmorSlot::ArmorSlot(int slotNum, std::shared_ptr<Container> container, int id,
                      int x, int y)

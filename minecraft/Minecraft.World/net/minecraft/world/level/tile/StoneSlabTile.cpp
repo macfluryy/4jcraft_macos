@@ -1,8 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../net.minecraft.world.level.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "StoneSlabTile.h"
 
 const unsigned int StoneSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {

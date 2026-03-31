@@ -1,4 +1,3 @@
-#include "../../Header Files/stdafx.h"
 #include "Facing.h"
 
 const int Facing::OPPOSITE_FACING[6] = {UP, DOWN, SOUTH, NORTH, EAST, WEST};

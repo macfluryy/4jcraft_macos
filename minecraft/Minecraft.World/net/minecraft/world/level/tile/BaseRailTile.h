@@ -1,11 +1,17 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "Tile.h"
-#include "../TilePos.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Random;
 class HitResult;
 class ChunkRebuildData;
+class Icon;
+class Level;
+class TilePos;
 
 class BaseRailTile : public Tile {
     friend class Tile;

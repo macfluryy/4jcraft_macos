@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.commands.h"
 #include "GameModeCommand.h"
+
+class CommandSender;
 
 EGameCommand GameModeCommand::getId() { return eGameCommand_GameMode; }
 

@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+#include <typeinfo>
+
 #include "Goal.h"
 
 class Mob;
 class Level;
+class Entity;
 
 class LookAtPlayerGoal : public Goal {
 private:

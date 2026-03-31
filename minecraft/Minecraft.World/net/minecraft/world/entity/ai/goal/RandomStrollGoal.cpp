@@ -1,11 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../util/net.minecraft.world.entity.ai.util.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "../../../../SharedConstants.h"
+#include <memory>
+#include <optional>
+
 #include "RandomStrollGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/util/RandomPos.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 RandomStrollGoal::RandomStrollGoal(PathfinderMob* mob, double speedModifier) {
     this->mob = mob;

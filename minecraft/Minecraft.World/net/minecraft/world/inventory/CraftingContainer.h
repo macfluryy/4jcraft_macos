@@ -1,6 +1,12 @@
 #pragma once
 
-#include "../Container.h"
+#include <format>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class AbstractContainerMenu;
 

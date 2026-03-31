@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+#include "java/Class.h"
+
 class Node {
     // 4J Jev, these classes were accessing protected members.
     friend class BinaryHeap;

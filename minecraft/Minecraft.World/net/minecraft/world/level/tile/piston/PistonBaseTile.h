@@ -1,7 +1,14 @@
 #pragma once
-#include "../Tile.h"
 #include <cstdint>
 #include <optional>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
+class Level;
+class LivingEntity;
 
 class PistonBaseTile : public Tile {
 public:

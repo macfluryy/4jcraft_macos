@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "RainforestBiome.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/TreeFeature.h"
 
 RainforestBiome::RainforestBiome(int id) : Biome(id) {}
 

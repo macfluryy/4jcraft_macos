@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Minecart.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+
+class Entity;
+class Level;
 
 class MinecartFurnace : public Minecart {
 public:

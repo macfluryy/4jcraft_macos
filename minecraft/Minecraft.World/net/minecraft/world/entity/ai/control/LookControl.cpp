@@ -1,8 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../phys/net.minecraft.world.phys.h"
+#include <math.h>
+#include <numbers>
+
 #include "LookControl.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 LookControl::LookControl(Mob* mob) {
     yMax = xMax = 0.0f;

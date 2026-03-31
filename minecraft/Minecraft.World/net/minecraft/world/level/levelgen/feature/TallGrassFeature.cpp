@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
 #include "TallGrassFeature.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 TallGrassFeature::TallGrassFeature(int tile, int type) {
     this->tile = tile;

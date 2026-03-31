@@ -1,6 +1,10 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+
 #include "LargeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/LargeFeature.h"
 
 class LargeHellCaveFeature : public LargeFeature {
 protected:

@@ -1,6 +1,13 @@
 #pragma once
 
+#include <unordered_map>
+#include <unordered_set>
+
 #include "AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
+
+class Attribute;
+class BaseAttributeMap;
 
 class ModifiableAttributeInstance : public AttributeInstance {
 private:

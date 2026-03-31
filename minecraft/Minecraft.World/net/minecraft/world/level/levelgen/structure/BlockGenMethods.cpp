@@ -1,7 +1,9 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../../net.minecraft.h"
-#include "../../net.minecraft.world.level.h"
+#include <vector>
+
 #include "BlockGenMethods.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 void BlockGenMethods::generateBox(Level* level, std::vector<uint8_t>& blocks, int sx,
                                   int sy, int sz, int ex, int ey, int ez,

@@ -1,7 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "WaterlilyFeature.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.level.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool WaterlilyFeature::place(Level* level, Random* random, int x, int y,
                              int z) {

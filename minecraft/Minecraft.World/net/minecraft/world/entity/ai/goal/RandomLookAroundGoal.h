@@ -2,6 +2,8 @@
 
 #include "Goal.h"
 
+class Mob;
+
 class RandomLookAroundGoal : public Goal {
 private:
     Mob* mob;

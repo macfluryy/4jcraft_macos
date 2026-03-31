@@ -1,10 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/pathfinder/net.minecraft.world.level.pathfinder.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
+#include <algorithm>
+
 #include "DoorInteractGoal.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Node.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Path.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DoorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DoorInteractGoal::DoorInteractGoal(Mob* mob) {
     doorX = doorY = doorZ = 0;

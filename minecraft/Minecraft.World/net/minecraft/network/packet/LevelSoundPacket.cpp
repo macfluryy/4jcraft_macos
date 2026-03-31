@@ -1,8 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "net.minecraft.network.packet.h"
-#include "LevelSoundPacket.h"
 #include <limits>
+
+#include "LevelSoundPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
 
 const float LevelSoundPacket::PITCH_ACCURACY =
     std::numeric_limits<char>::max() / 2.0;

@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 
 class DispenserTileEntity;
+class Container;
 
 class TrapMenu : public AbstractContainerMenu {
 private:

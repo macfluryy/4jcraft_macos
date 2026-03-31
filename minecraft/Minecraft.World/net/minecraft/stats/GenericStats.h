@@ -1,9 +1,22 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Stat.h"
 #include "Stats.h"
+#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+#include "java/Class.h"
 
-// #include "../world/damageSource/DamageSource.h"
+class DamageSource;
+class ItemInstance;
+class Mob;
+class Player;
+class Stat;
+
+// #include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
 
 // #include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
 

@@ -1,6 +1,6 @@
 #pragma once
-#include "../Creature.h"
-#include "../EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/Creature.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
 
 class Enemy : public Creature {
 public:

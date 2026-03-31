@@ -1,12 +1,18 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include <vector>
+
 #include "FurnaceResultSlot.h"
 #include "Slot.h"
-#include "../../stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "FurnaceMenu.h"
-#include "../item/crafting/FurnaceRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/FurnaceRecipes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/item/CoalItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/FurnaceTileEntity.h"
 
 FurnaceMenu::FurnaceMenu(std::shared_ptr<Inventory> inventory,
                          std::shared_ptr<FurnaceTileEntity> furnace)

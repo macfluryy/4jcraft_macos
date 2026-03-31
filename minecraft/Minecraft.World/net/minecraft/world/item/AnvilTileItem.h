@@ -2,6 +2,8 @@
 
 #include "MultiTextureTileItem.h"
 
+class Tile;
+
 class AnvilTileItem : public MultiTextureTileItem {
 public:
     AnvilTileItem(Tile* tile);

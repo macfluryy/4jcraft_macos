@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
+
+class LivingEntity;
+class Villager;
 
 class PlayGoal : public Goal {
 private:

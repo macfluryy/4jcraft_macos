@@ -1,6 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "GameModeCommand.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
 
 class GameType;
 

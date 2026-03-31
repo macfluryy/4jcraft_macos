@@ -1,14 +1,35 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <assert.h>
+#include <stdio.h>
 #include <mutex>
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 #include "java/File.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../../entity/net.minecraft.world.entity.h"
-#include "../../net.minecraft.world.level.h"
-#include "../net.minecraft.world.level.chunk.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../storage/net.minecraft.world.level.storage.h"
-#include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "OldChunkStorage.h"
+#include "4J_Profile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "java/InputOutputStream/FileInputStream.h"
+#include "java/InputOutputStream/FileOutputStream.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/NbtIo.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/TickNextTickData.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =
     nullptr;

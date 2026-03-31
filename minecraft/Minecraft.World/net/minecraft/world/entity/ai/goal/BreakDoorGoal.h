@@ -1,7 +1,10 @@
 #pragma once
 
 #include "DoorInteractGoal.h"
-#include "../../../../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+
+class Mob;
 
 class BreakDoorGoal : public DoorInteractGoal {
 private:

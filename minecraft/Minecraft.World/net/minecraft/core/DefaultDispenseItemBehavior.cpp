@@ -1,10 +1,12 @@
-#include "../../../Header Files/stdafx.h"
-#include "../net.minecraft.h"
-#include "net.minecraft.core.h"
-#include "../world/level/tile/net.minecraft.world.level.tile.h"
-#include "../world/level/net.minecraft.world.level.h"
-#include "../world/entity/item/net.minecraft.world.entity.item.h"
 #include "DefaultDispenseItemBehavior.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/core/BlockSource.h"
+#include "Minecraft.World/net/minecraft/core/FacingEnum.h"
+#include "Minecraft.World/net/minecraft/core/Position.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DispenserTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
 
 std::shared_ptr<ItemInstance> DefaultDispenseItemBehavior::dispense(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed) {

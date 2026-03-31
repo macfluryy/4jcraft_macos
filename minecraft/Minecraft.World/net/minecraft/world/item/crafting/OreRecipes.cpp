@@ -1,10 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../DyePowderItem.h"
-#include "../../level/tile/Tile.h"
-#include "Recipy.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Recipes.h"
 #include "OreRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/CoalItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 void OreRecipies::_init() {
     ADD_OBJECT(map[0], Tile::goldBlock);

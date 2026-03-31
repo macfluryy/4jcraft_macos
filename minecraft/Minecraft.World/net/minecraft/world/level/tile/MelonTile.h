@@ -2,6 +2,8 @@
 #include "Tile.h"
 
 class ChunkRebuildData;
+class Icon;
+
 class MelonTile : public Tile {
     friend class ChunkRebuildData;
 

@@ -1,5 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
+class Entity;
+class Mob;
+
 class Sensing {
 private:
     Mob* mob;

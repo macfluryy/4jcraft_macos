@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Vec3.h"
-#include "../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class HitResult;
 

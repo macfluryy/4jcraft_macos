@@ -1,6 +1,13 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Level;
+class Material;
 
 class BasePressurePlateTile : public Tile {
 private:

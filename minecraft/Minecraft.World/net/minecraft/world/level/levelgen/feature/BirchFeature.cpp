@@ -1,7 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
+#include <stdlib.h>
+
 #include "BirchFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LeafTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
 
 BirchFeature::BirchFeature(bool doUpdate) : Feature(doUpdate) {}
 

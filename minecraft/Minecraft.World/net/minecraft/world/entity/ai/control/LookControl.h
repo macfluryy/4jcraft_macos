@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Control.h"
 
 class Mob;
+class Entity;
 
 class LookControl : public Control {
 private:

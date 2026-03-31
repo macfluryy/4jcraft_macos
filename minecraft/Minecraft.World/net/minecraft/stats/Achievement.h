@@ -1,8 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Stat.h"
 
 class DescFormatter;
+class Item;
+class ItemInstance;
+class Tile;
 
 class Achievement : public Stat {
 public:

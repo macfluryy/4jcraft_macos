@@ -1,5 +1,14 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Node.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
+class Entity;
+
 class Path {
     friend class PathFinder;
 

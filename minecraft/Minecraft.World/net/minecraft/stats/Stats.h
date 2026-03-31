@@ -1,8 +1,12 @@
 #pragma once
 
+#include <format>
+#include <unordered_map>
+
 #include "Stat.h"
 
 class ItemStat;
+class Stat;
 
 class Stats {
     friend class Stat;

@@ -1,9 +1,16 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.commands.h"
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
 #include "TimeCommand.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+
+class CommandSender;
 
 EGameCommand TimeCommand::getId() { return eGameCommand_Time; }
 

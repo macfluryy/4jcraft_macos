@@ -1,9 +1,13 @@
 #pragma once
 #include <cstdint>
+#include <format>
+#include <memory>
+#include <string>
 
 #include "Packet.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 #include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class DLCSkinFile;
 

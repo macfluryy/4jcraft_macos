@@ -1,16 +1,27 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../effect/net.minecraft.world.effect.h"
-#include "../../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "Monster.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
 
+#include "Monster.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Enemy.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/ThornsEnchantment.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 Monster::Monster(Level* level) : PathfinderMob(level) {
     xpReward = Enemy::XP_REWARD_MEDIUM;

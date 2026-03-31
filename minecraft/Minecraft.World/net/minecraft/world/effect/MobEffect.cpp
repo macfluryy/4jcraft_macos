@@ -1,13 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "../food/net.minecraft.world.food.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
+#include "Minecraft.World/net/minecraft/world/food/net.minecraft.world.food.h"
 #include "net.minecraft.world.effect.h"
-#include "../../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 
 MobEffect* MobEffect::effects[NUM_EFFECTS];
 

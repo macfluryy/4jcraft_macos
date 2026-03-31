@@ -1,12 +1,25 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../effect/net.minecraft.world.effect.h"
-#include "../../../SharedConstants.h"
+#include <math.h>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "java/JavaMath.h"
 #include "ThrownPotion.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Throwable.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/PotionItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+
+class Entity;
 
 const double ThrownPotion::SPLASH_RANGE = 4.0;
 const double ThrownPotion::SPLASH_RANGE_SQ =

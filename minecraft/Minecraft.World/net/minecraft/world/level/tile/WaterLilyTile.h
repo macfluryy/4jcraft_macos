@@ -1,6 +1,9 @@
 #pragma once
 #include "PlantTile.h"
 
+class Level;
+class Random;
+
 class WaterlilyTile : public Bush {
 private:
     // static const int col = 0x208030;

@@ -1,7 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-
-#include "../entity/net.minecraft.world.entity.h"
 #include "HitResult.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 HitResult::HitResult(int x, int y, int z, int f, const Vec3& pos) {
     type = TILE;

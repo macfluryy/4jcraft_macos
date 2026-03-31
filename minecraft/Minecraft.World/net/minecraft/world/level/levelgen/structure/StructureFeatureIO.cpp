@@ -1,6 +1,25 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 #include "StructureFeatureIO.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/MineShaftPieces.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/MineShaftStart.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/NetherBridgeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/NetherBridgePieces.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/RandomScatteredLargeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/ScatteredFeaturePieces.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StrongholdFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StrongholdPieces.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureStart.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/VillageFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/VillagePieces.h"
+
+class Level;
 
 std::unordered_map<std::wstring, structureStartCreateFn>
     StructureFeatureIO::startIdClassMap;

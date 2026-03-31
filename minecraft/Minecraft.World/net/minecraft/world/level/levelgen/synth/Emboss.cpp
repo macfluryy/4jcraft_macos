@@ -1,5 +1,5 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "Emboss.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/Synth.h"
 
 Emboss::Emboss(Synth* synth) { this->synth = synth; }
 

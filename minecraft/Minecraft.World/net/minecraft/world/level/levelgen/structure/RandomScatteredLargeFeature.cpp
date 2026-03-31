@@ -1,9 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
+#include <list>
+#include <utility>
+
 #include "ScatteredFeaturePieces.h"
 #include "RandomScatteredLargeFeature.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureStart.h"
 
 const std::wstring RandomScatteredLargeFeature::OPTION_SPACING = L"distance";
 std::vector<Biome*> RandomScatteredLargeFeature::allowedBiomes;

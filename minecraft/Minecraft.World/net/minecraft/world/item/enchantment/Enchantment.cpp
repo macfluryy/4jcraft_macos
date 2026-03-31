@@ -1,6 +1,6 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "net.minecraft.world.item.enchantment.h"
-#include "../net.minecraft.world.item.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Enchantment.h"
 
 // Enchantment *Enchantment::enchantments[256];

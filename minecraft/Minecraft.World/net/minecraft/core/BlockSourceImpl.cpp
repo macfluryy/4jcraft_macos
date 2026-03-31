@@ -1,8 +1,8 @@
-#include "../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "BlockSourceImpl.h"
-#include "../world/level/net.minecraft.world.level.h"
-#include "../world/level/tile/net.minecraft.world.level.tile.h"
-#include "../world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 BlockSourceImpl::BlockSourceImpl(Level* world, int x, int y, int z) {
     this->world = world;

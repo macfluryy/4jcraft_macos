@@ -1,6 +1,11 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "TileEntity.h"
+#include "java/Class.h"
+
+class Level;
 
 class MusicTileEntity : public TileEntity {
 public:

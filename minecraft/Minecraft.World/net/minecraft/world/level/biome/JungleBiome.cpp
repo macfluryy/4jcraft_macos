@@ -1,10 +1,21 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.biome.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
+#include <vector>
+
 #include "JungleBiome.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/GroundBushFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/MegaTreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/TallGrassFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/TreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/VinesFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LeafTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TallGrassPlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 JungleBiome::JungleBiome(int id) : Biome(id) {
     decorator->treeCount = 50;

@@ -1,9 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
-#include "../../world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "SignUpdatePacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/SignTileEntity.h"
 
 SignUpdatePacket::SignUpdatePacket() {
     shouldDelay = true;

@@ -1,10 +1,16 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "../../stats/net.minecraft.stats.h"
+#include <vector>
+
 #include "BrewingStandMenu.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionBrewing.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
 
 BrewingStandMenu::BrewingStandMenu(
     std::shared_ptr<Inventory> inventory,

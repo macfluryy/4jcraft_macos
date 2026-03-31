@@ -1,6 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
+
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/TemperatureLayer.h"
 
 TemperatureLayer::TemperatureLayer(std::shared_ptr<Layer> parent) : Layer(0) {
     this->parent = parent;

@@ -1,8 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "GrassTile.h"
+#include <optional>
+
 #include "PlantTile.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void Bush::_init() {
     setTicking(true);

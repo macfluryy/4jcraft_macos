@@ -1,16 +1,27 @@
 #pragma once
 
-#include "../../../Header Files/stdafx.h"
+#include <stdint.h>
 #include <queue>
+#include <mutex>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/System.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "packet/net.minecraft.network.packet.h"
-#include "../../../ConsoleHelpers/C4JThread.h"
-
-#include <mutex>
-
+#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "Minecraft.Client/Common/Source Files/Network/Socket.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+
+class DataInputStream;
+class DataOutputStream;
+class Packet;
+class PacketListener;
+class SocketAddress;
 
 // 4J JEV, size of the threads (bytes).
 #define READ_STACK_SIZE 0

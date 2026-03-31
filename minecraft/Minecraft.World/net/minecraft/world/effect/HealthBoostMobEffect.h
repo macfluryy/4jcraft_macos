@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MobEffect.h"
+#include "Minecraft.Client/Common/App_enums.h"
 
 class LivingEntity;
 class BaseAttributeMap;

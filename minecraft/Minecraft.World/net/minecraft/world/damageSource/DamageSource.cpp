@@ -1,11 +1,19 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "../level/net.minecraft.world.level.h"
-#include "net.minecraft.world.damagesource.h"
-#include "../food/net.minecraft.world.food.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
+
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/EntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/IndirectEntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Fireball.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodConstants.h"
+#include "Minecraft.World/net/minecraft/world/level/Explosion.h"
+
+class Entity;
 
 DamageSource* DamageSource::inFire =
     (new DamageSource(ChatPacket::e_ChatDeathInFire,

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <format>
+#include <typeinfo>
+
+#include "java/Class.h"
+
 class Material;
 
 class MobCategory {

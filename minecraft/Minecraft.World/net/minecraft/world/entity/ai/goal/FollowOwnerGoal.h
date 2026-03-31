@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class PathNavigation;
 class TamableAnimal;
+class Level;
+class LivingEntity;
 
 class FollowOwnerGoal : public Goal {
 public:

@@ -1,14 +1,24 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../net.minecraft.world.entity.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/material/net.minecraft.world.level.material.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
+#include <math.h>
+#include <format>
+#include <memory>
+#include <numbers>
+#include <vector>
+
 #include "Boat.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/EntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 const double Boat::MAX_SPEED = 0.35;
 const double Boat::MAX_COLLISION_SPEED = MAX_SPEED * 0.75;

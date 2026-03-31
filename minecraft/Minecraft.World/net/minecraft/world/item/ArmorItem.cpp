@@ -1,13 +1,29 @@
-#include "../../../../Header Files/stdafx.h"
+#include <stdio.h>
+#include <format>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "../net.minecraft.world.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../level/net.minecraft.world.level.h"
-#include "nbt/com.mojang.nbt.h"
 #include "ArmorItem.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/Class.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/core/BehaviorRegistry.h"
+#include "Minecraft.World/net/minecraft/core/BlockSource.h"
+#include "Minecraft.World/net/minecraft/core/DefaultDispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/core/FacingEnum.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DispenserTile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
+class Icon;
 
 const int ArmorItem::healthPerSlot[] = {11, 16, 15, 13};
 

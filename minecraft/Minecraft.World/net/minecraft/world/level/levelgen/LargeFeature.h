@@ -1,5 +1,5 @@
 #pragma once
-#include "../chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class Level;
 

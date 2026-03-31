@@ -1,4 +1,4 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "ArrowDamageEnchantment.h"
 
 ArrowDamageEnchantment::ArrowDamageEnchantment(int id, int frequency)

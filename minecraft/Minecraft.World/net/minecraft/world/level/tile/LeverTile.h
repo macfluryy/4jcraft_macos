@@ -1,5 +1,9 @@
 #pragma once
+#include <memory>
+
 #include "Tile.h"
+
+class Level;
 
 class LeverTile : public Tile {
     friend class Tile;

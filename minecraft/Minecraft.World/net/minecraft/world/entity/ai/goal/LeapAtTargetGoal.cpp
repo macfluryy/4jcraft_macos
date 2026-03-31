@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../net.minecraft.world.entity.h"
+#include <math.h>
+
 #include "LeapAtTargetGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
 
 LeapAtTargetGoal::LeapAtTargetGoal(Mob* mob, float yd) {
     target = std::weak_ptr<LivingEntity>();

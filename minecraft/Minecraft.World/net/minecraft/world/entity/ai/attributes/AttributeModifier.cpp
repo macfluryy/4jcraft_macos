@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <assert.h>
+#include <wchar.h>
 
 #include "AttributeModifier.h"
-#include "../../../../util/HtmlString.h"
+#include "Minecraft.World/net/minecraft/util/HtmlString.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 void AttributeModifier::_init(eMODIFIER_ID id, const std::wstring name,
                               double amount, int operation) {

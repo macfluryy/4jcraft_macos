@@ -1,8 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "Zombie.h"
+#include "java/Class.h"
 
 class DamageSource;
+class AttributeModifier;
+class Entity;
+class Level;
 
 // SKIN BY XaPhobia Chris Beidler
 class PigZombie : public Zombie {

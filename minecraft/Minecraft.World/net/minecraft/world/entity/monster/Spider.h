@@ -1,7 +1,13 @@
 #pragma once
 
 #include "Monster.h"
-#include "../MobGroupData.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobGroupData.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobType.h"
+
+class Entity;
+class Level;
+class Random;
 
 class Spider : public Monster {
 public:

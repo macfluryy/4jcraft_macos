@@ -1,8 +1,15 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "LevelData.h"
 
 class GameRules;
+class CompoundTag;
+class Player;
 
 class DerivedLevelData : public LevelData {
 private:

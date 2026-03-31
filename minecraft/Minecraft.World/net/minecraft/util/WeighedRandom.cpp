@@ -1,5 +1,11 @@
-#include "../../../Header Files/stdafx.h"
-#include "WeighedRandom.h"
+
+#include <format>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
 
 int WeighedRandom::getTotalWeight(std::vector<WeighedRandomItem*>* items) {
     int totalWeight = 0;

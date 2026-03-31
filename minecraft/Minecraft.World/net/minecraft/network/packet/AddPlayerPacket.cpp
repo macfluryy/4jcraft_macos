@@ -1,10 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
-#include "../../world/item/net.minecraft.world.item.h"
+#include <vector>
+
 #include "PacketListener.h"
 #include "AddPlayerPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 AddPlayerPacket::AddPlayerPacket() {
     id = -1;

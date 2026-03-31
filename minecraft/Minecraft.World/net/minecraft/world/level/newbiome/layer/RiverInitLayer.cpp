@@ -1,5 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
+
+#include <stdint.h>
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/RiverInitLayer.h"
 
 RiverInitLayer::RiverInitLayer(int64_t seed, std::shared_ptr<Layer> parent)
     : Layer(seed) {

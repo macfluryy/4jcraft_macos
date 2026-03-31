@@ -1,7 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "SetCreativeModeSlotPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 SetCreativeModeSlotPacket::SetCreativeModeSlotPacket() {
     this->slotNum = 0;

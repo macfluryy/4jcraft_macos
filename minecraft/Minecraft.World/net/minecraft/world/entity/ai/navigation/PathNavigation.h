@@ -1,8 +1,14 @@
 #pragma once
 
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
 class Mob;
 class Level;
 class Path;
+class AttributeInstance;
+class Entity;
 
 class PathNavigation {
 private:

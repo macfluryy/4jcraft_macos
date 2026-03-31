@@ -1,7 +1,11 @@
 #pragma once
+#include <deque>
+
 #include "LiquidTile.h"
 
 class Random;
+class Level;
+class Material;
 
 class LiquidTileDynamic : public LiquidTile {
     friend class Tile;

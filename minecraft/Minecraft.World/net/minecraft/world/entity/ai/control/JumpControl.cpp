@@ -1,6 +1,5 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
 #include "JumpControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 
 JumpControl::JumpControl(Mob* mob) {
     _jump = false;

@@ -58,7 +58,7 @@
 
 // TU9
 #include "FireChargeItem.h"
-#include "../entity/ItemFrame.h"
+#include "Minecraft.World/net/minecraft/world/entity/ItemFrame.h"
 #include "SpawnEggItem.h"
 #include "MultiTextureTileItem.h"
 
@@ -84,4 +84,4 @@
 // 4J Added
 #include "ClockItem.h"
 #include "CompassItem.h"
-#include "../../util/HtmlString.h"
+#include "Minecraft.World/net/minecraft/util/HtmlString.h"

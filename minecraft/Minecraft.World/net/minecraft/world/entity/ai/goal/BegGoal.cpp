@@ -1,10 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../../player/net.minecraft.world.entity.player.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../item/net.minecraft.world.item.h"
 #include "BegGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Wolf.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 BegGoal::BegGoal(Wolf* wolf, float lookDistance) {
     player = std::weak_ptr<Player>();

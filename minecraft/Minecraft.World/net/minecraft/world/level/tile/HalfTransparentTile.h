@@ -1,7 +1,10 @@
 #pragma once
+#include <string>
+
 #include "Tile.h"
 
 class ChunkRebuildData;
+class Material;
 
 class HalfTransparentTile : public Tile {
     friend class ChunkRebuildData;

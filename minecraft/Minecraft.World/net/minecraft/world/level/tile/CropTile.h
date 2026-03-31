@@ -1,10 +1,11 @@
 #pragma once
 #include "PlantTile.h"
-#include "../material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 
 class Random;
 class Level;
 class ChunkRebuildData;
+class Icon;
 
 class CropTile : public Bush {
     friend class Tile;

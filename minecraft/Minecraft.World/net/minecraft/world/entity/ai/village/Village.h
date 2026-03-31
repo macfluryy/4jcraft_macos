@@ -1,6 +1,21 @@
 #pragma once
 
 #include <optional>
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/DoorInfo.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
+class CompoundTag;
+class Level;
+class Pos;
+
 class Village {
 private:
     Level* level;

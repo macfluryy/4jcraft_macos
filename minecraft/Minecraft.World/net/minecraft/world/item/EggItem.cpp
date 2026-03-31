@@ -1,16 +1,15 @@
 
-#include "../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../level/net.minecraft.world.level.h"
-#include "net.minecraft.world.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "../entity/global/net.minecraft.world.entity.global.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
+#include <memory>
+
 #include "EggItem.h"
-#include "../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/ThrownEgg.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 EggItem::EggItem(int id) : Item(id) { maxStackSize = 16; }
 

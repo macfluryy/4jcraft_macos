@@ -1,6 +1,14 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <unordered_map>
+
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
+
 class ModifiableAttributeInstance;
+class AttributeInstance;
+class ItemInstance;
 
 class BaseAttributeMap {
 protected:

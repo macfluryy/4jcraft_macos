@@ -1,11 +1,17 @@
 #pragma once
 #include <optional>
+#include <string>
+#include <unordered_set>
+
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
 
 class Random;
 class Level;
 class ChunkRebuildData;
+class Icon;
+class LevelSource;
 
 class RedStoneDustTile : public Tile {
     friend ChunkRebuildData;

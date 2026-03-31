@@ -1,7 +1,12 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <unordered_map>
+
 class AbstractContainerMenu;
 class Inventory;
+class ItemInstance;
 
 class MenuBackup {
 private:

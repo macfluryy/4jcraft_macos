@@ -1,6 +1,6 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.scores.criteria.h"
 #include "ObjectiveCriteria.h"
+#include "Minecraft.World/net/minecraft/world/scores/criteria/DummyCriteria.h"
+#include "Minecraft.World/net/minecraft/world/scores/criteria/HealthCriteria.h"
 
 std::unordered_map<std::wstring, ObjectiveCriteria*>
     ObjectiveCriteria::CRITERIA_BY_NAME;

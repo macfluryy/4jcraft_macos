@@ -1,5 +1,10 @@
 #pragma once
 
+#include <format>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 class FlatLayerInfo;
 
 class FlatGeneratorInfo {

@@ -1,14 +1,27 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <stdint.h>
+#include <stdlib.h>
+#include <cmath>
+#include <format>
+#include <numbers>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "Fireball.h"
-#include "../../level/dimension/net.minecraft.world.level.dimension.h"
-#include "../../../SharedConstants.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 // 4J - added common ctor code.
 void Fireball::_init() {

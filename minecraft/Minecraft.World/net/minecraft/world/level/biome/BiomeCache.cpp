@@ -1,9 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <utility>
 
-#include "Biome.h"
 #include "BiomeSource.h"
 #include "BiomeCache.h"
-#include "java/System.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
     // 	temps = std::vector<float>(ZONE_SIZE * ZONE_SIZE, false);		// MGH -

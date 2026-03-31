@@ -1,10 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "TripWireTile.h"
 #include <optional>
+#include <format>
+#include <vector>
+
+#include "TripWireTile.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TripWireSourceTile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) {
     setShape(0, 0, 0, 1, 2.5f / 16.0f, 1);

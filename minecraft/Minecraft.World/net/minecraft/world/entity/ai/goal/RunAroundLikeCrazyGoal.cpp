@@ -1,12 +1,20 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../player/net.minecraft.world.entity.player.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../util/RandomPos.h"
+#include <memory>
+#include <optional>
+
+#include "Minecraft.World/net/minecraft/world/entity/ai/util/RandomPos.h"
 #include "RunAroundLikeCrazyGoal.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityEvent.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 RunAroundLikeCrazyGoal::RunAroundLikeCrazyGoal(EntityHorse* mob,
                                                double speedModifier) {

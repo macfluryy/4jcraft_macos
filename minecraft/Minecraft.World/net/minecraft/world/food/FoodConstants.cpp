@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "FoodConstants.h"
 
 const int FoodConstants::MAX_FOOD = 20;

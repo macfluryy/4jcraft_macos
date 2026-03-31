@@ -2,6 +2,9 @@
 #include "PlantTile.h"
 
 class ChunkRebuildData;
+class Icon;
+class Level;
+
 class NetherWartTile : public Bush {
     friend class ChunkRebuildData;
 

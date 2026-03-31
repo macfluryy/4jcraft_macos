@@ -1,7 +1,7 @@
 #pragma once
 #include "java/File.h"
 #include "ChunkStorage.h"
-#include "../LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 
 // 4J Stu - There are changes to this class for 1.8.2, but since we never use it
 // anyway lets not worry about it

@@ -1,8 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "net.minecraft.world.item.h"
-#include "../level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "FireworksItem.h"
 
 const std::wstring FireworksItem::TAG_FIREWORKS = L"Fireworks";

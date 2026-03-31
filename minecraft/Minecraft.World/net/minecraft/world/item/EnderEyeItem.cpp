@@ -1,13 +1,23 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/levelgen/net.minecraft.world.level.levelgen.h"
-#include "../level/dimension/net.minecraft.world.level.dimension.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "../phys/net.minecraft.world.phys.h"
+#include <memory>
+
 #include "EnderEyeItem.h"
-#include "../../../../Header Files/SoundTypes.h"
-#include "../level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/EyeOfEnderSignal.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TheEndPortalFrameTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 
 EnderEyeItem::EnderEyeItem(int id) : Item(id) {}
 

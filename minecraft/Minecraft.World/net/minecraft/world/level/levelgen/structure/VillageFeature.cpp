@@ -1,9 +1,22 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <list>
+#include <utility>
+#include <vector>
+
 #include "VillageFeature.h"
 #include "VillagePieces.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureStart.h"
 
 const std::wstring VillageFeature::OPTION_SIZE_MODIFIER = L"size";
 const std::wstring VillageFeature::OPTION_SPACING = L"distance";

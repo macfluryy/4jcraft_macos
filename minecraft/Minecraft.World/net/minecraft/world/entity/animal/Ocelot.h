@@ -1,8 +1,13 @@
 #pragma once
 
-#include "../TamableAnimal.h"
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/TamableAnimal.h"
+#include "java/Class.h"
 
 class TemptGoal;
+class Entity;
+class Level;
 
 class Ocelot : public TamableAnimal {
     friend class OcelotSitOnTileGoal;

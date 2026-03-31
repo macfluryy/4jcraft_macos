@@ -1,12 +1,39 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../Container.h"
-#include "../../inventory/AbstractContainerMenu.h"
-#include "../../inventory/CraftingContainer.h"
-#include "../CoalItem.h"
-#include "../Item.h"
-#include "../ItemInstance.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.crafting.h"
+#include <stdarg.h>
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/CoalItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ArmorRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ClothDyeRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/FireworksRecipe.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/FoodRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/OreRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ShapedRecipy.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ShapelessRecipy.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/StructureRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ToolRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/WeaponRecipes.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DaylightDetectorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HopperTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TripWireSourceTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/WallTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/piston/PistonBaseTile.h"
+
+class Level;
 
 Recipes* Recipes::instance = nullptr;
 ArmorRecipes* Recipes::pArmorRecipes = nullptr;

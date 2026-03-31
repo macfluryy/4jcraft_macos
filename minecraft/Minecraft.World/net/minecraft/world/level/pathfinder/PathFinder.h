@@ -1,7 +1,14 @@
 #pragma once
+#include <format>
+#include <unordered_map>
+
 #include "java/JavaIntHash.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/BinaryHeap.h"
 
 class LevelSource;
+class Entity;
+class Node;
+class Path;
 
 class PathFinder {
 private:

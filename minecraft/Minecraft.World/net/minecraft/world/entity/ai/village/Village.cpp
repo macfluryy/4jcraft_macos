@@ -1,13 +1,25 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.entity.ai.village.h"
-#include "../../npc/net.minecraft.world.entity.npc.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "Village.h"
+#include <stdlib.h>
 #include <limits>
 #include <optional>
+#include <algorithm>
+#include <cmath>
+#include <utility>
+
+#include "Village.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Villages.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/VillagerGolem.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 Village::Aggressor::Aggressor(std::shared_ptr<LivingEntity> mob,
                               int timeStamp) {

@@ -1,5 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
+
+#include <string>
+
 #include "SavedData.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
 
 SavedData::SavedData(const std::wstring& id) : id(id) { dirty = false; }
 

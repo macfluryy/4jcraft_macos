@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 class Mob;
+class CompoundTag;
+class LivingEntity;
 
 class MobEffectInstance {
 private:

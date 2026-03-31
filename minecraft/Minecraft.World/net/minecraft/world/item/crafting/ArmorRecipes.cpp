@@ -1,13 +1,13 @@
 // package net.minecraft.world.item.crafting;
 
-// import net.minecraft.world.item.*;
-// import net.minecraft.world.level.tile.Tile;
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../../level/tile/Tile.h"
-#include "Recipy.h"
+#include <vector>
+
 #include "Recipes.h"
 #include "ArmorRecipes.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
 std::wstring ArmorRecipes::shapes[][4] = {

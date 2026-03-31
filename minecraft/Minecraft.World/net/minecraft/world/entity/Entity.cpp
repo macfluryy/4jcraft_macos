@@ -1,31 +1,52 @@
-#include "../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/dimension/net.minecraft.world.level.dimension.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "item/net.minecraft.world.entity.item.h"
-#include "../level/material/net.minecraft.world.level.material.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "SyncedEntityData.h"
-#include "EntityIO.h"
-#include "../../SharedConstants.h"
-
-#include "../../../../Header Files/ParticleTypes.h"
-
-#include "EntityPos.h"
-#include "Entity.h"
-#include "../../../../Header Files/SoundTypes.h"
-#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include <stdarg.h>
+#include <stdlib.h>
 #include <cstdint>
 #include <optional>
+#include <algorithm>
+#include <cmath>
+#include <format>
+#include <memory>
+#include <numbers>
+#include <string>
+#include <vector>
+
+#include "SyncedEntityData.h"
+#include "EntityIO.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "EntityPos.h"
+#include "Entity.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "SoundTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/FloatTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/ProtectionEnchantment.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LiquidTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 thread_local bool Entity::m_tlsUseSmallIds = false;
 

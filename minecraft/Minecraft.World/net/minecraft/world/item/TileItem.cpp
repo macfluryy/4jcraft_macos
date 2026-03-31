@@ -1,16 +1,22 @@
 
 
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
-#include "../net.minecraft.world.h"
-#include "../../stats/net.minecraft.stats.h"
+#include <string>
+
 #include "TileItem.h"
-#include "../../Facing.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TopSnowTile.h"
 
 TileItem::TileItem(int id) : Item(id) {
     this->tileId = id + 256;

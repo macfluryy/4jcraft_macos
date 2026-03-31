@@ -1,6 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <algorithm>
+#include <format>
+#include <vector>
+
 #include "Goal.h"
-#include "GoalSelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/GoalSelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/GoalSelector.h"
+
+class Level;
 
 GoalSelector::InternalGoal::InternalGoal(int prio, Goal* goal,
                                          bool canDeletePointer) {

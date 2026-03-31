@@ -1,6 +1,11 @@
 #pragma once
 
 #include "MinecartContainer.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartContainer.h"
+
+class Entity;
+class Level;
 
 class MinecartChest : public MinecartContainer {
 public:

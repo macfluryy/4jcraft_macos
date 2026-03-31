@@ -1,12 +1,16 @@
 #pragma once
 
+#include <memory>
+#include <typeinfo>
+
 #include "Goal.h"
-#include "../../EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
 
 class PathNavigation;
 class PathfinderMob;
 class Path;
 class AvoidPlayerGoal;
+class Entity;
 
 class AvoidPlayerGoalEntitySelector : public EntitySelector {
 private:

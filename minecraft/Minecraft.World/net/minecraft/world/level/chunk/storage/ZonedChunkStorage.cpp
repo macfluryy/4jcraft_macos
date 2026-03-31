@@ -1,11 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include <mutex>
 #include "java/File.h"
 #include "java/ByteBuffer.h"
-#include "../../../entity/net.minecraft.world.entity.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../net.minecraft.world.level.chunk.h"
+#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "ZonedChunkStorage.h"
 #include "ZoneFile.h"
 

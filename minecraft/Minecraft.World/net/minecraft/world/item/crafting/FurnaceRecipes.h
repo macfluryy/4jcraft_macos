@@ -1,5 +1,9 @@
 #pragma once
 
+#include <unordered_map>
+
+class ItemInstance;
+
 class FurnaceRecipes {
 private:
     static FurnaceRecipes* instance;

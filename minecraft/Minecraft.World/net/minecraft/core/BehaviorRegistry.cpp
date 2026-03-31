@@ -1,6 +1,9 @@
-#include "../../../Header Files/stdafx.h"
+#include <utility>
 
 #include "BehaviorRegistry.h"
+#include "Minecraft.World/net/minecraft/core/DispenseItemBehavior.h"
+
+class Item;
 
 BehaviorRegistry::BehaviorRegistry(DispenseItemBehavior* defaultValue) {
     defaultBehavior = defaultValue;

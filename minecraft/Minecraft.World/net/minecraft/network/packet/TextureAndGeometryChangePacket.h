@@ -1,7 +1,12 @@
 #pragma once
 #include <cstdint>
+#include <memory>
+#include <string>
 
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
+class Entity;
 
 class TextureAndGeometryChangePacket
     : public Packet,

@@ -1,5 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <cmath>
+
 #include "Rotate.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/Synth.h"
 
 Rotate::Rotate(Synth* synth, float angle) {
     this->synth = synth;

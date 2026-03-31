@@ -1,9 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "DiodeTile.h"
 #include "EntityTile.h"
 
 class ComparatorTileEntity;
+class Level;
+class LevelSource;
+class Random;
 
 class ComparatorTile : public DiodeTile, public EntityTile {
 private:

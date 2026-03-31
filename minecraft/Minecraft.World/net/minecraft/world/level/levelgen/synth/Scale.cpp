@@ -1,5 +1,5 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "Scale.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/Synth.h"
 
 Scale::Scale(Synth* synth, double xScale, double yScale) {
     this->synth = synth;

@@ -1,13 +1,20 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../util/net.minecraft.world.entity.ai.util.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../npc/net.minecraft.world.entity.npc.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "PlayGoal.h"
 #include <limits>
+#include <format>
+#include <optional>
+#include <vector>
+
+#include "PlayGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/util/RandomPos.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 PlayGoal::PlayGoal(Villager* mob, double speedModifier) {
     followFriend = std::weak_ptr<LivingEntity>();

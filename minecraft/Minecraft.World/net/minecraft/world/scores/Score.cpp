@@ -1,7 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.scores.h"
-#include "criteria/net.minecraft.world.scores.criteria.h"
 #include "Score.h"
+#include "Minecraft.World/net/minecraft/world/scores/Objective.h"
+#include "Minecraft.World/net/minecraft/world/scores/Scoreboard.h"
+#include "Minecraft.World/net/minecraft/world/scores/criteria/ObjectiveCriteria.h"
+
+class Player;
 
 Score::Score(Scoreboard* scoreboard, Objective* objective,
              const std::wstring& owner) {

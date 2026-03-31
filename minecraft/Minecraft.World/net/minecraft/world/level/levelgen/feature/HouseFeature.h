@@ -1,6 +1,6 @@
 #pragma once
 #include "Feature.h"
-#include "../../material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 
 class HouseFeature : public Feature {
 public:

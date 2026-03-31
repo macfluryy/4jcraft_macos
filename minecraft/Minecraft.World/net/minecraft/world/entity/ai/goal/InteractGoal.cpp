@@ -1,6 +1,8 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
 #include "InteractGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
+
+class Mob;
 
 InteractGoal::InteractGoal(Mob* mob, const std::type_info& lookAtType,
                            float lookDistance)

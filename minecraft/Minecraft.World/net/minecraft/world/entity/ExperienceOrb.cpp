@@ -1,14 +1,21 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/material/net.minecraft.world.level.material.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <math.h>
+#include <stdint.h>
+#include <string>
+
 #include "java/JavaMath.h"
-#include "../../SharedConstants.h"
 #include "ExperienceOrb.h"
-#include "../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 const int ExperienceOrb::LIFETIME =
     5 * 60 * SharedConstants::TICKS_PER_SECOND;  // Five minutes!

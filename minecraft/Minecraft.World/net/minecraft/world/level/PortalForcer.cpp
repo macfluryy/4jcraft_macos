@@ -1,10 +1,17 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "net.minecraft.world.level.h"
-#include "tile/net.minecraft.world.level.tile.h"
-#include "dimension/net.minecraft.world.level.dimension.h"
+#include <utility>
+
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "PortalForcer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 PortalForcer::PortalPosition::PortalPosition(int x, int y, int z, int64_t time)
     : Pos(x, y, z) {

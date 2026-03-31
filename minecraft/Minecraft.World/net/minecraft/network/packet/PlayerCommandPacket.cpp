@@ -1,9 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
 #include "PlayerCommandPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 const int PlayerCommandPacket::START_SNEAKING = 1;
 const int PlayerCommandPacket::STOP_SNEAKING = 2;

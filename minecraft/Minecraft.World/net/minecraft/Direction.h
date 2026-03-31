@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Direction {
 public:
     static const int UNDEFINED = -1;

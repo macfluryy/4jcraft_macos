@@ -1,10 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
 #include <cstdint>
 #include <cstring>
-#include <iostream>
+
 #include "PacketListener.h"
 #include "PreLoginPacket.h"
-#include "java/InputOutputStream/InputOutputStream.h"
+#include "Minecraft.Client/Common/Source Files/Network/PlatformNetworkManagerInterface.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 PreLoginPacket::PreLoginPacket() {
     loginKey = L"";

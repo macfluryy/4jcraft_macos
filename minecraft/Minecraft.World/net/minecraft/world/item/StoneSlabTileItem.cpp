@@ -1,12 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.item.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../../net.minecraft.h"
+#include <optional>
+
 #include "StoneSlabTileItem.h"
-#include "../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/TileItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 StoneSlabTileItem::StoneSlabTileItem(int id, HalfSlabTile* halfTile,
                                      HalfSlabTile* fullTile, bool full)

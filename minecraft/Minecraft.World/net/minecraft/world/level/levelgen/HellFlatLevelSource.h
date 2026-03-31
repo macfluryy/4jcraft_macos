@@ -1,16 +1,24 @@
 #pragma once
-#include "../chunk/ChunkSource.h"
-#include "synth/PerlinNoise.h"
+#include <stdint.h>
+#include <format>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/synth/PerlinNoise.h"
 #include "LargeFeature.h"
 #include "LargeHellCaveFeature.h"
-#include "../chunk/LevelChunk.h"
-#include "feature/HellFireFeature.h"
-#include "feature/LightGemFeature.h"
-#include "feature/HellPortalFeature.h"
-#include "feature/FlowerFeature.h"
-#include "feature/HellSpringFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HellFireFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/LightGemFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HellPortalFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/FlowerFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HellSpringFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class ProgressListener;
+class Level;
+class Random;
 
 class HellFlatLevelSource : public ChunkSource {
 public:

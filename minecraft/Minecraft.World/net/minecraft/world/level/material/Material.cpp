@@ -1,10 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "Material.h"
 #include "DecorationMaterial.h"
 #include "GasMaterial.h"
 #include "LiquidMaterial.h"
 #include "PortalMaterial.h"
 #include "WebMaterial.h"  // 4J added, Java version just does a local alteration when instantiating the Material for webs to get the same thing
+#include "Minecraft.World/net/minecraft/world/level/material/MaterialColor.h"
 
 Material* Material::air = nullptr;
 Material* Material::grass = nullptr;

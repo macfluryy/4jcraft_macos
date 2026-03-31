@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
+
+class PathfinderMob;
+class Player;
 
 class TemptGoal : public Goal {
 private:

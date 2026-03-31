@@ -1,8 +1,8 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../material/net.minecraft.world.level.material.h"
 #include "ClayFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ClayFeature::ClayFeature(int radius) {
     this->tile = Tile::clay_Id;

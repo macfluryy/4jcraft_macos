@@ -1,7 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <utility>
+
 #include "java/File.h"
 #include "RegionFileCache.h"
-#include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFile.h"
+
+class DataInputStream;
+class DataOutputStream;
 
 RegionFileCache RegionFileCache::s_defaultCache;
 

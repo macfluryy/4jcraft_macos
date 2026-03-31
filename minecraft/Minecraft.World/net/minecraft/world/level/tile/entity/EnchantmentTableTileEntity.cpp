@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "EnchantmentTableTileEntity.h"
-#include "../../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 
 EnchantmentTableEntity::EnchantmentTableEntity() {
     random = new Random();

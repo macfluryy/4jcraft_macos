@@ -1,17 +1,30 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../material/net.minecraft.world.level.material.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../entity/net.minecraft.world.entity.h"
-#include "../../../../util/WeighedTreasure.h"
-#include "StructurePiece.h"
-#include "BoundingBox.h"
-#include "../../../../Direction.h"
+#include <list>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
 #include "java/JavaMath.h"
-#include "../../../../Facing.h"
-#include "../../../item/DoorItem.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/item/DoorItem.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntArrayTag.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseRailTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ChestTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DirectionalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/ChestTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
 
 /**
  *

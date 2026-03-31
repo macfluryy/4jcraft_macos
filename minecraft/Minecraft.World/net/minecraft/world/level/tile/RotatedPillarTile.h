@@ -2,6 +2,9 @@
 
 #include "Tile.h"
 
+class Icon;
+class Material;
+
 class RotatedPillarTile : public Tile {
 public:
     static const int MASK_TYPE = 0x3;

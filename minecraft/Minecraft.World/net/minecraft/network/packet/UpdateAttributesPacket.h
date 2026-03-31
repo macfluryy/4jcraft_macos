@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <unordered_set>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
 
 class AttributeModifier;
 class AttributeInstance;

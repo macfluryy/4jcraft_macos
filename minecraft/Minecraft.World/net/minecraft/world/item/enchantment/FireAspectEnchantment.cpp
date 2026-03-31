@@ -1,4 +1,4 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "FireAspectEnchantment.h"
 
 FireAspectEnchantment::FireAspectEnchantment(int id, int frequency)

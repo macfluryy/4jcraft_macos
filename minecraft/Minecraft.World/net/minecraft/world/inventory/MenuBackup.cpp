@@ -1,9 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
+#include <vector>
+
 #include "AbstractContainerMenu.h"
 #include "Slot.h"
 #include "MenuBackup.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 MenuBackup::MenuBackup(std::shared_ptr<Inventory> inventory,
                        AbstractContainerMenu* menu) {

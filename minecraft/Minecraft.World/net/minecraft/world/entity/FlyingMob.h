@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 
 class Level;
 

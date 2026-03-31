@@ -1,6 +1,6 @@
 #pragma once
 #include <mutex>
-#include "../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 
 class Compression {
 public:

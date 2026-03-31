@@ -1,11 +1,23 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../net.minecraft.world.h"
-#include "../../../net.minecraft.h"
+#include <optional>
+
 #include "CocoaTile.h"
-#include "../../phys/AABB.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DirectionalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Icon;
 
 const std::wstring CocoaTile::TEXTURE_AGES[] = {L"cocoa_0", L"cocoa_1",
                                                 L"cocoa_2"};

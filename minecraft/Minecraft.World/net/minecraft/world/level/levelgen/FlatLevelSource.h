@@ -1,6 +1,12 @@
 #pragma once
 
-#include "../chunk/ChunkSource.h"
+#include <stdint.h>
+#include <format>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class ProgressListener;
 class LargeFeature;
@@ -8,6 +14,8 @@ class StrongholdFeature;
 class VillageFeature;
 class MineShaftFeature;
 class PerlinNoise;
+class Level;
+class Random;
 
 class FlatLevelSource : public ChunkSource {
 public:

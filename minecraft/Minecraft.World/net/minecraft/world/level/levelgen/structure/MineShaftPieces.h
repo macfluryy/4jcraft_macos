@@ -1,6 +1,15 @@
 #pragma once
 
+#include <format>
+#include <list>
+
 #include "StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+
+class BoundingBox;
+class Random;
+class WeighedTreasure;
 
 class MineShaftPieces {
 private:

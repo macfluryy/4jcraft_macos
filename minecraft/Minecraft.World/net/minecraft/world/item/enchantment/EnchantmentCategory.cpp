@@ -1,6 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
 #include "EnchantmentCategory.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/BowItem.h"
+#include "Minecraft.World/net/minecraft/world/item/DiggerItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/WeaponItem.h"
 
 const EnchantmentCategory* EnchantmentCategory::all = new EnchantmentCategory();
 const EnchantmentCategory* EnchantmentCategory::armor =

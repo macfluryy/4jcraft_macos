@@ -1,6 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-
 #include "DerivedLevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+
+class CompoundTag;
+class Player;
 
 DerivedLevelData::DerivedLevelData(LevelData* wrapped) {
     this->wrapped = wrapped;

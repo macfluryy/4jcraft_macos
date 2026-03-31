@@ -1,12 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../food/net.minecraft.world.food.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../net.minecraft.world.h"
-#include "../../../net.minecraft.h"
+#include <optional>
+#include <string>
+
 #include "CakeTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodConstants.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 CakeTile::CakeTile(int id) : Tile(id, Material::cake, false) {
     setTicking(true);

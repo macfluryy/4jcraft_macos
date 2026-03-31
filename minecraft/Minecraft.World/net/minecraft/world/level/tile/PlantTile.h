@@ -1,10 +1,11 @@
 #pragma once
 #include "Tile.h"
-#include "../material/Material.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Random;
 class Level;
+class Material;
 
 class Bush : public Tile {
     friend class Tile;

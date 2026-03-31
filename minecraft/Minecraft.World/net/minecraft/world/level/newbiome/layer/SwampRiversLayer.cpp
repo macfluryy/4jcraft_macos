@@ -1,6 +1,8 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
+#include <vector>
+
 #include "SwampRiversLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 SwampRiversLayer::SwampRiversLayer(int64_t seed, std::shared_ptr<Layer> parent)
     : Layer(seed) {

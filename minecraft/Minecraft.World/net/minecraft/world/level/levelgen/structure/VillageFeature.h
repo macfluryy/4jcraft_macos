@@ -1,7 +1,16 @@
 #pragma once
+#include <format>
+#include <string>
+#include <unordered_map>
+
 #include "StructureFeature.h"
 #include "StructureStart.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+
 class Biome;
+class Level;
+class Random;
 
 class VillageFeature : public StructureFeature {
 public:

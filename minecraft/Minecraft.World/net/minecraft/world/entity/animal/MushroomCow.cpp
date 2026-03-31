@@ -1,13 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../item/net.minecraft.world.entity.item.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include <memory>
+
 #include "MushroomCow.h"
-#include "../MobCategory.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Cow.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 MushroomCow::MushroomCow(Level* level) : Cow(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

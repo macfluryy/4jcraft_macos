@@ -1,12 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include <string>
+
 #include "JukeboxTile.h"
 #include "LevelEvent.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 JukeboxTile::Entity::Entity() : TileEntity() { record = nullptr; }
 

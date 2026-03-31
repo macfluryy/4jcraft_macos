@@ -2,11 +2,13 @@
 
 // 4J ADDED PACKET
 
-#include "Packet.h"
-
-#include "../../../../Header Files/stdafx.h"
 #include <iostream>
+#include <memory>
+
+#include "Packet.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "PacketListener.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class TradeItemPacket : public Packet,
                         public std::enable_shared_from_this<TradeItemPacket> {

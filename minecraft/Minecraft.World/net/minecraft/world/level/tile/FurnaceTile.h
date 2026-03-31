@@ -5,6 +5,8 @@ class Mob;
 class Player;
 class Random;
 class ChunkRebuildData;
+class Icon;
+class Level;
 
 class FurnaceTile : public BaseEntityTile {
     friend class Tile;

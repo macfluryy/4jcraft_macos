@@ -1,11 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../level/net.minecraft.world.level.h"
+#include <math.h>
+#include <format>
+#include <vector>
+
 #include "java/JavaMath.h"
 #include "DragonFireball.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Fireball.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+
+class Entity;
 
 const double DragonFireball::SPLASH_RANGE = 4.0;
 const double DragonFireball::SPLASH_RANGE_SQ =

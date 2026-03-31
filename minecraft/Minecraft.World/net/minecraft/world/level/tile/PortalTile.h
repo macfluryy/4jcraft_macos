@@ -1,9 +1,12 @@
 #pragma once
 #include <optional>
+#include <memory>
+
 #include "HalfTransparentTile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Random;
+class Level;
 
 class PortalTile : public HalfTransparentTile {
 public:

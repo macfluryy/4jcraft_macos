@@ -1,13 +1,34 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../../net.minecraft.h"
-#include "../../../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../../../util/WeighedTreasure.h"
+#include <algorithm>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
 #include "ScatteredFeaturePieces.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Witch.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FlowerPotTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LeverTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SandStoneTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SmoothStoneBrickTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StairTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TripWireSourceTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TripWireTile.h"
 
 void ScatteredFeaturePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_DesertPyramidPiece,

@@ -1,8 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class Wolf;
+class Level;
+class Player;
 
 class BegGoal : public Goal {
 private:

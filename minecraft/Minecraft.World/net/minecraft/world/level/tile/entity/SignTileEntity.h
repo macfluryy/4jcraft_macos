@@ -1,6 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "TileEntity.h"
+#include "4J_Input.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 #define MAX_SIGN_LINES 4
 

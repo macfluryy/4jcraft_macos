@@ -1,5 +1,3 @@
-#include "../../../../../Header Files/stdafx.h"
-
 #include "Redstone.h"
 
 // 4J-JEV: Because whiny Ps4 compiler.

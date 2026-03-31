@@ -1,13 +1,19 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../util/net.minecraft.world.entity.ai.util.h"
-#include "../village/net.minecraft.world.entity.ai.village.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "MoveThroughVillageGoal.h"
 #include <limits>
-#include "../../../level/pathfinder/Path.h"
+#include <format>
+#include <optional>
+
+#include "MoveThroughVillageGoal.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Path.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/util/RandomPos.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/DoorInfo.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Village.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Villages.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,
                                                double speedModifier,

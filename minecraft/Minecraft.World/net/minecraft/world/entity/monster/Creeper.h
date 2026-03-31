@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Monster.h"
+#include "java/Class.h"
 
 class Level;
 class DamageSource;
+class Entity;
 
 class Creeper : public Monster {
 public:

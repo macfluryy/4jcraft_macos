@@ -1,6 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
+#include <string>
+
 #include "HayBlockTile.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/RotatedPillarTile.h"
 
 HayBlockTile::HayBlockTile(int id) : RotatedPillarTile(id, Material::grass) {}
 

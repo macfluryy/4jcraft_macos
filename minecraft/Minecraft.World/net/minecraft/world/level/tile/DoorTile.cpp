@@ -1,12 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
+#include <optional>
+
 #include "DoorTile.h"
 #include "LevelEvent.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../net.minecraft.world.h"
-#include "../../../net.minecraft.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/FlippedIcon.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 const std::wstring DoorTile::TEXTURES[] = {
     L"doorWood_lower", L"doorWood_upper", L"doorIron_lower", L"doorIron_upper"};

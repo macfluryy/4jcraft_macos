@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class FlowerPotTile : public Tile {
 public:

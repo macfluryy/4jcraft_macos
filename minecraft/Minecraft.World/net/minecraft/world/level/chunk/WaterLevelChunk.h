@@ -1,8 +1,16 @@
 #pragma once
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <typeinfo>
+
 #include "LevelChunk.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
 
 class Level;
+class AABB;
+class Entity;
 
 class WaterLevelChunk : public LevelChunk {
 public:

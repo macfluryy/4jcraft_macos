@@ -1,17 +1,20 @@
-#include "../Header Files/stdafx.h"
-
-#include "C4JThread.h"
-
+#include <bits/cpu-set.h>
 #include <bit>
 #include <cassert>
 #include <cerrno>
 #include <chrono>
-#include <climits>
 #include <cstdio>
 #include <limits>
 #include <thread>
-#include <utility>
 #include <vector>
+#include <algorithm>
+#include <atomic>
+#include <condition_variable>
+#include <cstdint>
+#include <memory>
+#include <mutex>
+#include <queue>
+#include <string>
 
 #if defined(_WIN32)
 #include <Windows.h>
@@ -27,6 +30,8 @@
 #endif
 
 #include "Minecraft.Client/Common/ShutdownManager.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 
 thread_local C4JThread* C4JThread::ms_currentThread = nullptr;
 

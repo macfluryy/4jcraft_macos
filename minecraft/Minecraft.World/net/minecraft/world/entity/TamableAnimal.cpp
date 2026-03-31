@@ -1,10 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "ai/goal/net.minecraft.world.entity.ai.goal.h"
-#include "net.minecraft.world.entity.h"
-#include "../level/net.minecraft.world.level.h"
 #include "SyncedEntityData.h"
-#include "../../../../Header Files/ParticleTypes.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
 #include "TamableAnimal.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityEvent.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/SitGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Animal.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 TamableAnimal::TamableAnimal(Level* level) : Animal(level) {
     sitGoal = new SitGoal(this);

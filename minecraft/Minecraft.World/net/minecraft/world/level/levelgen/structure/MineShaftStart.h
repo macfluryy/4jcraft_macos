@@ -1,6 +1,10 @@
 #pragma once
 
 #include "StructureStart.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+
+class Level;
+class Random;
 
 class MineShaftStart : public StructureStart {
 public:

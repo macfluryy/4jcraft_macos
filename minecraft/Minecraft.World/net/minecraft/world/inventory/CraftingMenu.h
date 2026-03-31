@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 
 class CraftingContainer;
 class Container;
+class Inventory;
+class Level;
 
 class CraftingMenu : public AbstractContainerMenu {
     // 4J Stu Made these public for UI menus, perhaps should make friend class?

@@ -1,4 +1,3 @@
-#include "../../../Header Files/stdafx.h"
 #include "SmoothFloat.h"
 
 SmoothFloat::SmoothFloat() {

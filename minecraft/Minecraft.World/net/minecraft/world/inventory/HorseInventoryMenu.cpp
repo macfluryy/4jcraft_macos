@@ -1,7 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../entity/animal/net.minecraft.world.entity.animal.h"
+#include <vector>
+
 #include "HorseInventoryMenu.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 HorseSaddleSlot::HorseSaddleSlot(std::shared_ptr<Container> horseInventory)
     : Slot(horseInventory, EntityHorse::INV_SLOT_SADDLE, 8, 18) {}

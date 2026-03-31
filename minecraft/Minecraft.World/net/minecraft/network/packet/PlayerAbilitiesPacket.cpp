@@ -1,7 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.network.packet.h"
+#include <stdint.h>
+
 #include "PlayerAbilitiesPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
 
 PlayerAbilitiesPacket::PlayerAbilitiesPacket() {
     invulnerable = false;

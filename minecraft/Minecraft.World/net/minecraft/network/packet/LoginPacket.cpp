@@ -1,11 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include <cstring>
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
 #include "PacketListener.h"
 #include "LoginPacket.h"
-#include "../../world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 LoginPacket::LoginPacket() {
     this->userName = L"";

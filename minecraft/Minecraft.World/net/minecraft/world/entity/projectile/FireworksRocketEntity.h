@@ -1,6 +1,14 @@
 #pragma once
 
-#include "../Entity.h"
+#include <stdint.h>
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+
+class ItemInstance;
+class Level;
 
 class FireworksRocketEntity : public Entity {
 public:

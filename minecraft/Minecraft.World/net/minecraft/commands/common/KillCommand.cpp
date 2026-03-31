@@ -1,9 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.commands.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
-#include "../../world/damageSource/net.minecraft.world.damagesource.h"
-#include "KillCommand.h"
 #include <limits>
+#include <memory>
+#include <string>
+
+#include "KillCommand.h"
+#include "Minecraft.World/net/minecraft/commands/CommandSender.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 EGameCommand KillCommand::getId() { return eGameCommand_Kill; }
 

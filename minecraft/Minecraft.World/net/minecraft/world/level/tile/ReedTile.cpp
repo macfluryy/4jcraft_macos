@@ -1,11 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "GrassTile.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../material/net.minecraft.world.level.material.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "ReedTile.h"
 #include <optional>
+
+#include "ReedTile.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 ReedTile::ReedTile(int id) : Tile(id, Material::plant, false) {
     this->updateDefaultShape();

@@ -1,6 +1,9 @@
-#include "../../Header Files/stdafx.h"
 
-#include "Pos.h"
+
+#include <math.h>
+
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
 
 Pos::Pos() { x = y = z = 0; }
 

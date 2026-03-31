@@ -1,6 +1,10 @@
 #pragma once
 
 #include <optional>
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
 class PathfinderMob;
 
 class RandomPos {

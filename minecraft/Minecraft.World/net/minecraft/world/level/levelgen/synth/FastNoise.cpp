@@ -1,5 +1,5 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "FastNoise.h"
+#include "java/Random.h"
 
 FastNoise::FastNoise(int levels) {
     Random random;

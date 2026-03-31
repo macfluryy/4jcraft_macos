@@ -1,6 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Entity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+
+class Level;
+class Player;
 
 class ExperienceOrb : public Entity {
 public:

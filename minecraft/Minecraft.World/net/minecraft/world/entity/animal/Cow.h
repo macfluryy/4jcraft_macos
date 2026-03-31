@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Animal.h"
+#include "java/Class.h"
 
 class Player;
 class Level;
+class Entity;
 
 class Cow : public Animal {
 public:

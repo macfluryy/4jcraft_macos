@@ -1,10 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <memory>
+
 #include "BonusChestFeature.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../../util/WeighedTreasure.h"
-#include "../structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/ChestTileEntity.h"
 
 BonusChestFeature::BonusChestFeature(std::vector<WeighedTreasure*>& treasureList,
                                      int numRolls)

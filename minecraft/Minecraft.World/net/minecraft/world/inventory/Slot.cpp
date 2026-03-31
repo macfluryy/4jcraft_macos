@@ -1,9 +1,15 @@
-#include "../../../../Header Files/stdafx.h"
+#include <vector>
 
-#include "../Container.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/crafting/net.minecraft.world.item.crafting.h"
 #include "Slot.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ArmorDyeRecipe.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
+
+class Icon;
+class Player;
 
 Slot::Slot(std::shared_ptr<Container> container, int slot, int x, int y)
     : container(container), slot(slot) {

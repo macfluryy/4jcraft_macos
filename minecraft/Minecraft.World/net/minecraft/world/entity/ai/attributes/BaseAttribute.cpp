@@ -1,5 +1,3 @@
-#include "../../../../../../Header Files/stdafx.h"
-
 #include "BaseAttribute.h"
 
 BaseAttribute::BaseAttribute(eATTRIBUTE_ID id, double defaultValue) {

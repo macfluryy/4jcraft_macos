@@ -1,6 +1,15 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
 class Pos;
+class DataInputStream;
+class DataOutputStream;
 
 class SynchedEntityData {
 public:

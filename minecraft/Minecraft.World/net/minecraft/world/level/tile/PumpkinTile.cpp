@@ -1,12 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include <memory>
+
 #include "PumpkinTile.h"
-#include "../../entity/Mob.h"
-#include "../../entity/animal/SnowMan.h"
-#include "../../entity/MobCategory.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/SnowMan.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/VillagerGolem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DirectionalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const std::wstring PumpkinTile::TEXTURE_FACE = L"pumpkin_face";
 const std::wstring PumpkinTile::TEXTURE_LANTERN = L"pumpkin_jack";

@@ -1,12 +1,16 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../Container.h"
-#include "../item/net.minecraft.world.item.h"
+#include <vector>
+
 #include "Slot.h"
-#include "../../stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "ContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ContainerMenu::ContainerMenu(std::shared_ptr<Container> inventory,
                              std::shared_ptr<Container> container)

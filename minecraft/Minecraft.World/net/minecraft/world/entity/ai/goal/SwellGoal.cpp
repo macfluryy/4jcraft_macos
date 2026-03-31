@@ -1,9 +1,9 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../sensing/net.minecraft.world.entity.ai.sensing.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../monster/net.minecraft.world.entity.monster.h"
 #include "SwellGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/sensing/Sensing.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Creeper.h"
 
 SwellGoal::SwellGoal(Creeper* creeper) {
     target = std::weak_ptr<LivingEntity>();

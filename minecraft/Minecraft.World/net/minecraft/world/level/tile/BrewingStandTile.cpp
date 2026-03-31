@@ -1,11 +1,24 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+#include <string>
+
 #include "BrewingStandTile.h"
-#include "entity/BrewingStandTileEntity.h"
-#include "../net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../net.minecraft.world.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+
+class Icon;
 
 BrewingStandTile::BrewingStandTile(int id)
     : BaseEntityTile(id, Material::metal, false) {

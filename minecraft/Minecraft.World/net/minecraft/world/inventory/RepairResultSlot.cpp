@@ -1,9 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.inventory.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
 #include "RepairResultSlot.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AnvilMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 RepairResultSlot::RepairResultSlot(AnvilMenu* menu, int xt, int yt, int zt,
                                    std::shared_ptr<Container> container,

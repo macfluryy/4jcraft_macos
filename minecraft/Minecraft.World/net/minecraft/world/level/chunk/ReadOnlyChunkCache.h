@@ -1,10 +1,19 @@
 #pragma once
+#include <stdint.h>
+#include <string>
+#include <vector>
+
 #include "ChunkSource.h"
 #include "LevelChunk.h"
 #include "EmptyLevelChunk.h"
-#include "storage/ChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/ChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class ProgressListener;
+class ChunkStorage;
+class Level;
+class LevelChunk;
 
 class ReadOnlyChunkCache : public ChunkSource {
 private:

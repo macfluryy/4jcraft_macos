@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.scores.h"
 #include "PlayerTeam.h"
+#include "Minecraft.World/net/minecraft/world/scores/Scoreboard.h"
+#include "Minecraft.World/net/minecraft/world/scores/Team.h"
 
 PlayerTeam::PlayerTeam(Scoreboard* scoreboard, const std::wstring& name) {
     this->scoreboard = scoreboard;

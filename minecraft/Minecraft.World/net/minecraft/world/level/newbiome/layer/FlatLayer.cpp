@@ -1,5 +1,8 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
+
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/FlatLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 FlatLayer::FlatLayer(int val) : Layer(0) { this->val = val; }
 

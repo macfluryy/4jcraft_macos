@@ -1,7 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
+#include <numbers>
+#include <vector>
+
 #include "DungeonFeature.h"
-#include "../tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 void DungeonFeature::addRoom(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
                              double xRoom, double yRoom, double zRoom) {

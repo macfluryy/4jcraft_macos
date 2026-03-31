@@ -1,8 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
 #include "RestrictSunGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 RestrictSunGoal::RestrictSunGoal(PathfinderMob* mob) { this->mob = mob; }
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+
 class DaylightDetectorTileEntity : public TileEntity {
 public:
     eINSTANCEOF GetType() { return eTYPE_DAYLIGHTDETECTORTILEENTITY; }

@@ -1,6 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
+#include <memory>
+
 #include "ColoredTileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/TileItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ColoredTileItem::ColoredTileItem(int id, bool stackedByData) : TileItem(id) {
     this->colorTile = Tile::tiles[getTileId()];

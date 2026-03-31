@@ -1,4 +1,3 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "LevelSummary.h"
 
 LevelSummary::LevelSummary(const std::wstring& levelId,

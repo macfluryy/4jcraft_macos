@@ -1,10 +1,21 @@
 #pragma once
+#include <memory>
+
 #include "BaseEntityTile.h"
-#include "../../../core/net.minecraft.core.h"
+#include "Minecraft.World/net/minecraft/core/net.minecraft.core.h"
 
 class Player;
 class Mob;
 class ChunkRebuildData;
+class BehaviorRegistry;
+class BlockSource;
+class DispenseItemBehavior;
+class FacingEnum;
+class Icon;
+class ItemInstance;
+class Level;
+class Position;
+class Random;
 
 class DispenserTile : public BaseEntityTile {
     friend class Tile;

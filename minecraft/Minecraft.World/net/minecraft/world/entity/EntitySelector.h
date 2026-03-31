@@ -1,5 +1,10 @@
 #pragma once
 
+#include <memory>
+
+class Entity;
+class ItemInstance;
+
 class EntitySelector {
 public:
     static const EntitySelector* ENTITY_STILL_ALIVE;

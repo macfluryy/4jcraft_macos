@@ -1,9 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
 #include "PacketListener.h"
 #include "SetEntityMotionPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 void SetEntityMotionPacket::_init(int id, double xd, double yd, double zd) {
     this->id = id;

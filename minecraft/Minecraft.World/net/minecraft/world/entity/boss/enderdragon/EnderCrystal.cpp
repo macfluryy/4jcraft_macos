@@ -1,10 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../net.minecraft.world.entity.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.boss.enderdragon.h"
 #include "EnderCrystal.h"
-#include "../../../damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
 
 void EnderCrystal::_init(Level* level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

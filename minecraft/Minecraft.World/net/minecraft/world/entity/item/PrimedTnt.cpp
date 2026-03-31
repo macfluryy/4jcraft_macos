@@ -1,8 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <stdint.h>
+#include <cmath>
+#include <numbers>
+#include <string>
+
 #include "java/JavaMath.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../level/net.minecraft.world.level.h"
 #include "PrimedTnt.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 void PrimedTnt::_init() {
     life = 0;

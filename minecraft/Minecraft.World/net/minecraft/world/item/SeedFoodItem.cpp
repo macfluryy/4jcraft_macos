@@ -1,8 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../../net.minecraft.h"
-#include "../level/net.minecraft.world.level.h"
+#include <memory>
+
 #include "SeedFoodItem.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/FoodItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 SeedFoodItem::SeedFoodItem(int id, int nutrition, float saturationMod,
                            int resultId, int targetLand)

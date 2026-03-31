@@ -1,11 +1,18 @@
 #pragma once
 
-#include "../../../../../../ConsoleHelpers/HashExtension.h"
+#include <memory>
+#include <string>
+#include <unordered_map>
+
+#include "Minecraft.World/ConsoleHelpers/HashExtension.h"
 #include "java/JavaIntHash.h"
+#include "java/Class.h"
 
 class Level;
 class Packet;
 class CompoundTag;
+class Tile;
+class TileEntity;
 
 typedef TileEntity* (*tileEntityCreateFn)();
 

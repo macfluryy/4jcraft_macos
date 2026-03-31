@@ -1,9 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "Entity.h"
 #include "HangingEntity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class Level;
+class Entity;
 
 class ItemFrame : public HangingEntity {
 public:

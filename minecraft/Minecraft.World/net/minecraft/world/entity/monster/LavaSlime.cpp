@@ -1,12 +1,15 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include <memory>
+#include <vector>
+
 #include "LavaSlime.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Slime.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 LavaSlime::LavaSlime(Level* level) : Slime(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

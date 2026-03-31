@@ -5,6 +5,12 @@
 
 #pragma once
 
+#include <format>
+#include <string>
+
+class Object;
+class Recipes;
+
 #define MAX_WEAPON_RECIPES 2
 class WeaponRecipies {
 public:

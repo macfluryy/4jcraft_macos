@@ -1,9 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../SharedConstants.h"
+#include <stdio.h>
+#include <memory>
+
 #include "PacketListener.h"
-#include "DisconnectPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 
 DisconnectPacket::DisconnectPacket() { reason = eDisconnect_None; }
 

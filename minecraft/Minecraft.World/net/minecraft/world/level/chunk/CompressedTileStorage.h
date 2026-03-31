@@ -1,5 +1,11 @@
 #pragma once
+#include <stdint.h>
 #include <mutex>
+#include <format>
+
+class DataInputStream;
+class DataOutputStream;
+template <typename T> class XLockFreeStack;
 #if !defined(__linux__)
 #include "../../../../../x64headers/xmcore.h"
 #endif
@@ -74,6 +80,7 @@
 
 // #define BLOCK_COMPRESSION_STATS
 class TileCompressData_SPU;
+
 class CompressedTileStorage {
     friend class TileCompressData_SPU;
 

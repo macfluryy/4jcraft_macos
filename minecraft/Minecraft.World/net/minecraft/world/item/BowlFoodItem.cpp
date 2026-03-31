@@ -1,7 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "ItemInstance.h"
+#include <memory>
+
 #include "BowlFoodItem.h"
+#include "Minecraft.World/net/minecraft/world/item/FoodItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 BowlFoodItem::BowlFoodItem(int id, int nutrition)
     : FoodItem(id, nutrition, false) {

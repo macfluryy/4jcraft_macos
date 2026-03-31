@@ -1,8 +1,18 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "Monster.h"
-#include "../../../SharedConstants.h"
-#include "../MobGroupData.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobGroupData.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobType.h"
+
+class Attribute;
+class AttributeModifier;
+class Entity;
+class Level;
 
 class Zombie : public Monster {
 private:

@@ -1,9 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "Recipy.h"
+#include <vector>
+
 #include "Recipes.h"
 #include "ClothDyeRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ColoredTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 void ClothDyeRecipes::addRecipes(Recipes* r) {
     // recipes for converting cloth to colored cloth using dye

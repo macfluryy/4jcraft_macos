@@ -1,11 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../material/net.minecraft.world.level.material.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../../../util/WeighedTreasure.h"
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
 #include "MonsterRoomFeature.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/ChestTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 WeighedTreasure* MonsterRoomFeature::monsterRoomTreasure
     [MonsterRoomFeature::TREASURE_ITEMS_COUNT] = {

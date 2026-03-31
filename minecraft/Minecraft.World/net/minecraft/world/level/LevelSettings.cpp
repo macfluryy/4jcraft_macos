@@ -1,7 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
 #include "LevelSettings.h"
-#include "storage/net.minecraft.world.level.storage.h"
-#include "LevelType.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 
 GameType* GameType::NOT_SET = nullptr;
 GameType* GameType::SURVIVAL = nullptr;

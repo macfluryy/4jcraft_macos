@@ -1,10 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "../../food/net.minecraft.world.food.h"
-#include "../../../stats/net.minecraft.stats.h"
+#include <memory>
+#include <string>
+
 #include "IceTile.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodConstants.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfTransparentTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class ItemInstance;
 
 IceTile::IceTile(int id)
     : HalfTransparentTile(id, L"ice", Material::ice, false) {

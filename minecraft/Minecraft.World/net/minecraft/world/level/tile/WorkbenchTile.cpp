@@ -1,9 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
-#include "../../../net.minecraft.h"
+#include <memory>
+#include <string>
+
 #include "WorkbenchTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 WorkbenchTile::WorkbenchTile(int id) : Tile(id, Material::wood) {
     iconTop = nullptr;

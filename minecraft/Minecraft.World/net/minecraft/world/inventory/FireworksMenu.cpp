@@ -1,13 +1,18 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/crafting/net.minecraft.world.item.crafting.h"
+#include <vector>
+
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
 #include "ResultSlot.h"
 #include "FireworksMenu.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/FireworksRecipe.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 FireworksMenu::FireworksMenu(std::shared_ptr<Inventory> inventory, Level* level,
                              int xt, int yt, int zt)

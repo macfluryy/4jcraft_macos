@@ -1,9 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 #include "Slot.h"
 
 class BeaconTileEntity;
+class Container;
 
 class BeaconMenu : public AbstractContainerMenu {
 private:

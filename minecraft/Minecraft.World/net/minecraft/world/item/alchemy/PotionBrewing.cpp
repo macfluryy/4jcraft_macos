@@ -1,8 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "../../effect/net.minecraft.world.effect.h"
+#include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
 #include "java/JavaMath.h"
-#include "../../../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "PotionBrewing.h"
 
 const int PotionBrewing::DEFAULT_APPEARANCES[] = {

@@ -1,9 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
+#include <string>
+
 #include "StructureStart.h"
-#include "StructurePiece.h"
-#include "BoundingBox.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntArrayTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 StructureStart::StructureStart() {
     chunkX = chunkZ = 0;

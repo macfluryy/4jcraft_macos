@@ -1,6 +1,10 @@
 #pragma once
 
+#include <cstdint>
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class ServerPlayer;
 

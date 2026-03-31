@@ -1,9 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../net.minecraft.h"
 #include "StairTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 int StairTile::DEAD_SPACES[8][2] = {{2, 6}, {3, 7}, {2, 3}, {6, 7},
                                     {0, 4}, {1, 5}, {0, 1}, {4, 5}};

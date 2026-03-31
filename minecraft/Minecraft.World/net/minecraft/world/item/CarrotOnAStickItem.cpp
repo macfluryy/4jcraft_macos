@@ -1,9 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/ai/goal/net.minecraft.world.entity.ai.goal.h"
-#include "net.minecraft.world.item.h"
+#include <memory>
+
 #include "CarrotOnAStickItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/ControlledByPlayerGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Pig.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/FishingRodItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 CarrotOnAStickItem::CarrotOnAStickItem(int id) : Item(id) {
     setMaxStackSize(1);

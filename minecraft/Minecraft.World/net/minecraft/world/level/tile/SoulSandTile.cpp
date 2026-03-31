@@ -1,7 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../phys/net.minecraft.world.phys.h"
+#include <memory>
+#include <optional>
+
 #include "SoulSandTile.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 SoulSandTile::SoulSandTile(int id) : Tile(id, Material::sand) {}
 

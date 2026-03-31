@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../LevelSource.h"
-#include "../../entity/Mob.h"
-#include "../../../util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
 
 class Feature;
 class MobCategory;

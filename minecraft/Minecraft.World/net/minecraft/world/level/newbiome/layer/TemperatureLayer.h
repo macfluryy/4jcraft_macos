@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Layer.h"
 
 class TemperatureLayer : public Layer {

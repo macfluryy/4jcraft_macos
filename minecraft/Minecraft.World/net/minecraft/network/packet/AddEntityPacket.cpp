@@ -1,11 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include <exception>
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/entity/net.minecraft.world.entity.h"
 #include "PacketListener.h"
 #include "AddEntityPacket.h"
-#include <bitset>
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 void AddEntityPacket::_init(std::shared_ptr<Entity> e, int type, int data,
                             int xp, int yp, int zp, int yRotp, int xRotp) {

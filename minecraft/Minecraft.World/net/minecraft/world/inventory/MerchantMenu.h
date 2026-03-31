@@ -1,8 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/Merchant.h"
 
 class MerchantContainer;
+class Inventory;
+class Level;
 
 class MerchantMenu : public AbstractContainerMenu {
 public:

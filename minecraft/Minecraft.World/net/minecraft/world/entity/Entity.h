@@ -1,13 +1,14 @@
 #pragma once
 
+#include <cstdint>
+#include <optional>
+
 #include "nbt/ListTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/FloatTag.h"
-#include "../phys/Vec3.h"
-#include "../../../../ConsoleHelpers/Definitions.h"
-#include "../phys/AABB.h"
-#include <cstdint>
-#include <optional>
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 class LivingEntity;
 class LightningBolt;

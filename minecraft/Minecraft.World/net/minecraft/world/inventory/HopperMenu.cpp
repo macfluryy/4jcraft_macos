@@ -1,6 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.inventory.h"
+#include <vector>
+
 #include "HopperMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 HopperMenu::HopperMenu(std::shared_ptr<Container> inventory,
                        std::shared_ptr<Container> hopper) {

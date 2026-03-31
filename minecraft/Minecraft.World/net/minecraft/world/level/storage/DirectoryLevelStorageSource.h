@@ -1,5 +1,8 @@
 #pragma once
 
+#include <format>
+#include <string>
+
 #include "LevelStorageSource.h"
 #include "java/File.h"
 

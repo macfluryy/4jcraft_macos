@@ -1,6 +1,7 @@
 #pragma once
 #include <optional>
-#include "../Entity.h"
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class DamageSource;
 class Tickable;

@@ -1,12 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../material/Material.h"
-#include "entity/SignTileEntity.h"
-#include "SignTile.h"
-#include "../../phys/AABB.h"
-
 #include <optional>
+
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/SignTileEntity.h"
+#include "SignTile.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 SignTile::SignTile(int id, eINSTANCEOF clas, bool onGround)
     : BaseEntityTile(id, Material::wood, false) {

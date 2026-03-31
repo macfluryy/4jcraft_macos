@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../../../ConsoleHelpers/ArrayWithLength.h"
+#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 
 class BoundingBox {
 public:

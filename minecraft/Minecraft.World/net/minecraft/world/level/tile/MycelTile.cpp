@@ -1,8 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "MycelTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 MycelTile::MycelTile(int id) : Tile(id, Material::grass) {
     iconTop = nullptr;

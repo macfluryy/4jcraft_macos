@@ -1,8 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
+#include <stdint.h>
 
-#include "../../world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
 #include "PacketListener.h"
 #include "UpdateAttributesPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
 
 UpdateAttributesPacket::UpdateAttributesPacket() { entityId = 0; }
 

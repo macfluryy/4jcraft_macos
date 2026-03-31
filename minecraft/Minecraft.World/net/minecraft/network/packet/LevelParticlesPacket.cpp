@@ -1,6 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
 #include "PacketListener.h"
 #include "LevelParticlesPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 LevelParticlesPacket::LevelParticlesPacket() {
     this->name = L"";

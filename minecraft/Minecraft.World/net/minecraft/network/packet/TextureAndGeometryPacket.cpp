@@ -1,8 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <sstream>
+#include <vector>
+
 #include "PacketListener.h"
 #include "TextureAndGeometryPacket.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 TextureAndGeometryPacket::TextureAndGeometryPacket() {
     this->textureName = L"";

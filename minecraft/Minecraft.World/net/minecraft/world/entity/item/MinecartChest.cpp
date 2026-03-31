@@ -1,7 +1,9 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../network/packet/net.minecraft.network.packet.h"
 #include "MinecartChest.h"
+#include "Minecraft.World/net/minecraft/network/packet/ContainerOpenPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ChestTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Level;
 
 MinecartChest::MinecartChest(Level* level) : MinecartContainer(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

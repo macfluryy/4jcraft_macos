@@ -1,8 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "ComplexItem.h"
 
 class MapItemSavedData;
+class Entity;
+class ItemInstance;
+class Level;
 
 class MapItem : public ComplexItem {
 public:

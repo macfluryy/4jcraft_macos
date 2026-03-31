@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class Creeper;
+class LivingEntity;
 
 class SwellGoal : public Goal {
 private:

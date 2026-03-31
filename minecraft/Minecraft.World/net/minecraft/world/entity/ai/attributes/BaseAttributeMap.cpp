@@ -1,6 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.entity.ai.attributes.h"
+#include <utility>
+#include <vector>
+
 #include "BaseAttributeMap.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 BaseAttributeMap::~BaseAttributeMap() {
     for (auto it = attributesById.begin(); it != attributesById.end(); ++it) {

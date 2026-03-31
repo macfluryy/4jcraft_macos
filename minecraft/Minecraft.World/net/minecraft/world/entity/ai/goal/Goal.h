@@ -1,5 +1,7 @@
 #pragma once
 
+class Level;
+
 class Goal {
 private:
     int _requiredControlFlags;

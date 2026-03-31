@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class SignUpdatePacket : public Packet,
                          public std::enable_shared_from_this<SignUpdatePacket> {

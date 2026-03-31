@@ -1,14 +1,20 @@
-#include "../../../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.world.entity.h"
-#include "../../attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../sensing/net.minecraft.world.entity.ai.sensing.h"
-#include "../../../animal/net.minecraft.world.entity.animal.h"
-#include "../../../monster/net.minecraft.world.entity.monster.h"
-#include "../../../player/net.minecraft.world.entity.player.h"
-#include "../../../../level/pathfinder/net.minecraft.world.level.pathfinder.h"
-#include "../../../../phys/net.minecraft.world.phys.h"
+#include <string>
+
 #include "TargetGoal.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/OwnableEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/sensing/Sensing.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Node.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Path.h"
 
 void TargetGoal::_init(PathfinderMob* mob, bool mustSee, bool mustReach) {
     reachCache = EmptyReachCache;

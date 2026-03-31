@@ -1,9 +1,9 @@
-#include "../../Header Files/stdafx.h"
-#include "../../net/minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "../../net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
 #include "ConsoleSaveFileIO.h"
 #include "ConsoleSaveFileConverter.h"
-#include "../../net/minecraft/util/ProgressListener.h"
+#include "Minecraft.World/net/minecraft/util/ProgressListener.h"
 
 void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile* sourceSave,
                                                  FileEntry* sourceFileEntry,

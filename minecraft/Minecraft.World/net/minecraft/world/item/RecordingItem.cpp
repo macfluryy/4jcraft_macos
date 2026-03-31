@@ -1,12 +1,21 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
-#include "../net.minecraft.world.h"
-#include "ItemInstance.h"
+#include <wchar.h>
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "RecordingItem.h"
-#include "../../stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.World/net/minecraft/util/HtmlString.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/Rarity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/JukeboxTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 std::unordered_map<std::wstring, RecordingItem*> RecordingItem::BY_NAME;
 

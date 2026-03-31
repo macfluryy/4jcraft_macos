@@ -1,8 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <stdint.h>
+#include <vector>
+
 #include "MushroomIslandBiome.h"
 #include "BiomeDecorator.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../tile/net.minecraft.world.level.tile.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 MushroomIslandBiome::MushroomIslandBiome(int id) : Biome(id) {
     decorator->treeCount = -100;

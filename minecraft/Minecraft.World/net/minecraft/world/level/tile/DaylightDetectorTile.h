@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "BaseEntityTile.h"
+
+class Icon;
+class Level;
 
 class DaylightDetectorTile : public BaseEntityTile {
     friend class ChunkRebuildData;

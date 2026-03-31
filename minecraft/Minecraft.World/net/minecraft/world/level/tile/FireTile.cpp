@@ -1,17 +1,26 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../../net.minecraft.world.h"
-#include "net.minecraft.world.level.tile.h"
+#include <string.h>
+#include <optional>
+
 #include "FireTile.h"
-#include "../../../../../Header Files/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PortalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TntTile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
-// AP - added for Vita to set Alpha Cut out
-#include "java/IntBuffer.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+class Icon;
 
 const std::wstring FireTile::TEXTURE_FIRST = L"fire_0";
 const std::wstring FireTile::TEXTURE_SECOND = L"fire_1";

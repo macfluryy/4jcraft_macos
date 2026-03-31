@@ -1,7 +1,7 @@
 #pragma once
-#include "../../Container.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
 #include "nbt/ListTag.h"
-#include "../../item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class Player;
 class CompoundTag;

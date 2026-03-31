@@ -1,9 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class Villager;
 class Village;
+class Level;
 
 class MakeLoveGoal : public Goal {
 private:

@@ -1,17 +1,36 @@
 #pragma once
 
+#include <cstdint>
+#include <mutex>
+#include <unordered_set>
+#include <format>
+#include <memory>
+#include <string>
+#include <typeinfo>
+#include <vector>
+
 #include "LevelSource.h"
 #include "LightLayer.h"
 #include "ChunkPos.h"
 #include "TickNextTickData.h"
-#include "saveddata/SavedData.h"
-#include "../../../../ConsoleHelpers/Definitions.h"
-#include "../../../../Header Files/ParticleTypes.h"
-#include "biome/Biome.h"
-#include "../../../../ConsoleHelpers/C4JThread.h"
-#include <cstdint>
-#include <mutex>
-#include <unordered_set>
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "4J.Common/4J_Compat.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class CompoundTag;
+class ItemInstance;
+class LevelChunk;
+class TickNextTickData;
+class Tile;
+class TilePos;
 
 // 4J Stu - This value should be big enough that we don't get any crashes causes
 // by memory overwrites, however it does seem way too large for what is actually

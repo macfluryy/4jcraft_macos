@@ -1,12 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "entity/net.minecraft.world.level.tile.entity.h"
-#include "../../net.minecraft.world.h"
+#include <math.h>
+#include <numbers>
+#include <string>
+
 #include "java/JavaMath.h"
 #include "DaylightDetectorTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/DaylightDetectorTileEntity.h"
 
 DaylightDetectorTile::DaylightDetectorTile(int id)
     : BaseEntityTile(id, Material::wood, false) {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Minecraft.Client/Common/App_enums.h"
+
 class MaterialColor {
 public:
     static MaterialColor** colors;

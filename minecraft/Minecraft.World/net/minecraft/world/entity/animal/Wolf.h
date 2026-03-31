@@ -1,7 +1,16 @@
 #pragma once
 
-#include "../TamableAnimal.h"
+#include <stdint.h>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/TamableAnimal.h"
+#include "java/Class.h"
+
 class DamageSource;
+class Entity;
+class Level;
+class LivingEntity;
 
 class Wolf : public TamableAnimal {
 public:

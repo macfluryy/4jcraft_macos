@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 
 class CraftingContainer;
 class Container;
+class Inventory;
+class Player;
 
 class InventoryMenu : public AbstractContainerMenu {
 private:

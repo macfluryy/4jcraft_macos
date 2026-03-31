@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseAttribute.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
 
 class RangedAttribute : public BaseAttribute {
 private:

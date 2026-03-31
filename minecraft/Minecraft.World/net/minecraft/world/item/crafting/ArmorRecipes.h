@@ -4,6 +4,12 @@
 // import net.minecraft.world.level.tile.Tile;
 #pragma once
 
+#include <format>
+#include <string>
+
+class Object;
+class Recipes;
+
 #define MAX_ARMOUR_RECIPES 5
 class ArmorRecipes {
 public:

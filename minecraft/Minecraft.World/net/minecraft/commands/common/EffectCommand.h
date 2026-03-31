@@ -1,6 +1,12 @@
 #pragma once
 
-#include "../Command.h"
+#include <stdint.h>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/commands/Command.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
+
+class CommandSender;
 
 class EffectCommand : public Command {
 public:

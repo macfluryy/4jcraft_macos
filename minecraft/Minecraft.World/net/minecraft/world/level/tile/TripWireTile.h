@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
+
+class Level;
+class LevelSource;
 
 class TripWireTile : public Tile {
     using Tile::getTickDelay;

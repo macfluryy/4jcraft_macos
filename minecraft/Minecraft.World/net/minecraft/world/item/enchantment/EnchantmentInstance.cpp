@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.item.enchantment.h"
+#include <vector>
+
 #include "EnchantmentInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
 
 EnchantmentInstance::EnchantmentInstance(Enchantment* enchantment, int level)
     : WeighedRandomItem(enchantment->getFrequency()),

@@ -7,43 +7,86 @@
 // derives from, and not to find the derived class itself (which should own the
 // virtual GetType function)
 
-#include "../../../../../Header Files/stdafx.h"
+#include <limits.h>
+#include <stdlib.h>
+#include <wchar.h>
+#include <string>
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+#include <sstream>
+#include <vector>
+
 #include "java/JavaMath.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/chunk/net.minecraft.world.level.chunk.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.entity.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../animal/net.minecraft.world.entity.animal.h"
-#include "../boss/net.minecraft.world.entity.boss.h"
-#include "../monster/net.minecraft.world.entity.monster.h"
-#include "../item/net.minecraft.world.entity.item.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "../../level/dimension/net.minecraft.world.level.dimension.h"
-#include "../../level/material/net.minecraft.world.level.material.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../scores/net.minecraft.world.scores.h"
-#include "../../scores/criteria/net.minecraft.world.scores.criteria.h"
-#include "../projectile/net.minecraft.world.entity.projectile.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../effect/net.minecraft.world.effect.h"
-#include "../../food/net.minecraft.world.food.h"
 #include "Inventory.h"
 #include "Player.h"
-#include "../../../../../Header Files/ParticleTypes.h"
-#include <string>
-#include <functional>
+#include "Minecraft.World/Header Files/ParticleTypes.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include <limits.h>
-#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/App_structs.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "net/minecraft/Direction.h"
+#include "net/minecraft/Pos.h"
+#include "net/minecraft/SharedConstants.h"
+#include "net/minecraft/stats/GenericStats.h"
+#include "net/minecraft/util/Mth.h"
+#include "net/minecraft/world/Difficulty.h"
+#include "net/minecraft/world/damageSource/CombatTracker.h"
+#include "net/minecraft/world/damageSource/DamageSource.h"
+#include "net/minecraft/world/effect/MobEffect.h"
+#include "net/minecraft/world/effect/MobEffectInstance.h"
+#include "net/minecraft/world/entity/EntityEvent.h"
+#include "net/minecraft/world/entity/SyncedEntityData.h"
+#include "net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "net/minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
+#include "net/minecraft/world/entity/animal/Pig.h"
+#include "net/minecraft/world/entity/boss/MultiEntityMob.h"
+#include "net/minecraft/world/entity/boss/MultiEntityMobPart.h"
+#include "net/minecraft/world/entity/item/ItemEntity.h"
+#include "net/minecraft/world/entity/item/Minecart.h"
+#include "net/minecraft/world/entity/monster/Monster.h"
+#include "net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "net/minecraft/world/entity/player/Abilities.h"
+#include "net/minecraft/world/entity/projectile/Arrow.h"
+#include "net/minecraft/world/food/FoodConstants.h"
+#include "net/minecraft/world/food/FoodData.h"
+#include "net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "net/minecraft/world/inventory/InventoryMenu.h"
+#include "net/minecraft/world/inventory/PlayerEnderChestContainer.h"
+#include "net/minecraft/world/item/BowItem.h"
+#include "net/minecraft/world/item/FishingRodItem.h"
+#include "net/minecraft/world/item/Item.h"
+#include "net/minecraft/world/item/UseAnim.h"
+#include "net/minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "net/minecraft/world/item/enchantment/ThornsEnchantment.h"
+#include "net/minecraft/world/level/GameRules.h"
+#include "net/minecraft/world/level/Level.h"
+#include "net/minecraft/world/level/chunk/ChunkSource.h"
+#include "net/minecraft/world/level/dimension/Dimension.h"
+#include "net/minecraft/world/level/material/Material.h"
+#include "net/minecraft/world/level/tile/BedTile.h"
+#include "net/minecraft/world/level/tile/Tile.h"
+#include "net/minecraft/world/phys/AABB.h"
+#include "net/minecraft/world/phys/Vec3.h"
+#include "net/minecraft/world/scores/PlayerTeam.h"
+#include "net/minecraft/world/scores/Score.h"
+#include "net/minecraft/world/scores/Scoreboard.h"
+#include "net/minecraft/world/scores/Team.h"
+#include "net/minecraft/world/scores/criteria/ObjectiveCriteria.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+class ModelPart;
+class Objective;
+class Stat;
 
 void Player::_init() {
     registerAttributes();

@@ -1,8 +1,11 @@
-#include "../../Header Files/stdafx.h"
-#include "java/File.h"
-#include "ConsoleSaveFileOutputStream.h"
+#include <assert.h>
+#include <cstdint>
+#include <vector>
 
+#include "ConsoleSaveFileOutputStream.h"
 #include "ConsoleSaveFile.h"
+
+class ConsoleSavePath;
 
 // Creates a file output stream to write to the file represented by the
 // specified File object. A new FileDescriptor object is created to represent

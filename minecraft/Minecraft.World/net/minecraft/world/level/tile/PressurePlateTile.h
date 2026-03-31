@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "BasePressurePlateTile.h"
+
+class Material;
 
 class PressurePlateTile : public BasePressurePlateTile {
 public:

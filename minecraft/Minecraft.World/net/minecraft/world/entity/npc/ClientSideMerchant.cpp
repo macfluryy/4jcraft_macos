@@ -1,7 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/trading/net.minecraft.world.item.trading.h"
-#include "../../inventory/net.minecraft.world.inventory.h"
 #include "ClientSideMerchant.h"
+#include "Minecraft.World/net/minecraft/world/inventory/MerchantContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipe.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipeList.h"
+
+class Container;
+class Player;
 
 ClientSideMerchant::ClientSideMerchant(std::shared_ptr<Player> source,
                                        const std::wstring& name) {

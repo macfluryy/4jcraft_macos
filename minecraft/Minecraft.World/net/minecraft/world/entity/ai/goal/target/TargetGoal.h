@@ -1,8 +1,11 @@
 #pragma once
 
-#include "../Goal.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/Goal.h"
 
 class PathfinderMob;
+class LivingEntity;
 
 class TargetGoal : public Goal {
 public:

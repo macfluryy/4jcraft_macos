@@ -1,8 +1,17 @@
-#include "../../../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.world.entity.h"
-#include "../../../../level/net.minecraft.world.level.h"
-#include "../../../../phys/net.minecraft.world.phys.h"
+#include <algorithm>
+#include <format>
+#include <vector>
+
 #include "NearestAttackableTargetGoal.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/target/TargetGoal.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 SubselectEntitySelector::SubselectEntitySelector(
     NearestAttackableTargetGoal* parent, EntitySelector* subselector) {

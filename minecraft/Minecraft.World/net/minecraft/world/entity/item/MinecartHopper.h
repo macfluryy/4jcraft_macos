@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MinecartContainer.h"
-#include "../../level/tile/entity/Hopper.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/Hopper.h"
 
 class MinecartHopper : public MinecartContainer, public Hopper {
 public:

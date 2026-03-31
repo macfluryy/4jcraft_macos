@@ -1,18 +1,24 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../net.minecraft.world.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "../item/net.minecraft.world.entity.item.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
+#include <format>
+#include <string>
+#include <vector>
+
 #include "PigZombie.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Zombie.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 AttributeModifier* PigZombie::SPEED_MODIFIER_ATTACKING =
     (new AttributeModifier(eModifierId_MOB_PIG_ATTACKSPEED, 0.45,

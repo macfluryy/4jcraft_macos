@@ -1,10 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Item.h"
 
 class Player;
 class Packet;
 class Level;
+class ItemInstance;
 
 class ComplexItem : public Item {
 protected:

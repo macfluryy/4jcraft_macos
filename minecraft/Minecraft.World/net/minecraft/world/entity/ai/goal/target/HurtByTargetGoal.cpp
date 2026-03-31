@@ -1,8 +1,14 @@
-#include "../../../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.world.entity.h"
-#include "../../../../phys/net.minecraft.world.phys.h"
-#include "../../../../level/net.minecraft.world.level.h"
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "HurtByTargetGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/target/TargetGoal.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 HurtByTargetGoal::HurtByTargetGoal(PathfinderMob* mob, bool alertSameType)
     : TargetGoal(mob, false) {

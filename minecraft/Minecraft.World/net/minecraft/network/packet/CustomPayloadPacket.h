@@ -1,6 +1,13 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class CustomPayloadPacket
     : public Packet,

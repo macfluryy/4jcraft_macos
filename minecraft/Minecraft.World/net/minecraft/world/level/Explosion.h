@@ -1,9 +1,18 @@
 #pragma once
+#include <format>
+#include <memory>
+#include <unordered_map>
+#include <unordered_set>
+
 #include "TilePos.h"
-#include "../entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 class Random;
 class Level;
+class Entity;
 
 class Explosion {
 public:

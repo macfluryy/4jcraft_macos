@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.h"
 
 // 	public static final LevelType[] levelTypes = new LevelType[16];
 //
@@ -11,6 +9,10 @@
 // 	private final int version;
 // 	private bool selectable;
 // 	private bool replacement;
+
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
 
 LevelType* LevelType::levelTypes[16];  // = new LevelType[16];
 LevelType* LevelType::lvl_normal =

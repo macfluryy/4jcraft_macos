@@ -1,10 +1,16 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../phys/AABB.h"
+#include <format>
+#include <vector>
+
 #include "LeashItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/LeashFenceKnotEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 LeashItem::LeashItem(int id) : Item(id) {}
 

@@ -26,7 +26,7 @@
 
 #include <memory>
 
-#include "../x64headers/extraX64.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 #include <list>
 #include <map>
@@ -44,17 +44,17 @@
 
 #include <assert.h>
 
-#include "../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 #include "java/Class.h"
 #include "java/Exceptions.h"
-#include "../net/minecraft/util/Mth.h"
-#include "../ConsoleHelpers/StringHelpers.h"
-#include "../ConsoleHelpers/ArrayWithLength.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
 #include "java/Random.h"
-#include "../net/minecraft/world/level/TilePos.h"
-#include "../net/minecraft/world/level/ChunkPos.h"
-#include "../Header Files/compression.h"
-#include "../ConsoleHelpers/PerformanceTimer.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/ConsoleHelpers/PerformanceTimer.h"
 
 #ifdef _FINAL_BUILD
 #define printf BREAKTHECOMPILE

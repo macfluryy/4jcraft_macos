@@ -1,8 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../item/net.minecraft.world.item.h"
+#include <memory>
+#include <optional>
+
 #include "WebTile.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 WebTile::WebTile(int id) : Tile(id, Material::web) {}
 

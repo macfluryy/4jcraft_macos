@@ -1,6 +1,12 @@
 #pragma once
+#include <format>
+#include <vector>
+
 #include "Synth.h"
 #include "SimplexNoise.h"
+
+class Random;
+class SimplexNoise;
 
 class PerlinSimplexNoise : public Synth {
 private:

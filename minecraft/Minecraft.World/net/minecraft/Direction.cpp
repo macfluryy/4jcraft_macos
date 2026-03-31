@@ -1,6 +1,6 @@
-#include "../../Header Files/stdafx.h"
 #include "Direction.h"
 #include "Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 const int Direction::STEP_X[] = {0, -1, 0, 1};
 

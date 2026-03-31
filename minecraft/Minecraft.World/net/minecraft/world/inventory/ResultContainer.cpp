@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
 #include "ResultContainer.h"
 
 ResultContainer::ResultContainer() : Container() {}

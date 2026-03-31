@@ -1,9 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
+#include <memory>
+
 #include "RepeaterTile.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DiodeTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const double RepeaterTile::DELAY_RENDER_OFFSETS[4] = {
     -1.0f / 16.0f, 1.0f / 16.0f, 3.0f / 16.0f, 5.0f / 16.0f};

@@ -1,8 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "animal/net.minecraft.world.entity.animal.h"
-#include "monster/net.minecraft.world.entity.monster.h"
-#include "Creature.h"
-#include "../level/material/Material.h"
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "MobCategory.h"
 
 MobCategory* MobCategory::monster = nullptr;

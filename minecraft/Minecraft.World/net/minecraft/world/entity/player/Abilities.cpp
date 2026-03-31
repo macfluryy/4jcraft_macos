@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
+#include <string>
+
 #include "Abilities.h"
+#include "nbt/CompoundTag.h"
 
 Abilities::Abilities() {
     invulnerable = false;

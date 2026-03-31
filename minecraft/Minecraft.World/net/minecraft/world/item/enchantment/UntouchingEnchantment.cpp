@@ -1,5 +1,5 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "UntouchingEnchantment.h"
 
 UntouchingEnchantment::UntouchingEnchantment(int id, int frequency)

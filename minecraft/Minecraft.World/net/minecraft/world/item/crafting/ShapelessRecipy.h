@@ -1,5 +1,11 @@
 #pragma once
 
+#include <format>
+
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
+
+class ItemInstance;
+
 class ShapelessRecipy : public Recipy {
 private:
     _eGroupType group;

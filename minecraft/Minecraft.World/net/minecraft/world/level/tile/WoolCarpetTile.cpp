@@ -1,8 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../SharedConstants.h"
+#include <optional>
+
 #include "WoolCarpetTile.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 WoolCarpetTile::WoolCarpetTile(int id)
     : Tile(id, Material::clothDecoration, false) {

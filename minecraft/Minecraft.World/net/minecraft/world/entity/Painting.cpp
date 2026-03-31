@@ -1,13 +1,17 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "item/net.minecraft.world.entity.item.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/material/net.minecraft.world.level.material.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Painting.h"
-#include "../level/material/Material.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/HangingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 typedef Painting::Motive _Motive;
 const _Motive* Painting::Motive::values[] = {

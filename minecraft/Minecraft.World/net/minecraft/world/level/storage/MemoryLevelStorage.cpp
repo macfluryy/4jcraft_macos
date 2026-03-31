@@ -1,12 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../net.minecraft.world.level.h"
-#include "../chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "nbt/com.mojang.nbt.h"
 #include "MemoryLevelStorage.h"
 
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
 
 MemoryLevelStorage::MemoryLevelStorage() {}
 

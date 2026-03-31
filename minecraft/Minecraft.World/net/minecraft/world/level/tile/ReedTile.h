@@ -1,10 +1,12 @@
 #pragma once
 
 #include <optional>
+
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Random;
+class Level;
 
 class ReedTile : public Tile {
     friend class Tile;

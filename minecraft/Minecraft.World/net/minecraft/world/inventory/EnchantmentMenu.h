@@ -1,6 +1,13 @@
 #pragma once
+#include <stdint.h>
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 #include "java/Random.h"
+
+class Container;
+class Inventory;
+class Level;
 
 class EnchantmentMenu : public AbstractContainerMenu {
     // 4J Stu Made these public for UI menus, perhaps should make friend class?

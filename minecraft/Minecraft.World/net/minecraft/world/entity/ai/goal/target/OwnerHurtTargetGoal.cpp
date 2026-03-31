@@ -1,7 +1,8 @@
-#include "../../../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.world.entity.h"
-#include "../../../animal/net.minecraft.world.entity.animal.h"
 #include "OwnerHurtTargetGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/TamableAnimal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/target/TargetGoal.h"
 
 OwnerHurtTargetGoal::OwnerHurtTargetGoal(TamableAnimal* tameAnimal)
     : TargetGoal(tameAnimal, 32, false) {

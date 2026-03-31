@@ -1,11 +1,22 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "StructureFeature.h"
+#include <float.h>
+#include <stdint.h>
+#include <format>
+#include <list>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "StructureStart.h"
-#include "StructurePiece.h"
-#include "../../ChunkPos.h"
-#include "BoundingBox.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 StructureFeature::StructureFeature() {
 #ifdef ENABLE_STRUCTURE_SAVING

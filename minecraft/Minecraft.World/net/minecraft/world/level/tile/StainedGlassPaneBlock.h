@@ -2,6 +2,8 @@
 
 #include "ThinFenceTile.h"
 
+class Icon;
+
 class StainedGlassPaneBlock : public ThinFenceTile {
     friend class ChunkRebuildData;
 

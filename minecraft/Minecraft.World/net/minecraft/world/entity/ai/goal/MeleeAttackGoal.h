@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "Goal.h"
+#include "java/Class.h"
 
 class Level;
 class PathfinderMob;

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <vector>
+
 class DataLayer {
 public:
     std::vector<uint8_t> data;

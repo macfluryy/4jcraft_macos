@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Item.h"
+
+class Level;
+class Player;
 
 class LeashItem : public Item {
 public:

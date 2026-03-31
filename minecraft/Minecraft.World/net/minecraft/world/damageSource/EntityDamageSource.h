@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "DamageSource.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
 
 class Entity;
 class Player;

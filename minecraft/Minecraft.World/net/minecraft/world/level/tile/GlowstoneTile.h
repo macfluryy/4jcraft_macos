@@ -2,6 +2,7 @@
 #include "Tile.h"
 
 class Random;
+class Material;
 
 class Glowstonetile : public Tile {
 public:

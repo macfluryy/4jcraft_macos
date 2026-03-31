@@ -1,8 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../world/effect/net.minecraft.world.effect.h"
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "RemoveMobEffectPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
 
 RemoveMobEffectPacket::RemoveMobEffectPacket() {}
 

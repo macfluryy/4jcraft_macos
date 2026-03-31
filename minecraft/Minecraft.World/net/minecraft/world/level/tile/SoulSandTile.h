@@ -1,6 +1,6 @@
 #pragma once
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class SoulSandTile : public Tile {
 public:

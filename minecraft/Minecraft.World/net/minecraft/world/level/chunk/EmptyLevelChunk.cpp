@@ -1,8 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "java/Arrays.h"
-#include "../net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
 #include "EmptyLevelChunk.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
+class EntitySelector;
 
 EmptyLevelChunk::EmptyLevelChunk(Level* level, int x, int z)
     : LevelChunk(level, x, z) {

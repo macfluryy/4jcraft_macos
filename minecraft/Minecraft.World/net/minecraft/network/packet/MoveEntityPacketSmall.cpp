@@ -1,8 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <stdint.h>
+
 #include "PacketListener.h"
 #include "MoveEntityPacketSmall.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 MoveEntityPacketSmall::MoveEntityPacketSmall() {
     hasRot = false;

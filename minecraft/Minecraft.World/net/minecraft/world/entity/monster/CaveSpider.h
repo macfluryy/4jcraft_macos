@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Spider.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
 
 class CaveSpider : public Spider {
 public:

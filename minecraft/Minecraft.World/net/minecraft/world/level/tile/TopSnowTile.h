@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
 
 class Player;
+class Level;
 
 class TopSnowTile : public Tile {
     friend class Tile;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 #include "Layer.h"
 
 class IslandLayer : public Layer {

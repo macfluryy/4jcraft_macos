@@ -1,6 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.scores.h"
 #include "Objective.h"
+#include "Minecraft.World/net/minecraft/world/scores/Scoreboard.h"
 
 Objective::Objective(Scoreboard* scoreboard, const std::wstring& name,
                      ObjectiveCriteria* criteria) {

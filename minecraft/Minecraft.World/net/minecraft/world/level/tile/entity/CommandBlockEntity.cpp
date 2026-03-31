@@ -1,9 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../../network/packet/net.minecraft.network.packet.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../../../commands/net.minecraft.commands.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include <assert.h>
+#include <memory>
+
 #include "CommandBlockEntity.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/network/packet/TileEntityDataPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+
+class Level;
 
 CommandBlockEntity::CommandBlockEntity() {
     successCount = 0;

@@ -1,10 +1,19 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <string.h>
+#include <algorithm>
+#include <cstdint>
+#include <string>
+
 #include "java/System.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "java/File.h"
 #include "RegionFile.h"
-
-#include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "compression.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 std::vector<uint8_t> RegionFile::emptySector(SECTOR_BYTES);
 
@@ -314,13 +323,6 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
 #endif
 
         if (sectorNumber != 0 && sectorsAllocated == sectorsNeeded) {
-            /* we can simply overwrite the old sectors */
-//        debug("SAVE", x, z, length, "rewrite");
-#ifndef _CONTENT_PACKAGE
-            // wprintf(L"Writing chunk (%d,%d) in %ls from current sector %d to
-            // %d\n", x,z, fileEntry->data.filename, sectorNumber, sectorNumber
-            // + sectorsNeeded - 1);
-#endif
             write(sectorNumber, compData, length, compLength);
         } else {
             /* we need to allocate new sectors */
@@ -363,11 +365,6 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
                 //            debug("SAVE", x, z, length, "reuse");
                 sectorNumber = runStart;
                 setOffset(x, z, (sectorNumber << 8) | sectorsNeeded);
-#ifndef _CONTENT_PACKAGE
-                // wprintf(L"Writing chunk (%d,%d) in %ls from old sector %d to
-                // %d\n", x,z, fileEntry->data.filename, sectorNumber,
-                // sectorNumber + sectorsNeeded - 1);
-#endif
                 for (int i = 0; i < sectorsNeeded; ++i) {
                     sectorFree->at(sectorNumber + i) = false;
                 }
@@ -385,11 +382,6 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
                                            SaveFileSeekOrigin::End);
 
                 sectorNumber = (int)sectorFree->size();
-#ifndef _CONTENT_PACAKGE
-                // wprintf(L"Writing chunk (%d,%d) in %ls from new sector %d to
-                // %d\n", x,z, fileEntry->data.filename, sectorNumber,
-                // sectorNumber + sectorsNeeded - 1);
-#endif
                 unsigned int numberOfBytesWritten = 0;
                 for (int i = 0; i < sectorsNeeded; ++i) {
                     // WriteFile(file,emptySector.data(),SECTOR_BYTES,&numberOfBytesWritten,nullptr);

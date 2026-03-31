@@ -1,7 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/Tile.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "MultiTextureTileItem.h"
-#include "crafting/net.minecraft.world.item.crafting.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/TileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
 
 MultiTextureTileItem::MultiTextureTileItem(int id, Tile* parentTile,
                                            int* nameExtensions, int iLength,

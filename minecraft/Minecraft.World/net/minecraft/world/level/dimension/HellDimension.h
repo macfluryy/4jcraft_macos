@@ -1,4 +1,6 @@
 #pragma once
+#include <stdint.h>
+
 #include "Dimension.h"
 
 class HellDimension : public Dimension {

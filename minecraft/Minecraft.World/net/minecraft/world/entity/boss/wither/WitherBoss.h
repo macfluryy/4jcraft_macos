@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../monster/Monster.h"
-#include "../../monster/RangedAttackMob.h"
-#include "../BossMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Monster.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/RangedAttackMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/boss/BossMob.h"
 
 class LivingEntitySelector : public EntitySelector {
 public:

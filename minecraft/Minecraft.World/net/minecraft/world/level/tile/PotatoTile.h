@@ -2,6 +2,8 @@
 
 #include "CropTile.h"
 
+class Icon;
+
 class PotatoTile : public CropTile {
     friend class ChunkRebuildData;
 

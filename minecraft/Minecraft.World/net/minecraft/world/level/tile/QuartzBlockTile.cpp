@@ -1,12 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "QuartzBlockTile.h"
 
 // 4J Added
-#include "../Level.h"
-#include "piston/PistonBaseTile.h"
-#include "../../entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/piston/PistonBaseTile.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 int QuartzBlockTile::BLOCK_NAMES[QUARTZ_BLOCK_NAMES] = {
     IDS_TILE_QUARTZ_BLOCK, IDS_TILE_QUARTZ_BLOCK_CHISELED,

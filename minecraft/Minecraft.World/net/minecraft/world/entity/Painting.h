@@ -1,11 +1,15 @@
 #pragma once
 
+#include <string>
+
 #include "Entity.h"
 #include "HangingEntity.h"
+#include "java/Class.h"
 
 class Level;
 class CompoundTag;
 class DamageSource;
+class Entity;
 
 class Painting : public HangingEntity {
 public:

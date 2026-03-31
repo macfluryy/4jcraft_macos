@@ -1,9 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "TileEventPacket.h"
-#include "../../world/level/tile/net.minecraft.world.level.tile.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 TileEventPacket::TileEventPacket() {
     x = 0;

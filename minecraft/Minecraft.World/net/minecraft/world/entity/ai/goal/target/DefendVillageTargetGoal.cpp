@@ -1,7 +1,10 @@
-#include "../../../../../../../Header Files/stdafx.h"
-#include "../../village/net.minecraft.world.entity.ai.village.h"
-#include "../../../animal/net.minecraft.world.entity.animal.h"
 #include "DefendVillageTargetGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/target/TargetGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Village.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/VillagerGolem.h"
 
 DefendVillageTargetGoal::DefendVillageTargetGoal(VillagerGolem* golem)
     : TargetGoal(golem, false, true) {

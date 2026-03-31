@@ -1,10 +1,17 @@
 #pragma once
 #include <optional>
+#include <string>
+
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 class Random;
 class ChunkRebuildData;
+class Icon;
+class Level;
+class LevelSource;
+class Material;
 
 class LiquidTile : public Tile {
     friend class ChunkRebuildData;

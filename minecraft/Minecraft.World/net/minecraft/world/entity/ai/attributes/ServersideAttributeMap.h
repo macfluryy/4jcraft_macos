@@ -1,6 +1,11 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "BaseAttributeMap.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
+
+class AttributeInstance;
 
 class ServersideAttributeMap : public BaseAttributeMap {
 private:

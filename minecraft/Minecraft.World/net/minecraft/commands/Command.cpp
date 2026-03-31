@@ -1,9 +1,9 @@
-#include "../../../Header Files/stdafx.h"
-#include "net.minecraft.commands.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Command.h"
+#include "Minecraft.World/net/minecraft/commands/AdminLogCommand.h"
+#include "Minecraft.World/net/minecraft/commands/CommandSender.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
 
 AdminLogCommand* Command::logger;
 

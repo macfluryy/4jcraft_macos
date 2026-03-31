@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Monster.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
 
 class Blaze : public Monster {
 public:

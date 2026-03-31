@@ -1,7 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
+#include <memory>
+
 #include "EmptyMapItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ComplexItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
 
 EmptyMapItem::EmptyMapItem(int id) : ComplexItem(id) {}
 

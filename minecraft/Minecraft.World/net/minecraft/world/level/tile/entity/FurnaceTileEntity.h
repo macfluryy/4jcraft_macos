@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../FurnaceTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FurnaceTile.h"
 #include "TileEntity.h"
-#include "../../../WorldlyContainer.h"
+#include "Minecraft.World/net/minecraft/world/WorldlyContainer.h"
 
 class Player;
 class Level;

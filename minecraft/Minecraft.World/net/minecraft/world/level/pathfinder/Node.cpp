@@ -1,9 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "net.minecraft.world.level.pathfinder.h"
 
 // 4J - added for common ctor code
 // Do all the default initialisations done in the java class
+#include <stdint.h>
+#include <string>
+
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Node.h"
+
 void Node::_init() {
     heapIdx = -1;
 

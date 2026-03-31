@@ -2,7 +2,7 @@
 
 #include "LivingEntity.h"
 #include "MobType.h"
-#include "ai/goal/GoalSelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/GoalSelector.h"
 
 class HitResult;
 class Level;

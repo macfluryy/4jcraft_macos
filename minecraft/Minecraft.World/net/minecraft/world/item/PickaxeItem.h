@@ -1,6 +1,10 @@
 #pragma once
 
+#include <format>
+
 #include "DiggerItem.h"
+
+class Tile;
 
 #define PICKAXE_DIGGABLES 23
 

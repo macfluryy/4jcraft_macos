@@ -1,4 +1,4 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "LootBonusEnchantment.h"
 
 LootBonusEnchantment::LootBonusEnchantment(int id, int frequency,

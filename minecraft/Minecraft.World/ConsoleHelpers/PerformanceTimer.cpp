@@ -1,5 +1,10 @@
-#include "../Header Files/stdafx.h"
-#include "PerformanceTimer.h"
+
+#include <chrono>
+#include <string>
+
+#include "Minecraft.World/ConsoleHelpers/PerformanceTimer.h"
+#include "Minecraft.World/ConsoleHelpers/PerformanceTimer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 PerformanceTimer::PerformanceTimer() { Reset(); }
 

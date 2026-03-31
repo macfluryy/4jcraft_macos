@@ -1,6 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "AnvilMenu.h"
 #include "RepairContainer.h"
+#include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
 
 RepairContainer::RepairContainer(AnvilMenu* menu, int name, bool customName,
                                  int size)

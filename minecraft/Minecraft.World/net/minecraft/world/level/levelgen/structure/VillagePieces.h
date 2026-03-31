@@ -1,7 +1,17 @@
 #pragma once
+#include <format>
+#include <list>
+#include <vector>
+
 #include "StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 class BiomeSource;
+class BoundingBox;
+class Level;
+class Random;
+class WeighedTreasure;
 
 class VillagePieces {
 private:
@@ -53,6 +63,7 @@ public:
 
 private:
     class VillagePiece;
+
     static int updatePieceWeight(
         std::list<PieceWeight*>* currentPieces);  // 4J = was array list
     static VillagePiece* findAndCreatePieceFactory(

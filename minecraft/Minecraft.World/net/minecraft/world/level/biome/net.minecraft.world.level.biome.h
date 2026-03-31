@@ -11,7 +11,7 @@
 #include "WaterlilyFeature.h"
 #include "SwampBiome.h"
 #include "TaigaBiome.h"
-#include "../LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
 #include "BiomeSource.h"
 #include "FixedBiomeSource.h"
 

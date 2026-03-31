@@ -1,7 +1,17 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <typeinfo>
+#include <unordered_map>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
+
 class ConsoleSaveFile;
-#include "../saveddata/SavedData.h"
+class LevelStorage;
 
 class SavedDataStorage {
 private:

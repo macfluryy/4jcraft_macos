@@ -1,5 +1,3 @@
-#include "../../../../../Header Files/stdafx.h"
-
 #include "LevelStorage.h"
 
 const std::wstring LevelStorage::NETHER_FOLDER = L"DIM-1";

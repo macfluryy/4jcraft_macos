@@ -1,9 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../monster/net.minecraft.world.entity.monster.h"
 #include "Snowball.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Throwable.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+
+class LivingEntity;
 
 void Snowball::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

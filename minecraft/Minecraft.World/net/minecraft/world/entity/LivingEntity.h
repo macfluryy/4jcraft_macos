@@ -1,10 +1,11 @@
 #pragma once
 
 #include <optional>
+
 #include "Entity.h"
 #include "MobType.h"
-#include "ai/goal/GoalSelector.h"
-#include "../../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/GoalSelector.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 
 class CombatTracker;
 class AttributeInstance;

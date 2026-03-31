@@ -1,10 +1,15 @@
 #pragma once
 
-#include "../Entity.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Projectile.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 class Level;
 class CompoundTag;
+class LivingEntity;
 
 class Arrow : public Entity, public Projectile {
 public:

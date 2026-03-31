@@ -1,5 +1,3 @@
-#include "../../../Header Files/stdafx.h"
-
 #include "DispenseItemBehavior.h"
 
 DispenseItemBehavior* DispenseItemBehavior::NOOP =

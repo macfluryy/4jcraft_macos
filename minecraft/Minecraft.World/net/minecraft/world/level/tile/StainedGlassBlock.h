@@ -2,6 +2,9 @@
 
 #include "HalfTransparentTile.h"
 
+class Icon;
+class Material;
+
 class StainedGlassBlock : public HalfTransparentTile {
     friend class ChunkRebuildData;
 

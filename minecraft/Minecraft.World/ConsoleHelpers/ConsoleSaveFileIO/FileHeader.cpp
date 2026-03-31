@@ -1,7 +1,21 @@
-#include "../../Header Files/stdafx.h"
-#include "FileHeader.h"
 
 // #define _DEBUG_FILE_HEADER
+
+#include <assert.h>
+#include <string.h>
+#include <wchar.h>
+#include <algorithm>
+#include <compare>
+#include <format>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/System.h"
 
 extern CConsoleMinecraftApp app;
 

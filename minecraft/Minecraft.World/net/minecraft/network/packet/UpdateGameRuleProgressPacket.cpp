@@ -1,7 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <string.h>
+
 #include "PacketListener.h"
 #include "UpdateGameRuleProgressPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 UpdateGameRuleProgressPacket::UpdateGameRuleProgressPacket() {
     m_messageId = L"";

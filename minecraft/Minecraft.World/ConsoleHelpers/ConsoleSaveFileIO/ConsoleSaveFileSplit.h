@@ -1,11 +1,18 @@
 #pragma once
 #include <mutex>
+#include <cstdint>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "FileHeader.h"
 #include "ConsoleSavePath.h"
 #include "ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class ProgressRenderer;
+class ProgressListener;
 
 class ConsoleSaveFileSplit : public ConsoleSaveFile {
 private:

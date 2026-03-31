@@ -1,6 +1,9 @@
 #pragma once
 
-#include "../Command.h"
+#include <stdint.h>
+
+#include "Minecraft.World/net/minecraft/commands/Command.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
 
 class KillCommand : public Command {
 public:

@@ -1,6 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <string>
 
 #include "StructureFeatureSavedData.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureSavedData.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
 
 std::wstring StructureFeatureSavedData::TAG_FEATURES = L"Features";
 

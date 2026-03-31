@@ -1,8 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <limits>
+
 #include "PacketListener.h"
 #include "GameCommandPacket.h"
-#include <limits>
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
 
 GameCommandPacket::GameCommandPacket() { length = 0; }
 

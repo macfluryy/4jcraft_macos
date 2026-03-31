@@ -1,8 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "Goal.h"
 
 class RangedAttackMob;
+class LivingEntity;
+class Mob;
 
 class RangedAttackGoal : public Goal {
 private:

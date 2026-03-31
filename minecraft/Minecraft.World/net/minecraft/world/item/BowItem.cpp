@@ -1,12 +1,20 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "enchantment/net.minecraft.world.item.enchantment.h"
-#include "../net.minecraft.world.h"
+#include <memory>
+
 #include "BowItem.h"
-#include "../../../../Header Files/SoundTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+
+class Icon;
 
 const std::wstring BowItem::TEXTURE_PULL[] = {L"bow_pull_0", L"bow_pull_1",
                                               L"bow_pull_2"};

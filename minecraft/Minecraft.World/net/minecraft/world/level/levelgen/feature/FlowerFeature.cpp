@@ -1,8 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
 #include "FlowerFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 FlowerFeature::FlowerFeature(int tile) { this->tile = tile; }
 

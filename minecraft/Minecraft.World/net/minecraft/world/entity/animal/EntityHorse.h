@@ -1,12 +1,23 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Animal.h"
-#include "../../net.minecraft.world.ContainerListener.h"
-#include "../MobGroupData.h"
-#include "../EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobGroupData.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 class Attribute;
 class AnimalChest;
+class Entity;
+class ItemInstance;
+class Level;
 
 class HorseEntitySelector : public EntitySelector {
 public:

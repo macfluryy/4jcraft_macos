@@ -1,9 +1,9 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "SkyIslandDimension.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.level.levelgen.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/net.minecraft.world.level.biome.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/net.minecraft.world.level.levelgen.h"
 
 void SkyIslandDimension::init() {
     biomeSource = new FixedBiomeSource(Biome::sky, 0.5f, 0);

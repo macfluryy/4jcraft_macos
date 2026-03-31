@@ -1,9 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "../../net.minecraft.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
 #include "PacketListener.h"
 #include "ChatPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 // longest allowed string is "<" + name + "> " + message
 const unsigned int ChatPacket::MAX_LENGTH =

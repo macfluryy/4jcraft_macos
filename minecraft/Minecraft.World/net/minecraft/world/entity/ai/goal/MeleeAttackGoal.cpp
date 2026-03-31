@@ -1,13 +1,16 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../monster/net.minecraft.world.entity.monster.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../../level/pathfinder/Path.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../sensing/net.minecraft.world.entity.ai.sensing.h"
-#include "../../../phys/net.minecraft.world.phys.h"
+#include <algorithm>
+
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Path.h"
 #include "MeleeAttackGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/sensing/Sensing.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void MeleeAttackGoal::_init(PathfinderMob* mob, double speedModifier,
                             bool trackTarget) {

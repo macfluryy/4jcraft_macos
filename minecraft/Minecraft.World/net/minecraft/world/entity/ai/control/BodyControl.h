@@ -2,6 +2,8 @@
 
 #include "Control.h"
 
+class LivingEntity;
+
 class BodyControl : public Control {
 private:
     LivingEntity* mob;

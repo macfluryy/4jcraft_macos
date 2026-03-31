@@ -1,6 +1,10 @@
-#include "../../../Header Files/stdafx.h"
-#include "net.minecraft.commands.h"
+#include <string>
+#include <utility>
+
 #include "CommandDispatcher.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/commands/Command.h"
+#include "Minecraft.World/net/minecraft/commands/CommandSender.h"
 
 int CommandDispatcher::performCommand(std::shared_ptr<CommandSender> sender,
                                       EGameCommand command,

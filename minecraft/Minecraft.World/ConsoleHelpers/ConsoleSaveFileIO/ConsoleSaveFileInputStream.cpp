@@ -1,8 +1,11 @@
-#include "../../Header Files/stdafx.h"
+#include <assert.h>
+#include <cstdint>
+#include <vector>
 
-#include "java/File.h"
 #include "ConsoleSaveFile.h"
 #include "ConsoleSaveFileInputStream.h"
+
+class ConsoleSavePath;
 
 ConsoleSaveFileInputStream::ConsoleSaveFileInputStream(
     ConsoleSaveFile* saveFile, const ConsoleSavePath& file) {

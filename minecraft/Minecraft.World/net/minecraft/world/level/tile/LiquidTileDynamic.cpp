@@ -1,7 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
 #include "LiquidTileDynamic.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LiquidTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 LiquidTileDynamic::LiquidTileDynamic(int id, Material* material)
     : LiquidTile(id, material) {

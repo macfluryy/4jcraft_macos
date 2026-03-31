@@ -1,10 +1,14 @@
-#include "../../../Header Files/stdafx.h"
-#include "net.minecraft.stats.h"
-#include "../world/item/net.minecraft.world.item.h"
-#include "../world/level/tile/net.minecraft.world.level.tile.h"
 #include <limits>
+#include <string>
+#include <vector>
+
 #include "Achievement.h"
 #include "Achievements.h"
+#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+#include "Minecraft.World/net/minecraft/world/item/BowItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/PotionItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const int Achievements::ACHIEVEMENT_OFFSET = 0x500000;
 

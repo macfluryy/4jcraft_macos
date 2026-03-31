@@ -1,9 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
 
 class Mob;
 class Player;
+class LevelSource;
 
 class StairTile : public Tile {
     friend class Tile;

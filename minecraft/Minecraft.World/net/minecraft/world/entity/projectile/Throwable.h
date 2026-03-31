@@ -1,10 +1,16 @@
 #pragma once
 
-#include "../Entity.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Projectile.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 
 class Mob;
 class HitResult;
+class Level;
 
 class Throwable : public Entity, public Projectile {
 private:

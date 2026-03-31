@@ -1,5 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.commands.h"
+#include <memory>
+
 #include "DefaultGameModeCommand.h"
 
 EGameCommand DefaultGameModeCommand::getId() {

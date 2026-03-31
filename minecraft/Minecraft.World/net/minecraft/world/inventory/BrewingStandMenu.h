@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerMenu.h"
 #include "Slot.h"
 
@@ -7,6 +9,7 @@ class BrewingStandTileEntity;
 class Inventory;
 class Player;
 class Container;
+class ItemInstance;
 
 class BrewingStandMenu : public AbstractContainerMenu {
     // 4J Stu - Made public so that we can access these from the XUI menus

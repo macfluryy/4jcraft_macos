@@ -1,11 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "../net.minecraft.commands.h"
-#include "../../world/level/net.minecraft.world.level.h"
-#include "../../world/level/storage/net.minecraft.world.level.storage.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
 #include "ToggleDownfallCommand.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/GameCommandPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 
 EGameCommand ToggleDownfallCommand::getId() {
     return eGameCommand_ToggleDownfall;

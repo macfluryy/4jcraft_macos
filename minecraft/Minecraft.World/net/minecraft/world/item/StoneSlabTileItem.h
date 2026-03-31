@@ -1,7 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "TileItem.h"
-#include "../level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+
+class HalfSlabTile;
+class ItemInstance;
+class Level;
+class Player;
 
 class StoneSlabTileItem : public TileItem {
 private:

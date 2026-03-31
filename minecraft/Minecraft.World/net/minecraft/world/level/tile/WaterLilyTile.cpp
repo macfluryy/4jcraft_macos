@@ -1,9 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+#include <optional>
+
 #include "WaterLilyTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Random;
 
 WaterlilyTile::WaterlilyTile(int id) : Bush(id) { this->updateDefaultShape(); }
 

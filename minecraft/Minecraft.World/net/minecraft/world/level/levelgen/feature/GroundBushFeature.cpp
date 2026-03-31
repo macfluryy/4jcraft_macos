@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include <stdlib.h>
+
 #include "GroundBushFeature.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 GroundBushFeature::GroundBushFeature(int trunkType, int leafType) {
     trunkTileType = trunkType;

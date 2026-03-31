@@ -1,13 +1,37 @@
+#include <stdio.h>
+#include <string.h>
 #include <mutex>
 #include <thread>
 #include <chrono>
+#include <utility>
 
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
-#include "../../../../../../ConsoleHelpers/ThreadName.h"
-#include "../../storage/LevelData.h"
+#include "Minecraft.World/ConsoleHelpers/ThreadName.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "McRegionChunkStorage.h"
+#include "4J_Profile.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "compression.h"
+#include "java/InputOutputStream/BufferedOutputStream.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/NbtIo.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFileCache.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+class DataInput;
 
 std::mutex McRegionChunkStorage::cs_memory;
 

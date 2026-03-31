@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "TileEntity.h"
+#include "java/Class.h"
+
+class Player;
 
 class EnderChestTileEntity : public TileEntity {
 public:

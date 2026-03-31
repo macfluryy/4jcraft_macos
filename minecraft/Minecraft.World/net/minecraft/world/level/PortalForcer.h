@@ -1,6 +1,15 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <unordered_map>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/Pos.h"
+
 class Random;
+class Entity;
+class ServerLevel;
 
 class PortalForcer {
 public:

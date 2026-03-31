@@ -1,9 +1,12 @@
-#include "../../../Header Files/stdafx.h"
 #include <utility>
+#include <unordered_map>
+#include <vector>
+
 #include "NumberFormatters.h"
 #include "StatFormatter.h"
 #include "Stats.h"
 #include "Stat.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 Stat::DefaultFormat* Stat::defaultFormatter = new DefaultFormat();
 Stat::TimeFormatter* Stat::timeFormatter = new TimeFormatter();

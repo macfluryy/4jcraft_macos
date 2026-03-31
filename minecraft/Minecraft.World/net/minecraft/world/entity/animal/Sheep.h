@@ -1,12 +1,19 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+
+#include "Animal.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+
 class Random;
 class EatTileGoal;
 class CraftingContainer;
-
-#include "Animal.h"
-#include "../../../SharedConstants.h"
-#include "../../inventory/AbstractContainerMenu.h"
+class Entity;
+class Level;
 
 class Sheep : public Animal {
 private:

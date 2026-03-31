@@ -1,15 +1,32 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory>
+#include <string>
+
 #include "StrongholdPieces.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../storage/net.minecraft.world.level.storage.h"
-#include "../net.minecraft.world.level.levelgen.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../../../util/WeighedTreasure.h"
-#include "../../../../../../ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
-#include "../../../../Facing.h"
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/world/item/CoalItem.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DoorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SmoothStoneBrickTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneMonsterTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TheEndPortalFrameTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 int StrongholdPieces::totalWeight = 0;
 std::list<StrongholdPieces::PieceWeight*> StrongholdPieces::currentPieces;

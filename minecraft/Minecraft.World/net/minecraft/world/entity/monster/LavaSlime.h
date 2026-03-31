@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Slime.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
 
 class LavaSlime : public Slime {
 public:

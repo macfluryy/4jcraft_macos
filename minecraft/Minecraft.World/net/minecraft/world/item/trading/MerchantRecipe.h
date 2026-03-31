@@ -1,5 +1,13 @@
 #pragma once
 
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
+class CompoundTag;
+class Item;
+class Tile;
+
 class MerchantRecipe {
 private:
     std::shared_ptr<ItemInstance> buyA;

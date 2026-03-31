@@ -1,22 +1,36 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.entity.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "../../../network/packet/net.minecraft.network.packet.h"
+#include <math.h>
+#include <stdint.h>
+#include <format>
+#include <numbers>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
-#include "nbt/com.mojang.nbt.h"
 #include "Arrow.h"
-
-// 4J : WESTY : Added for other award, kill creeper with arrow.
-#include "../monster/net.minecraft.world.entity.monster.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/network/packet/GameEventPacket.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/ThornsEnchantment.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 // base damage, multiplied with velocity
 const double Arrow::ARROW_BASE_DAMAGE = 2.0f;

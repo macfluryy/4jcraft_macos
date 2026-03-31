@@ -1,8 +1,15 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "Tile.h"
 #include "PlantTile.h"
 
 class ChunkRebuildData;
+class Icon;
+class Level;
+class LevelSource;
+
 class StemTile : public Bush {
     friend class ChunkRebuildData;
 

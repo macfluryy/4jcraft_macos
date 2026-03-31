@@ -1,5 +1,10 @@
 #pragma once
 
+#include <format>
+#include <string>
+
+#include "Minecraft.Client/Common/App_enums.h"
+
 // 4J: Simple std::string wrapper that includes basic formatting information
 class HtmlString {
 public:

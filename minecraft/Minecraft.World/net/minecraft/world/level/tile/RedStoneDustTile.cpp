@@ -1,21 +1,27 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <stdint.h>
+#include <optional>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "RedStoneDustTile.h"
-#include <cstddef>
-#include <optional>
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../net.minecraft.world.h"
-#include "../../../net.minecraft.h"
-#include "../../../Direction.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
 #include "DiodeTile.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/RepeaterTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
-// AP - added for Vita to set Alpha Cut out
-#include "java/IntBuffer.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+class Icon;
 
 const std::wstring RedStoneDustTile::TEXTURE_CROSS = L"_cross";
 const std::wstring RedStoneDustTile::TEXTURE_LINE = L"_line";

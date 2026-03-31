@@ -1,11 +1,13 @@
 #pragma once
 
-#include "../PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
 #include "Enemy.h"
+#include "java/Class.h"
 
 class Level;
 class CompoundTag;
 class DamageSource;
+class Entity;
 
 class Monster : public PathfinderMob, public Enemy {
 public:

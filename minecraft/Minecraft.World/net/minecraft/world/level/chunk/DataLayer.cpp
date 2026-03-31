@@ -1,4 +1,3 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "DataLayer.h"
 
 DataLayer::DataLayer(int length, int depthBits)

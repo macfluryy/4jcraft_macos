@@ -1,6 +1,12 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "Tile.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+
+class Icon;
+class Material;
 
 class ThinFenceTile : public Tile {
 private:

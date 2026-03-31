@@ -1,19 +1,31 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../net.minecraft.world.entity.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../projectile/net.minecraft.world.entity.projectile.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../stats/net.minecraft.stats.h"
+#include <math.h>
+#include <stdint.h>
+#include <numbers>
+#include <string>
+#include <vector>
+
 #include "Ghast.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "../../level/tile/LevelEvent.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/FlyingMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Enemy.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/LargeFireball.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 void Ghast::_init() {
     explosionPower = 1;

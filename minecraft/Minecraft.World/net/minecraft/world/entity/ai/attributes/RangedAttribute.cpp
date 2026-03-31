@@ -1,6 +1,5 @@
-#include "../../../../../../Header Files/stdafx.h"
-
 #include "RangedAttribute.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/BaseAttribute.h"
 
 RangedAttribute::RangedAttribute(eATTRIBUTE_ID id, double defaultValue,
                                  double minValue, double maxValue)

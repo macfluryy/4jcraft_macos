@@ -1,5 +1,9 @@
 #pragma once
-#include "../Command.h"
+#include <stdint.h>
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/commands/Command.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
 
 class GameCommandPacket;
 

@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "Tile.h"
+
+class Icon;
 
 class TheEndPortalFrameTile : public Tile {
 public:

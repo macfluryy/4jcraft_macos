@@ -1,10 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../dimension/Dimension.h"
-#include "../../../net.minecraft.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "BedTile.h"
 
 int BedTile::HEAD_DIRECTION_OFFSETS[4][2] = {{0, 1}, {-1, 0}, {0, -1}, {1, 0}};

@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "PathfinderMob.h"
+
+class Level;
 
 class AgableMob : public PathfinderMob {
 private:

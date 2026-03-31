@@ -5,6 +5,7 @@
 class Player;
 class Material;
 class Level;
+class Tile;
 
 class DoorItem : public Item {
 private:

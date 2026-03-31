@@ -1,9 +1,21 @@
 #pragma once
 
-#include "../entity/Mob.h"
+#include <format>
+#include <memory>
+#include <unordered_map>
+
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
 
 class Player;
 class Level;
+class Biome;
+class ChunkPos;
+class MobCategory;
+class Random;
+class ServerLevel;
+struct ChunkPosKeyEq;
+struct ChunkPosKeyHash;
 
 class MobSpawner {
 private:

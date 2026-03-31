@@ -1,7 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <limits.h>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "BoundingBox.h"
-#include "../../../../Direction.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
 #include "java/JavaMath.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "nbt/IntArrayTag.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
 
 BoundingBox::BoundingBox() {
     // 4J added initialisers

@@ -1,6 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../Container.h"
 #include "EntitySelector.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+
+class ItemInstance;
 
 const EntitySelector* EntitySelector::ENTITY_STILL_ALIVE =
     new AliveEntitySelector();

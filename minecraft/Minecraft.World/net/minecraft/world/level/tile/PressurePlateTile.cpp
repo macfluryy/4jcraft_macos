@@ -1,8 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "PressurePlateTile.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BasePressurePlateTile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Material;
 
 PressurePlateTile::PressurePlateTile(int id, const std::wstring& tex,
                                      Material* material,

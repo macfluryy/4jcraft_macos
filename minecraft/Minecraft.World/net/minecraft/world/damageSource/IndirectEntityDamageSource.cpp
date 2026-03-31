@@ -1,12 +1,19 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "net.minecraft.world.damagesource.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
 
 // IndirectEntityDamageSource::IndirectEntityDamageSource(const wstring &msgId,
 // shared_ptr<Entity> entity, shared_ptr<Entity> owner) :
 // EntityDamageSource(msgId, entity)
+#include <memory>
+#include <string>
+
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/EntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/IndirectEntityDamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
 IndirectEntityDamageSource::IndirectEntityDamageSource(
     ChatPacket::EChatPacketMessage msgId,
     ChatPacket::EChatPacketMessage msgWithItemId,

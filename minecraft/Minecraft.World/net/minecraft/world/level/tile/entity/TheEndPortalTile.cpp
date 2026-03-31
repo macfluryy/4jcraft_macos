@@ -1,13 +1,20 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "TheEndPortalTile.h"
 #include "TheEndPortalTileEntity.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
-#include "../../storage/net.minecraft.world.level.storage.h"
-#include "../../../entity/net.minecraft.world.entity.h"
-#include "../../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../../net.minecraft.world.h"
-#include <cstdint>
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+
+class Material;
 
 thread_local bool TheEndPortal::m_tlsAllowAnywhere = false;
 

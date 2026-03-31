@@ -1,5 +1,15 @@
 #pragma once
+#include <list>
+#include <vector>
+
 #include "StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+
+class BoundingBox;
+class Level;
+class Random;
+class WeighedTreasure;
 
 class NetherBridgePieces {
 private:
@@ -54,6 +64,7 @@ private:
 
 private:
     class NetherBridgePiece;
+
     static NetherBridgePiece* findAndCreateBridgePieceFactory(
         NetherBridgePieces::PieceWeight* piece,
         std::list<StructurePiece*>* pieces, Random* random, int footX,

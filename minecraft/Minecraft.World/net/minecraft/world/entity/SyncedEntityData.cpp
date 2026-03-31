@@ -1,10 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/Class.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../net.minecraft.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
-#include "../item/net.minecraft.world.item.h"
+#include <assert.h>
+#include <vector>
+
 #include "SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 SynchedEntityData::SynchedEntityData() {
     m_isDirty = false;

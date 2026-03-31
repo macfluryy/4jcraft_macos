@@ -1,12 +1,18 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../stats/net.minecraft.stats.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../item/crafting/net.minecraft.world.item.crafting.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../item/net.minecraft.world.item.h"
+#include <algorithm>
+#include <cmath>
+
 #include "java/JavaMath.h"
 #include "FurnaceResultSlot.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/ExperienceOrb.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/FurnaceRecipes.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+
+class Container;
 
 FurnaceResultSlot::FurnaceResultSlot(std::shared_ptr<Player> player,
                                      std::shared_ptr<Container> container,

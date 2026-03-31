@@ -1,12 +1,29 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../player/net.minecraft.world.entity.player.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../level/pathfinder/net.minecraft.world.level.pathfinder.h"
+#include <math.h>
+#include <algorithm>
+#include <memory>
+#include <numbers>
+#include <vector>
+
 #include "ControlledByPlayerGoal.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/JumpControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/FishingRodItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/Node.h"
+#include "Minecraft.World/net/minecraft/world/level/pathfinder/PathFinder.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ControlledByPlayerGoal::ControlledByPlayerGoal(Mob* mob, float maxSpeed,
                                                float walkSpeed) {

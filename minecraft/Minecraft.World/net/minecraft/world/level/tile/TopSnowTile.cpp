@@ -1,12 +1,17 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../net.minecraft.world.h"
+#include <optional>
+#include <string>
+
 #include "TopSnowTile.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 const int TopSnowTile::MAX_HEIGHT = 6;
 const int TopSnowTile::HEIGHT_MASK = 7;  // max 8 steps

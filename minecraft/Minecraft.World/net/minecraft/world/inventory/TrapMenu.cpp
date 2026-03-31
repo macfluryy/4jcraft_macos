@@ -1,9 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../Container.h"
+#include <vector>
+
 #include "Slot.h"
 #include "TrapMenu.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
+
+class Container;
 
 TrapMenu::TrapMenu(std::shared_ptr<Container> inventory,
                    std::shared_ptr<DispenserTileEntity> trap) {

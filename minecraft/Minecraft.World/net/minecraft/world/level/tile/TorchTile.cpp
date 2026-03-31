@@ -1,10 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "TorchTile.h"
 #include <optional>
-#include "../../phys/AABB.h"
+
+#include "TorchTile.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 TorchTile::TorchTile(int id) : Tile(id, Material::decoration, false) {
     this->setTicking(true);

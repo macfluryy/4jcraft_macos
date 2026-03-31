@@ -1,7 +1,16 @@
 #pragma once
+#include <string>
+#include <unordered_map>
+
 #include "RegionFile.h"
 #include "java/Reference.h"
 #include "java/File.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+
+class ConsoleSaveFile;
+class DataInputStream;
+class DataOutputStream;
+class RegionFile;
 
 class RegionFileCache {
     friend class ConsoleSaveFileOriginal;

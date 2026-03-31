@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <unordered_map>
 
 #include "DummyCriteria.h"
+#include "Minecraft.World/net/minecraft/world/scores/criteria/ObjectiveCriteria.h"
 
 DummyCriteria::DummyCriteria(const std::wstring& name) {
     this->name = name;

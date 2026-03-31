@@ -1,7 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../player/net.minecraft.world.entity.player.h"
-#include "../../npc/net.minecraft.world.entity.npc.h"
+#include <memory>
+
 #include "LookAtTradingPlayerGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+
+class Entity;
+class Mob;
 
 LookAtTradingPlayerGoal::LookAtTradingPlayerGoal(Villager* villager)
     : LookAtPlayerGoal((Mob*)villager, typeid(Player), 8) {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Creature.h"
+#include "Minecraft.World/net/minecraft/world/entity/Creature.h"
 
 class Level;
 

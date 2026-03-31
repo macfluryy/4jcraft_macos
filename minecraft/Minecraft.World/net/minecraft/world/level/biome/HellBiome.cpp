@@ -1,6 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/monster/net.minecraft.world.entity.monster.h"
+#include <vector>
+
 #include "HellBiome.h"
+#include "java/Class.h"
 
 HellBiome::HellBiome(int id) : Biome(id) {
     enemies.clear();

@@ -1,9 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <string>
+
 #include "PacketListener.h"
 #include "RespawnPacket.h"
-#include "../../world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 RespawnPacket::RespawnPacket() {
     this->dimension = 0;

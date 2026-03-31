@@ -1,19 +1,29 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include <cstdint>
 #include <optional>
+
 #include "PistonBaseTile.h"
-#include "../entity/PistonMovingTileEntity.h"
-#include "../entity/PistonPieceTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/PistonMovingTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/PistonPieceTileEntity.h"
 #include "PistonExtensionTile.h"
-#include "../../../../Facing.h"
-#include "../../net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "../../../net.minecraft.world.h"
-#include "../../chunk/LevelChunk.h"
-#include "../../dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
-#include "../../../phys/AABB.h"
+class Icon;
 
 const std::wstring PistonBaseTile::EDGE_TEX = L"piston_side";
 const std::wstring PistonBaseTile::PLATFORM_TEX = L"piston_top";

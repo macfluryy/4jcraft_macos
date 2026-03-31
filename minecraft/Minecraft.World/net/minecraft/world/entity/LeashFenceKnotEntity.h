@@ -1,6 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "HangingEntity.h"
+#include "java/Class.h"
+
+class CompoundTag;
+class Entity;
+class Level;
 
 class LeashFenceKnotEntity : public HangingEntity {
 public:

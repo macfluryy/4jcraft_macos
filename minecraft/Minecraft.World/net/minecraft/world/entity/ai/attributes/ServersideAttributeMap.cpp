@@ -1,10 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
-#include "Attribute.h"
-#include "RangedAttribute.h"
 #include "AttributeInstance.h"
 #include "ModifiableAttributeInstance.h"
 #include "ServersideAttributeMap.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
 
 AttributeInstance* ServersideAttributeMap::getInstance(Attribute* attribute) {
     return BaseAttributeMap::getInstance(attribute);

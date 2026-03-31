@@ -1,8 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/animal/net.minecraft.world.entity.animal.h"
-#include "net.minecraft.world.item.h"
-#include "../entity/net.minecraft.world.entity.h"
+#include <memory>
+
 #include "SaddleItem.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Pig.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 SaddleItem::SaddleItem(int id) : Item(id) { maxStackSize = 1; }
 

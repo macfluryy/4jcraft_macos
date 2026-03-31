@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "Entity.h"
 #include "EntityPos.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 EntityPos::EntityPos(double x, double y, double z, float yRot, float xRot) {
     this->x = x;

@@ -1,6 +1,10 @@
 #pragma once
 
 #include "Cow.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
 
 class MushroomCow : public Cow {
 public:

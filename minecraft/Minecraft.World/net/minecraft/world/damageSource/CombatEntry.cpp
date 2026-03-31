@@ -1,8 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.damagesource.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "CombatEntry.h"
 #include <limits>
+#include <memory>
+
+#include "CombatEntry.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/CombatTracker.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 
 CombatEntry::CombatEntry(DamageSource* source, int time, float health,
                          float damage, CombatTracker::eLOCATION location,

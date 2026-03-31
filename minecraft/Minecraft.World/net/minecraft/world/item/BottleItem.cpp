@@ -1,10 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/material/net.minecraft.world.level.material.h"
-#include "net.minecraft.world.item.h"
+#include <memory>
+
 #include "BottleItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/PotionItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 
 BottleItem::BottleItem(int id) : Item(id) {}
 

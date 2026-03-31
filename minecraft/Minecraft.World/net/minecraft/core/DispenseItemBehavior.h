@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Behavior.h"
 
 class ItemInstance;

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <unordered_set>
+
 #include "Team.h"
 
 class Scoreboard;

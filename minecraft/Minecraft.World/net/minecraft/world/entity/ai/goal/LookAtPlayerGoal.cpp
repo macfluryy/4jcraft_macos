@@ -1,9 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../phys/net.minecraft.world.phys.h"
 #include "LookAtPlayerGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 LookAtPlayerGoal::LookAtPlayerGoal(Mob* mob, const std::type_info& lookAtType,
                                    float lookDistance)

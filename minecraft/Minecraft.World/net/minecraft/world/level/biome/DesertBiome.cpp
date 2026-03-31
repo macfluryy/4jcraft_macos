@@ -1,8 +1,15 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "../net.minecraft.world.level.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.level.biome.h"
+
+#include <cstdint>
+#include <vector>
+
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/DesertBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/DesertWellFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DesertBiome::DesertBiome(int id) : Biome(id) {
     // remove default mob spawn settings

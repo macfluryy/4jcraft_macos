@@ -1,6 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
+#include <memory>
+#include <string>
+
 #include "NameTagItem.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 NameTagItem::NameTagItem(int id) : Item(id) {}
 

@@ -1,8 +1,18 @@
 #pragma once
+#include <format>
+#include <string>
+#include <vector>
+
 #include "StructureFeature.h"
 #include "StructureStart.h"
-#include "../../biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+
 class Random;
+class ChunkPos;
+class Level;
 
 class NetherBridgeFeature : public StructureFeature {
 private:

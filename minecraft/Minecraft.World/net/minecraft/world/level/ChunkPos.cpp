@@ -1,6 +1,13 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "ChunkPos.h"
+
+#include <stdint.h>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
 
 ChunkPos::ChunkPos(int x, int z) : x(x), z(z) {}
 

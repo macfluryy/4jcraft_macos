@@ -1,11 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "WoodTile.h"
 #include "TreeTile.h"
-#include "../net.minecraft.world.level.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/net.minecraft.world.level.biome.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 
 const unsigned int WoodTile::WOOD_NAMES[WOOD_NAMES_LENGTH] = {
     IDS_TILE_OAKWOOD_PLANKS,

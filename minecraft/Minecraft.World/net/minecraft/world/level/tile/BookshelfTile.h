@@ -1,6 +1,6 @@
 #pragma once
 #include "Tile.h"
-#include "../material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 
 class Random;
 

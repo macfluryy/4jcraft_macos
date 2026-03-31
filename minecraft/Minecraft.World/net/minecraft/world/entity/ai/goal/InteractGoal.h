@@ -1,6 +1,10 @@
 #pragma once
 
+#include <typeinfo>
+
 #include "LookAtPlayerGoal.h"
+
+class Mob;
 
 class InteractGoal : public LookAtPlayerGoal {
 public:

@@ -1,10 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <vector>
 
-#include "../net.minecraft.world.item.h"
-#include "../../level/tile/Tile.h"
-#include "Recipy.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Recipes.h"
 #include "WeaponRecipes.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
 std::wstring WeaponRecipies::shapes[][4] = {

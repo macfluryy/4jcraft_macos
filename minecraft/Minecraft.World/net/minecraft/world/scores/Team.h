@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Team {
 public:
     virtual bool isAlliedTo(Team* other);

@@ -1,7 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include <stdlib.h>
+#include <algorithm>
+#include <cmath>
+
 #include "BasicTreeFeature.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 uint8_t BasicTree::axisConversionArray[] = {2, 0, 0, 1, 2, 1};
 

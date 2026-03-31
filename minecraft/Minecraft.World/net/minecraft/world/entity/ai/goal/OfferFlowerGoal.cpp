@@ -1,10 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../../npc/net.minecraft.world.entity.npc.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../phys/net.minecraft.world.phys.h"
 #include "OfferFlowerGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/VillagerGolem.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 OfferFlowerGoal::OfferFlowerGoal(VillagerGolem* golem) {
     this->golem = golem;

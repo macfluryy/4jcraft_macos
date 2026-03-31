@@ -1,51 +1,76 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/System.h"
-#include "java/File.h"
-#include "../../util/ProgressListener.h"
-#include "../../net.minecraft.h"
-#include "../net.minecraft.world.h"
-#include "../entity/ai/village/net.minecraft.world.entity.ai.village.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/global/net.minecraft.world.entity.global.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "biome/net.minecraft.world.level.biome.h"
-#include "chunk/net.minecraft.world.level.chunk.h"
-#include "dimension/net.minecraft.world.level.dimension.h"
-#include "tile/net.minecraft.world.level.tile.h"
-#include "tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "net.minecraft.world.level.h"
-#include "levelgen/net.minecraft.world.level.levelgen.h"
-#include "storage/net.minecraft.world.level.storage.h"
-#include "pathfinder/net.minecraft.world.level.pathfinder.h"
-#include "redstone/net.minecraft.world.level.redstone.h"
-#include "../scores/net.minecraft.world.scores.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "Explosion.h"
-#include "LevelListener.h"
-#include "Level.h"
-#include "../../../../ConsoleHelpers/ThreadName.h"
-#include "../../util/WeighedRandom.h"
-
-#include "../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include <stdlib.h>
+#include <wchar.h>
 #include <mutex>
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
-#include "../../../../Header Files/SoundTypes.h"
-#include "chunk/SparseLightStorage.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
-#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/ShutdownManager.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/Header Files/FrameProfiler.h"
 #include <cmath>
 #include <cstdint>
 #include <limits>
 #include <optional>
+#include <algorithm>
+#include <numbers>
 
-// 4J : WESTY : Added for time played stats.
-#include "../../stats/net.minecraft.stats.h"
+#include "Explosion.h"
+#include "LevelListener.h"
+#include "Level.h"
+#include "ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
+#include "Minecraft.Client/Header Files/FrameProfiler.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "net/minecraft/Direction.h"
+#include "net/minecraft/Facing.h"
+#include "net/minecraft/Pos.h"
+#include "net/minecraft/SharedConstants.h"
+#include "net/minecraft/stats/GenericStats.h"
+#include "net/minecraft/util/Mth.h"
+#include "net/minecraft/world/Difficulty.h"
+#include "net/minecraft/world/entity/Entity.h"
+#include "net/minecraft/world/entity/MobCategory.h"
+#include "net/minecraft/world/entity/ai/village/VillageSiege.h"
+#include "net/minecraft/world/entity/ai/village/Villages.h"
+#include "net/minecraft/world/entity/player/Abilities.h"
+#include "net/minecraft/world/entity/player/Player.h"
+#include "net/minecraft/world/level/LevelType.h"
+#include "net/minecraft/world/level/Region.h"
+#include "net/minecraft/world/level/biome/Biome.h"
+#include "net/minecraft/world/level/biome/BiomeSource.h"
+#include "net/minecraft/world/level/chunk/ChunkSource.h"
+#include "net/minecraft/world/level/chunk/LevelChunk.h"
+#include "net/minecraft/world/level/dimension/Dimension.h"
+#include "net/minecraft/world/level/material/Material.h"
+#include "net/minecraft/world/level/pathfinder/PathFinder.h"
+#include "net/minecraft/world/level/redstone/Redstone.h"
+#include "net/minecraft/world/level/storage/LevelData.h"
+#include "net/minecraft/world/level/storage/LevelStorage.h"
+#include "net/minecraft/world/level/storage/SavedDataStorage.h"
+#include "net/minecraft/world/level/tile/ComparatorTile.h"
+#include "net/minecraft/world/level/tile/FireTile.h"
+#include "net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "net/minecraft/world/level/tile/HopperTile.h"
+#include "net/minecraft/world/level/tile/LevelEvent.h"
+#include "net/minecraft/world/level/tile/LiquidTile.h"
+#include "net/minecraft/world/level/tile/NotGateTile.h"
+#include "net/minecraft/world/level/tile/StairTile.h"
+#include "net/minecraft/world/level/tile/Tile.h"
+#include "net/minecraft/world/level/tile/TopSnowTile.h"
+#include "net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "net/minecraft/world/phys/HitResult.h"
+#include "net/minecraft/world/phys/Vec3.h"
+#include "net/minecraft/world/scores/Scoreboard.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+class CompoundTag;
+class ItemInstance;
+class TickNextTickData;
+class TilePos;
 
 // 4J - Caching of lighting data added. This is implemented as a 16x16x16 cache
 // of ints (ie 16K storage in total). The index of the element to be used in the
@@ -58,40 +83,6 @@
 // setBrightnessCached, getBrightnessCached, getEmissionCached,
 // getBlockingCached methods to get and set data (3) Call flushCache, which
 // writes through any dirty values in cache
-
-#if defined(_LARGE_WORLDS)
-// Packing for cache entries in large worlds is as follows ( 64 bits per entry)
-// Add the extra x and z data into the top 32 bits, to keep all the masks and
-// code for everything else the same
-// xxxxxxxxxxxxxxxxzzzzzzzzzzzzzzzzWEBLllllbbbbeeeexxxxxxyyyyzzzzzz
-//
-// xxxxxx  - middle 6 bits of x position
-// yyyy	   - top 4 bits of y position
-// zzzzzz  - middle 6 bits of z position
-// eeee    - light emission
-// bbbb	   - light blocking
-// llll	   - light level
-// L	   - light value valid
-// B       - blocking value valid
-// E	   - emission value valid
-// W       - lighting value requires write
-// xxxxxxxxxxxxxxxx - top 16 bits of x position
-// zzzzzzzzzzzzzzzz - top 16 bits of z position
-#else
-// Packing for cache entries is as follows ( 32 bits per entry)
-// WEBLllllbbbbeeeexxxxxxyyyyzzzzzz
-//
-// xxxxxx  - top 6 bits of x position
-// yyyy	   - top 4 bits of y position
-// zzzzzz  - top 6 bits of z position
-// eeee    - light emission
-// bbbb	   - light blocking
-// llll	   - light level
-// L	   - light value valid
-// B       - blocking value valid
-// E	   - emission value valid
-// W       - lighting value requires write
-#endif
 
 thread_local bool Level::m_tlsInstaTick = false;
 thread_local Level::lightCache_t* Level::m_tlsLightCache = nullptr;

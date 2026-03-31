@@ -1,6 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.network.packet.h"
 #include "TileDestructionPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
 
 TileDestructionPacket::TileDestructionPacket() {
     id = 0;

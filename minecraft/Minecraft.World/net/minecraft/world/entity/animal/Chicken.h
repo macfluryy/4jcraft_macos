@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Animal.h"
+#include "java/Class.h"
 
 class Level;
 class CompoundTag;
+class Entity;
 
 class Chicken : public Animal {
 public:

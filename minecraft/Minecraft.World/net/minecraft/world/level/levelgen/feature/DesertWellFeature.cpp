@@ -1,7 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
 #include "DesertWellFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool DesertWellFeature::place(Level* level, Random* random, int x, int y,
                               int z) {

@@ -1,5 +1,6 @@
 #pragma once
 #include "TileEntity.h"
+#include "java/Class.h"
 
 class PistonPieceEntity : public TileEntity {
 public:

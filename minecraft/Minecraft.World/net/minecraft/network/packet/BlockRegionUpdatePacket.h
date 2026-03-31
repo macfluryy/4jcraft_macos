@@ -1,6 +1,11 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <vector>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class Level;
 

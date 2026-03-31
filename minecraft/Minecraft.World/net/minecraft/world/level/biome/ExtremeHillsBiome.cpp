@@ -1,8 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
+#include <vector>
+
 #include "ExtremeHillsBiome.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/OreFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ExtremeHillsBiome::ExtremeHillsBiome(int id) : Biome(id) {
     silverfishFeature = new OreFeature(Tile::monsterStoneEgg_Id, 8);

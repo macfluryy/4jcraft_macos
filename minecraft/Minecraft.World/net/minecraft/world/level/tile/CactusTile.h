@@ -1,11 +1,12 @@
 #pragma once
 #include "Tile.h"
-#include "../material/Material.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 class Random;
 class Level;
 class ChunkRebuildData;
+class Icon;
 
 class CactusTile : public Tile {
     friend class Tile;

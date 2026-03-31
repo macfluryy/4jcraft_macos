@@ -1,7 +1,16 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <stdint.h>
+#include <numbers>
+#include <vector>
+
 #include "CaveFeature.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
     float dir = random->nextFloat() * std::numbers::pi;

@@ -1,6 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <string>
 
 #include "MerchantRecipe.h"
+#include "nbt/CompoundTag.h"
+
+class Item;
+class Tile;
 
 void MerchantRecipe::_init(std::shared_ptr<ItemInstance> buyA,
                            std::shared_ptr<ItemInstance> buyB,

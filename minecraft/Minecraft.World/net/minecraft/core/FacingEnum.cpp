@@ -1,5 +1,3 @@
-#include "../../../Header Files/stdafx.h"
-
 #include "FacingEnum.h"
 
 FacingEnum* FacingEnum::DOWN = new FacingEnum(0, 1, 0, -1, 0);

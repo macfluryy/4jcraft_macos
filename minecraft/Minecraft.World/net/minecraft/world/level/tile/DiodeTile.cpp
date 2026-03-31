@@ -1,12 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "../net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../net.minecraft.world.h"
+#include <algorithm>
+#include <memory>
+
 #include "DiodeTile.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ComparatorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DirectionalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/RepeaterTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DiodeTile::DiodeTile(int id, bool on)
     : DirectionalTile(id, Material::decoration, false) {

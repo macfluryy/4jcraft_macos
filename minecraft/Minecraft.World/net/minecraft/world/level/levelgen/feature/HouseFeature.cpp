@@ -1,9 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
+#include <memory>
+
 #include "HouseFeature.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../../../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../../../item/net.minecraft.world.item.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/PigZombie.h"
+#include "Minecraft.World/net/minecraft/world/item/DoorItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool HouseFeature::place(Level* level, Random* random, int x, int y, int z) {
     while (y > 0 && !level->getMaterial(x, y - 1, z)->blocksMotion()) y--;

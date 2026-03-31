@@ -1,7 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
 #include "PacketListener.h"
-#include "../../world/scores/net.minecraft.world.scores.h"
 #include "SetDisplayObjectivePacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/scores/Objective.h"
 
 SetDisplayObjectivePacket::SetDisplayObjectivePacket() {
     slot = 0;

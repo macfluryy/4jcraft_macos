@@ -1,21 +1,36 @@
-#include <thread>
+#include <assert.h>
+#include <wchar.h>
 #include <chrono>
+#include <algorithm>
+#include <compare>
+#include <cstdint>
+#include <cstring>
+#include <ctime>
+#include <format>
+#include <vector>
 
-#include "../../Header Files/stdafx.h"
-#include "../StringHelpers.h"
-#include "../../Header Files/PortableFileIO.h"
+#include "Minecraft.World/Header Files/PortableFileIO.h"
 #include "ConsoleSaveFileOriginal.h"
 #include "java/File.h"
-#include <chrono>
-#include <thread>
-#include "../../Header Files/compression.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "../../net/minecraft/world/level/net.minecraft.world.level.h"
-#include "../../net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "../../net/minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J_Storage.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "compression.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "java/System.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 #define RESERVE_ALLOCATION MEM_RESERVE
 #define COMMIT_ALLOCATION MEM_COMMIT

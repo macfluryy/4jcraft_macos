@@ -1,5 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+#include <vector>
+
 #include "SparseDataStorage.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 // Note: See header for an overview of this class
 

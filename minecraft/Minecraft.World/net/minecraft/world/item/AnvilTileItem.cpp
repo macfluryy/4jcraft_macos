@@ -1,6 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
 #include "AnvilTileItem.h"
+#include "Minecraft.World/net/minecraft/world/item/MultiTextureTileItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/AnvilTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 AnvilTileItem::AnvilTileItem(Tile* tile)
     : MultiTextureTileItem(tile->id - 256, tile, (int*)AnvilTile::ANVIL_NAMES,

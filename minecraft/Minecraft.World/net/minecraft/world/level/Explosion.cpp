@@ -1,15 +1,24 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "../item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "net.minecraft.world.level.h"
-#include "tile/net.minecraft.world.level.tile.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "TilePos.h"
+#include <math.h>
+#include <stddef.h>
+#include <utility>
+#include <vector>
+
 #include "Explosion.h"
-#include "../../../../Header Files/SoundTypes.h"
-#include "../phys/AABB.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/PrimedTnt.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/ProtectionEnchantment.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
                      double y, double z, float r) {

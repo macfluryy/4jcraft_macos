@@ -1,8 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "net.minecraft.world.item.enchantment.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
+#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "ThornsEnchantment.h"
 
 const float ThornsEnchantment::CHANCE_PER_LEVEl = 0.15f;

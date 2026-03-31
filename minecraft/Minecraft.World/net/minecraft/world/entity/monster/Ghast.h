@@ -1,10 +1,14 @@
 #pragma once
 
-#include "../FlyingMob.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/FlyingMob.h"
 #include "Enemy.h"
+#include "java/Class.h"
 
 class GhastClass;
 class Level;
+class Entity;
 
 class Ghast : public FlyingMob, public Enemy {
 public:

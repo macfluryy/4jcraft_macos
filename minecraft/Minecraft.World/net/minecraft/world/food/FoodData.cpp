@@ -1,12 +1,16 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../net.minecraft.world.h"
-#include "../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <algorithm>
+#include <string>
+
 #include "FoodConstants.h"
 #include "FoodData.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/FoodItem.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 FoodData::FoodData() {
     exhaustionLevel = 0;

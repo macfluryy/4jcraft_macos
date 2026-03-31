@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "ObjectiveCriteria.h"
 
 class DummyCriteria : public ObjectiveCriteria {

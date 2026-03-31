@@ -4,6 +4,7 @@
 
 class Player;
 class ChunkRebuildData;
+class Icon;
 
 class WorkbenchTile : public Tile {
     friend class Tile;

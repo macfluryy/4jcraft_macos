@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SimpleContainer.h"
+#include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
 
 class AnimalChest : public SimpleContainer {
 public:

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../../util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
 #include "BoundingBox.h"
 #include "StructureFeatureIO.h"
 

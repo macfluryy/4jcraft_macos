@@ -1,4 +1,4 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/ByteBuffer.h"
 #include "java/File.h"
 #include "ZoneFile.h"

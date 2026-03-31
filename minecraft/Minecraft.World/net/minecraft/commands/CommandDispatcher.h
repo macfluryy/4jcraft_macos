@@ -1,5 +1,13 @@
 #pragma once
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <unordered_map>
+#include <unordered_set>
+
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
+
 class Command;
 class CommandSender;
 

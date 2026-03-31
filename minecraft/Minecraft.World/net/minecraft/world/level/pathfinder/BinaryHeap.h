@@ -1,8 +1,12 @@
 #pragma once
 
-#include "../../../../../Header Files/stdafx.h"
+#include <vector>
+
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "Node.h"
 #include "java/System.h"
+
+class Node;
 
 class BinaryHeap {
 private:

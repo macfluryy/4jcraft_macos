@@ -1,6 +1,10 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class LevelType;
 class GameType;

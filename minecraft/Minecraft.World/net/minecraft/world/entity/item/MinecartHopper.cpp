@@ -1,12 +1,23 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.entity.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "net.minecraft.world.entity.item.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "MinecartHopper.h"
+
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartHopper.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntitySelector.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartContainer.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartHopper.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HopperTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/HopperTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 const int MinecartHopper::MOVE_ITEM_SPEED =
     HopperTileEntity::MOVE_ITEM_SPEED / 2;

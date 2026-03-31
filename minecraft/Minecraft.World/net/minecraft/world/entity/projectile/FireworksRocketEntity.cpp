@@ -1,8 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.entity.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../level/net.minecraft.world.level.h"
+#include <math.h>
+#include <numbers>
+#include <string>
+
 #include "FireworksRocketEntity.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityEvent.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/item/FireworksItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 FireworksRocketEntity::FireworksRocketEntity(Level* level) : Entity(level) {
     defineSynchedData();

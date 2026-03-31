@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "PacketListener.h"
 #include "GetInfoPacket.h"
 

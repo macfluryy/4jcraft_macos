@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
+
+class Material;
 
 class HalfSlabTile : public Tile {
 public:

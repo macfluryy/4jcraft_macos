@@ -1,6 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
 
 #include "AmbientCreature.h"
+
+class Level;
 
 AmbientCreature::AmbientCreature(Level* level) : Mob(level) {}
 

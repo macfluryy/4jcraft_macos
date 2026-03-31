@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.level.h"
-#include "../net.minecraft.world.level.tile.h"
+#include <memory>
+
 #include "DaylightDetectorTileEntity.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DaylightDetectorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 DaylightDetectorTileEntity::DaylightDetectorTileEntity() {}
 

@@ -1,5 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
+#include <vector>
+
 #include "ImprovedNoise.h"
+#include "java/Random.h"
 
 ImprovedNoise::ImprovedNoise() {
     Random random;

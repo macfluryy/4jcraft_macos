@@ -1,5 +1,9 @@
 #pragma once
 
+#include <memory>
+
+class Entity;
+
 class EntityPos {
 public:
     double x, y, z;

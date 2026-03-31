@@ -1,6 +1,13 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
+class ItemInstance;
 
 class ContainerSetContentPacket
     : public Packet,

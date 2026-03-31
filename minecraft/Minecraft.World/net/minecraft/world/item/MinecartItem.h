@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Item.h"
-#include "../../core/DefaultDispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/core/DefaultDispenseItemBehavior.h"
+
+class BlockSource;
 
 class MinecartItem : public Item {
 private:

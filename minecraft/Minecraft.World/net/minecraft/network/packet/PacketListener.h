@@ -1,7 +1,11 @@
 #pragma once
 
-class Packet;
+#include <memory>
 
+#include "DisconnectPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+
+class Packet;
 class AddEntityPacket;
 class AddGlobalEntityPacket;
 class AddMobPacket;
@@ -21,7 +25,6 @@ class ContainerOpenPacket;
 class ContainerSetContentPacket;
 class ContainerSetDataPacket;
 class ContainerSetSlotPacket;
-#include "DisconnectPacket.h"
 class EntityActionAtPositionPacket;
 class EntityEventPacket;
 class ExplodePacket;
@@ -53,7 +56,6 @@ class TeleportEntityPacket;
 class TileEventPacket;
 class TileUpdatePacket;
 class UseItemPacket;
-
 // 1.8.2
 class GetInfoPacket;
 class UpdateMobEffectPacket;
@@ -62,17 +64,13 @@ class PlayerInfoPacket;
 class SetExperiencePacket;
 class SetCreativeModeSlotPacket;
 class AddExperienceOrbPacket;
-
 // 1.0.1
 class ContainerButtonClickPacket;
 class TileEntityDataPacket;
-
 // 1.1
 class CustomPayloadPacket;
-
 // 1.2.3
 class RotateHeadPacket;
-
 // 1.3.2
 class ClientProtocolPacket;
 class ServerAuthDataPacket;
@@ -84,7 +82,6 @@ class LevelSoundPacket;
 class TileDestructionPacket;
 class ClientCommandPacket;
 class LevelChunksPacket;
-
 // 1.6.4
 class SetObjectivePacket;
 class SetScorePacket;
@@ -93,7 +90,6 @@ class SetPlayerTeamPacket;
 class LevelParticlesPacket;
 class UpdateAttributesPacket;
 class TileEditorOpenPacket;
-
 // 4J Added
 class CraftItemPacket;
 class TradeItemPacket;

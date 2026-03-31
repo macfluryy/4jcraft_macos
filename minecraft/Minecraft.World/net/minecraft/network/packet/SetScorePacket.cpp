@@ -1,8 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../../world/entity/player/net.minecraft.world.entity.player.h"
-#include "../../world/scores/net.minecraft.world.scores.h"
 #include "PacketListener.h"
 #include "SetScorePacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/scores/Objective.h"
+#include "Minecraft.World/net/minecraft/world/scores/Score.h"
 
 SetScorePacket::SetScorePacket() {
     owner = L"";

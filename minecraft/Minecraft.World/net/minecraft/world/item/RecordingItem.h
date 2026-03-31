@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
 #include "Item.h"
 
 class RecordingItem : public Item {

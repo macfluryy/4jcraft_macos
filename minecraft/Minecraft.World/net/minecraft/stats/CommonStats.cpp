@@ -1,8 +1,11 @@
-#include "../../../Header Files/stdafx.h"
+#include <string.h>
+
 #include "Achievements.h"
-#include "../world/item/Item.h"
-#include "../world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "CommonStats.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/stats/Stats.h"
 
 Stat* CommonStats::get_stat(int i) { return Stats::get(i); }
 

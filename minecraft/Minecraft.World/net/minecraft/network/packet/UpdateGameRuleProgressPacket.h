@@ -1,6 +1,13 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Packet.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class UpdateGameRuleProgressPacket
     : public Packet,

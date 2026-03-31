@@ -1,13 +1,22 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <optional>
+
 #include "VineTile.h"
-#include "../material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "java/JavaMath.h"
-#include "../../../Facing.h"
-#include "../net.minecraft.world.level.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/ShearsItem.h"
+#include "Minecraft.World/net/minecraft/world/level/FoliageColor.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 VineTile::VineTile(int id) : Tile(id, Material::replaceable_plant, false) {
     setTicking(true);

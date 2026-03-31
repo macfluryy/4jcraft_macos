@@ -3,6 +3,8 @@
 
 class Level;
 class ChunkRebuildData;
+class Icon;
+
 class GrassTile : public Tile {
     friend class Tile;
     friend class ChunkRebuildData;

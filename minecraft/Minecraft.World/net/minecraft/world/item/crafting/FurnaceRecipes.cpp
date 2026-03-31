@@ -1,7 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "../../level/tile/Tile.h"
+#include <utility>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "FurnaceRecipes.h"
+#include "Minecraft.World/net/minecraft/world/item/CoalItem.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 FurnaceRecipes* FurnaceRecipes::instance = nullptr;
 

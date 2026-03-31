@@ -1,8 +1,13 @@
 #pragma once
+#include <memory>
+
 #include "DispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class FacingEnum;
 class Position;
+class BlockSource;
+class Level;
 
 class DefaultDispenseItemBehavior : public DispenseItemBehavior {
 protected:

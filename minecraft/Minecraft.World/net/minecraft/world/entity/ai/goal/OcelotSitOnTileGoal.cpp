@@ -1,14 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "net.minecraft.world.entity.ai.goal.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "java/Arrays.h"
-#include "OcelotSitOnTileGoal.h"
 #include <limits>
+#include <memory>
+
+#include "OcelotSitOnTileGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/SitGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Ocelot.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/BedTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/ChestTileEntity.h"
 
 const int OcelotSitOnTileGoal::GIVE_UP_TICKS =
     3 * SharedConstants::TICKS_PER_SECOND;

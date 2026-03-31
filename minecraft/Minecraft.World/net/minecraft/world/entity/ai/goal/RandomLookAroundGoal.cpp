@@ -1,7 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
+#include <math.h>
+#include <numbers>
+
 #include "RandomLookAroundGoal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/LookControl.h"
 
 RandomLookAroundGoal::RandomLookAroundGoal(Mob* mob) {
     relX = relZ = 0.0;

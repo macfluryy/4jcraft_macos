@@ -1,8 +1,11 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <vector>
+
 #include "TaigaBiome.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "net.minecraft.world.level.biome.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/PineFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/SpruceFeature.h"
 
 TaigaBiome::TaigaBiome(int id) : Biome(id) {
     friendlies_wolf.push_back(new MobSpawnerData(

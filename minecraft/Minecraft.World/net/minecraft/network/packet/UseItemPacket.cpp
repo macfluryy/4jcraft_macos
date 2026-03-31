@@ -1,9 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "../../world/item/net.minecraft.world.item.h"
 #include "PacketListener.h"
 #include "UseItemPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 const float UseItemPacket::CLICK_ACCURACY = 16.0f;
 

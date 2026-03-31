@@ -1,6 +1,6 @@
 #pragma once
-#include "../AgeableMob.h"
-#include "../Creature.h"
+#include "Minecraft.World/net/minecraft/world/entity/AgeableMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/Creature.h"
 
 class Level;
 class CompoundTag;

@@ -1,20 +1,27 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/storage/net.minecraft.world.level.storage.h"
-#include "../../level/chunk/net.minecraft.world.level.chunk.h"
-#include "../net.minecraft.world.entity.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "../item/net.minecraft.world.entity.item.h"
-#include "../player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "nbt/com.mojang.nbt.h"
+#include <math.h>
+#include <stdint.h>
+#include <numbers>
+#include <string>
+
 #include "Slime.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "../../../../../Header Files/SoundTypes.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void Slime::_init() {
     jumpDelay = 0;

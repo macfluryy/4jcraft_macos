@@ -1,9 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Item.h"
+#include "Minecraft.World/net/minecraft/world/item/UseAnim.h"
 
 class Player;
 class Level;
+class ItemInstance;
 
 class FoodItem : public Item {
 public:

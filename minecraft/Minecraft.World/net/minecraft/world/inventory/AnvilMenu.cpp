@@ -1,9 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "net.minecraft.world.inventory.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/enchantment/net.minecraft.world.item.enchantment.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
 #include "AnvilMenu.h"
 
 AnvilMenu::AnvilMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,

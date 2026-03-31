@@ -1,7 +1,11 @@
 #pragma once
 
 #include <optional>
+#include <memory>
+
 #include "Tile.h"
+
+class Level;
 
 class WoolCarpetTile : public Tile {
     friend class Tile;

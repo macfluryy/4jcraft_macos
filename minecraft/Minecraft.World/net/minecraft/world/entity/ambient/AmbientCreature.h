@@ -1,7 +1,10 @@
 #pragma once
 
-#include "../Mob.h"
-#include "../Creature.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/Creature.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+
+class Level;
 
 class AmbientCreature : public Mob, public Creature {
 public:

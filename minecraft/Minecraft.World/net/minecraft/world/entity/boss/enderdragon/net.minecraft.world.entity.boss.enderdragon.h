@@ -2,4 +2,4 @@
 
 #include "EnderCrystal.h"
 #include "EnderDragon.h"
-#include "../../../level/levelgen/feature/NetherSphereFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/NetherSphereFeature.h"

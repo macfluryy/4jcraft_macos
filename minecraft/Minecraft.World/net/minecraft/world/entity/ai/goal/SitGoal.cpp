@@ -1,10 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../control/net.minecraft.world.entity.ai.control.h"
-#include "net.minecraft.world.entity.ai.goal.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../animal/net.minecraft.world.entity.animal.h"
+#include <memory>
+
 #include "SitGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/TamableAnimal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/Control.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/goal/FollowOwnerGoal.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
 
 SitGoal::SitGoal(TamableAnimal* mob) {
     _wantToSit = false;

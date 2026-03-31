@@ -1,7 +1,11 @@
 #pragma once
 
 #include "Goal.h"
-#include "../../../../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+
+class Level;
+class Mob;
 
 // note: Mob should implement handleEntityEvent for client state, also ate to
 // take action upon eating

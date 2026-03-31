@@ -1,9 +1,16 @@
 #pragma once
 
+#include <string>
+
 #include "TileEntity.h"
-#include "../../../../commands/CommandSender.h"
+#include "Minecraft.World/net/minecraft/commands/CommandSender.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
 
 class ChatMessageComponent;
+class Level;
+class Pos;
 
 class CommandBlockEntity : public TileEntity, public CommandSender {
 public:

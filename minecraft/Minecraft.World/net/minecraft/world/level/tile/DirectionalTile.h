@@ -2,6 +2,8 @@
 
 #include "Tile.h"
 
+class Material;
+
 class DirectionalTile : public Tile {
 public:
     static const int DIRECTION_MASK = 0x3;

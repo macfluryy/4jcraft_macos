@@ -1,7 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
 
-#include "TilePos.h"
-#include "../phys/Vec3.h"
+
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 TilePos::TilePos(int x, int y, int z) {
     this->x = x;

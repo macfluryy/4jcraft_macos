@@ -1,10 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "net.minecraft.world.entity.ai.control.h"
-#include "../../monster/net.minecraft.world.entity.monster.h"
-#include "../../../phys/net.minecraft.world.phys.h"
+#include <math.h>
+#include <numbers>
+
 #include "MoveControl.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/control/JumpControl.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 const float MoveControl::MIN_SPEED = 0.0005f;
 const float MoveControl::MIN_SPEED_SQR = MIN_SPEED * MIN_SPEED;

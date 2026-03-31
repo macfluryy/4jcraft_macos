@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Item.h"
+#include "Minecraft.World/net/minecraft/world/item/UseAnim.h"
 
 class MilkBucketItem : public Item {
 private:

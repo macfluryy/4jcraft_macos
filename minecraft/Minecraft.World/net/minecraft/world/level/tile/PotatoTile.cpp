@@ -1,8 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
+#include <memory>
+#include <string>
+
 #include "PotatoTile.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/CropTile.h"
 
 PotatoTile::PotatoTile(int id) : CropTile(id) {}
 

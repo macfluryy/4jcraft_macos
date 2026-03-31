@@ -1,8 +1,15 @@
 #pragma once
 
-#include "../Mob.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 #include "Enemy.h"
-#include "../../../../../Header Files/ParticleTypes.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+
+class Entity;
+class Level;
 
 class Slime : public Mob, public Enemy {
 public:

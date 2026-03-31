@@ -1,11 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "../dimension/net.minecraft.world.level.dimension.h"
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
+#include <stdint.h>
+#include <format>
+#include <vector>
+
 #include "LevelData.h"
 #include "java/File.h"
 #include "McRegionLevelStorage.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/McRegionChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFileCache.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/HellDimension.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/TheEndDimension.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/DirectoryLevelStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelStorage.h"
 
 McRegionLevelStorage::McRegionLevelStorage(ConsoleSaveFile* saveFile, File dir,
                                            const std::wstring& levelName,

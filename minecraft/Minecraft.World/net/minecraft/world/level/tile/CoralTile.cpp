@@ -1,5 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "CoralTile.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfTransparentTile.h"
 
 CoralTile::CoralTile(int id)
     : HalfTransparentTile(id, L"coral", Material::coral, true) {

@@ -1,12 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "../net.minecraft.world.level.h"
-#include "../redstone/net.minecraft.world.level.redstone.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../../net.minecraft.h"
-#include "ButtonTile.h"
 #include <optional>
-#include "../../../../../Header Files/SoundTypes.h"
+#include <format>
+#include <vector>
+
+#include "ButtonTile.h"
+#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/redstone/Redstone.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 ButtonTile::ButtonTile(int id, bool sensitive)
     : Tile(id, Material::decoration, false) {

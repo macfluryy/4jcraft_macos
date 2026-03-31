@@ -1,7 +1,17 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <string>
+
 #include "Container.h"
 #include "net.minecraft.world.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+
+class ItemInstance;
+namespace net_minecraft_world {
+class ContainerListener;
+}  // namespace net_minecraft_world
 
 class SimpleContainer : public Container {
 private:

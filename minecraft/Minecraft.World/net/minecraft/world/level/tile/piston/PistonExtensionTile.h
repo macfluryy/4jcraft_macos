@@ -1,5 +1,9 @@
 #pragma once
-#include "../Tile.h"
+#include <memory>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 class PistonExtensionTile : public Tile {
 public:

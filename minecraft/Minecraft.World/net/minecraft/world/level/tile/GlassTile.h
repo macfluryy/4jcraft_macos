@@ -2,6 +2,7 @@
 #include "HalfTransparentTile.h"
 
 class Random;
+class Material;
 
 class GlassTile : public HalfTransparentTile {
 public:

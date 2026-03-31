@@ -1,7 +1,7 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../material/net.minecraft.world.level.material.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "SandStoneTile.h"
 
 const std::wstring SandStoneTile::TEXTURE_TOP = L"sandstone_top";

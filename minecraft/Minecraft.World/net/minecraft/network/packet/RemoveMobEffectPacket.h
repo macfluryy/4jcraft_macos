@@ -1,8 +1,11 @@
 #pragma once
 
-class MobEffectInstance;
+#include <memory>
 
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
+class MobEffectInstance;
 
 class RemoveMobEffectPacket
     : public Packet,

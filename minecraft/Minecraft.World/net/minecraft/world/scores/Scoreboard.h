@@ -1,5 +1,13 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
 class Objective;
 class ObjectiveCriteria;
 class PlayerTeam;

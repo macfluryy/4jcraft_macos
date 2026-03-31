@@ -1,7 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../net.minecraft.world.h"
+#include <string>
+
 #include "StainedGlassBlock.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfTransparentTile.h"
+
+class Icon;
+class Material;
 
 Icon* StainedGlassBlock::ICONS[StainedGlassBlock::ICONS_LENGTH];
 

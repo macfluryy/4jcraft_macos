@@ -1,6 +1,10 @@
-#include "../../../Header Files/stdafx.h"
-#include "net.minecraft.stats.h"
+#include <vector>
+
 #include "GeneralStat.h"
+#include "Minecraft.World/net/minecraft/stats/Stat.h"
+#include "Minecraft.World/net/minecraft/stats/Stats.h"
+
+class StatFormatter;
 
 GeneralStat::GeneralStat(int id, const std::wstring& name,
                          StatFormatter* formatter)

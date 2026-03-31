@@ -1,4 +1,3 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "Goal.h"
 
 Goal::Goal() { _requiredControlFlags = 0; }

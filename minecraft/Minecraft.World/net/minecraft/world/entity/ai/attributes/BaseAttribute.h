@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Attribute.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
 
 class BaseAttribute : public Attribute {
 private:

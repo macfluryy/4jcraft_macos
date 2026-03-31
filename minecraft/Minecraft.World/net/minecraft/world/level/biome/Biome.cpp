@@ -1,14 +1,38 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "java/Color.h"
+#include <stdint.h>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../../entity/monster/net.minecraft.world.entity.monster.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "Biome.h"
-#include "net.minecraft.world.level.biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BeachBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/DesertBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/ExtremeHillsBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/ForestBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/HellBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/IceBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/JungleBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/MushroomIslandBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/OceanBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/PlainsBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/RiverBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/SwampBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/TaigaBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/TheEndBiome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/TallGrassFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/TreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/TallGrassPlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Level;
 
 // public static final Biome[] biomes = new Biome[256];
 Biome* Biome::biomes[256];

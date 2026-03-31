@@ -2,8 +2,14 @@
 
 // 4J Stu - Based loosely on the Java versions
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <string>
+
 #include "CommandsEnum.h"
-#include "../network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "4J.Common/4J_Compat.h"
 
 class AdminLogCommand;
 class CommandSender;

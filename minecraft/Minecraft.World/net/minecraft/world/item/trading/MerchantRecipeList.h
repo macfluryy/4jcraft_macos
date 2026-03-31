@@ -1,5 +1,7 @@
 #pragma once
+#include <stddef.h>
 #include <vector>
+#include <memory>
 
 class MerchantRecipe;
 class CompoundTag;

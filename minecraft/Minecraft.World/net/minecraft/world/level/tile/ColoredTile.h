@@ -2,6 +2,9 @@
 
 #include "Tile.h"
 
+class Icon;
+class Material;
+
 class ColoredTile : public Tile {
     friend class ChunkRebuildData;
 

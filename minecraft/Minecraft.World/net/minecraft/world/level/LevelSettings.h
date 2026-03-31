@@ -1,6 +1,8 @@
 #pragma once
-class LevelType;
+#include <stdint.h>
+#include <string>
 
+class LevelType;
 class Abilities;
 class LevelData;
 

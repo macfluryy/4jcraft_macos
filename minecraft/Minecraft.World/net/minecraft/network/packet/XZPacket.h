@@ -2,7 +2,10 @@
 
 // 4J ADDED THIS PACKET
 
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class XZPacket : public Packet, public std::enable_shared_from_this<XZPacket> {
 public:

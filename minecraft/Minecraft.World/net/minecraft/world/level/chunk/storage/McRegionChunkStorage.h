@@ -1,14 +1,24 @@
 #pragma once
 
+#include <stdint.h>
 #include <mutex>
+#include <deque>
+#include <format>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "ChunkStorage.h"
-#include "../LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "RegionFileCache.h"
 #include "nbt/com.mojang.nbt.h"
 #include "OldChunkStorage.h"
 
 class ConsoleSaveFile;
+class C4JThread;
+class DataOutputStream;
+class Level;
+class LevelChunk;
 
 class McRegionChunkStorage : public ChunkStorage {
 private:

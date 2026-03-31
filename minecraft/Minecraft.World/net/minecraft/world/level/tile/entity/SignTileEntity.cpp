@@ -1,17 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../../entity/item/net.minecraft.world.entity.item.h"
-#include "../../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../../entity/net.minecraft.world.entity.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "../../../../network/packet/net.minecraft.network.packet.h"
+#include <wchar.h>
+
 #include "SignTileEntity.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "../../Level.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/network/packet/SignUpdatePacket.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 const int SignTileEntity::MAX_LINE_LENGTH = 15;
 

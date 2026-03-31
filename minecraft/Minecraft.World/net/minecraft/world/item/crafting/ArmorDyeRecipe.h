@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Recipy.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
+class CraftingContainer;
 
 class ArmorDyeRecipe : public Recipy {
 public:

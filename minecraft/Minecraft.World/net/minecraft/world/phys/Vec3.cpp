@@ -1,9 +1,11 @@
-#include "Vec3.h"
-
 #include <format>
 #include <optional>
+#include <cmath>
+#include <string>
 
-#include "AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 Vec3 Vec3::vectorTo(const Vec3& p) const { return {p.x - x, p.y - y, p.z - z}; }
 

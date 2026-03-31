@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "nbt/CompoundTag.h"
 
 class Packet;

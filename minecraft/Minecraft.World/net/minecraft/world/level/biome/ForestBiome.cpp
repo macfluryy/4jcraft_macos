@@ -1,9 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "net.minecraft.world.level.biome.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../../entity/net.minecraft.world.entity.h"
+#include <vector>
+
 #include "ForestBiome.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeDecorator.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/BirchFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/TreeFeature.h"
 
 ForestBiome::ForestBiome(int id) : Biome(id) {
     friendlies_wolf.push_back(new MobSpawnerData(

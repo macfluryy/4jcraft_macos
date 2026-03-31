@@ -1,19 +1,25 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../../net.minecraft.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../storage/net.minecraft.world.level.storage.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.level.levelgen.h"
-#include "net.minecraft.world.level.levelgen.structure.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../dimension/net.minecraft.world.level.dimension.h"
-#include "../../../entity/npc/net.minecraft.world.entity.npc.h"
-#include "../../../../util/WeighedTreasure.h"
+#include <stdlib.h>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
 #include "VillagePieces.h"
 #include "VillageFeature.h"
-#include "../../../../Direction.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
 #include "java/JavaMath.h"
-#include "../../biome/BiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.World/net/minecraft/world/item/DyePowderItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/SandStoneTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 std::vector<WeighedTreasure*> VillagePieces::Smithy::treasureItems;
 

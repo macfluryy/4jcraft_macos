@@ -1,5 +1,7 @@
 #pragma once
 #include "Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+
 class LevelSource;
 
 class SwampBiome : public Biome {

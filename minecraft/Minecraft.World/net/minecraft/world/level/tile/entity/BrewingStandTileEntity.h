@@ -1,6 +1,6 @@
 #pragma once
 #include "TileEntity.h"
-#include "../../../WorldlyContainer.h"
+#include "Minecraft.World/net/minecraft/world/WorldlyContainer.h"
 
 class BrewingStandTileEntity : public TileEntity, public WorldlyContainer {
 public:

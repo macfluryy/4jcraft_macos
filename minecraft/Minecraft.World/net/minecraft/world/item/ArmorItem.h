@@ -1,7 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Item.h"
-#include "../../core/DefaultDispenseItemBehavior.h"
+#include "Minecraft.World/net/minecraft/core/DefaultDispenseItemBehavior.h"
+#include "Minecraft.Client/Common/App_enums.h"
+
+class Icon;
+class ItemInstance;
 
 class ArmorItem : public Item {
 public:

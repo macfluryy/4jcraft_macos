@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "BasePressurePlateTile.h"
+
+class Material;
 
 class WeightedPressurePlateTile : public BasePressurePlateTile {
 private:

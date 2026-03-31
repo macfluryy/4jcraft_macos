@@ -2,6 +2,7 @@
 #include "PlantTile.h"
 
 class Random;
+class Level;
 
 class Mushroom : public Bush {
     friend class Tile;

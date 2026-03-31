@@ -1,8 +1,14 @@
 #pragma once
-class StructurePiece;
-class BoundingBox;
+#include <list>
 
 #include "StructureFeatureIO.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+
+class StructurePiece;
+class BoundingBox;
+class CompoundTag;
+class Level;
+class Random;
 
 class StructureStart {
 public:

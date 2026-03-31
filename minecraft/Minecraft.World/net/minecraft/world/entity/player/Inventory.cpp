@@ -1,10 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "nbt/com.mojang.nbt.h"
 #include "net.minecraft.world.entity.player.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../stats/net.minecraft.stats.h"
-#include "../../level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "Inventory.h"
 
 const int Inventory::POP_TIME_DURATION = 5;

@@ -1,6 +1,17 @@
 #pragma once
 
-#include "../chunk/ChunkSource.h"
+#include <stdint.h>
+#include <format>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+
+class Level;
+class PerlinNoise;
+class Random;
 
 #ifndef _CONTENT_PACKAGE
 #define _OVERRIDE_HEIGHTMAP

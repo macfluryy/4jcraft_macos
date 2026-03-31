@@ -3,6 +3,7 @@
 
 class Player;
 class Random;
+class Level;
 
 class RedStoneOreTile : public Tile {
 private:

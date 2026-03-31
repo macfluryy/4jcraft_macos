@@ -5,6 +5,7 @@ class Entity;
 class Random;
 class Level;
 class ChunkRebuildData;
+class Icon;
 
 class DetectorRailTile : public BaseRailTile {
     friend class ChunkRebuildData;

@@ -1,5 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+class Player;
+
 class ObjectiveCriteria {
 public:
     static std::unordered_map<std::wstring, ObjectiveCriteria*>

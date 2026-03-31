@@ -25,12 +25,21 @@
 // The save file version in which we added the End dimension map mappings
 #define END_DIMENSION_MAP_MAPPINGS_SAVE_VERSION 5
 
+#include <stdint.h>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "java/File.h"
 #include "LevelStorage.h"
 #include "PlayerIO.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "4J.Common/4J_Compat.h"
 
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
 class ConsoleSaveFile;
+class ByteArrayOutputStream;
+class DataInputStream;
+class DataOutputStream;
 
 // 4J Stu - Added this which we will write out as a file. Map id's are stored in
 // itemInstances as the auxValue, so we can have at most 65536 maps. As we

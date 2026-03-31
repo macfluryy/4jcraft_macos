@@ -1,8 +1,14 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "PistonExtensionTile.h"
 #include "PistonBaseTile.h"
-#include "../../../../Facing.h"
-#include "../../net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 PistonExtensionTile::PistonExtensionTile(int id)
     : Tile(id, Material::piston, false) {

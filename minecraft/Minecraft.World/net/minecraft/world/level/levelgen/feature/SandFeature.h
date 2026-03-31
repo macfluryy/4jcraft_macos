@@ -1,5 +1,6 @@
 #pragma once
 #include "Feature.h"
+
 class Random;
 
 class SandFeature : public Feature {

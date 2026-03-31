@@ -1,7 +1,8 @@
-﻿#include "../../Header Files/stdafx.h"
-#include "java/File.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "SharedConstants.h"
+﻿
+#include <string>
+
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 
 const std::wstring SharedConstants::VERSION_STRING = L"1.6.4";
 const bool SharedConstants::TEXTURE_LIGHTING = true;

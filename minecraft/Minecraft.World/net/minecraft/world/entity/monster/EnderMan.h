@@ -1,6 +1,14 @@
 #pragma once
 
+#include <memory>
+
 #include "Monster.h"
+#include "java/Class.h"
+
+class AttributeModifier;
+class Entity;
+class Level;
+class Player;
 
 class EnderMan : public Monster {
 public:

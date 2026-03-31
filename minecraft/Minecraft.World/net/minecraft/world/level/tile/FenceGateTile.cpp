@@ -1,10 +1,17 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <optional>
+
 #include "FenceGateTile.h"
-#include "../../phys/AABB.h"
-#include "../net.minecraft.world.level.h"
-#include "../../../net.minecraft.h"
 #include "LevelEvent.h"
-#include "../../../Direction.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DirectionalTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 FenceGateTile::FenceGateTile(int id)
     : DirectionalTile(id, Material::wood, false) {}

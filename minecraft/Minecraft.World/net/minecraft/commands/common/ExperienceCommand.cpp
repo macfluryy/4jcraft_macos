@@ -1,8 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.commands.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "../../world/level/net.minecraft.world.level.h"
+#include <memory>
+
 #include "ExperienceCommand.h"
 
 EGameCommand ExperienceCommand::getId() { return eGameCommand_Experience; }

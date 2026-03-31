@@ -1,4 +1,6 @@
 #pragma once
+#include <stdint.h>
+
 #include "ChunkStorage.h"
 
 class Level;

@@ -1,10 +1,20 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "net.minecraft.world.level.h"
-#include "tile/net.minecraft.world.level.tile.h"
-#include "../phys/net.minecraft.world.phys.h"
+#include <vector>
+
 #include "BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/Tag.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 BaseMobSpawner::BaseMobSpawner() {
     spawnPotentials = nullptr;

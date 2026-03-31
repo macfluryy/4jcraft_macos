@@ -1,7 +1,10 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../../../network/packet/net.minecraft.network.packet.h"
+#include <cstdint>
+#include <memory>
+
 #include "SkullTileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/network/packet/TileEntityDataPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 SkullTileEntity::SkullTileEntity() {
     skullType = 0;

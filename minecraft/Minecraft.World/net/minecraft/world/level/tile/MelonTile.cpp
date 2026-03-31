@@ -1,8 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <string>
+
 #include "MelonTile.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../net.minecraft.world.h"
-#include "../../../Facing.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 MelonTile::MelonTile(int id) : Tile(id, Material::vegetable) {
     iconTop = nullptr;

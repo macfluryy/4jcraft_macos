@@ -2,9 +2,13 @@
 
 #include "Monster.h"
 #include "RangedAttackMob.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/entity/MobType.h"
 
 class RangedAttackGoal;
 class MeleeAttackGoal;
+class Entity;
+class Level;
 
 class Skeleton : public Monster, public RangedAttackMob {
 public:

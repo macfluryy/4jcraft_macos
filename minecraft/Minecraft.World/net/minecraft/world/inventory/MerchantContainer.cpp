@@ -1,7 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../item/trading/net.minecraft.world.item.trading.h"
 #include "MerchantMenu.h"
 #include "MerchantContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/Merchant.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipe.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipeList.h"
 
 MerchantContainer::~MerchantContainer() {}
 

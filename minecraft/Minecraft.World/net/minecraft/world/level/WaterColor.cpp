@@ -1,5 +1,3 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "WaterColor.h"
 
 // 4J Stu - Not using this any more

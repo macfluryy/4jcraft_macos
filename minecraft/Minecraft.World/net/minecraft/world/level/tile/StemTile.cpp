@@ -1,11 +1,19 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
-#include "../net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
+#include <stdint.h>
+
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 #include "StemTile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 const std::wstring StemTile::TEXTURE_ANGLED = L"stem_bent";
 

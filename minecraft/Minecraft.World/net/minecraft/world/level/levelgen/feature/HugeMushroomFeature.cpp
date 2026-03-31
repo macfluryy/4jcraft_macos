@@ -1,7 +1,8 @@
-#include "../../../../../../Header Files/stdafx.h"
 #include "HugeMushroomFeature.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 HugeMushroomFeature::HugeMushroomFeature(int forcedType) : Feature(true) {
     this->forcedType = forcedType;

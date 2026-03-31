@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 // 4J Added packet to update clients on the time for the host to finish doing
 // something

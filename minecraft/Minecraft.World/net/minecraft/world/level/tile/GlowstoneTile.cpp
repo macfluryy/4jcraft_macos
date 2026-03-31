@@ -1,6 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "GlowstoneTile.h"
-#include "../../item/net.minecraft.world.item.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Material;
 
 Glowstonetile::Glowstonetile(int id, Material* material) : Tile(id, material) {}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 
 class LevelSummary;
 class ProgressListener;

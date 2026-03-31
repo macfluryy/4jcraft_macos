@@ -1,6 +1,11 @@
 #pragma once
 
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "4J.Common/4J_Compat.h"
 
 class PlayerIO;
 class Dimension;
@@ -8,7 +13,6 @@ class ChunkStorage;
 class LevelData;
 class Player;
 class File;
-
 class ConsoleSaveFile;
 
 class LevelStorage {

@@ -1,6 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
+#include <memory>
 
 #include "BookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 BookItem::BookItem(int id) : Item(id) {}
 

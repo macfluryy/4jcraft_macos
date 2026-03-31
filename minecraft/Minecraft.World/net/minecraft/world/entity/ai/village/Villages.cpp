@@ -1,10 +1,13 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.entity.ai.village.h"
-#include "../../../level/net.minecraft.world.level.h"
-#include "../../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../../phys/net.minecraft.world.phys.h"
-#include "Villages.h"
+#include <stdlib.h>
 #include <limits>
+
+#include "Villages.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/DoorTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const std::wstring Villages::VILLAGE_FILE_ID = L"villages";
 

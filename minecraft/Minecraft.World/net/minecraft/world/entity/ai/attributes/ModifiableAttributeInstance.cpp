@@ -1,6 +1,9 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.entity.ai.attributes.h"
+#include <assert.h>
+#include <utility>
+
 #include "ModifiableAttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/Attribute.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
 
 ModifiableAttributeInstance::ModifiableAttributeInstance(
     BaseAttributeMap* attributeMap, Attribute* attribute) {

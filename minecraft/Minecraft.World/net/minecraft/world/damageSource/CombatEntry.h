@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "CombatTracker.h"
 
 class DamageSource;

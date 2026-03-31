@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Facing {
 public:
     static const int DOWN = 0;

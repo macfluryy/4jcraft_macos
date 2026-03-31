@@ -1,12 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../item/net.minecraft.world.item.h"
-#include "../item/net.minecraft.world.entity.item.h"
-#include "../../../SharedConstants.h"
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "java/JavaMath.h"
 #include "EyeOfEnderSignal.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 void EyeOfEnderSignal::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

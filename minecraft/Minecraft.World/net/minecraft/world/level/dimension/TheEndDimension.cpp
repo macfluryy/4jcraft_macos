@@ -1,11 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <math.h>
+#include <numbers>
+
 #include "TheEndDimension.h"
-#include "../biome/FixedBiomeSource.h"
-#include "../levelgen/net.minecraft.world.level.levelgen.h"
-#include "../net.minecraft.world.level.h"
-#include "../tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/FixedBiomeSource.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/TheEndLevelRandomLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 void TheEndDimension::init() {
     biomeSource = new FixedBiomeSource(Biome::sky, 0.5f, 0);

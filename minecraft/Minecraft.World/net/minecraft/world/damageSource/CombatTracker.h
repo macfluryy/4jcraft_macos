@@ -1,10 +1,15 @@
 #pragma once
 
-#include "../../SharedConstants.h"
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
 
 class CombatEntry;
 class LivingEntity;
 class ChatPacket;
+class DamageSource;
 
 class CombatTracker {
 public:

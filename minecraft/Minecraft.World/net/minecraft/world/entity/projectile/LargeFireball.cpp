@@ -1,8 +1,14 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
+#include <string>
+
 #include "LargeFireball.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Fireball.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 
 LargeFireball::LargeFireball(Level* level) : Fireball(level) {
     explosionPower = 1;

@@ -1,14 +1,13 @@
-#include "../../../Header Files/stdafx.h"
 #if defined(_WIN32)
 #include <xhash>
 #else
-#include <openssl/md5.h>
-#include <iostream>
 #include <iomanip>
 #include <sstream>
 #endif  // _WIN32
-#include "Hasher.h"
 #include <openssl/evp.h>
+#include <openssl/types.h>
+
+#include "Hasher.h"
 
 Hasher::Hasher(std::wstring& salt) { this->salt = salt; }
 

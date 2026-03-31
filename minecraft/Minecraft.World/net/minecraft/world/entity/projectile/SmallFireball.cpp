@@ -1,10 +1,12 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../net.minecraft.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../level/net.minecraft.world.level.h"
 #include "SmallFireball.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Fireball.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
 
 SmallFireball::SmallFireball(Level* level) : Fireball(level) {
     setSize(5 / 16.0f, 5 / 16.0f);

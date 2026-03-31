@@ -1,8 +1,16 @@
 #pragma once
-#include "../Entity.h"
-#include "../../../SharedConstants.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class Player;
+class Level;
 
 class ItemEntity : public Entity {
 public:

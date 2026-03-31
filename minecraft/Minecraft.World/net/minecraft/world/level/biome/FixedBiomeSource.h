@@ -1,5 +1,10 @@
 #pragma once
+#include <stdint.h>
+#include <format>
+
 #include "BiomeSource.h"
+
+class Biome;
 
 class FixedBiomeSource : public BiomeSource {
 private:

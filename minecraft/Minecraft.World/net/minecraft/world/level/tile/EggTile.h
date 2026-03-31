@@ -1,6 +1,8 @@
 #pragma once
 #include "Tile.h"
 
+class Level;
+
 class EggTile : public Tile {
 public:
     EggTile(int id);

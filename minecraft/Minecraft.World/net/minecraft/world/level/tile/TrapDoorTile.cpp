@@ -1,10 +1,15 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.level.tile.h"
-#include "../../../net.minecraft.h"
+#include <optional>
+
 #include "TrapDoorTile.h"
-#include "../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LevelEvent.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StairTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 TrapDoorTile::TrapDoorTile(int id, Material* material)
     : Tile(id, material, false) {

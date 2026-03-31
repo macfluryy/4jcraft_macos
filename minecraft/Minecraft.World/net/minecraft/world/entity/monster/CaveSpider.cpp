@@ -1,12 +1,16 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../../SharedConstants.h"
-#include "../ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "net.minecraft.world.entity.monster.h"
-#include "../../effect/net.minecraft.world.effect.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../net.minecraft.world.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include <memory>
+
 #include "CaveSpider.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/Difficulty.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Spider.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 CaveSpider::CaveSpider(Level* level) : Spider(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

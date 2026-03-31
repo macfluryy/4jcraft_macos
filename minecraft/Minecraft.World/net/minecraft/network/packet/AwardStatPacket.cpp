@@ -1,8 +1,9 @@
-#include "../../../../Header Files/stdafx.h"
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <string.h>
+
 #include "PacketListener.h"
 #include "AwardStatPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 AwardStatPacket::AwardStatPacket() {
     this->m_paramData.clear();

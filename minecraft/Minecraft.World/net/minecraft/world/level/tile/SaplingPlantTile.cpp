@@ -1,8 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "../../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 
 #include "SaplingPlantTile.h"
 

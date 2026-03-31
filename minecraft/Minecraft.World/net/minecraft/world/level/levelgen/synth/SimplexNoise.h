@@ -1,5 +1,9 @@
 #pragma once
 
+#include <format>
+
+class Random;
+
 class SimplexNoise {
 private:
     static int grad3[12][3];

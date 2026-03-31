@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CommandsEnum.h"
-#include "../network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
 
 class CommandSender {
 public:

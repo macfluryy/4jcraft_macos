@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../network/packet/ContainerOpenPacket.h"
+#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "Minecraft.World/net/minecraft/network/packet/ContainerOpenPacket.h"
 #include "PlayerEnderChestContainer.h"
 
 PlayerEnderChestContainer::PlayerEnderChestContainer()

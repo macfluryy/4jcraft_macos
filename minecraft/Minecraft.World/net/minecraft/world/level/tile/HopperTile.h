@@ -1,8 +1,15 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "BaseEntityTile.h"
+#include "java/Random.h"
 
 class HopperTileEntity;
+class Icon;
+class Level;
+class LevelSource;
 
 class HopperTile : public BaseEntityTile {
     friend class ChunkRebuildData;

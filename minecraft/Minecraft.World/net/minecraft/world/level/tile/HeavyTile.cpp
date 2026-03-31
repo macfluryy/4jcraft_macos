@@ -1,8 +1,8 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../../entity/item/net.minecraft.world.entity.item.h"
 #include "HeavyTile.h"
-#include "FireTile.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/FallingTile.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 bool HeavyTile::instaFall = false;
 

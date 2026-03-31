@@ -2,6 +2,8 @@
 #include "LiquidTile.h"
 
 class Random;
+class Level;
+class Material;
 
 class LiquidTileStatic : public LiquidTile {
     friend class Tile;

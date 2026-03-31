@@ -1,15 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../food/net.minecraft.world.food.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../effect/net.minecraft.world.effect.h"
-#include "../../net.minecraft.h"
-#include "ItemInstance.h"
 #include "FoodItem.h"
-#include "../../../../Header Files/SoundTypes.h"
-
-// 4J : WESTY : Other award ... eating cooked pork chop.
-#include "../../stats/net.minecraft.stats.h"
+#include "SoundTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodConstants.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 void FoodItem::_init() {
     // 4J Initialisers

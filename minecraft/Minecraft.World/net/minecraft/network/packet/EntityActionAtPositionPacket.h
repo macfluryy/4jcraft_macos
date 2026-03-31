@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+
+class Entity;
 
 class EntityActionAtPositionPacket
     : public Packet,

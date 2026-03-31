@@ -2,8 +2,12 @@
 
 #include <optional>
 
-#include "../../../phys/Vec3.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "Goal.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
+class Level;
+class PathfinderMob;
 
 class FleeSunGoal : public Goal {
 private:

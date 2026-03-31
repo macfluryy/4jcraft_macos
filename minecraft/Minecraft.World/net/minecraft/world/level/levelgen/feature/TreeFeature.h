@@ -1,6 +1,8 @@
 #pragma once
 #include "Feature.h"
 
+class Level;
+
 class TreeFeature : public Feature {
 private:
     const int baseHeight;

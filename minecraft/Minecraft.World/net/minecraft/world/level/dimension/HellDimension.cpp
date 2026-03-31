@@ -1,12 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../storage/net.minecraft.world.level.storage.h"
+#include <cmath>
+
 #include "HellDimension.h"
-#include "../levelgen/net.minecraft.world.level.levelgen.h"
-#include "../biome/net.minecraft.world.level.biome.h"
-#include "../tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/FixedBiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/HellFlatLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/HellRandomLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 void HellDimension::init() {
     biomeSource = new FixedBiomeSource(Biome::hell, 1, 0);

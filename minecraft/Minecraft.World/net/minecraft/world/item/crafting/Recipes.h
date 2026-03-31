@@ -15,13 +15,23 @@ import net.minecraft.world.level.tile.StoneSlabTile;
 import net.minecraft.world.level.tile.Tile;
 */
 
+#include <format>
+#include <memory>
+#include <unordered_map>
+
 #include "Recipy.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
+class Item;
+class Level;
+class MapItem;
+class Tile;
 
 #pragma once
 
 class CraftingContainer;
 class FireTile;
-
 class ArmorRecipes;
 class ClothDyeRecipes;
 class FoodRecipies;

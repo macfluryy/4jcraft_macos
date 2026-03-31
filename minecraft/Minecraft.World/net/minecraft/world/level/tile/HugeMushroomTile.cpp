@@ -1,6 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../net.minecraft.world.h"
 #include "HugeMushroomTile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Icon;
+class Material;
 
 const std::wstring HugeMushroomTile::TEXTURE_STEM = L"skin_stem";
 const std::wstring HugeMushroomTile::TEXTURE_INSIDE = L"inside";

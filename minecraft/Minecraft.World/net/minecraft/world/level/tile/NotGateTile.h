@@ -1,7 +1,12 @@
 #pragma once
+#include <stdint.h>
+#include <deque>
+#include <unordered_map>
+
 #include "TorchTile.h"
 
 class Random;
+class Level;
 
 class NotGateTile : public TorchTile {
     friend class Tile;

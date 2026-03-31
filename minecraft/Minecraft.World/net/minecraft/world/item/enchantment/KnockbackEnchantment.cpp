@@ -1,4 +1,4 @@
-#include "../../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "KnockbackEnchantment.h"
 
 KnockbackEnchantment::KnockbackEnchantment(int id, int frequency)

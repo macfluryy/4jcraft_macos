@@ -1,11 +1,20 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.item.h"
-#include "net.minecraft.world.item.enchantment.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../util/WeighedRandom.h"
+#include <algorithm>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "EnchantmentHelper.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentInstance.h"
 
 Random EnchantmentHelper::random;
 

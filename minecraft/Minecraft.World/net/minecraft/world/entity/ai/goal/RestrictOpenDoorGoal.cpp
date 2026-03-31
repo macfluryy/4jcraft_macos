@@ -1,9 +1,11 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "../village/net.minecraft.world.entity.ai.village.h"
-#include "../../net.minecraft.world.entity.h"
-#include "../../../level/net.minecraft.world.level.h"
 #include "RestrictOpenDoorGoal.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/DoorInfo.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Village.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/village/Villages.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 RestrictOpenDoorGoal::RestrictOpenDoorGoal(PathfinderMob* mob) {
     this->mob = mob;

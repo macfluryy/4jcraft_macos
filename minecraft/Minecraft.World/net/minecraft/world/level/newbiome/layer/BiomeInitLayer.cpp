@@ -1,8 +1,7 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../biome/net.minecraft.world.level.biome.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
-#include "../../net.minecraft.world.level.h"
 #include "BiomeInitLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
 
 BiomeInitLayer::~BiomeInitLayer() {}
 

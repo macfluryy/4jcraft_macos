@@ -1,7 +1,11 @@
 #pragma once
+#include <string>
+
 #include "BaseEntityTile.h"
 
 class ChunkRebuildData;
+class Icon;
+
 class EnchantmentTableTile : public BaseEntityTile {
     friend class ChunkRebuildData;
 

@@ -1,6 +1,11 @@
 #pragma once
 
-#include "../GameRules.h"
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
 
 class Player;
 class CompoundTag;

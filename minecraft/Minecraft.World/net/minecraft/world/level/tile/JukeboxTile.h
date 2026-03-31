@@ -1,11 +1,17 @@
 #pragma once
 
+#include <memory>
+
 #include "BaseEntityTile.h"
 #include "nbt/CompoundTag.h"
-#include "entity/TileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class CompoundTag;
 class ChunkRebuildData;
+class Icon;
+class Level;
 
 class JukeboxTile : public BaseEntityTile {
     friend class Tile;

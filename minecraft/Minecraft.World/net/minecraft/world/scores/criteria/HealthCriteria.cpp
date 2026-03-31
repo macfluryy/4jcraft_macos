@@ -1,6 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/player/net.minecraft.world.entity.player.h"
+#include <memory>
+#include <vector>
+
 #include "HealthCriteria.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/scores/criteria/DummyCriteria.h"
 
 HealthCriteria::HealthCriteria(const std::wstring& id) : DummyCriteria(id) {}
 

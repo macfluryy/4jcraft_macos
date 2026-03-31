@@ -1,8 +1,11 @@
 #pragma once
+#include <string>
+
 #include "DirectionalTile.h"
 
 class Mob;
 class ChunkRebuildData;
+class Icon;
 
 class PumpkinTile : public DirectionalTile {
     friend class Tile;

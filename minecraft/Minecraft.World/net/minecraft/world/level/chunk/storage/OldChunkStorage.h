@@ -1,12 +1,18 @@
 #pragma once
+#include <cstdint>
+#include <vector>
+
 #include "ChunkStorage.h"
-#include "../LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "java/File.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/com.mojang.nbt.h"
-#include <cstdint>
 
 class Level;
+class CompoundTag;
+class DataInputStream;
+class DataOutputStream;
+class LevelChunk;
 
 class OldChunkStorage : public ChunkStorage {
 private:

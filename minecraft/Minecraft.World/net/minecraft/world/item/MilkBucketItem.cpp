@@ -1,7 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
+#include <memory>
+
 #include "MilkBucketItem.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 MilkBucketItem::MilkBucketItem(int id) : Item(id) { setMaxStackSize(1); }
 

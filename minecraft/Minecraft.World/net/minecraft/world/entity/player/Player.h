@@ -1,14 +1,24 @@
 #pragma once
 
 #include <cstdint>
+#include <format>
+#include <memory>
+#include <string>
 
-#include "../LivingEntity.h"
-#include "../../../../../ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
 #include "Abilities.h"
-#include "../../food/FoodData.h"
-#include "../../inventory/PlayerEnderChestContainer.h"
-#include "../../../commands/CommandSender.h"
-#include "../../scores/ScoreHolder.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "Minecraft.World/net/minecraft/world/inventory/PlayerEnderChestContainer.h"
+#include "Minecraft.World/net/minecraft/commands/CommandSender.h"
+#include "Minecraft.World/net/minecraft/world/scores/ScoreHolder.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "java/Class.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 class AbstractContainerMenu;
 class Stats;
@@ -33,6 +43,10 @@ class Merchant;
 class PlayerEnderChestContainer;
 class GameType;
 class Scoreboard;
+class Level;
+class ModelPart;
+class Stat;
+class Tile;
 
 class Player : public LivingEntity, public CommandSender, public ScoreHolder {
 public:

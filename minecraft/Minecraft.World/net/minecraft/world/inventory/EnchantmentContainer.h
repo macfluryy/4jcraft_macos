@@ -3,7 +3,7 @@
 // In EnchantmentMenu.java they create an anoymous class while creating the
 // container. I have moved the content of that anonymous class to here
 
-#include "../SimpleContainer.h"
+#include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
 
 class EnchantmentMenu;
 

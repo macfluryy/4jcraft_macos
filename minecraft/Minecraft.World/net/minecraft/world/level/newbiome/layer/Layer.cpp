@@ -1,7 +1,29 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "net.minecraft.world.level.newbiome.layer.h"
-#include "../../net.minecraft.world.level.h"
+#include <stdint.h>
+#include <memory>
+#include <vector>
+
 #include "BiomeOverrideLayer.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/AddIslandLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/AddMushroomIslandLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/AddSnowLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/BiomeInitLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/FuzzyZoomLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/GrowMushroomIslandLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/IslandLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/Layer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/RegionHillsLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/RiverInitLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/RiverLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/RiverMixerLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/ShoreLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/SmoothLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/SwampRiversLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/VoronoiZoom.h"
+#include "Minecraft.World/net/minecraft/world/level/newbiome/layer/ZoomLayer.h"
 
 std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
     // 4J - Some changes moved here from 1.2.3. Temperature & downfall layers

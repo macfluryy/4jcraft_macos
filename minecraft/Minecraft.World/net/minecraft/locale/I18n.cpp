@@ -1,4 +1,3 @@
-#include "../../../Header Files/stdafx.h"
 #include "Language.h"
 #include "I18n.h"
 

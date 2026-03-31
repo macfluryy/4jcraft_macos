@@ -1,8 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "../../net.minecraft.world.h"
 #include "MushroomPlantTile.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/feature/HugeMushroomFeature.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 Mushroom::Mushroom(int id) : Bush(id) {
     this->updateDefaultShape();

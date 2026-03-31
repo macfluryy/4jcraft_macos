@@ -1,9 +1,15 @@
 #pragma once
 
-#include "animal/Animal.h"
+#include <stdint.h>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/entity/animal/Animal.h"
 #include "OwnableEntity.h"
 
 class SitGoal;
+class Level;
+class LivingEntity;
 
 class TamableAnimal : public Animal, public OwnableEntity {
 protected:

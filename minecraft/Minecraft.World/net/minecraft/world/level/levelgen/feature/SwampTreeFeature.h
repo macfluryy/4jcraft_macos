@@ -1,6 +1,8 @@
 #pragma once
 #include "Feature.h"
+
 class Random;
+class Level;
 
 class SwampTreeFeature : public Feature {
 public:

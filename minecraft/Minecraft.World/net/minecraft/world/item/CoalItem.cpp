@@ -1,8 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
+#include "Minecraft.World/Header Files/stdafx.h"
 #include "net.minecraft.world.item.h"
-#include "../entity/item/net.minecraft.world.entity.item.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "CoalItem.h"
 
 CoalItem::CoalItem(int id) : Item(id) {

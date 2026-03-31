@@ -1,9 +1,12 @@
 #pragma once
+#include <memory>
+
 #include "Tile.h"
 
 class Random;
 class Level;
 class FallingTile;
+class Material;
 
 class HeavyTile : public Tile {
 public:

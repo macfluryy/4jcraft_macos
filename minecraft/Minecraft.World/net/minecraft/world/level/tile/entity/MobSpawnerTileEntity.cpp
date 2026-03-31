@@ -1,8 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "../../../../network/packet/net.minecraft.network.packet.h"
-#include "../../net.minecraft.world.level.h"
-#include "../net.minecraft.world.level.tile.h"
+#include <memory>
+
 #include "MobSpawnerTileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/network/packet/TileEntityDataPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 MobSpawnerTileEntity::TileEntityMobSpawner::TileEntityMobSpawner(
     MobSpawnerTileEntity* parent) {

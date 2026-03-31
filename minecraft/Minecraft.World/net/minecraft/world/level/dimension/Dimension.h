@@ -1,13 +1,19 @@
 #pragma once
+#include <stdint.h>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/net/minecraft/Pos.h"
+#include "java/File.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
 class BiomeSource;
 class ChunkSource;
 class ChunkStorage;
 class Level;
 class LevelType;
-
-#include "../material/Material.h"
-#include "../../phys/Vec3.h"
-#include "../../../Pos.h"
+class Pos;
 
 class Dimension {
 public:

@@ -1,6 +1,11 @@
 #pragma once
 
+#include <unordered_map>
+
 #include "DispenseItemBehavior.h"
+
+class DispenseItemBehavior;
+class Item;
 
 class BehaviorRegistry {
 private:

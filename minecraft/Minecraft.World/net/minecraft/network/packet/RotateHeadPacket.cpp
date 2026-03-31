@@ -1,6 +1,7 @@
-#include "../../../../Header Files/stdafx.h"
-
 #include "RotateHeadPacket.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
 
 RotateHeadPacket::RotateHeadPacket() {}
 

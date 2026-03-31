@@ -1,7 +1,13 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
+#include <memory>
+
 #include "RedStoneOreTile.h"
-#include "../../item/net.minecraft.world.item.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 RedStoneOreTile::RedStoneOreTile(int id, bool lit) : Tile(id, Material::stone) {
     if (lit) {

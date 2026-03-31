@@ -1,9 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/animal/net.minecraft.world.entity.animal.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../net.minecraft.world.item.h"
-#include "net.minecraft.world.item.crafting.h"
+#include <string.h>
+#include <algorithm>
+#include <vector>
+
 #include "ArmorDyeRecipe.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Sheep.h"
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingContainer.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/ShapedRecipy.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ColoredTile.h"
 
 bool ArmorDyeRecipe::matches(std::shared_ptr<CraftingContainer> craftSlots,
                              Level* level) {

@@ -1,10 +1,18 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../net.minecraft.commands.h"
-#include "../../world/entity/item/net.minecraft.world.entity.item.h"
-#include "../../world/item/net.minecraft.world.item.h"
-#include "../../network/packet/net.minecraft.network.packet.h"
+#include <vector>
+
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "GiveItemCommand.h"
+#include "4J.Common/4J_Compat.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/GameCommandPacket.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 EGameCommand GiveItemCommand::getId() { return eGameCommand_Give; }
 

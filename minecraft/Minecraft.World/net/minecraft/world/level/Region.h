@@ -1,10 +1,16 @@
 #pragma once
 
+#include <format>
+
 #include "LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
 
 class Material;
 class TileEntity;
 class BiomeSource;
+class Level;
+class LevelChunk;
 
 class Region : public LevelSource {
 private:

@@ -1,6 +1,15 @@
 #pragma once
 
-#include "../../util/WeighedRandom.h"
+#include <format>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/util/WeighedRandom.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+
+class CompoundTag;
+class Level;
 
 class BaseMobSpawner {
 public:

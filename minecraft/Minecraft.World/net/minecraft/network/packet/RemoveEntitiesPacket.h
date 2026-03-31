@@ -1,7 +1,12 @@
 #pragma once
 
 #include <limits>
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class RemoveEntitiesPacket
     : public Packet,

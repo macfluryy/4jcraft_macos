@@ -1,9 +1,14 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.inventory.h"
-#include "../item/trading/net.minecraft.world.item.trading.h"
-#include "../level/net.minecraft.world.level.h"
+#include <vector>
+
 #include "MerchantMenu.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/MerchantContainer.h"
+#include "Minecraft.World/net/minecraft/world/inventory/MerchantResultSlot.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 MerchantMenu::MerchantMenu(std::shared_ptr<Inventory> inventory,
                            std::shared_ptr<Merchant> merchant, Level* level) {

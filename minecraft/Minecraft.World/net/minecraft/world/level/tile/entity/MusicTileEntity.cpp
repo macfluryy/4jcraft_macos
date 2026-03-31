@@ -1,12 +1,12 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../../entity/player/net.minecraft.world.entity.player.h"
-#include "../../../item/net.minecraft.world.item.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../material/net.minecraft.world.level.material.h"
-#include "../net.minecraft.world.level.tile.h"
+#include <memory>
+#include <string>
 
 #include "MusicTileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 MusicTileEntity::MusicTileEntity() : TileEntity() {
     note = 0;

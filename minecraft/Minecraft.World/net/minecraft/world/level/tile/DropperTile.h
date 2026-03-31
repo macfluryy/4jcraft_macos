@@ -2,6 +2,8 @@
 
 #include "DispenserTile.h"
 
+class DispenseItemBehavior;
+
 class DropperTile : public DispenserTile {
 private:
     DispenseItemBehavior* DISPENSE_BEHAVIOUR;

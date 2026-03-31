@@ -1,15 +1,17 @@
-#include "../../../../../Header Files/stdafx.h"
+#include <memory>
+#include <vector>
+
 #include "java/File.h"
 #include "LevelData.h"
-#include "LevelSummary.h"
-#include "nbt/com.mojang.nbt.h"
 #include "DirectoryLevelStorage.h"
 #include "DirectoryLevelStorageSource.h"
-
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
-#include "../../../../../ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
-
-class LevelStorage;
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
+#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/NbtIo.h"
 
 DirectoryLevelStorageSource::DirectoryLevelStorageSource(const File dir)
     : baseDir(dir) {

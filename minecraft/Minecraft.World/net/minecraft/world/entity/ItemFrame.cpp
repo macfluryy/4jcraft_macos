@@ -1,15 +1,20 @@
-#include "../../../../Header Files/stdafx.h"
+#include <stdint.h>
+#include <string>
 
-#include "item/net.minecraft.world.entity.item.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../phys/net.minecraft.world.phys.h"
-#include "../level/net.minecraft.world.level.h"
-#include "player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.entity.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../level/saveddata/net.minecraft.world.level.saveddata.h"
-#include "nbt/com.mojang.nbt.h"
 #include "ItemFrame.h"
+#include "Minecraft.World/net/minecraft/world/entity/ItemFrame.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/HangingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/MapItemSavedData.h"
 
 // 4J - added for common ctor code
 void ItemFrame::_init() {

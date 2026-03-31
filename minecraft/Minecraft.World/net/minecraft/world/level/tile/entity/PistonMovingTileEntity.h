@@ -1,7 +1,14 @@
 #pragma once
-#include "../BaseEntityTile.h"
+#include <memory>
+#include <optional>
+
+#include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 class PistonPieceEntity;
+class Level;
+class LevelSource;
 
 class PistonMovingPiece : public BaseEntityTile {
 public:

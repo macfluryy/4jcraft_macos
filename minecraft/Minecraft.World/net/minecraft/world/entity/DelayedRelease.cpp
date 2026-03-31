@@ -1,6 +1,5 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/net.minecraft.world.level.h"
 #include "DelayedRelease.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 DelayedRelease::DelayedRelease(Level* level, std::shared_ptr<Entity> toRelease,
                                int delay)

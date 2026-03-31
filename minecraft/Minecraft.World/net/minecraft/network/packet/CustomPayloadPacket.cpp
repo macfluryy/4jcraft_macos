@@ -1,8 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "java/InputOutputStream/InputOutputStream.h"
+#include <limits>
+
 #include "PacketListener.h"
 #include "CustomPayloadPacket.h"
-#include <limits>
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 // Mojang-defined custom packets
 const std::wstring CustomPayloadPacket::CUSTOM_BOOK_PACKET = L"MC|BEdit";

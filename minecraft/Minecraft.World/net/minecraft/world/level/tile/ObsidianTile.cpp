@@ -1,5 +1,6 @@
-#include "../../../../../Header Files/stdafx.h"
 #include "ObsidianTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/StoneTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 ObsidianTile::ObsidianTile(int id) : StoneTile(id) {}
 

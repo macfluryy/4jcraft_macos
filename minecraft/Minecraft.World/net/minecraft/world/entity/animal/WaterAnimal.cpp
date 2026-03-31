@@ -1,10 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
-#include "../../level/tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../level/net.minecraft.world.level.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
+#include <memory>
+
 #include "WaterAnimal.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 WaterAnimal::WaterAnimal(Level* level) : PathfinderMob(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

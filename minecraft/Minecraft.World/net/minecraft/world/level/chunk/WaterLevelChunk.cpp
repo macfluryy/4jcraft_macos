@@ -1,9 +1,10 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "java/Arrays.h"
-#include "../net.minecraft.world.level.h"
-#include "../../phys/net.minecraft.world.phys.h"
 #include "WaterLevelChunk.h"
-#include "../biome/net.minecraft.world.level.biome.h"
+#include "java/Random.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class Entity;
 
 WaterLevelChunk::WaterLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z)
     : LevelChunk(level, blocks, x, z) {

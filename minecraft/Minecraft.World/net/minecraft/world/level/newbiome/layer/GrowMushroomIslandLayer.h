@@ -1,4 +1,7 @@
 #pragma once
+#include <stdint.h>
+#include <memory>
+
 #include "Layer.h"
 
 class GrowMushroomIslandLayer : public Layer {

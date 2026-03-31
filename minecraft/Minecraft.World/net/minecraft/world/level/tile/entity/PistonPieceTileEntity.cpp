@@ -1,11 +1,17 @@
-#include "../../../../../../Header Files/stdafx.h"
-#include "nbt/com.mojang.nbt.h"
+#include <format>
+#include <memory>
+#include <optional>
+#include <string>
+#include <vector>
+
 #include "PistonPieceTileEntity.h"
 #include "PistonMovingTileEntity.h"
-#include "../../net.minecraft.world.level.h"
-#include "../../../../Facing.h"
-#include "../Tile.h"
-#include "../../../phys/AABB.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 PistonPieceEntity::PistonPieceEntity() {
     // for the tile entity loader

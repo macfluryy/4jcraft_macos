@@ -1,11 +1,23 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "net.minecraft.world.inventory.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/enchantment/net.minecraft.world.item.enchantment.h"
+#include <format>
+#include <vector>
+
 #include "EnchantmentMenu.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentContainer.h"
+#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentSlot.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 EnchantmentMenu::EnchantmentMenu(std::shared_ptr<Inventory> inventory,
                                  Level* level, int xt, int yt, int zt) {

@@ -1,7 +1,10 @@
-#include "../../../../Header Files/stdafx.h"
+#include <vector>
 
-#include "../level/tile/net.minecraft.world.level.tile.h"
 #include "ShovelItem.h"
+#include "Minecraft.World/net/minecraft/world/item/DiggerItem.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/GrassTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/MycelTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 std::vector<Tile*>* ShovelItem::diggables = nullptr;
 

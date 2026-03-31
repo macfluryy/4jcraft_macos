@@ -1,9 +1,16 @@
 #pragma once
 
+#include <memory>
+
 #include "Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 
 class Level;
 class Path;
+class AttributeModifier;
+class Goal;
+class Pos;
 
 class PathfinderMob : public Mob {
 public:

@@ -1,6 +1,11 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
+#include <memory>
+#include <vector>
+
 #include "PickaxeItem.h"
+#include "Minecraft.World/net/minecraft/world/item/DiggerItem.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/HalfSlabTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 std::vector<Tile*> PickaxeItem::diggables;
 

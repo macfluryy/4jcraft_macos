@@ -1,18 +1,30 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../levelgen/flat/net.minecraft.world.level.levelgen.flat.h"
-#include "../levelgen/net.minecraft.world.level.levelgen.h"
-#include "../net.minecraft.world.level.h"
-#include "../storage/net.minecraft.world.level.storage.h"
+#include <math.h>
+#include <numbers>
+
 #include "Dimension.h"
-#include "../biome/BiomeSource.h"
-#include "../biome/FixedBiomeSource.h"
-#include "../chunk/storage/OldChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/FixedBiomeSource.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "HellDimension.h"
 #include "NormalDimension.h"
 #include "TheEndDimension.h"
-#include "../tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/CustomLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/FlatLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/RandomLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/flat/FlatGeneratorInfo.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+
+class Pos;
 
 const float Dimension::MOON_BRIGHTNESS_PER_PHASE[8] = {
     1.0f, 0.75f, 0.5f, 0.25f, 0, 0.25f, 0.5f, 0.75f};

@@ -1,6 +1,6 @@
-#include "../../../Header Files/stdafx.h"
 #include "FlippedIcon.h"
-#include "../SharedConstants.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
 
 FlippedIcon::FlippedIcon(Icon* base, bool horizontal, bool vertical)
     : base(base), horizontal(horizontal), vertical(vertical) {}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdint.h>
 // 4J Stu - In Java TickNextTickData implements Comparable<TickNextTickData>
 // We don't need to do that as it is only as helper for the java sdk sorting
 // operations

@@ -1,12 +1,16 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../net.minecraft.world.level.h"
-#include "../material/net.minecraft.world.level.material.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../../phys/net.minecraft.world.phys.h"
-#include "../../damageSource/net.minecraft.world.damagesource.h"
-#include "../../../net.minecraft.h"
-#include "../../net.minecraft.world.h"
+#include <memory>
+#include <optional>
+#include <string>
+
 #include "CactusTile.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 CactusTile::CactusTile(int id) : Tile(id, Material::cactus, false) {
     setTicking(true);

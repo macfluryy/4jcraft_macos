@@ -1,6 +1,6 @@
-#include "../../../../Header Files/stdafx.h"
-#include "Calendar.h"
 #include <time.h>
+
+#include "Calendar.h"
 
 unsigned int Calendar::GetDayOfMonth() {
     time_t t = time(0);

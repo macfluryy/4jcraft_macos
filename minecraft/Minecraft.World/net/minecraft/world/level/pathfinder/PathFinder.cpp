@@ -1,13 +1,18 @@
-#include "../../../../../Header Files/stdafx.h"
-#include "../../entity/net.minecraft.world.entity.h"
-#include "../net.minecraft.world.level.h"
-#include "../material/net.minecraft.world.level.material.h"
-#include "../tile/net.minecraft.world.level.tile.h"
-#include "../../phys/net.minecraft.world.phys.h"
+#include <cmath>
+#include <utility>
+#include <vector>
+
 #include "BinaryHeap.h"
 #include "Node.h"
 #include "Path.h"
 #include "PathFinder.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 PathFinder::PathFinder(LevelSource* level, bool canPassDoors, bool canOpenDoors,
                        bool avoidWater, bool canFloat) {

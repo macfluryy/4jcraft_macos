@@ -1,6 +1,12 @@
-#include "../../../../Header Files/stdafx.h"
-#include "net.minecraft.commands.common.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+
+#include <stdint.h>
+#include <memory>
+#include <string>
+
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
+#include "Minecraft.World/net/minecraft/commands/common/EffectCommand.h"
+
+class CommandSender;
 
 EGameCommand EffectCommand::getId() { return eGameCommand_Effect; }
 

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "TileEntity.h"
-#include "../../BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "java/Class.h"
 
 class Packet;
 class Entity;

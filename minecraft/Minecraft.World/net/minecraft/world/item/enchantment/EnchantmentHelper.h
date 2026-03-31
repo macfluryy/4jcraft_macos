@@ -1,10 +1,16 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <unordered_map>
+
 class ItemInstance;
 class Inventory;
 class DamageSource;
 class Enchantment;
 class EnchantmentInstance;
+class LivingEntity;
+class Random;
 
 class EnchantmentHelper {
 private:

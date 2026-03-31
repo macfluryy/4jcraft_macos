@@ -1,7 +1,8 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/net.minecraft.world.entity.h"
-#include "net.minecraft.world.effect.h"
+#include <memory>
+
 #include "AbsoptionMobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 
 AbsoptionMobEffect::AbsoptionMobEffect(int id, bool isHarmful,
                                        eMinecraftColour color)

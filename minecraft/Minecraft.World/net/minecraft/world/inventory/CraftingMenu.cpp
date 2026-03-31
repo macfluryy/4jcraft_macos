@@ -1,13 +1,18 @@
-#include "../../../../Header Files/stdafx.h"
-#include "../entity/player/net.minecraft.world.entity.player.h"
-#include "../level/net.minecraft.world.level.h"
-#include "../level/tile/net.minecraft.world.level.tile.h"
-#include "../item/net.minecraft.world.item.h"
-#include "../item/crafting/net.minecraft.world.item.crafting.h"
+#include <vector>
+
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
 #include "ResultSlot.h"
 #include "CraftingMenu.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 const int CraftingMenu::RESULT_SLOT = 0;
 const int CraftingMenu::CRAFT_SLOT_START = 1;
