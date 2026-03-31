@@ -1,9 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "EndermanRenderer.h"
-#include "../../model/EndermanModel.h"
-#include "../texture/TextureAtlas.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/net/minecraft/client/model/EndermanModel.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/EnderMan.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation EndermanRenderer::ENDERMAN_EYES_LOCATION =
     ResourceLocation(TN_MOB_ENDERMAN_EYES);

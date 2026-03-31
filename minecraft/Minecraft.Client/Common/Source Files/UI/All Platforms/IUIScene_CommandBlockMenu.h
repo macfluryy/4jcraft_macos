@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+
+class CommandBlockEntity;
 
 class IUIScene_CommandBlockMenu {
 public:

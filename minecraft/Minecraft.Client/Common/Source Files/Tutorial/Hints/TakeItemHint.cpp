@@ -1,8 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "../Tutorial.h"
+#include <memory>
+
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "TakeItemHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 TakeItemHint::TakeItemHint(eTutorial_Hint id, Tutorial* tutorial, int items[],
                            unsigned int itemsLength)

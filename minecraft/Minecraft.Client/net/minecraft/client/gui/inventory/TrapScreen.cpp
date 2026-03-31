@@ -1,10 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+
 #include "TrapScreen.h"
-#include "../../player/LocalPlayer.h"
-#include "../../renderer/Textures.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/inventory/TrapMenu.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_TRAP_LOCATION = ResourceLocation(TN_GUI_TRAP);

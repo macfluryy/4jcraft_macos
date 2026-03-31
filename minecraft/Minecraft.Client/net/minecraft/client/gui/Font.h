@@ -1,9 +1,13 @@
 #pragma once
 
+#include <map>
+#include <string>
+
 class IntBuffer;
 class Options;
 class Textures;
 class ResourceLocation;
+class Random;
 
 class Font {
 private:

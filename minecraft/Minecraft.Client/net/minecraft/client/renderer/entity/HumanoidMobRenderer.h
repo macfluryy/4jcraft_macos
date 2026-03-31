@@ -1,9 +1,16 @@
 #pragma once
+#include <map>
+#include <memory>
+#include <string>
+
 #include "MobRenderer.h"
 
 class HumanoidModel;
 class Giant;
 class ArmorItem;
+class Entity;
+class ItemInstance;
+class ResourceLocation;
 
 class HumanoidMobRenderer : public MobRenderer {
 private:

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <format>
+#include <string>
+
 class TextureHolder;
 
 class StitchSlot {

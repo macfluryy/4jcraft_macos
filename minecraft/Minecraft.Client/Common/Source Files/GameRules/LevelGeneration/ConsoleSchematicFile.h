@@ -4,7 +4,17 @@
 #define XBOX_SCHEMATIC_ORIGINAL_VERSION 1
 #define XBOX_SCHEMATIC_CURRENT_VERSION 2
 
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <ranges>
+#include <utility>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 class Level;
 class DataOutputStream;
@@ -13,6 +23,7 @@ class TileEntity;
 class LevelChunk;
 class AABB;
 class Vec3;
+class CompoundTag;
 
 class ConsoleSchematicFile {
 public:

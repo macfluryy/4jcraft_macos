@@ -1,6 +1,6 @@
 #pragma once
-#include "../geom/Model.h"
-#include "../geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 class DragonModel : public Model {
 public:

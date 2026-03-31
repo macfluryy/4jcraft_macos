@@ -1,9 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "Minecraft.World/net/minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "../../../../net/minecraft/client/player/LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "IUIScene_CraftingMenu.h"
 
 Recipy::_eGroupType IUIScene_CraftingMenu::m_GroupTypeMapping4GridA

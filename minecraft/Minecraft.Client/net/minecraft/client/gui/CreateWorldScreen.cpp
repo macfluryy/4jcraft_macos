@@ -1,18 +1,30 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <stddef.h>
+#include <stdint.h>
+#include <string>
+#include <vector>
+
 #include "CreateWorldScreen.h"
 #include "EditBox.h"
 #include "Button.h"
-#include "../../server/level/SurvivalMode.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "java/Random.h"
-#include "../../server/MinecraftServer.h"
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "MessageScreen.h"
-#include <string>
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 CreateWorldScreen::CreateWorldScreen(Screen* lastScreen) {
     done = false;  // 4J added

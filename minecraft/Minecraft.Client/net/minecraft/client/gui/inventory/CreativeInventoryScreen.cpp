@@ -1,18 +1,26 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <algorithm>
+#include <string>
+
 #include "CreativeInventoryScreen.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
 #include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "../../Minecraft.h"
-#include "../../renderer/Textures.h"
-#include "../../renderer/entity/ItemRenderer.h"
-#include "../../Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
 #include "Minecraft.World/net/minecraft/world/inventory/InventoryMenu.h"
-#include <algorithm>
-#include <cmath>
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 // Static member initialization
 int CreativeInventoryScreen::selectedTabIndex =

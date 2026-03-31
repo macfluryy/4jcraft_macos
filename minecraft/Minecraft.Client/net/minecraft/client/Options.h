@@ -1,8 +1,11 @@
 #pragma once
 
+#include <string>
+
+#include "java/File.h"
+
 class Minecraft;
 class KeyMapping;
-#include "java/File.h"
 
 class Options {
 public:

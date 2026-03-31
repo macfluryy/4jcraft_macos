@@ -1,5 +1,14 @@
 #pragma once
-#include "All Platforms/UIEnums.h"
+#include <stdint.h>
+#include <ranges>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
 // using namespace std;
 class UIScene;
 class UIGroup;

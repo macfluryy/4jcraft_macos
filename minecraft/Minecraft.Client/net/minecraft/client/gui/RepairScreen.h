@@ -1,11 +1,17 @@
 #pragma once
 
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "inventory/AbstractContainerScreen.h"
+#include <memory>
+
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/AnvilMenu.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
 
 class EditBox;
+class AnvilMenu;
+class Inventory;
+class Level;
 
 class RepairScreen : public AbstractContainerScreen, public ContainerListener {
 public:

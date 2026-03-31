@@ -1,5 +1,9 @@
 #pragma once
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+
+class AABB;
 
 class FrustumData {
 public:

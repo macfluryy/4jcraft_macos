@@ -1,11 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "OptionsScreen.h"
 #include "SmallButton.h"
 #include "SlideButton.h"
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "ControlsScreen.h"
 #include "VideoSettingsScreen.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 OptionsScreen::OptionsScreen(Screen* lastScreen, Options* options) {
     title = L"Options";  // 4J added

@@ -1,23 +1,40 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../../Common/Source Files/DLC/DLCGameRulesFile.h"
-#include "../../../../Common/Source Files/DLC/DLCGameRulesHeader.h"
-#include "../../../../Common/Source Files/DLC/DLCGameRules.h"
-#include "DLCTexturePack.h"
-#include "../../../../Common/Source Files/DLC/DLCColourTableFile.h"
-#include "../../../../Common/Source Files/DLC/DLCUIDataFile.h"
-#include "../../../../Common/Source Files/DLC/DLCTextureFile.h"
-#include "../../../../Common/Source Files/DLC/DLCLocalisationFile.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/Header Files/PortableFileIO.h"
-#include "../../../../Common/Source Files/Localisation/StringTable.h"
-#include "../../../../Common/Source Files/DLC/DLCAudioFile.h"
-
 #include <cstdint>
 #include <limits>
+#include <cwchar>
+#include <vector>
+
+#include "Minecraft.Client/Common/Source Files/DLC/DLCGameRulesHeader.h"
+#include "DLCTexturePack.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCColourTableFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCUIDataFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCTextureFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCLocalisationFile.h"
+#include "Minecraft.World/Header Files/PortableFileIO.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCAudioFile.h"
+#include "4J_Profile.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/File.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/skins/AbstractTexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
 
 #if defined(_WINDOWS64)
-#include "../../../../Windows64/XML/ATGXmlParser.h"
-#include "../../../../Windows64/XML/xmlFilesCallback.h"
+#include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
+#include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"
 #endif
 
 namespace {

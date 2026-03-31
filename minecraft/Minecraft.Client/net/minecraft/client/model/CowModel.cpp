@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "CowModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/QuadrupedModel.h"
 
 CowModel::CowModel() : QuadrupedModel(12, 0) {
     head = new ModelPart(this, 0, 0);

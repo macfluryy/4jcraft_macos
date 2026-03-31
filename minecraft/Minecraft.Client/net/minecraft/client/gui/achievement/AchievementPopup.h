@@ -1,7 +1,12 @@
 #pragma once
-#include "../GuiComponent.h"
+#include <stdint.h>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/gui/GuiComponent.h"
+
 class Achievement;
 class ItemRenderer;
+class Minecraft;
 
 class AchievementPopup : public GuiComponent {
 private:

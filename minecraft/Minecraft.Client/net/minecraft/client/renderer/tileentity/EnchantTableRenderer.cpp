@@ -1,8 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../model/BookModel.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include <GL/gl.h>
+#include <cmath>
+#include <memory>
+#include <numbers>
+
+#include "Minecraft.Client/net/minecraft/client/model/BookModel.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "EnchantTableRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation EnchantTableRenderer::BOOK_LOCATION =
     ResourceLocation(TN_ITEM_BOOK);

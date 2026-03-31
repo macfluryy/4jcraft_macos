@@ -1,9 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "PlayerCloudParticle.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
 
 PlayerCloudParticle::PlayerCloudParticle(Level* level, double x, double y,
                                          double z, double xa, double ya,

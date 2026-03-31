@@ -2,8 +2,10 @@
 // using namespace std;
 
 #include "TutorialHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
 
 class ItemInstance;
+class Tutorial;
 
 class TakeItemHint : public TutorialHint {
 private:

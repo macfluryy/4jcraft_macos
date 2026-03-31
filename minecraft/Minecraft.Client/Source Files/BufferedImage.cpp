@@ -1,12 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
-#include "../Header Files/BufferedImage.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+
 #include <filesystem>
 #include <vector>
 #include <string>
+#include <cstdint>
+#include <format>
 
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];

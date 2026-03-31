@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 class Timer {
 private:
     static const int MAX_TICKS_PER_UPDATE = 10;

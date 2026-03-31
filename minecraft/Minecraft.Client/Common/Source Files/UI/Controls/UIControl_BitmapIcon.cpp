@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_BitmapIcon.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_BitmapIcon.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 bool UIControl_BitmapIcon::setupControl(UIScene* scene, IggyValuePath* parent,
                                         const std::string& controlName) {

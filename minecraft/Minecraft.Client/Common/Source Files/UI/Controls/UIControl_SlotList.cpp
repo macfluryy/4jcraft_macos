@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 UIControl_SlotList::UIControl_SlotList() { m_lastHighlighted = -1; }
 

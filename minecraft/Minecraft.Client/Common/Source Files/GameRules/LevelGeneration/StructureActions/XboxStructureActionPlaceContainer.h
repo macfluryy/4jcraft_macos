@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "XboxStructureActionPlaceBlock.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class AddItemRuleDefinition;
 class StructurePiece;

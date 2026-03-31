@@ -1,19 +1,28 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "../../Minecraft.h"
-#include "../LevelRenderer.h"
-#include "../entity/EntityRenderDispatcher.h"
+#include <wchar.h>
+#include <format>
+#include <utility>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "Stitcher.h"
 #include "StitchSlot.h"
 #include "StitchedTexture.h"
 #include "Texture.h"
 #include "TextureHolder.h"
 #include "TextureManager.h"
-#include "../../skins/TexturePack.h"
-#include "../../skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "TextureMap.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "java/InputOutputStream/BufferedReader.h"
+#include "java/InputOutputStream/InputStream.h"
+#include "java/InputOutputStream/InputStreamReader.h"
 
 const std::wstring TextureMap::NAME_MISSING_TEXTURE = L"missingno";
 

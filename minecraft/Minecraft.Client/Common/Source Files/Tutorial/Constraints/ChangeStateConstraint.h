@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../TutorialEnum.h"
-#include "TutorialConstraint.h"
-
 #include <cstddef>
+
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "TutorialConstraint.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 class AABB;
 class Tutorial;

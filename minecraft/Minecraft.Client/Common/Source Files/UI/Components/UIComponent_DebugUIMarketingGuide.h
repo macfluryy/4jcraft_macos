@@ -1,7 +1,13 @@
 #pragma once
 
-#include "../UIScene.h"
-#include "../Controls/UIControl_Label.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+
+class UILayer;
 
 class UIComponent_DebugUIMarketingGuide : public UIScene {
 private:

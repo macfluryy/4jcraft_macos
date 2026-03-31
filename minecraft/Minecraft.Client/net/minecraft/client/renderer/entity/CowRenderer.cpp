@@ -1,5 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "CowRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation CowRenderer::COW_LOCATION = ResourceLocation(TN_MOB_COW);
 

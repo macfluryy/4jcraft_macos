@@ -1,5 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "AllowAllCuller.h"
+
+class AABB;
 
 bool AllowAllCuller::isVisible(AABB* bb) { return true; }
 

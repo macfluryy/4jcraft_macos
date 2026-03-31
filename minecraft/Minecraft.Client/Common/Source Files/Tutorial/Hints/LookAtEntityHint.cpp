@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "LookAtEntityHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHint.h"
 
 LookAtEntityHint::LookAtEntityHint(eTutorial_Hint id, Tutorial* tutorial,
                                    int descriptionId, int titleId,

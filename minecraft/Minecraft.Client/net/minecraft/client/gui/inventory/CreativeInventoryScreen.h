@@ -1,13 +1,18 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
-#include "../../../../../Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 class Player;
 class SimpleContainer;
 class Inventory;
 class Slot;
+class ItemInstance;
+class ItemRenderer;
 
 class CreativeInventoryScreen : public AbstractContainerScreen {
 private:

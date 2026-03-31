@@ -2,6 +2,7 @@
 #include "MobRenderer.h"
 
 class Silverfish;
+class ResourceLocation;
 
 class SilverfishRenderer : public MobRenderer {
 private:

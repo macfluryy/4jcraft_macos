@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
+
 #include "IUIScene_HorseInventoryMenu.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_HorseInventoryMenu::GetSectionAndSlotInDirection(

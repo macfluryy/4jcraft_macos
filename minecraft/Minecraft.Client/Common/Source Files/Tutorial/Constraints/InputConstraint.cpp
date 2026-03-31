@@ -1,5 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "InputConstraint.h"
+#include "4J_Input.h"
+#include "Minecraft.Client/Common/App_enums.h"
 
 bool InputConstraint::isMappingConstrained(int iPad, int mapping) {
     // If it's a menu button, then we ignore all inputs

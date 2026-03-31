@@ -1,6 +1,8 @@
 #pragma once
 #include "EntityRenderer.h"
 
+class ResourceLocation;
+
 class FishingHookRenderer : public EntityRenderer {
 private:
     static ResourceLocation PARTICLE_LOCATION;

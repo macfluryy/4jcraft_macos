@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TutorialConstraint.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 class AABB;
 

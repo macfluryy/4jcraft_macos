@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class ClientConstants {
     // This file holds global constants used by the client.
     // The file should be replaced at compile-time with the

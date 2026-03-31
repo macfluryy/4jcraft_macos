@@ -1,8 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <math.h>
+#include <memory>
+
 #include "BoatRenderer.h"
-#include "../../model/BoatModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.Client/net/minecraft/client/model/BoatModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Boat.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation BoatRenderer::BOAT_LOCATION = ResourceLocation(TN_ITEM_BOAT);
 

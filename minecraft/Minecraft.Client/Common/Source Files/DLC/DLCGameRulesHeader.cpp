@@ -1,13 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-
 #include <string>
-
-#include "java/File.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 
 #include "DLCManager.h"
 #include "DLCGameRulesHeader.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCGameRulesHeader.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCGameRules.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+
+class StringTable;
 
 DLCGameRulesHeader::DLCGameRulesHeader(const std::wstring& path)
     : DLCGameRules(DLCManager::e_DLCType_GameRulesHeader, path) {

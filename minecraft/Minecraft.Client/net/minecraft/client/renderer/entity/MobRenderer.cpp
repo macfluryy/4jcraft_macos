@@ -1,13 +1,22 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <numbers>
+
 #include "MobRenderer.h"
 #include "LivingEntityRenderer.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "EntityRenderDispatcher.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+
+class Model;
 
 MobRenderer::MobRenderer(Model* model, float shadow)
     : LivingEntityRenderer(model, shadow) {}

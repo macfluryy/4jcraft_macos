@@ -1,6 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
 #include "UIScene_DebugOptions.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/Debug/UIScene_DebugOptions.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+
+class UILayer;
 
 const wchar_t*
     UIScene_DebugOptionsMenu::m_DebugCheckboxTextA[eDebugSetting_Max + 1] = {

@@ -1,5 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "FrustumData.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 // float** m_Frustum;
 

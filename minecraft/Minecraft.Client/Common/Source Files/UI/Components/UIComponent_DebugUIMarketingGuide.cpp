@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIComponent_DebugUIMarketingGuide.h"
+#include "Minecraft.Client/Common/Source Files/UI/Components/UIComponent_DebugUIMarketingGuide.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 UIComponent_DebugUIMarketingGuide::UIComponent_DebugUIMarketingGuide(
     int iPad, void* initData, UILayer* parentLayer)

@@ -1,5 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "UIGroup.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+
+class UIScene;
 
 UIGroup::UIGroup(EUIGroup group, int iPad) {
     m_group = group;

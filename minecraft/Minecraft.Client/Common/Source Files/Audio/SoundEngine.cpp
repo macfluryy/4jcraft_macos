@@ -1,19 +1,33 @@
-﻿#include "Minecraft.World/Header Files/stdafx.h"
+﻿#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
+#include <unistd.h>
+#include <cmath>
+#include <cstdlib>
+#include <initializer_list>
+#include <memory>
+#include <vector>
+
 #include "SoundEngine.h"
 #include <filesystem>
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
-#include "../../Consoles_App.h"
-#include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "../../../net/minecraft/client/skins/TexturePackRepository.h"
-#include "../../../net/minecraft/client/skins/DLCTexturePack.h"
-#include "../DLC/DLCAudioFile.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "java/Random.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 #if defined(__linux__)
 #define STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
+
 // Fixes strcasecmp in miniaudio
 // https://stackoverflow.com/questions/31127260/strcasecmp-a-non-standard-function
 int strcasecmp(const char* a, const char* b) {
@@ -30,11 +44,12 @@ int strcasecmp(const char* a, const char* b) {
 }
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
+
 #undef STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
 #endif
 #if defined(_WINDOWS64)
-#include "../../../Windows64/Windows64_App.h"
+#include "Minecraft.Client/Windows64/Windows64_App.h"
 #include "Minecraft.Client/Platform/Windows64/Miles/include/imssapi.h"
 #endif
 
@@ -80,8 +95,8 @@ const char* SoundEngine::m_szStreamFileA[eStream_Max] = {"calm1",
                                                          "ward",
                                                          "where_are_we_now"};
 #if defined(__linux__)
-char SoundEngine::m_szSoundPath[] = {"Common/Sound/"};
-char SoundEngine::m_szMusicPath[] = {"Common/"};
+char SoundEngine::m_szSoundPath[] = {"Minecraft.Client/Common/Sound/"};
+char SoundEngine::m_szMusicPath[] = {"Minecraft.Client/Common/"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
 #endif
 
@@ -161,8 +176,8 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
         if (szId[i] == '.') szId[i] = '/';
 
     std::string base = PathHelper::GetExecutableDirA() + "/";
-    const char* roots[] = {"Sound/Minecraft/", "Common/Sound/Minecraft/",
-                           "Common/res/TitleUpdate/res/Sound/Minecraft/"};
+    const char* roots[] = {"Sound/Minecraft/", "Minecraft.Client/Common/Sound/Minecraft/",
+                           "Minecraft.Client/Common/res/TitleUpdate/res/Sound/Minecraft/"};
     char finalPath[512] = {0};
     bool found = false;
 
@@ -230,8 +245,8 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
     const char* roots[] = {
         "Sound/Minecraft/UI/",
         "Sound/Minecraft/",
-        "Common/Sound/Minecraft/UI/",
-        "Common/Sound/Minecraft/",
+        "Minecraft.Client/Common/Sound/Minecraft/UI/",
+        "Minecraft.Client/Common/Sound/Minecraft/",
     };
     char finalPath[512] = {0};
     bool found = false;
@@ -434,7 +449,7 @@ void SoundEngine::playMusicTick() {
                 bool found = false;
                 m_szStreamName[0] = '\0';
 
-                const char* roots[] = {"Common/music/", "music/", "./"};
+                const char* roots[] = {"Minecraft.Client/Common/music/", "music/", "./"};
 
                 for (const char* r : roots) {
                     for (const char* e : {".ogg", ".mp3", ".wav"}) {

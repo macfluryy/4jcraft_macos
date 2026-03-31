@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "../UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIScene_QuadrantSignin : public UIScene {
 private:

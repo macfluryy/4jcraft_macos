@@ -1,8 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "java/JavaMath.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 UIControl::UIControl() {
     m_parentScene = nullptr;

@@ -2,6 +2,7 @@
 #include "MobRenderer.h"
 
 class SnowManModel;
+class ResourceLocation;
 
 class SnowManRenderer : public MobRenderer {
 private:

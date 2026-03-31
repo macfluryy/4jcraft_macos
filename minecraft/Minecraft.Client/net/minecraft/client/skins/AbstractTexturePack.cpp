@@ -1,10 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../renderer/Textures.h"
-#include "AbstractTexturePack.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include <GL/gl.h>
+#include <wchar.h>
+#include <vector>
 
-#include <limits>
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "AbstractTexturePack.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/File.h"
+#include "java/InputOutputStream/BufferedReader.h"
+#include "java/InputOutputStream/FileInputStream.h"
+#include "java/InputOutputStream/InputStream.h"
+#include "java/InputOutputStream/InputStreamReader.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
 
 AbstractTexturePack::AbstractTexturePack(std::uint32_t id, File* file,
                                          const std::wstring& name,

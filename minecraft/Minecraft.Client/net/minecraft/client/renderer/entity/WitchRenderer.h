@@ -2,6 +2,7 @@
 #include "MobRenderer.h"
 
 class WitchModel;
+class ResourceLocation;
 
 class WitchRenderer : public MobRenderer {
 private:

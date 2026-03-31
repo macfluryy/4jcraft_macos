@@ -2,9 +2,12 @@
 
 #include <span>
 #include <vector>
+
 #include "Vertex.h"
-#include "../renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
+
+class Tesselator;
 
 class _Polygon {
 public:

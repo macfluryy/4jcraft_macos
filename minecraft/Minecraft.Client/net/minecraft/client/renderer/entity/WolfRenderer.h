@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class WolfRenderer : public MobRenderer {
 private:
     static ResourceLocation* WOLF_LOCATION;

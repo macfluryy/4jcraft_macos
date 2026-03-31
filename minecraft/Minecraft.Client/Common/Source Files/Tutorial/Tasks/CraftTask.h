@@ -1,5 +1,10 @@
 #pragma once
+#include <format>
+
 #include "TutorialTask.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 class CraftTask : public TutorialTask {
 public:

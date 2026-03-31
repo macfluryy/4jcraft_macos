@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 class ChestTileEntity;
 class EnderChestTileEntity;
 class Tile;

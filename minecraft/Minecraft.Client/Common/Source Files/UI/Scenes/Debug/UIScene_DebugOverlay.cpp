@@ -1,20 +1,36 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 
+#include <wchar.h>
+#include <memory>
+
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/Debug/UIScene_DebugOverlay.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/net/minecraft/commands/common/EnchantItemCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/GiveItemCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/TimeCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/ToggleDownfallCommand.h"
+#include "Minecraft.World/net/minecraft/network/packet/GameCommandPacket.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+
+class Player;
+class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "../../UI.h"
 #include "UIScene_DebugOverlay.h"
-#include "../../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../../net/minecraft/server/MinecraftServer.h"
-#include "../../../../../net/minecraft/client/renderer/GameRenderer.h"
-#include "../../../../../net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "../../../../../net/minecraft/client/multiplayer/ClientConnection.h"
-#include "../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/GameRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "Minecraft.World/net/minecraft/commands/common/net.minecraft.commands.common.h"
-#include "Minecraft.World/net/minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
 
 UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
                                            UILayer* parentLayer)

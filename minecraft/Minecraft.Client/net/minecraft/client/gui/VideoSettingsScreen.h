@@ -1,5 +1,8 @@
 #pragma once
+#include <string>
+
 #include "Screen.h"
+
 class Options;
 
 class VideoSettingsScreen : public Screen {

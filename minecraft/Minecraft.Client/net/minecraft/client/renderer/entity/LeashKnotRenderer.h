@@ -2,6 +2,7 @@
 #include "EntityRenderer.h"
 
 class LeashKnotModel;
+class ResourceLocation;
 
 class LeashKnotRenderer : public EntityRenderer {
 private:

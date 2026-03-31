@@ -1,6 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "LeashKnotRenderer.h"
-#include "../../model/LeashKnotModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/LeashKnotModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation LeashKnotRenderer::KNOT_LOCATION =
     ResourceLocation(TN_ITEM_LEASHKNOT);

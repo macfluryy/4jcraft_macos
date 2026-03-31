@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "EntityRenderer.h"
 
 class DefaultRenderer : public EntityRenderer {

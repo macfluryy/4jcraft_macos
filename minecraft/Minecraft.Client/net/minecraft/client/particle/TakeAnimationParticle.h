@@ -1,6 +1,11 @@
 #pragma once
+#include <memory>
+
 #include "Particle.h"
+#include "java/Class.h"
+
 class Entity;
+class Level;
 
 class TakeAnimationParticle : public Particle {
 public:

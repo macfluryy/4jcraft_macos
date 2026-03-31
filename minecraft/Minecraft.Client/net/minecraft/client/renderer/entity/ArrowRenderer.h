@@ -1,6 +1,8 @@
 #pragma once
 #include "EntityRenderer.h"
 
+class ResourceLocation;
+
 class ArrowRenderer : public EntityRenderer {
 private:
     static ResourceLocation ARROW_LOCATION;

@@ -1,11 +1,19 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "java/Random.h"
-#include "../../../../../Header Files/SkinBox.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
+
 class Mob;
 class ModelPart;
 class TexOffs;
 class LivingEntity;
+class Entity;
 
 class Model {
 public:

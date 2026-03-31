@@ -1,12 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <unordered_map>
+
 #include "DLCManager.h"
 #include "DLCAudioFile.h"
+#include "4J.Render/4J_Render.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 #if defined(_WINDOWS64)
-#include "../../../Windows64/XML/ATGXmlParser.h"
-#include "../../../Windows64/XML/xmlFilesCallback.h"
+#include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
+#include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"
 #endif
 
 namespace {

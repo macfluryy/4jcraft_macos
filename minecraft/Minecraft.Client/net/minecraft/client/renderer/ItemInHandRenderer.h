@@ -1,11 +1,15 @@
 #pragma once
 
+#include <memory>
+
 class Minecraft;
 class ItemInstance;
 class Minimap;
 class LivingEntity;
 class TileRenderer;
 class Tesselator;
+class Icon;
+class ResourceLocation;
 
 class ItemInHandRenderer {
 public:

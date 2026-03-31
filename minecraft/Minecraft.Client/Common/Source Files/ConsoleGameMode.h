@@ -1,5 +1,8 @@
 #pragma once
-#include "Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+
+class ClientConnection;
+class Minecraft;
 
 class ConsoleGameMode : public TutorialMode {
 public:

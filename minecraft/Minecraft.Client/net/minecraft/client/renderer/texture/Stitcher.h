@@ -1,8 +1,14 @@
 #pragma once
 
+#include <format>
+#include <set>
+#include <string>
+#include <vector>
+
+#include "TextureHolder.h"
+
 class StitchSlot;
 class Texture;
-#include "TextureHolder.h"
 
 class Stitcher {
 public:

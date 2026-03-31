@@ -1,6 +1,8 @@
 #pragma once
 #include "Culler.h"
 
+class AABB;
+
 class AllowAllCuller {
 public:
     virtual bool isVisible(AABB* bb);

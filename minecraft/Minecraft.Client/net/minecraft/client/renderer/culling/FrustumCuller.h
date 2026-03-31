@@ -1,7 +1,9 @@
 #pragma once
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "Culler.h"
 #include "Frustum.h"
+
+class FrustumData;
 
 class FrustumCuller : public Culler {
 public:

@@ -1,8 +1,15 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "MobRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/LivingEntityRenderer.h"
 
 class HumanoidModel;
+class LivingEntity;
+class ResourceLocation;
 
 class PlayerRenderer : public LivingEntityRenderer {
 public:

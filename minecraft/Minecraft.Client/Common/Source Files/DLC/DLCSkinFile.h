@@ -1,6 +1,13 @@
 #pragma once
+#include <cstdint>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "DLCFile.h"
-#include "../../../net/minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class DLCSkinFile : public DLCFile {
 private:

@@ -1,11 +1,17 @@
 #pragma once
+#include <format>
+#include <memory>
+#include <vector>
+
 // using namespace std;
-#include "../TutorialEnum.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
 
 class Level;
 class Tutorial;
 class TutorialConstraint;
 class MobEffect;
+class Entity;
+class ItemInstance;
 
 // A class that represents each individual task in the tutorial.
 //

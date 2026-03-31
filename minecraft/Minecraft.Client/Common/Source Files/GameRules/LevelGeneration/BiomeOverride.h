@@ -1,7 +1,11 @@
 #pragma once
 // using namespace std;
 
-#include "../LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include <cstdint>
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class BiomeOverride : public GameRuleDefinition {
 private:

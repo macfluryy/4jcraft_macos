@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+
 #include "LevelGenerationOptions.h"
 #include "LevelGenerators.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerators.h"
 
 LevelGenerators::LevelGenerators() {}
 

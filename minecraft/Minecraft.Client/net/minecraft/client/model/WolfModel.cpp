@@ -1,8 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+
 #include "WolfModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/Wolf.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 WolfModel::WolfModel() {
     float g = 0;

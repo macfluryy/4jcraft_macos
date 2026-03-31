@@ -1,10 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "DripParticle.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LiquidTile.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
 
 DripParticle::DripParticle(Level* level, double x, double y, double z,
                            Material* material)

@@ -1,10 +1,15 @@
 #pragma once
 
+#include <deque>
+#include <memory>
+#include <string>
+
 class Particle;
 class Level;
 class Textures;
 class Entity;
 class Random;
+class ResourceLocation;
 
 class ParticleEngine {
 private:

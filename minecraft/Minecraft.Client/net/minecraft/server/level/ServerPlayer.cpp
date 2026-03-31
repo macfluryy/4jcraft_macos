@@ -1,13 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "ServerPlayer.h"
 #include "ServerPlayerGameMode.h"
 #include "ServerLevel.h"
-#include "../MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "EntityTracker.h"
-#include "../network/PlayerConnection.h"
-#include "../Settings.h"
-#include "../PlayerList.h"
-#include "../../client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
+#include "Minecraft.Client/net/minecraft/server/Settings.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
@@ -31,7 +31,7 @@
 #include "java/Random.h"
 
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
-#include "../../client/renderer/LevelRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
 
 ServerPlayer::ServerPlayer(MinecraftServer* server, Level* level,
                            const std::wstring& name,

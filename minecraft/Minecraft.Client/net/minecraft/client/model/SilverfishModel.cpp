@@ -1,8 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <math.h>
+#include <stdlib.h>
+#include <memory>
+#include <numbers>
+
 #include "SilverfishModel.h"
-#include "geom/Cube.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 const int SilverfishModel::BODY_SIZES[BODY_COUNT][3] = {
     {3, 2, 2}, {4, 3, 2}, {6, 4, 3}, {3, 3, 3}, {2, 2, 3}, {2, 1, 2}, {1, 1, 2},

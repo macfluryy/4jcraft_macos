@@ -1,9 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_DeathMenu.h"
-#include "../../All Platforms/IUIScene_PauseMenu.h"
-#include "../../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_PauseMenu.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 UIScene_DeathMenu::UIScene_DeathMenu(int iPad, void* initData,
                                      UILayer* parentLayer)

@@ -1,12 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include <algorithm>
 #include "DLCManager.h"
 #include "DLCPack.h"
 #include "DLCFile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/Header Files/PortableFileIO.h"
-#include "../../../net/minecraft/client/Minecraft.h"
-#include "../../../net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include <cstring>
 #include <limits>
 #include <cstddef>

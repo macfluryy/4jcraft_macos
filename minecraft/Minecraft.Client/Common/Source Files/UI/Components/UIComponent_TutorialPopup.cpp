@@ -1,10 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIComponent_TutorialPopup.h"
-#include "../../Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,

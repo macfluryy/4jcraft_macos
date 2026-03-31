@@ -1,6 +1,11 @@
 #pragma once
 
+#include <float.h>
+#include <cstdint>
+#include <format>
+
 class ChunkRebuildData;
+class IntBuffer;
 
 class Tesselator {
     // private static bool TRIANGLE_MODE = false;

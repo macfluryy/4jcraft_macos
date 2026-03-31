@@ -1,6 +1,17 @@
 #pragma once
 #ifdef _DEBUG_MENUS_ENABLED
-#include "../../UIScene.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 class UIScene_DebugSetCamera : public UIScene {
 private:

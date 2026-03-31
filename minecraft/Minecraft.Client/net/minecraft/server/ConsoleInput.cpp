@@ -1,5 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ConsoleInput.h"
+
+class ConsoleInputSource;
 
 ConsoleInput::ConsoleInput(const std::wstring& msg,
                            ConsoleInputSource* source) {

@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "java/FloatBuffer.h"
 #include "java/IntBuffer.h"
 
@@ -6,6 +8,9 @@ class TilePos;
 class Vec3;
 class Player;
 class Mob;
+class FloatBuffer;
+class Level;
+class LivingEntity;
 
 class Camera {
 public:

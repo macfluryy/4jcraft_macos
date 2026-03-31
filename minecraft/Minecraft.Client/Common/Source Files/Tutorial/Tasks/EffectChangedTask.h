@@ -4,6 +4,7 @@
 #include "TutorialTask.h"
 
 class MobEffect;
+class Tutorial;
 
 class EffectChangedTask : public TutorialTask {
 private:

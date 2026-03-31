@@ -4,6 +4,7 @@
 #include "TutorialTask.h"
 
 class Level;
+class Tutorial;
 
 class CompleteUsingItemTask : public TutorialTask {
 private:

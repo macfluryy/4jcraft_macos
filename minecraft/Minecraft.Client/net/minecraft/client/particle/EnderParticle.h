@@ -1,5 +1,8 @@
 #pragma once
 #include "Particle.h"
+#include "java/Class.h"
+
+class Level;
 
 // 4J Stu - This class was originally "PortalParticle" but I have split the two
 // uses of the particle End creatures/items (e.g. EnderMan, EyeOfEnder, etc) use

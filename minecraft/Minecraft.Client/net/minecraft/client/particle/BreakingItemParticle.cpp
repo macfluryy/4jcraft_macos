@@ -1,9 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "BreakingItemParticle.h"
-#include "../renderer/Tesselator.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
+
+class Level;
+class Textures;
 
 void BreakingItemParticle::_init(Item* item, Textures* textures, int data) {
     this->setTex(textures, item->getIcon(data));

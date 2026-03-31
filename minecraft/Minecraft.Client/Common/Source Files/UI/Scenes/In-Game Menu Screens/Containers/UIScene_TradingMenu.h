@@ -1,6 +1,9 @@
 #pragma once
 
-#include "../../../All Platforms/IUIScene_TradingMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_TradingMenu.h"
 
 class InventoryMenu;
 

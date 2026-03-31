@@ -3,6 +3,7 @@
 
 class PistonPieceEntity;
 class TileRenderer;
+class ResourceLocation;
 
 class PistonPieceRenderer : public TileEntityRenderer {
 private:

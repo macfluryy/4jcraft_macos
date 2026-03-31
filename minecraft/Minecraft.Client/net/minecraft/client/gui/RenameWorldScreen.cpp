@@ -1,10 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "RenameWorldScreen.h"
 #include "EditBox.h"
 #include "Button.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelStorageSource.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 RenameWorldScreen::RenameWorldScreen(Screen* lastScreen,
                                      const std::wstring& levelId) {

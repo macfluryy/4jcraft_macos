@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class SquidRenderer : public MobRenderer {
 private:
     static ResourceLocation SQUID_LOCATION;

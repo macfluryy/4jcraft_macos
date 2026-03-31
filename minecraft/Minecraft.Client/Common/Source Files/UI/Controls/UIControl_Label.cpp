@@ -1,7 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_Label.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 UIControl_Label::UIControl_Label() {}
 

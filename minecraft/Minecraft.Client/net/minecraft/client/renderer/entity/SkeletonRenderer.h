@@ -1,6 +1,8 @@
 #pragma once
 #include "HumanoidMobRenderer.h"
 
+class ResourceLocation;
+
 class SkeletonRenderer : public HumanoidMobRenderer {
 private:
     static ResourceLocation SKELETON_LOCATION;

@@ -1,9 +1,15 @@
 #pragma once
-#include "../Screen.h"
+#include <format>
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+
 class ItemRenderer;
 class AbstractContainerMenu;
 class Slot;
 class Container;
+class ItemInstance;
 
 class AbstractContainerScreen : public Screen {
 protected:

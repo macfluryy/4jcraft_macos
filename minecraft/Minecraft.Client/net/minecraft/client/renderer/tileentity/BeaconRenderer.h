@@ -2,6 +2,7 @@
 #include "TileEntityRenderer.h"
 
 class BeaconTileEntity;
+class ResourceLocation;
 
 class BeaconRenderer : public TileEntityRenderer {
 private:

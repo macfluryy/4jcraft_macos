@@ -1,6 +1,8 @@
 #pragma once
 #include "MobRenderer.h"
 
+class ResourceLocation;
+
 class SpiderRenderer : public MobRenderer {
 private:
     static ResourceLocation SPIDER_LOCATION;

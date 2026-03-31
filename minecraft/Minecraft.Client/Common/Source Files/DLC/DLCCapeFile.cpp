@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "DLCManager.h"
 #include "DLCCapeFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 DLCCapeFile::DLCCapeFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_Cape, path) {}

@@ -1,5 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <sstream>
+
 #include "DLCFile.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
 
 DLCFile::DLCFile(DLCManager::EDLCType type, const std::wstring& path) {
     m_type = type;

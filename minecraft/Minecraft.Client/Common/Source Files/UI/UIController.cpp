@@ -4,14 +4,14 @@
 #include "UI.h"
 #include "UIScene.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../../../net/minecraft/client/player/LocalPlayer.h"
-#include "../../../net/minecraft/client/skins/DLCTexturePack.h"
-#include "../../../net/minecraft/client/skins/TexturePackRepository.h"
-#include "../../../net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "../../../net/minecraft/client/renderer/entity/EnderDragonRenderer.h"
-#include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../net/minecraft/client/title/TitleScreen.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EnderDragonRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/title/TitleScreen.h"
 #include "UIFontData.h"
 
 // 4J Stu - Enable this to override the Iggy Allocator
@@ -20,7 +20,7 @@
 
 // #define ENABLE_IGGY_EXPLORER
 #if defined(ENABLE_IGGY_EXPLORER)
-#include "../../../Windows64/Iggy/include/iggyexpruntime.h"
+#include "Minecraft.Client/Windows64/Iggy/include/iggyexpruntime.h"
 #endif
 
 // #define ENABLE_IGGY_PERFMON
@@ -30,7 +30,7 @@
 #define PM_ORIGIN_Y 34
 
 #if defined(__WINDOWS64)
-#include "../../../Windows64/Iggy/include/iggyperfmon.h"
+#include "Minecraft.Client/Windows64/Iggy/include/iggyperfmon.h"
 #endif
 
 #endif
@@ -314,15 +314,15 @@ UITTFFont* UIController::createFont(EFont fontLanguage) {
     switch (fontLanguage) {
         case eFont_Japanese:
             return new UITTFFont("Mojangles_TTF_jaJP",
-                                 "Common/Media/font/JPN/DFGMaruGothic-Md.ttf",
+                                 "Minecraft.Client/Common/Media/font/JPN/DFGMaruGothic-Md.ttf",
                                  0x2022);  // JPN
         case eFont_TradChinese:
             return new UITTFFont("Mojangles_TTF_cnTD",
-                                 "Common/Media/font/CHT/DFHeiMedium-B5.ttf",
+                                 "Minecraft.Client/Common/Media/font/CHT/DFHeiMedium-B5.ttf",
                                  0x2022);  // CHT
         case eFont_Korean:
             return new UITTFFont("Mojangles_TTF_koKR",
-                                 "Common/Media/font/KOR/BOKMSD.ttf",
+                                 "Minecraft.Client/Common/Media/font/KOR/BOKMSD.ttf",
                                  0x2022);  // KOR
         // 4J-JEV, Cyrillic characters have been added to this font now,
         // (4/July/14) XC_LANGUAGE_RUSSIAN and XC_LANGUAGE_GREEK:

@@ -1,15 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "BrewingStandScreen.h"
-#include <GL/gl.h>
 #include <memory>
 #include <string>
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../Lighting.h"
-#include "../../renderer/Textures.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+
+#include "BrewingStandScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/BrewingStandMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
-#include "../../Minecraft.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes

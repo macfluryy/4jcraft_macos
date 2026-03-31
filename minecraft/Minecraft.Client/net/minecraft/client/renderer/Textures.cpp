@@ -1,24 +1,32 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <assert.h>
+#include <string.h>
+#include <cstdint>
+#include <utility>
+
 #include "Textures.h"
-#include "../skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "HttpTexture.h"
-#include "../../../../Header Files/MemTexture.h"
-#include "java/InputOutputStream/InputStream.h"
-#include "java/IntBuffer.h"
+#include "Minecraft.Client/Header Files/MemTexture.h"
 #include "java/ByteBuffer.h"
-#include "../skins/TexturePack.h"
-#include "../Options.h"
-#include "../../../../Header Files/MemTextureProcessor.h"
-#include "../../../../Header Files/MobSkinMemTextureProcessor.h"
-#include "texture/PreStitchedTextureMap.h"
-#include "texture/StitchedTexture.h"
-#include "texture/Texture.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/Header Files/MemTextureProcessor.h"
+#include "Minecraft.Client/Header Files/MobSkinMemTextureProcessor.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/PreStitchedTextureMap.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/Texture.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../resources/ResourceLocation.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
-#include "texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "java/Buffer.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
 
 // Linux/PC port: disable mipmapping globally so textures are always sampled
 // from the full-resolution level 0 with GL_NEAREST, giving pixel-crisp

@@ -1,7 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include <math.h>
+#include <memory>
+
 #include "ChickenRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Chicken.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation ChickenRenderer::CHICKEN_LOCATION =
     ResourceLocation(TN_MOB_CHICKEN);

@@ -1,7 +1,11 @@
 #pragma once
+#include <string>
+
 #include "Screen.h"
+
 class EditBox;
 class LevelStorageSource;
+class Button;
 
 class CreateWorldScreen : public Screen {
 private:

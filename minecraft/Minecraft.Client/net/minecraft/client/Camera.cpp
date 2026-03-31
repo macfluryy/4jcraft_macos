@@ -1,10 +1,23 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <string.h>
+#include <numbers>
+
 #include "Camera.h"
 #include "MemoryTracker.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMath.h"
+#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMathConvert.inl"
+#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMathMatrix.inl"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/LiquidTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "java/FloatBuffer.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 float Camera::xPlayerOffs = 0.0f;
 float Camera::yPlayerOffs = 0.0f;

@@ -1,5 +1,7 @@
 #pragma once
-#include "geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+
+class ModelPart;
 
 class LeashKnotModel : public Model {
 public:

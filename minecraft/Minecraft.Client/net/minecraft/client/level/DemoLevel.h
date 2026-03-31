@@ -1,5 +1,14 @@
 #pragma once
+#include <stdint.h>
+#include <memory>
+#include <string>
+
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+
+class Dimension;
+class LevelSettings;
+class LevelStorage;
 
 class DemoLevel : public Level {
 private:

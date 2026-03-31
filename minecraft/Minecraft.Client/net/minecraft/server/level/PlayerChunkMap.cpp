@@ -1,17 +1,30 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
+#include <algorithm>
+#include <compare>
+#include <format>
+#include <list>
+#include <unordered_set>
+#include <utility>
+
 #include "PlayerChunkMap.h"
-#include "../network/PlayerConnection.h"
+#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "ServerLevel.h"
 #include "ServerChunkCache.h"
 #include "ServerPlayer.h"
-#include "../MinecraftServer.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
-#include "java/System.h"
-#include "../PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/network/packet/BlockRegionUpdatePacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChunkTilesUpdatePacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChunkVisibilityAreaPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChunkVisibilityPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/Packet.h"
+#include "Minecraft.World/net/minecraft/network/packet/TileUpdatePacket.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 PlayerChunkMap::PlayerChunk::PlayerChunk(int x, int z, PlayerChunkMap* pcm)
     : pos(x, z) {

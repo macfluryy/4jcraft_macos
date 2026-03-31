@@ -1,14 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+#include <vector>
+
 #include "InventoryScreen.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../Font.h"
-#include "../../renderer/entity/EntityRenderDispatcher.h"
-#include "../../Lighting.h"
-#include "../../renderer/Textures.h"
-#include "../Button.h"
-#include "../achievement/AchievementScreen.h"
-#include "../achievement/StatsScreen.h"
-#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/achievement/AchievementScreen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/achievement/StatsScreen.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 InventoryScreen::InventoryScreen(std::shared_ptr<Player> player)
     : AbstractContainerScreen(player->inventoryMenu) {

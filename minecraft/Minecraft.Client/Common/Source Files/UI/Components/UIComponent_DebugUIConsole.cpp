@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIComponent_DebugUIConsole.h"
+#include "Minecraft.Client/Common/Source Files/UI/Components/UIComponent_DebugUIConsole.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+
+class UILayer;
 
 UIComponent_DebugUIConsole::UIComponent_DebugUIConsole(int iPad, void* initData,
                                                        UILayer* parentLayer)

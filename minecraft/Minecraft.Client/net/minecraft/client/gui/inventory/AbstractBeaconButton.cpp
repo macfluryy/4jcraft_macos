@@ -1,8 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+
 #include "AbstractBeaconButton.h"
-#include "../../renderer/Textures.h"
-#include "../../Minecraft.h"
-#include <GL/gl.h>
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4)
 #ifdef ENABLE_JAVA_GUIS

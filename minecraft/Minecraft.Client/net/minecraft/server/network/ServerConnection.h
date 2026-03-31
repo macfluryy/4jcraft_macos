@@ -1,5 +1,10 @@
 #pragma once
 #include <mutex>
+#include <format>
+#include <memory>
+#include <string>
+#include <vector>
+
 class PendingConnection;
 class PlayerConnection;
 class MinecraftServer;

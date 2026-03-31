@@ -1,13 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
+#include <GL/gl.h>
+#include <cmath>
+
 #include "UIControl_EnchantmentBook.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
-#include "../../../../net/minecraft/client/renderer/tileentity/EnchantTableRenderer.h"
-#include "../../../../net/minecraft/client/Lighting.h"
-#include "../../../../net/minecraft/client/model/BookModel.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/EnchantTableRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/model/BookModel.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_EnchantmentBook.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 
 UIControl_EnchantmentBook::UIControl_EnchantmentBook() {
     UIControl::setControlType(UIControl::eEnchantmentBook);

@@ -1,7 +1,15 @@
 #pragma once
 
+#include <format>
+#include <ranges>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/Icon.h"
+
 class Texture;
+class BufferedReader;
 
 class StitchedTexture : public Icon {
 private:

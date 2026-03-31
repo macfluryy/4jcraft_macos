@@ -1,9 +1,15 @@
 #pragma once
+#include <map>
+#include <memory>
+#include <string>
+
 #include "MobRenderer.h"
-#include "../../resources/ResourceLocation.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 class EntityHorse;
 class PathfinderMob;
+class Model;
+class ResourceLocation;
 
 class HorseRenderer : public MobRenderer {
 private:

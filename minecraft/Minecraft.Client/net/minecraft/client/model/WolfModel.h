@@ -1,6 +1,8 @@
 #pragma once
-#include "geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+
+class ModelPart;
 
 class WolfModel : public Model {
 public:

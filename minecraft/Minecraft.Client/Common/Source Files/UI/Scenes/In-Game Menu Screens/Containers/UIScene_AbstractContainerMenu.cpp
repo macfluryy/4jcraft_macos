@@ -1,10 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_AbstractContainerMenu.h"
 
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "../../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 UIScene_AbstractContainerMenu::UIScene_AbstractContainerMenu(
     int iPad, UILayer* parentLayer)

@@ -1,8 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "renderer/Tesselator.h"
-#include "renderer/Textures.h"
 #include "ProgressRenderer.h"
 #include "java/System.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 std::recursive_mutex ProgressRenderer::s_progress;
 

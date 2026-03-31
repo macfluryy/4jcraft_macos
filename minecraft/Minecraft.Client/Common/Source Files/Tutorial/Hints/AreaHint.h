@@ -1,8 +1,11 @@
 #pragma once
 
 #include "TutorialHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 
 class AABB;
+class Tutorial;
 
 class AreaHint : public TutorialHint {
 private:

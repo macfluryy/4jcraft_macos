@@ -1,5 +1,8 @@
 #pragma once
 #include "Particle.h"
+#include "java/Class.h"
+
+class Level;
 
 class LavaParticle : public Particle {
 public:

@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "DLCManager.h"
 #include "DLCTextureFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
 
 DLCTextureFile::DLCTextureFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_Texture, path) {

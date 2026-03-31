@@ -1,10 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "java/Random.h"
-#include "../../../../../net/minecraft/client/User.h"
-#include "../../../../../net/minecraft/server/MinecraftServer.h"
-#include "../../UI.h"
+#include "Minecraft.Client/net/minecraft/client/User.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_MainMenu.h"
 
 Random* UIScene_MainMenu::random = new Random();

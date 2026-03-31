@@ -1,12 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include <string>
-#include <unordered_map>
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../Tutorial.h"
-#include "../Constraints/TutorialConstraints.h"
+#include <memory>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "ChoiceTask.h"
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "4J_Input.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/InputConstraint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 
 ChoiceTask::ChoiceTask(
     Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,

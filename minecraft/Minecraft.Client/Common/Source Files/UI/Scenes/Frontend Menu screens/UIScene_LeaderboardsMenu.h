@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../UIScene.h"
-#include "../../../Leaderboards/LeaderboardInterface.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardInterface.h"
 
 class UIScene_LeaderboardsMenu : public UIScene,
                                  public LeaderboardReadListener {

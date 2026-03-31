@@ -1,15 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Common/Consoles_App.h"
-#include "../net/minecraft/client/User.h"
-#include "../net/minecraft/client/Minecraft.h"
-#include "../net/minecraft/server/MinecraftServer.h"
-#include "../net/minecraft/server/PlayerList.h"
-#include "../net/minecraft/server/level/ServerPlayer.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include <assert.h>
+#include <string>
+
+#include "Minecraft.Client/Common/Consoles_App.h"
+#include "Minecraft.Client/net/minecraft/client/User.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
-#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
 #include "Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "4J_Profile.h"
+#include "4J.Render/4J_Render.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 
 CConsoleMinecraftApp app;
 

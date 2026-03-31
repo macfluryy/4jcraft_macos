@@ -1,11 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+
 #include "HorseInventoryScreen.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../renderer/entity/EntityRenderDispatcher.h"
-#include "../../Lighting.h"
-#include "../../renderer/Textures.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 #include "Minecraft.World/net/minecraft/world/inventory/HorseInventoryMenu.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
+
+class EntityHorse;
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing InventoryScreen
 #ifdef ENABLE_JAVA_GUIS

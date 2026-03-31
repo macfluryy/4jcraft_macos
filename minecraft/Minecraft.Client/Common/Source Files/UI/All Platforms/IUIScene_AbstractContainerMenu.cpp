@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "IUIScene_AbstractContainerMenu.h"
 
@@ -6,8 +6,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = nullptr;

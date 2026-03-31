@@ -1,13 +1,30 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <cmath>
+#include <numbers>
+#include <vector>
+
 #include "LivingEntityRenderer.h"
-#include "../../Lighting.h"
-#include "../../model/geom/Cube.h"
-#include "../../model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Cube.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "EntityRenderDispatcher.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation LivingEntityRenderer::ENCHANT_GLINT_LOCATION =
     ResourceLocation(TN__BLUR__MISC_GLINT);

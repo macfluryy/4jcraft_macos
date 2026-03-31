@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Tutorial.h"
+#include <vector>
+
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "AreaTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
 
 AreaTask::AreaTask(eTutorial_State state, Tutorial* tutorial,
                    std::vector<TutorialConstraint*>* inConstraints,

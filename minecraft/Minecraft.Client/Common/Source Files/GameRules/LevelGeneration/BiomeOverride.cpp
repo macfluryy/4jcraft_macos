@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "BiomeOverride.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/BiomeOverride.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 BiomeOverride::BiomeOverride() {
     m_tile = 0;

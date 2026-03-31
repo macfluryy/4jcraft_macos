@@ -1,15 +1,28 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Chunk.h"
-#include "TileRenderer.h"
-#include "tileentity/TileEntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "LevelRenderer.h"
-#include "../../../../Header Files/FrameProfiler.h"
+#include <GL/gl.h>
+#include <string.h>
 #include <unordered_set>
 #include <mutex>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#include "Chunk.h"
+#include "TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
+#include "LevelRenderer.h"
+#include "Minecraft.Client/Header Files/FrameProfiler.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/Region.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/culling/Culler.h"
 
 int Chunk::updates = 0;
 

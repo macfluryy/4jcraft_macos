@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Button.h"
-#include "../renderer/Textures.h"
+
+class Minecraft;
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_GUI_LOCATION = ResourceLocation(TN_GUI_GUI);

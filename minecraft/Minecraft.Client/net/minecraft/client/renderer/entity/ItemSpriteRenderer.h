@@ -2,6 +2,8 @@
 #include "EntityRenderer.h"
 
 class Item;
+class Icon;
+class Tesselator;
 
 class ItemSpriteRenderer : public EntityRenderer {
 private:

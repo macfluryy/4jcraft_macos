@@ -5,7 +5,7 @@
 #include <cstdint>
 
 #include "UIEnums.h"
-#include "../../../App_Defines.h"
+#include "Minecraft.Client/Common/App_Defines.h"
 #include "4J.Storage/4J_Storage.h"
 
 class Container;

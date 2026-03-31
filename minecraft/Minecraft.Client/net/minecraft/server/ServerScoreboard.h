@@ -1,5 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/scores/Scoreboard.h"
 
 class MinecraftServer;
@@ -7,6 +12,7 @@ class ScoreboardSaveData;
 class Score;
 class Objective;
 class PlayerTeam;
+class Packet;
 
 class ServerScoreboard : public Scoreboard {
 private:

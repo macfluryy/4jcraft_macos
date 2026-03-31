@@ -1,11 +1,16 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"
 
 class Icon;
 class StitchedTexture;
 class Texture;
 class BufferedImage;
+class TexturePack;
 
 // 4J Added this class to stop having to do texture stitching at runtime
 class PreStitchedTextureMap : public IconRegister {

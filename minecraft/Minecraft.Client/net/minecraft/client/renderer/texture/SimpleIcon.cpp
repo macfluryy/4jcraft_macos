@@ -1,5 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SimpleIcon.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
 
 SimpleIcon::SimpleIcon(const std::wstring& name, const std::wstring& filename,
                        float U0, float V0, float U1, float V1)

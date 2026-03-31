@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "../Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 #define STUBBED \
     {           \

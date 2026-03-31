@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "StartFeature.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StartFeature.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 StartFeature::StartFeature() {
     m_chunkX = 0;

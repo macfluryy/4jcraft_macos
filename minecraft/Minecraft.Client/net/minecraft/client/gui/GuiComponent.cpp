@@ -1,6 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+
 #include "GuiComponent.h"
-#include "../renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 void GuiComponent::hLine(int x0, int x1, int y, int col) {
     if (x1 < x0) {

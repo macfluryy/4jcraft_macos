@@ -1,19 +1,22 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include <format>
 #ifndef __linux__
 #include <xrnm.h>
 #include <qnet.h>
 #endif
 #include <mutex>
 #include <queue>
+
 #include "java/InputOutputStream/InputStream.h"
 #include "java/InputOutputStream/OutputStream.h"
-
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h" // 4jcraft TODO
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h" // 4jcraft TODO
 #include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+
+class INetworkPlayer;
 
 #define SOCKET_CLIENT_END 0
 #define SOCKET_SERVER_END 1

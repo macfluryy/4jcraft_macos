@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIComponent_MenuBackground.h"
+#include "Minecraft.Client/Common/Source Files/UI/Components/UIComponent_MenuBackground.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 
 UIComponent_MenuBackground::UIComponent_MenuBackground(int iPad, void* initData,
                                                        UILayer* parentLayer)

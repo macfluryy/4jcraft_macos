@@ -1,4 +1,7 @@
 #pragma once
+#include <cstdint>
+#include <string>
+
 #include "DLCGameRules.h"
 
 class DLCGameRulesFile : public DLCGameRules {

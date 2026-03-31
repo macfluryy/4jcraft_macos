@@ -1,5 +1,12 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "ServerLevel.h"
+
+class LevelSettings;
+class LevelStorage;
+class MinecraftServer;
 
 class DerivedServerLevel : public ServerLevel {
 public:

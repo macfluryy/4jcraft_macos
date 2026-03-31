@@ -1,6 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+#include <memory>
+#include <string>
+
 #include "CraftTask.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 CraftTask::CraftTask(
     int itemId, int auxValue, int quantity, Tutorial* tutorial,

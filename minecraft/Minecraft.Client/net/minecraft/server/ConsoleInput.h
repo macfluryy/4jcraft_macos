@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "ConsoleInputSource.h"
+
+class ConsoleInputSource;
 
 class ConsoleInput {
 public:

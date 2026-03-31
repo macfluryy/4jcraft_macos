@@ -1,7 +1,11 @@
 #pragma once
 // using namespace std;
 
+#include <unordered_map>
+
 #include "TutorialTask.h"
+
+class Tutorial;
 
 // 4J Stu - Tasks that involve using the controller
 class ControllerTask : public TutorialTask {

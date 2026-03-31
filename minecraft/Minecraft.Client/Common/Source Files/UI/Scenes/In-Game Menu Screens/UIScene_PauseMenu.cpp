@@ -1,11 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_PauseMenu.h"
-#include "../../../../../net/minecraft/server/MinecraftServer.h"
-#include "../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../../../net/minecraft/client/skins/TexturePackRepository.h"
-#include "../../../../../net/minecraft/client/skins/TexturePack.h"
-#include "../../../../../net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,

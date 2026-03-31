@@ -1,8 +1,8 @@
 #pragma once
 #include <cstddef>
 #include "GuiComponent.h"
-#include "../GuiMessage.h"
-#include "../renderer/entity/ItemRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/GuiMessage.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
 class Random;
 class Minecraft;
 

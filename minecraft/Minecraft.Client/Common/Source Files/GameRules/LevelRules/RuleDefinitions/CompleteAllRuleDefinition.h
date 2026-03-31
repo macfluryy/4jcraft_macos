@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "CompoundGameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+
+class GameRule;
 
 class CompleteAllRuleDefinition : public CompoundGameRuleDefinition {
 private:

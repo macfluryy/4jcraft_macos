@@ -1,9 +1,15 @@
 #pragma once
 
+#include <memory>
+
 #include "IUIScene_AbstractContainerMenu.h"
 #include "Minecraft.World/net/minecraft/world/Container.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+
+class Container;
+class EntityHorse;
+class Inventory;
 
 class IUIScene_HorseInventoryMenu
     : public virtual IUIScene_AbstractContainerMenu {

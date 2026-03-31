@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 #define BUTTON_HAO_CHANGESKIN 0
 #define BUTTON_HAO_HOWTOPLAY 1

@@ -1,6 +1,15 @@
 #pragma once
 
+#include <stdint.h>
+#include <ranges>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIControl_SpaceIndicatorBar : public UIControl_Base {
 private:

@@ -1,10 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../model/dragon/DragonModel.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/net/minecraft/client/model/dragon/DragonModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "../Tesselator.h"
-#include "../../Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
 #include "EnderDragonRenderer.h"
-#include "../BossMobGuiInfo.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/BossMobGuiInfo.h"
 
 ResourceLocation EnderDragonRenderer::DRAGON_EXPLODING_LOCATION =
     ResourceLocation(TN_MOB_ENDERDRAGON_SHUFFLE);

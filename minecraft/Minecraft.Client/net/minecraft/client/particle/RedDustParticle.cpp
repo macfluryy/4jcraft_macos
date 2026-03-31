@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/JavaMath.h"
 #include "RedDustParticle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 void RedDustParticle::init(Level* level, double x, double y, double z,
                            float scale, float rCol, float gCol, float bCol) {

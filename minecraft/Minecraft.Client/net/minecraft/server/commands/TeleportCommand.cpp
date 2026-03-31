@@ -1,13 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../MinecraftServer.h"
-#include "../PlayerList.h"
-#include "../level/ServerPlayer.h"
-#include "../network/PlayerConnection.h"
-#include "Minecraft.World/net/minecraft/commands/net.minecraft.commands.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
+#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "TeleportCommand.h"
+#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "java/Class.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 EGameCommand TeleportCommand::getId() { return eGameCommand_Teleport; }
 

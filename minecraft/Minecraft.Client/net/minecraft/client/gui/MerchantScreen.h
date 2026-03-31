@@ -1,10 +1,16 @@
 #pragma once
 
-#include "inventory/AbstractContainerScreen.h"
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
 #include "Minecraft.World/net/minecraft/world/item/trading/net.minecraft.world.item.trading.h"
 
 class TradeSwitchButton;
+class Inventory;
+class Level;
+class Merchant;
+class MerchantMenu;
 
 class MerchantScreen : public AbstractContainerScreen {
 public:

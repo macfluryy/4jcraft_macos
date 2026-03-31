@@ -1,10 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+
 #include "TradeSwitchButton.h"
-#include "../renderer/Textures.h"
-#include "../renderer/Tesselator.h"
-#include "../Minecraft.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4)
 #ifdef ENABLE_JAVA_GUIS

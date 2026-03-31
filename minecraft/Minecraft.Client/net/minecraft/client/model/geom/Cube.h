@@ -1,11 +1,17 @@
 #pragma once
 #include <array>
 #include <cstdint>
+#include <string>
+
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
-#include "../Vertex.h"
-#include "../Polygon.h"
+#include "Minecraft.Client/net/minecraft/client/model/Vertex.h"
+#include "Minecraft.Client/net/minecraft/client/model/Polygon.h"
 
 class Model;
+class ModelPart;
+class Tesselator;
+class Vertex;
+class _Polygon;
 
 class Cube {
 private:

@@ -1,11 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../Minecraft.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "../../../multiplayer/MultiPlayerLocalPlayer.h"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "java/JavaMath.h"
-#include "../Texture.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/Texture.h"
 #include "ClockTexture.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
 
 ClockTexture::ClockTexture() : StitchedTexture(L"clock", L"clock") {
     rot = rota = 0.0;

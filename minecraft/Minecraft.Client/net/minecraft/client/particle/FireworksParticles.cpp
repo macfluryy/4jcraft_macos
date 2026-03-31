@@ -1,8 +1,22 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <vector>
+
 #include "FireworksParticles.h"
-#include "../renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/FireworksItem.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/Tag.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
 
 FireworksParticles::FireworksStarter::FireworksStarter(
     Level* level, double x, double y, double z, double xd, double yd, double zd,

@@ -1,22 +1,24 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "MerchantScreen.h"
-#include <GL/gl.h>
 #include <memory>
+#include <string>
+#include <vector>
+
+#include "MerchantScreen.h"
 #include "TradeSwitchButton.h"
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../Lighting.h"
-#include "../renderer/Textures.h"
-#include "../renderer/entity/ItemRenderer.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
-#include "Minecraft.World/net/minecraft/world/inventory/MerchantContainer.h"
-#include "Minecraft.World/net/minecraft/world/item/trading/net.minecraft.world.item.trading.h"
-#include "../Minecraft.h"
-#include "../multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "Minecraft.World/net/minecraft/world/item/Rarity.h"
+#include "Minecraft.World/net/minecraft/network/packet/CustomPayloadPacket.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/Merchant.h"
+#include "Minecraft.World/net/minecraft/world/item/trading/MerchantRecipeList.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
+
+class Level;
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes (and iggy too)

@@ -1,9 +1,14 @@
 #pragma once
-#include "../../resources/ResourceLocation.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "EntityRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 
 class LivingEntity;
+class Model;
+class ResourceLocation;
 
 class LivingEntityRenderer : public EntityRenderer {
     static const int PLAYER_NAME_READABLE_FULLSCREEN = 16;

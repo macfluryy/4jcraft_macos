@@ -1,5 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "LevelRules.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/LevelRules.h"
 
 LevelRules::LevelRules() {}
 

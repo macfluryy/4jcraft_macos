@@ -1,7 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/entity/ambient/net.minecraft.world.entity.ambient.h"
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "BatModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ambient/Bat.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 BatModel::BatModel() : Model() {
     texWidth = 64;

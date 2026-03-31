@@ -1,6 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "SquidRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Squid.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation SquidRenderer::SQUID_LOCATION = ResourceLocation(TN_MOB_SQUID);
 

@@ -1,9 +1,15 @@
 #pragma once
 
+#include <memory>
+
 #include "UIControl.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "java/Random.h"
 
 class UIScene_EnchantingMenu;
 class BookModel;
+class ItemInstance;
 
 class UIControl_EnchantmentBook : public UIControl {
 private:

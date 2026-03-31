@@ -1,6 +1,8 @@
 #pragma once
 #include "FrustumData.h"
 
+class FloatBuffer;
+
 class Frustum : public FrustumData {
 private:
     static Frustum* frustum;

@@ -1,11 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+#include <utility>
+#include <vector>
+
 #include "Stitcher.h"
 #include "Texture.h"
-#include "../../skins/TexturePack.h"
-#include "../../skins/TexturePackRepository.h"
-#include "../../Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "TextureManager.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/File.h"
 
 TextureManager* TextureManager::instance = nullptr;
 

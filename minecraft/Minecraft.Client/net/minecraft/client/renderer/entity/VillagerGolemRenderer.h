@@ -3,6 +3,7 @@
 #include "MobRenderer.h"
 
 class VillagerGolemModel;
+class ResourceLocation;
 
 class VillagerGolemRenderer : public MobRenderer {
 private:

@@ -1,7 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+
 #include "ChickenModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 ChickenModel::ChickenModel() : Model() {
     int yo = 16;

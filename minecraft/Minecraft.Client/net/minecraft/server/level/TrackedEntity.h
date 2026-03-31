@@ -1,10 +1,17 @@
 #pragma once
-class Entity;
+#include <format>
+#include <memory>
+#include <unordered_set>
+
 // class ServerPlayer;
 #include "ServerPlayer.h"
-class Packet;
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
+class Entity;
+class Packet;
 class EntityTracker;
+class PlayerConnection;
+class ServerPlayer;
 
 #define TRACKED_ENTITY_MINIMUM_VIEW_DISTANCE 4
 

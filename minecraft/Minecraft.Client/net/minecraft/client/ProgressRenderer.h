@@ -1,6 +1,11 @@
 #pragma once
+#include <stdint.h>
 #include <mutex>
+#include <string>
+
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
+
+class Minecraft;
 
 class ProgressRenderer : public ProgressListener {
 public:

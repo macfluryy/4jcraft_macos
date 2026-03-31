@@ -1,11 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
-#include "UIComponent_Panorama.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include <stdint.h>
 #include <mutex>
+
+#include "UIComponent_Panorama.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/Common/Source Files/UI/Components/UIComponent_Panorama.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 
 UIComponent_Panorama::UIComponent_Panorama(int iPad, void* initData,
                                            UILayer* parentLayer)

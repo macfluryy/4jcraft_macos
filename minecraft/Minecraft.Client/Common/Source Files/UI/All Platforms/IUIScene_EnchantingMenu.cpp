@@ -1,8 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include <assert.h>
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "IUIScene_EnchantingMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+
+class Player;
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_EnchantingMenu::GetSectionAndSlotInDirection(

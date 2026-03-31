@@ -1,10 +1,18 @@
 #pragma once
-#include "../Textures.h"
+#include <memory>
+#include <unordered_map>
+
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "java/JavaIntHash.h"
+#include "java/Class.h"
+
 class Mob;
 class Level;
 class TileEntityRenderer;
 class TileEntity;
+class Font;
+class LivingEntity;
+class Textures;
 
 class TileEntityRenderDispatcher {
 public:

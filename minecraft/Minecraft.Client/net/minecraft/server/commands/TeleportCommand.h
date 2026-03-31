@@ -1,6 +1,12 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+
 #include "Minecraft.World/net/minecraft/commands/Command.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
+#include "Minecraft.World/net/minecraft/network/packet/GameCommandPacket.h"
 
 class TeleportCommand : public Command {
 public:

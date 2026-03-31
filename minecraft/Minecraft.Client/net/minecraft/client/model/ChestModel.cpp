@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+
 #include "ChestModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 ChestModel::ChestModel() {
     lid = ((new ModelPart(this, 0, 0)))->setTexSize(64, 64);

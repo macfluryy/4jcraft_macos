@@ -1,7 +1,11 @@
 #pragma once
 // using namespace std;
 
+#include <unordered_map>
+
 #include "TutorialTask.h"
+
+class Tutorial;
 
 // Information messages
 class InfoTask : public TutorialTask {

@@ -1,5 +1,12 @@
 #pragma once
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
+#include "4J.Render/4J_Render.h"
 
 class Icon;
 class Entity;
@@ -11,7 +18,6 @@ class TexturePackRepository;
 class HttpTextureProcessor;
 class MemTextureProcessor;
 class Options;
-
 class IntBuffer;
 class PreStitchedTextureMap;
 class ResourceLocation;

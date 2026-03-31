@@ -1,13 +1,23 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../UI.h"
-#include "UIScene_CreativeMenu.h"
+#include <assert.h>
+#include <memory>
 
-#include "java/JavaMath.h"
-#include "../../../../../../net/minecraft/client/player/LocalPlayer.h"
-#include "../../../../Tutorial/Tutorial.h"
-#include "../../../../Tutorial/TutorialMode.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "UIScene_CreativeMenu.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_CreativeMenu.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+
+class UILayer;
 
 UIScene_CreativeMenu::UIScene_CreativeMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)

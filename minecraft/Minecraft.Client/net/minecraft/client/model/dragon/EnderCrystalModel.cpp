@@ -1,5 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <string>
+
 #include "EnderCrystalModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 EnderCrystalModel::EnderCrystalModel(float g) {
     glass = new ModelPart(this, L"glass");

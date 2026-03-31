@@ -1,6 +1,10 @@
 #pragma once
+#include <stdint.h>
+#include <format>
+
 class Button;
 class Tesselator;
+class Minecraft;
 
 class ScrolledSelectionList {
 private:

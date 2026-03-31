@@ -1,12 +1,23 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/HashExtension.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "java/JavaIntHash.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
 
 class ClientConnection;
 class MultiPlayerChunkCache;
+class LevelSettings;
+class Minecraft;
+class Scoreboard;
 
 class MultiPlayerLevel : public Level {
 private:

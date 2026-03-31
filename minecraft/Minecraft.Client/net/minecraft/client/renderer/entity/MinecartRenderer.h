@@ -1,7 +1,13 @@
 #pragma once
+#include <memory>
+
 #include "EntityRenderer.h"
 
 class Minecart;
+class Model;
+class ResourceLocation;
+class Tile;
+class TileRenderer;
 
 class MinecartRenderer : public EntityRenderer {
 private:

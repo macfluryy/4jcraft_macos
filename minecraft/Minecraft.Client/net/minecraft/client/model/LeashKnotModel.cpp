@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <numbers>
+
 #include "LeashKnotModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 LeashKnotModel::LeashKnotModel() { _init(0, 0, 32, 32); }
 

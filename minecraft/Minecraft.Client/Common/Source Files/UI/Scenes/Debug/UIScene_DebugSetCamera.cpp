@@ -1,10 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 
+#include <wchar.h>
+#include <memory>
+
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/Debug/UIScene_DebugSetCamera.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
+class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "../../UI.h"
 #include "UIScene_DebugSetCamera.h"
-#include "../../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,

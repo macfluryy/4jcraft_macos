@@ -1,5 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Consoles_SoundEngine.h"
+#include "Minecraft.Client/Common/Source Files/Audio/Consoles_SoundEngine.h"
 
 bool ConsoleSoundEngine::GetIsPlayingStreamingCDMusic() {
     return m_bIsPlayingStreamingCDMusic;

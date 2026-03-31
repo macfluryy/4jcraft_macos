@@ -1,6 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include <math.h>
+
 #include "NoteParticle.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 void NoteParticle::init(Level* level, double x, double y, double z, double xa,
                         double ya, double za, float scale) {

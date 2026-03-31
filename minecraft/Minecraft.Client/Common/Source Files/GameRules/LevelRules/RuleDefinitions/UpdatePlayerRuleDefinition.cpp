@@ -1,11 +1,17 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+#include <memory>
+
 #include "UpdatePlayerRuleDefinition.h"
-#include "../../ConsoleGameRules.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/food/net.minecraft.world.food.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/UpdatePlayerRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 UpdatePlayerRuleDefinition::UpdatePlayerRuleDefinition() {
     m_bUpdateHealth = m_bUpdateFood = m_bUpdateYRot = false;

@@ -1,6 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Minecraft.World/Header Files/SoundTypes.h"
+
+class File;
 
 typedef struct {
     float x, y, z;

@@ -1,8 +1,11 @@
 #pragma once
+#include <memory>
+
 #include "EntityRenderer.h"
 
 class Painting;
 class Random;
+class ResourceLocation;
 
 class PaintingRenderer : public EntityRenderer {
 private:

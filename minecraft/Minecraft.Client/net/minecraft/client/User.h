@@ -1,5 +1,10 @@
 #pragma once
 
+#include <format>
+#include <string>
+
+class Tile;
+
 class User {
 public:
     static std::vector<Tile*> allowedTiles;

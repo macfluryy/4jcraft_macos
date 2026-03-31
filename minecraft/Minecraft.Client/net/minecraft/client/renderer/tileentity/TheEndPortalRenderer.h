@@ -2,6 +2,10 @@
 
 #include "TileEntityRenderer.h"
 
+class FloatBuffer;
+class Random;
+class ResourceLocation;
+
 class TheEndPortalRenderer : public TileEntityRenderer {
 private:
     static ResourceLocation END_SKY_LOCATION;

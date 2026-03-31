@@ -1,18 +1,23 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../gui/Button.h"
-#include "../gui/OptionsScreen.h"
-#include "../gui/SelectWorldScreen.h"
-#include "../gui/JoinMultiplayerScreen.h"
-#include "../renderer/Tesselator.h"
-#include "../renderer/Textures.h"
-#include "../Options.h"
+#include <stdint.h>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/OptionsScreen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/SelectWorldScreen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/JoinMultiplayerScreen.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "java/System.h"
 #include "java/Random.h"
-#include <GL/gl.h>
 #include "TitleScreen.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "java/InputOutputStream/BufferedReader.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/InputStreamReader.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 Random* TitleScreen::random = new Random();
 

@@ -1,7 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "LightningBoltRenderer.h"
-#include "../Tesselator.h"
-#include "Minecraft.World/net/minecraft/world/entity/global/net.minecraft.world.entity.global.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/global/LightningBolt.h"
+#include "java/Random.h"
 
 void LightningBoltRenderer::render(std::shared_ptr<Entity> _bolt, double x,
                                    double y, double z, float rot, float a) {

@@ -1,7 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "GameRuleDefinition.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class NamedAreaRuleDefinition : public GameRuleDefinition {
 private:

@@ -8,19 +8,19 @@
 
 // using namespace std;
 
-#include "Source Files/Audio/Consoles_SoundEngine.h"
-#include "Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/Source Files/Audio/Consoles_SoundEngine.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
 
-#include "Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
 
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 
-#include "Source Files/Localisation/StringTable.h"
-#include "Source Files/DLC/DLCManager.h"
-#include "Source Files/GameRules/ConsoleGameRulesConstants.h"
-#include "Source Files/GameRules/GameRuleManager.h"
-#include "../Header Files/SkinBox.h"
-#include "Source Files/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/MinecartHopper.h"
 
 typedef struct _JoinFromInviteData {

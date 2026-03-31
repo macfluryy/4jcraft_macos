@@ -1,5 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../../Header Files/MemTexture.h"
+#include <cstdint>
+#include <string>
+
+#include "Minecraft.Client/Header Files/MemTexture.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+
+class MemTextureProcessor;
 
 MemTexture::MemTexture(const std::wstring& _url, std::uint8_t* pbData,
                        std::uint32_t dataBytes,

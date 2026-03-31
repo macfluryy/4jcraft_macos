@@ -1,8 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "../../../../../../net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_EnchantingMenu.h"
 
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,

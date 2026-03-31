@@ -1,10 +1,19 @@
 #pragma once
+#include <stdint.h>
 // using namespace std;
 #include <vector>
+#include <string>
+
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerInterface.h"
 #include "SessionInfo.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+class C4JThread;
+class CGameNetworkManager;
+class INetworkPlayer;
 
 class CPlatformNetworkManagerStub : public CPlatformNetworkManager {
     friend class CGameNetworkManager;

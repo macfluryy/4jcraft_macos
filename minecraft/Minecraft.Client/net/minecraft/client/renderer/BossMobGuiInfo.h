@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 class BossMob;
 
 class BossMobGuiInfo {

@@ -1,19 +1,18 @@
 #define GDRAW_ASSERTS
 
 #include "gdraw.h"
-#include "../../../Windows64/Iggy/include/gdraw.h"
-#include "../../../Windows64/Iggy/include/gdraw.h"
 
 #include <GL/gl.h>
-#include <GL/glext.h>
-#include <SDL2/SDL.h>
 #include <string.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
-#include <assert.h>
 #include <dlfcn.h>
+#include <stddef.h>
+
+#include "Minecraft.Client/Windows64/Iggy/include/gdraw.h"
+#include "SDL_video.h"
+#include "Minecraft.Client/Windows64/Iggy/gdraw/gdraw_shared.inl"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 #define true 1
 #define false 0
@@ -684,7 +683,8 @@ static void gdraw_FramebufferRenderbufferSafe(GLenum target, GLenum attachment,
 #define glFramebufferRenderbuffer_SAFE gdraw_FramebufferRenderbufferSafe
 #define glFramebufferRenderbuffer glFramebufferRenderbuffer_SAFE
 
-#include "../../../Windows64/Iggy/gdraw/gdraw_gl_shared.inl"
+#include "Minecraft.Client/Windows64/Iggy/gdraw/gdraw_gl_shared.inl"
+
 #undef glVertexAttribPointer
 #define glVertexAttribPointer gdraw_real_vtxattrib
 

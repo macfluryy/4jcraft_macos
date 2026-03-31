@@ -1,10 +1,16 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+
 class MinecraftServer;
 class Socket;
 class LoginPacket;
 class Connection;
 class Random;
+class Packet;
 
 class PendingConnection : public PacketListener {
 private:

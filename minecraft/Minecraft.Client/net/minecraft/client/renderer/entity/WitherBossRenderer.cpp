@@ -1,9 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "WitherBossRenderer.h"
-#include "../../model/WitherBossModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/WitherBossModel.h"
 #include "MobRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/wither/WitherBoss.h"
-#include "../BossMobGuiInfo.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/BossMobGuiInfo.h"
 
 ResourceLocation WitherBossRenderer::WITHER_ARMOR_LOCATION =
     ResourceLocation(TN_MOB_WITHER_ARMOR);

@@ -2,6 +2,9 @@
 // using namespace std;
 
 #include "TutorialTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+
+class Tutorial;
 
 // Information messages with a choice
 class FullTutorialActiveTask : public TutorialTask {

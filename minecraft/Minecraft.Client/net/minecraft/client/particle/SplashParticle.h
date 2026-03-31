@@ -1,5 +1,8 @@
 #pragma once
 #include "WaterDropParticle.h"
+#include "java/Class.h"
+
+class Level;
 
 class SplashParticle : public WaterDropParticle {
 public:

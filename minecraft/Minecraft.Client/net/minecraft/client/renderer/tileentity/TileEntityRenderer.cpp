@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "TileEntityRenderer.h"
 #include "TileEntityRenderDispatcher.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 void TileEntityRenderer::bindTexture(ResourceLocation* location) {
     Textures* t = tileEntityRenderDispatcher->textures;

@@ -1,7 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <memory>
+
 #include "ArrowRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation ArrowRenderer::ARROW_LOCATION =
     ResourceLocation(TN_ITEM_ARROWS);

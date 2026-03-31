@@ -1,10 +1,17 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "EntityRenderer.h"
 
 class Textures;
 class ItemInstance;
 class Random;
 class ItemEntity;
+class Font;
+class Icon;
+class ResourceLocation;
+class Tesselator;
 
 class ItemRenderer : public EntityRenderer {
 private:

@@ -2,6 +2,7 @@
 #include "EntityRenderer.h"
 
 class SkeletonHeadModel;
+class ResourceLocation;
 
 class WitherSkullRenderer : public EntityRenderer {
 private:

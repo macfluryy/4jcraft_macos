@@ -1,9 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ScrolledSelectionList.h"
 #include "Button.h"
-#include "../renderer/Tesselator.h"
-#include "../renderer/Textures.h"
-#include "java/System.h"
+
+class Minecraft;
 
 ScrolledSelectionList::ScrolledSelectionList(Minecraft* minecraft, int width,
                                              int height, int y0, int y1,

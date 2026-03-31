@@ -1,11 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../MinecraftServer.h"
-#include "../PlayerList.h"
-#include "../level/ServerPlayer.h"
-#include "Minecraft.World/net/minecraft/commands/net.minecraft.commands.h"
-#include "Minecraft.World/net/minecraft/commands/common/net.minecraft.commands.common.h"
+#include <memory>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "TeleportCommand.h"
 #include "ServerCommandDispatcher.h"
+#include "Minecraft.World/net/minecraft/commands/Command.h"
+#include "Minecraft.World/net/minecraft/commands/CommandSender.h"
+#include "Minecraft.World/net/minecraft/commands/common/DefaultGameModeCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/EnchantItemCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/ExperienceCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/GameModeCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/GiveItemCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/KillCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/TimeCommand.h"
+#include "Minecraft.World/net/minecraft/commands/common/ToggleDownfallCommand.h"
 
 ServerCommandDispatcher::ServerCommandDispatcher() {
     addCommand(new TimeCommand());

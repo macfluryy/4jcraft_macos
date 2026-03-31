@@ -1,5 +1,10 @@
 #pragma once
 
+#include <string>
+
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
 struct SFontData;
 class CFontData;
 

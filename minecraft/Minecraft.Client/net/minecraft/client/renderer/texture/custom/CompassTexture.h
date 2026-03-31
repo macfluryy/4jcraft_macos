@@ -1,5 +1,7 @@
 #pragma once
-#include "../StitchedTexture.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
+
+class Level;
 
 class CompassTexture : public StitchedTexture {
 private:

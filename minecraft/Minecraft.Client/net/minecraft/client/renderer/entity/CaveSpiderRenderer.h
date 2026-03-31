@@ -2,6 +2,7 @@
 #include "SpiderRenderer.h"
 
 class CaveSpider;
+class ResourceLocation;
 
 class CaveSpiderRenderer : public SpiderRenderer {
 private:

@@ -1,17 +1,22 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <string>
+#include <vector>
+
 #include "PauseScreen.h"
 #include "Button.h"
-#include "../../stats/StatsCounter.h"
 #include "MessageScreen.h"
 #include "OptionsScreen.h"
-#include "../title/TitleScreen.h"
-#include "../multiplayer/MultiPlayerLevel.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "../player/LocalPlayer.h"
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 PauseScreen::PauseScreen() {
     saveStep = 0;

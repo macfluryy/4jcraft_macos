@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <mutex>
 
-#include "All Platforms/IUIController.h"
-#include "All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIController.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
 #include "UIGroup.h"
 
 class UIAbstractBitmapFont;

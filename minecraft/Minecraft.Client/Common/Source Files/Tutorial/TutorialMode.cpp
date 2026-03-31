@@ -1,14 +1,19 @@
 #include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include <memory>
-#include "../../../net/minecraft/client/Minecraft.h"
-#include "../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+
+class ClientConnection;
 
 TutorialMode::TutorialMode(int iPad, Minecraft* minecraft,
                            ClientConnection* connection)

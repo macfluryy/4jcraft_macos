@@ -1,11 +1,18 @@
 #pragma once
+#include <stdint.h>
+#include <memory>
+#include <unordered_map>
+#include <vector>
+
 #include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+
 class ServerPlayer;
 class ServerLevel;
 class MinecraftServer;
 class Packet;
 class TileEntity;
+class LevelChunk;
 
 class PlayerChunkMap {
 public:

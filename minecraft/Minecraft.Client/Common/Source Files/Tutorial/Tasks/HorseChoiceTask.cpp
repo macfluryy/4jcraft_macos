@@ -1,13 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-
-#include <string>
-
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../Tutorial.h"
+#include <memory>
 
 #include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
-
 #include "HorseChoiceTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/ChoiceTask.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+
+class Tutorial;
 
 HorseChoiceTask::HorseChoiceTask(Tutorial* tutorial, int iDescHorse,
                                  int iDescDonkey, int iDescMule, int iPromptId,

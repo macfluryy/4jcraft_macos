@@ -1,8 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
+#include <string>
+#include <vector>
+
 #include "UIControl.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "java/JavaMath.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 UIControl_Base::UIControl_Base() {
     m_bLabelChanged = false;

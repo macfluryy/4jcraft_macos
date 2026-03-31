@@ -1,7 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
 
 #include "IUIScene_InventoryMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/InventoryMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_InventoryMenu::GetSectionAndSlotInDirection(ESceneSection eSection,

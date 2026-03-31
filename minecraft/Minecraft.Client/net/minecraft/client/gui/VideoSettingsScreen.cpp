@@ -1,10 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "VideoSettingsScreen.h"
 #include "SmallButton.h"
 #include "SlideButton.h"
-#include "../Options.h"
-#include "ControlsScreen.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 // 4jcraft
 #define ITEM_COUNT 10

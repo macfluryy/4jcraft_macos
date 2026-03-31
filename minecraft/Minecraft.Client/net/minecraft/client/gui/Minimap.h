@@ -1,5 +1,9 @@
 #pragma once
+#include <memory>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+
 class Options;
 class Font;
 class Textures;

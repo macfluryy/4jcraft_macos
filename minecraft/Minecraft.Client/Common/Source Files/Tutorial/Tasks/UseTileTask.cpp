@@ -1,8 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include <memory>
+
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 #include "UseTileTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 UseTileTask::UseTileTask(const int tileId, int x, int y, int z,
                          Tutorial* tutorial, int descriptionId,

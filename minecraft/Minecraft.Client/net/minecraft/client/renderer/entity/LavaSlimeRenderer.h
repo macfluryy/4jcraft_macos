@@ -1,6 +1,8 @@
 #pragma once
 #include "MobRenderer.h"
 
+class ResourceLocation;
+
 class LavaSlimeRenderer : public MobRenderer {
 private:
     int modelVersion;

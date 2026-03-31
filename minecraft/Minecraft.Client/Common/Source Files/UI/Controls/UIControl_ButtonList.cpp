@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIControl_ButtonList::UIControl_ButtonList() {
     m_itemCount = 0;

@@ -1,8 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "DisconnectedScreen.h"
-#include "../title/TitleScreen.h"
-#include "../gui/Button.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.Client/net/minecraft/client/title/TitleScreen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 DisconnectedScreen::DisconnectedScreen(const std::wstring& title,
                                        const std::wstring reason,

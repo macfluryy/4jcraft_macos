@@ -1,6 +1,10 @@
 #pragma once
 #include "Particle.h"
+#include "java/Class.h"
+
 class Textures;
+class Level;
+class ResourceLocation;
 
 class FootstepParticle : public Particle {
 public:

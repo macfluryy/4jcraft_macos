@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIComponent_PressStartToPlay : public UIScene {
 private:

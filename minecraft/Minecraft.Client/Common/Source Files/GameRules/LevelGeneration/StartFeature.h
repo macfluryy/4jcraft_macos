@@ -1,8 +1,11 @@
 #pragma once
 // using namespace std;
 
-#include "../LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class StartFeature : public GameRuleDefinition {
 private:

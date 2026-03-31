@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "DLCManager.h"
 #include "DLCUIDataFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 DLCUIDataFile::DLCUIDataFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_UIData, path) {

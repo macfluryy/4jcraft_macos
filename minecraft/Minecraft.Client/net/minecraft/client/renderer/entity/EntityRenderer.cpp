@@ -1,17 +1,24 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+
 #include "EntityRenderer.h"
 #include "EntityRenderDispatcher.h"
-#include "../../model/HumanoidModel.h"
-#include "../../player/LocalPlayer.h"
-#include "../../Options.h"
-#include "../texture/TextureAtlas.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Animal.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FireTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation EntityRenderer::SHADOW_LOCATION =
     ResourceLocation(TN__CLAMP__MISC_SHADOW);

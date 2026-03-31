@@ -1,9 +1,21 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "UIScene_AbstractContainerMenu.h"
-#include "../../../All Platforms/IUIScene_BrewingMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_BrewingMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Progress.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class InventoryMenu;
+class BrewingStandTileEntity;
+class UILayer;
 
 class UIScene_BrewingStandMenu : public UIScene_AbstractContainerMenu,
                                  public IUIScene_BrewingMenu {

@@ -1,66 +1,70 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "LocalPlayer.h"
-#include "../gui/inventory/BeaconScreen.h"
-#include "../gui/inventory/BrewingStandScreen.h"
-#include "../gui/EnchantmentScreen.h"
-#include "../gui/HopperScreen.h"
-#include "../gui/inventory/HorseInventoryScreen.h"
-#include "../gui/MerchantScreen.h"
-#include "../gui/RepairScreen.h"
-#include "../User.h"
-#include "Input.h"
-#include "../../stats/StatsCounter.h"
-#include "../particle/ParticleEngine.h"
-#include "../particle/TakeAnimationParticle.h"
-#include "../Options.h"
-#include "../gui/inventory/TextEditScreen.h"
-#include "../gui/inventory/ContainerScreen.h"
-#include "../gui/inventory/CraftingScreen.h"
-#include "../gui/inventory/FurnaceScreen.h"
-#include "../gui/inventory/TrapScreen.h"
+#include <math.h>
+#include <stdio.h>
+#include <iostream>
+#include <memory>
+#include <numbers>
 
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../server/level/CreativeMode.h"
-#include "../renderer/GameRenderer.h"
-#include "../renderer/ItemInHandRenderer.h"
+#include "LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/User.h"
+#include "Input.h"
+#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
+#include "Minecraft.Client/net/minecraft/client/particle/TakeAnimationParticle.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/GameRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/ItemInHandRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
-#include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/food/net.minecraft.world.food.h"
-#include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
-#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "nbt/com.mojang.nbt.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "../gui/achievement/AchievementPopup.h"
-#include "../particle/CritParticle.h"
-
+#include "Minecraft.Client/net/minecraft/client/particle/CritParticle.h"
 // 4J : WESTY : Added for new achievements.
 #include "Minecraft.World/net/minecraft/world/item/Item.h"
-#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-
 // 4J Stu - Added for tutorial callbacks
-#include "../Minecraft.h"
-
-#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/Boat.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/Pig.h"
-
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
-
 #include "Minecraft.World/net/minecraft/stats/CommonStats.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/App_structs.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/stats/Achievement.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/stats/Stat.h"
+#include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodConstants.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "Minecraft.World/net/minecraft/world/item/BowItem.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/CommandBlockEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/SignTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/net/minecraft/world/phys/HitResult.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)
@@ -1204,6 +1208,9 @@ void LocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
 
 // 4J TODO - Remove
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+
+class ModelPart;
+
 void LocalPlayer::mapPlayerChunk(const unsigned int flagTileType) {
     int cx = this->xChunk;
     int cz = this->zChunk;

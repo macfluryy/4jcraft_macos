@@ -1,5 +1,11 @@
 #pragma once
+#include <memory>
+
 #include "EntityRenderer.h"
+
+class Icon;
+class ItemFrame;
+class ResourceLocation;
 
 class ItemFrameRenderer : public EntityRenderer {
 private:

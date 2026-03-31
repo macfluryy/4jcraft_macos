@@ -1,16 +1,23 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
+#include <limits.h>
+#include <cstring>
+#include <cstdint>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "StatsCounter.h"
 #include "Minecraft.World/net/minecraft/stats/Stat.h"
 #include "Minecraft.World/net/minecraft/stats/Stats.h"
 #include "Minecraft.World/net/minecraft/stats/Achievement.h"
 #include "Minecraft.World/net/minecraft/stats/Achievements.h"
-#include "../client/player/LocalPlayer.h"
-
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-
-#include "../../../Common/Source Files/Leaderboards/LeaderboardManager.h"
-#include <cstring>
+#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_structs.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 Stat** StatsCounter::LARGE_STATS[] = {&Stats::walkOneM,     &Stats::swimOneM,
                                       &Stats::fallOneM,     &Stats::climbOneM,

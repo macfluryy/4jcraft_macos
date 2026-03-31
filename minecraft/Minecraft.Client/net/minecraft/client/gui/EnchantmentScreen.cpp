@@ -1,17 +1,23 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "EnchantmentScreen.h"
-#include <GL/gl.h>
 #include <memory>
 #include <string>
 #include <iterator>
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../Lighting.h"
-#include "../renderer/Textures.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include <algorithm>
+#include <sstream>
+
+#include "EnchantmentScreen.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
 #include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
-#include "../model/BookModel.h"
-#include "../Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+
+class Level;
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes (and iggy too)

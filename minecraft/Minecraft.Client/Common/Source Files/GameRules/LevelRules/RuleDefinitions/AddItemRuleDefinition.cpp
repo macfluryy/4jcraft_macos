@@ -1,10 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "AddItemRuleDefinition.h"
 #include "AddEnchantmentRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 AddItemRuleDefinition::AddItemRuleDefinition() {
     m_itemId = m_quantity = m_auxValue = m_dataTag = 0;
@@ -45,10 +50,6 @@ GameRuleDefinition* AddItemRuleDefinition::addChild(
         rule = new AddEnchantmentRuleDefinition();
         m_enchantments.push_back((AddEnchantmentRuleDefinition*)rule);
     } else {
-#ifndef _CONTENT_PACKAGE
-        // wprintf(L"AddItemRuleDefinition: Attempted to add invalid child rule
-        // - %d\n", ruleType );
-#endif
     }
     return rule;
 }

@@ -1,11 +1,17 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+#include <memory>
+
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "XboxStructureActionPlaceContainer.h"
-#include "../../LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/net.minecraft.world.level.levelgen.structure.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceContainer.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 
 XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer() {
     m_tile = Tile::chest_Id;

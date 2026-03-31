@@ -1,17 +1,25 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <algorithm>
+#include <numbers>
+
 #include "ParticleEngine.h"
 #include "Particle.h"
-#include "../renderer/Textures.h"
-#include "../renderer/texture/TextureAtlas.h"
-#include "../renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "TerrainParticle.h"
-#include "../resources/ResourceLocation.h"
-#include "../Camera.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+#include "Minecraft.Client/net/minecraft/client/Camera.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "java/Class.h"
+#include "java/Random.h"
 
 ResourceLocation ParticleEngine::PARTICLES_LOCATION =
     ResourceLocation(TN_PARTICLES);

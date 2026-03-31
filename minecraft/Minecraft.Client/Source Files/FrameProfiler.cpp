@@ -1,5 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Header Files/FrameProfiler.h"
 
 #ifdef ENABLE_FRAME_PROFILER
 

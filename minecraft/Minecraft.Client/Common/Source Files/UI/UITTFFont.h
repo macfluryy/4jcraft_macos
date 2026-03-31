@@ -1,5 +1,10 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
 class UITTFFont {
 private:
     std::uint8_t* pbData;

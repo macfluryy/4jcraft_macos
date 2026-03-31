@@ -1,14 +1,27 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <utility>
+#include <vector>
+
 #include "HumanoidMobRenderer.h"
-#include "../tileentity/SkullTileRenderer.h"
-#include "../../model/HumanoidModel.h"
-#include "../../model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/SkullTileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/Facing.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/ArmorItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/ItemInHandRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 const std::wstring HumanoidMobRenderer::MATERIAL_NAMES[5] = {
     L"cloth", L"chain", L"iron", L"diamond", L"gold"};

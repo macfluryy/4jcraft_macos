@@ -1,9 +1,18 @@
 #pragma once
 class Mob;
 class Options;
+class C4JThread;
+class Random;
+
 using namespace std;
+#include <string>
+
 #include "Minecraft.World/Header Files/SoundTypes.h"
 #include "./miniaudio.h"
+#include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.Client/Common/Source Files/Audio/Consoles_SoundEngine.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
 constexpr float SFX_3D_MIN_DISTANCE = 1.0f;
 constexpr float SFX_3D_MAX_DISTANCE = 16.0f;
 constexpr float SFX_3D_ROLLOFF = 0.5f;

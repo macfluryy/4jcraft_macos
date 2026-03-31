@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 class LevelRuleset;
 
 class LevelRules {

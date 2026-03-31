@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 #include "IUIScene_AbstractContainerMenu.h"
 
 class BeaconTileEntity;

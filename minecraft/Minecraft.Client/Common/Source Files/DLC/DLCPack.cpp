@@ -1,4 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+#include <algorithm>
+#include <sstream>
+#include <utility>
+
 #include "DLCPack.h"
 #include "DLCSkinFile.h"
 #include "DLCCapeFile.h"
@@ -10,6 +14,14 @@
 #include "DLCAudioFile.h"
 #include "DLCColourTableFile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 
 DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_dataPath = L"";

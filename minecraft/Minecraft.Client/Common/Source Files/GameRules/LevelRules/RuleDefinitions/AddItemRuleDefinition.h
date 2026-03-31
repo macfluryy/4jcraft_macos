@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class Container;
 class AddEnchantmentRuleDefinition;

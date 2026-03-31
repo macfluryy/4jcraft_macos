@@ -1,7 +1,20 @@
 #pragma once
 #ifdef _DEBUG_MENUS_ENABLED
-#include "../../UIScene.h"
-#include "../../Controls/UIControl_ButtonList.h"
+#include <ranges>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "java/Class.h"
+
+class UILayer;
 
 class UIScene_DebugOverlay : public UIScene {
 private:

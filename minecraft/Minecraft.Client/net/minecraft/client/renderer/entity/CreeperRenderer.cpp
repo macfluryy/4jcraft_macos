@@ -1,8 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <memory>
+
 #include "CreeperRenderer.h"
-#include "../../model/CreeperModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.Client/net/minecraft/client/model/CreeperModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Creeper.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation CreeperRenderer::POWER_LOCATION =
     ResourceLocation(TN_POWERED_CREEPER);

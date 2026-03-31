@@ -1,10 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "MinecartRenderer.h"
+#include <math.h>
+#include <stdint.h>
 #include <optional>
-#include "../../model/MinecartModel.h"
-#include "../texture/TextureAtlas.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include <numbers>
+
+#include "MinecartRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/model/MinecartModel.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Tile;
 
 ResourceLocation MinecartRenderer::MINECART_LOCATION(TN_ITEM_CART);
 

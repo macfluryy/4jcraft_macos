@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIComponent_Logo.h"
+#include "Minecraft.Client/Common/Source Files/UI/Components/UIComponent_Logo.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 UIComponent_Logo::UIComponent_Logo(int iPad, void* initData,
                                    UILayer* parentLayer)

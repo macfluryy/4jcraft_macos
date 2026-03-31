@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../UIScene.h"
-#include "../../All Platforms/IUIScene_PauseMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_PauseMenu.h"
 
 #define BUTTON_PAUSE_RESUMEGAME 0
 #define BUTTON_PAUSE_HELPANDOPTIONS 1

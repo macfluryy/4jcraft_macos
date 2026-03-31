@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 #define TUTORIAL_POPUP_FADE_TIMER_ID 0
 #define TUTORIAL_POPUP_MOVE_SCENE_TIMER_ID 1

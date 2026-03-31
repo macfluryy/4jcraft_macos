@@ -2,6 +2,7 @@
 #include "MobRenderer.h"
 
 class BatModel;
+class ResourceLocation;
 
 class BatRenderer : public MobRenderer {
     static ResourceLocation BAT_LOCATION;

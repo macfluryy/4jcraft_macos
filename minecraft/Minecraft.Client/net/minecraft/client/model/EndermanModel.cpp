@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "EndermanModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
 
 EndermanModel::EndermanModel() : HumanoidModel(0, -14, 64, 32) {
     carrying = false;

@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIScene_Timer.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/UIScene_Timer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+
+class UILayer;
 
 UIScene_Timer::UIScene_Timer(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {

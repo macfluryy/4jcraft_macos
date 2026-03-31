@@ -1,7 +1,12 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 #include "DLCGameRules.h"
-#include "../GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+
+class StringTable;
 
 class DLCGameRulesHeader : public DLCGameRules, public JustGrSource {
 private:

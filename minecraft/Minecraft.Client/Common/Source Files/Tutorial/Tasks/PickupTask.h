@@ -1,8 +1,12 @@
 #pragma once
+#include <format>
+
 // using namespace std;
 #include "TutorialTask.h"
 
 class ItemInstance;
+class Tutorial;
+class TutorialConstraint;
 
 class PickupTask : public TutorialTask {
 public:

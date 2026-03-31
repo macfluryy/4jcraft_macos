@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "WindowsLeaderboardManager.h"
 

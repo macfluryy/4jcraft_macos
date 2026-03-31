@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DLCFile.h"
-#include "../GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
 
 class DLCGameRules : public DLCFile {
 public:

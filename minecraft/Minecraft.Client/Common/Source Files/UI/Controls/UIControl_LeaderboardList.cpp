@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_LeaderboardList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_LeaderboardList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIControl_LeaderboardList::UIControl_LeaderboardList() {}
 

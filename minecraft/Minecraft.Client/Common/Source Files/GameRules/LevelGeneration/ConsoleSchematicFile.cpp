@@ -1,16 +1,34 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
+#include <string.h>
 #include <vector>
-#include "nbt/com.mojang.nbt.h"
-#include "java/System.h"
+#include <algorithm>
+#include <string>
+#include <unordered_map>
+
 #include "ConsoleSchematicFile.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
+#include "Minecraft.World/net/minecraft/world/entity/ItemFrame.h"
+#include "Minecraft.World/net/minecraft/world/entity/Painting.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
+#include "Minecraft.World/net/minecraft/world/level/TilePos.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/Class.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/IntTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/NbtIo.h"
+#include "nbt/Tag.h"
 
 ConsoleSchematicFile::ConsoleSchematicFile() {
     m_xSize = m_ySize = m_zSize = 0;
@@ -152,10 +170,6 @@ void ConsoleSchematicFile::load(DataInputStream* dis) {
                     y = ((IntTag*)eTag->get(L"TileY"))->data;
                     z = ((IntTag*)eTag->get(L"TileZ"))->data;
                 }
-#ifdef _DEBUG
-                // app.DebugPrintf(1,"Loaded entity type %d at
-                // (%f,%f,%f)\n",(int)type,x,y,z);
-#endif
                 m_entities.push_back(std::pair<Vec3, CompoundTag*>(
                     Vec3(x, y, z), (CompoundTag*)eTag->copy()));
             }

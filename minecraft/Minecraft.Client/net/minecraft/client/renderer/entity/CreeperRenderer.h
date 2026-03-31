@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class CreeperRenderer : public MobRenderer {
 private:
     static ResourceLocation POWER_LOCATION;

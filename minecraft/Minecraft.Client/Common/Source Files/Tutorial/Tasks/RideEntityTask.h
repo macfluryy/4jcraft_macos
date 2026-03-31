@@ -1,8 +1,12 @@
 #pragma once
 
+#include <format>
+
 #include "TutorialTask.h"
 
 class Level;
+class Tutorial;
+class TutorialConstraint;
 
 // 4J-JEV: Tasks that involve riding an entity.
 class RideEntityTask : public TutorialTask {

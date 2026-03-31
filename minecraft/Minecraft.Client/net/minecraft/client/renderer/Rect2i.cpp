@@ -1,4 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+
 #include "Rect2i.h"
 
 Rect2i::Rect2i(int x, int y, int width, int height) {

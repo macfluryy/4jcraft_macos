@@ -1,10 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "DeathScreen.h"
 #include "Button.h"
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "PauseScreen.h"
-#include "../title/TitleScreen.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 void DeathScreen::init() {
     buttons.clear();

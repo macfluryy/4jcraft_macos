@@ -1,16 +1,36 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <math.h>
+#include <vector>
+
 #include "ItemRenderer.h"
-#include "../TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
 #include "EntityRenderDispatcher.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
-#include "../../Options.h"
-#include "../texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/Random.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/ItemInHandRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
+
+class ResourceLocation;
 
 ItemRenderer::ItemRenderer() : EntityRenderer() {
     random = new Random();

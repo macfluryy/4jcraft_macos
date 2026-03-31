@@ -1,5 +1,7 @@
 #pragma once
 #include <cstdint>
+#include <unordered_map>
+
 class Stat;
 class Achievement;
 class StatsSyncher;

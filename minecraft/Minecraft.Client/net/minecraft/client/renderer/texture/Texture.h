@@ -1,5 +1,9 @@
 #pragma once
 
+#include <GL/gl.h>
+#include <format>
+#include <string>
+
 class Rect2i;
 class ByteBuffer;
 class BufferedImage;

@@ -1,11 +1,15 @@
 #pragma once
-#include "../Textures.h"
-#include "../../resources/ResourceLocation.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 class TileEntityRenderDispatcher;
 class TileEntity;
 class Level;
 class Font;
+class ResourceLocation;
 
 class TileEntityRenderer {
 protected:

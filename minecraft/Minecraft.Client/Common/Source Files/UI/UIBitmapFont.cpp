@@ -1,10 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-
-#include "../../../Header Files/BufferedImage.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
 #include "UIFontData.h"
-
-#include <unordered_set>
-
 #include "UIBitmapFont.h"
 
 /////////////////////////////

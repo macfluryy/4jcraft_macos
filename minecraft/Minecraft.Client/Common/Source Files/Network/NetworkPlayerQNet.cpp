@@ -1,5 +1,10 @@
 #include "NetworkPlayerQNet.h"
 
+#include <limits.h>
+
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/System.h"
+
 NetworkPlayerQNet::NetworkPlayerQNet(IQNetPlayer* qnetPlayer) {
     m_qnetPlayer = qnetPlayer;
     m_pSocket = nullptr;

@@ -1,18 +1,18 @@
 #include <thread>
 #include <chrono>
 
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "IUIScene_PauseMenu.h"
-#include "../UIScene.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/server/MinecraftServer.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "../../../../net/minecraft/client/ProgressRenderer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
-#include "../../../../net/minecraft/client/skins/TexturePackRepository.h"
-#include "../../../../net/minecraft/client/skins/TexturePack.h"
-#include "../../../../net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 int IUIScene_PauseMenu::ExitGameDialogReturned(

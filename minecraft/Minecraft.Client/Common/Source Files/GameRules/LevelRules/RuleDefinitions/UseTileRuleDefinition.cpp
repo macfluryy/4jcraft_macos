@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "UseTileRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/UseTileRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 UseTileRuleDefinition::UseTileRuleDefinition() {
     m_tileId = -1;

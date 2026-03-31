@@ -1,7 +1,13 @@
 #pragma once
 // using namespace std;
 #include <cstdint>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "DLCManager.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
 
 class DLCFile;
 class DLCSkinFile;

@@ -1,20 +1,43 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <float.h>
 #include <mutex>
+#include <algorithm>
+#include <cmath>
+#include <compare>
+#include <string>
+#include <utility>
+
 #include "MultiPlayerLevel.h"
 #include "MultiPlayerLocalPlayer.h"
 #include "ClientConnection.h"
 #include "MultiPlayerChunkCache.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/Pos.h"
-#include "../../server/MinecraftServer.h"
-#include "../../server/level/ServerLevel.h"
-#include "../Minecraft.h"
-#include "../particle/FireworksParticles.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/PrimedTnt.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/FireworksParticles.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 #include "java/JavaMath.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "Minecraft.World/net/minecraft/world/level/GameRules.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/MockedLevelStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/SavedDataStorage.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/Random.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
+
+class LevelSettings;
+class Scoreboard;
 
 MultiPlayerLevel::ResetInfo::ResetInfo(int x, int y, int z, int tile,
                                        int data) {

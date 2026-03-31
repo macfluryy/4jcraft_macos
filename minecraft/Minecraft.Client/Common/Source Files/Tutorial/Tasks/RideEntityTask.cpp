@@ -1,13 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-
-#include <string>
-
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../Tutorial.h"
-
-#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include <memory>
 
 #include "RideEntityTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 RideEntityTask::RideEntityTask(const int eType, Tutorial* tutorial,
                                int descriptionId, bool enablePreCompletion,

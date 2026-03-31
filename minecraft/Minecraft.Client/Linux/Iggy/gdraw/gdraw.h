@@ -1,8 +1,10 @@
 #ifndef __LINUX_IGGY_GDRAW_H__
 #define __LINUX_IGGY_GDRAW_H__
 
-#include "../../../Windows64/Iggy/include/gdraw.h"
-#include "../../../Windows64/Iggy/include/iggy.h"
+#include "Minecraft.Client/Windows64/Iggy/include/gdraw.h"
+
+#include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 #ifdef __cplusplus
 extern "C" {

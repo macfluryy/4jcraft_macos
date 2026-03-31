@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class PigRenderer : public MobRenderer {
 private:
     static ResourceLocation PIG_LOCATION;

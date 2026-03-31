@@ -1,8 +1,13 @@
 #pragma once
 
+#include <format>
+#include <string>
+#include <unordered_map>
+
 class Texture;
 class Stitcher;
 class TexturePack;
+class BufferedImage;
 
 class TextureManager {
 private:

@@ -1,6 +1,12 @@
 #pragma once
 
-#include "../../UIScene.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+
+class UILayer;
 
 class UIScene_Intro : public UIScene {
 private:

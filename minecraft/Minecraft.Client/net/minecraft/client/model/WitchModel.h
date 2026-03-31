@@ -1,6 +1,8 @@
 #pragma once
 #include "VillagerModel.h"
 
+class ModelPart;
+
 class WitchModel : public VillagerModel {
 public:
     bool holdingItem;

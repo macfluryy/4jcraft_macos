@@ -1,8 +1,13 @@
 #pragma once
+#include <string>
+#include <vector>
+
 #include "GuiComponent.h"
+
 class Button;
 class GuiParticles;
 class Minecraft;
+class Font;
 
 class Screen : public GuiComponent {
 protected:

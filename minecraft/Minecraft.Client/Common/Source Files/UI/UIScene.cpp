@@ -1,12 +1,31 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
 #include <mutex>
-#include "UI.h"
-#include "UIScene.h"
+#include <cstddef>
+#include <utility>
 
-#include "../../../net/minecraft/client/Lighting.h"
-#include "../../../net/minecraft/client/player/LocalPlayer.h"
-#include "../../../net/minecraft/client/renderer/entity/ItemRenderer.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "UIScene.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIController.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIGroup.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/System.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+
+class MultiplayerLocalPlayer;
 
 UIScene::UIScene(int iPad, UILayer* parentLayer) {
     m_parentLayer = parentLayer;
@@ -718,11 +737,6 @@ void UIScene::navigateBack() {
     ui.NavigateBack(m_iPad);
 
     if (m_parentLayer == nullptr) {
-//		app.DebugPrintf("A scene is trying to navigate back, but it's
-// parent layer is nullptr!\n");
-#if !defined(_CONTENT_PACKAGE)
-//		__debugbreak();
-#endif
     } else {
         //		m_parentLayer->removeScene(this);
     }

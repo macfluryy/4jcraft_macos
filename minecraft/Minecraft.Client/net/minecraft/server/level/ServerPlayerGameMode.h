@@ -1,10 +1,13 @@
 #pragma once
+#include <memory>
+
 class ServerPlayer;
 class Level;
 class ItemInstance;
 class ServerLevel;
 class GameRulesInstance;
 class GameType;
+class Player;
 
 class ServerPlayerGameMode {
 public:

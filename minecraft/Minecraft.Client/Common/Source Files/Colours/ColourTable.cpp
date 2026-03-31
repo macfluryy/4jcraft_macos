@@ -1,6 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <utility>
+#include <vector>
+
 #include "ColourTable.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
 
 std::unordered_map<std::wstring, eMinecraftColour>
     ColourTable::s_colourNamesMap;

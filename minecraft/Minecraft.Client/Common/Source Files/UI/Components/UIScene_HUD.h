@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../UIScene.h"
-#include "../All Platforms/IUIScene_HUD.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_HUD.h"
 
 #define CHAT_LINES_COUNT 10
 

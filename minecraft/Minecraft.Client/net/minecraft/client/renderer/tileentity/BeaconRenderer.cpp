@@ -1,8 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include <GL/gl.h>
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "BeaconRenderer.h"
-#include "../Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BeaconTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation BeaconRenderer::BEAM_LOCATION =
     ResourceLocation(TN_MISC_BEACON_BEAM);

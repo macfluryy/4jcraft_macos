@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class GuiMessage {
 public:
     std::wstring string;

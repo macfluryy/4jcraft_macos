@@ -1,7 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "UIControl.h"
-#include "../UIString.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 // This class maps to the FJ_Base class in actionscript
 class UIControl_Base : public UIControl {

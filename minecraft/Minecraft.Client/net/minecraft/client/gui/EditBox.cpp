@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "EditBox.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 EditBox::EditBox(Screen* screen, Font* font, int x, int y, int width,
                  int height, const std::wstring& value) {

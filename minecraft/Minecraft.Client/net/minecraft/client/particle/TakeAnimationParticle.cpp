@@ -1,9 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+
 #include "TakeAnimationParticle.h"
-#include "../renderer/entity/EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
 
 TakeAnimationParticle::TakeAnimationParticle(Level* level,
                                              std::shared_ptr<Entity> item,

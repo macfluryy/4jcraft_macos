@@ -1,9 +1,16 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 #include "AbstractTexturePack.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
 
 class DLCPack;
 class StringTable;
+class ArchiveFile;
+class TexturePack;
 
 class DLCTexturePack : public AbstractTexturePack {
 private:

@@ -1,5 +1,8 @@
-﻿#include "Minecraft.World/Header Files/stdafx.h"
+﻿#include <assert.h>
+#include <utility>
+
 #include "UIFontData.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 /////////////////////////////////////////////////////
 //  --- -- --- THIS FILE IS IN UNICODE  --- -- --- //

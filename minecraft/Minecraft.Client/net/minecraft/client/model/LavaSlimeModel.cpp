@@ -1,8 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include <memory>
+
 #include "LavaSlimeModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/LavaSlime.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 
 LavaSlimeModel::LavaSlimeModel() {
     for (int i = 0; i < BODYCUBESLENGTH; i++) {

@@ -1,9 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "MobSpawnerRenderer.h"
-#include "TileEntityRenderDispatcher.h"
-#include "../entity/EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 void MobSpawnerRenderer::render(std::shared_ptr<TileEntity> _spawner, double x,
                                 double y, double z, float a, bool setColor,

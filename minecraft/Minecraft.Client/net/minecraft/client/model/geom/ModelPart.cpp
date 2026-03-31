@@ -1,7 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <numbers>
+
 #include "TexOffs.h"
 #include "ModelPart.h"
 #include "Cube.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 
 const float ModelPart::RAD = (180.0f / std::numbers::pi);
 

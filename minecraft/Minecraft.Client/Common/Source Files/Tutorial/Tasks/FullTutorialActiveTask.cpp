@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "FullTutorialActiveTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
 
 FullTutorialActiveTask::FullTutorialActiveTask(
     Tutorial* tutorial,

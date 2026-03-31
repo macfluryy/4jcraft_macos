@@ -1,10 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../UI.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "../../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../../../../net/minecraft/client/Minecraft.h"
+#include <assert.h>
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_HorseInventoryMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HorseInventoryMenu.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/inventory/HorseInventoryMenu.h"
+
+class UILayer;
 
 UIScene_HorseInventoryMenu::UIScene_HorseInventoryMenu(int iPad,
                                                        void* _initData,

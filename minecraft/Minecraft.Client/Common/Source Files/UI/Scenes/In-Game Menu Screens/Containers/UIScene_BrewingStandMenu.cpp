@@ -1,10 +1,20 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../UI.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../../../../../net/minecraft/client/Minecraft.h"
+#include <assert.h>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_BrewingStandMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_BrewingStandMenu.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/inventory/BrewingStandMenu.h"
+#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionBrewing.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+
+class UILayer;
 
 UIScene_BrewingStandMenu::UIScene_BrewingStandMenu(int iPad, void* _initData,
                                                    UILayer* parentLayer)

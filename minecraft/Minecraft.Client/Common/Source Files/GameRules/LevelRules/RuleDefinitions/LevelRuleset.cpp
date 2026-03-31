@@ -1,8 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../../../Localisation/StringTable.h"
-#include "../../ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
 #include "LevelRuleset.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/CompoundGameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/NamedAreaRuleDefinition.h"
+
+class AABB;
 
 LevelRuleset::LevelRuleset() { m_stringTable = nullptr; }
 

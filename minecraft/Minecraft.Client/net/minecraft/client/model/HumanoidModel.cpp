@@ -1,8 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "HumanoidModel.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 // 4J added
 

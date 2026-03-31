@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class GiantMobRenderer : public MobRenderer {
 private:
     static ResourceLocation ZOMBIE_LOCATION;

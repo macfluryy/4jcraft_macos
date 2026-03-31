@@ -1,8 +1,13 @@
 #pragma once
+#include <memory>
+
 #include "Culler.h"
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 
 class Mob;
+class AABB;
+class LivingEntity;
+
 class ViewportCuller : public Culler {
 private:
     class Face {

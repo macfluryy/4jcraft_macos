@@ -1,5 +1,8 @@
 #pragma once
+#include <string>
+
 #include "Screen.h"
+
 class Button;
 class EditBox;
 

@@ -1,15 +1,20 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <vector>
+
 #include "ServerLevelListener.h"
 #include "EntityTracker.h"
-#include "../MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
-#include "../PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "PlayerChunkMap.h"
-#include "../network/PlayerConnection.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/network/packet/LevelEventPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/LevelSoundPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/TileDestructionPacket.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
 
 ServerLevelListener::ServerLevelListener(MinecraftServer* server,
                                          ServerLevel* level) {

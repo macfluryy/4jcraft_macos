@@ -1,11 +1,17 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/Header Files/ParticleTypes.h"
 #include "ParticleEngine.h"
+
 class Tesselator;
 class CompoundTag;
 class Icon;
+class Level;
+class Textures;
 
 class Particle : public Entity {
 protected:

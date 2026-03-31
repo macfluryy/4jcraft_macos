@@ -1,8 +1,14 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 #include "TexturePack.h"
 
 class BufferedImage;
+class ColourTable;
+class File;
+class InputStream;
 
 class AbstractTexturePack : public TexturePack {
 private:

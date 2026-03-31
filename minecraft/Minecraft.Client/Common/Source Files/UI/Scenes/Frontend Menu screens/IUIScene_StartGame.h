@@ -1,6 +1,17 @@
 #pragma once
 
-#include "../../UIScene.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_BitmapIcon.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_TexturePackList.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 // Shared functions between CreteWorld, Load and Join
 class IUIScene_StartGame : public UIScene {

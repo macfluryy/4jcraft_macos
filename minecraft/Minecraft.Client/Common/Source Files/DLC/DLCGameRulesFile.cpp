@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "DLCManager.h"
 #include "DLCGameRulesFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCGameRules.h"
 
 DLCGameRulesFile::DLCGameRulesFile(const std::wstring& path)
     : DLCGameRules(DLCManager::e_DLCType_GameRules, path) {

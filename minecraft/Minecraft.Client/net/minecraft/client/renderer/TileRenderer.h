@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <unordered_map>
+
 class Level;
 class LevelSource;
 class Tile;

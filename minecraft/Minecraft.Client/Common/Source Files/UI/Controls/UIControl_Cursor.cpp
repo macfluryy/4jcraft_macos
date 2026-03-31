@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_Cursor.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Cursor.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
 
 UIControl_Cursor::UIControl_Cursor() {}
 

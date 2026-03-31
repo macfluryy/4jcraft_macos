@@ -1,10 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../model/geom/ModelPart.h"
+#include <GL/gl.h>
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "MushroomCowRenderer.h"
-#include "../texture/TextureAtlas.h"
-#include "../../model/QuadrupedModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/model/QuadrupedModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/MushroomCow.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/PlantTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation MushroomCowRenderer::MOOSHROOM_LOCATION =
     ResourceLocation(TN_MOB_RED_COW);

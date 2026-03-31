@@ -1,8 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "TileEntityRenderer.h"
 
 class SkeletonHeadModel;
+class ResourceLocation;
 
 class SkullTileRenderer : public TileEntityRenderer {
 public:

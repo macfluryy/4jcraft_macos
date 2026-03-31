@@ -1,13 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "TexturePackRepository.h"
 #include "DefaultTexturePack.h"
 #include "FileTexturePack.h"
 #include "FolderTexturePack.h"
 #include "DLCTexturePack.h"
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "java/File.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../gui/Minimap.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Minimap.h"
 
 TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = nullptr;
 

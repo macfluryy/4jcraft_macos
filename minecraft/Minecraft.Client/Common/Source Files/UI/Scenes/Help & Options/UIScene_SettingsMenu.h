@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 #define BUTTON_ALL_OPTIONS 0
 #define BUTTON_ALL_AUDIO 1

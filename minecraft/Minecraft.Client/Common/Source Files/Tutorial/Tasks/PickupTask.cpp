@@ -1,5 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "PickupTask.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 
 void PickupTask::onTake(std::shared_ptr<ItemInstance> item,
                         unsigned int invItemCountAnyAux,

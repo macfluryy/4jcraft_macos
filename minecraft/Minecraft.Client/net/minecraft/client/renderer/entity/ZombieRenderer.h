@@ -1,8 +1,12 @@
 #pragma once
+#include <memory>
+
 #include "HumanoidMobRenderer.h"
 
 class VillagerZombieModel;
 class Zombie;
+class HumanoidModel;
+class ResourceLocation;
 
 class ZombieRenderer : public HumanoidMobRenderer {
 private:

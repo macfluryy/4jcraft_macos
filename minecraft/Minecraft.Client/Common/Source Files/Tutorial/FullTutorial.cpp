@@ -1,15 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
-#include "../GameRules/ConsoleGameRules.h"
-#include "Hints/DiggerItemHint.h"
-#include "Tasks/TutorialTasks.h"
-#include "Hints/AreaHint.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/DiggerItemHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTasks.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/AreaHint.h"
 #include "FullTutorial.h"
-#include "Constraints/TutorialConstraints.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraints.h"
 
 FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     : Tutorial(iPad, true) {

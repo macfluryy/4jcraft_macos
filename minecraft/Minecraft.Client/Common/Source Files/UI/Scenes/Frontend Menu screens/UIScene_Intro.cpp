@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
 #include "UIScene_Intro.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/Frontend Menu screens/UIScene_Intro.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+
+class UILayer;
 
 #if !defined(_ENABLEIGGY)
 static int s_introTickCount = 0;

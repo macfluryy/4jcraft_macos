@@ -1,7 +1,10 @@
 #pragma once
+#include <memory>
+
 #include "MinecartRenderer.h"
 
 class MinecartSpawner;
+class Tile;
 
 class MinecartSpawnerRenderer : public MinecartRenderer {
 protected:

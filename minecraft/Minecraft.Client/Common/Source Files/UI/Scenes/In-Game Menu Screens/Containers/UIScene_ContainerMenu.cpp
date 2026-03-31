@@ -1,15 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../UI.h"
-#include "UIScene_ContainerMenu.h"
+#include <assert.h>
+#include <memory>
 
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "../../../../../../net/minecraft/client/player/LocalPlayer.h"
-#include "../../../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../Tutorial/Tutorial.h"
-#include "../../../../Tutorial/TutorialMode.h"
-#include "../../../../Tutorial/TutorialEnum.h"
+#include "UIScene_ContainerMenu.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_ContainerMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/Container.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/ContainerMenu.h"
+
+class UILayer;
 
 UIScene_ContainerMenu::UIScene_ContainerMenu(int iPad, void* _initData,
                                              UILayer* parentLayer)

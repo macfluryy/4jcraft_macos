@@ -1,8 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "SkeletonModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Skeleton.h"
+#include "Minecraft.Client/net/minecraft/client/model/ZombieModel.h"
 
 void SkeletonModel::_init(float g) {
     arm0 = new ModelPart(this, 24 + 16, 16);

@@ -1,4 +1,8 @@
 #pragma once
+#include <cstdint>
+#include <string>
+#include <vector>
+
 #include "DLCFile.h"
 
 class DLCAudioFile : public DLCFile {

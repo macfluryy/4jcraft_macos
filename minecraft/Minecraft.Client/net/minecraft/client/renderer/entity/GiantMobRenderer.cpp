@@ -1,5 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "GiantMobRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation GiantMobRenderer::ZOMBIE_LOCATION =
     ResourceLocation(TN_ITEM_ARROWS);

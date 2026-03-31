@@ -1,5 +1,5 @@
 #pragma once
-#include "../renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 
 typedef std::vector<_TEXTURE_NAME> textureNameArray;
 class ResourceLocation {

@@ -1,5 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SlideButton.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 
 SlideButton::SlideButton(int id, int x, int y, const Options::Option* option,
                          const std::wstring& msg, float value)

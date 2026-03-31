@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Particle.h"
+#include "java/Class.h"
+
+class Level;
+class ResourceLocation;
+class Textures;
 
 class HugeExplosionParticle : public Particle {
 private:

@@ -1,6 +1,8 @@
 #pragma once
 #include "MobRenderer.h"
 
+class ResourceLocation;
+
 class BlazeRenderer : public MobRenderer {
 private:
     static ResourceLocation BLAZE_LOCATION;

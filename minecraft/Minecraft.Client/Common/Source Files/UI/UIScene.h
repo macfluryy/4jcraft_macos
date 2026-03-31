@@ -5,13 +5,48 @@
 //  A scene map directly to an Iggy movie (or more accurately a collection of
 //  different sized movies)
 
+#include <stddef.h>
 #include <cstdint>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
-#include "All Platforms/UIEnums.h"
-#include "Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_BeaconEffectButton.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_BitmapIcon.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Cursor.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_DLCList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_DynamicLabel.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_EnchantmentBook.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_EnchantmentButton.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_HTMLLabel.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_LeaderboardList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_MinecraftHorse.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_MinecraftPlayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_PlayerList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_PlayerSkinPreview.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Progress.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SaveList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_TexturePackList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/Containers/UIScene_TradingMenu.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class ItemRenderer;
 class UILayer;
+class ItemInstance;
+class UIControl;
 
 // 4J Stu - Setup some defines for quickly mapping elements in the scene
 

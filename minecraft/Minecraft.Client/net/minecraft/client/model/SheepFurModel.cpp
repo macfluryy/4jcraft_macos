@@ -1,7 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include <memory>
+
 #include "SheepFurModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Sheep.h"
+#include "Minecraft.Client/net/minecraft/client/model/QuadrupedModel.h"
 
 SheepFurModel::SheepFurModel() : QuadrupedModel(12, 0) {
     headXRot = 0.0f;

@@ -1,6 +1,8 @@
 #pragma once
 #include "TileEntityRenderer.h"
-#include "../../model/ChestModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/ChestModel.h"
+
+class ResourceLocation;
 
 class EnderChestRenderer : public TileEntityRenderer {
 private:

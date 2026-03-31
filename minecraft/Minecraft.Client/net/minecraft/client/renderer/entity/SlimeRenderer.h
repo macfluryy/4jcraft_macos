@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class SlimeRenderer : public MobRenderer {
 private:
     Model* armor;

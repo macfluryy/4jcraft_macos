@@ -1,8 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "geom/ModelPart.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "OcelotModel.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Ocelot.h"
 
 const float OcelotModel::xo = 0;
 const float OcelotModel::yo = 16;

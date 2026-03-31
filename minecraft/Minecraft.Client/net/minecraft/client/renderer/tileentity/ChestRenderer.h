@@ -2,6 +2,7 @@
 #include "TileEntityRenderer.h"
 
 class ChestModel;
+class ResourceLocation;
 
 class ChestRenderer : public TileEntityRenderer {
 private:

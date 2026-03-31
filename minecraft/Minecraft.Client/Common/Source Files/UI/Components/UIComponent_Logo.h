@@ -1,6 +1,11 @@
 #pragma once
 
-#include "../UIScene.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+
+class UILayer;
 
 class UIComponent_Logo : public UIScene {
 public:

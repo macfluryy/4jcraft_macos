@@ -1,6 +1,13 @@
 #pragma once
 
+#include <stdint.h>
+#include <string>
+
 #include "NetworkPlayerInterface.h"
+#include "4J.Common/4J_Compat.h"
+
+class IQNetPlayer;
+class Socket;
 
 // This is an implementation of the INetworkPlayer interface for the supported
 // QNet-backed path. It

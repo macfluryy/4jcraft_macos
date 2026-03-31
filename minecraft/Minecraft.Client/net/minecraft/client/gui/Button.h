@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "GuiComponent.h"
+
+class Minecraft;
 
 class Button : public GuiComponent {
 protected:

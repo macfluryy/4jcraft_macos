@@ -1,6 +1,6 @@
 #pragma once
 // using namespace std;
-#include "../Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "TutorialTask.h"
 
 class StateChangeTask : public TutorialTask {

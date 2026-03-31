@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "CritParticle2.h"
 #include "java/JavaMath.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 void CritParticle2::_init(double xa, double ya, double za, float scale) {
     xd *= 0.1f;

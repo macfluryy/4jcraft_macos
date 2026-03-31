@@ -1,11 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+#include <algorithm>
+
 #include "ConsoleGenerateStructure.h"
-#include "../ConsoleGameRules.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/net.minecraft.world.level.levelgen.structure.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/net.minecraft.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleGenerateStructure.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionGenerateBox.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceContainer.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceSpawner.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/Direction.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 ConsoleGenerateStructure::ConsoleGenerateStructure() : StructurePiece(0) {
     m_x = m_y = m_z = 0;

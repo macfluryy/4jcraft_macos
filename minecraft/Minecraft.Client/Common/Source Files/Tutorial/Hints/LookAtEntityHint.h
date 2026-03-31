@@ -3,8 +3,10 @@
 
 #include "java/Class.h"
 #include "TutorialHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
 
 class ItemInstance;
+class Tutorial;
 
 class LookAtEntityHint : public TutorialHint {
 private:

@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "Screen.h"
+
+class Button;
 
 class NameEntryScreen : public Screen {
 private:

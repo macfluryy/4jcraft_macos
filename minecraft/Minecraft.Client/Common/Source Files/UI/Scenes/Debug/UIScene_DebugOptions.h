@@ -1,7 +1,13 @@
 #pragma once
 
-#include "../../UIScene.h"
-#include "../../Controls/UIControl_CheckBox.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+
+class UILayer;
 
 class UIScene_DebugOptionsMenu : public UIScene {
 private:

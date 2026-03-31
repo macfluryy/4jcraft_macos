@@ -1,4 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+
 #include "Stitcher.h"
 #include "Texture.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"

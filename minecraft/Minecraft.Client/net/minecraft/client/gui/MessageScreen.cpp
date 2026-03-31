@@ -1,5 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "MessageScreen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 MessageScreen::MessageScreen(const std::wstring& message) {
     this->message = message;

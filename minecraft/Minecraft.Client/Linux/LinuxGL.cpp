@@ -1,11 +1,10 @@
 #ifdef __linux__
 
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "4J_Render.h"
-
+#include "4J.Render/4J_Render.h"
 #include "java/IntBuffer.h"
 #include "java/FloatBuffer.h"
 #include "java/ByteBuffer.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 extern C4JRender RenderManager;
 
@@ -108,6 +107,11 @@ void glTexGen_4J(int, int, FloatBuffer*) {}
 
 // query objects
 #include <dlfcn.h>
+#include <GL/gl.h>
+#include <GL/glext.h>
+#include <stdio.h>
+#include <string.h>
+
 static PFNGLGENQUERIESARBPROC _glGenQueriesARB = nullptr;
 static PFNGLBEGINQUERYARBPROC _glBeginQueryARB = nullptr;
 static PFNGLENDQUERYARBPROC _glEndQueryARB = nullptr;

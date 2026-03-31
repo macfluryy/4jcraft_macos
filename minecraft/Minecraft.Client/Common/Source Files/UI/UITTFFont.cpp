@@ -1,7 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "UI.h"
+#include <assert.h>
+#include <cstdio>
+
 #include "Minecraft.World/Header Files/PortableFileIO.h"
 #include "UITTFFont.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UITTFFont::UITTFFont(const std::string& name, const std::string& path,
                      S32 fallbackCharacter)

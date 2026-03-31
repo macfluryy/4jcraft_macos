@@ -1,9 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
 
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "AreaConstraint.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraint.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 AreaConstraint::AreaConstraint(int descriptionId, double x0, double y0,
                                double z0, double x1, double y1, double z1,

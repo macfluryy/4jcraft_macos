@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ChoiceTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+
+class Tutorial;
 
 // Same as choice task, but switches description based on horse type.
 class HorseChoiceTask : public ChoiceTask {

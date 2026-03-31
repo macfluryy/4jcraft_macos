@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/JavaMath.h"
 #include "SpellParticle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 SpellParticle::SpellParticle(Level* level, double x, double y, double z,
                              double xa, double ya, double za)

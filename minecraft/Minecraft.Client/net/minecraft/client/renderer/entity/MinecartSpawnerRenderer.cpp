@@ -1,8 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "MinecartSpawnerRenderer.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "../tileentity/MobSpawnerRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/MobSpawnerRenderer.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartSpawner.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MinecartRenderer.h"
 
 void MinecartSpawnerRenderer::renderMinecartContents(
     std::shared_ptr<MinecartSpawner> cart, float a, Tile* tile, int tileData) {

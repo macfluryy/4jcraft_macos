@@ -1,17 +1,26 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "RepairScreen.h"
 #include <GL/gl.h>
 #include <memory>
 #include <string>
+
+#include "RepairScreen.h"
 #include "EditBox.h"
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../Lighting.h"
-#include "../renderer/Textures.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/inventory/AnvilMenu.h"
 #include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
-#include "../multiplayer/ClientConnection.h"
-#include "../Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.World/net/minecraft/network/packet/CustomPayloadPacket.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
+
+class Inventory;
+class Level;
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // IUIScene_AnvilMenu (from iggy UI)

@@ -1,6 +1,8 @@
 #pragma once
 #include "Screen.h"
 
+class Minecraft;
+
 class PauseScreen : public Screen {
 private:
     int saveStep;

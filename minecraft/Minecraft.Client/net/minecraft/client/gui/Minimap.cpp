@@ -1,12 +1,21 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Minecraft.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <wchar.h>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minimap.h"
 #include "Font.h"
-#include "../Options.h"
-#include "../renderer/Textures.h"
-#include "../renderer/Tesselator.h"
-#include "Minecraft.World/net/minecraft/world/level/saveddata/net.minecraft.world.level.saveddata.h"
-#include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/level/material/MaterialColor.h"
+#include "Minecraft.World/net/minecraft/world/level/saveddata/MapItemSavedData.h"
 
 int Minimap::LUT[256];        // 4J added
 bool Minimap::genLUT = true;  // 4J added

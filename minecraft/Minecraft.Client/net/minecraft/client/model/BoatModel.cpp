@@ -1,5 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <numbers>
+
 #include "BoatModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 BoatModel::BoatModel() : Model() {
     cubes[0] = new ModelPart(this, 0, 8);

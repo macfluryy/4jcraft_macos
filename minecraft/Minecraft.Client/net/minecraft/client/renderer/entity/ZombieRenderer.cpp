@@ -1,8 +1,17 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../model/ZombieModel.h"
-#include "../../model/VillagerZombieModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include <math.h>
+#include <numbers>
+
+#include "Minecraft.Client/net/minecraft/client/model/ZombieModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/VillagerZombieModel.h"
 #include "ZombieRenderer.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Zombie.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/HumanoidMobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation ZombieRenderer::ZOMBIE_PIGMAN_LOCATION(TN_MOB_PIGZOMBIE);
 ResourceLocation ZombieRenderer::ZOMBIE_LOCATION(TN_MOB_ZOMBIE);

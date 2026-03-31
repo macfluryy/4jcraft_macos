@@ -1,7 +1,7 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include <assert.h>
 #include <mutex>
@@ -38,8 +38,8 @@ static void sigsegv_handler(int sig) {
     _exit(139);
 }
 #endif
-#include "../net/minecraft/server/MinecraftServer.h"
-#include "../net/minecraft/client/player/LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 #include "Minecraft.World/net/minecraft/world/item/MapItem.h"
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
@@ -51,18 +51,18 @@ static void sigsegv_handler(int sig) {
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
-#include "../net/minecraft/client/multiplayer/ClientConnection.h"
-#include "../net/minecraft/client/User.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/Common/Source Files/Network/Socket.h"
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
-#include "../net/minecraft/stats/StatsCounter.h"
-#include "../net/minecraft/client/multiplayer/ConnectScreen.h"
-// #include "../../Common/Source Files/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ConnectScreen.h"
+// #include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"
-#include "../net/minecraft/client/renderer/Tesselator.h"
-#include "../net/minecraft/client/Options.h"
-#include "../net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 // #include "../Orbis/Leaderboards/OrbisLeaderboardManager.h"

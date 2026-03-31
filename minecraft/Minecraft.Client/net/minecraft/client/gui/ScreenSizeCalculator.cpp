@@ -1,6 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <math.h>
+
 #include "ScreenSizeCalculator.h"
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
 
 // who the fuck thought this was a good idea
 ScreenSizeCalculator::ScreenSizeCalculator(Options* options, int width,

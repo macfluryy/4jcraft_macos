@@ -21,7 +21,7 @@
 #include <vector>
 
 #ifdef __linux__
-#include "../Linux/Stubs/LinuxStubs.h"
+#include "Minecraft.Client/Linux/Stubs/LinuxStubs.h"
 #endif
 
 #ifdef _WINDOWS64
@@ -68,64 +68,64 @@ using namespace DirectX;
 #else
 #include "4J_Input.h"
 #include "4J_Profile.h"
-#include "4J_Render.h"
+#include "4J.Render/4J_Render.h"
 #include "4J_Storage.h"
 #endif
 
-#include "../net/minecraft/client/renderer/Textures.h"
-#include "../net/minecraft/client/gui/Font.h"
-#include "../net/minecraft/client/ClientConstants.h"
-#include "../net/minecraft/client/gui/Gui.h"
-#include "../net/minecraft/client/gui/Screen.h"
-#include "../net/minecraft/client/gui/ScreenSizeCalculator.h"
-#include "../net/minecraft/client/Minecraft.h"
-#include "../net/minecraft/client/MemoryTracker.h"
-#include "stubs.h"
-#include "BufferedImage.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/ClientConstants.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
+#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
 
-#include "../Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
 
-#include "../Common/Source Files/UI/All Platforms/UIEnums.h"
-#include "../Common/Source Files/UI/All Platforms/UIStructs.h"
-#include "../Common/App_Defines.h"
-#include "../Common/App_enums.h"
-#include "../Common/Source Files/Tutorial/TutorialEnum.h"
-#include "../Common/App_structs.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/App_structs.h"
 
-#include "../Common/Consoles_App.h"
-#include "../Common/Minecraft_Macros.h"
-#include "../Common/Source Files/BuildVer/BuildVer.h"
+#include "Minecraft.Client/Common/Consoles_App.h"
+#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
 
 // This is generated at build time via scripts/pack_loc.py
 #include "strings.h"
 
 #ifdef _WINDOWS64
-#include "../Windows64/Windows64_App.h"
-#include "../Windows64/XML/ATGXmlParser.h"
-#include "../Common/Source Files/Audio/SoundEngine.h"
-#include "../Windows64/Iggy/include/iggy.h"
-#include "../Windows64/Iggy/gdraw/gdraw_d3d11.h"
-#include "../Windows64/Windows64_UIController.h"
+#include "Minecraft.Client/Windows64/Windows64_App.h"
+#include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
+#include "Minecraft.Client/Windows64/Iggy/gdraw/gdraw_d3d11.h"
+#include "Minecraft.Client/Windows64/Windows64_UIController.h"
 #else
-#include "../Linux/Linux_App.h"
-#include "../Linux/Iggy/include/iggy.h"
-#include "../Common/Source Files/Audio/SoundEngine.h"
-#include "../Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 #endif
 
-#include "../Common/Source Files/ConsoleGameMode.h"
-#include "../Common/Source Files/Console_Debug_enum.h"
-#include "../Common/Source Files/Console_Awards_enum.h"
-#include "../Common/Source Files/Tutorial/TutorialMode.h"
-#include "../Common/Source Files/Tutorial/Tutorial.h"
-#include "../Common/Source Files/Tutorial/FullTutorialMode.h"
-#include "../Common/Source Files/Trial/TrialMode.h"
-#include "../Common/Source Files/GameRules/ConsoleGameRules.h"
-#include "../Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
-#include "../Common/Source Files/Colours/ColourTable.h"
-#include "../Common/Source Files/DLC/DLCSkinFile.h"
-#include "../Common/Source Files/DLC/DLCManager.h"
-#include "../Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/Source Files/ConsoleGameMode.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/FullTutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Trial/TrialMode.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
 
 #include "extraX64client.h"
 

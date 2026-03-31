@@ -1,5 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SplashParticle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/WaterDropParticle.h"
+
+class Level;
 
 SplashParticle::SplashParticle(Level* level, double x, double y, double z,
                                double xa, double ya, double za)

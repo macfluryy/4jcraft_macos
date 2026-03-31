@@ -1,6 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SignModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 SignModel::SignModel() {
     cube = new ModelPart(this, 0, 0);

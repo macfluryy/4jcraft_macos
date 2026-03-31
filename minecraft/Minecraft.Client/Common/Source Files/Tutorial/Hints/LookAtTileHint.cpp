@@ -1,8 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "../Tutorial.h"
+#include <vector>
+
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "LookAtTileHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
 
 LookAtTileHint::LookAtTileHint(eTutorial_Hint id, Tutorial* tutorial,
                                int tiles[], unsigned int tilesLength,

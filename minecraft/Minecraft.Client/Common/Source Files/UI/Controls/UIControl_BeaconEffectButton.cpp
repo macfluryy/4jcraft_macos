@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_BeaconEffectButton.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_BeaconEffectButton.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 UIControl_BeaconEffectButton::UIControl_BeaconEffectButton() {
     m_data = 0;

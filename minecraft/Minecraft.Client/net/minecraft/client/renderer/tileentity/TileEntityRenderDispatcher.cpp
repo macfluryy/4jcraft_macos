@@ -1,10 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <utility>
+
 #include "TileEntityRenderDispatcher.h"
 #include "TileEntityRenderer.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/PistonPieceTileEntity.h"
 #include "SignRenderer.h"
 #include "MobSpawnerRenderer.h"
 #include "PistonPieceRenderer.h"
@@ -14,6 +12,14 @@
 #include "SkullTileRenderer.h"
 #include "EnderChestRenderer.h"
 #include "BeaconRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+
+class Font;
+class Textures;
 
 TileEntityRenderDispatcher* TileEntityRenderDispatcher::instance = nullptr;
 double TileEntityRenderDispatcher::xOff = 0;

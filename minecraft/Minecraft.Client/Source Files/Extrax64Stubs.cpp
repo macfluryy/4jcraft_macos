@@ -1,7 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 
-#include "../net/minecraft/stats/StatsCounter.h"
 
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "extraX64client.h"
+
+class INVITE_INFO;
 #if defined(_WINDOWS64)
 // C4JStorage StorageManager;
 C_4JProfile ProfileManager;

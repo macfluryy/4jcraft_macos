@@ -1,7 +1,13 @@
 #pragma once
 // using namespace std;
 
+#include <format>
+
 #include "TutorialTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 // A task that creates an maintains an area constraint until it is activated
 class AreaTask : public TutorialTask {

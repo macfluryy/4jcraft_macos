@@ -1,10 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <stdio.h>
+
 #include "Texture.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "custom/ClockTexture.h"
-#include "custom/CompassTexture.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/custom/ClockTexture.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/custom/CompassTexture.h"
 #include "StitchedTexture.h"
 #include "TextureManager.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "java/InputOutputStream/BufferedReader.h"
 
 StitchedTexture* StitchedTexture::create(const std::wstring& name) {
     // TODO: Generalize?

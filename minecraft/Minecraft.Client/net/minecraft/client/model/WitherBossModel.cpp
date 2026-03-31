@@ -1,7 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "WitherBossModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/wither/WitherBoss.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 WitherBossModel::WitherBossModel() {
     texWidth = 64;

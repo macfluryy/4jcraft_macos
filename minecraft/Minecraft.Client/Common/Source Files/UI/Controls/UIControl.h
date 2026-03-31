@@ -1,5 +1,11 @@
 #pragma once
 
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
 // This class for any name object in the flash scene
 class UIControl {
 public:

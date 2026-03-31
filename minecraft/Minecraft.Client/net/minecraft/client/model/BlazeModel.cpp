@@ -1,7 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+
 #include "BlazeModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 BlazeModel::BlazeModel() : Model() {
     upperBodyParts = std::vector<ModelPart*>(12);

@@ -1,17 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <string>
+#include <vector>
+
 #include "AchievementScreen.h"
-#include "../SmallButton.h"
-#include "../../Options.h"
-#include "../../KeyMapping.h"
-#include "../Font.h"
-#include "../../Lighting.h"
-#include "../../renderer/Textures.h"
-#include "../../../stats/StatsCounter.h"
-#include "../../renderer/entity/ItemRenderer.h"
-#include "java/System.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "java/JavaMath.h"
+#include "Minecraft.Client/net/minecraft/client/gui/SmallButton.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/KeyMapping.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "Minecraft.World/net/minecraft/stats/Achievement.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 AchievementScreen::AchievementScreen(StatsCounter* statsCounter) {
     // 4J - added initialisers

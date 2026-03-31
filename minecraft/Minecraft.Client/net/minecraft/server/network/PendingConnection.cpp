@@ -1,20 +1,27 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <stdio.h>
 #include <cstdint>
+#include <vector>
+
 #include "PendingConnection.h"
 #include "PlayerConnection.h"
 #include "ServerConnection.h"
-#include "../level/ServerPlayer.h"
-#include "../level/ServerPlayerGameMode.h"
-#include "../level/ServerLevel.h"
-#include "../PlayerList.h"
-#include "../MinecraftServer.h"
-#include "Minecraft.World/net/minecraft/network/net.minecraft.network.h"
-#include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "../Settings.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/Source Files/Network/PlatformNetworkManagerInterface.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/network/Connection.h"
+#include "Minecraft.World/net/minecraft/network/packet/LoginPacket.h"
+#include "Minecraft.World/net/minecraft/network/packet/PreLoginPacket.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/Random.h"
+
+class Packet;
 // #if 0
 // #include "PS3/Network/NetworkPlayerSony.h"
 // #endif

@@ -1,10 +1,15 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"
 
 class StitchedTexture;
 class Texture;
 class BufferedImage;
+class Icon;
 
 class TextureMap : public IconRegister {
 public:

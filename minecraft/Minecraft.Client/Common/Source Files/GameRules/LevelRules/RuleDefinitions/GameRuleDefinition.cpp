@@ -1,7 +1,22 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../WstringLookup.h"
+#include <assert.h>
+#include <wchar.h>
+#include <format>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "../../ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRule.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRulesInstance.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+
+class Connection;
 
 GameRuleDefinition::GameRuleDefinition() {
     m_descriptionId = L"";

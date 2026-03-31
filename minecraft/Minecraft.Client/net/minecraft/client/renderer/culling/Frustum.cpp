@@ -1,7 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <string.h>
+#include <cmath>
+#include <vector>
+
 #include "java/FloatBuffer.h"
 #include "Frustum.h"
-#include "../../Camera.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
+
+class FrustumData;
 
 Frustum* Frustum::frustum = new Frustum();
 

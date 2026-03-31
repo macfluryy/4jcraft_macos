@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ConsoleGameMode.h"
-#include "Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/ConsoleGameMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+
+class ClientConnection;
+class Minecraft;
 
 ConsoleGameMode::ConsoleGameMode(int iPad, Minecraft* minecraft,
                                  ClientConnection* connection)

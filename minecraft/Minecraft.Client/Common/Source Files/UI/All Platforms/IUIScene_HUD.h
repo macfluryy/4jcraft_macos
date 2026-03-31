@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class IUIScene_HUD {
 protected:
     int m_lastActiveSlot;

@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "HttpTexture.h"
 
 HttpTexture::HttpTexture(const std::wstring& _url,

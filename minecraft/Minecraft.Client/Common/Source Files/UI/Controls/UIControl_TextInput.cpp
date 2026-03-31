@@ -1,7 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_TextInput.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 UIControl_TextInput::UIControl_TextInput() { m_bHasFocus = false; }
 

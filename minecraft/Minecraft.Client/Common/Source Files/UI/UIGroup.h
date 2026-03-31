@@ -1,11 +1,17 @@
 #pragma once
+#include <stdint.h>
+
 #include "UILayer.h"
-#include "All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class UIComponent_Tooltips;
 class UIComponent_TutorialPopup;
 class UIScene_HUD;
 class UIComponent_PressStartToPlay;
+class UILayer;
+class UIScene;
 
 // A group contains a collection of layers for a specific context (e.g. each
 // player has 1 group)

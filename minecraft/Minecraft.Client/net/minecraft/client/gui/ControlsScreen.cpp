@@ -1,8 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "ControlsScreen.h"
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "SmallButton.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 ControlsScreen::ControlsScreen(Screen* lastScreen, Options* options) {
     // 4J - added initialisers

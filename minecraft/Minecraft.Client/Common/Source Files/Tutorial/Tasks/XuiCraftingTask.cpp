@@ -1,8 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
-#include "../../UI/UI.h"
-#include "../Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "XuiCraftingTask.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/UIScene_CraftingMenu.h"
 
 bool XuiCraftingTask::isCompleted() {
     // This doesn't seem to work

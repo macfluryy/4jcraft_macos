@@ -1,7 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "TntMinecartRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/MinecartTNT.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MinecartRenderer.h"
 
 void TntMinecartRenderer::renderMinecartContents(
     std::shared_ptr<Minecart> _cart, float a, Tile* tile, int tileData) {

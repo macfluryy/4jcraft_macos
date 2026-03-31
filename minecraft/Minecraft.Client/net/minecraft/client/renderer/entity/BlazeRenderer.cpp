@@ -1,7 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../model/BlazeModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/model/BlazeModel.h"
 #include "BlazeRenderer.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/Blaze.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation BlazeRenderer::BLAZE_LOCATION = ResourceLocation(TN_MOB_BLAZE);
 

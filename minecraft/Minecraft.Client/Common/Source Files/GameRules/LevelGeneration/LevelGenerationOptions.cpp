@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include <fstream>
 #include <filesystem>
@@ -9,9 +9,9 @@
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "../../Localisation/StringTable.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
 #include "LevelGenerationOptions.h"
-#include "../ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
 
 JustGrSource::JustGrSource() {
     m_displayName = L"Default_DisplayName";

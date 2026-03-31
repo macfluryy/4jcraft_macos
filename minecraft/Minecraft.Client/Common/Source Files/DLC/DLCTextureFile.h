@@ -1,5 +1,9 @@
 #pragma once
+#include <cstdint>
+#include <string>
+
 #include "DLCFile.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
 
 class DLCTextureFile : public DLCFile {
 private:

@@ -1,7 +1,14 @@
 #pragma once
-#include "../Screen.h"
-#include "../ScrolledSelectionList.h"
+#include <string>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScrolledSelectionList.h"
+
 class ItemStat;
+class ItemRenderer;
+class StatsCounter;
+class Tesselator;
 
 class StatsScreen : public Screen {
 private:

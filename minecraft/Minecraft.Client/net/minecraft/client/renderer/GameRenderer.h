@@ -1,4 +1,16 @@
 #pragma once
+#include <stdint.h>
+#include <mutex>
+#include <format>
+#include <memory>
+#include <vector>
+
+#include "Minecraft.World/net/minecraft/util/SmoothFloat.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+#include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+
 class Minecraft;
 class Entity;
 class Random;
@@ -8,11 +20,10 @@ class DataLayer;
 class SparseLightStorage;
 class CompressedTileStorage;
 class SparseDataStorage;
-
-#include <mutex>
-#include "Minecraft.World/net/minecraft/util/SmoothFloat.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "../resources/ResourceLocation.h"
+class Level;
+class LevelRenderer;
+class Player;
+class ResourceLocation;
 
 class GameRenderer {
 private:

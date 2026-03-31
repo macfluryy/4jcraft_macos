@@ -1,11 +1,22 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 
+#include <wchar.h>
+
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/Debug/UIScene_DebugCreateSchematic.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+
+class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "../../UI.h"
 #include "UIScene_DebugCreateSchematic.h"
-#include "../../../../../net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 
 UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad,
                                                            void* initData,

@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-
 #include "ServerScoreboard.h"
+
+class Packet;
 
 ServerScoreboard::ServerScoreboard(MinecraftServer* server) {
     this->server = server;

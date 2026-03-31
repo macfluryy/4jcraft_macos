@@ -1,10 +1,12 @@
 #pragma once
 #include <memory>
-#include "inventory/AbstractContainerScreen.h"
+
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 class HopperTileEntity;
 class MinecartHopper;
 class Inventory;
+class Container;
 
 class HopperScreen : public AbstractContainerScreen {
 public:

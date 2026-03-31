@@ -1,8 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string.h>
+#include <wchar.h>
+#include <compare>
+
 #include "Socket.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "NetworkPlayerQNet.h"
 #include "PlatformNetworkManagerStub.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 
 CPlatformNetworkManagerStub* g_pPlatformNetworkManager;
 

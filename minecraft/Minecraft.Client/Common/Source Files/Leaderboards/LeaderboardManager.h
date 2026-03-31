@@ -1,8 +1,11 @@
 #pragma once
 
+#include <string>
+
+#include "4J.Common/4J_Compat.h"
+
 // Forward Declarations.
 class LeaderboardManager;
-
 // READ LISTENTER //
 class LeaderboardReadListener;
 

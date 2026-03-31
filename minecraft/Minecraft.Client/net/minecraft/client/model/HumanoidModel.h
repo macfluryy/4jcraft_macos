@@ -1,5 +1,8 @@
 #pragma once
-#include "geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
+
+class ModelPart;
 
 class HumanoidModel : public Model {
 public:

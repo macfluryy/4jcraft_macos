@@ -1,8 +1,13 @@
 #pragma once
+#include <stdint.h>
 #include <optional>
-#include "../LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "ConsoleSchematicFile.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 class AABB;
 class Vec3;

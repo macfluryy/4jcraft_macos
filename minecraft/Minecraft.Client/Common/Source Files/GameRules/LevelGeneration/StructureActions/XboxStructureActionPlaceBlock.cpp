@@ -1,7 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "XboxStructureActionPlaceBlock.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/net.minecraft.world.level.levelgen.structure.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 XboxStructureActionPlaceBlock::XboxStructureActionPlaceBlock() {
     m_x = m_y = m_z = m_tile = m_data = 0;

@@ -1,9 +1,14 @@
 #pragma once
+#include <cstdint>
+#include <string>
+
 #include "AbstractTexturePack.h"
+
 // class ZipFile;
 class BufferedImage;
 class File;
 class Textures;
+class TexturePack;
 
 class FileTexturePack : public AbstractTexturePack {
 private:

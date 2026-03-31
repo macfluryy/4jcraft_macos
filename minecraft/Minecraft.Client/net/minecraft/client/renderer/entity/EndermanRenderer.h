@@ -1,8 +1,10 @@
 #pragma once
 #include "MobRenderer.h"
+#include "java/Random.h"
 
 class EnderMan;
 class EndermanModel;
+class ResourceLocation;
 
 class EndermanRenderer : public MobRenderer {
 private:

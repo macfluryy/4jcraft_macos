@@ -1,7 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "WolfRenderer.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Sheep.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Wolf.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation* WolfRenderer::WOLF_LOCATION =
     new ResourceLocation(TN_MOB_WOLF);

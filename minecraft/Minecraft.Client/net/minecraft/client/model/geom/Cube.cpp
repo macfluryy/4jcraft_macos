@@ -1,9 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Model.h"
-#include "ModelPart.h"
-#include "../Vertex.h"
-#include "Cube.h"
 #include <array>
+#include <span>
+
+#include "ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/Vertex.h"
+#include "Cube.h"
+#include "Minecraft.Client/net/minecraft/client/model/Polygon.h"
+
+class Tesselator;
 
 // void Cube::addBox(float x0, float y0, float z0, int w, int h, int d, float g)
 Cube::Cube(ModelPart* modelPart, int xTexOffs, int yTexOffs, float x0, float y0,

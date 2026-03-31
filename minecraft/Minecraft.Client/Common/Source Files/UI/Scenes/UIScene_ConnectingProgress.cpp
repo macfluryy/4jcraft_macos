@@ -1,7 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_ConnectingProgress.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 UIScene_ConnectingProgress::UIScene_ConnectingProgress(int iPad,
                                                        void* _initData,

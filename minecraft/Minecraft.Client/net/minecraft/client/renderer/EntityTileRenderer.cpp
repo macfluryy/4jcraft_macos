@@ -1,8 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "EntityTileRenderer.h"
-#include "tileentity/TileEntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/ChestTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/ChestTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/EnderChestTileEntity.h"
 
 EntityTileRenderer* EntityTileRenderer::instance = new EntityTileRenderer;
 

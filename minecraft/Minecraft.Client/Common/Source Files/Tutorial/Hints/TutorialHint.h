@@ -1,7 +1,14 @@
 #pragma once
 // using namespace std;
 
-#include "../TutorialEnum.h"
+#include <memory>
+
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "java/Class.h"
+
+class Entity;
+class ItemInstance;
+class Tile;
 
 #define TUTORIAL_HINT_MAX_MINE_REPEATS 20
 

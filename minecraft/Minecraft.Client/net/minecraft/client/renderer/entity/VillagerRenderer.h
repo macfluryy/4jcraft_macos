@@ -2,6 +2,7 @@
 #include "MobRenderer.h"
 
 class VillagerModel;
+class ResourceLocation;
 
 class VillagerRenderer : public MobRenderer {
 private:

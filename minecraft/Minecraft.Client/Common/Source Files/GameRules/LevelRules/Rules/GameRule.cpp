@@ -1,5 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../ConsoleGameRules.h"
+
+#include <wchar.h>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRule.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+
+class Connection;
+class ItemInstance;
 
 GameRule::GameRule(GameRuleDefinition* definition, Connection* connection) {
     m_definition = definition;

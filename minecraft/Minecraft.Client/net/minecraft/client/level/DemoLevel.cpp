@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "DemoLevel.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
+#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+
+class LevelStorage;
 
 LevelSettings DemoLevel::DEMO_LEVEL_SETTINGS =
     LevelSettings(DemoLevel::DEMO_LEVEL_SEED, GameType::SURVIVAL, false, false,

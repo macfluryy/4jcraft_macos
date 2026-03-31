@@ -1,10 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SuspendedParticle.h"
 #include "java/Random.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/net/minecraft/world/level/material/net.minecraft.world.level.material.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
 
 SuspendedParticle::SuspendedParticle(Level* level, double x, double y, double z,
                                      double xa, double ya, double za)

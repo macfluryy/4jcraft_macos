@@ -1,5 +1,5 @@
 #pragma once
-#include "../StitchedTexture.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
 
 class ClockTexture : public StitchedTexture {
 private:

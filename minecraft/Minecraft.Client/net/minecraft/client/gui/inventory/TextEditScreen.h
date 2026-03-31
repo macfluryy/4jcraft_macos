@@ -1,5 +1,9 @@
 #pragma once
-#include "../Screen.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+
 class SignTileEntity;
 
 class TextEditScreen : public Screen {

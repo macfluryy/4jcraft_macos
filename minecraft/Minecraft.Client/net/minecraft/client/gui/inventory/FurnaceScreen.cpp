@@ -1,10 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+
 #include "FurnaceScreen.h"
-#include "../../renderer/Textures.h"
-#include "../../player/LocalPlayer.h"
-#include "../Font.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/FurnaceTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/inventory/FurnaceMenu.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_FURNACE_LOCATION = ResourceLocation(TN_GUI_FURNACE);

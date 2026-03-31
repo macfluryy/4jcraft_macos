@@ -1,8 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "Minecraft.World/net/minecraft/network/packet/CustomPayloadPacket.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../../../../net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "IUIScene_CommandBlockMenu.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/CommandBlockEntity.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 void IUIScene_CommandBlockMenu::Initialise(CommandBlockEntity* commandBlock) {
     m_commandBlock = commandBlock;

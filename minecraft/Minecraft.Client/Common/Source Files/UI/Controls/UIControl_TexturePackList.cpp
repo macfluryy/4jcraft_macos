@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_TexturePackList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_TexturePackList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIControl_TexturePackList::UIControl_TexturePackList() {}
 

@@ -1,6 +1,11 @@
 #pragma once
-#include "../LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include <string>
+#include <vector>
+
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 class Level;
 class Random;

@@ -1,9 +1,17 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
-#include "../../../../../net/minecraft/client/skins/TexturePack.h"
-#include "../../../../../net/minecraft/client/skins/TexturePackRepository.h"
-#include "../../../../../net/minecraft/client/Minecraft.h"
+#include <wchar.h>
+#include <cstdint>
+
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "IUIScene_StartGame.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_structs.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+
+class UILayer;
 
 IUIScene_StartGame::IUIScene_StartGame(int iPad, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {

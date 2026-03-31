@@ -1,6 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRulesInstance.h"
 
 class CompoundGameRuleDefinition : public GameRuleDefinition {
 protected:

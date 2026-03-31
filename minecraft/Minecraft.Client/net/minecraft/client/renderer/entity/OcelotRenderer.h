@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class OcelotRenderer : public MobRenderer {
 private:
     static ResourceLocation CAT_BLACK_LOCATION;

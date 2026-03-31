@@ -40,7 +40,7 @@ class MultiPlayerGameMode;
 #include "java/File.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "resources/ResourceLocation.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 #if defined(linux)
 #undef linux

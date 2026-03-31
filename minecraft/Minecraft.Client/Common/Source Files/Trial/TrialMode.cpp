@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "TrialMode.h"
-#include "../Tutorial/FullTutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/FullTutorial.h"
+#include "Minecraft.Client/Common/Source Files/Trial/TrialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/FullTutorialMode.h"
+
+class ClientConnection;
+class Minecraft;
 
 TrialMode::TrialMode(int iPad, Minecraft* minecraft,
                      ClientConnection* connection)

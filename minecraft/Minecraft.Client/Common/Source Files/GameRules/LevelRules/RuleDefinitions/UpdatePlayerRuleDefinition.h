@@ -1,7 +1,11 @@
 #pragma once
 // using namespace std;
 
+#include <string>
+#include <vector>
+
 #include "GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class AddItemRuleDefinition;
 class Pos;

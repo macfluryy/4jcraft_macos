@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 #include "Screen.h"
 
 class ConfirmScreen : public Screen {

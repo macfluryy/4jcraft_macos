@@ -1,8 +1,14 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "CompoundGameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class NamedAreaRuleDefinition;
+class AABB;
+class StringTable;
 
 class LevelRuleset : public CompoundGameRuleDefinition {
 private:

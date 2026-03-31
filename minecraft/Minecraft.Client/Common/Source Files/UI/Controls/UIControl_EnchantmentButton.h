@@ -1,6 +1,12 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "UIControl_Button.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "java/Random.h"
 
 class UIControl_EnchantmentButton : public UIControl_Button {
 private:

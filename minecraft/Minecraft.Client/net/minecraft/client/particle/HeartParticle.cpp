@@ -1,5 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "HeartParticle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 // 4J - added
 void HeartParticle::init(Level* level, double x, double y, double z, double xa,

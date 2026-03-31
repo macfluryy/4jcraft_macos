@@ -1,7 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "geom/ModelPart.h"
+#include <cmath>
+#include <memory>
+#include <numbers>
+
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "VillagerGolemModel.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/VillagerGolem.h"
 
 VillagerGolemModel::VillagerGolemModel(float g, float yOffset) {
     int xTexSize = 128;

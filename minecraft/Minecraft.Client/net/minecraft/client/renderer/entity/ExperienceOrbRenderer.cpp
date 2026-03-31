@@ -1,12 +1,17 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <memory>
+#include <numbers>
+
 #include "ExperienceOrbRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "../Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "java/JavaMath.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ExperienceOrb.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation ExperienceOrbRenderer::XP_ORB_LOCATION =
     ResourceLocation(TN_ITEM_EXPERIENCE_ORB);

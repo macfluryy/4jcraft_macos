@@ -5,7 +5,7 @@
 
 #include <cstdint>
 
-#include "../LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeature.h"
 
 class ApplySchematicRuleDefinition;

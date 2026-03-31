@@ -1,5 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
+
 #include "LeaderboardInterface.h"
+#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
 
 LeaderboardInterface::LeaderboardInterface(LeaderboardManager* man) {
     m_manager = man;

@@ -1,7 +1,12 @@
 #pragma once
+#include <memory>
+#include <string>
+#include <unordered_map>
+
 #include "TileEntityRenderer.h"
 
 class BaseMobSpawner;
+class Entity;
 
 class MobSpawnerRenderer : public TileEntityRenderer {
 private:

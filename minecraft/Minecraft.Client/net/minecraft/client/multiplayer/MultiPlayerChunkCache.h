@@ -1,10 +1,17 @@
 #pragma once
 #include <mutex>
+#include <string>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/RandomLevelSource.h"
+#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class ServerChunkCache;
+class Level;
+class LevelChunk;
 
 // 4J - various alterations here to make this thread safe, and operate as a
 // fixed sized cache

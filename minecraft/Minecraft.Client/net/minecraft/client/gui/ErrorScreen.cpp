@@ -1,5 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ErrorScreen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 ErrorScreen::ErrorScreen(const std::wstring& title,
                          const std::wstring& message) {

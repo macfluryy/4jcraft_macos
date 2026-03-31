@@ -1,6 +1,13 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIControl_Slider : public UIControl_Base {
 private:

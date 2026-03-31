@@ -1,5 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <cmath>
+#include <numbers>
+
 #include "SkiModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+
+class Entity;
 
 SkiModel::SkiModel() { _init(false); }
 

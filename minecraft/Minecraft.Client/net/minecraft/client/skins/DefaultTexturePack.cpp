@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "DefaultTexturePack.h"
-#include "../renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 DefaultTexturePack::DefaultTexturePack()

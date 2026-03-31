@@ -1,10 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
 
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "AreaHint.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
-#include "../Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 AreaHint::AreaHint(eTutorial_Hint id, Tutorial* tutorial,
                    eTutorial_State displayState, eTutorial_State completeState,

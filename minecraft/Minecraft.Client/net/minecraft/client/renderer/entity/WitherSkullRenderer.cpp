@@ -1,7 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "WitherSkullRenderer.h"
-#include "../../model/SkeletonHeadModel.h"
+#include "Minecraft.Client/net/minecraft/client/model/SkeletonHeadModel.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/WitherSkull.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation WitherSkullRenderer::WITHER_ARMOR_LOCATION(
     TN_MOB_WITHER_INVULNERABLE);

@@ -1,7 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Tutorial.h"
-#include "../Constraints/TutorialConstraints.h"
+#include <compare>
+
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "TutorialTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraint.h"
 
 TutorialTask::TutorialTask(Tutorial* tutorial, int descriptionId,
                            bool enablePreCompletion,

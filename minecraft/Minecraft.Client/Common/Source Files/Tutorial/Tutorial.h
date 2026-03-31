@@ -1,8 +1,8 @@
 #pragma once
 // using namespace std;
-#include "Tasks/TutorialTask.h"
-#include "Constraints/TutorialConstraint.h"
-#include "Hints/TutorialHint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraint.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHint.h"
 #include "TutorialMessage.h"
 #include "TutorialEnum.h"
 

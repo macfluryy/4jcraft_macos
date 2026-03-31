@@ -1,12 +1,7 @@
 #ifdef __linux__
 
-#include <cstddef>
-#include <cstring>
-#include <string>
-#include <pthread.h>
-
-#include "Stubs/LinuxStubs.h"
-#include "../Common/Consoles_App.h"
+#include "Minecraft.Client/Common/Consoles_App.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 void Display::update() {}
 

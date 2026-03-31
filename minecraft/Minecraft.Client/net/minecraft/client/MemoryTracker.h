@@ -1,4 +1,7 @@
 #pragma once
+#include <format>
+#include <unordered_map>
+
 class ByteBuffer;
 class IntBuffer;
 class FloatBuffer;

@@ -1,6 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "TutorialTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+
+class Tutorial;
 
 // A tutorial task that requires each of the task to be completed in order until
 // the last one is complete. If an earlier task that was complete is now not

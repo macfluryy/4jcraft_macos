@@ -1,7 +1,17 @@
 #pragma once
 
-#include "inventory/AbstractContainerScreen.h"
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
+#include "java/Random.h"
+
+class EnchantmentMenu;
+class Inventory;
+class ItemInstance;
+class Level;
 
 class EnchantmentScreen : public AbstractContainerScreen {
 public:

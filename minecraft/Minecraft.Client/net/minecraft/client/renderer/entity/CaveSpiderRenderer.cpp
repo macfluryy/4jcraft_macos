@@ -1,5 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "CaveSpiderRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/SpiderRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation CaveSpiderRenderer::CAVE_SPIDER_LOCATION =
     ResourceLocation(TN_MOB_CAVE_SPIDER);

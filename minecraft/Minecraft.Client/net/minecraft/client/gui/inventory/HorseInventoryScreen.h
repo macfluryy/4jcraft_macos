@@ -1,7 +1,12 @@
 #pragma once
 #include <memory>
+
 #include "AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+
+class Container;
+class EntityHorse;
+class Inventory;
 
 class HorseInventoryScreen : public AbstractContainerScreen {
 public:

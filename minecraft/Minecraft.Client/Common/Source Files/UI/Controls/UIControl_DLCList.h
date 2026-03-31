@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "UIControl_ButtonList.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIControl_DLCList : public UIControl_ButtonList {
 private:

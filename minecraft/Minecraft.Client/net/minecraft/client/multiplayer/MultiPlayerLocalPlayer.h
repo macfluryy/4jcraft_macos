@@ -1,11 +1,19 @@
 #pragma once
 #include <cstdint>
-#include "../player/LocalPlayer.h"
+#include <format>
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 
 class ClientConnection;
 class Minecraft;
 class Level;
+class Stat;
+class User;
 
 // #define STRESS_TEST_MOVE
 

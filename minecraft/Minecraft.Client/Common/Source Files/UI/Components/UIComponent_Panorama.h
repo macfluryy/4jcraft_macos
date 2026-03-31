@@ -1,6 +1,14 @@
 #pragma once
 
-#include "../UIScene.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 class UIComponent_Panorama : public UIScene {
 private:

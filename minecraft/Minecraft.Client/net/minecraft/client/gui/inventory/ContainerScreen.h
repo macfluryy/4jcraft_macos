@@ -1,5 +1,8 @@
 #pragma once
+#include <memory>
+
 #include "AbstractContainerScreen.h"
+
 class Container;
 
 class ContainerScreen : public AbstractContainerScreen {

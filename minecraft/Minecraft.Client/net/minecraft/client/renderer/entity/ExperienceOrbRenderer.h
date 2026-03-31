@@ -1,6 +1,8 @@
 #pragma once
 #include "EntityRenderer.h"
 
+class ResourceLocation;
+
 class ExperienceOrbRenderer : public EntityRenderer {
 private:
     static ResourceLocation XP_ORB_LOCATION;

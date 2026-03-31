@@ -1,11 +1,26 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include <cmath>
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "IUIScene_HUD.h"
+#include "4J_Profile.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "Minecraft.World/net/minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 IUIScene_HUD::IUIScene_HUD() {
     m_lastActiveSlot = -1;

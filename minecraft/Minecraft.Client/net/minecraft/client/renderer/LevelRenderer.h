@@ -4,11 +4,31 @@
 #include "OffsettedRenderList.h"
 #include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+class ClipChunk;
+class HitResult;
+class Icon;
+class ItemInstance;
+class LivingEntity;
+class Player;
+class ResourceLocation;
 #if !defined(__linux__)
 #include <xmcore.h>
 #endif
+#include <stddef.h>
+#include <stdint.h>
 #include <unordered_set>
 #include <mutex>
+#include <format>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 class MultiPlayerLevel;
 class Textures;
 class Chunk;

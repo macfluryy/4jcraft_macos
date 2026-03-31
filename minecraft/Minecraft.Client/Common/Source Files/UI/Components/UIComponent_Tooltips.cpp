@@ -1,6 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIComponent_Tooltips.h"
+#include "Minecraft.Client/Common/Source Files/UI/Components/UIComponent_Tooltips.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/Source Files/UI/UILayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void* initData,
                                            UILayer* parentLayer)

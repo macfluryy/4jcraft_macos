@@ -1,6 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "DefaultRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
+#include "4J.Render/4J_Render.h"
 
 void DefaultRenderer::render(std::shared_ptr<Entity> entity, double x, double y,
                              double z, float rot, float a) {

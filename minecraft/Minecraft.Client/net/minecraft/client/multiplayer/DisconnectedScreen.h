@@ -1,5 +1,7 @@
 #pragma once
-#include "../gui/Screen.h"
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 class DisconnectedScreen : public Screen {
 private:

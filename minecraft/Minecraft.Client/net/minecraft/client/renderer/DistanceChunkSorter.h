@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+
 class Entity;
 class Chunk;
 

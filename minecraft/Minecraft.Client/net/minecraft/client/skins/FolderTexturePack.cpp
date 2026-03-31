@@ -1,5 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "FolderTexturePack.h"
+#include "java/File.h"
+#include "java/InputOutputStream/InputStream.h"
+#include "Minecraft.Client/net/minecraft/client/skins/AbstractTexturePack.h"
+
+class TexturePack;
 
 FolderTexturePack::FolderTexturePack(std::uint32_t id, const std::wstring& name,
                                      File* folder, TexturePack* fallback)

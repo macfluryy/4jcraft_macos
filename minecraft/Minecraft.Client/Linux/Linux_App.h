@@ -1,5 +1,12 @@
 #pragma once
 
+#include <cstdint>
+
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Consoles_App.h"
+
+class C4JStringTable;
+
 class CConsoleMinecraftApp : public CMinecraftApp {
 public:
     CConsoleMinecraftApp();

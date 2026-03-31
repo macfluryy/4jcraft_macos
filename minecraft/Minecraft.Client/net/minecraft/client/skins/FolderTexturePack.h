@@ -1,6 +1,12 @@
 #pragma once
 
+#include <cstdint>
+#include <string>
+
 #include "AbstractTexturePack.h"
+
+class File;
+class TexturePack;
 
 class FolderTexturePack : public AbstractTexturePack {
 private:

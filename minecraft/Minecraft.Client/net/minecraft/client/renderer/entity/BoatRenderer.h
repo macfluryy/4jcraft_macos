@@ -1,6 +1,9 @@
 #pragma once
 #include "EntityRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class BoatRenderer : public EntityRenderer {
 private:
     static ResourceLocation BOAT_LOCATION;

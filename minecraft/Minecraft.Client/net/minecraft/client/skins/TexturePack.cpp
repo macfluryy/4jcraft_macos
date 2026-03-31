@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "TexturePack.h"
 
 std::wstring TexturePack::getPath(
@@ -10,7 +9,7 @@ std::wstring TexturePack::getPath(
         // Make the content package point to to the UPDATE: drive is needed
         wDrive = L"Common\\res\\TitleUpdate\\";
     } else {
-        wDrive = L"Common/";
+        wDrive = L"Minecraft.Client/Common/";
     }
 
     return wDrive;

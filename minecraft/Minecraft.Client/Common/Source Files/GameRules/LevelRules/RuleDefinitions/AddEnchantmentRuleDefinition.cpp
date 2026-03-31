@@ -1,8 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
 #include "AddEnchantmentRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/AddEnchantmentRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/item/EnchantedBookItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "Minecraft.World/net/minecraft/world/item/enchantment/EnchantmentInstance.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 AddEnchantmentRuleDefinition::AddEnchantmentRuleDefinition() {
     m_enchantmentId = m_enchantmentLevel = 0;

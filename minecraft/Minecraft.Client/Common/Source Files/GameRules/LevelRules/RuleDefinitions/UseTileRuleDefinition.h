@@ -1,8 +1,11 @@
 #pragma once
 // using namespace std;
 
+#include <string>
+
 #include "GameRuleDefinition.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class UseTileRuleDefinition : public GameRuleDefinition {
 private:

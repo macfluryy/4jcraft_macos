@@ -1,6 +1,9 @@
 #pragma once
 
+#include <string>
+
 #include "XboxStructureActionPlaceBlock.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class StructurePiece;
 class Level;

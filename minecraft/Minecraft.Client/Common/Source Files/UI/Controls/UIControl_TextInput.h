@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 class UIControl_TextInput : public UIControl_Base {
 private:

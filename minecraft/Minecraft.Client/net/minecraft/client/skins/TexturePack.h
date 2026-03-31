@@ -1,12 +1,17 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
-#include "../../../../Common/App_enums.h"
+#include "Minecraft.Client/Common/App_enums.h"
 
 class InputStream;
 class Minecraft;
 class ArchiveFile;
+class BufferedImage;
+class ColourTable;
+class DLCPack;
+class Textures;
 
 class TexturePack {
 public:

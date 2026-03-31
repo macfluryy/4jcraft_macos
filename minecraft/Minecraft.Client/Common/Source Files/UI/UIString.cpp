@@ -1,8 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-
 #include "UIString.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 bool UIString::setCurrentLanguage() {
     int nextLanguage, nextLocale;

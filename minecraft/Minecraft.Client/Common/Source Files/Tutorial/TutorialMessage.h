@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdint.h>
+
 // The default number of times any message should be shown
 #define TUTORIAL_MESSAGE_DEFAULT_SHOW 3
 

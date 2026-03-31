@@ -1,6 +1,12 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIString.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIControl_ButtonList : public UIControl_Base {
 protected:

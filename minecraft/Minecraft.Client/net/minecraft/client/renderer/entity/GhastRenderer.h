@@ -1,6 +1,8 @@
 #pragma once
 #include "MobRenderer.h"
 
+class ResourceLocation;
+
 class GhastRenderer : public MobRenderer {
 private:
     static ResourceLocation GHAST_LOCATION;

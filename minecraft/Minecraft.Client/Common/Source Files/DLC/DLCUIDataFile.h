@@ -1,4 +1,7 @@
 #pragma once
+#include <cstdint>
+#include <string>
+
 #include "DLCFile.h"
 
 class DLCUIDataFile : public DLCFile {

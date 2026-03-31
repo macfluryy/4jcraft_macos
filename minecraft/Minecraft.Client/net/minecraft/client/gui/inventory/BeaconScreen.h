@@ -1,11 +1,16 @@
 #pragma once
 
+#include <memory>
+
 #include "AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/BeaconMenu.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 
 class BeaconConfirmButton;
 class BeaconCancelButton;
+class BeaconMenu;
+class BeaconTileEntity;
+class Inventory;
 
 class BeaconScreen : public AbstractContainerScreen {
 public:

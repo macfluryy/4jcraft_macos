@@ -1,7 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <wchar.h>
+
 #include "NamedAreaRuleDefinition.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/NamedAreaRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 NamedAreaRuleDefinition::NamedAreaRuleDefinition() {
     m_name = L"";

@@ -1,9 +1,12 @@
 #pragma once
 
 #include <cstdint>
+#include <format>
+#include <string>
 
 #include "UIControl.h"
-#include "../../../../net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 class ModelPart;
 class EntityRenderer;

@@ -2,6 +2,7 @@
 #include "TileEntityRenderer.h"
 
 class BookModel;
+class ResourceLocation;
 
 class EnchantTableRenderer : public TileEntityRenderer {
     friend class CXuiCtrlEnchantmentBook;

@@ -4,7 +4,7 @@
 #pragma once
 
 #include "winapi_stubs.h"
-#include "DirectXMath/DirectXMath.h"
+#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMath.h"
 
 // The DirectXMath SAL shim defines a few reserved identifiers such as
 // `__valid`. Newer libstdc++ headers also use those internal names, so keep

@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_PlayerList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_PlayerList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 bool UIControl_PlayerList::setupControl(UIScene* scene, IggyValuePath* parent,
                                         const std::string& controlName) {

@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "SlimeModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 
 SlimeModel::SlimeModel(int vOffs) {
     cube = new ModelPart(this, 0, vOffs);

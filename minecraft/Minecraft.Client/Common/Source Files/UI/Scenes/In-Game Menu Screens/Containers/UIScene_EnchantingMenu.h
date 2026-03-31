@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UIScene_AbstractContainerMenu.h"
-#include "../../../All Platforms/IUIScene_EnchantingMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_EnchantingMenu.h"
 
 class InventoryMenu;
 

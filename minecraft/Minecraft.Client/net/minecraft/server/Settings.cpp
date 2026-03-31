@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Settings.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 

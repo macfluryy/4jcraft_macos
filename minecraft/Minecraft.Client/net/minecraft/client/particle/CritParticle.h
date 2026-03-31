@@ -1,8 +1,13 @@
 #pragma once
 
+#include <memory>
+
 #include "Particle.h"
+#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "java/Class.h"
 
 class Entity;
+class Level;
 
 class CritParticle : public Particle {
 private:

@@ -1,6 +1,12 @@
 #pragma once
+#include <memory>
+
 #include "Particle.h"
+#include "java/Class.h"
+
 class Tile;
+class Level;
+class Textures;
 
 class TerrainParticle : public Particle {
 public:

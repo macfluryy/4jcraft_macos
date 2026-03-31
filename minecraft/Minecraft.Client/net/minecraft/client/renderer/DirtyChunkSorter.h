@@ -1,6 +1,9 @@
 #pragma once
+#include <memory>
+
 class Chunk;
 class Mob;
+class LivingEntity;
 
 class DirtyChunkSorter {
 private:

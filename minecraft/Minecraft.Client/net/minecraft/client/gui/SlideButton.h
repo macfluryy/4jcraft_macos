@@ -1,6 +1,9 @@
 #pragma once
+#include <string>
+
 #include "Button.h"
-#include "../Options.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+
 class Minecraft;
 
 class SlideButton : public Button {

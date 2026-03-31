@@ -1,13 +1,22 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "StatsScreen.h"
-#include "../../../stats/StatsCounter.h"
-#include "../../renderer/entity/ItemRenderer.h"
-#include "../Button.h"
-#include "../Font.h"
-#include "../../Lighting.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.World/net/minecraft/stats/ItemStat.h"
+#include "Minecraft.World/net/minecraft/stats/Stat.h"
+#include "Minecraft.World/net/minecraft/stats/Stats.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScrolledSelectionList.h"
+#include "Minecraft.Client/Header Files/stubs.h"
+
+class Tesselator;
 
 const float StatsScreen::SLOT_TEX_SIZE = 128.0f;
 ItemRenderer* StatsScreen::itemRenderer = nullptr;

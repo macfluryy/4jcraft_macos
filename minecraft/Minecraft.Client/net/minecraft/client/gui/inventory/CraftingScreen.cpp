@@ -1,9 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string>
+
 #include "CraftingScreen.h"
-#include "../../renderer/Textures.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
+#include "Minecraft.World/net/minecraft/world/inventory/CraftingMenu.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
+
+class Player;
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_CRAFTING_LOCATION = ResourceLocation(TN_GUI_CRAFTING);

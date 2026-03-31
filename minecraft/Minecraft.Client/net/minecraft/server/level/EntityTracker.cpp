@@ -1,7 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "EntityTracker.h"
-#include "../MinecraftServer.h"
-#include "../PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "TrackedEntity.h"
 #include "ServerPlayer.h"
 #include "ServerLevel.h"
@@ -18,7 +18,7 @@
 #include "Minecraft.World/net/minecraft/network/net.minecraft.network.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "../network/PlayerConnection.h"
+#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 
 EntityTracker::EntityTracker(ServerLevel* level) {
     this->level = level;

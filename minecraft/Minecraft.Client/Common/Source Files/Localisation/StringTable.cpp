@@ -1,5 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <ranges>
+#include <utility>
+
 #include "StringTable.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
 
 StringTable::StringTable(void) {}
 

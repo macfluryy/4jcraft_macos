@@ -1,6 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "PigRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Pig.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation PigRenderer::PIG_LOCATION = ResourceLocation(TN_MOB_PIG);
 ResourceLocation PigRenderer::SADDLE_LOCATION = ResourceLocation(TN_MOB_SADDLE);

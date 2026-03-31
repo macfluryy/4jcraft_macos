@@ -1,8 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <string.h>
+#include <cstdint>
+#include <vector>
+
 #include "java/ByteBuffer.h"
-#include "../Rect2i.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Rect2i.h"
 #include "TextureManager.h"
 #include "Texture.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Buffer.h"
 
 #define MAX_MIP_LEVELS 5
 

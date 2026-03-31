@@ -1,5 +1,8 @@
 #pragma once
-#include "../ConsoleGenerateStructureAction.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
 
 class StructurePiece;
 class Level;

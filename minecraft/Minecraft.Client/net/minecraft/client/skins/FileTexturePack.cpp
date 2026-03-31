@@ -1,5 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "FileTexturePack.h"
+#include "java/File.h"
+#include "Minecraft.Client/net/minecraft/client/skins/AbstractTexturePack.h"
+
+class TexturePack;
 
 FileTexturePack::FileTexturePack(std::uint32_t id, File* file,
                                  TexturePack* fallback)

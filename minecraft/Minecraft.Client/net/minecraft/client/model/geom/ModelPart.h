@@ -1,11 +1,16 @@
 #pragma once
+#include <string>
+#include <vector>
+
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
-#include "../Vertex.h"
-#include "../Polygon.h"
+#include "Minecraft.Client/net/minecraft/client/model/Vertex.h"
+#include "Minecraft.Client/net/minecraft/client/model/Polygon.h"
 #include "Model.h"
-#include "../../../../../Header Files/SkinBox.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class Cube;
+class Model;
 
 class ModelPart {
 public:

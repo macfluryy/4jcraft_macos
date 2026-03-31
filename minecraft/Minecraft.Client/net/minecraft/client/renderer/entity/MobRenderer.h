@@ -1,6 +1,10 @@
 #pragma once
+#include <memory>
+
 #include "LivingEntityRenderer.h"
+
 class Mob;
+class Model;
 
 // This was used in MobRenderer but lots of code moved to LivingEntity and I
 // haven't put this back yet

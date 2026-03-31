@@ -1,6 +1,15 @@
 #pragma once
 
-#include "../UIScene.h"
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 #define CHAT_LINES_COUNT 10
 

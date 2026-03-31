@@ -1,8 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
 #include "ModelHorse.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 ModelHorse::ModelHorse() {
     texWidth = 128;

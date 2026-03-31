@@ -1,6 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <numbers>
+
 #include "MinecartModel.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 MinecartModel::MinecartModel() : Model() {
     cubes[0] = new ModelPart(this, 0, 10);

@@ -1,7 +1,14 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/entity/npc/net.minecraft.world.entity.npc.h"
-#include "../../model/VillagerModel.h"
+#include <memory>
+
+#include "Minecraft.Client/net/minecraft/client/model/VillagerModel.h"
 #include "VillagerRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/npc/Villager.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation VillagerRenderer::VILLAGER_LOCATION =
     ResourceLocation(TN_MOB_VILLAGER_VILLAGER);

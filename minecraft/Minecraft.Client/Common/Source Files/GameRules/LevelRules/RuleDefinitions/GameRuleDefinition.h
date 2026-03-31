@@ -2,16 +2,20 @@
 // using namespace std;
 #include <unordered_map>
 #include <string>
+#include <format>
+#include <memory>
 
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
-#include "../../ConsoleGameRulesConstants.h"
-
-#include "../Rules/GameRulesInstance.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRulesInstance.h"
 
 class GameRule;
 class LevelRuleset;
 class Player;
 class WstringLookup;
+class Connection;
+class DataOutputStream;
+class ItemInstance;
 
 class GameRuleDefinition {
 private:

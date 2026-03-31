@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Particle.h"
+#include "java/Class.h"
+
+class Level;
 
 class PlayerCloudParticle : public Particle {
 private:

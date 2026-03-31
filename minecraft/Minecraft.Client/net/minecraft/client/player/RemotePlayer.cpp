@@ -1,7 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <math.h>
+#include <memory>
+#include <vector>
+
 #include "RemotePlayer.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+
+class Level;
 
 RemotePlayer::RemotePlayer(Level* level, const std::wstring& name)
     : Player(level, name) {

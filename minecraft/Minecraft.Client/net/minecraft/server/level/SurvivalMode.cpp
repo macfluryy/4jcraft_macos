@@ -1,13 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "SurvivalMode.h"
 #include "DemoMode.h"
-#include "../../client/renderer/LevelRenderer.h"
-#include "../../client/player/LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "../../client/ClientConstants.h"
+#include "Minecraft.Client/net/minecraft/client/ClientConstants.h"
 
 SurvivalMode::SurvivalMode(Minecraft* minecraft) : GameMode(minecraft) {
     // 4J - added initialisers

@@ -1,4 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+#include <vector>
+
 #include "TextureHolder.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "StitchSlot.h"

@@ -1,6 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "TexOffs.h"
 #include "Model.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 Model::Model() {
     riding = false;

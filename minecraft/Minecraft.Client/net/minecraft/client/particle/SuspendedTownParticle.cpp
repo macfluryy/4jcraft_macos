@@ -1,7 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SuspendedTownParticle.h"
 #include "java/Random.h"
 #include "java/JavaMath.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 SuspendedTownParticle::SuspendedTownParticle(Level* level, double x, double y,
                                              double z, double xa, double ya,

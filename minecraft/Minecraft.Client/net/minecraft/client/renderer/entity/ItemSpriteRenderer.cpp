@@ -1,11 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "ItemSpriteRenderer.h"
 #include "EntityRenderDispatcher.h"
-#include "../texture/TextureAtlas.h"
-#include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/ThrownPotion.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/PotionItem.h"
+#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionBrewing.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
 
 ItemSpriteRenderer::ItemSpriteRenderer(Item* sourceItem,
                                        int sourceItemAuxValue /*= 0*/)

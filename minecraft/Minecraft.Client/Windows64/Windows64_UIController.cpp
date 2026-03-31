@@ -1,9 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "Windows64_UIController.h"
 
 // Temp
-#include "../net/minecraft/client/Minecraft.h"
-#include "../net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 
 #define _ENABLEIGGY
 

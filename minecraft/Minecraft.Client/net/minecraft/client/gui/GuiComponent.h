@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 class Font;
 
 class GuiComponent {

@@ -1,10 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+
 #include "PaintingRenderer.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/Painting.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation PaintingRenderer::PAINTING_LOCATION(TN_ART_KZ);
 

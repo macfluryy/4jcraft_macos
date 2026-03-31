@@ -1,7 +1,18 @@
 #pragma once
 
+#include <string>
+
 #include "UIScene_AbstractContainerMenu.h"
-#include "../../../All Platforms/IUIScene_CreativeMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+
+class UILayer;
 
 class UIScene_CreativeMenu : public UIScene_AbstractContainerMenu,
                              public IUIScene_CreativeMenu {

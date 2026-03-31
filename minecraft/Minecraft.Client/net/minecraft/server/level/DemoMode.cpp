@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "DemoMode.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 

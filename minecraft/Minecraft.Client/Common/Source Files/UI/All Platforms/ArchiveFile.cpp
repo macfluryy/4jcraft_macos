@@ -1,10 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <assert.h>
+#include <cstdlib>
+#include <utility>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/Header Files/PortableFileIO.h"
 #include "Minecraft.World/Header Files/compression.h"
-
 #include "ArchiveFile.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/FileInputStream.h"
 
 void ArchiveFile::_readHeader(DataInputStream* dis) {
     int numberOfFiles = dis->readInt();

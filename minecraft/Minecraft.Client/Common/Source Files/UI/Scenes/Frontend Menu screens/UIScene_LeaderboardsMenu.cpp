@@ -1,7 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_LeaderboardsMenu.h"
-#include "../../../Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 

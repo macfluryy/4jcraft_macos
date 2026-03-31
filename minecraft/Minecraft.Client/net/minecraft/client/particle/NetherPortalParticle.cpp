@@ -1,8 +1,12 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "NetherPortalParticle.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
-#include "../Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 // 4J Stu - This class was originally "PortalParticle" but I have split the two
 // uses of the particle Only the nether portal uses this particle

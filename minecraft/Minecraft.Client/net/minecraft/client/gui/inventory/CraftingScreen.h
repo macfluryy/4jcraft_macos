@@ -1,5 +1,8 @@
 #pragma once
+#include <memory>
+
 #include "AbstractContainerScreen.h"
+
 class Inventory;
 class Level;
 

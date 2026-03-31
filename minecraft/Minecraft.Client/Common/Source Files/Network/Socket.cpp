@@ -1,13 +1,15 @@
+#include <stdio.h>
 #include <thread>
 #include <chrono>
+#include <vector>
 
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "Socket.h"
-#include <algorithm>
-
 // 4jcraft TODO
-#include "../../Minecraft.Client/Common/ShutdownManager.h"
-#include "../../Minecraft.Client/net/minecraft/server/network/ServerConnection.h"
+#include "Minecraft.Client/Common/ShutdownManager.h"
+#include "Minecraft.Client/net/minecraft/server/network/ServerConnection.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 class SocketAddress {};
 

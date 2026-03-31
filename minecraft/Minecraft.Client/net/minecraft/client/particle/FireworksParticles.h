@@ -1,8 +1,14 @@
 #pragma once
+#include <format>
+
 #include "Particle.h"
 #include "nbt/CompoundTag.h"
+#include "java/Class.h"
 
 class ParticleEngine;
+class CompoundTag;
+class Level;
+template <class T> class ListTag;
 
 class FireworksParticles {
 public:

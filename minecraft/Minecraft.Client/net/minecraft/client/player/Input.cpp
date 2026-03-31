@@ -1,12 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../Minecraft.h"
-#include "../../server/level/GameMode.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include <cmath>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Input.h"
 #include "LocalPlayer.h"
-#include "../Options.h"
+#include "4J_Input.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 Input::Input() {
     xa = 0;

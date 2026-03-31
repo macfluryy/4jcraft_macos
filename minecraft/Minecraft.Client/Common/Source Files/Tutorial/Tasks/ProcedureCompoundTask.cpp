@@ -1,5 +1,8 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <compare>
+#include <memory>
+
 #include "ProcedureCompoundTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
 
 ProcedureCompoundTask::~ProcedureCompoundTask() {
     for (auto it = m_taskSequence.begin(); it < m_taskSequence.end(); ++it) {

@@ -1,20 +1,23 @@
-#include <thread>
-#include <chrono>
+#include <assert.h>
+#include <stdint.h>
+#include <string.h>
+#include <algorithm>
 
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "ServerChunkCache.h"
 #include "ServerLevel.h"
-#include "../MinecraftServer.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
-#include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "Minecraft.World/Header Files/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/EmptyLevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/storage/ChunkStorage.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/x64headers/extraX64.h"
 
 ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
                                    ChunkSource* source) {

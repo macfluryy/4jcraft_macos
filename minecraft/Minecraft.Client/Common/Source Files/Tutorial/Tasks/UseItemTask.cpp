@@ -1,8 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include <memory>
+
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 #include "UseItemTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 UseItemTask::UseItemTask(const int itemId, Tutorial* tutorial,
                          int descriptionId, bool enablePreCompletion,

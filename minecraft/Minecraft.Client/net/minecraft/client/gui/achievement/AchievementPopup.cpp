@@ -1,13 +1,13 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+
 #include "AchievementPopup.h"
-#include "../../renderer/entity/ItemRenderer.h"
-#include "../Font.h"
-#include "../../renderer/Textures.h"
-#include "../../Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
 #include "java/System.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
-#include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "Minecraft.World/net/minecraft/stats/Achievement.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
 
 AchievementPopup::AchievementPopup(Minecraft* mc) {
     // 4J - added initialisers

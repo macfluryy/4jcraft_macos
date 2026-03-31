@@ -1,13 +1,23 @@
 #pragma once
+#include <stdint.h>
 #include <mutex>
-#include "../ConsoleInputSource.h"
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/server/ConsoleInputSource.h"
 #include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
 #include "java/JavaIntHash.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 
 class MinecraftServer;
 class Connection;
 class ServerPlayer;
 class INetworkPlayer;
+class Packet;
+class Random;
 
 class PlayerConnection : public PacketListener, public ConsoleInputSource {
     //    public static Logger logger = Logger.getLogger("Minecraft");

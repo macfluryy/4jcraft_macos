@@ -1,7 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <string>
+
 #include "SheepRenderer.h"
-#include "../../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/Sheep.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class Model;
 
 ResourceLocation SheepRenderer::SHEEP_LOCATION = ResourceLocation(TN_MOB_SHEEP);
 ResourceLocation SheepRenderer::SHEEP_FUR_LOCATION =

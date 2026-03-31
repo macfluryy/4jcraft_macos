@@ -1,9 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <unordered_map>
+#include <utility>
+
 #include "CompleteAllRuleDefinition.h"
-#include "../../ConsoleGameRules.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/network/Connection.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/CompoundGameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRule.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/network/packet/UpdateGameRuleProgressPacket.h"
 
 void CompleteAllRuleDefinition::getChildren(
     std::vector<GameRuleDefinition*>* children) {

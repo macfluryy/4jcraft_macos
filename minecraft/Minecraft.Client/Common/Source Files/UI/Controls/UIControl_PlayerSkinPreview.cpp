@@ -1,14 +1,25 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../net/minecraft/client/gui/ScreenSizeCalculator.h"
-#include "../../../../net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "../../../../net/minecraft/client/renderer/entity/PlayerRenderer.h"
-#include "../../../../net/minecraft/client/model/HumanoidModel.h"
-#include "../../../../net/minecraft/client/Lighting.h"
-#include "../../../../net/minecraft/client/model/geom/ModelPart.h"
-#include "../../../../net/minecraft/client/Options.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include <GL/gl.h>
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "UIControl_PlayerSkinPreview.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
 
 // #define SKIN_PREVIEW_BOB_ANIM
 #define SKIN_PREVIEW_WALKING_ANIM

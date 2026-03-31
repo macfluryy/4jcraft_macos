@@ -1,8 +1,16 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <utility>
+
 #include "HorseRenderer.h"
 #include "MobRenderer.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation HorseRenderer::HORSE_LOCATION =
     ResourceLocation(TN_MOB_HORSE_WHITE);

@@ -1,9 +1,13 @@
 #pragma once
 // using namespace std;
 
+#include <format>
+
 #include "TutorialTask.h"
 
 class Level;
+class Tutorial;
+class TutorialConstraint;
 
 // 4J Stu - Tasks that involve using a tile, with or without an item. e.g.
 // Opening a chest

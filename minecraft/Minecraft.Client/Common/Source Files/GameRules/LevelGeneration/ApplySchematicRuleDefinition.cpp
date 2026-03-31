@@ -1,14 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <algorithm>
+#include <cmath>
+
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "ApplySchematicRuleDefinition.h"
 #include "LevelGenerationOptions.h"
 #include "ConsoleSchematicFile.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ApplySchematicRuleDefinition.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
+#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     LevelGenerationOptions* levelGenOptions) {

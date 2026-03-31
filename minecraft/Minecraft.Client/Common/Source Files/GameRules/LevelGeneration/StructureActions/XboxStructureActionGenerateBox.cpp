@@ -1,7 +1,11 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "XboxStructureActionGenerateBox.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/net.minecraft.world.level.levelgen.structure.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/StructureActions/XboxStructureActionGenerateBox.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 
 XboxStructureActionGenerateBox::XboxStructureActionGenerateBox() {
     m_x0 = m_y0 = m_z0 = m_x1 = m_y1 = m_z1 = m_edgeTile = m_fillTile = 0;

@@ -1,7 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "GuiParticles.h"
 #include "GuiParticle.h"
-#include "../../renderer/Textures.h"
 
 GuiParticles::GuiParticles(Minecraft* mc) { this->mc = mc; }
 

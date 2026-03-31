@@ -1,9 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "InBedChatScreen.h"
 #include "Button.h"
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/ChatScreen.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 void InBedChatScreen::init() {
     Keyboard::enableRepeatEvents(true);

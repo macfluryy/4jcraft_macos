@@ -1,20 +1,20 @@
 
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
-#include "../net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "../net/minecraft/server/MinecraftServer.h"
-#include "../net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "../net/minecraft/client/renderer/GameRenderer.h"
-#include "../net/minecraft/client/ProgressRenderer.h"
-#include "../net/minecraft/client/renderer/LevelRenderer.h"
-#include "../Header Files/MobSkinMemTextureProcessor.h"
-#include "../net/minecraft/client/Minecraft.h"
-#include "../net/minecraft/client/multiplayer/ClientConnection.h"
-#include "../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "../net/minecraft/client/player/LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/GameRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
+#include "Minecraft.Client/Header Files/MobSkinMemTextureProcessor.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
@@ -24,44 +24,44 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/HopperTileEntity.h"
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
-#include "../net/minecraft/stats/StatsCounter.h"
-#include "../net/minecraft/server/level/GameMode.h"
-#include "Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "Minecraft.Client/net/minecraft/server/level/GameMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
 #if defined(_WINDOWS64)
-#include "../Windows64/XML/ATGXmlParser.h"
-#include "../Windows64/XML/xmlFilesCallback.h"
+#include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
+#include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"
 #endif
 #include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include "Minecraft_Macros.h"
-#include "../net/minecraft/server/PlayerList.h"
-#include "../net/minecraft/server/level/ServerPlayer.h"
-#include "Source Files/GameRules/ConsoleGameRules.h"
-#include "Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
-#include "../net/minecraft/client/User.h"
+#include "Minecraft.Client/net/minecraft/client/User.h"
 #include <cstring>
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "../net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "Minecraft.World/Header Files/compression.h"
-#include "../net/minecraft/client/skins/TexturePackRepository.h"
-#include "../net/minecraft/client/skins/DLCTexturePack.h"
-#include "Source Files/DLC/DLCPack.h"
-#include "Source Files/Localisation/StringTable.h"
-#include "Source Files/UI/All Platforms/ArchiveFile.h"
-#include "../net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
+#include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #if defined(__linux__)
 #include <unistd.h>
 #include <climits>
 #endif
-#include "Source Files/UI/UI.h"
-#include "Source Files/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
+#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
 
 #include <thread>
 #include <chrono>
 
-#include "Source Files/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
 
 // CMinecraftApp app;
 unsigned int CMinecraftApp::m_uiLastSignInData = 0;
@@ -3606,7 +3606,7 @@ void CMinecraftApp::loadMediaArchive() {
 #if _WINDOWS64
     mediapath = L"Common\\Media\\MediaWindows64.arc";
 #elif __linux__
-    mediapath = L"Common/Media/MediaLinux.arc";
+    mediapath = L"Minecraft.Client/Common/Media/MediaLinux.arc";
 #endif
 
     if (!mediapath.empty()) {

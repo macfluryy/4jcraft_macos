@@ -1,10 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+
 #include "HugeExplosionParticle.h"
 #include "java/Random.h"
-#include "../renderer/Textures.h"
-#include "../renderer/Tesselator.h"
-#include "../Lighting.h"
-#include "../resources/ResourceLocation.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
+
+class Level;
 
 ResourceLocation HugeExplosionParticle::EXPLOSION_LOCATION =
     ResourceLocation(TN_MISC_EXPLOSION);

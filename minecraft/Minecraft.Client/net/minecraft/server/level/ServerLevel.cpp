@@ -2,15 +2,15 @@
 #include <chrono>
 #include <mutex>
 
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "ServerLevel.h"
-#include "../MinecraftServer.h"
+#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "ServerChunkCache.h"
-#include "../PlayerList.h"
+#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "ServerPlayer.h"
-#include "../network/PlayerConnection.h"
+#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "EntityTracker.h"
-#include "../ServerScoreboard.h"
+#include "Minecraft.Client/net/minecraft/server/ServerScoreboard.h"
 #include "Minecraft.World/net/minecraft/world/scores/ScoreboardSaveData.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
@@ -36,10 +36,10 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "ServerLevelListener.h"
 #include "Minecraft.World/net/minecraft/util/WeighedTreasure.h"
-#include "../../client/skins/TexturePackRepository.h"
-#include "../../client/skins/DLCTexturePack.h"
+#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
-#include "../../../../Common/ShutdownManager.h"
+#include "Minecraft.Client/Common/ShutdownManager.h"
 #include "PlayerChunkMap.h"
 
 std::vector<WeighedTreasure*> ServerLevel::RANDOM_BONUS_ITEMS;

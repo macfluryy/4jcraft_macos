@@ -1,5 +1,9 @@
 #pragma once
 #include <cstdint>
+#include <string>
+#include <unordered_map>
+
+#include "Minecraft.Client/Common/App_enums.h"
 
 class ColourTable {
 private:

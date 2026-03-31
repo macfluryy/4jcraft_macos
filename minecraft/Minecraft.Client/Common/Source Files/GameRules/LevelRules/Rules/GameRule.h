@@ -1,11 +1,17 @@
 #pragma once
 // using namespace std;
 
+#include <stdint.h>
 #include <unordered_map>
+#include <memory>
+#include <string>
 
 class CompoundTag;
 class GameRuleDefinition;
 class Connection;
+class DataInputStream;
+class DataOutputStream;
+class ItemInstance;
 
 // A game rule maintains the state for one particular definition
 class GameRule {

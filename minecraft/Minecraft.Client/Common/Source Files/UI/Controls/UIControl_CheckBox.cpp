@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
 #include "UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIControl_CheckBox::UIControl_CheckBox() {}
 

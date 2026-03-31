@@ -1,5 +1,6 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "SmallButton.h"
+#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 
 SmallButton::SmallButton(int id, int x, int y, const std::wstring& msg)
     : Button(id, x, y, 150, 20, msg) {

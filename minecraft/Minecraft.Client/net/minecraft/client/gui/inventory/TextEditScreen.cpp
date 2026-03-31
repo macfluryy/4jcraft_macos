@@ -1,14 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <vector>
+
 #include "TextEditScreen.h"
-#include "../Button.h"
-#include "../../renderer/tileentity/TileEntityRenderDispatcher.h"
-#include "../../multiplayer/ClientConnection.h"
-#include "../../multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/network/packet/SignUpdatePacket.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
+#include "Minecraft.Client/Header Files/stubs.h"
 
 const std::wstring TextEditScreen::allowedChars =
     SharedConstants::acceptableLetters;

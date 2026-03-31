@@ -1,7 +1,15 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "../../model/geom/ModelPart.h"
+#include <GL/gl.h>
+#include <memory>
+#include <numbers>
+
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "EnderChestRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/EnderChestTileEntity.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "Minecraft.Client/net/minecraft/client/model/ChestModel.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation EnderChestRenderer::ENDER_CHEST_LOCATION =
     ResourceLocation(TN_TILE_ENDER_CHEST);

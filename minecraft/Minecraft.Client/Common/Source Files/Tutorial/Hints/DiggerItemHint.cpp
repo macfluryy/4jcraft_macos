@@ -1,9 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "../Tutorial.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
 #include "DiggerItemHint.h"
 
 DiggerItemHint::DiggerItemHint(eTutorial_Hint id, Tutorial* tutorial,

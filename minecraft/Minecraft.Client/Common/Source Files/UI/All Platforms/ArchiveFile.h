@@ -3,9 +3,13 @@
 #include <cstdint>
 #include <vector>
 #include <unordered_map>
+#include <format>
+#include <string>
 
 #include "java/File.h"
 #include "Minecraft.World/ConsoleHelpers/ArrayWithLength.h"
+
+class DataInputStream;
 
 class ArchiveFile {
 protected:

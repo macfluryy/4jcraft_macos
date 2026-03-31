@@ -1,5 +1,5 @@
 #pragma once
-#include "../Button.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 
 class ResourceLocation;
 

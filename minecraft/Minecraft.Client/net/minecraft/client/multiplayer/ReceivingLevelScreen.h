@@ -1,5 +1,5 @@
 #pragma once
-#include "../gui/Screen.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 class ClientConnection;
 
 class ReceivingLevelScreen : public Screen {

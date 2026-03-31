@@ -1,8 +1,16 @@
 #pragma once
 #include <cstdint>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "Minecraft.World/net/minecraft/util/SmoothFloat.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
+#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "java/Class.h"
+
 class Level;
 class User;
 class CompoundTag;
@@ -13,6 +21,7 @@ class Container;
 class Input;
 class Stat;
 class Minecraft;
+class ModelPart;
 
 // Time in seconds before the players presence is update to Idle
 #define PLAYER_IDLE_TIME 300

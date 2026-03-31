@@ -1,6 +1,9 @@
 #pragma once
 #include "MobRenderer.h"
 
+class Model;
+class ResourceLocation;
+
 class MushroomCowRenderer : public MobRenderer {
 private:
     static ResourceLocation MOOSHROOM_LOCATION;

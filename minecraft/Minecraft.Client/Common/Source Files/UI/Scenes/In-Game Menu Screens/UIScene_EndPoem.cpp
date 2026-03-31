@@ -1,9 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_EndPoem.h"
-#include "../../UIBitmapFont.h"
-#include "../../../../../net/minecraft/client/Minecraft.h"
-#include "../../../../../net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIBitmapFont.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)

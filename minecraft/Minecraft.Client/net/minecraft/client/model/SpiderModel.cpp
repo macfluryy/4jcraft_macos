@@ -1,7 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <cmath>
+#include <memory>
+#include <numbers>
+
 #include "SpiderModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 SpiderModel::SpiderModel() : Model() {
     float g = 0;

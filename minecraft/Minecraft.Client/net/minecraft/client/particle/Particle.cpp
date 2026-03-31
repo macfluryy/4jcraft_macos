@@ -1,10 +1,18 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <stdio.h>
+
 #include "Particle.h"
-#include "../renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
+
+class Level;
+class Textures;
 
 /*
     protected int tex;

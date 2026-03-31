@@ -1,6 +1,11 @@
 #pragma once
+#include <format>
+
 #include "TutorialTask.h"
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
+
+class Tutorial;
+class TutorialConstraint;
 
 class XuiCraftingTask : public TutorialTask {
 public:

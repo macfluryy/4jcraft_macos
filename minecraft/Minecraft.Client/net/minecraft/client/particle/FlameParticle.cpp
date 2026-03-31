@@ -1,7 +1,9 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "FlameParticle.h"
+#include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
+
+class Level;
 
 FlameParticle::FlameParticle(Level* level, double x, double y, double z,
                              double xd, double yd, double zd)

@@ -2,8 +2,8 @@
 #include <cstdint>
 
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
-#include "../../UIScene.h"
-#include "../../Controls/UIControl_PlayerSkinPreview.h"
+#include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_PlayerSkinPreview.h"
 
 class UIScene_SkinSelectMenu : public UIScene {
 private:

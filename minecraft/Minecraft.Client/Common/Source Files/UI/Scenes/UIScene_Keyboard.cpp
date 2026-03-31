@@ -1,5 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
-#include "../UI.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_Keyboard.h"
 
 #define KEYBOARD_DONE_TIMER_ID 0

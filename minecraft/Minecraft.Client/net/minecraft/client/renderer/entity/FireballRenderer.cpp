@@ -1,12 +1,19 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <memory>
+
 #include "FireballRenderer.h"
 #include "EntityRenderDispatcher.h"
-#include "../texture/TextureAtlas.h"
-#include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "Minecraft.World/net/minecraft/world/entity/projectile/Fireball.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FireTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "java/Class.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 
 FireballRenderer::FireballRenderer(float scale) { this->scale = scale; }
 

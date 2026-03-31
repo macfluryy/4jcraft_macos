@@ -1,4 +1,3 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "Timer.h"
 #include "java/System.h"
 

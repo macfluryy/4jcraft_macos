@@ -1,6 +1,8 @@
 #pragma once
 #include "EntityRenderer.h"
 
+class TileRenderer;
+
 class FallingTileRenderer : public EntityRenderer {
 private:
     TileRenderer* tileRenderer;

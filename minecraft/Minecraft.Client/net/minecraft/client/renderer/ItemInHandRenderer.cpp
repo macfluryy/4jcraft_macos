@@ -1,22 +1,47 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <GL/gl.h>
+#include <cmath>
+#include <numbers>
+#include <vector>
+
 #include "ItemInHandRenderer.h"
 #include "TileRenderer.h"
 #include "Tesselator.h"
 #include "Textures.h"
-#include "texture/TextureAtlas.h"
-#include "entity/EntityRenderer.h"
-#include "entity/PlayerRenderer.h"
-#include "entity/EntityRenderDispatcher.h"
-#include "../Lighting.h"
-#include "../multiplayer/MultiPlayerLocalPlayer.h"
-#include "../gui/Minimap.h"
-#include "../multiplayer/MultiPlayerLevel.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/PlayerRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "Minecraft.Client/net/minecraft/client/Lighting.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/gui/Minimap.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/ItemInHandRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "Minecraft.World/net/minecraft/world/item/BowItem.h"
+#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+#include "Minecraft.World/net/minecraft/world/item/UseAnim.h"
+#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/FireTile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+#include "java/System.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
+
+class EntityRenderer;
+class MapItemSavedData;
 
 ResourceLocation ItemInHandRenderer::ENCHANT_GLINT_LOCATION =
     ResourceLocation(TN__BLUR__MISC_GLINT);

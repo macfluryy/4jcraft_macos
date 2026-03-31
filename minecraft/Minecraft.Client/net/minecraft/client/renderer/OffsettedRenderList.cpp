@@ -1,6 +1,7 @@
-#include "Minecraft.World/Header Files/stdafx.h"
 #include "java/IntBuffer.h"
 #include "OffsettedRenderList.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
 
 // 4J added
 OffsettedRenderList::OffsettedRenderList() {

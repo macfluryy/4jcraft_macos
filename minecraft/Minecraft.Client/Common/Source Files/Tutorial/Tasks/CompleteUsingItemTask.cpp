@@ -1,6 +1,10 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include <memory>
+
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 #include "CompleteUsingItemTask.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tasks/TutorialTask.h"
+
+class Tutorial;
 
 CompleteUsingItemTask::CompleteUsingItemTask(Tutorial* tutorial,
                                              int descriptionId, int itemIds[],

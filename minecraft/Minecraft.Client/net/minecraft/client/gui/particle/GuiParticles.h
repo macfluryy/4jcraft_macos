@@ -1,5 +1,7 @@
 #pragma once
-#include "../GuiComponent.h"
+#include <vector>
+
+#include "Minecraft.Client/net/minecraft/client/gui/GuiComponent.h"
 
 class GuiParticle;
 class Minecraft;

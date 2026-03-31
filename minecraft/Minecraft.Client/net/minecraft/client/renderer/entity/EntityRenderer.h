@@ -1,10 +1,13 @@
 #pragma once
-#include "../../model/geom/Model.h"
-#include "../TileRenderer.h"
-#include "../Tesselator.h"
-#include "../Textures.h"
-#include "../ItemInHandRenderer.h"
-#include "../../resources/ResourceLocation.h"
+#include <memory>
+#include <string>
+
+#include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "Minecraft.Client/net/minecraft/client/renderer/ItemInHandRenderer.h"
+#include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 
 class Tile;
 class Entity;
@@ -12,9 +15,10 @@ class Level;
 class AABB;
 class IconRegister;
 class ResourceLocation;
-
 class EntityRenderDispatcher;
 class Font;
+class Model;
+class TileRenderer;
 
 // 4J - this was originally a generic of type EntityRenderer<T extends Entity>
 class EntityRenderer {
