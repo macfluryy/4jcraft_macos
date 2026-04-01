@@ -3,7 +3,7 @@
 #include "DripParticle.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/LiquidTile.h"

@@ -39,7 +39,7 @@ lib_world = static_library('Minecraft.World',
     platform_dep,
     simdutf_dep,
   ],
-  include_directories : include_directories('include', '..'),
+  include_directories : include_directories('..'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )
 

@@ -12,7 +12,7 @@
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.World/include/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"

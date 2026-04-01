@@ -1,4 +1,4 @@
-#include "Minecraft.World/include/stdafx.h"
+#include "Minecraft.World/stdafx.h"
 
 #include <string>
 #include <memory>

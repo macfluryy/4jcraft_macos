@@ -1,4 +1,4 @@
-#include "Minecraft.World/include/stdafx.h"
+#include "Minecraft.World/stdafx.h"
 
 #include "nbt/com.mojang.nbt.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"

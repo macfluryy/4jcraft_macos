@@ -1,7 +1,7 @@
 #include <memory>
 
 #include "MushroomCow.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/PathfinderMob.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/Cow.h"

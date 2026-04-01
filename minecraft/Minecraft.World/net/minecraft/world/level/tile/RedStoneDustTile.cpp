@@ -8,7 +8,7 @@
 #include "DiodeTile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"

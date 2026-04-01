@@ -3,7 +3,7 @@
 #include <format>
 #include <vector>
 
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "java/InputOutputStream/InputOutputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 

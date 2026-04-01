@@ -1,7 +1,7 @@
 #include <optional>
 
 #include "TorchTile.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelSource.h"
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"

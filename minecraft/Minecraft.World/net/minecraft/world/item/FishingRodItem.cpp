@@ -2,7 +2,7 @@
 #include <string>
 
 #include "FishingRodItem.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"

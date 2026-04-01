@@ -25,7 +25,7 @@
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"

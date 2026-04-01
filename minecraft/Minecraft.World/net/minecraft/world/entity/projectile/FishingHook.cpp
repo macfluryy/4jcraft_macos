@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "FishingHook.h"
-#include "Minecraft.World/include/ParticleTypes.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"

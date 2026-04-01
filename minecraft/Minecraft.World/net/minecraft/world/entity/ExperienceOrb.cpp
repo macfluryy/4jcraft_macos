@@ -4,7 +4,7 @@
 
 #include "java/JavaMath.h"
 #include "ExperienceOrb.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"

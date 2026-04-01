@@ -5,7 +5,7 @@
 #include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"

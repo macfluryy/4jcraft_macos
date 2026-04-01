@@ -4,7 +4,7 @@
 
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 #include "Enemy.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 

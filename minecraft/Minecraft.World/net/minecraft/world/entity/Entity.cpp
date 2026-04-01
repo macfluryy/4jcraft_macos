@@ -12,7 +12,7 @@
 
 #include "SyncedEntityData.h"
 #include "EntityIO.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "EntityPos.h"
 #include "Entity.h"
 #include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
@@ -23,7 +23,7 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

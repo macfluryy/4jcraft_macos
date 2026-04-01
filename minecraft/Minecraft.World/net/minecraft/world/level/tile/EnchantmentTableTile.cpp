@@ -2,7 +2,7 @@
 
 #include "EnchantmentTableTile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"

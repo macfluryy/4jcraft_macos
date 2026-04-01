@@ -4,7 +4,7 @@
 
 #include "PigZombie.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/world/Difficulty.h"

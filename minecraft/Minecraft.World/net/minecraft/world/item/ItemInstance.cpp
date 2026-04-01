@@ -12,7 +12,7 @@
 #include "Minecraft.World/net/minecraft/util/HtmlString.h"
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/include/Potion_Macros.h"
+#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionMacros.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/IntTag.h"
 #include "nbt/ListTag.h"

@@ -7,7 +7,7 @@
 #include "ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

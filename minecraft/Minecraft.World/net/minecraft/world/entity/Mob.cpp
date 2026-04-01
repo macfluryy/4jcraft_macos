@@ -9,7 +9,7 @@
 
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/level/EntityTracker.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "net/minecraft/world/entity/item/ItemEntity.h"
 #include "net/minecraft/world/entity/Mob.h"
 #include "ConsoleHelpers/StringHelpers.h"

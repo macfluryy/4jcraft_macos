@@ -5,7 +5,7 @@
 
 #include "Sheep.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/world/entity/AgeableMob.h"

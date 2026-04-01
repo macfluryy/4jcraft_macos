@@ -5,7 +5,7 @@
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/include/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/locale/I18n.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"
 #include "Minecraft.World/net/minecraft/stats/ItemStat.h"

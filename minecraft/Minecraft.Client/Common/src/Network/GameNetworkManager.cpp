@@ -24,7 +24,7 @@
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"

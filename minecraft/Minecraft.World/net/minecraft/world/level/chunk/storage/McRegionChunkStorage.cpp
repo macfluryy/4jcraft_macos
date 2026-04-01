@@ -16,7 +16,7 @@
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"

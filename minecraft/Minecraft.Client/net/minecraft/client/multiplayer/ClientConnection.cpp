@@ -45,7 +45,7 @@
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/client/ClientConstants.h"
-#include "Minecraft.World/include/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/gui/MerchantScreen.h"
 #include "Minecraft.Client/Common/src/UI/UI.h"

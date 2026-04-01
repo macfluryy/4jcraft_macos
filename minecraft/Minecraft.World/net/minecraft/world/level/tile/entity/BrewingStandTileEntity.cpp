@@ -1,4 +1,4 @@
-#include "Minecraft.World/include/stdafx.h"
+#include "Minecraft.World/stdafx.h"
 
 #include "nbt/com.mojang.nbt.h"
 #include "BrewingStandTileEntity.h"
@@ -7,7 +7,7 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "Minecraft.World/include/Potion_Macros.h"
+#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionMacros.h"
 
 int slotsForUp[] = {BrewingStandTileEntity::INGREDIENT_SLOT};
 int slotsForOtherFaces[] = {0, 1, 2};

@@ -9,7 +9,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"

@@ -1,6 +1,6 @@
 #include "TripWireSourceTile.h"
 #include "optional"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Direction.h"
 #include "Minecraft.World/net/minecraft/Facing.h"

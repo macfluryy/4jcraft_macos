@@ -6,7 +6,7 @@
 #include "LightningBolt.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"

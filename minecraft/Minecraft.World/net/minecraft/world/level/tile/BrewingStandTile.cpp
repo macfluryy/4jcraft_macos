@@ -3,7 +3,7 @@
 
 #include "BrewingStandTile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/world/Container.h"

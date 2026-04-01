@@ -42,7 +42,7 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/CompressedTileStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseLightStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseDataStorage.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"

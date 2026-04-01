@@ -3,7 +3,7 @@
 #include <string>
 
 #include "Creeper.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"

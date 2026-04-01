@@ -2,7 +2,7 @@
 
 #include "Silverfish.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"

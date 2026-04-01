@@ -1,7 +1,7 @@
 #include <memory>
 
 #include "Chicken.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/goal/BreedGoal.h"

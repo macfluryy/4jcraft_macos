@@ -2,7 +2,7 @@
 
 #include "BaseMobSpawner.h"
 #include "Minecraft.World/net/minecraft/world/level/BaseMobSpawner.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

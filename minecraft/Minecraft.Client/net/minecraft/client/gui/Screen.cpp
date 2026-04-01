@@ -1,7 +1,7 @@
 #include "Screen.h"
 #include "Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/particle/GuiParticles.h"
-#include "Minecraft.World/include/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "4J_Profile.h"
 #include "4J_Input.h"

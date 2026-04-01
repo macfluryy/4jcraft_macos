@@ -3,7 +3,7 @@
 #include "TntTile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Facing.h"

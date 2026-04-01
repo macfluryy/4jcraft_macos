@@ -3,7 +3,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/AgeableMob.h"
 #include "Npc.h"
 #include "Minecraft.World/net/minecraft/world/item/trading/Merchant.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 
 class Level;
 class Village;

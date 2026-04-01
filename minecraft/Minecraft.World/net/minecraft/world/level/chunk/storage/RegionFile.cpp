@@ -9,7 +9,7 @@
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

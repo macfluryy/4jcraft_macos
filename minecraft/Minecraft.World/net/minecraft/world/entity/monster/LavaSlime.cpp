@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "LavaSlime.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/Difficulty.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/AttributeInstance.h"

@@ -5,7 +5,7 @@
 #include "BreedGoal.h"
 #include "Minecraft.World/net/minecraft/world/entity/ExperienceOrb.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/entity/AgeableMob.h"

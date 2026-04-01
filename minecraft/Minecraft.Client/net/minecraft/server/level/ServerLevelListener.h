@@ -2,7 +2,7 @@
 #include <string>
 
 #include "Minecraft.World/net/minecraft/world/level/LevelListener.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 
 class Player;
 class TileEntity;

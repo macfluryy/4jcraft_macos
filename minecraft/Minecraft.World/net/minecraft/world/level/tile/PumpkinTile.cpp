@@ -2,7 +2,7 @@
 
 #include "PumpkinTile.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/SnowMan.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Facing.h"

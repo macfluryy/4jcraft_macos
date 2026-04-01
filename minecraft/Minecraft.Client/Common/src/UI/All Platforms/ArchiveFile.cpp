@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "ArchiveFile.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

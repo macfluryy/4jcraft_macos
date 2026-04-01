@@ -5,7 +5,7 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/include/SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 
 UIControl_Slider::UIControl_Slider() {
     m_id = 0;

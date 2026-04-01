@@ -1,9 +1,9 @@
 #include "Minecraft.Client/include/stdafx.h"
 
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "java/File.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCLocalisationFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCGameRulesFile.h"

@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "ButtonTile.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"

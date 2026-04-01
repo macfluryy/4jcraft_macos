@@ -3,8 +3,8 @@
 
 #include "NoteBlockTile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/include/ParticleTypes.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/BaseEntityTile.h"

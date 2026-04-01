@@ -5,7 +5,7 @@
 
 #include "java/JavaMath.h"
 #include "PrimedTnt.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 

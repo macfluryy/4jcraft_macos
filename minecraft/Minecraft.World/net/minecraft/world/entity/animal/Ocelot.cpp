@@ -9,7 +9,7 @@
 #include "Ocelot.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"

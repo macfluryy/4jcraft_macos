@@ -41,7 +41,7 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"

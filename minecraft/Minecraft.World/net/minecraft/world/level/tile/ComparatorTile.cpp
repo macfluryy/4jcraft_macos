@@ -1,7 +1,7 @@
 #include <algorithm>
 
 #include "ComparatorTile.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/Direction.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/item/Item.h"

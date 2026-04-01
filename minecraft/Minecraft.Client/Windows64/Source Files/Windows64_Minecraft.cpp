@@ -33,7 +33,7 @@
 #include "Sentient/SentientManager.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../Resource.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 
 HINSTANCE hMyInst;

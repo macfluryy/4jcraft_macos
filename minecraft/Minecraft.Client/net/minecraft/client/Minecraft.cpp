@@ -60,7 +60,7 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/include/Minecraft.World.h"
+#include "Minecraft.World/net/minecraft/StaticConstructors.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/HellRandomLevelSource.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
@@ -85,7 +85,7 @@
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/ConsoleGameMode.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/include/Potion_Macros.h"
+#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionMacros.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "4J_Input.h"
@@ -4158,7 +4158,7 @@ void Minecraft::main() {
 
     useLomp = true;
 
-    MinecraftWorld_RunStaticCtors();
+    Minecraft_RunStaticCtors();
     EntityRenderDispatcher::staticCtor();
     TileEntityRenderDispatcher::staticCtor();
     User::staticCtor();

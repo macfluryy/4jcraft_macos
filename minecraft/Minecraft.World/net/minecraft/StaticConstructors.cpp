@@ -1,4 +1,4 @@
-#include "Minecraft.World/include/Minecraft.World.h"
+#include "Minecraft.World/net/minecraft/StaticConstructors.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.World/net/minecraft/stats/CommonStats.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
@@ -39,7 +39,7 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/BeaconTileEntity.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
-void MinecraftWorld_RunStaticCtors() {
+void Minecraft_RunStaticCtors() {
     // The ordering of these static ctors can be important. If they are within
     // statement blocks then DO NOT CHANGE the ordering - 4J Stu
 

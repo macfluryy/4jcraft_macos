@@ -1,4 +1,4 @@
-#include "Minecraft.World/include/stdafx.h"
+#include "Minecraft.World/stdafx.h"
 
 #include "nbt/com.mojang.nbt.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"

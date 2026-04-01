@@ -7,7 +7,7 @@
 #include "java/JavaMath.h"
 #include "ItemEntity.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"

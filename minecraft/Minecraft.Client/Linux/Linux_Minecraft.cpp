@@ -61,7 +61,7 @@ static void sigsegv_handler(int sig) {
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.World/include/compression.h"
+#include "Minecraft.World/ConsoleHelpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/App_Defines.h"

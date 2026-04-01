@@ -22,7 +22,7 @@
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/include/ParticleTypes.h"
+#include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 #include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"

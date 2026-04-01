@@ -1,7 +1,7 @@
 #include <memory>
 
 #include "FlintAndSteelItem.h"
-#include "SoundTypes.h"
+#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
