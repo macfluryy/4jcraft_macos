@@ -422,43 +422,32 @@ void Mob::checkDespawn() {
 }
 
 void Mob::newServerAiStep() {
-    PIXBeginNamedEvent(0, "Tick target selector for %d", GetType());
-    noActionTime++;
-    PIXBeginNamedEvent(0, "Check despawn");
-    checkDespawn();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick sensing");
-    sensing->tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick target selector");
-    targetSelector.tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick goal selectors");
-    goalSelector.tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick navigation");
-    navigation->tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick server ai mob step");
-    serverAiMobStep();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick move");
-    moveControl->tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick look");
-    lookControl->tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Tick jump");
-    jumpControl->tick();
-    PIXEndNamedEvent();
+        noActionTime++;
+        checkDespawn();
+    
+        sensing->tick();
+    
+        targetSelector.tick();
+    
+        goalSelector.tick();
+    
+        navigation->tick();
+    
+        serverAiMobStep();
+    
+        moveControl->tick();
+    
+        lookControl->tick();
+    
+        jumpControl->tick();
+    
     // Consider this for extra strolling if it is protected against despawning.
     // We aren't interested in ones that aren't protected as the whole point of
     // this extra wandering is to potentially transition from protected to not
     // protected.
-    PIXBeginNamedEvent(0, "Consider extra wandering");
-    considerForExtraWandering(isDespawnProtected());
-    PIXEndNamedEvent();
-    PIXEndNamedEvent();
+        considerForExtraWandering(isDespawnProtected());
+    
+    
 }
 
 void Mob::serverAiStep() {

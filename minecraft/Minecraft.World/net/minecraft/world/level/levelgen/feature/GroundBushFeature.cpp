@@ -13,8 +13,7 @@ GroundBushFeature::GroundBushFeature(int trunkType, int leafType) {
 
 bool GroundBushFeature::place(Level* level, Random* random, int x, int y,
                               int z) {
-    PIXBeginNamedEvent(0, "Placing GroundBushFeature");
-    int t = 0;
+        int t = 0;
     while (((t = level->getTile(x, y, z)) == 0 || t == Tile::leaves_Id) &&
            y > 0)
         y--;
@@ -41,6 +40,6 @@ bool GroundBushFeature::place(Level* level, Random* random, int x, int y,
             }
         }
     }
-    PIXEndNamedEvent();
+    
     return true;
 }

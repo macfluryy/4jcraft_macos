@@ -44,51 +44,6 @@ uint32_t XContentGetThumbnail(uint32_t dwUserIndex,
     return 0;
 }
 
-void PIXAddNamedCounter(int a, const char* b, ...) {}
-// #define PS3_USE_PIX_EVENTS
-// #define PS4_USE_PIX_EVENTS
-void PIXBeginNamedEvent(int a, const char* b, ...) {
-#if defined(PS4_USE_PIX_EVENTS)
-    char buf[512];
-    va_list args;
-    va_start(args, b);
-    vsprintf(buf, b, args);
-    sceRazorCpuPushMarker(buf, 0xffffffff, SCE_RAZOR_MARKER_ENABLE_HUD);
-
-#endif
-#if defined(PS3_USE_PIX_EVENTS)
-    char buf[256];
-    wchar_t wbuf[256];
-    va_list args;
-    va_start(args, b);
-    vsprintf(buf, b, args);
-    snPushMarker(buf);
-
-    // 	mbstowcs(wbuf,buf,256);
-    // 	RenderManager.BeginEvent(wbuf);
-    va_end(args);
-#endif
-}
-
-void PIXEndNamedEvent() {
-#if defined(PS4_USE_PIX_EVENTS)
-    sceRazorCpuPopMarker();
-#endif
-#if defined(PS3_USE_PIX_EVENTS)
-    snPopMarker();
-// 	RenderManager.EndEvent();
-#endif
-}
-void PIXSetMarkerDeprecated(int a, char* b, ...) {}
-
-// void *D3DXBUFFER::GetBufferPointer() { return nullptr; }
-// int D3DXBUFFER::GetBufferSize() { return 0; }
-// void D3DXBUFFER::Release() {}
-
-// #if 0
-// void GetLocalTime(SYSTEMTIME *time) {}
-// #endif
-
 bool IsEqualXUID(PlayerUID a, PlayerUID b) { return false; }
 
 void XMemCpy(void* a, const void* b, size_t s) { memcpy(a, b, s); }

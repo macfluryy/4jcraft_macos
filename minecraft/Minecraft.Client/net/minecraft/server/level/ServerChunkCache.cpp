@@ -544,8 +544,7 @@ void ServerChunkCache::flagPostProcessComplete(short flag, int x, int z) {
     if ((lc->terrainPopulated & LevelChunk::sTerrainPopulatedAllAffecting) ==
         LevelChunk::sTerrainPopulatedAllAffecting) {
         // Do the compression of data & lighting at this point
-        PIXBeginNamedEvent(0, "Compressing lighting/blocks");
-
+        
         // Check, using lower blocks as a reference, if we've already compressed
         // - no point doing this multiple times, which otherwise we will do as
         // we aren't checking for the flags transitioning in the if statement
@@ -554,7 +553,7 @@ void ServerChunkCache::flagPostProcessComplete(short flag, int x, int z) {
         if (!lc->isLowerBlockLightStorageCompressed()) lc->compressLighting();
         if (!lc->isLowerDataStorageCompressed()) lc->compressData();
 
-        PIXEndNamedEvent();
+        
     }
 
     // Are all neighbouring chunks And this one now post-processed?
@@ -564,16 +563,14 @@ void ServerChunkCache::flagPostProcessComplete(short flag, int x, int z) {
 
         // This would be a good time to fix up any lighting for this chunk since
         // all the geometry that could affect it should now be in place
-        PIXBeginNamedEvent(0, "Recheck gaps");
-        if (lc->level->dimension->id != 1) {
+                if (lc->level->dimension->id != 1) {
             lc->recheckGaps(true);
         }
-        PIXEndNamedEvent();
+        
 
         // Do a checkLight on any tiles which are lava.
-        PIXBeginNamedEvent(0, "Light lava (this)");
-        lc->lightLava();
-        PIXEndNamedEvent();
+                lc->lightLava();
+        
 
         // Flag as now having this post-post-processing stage completed
         lc->terrainPopulated |= LevelChunk::sTerrainPostPostProcessed;
@@ -585,9 +582,8 @@ void ServerChunkCache::postProcess(ChunkSource* parent, int x, int z) {
     if ((chunk->terrainPopulated & LevelChunk::sTerrainPopulatedFromHere) ==
         0) {
         if (source != nullptr) {
-            PIXBeginNamedEvent(0, "Main post processing");
-            source->postProcess(parent, x, z);
-            PIXEndNamedEvent();
+                        source->postProcess(parent, x, z);
+            
 
             chunk->markUnsaved();
         }
@@ -650,23 +646,20 @@ void ServerChunkCache::postProcess(ChunkSource* parent, int x, int z) {
 
 // 4J Added for suspend
 bool ServerChunkCache::saveAllEntities() {
-    PIXBeginNamedEvent(0, "Save all entities");
-
-    PIXBeginNamedEvent(0, "saving to NBT");
-    {
+    
+        {
         std::lock_guard<std::recursive_mutex> lock(m_csLoadCreate);
         for (auto it = m_loadedChunkList.begin(); it != m_loadedChunkList.end();
              ++it) {
             storage->saveEntities(level, *it);
         }
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Flushing");
-    storage->flush();
-    PIXEndNamedEvent();
+        storage->flush();
+    
 
-    PIXEndNamedEvent();
+    
     return true;
 }
 
@@ -871,19 +864,16 @@ int ServerChunkCache::runSaveThreadProc(void* lpParam) {
     // app.DebugPrintf("Save thread has started\n");
 
     while (params->chunkToSave != nullptr) {
-        PIXBeginNamedEvent(0, "Saving entities");
-        // app.DebugPrintf("Save thread has started processing a chunk\n");
+                // app.DebugPrintf("Save thread has started processing a chunk\n");
         if (params->saveEntities)
             params->cache->saveEntities(params->chunkToSave);
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Saving chunk");
-
+        
+        
         params->cache->save(params->chunkToSave);
         params->chunkToSave->setUnsaved(false);
 
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Notifying and waiting for next chunk");
-
+        
+        
         // Inform the producer thread that we are done with this chunk
         params->notificationEvent
             ->set();  // SetEvent(params->notificationEvent);
@@ -895,7 +885,7 @@ int ServerChunkCache::runSaveThreadProc(void* lpParam) {
         params->wakeEvent->waitForSignal(
             C4JThread::
                 kInfiniteTimeout);  // WaitForSingleObject(params->wakeEvent,INFINITE);
-        PIXEndNamedEvent();
+        
     }
 
     // app.DebugPrintf("Thread is exiting as it has no chunk to process\n");

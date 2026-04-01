@@ -1749,8 +1749,6 @@ bool LevelRenderer::updateDirtyChunks() {
         }
         throttle++;
         */
-        PIXAddNamedCounter(((float)memAlloc) / (1024.0f * 1024.0f),
-                           "Command buffer allocations");
         bool onlyRebuild = (memAlloc >= MAX_COMMANDBUFFER_ALLOCATIONS);
 
         // Move any dirty chunks stored in the lock free stack into global flags
@@ -1800,8 +1798,7 @@ bool LevelRenderer::updateDirtyChunks() {
         // chunk(s)
         if (dirtyChunkPresent) {
             lastDirtyChunkFound = System::currentTimeMillis();
-            PIXBeginNamedEvent(0, "Finding nearest chunk\n");
-
+            
             // Find nearest chunk that is dirty
             for (int p = 0; p < XUSER_MAX_COUNT; p++) {
                 // It's possible that the localplayers member can be set to
@@ -1937,7 +1934,7 @@ bool LevelRenderer::updateDirtyChunks() {
                 }
                 //			app.DebugPrintf("[%d,%d,%d]\n",nearestClipChunks.empty(),considered,wouldBeNearButEmpty);
             }
-            PIXEndNamedEvent();
+            
         }
     }
 
@@ -2019,7 +2016,7 @@ bool LevelRenderer::updateDirtyChunks() {
                 //		totalTime += (endTime - startTime);
                 //		countTime++;
                 //		printf("%d : %f\n", countTime, (float)totalTime
-                /// (float)countTime); PIXEndNamedEvent();
+                /// (float)countTime); 
             }
             // 4J Stu - Ignore this path when in constrained mode on Xbox One
             else {
@@ -2038,8 +2035,6 @@ bool LevelRenderer::updateDirtyChunks() {
 #else
     if (nearChunk) {
         chunk = nearChunk->chunk;
-        PIXBeginNamedEvent(0, "Rebuilding near chunk %d %d %d", chunk->x,
-                           chunk->y, chunk->z);
         static Chunk permaChunk;
         {
             FRAME_PROFILE_SCOPE(ChunkRebuildSchedule);
@@ -2078,7 +2073,7 @@ bool LevelRenderer::updateDirtyChunks() {
         //		countTime++;
         //		printf("%d : %f\n", countTime, (float)totalTime /
         //(float)countTime);
-        PIXEndNamedEvent();
+        
     }
 #endif
     else {
@@ -2397,8 +2392,6 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                         (int*)(intptr_t)(uintptr_t)(index + 2));
 #endif
 
-                    PIXSetMarkerDeprecated(0, "Setting chunk %d %d %d dirty",
-                                           x * 16, y * 16, z * 16);
                 }
                 //				setGlobalChunkFlag(x * 16, y *
                 // 16, z * 16, level, CHUNK_FLAG_DIRTY);

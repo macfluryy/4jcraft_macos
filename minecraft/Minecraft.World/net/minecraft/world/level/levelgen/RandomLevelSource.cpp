@@ -756,17 +756,15 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 
     bool hasVillage = false;
 
-    PIXBeginNamedEvent(0, "Structure postprocessing");
-    if (generateStructures) {
+        if (generateStructures) {
         mineShaftFeature->postProcess(level, pprandom, xt, zt);
         hasVillage = villageFeature->postProcess(level, pprandom, xt, zt);
         strongholdFeature->postProcess(level, pprandom, xt, zt);
         scatteredFeature->postProcess(level, random, xt, zt);
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Lakes");
-    if (biome != Biome::desert && biome != Biome::desertHills) {
+        if (biome != Biome::desert && biome != Biome::desertHills) {
         if (!hasVillage && pprandom->nextInt(4) == 0) {
             int x = xo + pprandom->nextInt(16) + 8;
             int y = pprandom->nextInt(Level::genDepth);
@@ -776,10 +774,9 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             calmWater.place(level, pprandom, x, y, z);
         }
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Lava");
-    if (!hasVillage && pprandom->nextInt(8) == 0) {
+        if (!hasVillage && pprandom->nextInt(8) == 0) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(pprandom->nextInt(Level::genDepth - 8) + 8);
         int z = zo + pprandom->nextInt(16) + 8;
@@ -788,33 +785,28 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             calmLava.place(level, pprandom, x, y, z);
         }
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Monster rooms");
-    for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::genDepth);
         int z = zo + pprandom->nextInt(16) + 8;
         MonsterRoomFeature mrf;
         mrf.place(level, pprandom, x, y, z);
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Biome decorate");
-    biome->decorate(level, pprandom, xo, zo);
-    PIXEndNamedEvent();
+        biome->decorate(level, pprandom, xo, zo);
+    
 
-    PIXBeginNamedEvent(0, "Process Schematics");
-    app.processSchematics(parent->getChunk(xt, zt));
-    PIXEndNamedEvent();
+        app.processSchematics(parent->getChunk(xt, zt));
+    
 
-    PIXBeginNamedEvent(0, "Post process mobs");
-    MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
+        MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
                                      pprandom);
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Update ice and snow");
-    // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
+        // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
     xo += 8;
     zo += 8;
     for (int x = 0; x < 16; x++) {
@@ -831,7 +823,7 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             }
         }
     }
-    PIXEndNamedEvent();
+    
 
     HeavyTile::instaFall = false;
 }

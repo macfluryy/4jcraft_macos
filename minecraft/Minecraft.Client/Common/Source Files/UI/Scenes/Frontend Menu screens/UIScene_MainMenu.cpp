@@ -303,9 +303,8 @@ void UIScene_MainMenu::RunAction(int iPad) {
 
 void UIScene_MainMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     if (std::char_traits<char16_t>::compare(region->name, u"Splash", 6) == 0) {
-        PIXBeginNamedEvent(0, "Custom draw splash");
-        customDrawSplash(region);
-        PIXEndNamedEvent();
+                customDrawSplash(region);
+        
     }
 }
 

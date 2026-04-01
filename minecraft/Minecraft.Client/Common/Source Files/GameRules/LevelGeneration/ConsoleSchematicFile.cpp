@@ -227,13 +227,11 @@ int64_t ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
     int totalBlockCount = getXSize() * rowBlockCount;
 
     std::vector<uint8_t> blockData = std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
-    PIXBeginNamedEvent(0, "Getting block data");
-    chunk->getBlockData(blockData);
-    PIXEndNamedEvent();
+        chunk->getBlockData(blockData);
+    
     std::vector<uint8_t> dataData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
-    PIXBeginNamedEvent(0, "Getting Data data");
-    chunk->getDataData(dataData);
-    PIXEndNamedEvent();
+        chunk->getDataData(dataData);
+    
 
     // Ignore light data
     int blockLightP = -1;
@@ -305,13 +303,11 @@ int64_t ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
     //	}
     //}
 
-    PIXBeginNamedEvent(0, "Setting Block data");
-    chunk->setBlockData(blockData);
-    PIXEndNamedEvent();
+        chunk->setBlockData(blockData);
+    
     chunk->recalcHeightmapOnly();
-    PIXBeginNamedEvent(0, "Setting Data data");
-    chunk->setDataData(dataData);
-    PIXEndNamedEvent();
+        chunk->setDataData(dataData);
+    
 
     // A basic pass through to roughly do the lighting. At this point of
     // post-processing, we don't have all the neighbouring chunks loaded in, so
@@ -966,8 +962,7 @@ void ConsoleSchematicFile::setBlocksAndData(
         upperY1 = y1 - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
         bHasUpper = true;
     }
-    PIXBeginNamedEvent(0, "Applying block data");
-    for (int x = x0; x < x1; x++)
+        for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++) {
             if (bHasLower) {
                 int slot = x << Level::genDepthBitsPlusFour |
@@ -985,10 +980,9 @@ void ConsoleSchematicFile::setBlocksAndData(
                 blocksP += len;
             }
         }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Applying Data data");
-    for (int x = x0; x < x1; x++)
+        for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++) {
             if (bHasLower) {
                 int slot = (x << Level::genDepthBitsPlusFour |
@@ -1008,7 +1002,7 @@ void ConsoleSchematicFile::setBlocksAndData(
                 dataP += len;
             }
         }
-    PIXEndNamedEvent();
+    
     // 4J Stu - Allow ignoring light data
     if (blockLightP > -1) {
         std::vector<uint8_t> blockLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);

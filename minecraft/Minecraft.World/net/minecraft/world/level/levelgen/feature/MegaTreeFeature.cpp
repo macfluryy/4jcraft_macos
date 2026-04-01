@@ -27,12 +27,11 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     // 4J Stu Added to stop tree features generating areas previously place by
     // game rule generation
     if (app.getLevelGenerationOptions() != nullptr) {
-        PIXBeginNamedEvent(0, "MegaTreeFeature Checking intersects");
         LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
         bool intersects = levelGenOptions->checkIntersects(
             x - 2, y - 1, z - 2, x + 2, y + treeHeight, z + 2);
-        PIXEndNamedEvent();
+
         if (intersects) {
             // app.DebugPrintf("Skipping reeds feature generation as it overlaps
             // a game rule structure\n");
@@ -74,12 +73,8 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     level->setTileAndData(x + 1, y - 1, z + 1, Tile::dirt_Id, 0,
                           Tile::UPDATE_CLIENTS);
 
-    PIXBeginNamedEvent(0, "MegaTree placing leaves, %d, %d, %d", x, z,
-                       y + treeHeight);
     placeLeaves(level, x, z, y + treeHeight, 2, random);
-    PIXEndNamedEvent();
 
-    PIXBeginNamedEvent(0, "MegaTree placing branches");
     int branchHeight = y + treeHeight - 2 - random->nextInt(4);
     while (branchHeight > y + treeHeight / 2) {
         float angle = random->nextFloat() * std::numbers::pi * 2.0f;
@@ -96,9 +91,7 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
 
         branchHeight -= 2 + random->nextInt(4);
     }
-    PIXEndNamedEvent();
 
-    PIXBeginNamedEvent(0, "MegaTree placing vines");
     for (int hh = 0; hh < treeHeight; hh++) {
         int t = level->getTile(x, y + hh, z);
         if (t == 0 || t == Tile::leaves_Id) {
@@ -170,7 +163,6 @@ bool MegaTreeFeature::place(Level* level, Random* random, int x, int y, int z) {
             }
         }
     }
-    PIXEndNamedEvent();
 
     return true;
 }
@@ -199,13 +191,10 @@ void MegaTreeFeature::placeLeaves(Level* level, int x, int z, int topPosition,
                     (xo * xo + zo * zo) > ((radius - 1) * (radius - 1))) {
                     continue;
                 }
-                PIXBeginNamedEvent(0, "Getting tile");
                 int t = level->getTile(xx, yy, zz);
-                PIXEndNamedEvent();
+
                 if (t == 0 || t == Tile::leaves_Id) {
-                    PIXBeginNamedEvent(0, "Placing block");
                     placeBlock(level, xx, yy, zz, Tile::leaves_Id, leafType);
-                    PIXEndNamedEvent();
                 }
             }
         }

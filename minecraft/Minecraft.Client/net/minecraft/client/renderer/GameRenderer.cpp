@@ -252,9 +252,8 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
 
     itemInHandRenderer->tick();
 
-    PIXBeginNamedEvent(0, "Rain tick");
-    tickRain();
-    PIXEndNamedEvent();
+        tickRain();
+    
 
     darkenWorldAmountO = darkenWorldAmount;
     if (BossMobGuiInfo::darkenWorld) {
@@ -767,9 +766,8 @@ void GameRenderer::renderItemInHand(float a, int eye) {
             !mc->cameraTargetPlayer->isSleeping()) {
             if (!mc->options->hideGui && !mc->gameMode->isCutScene()) {
                 turnOnLightLayer(a, true);
-                PIXBeginNamedEvent(0, "Item in hand render");
-                itemInHandRenderer->render(a);
-                PIXEndNamedEvent();
+                                itemInHandRenderer->render(a);
+                
                 turnOffLightLayer(a);
             }
         }
@@ -1119,9 +1117,6 @@ int GameRenderer::runUpdate(void* lpParam) {
 
         m_updateEvents->set(eUpdateCanRun);
 
-        //		PIXBeginNamedEvent(0,"Updating dirty chunks
-        //%d",(count++)&7);
-
         // Update chunks atomically until there aren't any very near ones left -
         // they will be deferred for rendering until the call to
         // CBuffDeferredModeEnd if we have anything near to render here Now
@@ -1168,7 +1163,7 @@ int GameRenderer::runUpdate(void* lpParam) {
             m_deleteStackSparseDataStorage.clear();
         }
 
-        //		PIXEndNamedEvent();
+        //		
 
         m_updateEvents->set(eUpdateEventIsFinished);
     }
@@ -1281,8 +1276,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             GL11::glShadeModel(GL11::GL_SMOOTH);
         }
 
-        PIXBeginNamedEvent(0, "Culling");
-        //		Culler *frustum = new FrustumCuller();
+                //		Culler *frustum = new FrustumCuller();
         FrustumCuller frustObj;
         Culler* frustum = &frustObj;
         frustum->prepare(xOff, yOff, zOff);
@@ -1291,19 +1285,16 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             FRAME_PROFILE_SCOPE(ChunkCull);
             mc->levelRenderer->cull(frustum, a);
         }
-        PIXEndNamedEvent();
+        
 
 #if !defined(MULTITHREAD_ENABLE)
         if ((i == 0) && updateChunks)  // 4J - added updateChunks condition
         {
             int PIXPass = 0;
-            PIXBeginNamedEvent(0, "Updating dirty chunks");
-            do {
-                PIXBeginNamedEvent(0, "Updating dirty chunks pass %d",
-                                   PIXPass++);
+                        do {
                 bool retval =
                     mc->levelRenderer->updateDirtyChunks(cameraEntity, false);
-                PIXEndNamedEvent();
+                
                 if (retval) break;
 
                 if (until == 0) break;
@@ -1312,7 +1303,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 if (diff < 0) break;
                 if (diff > 1000000000) break;
             } while (true);
-            PIXEndNamedEvent();
+            
         }
 #endif
 
@@ -1330,16 +1321,14 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         mc->textures->bindTexture(
             &TextureAtlas::LOCATION_BLOCKS);  // 4J was L"/terrain.png"
         Lighting::turnOff();
-        PIXBeginNamedEvent(0, "Level render");
-        levelRenderer->render(cameraEntity, 0, a, updateChunks);
-        PIXEndNamedEvent();
+                levelRenderer->render(cameraEntity, 0, a, updateChunks);
+        
 
         GL11::glShadeModel(GL11::GL_FLAT);
 
         if (cameraFlip == 0) {
             Lighting::turnOn();
-            PIXBeginNamedEvent(0, "Entity render");
-            // 4J - for entities, don't include the "a" factor that interpolates
+                        // 4J - for entities, don't include the "a" factor that interpolates
             // from the old to new position, as the AABBs for the entities are
             // already fully at the new position This fixes flickering
             // minecarts, and pigs that you are riding on
@@ -1358,9 +1347,8 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 FRAME_PROFILE_SCOPE(Entity);
                 levelRenderer->renderEntities(&cameraPos, frustum, a);
             }
-            PIXEndNamedEvent();
-            PIXBeginNamedEvent(0, "Particle render");
-            turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
+            
+                        turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
             {
                 FRAME_PROFILE_SCOPE(Particle);
                 particleEngine->renderLit(cameraEntity, a,
@@ -1373,7 +1361,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 particleEngine->render(cameraEntity, a,
                                        ParticleEngine::OPAQUE_LIST);
             }
-            PIXEndNamedEvent();
+            
             turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
 
             if ((mc->hitResult != nullptr) &&
@@ -1411,33 +1399,29 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             }
 
             glBlendFunc(GL_ZERO, GL_ONE);
-            PIXBeginNamedEvent(0, "Fancy second pass - writing z");
-            int visibleWaterChunks =
+                        int visibleWaterChunks =
                 levelRenderer->render(cameraEntity, 1, a, updateChunks);
-            PIXEndNamedEvent();
+            
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             if (visibleWaterChunks > 0) {
-                PIXBeginNamedEvent(0, "Fancy second pass - actual rendering");
-                levelRenderer->render(
+                                levelRenderer->render(
                     cameraEntity, 1, a,
                     updateChunks);  // 4J - chanaged, used to be
                                     // renderSameAsLast but we don't support
                                     // that anymore
-                PIXEndNamedEvent();
+                
             }
 
             GL11::glShadeModel(GL11::GL_FLAT);
         } else {
-            PIXBeginNamedEvent(0, "Second pass level render");
-            levelRenderer->render(cameraEntity, 1, a, updateChunks);
-            PIXEndNamedEvent();
+                        levelRenderer->render(cameraEntity, 1, a, updateChunks);
+            
         }
 
         // 4J - added - have split out translucent particle rendering so that it
         // happens after the water is rendered, primarily for fireworks
-        PIXBeginNamedEvent(0, "Particle render (translucent)");
-        Lighting::turnOn();
+                Lighting::turnOn();
         turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
         {
             FRAME_PROFILE_SCOPE(Particle);
@@ -1451,7 +1435,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             particleEngine->render(cameraEntity, a,
                                    ParticleEngine::TRANSLUCENT_LIST);
         }
-        PIXEndNamedEvent();
+        
         turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
         ////////////////////////// End of 4J added section
 
@@ -1473,9 +1457,8 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         }
 
         /* 4J - moved rain rendering to after clouds so that it alpha blends
-        onto them properly PIXBeginNamedEvent(0,"Rendering snow and rain");
-        renderSnowAndRain(a);
-        PIXEndNamedEvent();
+        onto them properly         renderSnowAndRain(a);
+        
         glDisable(GL_FOG);
         */
 
@@ -1498,12 +1481,11 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         // blend properly onto them
         setupFog(0, a);
         glEnable(GL_FOG);
-        PIXBeginNamedEvent(0, "Rendering snow and rain");
-        {
+                {
             FRAME_PROFILE_SCOPE(WeatherSky);
             renderSnowAndRain(a);
         }
-        PIXEndNamedEvent();
+        
         glDisable(GL_FOG);
 
         if (zoom == 1) {
@@ -1524,9 +1506,8 @@ void GameRenderer::prepareAndRenderClouds(LevelRenderer* levelRenderer,
         glPushMatrix();
         setupFog(0, a);
         glEnable(GL_FOG);
-        PIXBeginNamedEvent(0, "Rendering clouds");
-        levelRenderer->renderClouds(a);
-        PIXEndNamedEvent();
+                levelRenderer->renderClouds(a);
+        
         glDisable(GL_FOG);
         setupFog(1, a);
         glPopMatrix();

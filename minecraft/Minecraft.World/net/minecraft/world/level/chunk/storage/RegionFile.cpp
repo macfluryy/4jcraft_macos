@@ -335,8 +335,7 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
             // better compressed until it is reused
             zero(sectorNumber, SECTOR_BYTES * sectorsAllocated);
 
-            PIXBeginNamedEvent(0, "Scanning for free space\n");
-            /* scan for a free space large enough to store this chunk */
+                        /* scan for a free space large enough to store this chunk */
             int runStart =
                 (int)(find(sectorFree->begin(), sectorFree->end(), true) -
                       sectorFree
@@ -358,7 +357,7 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
                     }
                 }
             }
-            PIXEndNamedEvent();
+            
 
             if (runLength >= sectorsNeeded) {
                 /* we found a free space large enough */
@@ -370,8 +369,6 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
                 }
                 write(sectorNumber, compData, length, compLength);
             } else {
-                PIXBeginNamedEvent(0, "Expanding storage for %d sectors\n",
-                                   sectorsNeeded);
                 /*
                  * no free space large enough found -- we need to grow the
                  * file
@@ -393,7 +390,7 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
 
                 write(sectorNumber, compData, length, compLength);
                 setOffset(x, z, (sectorNumber << 8) | sectorsNeeded);
-                PIXEndNamedEvent();
+                
             }
         }
         setTimestamp(x, z, (int)(System::currentTimeMillis() / 1000L));

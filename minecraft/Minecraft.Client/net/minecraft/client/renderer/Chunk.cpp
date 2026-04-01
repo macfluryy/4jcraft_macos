@@ -187,7 +187,6 @@ void Chunk::setPos(int x, int y, int z) {
             // itself have been made dirty.
             levelRenderer->setGlobalChunkFlag(x, y, z, level,
                                               LevelRenderer::CHUNK_FLAG_DIRTY);
-            PIXSetMarkerDeprecated(0, "Non-stack event pushed");
         }
     }
 }
@@ -221,11 +220,9 @@ void Chunk::makeCopyForRebuild(Chunk* source) {
 }
 
 void Chunk::rebuild() {
-    PIXBeginNamedEvent(0, "Rebuilding chunk %d, %d, %d", x, y, z);
-
+    
     //	if (!dirty) return;
-    PIXBeginNamedEvent(0, "Rebuild section A");
-
+    
 #if defined(_LARGE_WORLDS)
     Tesselator* t = Tesselator::getInstance();
 #else
@@ -258,10 +255,9 @@ void Chunk::rebuild() {
                 2;
     lists += levelRenderer->chunkLists;
 
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Rebuild section B");
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 4J - optimisation begins.
 
     // Get the data for the level chunk that this render chunk is it (level
@@ -406,7 +402,7 @@ void Chunk::rebuild() {
             }
         }
     }
-    PIXEndNamedEvent();
+    
     // Nothing at all to do for this chunk?
     if (empty) {
         // 4J - added - clear any renderer data associated with this
@@ -430,8 +426,7 @@ void Chunk::rebuild() {
     // 4J - optimisation ends
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    PIXBeginNamedEvent(0, "Rebuild section C");
-    Tesselator::Bounds bounds;  // 4J MGH - added
+        Tesselator::Bounds bounds;  // 4J MGH - added
     {
         // this was the old default clip bounds for the chunk, set in
         // Chunk::setPos.
@@ -549,9 +544,8 @@ void Chunk::rebuild() {
     delete tileRenderer;
     delete region;
 
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Rebuild section D");
-
+    
+    
     // 4J - have rewritten the way that tile entities are stored globally to
     // make it work more easily with split screen. Chunks are now stored
     // globally in the levelrenderer, in a hashmap with a special key made up
@@ -561,7 +555,7 @@ void Chunk::rebuild() {
         std::lock_guard<std::mutex> lock(*globalRenderableTileEntities_cs);
         reconcileRenderableTileEntities(renderableTileEntities);
     }
-    PIXEndNamedEvent();
+    
 
     // 4J - These removed items are now also removed from
     // globalRenderableTileEntities
@@ -575,7 +569,7 @@ void Chunk::rebuild() {
     }
     levelRenderer->setGlobalChunkFlag(x, y, z, level,
                                       LevelRenderer::CHUNK_FLAG_COMPILED);
-    PIXEndNamedEvent();
+    
     return;
 }
 

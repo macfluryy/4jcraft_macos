@@ -597,8 +597,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
         compLength = 0;
 
         // Pre-calculate the buffer size required for the compressed data
-        PIXBeginNamedEvent(0, "Pre-calc save compression");
-        // Save the start time
+                // Save the start time
         const auto startTime = std::chrono::steady_clock::now();
         Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
@@ -607,7 +606,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
                            .count();
 
         app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
-        PIXEndNamedEvent();
+        
 
         // We add 4 bytes to the start so that we can signal compressed data
         // And another 4 bytes to store the decompressed data size
@@ -619,8 +618,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
 
     if (compData != nullptr) {
         // Re-compress all save data before we save it to disk
-        PIXBeginNamedEvent(0, "Actual save compression");
-        // Save the start time
+                // Save the start time
         const auto startTime = std::chrono::steady_clock::now();
         Compression::getCompression()->Compress(compData + 8, &compLength,
                                                 pvSaveMem, fileSize);
@@ -629,7 +627,7 @@ void ConsoleSaveFileOriginal::Flush(bool autosave, bool updateThumbnail) {
                            .count();
 
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
-        PIXEndNamedEvent();
+        
 
         std::fill_n(compData, 8, std::uint8_t{0});
         int saveVer = 0;

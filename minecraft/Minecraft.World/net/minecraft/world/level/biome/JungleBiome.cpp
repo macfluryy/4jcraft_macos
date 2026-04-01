@@ -58,8 +58,7 @@ Feature* JungleBiome::getGrassFeature(Random* random) {
 void JungleBiome::decorate(Level* level, Random* random, int xo, int zo) {
     Biome::decorate(level, random, xo, zo);
 
-    PIXBeginNamedEvent(0, "Adding vines");
-    VinesFeature* vines = new VinesFeature();
+        VinesFeature* vines = new VinesFeature();
 
     for (int i = 0; i < 50; i++) {
         int x = xo + random->nextInt(16) + 8;
@@ -67,5 +66,5 @@ void JungleBiome::decorate(Level* level, Random* random, int xo, int zo) {
         int z = zo + random->nextInt(16) + 8;
         vines->place(level, random, x, y, z);
     }
-    PIXEndNamedEvent();
+    
 }

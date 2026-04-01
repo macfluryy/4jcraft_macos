@@ -255,10 +255,9 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
                 server->m_postProcessRequests.pop_back();
                 lock.unlock();
                 static int count = 0;
-                PIXBeginNamedEvent(0, "Post processing %d ", (count++) % 8);
-                request.chunkSource->postProcess(request.chunkSource, request.x,
+                                request.chunkSource->postProcess(request.chunkSource, request.x,
                                                  request.z);
-                PIXEndNamedEvent();
+                
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -583,12 +582,11 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
                         //                        lastTime = now;
                     }
                     static int count = 0;
-                    PIXBeginNamedEvent(0, "Creating %d ", (count++) % 8);
-                    level->cache->create((spawnPos->x + x) >> 4,
+                                        level->cache->create((spawnPos->x + x) >> 4,
                                          (spawnPos->z + z) >> 4,
                                          true);  // 4J - added parameter to
                                                  // disable postprocessing here
-                    PIXEndNamedEvent();
+                    
                     //                    while (level->updateLights() &&
                     //                    running)
                     //                        ;
@@ -831,8 +829,7 @@ void MinecraftServer::saveGameRules() {
 }
 
 void MinecraftServer::Suspend() {
-    PIXBeginNamedEvent(0, "Suspending server");
-    m_suspending = true;
+        m_suspending = true;
     // Get the frequency of the timer
     float fElapsedTime = 0.0f;
     // Save the start time
@@ -862,7 +859,7 @@ void MinecraftServer::Suspend() {
 
     m_suspending = false;
     app.DebugPrintf("Suspend server: Elapsed time %f\n", fElapsedTime);
-    PIXEndNamedEvent();
+    
 }
 
 bool MinecraftServer::IsSuspending() { return m_suspending; }
@@ -1444,16 +1441,13 @@ void MinecraftServer::tick() {
             // #ifndef 0
             static int64_t stc = 0;
             int64_t st0 = System::currentTimeMillis();
-            PIXBeginNamedEvent(0, "Level tick %d", i);
-            ((Level*)level)->tick();
+                        ((Level*)level)->tick();
             int64_t st1 = System::currentTimeMillis();
-            PIXEndNamedEvent();
-            PIXBeginNamedEvent(0, "Update lights %d", i);
-
+            
+            
             int64_t st2 = System::currentTimeMillis();
-            PIXEndNamedEvent();
-            PIXBeginNamedEvent(0, "Entity tick %d", i);
-            // 4J added to stop ticking entities in levels when players are not
+            
+                        // 4J added to stop ticking entities in levels when players are not
             // in those levels. Note: now changed so that we also tick if there
             // are entities to be removed, as this also happens as a result of
             // calling tickEntities. If we don't do this, then the entities get
@@ -1466,11 +1460,10 @@ void MinecraftServer::tick() {
                 (level->hasEntitiesToRemove())) {
                 level->tickEntities();
             }
-            PIXEndNamedEvent();
+            
 
-            PIXBeginNamedEvent(0, "Entity tracker tick");
-            level->getTracker()->tick();
-            PIXEndNamedEvent();
+                        level->getTracker()->tick();
+            
 
             int64_t st3 = System::currentTimeMillis();
             //			printf(">>>>>>>>>>>>>>>>>>>>>> Tick %d %d %d :
@@ -1481,12 +1474,10 @@ void MinecraftServer::tick() {
     }
     Entity::tickExtraWandering();  // 4J added
 
-    PIXBeginNamedEvent(0, "Connection tick");
-    connection->tick();
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Players tick");
-    players->tick();
-    PIXEndNamedEvent();
+        connection->tick();
+    
+        players->tick();
+    
 
     // 4J - removed
 

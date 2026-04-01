@@ -763,32 +763,25 @@ int main(int argc, const char* argv[]) {
             ui.setScreenSize(fbw, fbh);
         }
         app.UpdateTime();
-        PIXBeginNamedEvent(0, "Input manager tick");
-        InputManager.Tick();
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Profile manager tick");
-        ProfileManager.Tick();
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Storage manager tick");
-        StorageManager.Tick();
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Render manager tick");
-        RenderManager.Tick();
-        PIXEndNamedEvent();
+                InputManager.Tick();
+        
+                ProfileManager.Tick();
+        
+                StorageManager.Tick();
+        
+                RenderManager.Tick();
+        
 
         // Tick the social networking manager.
-        PIXBeginNamedEvent(0, "Social network manager tick");
-        //		CSocialManager::Instance()->Tick();
-        PIXEndNamedEvent();
+                //		CSocialManager::Instance()->Tick();
+        
 
         // Tick sentient.
-        PIXBeginNamedEvent(0, "Sentient tick");
-        //		SentientManager.Tick();
-        PIXEndNamedEvent();
+                //		SentientManager.Tick();
+        
 
-        PIXBeginNamedEvent(0, "Network manager do work #1");
-        g_NetworkManager.DoWork();
-        PIXEndNamedEvent();
+                g_NetworkManager.DoWork();
+        
         // Render game graphics.
 #if defined(ENABLE_JAVA_GUIS)
         pMinecraft->run_middle();
@@ -831,8 +824,7 @@ int main(int argc, const char* argv[]) {
         RenderManager.Present();
 
         ui.CheckMenuDisplayed();
-        PIXBeginNamedEvent(0, "Profile load check");
-        // has the game defined profile data been changed (by a profile load)
+                // has the game defined profile data been changed (by a profile load)
         if (app.uiGameDefinedDataChangedBitmask != 0) {
             void* pData;
             for (int i = 0; i < XUSER_MAX_COUNT; i++) {
@@ -863,11 +855,10 @@ int main(int argc, const char* argv[]) {
             // clear the flag
             app.uiGameDefinedDataChangedBitmask = 0;
         }
-        PIXEndNamedEvent();
+        
 
-        PIXBeginNamedEvent(0, "Network manager do work #2");
-        g_NetworkManager.DoWork();
-        PIXEndNamedEvent();
+                g_NetworkManager.DoWork();
+        
 
         // Any threading type things to deal with from the xui side?
         app.HandleXuiActions();

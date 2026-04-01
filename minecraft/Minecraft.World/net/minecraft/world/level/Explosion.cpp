@@ -202,8 +202,7 @@ void Explosion::finalizeExplosion(
     if (destroyBlocks) {
         // toBlowArray.addAll(toBlow);
         //  TODO 4J Stu - Reverse iterator
-        PIXBeginNamedEvent(0, "Finalizing explosion size %d", toBlow.size());
-        app.DebugPrintf("Finalizing explosion size %d\n", toBlow.size());
+                app.DebugPrintf("Finalizing explosion size %d\n", toBlow.size());
         static const int MAX_EXPLODE_PARTICLES = 50;
         // 4J - try and make at most MAX_EXPLODE_PARTICLES pairs of particles
         int fraction = (int)toBlowArray->size() / MAX_EXPLODE_PARTICLES;
@@ -282,7 +281,7 @@ void Explosion::finalizeExplosion(
         }
     }
 
-    PIXEndNamedEvent();
+    
     if (toBlowDirect == nullptr) delete toBlowArray;
 }
 

@@ -362,8 +362,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
     if (item->getIconType() == Icon::TYPE_TERRAIN &&
         TileRenderer::canRender(Tile::tiles[itemId]->getRenderShape())) {
-        PIXBeginNamedEvent(0, "3D gui item render %d\n", itemId);
-        textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
+                textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
 
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
@@ -385,10 +384,9 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
 
         glPopMatrix();
-        PIXEndNamedEvent();
+        
     } else if (Item::items[itemId]->hasMultipleSpriteLayers()) {
-        PIXBeginNamedEvent(0, "Potion gui item render %d\n", itemIcon);
-        // special double-layered
+                // special double-layered
         glDisable(GL_LIGHTING);
 
         ResourceLocation* location = getTextureLocation(item->getIconType());
@@ -412,10 +410,9 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
             }
         }
         glEnable(GL_LIGHTING);
-        PIXEndNamedEvent();
+        
     } else {
-        PIXBeginNamedEvent(0, "2D gui item render %d\n", itemIcon);
-        glDisable(GL_LIGHTING);
+                glDisable(GL_LIGHTING);
         if (item->getIconType() == Icon::TYPE_TERRAIN) {
             textures->bindTexture(
                 &TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
@@ -442,7 +439,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
             blit((int)x, (int)y, itemIcon, 16, 16);
         }
         glEnable(GL_LIGHTING);
-        PIXEndNamedEvent();
+        
     }
     glEnable(GL_CULL_FACE);
 }

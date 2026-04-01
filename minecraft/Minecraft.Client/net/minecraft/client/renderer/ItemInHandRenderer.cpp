@@ -595,11 +595,10 @@ void ItemInHandRenderer::render(float a) {
 
         std::shared_ptr<MapItemSavedData> data =
             Item::map->getSavedData(item, minecraft->level);
-        PIXBeginNamedEvent(0, "Minimap render");
-        if (data != nullptr)
+                if (data != nullptr)
             minimap->render(minecraft->player, minecraft->textures, data,
                             minecraft->player->entityId);
-        PIXEndNamedEvent();
+        
 
         glPopMatrix();
     } else if (item != nullptr) {

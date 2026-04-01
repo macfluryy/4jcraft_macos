@@ -244,31 +244,26 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
     dos->writeLong(level->getGameTime());
     dos->writeLong(lc->inhabitedTime);
 
-    PIXBeginNamedEvent(0, "Getting block data");
-    lc->writeCompressedBlockData(dos);
-    PIXEndNamedEvent();
+        lc->writeCompressedBlockData(dos);
+    
 
-    PIXBeginNamedEvent(0, "Getting data data");
-    lc->writeCompressedDataData(dos);
-    PIXEndNamedEvent();
+        lc->writeCompressedDataData(dos);
+    
 
-    PIXBeginNamedEvent(0, "Getting sky and block light data");
-    lc->writeCompressedSkyLightData(dos);
+        lc->writeCompressedSkyLightData(dos);
     lc->writeCompressedBlockLightData(dos);
-    PIXEndNamedEvent();
+    
 
     dos->write(lc->heightmap);
     dos->writeShort(lc->terrainPopulated);
     dos->write(lc->getBiomes());
 
-    PIXBeginNamedEvent(0, "Saving entities");
-    CompoundTag* tag = new CompoundTag();
+        CompoundTag* tag = new CompoundTag();
 #if !defined(SPLIT_SAVES)
     saveEntities(lc, level, tag);
 #endif
 
-    PIXBeginNamedEvent(0, "Saving tile entities");
-    ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
+        ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
     auto itEnd = lc->tileEntities.end();
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
@@ -281,10 +276,9 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
         tileEntityTags->add(teTag);
     }
     tag->put(L"TileEntities", tileEntityTags);
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Saving tile tick data");
-    std::vector<TickNextTickData>* ticksInChunk =
+        std::vector<TickNextTickData>* ticksInChunk =
         level->fetchTicksInChunk(lc, false);
     if (ticksInChunk != nullptr) {
         int64_t levelTime = level->getGameTime();
@@ -304,11 +298,11 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
         tag->put(L"TileTicks", tickTags);
     }
     delete ticksInChunk;
-    PIXEndNamedEvent();
+    
 
     NbtIo::write(tag, dos);
     delete tag;
-    PIXEndNamedEvent();
+    
 }
 
 void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
@@ -331,26 +325,23 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     // moved to TLS
     ThreadStorage* tls = m_tlsStorage;
 
-    PIXBeginNamedEvent(0, "Getting block data");
-    // static std::vector<uint8_t> blockData = std::vector<uint8_t>(32768);
+        // static std::vector<uint8_t> blockData = std::vector<uint8_t>(32768);
     lc->getBlockData(tls->blockData);
     tag->putByteArray(L"Blocks", tls->blockData);
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Getting data data");
-    // static std::vector<uint8_t> dataData = std::vector<uint8_t>(16384);
+        // static std::vector<uint8_t> dataData = std::vector<uint8_t>(16384);
     lc->getDataData(tls->dataData);
     tag->putByteArray(L"Data", tls->dataData);
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Getting sky and block light data");
-    // static std::vector<uint8_t> skyLightData = std::vector<uint8_t>(16384);
+        // static std::vector<uint8_t> skyLightData = std::vector<uint8_t>(16384);
     // static std::vector<uint8_t> blockLightData = std::vector<uint8_t>(16384);
     lc->getSkyLightData(tls->skyLightData);
     lc->getBlockLightData(tls->blockLightData);
     tag->putByteArray(L"SkyLight", tls->skyLightData);
     tag->putByteArray(L"BlockLight", tls->blockLightData);
-    PIXEndNamedEvent();
+    
 
     tag->putByteArray(L"HeightMap", lc->heightmap);
     tag->putShort(
@@ -361,13 +352,11 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     std::vector<uint8_t> biomeData = lc->getBiomes();
     tag->putByteArray(L"Biomes", biomeData);
 
-    PIXBeginNamedEvent(0, "Saving entities");
-#if !defined(SPLIT_SAVES)
+    #if !defined(SPLIT_SAVES)
     saveEntities(lc, level, tag);
 #endif
 
-    PIXBeginNamedEvent(0, "Saving tile entities");
-    ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
+        ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
     auto itEnd = lc->tileEntities.end();
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
@@ -380,10 +369,9 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
         tileEntityTags->add(teTag);
     }
     tag->put(L"TileEntities", tileEntityTags);
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Saving tile tick data");
-    std::vector<TickNextTickData>* ticksInChunk =
+        std::vector<TickNextTickData>* ticksInChunk =
         level->fetchTicksInChunk(lc, false);
     if (ticksInChunk != nullptr) {
         int64_t levelTime = level->getGameTime();
@@ -404,8 +392,8 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
         tag->put(L"TileTicks", tickTags);
     }
     delete ticksInChunk;
-    PIXEndNamedEvent();
-    PIXEndNamedEvent();
+    
+    
 }
 
 void OldChunkStorage::loadEntities(LevelChunk* lc, Level* level,
@@ -437,8 +425,7 @@ void OldChunkStorage::loadEntities(LevelChunk* lc, Level* level,
 }
 
 LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
-    PIXBeginNamedEvent(0, "Loading chunk");
-    short version = dis->readShort();
+        short version = dis->readShort();
     int x = dis->readInt();
     int z = dis->readInt();
     int time = dis->readLong();
@@ -486,8 +473,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
     loadEntities(levelChunk, level, tag);
 
     if (tag->contains(L"TileTicks")) {
-        PIXBeginNamedEvent(0, "Loading TileTicks");
-        ListTag<CompoundTag>* tileTicks =
+                ListTag<CompoundTag>* tileTicks =
             (ListTag<CompoundTag>*)tag->getList(L"TileTicks");
 
         if (tileTicks != nullptr) {
@@ -500,12 +486,12 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
                     teTag->getInt(L"t"), teTag->getInt(L"p"));
             }
         }
-        PIXEndNamedEvent();
+        
     }
 
     delete tag;
 
-    PIXEndNamedEvent();
+    
 
     return levelChunk;
 }

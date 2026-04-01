@@ -1577,17 +1577,15 @@ void Minecraft::run_middle() {
 
                 // if (pause) timer.a = 1;
 
-                PIXBeginNamedEvent(0, "Sound engine update");
-                soundEngine->tick((std::shared_ptr<Mob>*)localplayers,
+                                soundEngine->tick((std::shared_ptr<Mob>*)localplayers,
                                   timer->a);
-                PIXEndNamedEvent();
+                
 
-                PIXBeginNamedEvent(0, "Light update");
-
+                
                 // if (level != nullptr) level->updateLights();
                 glEnable(GL_TEXTURE_2D);
 
-                PIXEndNamedEvent();
+                
 
                 //        if (!Keyboard::isKeyDown(Keyboard.KEY_F7))
                 //        Display.update();		// 4J - removed
@@ -1603,14 +1601,12 @@ void Minecraft::run_middle() {
                     int iPrimaryPad = InputManager.GetPrimaryPad();
                     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
                         if (setLocalPlayerIdx(i)) {
-                            PIXBeginNamedEvent(0, "Game render player idx %d",
-                                               i);
                             RenderManager.StateSetViewport(
                                 (C4JRender::eViewportType)
                                     player->m_iScreenSection);
                             gameRenderer->render(timer->a, bFirst);
                             bFirst = false;
-                            PIXEndNamedEvent();
+                            
 
                             if (i == iPrimaryPad) {
                                 // check to see if we need to capture a
@@ -1698,19 +1694,17 @@ void Minecraft::run_middle() {
 
                 achievementPopup->render();
 
-                PIXBeginNamedEvent(0, "Sleeping");
-                std::this_thread::yield();  // 4jcraft added now that we have
+                                std::this_thread::yield();  // 4jcraft added now that we have
                                             // portable thread yield.
                 // std::this_thread::sleep_for(
                 //     std::chrono::milliseconds(0));  // 4J - was
                 //     Thread.yield())
-                PIXEndNamedEvent();
+                
 
                 //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
                 //        Display.update();	// 4J - removed condition
-                PIXBeginNamedEvent(0, "Display update");
-                Display::update();
-                PIXEndNamedEvent();
+                                Display::update();
+                
 
                 //        checkScreenshot();	// 4J - removed
 
@@ -1986,9 +1980,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     glBindTexture(GL_TEXTURE_2D,
                   textures->loadTexture(TN_TERRAIN));  // L"/terrain.png"));
     if (bFirst) {
-        PIXBeginNamedEvent(0, "Texture tick");
-        if (!pause) textures->tick(bUpdateTextures);
-        PIXEndNamedEvent();
+                if (!pause) textures->tick(bUpdateTextures);
+        
     }
 
     /*
@@ -3528,9 +3521,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             level->difficulty = options->difficulty;
         }
 
-        PIXBeginNamedEvent(0, "Game renderer tick");
-        if (!pause) gameRenderer->tick(bFirst);
-        PIXEndNamedEvent();
+                if (!pause) gameRenderer->tick(bFirst);
+        
 
         // 4J - we want to tick each level once only per frame, and do it when a
         // player that is actually in that level happens to be active. This is
@@ -3543,9 +3535,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             levelsTickedFlags = 0;
 
 #if !defined(DISABLE_LEVELTICK_THREAD)
-            PIXBeginNamedEvent(0, "levelTickEventQueue waitForFinish");
-            levelTickEventQueue->waitForFinish();
-            PIXEndNamedEvent();
+                        levelTickEventQueue->waitForFinish();
+            
 #endif
             SparseLightStorage::tick();     // 4J added
             CompressedTileStorage::tick();  // 4J added
@@ -3571,9 +3562,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                            // level this frame
             levelsTickedFlags |= (1 << i);
 
-            PIXBeginNamedEvent(0, "Level renderer tick");
-            if (!pause) levelRenderer->tick();
-            PIXEndNamedEvent();
+                        if (!pause) levelRenderer->tick();
+            
             // if (!pause && player!=null) {
             // if (player != null && !level.entities.contains(player)) {
             // level.addEntity(player);
@@ -3582,9 +3572,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             if (levels[i] != nullptr) {
                 if (!pause) {
                     if (levels[i]->skyFlashTime > 0) levels[i]->skyFlashTime--;
-                    PIXBeginNamedEvent(0, "Level entity tick");
-                    levels[i]->tickEntities();
-                    PIXEndNamedEvent();
+                                        levels[i]->tickEntities();
+                    
                 }
 
                 // optimisation to set the culling off early, in parallel with
@@ -3596,21 +3585,19 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                     // app.DebugPrintf("Minecraft::tick spawn settings -
                     // Difficulty = %d",options->difficulty);
                     levels[i]->setSpawnSettings(level->difficulty > 0, true);
-                    PIXBeginNamedEvent(0, "Level tick");
-#if defined(DISABLE_LEVELTICK_THREAD)
+                    #if defined(DISABLE_LEVELTICK_THREAD)
                     levels[i]->tick();
 #else
                     levelTickEventQueue->sendEvent(levels[i]);
 #endif
-                    PIXEndNamedEvent();
+                    
                 }
             }
         }
 
         if (bFirst) {
-            PIXBeginNamedEvent(0, "Particle tick");
-            if (!pause) particleEngine->tick();
-            PIXEndNamedEvent();
+                        if (!pause) particleEngine->tick();
+            
         }
 
         // 4J Stu - Keep ticking the connections if paused so that they don't

@@ -238,8 +238,7 @@ void ServerLevel::tick() {
         awakenAllPlayers();
     }
 
-    PIXBeginNamedEvent(0, "Mob spawner tick");
-    // for Minecraft 1.8, spawn friendlies really rarely	- 4J - altered
+        // for Minecraft 1.8, spawn friendlies really rarely	- 4J - altered
     // from once every 400 ticks to 40 ticks as we depend on this a more than
     // the original since we don't have chunk post-process spawning
     if (getGameRules()->getBoolean(GameRules::RULE_DOMOBSPAWNING)) {
@@ -262,10 +261,9 @@ void ServerLevel::tick() {
         mobSpawner->tick(this, finalSpawnEnemies, finalSpawnFriendlies,
                          finalSpawnPersistent);
     }
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Chunk source tick");
-    chunkSource->tick();
-    PIXEndNamedEvent();
+    
+        chunkSource->tick();
+    
     int newDark = getOldSkyDarken(1);
     if (newDark != skyDarken) {
         skyDarken = newDark;
@@ -293,9 +291,8 @@ void ServerLevel::tick() {
 #endif
     {
         // app.DebugPrintf("Incremental save\n");
-        PIXBeginNamedEvent(0, "Incremental save");
-        save(false, nullptr);
-        PIXEndNamedEvent();
+                save(false, nullptr);
+        
     }
 
     // 4J : WESTY : Changed so that time update goes through stats tracking
@@ -316,30 +313,25 @@ void ServerLevel::tick() {
         }
     }
 
-    PIXBeginNamedEvent(0, "Tick pending ticks");
-    // if (tickCount % 5 == 0) {
+        // if (tickCount % 5 == 0) {
     tickPendingTicks(false);
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Tick tiles");
-    tickTiles();
-    PIXEndNamedEvent();
+        tickTiles();
+    
 
     chunkMap->tick();
 
-    PIXBeginNamedEvent(0, "Tick villages");
-    villages->tick();
+        villages->tick();
     villageSiege->tick();
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Tick portal forcer");
-    portalForcer->tick(getGameTime());
-    PIXEndNamedEvent();
+        portalForcer->tick(getGameTime());
+    
 
     // repeat after tile ticks
-    PIXBeginNamedEvent(0, "runTileEvents");
-    runTileEvents();
-    PIXEndNamedEvent();
+        runTileEvents();
+    
 
     // 4J Added
     runQueuedSendTileUpdates();
@@ -936,9 +928,8 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
             progressListener->progressStartNoAbort(IDS_PROGRESS_SAVING_LEVEL);
         }
     }
-    PIXBeginNamedEvent(0, "Saving level data");
-    saveLevelData();
-    PIXEndNamedEvent();
+        saveLevelData();
+    
 
     if (progressListener != nullptr)
         progressListener->progressStage(IDS_PROGRESS_SAVING_CHUNKS);
@@ -1425,8 +1416,7 @@ int ServerLevel::runUpdate(void* lpParam) {
         if (!ShutdownManager::ShouldRun(ShutdownManager::eRunUpdateThread))
             break;
 
-        PIXBeginNamedEvent(0, "Updating tiles to be ticked");
-        // 4J Stu - Grass and Lava ticks currently take up the majority of all
+                // 4J Stu - Grass and Lava ticks currently take up the majority of all
         // tile updates, so I am limiting them
         int grassTicks = 0;
         int lavaTicks = 0;
@@ -1522,7 +1512,7 @@ int ServerLevel::runUpdate(void* lpParam) {
                 }
             }
         }
-        PIXEndNamedEvent();
+        
     }
 
     ShutdownManager::HasFinished(ShutdownManager::eRunUpdateThread);

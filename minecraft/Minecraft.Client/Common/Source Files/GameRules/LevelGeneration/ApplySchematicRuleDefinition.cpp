@@ -164,8 +164,7 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
     if (m_completed) return;
     if (chunk->level->dimension->id != m_dimension) return;
 
-    PIXBeginNamedEvent(0, "Processing ApplySchematicRuleDefinition");
-    if (m_schematic == nullptr)
+        if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     if (!m_locationBox.has_value()) updateLocationBox();
@@ -177,16 +176,14 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
         app.DebugPrintf("Applying schematic %ls to chunk (%d,%d)\n",
                         m_schematicName.c_str(), chunk->x, chunk->z);
 #endif
-        PIXBeginNamedEvent(0, "Applying blocks and data");
-        m_totalBlocksChanged += m_schematic->applyBlocksAndData(
+                m_totalBlocksChanged += m_schematic->applyBlocksAndData(
             chunk, chunkBox, &*m_locationBox, m_rotation);
-        PIXEndNamedEvent();
+        
 
         // Add the tileEntities
-        PIXBeginNamedEvent(0, "Applying tile entities");
-        m_schematic->applyTileEntities(chunk, chunkBox, &*m_locationBox,
+                m_schematic->applyTileEntities(chunk, chunkBox, &*m_locationBox,
                                        m_rotation);
-        PIXEndNamedEvent();
+        
 
         // TODO This does not take into account things that go outside the
         // bounds of the world
@@ -200,7 +197,7 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
             // m_schematic = nullptr;
         }
     }
-    PIXEndNamedEvent();
+    
 }
 
 void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
@@ -208,8 +205,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
     if (m_completed) return;
     if (chunk->level->dimension->id != m_dimension) return;
 
-    PIXBeginNamedEvent(0, "Processing ApplySchematicRuleDefinition (lighting)");
-    if (m_schematic == nullptr)
+        if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     if (!m_locationBox.has_value()) updateLocationBox();
@@ -221,10 +217,9 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
         app.DebugPrintf("Applying schematic %ls to chunk (%d,%d)\n",
                         m_schematicName.c_str(), chunk->x, chunk->z);
 #endif
-        PIXBeginNamedEvent(0, "Patching lighting");
-        m_totalBlocksChangedLighting += m_schematic->applyLighting(
+                m_totalBlocksChangedLighting += m_schematic->applyLighting(
             chunk, chunkBox, &*m_locationBox, m_rotation);
-        PIXEndNamedEvent();
+        
 
         // TODO This does not take into account things that go outside the
         // bounds of the world
@@ -238,7 +233,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
             // m_schematic = nullptr;
         }
     }
-    PIXEndNamedEvent();
+    
 }
 
 bool ApplySchematicRuleDefinition::checkIntersects(int x0, int y0, int z0,

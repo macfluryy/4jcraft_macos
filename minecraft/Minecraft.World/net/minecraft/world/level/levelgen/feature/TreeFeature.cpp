@@ -35,12 +35,11 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
     // 4J Stu Added to stop tree features generating areas previously place by
     // game rule generation
     if (app.getLevelGenerationOptions() != nullptr) {
-        PIXBeginNamedEvent(0, "TreeFeature checking intersects");
-        LevelGenerationOptions* levelGenOptions =
+                LevelGenerationOptions* levelGenOptions =
             app.getLevelGenerationOptions();
         bool intersects = levelGenOptions->checkIntersects(
             x - 2, y - 1, z - 2, x + 2, y + treeHeight, z + 2);
-        PIXEndNamedEvent();
+        
         if (intersects) {
             // app.DebugPrintf("Skipping reeds feature generation as it overlaps
             // a game rule structure\n");
@@ -76,8 +75,7 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
 
     placeBlock(level, x, y - 1, z, Tile::dirt_Id, 0);
 
-    PIXBeginNamedEvent(0, "Placing TreeFeature leaves");
-    int grassHeight = 3;
+        int grassHeight = 3;
     int extraWidth = 0;
     // 4J Stu - Generate leaves from the top down to stop having to recalc
     // heightmaps
@@ -97,9 +95,8 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
             }
         }
     }
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Placing TreeFeature trunks");
-    for (int hh = 0; hh < treeHeight; hh++) {
+    
+        for (int hh = 0; hh < treeHeight; hh++) {
         int t = level->getTile(x, y + hh, z);
         if (t == 0 || t == Tile::leaves_Id) {
             placeBlock(level, x, y + hh, z, Tile::treeTrunk_Id, trunkType);
@@ -127,10 +124,9 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
             }
         }
     }
-    PIXEndNamedEvent();
+    
     if (addJungleFeatures) {
-        PIXBeginNamedEvent(0, "TreeFeature adding vines");
-        for (int yy = y - 3 + treeHeight; yy <= y + treeHeight; yy++) {
+                for (int yy = y - 3 + treeHeight; yy <= y + treeHeight; yy++) {
             int yo = yy - (y + treeHeight);
             int offs = 2 - yo / 2;
             for (int xx = x - offs; xx <= x + offs; xx++) {
@@ -158,11 +154,10 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
                 }
             }
         }
-        PIXEndNamedEvent();
+        
         // also chance for cocoa plants around stem
         if (random->nextInt(5) == 0 && treeHeight > 5) {
-            PIXBeginNamedEvent(0, "TreeFeature adding cocoa");
-            for (int rows = 0; rows < 2; rows++) {
+                        for (int rows = 0; rows < 2; rows++) {
                 for (int dir = 0; dir < 4; dir++) {
                     if (random->nextInt(4 - rows) == 0) {
                         int age = random->nextInt(3);
@@ -176,7 +171,7 @@ bool TreeFeature::place(Level* level, Random* random, int x, int y, int z) {
                     }
                 }
             }
-            PIXEndNamedEvent();
+            
         }
     }
 

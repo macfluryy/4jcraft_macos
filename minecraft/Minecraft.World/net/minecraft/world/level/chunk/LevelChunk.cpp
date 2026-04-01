@@ -830,13 +830,12 @@ void LevelChunk::recalcHeight(int x, int yStart, int z) {
     }
     if (height < lowestHeightmap) lowestHeightmap = height;
     if (!level->dimension->hasCeiling) {
-        PIXBeginNamedEvent(0, "Light gaps");
-        lightGap(xOffs - 1, zOffs, y1, y2);
+                lightGap(xOffs - 1, zOffs, y1, y2);
         lightGap(xOffs + 1, zOffs, y1, y2);
         lightGap(xOffs, zOffs - 1, y1, y2);
         lightGap(xOffs, zOffs + 1, y1, y2);
         lightGap(xOffs, zOffs, y1, y2);
-        PIXEndNamedEvent();
+        
     }
 
     this->setUnsaved(true);
@@ -895,9 +894,8 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
     if (old != 0 && !level->isClientSide) {
         Tile::tiles[old]->onRemoving(level, xOffs, y, zOffs, oldData);
     }
-    PIXBeginNamedEvent(0, "Chunk setting tile");
-    blocks->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, tile);
-    PIXEndNamedEvent();
+        blocks->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, tile);
+    
     if (old != 0) {
         if (!level->isClientSide) {
             Tile::tiles[old]->onRemove(level, xOffs, y, zOffs, old, oldData);
@@ -905,9 +903,8 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
             level->removeTileEntity(xOffs, y, zOffs);
         }
     }
-    PIXBeginNamedEvent(0, "Chunk setting data");
-    data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
-    PIXEndNamedEvent();
+        data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
+    
 
     // 4J added - flag if something emissive is being added. This is used during
     // level creation to determine what chunks need extra lighting processing
@@ -915,34 +912,30 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
         emissiveAdded = true;
     }
 
-    PIXBeginNamedEvent(0, "Updating lighting");
-    // 4J - There isn't any point in recalculating heights or updating sky
+        // 4J - There isn't any point in recalculating heights or updating sky
     // lighting if this tile has the same light-blocking capabilities as the one
     // it is replacing
     if (Tile::lightBlock[tile & 0xff] != Tile::lightBlock[old & 0xff]) {
         if (!level->dimension->hasCeiling) {
             if (Tile::lightBlock[tile & 0xff] != 0) {
                 if (y >= oldHeight) {
-                    PIXBeginNamedEvent(0, "Recalc height 1");
-                    recalcHeight(x, y + 1, z);
-                    PIXEndNamedEvent();
+                                        recalcHeight(x, y + 1, z);
+                    
                 }
             } else {
                 if (y == oldHeight - 1) {
-                    PIXBeginNamedEvent(0, "Recalc height 2");
-                    recalcHeight(x, y, z);
-                    PIXEndNamedEvent();
+                                        recalcHeight(x, y, z);
+                    
                 }
             }
         }
 
         // level.updateLight(LightLayer.Carried, xOffs, y, zOffs, xOffs, y,
         // zOffs);
-        PIXBeginNamedEvent(0, "Lighting gaps");
-        lightGaps(x, z);
-        PIXEndNamedEvent();
+                lightGaps(x, z);
+        
     }
-    PIXEndNamedEvent();
+    
     data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
     if (_tile != 0) {
         if (!level->isClientSide) {
@@ -1455,8 +1448,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             // 4J Stu - Save out entities to a cached format that won't
             // interfere with other systems
             m_unloadedEntitiesTag = new CompoundTag();
-            PIXBeginNamedEvent(0, "Saving entities");
-            ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
+                        ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
             {
                 std::lock_guard<std::recursive_mutex> lock(m_csEntities);
@@ -1478,10 +1470,9 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             }
 
             m_unloadedEntitiesTag->put(L"Entities", entityTags);
-            PIXEndNamedEvent();
+            
 
-            PIXBeginNamedEvent(0, "Saving tile entities");
-            ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
+                        ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
             auto itEnd = tileEntities.end();
             for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
@@ -1497,7 +1488,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             tileEntities.clear();
 
             m_unloadedEntitiesTag->put(L"TileEntities", tileEntityTags);
-            PIXEndNamedEvent();
+            
         }
     }
 #endif

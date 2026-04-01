@@ -847,14 +847,9 @@ bool Level::setTileAndData(int x, int y, int z, int tile, int data,
 #endif
     result = c->setTileAndData(x & 15, y, z & 15, tile, data);
     if (updateFlags != Tile::UPDATE_INVISIBLE_NO_LIGHT) {
-#if !defined(_CONTENT_PACKAGE)
-        PIXBeginNamedEvent(0, "Checking light %d %d %d", x, y, z);
-        PIXBeginNamedEvent(0, "was %d, %d now %d, %d", old, olddata, tile,
-                           data);
-#endif
         checkLight(x, y, z);
-        PIXEndNamedEvent();
-        PIXEndNamedEvent();
+        
+        
     }
     if (result) {
         if ((updateFlags & Tile::UPDATE_CLIENTS) != 0 &&
@@ -987,26 +982,22 @@ void Level::tileUpdated(int x, int y, int z, int tile) {
 }
 
 void Level::lightColumnChanged(int x, int z, int y0, int y1) {
-    PIXBeginNamedEvent(0, "LightColumnChanged (%d,%d) %d to %d", x, z, y0, y1);
-    if (y0 > y1) {
+        if (y0 > y1) {
         int tmp = y1;
         y1 = y0;
         y0 = tmp;
     }
 
     if (!dimension->hasCeiling) {
-        PIXBeginNamedEvent(0, "Checking lights");
-        for (int y = y0; y <= y1; y++) {
-            PIXBeginNamedEvent(0, "Checking light %d", y);
-            checkLight(LightLayer::Sky, x, y, z);
-            PIXEndNamedEvent();
+                for (int y = y0; y <= y1; y++) {
+                        checkLight(LightLayer::Sky, x, y, z);
+            
         }
-        PIXEndNamedEvent();
+        
     }
-    PIXBeginNamedEvent(0, "Setting tiles dirty");
-    setTilesDirty(x, y0, z, x, y1, z);
-    PIXEndNamedEvent();
-    PIXEndNamedEvent();
+        setTilesDirty(x, y0, z, x, y1, z);
+    
+    
 }
 
 void Level::setTileDirty(int x, int y, int z) {
@@ -2806,9 +2797,8 @@ void Level::setSpawnSettings(bool spawnEnemies, bool spawnFriendlies) {
 }
 
 void Level::tick() {
-    PIXBeginNamedEvent(0, "Weather tick");
-    tickWeather();
-    PIXEndNamedEvent();
+        tickWeather();
+    
 }
 
 void Level::prepareWeather() {
@@ -3848,9 +3838,8 @@ void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
             }
             if (forceUnshare) {
                 int size = (x1 - x0) * (y1 - y0) * (z1 - z0);
-                PIXBeginNamedEvent(0, "Chunk data unsharing %d\n", size);
-                lc->stopSharingTilesAndData();
-                PIXEndNamedEvent();
+                                lc->stopSharingTilesAndData();
+                
             }
             if (p < data.size())
                 p = lc->setBlocksAndData(data, x0, y0, z0, x1, y1, z1, p,
@@ -3858,11 +3847,10 @@ void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
             setTilesDirty(xc * 16 + x0, y0, zc * 16 + z0, xc * 16 + x1, y1,
                           zc * 16 + z1);
 
-            PIXBeginNamedEvent(0, "Chunk data sharing\n");
-            if (g_NetworkManager.IsHost() && isClientSide) {
+                        if (g_NetworkManager.IsHost() && isClientSide) {
                 lc->startSharingTilesAndData();
             }
-            PIXEndNamedEvent();
+            
         }
     }
 }

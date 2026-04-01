@@ -789,32 +789,25 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         // 		}
 
         app.UpdateTime();
-        PIXBeginNamedEvent(0, "Input manager tick");
-        InputManager.Tick();
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Profile manager tick");
-        //		ProfileManager.Tick();
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Storage manager tick");
-        StorageManager.Tick();
-        PIXEndNamedEvent();
-        PIXBeginNamedEvent(0, "Render manager tick");
-        RenderManager.Tick();
-        PIXEndNamedEvent();
+                InputManager.Tick();
+        
+                //		ProfileManager.Tick();
+        
+                StorageManager.Tick();
+        
+                RenderManager.Tick();
+        
 
         // Tick the social networking manager.
-        PIXBeginNamedEvent(0, "Social network manager tick");
-        //		CSocialManager::Instance()->Tick();
-        PIXEndNamedEvent();
+                //		CSocialManager::Instance()->Tick();
+        
 
         // Tick sentient.
-        PIXBeginNamedEvent(0, "Sentient tick");
-        //		SentientManager.Tick();
-        PIXEndNamedEvent();
+                //		SentientManager.Tick();
+        
 
-        PIXBeginNamedEvent(0, "Network manager do work #1");
-        //		g_NetworkManager.DoWork();
-        PIXEndNamedEvent();
+                //		g_NetworkManager.DoWork();
+        
 
         //		LeaderboardManager::Instance()->Tick();
         // Render game graphics.

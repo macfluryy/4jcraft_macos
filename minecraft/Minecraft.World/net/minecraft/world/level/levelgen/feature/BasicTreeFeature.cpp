@@ -139,8 +139,7 @@ void BasicTree::prepare() {
 
 void BasicTree::crossection(int x, int y, int z, float radius,
                             uint8_t direction, int material) {
-    PIXBeginNamedEvent(0, "BasicTree crossection");
-    // Create a circular cross section.
+        // Create a circular cross section.
     //
     // Used to nearly everything in the foliage, branches, and trunk.
     // This is a good target for performance optimization.
@@ -170,24 +169,22 @@ void BasicTree::crossection(int x, int y, int z, float radius,
                 continue;
             }
             position[secidx2] = center[secidx2] + offset2;
-            PIXBeginNamedEvent(0, "BasicTree getting tile");
-            thismat = thisLevel->getTile(position[0], position[1], position[2]);
-            PIXEndNamedEvent();
+                        thismat = thisLevel->getTile(position[0], position[1], position[2]);
+            
             if (!((thismat == 0) || (thismat == Tile::leaves_Id))) {
                 // If the material of the checked block is anything other than
                 // air or foliage, skip this tile.
                 offset2++;
                 continue;
             }
-            PIXBeginNamedEvent(0, "BasicTree placing block");
-            placeBlock(thisLevel, position[0], position[1], position[2],
+                        placeBlock(thisLevel, position[0], position[1], position[2],
                        material, 0);
-            PIXEndNamedEvent();
+            
             offset2++;
         }
         offset1++;
     }
-    PIXEndNamedEvent();
+    
 }
 
 float BasicTree::treeShape(int y) {
@@ -228,8 +225,7 @@ float BasicTree::foliageShape(int y) {
 }
 
 void BasicTree::foliageCluster(int x, int y, int z) {
-    PIXBeginNamedEvent(0, "BasicTree foliageCluster");
-    // Generate a cluster of foliage, with the base at x, y, z.
+        // Generate a cluster of foliage, with the base at x, y, z.
     // The shape of the cluster is derived from  foliageShape
     // crossection is called to make each level.
     int topy = y + foliageHeight;
@@ -242,7 +238,7 @@ void BasicTree::foliageCluster(int x, int y, int z) {
         crossection(x, cury, z, radius, (uint8_t)1, Tile::leaves_Id);
         cury--;
     }
-    PIXEndNamedEvent();
+    
 }
 
 void BasicTree::limb(int* start, int* end, int material) {
@@ -532,26 +528,21 @@ bool BasicTree::place(Level* level, Random* random, int x, int y, int z) {
         // System.out.println("Tree location failed");
         return false;
     }
-    PIXBeginNamedEvent(0, "Placing BasicTree");
-    // System.out.println("The height is");
+        // System.out.println("The height is");
     // System.out.println(height);
     // System.out.println("Trunk Height check done");
-    PIXBeginNamedEvent(0, "Preparing tree");
-    prepare();
-    PIXEndNamedEvent();
+        prepare();
+    
     // System.out.println("Prepare done");
-    PIXBeginNamedEvent(0, "Making foliage");
-    makeFoliage();
-    PIXEndNamedEvent();
+        makeFoliage();
+    
     // System.out.println("Foliage done");
-    PIXBeginNamedEvent(0, "Making trunk");
-    makeTrunk();
-    PIXEndNamedEvent();
+        makeTrunk();
+    
     // System.out.println("Trunk done");
-    PIXBeginNamedEvent(0, "Making branches");
-    makeBranches();
-    PIXEndNamedEvent();
+        makeBranches();
+    
     // System.out.println("Branches done");
-    PIXEndNamedEvent();
+    
     return true;
 }

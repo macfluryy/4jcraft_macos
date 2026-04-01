@@ -142,10 +142,8 @@ void UILayer::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
             auto itRef = m_componentRefCount.find((*it)->getSceneType());
             if (itRef != m_componentRefCount.end() && itRef->second.second) {
                 if ((*it)->isVisible()) {
-                    PIXBeginNamedEvent(0, "Rendering component %d",
-                                       (*it)->getSceneType());
                     (*it)->render(width, height, viewport);
-                    PIXEndNamedEvent();
+                    
                 }
             }
         }
@@ -161,11 +159,8 @@ void UILayer::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
                 (!ui.IsExpectingOrReloadingSkin() ||
                  m_sceneStack[lowestRenderable]->getSceneType() ==
                      eUIScene_Timer)) {
-                PIXBeginNamedEvent(
-                    0, "Rendering scene %d",
-                    m_sceneStack[lowestRenderable]->getSceneType());
                 m_sceneStack[lowestRenderable]->render(width, height, viewport);
-                PIXEndNamedEvent();
+                
             }
         }
     }

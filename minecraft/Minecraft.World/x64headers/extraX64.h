@@ -216,11 +216,6 @@ public:
     static IQNetPlayer m_player[4];
 };
 
-void PIXAddNamedCounter(int a, const char* b, ...);
-void PIXBeginNamedEvent(int a, const char* b, ...);
-void PIXEndNamedEvent();
-void PIXSetMarkerDeprecated(int a, const char* b, ...);
-
 void XSetThreadProcessor(void* a, int b);
 
 const int QNET_SENDDATA_LOW_PRIORITY = 0;

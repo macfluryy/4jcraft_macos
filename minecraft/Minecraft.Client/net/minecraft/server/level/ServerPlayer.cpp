@@ -437,8 +437,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                             connection->getNetworkPlayer(), flagIndex)) {
                         //						app.DebugPrintf("Creating
                         // BRUP for %d %d\n",nearest.x, nearest.z);
-                        PIXBeginNamedEvent(0, "Creation BRUP for sending\n");
-                        int64_t before = System::currentTimeMillis();
+                                                int64_t before = System::currentTimeMillis();
                         std::shared_ptr<BlockRegionUpdatePacket> packet =
                             std::shared_ptr<BlockRegionUpdatePacket>(
                                 new BlockRegionUpdatePacket(
@@ -447,7 +446,7 @@ void ServerPlayer::doChunkSendingTick(bool dontDelayChunks) {
                         int64_t after = System::currentTimeMillis();
                         //						app.DebugPrintf(">>><<<
                         //%d ms\n",after-before);
-                        PIXEndNamedEvent();
+                        
                         if (dontDelayChunks) packet->shouldDelay = false;
 
                         if (packet->shouldDelay == true) {

@@ -114,8 +114,7 @@ void MultiPlayerLevel::shareChunkAt(int x, int z) {
 }
 
 void MultiPlayerLevel::tick() {
-    PIXBeginNamedEvent(0, "Sky color changing");
-    setGameTime(getGameTime() + 1);
+        setGameTime(getGameTime() + 1);
     if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
         // 4J: Debug setting added to keep it at day time
 #if !defined(_FINAL_BUILD)
@@ -139,10 +138,9 @@ void MultiPlayerLevel::tick() {
     listeners[i]->skyColorChanged();
     }
     }*/
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Entity re-entry");
-    {
+        {
         std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
         for (int i = 0; i < 10 && !reEntries.empty(); i++) {
             std::shared_ptr<Entity> e = *(reEntries.begin());
@@ -151,20 +149,18 @@ void MultiPlayerLevel::tick() {
                 addEntity(e);
         }
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Connection ticking");
-    // 4J HEG - Copy the connections vector to prevent crash when moving to
+        // 4J HEG - Copy the connections vector to prevent crash when moving to
     // Nether
     std::vector<ClientConnection*> connectionsTemp = connections;
     for (auto connection = connectionsTemp.begin();
          connection < connectionsTemp.end(); ++connection) {
         (*connection)->tick();
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Updating resets");
-    unsigned int lastIndexToRemove = 0;
+        unsigned int lastIndexToRemove = 0;
     bool eraseElements = false;
     for (unsigned int i = 0; i < updatesToReset.size(); i++) {
         ResetInfo& r = updatesToReset[i];
@@ -187,7 +183,7 @@ void MultiPlayerLevel::tick() {
         updatesToReset.erase(updatesToReset.begin(),
                              updatesToReset.begin() + lastIndexToRemove);
     }
-    PIXEndNamedEvent();
+    
 
     chunkCache->tick();
     tickTiles();
@@ -411,13 +407,10 @@ void MultiPlayerLevel::tickTiles() {
                            // resets in buildAndPrepareChunksToPoll rather than
                            // the calling functions
 
-    PIXBeginNamedEvent(0, "Ticking tiles (multiplayer)");
-    PIXBeginNamedEvent(0, "buildAndPrepareChunksToPoll");
-    Level::tickTiles();
-    PIXEndNamedEvent();
+            Level::tickTiles();
+    
 
-    PIXBeginNamedEvent(0, "Ticking client side tiles");
-    auto itEndCtp = chunksToPoll.end();
+        auto itEndCtp = chunksToPoll.end();
     for (auto it = chunksToPoll.begin(); it != itEndCtp; it++) {
         ChunkPos cp = *it;
         int xo = cp.x * 16;
@@ -427,8 +420,8 @@ void MultiPlayerLevel::tickTiles() {
 
         tickClientSideTiles(xo, zo, lc);
     }
-    PIXEndNamedEvent();
-    PIXEndNamedEvent();
+    
+    
 }
 
 void MultiPlayerLevel::setChunkVisible(int x, int z, bool visible) {
@@ -917,11 +910,10 @@ void MultiPlayerLevel::removeClientConnection(ClientConnection* c,
 }
 
 void MultiPlayerLevel::tickAllConnections() {
-    PIXBeginNamedEvent(0, "Connection ticking");
-    for (auto it = connections.begin(); it < connections.end(); ++it) {
+        for (auto it = connections.begin(); it < connections.end(); ++it) {
         (*it)->tick();
     }
-    PIXEndNamedEvent();
+    
 }
 
 void MultiPlayerLevel::dataReceivedForChunk(int x, int z) {

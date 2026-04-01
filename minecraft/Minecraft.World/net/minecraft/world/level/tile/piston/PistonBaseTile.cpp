@@ -224,8 +224,7 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
     }
 
     if (param1 == TRIGGER_EXTEND) {
-        PIXBeginNamedEvent(0, "Create push\n");
-        if (createPush(level, x, y, z, facing)) {
+                if (createPush(level, x, y, z, facing)) {
             // 4J - it is (currently) critical that this setData sends data to
             // the client, so have added a bool to the method so that it sends
             // data even if the data was already set to the same value as
@@ -256,10 +255,9 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
         } else {
             return false;
         }
-        PIXEndNamedEvent();
+        
     } else if (param1 == TRIGGER_CONTRACT) {
-        PIXBeginNamedEvent(0, "Contract phase A\n");
-        std::shared_ptr<TileEntity> prevTileEntity = level->getTileEntity(
+                std::shared_ptr<TileEntity> prevTileEntity = level->getTileEntity(
             x + Facing::STEP_X[facing], y + Facing::STEP_Y[facing],
             z + Facing::STEP_Z[facing]);
         if (prevTileEntity != nullptr &&
@@ -276,23 +274,21 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                              PistonMovingPiece::newMovingPieceEntity(
                                  id, facing, facing, false, true));
 
-        PIXEndNamedEvent();
+        
 
         // sticky movement
         if (isSticky) {
-            PIXBeginNamedEvent(0, "Contract sticky phase A\n");
-            int twoX = x + Facing::STEP_X[facing] * 2;
+                        int twoX = x + Facing::STEP_X[facing] * 2;
             int twoY = y + Facing::STEP_Y[facing] * 2;
             int twoZ = z + Facing::STEP_Z[facing] * 2;
             int block = level->getTile(twoX, twoY, twoZ);
             int blockData = level->getData(twoX, twoY, twoZ);
             bool pistonPiece = false;
 
-            PIXEndNamedEvent();
+            
 
             if (block == Tile::pistonMovingPiece_Id) {
-                PIXBeginNamedEvent(0, "Contract sticky phase B\n");
-                // the block two steps away is a moving piston block piece, so
+                                // the block two steps away is a moving piston block piece, so
                 // replace it with the real data, since it's probably this
                 // piston which is changing too fast
                 std::shared_ptr<TileEntity> tileEntity =
@@ -312,11 +308,10 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                         pistonPiece = true;
                     }
                 }
-                PIXEndNamedEvent();
+                
             }
 
-            PIXBeginNamedEvent(0, "Contract sticky phase C\n");
-            if (!pistonPiece && block > 0 &&
+                        if (!pistonPiece && block > 0 &&
                 (isPushable(block, level, twoX, twoY, twoZ, false)) &&
                 (Tile::tiles[block]->getPistonPushReaction() ==
                      Material::PUSH_NORMAL ||
@@ -348,7 +343,7 @@ bool PistonBaseTile::triggerEvent(Level* level, int x, int y, int z, int param1,
                                   z + Facing::STEP_Z[facing]);
                 ignoreUpdate(true);
             }
-            PIXEndNamedEvent();
+            
         } else {
             stopSharingIfServer(level, x + Facing::STEP_X[facing],
                                 y + Facing::STEP_Y[facing],

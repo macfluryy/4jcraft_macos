@@ -483,10 +483,8 @@ void Connection::tick() {
     // MGH - moved the packet handling outside of the incoming_cs block, as it
     // was locking up sometimes when disconnecting
     for (int i = 0; i < packetsToHandle.size(); i++) {
-        PIXBeginNamedEvent(0, "Handling packet %d\n",
-                           packetsToHandle[i]->getId());
         packetsToHandle[i]->handle(packetListener);
-        PIXEndNamedEvent();
+        
     }
     flush();
 

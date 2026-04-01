@@ -88,12 +88,10 @@ void BiomeDecorator::_init() {
 }
 
 void BiomeDecorator::decorate() {
-    PIXBeginNamedEvent(0, "Decorate ores");
-    decorateOres();
-    PIXEndNamedEvent();
+        decorateOres();
+    
 
-    PIXBeginNamedEvent(0, "Decorate sand/clay/gravel");
-    for (int i = 0; i < sandCount; i++) {
+        for (int i = 0; i < sandCount; i++) {
         int x = xo + random->nextInt(16) + 8;
         int z = zo + random->nextInt(16) + 8;
         sandFeature->place(level, random, x, level->getTopSolidBlock(x, z), z);
@@ -110,10 +108,9 @@ void BiomeDecorator::decorate() {
         int z = zo + random->nextInt(16) + 8;
         sandFeature->place(level, random, x, level->getTopSolidBlock(x, z), z);
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Decorate forests");
-    int forests = treeCount;
+        int forests = treeCount;
     if (random->nextInt(10) == 0) forests += 1;
 
     for (int i = 0; i < forests; i++) {
@@ -124,10 +121,9 @@ void BiomeDecorator::decorate() {
         tree->place(level, random, x, level->getHeightmap(x, z), z);
         delete tree;
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Decorate mushrooms/flowers/grass");
-    for (int i = 0; i < hugeMushrooms; i++) {
+        for (int i = 0; i < hugeMushrooms; i++) {
         int x = xo + random->nextInt(16) + 8;
         int z = zo + random->nextInt(16) + 8;
         hugeMushroomFeature->place(level, random, x, level->getHeightmap(x, z),
@@ -158,10 +154,7 @@ void BiomeDecorator::decorate() {
         grassFeature->place(level, random, x, y, z);
         delete grassFeature;
     }
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(
-        0, "Decorate bush/waterlily/mushroom/reeds/pumpkins/cactuses");
-
+    
     // 4J Stu - For some reason this was created each time round in the loop
     // I assume there is a case where deadBushCount could be 0
     DeadBushFeature* deadBushFeature = nullptr;
@@ -245,9 +238,8 @@ void BiomeDecorator::decorate() {
         cactusFeature->place(level, random, x, y, z);
     }
 
-    PIXEndNamedEvent();
-    PIXBeginNamedEvent(0, "Decorate liquids");
-
+    
+    
     if (liquids) {
         // 4J Stu - For some reason this was created each time round in the loop
         SpringFeature* waterSpringFeature = new SpringFeature(Tile::water_Id);
@@ -270,7 +262,7 @@ void BiomeDecorator::decorate() {
         }
         delete lavaSpringFeature;
     }
-    PIXEndNamedEvent();
+    
 }
 
 void BiomeDecorator::decorate(int count, Feature* feature) {

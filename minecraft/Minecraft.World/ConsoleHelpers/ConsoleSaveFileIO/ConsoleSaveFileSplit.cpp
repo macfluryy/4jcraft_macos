@@ -688,9 +688,8 @@ void ConsoleSaveFileSplit::PrepareForWrite(FileEntry* file,
     //	bytesToGrowBy = 1024;
 
     // Move all the data beyond us
-    PIXBeginNamedEvent(0, "Growing file by %d bytes", bytesToGrowBy);
-    MoveDataBeyond(file, bytesToGrowBy);
-    PIXEndNamedEvent();
+        MoveDataBeyond(file, bytesToGrowBy);
+    
 
     // Update our length
     if (file->data.length < 0) file->data.length = 0;
@@ -1313,8 +1312,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         compLength = 0;
 
         // Pre-calculate the buffer size required for the compressed data
-        PIXBeginNamedEvent(0, "Pre-calc save compression");
-        // Save the start time
+                // Save the start time
         qwTime = PlatformTime::QueryPerformanceCounter();
         Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
@@ -1323,7 +1321,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
         app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
-        PIXEndNamedEvent();
+        
 
         // We add 4 bytes to the start so that we can signal compressed data
         // And another 4 bytes to store the decompressed data size
@@ -1335,8 +1333,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
 
     if (compData != nullptr) {
         // Re-compress all save data before we save it to disk
-        PIXBeginNamedEvent(0, "Actual save compression");
-        // Save the start time
+                // Save the start time
         qwTime = PlatformTime::QueryPerformanceCounter();
         Compression::getCompression()->Compress(compData + 8, &compLength,
                                                 pvSaveMem, fileSize);
@@ -1345,7 +1342,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
-        PIXEndNamedEvent();
+        
 
         memset(compData, 0,  8);
         int saveVer = 0;

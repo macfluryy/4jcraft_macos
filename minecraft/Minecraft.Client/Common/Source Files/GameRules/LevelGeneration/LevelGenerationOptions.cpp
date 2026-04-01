@@ -253,8 +253,6 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
 }
 
 void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
-    PIXBeginNamedEvent(0, "Processing schematics for chunk (%d,%d)", chunk->x,
-                       chunk->z);
     AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
                   Level::maxBuildHeight, chunk->z * 16 + 16);
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
@@ -277,12 +275,10 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
             delete bb;
         }
     }
-    PIXEndNamedEvent();
+    
 }
 
 void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
-    PIXBeginNamedEvent(0, "Processing schematics (lighting) for chunk (%d,%d)",
-                       chunk->x, chunk->z);
     AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
                   Level::maxBuildHeight, chunk->z * 16 + 16);
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
@@ -290,13 +286,12 @@ void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
         ApplySchematicRuleDefinition* rule = *it;
         rule->processSchematicLighting(&chunkBox, chunk);
     }
-    PIXEndNamedEvent();
+    
 }
 
 bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
                                              int y1, int z1) {
-    PIXBeginNamedEvent(0, "Check Intersects");
-
+    
     // As an optimisation, we can quickly discard things below a certain y which
     // makes most ore checks faster due to a) ores generally being below
     // ground/sea level and b) tutorial world additions generally being above
@@ -340,7 +335,7 @@ bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
             if (intersects) break;
         }
     }
-    PIXEndNamedEvent();
+    
     return intersects;
 }
 

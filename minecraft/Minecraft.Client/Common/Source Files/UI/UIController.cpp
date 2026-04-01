@@ -795,23 +795,20 @@ UIController::ExternalFunctionCallback(void* user_callback_data, Iggy* player,
 
 // RENDERING
 void UIController::renderScenes() {
-    PIXBeginNamedEvent(0, "Rendering Iggy scenes");
-    // Only render player scenes if the game is started
+        // Only render player scenes if the game is started
     if (app.GetGameStarted() &&
         !m_groups[eUIGroup_Fullscreen]->hidesLowerScenes()) {
         for (int i = eUIGroup_Player1; i < eUIGroup_COUNT; ++i) {
-            PIXBeginNamedEvent(0, "Rendering layer %d scenes", i);
-            m_groups[i]->render();
-            PIXEndNamedEvent();
+                        m_groups[i]->render();
+            
         }
     }
 
     // Always render the fullscreen group
-    PIXBeginNamedEvent(0, "Rendering fullscreen scenes");
-    m_groups[eUIGroup_Fullscreen]->render();
-    PIXEndNamedEvent();
+        m_groups[eUIGroup_Fullscreen]->render();
+    
 
-    PIXEndNamedEvent();
+    
 
 #if defined(ENABLE_IGGY_PERFMON)
     if (m_iggyPerfmonEnabled) {
@@ -942,9 +939,8 @@ void UIController::setupCustomDrawGameState() {
     m_customRenderingClearRect.bottom = LONG_MIN;
 
 #if defined(_WINDOWS64)
-    PIXBeginNamedEvent(0, "StartFrame");
-    RenderManager.StartFrame();
-    PIXEndNamedEvent();
+        RenderManager.StartFrame();
+    
     gdraw_D3D11_setViewport_4J();
 #elif defined(__linux__)
     RenderManager.StartFrame();
@@ -957,8 +953,7 @@ void UIController::setupCustomDrawGameState() {
     // RenderManager.Clear(GL_DEPTH_BUFFER_BIT, &m_customRenderingClearRect);
     // glClear(GL_DEPTH_BUFFER_BIT);
 
-    PIXBeginNamedEvent(0, "Final setup");
-    glMatrixMode(GL_PROJECTION);
+        glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, m_fScreenWidth, m_fScreenHeight, 0, 1000, 3000);
     glMatrixMode(GL_MODELVIEW);
@@ -967,7 +962,7 @@ void UIController::setupCustomDrawGameState() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(true);
-    PIXEndNamedEvent();
+    
 }
 
 void UIController::setupCustomDrawMatrices(UIScene* scene,

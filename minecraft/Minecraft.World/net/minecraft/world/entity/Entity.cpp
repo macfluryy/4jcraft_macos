@@ -145,8 +145,6 @@ void Entity::countFlagsForPIX() {
         }
         puiUsedFlags++;
     }
-    PIXAddNamedCounter(freecount, "Small Ids free");
-    PIXAddNamedCounter(2048 - freecount, "Small Ids used");
 }
 
 void Entity::resetSmallId() {

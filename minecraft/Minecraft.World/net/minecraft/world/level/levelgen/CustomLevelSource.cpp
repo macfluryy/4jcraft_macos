@@ -510,17 +510,15 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 
     bool hasVillage = false;
 
-    PIXBeginNamedEvent(0, "Structure postprocessing");
-    if (generateStructures) {
+        if (generateStructures) {
         mineShaftFeature->postProcess(level, pprandom, xt, zt);
         hasVillage = villageFeature->postProcess(level, pprandom, xt, zt);
         strongholdFeature->postProcess(level, pprandom, xt, zt);
         scatteredFeature->postProcess(level, random, xt, zt);
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Monster rooms");
-    for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::maxBuildHeight);
         int z = zo + pprandom->nextInt(16) + 8;
@@ -529,11 +527,10 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         }
         delete mrf;
     }
-    PIXEndNamedEvent();
+    
 
-    PIXBeginNamedEvent(0, "Biome decorate");
-    biome->decorate(level, pprandom, xo, zo);
-    PIXEndNamedEvent();
+        biome->decorate(level, pprandom, xo, zo);
+    
 
     app.processSchematics(parent->getChunk(xt, zt));
 
