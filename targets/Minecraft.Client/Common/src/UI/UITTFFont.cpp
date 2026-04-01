@@ -1,13 +1,14 @@
 #include "UITTFFont.h"
 
 #include <assert.h>
+
 #include <cstdio>
 
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/PortableFileIO.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 UITTFFont::UITTFFont(const std::string& name, const std::string& path,
                      S32 fallbackCharacter)

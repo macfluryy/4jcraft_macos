@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <vector>
 
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"

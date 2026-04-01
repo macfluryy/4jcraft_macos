@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "nbt/CompoundTag.h"
 
 class Item;
 class Tile;

@@ -1,24 +1,25 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <list>
+#include <memory>
 #include <mutex>
 #include <set>
-#include <memory>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
-#include "java/JavaIntHash.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "SharedConstants.h"
 #include "console_helpers/C4JThread.h"
+#include "java/JavaIntHash.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/TickNextTickData.h"
 #include "minecraft/world/level/TileEventData.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 
 class ServerChunkCache;
 class MinecraftServer;

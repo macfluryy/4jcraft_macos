@@ -23,6 +23,7 @@ class ResourceLocation;
 #endif
 #include <stddef.h>
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <mutex>

@@ -3,12 +3,9 @@
 
 #include <string.h>
 #include <wchar.h>
+
 #include <memory>
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Font.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
@@ -17,9 +14,13 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Font.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "strings.h"
 
 class UILayer;

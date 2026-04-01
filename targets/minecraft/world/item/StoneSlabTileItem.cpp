@@ -5,10 +5,10 @@
 #include "minecraft/Facing.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/HalfSlabTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/item/TileItem.h"
 
 StoneSlabTileItem::StoneSlabTileItem(int id, HalfSlabTile* halfTile,
                                      HalfSlabTile* fullTile, bool full)

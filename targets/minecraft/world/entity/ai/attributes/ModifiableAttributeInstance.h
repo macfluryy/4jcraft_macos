@@ -5,7 +5,6 @@
 
 #include "AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
-#include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 
 class Attribute;
 class BaseAttributeMap;

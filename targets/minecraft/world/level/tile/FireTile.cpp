@@ -1,6 +1,7 @@
 #include "FireTile.h"
 
 #include <string.h>
+
 #include <optional>
 
 #include "Minecraft.Client/Common/App_enums.h"
@@ -17,9 +18,9 @@
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/PortalTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TntTile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/level/tile/Tile.h"
 
 class Icon;
 

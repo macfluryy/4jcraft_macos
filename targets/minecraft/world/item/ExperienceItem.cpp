@@ -7,9 +7,9 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/ThrownExpBottle.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/item/Item.h"
 
 ExperienceItem::ExperienceItem(int id) : Item(id) {}
 

@@ -2,16 +2,16 @@
 
 #include <stdint.h>
 
-#include "TileEntity.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "TileEntity.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 DispenserTileEntity::DispenserTileEntity() : TileEntity() {
     items = std::vector<std::shared_ptr<ItemInstance>>(9);

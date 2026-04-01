@@ -4,11 +4,11 @@
 
 #include "4J_Render.h"
 #include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/Ocelot.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
 
 class Model;
 

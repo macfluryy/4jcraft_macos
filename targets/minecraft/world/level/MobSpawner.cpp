@@ -15,12 +15,12 @@
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/MobCategory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/ChunkPos.h"
+#include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/ChunkPos.h"
-#include "minecraft/world/level/TilePos.h"
 
 class MobGroupData;
 

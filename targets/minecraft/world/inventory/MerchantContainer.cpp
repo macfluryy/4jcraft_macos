@@ -1,11 +1,11 @@
 #include "MerchantContainer.h"
 
 #include "MerchantMenu.h"
+#include "minecraft/world/Container.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/world/item/trading/MerchantRecipe.h"
 #include "minecraft/world/item/trading/MerchantRecipeList.h"
-#include "minecraft/world/Container.h"
 
 MerchantContainer::~MerchantContainer() {}
 

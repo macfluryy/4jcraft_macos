@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <string.h>
+
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -13,8 +14,8 @@
 #include <utility>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Render.h"
 #include "4J_Input.h"
+#include "4J_Render.h"
 #include "Chunk.h"
 #include "GameRenderer.h"
 #include "Minecraft.Client/Common/App_enums.h"
@@ -67,6 +68,8 @@
 #include "minecraft/client/particle/SuspendedTownParticle.h"
 #include "minecraft/client/particle/TerrainParticle.h"
 #include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/client/renderer/OffsettedRenderList.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/renderer/culling/Culler.h"
 #include "minecraft/client/renderer/culling/Frustum.h"
@@ -91,6 +94,7 @@
 #include "minecraft/world/item/PotionItem.h"
 #include "minecraft/world/item/RecordingItem.h"
 #include "minecraft/world/level/BlockDestructionProgress.h"
+#include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
@@ -100,12 +104,9 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "minecraft/client/renderer/OffsettedRenderList.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/world/level/Level.h"
-#include "minecraft/world/phys/AABB.h"
 
 class Icon;
 class ItemInstance;

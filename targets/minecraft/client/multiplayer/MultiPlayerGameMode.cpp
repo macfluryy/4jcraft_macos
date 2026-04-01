@@ -7,6 +7,7 @@
 #include "MultiPlayerLevel.h"
 #include "java/Class.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/network/packet/ContainerButtonClickPacket.h"
 #include "minecraft/network/packet/ContainerClickPacket.h"
 #include "minecraft/network/packet/CraftItemPacket.h"
@@ -21,6 +22,7 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/item/WeaponItem.h"
 #include "minecraft/world/level/Level.h"
@@ -28,8 +30,6 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/item/ItemInstance.h"
 
 MultiPlayerGameMode::MultiPlayerGameMode(Minecraft* minecraft,
                                          ClientConnection* connection) {

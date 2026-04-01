@@ -4,8 +4,8 @@
 #include <string>
 
 #include "MinecartContainer.h"
-#include "minecraft/world/level/tile/entity/Hopper.h"
 #include "java/Class.h"
+#include "minecraft/world/level/tile/entity/Hopper.h"
 
 class Entity;
 class Level;

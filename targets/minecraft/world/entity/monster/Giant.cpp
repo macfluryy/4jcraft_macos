@@ -1,9 +1,9 @@
 #include "Giant.h"
 
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/entity/monster/Monster.h"
 
 Giant::Giant(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

@@ -3,11 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -16,6 +13,9 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 const std::wstring FireworksItem::TAG_FIREWORKS = L"Fireworks";
 const std::wstring FireworksItem::TAG_EXPLOSION = L"Explosion";

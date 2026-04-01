@@ -1,9 +1,9 @@
 #include "UIBitmapFont.h"
 
-#include "Minecraft.Client/include/BufferedImage.h"
-#include "UIFontData.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.Client/include/BufferedImage.h"
+#include "UIFontData.h"
 
 /////////////////////////////
 // UI Abstract Bitmap Font //

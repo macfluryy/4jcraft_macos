@@ -9,11 +9,11 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/redstone/Redstone.h"
+#include "minecraft/world/level/tile/DiodeTile.h"
 #include "minecraft/world/level/tile/HalfSlabTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/ComparatorTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "minecraft/world/level/tile/DiodeTile.h"
-#include "minecraft/world/level/tile/Tile.h"
 
 class Random;
 

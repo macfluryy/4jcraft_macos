@@ -12,12 +12,12 @@
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TopSnowTile.h"
-#include "minecraft/world/item/Item.h"
 
 TileItem::TileItem(int id) : Item(id) {
     this->tileId = id + 256;

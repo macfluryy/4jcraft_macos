@@ -4,6 +4,7 @@
 
 #include "4J_Render.h"
 #include "EntityRenderDispatcher.h"
+#include "gl3_loader.h"
 #include "java/Random.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
@@ -11,7 +12,6 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/Painting.h"
 #include "minecraft/world/level/Level.h"
-#include "gl3_loader.h"
 
 ResourceLocation PaintingRenderer::PAINTING_LOCATION(TN_ART_KZ);
 

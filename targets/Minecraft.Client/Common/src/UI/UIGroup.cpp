@@ -1,16 +1,16 @@
 #include "UIGroup.h"
 
 #include "4J_Profile.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/client/MemoryTracker.h"
 #include "minecraft/client/Minecraft.h"
-#include "4J_Render.h"
-#include "Minecraft.Client/Common/src/UI/UILayer.h"
-#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class UIScene;
 

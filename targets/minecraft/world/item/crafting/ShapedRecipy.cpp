@@ -12,8 +12,8 @@
 #include "Recipes.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/item/crafting/Recipy.h"
+#include "nbt/CompoundTag.h"
 
 // 4J-PB - for new crafting - Adding group to define type of item that the
 // recipe produces

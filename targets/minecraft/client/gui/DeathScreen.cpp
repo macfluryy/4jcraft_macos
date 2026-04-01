@@ -9,8 +9,8 @@
 #include "PauseScreen.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 void DeathScreen::init() {
     buttons.clear();

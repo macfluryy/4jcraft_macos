@@ -1,28 +1,29 @@
 #include "DLCManager.h"
 
 #include <wchar.h>
+
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <cstdio>
 #include <cstring>
 #include <limits>
-#include <cstdio>
 #include <sstream>
 #include <unordered_map>
 #include <utility>
 
+#include "4J_Profile.h"
+#include "4J_Storage.h"
 #include "DLCFile.h"
 #include "DLCPack.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "console_helpers/PortableFileIO.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
-#include "4J_Profile.h"
-#include "4J_Storage.h"
-#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "strings.h"
 
 // 4jcraft, this is the size of wchar_t on disk

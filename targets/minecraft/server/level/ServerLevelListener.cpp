@@ -8,6 +8,7 @@
 #include "PlayerChunkMap.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/LevelEventPacket.h"
 #include "minecraft/network/packet/LevelSoundPacket.h"
 #include "minecraft/network/packet/TileDestructionPacket.h"
@@ -16,7 +17,6 @@
 #include "minecraft/server/network/PlayerConnection.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 
 ServerLevelListener::ServerLevelListener(MinecraftServer* server,
                                          ServerLevel* level) {

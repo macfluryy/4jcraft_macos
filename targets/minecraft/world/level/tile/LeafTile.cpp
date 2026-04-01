@@ -2,12 +2,11 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "minecraft/client/Minecraft.h"
-#include "strings.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "minecraft/core/particles/ParticleTypes.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -21,6 +20,7 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TransparentTile.h"
+#include "strings.h"
 
 const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {
     IDS_TILE_LEAVES_OAK,

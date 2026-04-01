@@ -5,6 +5,8 @@
 #include "4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "gl3_loader.h"
 #include "java/Class.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
@@ -15,8 +17,6 @@
 #include "minecraft/world/inventory/EnchantmentMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
-#include "gl3_loader.h"
 
 UIControl_EnchantmentBook::UIControl_EnchantmentBook() {
     UIControl::setControlType(UIControl::eEnchantmentBook);

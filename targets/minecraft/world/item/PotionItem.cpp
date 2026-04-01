@@ -2,20 +2,16 @@
 
 #include <utility>
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/SharedConstants.h"
-#include "minecraft/sounds/SoundTypes.h"
-#include "minecraft/world/effect/MobEffectInstance.h"
-#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -25,7 +21,11 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/alchemy/PotionBrewing.h"
+#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 class Icon;
 

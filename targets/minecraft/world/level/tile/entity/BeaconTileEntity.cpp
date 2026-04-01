@@ -5,9 +5,7 @@
 
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "SharedConstants.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/network/packet/TileEntityDataPacket.h"
-#include "strings.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -17,6 +15,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 class Entity;
 

@@ -1,6 +1,7 @@
 #include "DLCPack.h"
 
 #include <wchar.h>
+
 #include <algorithm>
 #include <sstream>
 #include <utility>
@@ -16,12 +17,12 @@
 #include "DLCUIDataFile.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
-#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 
 DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_dataPath = L"";

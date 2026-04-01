@@ -5,9 +5,9 @@
 #include <string>
 
 #include "TileEntity.h"
+#include "java/Class.h"
 #include "minecraft/world/Container.h"
 #include "nbt/ListTag.h"
-#include "java/Class.h"
 
 class Player;
 class CompoundTag;

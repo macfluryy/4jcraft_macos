@@ -1,8 +1,8 @@
 #include "java/InputOutputStream/BufferedReader.h"
 
+#include <algorithm>
 #include <cassert>
 #include <cstring>
-#include <algorithm>
 
 #include "java/InputOutputStream/Reader.h"
 

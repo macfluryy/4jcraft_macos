@@ -3,10 +3,10 @@
 #include <string>
 
 #include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/FurnaceMenu.h"
 #include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_FURNACE_LOCATION = ResourceLocation(TN_GUI_FURNACE);

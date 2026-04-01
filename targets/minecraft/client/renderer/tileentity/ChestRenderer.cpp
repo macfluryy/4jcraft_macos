@@ -4,17 +4,17 @@
 #include <numbers>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/client/model/ChestModel.h"
 #include "minecraft/client/model/LargeChestModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/tileentity/TileEntityRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/level/tile/ChestTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/ChestTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "minecraft/client/renderer/tileentity/TileEntityRenderer.h"
-#include "gl3_loader.h"
 
 ResourceLocation ChestRenderer::CHEST_LARGE_TRAP_LOCATION =
     ResourceLocation(TN_TILE_LARGE_TRAP_CHEST);

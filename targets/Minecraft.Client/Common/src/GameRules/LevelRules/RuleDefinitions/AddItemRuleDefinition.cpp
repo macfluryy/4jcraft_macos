@@ -3,14 +3,14 @@
 #include <algorithm>
 
 #include "AddEnchantmentRuleDefinition.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 
 AddItemRuleDefinition::AddItemRuleDefinition() {
     m_itemId = m_quantity = m_auxValue = m_dataTag = 0;

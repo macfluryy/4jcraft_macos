@@ -2,19 +2,20 @@
 
 #include <assert.h>
 #include <limits.h>
+
 #include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
 #include "TrackedEntity.h"
+#include "java/Class.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/network/PlayerConnection.h"
-#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "java/Class.h"
 #include "minecraft/world/entity/Creature.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"

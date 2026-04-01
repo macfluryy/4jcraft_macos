@@ -4,7 +4,6 @@
 
 #include "DLCFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
-#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 
 class DLCTextureFile : public DLCFile {
 private:

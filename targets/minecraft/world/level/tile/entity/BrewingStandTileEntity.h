@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "TileEntity.h"
-#include "minecraft/world/WorldlyContainer.h"
 #include "java/Class.h"
+#include "minecraft/world/WorldlyContainer.h"
 
 class ItemInstance;
 

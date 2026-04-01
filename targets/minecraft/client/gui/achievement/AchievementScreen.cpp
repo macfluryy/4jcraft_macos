@@ -1,6 +1,7 @@
 #include "AchievementScreen.h"
 
 #include <GL/gl.h>
+
 #include <string>
 #include <vector>
 

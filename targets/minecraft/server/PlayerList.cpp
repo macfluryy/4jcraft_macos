@@ -2,44 +2,33 @@
 
 #include <string.h>
 #include <wchar.h>
-#include <cmath>
-#include <cstdint>
-#include <algorithm>
-#include <compare>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "MinecraftServer.h"
-#include "Settings.h"
-#include "java/JavaMath.h"
-#include "minecraft/Pos.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "minecraft/server/level/EntityTracker.h"
-#include "minecraft/server/level/PlayerChunkMap.h"
-#include "minecraft/server/level/ServerChunkCache.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/server/level/ServerPlayer.h"
-#include "minecraft/server/level/ServerPlayerGameMode.h"
-#include "minecraft/server/network/PendingConnection.h"
-#include "minecraft/server/network/PlayerConnection.h"
-#include "minecraft/server/network/ServerConnection.h"
-#include "minecraft/util/ProgressListener.h"
-#include "minecraft/world/entity/EntityIO.h"
+#include <algorithm>
+#include <cmath>
+#include <compare>
+#include <cstdint>
+
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Network/Socket.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/NetTypes.h"
+#include "MinecraftServer.h"
+#include "Settings.h"
 #include "console_helpers/Definitions.h"
 #include "java/Class.h"
-#include "nbt/CompoundTag.h"
+#include "java/JavaMath.h"
+#include "minecraft/Pos.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/network/Connection.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
@@ -56,8 +45,18 @@
 #include "minecraft/network/packet/TexturePacket.h"
 #include "minecraft/network/packet/UpdateMobEffectPacket.h"
 #include "minecraft/network/packet/XZPacket.h"
-#include "strings.h"
+#include "minecraft/server/level/EntityTracker.h"
+#include "minecraft/server/level/PlayerChunkMap.h"
+#include "minecraft/server/level/ServerChunkCache.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/level/ServerPlayerGameMode.h"
+#include "minecraft/server/network/PendingConnection.h"
+#include "minecraft/server/network/PlayerConnection.h"
+#include "minecraft/server/network/ServerConnection.h"
+#include "minecraft/util/ProgressListener.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -74,6 +73,8 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/storage/LevelStorage.h"
 #include "minecraft/world/level/storage/PlayerIO.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 class MobEffectInstance;
 

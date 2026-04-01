@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdint.h>
 #include <string.h>
+
 #include <string>
 #include <vector>
 
@@ -18,6 +19,7 @@
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -30,7 +32,6 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/monster/Monster.h"
 
 AttributeModifier* EnderMan::SPEED_MODIFIER_ATTACKING =
     (new AttributeModifier(eModifierId_MOB_ENDERMAN_ATTACKSPEED, 6.2f,

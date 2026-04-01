@@ -5,10 +5,6 @@
 #include <utility>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/util/HtmlString.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
@@ -20,6 +16,10 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/util/HtmlString.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"

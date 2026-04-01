@@ -5,8 +5,8 @@
 #include <numbers>
 
 #include "minecraft/client/model/geom/ModelPart.h"
-#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 
 WitherBossModel::WitherBossModel() {
     texWidth = 64;

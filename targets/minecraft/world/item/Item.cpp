@@ -2,17 +2,16 @@
 #include "Item.h"
 
 #include <math.h>
+
 #include <numbers>
 
 #include "HangingEntityItem.h"
 #include "MapItem.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/stats/Stats.h"
-#include "strings.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/effect/MobEffect.h"
@@ -78,6 +77,8 @@
 #include "minecraft/world/level/tile/ComparatorTile.h"
 #include "minecraft/world/level/tile/RepeaterTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/Vec3.h"
+#include "strings.h"
 
 typedef Item::Tier _Tier;
 

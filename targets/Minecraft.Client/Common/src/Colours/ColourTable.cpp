@@ -4,10 +4,10 @@
 #include <utility>
 #include <vector>
 
+#include "Common/App_enums.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
-#include "Common/App_enums.h"
 
 std::unordered_map<std::wstring, eMinecraftColour>
     ColourTable::s_colourNamesMap;

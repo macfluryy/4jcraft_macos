@@ -7,9 +7,9 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/food/FoodConstants.h"
 #include "minecraft/world/food/FoodData.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/item/Item.h"
 
 void FoodItem::_init() {
     // 4J Initialisers

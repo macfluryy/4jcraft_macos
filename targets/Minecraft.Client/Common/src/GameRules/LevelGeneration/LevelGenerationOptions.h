@@ -9,10 +9,10 @@
 #include <vector>
 
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeature.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 
 class ApplySchematicRuleDefinition;
 class LevelChunk;

@@ -2,6 +2,7 @@
 #include "UIScene_InventoryMenu.h"
 
 #include <assert.h>
+
 #include <format>
 #include <memory>
 #include <vector>
@@ -9,15 +10,15 @@
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftPlayer.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/effect/MobEffectInstance.h"

@@ -4,13 +4,13 @@
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/DeadBushTile.h"
 #include "minecraft/world/level/tile/PlantTile.h"
 #include "minecraft/world/level/tile/SaplingPlantTile.h"
 #include "minecraft/world/level/tile/TallGrassPlantTile.h"
-#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 FlowerPotTile::FlowerPotTile(int id) : Tile(id, Material::decoration, false) {

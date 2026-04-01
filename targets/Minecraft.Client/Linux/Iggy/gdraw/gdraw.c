@@ -10,9 +10,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "SDL_video.h"
 #include "Minecraft.Client/Linux/Iggy/gdraw/gdraw.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "SDL_video.h"
 
 #ifndef _ENABLEIGGY
 void* IggyGDrawMallocAnnotated(SINTa size, const char* file, int line) {

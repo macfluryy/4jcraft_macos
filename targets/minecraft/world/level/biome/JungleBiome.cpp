@@ -5,6 +5,7 @@
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeDecorator.h"
 #include "minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
 #include "minecraft/world/level/levelgen/feature/GroundBushFeature.h"
@@ -16,7 +17,6 @@
 #include "minecraft/world/level/tile/TallGrassPlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
-#include "minecraft/world/level/biome/Biome.h"
 
 JungleBiome::JungleBiome(int id) : Biome(id) {
     decorator->treeCount = 50;

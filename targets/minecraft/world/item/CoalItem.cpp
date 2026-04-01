@@ -3,10 +3,10 @@
 #include <memory>
 #include <string>
 
-#include "strings.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "strings.h"
 
 CoalItem::CoalItem(int id) : Item(id) {
     setStackedByData(true);

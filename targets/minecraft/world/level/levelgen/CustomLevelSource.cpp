@@ -1,8 +1,9 @@
 #include "CustomLevelSource.h"
 
 #include <assert.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include <filesystem>
 #include <fstream>
 

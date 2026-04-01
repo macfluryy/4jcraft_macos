@@ -5,13 +5,6 @@
 #include <format>
 #include <numbers>
 
-#include "console_helpers/StringHelpers.h"
-#include "java/Random.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/User.h"
-#include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/ScreenSizeCalculator.h"
-#include "minecraft/server/MinecraftServer.h"
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
@@ -28,11 +21,18 @@
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/NetTypes.h"
+#include "console_helpers/StringHelpers.h"
 #include "gl3_loader.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
+#include "java/Random.h"
 #include "java/System.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/User.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"
 

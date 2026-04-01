@@ -2,12 +2,14 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include <algorithm>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/compression.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -29,7 +31,6 @@
 #include "nbt/ListTag.h"
 #include "nbt/NbtIo.h"
 #include "nbt/Tag.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 
 ConsoleSchematicFile::ConsoleSchematicFile() {
     m_xSize = m_ySize = m_zSize = 0;

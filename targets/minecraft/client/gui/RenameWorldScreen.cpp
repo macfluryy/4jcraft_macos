@@ -7,9 +7,9 @@
 #include "Minecraft.Client/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Screen.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/world/level/storage/LevelStorageSource.h"
-#include "minecraft/client/gui/Screen.h"
 
 RenameWorldScreen::RenameWorldScreen(Screen* lastScreen,
                                      const std::wstring& levelId) {

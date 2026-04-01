@@ -1,12 +1,12 @@
 #pragma once
 #include <cstdint>
 #include <deque>
+#include <format>
 #include <memory>
 #include <mutex>
+#include <string>
 #include <unordered_map>
 #include <vector>
-#include <format>
-#include <string>
 
 #include "4J.Common/4J_Compat.h"
 #include "nbt/CompoundTag.h"

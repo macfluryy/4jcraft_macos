@@ -2,14 +2,14 @@
 
 #include <memory>
 
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/entity/ai/attributes/Attribute.h"
-#include "minecraft/world/item/Item.h"
 
 WeaponItem::WeaponItem(int id, const Tier* tier) : Item(id), tier(tier) {
     maxStackSize = 1;

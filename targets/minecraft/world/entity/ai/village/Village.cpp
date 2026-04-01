@@ -1,6 +1,7 @@
 #include "Village.h"
 
 #include <stdlib.h>
+
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -11,18 +12,18 @@
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/ai/village/DoorInfo.h"
 #include "minecraft/world/entity/ai/village/Villages.h"
 #include "minecraft/world/entity/animal/VillagerGolem.h"
 #include "minecraft/world/entity/npc/Villager.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/ai/village/DoorInfo.h"
-#include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/phys/Vec3.h"
 
 class Entity;
 

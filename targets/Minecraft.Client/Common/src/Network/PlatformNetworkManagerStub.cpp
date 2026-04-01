@@ -2,16 +2,17 @@
 
 #include <string.h>
 #include <wchar.h>
+
 #include <compare>
 
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
 #include "NetworkPlayerQNet.h"
 #include "Socket.h"
 #include "console_helpers/C4JThread.h"
-#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/include/NetTypes.h"
 
 CPlatformNetworkManagerStub* g_pPlatformNetworkManager;
 

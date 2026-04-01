@@ -2,20 +2,21 @@
 
 #include <stdlib.h>
 #include <string.h>
+
 #include <cmath>
 #include <vector>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/levelgen/feature/HellFireFeature.h"
 #include "minecraft/world/level/levelgen/feature/LightGemFeature.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/HeavyTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/chunk/ChunkSource.h"
 
 HellFlatLevelSource::HellFlatLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();

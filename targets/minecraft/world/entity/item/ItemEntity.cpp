@@ -1,29 +1,30 @@
 #include "ItemEntity.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <numbers>
 #include <vector>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "SharedConstants.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
-#include "SharedConstants.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/item/ItemInstance.h"
 
 void ItemEntity::_init() {
     age = 0;

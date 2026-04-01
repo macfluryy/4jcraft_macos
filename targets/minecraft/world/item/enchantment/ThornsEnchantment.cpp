@@ -1,6 +1,5 @@
 #include "ThornsEnchantment.h"
 
-#include "strings.h"
 #include "java/Random.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -12,6 +11,7 @@
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "strings.h"
 
 const float ThornsEnchantment::CHANCE_PER_LEVEl = 0.15f;
 

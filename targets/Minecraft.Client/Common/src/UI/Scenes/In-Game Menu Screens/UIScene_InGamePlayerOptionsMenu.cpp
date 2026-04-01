@@ -3,9 +3,6 @@
 
 #include <memory>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "4J.Common/4J_InputActions.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
@@ -18,6 +15,9 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/network/packet/KickPlayerPacket.h"
 #include "minecraft/network/packet/PlayerInfoPacket.h"
 #include "minecraft/world/entity/player/Player.h"

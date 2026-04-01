@@ -1,9 +1,10 @@
 #include "Connection.h"
 
 #include <stdio.h>
-#include <vector>
+
 #include <chrono>
 #include <thread>
+#include <vector>
 
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
@@ -16,10 +17,10 @@
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/network/packet/KeepAlivePacket.h"
 #include "minecraft/network/packet/Packet.h"
 #include "minecraft/network/packet/PacketListener.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
 
 class SocketAddress;
 

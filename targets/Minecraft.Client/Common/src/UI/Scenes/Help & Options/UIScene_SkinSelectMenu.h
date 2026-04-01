@@ -3,17 +3,17 @@
 #include <format>
 #include <string>
 
+#include "4J_Storage.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_PlayerSkinPreview.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "console_helpers/Definitions.h"
-#include "4J_Storage.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "console_helpers/Definitions.h"
 #include "minecraft/client/renderer/Textures.h"
 
 class DLCPack;

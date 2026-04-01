@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include <cstdint>
 #include <utility>
 #include <vector>
@@ -9,18 +10,18 @@
 #include "Minecraft.Client/Common/src/DLC/DLCGameRulesFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
 #include "Minecraft.Client/Common/src/DLC/DLCLocalisationFile.h"
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
-#include "console_helpers/compression.h"
-#include "java/File.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerators.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/LevelRules.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/compression.h"
+#include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"

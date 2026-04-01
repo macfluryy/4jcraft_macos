@@ -1,11 +1,12 @@
 #pragma once
 
 #include <stdint.h>
-#include <unordered_set>
+
 #include <memory>
 #include <string>
 #include <typeinfo>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "nbt/CompoundTag.h"

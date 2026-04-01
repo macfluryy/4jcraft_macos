@@ -3,6 +3,7 @@
 // 4J Stu - Based loosely on the Java versions
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <string>

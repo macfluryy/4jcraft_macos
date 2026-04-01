@@ -4,6 +4,7 @@
 
 #include "4J_Render.h"
 #include "EntityRenderDispatcher.h"
+#include "gl3_loader.h"
 #include "java/Class.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/renderer/Tesselator.h"
@@ -19,7 +20,6 @@
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "gl3_loader.h"
 
 ResourceLocation EntityRenderer::SHADOW_LOCATION =
     ResourceLocation(TN__CLAMP__MISC_SHADOW);

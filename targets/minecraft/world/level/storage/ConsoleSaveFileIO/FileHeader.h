@@ -1,10 +1,10 @@
 #pragma once
 
 #include <chrono>
+#include <cstdint>
 #include <cstring>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 #include "console_helpers/Definitions.h"
 

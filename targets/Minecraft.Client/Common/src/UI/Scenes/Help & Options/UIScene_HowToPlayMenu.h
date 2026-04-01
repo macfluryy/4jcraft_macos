@@ -2,9 +2,9 @@
 
 #include <string>
 
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class UILayer;

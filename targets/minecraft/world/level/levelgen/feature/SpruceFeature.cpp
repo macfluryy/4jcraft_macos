@@ -6,10 +6,10 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/LeafTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
-#include "minecraft/world/level/levelgen/feature/Feature.h"
 
 SpruceFeature::SpruceFeature(bool doUpdate) : Feature(doUpdate) {}
 

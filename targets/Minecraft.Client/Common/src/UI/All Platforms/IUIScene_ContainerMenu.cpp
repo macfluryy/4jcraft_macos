@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_ContainerMenu::GetSectionAndSlotInDirection(ESceneSection eSection,

@@ -1,6 +1,7 @@
 #include "MineShaftPieces.h"
 
 #include <stdlib.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
@@ -16,6 +17,8 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/tile/BaseRailTile.h"
 #include "minecraft/world/level/tile/RailTile.h"
 #include "minecraft/world/level/tile/Tile.h"
@@ -23,8 +26,6 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/IntArrayTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
-#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 std::vector<WeighedTreasure*> MineShaftPieces::smallTreasureItems;
 ;

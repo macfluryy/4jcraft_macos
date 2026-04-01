@@ -1,11 +1,13 @@
 #include "Linux_App.h"
 
 #include <assert.h>
+
 #include <string>
 
-#include "4J_Render.h"
 #include "4J_Profile.h"
+#include "4J_Render.h"
 #include "4J_Storage.h"
+#include "Common/App_enums.h"
 #include "Minecraft.Client/Common/Consoles_App.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
@@ -14,7 +16,6 @@
 #include "minecraft/client/User.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
-#include "Common/App_enums.h"
 
 CConsoleMinecraftApp app;
 

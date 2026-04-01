@@ -4,11 +4,13 @@
 #include <float.h>
 #include <stdio.h>
 #include <string.h>
+
 #include <algorithm>
 #include <format>
 #include <memory>
 #include <utility>
 
+#include "IPlatformInput.h"
 #include "LevelData.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
@@ -32,15 +34,14 @@
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "minecraft/world/level/storage/LevelStorage.h"
+#include "minecraft/world/level/storage/PlayerIO.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/ListTag.h"
 #include "nbt/NbtIo.h"
 #include "platform/IPlatformStorage.h"
 #include "platform/PlatformServices.h"
-#include "IPlatformInput.h"
-#include "minecraft/world/level/storage/LevelStorage.h"
-#include "minecraft/world/level/storage/PlayerIO.h"
 
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 

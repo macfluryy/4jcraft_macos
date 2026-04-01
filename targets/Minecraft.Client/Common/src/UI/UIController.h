@@ -2,8 +2,8 @@
 #include <stddef.h>
 // using namespace std;
 #include <cstdint>
-#include <mutex>
 #include <format>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -15,16 +15,16 @@
 #include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
 #endif
 
+#include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
+#include "4J_Render.h"
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIController.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
-#include "UIGroup.h"
-#include "4J.Common/4J_Compat.h"
-#include "4J_Render.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "UIGroup.h"
 #include "minecraft/sounds/SoundTypes.h"
 
 class UIAbstractBitmapFont;

@@ -2,13 +2,13 @@
 
 #include <memory>
 
+#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 AreaHint::AreaHint(eTutorial_Hint id, Tutorial* tutorial,
                    eTutorial_State displayState, eTutorial_State completeState,

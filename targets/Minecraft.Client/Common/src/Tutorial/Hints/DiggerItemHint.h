@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "TutorialHint.h"
 
 class DiggerItem;
 class Level;

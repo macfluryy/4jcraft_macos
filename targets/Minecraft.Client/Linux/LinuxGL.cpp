@@ -2,10 +2,10 @@
 
 #include "4J_Render.h"
 #include "Minecraft.Client/include/stubs.h"
+#include "gl3_loader.h"
 #include "java/ByteBuffer.h"
 #include "java/FloatBuffer.h"
 #include "java/IntBuffer.h"
-#include "gl3_loader.h"
 
 extern C4JRender RenderManager;
 

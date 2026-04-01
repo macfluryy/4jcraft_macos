@@ -1,6 +1,7 @@
 #include "Squid.h"
 
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
@@ -8,6 +9,7 @@
 #include "minecraft/SharedConstants.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/animal/WaterAnimal.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/Item.h"
@@ -15,7 +17,6 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/animal/WaterAnimal.h"
 
 void Squid::_init() {
     xBodyRot = xBodyRotO = 0.0f;

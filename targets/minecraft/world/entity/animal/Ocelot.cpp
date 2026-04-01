@@ -1,9 +1,11 @@
 #include "Ocelot.h"
 
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
+#include "IPlatformInput.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
@@ -48,7 +50,6 @@
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
 #include "platform/PlatformServices.h"
-#include "IPlatformInput.h"
 
 const double Ocelot::SNEAK_SPEED_MOD = 0.6;
 const double Ocelot::WALK_SPEED_MOD = 0.8;

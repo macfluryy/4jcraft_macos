@@ -1,9 +1,7 @@
 #include "SkullItem.h"
 
-#include "minecraft/util/Mth.h"
 #include "Facing.h"
-#include "nbt/CompoundTag.h"
-#include "strings.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
@@ -14,6 +12,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 const unsigned int SkullItem::NAMES[SKULL_COUNT] = {
     IDS_ITEM_SKULL_SKELETON, IDS_ITEM_SKULL_WITHER, IDS_ITEM_SKULL_ZOMBIE,

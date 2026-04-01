@@ -1,8 +1,8 @@
 #include "Screen.h"
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Profile.h"
 #include "4J_Input.h"
+#include "4J_Profile.h"
 #include "Button.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"

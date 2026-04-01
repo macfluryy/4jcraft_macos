@@ -3,22 +3,23 @@
 #include <assert.h>
 #include <string.h>
 #include <wchar.h>
+
 #include <string>
 #include <vector>
 
 #include "4J.Common/4J_InputActions.h"
-#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/player/LocalPlayer.h"
 #include "4J_Profile.h"
 #include "4J_Render.h"
 #include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Inventory.h"

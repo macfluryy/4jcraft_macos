@@ -5,6 +5,7 @@
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/PathfinderMob.h"
+#include "minecraft/world/entity/animal/Cow.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -15,7 +16,6 @@
 #include "minecraft/world/level/tile/PlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/animal/Cow.h"
 
 MushroomCow::MushroomCow(Level* level) : Cow(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

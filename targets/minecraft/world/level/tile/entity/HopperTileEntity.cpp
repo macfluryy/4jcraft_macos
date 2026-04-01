@@ -1,16 +1,14 @@
 #include "HopperTileEntity.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <format>
 
-#include "minecraft/util/Mth.h"
 #include "Facing.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/WorldlyContainer.h"
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
@@ -23,6 +21,9 @@
 #include "minecraft/world/level/tile/entity/Hopper.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 class Entity;
 

@@ -2,12 +2,11 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/stats/GenericStats.h"
-#include "strings.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
@@ -20,6 +19,7 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/PlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 
 class Icon;
 

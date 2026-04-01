@@ -4,7 +4,6 @@
 #include <assert.h>
 
 #include "4J_Profile.h"
-#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
@@ -13,6 +12,7 @@
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/inventory/FurnaceMenu.h"
 #include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
 #include "strings.h"

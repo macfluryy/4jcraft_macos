@@ -1,9 +1,12 @@
 #include "UpdatePlayerRuleDefinition.h"
 
 #include <wchar.h>
+
 #include <memory>
 
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
@@ -11,8 +14,6 @@
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/food/FoodData.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 
 UpdatePlayerRuleDefinition::UpdatePlayerRuleDefinition() {
     m_bUpdateHealth = m_bUpdateFood = m_bUpdateYRot = false;

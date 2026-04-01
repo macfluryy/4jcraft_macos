@@ -1,31 +1,32 @@
 #include "IUIScene_PauseMenu.h"
 
 #include <stdint.h>
+
 #include <chrono>
-#include <thread>
 #include <cstddef>
 #include <memory>
 #include <string>
+#include <thread>
 #include <vector>
 
+#include "4J_Profile.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/compression.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "4J_Profile.h"
-#include "Common/App_enums.h"
-#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
-#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "strings.h"
 
 class TexturePack;

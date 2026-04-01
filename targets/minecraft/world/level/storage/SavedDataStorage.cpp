@@ -1,6 +1,7 @@
 #include "SavedDataStorage.h"
 
 #include <assert.h>
+
 #include <algorithm>
 #include <utility>
 
@@ -10,6 +11,7 @@
 #include "minecraft/world/entity/ai/village/Villages.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureSavedData.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
+#include "minecraft/world/level/saveddata/SavedData.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
@@ -20,7 +22,6 @@
 #include "nbt/NbtIo.h"
 #include "nbt/ShortTag.h"
 #include "nbt/Tag.h"
-#include "minecraft/world/level/saveddata/SavedData.h"
 
 SavedDataStorage::SavedDataStorage(LevelStorage* levelStorage) {
     /*

@@ -11,7 +11,8 @@ class Player;
 class CompoundTag;
 class Item;
 class Tile;
-template <class T> class ListTag;
+template <class T>
+class ListTag;
 
 class Inventory : public Container {
 public:

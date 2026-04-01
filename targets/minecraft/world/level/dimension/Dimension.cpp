@@ -1,9 +1,11 @@
 #include "Dimension.h"
 
 #include <math.h>
+
 #include <numbers>
 
 #include "HellDimension.h"
+#include "IPlatformInput.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
@@ -23,9 +25,8 @@
 #include "minecraft/world/level/levelgen/flat/FlatGeneratorInfo.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "platform/PlatformServices.h"
-#include "IPlatformInput.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "platform/PlatformServices.h"
 
 class Pos;
 

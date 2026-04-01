@@ -1,11 +1,13 @@
 #include "Zombie.h"
 
 #include <math.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "SharedConstants.h"
 #include "java/Random.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
@@ -18,6 +20,7 @@
 #include "minecraft/world/entity/EntityEvent.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/MobGroupData.h"
+#include "minecraft/world/entity/MobType.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
@@ -36,6 +39,7 @@
 #include "minecraft/world/entity/ai/goal/target/HurtByTargetGoal.h"
 #include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/npc/Villager.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -48,9 +52,6 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
-#include "SharedConstants.h"
-#include "minecraft/world/entity/MobType.h"
-#include "minecraft/world/entity/monster/Monster.h"
 
 Attribute* Zombie::SPAWN_REINFORCEMENTS_CHANCE =
     (new RangedAttribute(eAttributeId_ZOMBIE_SPAWNREINFORCEMENTS, 0, 0, 1));

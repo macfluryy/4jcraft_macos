@@ -1,6 +1,7 @@
 #include "ItemInHandRenderer.h"
 
 #include <GL/gl.h>
+
 #include <cmath>
 #include <numbers>
 #include <vector>

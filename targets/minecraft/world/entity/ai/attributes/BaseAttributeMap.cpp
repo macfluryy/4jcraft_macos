@@ -3,10 +3,10 @@
 #include <utility>
 #include <vector>
 
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/entity/ai/attributes/Attribute.h"
 
 BaseAttributeMap::~BaseAttributeMap() {
     for (auto it = attributesById.begin(); it != attributesById.end(); ++it) {

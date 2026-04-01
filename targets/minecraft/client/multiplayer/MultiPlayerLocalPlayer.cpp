@@ -1,6 +1,7 @@
 #include "MultiPlayerLocalPlayer.h"
 
 #include <wchar.h>
+
 #include <cmath>
 
 #include "ClientConnection.h"
@@ -28,11 +29,11 @@
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/player/Player.h"
 
 class User;
 class ItemEntity;

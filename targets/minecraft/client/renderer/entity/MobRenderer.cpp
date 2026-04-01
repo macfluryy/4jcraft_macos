@@ -1,6 +1,7 @@
 #include "MobRenderer.h"
 
 #include <math.h>
+
 #include <numbers>
 
 #include "4J_Render.h"
@@ -8,6 +9,7 @@
 #include "LivingEntityRenderer.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "gl3_loader.h"
 #include "java/Class.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/renderer/Tesselator.h"
@@ -15,7 +17,6 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
-#include "gl3_loader.h"
 
 class Model;
 

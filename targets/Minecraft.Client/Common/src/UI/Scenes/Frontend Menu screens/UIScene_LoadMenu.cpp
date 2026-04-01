@@ -4,13 +4,6 @@
 #include <string.h>
 #include <wchar.h>
 
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/skins/DLCTexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/world/level/LevelSettings.h"
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
@@ -18,6 +11,7 @@
 #include "Common/App_Defines.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
@@ -31,8 +25,14 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/include/NetTypes.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/level/LevelSettings.h"
 #include "strings.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0

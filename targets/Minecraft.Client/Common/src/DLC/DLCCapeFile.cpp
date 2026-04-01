@@ -1,8 +1,8 @@
 #include "DLCCapeFile.h"
 
 #include "DLCManager.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 
 DLCCapeFile::DLCCapeFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_Cape, path) {}

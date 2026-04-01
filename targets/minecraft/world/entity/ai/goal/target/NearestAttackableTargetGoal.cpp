@@ -9,9 +9,9 @@
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/PathfinderMob.h"
+#include "minecraft/world/entity/ai/goal/target/TargetGoal.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/ai/goal/target/TargetGoal.h"
 
 SubselectEntitySelector::SubselectEntitySelector(
     NearestAttackableTargetGoal* parent, EntitySelector* subselector) {

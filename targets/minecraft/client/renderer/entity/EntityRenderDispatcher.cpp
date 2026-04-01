@@ -1,9 +1,11 @@
 #include "EntityRenderDispatcher.h"
 
 #include <assert.h>
+
 #include <cmath>
 #include <utility>
 
+#include "4J_Render.h"
 #include "ArrowRenderer.h"
 #include "BatRenderer.h"
 #include "BlazeRenderer.h"
@@ -32,12 +34,14 @@
 #include "LightningBoltRenderer.h"
 #include "MinecartRenderer.h"
 #include "MinecartSpawnerRenderer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 #include "MobRenderer.h"
 #include "MushroomCowRenderer.h"
 #include "OcelotRenderer.h"
 #include "PaintingRenderer.h"
 #include "PigRenderer.h"
 #include "PlayerRenderer.h"
+#include "SharedConstants.h"
 #include "SheepRenderer.h"
 #include "SilverfishRenderer.h"
 #include "SkeletonRenderer.h"
@@ -54,6 +58,7 @@
 #include "WitherSkullRenderer.h"
 #include "WolfRenderer.h"
 #include "ZombieRenderer.h"
+#include "gl3_loader.h"
 #include "minecraft/client/model/ChickenModel.h"
 #include "minecraft/client/model/CowModel.h"
 #include "minecraft/client/model/HumanoidModel.h"
@@ -65,12 +70,8 @@
 #include "minecraft/client/model/SlimeModel.h"
 #include "minecraft/client/model/SquidModel.h"
 #include "minecraft/client/model/WolfModel.h"
-#include "4J_Render.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "SharedConstants.h"
 #include "minecraft/client/model/ZombieModel.h"
 #include "minecraft/client/renderer/Tesselator.h"
-#include "gl3_loader.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Player.h"

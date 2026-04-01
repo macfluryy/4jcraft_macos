@@ -8,8 +8,8 @@
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
-#include "minecraft/locale/Language.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/locale/Language.h"
 
 JoinMultiplayerScreen::JoinMultiplayerScreen(Screen* lastScreen) {
     ipEdit = nullptr;

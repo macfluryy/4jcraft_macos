@@ -4,11 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "java/Random.h"
 #include "minecraft/Facing.h"
 #include "minecraft/util/Mth.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "strings.h"
 #include "minecraft/world/CompoundContainer.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/IconRegister.h"
@@ -26,6 +24,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/ChestTileEntity.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 class Entity;
 

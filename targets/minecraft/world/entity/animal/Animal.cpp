@@ -6,12 +6,10 @@
 #include <typeinfo>
 #include <vector>
 
-#include "java/Random.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
-#include "nbt/CompoundTag.h"
-#include "strings.h"
+#include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
 #include "minecraft/world/entity/AgeableMob.h"
@@ -30,6 +28,8 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 Animal::Animal(Level* level) : AgableMob(level) {
     //	inLove = 0;

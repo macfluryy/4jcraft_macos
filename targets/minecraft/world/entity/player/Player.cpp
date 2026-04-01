@@ -11,6 +11,7 @@
 
 #include <limits.h>
 #include <wchar.h>
+
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -41,7 +42,9 @@
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityEvent.h"
+#include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
@@ -52,6 +55,7 @@
 #include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
 #include "minecraft/world/food/FoodConstants.h"
 #include "minecraft/world/food/FoodData.h"
@@ -61,6 +65,7 @@
 #include "minecraft/world/item/BowItem.h"
 #include "minecraft/world/item/FishingRodItem.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/UseAnim.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
 #include "minecraft/world/item/enchantment/ThornsEnchantment.h"
@@ -80,10 +85,6 @@
 #include "minecraft/world/scores/criteria/ObjectiveCriteria.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/player/Abilities.h"
-#include "minecraft/world/item/ItemInstance.h"
 
 class ModelPart;
 class Objective;

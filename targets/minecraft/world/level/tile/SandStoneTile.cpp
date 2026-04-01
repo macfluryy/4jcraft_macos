@@ -1,10 +1,10 @@
 #include "SandStoneTile.h"
 
-#include "strings.h"
 #include "Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 
 class Icon;
 

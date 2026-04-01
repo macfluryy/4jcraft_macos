@@ -1,6 +1,7 @@
 #include "Boat.h"
 
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 #include <vector>
@@ -10,6 +11,7 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -19,7 +21,6 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/Entity.h"
 
 const double Boat::MAX_SPEED = 0.35;
 const double Boat::MAX_COLLISION_SPEED = MAX_SPEED * 0.75;

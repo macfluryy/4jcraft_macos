@@ -5,8 +5,8 @@
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/level/TilePos.h"
+#include "minecraft/world/phys/Vec3.h"
 
 ExplodePacket::ExplodePacket() {
     x = 0;

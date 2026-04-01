@@ -26,7 +26,8 @@ class HtmlString;
 class Tile;
 class Item;
 class Tag;
-template <class T> class ListTag;
+template <class T>
+class ListTag;
 
 // 4J Stu - While this is not really an abstract class, we don't want to make
 // new instances of it, mainly because there are too many ctors and that doesn't

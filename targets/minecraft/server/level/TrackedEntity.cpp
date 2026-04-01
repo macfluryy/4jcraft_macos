@@ -3,9 +3,10 @@
 #include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
+
+#include <cmath>
 #include <string>
 #include <vector>
-#include <cmath>
 
 #include "4J.Common/4J_Compat.h"
 #include "EntityTracker.h"
@@ -46,6 +47,7 @@
 #include "minecraft/world/entity/ai/attributes/ServersideAttributeMap.h"
 #include "minecraft/world/entity/item/FallingTile.h"
 #include "minecraft/world/entity/item/Minecart.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
 #include "minecraft/world/entity/projectile/Fireball.h"
 #include "minecraft/world/entity/projectile/FishingHook.h"
@@ -54,7 +56,6 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
-#include "minecraft/world/entity/player/Player.h"
 
 class AttributeInstance;
 class MobEffectInstance;

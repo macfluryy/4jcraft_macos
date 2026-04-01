@@ -4,11 +4,11 @@
 
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeDecorator.h"
 #include "minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
 #include "minecraft/world/level/levelgen/feature/BirchFeature.h"
 #include "minecraft/world/level/levelgen/feature/TreeFeature.h"
-#include "minecraft/world/level/biome/Biome.h"
 
 ForestBiome::ForestBiome(int id) : Biome(id) {
     friendlies_wolf.push_back(new MobSpawnerData(

@@ -1,10 +1,10 @@
 #include "DemoLevel.h"
 
+#include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/storage/LevelData.h"
-#include "minecraft/world/level/Level.h"
 
 class LevelStorage;
 

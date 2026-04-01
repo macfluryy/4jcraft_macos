@@ -1,15 +1,16 @@
 #include "PrimedTnt.h"
 
 #include <stdint.h>
+
 #include <cmath>
 #include <numbers>
 #include <string>
 
 #include "java/JavaMath.h"
 #include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/Entity.h"
 
 class LivingEntity;
 

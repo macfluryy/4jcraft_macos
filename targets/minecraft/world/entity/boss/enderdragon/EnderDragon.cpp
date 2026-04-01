@@ -1,16 +1,15 @@
 #include "EnderDragon.h"
 
+#include <algorithm>
 #include <cmath>
 #include <limits>
-#include <algorithm>
 #include <numbers>
 
-#include "minecraft/SharedConstants.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
@@ -30,6 +29,7 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TheEndPortalTile.h"
+#include "nbt/CompoundTag.h"
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 

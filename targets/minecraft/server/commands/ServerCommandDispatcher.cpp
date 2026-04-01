@@ -14,10 +14,10 @@
 #include "minecraft/commands/common/KillCommand.h"
 #include "minecraft/commands/common/TimeCommand.h"
 #include "minecraft/commands/common/ToggleDownfallCommand.h"
+#include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
-#include "minecraft/network/packet/ChatPacket.h"
 
 ServerCommandDispatcher::ServerCommandDispatcher() {
     addCommand(new TimeCommand());

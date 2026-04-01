@@ -5,8 +5,8 @@
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/network/packet/Packet.h"
+#include "minecraft/world/effect/MobEffectInstance.h"
 
 UpdateMobEffectPacket::UpdateMobEffectPacket() {
     entityId = 0;

@@ -5,9 +5,9 @@
 #include "SmallButton.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
-#include "minecraft/locale/Language.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/locale/Language.h"
 
 ControlsScreen::ControlsScreen(Screen* lastScreen, Options* options) {
     // 4J - added initialisers

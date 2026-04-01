@@ -1,6 +1,7 @@
 #include "SyncedEntityData.h"
 
 #include <assert.h>
+
 #include <vector>
 
 #include "Minecraft.Client/Linux/Linux_App.h"

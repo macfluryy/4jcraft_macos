@@ -5,7 +5,6 @@
 
 #include "DirectionalTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/tile/Tile.h"
 
 class Icon;
 

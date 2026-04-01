@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "TileEntity.h"
+#include "java/Class.h"
 #include "minecraft/world/Container.h"
 #include "nbt/com.mojang.nbt.h"
-#include "java/Class.h"
 
 class Player;
 class Random;

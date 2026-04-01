@@ -1,10 +1,10 @@
 #include "WeighedTreasure.h"
 
 #include "java/Random.h"
+#include "minecraft/util/WeighedRandom.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
-#include "minecraft/util/WeighedRandom.h"
 
 WeighedTreasure::WeighedTreasure(int itemId, int auxValue, int minCount,
                                  int maxCount, int weight)

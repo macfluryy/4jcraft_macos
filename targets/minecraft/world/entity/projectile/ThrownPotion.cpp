@@ -1,6 +1,7 @@
 #include "ThrownPotion.h"
 
 #include <math.h>
+
 #include <string>
 #include <vector>
 
@@ -9,6 +10,7 @@
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/projectile/Throwable.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/PotionItem.h"
@@ -17,7 +19,6 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/projectile/Throwable.h"
 
 class Entity;
 

@@ -1,10 +1,10 @@
 #pragma once
-#include <optional>
 #include <memory>
+#include <optional>
 #include <string>
 
-#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/phys/Vec3.h"
 
 class DamageSource;

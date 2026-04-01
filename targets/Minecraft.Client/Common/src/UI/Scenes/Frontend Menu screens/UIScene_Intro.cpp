@@ -1,10 +1,10 @@
 #include "UIScene_Intro.h"
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 
 class UILayer;
 

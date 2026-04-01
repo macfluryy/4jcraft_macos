@@ -3,8 +3,6 @@
 
 #include <memory>
 
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/server/commands/TeleportCommand.h"
 #include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
@@ -17,7 +15,9 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/network/packet/GameCommandPacket.h"
+#include "minecraft/server/commands/TeleportCommand.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"
 

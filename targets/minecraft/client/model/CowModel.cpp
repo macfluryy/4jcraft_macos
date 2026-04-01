@@ -1,7 +1,7 @@
 #include "CowModel.h"
 
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/QuadrupedModel.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 CowModel::CowModel() : QuadrupedModel(12, 0) {
     head = new ModelPart(this, 0, 0);

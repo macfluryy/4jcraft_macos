@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 
 class Model;
 

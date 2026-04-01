@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+
 #include <cstdint>
 
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
@@ -12,7 +13,9 @@
 #include "minecraft/world/entity/MobCategory.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/MobSpawner.h"
+#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/levelgen/CanyonFeature.h"
 #include "minecraft/world/level/levelgen/LargeCaveFeature.h"
@@ -28,8 +31,6 @@
 #include "minecraft/world/level/tile/HeavyTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/chunk/ChunkSource.h"
 
 const double RandomLevelSource::SNOW_SCALE = 0.3;
 const double RandomLevelSource::SNOW_CUTOFF = 0.5;

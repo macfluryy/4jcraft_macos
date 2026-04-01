@@ -2,22 +2,23 @@
 #include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugSetCamera.h"
 
 #include <wchar.h>
+
 #include <memory>
 
+#include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "minecraft/world/phys/Vec3.h"
-#include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED

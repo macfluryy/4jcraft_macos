@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 BookItem::BookItem(int id) : Item(id) {}
 

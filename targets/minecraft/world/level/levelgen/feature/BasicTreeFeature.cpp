@@ -1,6 +1,7 @@
 #include "BasicTreeFeature.h"
 
 #include <stdlib.h>
+
 #include <algorithm>
 #include <cmath>
 
@@ -9,9 +10,9 @@
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
-#include "minecraft/world/level/levelgen/feature/Feature.h"
 
 uint8_t BasicTree::axisConversionArray[] = {2, 0, 0, 1, 2, 1};
 

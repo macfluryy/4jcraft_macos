@@ -1,7 +1,7 @@
 #include "FullTutorialActiveTask.h"
 
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 FullTutorialActiveTask::FullTutorialActiveTask(

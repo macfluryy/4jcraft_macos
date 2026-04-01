@@ -1,18 +1,17 @@
 #include "Tile.h"
 
 #include <string.h>
+
 #include <optional>
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "Facing.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/stats/Stats.h"
-#include "strings.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
@@ -151,6 +150,8 @@
 #include "minecraft/world/level/tile/piston/PistonBaseTile.h"
 #include "minecraft/world/level/tile/piston/PistonExtensionTile.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "minecraft/world/phys/Vec3.h"
+#include "strings.h"
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 

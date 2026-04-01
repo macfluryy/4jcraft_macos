@@ -1,8 +1,8 @@
 #pragma once
 
 #include <cstdint>
-#include <optional>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -31,7 +31,8 @@ class Tile;
 class ItemInstance;
 class DoubleTag;
 class FloatTag;
-template <class T> class ListTag;
+template <class T>
+class ListTag;
 
 // 4J Stu Added this mainly to allow is to record telemetry for player deaths
 enum EEntityDamageType {

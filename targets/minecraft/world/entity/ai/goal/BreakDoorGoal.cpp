@@ -3,11 +3,11 @@
 #include "java/Random.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/ai/goal/DoorInteractGoal.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DoorTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
-#include "minecraft/world/entity/ai/goal/DoorInteractGoal.h"
 
 BreakDoorGoal::BreakDoorGoal(Mob* mob) : DoorInteractGoal(mob) {
     breakTime = 0;

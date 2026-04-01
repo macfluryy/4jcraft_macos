@@ -3,12 +3,12 @@
 #include <string>
 #include <vector>
 
+#include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/GameCommandPacket.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/world/level/storage/LevelData.h"
-#include "minecraft/commands/CommandsEnum.h"
 
 EGameCommand ToggleDownfallCommand::getId() {
     return eGameCommand_ToggleDownfall;

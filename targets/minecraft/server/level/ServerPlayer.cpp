@@ -2,35 +2,31 @@
 
 #include <assert.h>
 #include <string.h>
+
+#include <algorithm>
 #include <cfloat>
 #include <cmath>
-#include <algorithm>
 #include <format>
 
 #include "4J_Input.h"
 #include "EntityTracker.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
-#include "ServerLevel.h"
-#include "ServerPlayerGameMode.h"
-#include "java/Random.h"
-#include "minecraft/Pos.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/client/renderer/LevelRenderer.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/PlayerList.h"
-#include "minecraft/server/network/PlayerConnection.h"
-#include "minecraft/world/level/chunk/LevelChunk.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "ServerLevel.h"
+#include "ServerPlayerGameMode.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "java/Random.h"
 #include "java/System.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/Pos.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/renderer/LevelRenderer.h"
 #include "minecraft/network/packet/AnimatePacket.h"
 #include "minecraft/network/packet/AwardStatPacket.h"
 #include "minecraft/network/packet/BlockRegionUpdatePacket.h"
@@ -52,9 +48,11 @@
 #include "minecraft/network/packet/SetHealthPacket.h"
 #include "minecraft/network/packet/TileEditorOpenPacket.h"
 #include "minecraft/network/packet/UpdateMobEffectPacket.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/network/PlayerConnection.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/stats/Stat.h"
-#include "strings.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/damageSource/CombatTracker.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -78,6 +76,7 @@
 #include "minecraft/world/inventory/FurnaceMenu.h"
 #include "minecraft/world/inventory/HopperMenu.h"
 #include "minecraft/world/inventory/HorseInventoryMenu.h"
+#include "minecraft/world/inventory/MerchantContainer.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
 #include "minecraft/world/inventory/ResultSlot.h"
 #include "minecraft/world/inventory/Slot.h"
@@ -93,6 +92,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
@@ -106,7 +106,8 @@
 #include "minecraft/world/scores/Score.h"
 #include "minecraft/world/scores/Scoreboard.h"
 #include "minecraft/world/scores/criteria/ObjectiveCriteria.h"
-#include "minecraft/world/inventory/MerchantContainer.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 class Objective;
 

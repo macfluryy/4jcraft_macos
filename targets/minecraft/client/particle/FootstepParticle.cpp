@@ -1,15 +1,16 @@
 #include "FootstepParticle.h"
 
 #include <GL/gl.h>
+
 #include <cmath>
 
 #include "4J_Render.h"
+#include "minecraft/client/particle/Particle.h"
+#include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/client/particle/Particle.h"
-#include "minecraft/client/particle/ParticleEngine.h"
 
 ResourceLocation FootstepParticle::FOOTPRINT_LOCATION =
     ResourceLocation(TN_MISC_FOOTSTEP);

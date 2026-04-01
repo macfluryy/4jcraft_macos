@@ -2,14 +2,15 @@
 ////using namespace std;
 
 #include <stdint.h>
+
 #include <format>
 #include <string>
 #include <unordered_map>
 
 #include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerators.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/LevelRules.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 
 class LevelGenerationOptions;
 class RootGameRulesDefinition;

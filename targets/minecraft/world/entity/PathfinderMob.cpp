@@ -7,6 +7,7 @@
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/TamableAnimal.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
@@ -19,7 +20,6 @@
 #include "minecraft/world/level/pathfinder/Path.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "minecraft/world/entity/Mob.h"
 
 AttributeModifier* PathfinderMob::SPEED_MODIFIER_FLEEING =
     (new AttributeModifier(eModifierId_MOB_FLEEING, 2.0f,

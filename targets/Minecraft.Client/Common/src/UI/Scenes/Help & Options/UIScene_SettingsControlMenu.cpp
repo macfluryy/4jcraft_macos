@@ -2,7 +2,6 @@
 
 #include <wchar.h>
 
-#include "minecraft/client/Minecraft.h"
 #include "4J.Common/4J_InputActions.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
@@ -10,6 +9,7 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
 #include "strings.h"
 
 UIScene_SettingsControlMenu::UIScene_SettingsControlMenu(int iPad,

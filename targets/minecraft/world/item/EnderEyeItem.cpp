@@ -10,6 +10,7 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/EyeOfEnderSignal.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
@@ -18,7 +19,6 @@
 #include "minecraft/world/level/tile/TheEndPortalFrameTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "minecraft/world/item/Item.h"
 
 EnderEyeItem::EnderEyeItem(int id) : Item(id) {}
 

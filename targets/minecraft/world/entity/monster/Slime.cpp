@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <stdint.h>
+
 #include <numbers>
 #include <string>
 
@@ -11,6 +12,7 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
@@ -23,7 +25,6 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/Mob.h"
 
 void Slime::_init() {
     jumpDelay = 0;

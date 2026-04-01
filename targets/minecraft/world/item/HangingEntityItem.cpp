@@ -2,23 +2,24 @@
 
 #include <string.h>
 #include <wchar.h>
+
 #include <string>
 #include <vector>
 
-#include "minecraft/stats/GenericStats.h"
-#include "minecraft/world/entity/HangingEntity.h"
-#include "minecraft/world/entity/ItemFrame.h"
-#include "minecraft/world/entity/Painting.h"
 #include "Direction.h"
 #include "Facing.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "strings.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/HtmlString.h"
+#include "minecraft/world/entity/HangingEntity.h"
+#include "minecraft/world/entity/ItemFrame.h"
+#include "minecraft/world/entity/Painting.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "strings.h"
 
 HangingEntityItem::HangingEntityItem(int id, eINSTANCEOF eClassType)
     : Item(id) {

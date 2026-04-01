@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Pos.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/SharedConstants.h"
@@ -13,7 +14,6 @@
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Pos.h"
 
 PortalForcer::PortalPosition::PortalPosition(int x, int y, int z, int64_t time)
     : Pos(x, y, z) {

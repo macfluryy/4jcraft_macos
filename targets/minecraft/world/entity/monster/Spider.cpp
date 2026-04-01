@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <stdint.h>
+
 #include <limits>
 #include <memory>
 
@@ -13,15 +14,15 @@
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/MobGroupData.h"
+#include "minecraft/world/entity/MobType.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/monster/Skeleton.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/entity/MobType.h"
-#include "minecraft/world/entity/monster/Monster.h"
 
 Spider::Spider(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

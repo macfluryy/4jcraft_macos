@@ -8,6 +8,7 @@
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/GameCommandPacket.h"
 #include "minecraft/server/level/ServerPlayer.h"
@@ -16,7 +17,6 @@
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/commands/CommandsEnum.h"
 
 EGameCommand EnchantItemCommand::getId() { return eGameCommand_EnchantItem; }
 

@@ -1,6 +1,7 @@
 #include "PathNavigation.h"
 
 #include <stdlib.h>
+
 #include <cmath>
 
 #include "minecraft/util/Mth.h"

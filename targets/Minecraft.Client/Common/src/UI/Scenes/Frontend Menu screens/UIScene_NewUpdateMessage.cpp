@@ -34,7 +34,8 @@ UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
     std::vector<std::wstring> paragraphs;
     int lastIndex = 0;
     for (int index = message.find(L"\r\n", lastIndex, 2);
-         index != std::wstring::npos; index = message.find(L"\r\n", lastIndex, 2)) {
+         index != std::wstring::npos;
+         index = message.find(L"\r\n", lastIndex, 2)) {
         paragraphs.push_back(message.substr(lastIndex, index - lastIndex) +
                              L" ");
         lastIndex = index + 2;

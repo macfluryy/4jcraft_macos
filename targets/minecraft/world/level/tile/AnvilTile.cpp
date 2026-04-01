@@ -1,9 +1,8 @@
 #include "AnvilTile.h"
 
-#include "minecraft/util/Mth.h"
-#include "strings.h"
 #include "Direction.h"
 #include "Facing.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/item/FallingTile.h"
@@ -14,6 +13,7 @@
 #include "minecraft/world/level/tile/HeavyTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 
 class Icon;
 

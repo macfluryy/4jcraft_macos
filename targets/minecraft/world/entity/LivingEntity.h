@@ -1,16 +1,17 @@
 #pragma once
 
 #include <stdint.h>
+
+#include <memory>
 #include <optional>
 #include <unordered_map>
-#include <memory>
 #include <vector>
 
 #include "Entity.h"
 #include "MobType.h"
+#include "java/Class.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/ai/goal/GoalSelector.h"
-#include "java/Class.h"
 #include "minecraft/world/item/ItemInstance.h"
 
 class CombatTracker;

@@ -1,8 +1,8 @@
 #include "LootBonusEnchantment.h"
 
-#include "strings.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "strings.h"
 
 LootBonusEnchantment::LootBonusEnchantment(int id, int frequency,
                                            const EnchantmentCategory* cat)

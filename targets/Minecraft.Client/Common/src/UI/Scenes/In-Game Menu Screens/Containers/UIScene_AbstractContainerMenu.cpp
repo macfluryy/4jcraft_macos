@@ -4,10 +4,9 @@
 #include <cmath>
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Cursor.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
@@ -17,6 +16,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"

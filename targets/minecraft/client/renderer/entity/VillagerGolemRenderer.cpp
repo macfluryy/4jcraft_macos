@@ -5,19 +5,19 @@
 #include <numbers>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/model/VillagerGolemModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/VillagerGolem.h"
 #include "minecraft/world/level/tile/PlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
-#include "gl3_loader.h"
 
 ResourceLocation VillagerGolemRenderer::GOLEM_LOCATION =
     ResourceLocation(TN_MOB_VILLAGER_GOLEM);

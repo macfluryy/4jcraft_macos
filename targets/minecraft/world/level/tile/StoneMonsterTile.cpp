@@ -4,13 +4,13 @@
 
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"
-#include "strings.h"
 #include "minecraft/world/entity/monster/Silverfish.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 
 const unsigned int
     StoneMonsterTile::STONE_MONSTER_NAMES[STONE_MONSTER_NAMES_LENGTH] = {

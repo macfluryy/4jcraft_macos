@@ -5,10 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -26,6 +24,8 @@
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 AnvilMenu::AnvilMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,
                      int yt, int zt, std::shared_ptr<Player> player) {

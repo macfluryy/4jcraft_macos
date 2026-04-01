@@ -1,7 +1,6 @@
 
 #include "UIScene_SettingsMenu.h"
 
-#include "minecraft/client/Minecraft.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
@@ -9,6 +8,7 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"
 

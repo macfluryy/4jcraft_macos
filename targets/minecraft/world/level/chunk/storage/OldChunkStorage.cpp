@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdio.h>
+
 #include <format>
 #include <memory>
 #include <mutex>
@@ -9,6 +10,7 @@
 #include <unordered_map>
 #include <utility>
 
+#include "IPlatformInput.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/Definitions.h"
@@ -30,7 +32,6 @@
 #include "nbt/ListTag.h"
 #include "nbt/NbtIo.h"
 #include "platform/PlatformServices.h"
-#include "IPlatformInput.h"
 
 thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =
     nullptr;

@@ -2,8 +2,8 @@
 
 #include <cassert>
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "console_helpers/StringHelpers.h"  // 4jcraft TODO
 #include "java/File.h"

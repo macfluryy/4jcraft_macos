@@ -27,6 +27,7 @@
 #include "minecraft/network/packet/CraftItemPacket.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/network/packet/DebugOptionsPacket.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/network/packet/EntityActionAtPositionPacket.h"
 #include "minecraft/network/packet/EntityEventPacket.h"
 #include "minecraft/network/packet/ExplodePacket.h"
@@ -87,7 +88,6 @@
 #include "minecraft/network/packet/UpdateProgressPacket.h"
 #include "minecraft/network/packet/UseItemPacket.h"
 #include "minecraft/network/packet/XZPacket.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
 
 void PacketListener::handleBlockRegionUpdate(
     std::shared_ptr<BlockRegionUpdatePacket> packet) {}

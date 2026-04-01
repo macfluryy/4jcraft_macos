@@ -7,15 +7,15 @@
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/packet/ChatPacket.h"
+#include "minecraft/network/packet/GameCommandPacket.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/server/network/PlayerConnection.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/commands/CommandsEnum.h"
-#include "minecraft/network/packet/GameCommandPacket.h"
 
 EGameCommand TeleportCommand::getId() { return eGameCommand_Teleport; }
 

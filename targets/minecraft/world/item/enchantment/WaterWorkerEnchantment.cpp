@@ -1,8 +1,8 @@
 #include "WaterWorkerEnchantment.h"
 
-#include "strings.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "strings.h"
 
 WaterWorkerEnchantment::WaterWorkerEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::armor_head) {

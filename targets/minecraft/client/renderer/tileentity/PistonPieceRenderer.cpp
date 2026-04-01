@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
@@ -15,7 +16,6 @@
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/level/tile/piston/PistonBaseTile.h"
 #include "minecraft/world/level/tile/piston/PistonExtensionTile.h"
-#include "gl3_loader.h"
 
 ResourceLocation PistonPieceRenderer::SIGN_LOCATION =
     ResourceLocation(TN_ITEM_SIGN);

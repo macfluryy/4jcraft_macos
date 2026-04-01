@@ -2,12 +2,11 @@
 
 #include <string>
 
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl_Base.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 
 class UIControl_SlotList : public UIControl_Base {
 private:

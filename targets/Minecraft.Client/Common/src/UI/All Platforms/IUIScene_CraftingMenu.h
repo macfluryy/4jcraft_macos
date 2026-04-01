@@ -2,10 +2,10 @@
 #include <memory>
 
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/crafting/Recipy.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 class LocalPlayer;
 class ItemInstance;

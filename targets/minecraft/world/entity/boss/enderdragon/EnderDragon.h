@@ -5,17 +5,17 @@
 #include <string>
 #include <vector>
 
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
 #include "minecraft/stdafx.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/boss/BossMob.h"
 #include "minecraft/world/entity/boss/MultiEntityMob.h"
 #include "minecraft/world/entity/monster/Enemy.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "java/Class.h"
-#include "strings.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "strings.h"
 
 class MultiEntityMobPart;
 class EnderCrystal;

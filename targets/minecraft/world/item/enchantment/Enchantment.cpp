@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <wchar.h>
 
-#include "strings.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/util/HtmlString.h"
@@ -24,6 +23,7 @@
 #include "minecraft/world/item/enchantment/ThornsEnchantment.h"
 #include "minecraft/world/item/enchantment/UntouchingEnchantment.h"
 #include "minecraft/world/item/enchantment/WaterWorkerEnchantment.h"
+#include "strings.h"
 
 // Enchantment *Enchantment::enchantments[256];
 std::vector<Enchantment*> Enchantment::enchantments =

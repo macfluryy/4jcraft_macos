@@ -1,6 +1,7 @@
 #include "MultiPlayerLevel.h"
 
 #include <float.h>
+
 #include <algorithm>
 #include <cmath>
 #include <compare>
@@ -25,8 +26,10 @@
 #include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/GameRules.h"
+#include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
@@ -35,8 +38,6 @@
 #include "minecraft/world/level/storage/SavedDataStorage.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/level/Level.h"
 
 class LevelSettings;
 class Scoreboard;

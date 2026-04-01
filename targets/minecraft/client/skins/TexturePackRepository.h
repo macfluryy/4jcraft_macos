@@ -1,9 +1,9 @@
 #pragma once
 
-#include <unordered_map>
 #include <cstdint>
 #include <ranges>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "TexturePack.h"

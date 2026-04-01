@@ -4,11 +4,11 @@
 
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/RedStoneDustTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/item/Item.h"
 
 RedStoneItem::RedStoneItem(int id) : Item(id) {}
 

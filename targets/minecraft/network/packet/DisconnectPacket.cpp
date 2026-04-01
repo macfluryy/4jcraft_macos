@@ -1,6 +1,7 @@
 #include "minecraft/network/packet/DisconnectPacket.h"
 
 #include <stdio.h>
+
 #include <memory>
 
 #include "PacketListener.h"

@@ -6,6 +6,7 @@
 
 #include "4J_Render.h"
 #include "EntityRenderDispatcher.h"
+#include "gl3_loader.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/Tesselator.h"
@@ -15,7 +16,6 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/FishingHook.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "gl3_loader.h"
 
 ResourceLocation FishingHookRenderer::PARTICLE_LOCATION =
     ResourceLocation(TN_PARTICLES);

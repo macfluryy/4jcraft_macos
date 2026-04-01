@@ -14,10 +14,10 @@
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
+#include "nbt/CompoundTag.h"
 
 const std::wstring VillageFeature::OPTION_SIZE_MODIFIER = L"size";
 const std::wstring VillageFeature::OPTION_SPACING = L"distance";

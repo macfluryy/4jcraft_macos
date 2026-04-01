@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+
 #include <algorithm>
 #include <chrono>
 #include <compare>
@@ -33,10 +34,10 @@
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileConverter.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "platform/IPlatformStorage.h"
 #include "platform/PlatformServices.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class ProgressListener;
 

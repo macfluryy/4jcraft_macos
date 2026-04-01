@@ -1,6 +1,7 @@
 #include "Monster.h"
 
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
@@ -15,6 +16,7 @@
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
+#include "minecraft/world/entity/monster/Enemy.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
@@ -22,7 +24,6 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LightLayer.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/monster/Enemy.h"
 
 Monster::Monster(Level* level) : PathfinderMob(level) {
     xpReward = Enemy::XP_REWARD_MEDIUM;

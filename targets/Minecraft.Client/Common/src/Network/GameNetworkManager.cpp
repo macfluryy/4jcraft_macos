@@ -1,38 +1,17 @@
 #include "GameNetworkManager.h"
 
 #include <assert.h>
+
+#include <algorithm>
 #include <chrono>
+#include <compare>
 #include <filesystem>
 #include <fstream>
-#include <thread>
-#include <algorithm>
-#include <compare>
 #include <memory>
+#include <thread>
 #include <vector>
 
 #include "4J_Input.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
-#include "Socket.h"
-#include "console_helpers/StringHelpers.h"
-#include "console_helpers/ThreadName.h"
-#include "console_helpers/compression.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/ProgressRenderer.h"
-#include "minecraft/client/User.h"
-#include "minecraft/client/gui/Gui.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/renderer/LevelRenderer.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/PlayerList.h"
-#include "minecraft/server/level/ServerPlayer.h"
-#include "minecraft/server/network/PlayerConnection.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/item/crafting/FireworksRecipe.h"
-#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "4J_Profile.h"
 #include "4J_Render.h"
 #include "4J_Storage.h"
@@ -44,14 +23,36 @@
 #include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerStub.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Socket.h"
 #include "XboxStubs.h"
+#include "console_helpers/StringHelpers.h"
+#include "console_helpers/ThreadName.h"
+#include "console_helpers/compression.h"
 #include "java/File.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/ProgressRenderer.h"
+#include "minecraft/client/User.h"
+#include "minecraft/client/gui/Gui.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/LevelRenderer.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/network/Connection.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/network/packet/PreLoginPacket.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/network/PlayerConnection.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/item/crafting/FireworksRecipe.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "strings.h"
 

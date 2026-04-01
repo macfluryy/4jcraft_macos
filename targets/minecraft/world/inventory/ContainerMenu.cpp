@@ -9,9 +9,9 @@
 #include "minecraft/stats/StatsCounter.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 ContainerMenu::ContainerMenu(std::shared_ptr<Container> inventory,
                              std::shared_ptr<Container> container)

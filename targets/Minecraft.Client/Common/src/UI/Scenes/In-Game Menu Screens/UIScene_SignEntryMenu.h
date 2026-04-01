@@ -3,11 +3,11 @@
 #include <memory>
 #include <string>
 
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class SignTileEntity;

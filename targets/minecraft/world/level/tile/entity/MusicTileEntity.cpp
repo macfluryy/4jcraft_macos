@@ -6,8 +6,8 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 MusicTileEntity::MusicTileEntity() : TileEntity() {
     note = 0;

@@ -1,6 +1,5 @@
 #include "SaplingPlantTile.h"
 
-#include "strings.h"
 #include "java/Random.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/Level.h"
@@ -14,6 +13,7 @@
 #include "minecraft/world/level/tile/PlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
+#include "strings.h"
 
 class Icon;
 

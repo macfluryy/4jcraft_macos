@@ -1,10 +1,11 @@
 #include "LocalPlayer.h"
 
 #include <stdio.h>
+
+#include <cmath>
 #include <iostream>
 #include <memory>
 #include <numbers>
-#include <cmath>
 
 #include "Input.h"
 #include "java/Random.h"
@@ -24,9 +25,10 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/Tile.h"
 // 4J Stu - Added for tutorial callbacks
-#include "4J_Render.h"
+#include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
@@ -36,6 +38,8 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "PlatformTypes.h"
+#include "Pos.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Gui.h"
@@ -53,12 +57,14 @@
 #include "minecraft/client/gui/inventory/TextEditScreen.h"
 #include "minecraft/client/gui/inventory/TrapScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/Achievement.h"
 #include "minecraft/stats/CommonStats.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/stats/Stat.h"
+#include "minecraft/util/SmoothFloat.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
@@ -66,6 +72,7 @@
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/food/FoodConstants.h"
 #include "minecraft/world/food/FoodData.h"
 #include "minecraft/world/item/BowItem.h"
@@ -77,12 +84,6 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "4J.Common/4J_InputActions.h"
-#include "PlatformTypes.h"
-#include "Pos.h"
-#include "minecraft/commands/CommandsEnum.h"
-#include "minecraft/util/SmoothFloat.h"
-#include "minecraft/world/entity/player/Player.h"
 
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)

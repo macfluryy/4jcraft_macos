@@ -7,14 +7,12 @@
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/HorseInventoryMenu.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
-
-#include "minecraft/client/renderer/Textures.h"
 
 class EntityHorse;
 

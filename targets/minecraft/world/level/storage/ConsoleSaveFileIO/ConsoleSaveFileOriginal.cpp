@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <wchar.h>
+
 #include <algorithm>
 #include <chrono>
 #include <compare>
@@ -29,10 +30,10 @@
 #include "minecraft/world/level/chunk/storage/RegionFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "platform/IPlatformStorage.h"
 #include "platform/PlatformServices.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 #define RESERVE_ALLOCATION MEM_RESERVE
 #define COMMIT_ALLOCATION MEM_COMMIT

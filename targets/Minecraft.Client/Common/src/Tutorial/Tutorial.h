@@ -1,19 +1,19 @@
 #pragma once
 // using namespace std;
 #include <cstdint>
-#include <unordered_map>
 #include <memory>
 #include <ranges>
 #include <string>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "TutorialEnum.h"
 #include "TutorialMessage.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 class Entity;
 class ItemInstance;

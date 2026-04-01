@@ -2,11 +2,11 @@
 
 #include <memory>
 
-#include "strings.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "strings.h"
 
 UntouchingEnchantment::UntouchingEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::digger) {

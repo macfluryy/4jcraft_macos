@@ -4,10 +4,10 @@
 
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/item/ComplexItem.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/MapItem.h"
 
 EmptyMapItem::EmptyMapItem(int id) : ComplexItem(id) {}
 

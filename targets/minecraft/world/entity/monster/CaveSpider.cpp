@@ -10,8 +10,8 @@
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
-#include "minecraft/world/level/Level.h"
 #include "minecraft/world/entity/monster/Spider.h"
+#include "minecraft/world/level/Level.h"
 
 CaveSpider::CaveSpider(Level* level) : Spider(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

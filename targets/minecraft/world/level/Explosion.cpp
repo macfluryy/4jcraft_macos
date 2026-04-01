@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <stddef.h>
+
 #include <utility>
 #include <vector>
 
@@ -13,14 +14,14 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/item/PrimedTnt.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/enchantment/ProtectionEnchantment.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/phys/Vec3.h"
 
 Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,

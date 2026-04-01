@@ -3,12 +3,12 @@
 #include <memory>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MinecartRenderer.h"
 #include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/item/MinecartTNT.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/renderer/entity/MinecartRenderer.h"
-#include "gl3_loader.h"
 
 void TntMinecartRenderer::renderMinecartContents(
     std::shared_ptr<Minecart> _cart, float a, Tile* tile, int tileData) {

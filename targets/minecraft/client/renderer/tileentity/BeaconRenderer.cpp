@@ -5,13 +5,13 @@
 #include <numbers>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "gl3_loader.h"
 
 ResourceLocation BeaconRenderer::BEAM_LOCATION =
     ResourceLocation(TN_MISC_BEACON_BEAM);

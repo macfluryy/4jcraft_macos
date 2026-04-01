@@ -2,8 +2,9 @@
 
 #include <GL/gl.h>
 #include <math.h>
-#include <wchar.h>
 #include <string.h>
+#include <wchar.h>
+
 #include <string>
 
 #include "4J_Render.h"

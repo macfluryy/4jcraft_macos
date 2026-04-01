@@ -10,7 +10,6 @@
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
-#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 class Biome;
 class ChunkPos;

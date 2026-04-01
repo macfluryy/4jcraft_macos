@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <vector>
 
-#include "minecraft/client/skins/AbstractTexturePack.h"
 #include "java/InputOutputStream/InputStream.h"
+#include "minecraft/client/skins/AbstractTexturePack.h"
 
 DefaultTexturePack::DefaultTexturePack()
     : AbstractTexturePack(0, nullptr, L"Minecraft", nullptr) {

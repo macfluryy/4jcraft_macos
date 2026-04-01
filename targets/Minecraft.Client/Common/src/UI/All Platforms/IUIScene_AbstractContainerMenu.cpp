@@ -1,24 +1,24 @@
 #include "IUIScene_AbstractContainerMenu.h"
 
 #include <assert.h>
-#include <cmath>
+
 #include <algorithm>
+#include <cmath>
 #include <string>
 #include <vector>
 
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "4J_Render.h"
 #include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/HtmlString.h"
@@ -32,6 +32,7 @@
 #include "minecraft/world/item/crafting/ArmorRecipes.h"
 #include "minecraft/world/item/crafting/FurnaceRecipes.h"
 #include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
+#include "minecraft/world/phys/Vec3.h"
 #include "strings.h"
 
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {

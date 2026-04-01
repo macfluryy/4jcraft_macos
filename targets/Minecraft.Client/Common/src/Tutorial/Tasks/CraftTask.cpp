@@ -1,11 +1,12 @@
 #include "CraftTask.h"
 
 #include <wchar.h>
+
 #include <memory>
 #include <string>
 
-#include "minecraft/world/item/ItemInstance.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class Tutorial;
 class TutorialConstraint;

@@ -2,18 +2,11 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include <algorithm>
 #include <compare>
 
 #include "4J.Common/4J_InputActions.h"
-#include "TutorialMessage.h"
-#include "console_helpers/PlatformTime.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/world/entity/Entity.h"
 #include "4J_Profile.h"
 #include "Common/App_enums.h"
 #include "Common/App_structs.h"
@@ -31,7 +24,15 @@
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "TutorialMessage.h"
+#include "console_helpers/PlatformTime.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/DyePowderItem.h"

@@ -3,9 +3,11 @@
 #include <GL/gl.h>
 #include <math.h>
 #include <string.h>
+
 #include <numbers>
 
 #include "MemoryTracker.h"
+#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMath.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "java/FloatBuffer.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -16,7 +18,6 @@
 #include "minecraft/world/level/tile/LiquidTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMath.h"
 
 float Camera::xPlayerOffs = 0.0f;
 float Camera::yPlayerOffs = 0.0f;

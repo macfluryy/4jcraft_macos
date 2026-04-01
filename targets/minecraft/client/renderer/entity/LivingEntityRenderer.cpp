@@ -8,6 +8,7 @@
 #include "EntityRenderDispatcher.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "gl3_loader.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/client/Lighting.h"
@@ -25,7 +26,6 @@
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
-#include "gl3_loader.h"
 
 ResourceLocation LivingEntityRenderer::ENCHANT_GLINT_LOCATION =
     ResourceLocation(TN__BLUR__MISC_GLINT);

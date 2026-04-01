@@ -5,13 +5,14 @@
 #include <limits.h>
 #include <string.h>
 #include <wchar.h>
+
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardInterface.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_LeaderboardList.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"

@@ -3,8 +3,8 @@
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "minecraft/world/entity/Entity.h"
 #include "minecraft/network/packet/Packet.h"
+#include "minecraft/world/entity/Entity.h"
 
 SetEntityLinkPacket::SetEntityLinkPacket() {
     sourceId = -1;

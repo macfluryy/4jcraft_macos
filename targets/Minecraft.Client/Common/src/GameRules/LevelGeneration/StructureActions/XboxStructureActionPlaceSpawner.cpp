@@ -1,16 +1,17 @@
 #include "XboxStructureActionPlaceSpawner.h"
 
 #include <wchar.h>
+
 #include <memory>
 
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
 
 XboxStructureActionPlaceSpawner::XboxStructureActionPlaceSpawner() {
     m_tile = Tile::mobSpawner_Id;

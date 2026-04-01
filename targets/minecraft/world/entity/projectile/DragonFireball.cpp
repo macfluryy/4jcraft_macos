@@ -1,17 +1,18 @@
 #include "DragonFireball.h"
 
 #include <math.h>
+
 #include <vector>
 
 #include "java/JavaMath.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/projectile/Fireball.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/world/entity/projectile/Fireball.h"
 
 class Entity;
 

@@ -2,15 +2,14 @@
 
 #include <optional>
 
-#include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "Facing.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -25,6 +24,7 @@
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 SkullTile::SkullTile(int id) : BaseEntityTile(id, Material::decoration, false) {
     setShape(4.0f / 16.0f, 0, 4.0f / 16.0f, 12.0f / 16.0f, .5f, 12.0f / 16.0f);

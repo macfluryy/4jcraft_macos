@@ -1,12 +1,18 @@
 #include "UIScene_CreativeMenu.h"
 
 #include <assert.h>
+
 #include <memory>
 
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
@@ -15,11 +21,6 @@
 #include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/SimpleContainer.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 class UILayer;
 

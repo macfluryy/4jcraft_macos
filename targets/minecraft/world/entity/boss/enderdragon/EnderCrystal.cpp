@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
+#include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
-#include "java/Random.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"

@@ -10,9 +10,9 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
 
 const std::wstring EnchantmentTableTile::TEXTURE_SIDE = L"enchantment_side";
 const std::wstring EnchantmentTableTile::TEXTURE_TOP = L"enchantment_top";

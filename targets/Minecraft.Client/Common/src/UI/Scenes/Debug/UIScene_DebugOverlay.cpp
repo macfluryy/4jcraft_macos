@@ -2,13 +2,20 @@
 #include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugOverlay.h"
 
 #include <wchar.h>
+
 #include <memory>
 
+#include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/commands/common/EnchantItemCommand.h"
@@ -20,12 +27,6 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/level/storage/LevelData.h"
-#include "4J.Common/4J_InputActions.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
-#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class Player;
 class UILayer;

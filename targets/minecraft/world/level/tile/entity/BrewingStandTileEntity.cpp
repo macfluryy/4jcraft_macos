@@ -1,24 +1,25 @@
 #include "BrewingStandTileEntity.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <format>
 
-#include "minecraft/SharedConstants.h"
-#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "Facing.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
+#include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/PotionItem.h"
 #include "minecraft/world/item/alchemy/PotionBrewing.h"
+#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 class MobEffectInstance;
 

@@ -1,8 +1,8 @@
 #include "OxygenEnchantment.h"
 
-#include "strings.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "strings.h"
 
 OxygenEnchantment::OxygenEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::armor_head) {

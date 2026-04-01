@@ -1,6 +1,7 @@
 #include "CreativeInventoryScreen.h"
 
 #include <GL/gl.h>
+
 #include <algorithm>
 #include <string>
 
@@ -10,22 +11,22 @@
 #include "AbstractContainerScreen.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/stubs.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "minecraft/world/SimpleContainer.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/InventoryMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "Minecraft.Client/include/stubs.h"
 
 // Static member initialization
 int CreativeInventoryScreen::selectedTabIndex =

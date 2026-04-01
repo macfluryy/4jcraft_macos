@@ -3,9 +3,9 @@
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/projectile/Throwable.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "minecraft/world/entity/projectile/Throwable.h"
 
 class LivingEntity;
 

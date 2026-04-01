@@ -3,8 +3,8 @@
 #include <cmath>
 #include <memory>
 
-#include "minecraft/client/model/dragon/EnderCrystalModel.h"
 #include "4J_Render.h"
+#include "minecraft/client/model/dragon/EnderCrystalModel.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"

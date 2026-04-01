@@ -7,9 +7,9 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/ThrownEnderpearl.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/item/Item.h"
 
 EnderpearlItem::EnderpearlItem(int id) : Item(id) { maxStackSize = 16; }
 

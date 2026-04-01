@@ -1,10 +1,9 @@
 
 #include "DyePowderItem.h"
 
-#include "minecraft/util/Mth.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "strings.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/Sheep.h"
@@ -25,6 +24,7 @@
 #include "minecraft/world/level/tile/TallGrassPlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
+#include "strings.h"
 
 class Icon;
 

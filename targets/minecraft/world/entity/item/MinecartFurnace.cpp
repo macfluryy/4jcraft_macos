@@ -1,6 +1,7 @@
 #include "MinecartFurnace.h"
 
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
@@ -11,6 +12,7 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
+#include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -19,7 +21,6 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/item/Minecart.h"
 
 MinecartFurnace::MinecartFurnace(Level* level) : Minecart(level) {
     defineSynchedData();

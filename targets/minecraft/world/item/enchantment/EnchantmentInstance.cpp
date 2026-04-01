@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/util/WeighedRandom.h"
+#include "minecraft/world/item/enchantment/Enchantment.h"
 
 EnchantmentInstance::EnchantmentInstance(Enchantment* enchantment, int level)
     : WeighedRandomItem(enchantment->getFrequency()),

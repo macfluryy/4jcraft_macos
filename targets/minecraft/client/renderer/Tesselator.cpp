@@ -1,6 +1,7 @@
 #include "Tesselator.h"
 
 #include <GL/gl.h>
+
 #include <vector>
 
 #include "4J_Render.h"

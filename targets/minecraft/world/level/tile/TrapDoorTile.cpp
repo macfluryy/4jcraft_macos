@@ -9,8 +9,8 @@
 #include "minecraft/world/level/tile/HalfSlabTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/StairTile.h"
-#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
 
 TrapDoorTile::TrapDoorTile(int id, Material* material)
     : Tile(id, material, false) {

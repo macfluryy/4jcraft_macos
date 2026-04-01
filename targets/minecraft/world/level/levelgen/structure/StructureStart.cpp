@@ -5,11 +5,11 @@
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/IntArrayTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 StructureStart::StructureStart() {
     chunkX = chunkZ = 0;

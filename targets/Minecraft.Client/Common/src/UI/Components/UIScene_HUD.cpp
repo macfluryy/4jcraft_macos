@@ -4,11 +4,6 @@
 #include <algorithm>
 #include <memory>
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Gui.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/renderer/BossMobGuiInfo.h"
 #include "4J_Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
@@ -17,7 +12,12 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Gui.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/BossMobGuiInfo.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/InventoryMenu.h"
 #include "minecraft/world/inventory/Slot.h"

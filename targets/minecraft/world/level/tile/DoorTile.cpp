@@ -12,8 +12,8 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
 
 const std::wstring DoorTile::TEXTURES[] = {
     L"doorWood_lower", L"doorWood_upper", L"doorIron_lower", L"doorIron_upper"};

@@ -2,16 +2,16 @@
 
 #include <assert.h>
 #include <math.h>
+
 #include <format>
 #include <numbers>
 #include <vector>
 
+#include "SharedConstants.h"
+#include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
-#include "SharedConstants.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
@@ -40,6 +40,7 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 bool LivingEntitySelector::matches(std::shared_ptr<Entity> entity) const {
     if (entity->instanceof(eTYPE_LIVINGENTITY)) {

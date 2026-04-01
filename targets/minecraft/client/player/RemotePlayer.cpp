@@ -1,15 +1,15 @@
 #include "RemotePlayer.h"
 
+#include <cmath>
 #include <memory>
 #include <vector>
-#include <cmath>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Pos.h"
 #include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "Pos.h"
-#include "minecraft/world/entity/player/Player.h"
 
 class Level;
 

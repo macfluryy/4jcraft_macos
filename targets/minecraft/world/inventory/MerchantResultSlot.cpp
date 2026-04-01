@@ -5,10 +5,10 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/MerchantContainer.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
+#include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/world/item/trading/MerchantRecipe.h"
-#include "minecraft/world/inventory/Slot.h"
 
 MerchantResultSlot::MerchantResultSlot(Player* player,
                                        std::shared_ptr<Merchant> merchant,

@@ -2,9 +2,6 @@
 
 #include <memory>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
@@ -21,6 +18,9 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/network/packet/KickPlayerPacket.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"

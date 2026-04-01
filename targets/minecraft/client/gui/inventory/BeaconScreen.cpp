@@ -1,6 +1,7 @@
 #include "BeaconScreen.h"
 
 #include <GL/gl.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -14,6 +15,8 @@
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/inventory/AbstractBeaconButton.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/entity/ItemRenderer.h"
@@ -24,8 +27,6 @@
 #include "minecraft/world/inventory/BeaconMenu.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
-#include "minecraft/client/gui/inventory/AbstractBeaconButton.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes (and iggy too)

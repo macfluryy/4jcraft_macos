@@ -5,11 +5,11 @@
 #include "4J_Render.h"
 #include "minecraft/client/model/SkeletonModel.h"
 #include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/entity/HumanoidMobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/monster/Skeleton.h"
-#include "minecraft/client/renderer/entity/HumanoidMobRenderer.h"
 
 ResourceLocation SkeletonRenderer::SKELETON_LOCATION =
     ResourceLocation(TN_MOB_SKELETON);

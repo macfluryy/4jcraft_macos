@@ -4,11 +4,10 @@
 #include <vector>
 
 #include "4J.Common/4J_InputActions.h"
-#include "Minecraft.Client/Common/src/Tutorial/Hints/AreaHint.h"
-#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/AreaConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/ChangeStateConstraint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Hints/AreaHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/AreaTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/ChoiceTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/CompleteUsingItemTask.h"
@@ -28,6 +27,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "minecraft/world/item/crafting/Recipy.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/tile/Tile.h"

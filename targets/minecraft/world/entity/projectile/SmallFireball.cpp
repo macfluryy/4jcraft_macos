@@ -4,10 +4,10 @@
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/projectile/Fireball.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "minecraft/world/entity/projectile/Fireball.h"
 
 SmallFireball::SmallFireball(Level* level) : Fireball(level) {
     setSize(5 / 16.0f, 5 / 16.0f);

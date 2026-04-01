@@ -6,9 +6,9 @@
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ArmorItem.h"
 #include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/crafting/ArmorDyeRecipe.h"
 #include "minecraft/world/item/crafting/Recipes.h"
-#include "minecraft/world/item/ItemInstance.h"
 
 class Icon;
 class Player;

@@ -8,7 +8,6 @@
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "UIControl_Base.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_DynamicLabel.h"
 
 class UIControl_DynamicLabel : public UIControl_Label {
 private:

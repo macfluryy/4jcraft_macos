@@ -2,10 +2,10 @@
 
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/world/level/Level.h"
 #include "minecraft/client/particle/Particle.h"
 #include "minecraft/client/particle/ParticleEngine.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/level/Level.h"
 
 HugeExplosionSeedParticle::HugeExplosionSeedParticle(Level* level, double x,
                                                      double y, double z,

@@ -1,12 +1,13 @@
 #pragma once
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 
 #include "IUIScene_AbstractContainerMenu.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 class Inventory;
 class ItemInstance;

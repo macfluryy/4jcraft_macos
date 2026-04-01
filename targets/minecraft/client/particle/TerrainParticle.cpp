@@ -1,13 +1,13 @@
 #include "TerrainParticle.h"
 
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/particle/Particle.h"
+#include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/GrassTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/particle/Particle.h"
-#include "minecraft/client/particle/ParticleEngine.h"
 
 class Textures;
 

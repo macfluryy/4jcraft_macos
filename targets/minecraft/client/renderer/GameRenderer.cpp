@@ -1,13 +1,14 @@
 #include "GameRenderer.h"
 
 #include <float.h>
+
 #include <algorithm>
 #include <cmath>
 #include <numbers>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Render.h"
 #include "4J_Input.h"
+#include "4J_Render.h"
 #include "BossMobGuiInfo.h"
 #include "Chunk.h"
 #include "ItemInHandRenderer.h"
@@ -22,6 +23,7 @@
 #include "Minecraft.Client/include/stubs.h"
 #include "Tesselator.h"
 #include "console_helpers/compression.h"
+#include "gl3_loader.h"
 #include "java/Class.h"
 #include "java/FloatBuffer.h"
 #include "java/JavaMath.h"
@@ -46,6 +48,7 @@
 #include "minecraft/client/particle/SmokeParticle.h"
 #include "minecraft/client/particle/WaterDropParticle.h"
 #include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/culling/Culler.h"
 #include "minecraft/client/renderer/culling/Frustum.h"
 #include "minecraft/client/renderer/culling/FrustumCuller.h"
@@ -78,8 +81,6 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "gl3_loader.h"
 #include "minecraft/world/phys/Vec3.h"
 
 bool GameRenderer::anaglyph3d = false;

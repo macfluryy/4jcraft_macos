@@ -6,11 +6,11 @@
 
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "strings.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 EnchantmentTableEntity::EnchantmentTableEntity() {
     random = new Random();

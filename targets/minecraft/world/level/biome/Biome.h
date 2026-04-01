@@ -1,15 +1,16 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <string>
 #include <vector>
 
 #include "Minecraft.Client/Common/App_enums.h"
+#include "java/Class.h"
 #include "minecraft/util/WeighedRandom.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/level/LevelSource.h"
-#include "java/Class.h"
 
 class Feature;
 class MobCategory;

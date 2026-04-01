@@ -1,19 +1,20 @@
 #include "UIControl_MinecraftPlayer.h"
 
 #include <GL/gl.h>
+
 #include <cmath>
 #include <memory>
 
 #include "4J_Render.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_InventoryMenu.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/gui/ScreenSizeCalculator.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 UIControl_MinecraftPlayer::UIControl_MinecraftPlayer() {
     UIControl::setControlType(UIControl::eMinecraftPlayer);

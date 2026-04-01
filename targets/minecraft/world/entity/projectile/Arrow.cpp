@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <stdint.h>
+
 #include <numbers>
 #include <optional>
 #include <string>
@@ -17,6 +18,7 @@
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -31,7 +33,6 @@
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/Entity.h"
 
 // base damage, multiplied with velocity
 const double Arrow::ARROW_BASE_DAMAGE = 2.0f;

@@ -3,18 +3,18 @@
 #include <cmath>
 #include <memory>
 
-#include "MobRenderer.h"
-#include "minecraft/client/model/WitherBossModel.h"
-#include "minecraft/client/renderer/BossMobGuiInfo.h"
-#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "4J_Render.h"
+#include "MobRenderer.h"
 #include "SharedConstants.h"
+#include "gl3_loader.h"
+#include "minecraft/client/model/WitherBossModel.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/renderer/BossMobGuiInfo.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
-#include "gl3_loader.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 
 ResourceLocation WitherBossRenderer::WITHER_ARMOR_LOCATION =
     ResourceLocation(TN_MOB_WITHER_ARMOR);

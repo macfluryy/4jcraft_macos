@@ -10,7 +10,9 @@
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/MobType.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/GameRules.h"
@@ -18,8 +20,6 @@
 #include "minecraft/world/level/tile/StoneMonsterTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/MobType.h"
-#include "minecraft/world/entity/monster/Monster.h"
 
 Silverfish::Silverfish(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

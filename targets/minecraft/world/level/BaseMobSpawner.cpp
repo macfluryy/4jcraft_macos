@@ -6,6 +6,8 @@
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/util/WeighedRandom.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/item/Minecart.h"
@@ -15,8 +17,6 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
 #include "nbt/Tag.h"
-#include "minecraft/util/WeighedRandom.h"
-#include "minecraft/world/entity/Entity.h"
 
 BaseMobSpawner::BaseMobSpawner() {
     spawnPotentials = nullptr;

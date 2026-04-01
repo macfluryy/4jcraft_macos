@@ -3,12 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+
 #include <compare>
 
-#include "Minecraft.Client/Common/src/Network/SessionInfo.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/server/MinecraftServer.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
@@ -17,6 +14,7 @@
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/SessionInfo.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
@@ -27,6 +25,9 @@
 #include "java/File.h"
 #include "java/InputOutputStream/FileInputStream.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "strings.h"

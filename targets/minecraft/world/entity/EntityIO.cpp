@@ -3,13 +3,10 @@
 #include <utility>
 
 #include "Entity.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 #include "Painting.h"
 #include "java/Class.h"
-#include "minecraft/world/entity/boss/wither/WitherBoss.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/JavaIntHash.h"
-#include "nbt/CompoundTag.h"
-#include "strings.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
 #include "minecraft/world/entity/ItemFrame.h"
 #include "minecraft/world/entity/LeashFenceKnotEntity.h"
@@ -28,6 +25,7 @@
 #include "minecraft/world/entity/animal/Wolf.h"
 #include "minecraft/world/entity/boss/enderdragon/EnderCrystal.h"
 #include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"
+#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "minecraft/world/entity/item/Boat.h"
 #include "minecraft/world/entity/item/FallingTile.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
@@ -66,6 +64,8 @@
 #include "minecraft/world/entity/projectile/ThrownExpBottle.h"
 #include "minecraft/world/entity/projectile/ThrownPotion.h"
 #include "minecraft/world/entity/projectile/WitherSkull.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 std::unordered_map<std::wstring, entityCreateFn>* EntityIO::idCreateMap =
     new std::unordered_map<std::wstring, entityCreateFn>;

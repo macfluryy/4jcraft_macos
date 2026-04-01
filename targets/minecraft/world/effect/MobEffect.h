@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 #include "Minecraft.Client/Common/App_enums.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"

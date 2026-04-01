@@ -1,11 +1,13 @@
 #include "Textures.h"
 
 #include <assert.h>
+
 #include <cstdint>
 #include <cstring>
 #include <string>
 #include <utility>
 
+#include "4J_Render.h"
 #include "HttpTexture.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/BufferedImage.h"
@@ -13,6 +15,7 @@
 #include "Minecraft.Client/include/MemTextureProcessor.h"
 #include "Minecraft.Client/include/MobSkinMemTextureProcessor.h"
 #include "console_helpers/StringHelpers.h"
+#include "gl3_loader.h"
 #include "java/Buffer.h"
 #include "java/ByteBuffer.h"
 #include "minecraft/client/MemoryTracker.h"
@@ -27,8 +30,6 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "4J_Render.h"
-#include "gl3_loader.h"
 
 // Linux/PC port: disable mipmapping globally so textures are always sampled
 // from the full-resolution level 0 with GL_NEAREST, giving pixel-crisp

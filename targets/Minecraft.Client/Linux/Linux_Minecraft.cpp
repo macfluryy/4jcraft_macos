@@ -1,7 +1,6 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-
 // #include <system_service.h>
 #include <csignal>
 
@@ -41,6 +40,7 @@ static void sigsegv_handler(int sig) {
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <string>
 #include <vector>
 
@@ -49,22 +49,22 @@ static void sigsegv_handler(int sig) {
 // #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"
+#include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
+#include "4J_Render.h"
+#include "4J_Storage.h"
 #include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "console_helpers/compression.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
-#include "4J.Common/4J_Compat.h"
-#include "4J_Render.h"
-#include "4J_Storage.h"
-#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "strings.h"
 

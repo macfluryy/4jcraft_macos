@@ -1,10 +1,10 @@
 #include "MinecartSpawner.h"
 
 #include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/entity/item/Minecart.h"
 
 MinecartSpawner::MinecartMobSpawner::MinecartMobSpawner(
     MinecartSpawner* parent) {

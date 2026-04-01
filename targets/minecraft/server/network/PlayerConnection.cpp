@@ -1,6 +1,7 @@
 #include "PlayerConnection.h"
 
 #include <wchar.h>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -38,6 +39,7 @@
 #include "minecraft/network/packet/CraftItemPacket.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/network/packet/DebugOptionsPacket.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/network/packet/GameCommandPacket.h"
 #include "minecraft/network/packet/GameEventPacket.h"
 #include "minecraft/network/packet/InteractPacket.h"
@@ -99,7 +101,6 @@
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
 
 class SavedData;
 

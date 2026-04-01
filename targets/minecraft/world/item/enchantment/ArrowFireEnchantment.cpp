@@ -1,8 +1,8 @@
 #include "ArrowFireEnchantment.h"
 
-#include "strings.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "strings.h"
 
 ArrowFireEnchantment::ArrowFireEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::bow) {

@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+
 #include <cmath>
 #include <numbers>
 #include <optional>
@@ -13,6 +14,7 @@
 #include "minecraft/SharedConstants.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
@@ -22,7 +24,6 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/world/entity/Entity.h"
 
 // 4J - added common ctor code.
 void Fireball::_init() {

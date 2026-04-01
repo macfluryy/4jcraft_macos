@@ -1,20 +1,21 @@
 #include "IUIScene_StartGame.h"
 
 #include <wchar.h>
+
 #include <cstdint>
 
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BitmapIcon.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TexturePackList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BitmapIcon.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TexturePackList.h"
-#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class UILayer;
 

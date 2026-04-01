@@ -3,10 +3,10 @@
 #include <string.h>
 
 #include "Achievements.h"
-#include "minecraft/world/item/Item.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/stats/Stats.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 Stat* CommonStats::get_stat(int i) { return Stats::get(i); }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <float.h>
+
 #include <cstdint>
 #include <format>
 #include <vector>

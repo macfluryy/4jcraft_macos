@@ -1,10 +1,10 @@
 #include "ArmorSlot.h"
 
+#include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ArmorItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/inventory/Slot.h"
 
 ArmorSlot::ArmorSlot(int slotNum, std::shared_ptr<Container> container, int id,
                      int x, int y)

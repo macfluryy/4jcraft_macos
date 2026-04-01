@@ -1,21 +1,22 @@
+#include "minecraft/world/effect/MobEffect.h"
+
 #include <string.h>
 #include <wchar.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <utility>
 
-#include "minecraft/SharedConstants.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "java/Class.h"
-#include "strings.h"
+#include "minecraft/SharedConstants.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/effect/AbsoptionMobEffect.h"
 #include "minecraft/world/effect/AttackDamageMobEffect.h"
 #include "minecraft/world/effect/HealthBoostMobEffect.h"
 #include "minecraft/world/effect/InstantaneousMobEffect.h"
-#include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
@@ -26,6 +27,7 @@
 #include "minecraft/world/food/FoodConstants.h"
 #include "minecraft/world/food/FoodData.h"
 #include "minecraft/world/level/Level.h"
+#include "strings.h"
 
 class Attribute;
 

@@ -5,9 +5,9 @@
 #include <vector>
 
 #include "TileEntity.h"
+#include "java/Class.h"
 #include "minecraft/world/WorldlyContainer.h"
 #include "minecraft/world/level/tile/FurnaceTile.h"
-#include "java/Class.h"
 
 class Player;
 class Level;

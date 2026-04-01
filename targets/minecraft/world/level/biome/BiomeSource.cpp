@@ -1,17 +1,16 @@
 #include "BiomeSource.h"
 
 #include <assert.h>
+
 #include <algorithm>
 
+#include "IPlatformInput.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
 #include "java/System.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"
-#include "platform/PlatformServices.h"
-#include "IPlatformInput.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "java/Random.h"
-#include "strings.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/TilePos.h"
@@ -19,6 +18,8 @@
 #include "minecraft/world/level/biome/BiomeCache.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 #include "minecraft/world/level/storage/LevelData.h"
+#include "platform/PlatformServices.h"
+#include "strings.h"
 
 // 4J - removal of separate temperature & downfall layers brought forward
 // from 1.2.3

@@ -3,13 +3,13 @@
 #include <memory>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/item/PrimedTnt.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "gl3_loader.h"
 
 TntRenderer::TntRenderer() {
     renderer = new TileRenderer();

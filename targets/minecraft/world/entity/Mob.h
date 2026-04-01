@@ -6,9 +6,9 @@
 
 #include "LivingEntity.h"
 #include "MobType.h"
-#include "minecraft/world/entity/ai/goal/GoalSelector.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/ai/goal/GoalSelector.h"
 
 class HitResult;
 class Level;

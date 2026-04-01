@@ -6,9 +6,11 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/EnchantmentContainer.h"
 #include "minecraft/world/inventory/EnchantmentSlot.h"
 #include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 #include "minecraft/world/item/EnchantedBookItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
@@ -16,8 +18,6 @@
 #include "minecraft/world/item/enchantment/EnchantmentInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 
 EnchantmentMenu::EnchantmentMenu(std::shared_ptr<Inventory> inventory,
                                  Level* level, int xt, int yt, int zt) {

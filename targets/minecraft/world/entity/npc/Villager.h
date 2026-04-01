@@ -1,17 +1,18 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 #include <ranges>
 #include <string>
 #include <unordered_map>
 
 #include "Npc.h"
+#include "java/Class.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/AgeableMob.h"
-#include "minecraft/world/item/trading/Merchant.h"
-#include "java/Class.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/trading/Merchant.h"
 
 class Level;
 class Village;

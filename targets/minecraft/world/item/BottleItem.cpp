@@ -4,12 +4,12 @@
 
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/PotionItem.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "minecraft/world/item/Item.h"
 
 BottleItem::BottleItem(int id) : Item(id) {}
 

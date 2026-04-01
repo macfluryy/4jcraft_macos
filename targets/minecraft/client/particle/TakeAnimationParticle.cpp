@@ -1,15 +1,16 @@
 #include "TakeAnimationParticle.h"
 
 #include <GL/gl.h>
+
 #include <cmath>
 
 #include "4J_Render.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/particle/Particle.h"
+#include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/client/particle/Particle.h"
-#include "minecraft/client/particle/ParticleEngine.h"
 
 TakeAnimationParticle::TakeAnimationParticle(Level* level,
                                              std::shared_ptr<Entity> item,

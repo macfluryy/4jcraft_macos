@@ -1,9 +1,9 @@
 #include "LevelRuleset.h"
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/NamedAreaRuleDefinition.h"
-#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompoundGameRuleDefinition.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/NamedAreaRuleDefinition.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 
 class AABB;
 

@@ -2,19 +2,17 @@
 #include "UIScene_PauseMenu.h"
 
 #include <stddef.h>
+
 #include <memory>
 
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/skins/DLCTexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_PauseMenu.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
@@ -22,6 +20,9 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"
 

@@ -1,19 +1,19 @@
 #include "IUIScene_CreativeMenu.h"
 
 #include <assert.h>
+
 #include <cmath>
 #include <string>
 #include <vector>
 
 #include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "java/JavaMath.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/item/alchemy/PotionMacros.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/SimpleContainer.h"
 #include "minecraft/world/entity/Painting.h"
@@ -27,6 +27,7 @@
 #include "minecraft/world/item/FireworksItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentInstance.h"
 #include "minecraft/world/level/tile/LeafTile.h"

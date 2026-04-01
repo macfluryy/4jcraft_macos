@@ -10,8 +10,8 @@
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
 

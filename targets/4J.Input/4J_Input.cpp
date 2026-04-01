@@ -1,9 +1,6 @@
 #include "4J_Input.h"
 
 #include <SDL2/SDL.h>
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_gamecontroller.h>
 #include <SDL2/SDL_joystick.h>
@@ -13,6 +10,10 @@
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/begin_code.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+
 #include <string>
 
 #include "../4J.Common/4J_InputActions.h"

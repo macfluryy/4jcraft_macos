@@ -6,10 +6,10 @@
 #include <vector>
 
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
 #include "minecraft/world/item/Rarity.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/world/item/trading/Merchant.h"
 
 class MerchantRecipe;

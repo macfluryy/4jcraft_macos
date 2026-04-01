@@ -1,21 +1,21 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <cstdint>
 #include <format>
+#include <string>
+#include <vector>
 
 #include "4J_Storage.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "java/File.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "java/File.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class LevelGenerationOptions;
 class File;

@@ -8,9 +8,9 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/redstone/Redstone.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 
 // 4J Stu - The java does not have ctor here (being an abstract) but we need one
 // to initialise the member variables

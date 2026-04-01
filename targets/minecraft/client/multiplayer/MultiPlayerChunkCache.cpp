@@ -12,13 +12,13 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/LightLayer.h"
+#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/EmptyLevelChunk.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/chunk/WaterLevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/biome/Biome.h"
 
 MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
     XZSIZE = level->dimension->getXZSize();  // 4J Added

@@ -30,6 +30,7 @@
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/entity/ai/village/Village.h"
 #include "minecraft/world/entity/ai/village/Villages.h"
+#include "minecraft/world/entity/animal/Golem.h"
 #include "minecraft/world/entity/monster/Enemy.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -38,7 +39,6 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/animal/Golem.h"
 
 VillagerGolem::VillagerGolem(Level* level) : Golem(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

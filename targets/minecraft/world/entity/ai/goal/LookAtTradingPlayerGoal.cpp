@@ -2,9 +2,9 @@
 
 #include <memory>
 
+#include "minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
 #include "minecraft/world/entity/npc/Villager.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
 
 class Entity;
 class Mob;

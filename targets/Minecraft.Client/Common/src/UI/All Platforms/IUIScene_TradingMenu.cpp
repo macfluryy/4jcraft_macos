@@ -1,20 +1,21 @@
 #include "IUIScene_TradingMenu.h"
 
 #include <limits.h>
+
 #include <algorithm>
 
 #include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "console_helpers/StringHelpers.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "java/InputOutputStream/ByteArrayOutputStream.h"
-#include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/network/packet/TradeItemPacket.h"
 #include "minecraft/util/HtmlString.h"

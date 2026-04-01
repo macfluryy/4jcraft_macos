@@ -9,7 +9,6 @@
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl.h"
 #include "minecraft/client/renderer/Textures.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_PlayerSkinPreview.h"
 
 class ModelPart;
 class EntityRenderer;

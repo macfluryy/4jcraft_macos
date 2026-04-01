@@ -5,10 +5,10 @@
 #include "minecraft/core/FacingEnum.h"
 #include "minecraft/core/Position.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
-#include "minecraft/world/item/ItemInstance.h"
 
 std::shared_ptr<ItemInstance> DefaultDispenseItemBehavior::dispense(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed) {

@@ -3,9 +3,9 @@
 #include <unordered_map>
 
 #include "EntityRenderer.h"
+#include "java/Class.h"
 #include "java/JavaIntHash.h"
 #include "minecraft/world/entity/Entity.h"
-#include "java/Class.h"
 
 class font;
 class Entity;

@@ -3,11 +3,11 @@
 #include <memory>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/client/model/LeashKnotModel.h"
 #include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/client/renderer/entity/EntityRenderer.h"
-#include "gl3_loader.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation LeashKnotRenderer::KNOT_LOCATION =
     ResourceLocation(TN_ITEM_LEASHKNOT);

@@ -1,6 +1,7 @@
 #include "FireworksParticles.h"
 
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 #include <vector>
@@ -8,6 +9,8 @@
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/particle/Particle.h"
+#include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -16,8 +19,6 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
 #include "nbt/Tag.h"
-#include "minecraft/client/particle/Particle.h"
-#include "minecraft/client/particle/ParticleEngine.h"
 
 FireworksParticles::FireworksStarter::FireworksStarter(
     Level* level, double x, double y, double z, double xd, double yd, double zd,

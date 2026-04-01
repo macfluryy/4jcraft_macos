@@ -4,6 +4,7 @@
 // NOTE: gl3_loader.h must be included before these two
 #include <GL/gl.h>
 #include <GL/glu.h>
+
 #include <cstdint>
 #include <cstdlib>
 

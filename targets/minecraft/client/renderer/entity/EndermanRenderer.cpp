@@ -3,18 +3,18 @@
 #include <memory>
 
 #include "4J_Render.h"
+#include "gl3_loader.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/model/EndermanModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/monster/EnderMan.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
-#include "gl3_loader.h"
 
 ResourceLocation EndermanRenderer::ENDERMAN_EYES_LOCATION =
     ResourceLocation(TN_MOB_ENDERMAN_EYES);

@@ -1,8 +1,9 @@
 #include "Level.h"
 
 #include <stdlib.h>
-#include <wchar.h>
 #include <string.h>
+#include <wchar.h>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -12,6 +13,7 @@
 #include <optional>
 
 #include "Explosion.h"
+#include "IPlatformInput.h"
 #include "LevelListener.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
@@ -38,7 +40,9 @@
 #include "minecraft/world/entity/ai/village/Villages.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/LevelType.h"
+#include "minecraft/world/level/LightLayer.h"
 #include "minecraft/world/level/Region.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
@@ -63,14 +67,11 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TopSnowTile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/scores/Scoreboard.h"
 #include "platform/PlatformServices.h"
-#include "IPlatformInput.h"
-#include "minecraft/world/level/ChunkPos.h"
-#include "minecraft/world/level/LightLayer.h"
-#include "minecraft/world/phys/AABB.h"
 
 class CompoundTag;
 class ItemInstance;

@@ -1,17 +1,5 @@
-#include "console_helpers/PathHelper.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/ProgressRenderer.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/renderer/GameRenderer.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/stats/StatsCounter.h"
-#include "minecraft/world/Container.h"
-#include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/crafting/Recipy.h"
-#include "minecraft/world/level/tile/entity/HopperTileEntity.h"
+#include "Common/Consoles_App.h"
+
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
@@ -20,7 +8,6 @@
 #include "Common/App_Defines.h"
 #include "Common/App_enums.h"
 #include "Common/App_structs.h"
-#include "Common/Consoles_App.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
@@ -37,17 +24,31 @@
 #include "Minecraft.Client/include/NetTypes.h"
 #include "SkinBox.h"
 #include "XboxStubs.h"
+#include "console_helpers/PathHelper.h"
 #include "java/Class.h"
 #include "java/File.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/GameRenderer.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/EntityRenderer.h"
 #include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/stats/StatsCounter.h"
+#include "minecraft/world/Container.h"
 #include "minecraft/world/entity/item/MinecartHopper.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/crafting/Recipy.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/HopperTileEntity.h"
 #include "strings.h"
 #if defined(_WINDOWS64)
 #include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
@@ -58,15 +59,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wchar.h>
-#include <cstring>
+
 #include <chrono>
-#include <thread>
 #include <compare>
 #include <cstdint>
+#include <cstring>
 #include <memory>
 #include <mutex>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -77,6 +79,7 @@
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
 #include "Minecraft_Macros.h"
 #include "console_helpers/PlatformTime.h"
 #include "console_helpers/StringHelpers.h"
@@ -88,7 +91,6 @@
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
 
 class BeaconTileEntity;
 class BrewingStandTileEntity;

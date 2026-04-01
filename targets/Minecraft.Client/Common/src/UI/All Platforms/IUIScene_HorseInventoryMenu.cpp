@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#include "minecraft/world/entity/animal/EntityHorse.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_HorseInventoryMenu::GetSectionAndSlotInDirection(

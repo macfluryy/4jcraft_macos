@@ -3,11 +3,11 @@
 #include <memory>
 #include <vector>
 
+#include "minecraft/world/item/DiggerItem.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/ChestTile.h"
 #include "minecraft/world/level/tile/HalfSlabTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/item/DiggerItem.h"
 
 std::vector<Tile*>* HatchetItem::diggables = nullptr;
 

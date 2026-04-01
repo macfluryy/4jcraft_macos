@@ -9,12 +9,12 @@
 #include "minecraft/core/DefaultDispenseItemBehavior.h"
 #include "minecraft/core/FacingEnum.h"
 #include "minecraft/world/entity/item/Minecart.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/BaseRailTile.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
-#include "minecraft/world/item/Item.h"
 
 std::shared_ptr<ItemInstance> MinecartItem::MinecartDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,

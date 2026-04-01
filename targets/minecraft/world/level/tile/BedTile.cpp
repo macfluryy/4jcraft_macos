@@ -3,19 +3,19 @@
 #include <string>
 #include <vector>
 
-#include "minecraft/world/level/dimension/Dimension.h"
 #include "Direction.h"
 #include "Facing.h"
 #include "Pos.h"
-#include "strings.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/DirectionalTile.h"
+#include "strings.h"
 
 class Icon;
 

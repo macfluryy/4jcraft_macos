@@ -1,18 +1,16 @@
 #include "ChestTileEntity.h"
 
 #include <stdint.h>
+
 #include <vector>
 
-#include "TileEntity.h"
-#include "minecraft/network/packet/ContainerOpenPacket.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "Direction.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "SharedConstants.h"
+#include "TileEntity.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
+#include "minecraft/network/packet/ContainerOpenPacket.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/CompoundContainer.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -23,6 +21,9 @@
 #include "minecraft/world/level/tile/ChestTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 class Entity;
 

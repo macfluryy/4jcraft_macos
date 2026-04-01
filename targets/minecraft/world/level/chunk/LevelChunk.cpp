@@ -1,6 +1,7 @@
 #include "LevelChunk.h"
 
 #include <string.h>
+
 #include <algorithm>
 #include <limits>
 #include <mutex>
@@ -30,9 +31,13 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LightLayer.h"
+#include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/world/level/chunk/CompressedTileStorage.h"
+#include "minecraft/world/level/chunk/SparseDataStorage.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/ChestTile.h"
@@ -42,10 +47,6 @@
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
-#include "minecraft/world/level/LightLayer.h"
-#include "minecraft/world/level/TilePos.h"
-#include "minecraft/world/level/chunk/CompressedTileStorage.h"
-#include "minecraft/world/level/chunk/SparseDataStorage.h"
 
 class DataInputStream;
 class DataOutputStream;

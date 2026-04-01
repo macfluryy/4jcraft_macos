@@ -1,7 +1,7 @@
 #include "DelayedRelease.h"
 
-#include "minecraft/world/level/Level.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/level/Level.h"
 
 DelayedRelease::DelayedRelease(Level* level, std::shared_ptr<Entity> toRelease,
                                int delay)

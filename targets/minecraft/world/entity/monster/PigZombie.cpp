@@ -12,13 +12,13 @@
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/entity/monster/Zombie.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/monster/Zombie.h"
 
 AttributeModifier* PigZombie::SPEED_MODIFIER_ATTACKING =
     (new AttributeModifier(eModifierId_MOB_PIG_ATTACKSPEED, 0.45,

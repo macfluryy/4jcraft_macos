@@ -7,9 +7,9 @@
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/VineTile.h"
-#include "minecraft/world/level/levelgen/feature/Feature.h"
 
 MegaTreeFeature::MegaTreeFeature(bool doUpdate, int baseHeight, int trunkType,
                                  int leafType)

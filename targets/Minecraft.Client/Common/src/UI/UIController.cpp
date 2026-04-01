@@ -5,20 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+
 #include <algorithm>
 #include <memory>
 #include <utility>
 
 #include "4J_Input.h"
-#include "Minecraft.Client/include/BufferedImage.h"
-#include "UIFontData.h"
-#include "console_helpers/PerformanceTimer.h"
-#include "console_helpers/PlatformTime.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/skins/DLCTexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
 #include "4J_Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
@@ -40,12 +32,21 @@
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/include/BufferedImage.h"
+#include "UIFontData.h"
 #include "XboxStubs.h"
 #include "console_helpers/C4JThread.h"
+#include "console_helpers/PerformanceTimer.h"
+#include "console_helpers/PlatformTime.h"
+#include "console_helpers/StringHelpers.h"
 #include "gl3_loader.h"
 #include "java/System.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "strings.h"
 
 class Tutorial;

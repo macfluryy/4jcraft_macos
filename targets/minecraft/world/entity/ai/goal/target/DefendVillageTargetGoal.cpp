@@ -3,9 +3,9 @@
 #include "java/Random.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/PathfinderMob.h"
+#include "minecraft/world/entity/ai/goal/target/TargetGoal.h"
 #include "minecraft/world/entity/ai/village/Village.h"
 #include "minecraft/world/entity/animal/VillagerGolem.h"
-#include "minecraft/world/entity/ai/goal/target/TargetGoal.h"
 
 DefendVillageTargetGoal::DefendVillageTargetGoal(VillagerGolem* golem)
     : TargetGoal(golem, false, true) {

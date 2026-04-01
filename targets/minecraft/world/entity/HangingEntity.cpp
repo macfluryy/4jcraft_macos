@@ -1,6 +1,7 @@
 #include "HangingEntity.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -9,13 +10,13 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/Entity.h"
 
 void HangingEntity::_init(Level* level) {
     checkInterval = 0;

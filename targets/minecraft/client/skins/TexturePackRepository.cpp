@@ -1,20 +1,21 @@
 #include "TexturePackRepository.h"
 
 #include <wchar.h>
+
 #include <algorithm>
 #include <utility>
 
 #include "4J_Input.h"
 #include "DLCTexturePack.h"
 #include "DefaultTexturePack.h"
+#include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "java/File.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Minimap.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/client/skins/TexturePack.h"
 
 TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = nullptr;
@@ -43,8 +44,7 @@ TexturePackRepository::TexturePackRepository(File workingDirectory,
     updateList();
 }
 
-void TexturePackRepository::addDebugPacks() {
-}
+void TexturePackRepository::addDebugPacks() {}
 
 void TexturePackRepository::createWorkingDirecoryUnlessExists() {
     // 4J Unused

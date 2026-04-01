@@ -1,6 +1,7 @@
 #include "VillageSiege.h"
 
 #include <math.h>
+
 #include <numbers>
 #include <optional>
 #include <vector>

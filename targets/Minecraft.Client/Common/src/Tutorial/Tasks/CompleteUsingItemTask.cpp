@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "minecraft/world/item/ItemInstance.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class Tutorial;
 

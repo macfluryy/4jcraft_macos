@@ -7,8 +7,8 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
+#include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 
 BeaconTile::BeaconTile(int id) : BaseEntityTile(id, Material::glass, false) {
     setDestroyTime(3.0f);

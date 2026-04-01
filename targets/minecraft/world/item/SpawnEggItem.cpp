@@ -3,17 +3,15 @@
 #include <unordered_map>
 #include <utility>
 
+#include "Facing.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
+#include "java/Class.h"
+#include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
-#include "minecraft/world/phys/HitResult.h"
-#include "Facing.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "java/Class.h"
-#include "java/Random.h"
-#include "strings.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/Mob.h"
@@ -25,6 +23,8 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
+#include "minecraft/world/phys/HitResult.h"
+#include "strings.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll

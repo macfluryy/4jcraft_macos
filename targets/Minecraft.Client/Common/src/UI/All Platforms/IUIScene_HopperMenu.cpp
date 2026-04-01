@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#include "minecraft/world/inventory/HopperMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
+#include "minecraft/world/inventory/HopperMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_HopperMenu::GetSectionAndSlotInDirection(ESceneSection eSection,

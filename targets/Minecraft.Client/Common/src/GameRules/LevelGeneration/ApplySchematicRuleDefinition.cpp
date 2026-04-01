@@ -5,6 +5,7 @@
 
 #include "ConsoleSchematicFile.h"
 #include "LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
@@ -13,7 +14,6 @@
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 
 ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     LevelGenerationOptions* levelGenOptions) {

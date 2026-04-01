@@ -24,6 +24,7 @@
 #include "minecraft/world/entity/ai/goal/RangedAttackGoal.h"
 #include "minecraft/world/entity/ai/goal/target/HurtByTargetGoal.h"
 #include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
+#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/ThrownPotion.h"
@@ -33,7 +34,6 @@
 #include "minecraft/world/item/alchemy/PotionBrewing.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/entity/monster/Monster.h"
 
 AttributeModifier* Witch::SPEED_MODIFIER_DRINKING =
     (new AttributeModifier(eModifierId_MOB_WITCH_DRINKSPEED, -0.25f,

@@ -3,9 +3,9 @@
 #include <string>
 
 #include "DLCManager.h"
+#include "Minecraft.Client/Common/src/DLC/DLCGameRules.h"
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Common/src/DLC/DLCGameRules.h"
 
 class StringTable;
 

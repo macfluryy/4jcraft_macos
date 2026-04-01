@@ -2,7 +2,6 @@
 
 #include <memory>
 
-#include "strings.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/MobType.h"
 #include "minecraft/world/item/HatchetItem.h"
@@ -10,6 +9,7 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "strings.h"
 
 const int DamageEnchantment::names[] = {IDS_ENCHANTMENT_DAMAGE_ALL,
                                         IDS_ENCHANTMENT_DAMAGE_UNDEAD,

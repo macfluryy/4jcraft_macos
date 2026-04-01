@@ -4,6 +4,7 @@
 #pragma once
 
 #include <fcntl.h>
+#include <pthread.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/time.h>
@@ -13,10 +14,9 @@
 #include <cerrno>
 #include <cstdarg>
 #include <cstdio>
-#include <cwchar>
 #include <cstdlib>
 #include <ctime>
-#include <pthread.h>
+#include <cwchar>
 
 #define __cdecl
 #define _vsnprintf_s vsnprintf;

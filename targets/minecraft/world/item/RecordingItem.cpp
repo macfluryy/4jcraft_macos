@@ -1,6 +1,7 @@
 #include "RecordingItem.h"
 
 #include <wchar.h>
+
 #include <memory>
 #include <utility>
 #include <vector>
@@ -10,13 +11,13 @@
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Rarity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/JukeboxTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/item/Item.h"
-#include "minecraft/world/item/Rarity.h"
 
 std::unordered_map<std::wstring, RecordingItem*> RecordingItem::BY_NAME;
 

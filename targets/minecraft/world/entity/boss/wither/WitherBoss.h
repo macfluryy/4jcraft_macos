@@ -3,15 +3,15 @@
 #include <memory>
 #include <string>
 
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
 #include "minecraft/stdafx.h"
+#include "minecraft/world/entity/EntitySelector.h"
+#include "minecraft/world/entity/MobType.h"
 #include "minecraft/world/entity/boss/BossMob.h"
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/RangedAttackMob.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "java/Class.h"
 #include "strings.h"
-#include "minecraft/world/entity/EntitySelector.h"
-#include "minecraft/world/entity/MobType.h"
 
 class Entity;
 class Level;

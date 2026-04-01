@@ -1,11 +1,12 @@
 #include "VillagerZombieModel.h"
 
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/HumanoidModel.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 void VillagerZombieModel::_init(float g, float yOffset, bool isArmor) {
     delete head;

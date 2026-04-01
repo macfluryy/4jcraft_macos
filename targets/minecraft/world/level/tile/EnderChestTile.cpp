@@ -13,9 +13,9 @@
 #include "minecraft/world/inventory/PlayerEnderChestContainer.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/entity/EnderChestTileEntity.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/EnderChestTileEntity.h"
 
 EnderChestTile::EnderChestTile(int id)
     : BaseEntityTile(id, Material::stone, false) {

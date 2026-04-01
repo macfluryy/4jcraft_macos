@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <wchar.h>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/ProgressRenderer.h"
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Profile.h"
@@ -21,6 +19,8 @@
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/C4JThread.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "strings.h"
 

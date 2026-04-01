@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIConsole.h"
@@ -74,11 +75,10 @@
 #include "Minecraft.Client/Common/src/UI/Scenes/UIScene_QuadrantSignin.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/UIScene_Timer.h"
 #include "Minecraft.Client/Common/src/UI/UIGroup.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
 
 UILayer::UILayer(UIGroup* parent) {
     m_parentGroup = parent;

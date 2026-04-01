@@ -1,6 +1,7 @@
 #include "RepairScreen.h"
 
 #include <GL/gl.h>
+
 #include <memory>
 #include <string>
 
@@ -16,10 +17,10 @@
 #include "minecraft/locale/Language.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/AnvilMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 class Inventory;
 class Level;

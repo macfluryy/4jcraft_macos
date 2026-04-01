@@ -4,15 +4,13 @@
 #include <utility>
 #include <vector>
 
-#include "minecraft/util/Mth.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Pos.h"
 #include "SharedConstants.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "strings.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
@@ -55,6 +53,8 @@
 #include "minecraft/world/item/trading/MerchantRecipeList.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
 
 namespace {
 struct VillagerShuffleRandom {

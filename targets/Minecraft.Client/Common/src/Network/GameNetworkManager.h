@@ -1,19 +1,19 @@
 #pragma once
 #include <stdint.h>
 // using namespace std;
-#include <vector>
 #include <format>
 #include <string>
+#include <vector>
 #if !defined(__linux__)
 #include <qnet.h>
 #endif
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
+#include "Minecraft.Client/include/NetTypes.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerStub.h"
 #include "SessionInfo.h"
 #include "console_helpers/C4JThread.h"
-#include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
-#include "Minecraft.Client/include/NetTypes.h"
 
 class ClientConnection;
 class Minecraft;

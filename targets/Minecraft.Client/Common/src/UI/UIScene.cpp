@@ -5,16 +5,22 @@
 #include <utility>
 
 #include "4J.Common/4J_Compat.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
 #include "Minecraft.Client/Common/src/UI/UIController.h"
 #include "Minecraft.Client/Common/src/UI/UIGroup.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/StringHelpers.h"
+#include "gl3_loader.h"
 #include "java/System.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
@@ -22,12 +28,6 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "4J.Common/4J_InputActions.h"
-#include "4J_Render.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
-#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
-#include "gl3_loader.h"
 
 class MultiplayerLocalPlayer;
 

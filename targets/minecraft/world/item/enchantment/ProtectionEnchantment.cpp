@@ -1,12 +1,12 @@
 #include "ProtectionEnchantment.h"
 
 #include "minecraft/util/Mth.h"
-#include "strings.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "strings.h"
 
 const int ProtectionEnchantment::names[] = {
     IDS_ENCHANTMENT_PROTECT_ALL, IDS_ENCHANTMENT_PROTECT_FIRE,

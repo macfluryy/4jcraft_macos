@@ -2,12 +2,8 @@
 
 #include <stdint.h>
 
-#include "minecraft/world/level/material/Material.h"
 #include "Facing.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "strings.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/CoalItem.h"
@@ -18,10 +14,14 @@
 #include "minecraft/world/item/WeaponItem.h"
 #include "minecraft/world/item/crafting/FurnaceRecipes.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/FurnaceTile.h"
 #include "minecraft/world/level/tile/HalfSlabTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
 
 int furnaceSlotsForUp[] = {FurnaceTileEntity::SLOT_INPUT};
 int furnaceSlotsForDown[] = {FurnaceTileEntity::SLOT_RESULT,

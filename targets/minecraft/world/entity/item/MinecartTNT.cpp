@@ -1,6 +1,7 @@
 #include "MinecartTNT.h"
 
 #include <math.h>
+
 #include <memory>
 #include <string>
 
@@ -8,12 +9,12 @@
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/BaseRailTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/item/Minecart.h"
 
 void MinecartTNT::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

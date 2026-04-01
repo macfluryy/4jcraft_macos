@@ -1,6 +1,7 @@
 #include "FallingTile.h"
 
 #include <stdint.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
@@ -9,6 +10,7 @@
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/HeavyTile.h"
@@ -16,7 +18,6 @@
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/Tag.h"
-#include "minecraft/world/entity/Entity.h"
 
 // 4J - added for common ctor code
 void FallingTile::_init() {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/Entity.h"
 
 class Level;
 
