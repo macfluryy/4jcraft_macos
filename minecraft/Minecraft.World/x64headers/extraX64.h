@@ -216,8 +216,6 @@ public:
     static IQNetPlayer m_player[4];
 };
 
-void XSetThreadProcessor(void* a, int b);
-
 const int QNET_SENDDATA_LOW_PRIORITY = 0;
 const int QNET_SENDDATA_SECONDARY = 0;
 constexpr PlayerUID INVALID_XUID = 0;
