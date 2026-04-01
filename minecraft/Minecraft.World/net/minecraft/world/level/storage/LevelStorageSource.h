@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+#include <string>
 
 class LevelSummary;
 class ProgressListener;

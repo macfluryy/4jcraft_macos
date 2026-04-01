@@ -6,6 +6,8 @@
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 
+#include "4J.Common/4J_InputActions.h"
+
 class UILayer;
 
 const wchar_t*

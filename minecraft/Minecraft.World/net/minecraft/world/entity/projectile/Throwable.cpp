@@ -9,6 +9,7 @@
 #include "java/Class.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
@@ -263,7 +264,7 @@ float Throwable::getShadowHeightOffs() { return 0; }
 
 std::shared_ptr<LivingEntity> Throwable::getOwner() {
     if (owner == nullptr && !ownerName.empty()) {
-        owner = std::dynamic_pointer_cast<LivingEntity>(level->getPlayerByName(ownerName));
+        owner = level->getPlayerByName(ownerName);
     }
     return owner;
 }

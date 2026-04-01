@@ -1,6 +1,6 @@
 #pragma once
 
-// #include "
+#include "java/InputOutputStream/DataOutputStream.h"
 
 class ConsoleGameRules {
 public:

@@ -1,4 +1,6 @@
+#include <cmath>
 
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "IUIScene_AbstractContainerMenu.h"
 
@@ -8,7 +10,12 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+
 #include "4J_Input.h"
+#include "4J.Common/4J_InputActions.h"
 
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = nullptr;

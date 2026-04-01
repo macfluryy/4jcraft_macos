@@ -1,3 +1,5 @@
+#include "Minecraft.World/Header Files/stdafx.h"
+
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"

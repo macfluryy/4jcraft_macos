@@ -6,6 +6,8 @@
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 
+#include "strings.h"
+
 const unsigned int WoodTile::WOOD_NAMES[WOOD_NAMES_LENGTH] = {
     IDS_TILE_OAKWOOD_PLANKS,
     IDS_TILE_SPRUCEWOOD_PLANKS,

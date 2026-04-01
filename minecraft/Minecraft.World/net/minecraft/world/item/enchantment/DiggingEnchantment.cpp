@@ -1,6 +1,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "DiggingEnchantment.h"
 
+#include "strings.h"
+
 DiggingEnchantment::DiggingEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::digger) {
     setDescriptionId(IDS_ENCHANTMENT_DIGGING);

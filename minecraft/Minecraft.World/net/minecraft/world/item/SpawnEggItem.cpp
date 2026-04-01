@@ -1,3 +1,5 @@
+#include "Minecraft.World/Header Files/stdafx.h"
+
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
@@ -11,6 +13,8 @@
 #include "Minecraft.World/net/minecraft/world/Difficulty.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll

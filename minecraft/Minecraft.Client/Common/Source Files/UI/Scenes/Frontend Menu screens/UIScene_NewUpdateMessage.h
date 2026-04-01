@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_DynamicLabel.h"
 
 class UIScene_NewUpdateMessage : public UIScene {
 private:

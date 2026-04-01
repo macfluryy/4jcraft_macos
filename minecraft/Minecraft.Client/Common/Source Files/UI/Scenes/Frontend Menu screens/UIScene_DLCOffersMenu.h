@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_DLCList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_HTMLLabel.h"
 
 class UIScene_DLCOffersMenu : public UIScene {
 private:

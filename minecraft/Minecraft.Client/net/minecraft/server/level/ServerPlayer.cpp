@@ -1,4 +1,5 @@
 #include <cfloat>
+#include <cmath>
 
 #include "ServerPlayer.h"
 #include "ServerPlayerGameMode.h"
@@ -28,6 +29,10 @@
 #include "Minecraft.World/net/minecraft/world/scores/criteria/net.minecraft.world.scores.criteria.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+
+#include "4J_Input.h"
 
 #include "Minecraft.World/net/minecraft/Pos.h"
 #include "java/Random.h"

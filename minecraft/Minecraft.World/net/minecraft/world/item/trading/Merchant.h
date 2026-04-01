@@ -1,8 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 class MerchantRecipeList;
 class MerchantRecipe;
 class Player;
+class ItemInstance;
 
 class Merchant {
 public:

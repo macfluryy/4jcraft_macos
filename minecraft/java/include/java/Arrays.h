@@ -1,6 +1,10 @@
 #pragma once
 
 #include <vector>
+#include <cassert>
+#include <cstdint>
+
+class Biome;
 
 class Arrays {
 public:

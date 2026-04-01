@@ -1,3 +1,7 @@
+#include "Minecraft.World/Header Files/stdafx.h"
+
+#include <string>
+#include <memory>
 
 #include "DropperTileEntity.h"
 

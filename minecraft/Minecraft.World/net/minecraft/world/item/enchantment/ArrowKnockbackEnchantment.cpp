@@ -1,5 +1,7 @@
 #include "ArrowKnockbackEnchantment.h"
 
+#include "strings.h"
+
 ArrowKnockbackEnchantment::ArrowKnockbackEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::bow) {
     setDescriptionId(IDS_ENCHANTMENT_ARROW_KNOCKBACK);

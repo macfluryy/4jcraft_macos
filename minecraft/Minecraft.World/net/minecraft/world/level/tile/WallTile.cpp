@@ -5,6 +5,8 @@
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "WallTile.h"
 
+#include "strings.h"
+
 const float WallTile::WALL_WIDTH = 3.0f / 16.0f;
 const float WallTile::WALL_HEIGHT = 13.0f / 16.0f;
 const float WallTile::POST_WIDTH = 4.0f / 16.0f;

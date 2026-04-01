@@ -1,7 +1,14 @@
 #pragma once
 
+#include <vector>
+#include <string>
+
 #include "java/File.h"
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SaveList.h"
+
+#include "4J_Storage.h"
 
 class LevelGenerationOptions;
 

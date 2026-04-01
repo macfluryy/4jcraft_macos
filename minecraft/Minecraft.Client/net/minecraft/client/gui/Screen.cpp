@@ -4,6 +4,7 @@
 #include "Minecraft.World/Header Files/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "4J_Profile.h"
+#include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"

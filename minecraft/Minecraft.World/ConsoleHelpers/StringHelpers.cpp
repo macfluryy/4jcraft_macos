@@ -1,5 +1,10 @@
 #include "simdutf.h"
 
+#include <algorithm>
+#include <cassert>
+#include <vector>
+#include <sstream>
+
 std::wstring toLower(const std::wstring& a) {
     std::wstring out = std::wstring(a);
     std::transform(out.begin(), out.end(), out.begin(), ::tolower);

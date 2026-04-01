@@ -10,6 +10,7 @@
 #include "Minecraft.Client/Common/Source Files/UI/UIString.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "4J.Common/4J_InputActions.h"
 
 class UILayer;
 

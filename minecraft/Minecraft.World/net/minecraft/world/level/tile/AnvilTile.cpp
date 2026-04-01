@@ -7,6 +7,8 @@
 #include "AnvilTile.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 
+#include "strings.h"
+
 const unsigned int AnvilTile::ANVIL_NAMES[ANVIL_NAMES_LENGTH] = {
     IDS_TILE_ANVIL_INTACT,
     IDS_TILE_ANVIL_SLIGHTLYDAMAGED,

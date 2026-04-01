@@ -86,6 +86,6 @@ void VillagerGolemModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
 }
 
 float VillagerGolemModel::triangleWave(float bob, float period) {
-    return (abs(fmod(bob, period) - period * 0.5f) - period * 0.25f) /
+    return (std::abs(fmod(bob, period) - period * 0.5f) - period * 0.25f) /
            (period * 0.25f);
 }

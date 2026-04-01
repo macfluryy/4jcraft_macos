@@ -2,6 +2,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "DamageEnchantment.h"
 
+#include "strings.h"
+
 const int DamageEnchantment::names[] = {IDS_ENCHANTMENT_DAMAGE_ALL,
                                         IDS_ENCHANTMENT_DAMAGE_UNDEAD,
                                         IDS_ENCHANTMENT_DAMAGE_ARTHROPODS};

@@ -2,7 +2,11 @@
 #include <cstdint>
 #include <deque>
 #include <mutex>
+#include <vector>
+#include <memory>
+#include <unordered_map>
 
+#include "nbt/CompoundTag.h"
 #include "4J.Common/4J_Compat.h"
 
 class ServerPlayer;
@@ -18,6 +22,10 @@ class GameType;
 class LoginPacket;
 class Connection;
 class ServerScoreboard;
+class Entity;
+class Pos;
+class Player;
+class Level;
 
 class PlayerList {
 private:

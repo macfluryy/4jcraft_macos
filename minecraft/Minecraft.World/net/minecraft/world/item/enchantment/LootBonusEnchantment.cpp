@@ -1,5 +1,7 @@
 #include "LootBonusEnchantment.h"
 
+#include "strings.h"
+
 LootBonusEnchantment::LootBonusEnchantment(int id, int frequency,
                                            const EnchantmentCategory* cat)
     : Enchantment(id, frequency, cat) {

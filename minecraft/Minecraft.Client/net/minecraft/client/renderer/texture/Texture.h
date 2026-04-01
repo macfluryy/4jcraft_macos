@@ -3,6 +3,7 @@
 #include <GL/gl.h>
 #include <format>
 #include <string>
+#include <vector>
 
 class Rect2i;
 class ByteBuffer;

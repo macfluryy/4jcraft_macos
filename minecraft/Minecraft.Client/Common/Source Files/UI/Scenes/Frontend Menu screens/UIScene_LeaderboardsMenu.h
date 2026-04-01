@@ -2,6 +2,7 @@
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 #include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardInterface.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_LeaderboardList.h"
 
 class UIScene_LeaderboardsMenu : public UIScene,
                                  public LeaderboardReadListener {

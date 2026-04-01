@@ -1,5 +1,4 @@
-
-// #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include <ctime>
 #include <thread>
@@ -52,6 +51,8 @@
 #include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "4J_Input.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 

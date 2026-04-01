@@ -1,5 +1,8 @@
 #pragma once
 
+#include <vector>
+#include <cstdint>
+
 // 4J Stu - Represents Java standard lib abstract
 
 class OutputStream {

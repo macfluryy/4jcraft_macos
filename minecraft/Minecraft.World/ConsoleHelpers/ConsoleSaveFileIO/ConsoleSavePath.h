@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class ConsoleSavePath {
 private:
     std::wstring path;

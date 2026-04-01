@@ -1,3 +1,4 @@
+#include <cmath>
 
 #include "nbt/com.mojang.nbt.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
@@ -11,6 +12,7 @@
 #include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "Minecraft.World/net/minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
 #include "Minecraft.World/net/minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "java/Random.h"
 #include "Animal.h"
 

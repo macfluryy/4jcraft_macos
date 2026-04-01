@@ -4,6 +4,7 @@
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_PlayerList.h"
 
 class UIScene_TeleportMenu : public UIScene {
 private:

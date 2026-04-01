@@ -3,6 +3,8 @@
 #include "EnchantmentInstance.h"
 #include "Minecraft.World/net/minecraft/world/item/enchantment/Enchantment.h"
 
+#include "strings.h"
+
 EnchantmentInstance::EnchantmentInstance(Enchantment* enchantment, int level)
     : WeighedRandomItem(enchantment->getFrequency()),
       enchantment(enchantment),

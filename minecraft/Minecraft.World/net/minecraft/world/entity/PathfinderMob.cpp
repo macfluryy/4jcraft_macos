@@ -319,9 +319,9 @@ void PathfinderMob::tickLeash() {
             double dy = (leashHolder->y - y) / _distanceTo;
             double dz = (leashHolder->z - z) / _distanceTo;
 
-            xd += dx * abs(dx) * .4;
-            yd += dy * abs(dy) * .4;
-            zd += dz * abs(dz) * .4;
+            xd += dx * std::abs(dx) * .4;
+            yd += dy * std::abs(dy) * .4;
+            zd += dz * std::abs(dz) * .4;
         }
         if (_distanceTo > 10) {
             dropLeash(true, true);

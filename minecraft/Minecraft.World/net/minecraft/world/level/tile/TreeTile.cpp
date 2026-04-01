@@ -6,6 +6,8 @@
 
 #include "TreeTile.h"
 
+#include "strings.h"
+
 const unsigned int TreeTile::TREE_NAMES[TreeTile::TREE_NAMES_LENGTH] = {
     IDS_TILE_LOG_OAK, IDS_TILE_LOG_SPRUCE, IDS_TILE_LOG_BIRCH,
     IDS_TILE_LOG_JUNGLE};

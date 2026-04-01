@@ -1,5 +1,8 @@
-
 #include <cstdint>
+#include <cmath>
+
+#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "PlayerList.h"
 #include "Minecraft.Client/net/minecraft/server/level/PlayerChunkMap.h"
 #include "MinecraftServer.h"
@@ -28,6 +31,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Tutorial.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 // 4J - this class is fairly substantially altered as there didn't seem any
 // point in porting code for banning, whitelisting, ops etc.

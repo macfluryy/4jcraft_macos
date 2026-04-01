@@ -7,6 +7,7 @@
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
+#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_MainMenu.h"
 
 

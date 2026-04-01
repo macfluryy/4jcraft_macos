@@ -3,6 +3,7 @@
 #include <float.h>
 #include <cstdint>
 #include <format>
+#include <vector>
 
 class ChunkRebuildData;
 class IntBuffer;

@@ -2,6 +2,7 @@
 
 #include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_InventoryMenu.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_MinecraftPlayer.h"
 
 #include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
 

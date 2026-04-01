@@ -5,6 +5,8 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_FurnaceMenu.h"
 
+#include "4J_Profile.h"
+
 UIScene_FurnaceMenu::UIScene_FurnaceMenu(int iPad, void* _initData,
                                          UILayer* parentLayer)
     : UIScene_AbstractContainerMenu(iPad, parentLayer) {

@@ -3,6 +3,8 @@
 #include "TileEntity.h"
 #include "Hopper.h"
 
+class ItemEntity;
+
 class HopperTileEntity : public TileEntity, public Hopper {
 public:
     eINSTANCEOF GetType() { return eTYPE_HOPPERTILEENTITY; }

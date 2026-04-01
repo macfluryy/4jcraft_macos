@@ -1,5 +1,7 @@
 #include "FireAspectEnchantment.h"
 
+#include "strings.h"
+
 FireAspectEnchantment::FireAspectEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::weapon) {
     setDescriptionId(IDS_ENCHANTMENT_FIRE);

@@ -3,6 +3,8 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "SandStoneTile.h"
 
+#include "strings.h"
+
 const std::wstring SandStoneTile::TEXTURE_TOP = L"sandstone_top";
 const std::wstring SandStoneTile::TEXTURE_BOTTOM = L"sandstone_bottom";
 const std::wstring SandStoneTile::TEXTURE_NAMES[] = {

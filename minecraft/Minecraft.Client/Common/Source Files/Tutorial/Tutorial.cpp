@@ -1,4 +1,5 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.Client/Header Files/stdafx.h"
+
 #include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
@@ -19,6 +20,8 @@
 #include "Minecraft.Client/Common/Source Files/Tutorial/Constraints/TutorialConstraints.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/Hints/TutorialHints.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+
+#include "4J.Common/4J_InputActions.h"
 
 std::vector<int> Tutorial::s_completableTasks;
 
@@ -1940,7 +1943,7 @@ Tutorial::~Tutorial() {
 void Tutorial::debugResetPlayerSavedProgress(int iPad) {
     GAME_SETTINGS* pGameSettings =
         (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(iPad);
-    ZeroMemory(pGameSettings->ucTutorialCompletion,
+    memset(pGameSettings->ucTutorialCompletion, 0,
                TUTORIAL_PROFILE_STORAGE_BYTES);
     pGameSettings->uiSpecialTutorialBitmask = 0;
 }

@@ -129,13 +129,13 @@ void SpiderModel::setupAnim(float time, float r, float bob, float yRot,
         -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 3 / 4.0f) * 0.4f) * r;
 
     float s0 =
-        abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 0 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 0 / 4.0f) * 0.4f) * r;
     float s1 =
-        abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 2 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 2 / 4.0f) * 0.4f) * r;
     float s2 =
-        abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 1 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 1 / 4.0f) * 0.4f) * r;
     float s3 =
-        abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 3 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 3 / 4.0f) * 0.4f) * r;
 
     leg0->yRot += +c0;
     leg1->yRot += -c0;

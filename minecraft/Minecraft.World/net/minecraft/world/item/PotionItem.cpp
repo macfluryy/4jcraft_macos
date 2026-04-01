@@ -1,3 +1,5 @@
+#include "Minecraft.World/Header Files/stdafx.h"
+
 #include "net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
 #include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"

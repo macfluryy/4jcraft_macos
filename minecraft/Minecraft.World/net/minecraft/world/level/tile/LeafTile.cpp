@@ -7,6 +7,8 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
 
+#include "strings.h"
+
 const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {
     IDS_TILE_LEAVES_OAK,
     IDS_TILE_LEAVES_SPRUCE,

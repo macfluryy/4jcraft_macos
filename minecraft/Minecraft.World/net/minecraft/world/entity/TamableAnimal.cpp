@@ -3,6 +3,7 @@
 #include "TamableAnimal.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
+#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/EntityEvent.h"
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"

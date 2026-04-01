@@ -1,3 +1,5 @@
+#include <cassert>
+#include <cmath>
 #include <chrono>
 #include <cstdint>  // for int64_t
 

@@ -1,3 +1,4 @@
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"

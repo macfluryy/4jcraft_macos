@@ -5,10 +5,14 @@
 
 #include <cassert>
 #include <cstdarg>
+#include <cerrno>
+#include <cstdio>
+#include <cwchar>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #define TRUE true
 #define FALSE false

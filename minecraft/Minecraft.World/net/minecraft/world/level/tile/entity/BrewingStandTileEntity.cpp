@@ -1,3 +1,5 @@
+#include "Minecraft.World/Header Files/stdafx.h"
+
 #include "nbt/com.mojang.nbt.h"
 #include "BrewingStandTileEntity.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"

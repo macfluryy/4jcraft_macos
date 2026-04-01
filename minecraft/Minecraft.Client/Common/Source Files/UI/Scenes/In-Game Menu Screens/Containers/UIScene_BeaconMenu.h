@@ -2,6 +2,7 @@
 
 #include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_BeaconEffectButton.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_BeaconMenu.h"
 
 class UIScene_BeaconMenu : public UIScene_AbstractContainerMenu,

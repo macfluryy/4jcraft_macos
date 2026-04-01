@@ -1,5 +1,7 @@
 #include <cmath>
 
+#include "Minecraft.World/Header Files/stdafx.h"
+
 #include "EnchantmentTableTileEntity.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"

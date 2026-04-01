@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include "java/File.h"
+
 #include "FileHeader.h"
 #include "ConsoleSavePath.h"
 

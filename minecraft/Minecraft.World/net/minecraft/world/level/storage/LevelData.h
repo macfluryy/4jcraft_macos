@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <format>
 #include <memory>
+#include <vector>
 #include <string>
 
 #include "Minecraft.World/net/minecraft/world/level/GameRules.h"

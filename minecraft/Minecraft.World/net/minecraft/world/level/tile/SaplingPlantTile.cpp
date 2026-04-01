@@ -5,6 +5,8 @@
 
 #include "SaplingPlantTile.h"
 
+#include "strings.h"
+
 int Sapling::SAPLING_NAMES[SAPLING_NAMES_SIZE] = {
     IDS_TILE_SAPLING_OAK, IDS_TILE_SAPLING_SPRUCE, IDS_TILE_SAPLING_BIRCH,
     IDS_TILE_SAPLING_JUNGLE};

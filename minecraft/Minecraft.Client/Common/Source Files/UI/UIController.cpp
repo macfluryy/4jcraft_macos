@@ -4,6 +4,7 @@
 #include "UI.h"
 #include "UIScene.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.Client/Header Files/BufferedImage.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"

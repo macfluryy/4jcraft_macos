@@ -1,6 +1,10 @@
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "Minecraft.Client/Common/Source Files/UI/UI.h"
 #include "UIScene_Keyboard.h"
+
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+
 
 #define KEYBOARD_DONE_TIMER_ID 0
 #define KEYBOARD_DONE_TIMER_TIME 100

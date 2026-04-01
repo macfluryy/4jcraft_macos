@@ -6,6 +6,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 
+#include "strings.h"
+
 const unsigned int WoodSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
     IDS_TILE_STONESLAB_OAK,
     IDS_TILE_STONESLAB_SPRUCE,

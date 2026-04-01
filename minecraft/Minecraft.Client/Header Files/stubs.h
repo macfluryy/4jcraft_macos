@@ -157,6 +157,7 @@ void glActiveTexture(int);
 #endif
 
 #ifdef __linux__
+#include "java/File.h"
 
 class GL11 {
 public:
@@ -217,7 +218,6 @@ public:
 class ZipEntry {};
 class InputStream;
 
-class File;
 class ZipFile {
 public:
     ZipFile(File* file) {}

@@ -1,5 +1,11 @@
+#include <cassert>
+#include <cstdint>
+#include <vector>
+
 #include "java/File.h"
 #include "java/InputOutputStream/FileOutputStream.h"
+
+#include "../../../Minecraft.World/ConsoleHelpers/StringHelpers.h" // 4jcraft TODO
 
 // Creates a file output stream to write to the file represented by the
 // specified File object. A new FileDescriptor object is created to represent

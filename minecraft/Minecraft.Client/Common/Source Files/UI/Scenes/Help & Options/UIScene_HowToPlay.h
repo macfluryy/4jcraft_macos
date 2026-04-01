@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_DynamicLabel.h"
 
 class UIScene_HowToPlay : public UIScene {
 public:

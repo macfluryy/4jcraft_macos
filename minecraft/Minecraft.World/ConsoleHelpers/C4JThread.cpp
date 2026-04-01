@@ -1,4 +1,4 @@
-#include <bits/cpu-set.h>
+#include <sched.h>
 #include <bit>
 #include <cassert>
 #include <cerrno>

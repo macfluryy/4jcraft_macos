@@ -1,5 +1,7 @@
 #ifdef __linux__
 
+#include <cstring>
+
 #include "4J.Render/4J_Render.h"
 #include "java/IntBuffer.h"
 #include "java/FloatBuffer.h"

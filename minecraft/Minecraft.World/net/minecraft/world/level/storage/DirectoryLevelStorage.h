@@ -31,6 +31,8 @@
 #include <vector>
 
 #include "java/File.h"
+#include "nbt/CompoundTag.h"
+
 #include "LevelStorage.h"
 #include "PlayerIO.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"

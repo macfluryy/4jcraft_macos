@@ -1,5 +1,7 @@
 #include "WaterWorkerEnchantment.h"
 
+#include "strings.h"
+
 WaterWorkerEnchantment::WaterWorkerEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::armor_head) {
     setDescriptionId(IDS_ENCHANTMENT_WATER_WORKER);

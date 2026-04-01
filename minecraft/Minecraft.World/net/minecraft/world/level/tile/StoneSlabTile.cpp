@@ -4,6 +4,8 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "StoneSlabTile.h"
 
+#include "strings.h"
+
 const unsigned int StoneSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
     IDS_TILE_STONESLAB_STONE,       IDS_TILE_STONESLAB_SAND,
     IDS_TILE_STONESLAB_WOOD,        IDS_TILE_STONESLAB_COBBLE,

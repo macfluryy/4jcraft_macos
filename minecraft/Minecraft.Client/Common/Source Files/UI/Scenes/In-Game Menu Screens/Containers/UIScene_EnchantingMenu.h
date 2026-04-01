@@ -3,6 +3,7 @@
 #include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_EnchantingMenu.h"
 #include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_EnchantmentButton.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_EnchantmentBook.h"
 
 class InventoryMenu;
 

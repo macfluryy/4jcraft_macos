@@ -1,5 +1,6 @@
-
 #include "AnimalChest.h"
+
+#include "strings.h"
 
 AnimalChest::AnimalChest(const std::wstring& name, int size)
     : SimpleContainer(IDS_CONTAINER_ANIMAL, name, false, size) {}

@@ -8,7 +8,7 @@ using namespace std;
 #include <string>
 
 #include "Minecraft.World/Header Files/SoundTypes.h"
-#include "./miniaudio.h"
+#include "miniaudio.h"
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "Minecraft.Client/Common/Source Files/Audio/Consoles_SoundEngine.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"

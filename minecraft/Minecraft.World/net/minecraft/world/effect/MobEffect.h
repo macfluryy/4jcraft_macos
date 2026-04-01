@@ -4,6 +4,7 @@
 #include "Minecraft.Client/Common/App_enums.h"
 
 #include <unordered_map>
+#include <memory>
 
 class Mob;
 class MobEffectInstance;

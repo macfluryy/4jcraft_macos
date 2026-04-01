@@ -1,5 +1,7 @@
 #include "Attribute.h"
 
+#include "strings.h"
+
 const int Attribute::AttributeNames[] = {
     IDS_ATTRIBUTE_NAME_GENERIC_MAXHEALTH,
     IDS_ATTRIBUTE_NAME_GENERIC_FOLLOWRANGE,

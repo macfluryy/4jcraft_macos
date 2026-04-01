@@ -1,3 +1,4 @@
+#include <cmath>
 
 #include "WitherBossRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/model/WitherBossModel.h"

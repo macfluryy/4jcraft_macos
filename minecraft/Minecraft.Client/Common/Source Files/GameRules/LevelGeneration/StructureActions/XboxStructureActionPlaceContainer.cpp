@@ -12,6 +12,7 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 
 XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer() {
     m_tile = Tile::chest_Id;

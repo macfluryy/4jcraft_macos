@@ -1,3 +1,5 @@
+#include <optional>
+
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.World/net/minecraft/locale/net.minecraft.locale.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
@@ -15,8 +17,8 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Tile.h"
-#include <optional>
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 

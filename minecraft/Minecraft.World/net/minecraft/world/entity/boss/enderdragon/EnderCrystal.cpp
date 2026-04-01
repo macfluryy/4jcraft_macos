@@ -4,6 +4,7 @@
 #include "net.minecraft.world.entity.boss.enderdragon.h"
 #include "EnderCrystal.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 
 void EnderCrystal::_init(Level* level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

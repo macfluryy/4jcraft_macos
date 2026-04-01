@@ -1,6 +1,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "UntouchingEnchantment.h"
 
+#include "strings.h"
+
 UntouchingEnchantment::UntouchingEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::digger) {
     setDescriptionId(IDS_ENCHANTMENT_UNTOUCHING);

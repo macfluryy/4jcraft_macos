@@ -1,6 +1,7 @@
 #include <GL/gl.h>
 #include <assert.h>
-#include <string.h>
+#include <string>
+#include <cstring>
 #include <cstdint>
 #include <utility>
 
@@ -460,7 +461,7 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
                 continue;
             }
 
-            wstring resourceName = wstring(preLoaded[textureName]) + L".png";
+            std::wstring resourceName = std::wstring(preLoaded[textureName]) + L".png";
             BufferedImage* image = readImage(textureName, resourceName);
             if (image == nullptr) {
                 continue;

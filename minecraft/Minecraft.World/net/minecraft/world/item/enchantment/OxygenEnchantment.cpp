@@ -1,5 +1,7 @@
 #include "OxygenEnchantment.h"
 
+#include "strings.h"
+
 OxygenEnchantment::OxygenEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::armor_head) {
     setDescriptionId(IDS_ENCHANTMENT_OXYGEN);

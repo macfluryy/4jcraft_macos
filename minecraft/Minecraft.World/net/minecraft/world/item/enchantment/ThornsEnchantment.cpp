@@ -4,6 +4,8 @@
 #include "Minecraft.World/net/minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "ThornsEnchantment.h"
 
+#include "strings.h"
+
 const float ThornsEnchantment::CHANCE_PER_LEVEl = 0.15f;
 
 ThornsEnchantment::ThornsEnchantment(int id, int freq)

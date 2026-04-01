@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_DynamicLabel.h"
+#include "Minecraft.Client/Common/Source Files/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 
 class UIScene_EULA : public UIScene {

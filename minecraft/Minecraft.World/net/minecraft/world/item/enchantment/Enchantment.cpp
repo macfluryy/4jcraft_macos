@@ -4,6 +4,8 @@
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Enchantment.h"
 
+#include "strings.h"
+
 // Enchantment *Enchantment::enchantments[256];
 std::vector<Enchantment*> Enchantment::enchantments = std::vector<Enchantment*>(256);
 std::vector<Enchantment*> Enchantment::validEnchantments;

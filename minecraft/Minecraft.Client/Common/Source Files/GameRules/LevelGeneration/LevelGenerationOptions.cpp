@@ -1,8 +1,8 @@
-
-
 #include <fstream>
 #include <filesystem>
 #include <unordered_set>
+
+#include "Minecraft.Client/Header Files/stdafx.h"
 
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
@@ -13,6 +13,9 @@
 #include "LevelGenerationOptions.h"
 #include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
 #include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
+#include "Minecraft.World/x64headers/extraX64.h"
+
+#include "4J_Storage.h"
 
 JustGrSource::JustGrSource() {
     m_displayName = L"Default_DisplayName";

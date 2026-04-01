@@ -4,6 +4,8 @@
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "ProtectionEnchantment.h"
 
+#include "strings.h"
+
 const int ProtectionEnchantment::names[] = {
     IDS_ENCHANTMENT_PROTECT_ALL, IDS_ENCHANTMENT_PROTECT_FIRE,
     IDS_ENCHANTMENT_PROTECT_FALL, IDS_ENCHANTMENT_PROTECT_EXPLOSION,

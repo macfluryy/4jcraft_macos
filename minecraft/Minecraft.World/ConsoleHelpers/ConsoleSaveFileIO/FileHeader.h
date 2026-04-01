@@ -4,6 +4,7 @@
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
 
 #include <cstring>
+#include <string>
 
 // The first 4 bytes is the location of the header (the header itself is at the
 // end of the file) Then 4 bytes for the size of the header Then 2 bytes for the

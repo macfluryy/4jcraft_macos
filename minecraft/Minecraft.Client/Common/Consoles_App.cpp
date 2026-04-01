@@ -50,6 +50,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
 #include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 #include "4J_Input.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"

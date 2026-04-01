@@ -13,9 +13,11 @@
 #include "net.minecraft.world.entity.boss.enderdragon.h"
 #include "Minecraft.World/net/minecraft/world/level/pathfinder/net.minecraft.world.level.pathfinder.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "EnderDragon.h"
 #include <limits>
 #include <optional>
+#include <cmath>
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 
@@ -919,7 +921,7 @@ void EnderDragon::findNewTarget() {
                 // More likely to strafe a player if they are close to the egg,
                 // or there are not many crystals remaining
                 else if (playerNearestToEgg != nullptr &&
-                         (random->nextInt(abs(dist) + 2) == 0 ||
+                         (random->nextInt(std::abs(dist) + 2) == 0 ||
                           random->nextInt(m_remainingCrystalsCount + 2) == 0)) {
                     setSynchedAction(e_EnderdragonAction_StrafePlayer);
 #if PRINT_DRAGON_STATE_CHANGE_MESSAGES
