@@ -54,7 +54,7 @@ public:
         Compression::ECompressionTypes compressionType;
 
         _XboxSchematicInitParam() {
-            ZeroMemory(name, 64 * (sizeof(wchar_t)));
+            memset(name, 0,  64 * (sizeof(wchar_t)));
             startX = startY = startZ = endX = endY = endZ = 0;
             bSaveMobs = false;
             compressionType = Compression::eCompressionType_None;

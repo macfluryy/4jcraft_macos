@@ -270,7 +270,7 @@ void UIScene_LoadMenu::tick() {
         unsigned int uiHostOptions = 0;
 
         char szSeed[50];
-        ZeroMemory(szSeed, 50);
+        memset(szSeed, 0,  50);
         app.GetImageTextData(
             m_pbThumbnailData, m_uiThumbnailSize, (unsigned char*)&szSeed,
             uiHostOptions, bHostOptionsRead, m_MoreOptionsParams.dwTexturePack);

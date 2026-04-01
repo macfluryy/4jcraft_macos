@@ -599,7 +599,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
     LeaderboardEntry* leaderboardEntry =
         &(m_leaderboard.m_entries[leaderboardEntryIndex]);
 
-    ZeroMemory(leaderboardEntry, sizeof(LeaderboardEntry));
+    memset(leaderboardEntry, 0,  sizeof(LeaderboardEntry));
     leaderboardEntry->m_xuid = statsRow->m_uid;
 
     // Copy the rank
@@ -635,7 +635,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
     // Copy the other columns
     for (unsigned int i = 0; i < statsRow->m_statsSize; i++) {
         leaderboardEntry->m_columns[i] = statsRow->m_statsData[i];
-        ZeroMemory(leaderboardEntry->m_wcColumns[i], 12 * sizeof(wchar_t));
+        memset(leaderboardEntry->m_wcColumns[i], 0,  12 * sizeof(wchar_t));
         if (!isDistanceLeaderboard) {
             unsigned int displayValue = leaderboardEntry->m_columns[i];
             if (displayValue > 99999) displayValue = 99999;

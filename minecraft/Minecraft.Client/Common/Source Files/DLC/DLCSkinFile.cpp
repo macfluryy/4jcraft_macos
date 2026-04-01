@@ -107,7 +107,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
         case DLCManager::e_DLCParamType_Box: {
             wchar_t wchBodyPart[10];
             SKIN_BOX* pSkinBox = new SKIN_BOX;
-            ZeroMemory(pSkinBox, sizeof(SKIN_BOX));
+            memset(pSkinBox, 0,  sizeof(SKIN_BOX));
 
             swscanf_s(value.c_str(), L"%9ls%f%f%f%f%f%f%f%f", wchBodyPart, 10,
                       &pSkinBox->fX, &pSkinBox->fY, &pSkinBox->fZ,

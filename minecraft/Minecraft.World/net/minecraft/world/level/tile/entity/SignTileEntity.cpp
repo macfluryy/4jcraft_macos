@@ -111,7 +111,7 @@ void SignTileEntity::setChanged() {
             for (int i = 0; i < MAX_SIGN_LINES; ++i)
             {
                     wcMessages[i]=new wchar_t [MAX_LINE_LENGTH+1];
-                    ZeroMemory(wcMessages[i],sizeof(wchar_t)*(MAX_LINE_LENGTH+1));
+                    memset(wcMessages[i], 0, sizeof(wchar_t)*(MAX_LINE_LENGTH+1));
                     if(m_wsmessages[i].length()>0)
                     {
                             memcpy(wcMessages[i],m_wsmessages[i].c_str(),m_wsmessages[i].length()*sizeof(wchar_t));

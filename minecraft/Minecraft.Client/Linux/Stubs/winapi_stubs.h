@@ -14,9 +14,6 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-#define RtlZeroMemory(Destination, Length) memset((Destination), 0, (Length))
-#define ZeroMemory RtlZeroMemory
-
 #define __cdecl
 #define _vsnprintf_s vsnprintf;
 

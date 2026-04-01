@@ -237,7 +237,7 @@ void UIScene_Credits::tick() {
 
                 wchar_t* creditsString = new wchar_t[128];
                 if (pDef->m_iStringID[0] == NO_TRANSLATED_STRING) {
-                    ZeroMemory(creditsString, 128);
+                    memset(creditsString, 0,  128);
                     memcpy(creditsString, sanitisedString.c_str(),
                            sizeof(wchar_t) * sanitisedString.length());
                 } else if (pDef->m_iStringID[1] != NO_TRANSLATED_STRING) {

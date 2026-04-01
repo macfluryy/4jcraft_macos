@@ -99,7 +99,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     std::uint8_t playerIndex = 0;
     {
         bool usedIndexes[MINECRAFT_NET_MAX_PLAYERS];
-        ZeroMemory(&usedIndexes, MINECRAFT_NET_MAX_PLAYERS * sizeof(bool));
+        memset(&usedIndexes, 0,  MINECRAFT_NET_MAX_PLAYERS * sizeof(bool));
         for (auto it = players.begin(); it < players.end(); ++it) {
             usedIndexes[(int)(*it)->getPlayerIndex()] = true;
         }

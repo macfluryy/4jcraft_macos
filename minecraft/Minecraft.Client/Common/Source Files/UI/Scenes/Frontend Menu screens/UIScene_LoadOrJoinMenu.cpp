@@ -1099,7 +1099,7 @@ void UIScene_LoadOrJoinMenu::UpdateGamesList() {
     }
 
     SessionID selectedSessionId;
-    ZeroMemory(&selectedSessionId, sizeof(SessionID));
+    memset(&selectedSessionId, 0,  sizeof(SessionID));
     if (pSelectedSession != nullptr)
         selectedSessionId = pSelectedSession->sessionId;
     pSelectedSession = nullptr;
@@ -1476,7 +1476,7 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
             // bring up a keyboard
             wchar_t wSaveName[128];
             // CD - Fix - We must memset the SaveName
-            ZeroMemory(wSaveName, 128 * sizeof(wchar_t));
+            memset(wSaveName, 0,  128 * sizeof(wchar_t));
             mbstowcs(
                 wSaveName,
                 pClass
@@ -1722,7 +1722,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                                             // on saving games that
 
                 std::uint8_t bTextMetadata[88];
-                ZeroMemory(bTextMetadata, 88);
+                memset(bTextMetadata, 0,  88);
                 unsigned int hostOptions =
                     app.getRemoteStorage()->getSaveHostOptions();
                 int iTextMetadataBytes = app.CreateImageTextData(
@@ -1898,7 +1898,7 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                                                 // for use on saving games that
 
                     std::uint8_t bTextMetadata[88];
-                    ZeroMemory(bTextMetadata, 88);
+                    memset(bTextMetadata, 0,  88);
                     unsigned int remoteHostOptions =
                         app.getRemoteStorage()->getSaveHostOptions();
                     app.SetGameHostOption(eGameHostOption_All,

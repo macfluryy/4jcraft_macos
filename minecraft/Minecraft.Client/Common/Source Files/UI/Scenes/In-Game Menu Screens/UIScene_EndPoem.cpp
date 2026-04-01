@@ -235,7 +235,7 @@ void UIScene_EndPoem::updateNoise() {
                 colour = eHTMLColor_9;
             else if (randomVal == 2)
                 colour = eHTMLColor_a;
-            ZeroMemory(replacements, 64 * sizeof(wchar_t));
+            memset(replacements, 0,  64 * sizeof(wchar_t));
             swprintf(
                 replacements, 64,
                 L"<font color=\"#%08x\" shadowcolor=\"#80000000\">%ls</font>",

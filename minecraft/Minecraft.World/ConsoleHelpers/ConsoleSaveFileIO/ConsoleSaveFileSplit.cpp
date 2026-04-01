@@ -505,7 +505,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
                 // 4J Stu - Saves created between 2/12/2011 and 7/12/2011 will
                 // have this problem
                 app.DebugPrintf("Invalid save data format\n");
-                ZeroMemory(pvSaveMem, fileSize);
+                memset(pvSaveMem, 0,  fileSize);
                 // Clear the first 8 bytes that reference the header
                 header.WriteHeader(pvSaveMem);
             } else {
@@ -542,7 +542,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
 #if !defined(_CONTENT_PACKAGE)
                     __debugbreak();
 #endif
-                    ZeroMemory(pvSaveMem, fileSize);
+                    memset(pvSaveMem, 0,  fileSize);
                     // Clear the first 8 bytes that reference the header
                     header.WriteHeader(pvSaveMem);
                 }
@@ -1347,7 +1347,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
         PIXEndNamedEvent();
 
-        ZeroMemory(compData, 8);
+        memset(compData, 0,  8);
         int saveVer = 0;
         memcpy(compData, &saveVer, sizeof(int));
         memcpy(compData + 4, &fileSize, sizeof(int));
@@ -1363,7 +1363,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             unsigned int dwDataSizeSaveImage = 0;
 
             std::uint8_t bTextMetadata[88];
-            ZeroMemory(bTextMetadata, 88);
+            memset(bTextMetadata, 0,  88);
 
             int64_t seed = 0;
             bool hasSeed = false;

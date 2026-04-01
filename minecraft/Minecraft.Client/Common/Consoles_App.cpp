@@ -143,11 +143,11 @@ CMinecraftApp::CMinecraftApp() {
     m_bDebugOptions = false;
 #endif
 
-    // ZeroMemory(m_PreviewBuffer,sizeof(XSOCIAL_PREVIEWIMAGE)*XUSER_MAX_COUNT);
+    // memset(m_PreviewBuffer, 0, sizeof(XSOCIAL_PREVIEWIMAGE)*XUSER_MAX_COUNT);
 
     m_xuidNotch = INVALID_XUID;
 
-    ZeroMemory(&m_InviteData, sizeof(JoinFromInviteData));
+    memset(&m_InviteData, 0,  sizeof(JoinFromInviteData));
 
     // 	m_bRead_TMS_XUIDS_XML=false;
     // 	m_bRead_TMS_DLCINFO_XML=false;
@@ -164,7 +164,7 @@ CMinecraftApp::CMinecraftApp() {
     m_iTotalDLCInstalled = 0;
     mfTrialPausedTime = 0.0f;
     m_uiAutosaveTimer = 0;
-    ZeroMemory(m_pszUniqueMapName, 14);
+    memset(m_pszUniqueMapName, 0,  14);
 
     m_bNewDLCAvailable = false;
     m_bSeenNewDLCTip = false;
@@ -177,7 +177,7 @@ CMinecraftApp::CMinecraftApp() {
     m_GameNewHellScale = 0;
 #endif
 
-    ZeroMemory(m_playerColours, MINECRAFT_NET_MAX_PLAYERS);
+    memset(m_playerColours, 0,  MINECRAFT_NET_MAX_PLAYERS);
 
     m_iDLCOfferC = 0;
     m_bAllDLCContentRetrieved = true;
@@ -4816,7 +4816,7 @@ int CMinecraftApp::TipsSortFunction(const void* a, const void* b) {
 void CMinecraftApp::InitialiseTips() {
     // We'll randomise the tips at start up based on their priority
 
-    ZeroMemory(m_TipIDA, sizeof(m_TipIDA));
+    memset(m_TipIDA, 0,  sizeof(m_TipIDA));
 
     // Make the first tip tell you that you can play splitscreen in HD modes if
     // you are in SD
@@ -5261,7 +5261,7 @@ int32_t CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
 
     if (eTempXuid != eXUID_Undefined) {
         pMojangData = new MOJANG_DATA;
-        ZeroMemory(pMojangData, sizeof(MOJANG_DATA));
+        memset(pMojangData, 0,  sizeof(MOJANG_DATA));
         pMojangData->eXuid = eTempXuid;
 
         wcsncpy(pMojangData->wchSkin, pSkin, MAX_CAPENAME_SIZE);
@@ -5313,7 +5313,7 @@ int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        wchar_t* pDataFile) {
     int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
-    ZeroMemory(pDLCData, sizeof(DLC_INFO));
+    memset(pDLCData, 0,  sizeof(DLC_INFO));
     pDLCData->ullOfferID_Full = ullOfferID_Full;
     pDLCData->ullOfferID_Trial = ullOfferID_Trial;
     pDLCData->eDLCType = e_DLC_NotDefined;
@@ -5375,7 +5375,7 @@ int32_t CMinecraftApp::RegisterDLCData(char* pchDLCName,
     char chDLCType[3];
     int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
-    ZeroMemory(pDLCData, sizeof(DLC_INFO));
+    memset(pDLCData, 0,  sizeof(DLC_INFO));
 
     chDLCType[0] = pchDLCName[0];
     chDLCType[1] = pchDLCName[1];
@@ -6203,7 +6203,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
             // check that it's the 4J text
             unsigned char* pszKeyword = &ucPtr[uiCount];
             while (pszKeyword < ucPtr + uiCount + uiChunkLen) {
-                ZeroMemory(szKeyword, 80);
+                memset(szKeyword, 0,  80);
                 unsigned int uiKeywordC = 0;
                 while (*pszKeyword != 0) {
                     szKeyword[uiKeywordC++] = *pszKeyword;
@@ -6225,7 +6225,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
                     unsigned int uiValueC = 0;
                     unsigned char pszHostOptions[9];  // Hex representation of
                                                       // unsigned int
-                    ZeroMemory(&pszHostOptions, 9);
+                    memset(&pszHostOptions, 0,  9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
                            uiValueC < 8) {
@@ -6242,7 +6242,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
                     unsigned int uiValueC = 0;
                     unsigned char pszTexturePack[9];  // Hex representation of
                                                       // unsigned int
-                    ZeroMemory(&pszTexturePack, 9);
+                    memset(&pszTexturePack, 0,  9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
                            uiValueC < 8) {
@@ -6653,7 +6653,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                             // app.DebugPrintf("Adding a request to the TMSPP
                             // download queue - %ls\n",pDLC->wchBanner);
                             TMSPPRequest* pTMSPPreq = new TMSPPRequest;
-                            ZeroMemory(pTMSPPreq, sizeof(TMSPPRequest));
+                            memset(pTMSPPreq, 0,  sizeof(TMSPPRequest));
 
                             pTMSPPreq->CallbackFunc =
                                 &CMinecraftApp::TMSPPFileReturned;

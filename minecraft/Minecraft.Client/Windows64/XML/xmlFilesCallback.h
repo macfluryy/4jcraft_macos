@@ -38,7 +38,7 @@ public:
                                   pAttributes[i].ValueLen);
                 } else if (_wcsicmp(wAttName, L"xuid") == 0) {
                     if (pAttributes[i].ValueLen <= 32) {
-                        ZeroMemory(wTemp, sizeof(wchar_t) * 35);
+                        memset(wTemp, 0,  sizeof(wchar_t) * 35);
                         wcsncpy_s(wTemp, pAttributes[i].strValue,
                                   pAttributes[i].ValueLen);
                         xuid = _wcstoui64(wTemp, nullptr, 10);
@@ -203,7 +203,7 @@ public:
                           pAttributes[i].NameLen);
                 if (_wcsicmp(wAttName, L"SortIndex") == 0) {
                     if (pAttributes[i].ValueLen <= 32) {
-                        ZeroMemory(wTemp, sizeof(wchar_t) * 35);
+                        memset(wTemp, 0,  sizeof(wchar_t) * 35);
                         wcsncpy_s(wTemp, pAttributes[i].strValue,
                                   pAttributes[i].ValueLen);
                         uiSortIndex = wcstoul(wTemp, nullptr, 16);
@@ -215,14 +215,14 @@ public:
                     }
                 } else if (_wcsicmp(wAttName, L"Full") == 0) {
                     if (pAttributes[i].ValueLen <= 32) {
-                        ZeroMemory(wTemp, sizeof(wchar_t) * 35);
+                        memset(wTemp, 0,  sizeof(wchar_t) * 35);
                         wcsncpy_s(wTemp, pAttributes[i].strValue,
                                   pAttributes[i].ValueLen);
                         ullFull = _wcstoui64(wTemp, nullptr, 16);
                     }
                 } else if (_wcsicmp(wAttName, L"Trial") == 0) {
                     if (pAttributes[i].ValueLen <= 32) {
-                        ZeroMemory(wTemp, sizeof(wchar_t) * 35);
+                        memset(wTemp, 0,  sizeof(wchar_t) * 35);
                         wcsncpy_s(wTemp, pAttributes[i].strValue,
                                   pAttributes[i].ValueLen);
                         ullTrial = _wcstoui64(wTemp, nullptr, 16);

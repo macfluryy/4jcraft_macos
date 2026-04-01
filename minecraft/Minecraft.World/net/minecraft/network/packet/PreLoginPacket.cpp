@@ -16,7 +16,7 @@ PreLoginPacket::PreLoginPacket() {
     m_dwPlayerCount = 0;
     m_friendsOnlyBits = 0;
     m_ugcPlayersVersion = 0;
-    ZeroMemory(m_szUniqueSaveName, m_iSaveNameLen);
+    memset(m_szUniqueSaveName, 0,  m_iSaveNameLen);
     m_serverSettings = 0;
     m_hostIndex = 0;
     m_texturePackId = 0;
@@ -29,7 +29,7 @@ PreLoginPacket::PreLoginPacket(std::wstring userName) {
     m_dwPlayerCount = 0;
     m_friendsOnlyBits = 0;
     m_ugcPlayersVersion = 0;
-    ZeroMemory(m_szUniqueSaveName, m_iSaveNameLen);
+    memset(m_szUniqueSaveName, 0,  m_iSaveNameLen);
     m_serverSettings = 0;
     m_hostIndex = 0;
     m_texturePackId = 0;

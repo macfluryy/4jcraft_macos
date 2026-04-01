@@ -67,7 +67,7 @@ RegionFile::RegionFile(ConsoleSaveFile* saveFile, File* path) {
         unsigned int numberOfBytesWritten = 0;
         unsigned int bytesToWrite = 0x1000 - (fileEntry->getFileSize() & 0xfff);
         std::uint8_t* zeroBytes = new std::uint8_t[bytesToWrite];
-        ZeroMemory(zeroBytes, bytesToWrite);
+        memset(zeroBytes, 0,  bytesToWrite);
 
         /* the file size is not a multiple of 4KB, grow it */
         m_saveFile->writeFile(fileEntry, zeroBytes, bytesToWrite,
@@ -455,7 +455,7 @@ void RegionFile::insertInitialSectors() {
     m_saveFile->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
     unsigned int numberOfBytesWritten = 0;
     std::uint8_t zeroBytes[SECTOR_BYTES];
-    ZeroMemory(zeroBytes, SECTOR_BYTES);
+    memset(zeroBytes, 0,  SECTOR_BYTES);
 
     /* we need to write the chunk offset table */
     m_saveFile->writeFile(fileEntry, zeroBytes, SECTOR_BYTES,

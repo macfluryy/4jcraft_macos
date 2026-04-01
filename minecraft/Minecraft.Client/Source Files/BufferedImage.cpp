@@ -88,7 +88,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
         }
 
         D3DXIMAGE_INFO ImageInfo;
-        ZeroMemory(&ImageInfo, sizeof(D3DXIMAGE_INFO));
+        memset(&ImageInfo, 0,  sizeof(D3DXIMAGE_INFO));
 
         if (foundOnDisk) {
             hr = RenderManager.LoadTextureData(wstringtofilename(finalPath),
@@ -164,7 +164,7 @@ BufferedImage::BufferedImage(std::uint8_t* pbData, std::uint32_t dataBytes) {
     }
 
     D3DXIMAGE_INFO ImageInfo;
-    ZeroMemory(&ImageInfo, sizeof(D3DXIMAGE_INFO));
+    memset(&ImageInfo, 0,  sizeof(D3DXIMAGE_INFO));
     int32_t hr =
         RenderManager.LoadTextureData(pbData, dataBytes, &ImageInfo, &data[0]);
 
