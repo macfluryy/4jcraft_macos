@@ -1197,7 +1197,7 @@ bool ConsoleSaveFileSplit::GetNumericIdentifierFromName(
         }
     }
     // Get x/z coords
-    swscanf_s(body, L"%d.%d.mcr", &x, &z);
+    swscanf(body, L"%d.%d.mcr", &x, &z);
 
     // Pack full id
     // 4jcraft added cast to unsigned

@@ -172,32 +172,6 @@ typedef struct _MEMORYSTATUS {
     size_t dwAvailVirtual;
 } MEMORYSTATUS, *LPMEMORYSTATUS;
 
-typedef struct _WIN32_FIND_DATAA {
-    DWORD dwFileAttributes;
-    FILETIME ftCreationTime;
-    FILETIME ftLastAccessTime;
-    FILETIME ftLastWriteTime;
-    DWORD nFileSizeHigh;
-    DWORD nFileSizeLow;
-    DWORD dwReserved0;
-    DWORD dwReserved1;
-    char cFileName[MAX_PATH];
-    char cAlternateFileName[14];
-} WIN32_FIND_DATAA, *PWIN32_FIND_DATAA, *LPWIN32_FIND_DATAA;
-
-typedef WIN32_FIND_DATAA WIN32_FIND_DATA;
-typedef PWIN32_FIND_DATAA PWIN32_FIND_DATA;
-typedef LPWIN32_FIND_DATAA LPWIN32_FIND_DATA;
-
-typedef struct _WIN32_FILE_ATTRIBUTE_DATA {
-    DWORD dwFileAttributes;
-    FILETIME ftCreationTime;
-    FILETIME ftLastAccessTime;
-    FILETIME ftLastWriteTime;
-    DWORD nFileSizeHigh;
-    DWORD nFileSizeLow;
-} WIN32_FILE_ATTRIBUTE_DATA, *LPWIN32_FILE_ATTRIBUTE_DATA;
-
 typedef enum _GET_FILEEX_INFO_LEVELS {
     GetFileExInfoStandard,
     GetFileExMaxInfoLevel
@@ -381,57 +355,6 @@ static inline bool ReadFile(HANDLE hFile, void* lpBuffer,
     return n >= 0;
 }
 
-static inline bool WriteFile(HANDLE hFile, const void* lpBuffer,
-                             DWORD nNumberOfBytesToWrite,
-                             DWORD* lpNumberOfBytesWritten,
-                             void* lpOverlapped) {
-    ssize_t n = write((int)(intptr_t)hFile, lpBuffer, nNumberOfBytesToWrite);
-    if (lpNumberOfBytesWritten) *lpNumberOfBytesWritten = n >= 0 ? (DWORD)n : 0;
-    return n >= 0;
-}
-
-static inline DWORD SetFilePointer(HANDLE hFile, LONG lDistanceToMove,
-                                   LONG* lpDistanceToMoveHigh,
-                                   DWORD dwMoveMethod) {
-    off_t offset = lDistanceToMove;
-    if (lpDistanceToMoveHigh) offset |= ((off_t)*lpDistanceToMoveHigh << 32);
-    off_t result = lseek((int)(intptr_t)hFile, offset, dwMoveMethod);
-    if (result == (off_t)-1) {
-        if (lpDistanceToMoveHigh) *lpDistanceToMoveHigh = -1;
-        return INVALID_SET_FILE_POINTER;
-    }
-    if (lpDistanceToMoveHigh) *lpDistanceToMoveHigh = (LONG)(result >> 32);
-    return (DWORD)(result & 0xFFFFFFFF);
-}
-
-static inline bool CreateDirectoryA(const char* lpPathName,
-                                    void* lpSecurityAttributes) {
-    return mkdir(lpPathName, 0755) == 0;
-}
-
-static inline bool CreateDirectory(const char* lpPathName,
-                                   void* lpSecurityAttributes) {
-    return CreateDirectoryA(lpPathName, lpSecurityAttributes);
-}
-
-static inline bool DeleteFileA(const char* lpFileName) {
-    return unlink(lpFileName) == 0;
-}
-
-static inline bool DeleteFile(const char* lpFileName) {
-    return DeleteFileA(lpFileName);
-}
-
-static inline bool MoveFileA(const char* lpExistingFileName,
-                             const char* lpNewFileName) {
-    return rename(lpExistingFileName, lpNewFileName) == 0;
-}
-
-static inline bool MoveFile(const char* lpExistingFileName,
-                            const char* lpNewFileName) {
-    return MoveFileA(lpExistingFileName, lpNewFileName);
-}
-
 // internal helper: convert FILETIME (100ns since 1601) to time_t (seconds since
 // 1970)
 static inline time_t _FileTimeToTimeT(const FILETIME& ft) {
@@ -467,15 +390,6 @@ static inline void _FillSystemTime(const struct tm* tm, long tv_nsec,
     lpSystemTime->wMilliseconds = (WORD)(tv_nsec / 1000000);  // ns to ms
 }
 
-// https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemtime
-static inline void GetSystemTime(LPSYSTEMTIME lpSystemTime) {
-    struct timespec ts;
-    _CurrentTimeSpec(&ts);
-    struct tm tm;
-    gmtime_r(&ts.tv_sec, &tm);  // UTC
-    _FillSystemTime(&tm, ts.tv_nsec, lpSystemTime);
-}
-
 // https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getlocaltime
 static inline void GetLocalTime(LPSYSTEMTIME lpSystemTime) {
     struct timespec ts;
@@ -483,27 +397,6 @@ static inline void GetLocalTime(LPSYSTEMTIME lpSystemTime) {
     struct tm tm;
     localtime_r(&ts.tv_sec, &tm);  // local time
     _FillSystemTime(&tm, ts.tv_nsec, lpSystemTime);
-}
-
-// https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-systemtimetofiletime
-static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
-                                        LPFILETIME lpFileTime) {
-    struct tm tm = {};
-    tm.tm_year = lpSystemTime->wYear - 1900;
-    tm.tm_mon = lpSystemTime->wMonth - 1;
-    tm.tm_mday = lpSystemTime->wDay;
-    tm.tm_hour = lpSystemTime->wHour;
-    tm.tm_min = lpSystemTime->wMinute;
-    tm.tm_sec = lpSystemTime->wSecond;
-
-    time_t t = timegm(&tm);
-    if (t == (time_t)-1) return false;
-
-    uint64_t ft = ((uint64_t)t + 11644473600ULL) * 10000000ULL;
-    ft += lpSystemTime->wMilliseconds * 10000ULL;
-    lpFileTime->dwLowDateTime = (DWORD)(ft & 0xFFFFFFFF);
-    lpFileTime->dwHighDateTime = (DWORD)(ft >> 32);
-    return true;
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
@@ -517,30 +410,6 @@ static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
     struct tm tm;
     gmtime_r(&t, &tm);  // UTC
     _FillSystemTime(&tm, remainder_ns, lpSystemTime);
-    return true;
-}
-static inline DWORD GetTickCount() {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    // milliseconds
-    return (long long)ts.tv_sec * 1000 + (long long)ts.tv_nsec / 1000000;
-}
-
-static inline bool QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency) {
-    // nanoseconds
-    lpFrequency->QuadPart = 1000000000;
-    return false;
-}
-
-static inline bool QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount) {
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-
-    // nanoseconds
-    lpPerformanceCount->QuadPart =
-        ((long long)ts.tv_sec * 1000000000) + (long long)ts.tv_nsec;
-
     return true;
 }
 
@@ -806,23 +675,6 @@ static inline HANDLE GetCurrentThread() {
 }
 
 template <size_t N>
-static inline int sprintf_s(char (&buf)[N], const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    int ret = vsnprintf(buf, N, fmt, args);
-    va_end(args);
-    return ret;
-}
-
-static inline int sprintf_s(char* buf, size_t sz, const char* fmt, ...) {
-    va_list args;
-    va_start(args, fmt);  // fucking horrid
-    int ret = vsnprintf(buf, sz, fmt, args);
-    va_end(args);
-    return ret;
-}
-
-template <size_t N>
 static inline int swprintf_s(wchar_t (&buf)[N], const wchar_t* fmt, ...) {
     va_list args;
     va_start(args, fmt);
@@ -879,11 +731,6 @@ static inline bool VirtualFree(void* lpAddress, size_t dwSize,
     return true;
 }
 
-#define swscanf_s swscanf
-#define sscanf_s sscanf
 #define _wcsicmp wcscasecmp
-#define _stricmp strcasecmp
-#define _strnicmp strncasecmp
-#define _wcsnicmp wcsncasecmp
 
 #endif  // WINAPISTUBS_H
