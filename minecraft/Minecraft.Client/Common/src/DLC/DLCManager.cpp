@@ -6,7 +6,7 @@
 #include "DLCPack.h"
 #include "DLCFile.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/include/PortableFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
 #include "Minecraft.Client/Common/src/UI/UIController.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"

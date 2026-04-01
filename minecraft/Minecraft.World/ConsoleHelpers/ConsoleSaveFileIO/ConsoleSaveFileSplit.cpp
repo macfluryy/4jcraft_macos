@@ -9,7 +9,7 @@
 #include <format>
 #include <utility>
 
-#include "Minecraft.World/include/PortableFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
 #include "ConsoleSaveFileSplit.h"
 #include "ConsoleSaveFileConverter.h"
 #include "java/File.h"

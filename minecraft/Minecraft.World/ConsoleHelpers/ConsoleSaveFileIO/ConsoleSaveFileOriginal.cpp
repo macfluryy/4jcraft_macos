@@ -9,7 +9,7 @@
 #include <format>
 #include <vector>
 
-#include "Minecraft.World/include/PortableFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
 #include "ConsoleSaveFileOriginal.h"
 #include "java/File.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

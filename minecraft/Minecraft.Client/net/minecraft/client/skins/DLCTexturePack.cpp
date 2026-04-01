@@ -9,7 +9,7 @@
 #include "Minecraft.Client/Common/src/DLC/DLCUIDataFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCTextureFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCLocalisationFile.h"
-#include "Minecraft.World/include/PortableFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Common/src/DLC/DLCAudioFile.h"
 #include "4J_Profile.h"

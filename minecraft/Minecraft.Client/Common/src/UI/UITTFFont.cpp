@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <cstdio>
 
-#include "Minecraft.World/include/PortableFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
 #include "UITTFFont.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

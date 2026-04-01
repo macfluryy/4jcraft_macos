@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <utility>
 
-#include "Minecraft.World/include/PortableFileIO.h"
+#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
 #include "Minecraft.World/include/compression.h"
 #include "ArchiveFile.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
