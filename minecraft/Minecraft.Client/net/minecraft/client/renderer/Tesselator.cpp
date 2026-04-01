@@ -6,7 +6,7 @@
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 bool Tesselator::TRIANGLE_MODE = false;
 bool Tesselator::USE_VBO = false;

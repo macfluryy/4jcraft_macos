@@ -8,7 +8,7 @@
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"

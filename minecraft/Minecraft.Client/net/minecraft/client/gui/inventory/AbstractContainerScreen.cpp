@@ -15,7 +15,7 @@
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 ItemRenderer* AbstractContainerScreen::itemRenderer = new ItemRenderer();
 

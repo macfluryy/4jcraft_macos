@@ -13,7 +13,7 @@
 #include "SimpleIcon.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/custom/CompassTexture.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/custom/ClockTexture.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.World/net/minecraft/world/Icon.h"

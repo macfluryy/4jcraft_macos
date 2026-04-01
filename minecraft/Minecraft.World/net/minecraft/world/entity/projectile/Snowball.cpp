@@ -1,5 +1,5 @@
 #include "Snowball.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/projectile/Throwable.h"

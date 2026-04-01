@@ -11,7 +11,7 @@
 #include "Minecraft.World/net/minecraft/stats/Stats.h"
 #include "Minecraft.World/net/minecraft/stats/Achievement.h"
 #include "Minecraft.World/net/minecraft/stats/Achievements.h"
-#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

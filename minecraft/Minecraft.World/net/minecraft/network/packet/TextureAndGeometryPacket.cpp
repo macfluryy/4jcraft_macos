@@ -4,7 +4,7 @@
 #include "PacketListener.h"
 #include "TextureAndGeometryPacket.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
-#include "Minecraft.Client/Common/Source Files/DLC/DLCSkinFile.h"
+#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

@@ -3,7 +3,7 @@
 #include "java/JavaMath.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

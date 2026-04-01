@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 void GuiComponent::hLine(int x0, int x1, int y, int col) {
     if (x1 < x0) {

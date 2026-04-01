@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Throwable.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

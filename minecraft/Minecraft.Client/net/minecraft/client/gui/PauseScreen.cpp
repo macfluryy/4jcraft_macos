@@ -13,7 +13,7 @@
 #include "4J_Profile.h"
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/locale/I18n.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

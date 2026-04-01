@@ -2,7 +2,7 @@
 
 #include "PlanterTileItem.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"

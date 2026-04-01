@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/include/stdafx.h"
 
 #include "net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
@@ -12,7 +12,7 @@
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "PotionItem.h"
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 #include "Minecraft.Client/Common/Potion_Macros.h"
 
 const std::wstring PotionItem::DEFAULT_ICON = L"potion";

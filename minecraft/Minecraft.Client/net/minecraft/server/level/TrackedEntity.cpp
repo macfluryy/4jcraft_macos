@@ -13,7 +13,7 @@
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "EntityTracker.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/net/minecraft/network/packet/AddEntityPacket.h"
@@ -53,9 +53,9 @@
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
 #include "Minecraft.World/net/minecraft/world/item/MapItem.h"
 #include "Minecraft.World/net/minecraft/world/level/saveddata/MapItemSavedData.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 #include "java/Class.h"
 
 class AttributeInstance;

@@ -1,6 +1,6 @@
 #include "HugeExplosionSeedParticle.h"
 #include "java/Random.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/particle/Particle.h"

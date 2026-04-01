@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/include/stdafx.h"
 
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
@@ -8,7 +8,7 @@
 #include "BiomeSource.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "platform/PlatformServices.h"
 
 // 4J - removal of separate temperature & downfall layers brought forward

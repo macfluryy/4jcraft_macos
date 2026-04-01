@@ -6,7 +6,7 @@
 #include "EnderMan.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

@@ -3,7 +3,7 @@
 #include <string>
 
 #include "MinecartFurnace.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"

@@ -4,7 +4,7 @@
 
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "ArmorItem.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/Class.h"
 #include "nbt/CompoundTag.h"

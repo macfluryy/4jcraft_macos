@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "BasicTreeFeature.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
@@ -11,9 +11,9 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 uint8_t BasicTree::axisConversionArray[] = {2, 0, 0, 1, 2, 1};
 

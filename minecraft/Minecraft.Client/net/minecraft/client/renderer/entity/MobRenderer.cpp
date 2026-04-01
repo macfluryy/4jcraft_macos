@@ -8,7 +8,7 @@
 #include "EntityRenderDispatcher.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"

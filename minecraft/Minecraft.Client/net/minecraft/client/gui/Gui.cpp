@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 #include "Gui.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"

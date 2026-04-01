@@ -1,6 +1,6 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/include/stdafx.h"
 #include <assert.h>
 #include <mutex>
 // #include <system_service.h>
@@ -51,17 +51,17 @@ static void sigsegv_handler(int sig) {
 
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
-#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ConnectScreen.h"
-// #include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
+// #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/include/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/App_Defines.h"

@@ -2,7 +2,7 @@
 
 #include "Entity.h"
 #include "java/JavaIntHash.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
 class Level;
 class CompoundTag;

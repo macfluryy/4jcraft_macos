@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.World/net/minecraft/network/packet/ContainerButtonClickPacket.h"
 #include "Minecraft.World/net/minecraft/network/packet/ContainerClickPacket.h"
 #include "Minecraft.World/net/minecraft/network/packet/CraftItemPacket.h"

@@ -9,7 +9,7 @@
 #include "Minecraft.World/net/minecraft/locale/Language.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/ChatScreen.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 void InBedChatScreen::init() {
     Keyboard::enableRepeatEvents(true);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Slime.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "java/Class.h"
 
 class Entity;

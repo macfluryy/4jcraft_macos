@@ -10,7 +10,7 @@
 #include "java/Random.h"
 #include "TitleScreen.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"

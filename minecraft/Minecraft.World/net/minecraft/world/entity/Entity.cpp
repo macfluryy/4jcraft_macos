@@ -12,7 +12,7 @@
 
 #include "SyncedEntityData.h"
 #include "EntityIO.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "EntityPos.h"
 #include "Entity.h"
 #include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
@@ -46,9 +46,9 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 thread_local bool Entity::m_tlsUseSmallIds = false;
 

@@ -105,14 +105,13 @@ platform_services_src = files('../platform/PlatformServices.cpp')
 client = executable(
   'Minecraft.Client',
   client_sources + platform_sources + platform_services_src + localisation[1],
-  include_directories: include_directories('Header Files', '..'),
+  include_directories: include_directories('include', '..'),
   dependencies: client_dependencies,
   cpp_args: global_cpp_args
   + global_cpp_defs
   + [
     '-DUNICODE',
     '-D_UNICODE',
-    # '-include', meson.current_source_dir() / 'Header Files/stdafx.h',
   ],
   c_args: global_cpp_defs + ['-DUNICODE', '-D_UNICODE'],
   install: true,

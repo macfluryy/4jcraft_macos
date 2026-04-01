@@ -7,7 +7,7 @@
 #include "TextureManager.h"
 #include "Texture.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Buffer.h"
 

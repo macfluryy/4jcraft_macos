@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"

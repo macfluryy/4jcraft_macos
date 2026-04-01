@@ -7,7 +7,7 @@
 #include "EntityHorse.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

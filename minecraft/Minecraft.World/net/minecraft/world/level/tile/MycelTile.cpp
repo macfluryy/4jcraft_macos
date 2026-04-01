@@ -1,7 +1,7 @@
 #include <string>
 
 #include "MycelTile.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"

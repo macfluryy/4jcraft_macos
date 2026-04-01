@@ -20,12 +20,12 @@
 
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
-#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
 #include "Minecraft.World/ConsoleHelpers/ThreadName.h"
 #include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ConnectScreen.h"
 // #include "Social/SocialManager.h"
-// #include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
+// #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
@@ -33,7 +33,7 @@
 #include "Sentient/SentientManager.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../Resource.h"
-#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/include/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 
 HINSTANCE hMyInst;

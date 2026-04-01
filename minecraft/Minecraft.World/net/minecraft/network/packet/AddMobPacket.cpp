@@ -7,7 +7,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 #include "Minecraft.World/net/minecraft/world/entity/SyncedEntityData.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
 AddMobPacket::AddMobPacket() {
     id = -1;

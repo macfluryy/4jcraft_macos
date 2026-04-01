@@ -2,7 +2,7 @@
 #include <chrono>
 #include <mutex>
 
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 #include "ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
@@ -43,13 +43,13 @@
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "PlayerChunkMap.h"
-#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "4J_Input.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
-#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 
 std::vector<WeighedTreasure*> ServerLevel::RANDOM_BONUS_ITEMS;
 

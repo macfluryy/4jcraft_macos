@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 
 class WindowsLeaderboardManager : public LeaderboardManager {
 public:

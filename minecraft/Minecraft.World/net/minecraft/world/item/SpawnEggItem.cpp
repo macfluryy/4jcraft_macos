@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/include/stdafx.h"
 
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
@@ -12,7 +12,7 @@
 #include "SpawnEggItem.h"
 #include "Minecraft.World/net/minecraft/world/Difficulty.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 

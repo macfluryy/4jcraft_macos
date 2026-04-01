@@ -7,7 +7,7 @@
 
 #include "Stat.h"
 #include "Stats.h"
-#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+#include "Minecraft.Client/Common/src/Console_Awards_enum.h"
 #include "java/Class.h"
 
 class DamageSource;
@@ -18,7 +18,7 @@ class Stat;
 
 // #include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
 
-// #include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+// #include "Minecraft.Client/Common/src/Console_Awards_enum.h"
 
 /**
         4J-JEV:

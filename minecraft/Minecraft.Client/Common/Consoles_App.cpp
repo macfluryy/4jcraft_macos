@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/GameRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
-#include "Minecraft.Client/Header Files/MobSkinMemTextureProcessor.h"
+#include "Minecraft.Client/include/MobSkinMemTextureProcessor.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
@@ -23,7 +23,7 @@
 #include "Minecraft.World/ConsoleHelpers/PathHelper.h"
 #include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
 #include "Minecraft.Client/net/minecraft/server/level/GameMode.h"
-#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #if defined(_WINDOWS64)
 #include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
 #include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"
@@ -32,8 +32,8 @@
 #include "Minecraft_Macros.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRules.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "java/InputOutputStream/InputOutputStream.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
@@ -41,27 +41,27 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/include/compression.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
-#include "Minecraft.Client/Common/Source Files/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Common/Source Files/Leaderboards/LeaderboardManager.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
 
 #include "4J_Input.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
-#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 
 #if defined(__linux__)
 #include <unistd.h>
 #include <climits>
 #endif
-#include "Minecraft.Client/Common/Source Files/UI/UI.h"
-#include "Minecraft.Client/Common/Source Files/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
 
 #include <thread>
 #include <chrono>

@@ -14,7 +14,7 @@
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "compression.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
@@ -28,9 +28,9 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFileCache.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 class DataInput;

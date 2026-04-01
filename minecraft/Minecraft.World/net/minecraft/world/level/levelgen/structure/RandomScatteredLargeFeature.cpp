@@ -3,7 +3,7 @@
 
 #include "ScatteredFeaturePieces.h"
 #include "RandomScatteredLargeFeature.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"
 #include "java/Random.h"

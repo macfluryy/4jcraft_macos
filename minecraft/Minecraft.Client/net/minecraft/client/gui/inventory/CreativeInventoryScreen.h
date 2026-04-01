@@ -4,7 +4,7 @@
 
 #include "AbstractContainerScreen.h"
 #include "Minecraft.World/net/minecraft/world/inventory/AbstractContainerMenu.h"
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 class Player;

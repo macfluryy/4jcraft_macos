@@ -1,6 +1,6 @@
 #include "GuiParticle.h"
 #include "java/Random.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 Random* GuiParticle::random = new Random();
 

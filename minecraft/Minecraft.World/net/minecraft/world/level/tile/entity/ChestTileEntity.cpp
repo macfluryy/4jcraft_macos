@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/include/stdafx.h"
 
 #include "nbt/com.mojang.nbt.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
@@ -12,7 +12,7 @@
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "ChestTileEntity.h"
 #include "Minecraft.World/net/minecraft/network/packet/ContainerOpenPacket.h"
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 
 int ChestTileEntity::getContainerType() {
     if (isBonusChest)

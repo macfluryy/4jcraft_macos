@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Packet.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class UpdateGameRuleProgressPacket

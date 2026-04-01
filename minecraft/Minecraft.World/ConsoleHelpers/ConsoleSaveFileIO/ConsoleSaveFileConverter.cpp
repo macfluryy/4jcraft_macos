@@ -3,7 +3,7 @@
 #include "ConsoleSaveFileIO.h"
 #include "ConsoleSaveFileConverter.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 
 void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile* sourceSave,
                                                  FileEntry* sourceFileEntry,

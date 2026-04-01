@@ -3,12 +3,12 @@
 
 #include "PacketListener.h"
 #include "PreLoginPacket.h"
-#include "Minecraft.Client/Common/Source Files/Network/PlatformNetworkManagerInterface.h"
+#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
+#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 
 PreLoginPacket::PreLoginPacket() {
     loginKey = L"";

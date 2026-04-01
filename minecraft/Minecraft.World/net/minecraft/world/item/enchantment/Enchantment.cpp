@@ -1,4 +1,4 @@
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/include/stdafx.h"
 
 #include "net.minecraft.world.item.enchantment.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"

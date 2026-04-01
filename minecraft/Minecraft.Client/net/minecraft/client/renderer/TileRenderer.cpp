@@ -10,12 +10,12 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Textures.h"
 #include "Tesselator.h"
-#include "Minecraft.Client/Header Files/FrameProfiler.h"
+#include "Minecraft.Client/include/FrameProfiler.h"
 #include "EntityTileRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.World/net/minecraft/Direction.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
@@ -63,9 +63,9 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/piston/PistonBaseTile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/piston/PistonExtensionTile.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 bool TileRenderer::fancy = true;
 

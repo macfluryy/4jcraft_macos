@@ -6,7 +6,7 @@
 
 #include "Packet.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/SkinBox.h"
 #include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 
 class DLCSkinFile;

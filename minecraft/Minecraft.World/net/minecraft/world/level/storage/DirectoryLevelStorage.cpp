@@ -18,8 +18,8 @@
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
@@ -37,9 +37,9 @@
 #include "Minecraft.World/net/minecraft/world/level/dimension/TheEndDimension.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/PlayerIO.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");

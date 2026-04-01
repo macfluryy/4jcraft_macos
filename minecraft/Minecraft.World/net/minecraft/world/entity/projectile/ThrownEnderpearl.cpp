@@ -1,7 +1,7 @@
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "ThrownEnderpearl.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/damageSource/DamageSource.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"

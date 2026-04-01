@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"

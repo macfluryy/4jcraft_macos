@@ -10,11 +10,11 @@
 #include "java/InputOutputStream/FileOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/locale/I18n.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 // 4J - the Option sub-class used to be an java enumerated type, trying to
 // emulate that functionality here

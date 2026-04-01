@@ -3,7 +3,7 @@
 #include <string>
 
 #include "MinecartTNT.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 #include <ctime>
 #include <thread>
@@ -33,7 +33,7 @@
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
 #endif
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
-#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
@@ -42,17 +42,17 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/CompressedTileStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseLightStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/SparseDataStorage.h"
-#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/include/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/net/minecraft/server/commands/ServerCommandDispatcher.h"
 #include "Minecraft.Client/net/minecraft/server/level/PlayerChunkMap.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/ConsoleSchematicFile.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "4J_Input.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 
 #define DEBUG_SERVER_DONT_SPAWN_MOBS 0
 

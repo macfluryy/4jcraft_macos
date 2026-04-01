@@ -8,24 +8,24 @@
 
 // using namespace std;
 
-#include "Minecraft.Client/Common/Source Files/Audio/Consoles_SoundEngine.h"
-#include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/src/Audio/Consoles_SoundEngine.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 
-#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
-#include "Minecraft.Client/Common/Source Files/DLC/DLCManager.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/GameRuleManager.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/MinecartHopper.h"
 #include "Minecraft.Client/Common/App_structs.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 typedef struct _JoinFromInviteData {
     std::uint32_t dwUserIndex;       // dwUserIndex

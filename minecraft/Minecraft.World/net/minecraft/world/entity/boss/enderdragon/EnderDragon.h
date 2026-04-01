@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Minecraft.World/Header Files/stdafx.h"
+#include "Minecraft.World/include/stdafx.h"
 
 #include "Minecraft.World/net/minecraft/world/entity/boss/BossMob.h"
 #include "Minecraft.World/net/minecraft/world/entity/boss/MultiEntityMob.h"

@@ -15,7 +15,7 @@
 #include "LivingEntity.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/level/EntityTracker.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "SoundTypes.h"

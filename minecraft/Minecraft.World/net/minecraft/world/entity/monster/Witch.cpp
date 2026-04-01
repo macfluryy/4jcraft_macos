@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Witch.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"

@@ -1,6 +1,6 @@
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
-#include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"

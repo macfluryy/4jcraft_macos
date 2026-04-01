@@ -13,7 +13,7 @@
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 
 #include "WitherBoss.h"
 

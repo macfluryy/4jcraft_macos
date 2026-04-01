@@ -8,9 +8,9 @@
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 AddPlayerPacket::AddPlayerPacket() {
     id = -1;

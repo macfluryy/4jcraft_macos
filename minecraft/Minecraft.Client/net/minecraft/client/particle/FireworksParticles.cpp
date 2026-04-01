@@ -6,7 +6,7 @@
 #include "FireworksParticles.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
 #include "Minecraft.World/net/minecraft/world/item/FireworksItem.h"

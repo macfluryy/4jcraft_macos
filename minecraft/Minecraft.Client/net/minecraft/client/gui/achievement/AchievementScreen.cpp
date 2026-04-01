@@ -13,7 +13,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 AchievementScreen::AchievementScreen(StatsCounter* statsCounter) {
     // 4J - added initialisers

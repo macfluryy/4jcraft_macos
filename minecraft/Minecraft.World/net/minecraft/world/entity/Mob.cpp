@@ -9,7 +9,7 @@
 
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/level/EntityTracker.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "net/minecraft/world/entity/item/ItemEntity.h"
 #include "net/minecraft/world/entity/Mob.h"
 #include "ConsoleHelpers/StringHelpers.h"
@@ -50,9 +50,9 @@
 #include "net/minecraft/world/level/Level.h"
 #include "net/minecraft/world/level/tile/Tile.h"
 #include "net/minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 const float Mob::MAX_WEARING_ARMOR_CHANCE = 0.15f;
 const float Mob::MAX_PICKUP_LOOT_CHANCE = 0.55f;

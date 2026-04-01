@@ -4,7 +4,7 @@
 
 #include "Achievement.h"
 #include "Achievements.h"
-#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+#include "Minecraft.Client/Common/src/Console_Awards_enum.h"
 #include "Minecraft.World/net/minecraft/world/item/BowItem.h"
 #include "Minecraft.World/net/minecraft/world/item/Item.h"
 #include "Minecraft.World/net/minecraft/world/item/PotionItem.h"

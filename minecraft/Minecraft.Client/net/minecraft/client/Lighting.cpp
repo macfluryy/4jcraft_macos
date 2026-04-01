@@ -4,7 +4,7 @@
 #include "java/FloatBuffer.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 FloatBuffer* Lighting::lb = new FloatBuffer(16);
 

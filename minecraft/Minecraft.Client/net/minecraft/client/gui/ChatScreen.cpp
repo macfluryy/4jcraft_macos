@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 const std::wstring ChatScreen::allowedChars =
     SharedConstants::acceptableLetters;

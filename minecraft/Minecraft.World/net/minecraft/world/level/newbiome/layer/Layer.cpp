@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "BiomeOverrideLayer.h"
-#include "Minecraft.Client/Common/Source Files/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelType.h"
 #include "Minecraft.World/net/minecraft/world/level/newbiome/layer/AddIslandLayer.h"

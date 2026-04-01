@@ -3,9 +3,9 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
-#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/locale/I18n.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"
 #include "Minecraft.World/net/minecraft/stats/ItemStat.h"
@@ -14,7 +14,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "Minecraft.Client/net/minecraft/client/gui/ScrolledSelectionList.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 class Tesselator;
 

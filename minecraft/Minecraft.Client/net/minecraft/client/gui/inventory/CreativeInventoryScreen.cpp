@@ -10,7 +10,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
 #include "Minecraft.World/net/minecraft/world/inventory/InventoryMenu.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/IUIScene_CreativeMenu.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
 #include "Minecraft.World/net/minecraft/world/item/Item.h"
@@ -20,7 +20,7 @@
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 // Static member initialization
 int CreativeInventoryScreen::selectedTabIndex =

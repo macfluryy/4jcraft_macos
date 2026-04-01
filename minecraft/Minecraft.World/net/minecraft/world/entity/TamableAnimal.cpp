@@ -1,5 +1,5 @@
 #include "SyncedEntityData.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "TamableAnimal.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

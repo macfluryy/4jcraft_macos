@@ -6,7 +6,7 @@
 #include "java/IntBuffer.h"
 #include "java/FloatBuffer.h"
 #include "java/ByteBuffer.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 extern C4JRender RenderManager;
 

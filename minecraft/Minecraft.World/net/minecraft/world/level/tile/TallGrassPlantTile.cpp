@@ -5,7 +5,7 @@
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "TallGrassPlantTile.h"
-#include "Minecraft.Client/Common/Source Files/Colours/ColourTable.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
 const unsigned int
     TallGrass::TALL_GRASS_TILE_NAMES[TALL_GRASS_TILE_NAMES_LENGTH] = {

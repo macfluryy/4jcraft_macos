@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "java/Random.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 class Mob;
 class ModelPart;

@@ -1,6 +1,6 @@
 #pragma once
 #include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 class ModelPart;
 

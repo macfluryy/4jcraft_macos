@@ -1,4 +1,4 @@
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 #include "DragonModel.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"

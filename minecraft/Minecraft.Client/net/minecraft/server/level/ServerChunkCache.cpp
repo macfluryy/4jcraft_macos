@@ -7,7 +7,7 @@
 #include "ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
-#include "Minecraft.World/Header Files/compression.h"
+#include "Minecraft.World/include/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
@@ -17,9 +17,9 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/ChunkStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
                                    ChunkSource* source) {

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Minecraft.Client/Common/Source Files/UI/UIController.h"
-#include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/UIController.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 

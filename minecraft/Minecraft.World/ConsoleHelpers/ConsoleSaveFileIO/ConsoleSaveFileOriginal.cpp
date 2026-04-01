@@ -9,20 +9,20 @@
 #include <format>
 #include <vector>
 
-#include "Minecraft.World/Header Files/PortableFileIO.h"
+#include "Minecraft.World/include/PortableFileIO.h"
 #include "ConsoleSaveFileOriginal.h"
 #include "java/File.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "4J.Common/4J_Compat.h"
 #include "platform/IPlatformStorage.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
+#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "compression.h"
@@ -30,9 +30,9 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFile.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 #define RESERVE_ALLOCATION MEM_RESERVE

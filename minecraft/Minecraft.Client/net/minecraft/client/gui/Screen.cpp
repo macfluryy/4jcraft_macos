@@ -1,16 +1,16 @@
 #include "Screen.h"
 #include "Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/particle/GuiParticles.h"
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "4J_Profile.h"
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/Source Files/Audio/SoundEngine.h"
-#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/stubs.h"
 
 Screen::Screen()  // 4J added
 {

@@ -11,7 +11,7 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "Minecraft.Client/Common/Source Files/Network/Socket.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"

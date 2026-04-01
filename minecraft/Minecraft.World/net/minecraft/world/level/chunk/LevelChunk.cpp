@@ -13,7 +13,7 @@
 #include "Minecraft.Client/net/minecraft/server/level/ServerChunkCache.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/GameRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
-#include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"
 #include "java/Random.h"
@@ -43,9 +43,9 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/Header Files/NetTypes.h"
-#include "Minecraft.Client/Header Files/XboxStubs.h"
-#include "Minecraft.Client/Header Files/SkinBox.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/include/SkinBox.h"
 
 class DataInputStream;
 class DataOutputStream;

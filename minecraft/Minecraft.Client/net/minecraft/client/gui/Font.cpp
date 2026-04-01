@@ -11,7 +11,7 @@
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 
 Font::Font(Options* options, const std::wstring& name, Textures* textures,

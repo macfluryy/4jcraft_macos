@@ -15,7 +15,7 @@
 #include "TickNextTickData.h"
 #include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "4J.Common/4J_Compat.h"

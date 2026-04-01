@@ -5,7 +5,7 @@
 
 #include "AbstractTexturePack.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Common/Source Files/Localisation/StringTable.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 
 class DLCPack;
 class StringTable;

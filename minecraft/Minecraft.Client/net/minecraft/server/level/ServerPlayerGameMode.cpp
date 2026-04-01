@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
-#include "Minecraft.Client/Common/Source Files/GameRules/LevelRules/Rules/GameRulesInstance.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 #include "Minecraft.World/net/minecraft/network/packet/TileUpdatePacket.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"

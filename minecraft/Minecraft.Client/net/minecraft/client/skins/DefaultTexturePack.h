@@ -1,5 +1,5 @@
 #pragma once
-#include "Minecraft.Client/Header Files/stdafx.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 #include "AbstractTexturePack.h"
 

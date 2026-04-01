@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "GenericStats.h"
-#include "Minecraft.Client/Common/Source Files/Console_Awards_enum.h"
+#include "Minecraft.Client/Common/src/Console_Awards_enum.h"
 #include "java/Class.h"
 
 class CommonStats : public GenericStats {

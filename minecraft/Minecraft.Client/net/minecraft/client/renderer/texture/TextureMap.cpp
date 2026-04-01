@@ -14,7 +14,7 @@
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "TextureMap.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.World/net/minecraft/world/Icon.h"

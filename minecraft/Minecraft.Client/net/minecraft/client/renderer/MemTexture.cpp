@@ -1,8 +1,8 @@
 #include <cstdint>
 #include <string>
 
-#include "Minecraft.Client/Header Files/MemTexture.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
+#include "Minecraft.Client/include/MemTexture.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 
 class MemTextureProcessor;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Minecraft.Client/Common/Source Files/UI/UIController.h"
+#include "Minecraft.Client/Common/src/UI/UIController.h"
 
 class ConsoleUIController : public UIController {
 private:

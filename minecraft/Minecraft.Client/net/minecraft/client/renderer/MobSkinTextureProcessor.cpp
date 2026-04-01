@@ -1,6 +1,6 @@
 #include "MobSkinTextureProcessor.h"
-#include "Minecraft.Client/Header Files/BufferedImage.h"
-#include "Minecraft.Client/Header Files/stubs.h"
+#include "Minecraft.Client/include/BufferedImage.h"
+#include "Minecraft.Client/include/stubs.h"
 
 BufferedImage* MobSkinTextureProcessor::process(BufferedImage* in) {
     if (in == nullptr) return nullptr;

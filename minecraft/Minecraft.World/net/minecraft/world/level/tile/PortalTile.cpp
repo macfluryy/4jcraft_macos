@@ -2,7 +2,7 @@
 #include <string>
 
 #include "PortalTile.h"
-#include "Minecraft.World/Header Files/ParticleTypes.h"
+#include "Minecraft.World/include/ParticleTypes.h"
 #include "SoundTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"

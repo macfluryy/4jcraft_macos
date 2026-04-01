@@ -2,7 +2,7 @@
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "Minecraft.World/ConsoleHelpers/Definitions.h"
-#include "Minecraft.World/Header Files/SoundTypes.h"
+#include "Minecraft.World/include/SoundTypes.h"
 #include <cstdint>
 #include <optional>
 #include <memory>
