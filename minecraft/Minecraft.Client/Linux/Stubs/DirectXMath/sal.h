@@ -4234,6 +4234,11 @@ __PRIMOP(int, _In_function_class_(__In_impl_ char *);)
 #define _Maybe_raises_SEH_exception_ _Pre_ _SA_annotes1(SAL_inTry, __yes)
 #define _Raises_SEH_exception_ _Group_(_Maybe_raises_SEH_exception_ _Analysis_noreturn_)
 
+// Clean up macros that collide with libstdc++ internals
+#undef __valid
+#undef __notvalid
+#undef __maybevalid
+
 #ifdef __cplusplus  // [
 }
 #endif  // ]
