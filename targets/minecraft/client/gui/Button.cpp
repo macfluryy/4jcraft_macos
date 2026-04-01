@@ -1,5 +1,9 @@
 #include "Button.h"
 
+#include "4J.Render/4J_Render.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 class Minecraft;
 
 #ifdef ENABLE_JAVA_GUIS

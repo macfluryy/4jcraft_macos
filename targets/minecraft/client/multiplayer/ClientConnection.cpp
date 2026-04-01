@@ -25,7 +25,7 @@
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/User.h"
 #include "minecraft/client/gui/Gui.h"
-#include "minecraft/client/gui/MerchantScreen.h"
+#include "minecraft/client/gui/inventory/MerchantScreen.h"
 #include "minecraft/client/particle/CritParticle.h"
 #include "minecraft/client/particle/TakeAnimationParticle.h"
 #include "minecraft/client/player/RemotePlayer.h"

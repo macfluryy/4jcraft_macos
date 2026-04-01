@@ -5,13 +5,15 @@
 #include <algorithm>
 #include <string>
 
+#include "4J.Common/4J_InputActions.h"
+#include "4J.Input/4J_Input.h"
 #include "4J.Render/4J_Render.h"
+#include "AbstractContainerScreen.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/entity/ItemRenderer.h"

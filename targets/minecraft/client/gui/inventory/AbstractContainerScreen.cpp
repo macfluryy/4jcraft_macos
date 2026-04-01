@@ -7,6 +7,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "minecraft/client/KeyMapping.h"
+#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Font.h"
@@ -38,7 +39,7 @@ void AbstractContainerScreen::init() {
 
 void AbstractContainerScreen::render(int xm, int ym, float a) {
     // 4J Stu - Not used
-#if ENABLE_JAVA_GUIS
+#ifdef ENABLE_JAVA_GUIS
     renderBackground();
     int xo = (width - imageWidth) / 2;
     int yo = (height - imageHeight) / 2;

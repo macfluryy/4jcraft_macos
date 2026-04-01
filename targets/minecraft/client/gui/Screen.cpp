@@ -1,5 +1,6 @@
 #include "Screen.h"
 
+#include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
 #include "Button.h"
@@ -8,6 +9,7 @@
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/stubs.h"
+#include "ScreenSizeCalculator.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/gui/particle/GuiParticles.h"

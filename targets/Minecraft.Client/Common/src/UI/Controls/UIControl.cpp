@@ -3,6 +3,9 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/JavaMath.h"
+#ifndef _ENABLESHIGGY
+#include "Minecraft.Client/Linux/Stubs/iggy_stubs.h"
+#endif
 
 UIControl::UIControl() {
     m_parentScene = nullptr;

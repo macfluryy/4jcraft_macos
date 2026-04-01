@@ -5,6 +5,7 @@
 #include "4J.Render/4J_Render.h"
 #include "java/System.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/ScreenSizeCalculator.h"
 #include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "minecraft/locale/I18n.h"
@@ -67,7 +68,7 @@ void AchievementPopup::prepareWindow() {
 }
 
 void AchievementPopup::render() {
-#if ENABLE_JAVA_GUIS
+#ifdef ENABLE_JAVA_GUIS
     if (Minecraft::warezTime > 0) {
         glDisable(GL_DEPTH_TEST);
         glDepthMask(false);

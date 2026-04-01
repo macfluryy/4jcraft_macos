@@ -4,17 +4,21 @@
 #include <string>
 #include <vector>
 
-#include "TradeSwitchButton.h"
+#include "AbstractContainerScreen.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/client/gui/TradeSwitchButton.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/entity/ItemRenderer.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/MerchantContainer.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
 #include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/world/item/trading/MerchantRecipeList.h"

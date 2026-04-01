@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "AbstractContainerScreen.h"
 #include "java/Random.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/world/inventory/EnchantmentMenu.h"
 
 class EnchantmentMenu;

@@ -1,8 +1,10 @@
 #include "Gui.h"
 
 #include "4J.Common/4J_Compat.h"
+#include "4J.Input/4J_Input.h"
 #include "ChatScreen.h"
 #include "Minecraft.Client/include/stdafx.h"
+#include "Minecraft.Client/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/JavaMath.h"
 #include "java/System.h"

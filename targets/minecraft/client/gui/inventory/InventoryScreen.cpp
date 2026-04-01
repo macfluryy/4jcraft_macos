@@ -1,8 +1,11 @@
 #include "InventoryScreen.h"
 
+#include <cmath>
 #include <string>
 #include <vector>
 
+#include "4J.Render/4J_Render.h"
+#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Font.h"
@@ -10,6 +13,9 @@
 #include "minecraft/client/gui/achievement/StatsScreen.h"
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
 

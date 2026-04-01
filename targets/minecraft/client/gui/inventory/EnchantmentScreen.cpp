@@ -1,14 +1,18 @@
 #include "EnchantmentScreen.h"
 
 #include <algorithm>
+#include <cmath>
 #include <iterator>
 #include <memory>
 #include <sstream>
 #include <string>
 
+#include "AbstractContainerScreen.h"
+#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/client/model/BookModel.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/locale/Language.h"

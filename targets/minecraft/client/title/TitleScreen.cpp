@@ -2,6 +2,7 @@
 
 #include <stdint.h>
 
+#include <cmath>
 #include <vector>
 
 #include "4J.Render/4J_Render.h"
@@ -13,12 +14,16 @@
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
 #include "java/Random.h"
+#include "minecraft/client/ClientConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"
+#include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/JoinMultiplayerScreen.h"
 #include "minecraft/client/gui/OptionsScreen.h"
 #include "minecraft/client/gui/SelectWorldScreen.h"
+#include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/locale/Language.h"
 
 Random* TitleScreen::random = new Random();
@@ -410,7 +415,7 @@ void TitleScreen::render(int xm, int ym, float a) {
     drawString(
         font, ClientConstants::VERSION_STRING, 2, height - 10,
         0xffffff);  // 4jcraft: use the same height as the copyright message
-    wstring msg = L"Copyright Mojang AB. Do not distribute.";
+    std::wstring msg = L"Copyright Mojang AB. Do not distribute.";
     drawString(font, msg, width - font->width(msg) - 2, height - 10, 0xffffff);
 
     Screen::render(xm, ym, a);

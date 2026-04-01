@@ -19,11 +19,13 @@
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/BeaconMenu.h"
+#include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
