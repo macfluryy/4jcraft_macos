@@ -216,3 +216,5 @@ protected:
         return m_localEndian != getEndian(plat);
     }
 };
+
+#undef MAKE_FOURCC
