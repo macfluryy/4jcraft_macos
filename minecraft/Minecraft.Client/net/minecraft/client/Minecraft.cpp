@@ -85,7 +85,7 @@
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/ConsoleGameMode.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.Client/Common/Potion_Macros.h"
+#include "Minecraft.World/include/Potion_Macros.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "4J_Input.h"

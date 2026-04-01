@@ -13,7 +13,7 @@
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "PotionItem.h"
 #include "Minecraft.World/include/SoundTypes.h"
-#include "Minecraft.Client/Common/Potion_Macros.h"
+#include "Minecraft.World/include/Potion_Macros.h"
 
 const std::wstring PotionItem::DEFAULT_ICON = L"potion";
 const std::wstring PotionItem::THROWABLE_ICON = L"potion_splash";

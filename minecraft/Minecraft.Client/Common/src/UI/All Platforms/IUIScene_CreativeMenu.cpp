@@ -14,7 +14,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/net.minecraft.world.entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "Minecraft.Client/Common/Potion_Macros.h"
+#include "Minecraft.World/include/Potion_Macros.h"
 #include "java/JavaMath.h"
 #include "4J.Common/4J_InputActions.h"
 
