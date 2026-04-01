@@ -9,10 +9,10 @@
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/net/minecraft/world/inventory/BrewingStandMenu.h"
-#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionBrewing.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/inventory/BrewingStandMenu.h"
+#include "minecraft/world/item/alchemy/PotionBrewing.h"
+#include "minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
 
 class UILayer;
 

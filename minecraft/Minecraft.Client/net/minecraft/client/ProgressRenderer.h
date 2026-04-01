@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-#include "Minecraft.World/net/minecraft/util/ProgressListener.h"
+#include "minecraft/util/ProgressListener.h"
 
 class Minecraft;
 

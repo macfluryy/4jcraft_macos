@@ -4,18 +4,18 @@
 
 #include "MobRenderer.h"
 #include "LivingEntityRenderer.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
 #include "EntityRenderDispatcher.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/Mob.h"
 #include "java/Class.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
 
 class Model;
 

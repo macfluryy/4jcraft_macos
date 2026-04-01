@@ -9,8 +9,8 @@
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/inventory/TrapMenu.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
+#include "minecraft/world/inventory/TrapMenu.h"
+#include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
 
 class UILayer;
 

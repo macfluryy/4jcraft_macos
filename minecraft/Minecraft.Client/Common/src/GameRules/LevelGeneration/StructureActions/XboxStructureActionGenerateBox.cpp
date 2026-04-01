@@ -4,7 +4,7 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
 XboxStructureActionGenerateBox::XboxStructureActionGenerateBox() {

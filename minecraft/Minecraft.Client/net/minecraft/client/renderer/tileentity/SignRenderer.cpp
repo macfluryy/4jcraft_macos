@@ -8,10 +8,10 @@
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
 
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/level/Level.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
 ResourceLocation SignRenderer::SIGN_LOCATION = ResourceLocation(TN_ITEM_SIGN);

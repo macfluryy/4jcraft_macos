@@ -2,7 +2,7 @@
 #include <format>
 
 #include "TutorialTask.h"
-#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
+#include "minecraft/world/item/crafting/Recipy.h"
 
 class Tutorial;
 class TutorialConstraint;

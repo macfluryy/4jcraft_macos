@@ -3,10 +3,10 @@
 #include "DemoMode.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.Client/net/minecraft/client/ClientConstants.h"
 
 SurvivalMode::SurvivalMode(Minecraft* minecraft) : GameMode(minecraft) {

@@ -2,9 +2,9 @@
 
 #include <list>
 
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
-#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "minecraft/world/level/ChunkPos.h"
 
 class PlayerConnection;
 class MinecraftServer;

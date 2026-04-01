@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
-#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
+#include "minecraft/world/inventory/EnchantmentMenu.h"
 #include "java/Random.h"
 
 class EnchantmentMenu;

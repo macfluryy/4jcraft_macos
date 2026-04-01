@@ -4,7 +4,7 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
 
 #define CHECKBOXES_TIMER_ID 0
 #define CHECKBOXES_TIMER_TIME 100

@@ -3,10 +3,10 @@
 #include "FootstepParticle.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "minecraft/world/level/Level.h"
 #include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
 #include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
 

@@ -9,9 +9,9 @@
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/Container.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/inventory/HopperMenu.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/HopperMenu.h"
 
 class UILayer;
 

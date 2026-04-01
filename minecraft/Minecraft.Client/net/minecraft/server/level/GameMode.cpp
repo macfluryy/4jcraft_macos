@@ -2,13 +2,13 @@
 #include "GameMode.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 
 GameMode::GameMode(Minecraft* minecraft) {
     instaBuild = false;  // 4J - added

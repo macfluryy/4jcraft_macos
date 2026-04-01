@@ -5,14 +5,14 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "java/File.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include "minecraft/world/level/storage/net.minecraft.world.level.storage.h"
 #include "java/JavaIntHash.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/RandomLevelSource.h"
+#include "minecraft/world/level/levelgen/RandomLevelSource.h"
 #include "console_helpers/C4JThread.h"
-#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
 
 class ServerLevel;
 class ChunkStorage;

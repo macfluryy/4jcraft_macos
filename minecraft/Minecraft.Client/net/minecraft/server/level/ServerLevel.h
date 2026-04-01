@@ -3,7 +3,7 @@
 #include <list>
 #include <set>
 #include <mutex>
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "java/JavaIntHash.h"
 
 class ServerChunkCache;

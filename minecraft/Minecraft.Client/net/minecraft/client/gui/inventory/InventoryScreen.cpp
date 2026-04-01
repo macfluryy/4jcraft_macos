@@ -7,8 +7,8 @@
 #include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/achievement/AchievementScreen.h"
 #include "Minecraft.Client/net/minecraft/client/gui/achievement/StatsScreen.h"
-#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "minecraft/stats/GenericStats.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 

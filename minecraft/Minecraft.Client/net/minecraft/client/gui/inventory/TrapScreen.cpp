@@ -1,9 +1,9 @@
 #include <string>
 
 #include "TrapScreen.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/DispenserTileEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/inventory/TrapMenu.h"
+#include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/TrapMenu.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 

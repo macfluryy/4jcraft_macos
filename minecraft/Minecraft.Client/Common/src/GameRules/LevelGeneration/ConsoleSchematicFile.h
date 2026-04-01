@@ -13,7 +13,7 @@
 
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/compression.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class Level;
 class DataOutputStream;

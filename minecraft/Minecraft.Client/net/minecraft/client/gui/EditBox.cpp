@@ -1,5 +1,5 @@
 #include "EditBox.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "minecraft/SharedConstants.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "Minecraft.Client/include/stubs.h"
 

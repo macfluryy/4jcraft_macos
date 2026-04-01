@@ -10,9 +10,9 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/Texture.h"
 #include "CompassTexture.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "minecraft/Pos.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/dimension/Dimension.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
 
 CompassTexture* CompassTexture::instance = nullptr;

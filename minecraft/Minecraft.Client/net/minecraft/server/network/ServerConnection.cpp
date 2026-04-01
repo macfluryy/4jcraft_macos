@@ -7,9 +7,9 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/network/Connection.h"
-#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
-#include "Minecraft.World/net/minecraft/network/packet/ServerSettingsChangedPacket.h"
+#include "minecraft/network/Connection.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/network/packet/ServerSettingsChangedPacket.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 ServerConnection::ServerConnection(MinecraftServer* server) {

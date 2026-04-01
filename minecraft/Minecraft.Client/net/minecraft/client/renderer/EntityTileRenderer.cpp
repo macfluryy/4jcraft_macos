@@ -1,9 +1,9 @@
 #include "EntityTileRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/ChestTile.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/ChestTileEntity.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/EnderChestTileEntity.h"
+#include "minecraft/world/level/tile/ChestTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/ChestTileEntity.h"
+#include "minecraft/world/level/tile/entity/EnderChestTileEntity.h"
 
 EntityTileRenderer* EntityTileRenderer::instance = new EntityTileRenderer;
 

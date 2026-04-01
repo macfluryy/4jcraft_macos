@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 
 class CommandBlockEntity;
 

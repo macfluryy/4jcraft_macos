@@ -2,7 +2,7 @@
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_TeleportMenu.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/server/commands/TeleportCommand.h"

@@ -1,7 +1,7 @@
 #pragma once
-#include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
-#include "Minecraft.World/net/minecraft/util/HtmlString.h"
-#include "Minecraft.World/net/minecraft/world/item/Rarity.h"
+#include "minecraft/world/inventory/MerchantMenu.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/item/Rarity.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 
 class MerchantRecipe;

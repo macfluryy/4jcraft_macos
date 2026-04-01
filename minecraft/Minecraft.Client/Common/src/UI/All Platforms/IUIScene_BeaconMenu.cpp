@@ -2,8 +2,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/network/packet/CustomPayloadPacket.h"
-#include "Minecraft.World/net/minecraft/util/HtmlString.h"
+#include "minecraft/network/packet/CustomPayloadPacket.h"
+#include "minecraft/util/HtmlString.h"
 #include "IUIScene_BeaconMenu.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
@@ -11,9 +11,9 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
-#include "Minecraft.World/net/minecraft/world/inventory/BeaconMenu.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/BeaconTileEntity.h"
+#include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/inventory/BeaconMenu.h"
+#include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

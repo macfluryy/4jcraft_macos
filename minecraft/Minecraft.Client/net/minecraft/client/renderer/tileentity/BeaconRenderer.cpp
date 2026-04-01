@@ -6,9 +6,9 @@
 #include "BeaconRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/BeaconTileEntity.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 

@@ -2,8 +2,8 @@
 
 #include "SkeletonModel.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/Skeleton.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/monster/Skeleton.h"
 #include "Minecraft.Client/net/minecraft/client/model/ZombieModel.h"
 
 void SkeletonModel::_init(float g) {

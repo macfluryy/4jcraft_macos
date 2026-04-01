@@ -10,8 +10,8 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "console_helpers/compression.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
 
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED

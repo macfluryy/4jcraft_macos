@@ -5,7 +5,7 @@
 #include <mutex>
 
 // #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "console_helpers/compression.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"

@@ -1,6 +1,6 @@
 #include "DerivedServerLevel.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/SavedDataStorage.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/DerivedLevelData.h"
+#include "minecraft/world/level/storage/SavedDataStorage.h"
+#include "minecraft/world/level/storage/DerivedLevelData.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 
 class LevelSettings;

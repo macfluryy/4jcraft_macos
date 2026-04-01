@@ -4,7 +4,7 @@
 #include "SmallButton.h"
 #include "SlideButton.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "minecraft/locale/Language.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"

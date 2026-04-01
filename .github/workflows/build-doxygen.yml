@@ -6,7 +6,7 @@ on:
     paths:
       - "Minecraft.Assets/**"
       - "Minecraft.Client/**"
-      - "Minecraft.World/**"
+      - "minecraft/**"
       - "docs/**"
 
 jobs:

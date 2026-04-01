@@ -3,9 +3,9 @@
 #include <memory>
 
 #include "IUIScene_AbstractContainerMenu.h"
-#include "Minecraft.World/net/minecraft/world/Container.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 
 class Container;
 class EntityHorse;

@@ -4,8 +4,8 @@
 #include "LightningBoltRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/global/LightningBolt.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/global/LightningBolt.h"
 #include "java/Random.h"
 
 void LightningBoltRenderer::render(std::shared_ptr<Entity> _bolt, double x,

@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/world/IconRegister.h"
+#include "minecraft/world/IconRegister.h"
 
 class Icon;
 class StitchedTexture;

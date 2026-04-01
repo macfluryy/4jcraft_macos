@@ -1,6 +1,6 @@
 #pragma once
-#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
-#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "minecraft/world/item/crafting/Recipy.h"
+#include "minecraft/world/item/Item.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 

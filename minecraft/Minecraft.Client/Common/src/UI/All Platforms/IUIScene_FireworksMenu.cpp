@@ -2,7 +2,7 @@
 
 #include "IUIScene_FireworksMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/FireworksMenu.h"
+#include "minecraft/world/inventory/FireworksMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_FireworksMenu::GetSectionAndSlotInDirection(ESceneSection eSection,

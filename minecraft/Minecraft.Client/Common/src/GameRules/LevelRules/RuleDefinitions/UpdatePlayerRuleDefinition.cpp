@@ -2,15 +2,15 @@
 #include <memory>
 
 #include "UpdatePlayerRuleDefinition.h"
-#include "Minecraft.World/net/minecraft/Pos.h"
+#include "minecraft/Pos.h"
 #include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/UpdatePlayerRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
-#include "Minecraft.World/net/minecraft/world/food/FoodData.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/food/FoodData.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
 UpdatePlayerRuleDefinition::UpdatePlayerRuleDefinition() {

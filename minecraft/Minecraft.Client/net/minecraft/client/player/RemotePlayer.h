@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 
-#include "Minecraft.World/net/minecraft/util/SmoothFloat.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/net/minecraft/commands/CommandsEnum.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "minecraft/util/SmoothFloat.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/Pos.h"
+#include "minecraft/commands/CommandsEnum.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "java/Class.h"
 
 class Input;

@@ -2,7 +2,7 @@
 
 #include "BeaconPowerButton.h"
 #include "BeaconScreen.h"
-#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/effect/MobEffect.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractBeaconButton.h"
 

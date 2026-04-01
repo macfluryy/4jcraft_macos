@@ -1,6 +1,6 @@
 #include "ContainerScreen.h"
-#include "Minecraft.World/net/minecraft/world/Container.h"
-#include "Minecraft.World/net/minecraft/world/inventory/ContainerMenu.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/inventory/ContainerMenu.h"
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 ContainerScreen::ContainerScreen(std::shared_ptr<Container> inventory,

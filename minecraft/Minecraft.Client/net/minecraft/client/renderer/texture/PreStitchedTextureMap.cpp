@@ -16,9 +16,9 @@
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/net/minecraft/world/Icon.h"
-#include "Minecraft.World/net/minecraft/world/item/Item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/Icon.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 class Stitcher;
 class TextureHolder;

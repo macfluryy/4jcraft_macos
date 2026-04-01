@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 
 class File;
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "EntityRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/Entity.h"
 #include "java/JavaIntHash.h"
 class font;
 

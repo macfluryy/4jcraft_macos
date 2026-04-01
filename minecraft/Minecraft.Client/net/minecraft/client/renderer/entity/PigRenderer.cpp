@@ -1,8 +1,8 @@
 #include <memory>
 
 #include "PigRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/Pig.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Pig.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"

@@ -5,10 +5,10 @@
 #include "AddEnchantmentRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "Minecraft.World/net/minecraft/world/Container.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/item/Item.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
 AddItemRuleDefinition::AddItemRuleDefinition() {

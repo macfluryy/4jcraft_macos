@@ -2,7 +2,7 @@
 #include "KeyMapping.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/LevelRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "minecraft/locale/Language.h"
 #include "java/File.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/InputStreamReader.h"
@@ -12,7 +12,7 @@
 #include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "minecraft/locale/I18n.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/include/stubs.h"
 

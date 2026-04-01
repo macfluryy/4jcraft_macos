@@ -11,9 +11,9 @@
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/Slot.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/inventory/EnchantmentMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "java/Class.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 

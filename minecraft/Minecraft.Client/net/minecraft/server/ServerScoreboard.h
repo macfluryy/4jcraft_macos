@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/world/scores/Scoreboard.h"
+#include "minecraft/world/scores/Scoreboard.h"
 
 class MinecraftServer;
 class ScoreboardSaveData;

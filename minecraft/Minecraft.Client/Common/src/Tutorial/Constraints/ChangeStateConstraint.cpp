@@ -4,16 +4,16 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "ChangeStateConstraint.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
-#include "Minecraft.World/net/minecraft/network/packet/PlayerInfoPacket.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/network/packet/PlayerInfoPacket.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/phys/Vec3.h"
 
 ChangeStateConstraint::ChangeStateConstraint(
     Tutorial* tutorial, eTutorial_State targetState,

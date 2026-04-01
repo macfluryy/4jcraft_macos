@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/world/Icon.h"
+#include "minecraft/world/Icon.h"
 
 class Texture;
 class BufferedReader;

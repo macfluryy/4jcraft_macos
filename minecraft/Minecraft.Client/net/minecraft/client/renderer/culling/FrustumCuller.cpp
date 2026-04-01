@@ -1,5 +1,5 @@
 #include "FrustumCuller.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/culling/Frustum.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/culling/FrustumData.h"
 

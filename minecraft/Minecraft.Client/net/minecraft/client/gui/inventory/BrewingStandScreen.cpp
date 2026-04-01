@@ -2,9 +2,9 @@
 #include <string>
 
 #include "BrewingStandScreen.h"
-#include "Minecraft.World/net/minecraft/world/inventory/BrewingStandMenu.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+#include "minecraft/world/inventory/BrewingStandMenu.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 

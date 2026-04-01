@@ -2,11 +2,11 @@
 #include "CreativeMode.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 CreativeMode::CreativeMode(Minecraft* minecraft) : GameMode(minecraft) {
     destroyDelay = 0;

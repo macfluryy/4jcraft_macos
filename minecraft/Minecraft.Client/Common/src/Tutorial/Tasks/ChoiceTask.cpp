@@ -5,7 +5,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "ChoiceTask.h"
-#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/material/Material.h"
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/InputConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"

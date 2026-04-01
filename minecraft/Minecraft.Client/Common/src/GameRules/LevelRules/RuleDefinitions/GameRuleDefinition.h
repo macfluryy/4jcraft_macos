@@ -5,7 +5,7 @@
 #include <format>
 #include <memory>
 
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 

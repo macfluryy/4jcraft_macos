@@ -5,10 +5,10 @@
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
-#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/biome/BiomeSource.h"
+#include "minecraft/world/level/LevelType.h"
 #include "Windows64_App.h"
 
 CConsoleMinecraftApp app;

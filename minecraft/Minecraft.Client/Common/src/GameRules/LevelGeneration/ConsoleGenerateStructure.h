@@ -3,9 +3,9 @@
 #include <vector>
 
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 class Level;
 class Random;

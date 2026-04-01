@@ -4,7 +4,7 @@
 
 #include "Vertex.h"
 #include "Polygon.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/world/phys/Vec3.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 
 _Polygon::_Polygon(const std::span<const Vertex> vertices)

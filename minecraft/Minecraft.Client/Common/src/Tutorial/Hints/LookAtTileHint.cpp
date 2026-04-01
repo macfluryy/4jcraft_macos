@@ -3,7 +3,7 @@
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "LookAtTileHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
-#include "Minecraft.World/net/minecraft/world/item/Item.h"
+#include "minecraft/world/item/Item.h"
 
 LookAtTileHint::LookAtTileHint(eTutorial_Hint id, Tutorial* tutorial,
                                int tiles[], unsigned int tilesLength,

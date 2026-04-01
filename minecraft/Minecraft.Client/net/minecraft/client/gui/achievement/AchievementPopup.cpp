@@ -4,8 +4,8 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
 #include "java/System.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/locale/I18n.h"
-#include "Minecraft.World/net/minecraft/stats/Achievement.h"
+#include "minecraft/locale/I18n.h"
+#include "minecraft/stats/Achievement.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
 

@@ -4,8 +4,8 @@
 
 #include "ReceivingLevelScreen.h"
 #include "ClientConnection.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
-#include "Minecraft.World/net/minecraft/network/packet/KeepAlivePacket.h"
+#include "minecraft/locale/Language.h"
+#include "minecraft/network/packet/KeepAlivePacket.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 ReceivingLevelScreen::ReceivingLevelScreen(ClientConnection* connection) {

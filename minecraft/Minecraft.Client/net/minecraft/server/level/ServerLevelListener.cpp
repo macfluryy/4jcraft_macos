@@ -10,11 +10,11 @@
 #include "PlayerChunkMap.h"
 #include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/network/packet/LevelEventPacket.h"
-#include "Minecraft.World/net/minecraft/network/packet/LevelSoundPacket.h"
-#include "Minecraft.World/net/minecraft/network/packet/TileDestructionPacket.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "minecraft/network/packet/LevelEventPacket.h"
+#include "minecraft/network/packet/LevelSoundPacket.h"
+#include "minecraft/network/packet/TileDestructionPacket.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/level/dimension/Dimension.h"
 
 ServerLevelListener::ServerLevelListener(MinecraftServer* server,
                                          ServerLevel* level) {

@@ -4,7 +4,7 @@
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_InventoryMenu.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftPlayer.h"
 
-#include "Minecraft.World/net/minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/effect/MobEffect.h"
 
 class InventoryMenu;
 

@@ -6,8 +6,8 @@
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "OcelotModel.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/Ocelot.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Ocelot.h"
 
 const float OcelotModel::xo = 0;
 const float OcelotModel::yo = 16;

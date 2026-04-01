@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
+#include "minecraft/world/item/MapItem.h"
 
 class Options;
 class Font;

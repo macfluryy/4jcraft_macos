@@ -13,7 +13,7 @@ simdutf_dep = dependency('simdutf',
 
 lib_console_helpers = static_library('console_helpers',
   console_helpers_sources,
-  dependencies: [simdutf_dep],
+  dependencies: [simdutf_dep, dependency('zlib')],
   include_directories : include_directories('include', '..'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )

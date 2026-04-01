@@ -1,6 +1,6 @@
 #pragma once
 #include <mutex>
-#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class Compression {
 public:

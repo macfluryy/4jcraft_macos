@@ -3,8 +3,8 @@
 #include <numbers>
 
 #include "HumanoidModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/Entity.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
 #include "4J.Render/4J_Render.h"

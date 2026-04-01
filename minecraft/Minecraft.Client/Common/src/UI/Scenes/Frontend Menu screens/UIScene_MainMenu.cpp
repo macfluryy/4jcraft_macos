@@ -1,5 +1,5 @@
 
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"

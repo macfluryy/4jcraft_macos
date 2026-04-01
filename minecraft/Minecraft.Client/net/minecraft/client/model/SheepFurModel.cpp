@@ -2,8 +2,8 @@
 
 #include "SheepFurModel.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/Sheep.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Sheep.h"
 #include "Minecraft.Client/net/minecraft/client/model/QuadrupedModel.h"
 
 SheepFurModel::SheepFurModel() : QuadrupedModel(12, 0) {

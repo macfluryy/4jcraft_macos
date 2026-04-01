@@ -7,7 +7,7 @@
 #include "StitchedTexture.h"
 #include "TextureManager.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "minecraft/SharedConstants.h"
 #include "java/InputOutputStream/BufferedReader.h"
 
 StitchedTexture* StitchedTexture::create(const std::wstring& name) {

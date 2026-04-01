@@ -3,8 +3,8 @@
 #include <memory>
 #include <string>
 
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/Level.h"
 
 class Dimension;
 class LevelSettings;

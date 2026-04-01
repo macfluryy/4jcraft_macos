@@ -2,10 +2,10 @@
 
 #include "SkeletonRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/model/SkeletonModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/Skeleton.h"
+#include "minecraft/world/entity/monster/Skeleton.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/HumanoidMobRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"

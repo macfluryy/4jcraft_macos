@@ -2,7 +2,7 @@
 
 #include "IUIScene_HorseInventoryMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_HorseInventoryMenu::GetSectionAndSlotInDirection(

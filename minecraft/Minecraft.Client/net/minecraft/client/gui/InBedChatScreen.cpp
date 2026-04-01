@@ -6,7 +6,7 @@
 #include "Button.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "minecraft/locale/Language.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/ChatScreen.h"
 #include "Minecraft.Client/include/stubs.h"

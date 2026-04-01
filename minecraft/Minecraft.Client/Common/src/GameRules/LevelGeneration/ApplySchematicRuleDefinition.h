@@ -5,9 +5,9 @@
 
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "ConsoleSchematicFile.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class AABB;
 class Vec3;

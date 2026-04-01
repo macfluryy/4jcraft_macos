@@ -5,8 +5,8 @@
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/net.minecraft.world.h"
 
 #define UPDATE_PLAYERS_TIMER_ID 0
 #define UPDATE_PLAYERS_TIMER_TIME 30000

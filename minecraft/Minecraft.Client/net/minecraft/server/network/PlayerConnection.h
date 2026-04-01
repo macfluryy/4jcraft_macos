@@ -7,10 +7,10 @@
 #include <vector>
 
 #include "Minecraft.Client/net/minecraft/server/ConsoleInputSource.h"
-#include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
+#include "minecraft/network/packet/PacketListener.h"
 #include "java/JavaIntHash.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 
 class MinecraftServer;
 class Connection;

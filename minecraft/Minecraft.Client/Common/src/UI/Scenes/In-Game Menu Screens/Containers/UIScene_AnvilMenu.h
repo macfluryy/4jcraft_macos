@@ -2,7 +2,7 @@
 
 #include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AnvilMenu.h"
-#include "Minecraft.World/net/minecraft/world/inventory/MerchantMenu.h"
+#include "minecraft/world/inventory/MerchantMenu.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "4J_Input.h"
 

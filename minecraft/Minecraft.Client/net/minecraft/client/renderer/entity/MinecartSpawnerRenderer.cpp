@@ -1,7 +1,7 @@
 #include "MinecartSpawnerRenderer.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/Tile.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/tileentity/MobSpawnerRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/MinecartSpawner.h"
+#include "minecraft/world/entity/item/MinecartSpawner.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/MinecartRenderer.h"
 
 void MinecartSpawnerRenderer::renderMinecartContents(

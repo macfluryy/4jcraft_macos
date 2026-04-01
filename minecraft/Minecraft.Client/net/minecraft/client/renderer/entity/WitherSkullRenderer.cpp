@@ -3,9 +3,9 @@
 
 #include "WitherSkullRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/model/SkeletonHeadModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/projectile/WitherSkull.h"
+#include "minecraft/world/entity/projectile/WitherSkull.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/Entity.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 

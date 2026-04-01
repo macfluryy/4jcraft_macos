@@ -5,7 +5,7 @@
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/LevelSettings.h"
 #include "Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "4J_Profile.h"

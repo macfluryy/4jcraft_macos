@@ -3,9 +3,9 @@
 
 #include "TntMinecartRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/Minecart.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/MinecartTNT.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/entity/item/Minecart.h"
+#include "minecraft/world/entity/item/MinecartTNT.h"
+#include "minecraft/world/level/tile/Tile.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/MinecartRenderer.h"
 

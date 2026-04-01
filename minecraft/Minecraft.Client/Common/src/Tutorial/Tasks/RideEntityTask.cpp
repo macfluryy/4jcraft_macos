@@ -2,7 +2,7 @@
 
 #include "RideEntityTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
 
 class Tutorial;

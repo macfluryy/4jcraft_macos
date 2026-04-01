@@ -13,7 +13,7 @@
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "minecraft/locale/Language.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"

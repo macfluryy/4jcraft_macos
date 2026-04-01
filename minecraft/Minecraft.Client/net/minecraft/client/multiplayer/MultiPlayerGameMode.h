@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "Minecraft.Client/net/minecraft/server/level/GameMode.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/ItemInstance.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 class ClientConnection;

@@ -4,8 +4,8 @@
 
 #include "ArrowRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/projectile/Arrow.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/projectile/Arrow.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"

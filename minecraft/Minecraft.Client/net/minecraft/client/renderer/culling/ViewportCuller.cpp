@@ -2,8 +2,8 @@
 #include <numbers>
 
 #include "ViewportCuller.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/phys/AABB.h"
 
 ViewportCuller::Face::Face(double x, double y, double z, float yRot,
                            float xRot) {

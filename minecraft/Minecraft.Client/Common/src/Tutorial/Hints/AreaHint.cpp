@@ -3,10 +3,10 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "AreaHint.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/world/phys/Vec3.h"
 
 AreaHint::AreaHint(eTutorial_Hint id, Tutorial* tutorial,
                    eTutorial_State displayState, eTutorial_State completeState,

@@ -5,10 +5,10 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/PrimedTnt.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/item/PrimedTnt.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 TntRenderer::TntRenderer() {
     renderer = new TileRenderer();

@@ -5,9 +5,9 @@
 #include <string>
 
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class ClientConnection;
 class Minecraft;

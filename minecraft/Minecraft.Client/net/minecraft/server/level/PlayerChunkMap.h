@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "java/JavaIntHash.h"
-#include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
+#include "minecraft/world/level/ChunkPos.h"
 
 class ServerPlayer;
 class ServerLevel;

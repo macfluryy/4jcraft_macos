@@ -4,11 +4,11 @@
 #include "XboxStructureActionPlaceSpawner.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceSpawner.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
 XboxStructureActionPlaceSpawner::XboxStructureActionPlaceSpawner() {

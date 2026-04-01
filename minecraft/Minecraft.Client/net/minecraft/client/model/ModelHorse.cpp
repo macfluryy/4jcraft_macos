@@ -3,15 +3,15 @@
 #include <memory>
 #include <numbers>
 
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
 #include "ModelHorse.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
 
 ModelHorse::ModelHorse() {
     texWidth = 128;

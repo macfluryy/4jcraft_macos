@@ -3,7 +3,7 @@
 #include <string>
 
 #include "MobRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"

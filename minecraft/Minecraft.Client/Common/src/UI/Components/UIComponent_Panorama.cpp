@@ -8,8 +8,8 @@
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
+#include "minecraft/world/level/dimension/Dimension.h"
+#include "minecraft/world/level/storage/LevelData.h"
 
 UIComponent_Panorama::UIComponent_Panorama(int iPad, void* initData,
                                            UILayer* parentLayer)

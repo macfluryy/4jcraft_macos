@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "AbstractContainerScreen.h"
-#include "Minecraft.World/net/minecraft/world/inventory/BrewingStandMenu.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/world/inventory/BrewingStandMenu.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 
 class BrewingStandMenu;
 class BrewingStandTileEntity;

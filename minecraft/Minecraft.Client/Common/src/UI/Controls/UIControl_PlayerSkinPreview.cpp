@@ -16,7 +16,7 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "java/Class.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"

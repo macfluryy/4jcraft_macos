@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/culling/AllowAllCuller.h"
 #include "Tesselator.h"
 #include "LevelRenderer.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/AABB.h"
 
 class Level;
 class TileEntity;

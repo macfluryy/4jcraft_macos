@@ -4,11 +4,11 @@
 
 #include "IUIScene_AbstractContainerMenu.h"
 
-#include "Minecraft.World/net/minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/world/phys/Vec3.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"

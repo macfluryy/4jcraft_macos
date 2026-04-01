@@ -7,16 +7,16 @@
 #include <mutex>
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
-#include "Minecraft.World/net/minecraft/world/item/MapItem.h"
-#include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
-#include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/MapItem.h"
+#include "minecraft/world/item/crafting/Recipes.h"
+#include "minecraft/world/item/crafting/Recipy.h"
+#include "minecraft/locale/Language.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
@@ -34,7 +34,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../Resource.h"
 #include "console_helpers/compression.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
+#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 
 HINSTANCE hMyInst;
 LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,

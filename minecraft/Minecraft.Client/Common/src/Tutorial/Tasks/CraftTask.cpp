@@ -4,7 +4,7 @@
 
 #include "CraftTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
-#include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class Tutorial;
 class TutorialConstraint;

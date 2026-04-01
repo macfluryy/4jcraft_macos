@@ -2,7 +2,7 @@
 
 #include "ChatScreen.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
+#include "minecraft/SharedConstants.h"
 #include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Gui.h"

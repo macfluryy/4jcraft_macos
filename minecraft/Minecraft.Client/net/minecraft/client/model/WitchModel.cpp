@@ -5,9 +5,9 @@
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "WitchModel.h"
 #include "VillagerModel.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/util/Mth.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/util/Mth.h"
 
 WitchModel::WitchModel(float g) : VillagerModel(g, 0, 64, 128) {
     mole = (new ModelPart(this))->setTexSize(64, 128);

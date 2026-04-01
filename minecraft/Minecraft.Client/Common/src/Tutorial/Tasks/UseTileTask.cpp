@@ -1,6 +1,6 @@
 #include <memory>
 
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
+#include "minecraft/world/level/Level.h"
 #include "UseTileTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 

@@ -41,7 +41,7 @@ class MultiPlayerGameMode;
 class LivingEntity;
 
 #include "java/File.h"
-#include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 #include "console_helpers/C4JThread.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "4J.Common/4J_Compat.h"

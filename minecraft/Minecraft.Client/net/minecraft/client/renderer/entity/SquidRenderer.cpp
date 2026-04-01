@@ -2,8 +2,8 @@
 
 #include "SquidRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/Squid.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Squid.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"

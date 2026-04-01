@@ -2,9 +2,9 @@
 
 #include "HopperScreen.h"
 #include "Font.h"
-#include "Minecraft.World/net/minecraft/world/inventory/HopperMenu.h"
-#include "Minecraft.World/net/minecraft/world/Container.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/HopperMenu.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.Client/net/minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing

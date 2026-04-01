@@ -9,7 +9,7 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED

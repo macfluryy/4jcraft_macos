@@ -13,9 +13,9 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
-#include "Minecraft.World/net/minecraft/world/level/material/MaterialColor.h"
-#include "Minecraft.World/net/minecraft/world/level/saveddata/MapItemSavedData.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/material/MaterialColor.h"
+#include "minecraft/world/level/saveddata/MapItemSavedData.h"
 
 int Minimap::LUT[256];        // 4J added
 bool Minimap::genLUT = true;  // 4J added

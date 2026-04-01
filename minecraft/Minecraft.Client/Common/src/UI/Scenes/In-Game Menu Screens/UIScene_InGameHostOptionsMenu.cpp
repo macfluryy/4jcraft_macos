@@ -4,8 +4,8 @@
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
-#include "Minecraft.World/net/minecraft/network/net.minecraft.network.h"
-#include "Minecraft.World/net/minecraft/network/packet/net.minecraft.network.packet.h"
+#include "minecraft/network/net.minecraft.network.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
 
 UIScene_InGameHostOptionsMenu::UIScene_InGameHostOptionsMenu(
     int iPad, void* initData, UILayer* parentLayer)

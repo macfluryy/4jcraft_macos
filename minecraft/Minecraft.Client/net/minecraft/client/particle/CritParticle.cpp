@@ -1,8 +1,8 @@
 #include "CritParticle.h"
 #include "java/Random.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
 #include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
 

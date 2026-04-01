@@ -1,9 +1,9 @@
 #include <memory>
 
-#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 #include "HorseChoiceTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/ChoiceTask.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
 
 class Tutorial;

@@ -1,7 +1,7 @@
 #include <cmath>
 
 #include "Minecraft.Client/net/minecraft/client/model/dragon/EnderCrystalModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
 #include "EnderCrystalRenderer.h"
 
 ResourceLocation EnderCrystalRenderer::ENDER_CRYSTAL_LOCATION =

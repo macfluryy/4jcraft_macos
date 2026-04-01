@@ -3,11 +3,11 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/RandomLevelSource.h"
-#include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
-#include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
+#include "minecraft/world/level/levelgen/RandomLevelSource.h"
+#include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
 
 class ServerChunkCache;
 class Level;

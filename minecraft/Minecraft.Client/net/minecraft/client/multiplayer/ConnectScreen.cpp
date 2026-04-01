@@ -7,8 +7,8 @@
 #include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
-#include "Minecraft.World/net/minecraft/network/packet/PreLoginPacket.h"
+#include "minecraft/locale/Language.h"
+#include "minecraft/network/packet/PreLoginPacket.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 
 ConnectScreen::ConnectScreen(Minecraft* minecraft, const std::wstring& ip,

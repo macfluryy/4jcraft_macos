@@ -7,12 +7,12 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceContainer.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/Container.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructurePiece.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 XboxStructureActionPlaceContainer::XboxStructureActionPlaceContainer() {
     m_tile = Tile::chest_Id;

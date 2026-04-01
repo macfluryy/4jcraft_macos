@@ -2,8 +2,8 @@
 
 #include "LavaSlimeModel.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/LavaSlime.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/monster/LavaSlime.h"
+#include "minecraft/world/entity/LivingEntity.h"
 
 LavaSlimeModel::LavaSlimeModel() {
     for (int i = 0; i < BODYCUBESLENGTH; i++) {

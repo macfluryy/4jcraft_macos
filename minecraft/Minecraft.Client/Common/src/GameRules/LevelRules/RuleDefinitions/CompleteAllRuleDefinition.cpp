@@ -4,13 +4,13 @@
 
 #include "CompleteAllRuleDefinition.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/network/Connection.h"
+#include "minecraft/network/Connection.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompoundGameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/network/packet/UpdateGameRuleProgressPacket.h"
+#include "minecraft/network/packet/UpdateGameRuleProgressPacket.h"
 
 void CompleteAllRuleDefinition::getChildren(
     std::vector<GameRuleDefinition*>* children) {

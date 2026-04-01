@@ -7,7 +7,7 @@
 #include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Abilities.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 Input::Input() {

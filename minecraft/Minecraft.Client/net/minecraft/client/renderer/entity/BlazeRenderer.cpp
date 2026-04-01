@@ -2,8 +2,8 @@
 
 #include "Minecraft.Client/net/minecraft/client/model/BlazeModel.h"
 #include "BlazeRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/monster/Blaze.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/monster/Blaze.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/MobRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"

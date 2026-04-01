@@ -15,7 +15,7 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/locale/I18n.h"
+#include "minecraft/locale/I18n.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 

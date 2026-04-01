@@ -1,7 +1,7 @@
 #include <cmath>
 
 #include "Minecraft.Client/net/minecraft/client/model/dragon/DragonModel.h"
-#include "Minecraft.World/net/minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.Client/net/minecraft/client/Lighting.h"
 #include "EnderDragonRenderer.h"

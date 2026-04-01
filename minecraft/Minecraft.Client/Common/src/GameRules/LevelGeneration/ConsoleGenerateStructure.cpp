@@ -11,10 +11,10 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceSpawner.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/Direction.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
-#include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/Direction.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/dimension/Dimension.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
 ConsoleGenerateStructure::ConsoleGenerateStructure() : StructurePiece(0) {

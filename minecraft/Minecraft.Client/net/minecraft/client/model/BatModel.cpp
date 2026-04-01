@@ -4,8 +4,8 @@
 
 #include "BatModel.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
-#include "Minecraft.World/net/minecraft/world/entity/Entity.h"
-#include "Minecraft.World/net/minecraft/world/entity/ambient/Bat.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/ambient/Bat.h"
 #include "Minecraft.Client/net/minecraft/client/model/geom/Model.h"
 
 BatModel::BatModel() : Model() {

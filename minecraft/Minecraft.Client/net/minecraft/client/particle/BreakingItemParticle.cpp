@@ -1,9 +1,9 @@
 #include "BreakingItemParticle.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/net/minecraft/world/Icon.h"
-#include "Minecraft.World/net/minecraft/world/item/Item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/Icon.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/tile/Tile.h"
 #include "Minecraft.Client/net/minecraft/client/particle/Particle.h"
 #include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
 

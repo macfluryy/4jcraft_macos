@@ -6,10 +6,10 @@
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/LevelSettings.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.World/net/minecraft/world/level/biome/BiomeSource.h"
-#include "Minecraft.World/net/minecraft/world/level/LevelType.h"
+#include "minecraft/world/level/biome/BiomeSource.h"
+#include "minecraft/world/level/LevelType.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 

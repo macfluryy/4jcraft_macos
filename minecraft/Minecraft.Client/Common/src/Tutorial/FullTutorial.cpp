@@ -2,18 +2,18 @@
 
 #include "4J.Common/4J_InputActions.h"
 
-#include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
-#include "Minecraft.World/net/minecraft/world/effect/net.minecraft.world.effect.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "minecraft/world/effect/net.minecraft.world.effect.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/DiggerItemHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTasks.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/AreaHint.h"
 #include "FullTutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraints.h"
-#include "Minecraft.World/net/minecraft/world/item/alchemy/PotionMacros.h"
+#include "minecraft/world/item/alchemy/PotionMacros.h"
 
 FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     : Tutorial(iPad, true) {

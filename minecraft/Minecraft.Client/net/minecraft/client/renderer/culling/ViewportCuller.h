@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "Culler.h"
-#include "Minecraft.World/net/minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/Mob.h"
 
 class Mob;
 class AABB;

@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "Minecraft.World/net/minecraft/commands/CommandDispatcher.h"
-#include "Minecraft.World/net/minecraft/commands/AdminLogCommand.h"
-#include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
+#include "minecraft/commands/CommandDispatcher.h"
+#include "minecraft/commands/AdminLogCommand.h"
+#include "minecraft/network/packet/ChatPacket.h"
 
 class ServerCommandDispatcher : public CommandDispatcher,
                                 public AdminLogCommand {

@@ -5,7 +5,7 @@
 
 // class ServerPlayer;
 #include "ServerPlayer.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class Entity;
 class Packet;

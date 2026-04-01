@@ -8,8 +8,8 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/Texture.h"
 #include "ClockTexture.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/dimension/Dimension.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/StitchedTexture.h"
 
 ClockTexture::ClockTexture() : StitchedTexture(L"clock", L"clock") {

@@ -4,7 +4,7 @@
 
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "EntityRenderer.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/LivingEntity.h"
 
 class LivingEntity;
 class Model;

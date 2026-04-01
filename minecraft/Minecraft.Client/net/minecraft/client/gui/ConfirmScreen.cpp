@@ -2,7 +2,7 @@
 
 #include "ConfirmScreen.h"
 #include "SmallButton.h"
-#include "Minecraft.World/net/minecraft/locale/Language.h"
+#include "minecraft/locale/Language.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Button.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 

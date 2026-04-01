@@ -16,8 +16,8 @@
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/world/entity/player/Abilities.h"
-#include "Minecraft.World/net/minecraft/world/inventory/EnchantmentMenu.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/inventory/EnchantmentMenu.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 
 UIControl_EnchantmentButton::UIControl_EnchantmentButton() {

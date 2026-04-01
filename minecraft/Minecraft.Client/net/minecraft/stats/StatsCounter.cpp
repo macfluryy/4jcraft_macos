@@ -7,17 +7,17 @@
 #include <vector>
 
 #include "StatsCounter.h"
-#include "Minecraft.World/net/minecraft/stats/Stat.h"
-#include "Minecraft.World/net/minecraft/stats/Stats.h"
-#include "Minecraft.World/net/minecraft/stats/Achievement.h"
-#include "Minecraft.World/net/minecraft/stats/Achievements.h"
+#include "minecraft/stats/Stat.h"
+#include "minecraft/stats/Stats.h"
+#include "minecraft/stats/Achievement.h"
+#include "minecraft/stats/Achievements.h"
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/net/minecraft/stats/GenericStats.h"
-#include "Minecraft.World/net/minecraft/world/item/Item.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
+#include "minecraft/stats/GenericStats.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 Stat** StatsCounter::LARGE_STATS[] = {&Stats::walkOneM,     &Stats::swimOneM,
                                       &Stats::fallOneM,     &Stats::climbOneM,

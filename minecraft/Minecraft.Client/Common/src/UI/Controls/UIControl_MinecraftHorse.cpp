@@ -11,10 +11,10 @@
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HorseInventoryMenu.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/entity/animal/EntityHorse.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 // #include
-// "../../../Minecraft.World/net.minecraft.world.entity.animal.EntityHorse.h"
+// "../../../minecraft/net.minecraft.world.entity.animal.EntityHorse.h"
 
 #include "UIControl_MinecraftHorse.h"
 

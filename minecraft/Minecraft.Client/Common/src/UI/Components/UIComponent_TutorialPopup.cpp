@@ -6,7 +6,7 @@
 #include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 UIComponent_TutorialPopup::UIComponent_TutorialPopup(int iPad, void* initData,
                                                      UILayer* parentLayer)

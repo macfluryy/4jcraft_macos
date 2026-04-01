@@ -1,5 +1,5 @@
 #pragma once
-#include "Minecraft.World/net/minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/AABB.h"
 
 class Culler {
 public:

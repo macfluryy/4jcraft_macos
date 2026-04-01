@@ -4,7 +4,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
-#include "Minecraft.World/net/minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/material/Material.h"
 
 class Entity;
 class ItemInstance;

@@ -7,7 +7,7 @@ class Random;
 using namespace std;
 #include <string>
 
-#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "miniaudio.h"
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "Minecraft.Client/Common/src/Audio/Consoles_SoundEngine.h"

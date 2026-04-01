@@ -13,10 +13,10 @@
 #include "EnderChestRenderer.h"
 #include "BeaconRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 class Font;
 class Textures;

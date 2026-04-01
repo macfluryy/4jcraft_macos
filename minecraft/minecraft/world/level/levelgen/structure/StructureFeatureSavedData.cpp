@@ -1,0 +1,42 @@
+#include <string>
+
+#include "StructureFeatureSavedData.h"
+#include "console_helpers/StringHelpers.h"
+#include "nbt/CompoundTag.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureSavedData.h"
+#include "minecraft/world/level/saveddata/SavedData.h"
+
+std::wstring StructureFeatureSavedData::TAG_FEATURES = L"Features";
+
+StructureFeatureSavedData::StructureFeatureSavedData(const std::wstring& idName)
+    : SavedData(idName) {
+    this->pieceTags = new CompoundTag(TAG_FEATURES);
+}
+
+StructureFeatureSavedData::~StructureFeatureSavedData() { delete pieceTags; }
+
+void StructureFeatureSavedData::load(CompoundTag* tag) {
+    this->pieceTags = tag->getCompound(TAG_FEATURES);
+}
+
+void StructureFeatureSavedData::save(CompoundTag* tag) {
+    tag->put(TAG_FEATURES, pieceTags->copy());
+}
+
+CompoundTag* StructureFeatureSavedData::getFeatureTag(int chunkX, int chunkZ) {
+    return pieceTags->getCompound(createFeatureTagId(chunkX, chunkZ));
+}
+
+void StructureFeatureSavedData::putFeatureTag(CompoundTag* tag, int chunkX,
+                                              int chunkZ) {
+    std::wstring name = createFeatureTagId(chunkX, chunkZ);
+    tag->setName(name);
+    pieceTags->put(name, tag);
+}
+
+std::wstring StructureFeatureSavedData::createFeatureTagId(int chunkX,
+                                                           int chunkZ) {
+    return L"[" + _toString<int>(chunkX) + L"," + _toString<int>(chunkZ) + L"]";
+}
+
+CompoundTag* StructureFeatureSavedData::getFullTag() { return pieceTags; }

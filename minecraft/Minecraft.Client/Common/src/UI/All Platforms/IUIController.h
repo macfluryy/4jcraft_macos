@@ -3,7 +3,7 @@
 #include "UIEnums.h"
 #include "UIStructs.h"
 #include "4J_Storage.h"
-#include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 
 // 4J Stu - An interface class that defines all the public functions that we use
 // within the game code. This allows us to build the Xbox 360 version without
