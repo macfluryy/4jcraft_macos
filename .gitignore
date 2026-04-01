@@ -6,7 +6,7 @@
 !/.github/
 !/.github-assets/
 !/docs/
-!/minecraft/
+!/targets/
 !/scripts/
 !/subprojects/
 /subprojects/*
