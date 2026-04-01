@@ -27,6 +27,7 @@ inline constexpr int XUSER_INDEX_FOCUS = 254;
 #define FOURJ_COMMON_PLAYER_UID_DEFINED
 using PlayerUID = unsigned long long;
 using PPlayerUID = PlayerUID*;
+inline constexpr PlayerUID INVALID_XUID = 0;
 #endif
 #endif
 

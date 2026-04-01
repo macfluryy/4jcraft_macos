@@ -9,7 +9,8 @@
 
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
 
 class INVITE_INFO;
 #if defined(_WINDOWS64)
