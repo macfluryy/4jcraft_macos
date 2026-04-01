@@ -513,7 +513,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
 
                 if (Compression::getCompression()->Decompress(
                         buf, &decompSize, (unsigned char*)pvSaveMem + 8,
-                        fileSize - 8) == S_OK) {
+                        fileSize - 8) == 0) {
                     // Only ReAlloc if we need to (we might already have enough)
                     // and align to 512 byte boundaries
                     unsigned int currentHeapSize =

@@ -177,7 +177,7 @@ int CPlatformNetworkManagerStub::GetLocalPlayerMask(int playerIndex) {
 
 bool CPlatformNetworkManagerStub::AddLocalPlayerByUserIndex(int userIndex) {
     NotifyPlayerJoined(m_pIQNet->GetLocalPlayerByUserIndex(userIndex));
-    return (m_pIQNet->AddLocalPlayerByUserIndex(userIndex) == S_OK);
+    return (m_pIQNet->AddLocalPlayerByUserIndex(userIndex) == 0);
 }
 
 bool CPlatformNetworkManagerStub::RemoveLocalPlayerByUserIndex(int userIndex) {
@@ -563,7 +563,7 @@ bool CPlatformNetworkManagerStub::IsHost() {
 bool CPlatformNetworkManagerStub::JoinGameFromInviteInfo(
     int userIndex, int userMask, const INVITE_INFO* pInviteInfo) {
     return (m_pIQNet->JoinGameFromInviteInfo(userIndex, userMask,
-                                             pInviteInfo) == S_OK);
+                                             pInviteInfo) == 0);
 }
 
 void CPlatformNetworkManagerStub::SetSessionTexturePackParentId(int id) {

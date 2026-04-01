@@ -67,7 +67,7 @@ int IUIScene_PauseMenu::ExitGameSaveDialogReturned(
                         &IUIScene_PauseMenu::WarningTrialTexturePackReturned,
                         pParam);
 
-                    return S_OK;
+                    return 0;
                 }
             }
 
@@ -226,7 +226,7 @@ int IUIScene_PauseMenu::SaveWorldThreadProc(void* lpParameter) {
     if (!MinecraftServer::serverHalted() && !app.GetChangingSessionType())
         app.SetGameStarted(true);
 
-    int32_t hr = S_OK;
+    int32_t hr = 0;
     if (app.GetChangingSessionType()) {
         // 4J Stu - This causes the fullscreenprogress scene to ignore the
         // action it was given
@@ -244,7 +244,7 @@ int IUIScene_PauseMenu::ExitWorldThreadProc(void* lpParameter) {
 
     _ExitWorld(lpParameter);
 
-    return S_OK;
+    return 0;
 }
 
 // This function performs the meat of exiting from a level. It should be called

@@ -94,7 +94,7 @@ int32_t XMLParser::ConsumeSpace() {
         if (FAILED(hr = AdvanceCharacter())) return hr;
     }
     SkipNextAdvance();
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ int32_t XMLParser::ConvertEscape() {
         // copy character into the buffer
         m_Ch = wVal;
 
-        return S_OK;
+        return 0;
     }
 
     // must be an entity reference
@@ -203,7 +203,7 @@ int32_t XMLParser::ConvertEscape() {
     }
 
     m_Ch = wVal;
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -250,7 +250,7 @@ int32_t XMLParser::AdvanceAttrVal() {
         *m_pWritePtr = m_Ch;
         m_pWritePtr++;
     }
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -289,7 +289,7 @@ int32_t XMLParser::AdvanceName() {
     }
 
     SkipNextAdvance();
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -303,7 +303,7 @@ int32_t XMLParser::AdvanceName() {
 int32_t XMLParser::AdvanceCharacter(bool bOkToFail) {
     if (m_bSkipNextAdvance) {
         m_bSkipNextAdvance = false;
-        return S_OK;
+        return 0;
     }
 
     // If we hit EOF in the middle of a character,
@@ -346,7 +346,7 @@ int32_t XMLParser::AdvanceCharacter(bool bOkToFail) {
     } else if (m_Ch != '\r')
         m_pISAXCallback->m_LinePos++;
 
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -374,7 +374,7 @@ int32_t XMLParser::AdvanceElement() {
                 return E_INVALID_XML_SYNTAX;
             }
             if (FAILED(hr = AdvanceComment())) return hr;
-            return S_OK;
+            return 0;
         }
 
         if (m_Ch != '[') {
@@ -436,7 +436,7 @@ int32_t XMLParser::AdvanceElement() {
         for (;;) {
             if (FAILED(hr = AdvanceCharacter())) return hr;
 
-            if (m_Ch == '>') return S_OK;
+            if (m_Ch == '>') return 0;
         }
     } else {
         XMLAttribute Attributes[XML_MAX_ATTRIBUTES_PER_ELEMENT];
@@ -525,7 +525,7 @@ int32_t XMLParser::AdvanceElement() {
         }
     }
 
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -570,7 +570,7 @@ int32_t XMLParser::AdvanceCDATA() {
 
     if (FAILED(m_pISAXCallback->CDATAEnd())) return E_ABORT;
 
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -595,7 +595,7 @@ int32_t XMLParser::AdvanceComment() {
             wStage = 0;
     }
 
-    return S_OK;
+    return 0;
 }
 
 //-------------------------------------------------------------------------------------
@@ -618,7 +618,7 @@ ISAXCallback* XMLParser::GetSAXCallbackInterface() { return m_pISAXCallback; }
 //-------------------------------------------------------------------------------------
 int32_t XMLParser::MainParseLoop() {
     bool bWhiteSpaceOnly = true;
-    int32_t hr = S_OK;
+    int32_t hr = 0;
 
     if (FAILED(m_pISAXCallback->StartDocument())) return E_ABORT;
 
@@ -664,7 +664,7 @@ int32_t XMLParser::MainParseLoop() {
 
             if (FAILED(m_pISAXCallback->EndDocument())) return E_ABORT;
 
-            return S_OK;
+            return 0;
         }
 
         if (m_Ch == '<') {

@@ -14,16 +14,12 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 
-#define TRUE true
-#define FALSE false
 #define RtlZeroMemory(Destination, Length) memset((Destination), 0, (Length))
 #define ZeroMemory RtlZeroMemory
-#define WINAPI
 
 #define __cdecl
 #define _vsnprintf_s vsnprintf;
 
-#define S_OK 0
 typedef unsigned int DWORD;
 typedef unsigned char BYTE;
 typedef BYTE* PBYTE;
@@ -64,8 +60,6 @@ typedef float FLOAT;
 #define ERROR_SUCCESS 0L
 #define ERROR_IO_PENDING 997L  // dderror
 #define ERROR_CANCELLED 1223L
-// #define S_OK                                   ((HRESULT)0x00000000L)
-#define S_FALSE ((HRESULT)0x00000001L)
 
 #define INFINITE 0xFFFFFFFF  // Infinite timeout
 
@@ -356,7 +350,7 @@ static inline HANDLE CreateFile(const wchar_t* lpFileName,
 }
 
 static inline bool CloseHandle(HANDLE hObject) {
-    if (hObject == INVALID_HANDLE_VALUE) return FALSE;
+    if (hObject == INVALID_HANDLE_VALUE) return false;
     return close((int)(intptr_t)hObject) == 0;
 }
 
@@ -373,13 +367,13 @@ static inline DWORD GetFileSize(HANDLE hFile, DWORD* lpFileSizeHigh) {
 
 static inline bool GetFileSizeEx(HANDLE hFile, LARGE_INTEGER* lpFileSize) {
     struct stat st{};
-    if (fstat((int)(intptr_t)hFile, &st) != 0) return FALSE;
+    if (fstat((int)(intptr_t)hFile, &st) != 0) return false;
     if (lpFileSize) {
         lpFileSize->QuadPart = st.st_size;
         lpFileSize->LowPart = (DWORD)(st.st_size & 0xFFFFFFFF);
         lpFileSize->HighPart = (LONG)(st.st_size >> 32);
     }
-    return TRUE;
+    return true;
 }
 
 static inline bool ReadFile(HANDLE hFile, void* lpBuffer,
@@ -506,13 +500,13 @@ static inline bool SystemTimeToFileTime(const SYSTEMTIME* lpSystemTime,
     tm.tm_sec = lpSystemTime->wSecond;
 
     time_t t = timegm(&tm);
-    if (t == (time_t)-1) return FALSE;
+    if (t == (time_t)-1) return false;
 
     uint64_t ft = ((uint64_t)t + 11644473600ULL) * 10000000ULL;
     ft += lpSystemTime->wMilliseconds * 10000ULL;
     lpFileTime->dwLowDateTime = (DWORD)(ft & 0xFFFFFFFF);
     lpFileTime->dwHighDateTime = (DWORD)(ft >> 32);
-    return TRUE;
+    return true;
 }
 
 // https://learn.microsoft.com/en-us/windows/win32/api/timezoneapi/nf-timezoneapi-filetimetosystemtime
@@ -526,7 +520,7 @@ static inline bool FileTimeToSystemTime(const FILETIME* lpFileTime,
     struct tm tm;
     gmtime_r(&t, &tm);  // UTC
     _FillSystemTime(&tm, remainder_ns, lpSystemTime);
-    return TRUE;
+    return true;
 }
 static inline DWORD GetTickCount() {
     struct timespec ts;
@@ -592,7 +586,7 @@ static inline HANDLE CreateEvent(void*, bool manual_reset, bool initial_state,
 
 static inline bool SetEvent(HANDLE hEvent) {
     Event* ev = (Event*)hEvent;
-    if (!ev) return FALSE;
+    if (!ev) return false;
     pthread_mutex_lock(&ev->mutex);
     ev->signaled = 1;
     if (ev->manual_reset)
@@ -600,16 +594,16 @@ static inline bool SetEvent(HANDLE hEvent) {
     else
         pthread_cond_signal(&ev->cond);
     pthread_mutex_unlock(&ev->mutex);
-    return TRUE;
+    return true;
 }
 
 static inline bool ResetEvent(HANDLE hEvent) {
     Event* ev = (Event*)hEvent;
-    if (!ev) return FALSE;
+    if (!ev) return false;
     pthread_mutex_lock(&ev->mutex);
     ev->signaled = 0;
     pthread_mutex_unlock(&ev->mutex);
-    return TRUE;
+    return true;
 }
 
 #define WAIT_FAILED ((DWORD)0xFFFFFFFF)
@@ -796,14 +790,14 @@ static inline DWORD ResumeThread(HANDLE hThread) {
 static inline bool SetThreadPriority(HANDLE hThread, int nPriority) {
     (void)hThread;
     (void)nPriority;
-    return TRUE;
+    return true;
 }
 
 static inline bool GetExitCodeThread(HANDLE hThread, DWORD* lpExitCode) {
     LinuxThread* lt = (LinuxThread*)hThread;
-    if (!lt || !lpExitCode) return FALSE;
+    if (!lt || !lpExitCode) return false;
     *lpExitCode = lt->exitCode;
-    return TRUE;
+    return true;
 }
 
 static inline DWORD GetCurrentThreadId() {
@@ -873,7 +867,7 @@ static inline void* VirtualAlloc(void* lpAddress, size_t dwSize,
 
 static inline bool VirtualFree(void* lpAddress, size_t dwSize,
                                DWORD dwFreeType) {
-    if (lpAddress == nullptr) return FALSE;
+    if (lpAddress == nullptr) return false;
     // MEM_RELEASE (0x8000) frees the whole region
     if (dwFreeType == 0x8000 /*MEM_RELEASE*/) {
         // dwSize should be 0 for MEM_RELEASE per Win32 API, but we don't track
@@ -885,7 +879,7 @@ static inline bool VirtualFree(void* lpAddress, size_t dwSize,
         // MEM_DECOMMIT (0x4000) - just decommit (make inaccessible)
         madvise(lpAddress, dwSize, MADV_DONTNEED);
     }
-    return TRUE;
+    return true;
 }
 
 #define swscanf_s swscanf

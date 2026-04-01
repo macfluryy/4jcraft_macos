@@ -8,8 +8,8 @@ using namespace ATG;
 
 class xmlMojangCallback : public ATG::ISAXCallback {
 public:
-    virtual int32_t StartDocument() { return S_OK; };
-    virtual int32_t EndDocument() { return S_OK; };
+    virtual int32_t StartDocument() { return 0; };
+    virtual int32_t EndDocument() { return 0; };
 
     virtual int32_t ElementBegin(const wchar_t* strName, uint32_t NameLen,
                                  const XMLAttribute* pAttributes,
@@ -22,12 +22,12 @@ public:
         PlayerUID xuid = 0LL;
 
         if (NameLen > 31)
-            return S_FALSE;
+            return 1;
         else
             wcsncpy(wAttName, strName, NameLen);
 
         if (_wcsicmp(wAttName, L"root") == 0) {
-            return S_OK;
+            return 0;
         } else if (_wcsicmp(wAttName, L"data") == 0) {
             for (uint32_t i = 0; i < NumAttributes; i++) {
                 wcsncpy_s(wAttName, pAttributes[i].strName,
@@ -61,29 +61,29 @@ public:
                 return CConsoleMinecraftApp::RegisterMojangData(
                     wNameXUID, xuid, wNameSkin, wNameCloak);
             } else
-                return S_FALSE;
+                return 1;
         } else {
-            return S_FALSE;
+            return 1;
         }
     };
 
     virtual int32_t ElementContent(const wchar_t* strData, uint32_t DataLen,
                                    bool More) {
-        return S_OK;
+        return 0;
     };
 
     virtual int32_t ElementEnd(const wchar_t* strName, uint32_t NameLen) {
-        return S_OK;
+        return 0;
     };
 
-    virtual int32_t CDATABegin() { return S_OK; };
+    virtual int32_t CDATABegin() { return 0; };
 
     virtual int32_t CDATAData(const wchar_t* strCDATA, uint32_t CDATALen,
                               bool bMore) {
-        return S_OK;
+        return 0;
     };
 
-    virtual int32_t CDATAEnd() { return S_OK; };
+    virtual int32_t CDATAEnd() { return 0; };
 
     virtual void Error(int32_t hError, const char* strMessage) {
         app.DebugPrintf("Error when Parsing xuids.XML\n");
@@ -92,8 +92,8 @@ public:
 
 class xmlConfigCallback : public ATG::ISAXCallback {
 public:
-    virtual int32_t StartDocument() { return S_OK; };
-    virtual int32_t EndDocument() { return S_OK; };
+    virtual int32_t StartDocument() { return 0; };
+    virtual int32_t EndDocument() { return 0; };
 
     virtual int32_t ElementBegin(const wchar_t* strName, uint32_t NameLen,
                                  const XMLAttribute* pAttributes,
@@ -105,12 +105,12 @@ public:
         int iValue = -1;
 
         if (NameLen > 31)
-            return S_FALSE;
+            return 1;
         else
             wcsncpy_s(wAttName, strName, NameLen);
 
         if (_wcsicmp(wAttName, L"root") == 0) {
-            return S_OK;
+            return 0;
         } else if (_wcsicmp(wAttName, L"data") == 0) {
             for (uint32_t i = 0; i < NumAttributes; i++) {
                 wcsncpy_s(wAttName, pAttributes[i].strName,
@@ -139,30 +139,30 @@ public:
                 return CConsoleMinecraftApp::RegisterConfigValues(wType,
                                                                   iValue);
             } else {
-                return S_FALSE;
+                return 1;
             }
         } else {
-            return S_FALSE;
+            return 1;
         }
     }
 
     virtual int32_t ElementContent(const wchar_t* strData, uint32_t DataLen,
                                    bool More) {
-        return S_OK;
+        return 0;
     };
 
     virtual int32_t ElementEnd(const wchar_t* strName, uint32_t NameLen) {
-        return S_OK;
+        return 0;
     };
 
-    virtual int32_t CDATABegin() { return S_OK; };
+    virtual int32_t CDATABegin() { return 0; };
 
     virtual int32_t CDATAData(const wchar_t* strCDATA, uint32_t CDATALen,
                               bool bMore) {
-        return S_OK;
+        return 0;
     };
 
-    virtual int32_t CDATAEnd() { return S_OK; };
+    virtual int32_t CDATAEnd() { return 0; };
 
     virtual void Error(int32_t hError, const char* strMessage) {
         app.DebugPrintf("Error when Parsing xuids.XML\n");
@@ -171,8 +171,8 @@ public:
 
 class xmlDLCInfoCallback : public ATG::ISAXCallback {
 public:
-    virtual int32_t StartDocument() { return S_OK; };
-    virtual int32_t EndDocument() { return S_OK; };
+    virtual int32_t StartDocument() { return 0; };
+    virtual int32_t EndDocument() { return 0; };
 
     virtual int32_t ElementBegin(const wchar_t* strName, uint32_t NameLen,
                                  const XMLAttribute* pAttributes,
@@ -191,12 +191,12 @@ public:
         int iConfig = 0;
 
         if (NameLen > 31)
-            return S_FALSE;
+            return 1;
         else
             wcsncpy_s(wAttName, strName, NameLen);
 
         if (_wcsicmp(wAttName, L"root") == 0) {
-            return S_OK;
+            return 0;
         } else if (_wcsicmp(wAttName, L"data") == 0) {
             for (uint32_t i = 0; i < NumAttributes; i++) {
                 wcsncpy_s(wAttName, pAttributes[i].strName,
@@ -271,30 +271,30 @@ public:
                     wType, wNameBanner, iGender, ullFull, ullTrial, wFirstSkin,
                     uiSortIndex, iConfig, wDataFile);
             } else {
-                return S_FALSE;
+                return 1;
             }
         } else {
-            return S_FALSE;
+            return 1;
         }
     };
 
     virtual int32_t ElementContent(const wchar_t* strData, uint32_t DataLen,
                                    bool More) {
-        return S_OK;
+        return 0;
     };
 
     virtual int32_t ElementEnd(const wchar_t* strName, uint32_t NameLen) {
-        return S_OK;
+        return 0;
     };
 
-    virtual int32_t CDATABegin() { return S_OK; };
+    virtual int32_t CDATABegin() { return 0; };
 
     virtual int32_t CDATAData(const wchar_t* strCDATA, uint32_t CDATALen,
                               bool bMore) {
-        return S_OK;
+        return 0;
     };
 
-    virtual int32_t CDATAEnd() { return S_OK; };
+    virtual int32_t CDATAEnd() { return 0; };
 
     virtual void Error(int32_t hError, const char* strMessage) {
         app.DebugPrintf("Error when Parsing DLC.XML\n");

@@ -29,10 +29,10 @@ class SocketAddress;
 class ByteArrayOutputStream;
 
 class Connection {
-    friend uint32_t WINAPI runRead(void* lpParam);
-    friend uint32_t WINAPI runWrite(void* lpParam);
-    friend uint32_t WINAPI runSendAndQuit(void* lpParam);
-    friend uint32_t WINAPI runClose(void* lpParam);
+    friend uint32_t runRead(void* lpParam);
+    friend uint32_t runWrite(void* lpParam);
+    friend uint32_t runSendAndQuit(void* lpParam);
+    friend uint32_t runClose(void* lpParam);
 
 private:
     static const int SEND_BUFFER_SIZE = 1024 * 5;

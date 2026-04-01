@@ -95,7 +95,7 @@ int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
     PIXEndNamedEvent();
     //	printf("Compressed from %d to %d to %d\n",SrcSize,rleSize,*pDestSize);
 
-    return S_OK;
+    return 0;
 }
 
 int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
@@ -153,7 +153,7 @@ int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
 #endif
     }
 
-    return S_OK;
+    return 0;
 }
 
 int32_t Compression::DecompressLZXRLE(void* pDestination,
@@ -215,7 +215,7 @@ int32_t Compression::DecompressLZXRLE(void* pDestination,
 
     if (dynamicRleBuf != nullptr) delete[] dynamicRleBuf;
 
-    return S_OK;
+    return 0;
 }
 
 int32_t Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
@@ -249,7 +249,7 @@ int32_t Compression::DecompressRLE(void* pDestination, unsigned int* pDestSize,
     }
     *pDestSize = (unsigned int)(pucOut - (unsigned char*)pDestination);
 
-    return S_OK;
+    return 0;
 }
 
 int32_t Compression::Compress(void* pDestination, unsigned int* pDestSize,
@@ -261,7 +261,7 @@ int32_t Compression::Compress(void* pDestination, unsigned int* pDestSize,
     int res = ::compress((Bytef*)pDestination, (uLongf*)&destSize,
                          (Bytef*)pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
-    return ((res == Z_OK) ? S_OK : -1);
+    return ((res == Z_OK) ? 0 : -1);
 #else
     size_t destSize = (size_t)(*pDestSize);
     int32_t res = XMemCompress(compressionContext, pDestination, &destSize,
@@ -289,7 +289,7 @@ int32_t Compression::Decompress(void* pDestination, unsigned int* pDestSize,
     int res = ::uncompress((Bytef*)pDestination, (uLongf*)&destSize,
                            (Bytef*)pSource, SrcSize);
     *pDestSize = (unsigned int)destSize;
-    return ((res == Z_OK) ? S_OK : -1);
+    return ((res == Z_OK) ? 0 : -1);
 #else
     size_t destSize = (size_t)(*pDestSize);
     int32_t res = XMemDecompress(decompressionContext, pDestination,
@@ -340,7 +340,7 @@ int32_t Compression::DecompressWithType(void* pDestination,
         case eCompressionType_None:
             memcpy(pDestination, pSource, SrcSize);
             *pDestSize = SrcSize;
-            return S_OK;
+            return 0;
         case eCompressionType_LZXRLE: {
 #if defined(_WIN64)
             size_t destSize = (size_t)(*pDestSize);
@@ -419,7 +419,7 @@ int32_t Compression::DecompressWithType(void* pDestination,
 
                 // Delete uncompressed data
                 delete uncompr.data;
-                return S_OK;
+                return 0;
             } else
                 break;  // Cannot decompress when destination is nullptr
 #else

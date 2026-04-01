@@ -148,7 +148,7 @@ void UIScene_FullscreenProgress::tick() {
     if (exitcode != C4JThread::kStillActive) {
         // If we failed (currently used by network connection thread), navigate
         // back
-        if (exitcode != S_OK) {
+        if (exitcode != 0) {
             if (exitcode == ERROR_CANCELLED) {
                 // Current thread cancelled for whatever reason
                 // Currently used only for the

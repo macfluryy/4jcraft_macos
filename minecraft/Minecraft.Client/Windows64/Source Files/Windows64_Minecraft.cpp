@@ -533,7 +533,7 @@ LRESULT CALLBACK DlgProc(HWND hWndDlg, uint32_t Msg, WPARAM wParam,
 // Create Direct3D device and swap chain
 //--------------------------------------------------------------------------------------
 int32_t InitDevice() {
-    int32_t hr = S_OK;
+    int32_t hr = 0;
 
     RECT rc;
     GetClientRect(g_hWnd, &rc);
@@ -639,7 +639,7 @@ int32_t InitDevice() {
 
     RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
 
-    return S_OK;
+    return 0;
 }
 
 //--------------------------------------------------------------------------------------

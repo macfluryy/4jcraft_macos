@@ -826,7 +826,7 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
 
     if (lpParameter != nullptr) delete (NetworkGameInitData*)lpParameter;
 
-    return S_OK;
+    return 0;
 }
 
 int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
@@ -846,7 +846,7 @@ int CGameNetworkManager::ExitAndJoinFromInviteThreadProc(void* lpParam) {
     JoinFromInviteData* inviteData = (JoinFromInviteData*)lpParam;
     app.SetAction(inviteData->dwUserIndex, eAppAction_JoinFromInvite, lpParam);
 
-    return S_OK;
+    return 0;
 }
 
 void CGameNetworkManager::_LeaveGame() {
@@ -1004,7 +1004,7 @@ int CGameNetworkManager::ChangeSessionTypeThreadProc(void* lpParam) {
     app.SetChangingSessionType(false);
     app.SetReallyChangingSessionType(false);
 
-    return S_OK;
+    return 0;
 }
 
 void CGameNetworkManager::SystemFlagSet(INetworkPlayer* pNetworkPlayer,

@@ -1087,7 +1087,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
             tutorial->handleUIInput(iAction);
             if (ui.IsTutorialVisible(getPad()) &&
                 !tutorial->isInputAllowed(iAction)) {
-                return S_OK;
+                return 0;
             }
         }
     }
@@ -1101,7 +1101,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
     bool itemEditorKeyPress = false;
 
     // Ignore input from other players
-    // if(pMinecraft->player->GetXboxPad()!=pInputData->UserIndex) return S_OK;
+    // if(pMinecraft->player->GetXboxPad()!=pInputData->UserIndex) return 0;
 
     switch (iAction) {
 #if defined(_DEBUG_MENUS_ENABLED)
@@ -1178,7 +1178,7 @@ bool IUIScene_AbstractContainerMenu::handleKeyDown(int iPad, int iAction,
             }
 
             bHandled = true;
-            return S_OK;
+            return 0;
         } break;
         case ACTION_MENU_LEFT: {
             // ui.PlayUISFX(eSFX_Focus);

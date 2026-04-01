@@ -128,7 +128,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
     // ignore key repeats of the X key - because it's X to open this menu, it
     // can come through as a repeat on opening
     if (bRepeat && (iAction == ACTION_MENU_X)) {
-        return S_OK;
+        return 0;
     }
 
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -140,7 +140,7 @@ bool IUIScene_CraftingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             tutorial->handleUIInput(iAction);
             if (ui.IsTutorialVisible(getPad()) &&
                 !tutorial->isInputAllowed(iAction)) {
-                return S_OK;
+                return 0;
             }
         }
     }

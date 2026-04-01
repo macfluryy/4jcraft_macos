@@ -41,7 +41,7 @@ bool IUIScene_TradingMenu::handleKeyDown(int iPad, int iAction, bool bRepeat) {
             tutorial->handleUIInput(iAction);
             if (ui.IsTutorialVisible(getPad()) &&
                 !tutorial->isInputAllowed(iAction)) {
-                return S_OK;
+                return 0;
             }
         }
     }

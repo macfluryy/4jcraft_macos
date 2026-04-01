@@ -622,7 +622,7 @@ int32_t InitDevice() {
 
     RenderManager.Initialise(g_pd3dDevice, g_pSwapChain);
 
-    return S_OK;
+    return 0;
 }
 
 //--------------------------------------------------------------------------------------

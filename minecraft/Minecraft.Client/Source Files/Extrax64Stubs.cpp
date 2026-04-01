@@ -28,7 +28,7 @@ ATG::XMLParser::XMLParser() {}
 ATG::XMLParser::~XMLParser() {}
 int32_t ATG::XMLParser::ParseXMLBuffer(const char* strBuffer,
                                        uint32_t uBufferSize) {
-    return S_OK;
+    return 0;
 }
 void ATG::XMLParser::RegisterSAXCallbackInterface(ISAXCallback* pISAXCallback) {
 }
@@ -36,7 +36,7 @@ void ATG::XMLParser::RegisterSAXCallbackInterface(ISAXCallback* pISAXCallback) {
 
 uint32_t XShowPartyUI(uint32_t dwUserIndex) { return 0; }
 uint32_t XShowFriendsUI(uint32_t dwUserIndex) { return 0; }
-int32_t XPartyGetUserList(void* pUserList) { return S_OK; }
+int32_t XPartyGetUserList(void* pUserList) { return 0; }
 uint32_t XContentGetThumbnail(uint32_t dwUserIndex,
                               const XCONTENT_DATA* pContentData,
                               uint8_t* pbThumbnail, uint32_t* pcbThumbnail,
@@ -144,7 +144,7 @@ IQNetPlayer IQNet::m_player[4];
 
 bool _bQNetStubGameRunning = false;
 
-int32_t IQNet::AddLocalPlayerByUserIndex(uint32_t dwUserIndex) { return S_OK; }
+int32_t IQNet::AddLocalPlayerByUserIndex(uint32_t dwUserIndex) { return 0; }
 IQNetPlayer* IQNet::GetHostPlayer() { return &m_player[0]; }
 IQNetPlayer* IQNet::GetLocalPlayerByUserIndex(uint32_t dwUserIndex) {
     return &m_player[dwUserIndex];
@@ -161,7 +161,7 @@ QNET_STATE IQNet::GetState() {
 bool IQNet::IsHost() { return true; }
 int32_t IQNet::JoinGameFromInviteInfo(uint32_t dwUserIndex, uint32_t dwUserMask,
                                       const INVITE_INFO* pInviteInfo) {
-    return S_OK;
+    return 0;
 }
 void IQNet::HostGame() { _bQNetStubGameRunning = true; }
 void IQNet::EndGame() { _bQNetStubGameRunning = false; }
@@ -179,7 +179,7 @@ uint32_t XUserGetSigninInfo(uint32_t dwUserIndex, uint32_t dwFlags,
 const wchar_t* CXuiStringTable::Lookup(const wchar_t* szId) { return szId; }
 const wchar_t* CXuiStringTable::Lookup(uint32_t nIndex) { return L"String"; }
 void CXuiStringTable::Clear() {}
-int32_t CXuiStringTable::Load(const wchar_t* szId) { return S_OK; }
+int32_t CXuiStringTable::Load(const wchar_t* szId) { return 0; }
 
 uint32_t XUserAreUsersFriends(uint32_t dwUserIndex, PPlayerUID pXuids,
                               uint32_t dwXuidCount, bool* pfResult,
@@ -191,7 +191,7 @@ int32_t XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
                        size_t* pDestSize, void* pSource, size_t SrcSize) {
     memcpy(pDestination, pSource, SrcSize);
     *pDestSize = SrcSize;
-    return S_OK;
+    return 0;
 
     /*
     DECOMPRESSOR_HANDLE Decompressor    = (DECOMPRESSOR_HANDLE)Context;
@@ -203,7 +203,7 @@ int32_t XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
     *pDestSize,				//  Decompressed buffer size
     pDestSize) )				//  Decompressed data size
     {
-            return S_OK;
+            return 0;
     }
     else
     */
@@ -216,7 +216,7 @@ int32_t XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
                      size_t* pDestSize, void* pSource, size_t SrcSize) {
     memcpy(pDestination, pSource, SrcSize);
     *pDestSize = SrcSize;
-    return S_OK;
+    return 0;
 
     /*
     COMPRESSOR_HANDLE Compressor    = (COMPRESSOR_HANDLE)Context;
@@ -228,7 +228,7 @@ int32_t XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
     Compressed Buffer size pDestSize)	)				//
     Compressed Data size
     {
-            return S_OK;
+            return 0;
     }
     else
     */
@@ -440,7 +440,7 @@ void C_4JProfile::SetNotificationsCallback(void (*Func)(void*, std::uint32_t,
                                            void* lpParam) {}
 bool C_4JProfile::RegionIsNorthAmerica(void) { return false; }
 bool C_4JProfile::LocaleIsUSorCanada(void) { return false; }
-int32_t C_4JProfile::GetLiveConnectionStatus() { return S_OK; }
+int32_t C_4JProfile::GetLiveConnectionStatus() { return 0; }
 bool C_4JProfile::IsSystemUIDisplayed() { return false; }
 void C_4JProfile::SetProfileReadErrorCallback(void (*Func)(void*),
                                               void* lpParam) {}

@@ -477,7 +477,7 @@ static GDrawTexture * RADLINK gdraw_MakeTextureEnd(GDraw_MakeTexture_ProcessingI
    GDrawHandle *t = (GDrawHandle *) p->p0;
    D3D1X_(SUBRESOURCE_DATA) mipdata[24];
    S32 i, w, h, nmips, bpp;
-   HRESULT hr = S_OK;
+   HRESULT hr = 0;
    char *failed_call;
    U8 *ptr;
 
@@ -2392,7 +2392,7 @@ GDrawTexture * RADLINK gdraw_D3D1X_(MakeTextureFromResource)(U8 *resource_file, 
    D3D1X_(SUBRESOURCE_DATA) mipdata[24] = { 0 };
    S32 k;
 
-   HRESULT hr = S_OK;
+   HRESULT hr = 0;
 
    width = texture->w;
    height = texture->h;

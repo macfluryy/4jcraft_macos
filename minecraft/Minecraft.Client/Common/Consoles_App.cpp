@@ -3791,7 +3791,7 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
-    return S_OK;
+    return 0;
 }
 
 int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
@@ -4639,7 +4639,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
                         &CMinecraftApp::WarningTrialTexturePackReturned,
                         pClass);
 
-                    return S_OK;
+                    return 0;
                 }
             }
             // does the save exist?
@@ -4719,7 +4719,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
                     &CMinecraftApp::WarningTrialTexturePackReturned, nullptr);
 
-                return S_OK;
+                return 0;
             }
         }
         // bool validSave =
@@ -5243,7 +5243,7 @@ std::unordered_map<std::wstring, uint64_t> CMinecraftApp::DLCInfo_SkinName;
 
 int32_t CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
                                           wchar_t* pSkin, wchar_t* pCape) {
-    int32_t hr = S_OK;
+    int32_t hr = 0;
     eXUID eTempXuid = eXUID_Undefined;
     MOJANG_DATA* pMojangData = nullptr;
 
@@ -5277,7 +5277,7 @@ MOJANG_DATA* CMinecraftApp::GetMojangDataForXuid(PlayerUID xuid) {
 }
 
 int32_t CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
-    int32_t hr = S_OK;
+    int32_t hr = 0;
 
     // #ifdef 0
     // 	if(pType!=nullptr)
@@ -5311,7 +5311,7 @@ int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        wchar_t* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
                                        wchar_t* pDataFile) {
-    int32_t hr = S_OK;
+    int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
     pDLCData->ullOfferID_Full = ullOfferID_Full;
@@ -5364,7 +5364,7 @@ int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
     fprintf(stderr,
             "warning: CMinecraftApp::RegisterDLCData unimplemented for "
             "platform `__linux__`\n");
-    return S_OK;
+    return 0;
 }
 #else
 
@@ -5373,7 +5373,7 @@ int32_t CMinecraftApp::RegisterDLCData(char* pchDLCName,
                                        char* pchImageURL) {
     // on PS3 we get all the required info from the name
     char chDLCType[3];
-    int32_t hr = S_OK;
+    int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
     ZeroMemory(pDLCData, sizeof(DLC_INFO));
 
@@ -5576,7 +5576,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
 
     Tile::ReleaseThreadStorage();
 
-    return S_OK;
+    return 0;
 }
 
 void CMinecraftApp::ExitGameFromRemoteSave(void* lpParameter) {
