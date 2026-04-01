@@ -1,8 +1,6 @@
 
 #include "UIScene_InGameSaveManagementMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
-
 namespace {
 int InGameSaveManagementThumbnailReturnedThunk(void* lpParam,
                                                std::uint8_t* thumbnailData,
