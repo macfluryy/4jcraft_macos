@@ -51,7 +51,6 @@
 
 class C_4JInput : public IPlatformInput {
 public:
-
     void Initialise(int iInputStateC, unsigned char ucMapC,
                     unsigned char ucActionC, unsigned char ucMenuActionC);
     void Tick(void);

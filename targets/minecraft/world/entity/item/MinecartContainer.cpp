@@ -42,8 +42,8 @@ void MinecartContainer::destroy(DamageSource* source) {
                 std::shared_ptr<ItemEntity> itemEntity =
                     std::make_shared<ItemEntity>(
                         level, x + xo, y + yo, z + zo,
-                        std::make_shared<ItemInstance>(
-                            item->id, count, item->getAuxValue()));
+                        std::make_shared<ItemInstance>(item->id, count,
+                                                       item->getAuxValue()));
                 float pow = 0.05f;
                 itemEntity->xd = (float)random->nextGaussian() * pow;
                 itemEntity->yd = (float)random->nextGaussian() * pow + 0.2f;

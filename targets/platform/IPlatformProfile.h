@@ -52,7 +52,7 @@ public:
     [[nodiscard]] virtual bool QuerySigninStatus() = 0;
     virtual void GetXUID(int iPad, PlayerUID* pXuid, bool bOnlineXuid) = 0;
     [[nodiscard]] virtual bool AreXUIDSEqual(PlayerUID xuid1,
-                                              PlayerUID xuid2) = 0;
+                                             PlayerUID xuid2) = 0;
     [[nodiscard]] virtual bool XUIDIsGuest(PlayerUID xuid) = 0;
     [[nodiscard]] virtual bool AllowedToPlayMultiplayer(int iProf) = 0;
     [[nodiscard]] virtual bool GetChatAndContentRestrictions(
@@ -64,37 +64,40 @@ public:
     virtual void SetPrimaryPad(int iPad) = 0;
     [[nodiscard]] virtual char* GetGamertag(int iPad) = 0;
     [[nodiscard]] virtual std::wstring GetDisplayName(int iPad) = 0;
-    virtual void SetSignInChangeCallback(
-        void (*Func)(void*, bool, unsigned int), void* lpParam) = 0;
-    virtual void SetNotificationsCallback(
-        void (*Func)(void*, std::uint32_t, unsigned int), void* lpParam) = 0;
+    virtual void SetSignInChangeCallback(void (*Func)(void*, bool,
+                                                      unsigned int),
+                                         void* lpParam) = 0;
+    virtual void SetNotificationsCallback(void (*Func)(void*, std::uint32_t,
+                                                       unsigned int),
+                                          void* lpParam) = 0;
     [[nodiscard]] virtual bool RegionIsNorthAmerica() = 0;
     [[nodiscard]] virtual bool LocaleIsUSorCanada() = 0;
     [[nodiscard]] virtual int GetLiveConnectionStatus() = 0;
     [[nodiscard]] virtual bool IsSystemUIDisplayed() = 0;
     virtual void SetProfileReadErrorCallback(void (*Func)(void*),
-                                              void* lpParam) = 0;
+                                             void* lpParam) = 0;
 
     // Profile data
-    virtual int SetDefaultOptionsCallback(
-        int (*Func)(void*, PROFILESETTINGS*, const int iPad),
-        void* lpParam) = 0;
-    virtual int SetOldProfileVersionCallback(
-        int (*Func)(void*, unsigned char*, const unsigned short, const int),
-        void* lpParam) = 0;
+    virtual int SetDefaultOptionsCallback(int (*Func)(void*, PROFILESETTINGS*,
+                                                      const int iPad),
+                                          void* lpParam) = 0;
+    virtual int SetOldProfileVersionCallback(int (*Func)(void*, unsigned char*,
+                                                         const unsigned short,
+                                                         const int),
+                                             void* lpParam) = 0;
     [[nodiscard]] virtual PROFILESETTINGS* GetDashboardProfileSettings(
         int iPad) = 0;
     virtual void WriteToProfile(int iQuadrant,
-                                 bool bGameDefinedDataChanged = false,
-                                 bool bOverrideTimeLimit = false) = 0;
+                                bool bGameDefinedDataChanged = false,
+                                bool bOverrideTimeLimit = false) = 0;
     virtual void ForceQueuedProfileWrites(int iPad = XUSER_INDEX_ANY) = 0;
     [[nodiscard]] virtual void* GetGameDefinedProfileData(int iQuadrant) = 0;
     virtual void ResetProfileProcessState() = 0;
 
     // Content
     virtual void AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
-                                              bool* allAllowed,
-                                              bool* friendsAllowed) = 0;
+                                             bool* allAllowed,
+                                             bool* friendsAllowed) = 0;
     [[nodiscard]] virtual bool CanViewPlayerCreatedContent(
         int iPad, bool thisQuadrantOnly, PlayerUID* pXuids,
         unsigned int xuidCount) = 0;
@@ -108,27 +111,28 @@ public:
 
     // Achievements
     virtual void RegisterAward(int iAwardNumber, int iGamerconfigID,
-                                EAwardType eType, bool bLeaderboardAffected = false,
-                                CXuiStringTable* pStringTable = nullptr,
-                                int iTitleStr = -1, int iTextStr = -1,
-                                int iAcceptStr = -1,
-                                char* pszThemeName = nullptr,
-                                unsigned int uiThemeSize = 0L) = 0;
+                               EAwardType eType,
+                               bool bLeaderboardAffected = false,
+                               CXuiStringTable* pStringTable = nullptr,
+                               int iTitleStr = -1, int iTextStr = -1,
+                               int iAcceptStr = -1,
+                               char* pszThemeName = nullptr,
+                               unsigned int uiThemeSize = 0L) = 0;
     [[nodiscard]] virtual int GetAwardId(int iAwardNumber) = 0;
     [[nodiscard]] virtual EAwardType GetAwardType(int iAwardNumber) = 0;
     [[nodiscard]] virtual bool CanBeAwarded(int iQuadrant,
-                                             int iAwardNumber) = 0;
+                                            int iAwardNumber) = 0;
     virtual void Award(int iQuadrant, int iAwardNumber,
-                        bool bForce = false) = 0;
+                       bool bForce = false) = 0;
     [[nodiscard]] virtual bool IsAwardsFlagSet(int iQuadrant, int iAward) = 0;
 
     // Rich presence
     virtual void RichPresenceInit(int iPresenceCount, int iContextCount) = 0;
     virtual void RegisterRichPresenceContext(int iGameConfigContextID) = 0;
     virtual void SetRichPresenceContextValue(int iPad, int iContextID,
-                                              int iVal) = 0;
+                                             int iVal) = 0;
     virtual void SetCurrentGameActivity(int iPad, int iNewPresence,
-                                         bool bSetOthersToIdle = false) = 0;
+                                        bool bSetOthersToIdle = false) = 0;
 
     // Debug
     virtual void SetDebugFullOverride(bool bVal) = 0;

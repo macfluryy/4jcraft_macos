@@ -90,8 +90,12 @@ FishingHook::FishingHook(Level* level, std::shared_ptr<Player> mob)
     heightOffset = 0;
 
     float speed = 0.4f;
-    xd = (-sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi)) * speed;
-    zd = (cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi)) * speed;
+    xd = (-sinf(yRot / 180 * std::numbers::pi) *
+          cosf(xRot / 180 * std::numbers::pi)) *
+         speed;
+    zd = (cosf(yRot / 180 * std::numbers::pi) *
+          cosf(xRot / 180 * std::numbers::pi)) *
+         speed;
     yd = (-sinf(xRot / 180 * std::numbers::pi)) * speed;
 
     shoot(xd, yd, zd, 1.5f, 1);
@@ -408,10 +412,9 @@ int FishingHook::retrieve() {
         ie->Entity::yd = ya * speed + sqrt(dist) * 0.08;
         ie->Entity::zd = za * speed;
         level->addEntity(ie);
-        owner->level->addEntity(
-            std::make_shared<ExperienceOrb>(
-                owner->level, owner->x, owner->y + 0.5f, owner->z + 0.5f,
-                random->nextInt(6) + 1));  // 4J Stu brought forward from 1.4
+        owner->level->addEntity(std::make_shared<ExperienceOrb>(
+            owner->level, owner->x, owner->y + 0.5f, owner->z + 0.5f,
+            random->nextInt(6) + 1));  // 4J Stu brought forward from 1.4
         dmg = 1;
     }
     if (inGround) dmg = 2;

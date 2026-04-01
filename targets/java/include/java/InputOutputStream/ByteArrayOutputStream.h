@@ -6,8 +6,8 @@
 #include <cstdint>
 
 class ByteArrayOutputStream : public OutputStream {
-    // Note - when actually implementing, std::vector<uint8_t> will need to grow as data is
-    // written
+    // Note - when actually implementing, std::vector<uint8_t> will need to grow
+    // as data is written
 public:
     std::vector<uint8_t> buf;  // The buffer where data is stored.
 
@@ -22,7 +22,8 @@ public:
     virtual void flush() {}
     virtual void write(unsigned int b);
     virtual void write(const std::vector<uint8_t>& b);
-    virtual void write(const std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
+    virtual void write(const std::vector<uint8_t>& b, unsigned int offset,
+                       unsigned int length);
     virtual void close();
     virtual std::vector<uint8_t> toByteArray();
 

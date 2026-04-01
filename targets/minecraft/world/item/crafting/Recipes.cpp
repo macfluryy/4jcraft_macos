@@ -1205,7 +1205,8 @@ std::shared_ptr<ItemInstance> Recipes::getItemForRecipe(Recipy* r) {
 
 // 4J-PB - build the required ingredients for recipes
 void Recipes::buildRecipeIngredientsArray(void) {
-    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes
+    // *)Recipes::getInstance())->getRecipies();
 
     int iRecipeC = (int)recipies->size();
 

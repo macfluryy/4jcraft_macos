@@ -1,8 +1,6 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
 
-
-
 #include <assert.h>
 #include <mutex>
 #include "minecraft/server/MinecraftServer.h"
@@ -564,7 +562,7 @@ int32_t InitDevice() {
     uint32_t numFeatureLevels = ARRAYSIZE(featureLevels);
 
     DXGI_SWAP_CHAIN_DESC sd;
-    memset(&sd, 0,  sizeof(sd));
+    memset(&sd, 0, sizeof(sd));
     sd.BufferCount = 1;
     sd.BufferDesc.Width = width;
     sd.BufferDesc.Height = height;
@@ -789,25 +787,21 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
         // 		}
 
         app.UpdateTime();
-                InputManager.Tick();
-        
-                //		ProfileManager.Tick();
-        
-                StorageManager.Tick();
-        
-                RenderManager.Tick();
-        
+        InputManager.Tick();
+
+        //		ProfileManager.Tick();
+
+        StorageManager.Tick();
+
+        RenderManager.Tick();
 
         // Tick the social networking manager.
-                //		CSocialManager::Instance()->Tick();
-        
+        //		CSocialManager::Instance()->Tick();
 
         // Tick sentient.
-                //		SentientManager.Tick();
-        
+        //		SentientManager.Tick();
 
-                //		g_NetworkManager.DoWork();
-        
+        //		g_NetworkManager.DoWork();
 
         //		LeaderboardManager::Instance()->Tick();
         // Render game graphics.

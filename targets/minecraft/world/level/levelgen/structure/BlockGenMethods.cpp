@@ -5,9 +5,10 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
 
-void BlockGenMethods::generateBox(Level* level, std::vector<uint8_t>& blocks, int sx,
-                                  int sy, int sz, int ex, int ey, int ez,
-                                  std::uint8_t edge, std::uint8_t filling) {
+void BlockGenMethods::generateBox(Level* level, std::vector<uint8_t>& blocks,
+                                  int sx, int sy, int sz, int ex, int ey,
+                                  int ez, std::uint8_t edge,
+                                  std::uint8_t filling) {
     sx = Mth::clamp(sx, 0, 15);
     sy = Mth::clamp(sy, 0, Level::genDepthMinusOne);
     sz = Mth::clamp(sz, 0, 15);
@@ -31,8 +32,8 @@ void BlockGenMethods::generateBox(Level* level, std::vector<uint8_t>& blocks, in
     }
 }
 
-void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks, int sx,
-                                    int sy, int ex, int ey, int flatZ,
+void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks,
+                                    int sx, int sy, int ex, int ey, int flatZ,
                                     int direction, std::uint8_t edge,
                                     std::uint8_t filling) {
     sx = Mth::clamp(sx, 0, 15);
@@ -86,11 +87,9 @@ void BlockGenMethods::generateFrame(Level* level, std::vector<uint8_t>& blocks, 
     }
 }
 
-void BlockGenMethods::generateDirectionLine(Level* level, std::vector<uint8_t>& blocks,
-                                            int sx, int sy, int sz, int ex,
-                                            int ey, int ez, int startDirection,
-                                            int endDirection,
-                                            std::uint8_t block) {
+void BlockGenMethods::generateDirectionLine(
+    Level* level, std::vector<uint8_t>& blocks, int sx, int sy, int sz, int ex,
+    int ey, int ez, int startDirection, int endDirection, std::uint8_t block) {
     sx = Mth::clamp(sx, 0, 15);
     sy = Mth::clamp(sy, 0, Level::genDepthMinusOne);
     sz = Mth::clamp(sz, 0, 15);
@@ -184,8 +183,8 @@ void BlockGenMethods::generateDirectionLine(Level* level, std::vector<uint8_t>& 
     }
 }
 
-void BlockGenMethods::generateLine(Level* level, std::vector<uint8_t>& blocks, int sx,
-                                   int sy, int sz, int ex, int ey, int ez,
-                                   std::uint8_t block) {
+void BlockGenMethods::generateLine(Level* level, std::vector<uint8_t>& blocks,
+                                   int sx, int sy, int sz, int ex, int ey,
+                                   int ez, std::uint8_t block) {
     generateDirectionLine(level, blocks, sx, sy, sz, ex, ey, ez, 0, 0, block);
 }

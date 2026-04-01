@@ -158,8 +158,9 @@ std::wstring C_4JProfile::GetDisplayName(int iPad) {
     return s_displayNames[p];
 }
 
-int C_4JProfile::SetDefaultOptionsCallback(
-    int (*Func)(void*, PROFILESETTINGS*, const int iPad), void* lpParam) {
+int C_4JProfile::SetDefaultOptionsCallback(int (*Func)(void*, PROFILESETTINGS*,
+                                                       const int iPad),
+                                           void* lpParam) {
     s_defaultOptionsCallback = Func;
     s_defaultOptionsCallbackParam = lpParam;
     return 0;

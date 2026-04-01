@@ -202,45 +202,40 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     // running saves on multiple threads these sections have a lot of
     // contention. Better to let each thread have its turn at a higher level of
     // granularity.
-        DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(
+    DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(
         m_saveFile, m_prefix, levelChunk->x, levelChunk->z);
-    
 
     if (m_saveFile->getOriginalSaveVersion() >=
         SAVE_FILE_VERSION_COMPRESSED_CHUNK_STORAGE) {
-                OldChunkStorage::save(levelChunk, level, output);
-        
+        OldChunkStorage::save(levelChunk, level, output);
 
-                {
+        {
             std::lock_guard<std::mutex> lock(cs_memory);
             s_chunkDataQueue.push_back(output);
         }
-        
+
     } else {
         CompoundTag* tag;
         {
             std::lock_guard<std::mutex> lock(cs_memory);
-                        tag = new CompoundTag();
+            tag = new CompoundTag();
             CompoundTag* levelData = new CompoundTag();
             tag->put(L"Level", levelData);
             OldChunkStorage::save(levelChunk, level, levelData);
-            
-                        NbtIo::write(tag, output);
-            
+
+            NbtIo::write(tag, output);
         }
-                output->close();
-        
+        output->close();
 
         // 4J Stu - getChunkDataOutputStream makes a new DataOutputStream that
         // points to a new ChunkBuffer( ByteArrayOutputStream ) We should clean
         // these up when we are done
         {
             std::lock_guard<std::mutex> lock(cs_memory);
-                        output->deleteChildStream();
+            output->deleteChildStream();
             delete output;
             delete tag;
         }
-        
     }
 
     LevelData* levelInfo = level->getLevelData();
@@ -258,10 +253,9 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
 
 void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
 #if defined(SPLIT_SAVES)
-        // 4j added cast to unsigned and changed index to u
+    // 4j added cast to unsigned and changed index to u
     uint64_t index = ((uint64_t)(uint32_t)(levelChunk->x) << 32) |
                      (((uint64_t)(uint32_t)(levelChunk->z)));
-
 
     CompoundTag* newTag = new CompoundTag();
     bool savedEntities =
@@ -283,7 +277,7 @@ void McRegionChunkStorage::saveEntities(Level* level, LevelChunk* levelChunk) {
         }
     }
     delete newTag;
-    
+
 #endif
 }
 
@@ -308,22 +302,21 @@ void McRegionChunkStorage::tick() { m_saveFile->tick(); }
 
 void McRegionChunkStorage::flush() {
 #if defined(SPLIT_SAVES)
-        ConsoleSavePath currentFile =
+    ConsoleSavePath currentFile =
         ConsoleSavePath(m_prefix + std::wstring(L"entities.dat"));
     ConsoleSaveFileOutputStream fos =
         ConsoleSaveFileOutputStream(m_saveFile, currentFile);
     BufferedOutputStream bos(&fos, 1024 * 1024);
     DataOutputStream dos(&bos);
 
-        dos.writeInt(m_entityData.size());
+    dos.writeInt(m_entityData.size());
 
     for (auto it = m_entityData.begin(); it != m_entityData.end(); ++it) {
         dos.writeLong(it->first);
         dos.write(it->second, 0, it->second.size());
     }
     bos.flush();
-    
-    
+
 #endif
 }
 
@@ -373,11 +366,10 @@ int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
                 lock.unlock();
 
                 if (dos) {
-                                        // app.DebugPrintf("Compressing chunk data (%d left)\n",
+                    // app.DebugPrintf("Compressing chunk data (%d left)\n",
                     // lastQueueSize - 1);
                     dos->close();
                     dos->deleteChildStream();
-                    
                 }
                 delete dos;
                 dos = nullptr;

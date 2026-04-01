@@ -13,10 +13,11 @@ void DungeonFeature::addRoom(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
               1 + random->nextFloat() * 6, 0, 0, -1, -1, 0.5);
 }
 
-void DungeonFeature::addTunnel(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
-                               double xCave, double yCave, double zCave,
-                               float thickness, float yRot, float xRot,
-                               int step, int dist, double yScale) {
+void DungeonFeature::addTunnel(int xOffs, int zOffs,
+                               std::vector<uint8_t>& blocks, double xCave,
+                               double yCave, double zCave, float thickness,
+                               float yRot, float xRot, int step, int dist,
+                               double yScale) {
     double xMid = xOffs * 16 + 8;
     double zMid = zOffs * 16 + 8;
 
@@ -39,7 +40,8 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, std::vector<uint8_t>& block
     bool steep = random->nextInt(6) == 0;
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
+        double rad =
+            1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
         float xc = Mth::cos(xRot);
@@ -65,11 +67,11 @@ void DungeonFeature::addTunnel(int xOffs, int zOffs, std::vector<uint8_t>& block
 
         if (!singleStep && step == splitPoint && thickness > 1) {
             addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave,
-                      random->nextFloat() * 0.5f + 0.5f, yRot - std::numbers::pi / 2,
-                      xRot / 3, step, dist, 1.0);
+                      random->nextFloat() * 0.5f + 0.5f,
+                      yRot - std::numbers::pi / 2, xRot / 3, step, dist, 1.0);
             addTunnel(xOffs, zOffs, blocks, xCave, yCave, zCave,
-                      random->nextFloat() * 0.5f + 0.5f, yRot + std::numbers::pi / 2,
-                      xRot / 3, step, dist, 1.0);
+                      random->nextFloat() * 0.5f + 0.5f,
+                      yRot + std::numbers::pi / 2, xRot / 3, step, dist, 1.0);
             return;
         }
         if (!singleStep && random->nextInt(4) == 0) continue;

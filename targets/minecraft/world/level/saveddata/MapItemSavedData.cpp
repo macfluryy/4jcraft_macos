@@ -48,8 +48,7 @@ MapItemSavedData::HoldingPlayer::HoldingPlayer(std::shared_ptr<Player> player,
     }
 }
 
-MapItemSavedData::HoldingPlayer::~HoldingPlayer() {
-}
+MapItemSavedData::HoldingPlayer::~HoldingPlayer() {}
 
 std::vector<char> MapItemSavedData::HoldingPlayer::nextUpdatePacket(
     std::shared_ptr<ItemInstance> itemInstance) {
@@ -67,10 +66,10 @@ std::vector<char> MapItemSavedData::HoldingPlayer::nextUpdatePacket(
         unsigned int playerDecorationsSize = (int)parent->decorations.size();
         unsigned int nonPlayerDecorationsSize =
             (int)parent->nonPlayerDecorations.size();
-        std::vector<char> data =
-            std::vector<char>((playerDecorationsSize + nonPlayerDecorationsSize) *
-                          DEC_PACKET_BYTES +
-                      1);
+        std::vector<char> data = std::vector<char>(
+            (playerDecorationsSize + nonPlayerDecorationsSize) *
+                DEC_PACKET_BYTES +
+            1);
         data[0] = 1;
         for (unsigned int i = 0; i < parent->decorations.size(); i++) {
             MapDecoration* md = parent->decorations.at(i);
@@ -187,7 +186,8 @@ void MapItemSavedData::load(CompoundTag* tag) {
         std::vector<uint8_t> newColors = tag->getByteArray(L"colors");
         // 4J - vector manages its own memory, no need to delete old colors
         // End4J
-        colors = std::vector<uint8_t>(MapItem::IMAGE_WIDTH * MapItem::IMAGE_HEIGHT);
+        colors =
+            std::vector<uint8_t>(MapItem::IMAGE_WIDTH * MapItem::IMAGE_HEIGHT);
         int xo = (MapItem::IMAGE_WIDTH - width) / 2;
         int yo = (MapItem::IMAGE_HEIGHT - height) / 2;
         for (int y = 0; y < height; y++) {

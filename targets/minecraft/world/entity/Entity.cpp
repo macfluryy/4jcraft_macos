@@ -333,8 +333,7 @@ void Entity::_init(bool useSmallId, Level* level) {
 
     // values that need to be sent to clients in SMP
     if (useSmallId) {
-        entityData =
-            std::make_shared<SynchedEntityData>();
+        entityData = std::make_shared<SynchedEntityData>();
     } else {
         entityData = nullptr;
     }
@@ -1405,9 +1404,8 @@ std::shared_ptr<ItemEntity> Entity::spawnAtLocation(int resource, int count) {
 
 std::shared_ptr<ItemEntity> Entity::spawnAtLocation(int resource, int count,
                                                     float yOffs) {
-    return spawnAtLocation(
-        std::make_shared<ItemInstance>(resource, count, 0),
-        yOffs);
+    return spawnAtLocation(std::make_shared<ItemInstance>(resource, count, 0),
+                           yOffs);
 }
 
 std::shared_ptr<ItemEntity> Entity::spawnAtLocation(
@@ -1535,7 +1533,8 @@ void Entity::lerpTo(double x, double y, double z, float yRot, float xRot,
     // intersect the geometry they land in slightly.
     if (GetType() != eTYPE_ARROW) {
         AABB shrunk = bb.shrink(1 / 32.0, 0.0, 1 / 32.0);
-        std::vector<AABB>* collisions = level->getCubes(shared_from_this(), &shrunk);
+        std::vector<AABB>* collisions =
+            level->getCubes(shared_from_this(), &shrunk);
         if (!collisions->empty()) {
             double yTop = 0;
             auto itEnd = collisions->end();
@@ -1583,9 +1582,12 @@ void Entity::handleEntityEvent(uint8_t eventId) {}
 
 void Entity::animateHurt() {}
 
-std::vector<std::shared_ptr<ItemInstance>> Entity::getEquipmentSlots()  // ItemInstance[]
+std::vector<std::shared_ptr<ItemInstance>>
+Entity::getEquipmentSlots()  // ItemInstance[]
 {
-    return std::vector<std::shared_ptr<ItemInstance>>();  // Default ctor creates nullptr internal array
+    return std::vector<std::shared_ptr<ItemInstance>>();  // Default ctor
+                                                          // creates nullptr
+                                                          // internal array
 }
 
 // 4J Stu - Brought forward change from 1.3 to fix #64688 - Customer
@@ -1744,7 +1746,7 @@ std::wstring Entity::getAName() {
 #endif
 }
 
-std::vector<std::shared_ptr<Entity> >* Entity::getSubEntities() {
+std::vector<std::shared_ptr<Entity>>* Entity::getSubEntities() {
     return nullptr;
 }
 

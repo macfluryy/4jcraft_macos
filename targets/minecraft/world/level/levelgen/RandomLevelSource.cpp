@@ -95,7 +95,6 @@ RandomLevelSource::~RandomLevelSource() {
     }
 
     delete forestNoise;
-
 }
 
 int g_numPrepareHeightCalls = 0;
@@ -238,7 +237,8 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
 
 #endif
 
-void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks) {
+void RandomLevelSource::prepareHeights(int xOffs, int zOffs,
+                                       std::vector<uint8_t>& blocks) {
     std::int64_t startTime;
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::genDepth / CHUNK_HEIGHT;
@@ -248,15 +248,16 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t
     int ySize = Level::genDepth / CHUNK_HEIGHT + 1;
     int zSize = xChunks + 1;
 
-    std::vector<Biome*> biomes;  // 4J created locally here for thread safety, java has
-                        // this as a class member
+    std::vector<Biome*> biomes;  // 4J created locally here for thread safety,
+                                 // java has this as a class member
 
     level->getBiomeSource()->getRawBiomeBlock(biomes, xOffs * CHUNK_WIDTH - 2,
                                               zOffs * CHUNK_WIDTH - 2,
                                               xSize + 5, zSize + 5);
 
-    std::vector<double> buffer;  // 4J - used to be declared with class level scope but
-                         // tidying up for thread safety reasons
+    std::vector<double>
+        buffer;  // 4J - used to be declared with class level scope but
+                 // tidying up for thread safety reasons
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize, biomes);
 
@@ -378,18 +379,18 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t
     g_totalPrepareHeightsTime += timeInFunc;
     g_averagePrepareHeightsTime =
         g_totalPrepareHeightsTime / g_numPrepareHeightCalls;
-
 }
 
-void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+void RandomLevelSource::buildSurfaces(int xOffs, int zOffs,
+                                      std::vector<uint8_t>& blocks,
                                       std::vector<Biome*>& biomes) {
     int waterHeight = level->seaLevel;
 
     double s = 1 / 32.0;
 
-    std::vector<double> depthBuffer(16 *
-                            16);  // 4J - used to be declared with class level
-                                  // scope but moved here for thread safety
+    std::vector<double> depthBuffer(
+        16 * 16);  // 4J - used to be declared with class level
+                   // scope but moved here for thread safety
 
     depthBuffer = perlinNoise3->getRegion(depthBuffer, xOffs * 16, zOffs * 16,
                                           0, 16, 16, 1, s * 2, s * 2, s * 2);
@@ -467,7 +468,6 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>
             }
         }
     }
-
 }
 
 LevelChunk* RandomLevelSource::create(int x, int z) { return getChunk(x, z); }
@@ -480,8 +480,10 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
     int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
-    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
+    std::vector<uint8_t> blocks =
+        std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
+    //    16);
 
     // LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     // // 4J - moved to below
@@ -495,7 +497,6 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
                                            16, true);
 
     buildSurfaces(xOffs, zOffs, blocks, biomes);
-
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
     // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
@@ -536,9 +537,11 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
 // does the same.
 void RandomLevelSource::lightChunk(LevelChunk* lc) { lc->recalcHeightmap(); }
 
-std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer, int x, int y,
-                                          int z, int xSize, int ySize,
-                                          int zSize, std::vector<Biome*>& biomes) {
+std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
+                                                  int x, int y, int z,
+                                                  int xSize, int ySize,
+                                                  int zSize,
+                                                  std::vector<Biome*>& biomes) {
     if (buffer.empty()) {
         buffer = std::vector<double>(xSize * ySize * zSize);
     }
@@ -661,7 +664,6 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer, i
         }
     }
 
-
     return buffer;
 }
 
@@ -757,15 +759,14 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 
     bool hasVillage = false;
 
-        if (generateStructures) {
+    if (generateStructures) {
         mineShaftFeature->postProcess(level, pprandom, xt, zt);
         hasVillage = villageFeature->postProcess(level, pprandom, xt, zt);
         strongholdFeature->postProcess(level, pprandom, xt, zt);
         scatteredFeature->postProcess(level, random, xt, zt);
     }
-    
 
-        if (biome != Biome::desert && biome != Biome::desertHills) {
+    if (biome != Biome::desert && biome != Biome::desertHills) {
         if (!hasVillage && pprandom->nextInt(4) == 0) {
             int x = xo + pprandom->nextInt(16) + 8;
             int y = pprandom->nextInt(Level::genDepth);
@@ -775,9 +776,8 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             calmWater.place(level, pprandom, x, y, z);
         }
     }
-    
 
-        if (!hasVillage && pprandom->nextInt(8) == 0) {
+    if (!hasVillage && pprandom->nextInt(8) == 0) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(pprandom->nextInt(Level::genDepth - 8) + 8);
         int z = zo + pprandom->nextInt(16) + 8;
@@ -786,28 +786,23 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             calmLava.place(level, pprandom, x, y, z);
         }
     }
-    
 
-        for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::genDepth);
         int z = zo + pprandom->nextInt(16) + 8;
         MonsterRoomFeature mrf;
         mrf.place(level, pprandom, x, y, z);
     }
-    
 
-        biome->decorate(level, pprandom, xo, zo);
-    
+    biome->decorate(level, pprandom, xo, zo);
 
-        app.processSchematics(parent->getChunk(xt, zt));
-    
+    app.processSchematics(parent->getChunk(xt, zt));
 
-        MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
+    MobSpawner::postProcessSpawnMobs(level, biome, xo + 8, zo + 8, 16, 16,
                                      pprandom);
-    
 
-        // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
+    // 4J - brought forward from 1.2.3 to get snow back in taiga biomes
     xo += 8;
     zo += 8;
     for (int x = 0; x < 16; x++) {
@@ -824,7 +819,6 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
             }
         }
     }
-    
 
     HeavyTile::instaFall = false;
 }

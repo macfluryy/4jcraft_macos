@@ -129,10 +129,10 @@ void ShapedRecipy::collectRequirements(INGREDIENTS_REQUIRED* pIngReq) {
     TempIngReq.iIngValA = new int[9];
     TempIngReq.iIngAuxValA = new int[9];
 
-    memset(TempIngReq.iIngIDA, 0,  sizeof(int) * 9);
-    memset(TempIngReq.iIngValA, 0,  sizeof(int) * 9);
+    memset(TempIngReq.iIngIDA, 0, sizeof(int) * 9);
+    memset(TempIngReq.iIngValA, 0, sizeof(int) * 9);
     memset(TempIngReq.iIngAuxValA, Recipes::ANY_AUX_VALUE, sizeof(int) * 9);
-    memset(TempIngReq.uiGridA, 0,  sizeof(unsigned int) * 9);
+    memset(TempIngReq.uiGridA, 0, sizeof(unsigned int) * 9);
 
     for (int x = 0; x < 3; x++) {
         for (int y = 0; y < 3; y++) {

@@ -12,7 +12,8 @@ public:
     GZIPOutputStream(OutputStream* out) : stream(out) {};
     virtual void write(unsigned int b) { stream->write(b); };
     virtual void write(const std::vector<uint8_t>& b) { stream->write(b); };
-    virtual void write(const std::vector<uint8_t>& b, unsigned int offset, unsigned int length) {
+    virtual void write(const std::vector<uint8_t>& b, unsigned int offset,
+                       unsigned int length) {
         stream->write(b, offset, length);
     };
     virtual void close() { stream->close(); };

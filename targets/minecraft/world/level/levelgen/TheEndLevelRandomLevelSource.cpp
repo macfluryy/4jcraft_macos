@@ -43,8 +43,9 @@ TheEndLevelRandomLevelSource::~TheEndLevelRandomLevelSource() {
 void TheEndLevelRandomLevelSource::prepareHeights(int xOffs, int zOffs,
                                                   std::vector<uint8_t>& blocks,
                                                   std::vector<Biome*>& biomes) {
-    std::vector<double> buffer;  // 4J - used to be declared with class level scope but
-                         // tidying up for thread safety reasons
+    std::vector<double>
+        buffer;  // 4J - used to be declared with class level scope but
+                 // tidying up for thread safety reasons
 
     int xChunks = 16 / CHUNK_WIDTH;
 
@@ -181,8 +182,10 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
     unsigned int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
-    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
+    std::vector<uint8_t> blocks =
+        std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
+    //    16);
 
     //    LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     //    // 4J moved below
@@ -207,9 +210,9 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
     return levelChunk;
 }
 
-std::vector<double> TheEndLevelRandomLevelSource::getHeights(std::vector<double>& buffer, int x,
-                                                     int y, int z, int xSize,
-                                                     int ySize, int zSize) {
+std::vector<double> TheEndLevelRandomLevelSource::getHeights(
+    std::vector<double>& buffer, int x, int y, int z, int xSize, int ySize,
+    int zSize) {
     if (buffer.empty()) {
         buffer = std::vector<double>(xSize * ySize * zSize);
     }
@@ -297,7 +300,6 @@ std::vector<double> TheEndLevelRandomLevelSource::getHeights(std::vector<double>
             }
         }
     }
-
 
     return buffer;
 }

@@ -211,10 +211,9 @@ void Witch::performRangedAttack(std::shared_ptr<LivingEntity> target,
                                 float power) {
     if (isUsingItem()) return;
 
-    std::shared_ptr<ThrownPotion> potion =
-        std::make_shared<ThrownPotion>(
-            level, std::dynamic_pointer_cast<LivingEntity>(shared_from_this()),
-            PotionBrewing::POTION_ID_SPLASH_DAMAGE);
+    std::shared_ptr<ThrownPotion> potion = std::make_shared<ThrownPotion>(
+        level, std::dynamic_pointer_cast<LivingEntity>(shared_from_this()),
+        PotionBrewing::POTION_ID_SPLASH_DAMAGE);
     potion->xRot -= -20;
     double xd = (target->x + target->xd) - x;
     double yd = (target->y + target->getHeadHeight() - 1.1f) - y;

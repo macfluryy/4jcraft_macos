@@ -223,8 +223,10 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         } else if (uiBitmaskOverrideAnim & (1 << eAnim_SingleArms)) {
-            arm0->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
-            arm1->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
+            arm0->xRot =
+                (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
+            arm1->xRot =
+                (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
         }
@@ -232,12 +234,13 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
         // that's up
         else if ((uiBitmaskOverrideAnim & (1 << eAnim_StatueOfLiberty)) &&
                  (holdingRightHand == 0) && (attackTime == 0.0f)) {
-            arm0->xRot = -std::numbers::pi ;
+            arm0->xRot = -std::numbers::pi;
             arm0->zRot = -0.3f;
             arm1->xRot = (cosf(time * 0.6662f) * 2.0f) * r * 0.5f;
             arm1->zRot = 0.0f;
         } else {
-            arm0->xRot = (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
+            arm0->xRot =
+                (cosf(time * 0.6662f + std::numbers::pi) * 2.0f) * r * 0.5f;
             arm1->xRot = (cosf(time * 0.6662f) * 2.0f) * r * 0.5f;
             arm0->zRot = 0.0f;
             arm1->zRot = 0.0f;
@@ -310,7 +313,8 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             swing *= swing;
             swing = 1.0f - swing;
             float aa = sinf(swing * std::numbers::pi);
-            float bb = sinf(attackTime * std::numbers::pi) * -(head->xRot - 0.7f) * 0.75f;
+            float bb = sinf(attackTime * std::numbers::pi) *
+                       -(head->xRot - 0.7f) * 0.75f;
             arm0->xRot -= aa * 1.2f + bb;  // 4J - changed 1.2 -> 1.2f
             arm0->yRot += body->yRot * 2.0f;
 
@@ -331,11 +335,12 @@ void HumanoidModel::setupAnim(float time, float r, float bob, float yRot,
             is = is * is * is;
             is = is * is * is;
             float iss = 1 - is;
-            arm0->xRot = -std::abs(cosf(eating_t / 4.0f * std::numbers::pi) * 0.1f) *
-                         (eating_swing > 0.2 ? 1.0f : 0.0f) *
-                         2.0f;  // This factor is the chomping bit (conditional
-                                // factor is so that he doesn't eat whilst the
-                                // food is being pulled away at the end)
+            arm0->xRot =
+                -std::abs(cosf(eating_t / 4.0f * std::numbers::pi) * 0.1f) *
+                (eating_swing > 0.2 ? 1.0f : 0.0f) *
+                2.0f;  // This factor is the chomping bit (conditional
+                       // factor is so that he doesn't eat whilst the
+                       // food is being pulled away at the end)
             arm0->yRot -=
                 iss * 0.5f;  // This factor and the following to the general arm
                              // movement through the life of the swing

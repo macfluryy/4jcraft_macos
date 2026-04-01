@@ -1017,8 +1017,7 @@ void Minecraft::run_middle() {
                 //            }
 
                 // 4J-PB - AUTOSAVE TIMER - if the player is the host
-                if (level != nullptr &&
-                    g_NetworkManager.IsHost()) {
+                if (level != nullptr && g_NetworkManager.IsHost()) {
                     /*if(!bAutosaveTimerSet)
                     {
                     // set the timer
@@ -1086,8 +1085,10 @@ void Minecraft::run_middle() {
 #if !defined(_CONTENT_PACKAGE)
                                         {
                                             // print the time
-                                            auto now_tp = std::chrono::system_clock::now();
-                                            std::time_t now_tt = std::chrono::system_clock::to_time_t(now_tp);
+                                            auto now_tp = std::chrono::
+                                                system_clock::now();
+                                            std::time_t now_tt = std::chrono::
+                                                system_clock::to_time_t(now_tp);
                                             std::tm utcTime{};
 #if defined(_WIN32)
                                             gmtime_s(&utcTime, &now_tt);
@@ -1577,15 +1578,11 @@ void Minecraft::run_middle() {
 
                 // if (pause) timer.a = 1;
 
-                                soundEngine->tick((std::shared_ptr<Mob>*)localplayers,
+                soundEngine->tick((std::shared_ptr<Mob>*)localplayers,
                                   timer->a);
-                
 
-                
                 // if (level != nullptr) level->updateLights();
                 glEnable(GL_TEXTURE_2D);
-
-                
 
                 //        if (!Keyboard::isKeyDown(Keyboard.KEY_F7))
                 //        Display.update();		// 4J - removed
@@ -1606,7 +1603,6 @@ void Minecraft::run_middle() {
                                     player->m_iScreenSection);
                             gameRenderer->render(timer->a, bFirst);
                             bFirst = false;
-                            
 
                             if (i == iPrimaryPad) {
                                 // check to see if we need to capture a
@@ -1694,17 +1690,15 @@ void Minecraft::run_middle() {
 
                 achievementPopup->render();
 
-                                std::this_thread::yield();  // 4jcraft added now that we have
+                std::this_thread::yield();  // 4jcraft added now that we have
                                             // portable thread yield.
-                // std::this_thread::sleep_for(
+                                            // std::this_thread::sleep_for(
                 //     std::chrono::milliseconds(0));  // 4J - was
                 //     Thread.yield())
-                
 
                 //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
                 //        Display.update();	// 4J - removed condition
-                                Display::update();
-                
+                Display::update();
 
                 //        checkScreenshot();	// 4J - removed
 
@@ -1980,8 +1974,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     glBindTexture(GL_TEXTURE_2D,
                   textures->loadTexture(TN_TERRAIN));  // L"/terrain.png"));
     if (bFirst) {
-                if (!pause) textures->tick(bUpdateTextures);
-        
+        if (!pause) textures->tick(bUpdateTextures);
     }
 
     /*
@@ -3521,8 +3514,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             level->difficulty = options->difficulty;
         }
 
-                if (!pause) gameRenderer->tick(bFirst);
-        
+        if (!pause) gameRenderer->tick(bFirst);
 
         // 4J - we want to tick each level once only per frame, and do it when a
         // player that is actually in that level happens to be active. This is
@@ -3535,8 +3527,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             levelsTickedFlags = 0;
 
 #if !defined(DISABLE_LEVELTICK_THREAD)
-                        levelTickEventQueue->waitForFinish();
-            
+            levelTickEventQueue->waitForFinish();
+
 #endif
             SparseLightStorage::tick();     // 4J added
             CompressedTileStorage::tick();  // 4J added
@@ -3562,8 +3554,8 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                            // level this frame
             levelsTickedFlags |= (1 << i);
 
-                        if (!pause) levelRenderer->tick();
-            
+            if (!pause) levelRenderer->tick();
+
             // if (!pause && player!=null) {
             // if (player != null && !level.entities.contains(player)) {
             // level.addEntity(player);
@@ -3572,8 +3564,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             if (levels[i] != nullptr) {
                 if (!pause) {
                     if (levels[i]->skyFlashTime > 0) levels[i]->skyFlashTime--;
-                                        levels[i]->tickEntities();
-                    
+                    levels[i]->tickEntities();
                 }
 
                 // optimisation to set the culling off early, in parallel with
@@ -3585,19 +3576,17 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                     // app.DebugPrintf("Minecraft::tick spawn settings -
                     // Difficulty = %d",options->difficulty);
                     levels[i]->setSpawnSettings(level->difficulty > 0, true);
-                    #if defined(DISABLE_LEVELTICK_THREAD)
+#if defined(DISABLE_LEVELTICK_THREAD)
                     levels[i]->tick();
 #else
                     levelTickEventQueue->sendEvent(levels[i]);
 #endif
-                    
                 }
             }
         }
 
         if (bFirst) {
-                        if (!pause) particleEngine->tick();
-            
+            if (!pause) particleEngine->tick();
         }
 
         // 4J Stu - Keep ticking the connections if paused so that they don't

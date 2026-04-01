@@ -393,7 +393,9 @@ ByteBuffer* ByteBuffer::put(std::vector<uint8_t>& inputArray) {
     return this;
 }
 
-std::vector<uint8_t> ByteBuffer::array() { return std::vector<uint8_t>(buffer, buffer + m_capacity); }
+std::vector<uint8_t> ByteBuffer::array() {
+    return std::vector<uint8_t>(buffer, buffer + m_capacity);
+}
 
 // Creates a view of this byte buffer as an int buffer.
 // The content of the new buffer will start at this buffer's current position.

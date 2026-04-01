@@ -22,7 +22,6 @@ std::shared_ptr<ItemInstance> EggItem::use(
     level->playEntitySound(player, eSoundType_RANDOM_BOW, 0.5f,
                            0.4f / (random->nextFloat() * 0.4f + 0.8f));
     if (!level->isClientSide)
-        level->addEntity(
-            std::make_shared<ThrownEgg>(level, player));
+        level->addEntity(std::make_shared<ThrownEgg>(level, player));
     return instance;
 }

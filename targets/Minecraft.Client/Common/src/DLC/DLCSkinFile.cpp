@@ -109,12 +109,11 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
         case DLCManager::e_DLCParamType_Box: {
             wchar_t wchBodyPart[10];
             SKIN_BOX* pSkinBox = new SKIN_BOX;
-            memset(pSkinBox, 0,  sizeof(SKIN_BOX));
+            memset(pSkinBox, 0, sizeof(SKIN_BOX));
 
             swscanf(value.c_str(), L"%9ls%f%f%f%f%f%f%f%f", wchBodyPart, 10,
-                      &pSkinBox->fX, &pSkinBox->fY, &pSkinBox->fZ,
-                      &pSkinBox->fW, &pSkinBox->fH, &pSkinBox->fD,
-                      &pSkinBox->fU, &pSkinBox->fV);
+                    &pSkinBox->fX, &pSkinBox->fY, &pSkinBox->fZ, &pSkinBox->fW,
+                    &pSkinBox->fH, &pSkinBox->fD, &pSkinBox->fU, &pSkinBox->fV);
 
             if (wcscmp(wchBodyPart, L"HEAD") == 0) {
                 pSkinBox->ePart = eBodyPart_Head;
@@ -135,7 +134,7 @@ void DLCSkinFile::addParameter(DLCManager::EDLCParameterType type,
         } break;
         case DLCManager::e_DLCParamType_Anim: {
             swscanf(value.c_str(), L"%X", &m_uiAnimOverrideBitmask,
-                      sizeof(unsigned int));
+                    sizeof(unsigned int));
             uint32_t skinId = app.getSkinIdFromPath(m_path);
             app.SetAnimOverrideBitmask(skinId, m_uiAnimOverrideBitmask);
             break;

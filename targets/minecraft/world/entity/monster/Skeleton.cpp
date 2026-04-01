@@ -214,8 +214,7 @@ void Skeleton::dropRareDeathLoot(int rareLootLevel) {
 void Skeleton::populateDefaultEquipmentSlots() {
     Monster::populateDefaultEquipmentSlots();
 
-    setEquippedSlot(SLOT_WEAPON,
-                    std::make_shared<ItemInstance>(Item::bow));
+    setEquippedSlot(SLOT_WEAPON, std::make_shared<ItemInstance>(Item::bow));
 }
 
 MobGroupData* Skeleton::finalizeMobSpawn(

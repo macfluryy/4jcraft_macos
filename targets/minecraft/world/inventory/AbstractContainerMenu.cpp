@@ -41,7 +41,7 @@ Slot* AbstractContainerMenu::addSlot(Slot* slot) {
 void AbstractContainerMenu::addSlotListener(ContainerListener* listener) {
     containerListeners.push_back(listener);
 
-    std::vector<std::shared_ptr<ItemInstance> >* items = getItems();
+    std::vector<std::shared_ptr<ItemInstance>>* items = getItems();
     listener->refreshContainer(this, items);
     delete items;
     broadcastChanges();
@@ -53,9 +53,9 @@ void AbstractContainerMenu::removeSlotListener(ContainerListener* listener) {
     if (it != containerListeners.end()) containerListeners.erase(it);
 }
 
-std::vector<std::shared_ptr<ItemInstance> >* AbstractContainerMenu::getItems() {
-    std::vector<std::shared_ptr<ItemInstance> >* items =
-        new std::vector<std::shared_ptr<ItemInstance> >();
+std::vector<std::shared_ptr<ItemInstance>>* AbstractContainerMenu::getItems() {
+    std::vector<std::shared_ptr<ItemInstance>>* items =
+        new std::vector<std::shared_ptr<ItemInstance>>();
     auto itEnd = slots.end();
     for (auto it = slots.begin(); it != itEnd; it++) {
         items->push_back((*it)->getItem());
@@ -507,7 +507,8 @@ void AbstractContainerMenu::setItem(unsigned int slot,
     getSlot(slot)->set(item);
 }
 
-void AbstractContainerMenu::setAll(std::vector<std::shared_ptr<ItemInstance>>* items) {
+void AbstractContainerMenu::setAll(
+    std::vector<std::shared_ptr<ItemInstance>>* items) {
     for (unsigned int i = 0; i < items->size(); i++) {
         getSlot(i)->set((*items)[i]);
     }

@@ -6,8 +6,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 
-ChunkTilesUpdatePacket::~ChunkTilesUpdatePacket() {
-}
+ChunkTilesUpdatePacket::~ChunkTilesUpdatePacket() {}
 
 ChunkTilesUpdatePacket::ChunkTilesUpdatePacket() {
     shouldDelay = true;

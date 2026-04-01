@@ -11,9 +11,10 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
-                              std::vector<uint8_t>& blocks, double xCave, double yCave,
-                              double zCave, float thickness, float yRot,
-                              float xRot, int step, int dist, double yScale) {
+                              std::vector<uint8_t>& blocks, double xCave,
+                              double yCave, double zCave, float thickness,
+                              float yRot, float xRot, int step, int dist,
+                              double yScale) {
     Random* random = new Random(seed);
     double xMid = xOffs * 16 + 8;
     double zMid = zOffs * 16 + 8;
@@ -43,7 +44,8 @@ void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
     }
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
+        double rad =
+            1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
         rad *= (random->nextFloat() * 0.25 + 0.75);

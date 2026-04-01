@@ -58,9 +58,14 @@ Throwable::Throwable(Level* level, std::shared_ptr<LivingEntity> mob)
     heightOffset = 0;
 
     float speed = 0.4f;
-    xd = (-sin(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi)) * speed;
-    zd = (cos(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi)) * speed;
-    yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * std::numbers::pi)) * speed;
+    xd = (-sin(yRot / 180 * std::numbers::pi) *
+          cos(xRot / 180 * std::numbers::pi)) *
+         speed;
+    zd = (cos(yRot / 180 * std::numbers::pi) *
+          cos(xRot / 180 * std::numbers::pi)) *
+         speed;
+    yd = (-sin((xRot + getThrowUpAngleOffset()) / 180 * std::numbers::pi)) *
+         speed;
 
     shoot(xd, yd, zd, getThrowPower(), 1);
 }

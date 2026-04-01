@@ -111,8 +111,8 @@ void SignTileEntity::setChanged() {
             for (int i = 0; i < MAX_SIGN_LINES; ++i)
             {
                     wcMessages[i]=new wchar_t [MAX_LINE_LENGTH+1];
-                    memset(wcMessages[i], 0, sizeof(wchar_t)*(MAX_LINE_LENGTH+1));
-                    if(m_wsmessages[i].length()>0)
+                    memset(wcMessages[i], 0,
+sizeof(wchar_t)*(MAX_LINE_LENGTH+1)); if(m_wsmessages[i].length()>0)
                     {
                             memcpy(wcMessages[i],m_wsmessages[i].c_str(),m_wsmessages[i].length()*sizeof(wchar_t));
                     }
@@ -171,8 +171,7 @@ int SignTileEntity::StringVerifyCallback(void* lpParam,
 
 // 4J Added
 std::shared_ptr<TileEntity> SignTileEntity::clone() {
-    std::shared_ptr<SignTileEntity> result =
-        std::make_shared<SignTileEntity>();
+    std::shared_ptr<SignTileEntity> result = std::make_shared<SignTileEntity>();
     TileEntity::clone(result);
 
     result->m_wsmessages[0] = m_wsmessages[0];

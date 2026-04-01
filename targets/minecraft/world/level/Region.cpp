@@ -29,7 +29,8 @@ Region::Region(Level* level, int x1, int y1, int z1, int x2, int y2, int z2,
     int xc2 = (x2 + r) >> 4;
     int zc2 = (z2 + r) >> 4;
 
-    chunks = new std::vector<std::vector<LevelChunk*>>(xc2 - xc1 + 1, std::vector<LevelChunk*>(zc2 - zc1 + 1, nullptr));
+    chunks = new std::vector<std::vector<LevelChunk*>>(
+        xc2 - xc1 + 1, std::vector<LevelChunk*>(zc2 - zc1 + 1, nullptr));
 
     allEmpty = true;
     for (int xc = xc1; xc <= xc2; xc++) {
@@ -174,7 +175,7 @@ int Region::getRawBrightness(int x, int y, int z, bool propagate) {
     int zc = (z >> 4) - zc1;
 
     return (*chunks)[xc][zc]->getRawBrightness(x & 15, y, z & 15,
-                                                     level->skyDarken);
+                                               level->skyDarken);
 }
 
 int Region::getData(int x, int y, int z) {

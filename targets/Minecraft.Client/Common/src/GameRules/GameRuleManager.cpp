@@ -199,7 +199,6 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions* lgo, uint8_t* dIn,
     dis.close();
     bais.close();
 
-
     ByteArrayInputStream bais2(content);
     DataInputStream dis2(&bais2);
 
@@ -227,7 +226,6 @@ void GameRuleManager::loadGameRules(LevelGenerationOptions* lgo, uint8_t* dIn,
     } else {
         delete lgo;
     }
-
 
     // Close and return.
     dis2.close();
@@ -286,8 +284,8 @@ void GameRuleManager::saveGameRules(uint8_t** dOut, unsigned int* dSize) {
             // Write string table.
             uint8_t* stbaPtr = nullptr;
             unsigned int stbaSize = 0;
-            m_currentGameRuleDefinitions->getStringTable()->getData(
-                &stbaPtr, &stbaSize);
+            m_currentGameRuleDefinitions->getStringTable()->getData(&stbaPtr,
+                                                                    &stbaSize);
             std::vector<uint8_t> stba(stbaPtr, stbaPtr + stbaSize);
             compr_dos.writeInt(stba.size());
             compr_dos.write(stba);
@@ -312,7 +310,6 @@ void GameRuleManager::saveGameRules(uint8_t** dOut, unsigned int* dSize) {
     dos.writeInt(compr_ba.size());  // Write length
     dos.writeInt(compr_baos.buf.size());
     dos.write(compr_ba);
-
 
     compr_dos.close();
     compr_baos.close();
@@ -416,7 +413,8 @@ bool GameRuleManager::readRuleFile(
         std::vector<uint8_t> compressedBuffer(compressedSize);
         dis.read(compressedBuffer);
 
-        std::vector<uint8_t> decompressedBuffer = std::vector<uint8_t>(uncompressedSize);
+        std::vector<uint8_t> decompressedBuffer =
+            std::vector<uint8_t>(uncompressedSize);
         unsigned int decompressedSize = uncompressedSize;
 
         switch (compressionType) {
@@ -466,7 +464,6 @@ bool GameRuleManager::readRuleFile(
                                         return false;
                                         */
         };
-
 
         contentBais = new ByteArrayInputStream(decompressedBuffer);
         contentDis = new DataInputStream(contentBais);

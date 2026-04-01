@@ -43,13 +43,14 @@ void VillagerZombieModel::setupAnim(float time, float r, float bob, float yRot,
                              uiBitmaskOverrideAnim);
 
     float attack2 = sinf(attackTime * std::numbers::pi);
-    float attack = sinf((1 - (1 - attackTime) * (1 - attackTime)) * std::numbers::pi);
+    float attack =
+        sinf((1 - (1 - attackTime) * (1 - attackTime)) * std::numbers::pi);
     arm0->zRot = 0;
     arm1->zRot = 0;
     arm0->yRot = -(0.1f - attack2 * 0.6f);
     arm1->yRot = +(0.1f - attack2 * 0.6f);
-    arm0->xRot = -std::numbers::pi  / 2.0f;
-    arm1->xRot = -std::numbers::pi  / 2.0f;
+    arm0->xRot = -std::numbers::pi / 2.0f;
+    arm1->xRot = -std::numbers::pi / 2.0f;
     arm0->xRot -= attack2 * 1.2f - attack * 0.4f;
     arm1->xRot -= attack2 * 1.2f - attack * 0.4f;
 

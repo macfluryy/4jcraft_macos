@@ -1659,10 +1659,12 @@ bool NetherBridgePieces::CastleSmallCorridorRightTurnPiece::postProcess(
         int x = getWorldX(1, 3), z = getWorldZ(1, 3);
         if (chunkBB->isInside(x, y, z)) {
             isNeedingChest = false;
-            createChest(level, chunkBB, random, 1, 2, 3,
-                        std::vector<WeighedTreasure*>(fortressTreasureItems, fortressTreasureItems +
-                                             FORTRESS_TREASURE_ITEMS_COUNT),
-                        2 + random->nextInt(4));
+            createChest(
+                level, chunkBB, random, 1, 2, 3,
+                std::vector<WeighedTreasure*>(
+                    fortressTreasureItems,
+                    fortressTreasureItems + FORTRESS_TREASURE_ITEMS_COUNT),
+                2 + random->nextInt(4));
         }
     }
 
@@ -1767,10 +1769,12 @@ bool NetherBridgePieces::CastleSmallCorridorLeftTurnPiece::postProcess(
         int x = getWorldX(3, 3), z = getWorldZ(3, 3);
         if (chunkBB->isInside(x, y, z)) {
             isNeedingChest = false;
-            createChest(level, chunkBB, random, 3, 2, 3,
-                        std::vector<WeighedTreasure*>(fortressTreasureItems, fortressTreasureItems +
-                                             FORTRESS_TREASURE_ITEMS_COUNT),
-                        2 + random->nextInt(4));
+            createChest(
+                level, chunkBB, random, 3, 2, 3,
+                std::vector<WeighedTreasure*>(
+                    fortressTreasureItems,
+                    fortressTreasureItems + FORTRESS_TREASURE_ITEMS_COUNT),
+                2 + random->nextInt(4));
         }
     }
 

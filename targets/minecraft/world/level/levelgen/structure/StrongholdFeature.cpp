@@ -183,7 +183,8 @@ bool StrongholdFeature::isFeatureChunk(int x, int z, bool bIsSuperflat) {
 
             // 4J Stu - Randomise the angles for retries as well
 #ifdef _LARGE_WORLDS
-            angle = random.nextDouble() * std::numbers::pi * 2.0 * circle / (double)spread;
+            angle = random.nextDouble() * std::numbers::pi * 2.0 * circle /
+                    (double)spread;
 #endif
         } while (!hasFoundValidPos && findAttempts < MAX_STRONGHOLD_ATTEMPTS);
 

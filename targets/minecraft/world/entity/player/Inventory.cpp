@@ -28,8 +28,7 @@ Inventory::Inventory(Player* player) {
     this->player = player;
 }
 
-Inventory::~Inventory() {
-}
+Inventory::~Inventory() {}
 
 std::shared_ptr<ItemInstance> Inventory::getSelected() {
     // sanity checking to prevent exploits
@@ -341,7 +340,8 @@ bool Inventory::add(std::shared_ptr<ItemInstance> item) {
 
 std::shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot,
                                                     int count) {
-    std::vector<std::shared_ptr<ItemInstance>>& pile = (slot >= items.size()) ? armor : items;
+    std::vector<std::shared_ptr<ItemInstance>>& pile =
+        (slot >= items.size()) ? armor : items;
     if (slot >= items.size()) {
         slot -= items.size();
     }
@@ -361,7 +361,8 @@ std::shared_ptr<ItemInstance> Inventory::removeItem(unsigned int slot,
 }
 
 std::shared_ptr<ItemInstance> Inventory::removeItemNoUpdate(int slot) {
-    std::vector<std::shared_ptr<ItemInstance>>& pile = (slot >= (int)items.size()) ? armor : items;
+    std::vector<std::shared_ptr<ItemInstance>>& pile =
+        (slot >= (int)items.size()) ? armor : items;
     if (slot >= (int)items.size()) {
         slot -= items.size();
     }
@@ -564,8 +565,7 @@ bool Inventory::isSame(std::shared_ptr<ItemInstance> a,
 }
 
 std::shared_ptr<Inventory> Inventory::copy() {
-    std::shared_ptr<Inventory> copy =
-        std::make_shared<Inventory>(nullptr);
+    std::shared_ptr<Inventory> copy = std::make_shared<Inventory>(nullptr);
     for (unsigned int i = 0; i < items.size(); i++) {
         copy->items[i] = items[i] != nullptr ? items[i]->copy() : nullptr;
     }

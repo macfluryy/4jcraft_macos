@@ -348,7 +348,7 @@ std::shared_ptr<Container> HopperTileEntity::getSourceContainer(
 std::shared_ptr<ItemEntity> HopperTileEntity::getItemAt(Level* level, double xt,
                                                         double yt, double zt) {
     AABB item_entity_aabb{xt, yt, zt, xt + 1, yt + 1, zt + 1};
-    std::vector<std::shared_ptr<Entity> >* entities =
+    std::vector<std::shared_ptr<Entity>>* entities =
         level->getEntitiesOfClass(typeid(ItemEntity), &item_entity_aabb,
                                   EntitySelector::ENTITY_STILL_ALIVE);
 
@@ -388,7 +388,7 @@ std::shared_ptr<Container> HopperTileEntity::getContainerAt(Level* level,
 
     if (result == nullptr) {
         AABB block_above{x, y, z, x + 1, y + 1, z + 1};
-        std::vector<std::shared_ptr<Entity> >* entities = level->getEntities(
+        std::vector<std::shared_ptr<Entity>>* entities = level->getEntities(
             nullptr, &block_above, EntitySelector::CONTAINER_ENTITY_SELECTOR);
 
         if ((entities != nullptr) && (entities->size() > 0)) {

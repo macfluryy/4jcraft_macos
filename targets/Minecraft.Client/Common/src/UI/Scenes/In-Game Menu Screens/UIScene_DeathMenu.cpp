@@ -117,8 +117,7 @@ void UIScene_DeathMenu::handlePress(F64 controlId, F64 childId) {
 
                         ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                            m_iPad,
-                            &IUIScene_PauseMenu::ExitGameDialogReturned,
+                            m_iPad, &IUIScene_PauseMenu::ExitGameDialogReturned,
                             (void*)GetCallbackUniqueId());
                     }
                 }

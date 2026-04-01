@@ -30,7 +30,6 @@ BiomeInitLayer::BiomeInitLayer(int64_t seed, std::shared_ptr<Layer> parent,
     }
 }
 
-
 std::vector<int> BiomeInitLayer::getArea(int xo, int yo, int w, int h) {
     std::vector<int> b = parent->getArea(xo, yo, w, h);
 

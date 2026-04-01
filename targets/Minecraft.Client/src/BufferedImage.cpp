@@ -88,7 +88,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
         }
 
         D3DXIMAGE_INFO ImageInfo;
-        memset(&ImageInfo, 0,  sizeof(D3DXIMAGE_INFO));
+        memset(&ImageInfo, 0, sizeof(D3DXIMAGE_INFO));
 
         if (foundOnDisk) {
             hr = RenderManager.LoadTextureData(wstringtofilename(finalPath),
@@ -164,7 +164,7 @@ BufferedImage::BufferedImage(std::uint8_t* pbData, std::uint32_t dataBytes) {
     }
 
     D3DXIMAGE_INFO ImageInfo;
-    memset(&ImageInfo, 0,  sizeof(D3DXIMAGE_INFO));
+    memset(&ImageInfo, 0, sizeof(D3DXIMAGE_INFO));
     int32_t hr =
         RenderManager.LoadTextureData(pbData, dataBytes, &ImageInfo, &data[0]);
 
@@ -186,8 +186,9 @@ int BufferedImage::getWidth() { return width; }
 
 int BufferedImage::getHeight() { return height; }
 
-void BufferedImage::getRGB(int startX, int startY, int w, int h, std::vector<int>& out,
-                           int offset, int scansize, int level) {
+void BufferedImage::getRGB(int startX, int startY, int w, int h,
+                           std::vector<int>& out, int offset, int scansize,
+                           int level) {
     int ww = width >> level;
     for (int y = 0; y < h; y++) {
         for (int x = 0; x < w; x++) {
@@ -225,13 +226,12 @@ BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
     BufferedImage* img = new BufferedImage(w, h, 0);
 
     // 4jcraft: Copy pixel data directly into img->data[0].
-    // The old arrayWithLength.h (custom vector impl) was a non-owning wrapper, std::vector copies
-    // so we write to the raw array directly instead.
+    // The old arrayWithLength.h (custom vector impl) was a non-owning wrapper,
+    // std::vector copies so we write to the raw array directly instead.
     int srcW = width;
     for (int row = 0; row < h; row++) {
         for (int col = 0; col < w; col++) {
-            img->data[0][row * w + col] =
-                data[0][(y + row) * srcW + (x + col)];
+            img->data[0][row * w + col] = data[0][(y + row) * srcW + (x + col)];
         }
     }
 

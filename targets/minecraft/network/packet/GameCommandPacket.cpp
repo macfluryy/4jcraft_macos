@@ -12,7 +12,8 @@ GameCommandPacket::GameCommandPacket() { length = 0; }
 
 GameCommandPacket::~GameCommandPacket() {}
 
-GameCommandPacket::GameCommandPacket(EGameCommand command, std::vector<uint8_t> data) {
+GameCommandPacket::GameCommandPacket(EGameCommand command,
+                                     std::vector<uint8_t> data) {
     this->command = command;
     this->data = data;
     length = 0;
@@ -30,7 +31,6 @@ GameCommandPacket::GameCommandPacket(EGameCommand command, std::vector<uint8_t> 
         }
     }
 }
-
 
 void GameCommandPacket::read(DataInputStream* dis) {
     command = (EGameCommand)dis->readInt();

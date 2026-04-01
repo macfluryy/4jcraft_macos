@@ -17,7 +17,8 @@ public:
 
     ComplexItemDataPacket();
     ~ComplexItemDataPacket();
-    ComplexItemDataPacket(short itemType, short itemId, std::vector<char>& data);
+    ComplexItemDataPacket(short itemType, short itemId,
+                          std::vector<char>& data);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

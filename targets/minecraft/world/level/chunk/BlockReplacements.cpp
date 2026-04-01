@@ -3,7 +3,8 @@
 #include "BlockReplacements.h"
 #include "minecraft/world/level/tile/Tile.h"
 
-std::vector<uint8_t> BlockReplacements::replacements = std::vector<uint8_t>(256);
+std::vector<uint8_t> BlockReplacements::replacements =
+    std::vector<uint8_t>(256);
 
 void BlockReplacements::staticCtor() {
     for (int i = 0; i < 256; i++) {

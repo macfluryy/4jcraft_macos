@@ -26,10 +26,11 @@ public:
 
     int getWidth();
     int getHeight();
-    void getRGB(int startX, int startY, int w, int h, std::vector<int>& out, int offset,
-                int scansize, int level = 0);  // 4J Added level param
-    int* getData();                            // 4J added
-    int* getData(int level);                   // 4J added
+    void getRGB(int startX, int startY, int w, int h, std::vector<int>& out,
+                int offset, int scansize,
+                int level = 0);  // 4J Added level param
+    int* getData();              // 4J added
+    int* getData(int level);     // 4J added
     Graphics* getGraphics();
     int getTransparency();
     BufferedImage* getSubimage(int x, int y, int w, int h);

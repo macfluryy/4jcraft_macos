@@ -77,9 +77,9 @@ void BatModel::render(std::shared_ptr<Entity> entity, float time, float r,
 
         body->xRot = std::numbers::pi;
 
-        rightWing->xRot = -std::numbers::pi  * .05f;
-        rightWing->yRot = -std::numbers::pi  * .40f;
-        rightWingTip->yRot = -std::numbers::pi  * .55f;
+        rightWing->xRot = -std::numbers::pi * .05f;
+        rightWing->yRot = -std::numbers::pi * .40f;
+        rightWingTip->yRot = -std::numbers::pi * .55f;
         leftWing->xRot = rightWing->xRot;
         leftWing->yRot = -rightWing->yRot;
         leftWingTip->yRot = -rightWingTip->yRot;

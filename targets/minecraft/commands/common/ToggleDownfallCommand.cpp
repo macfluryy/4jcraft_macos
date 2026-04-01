@@ -28,6 +28,6 @@ void ToggleDownfallCommand::doToggleDownfall() {
 }
 
 std::shared_ptr<GameCommandPacket> ToggleDownfallCommand::preparePacket() {
-    return std::shared_ptr<GameCommandPacket>(
-        new GameCommandPacket(eGameCommand_ToggleDownfall, std::vector<uint8_t>()));
+    return std::shared_ptr<GameCommandPacket>(new GameCommandPacket(
+        eGameCommand_ToggleDownfall, std::vector<uint8_t>()));
 }

@@ -357,7 +357,8 @@ public:
     virtual void lerpMotion(double xd, double yd, double zd);
     virtual void handleEntityEvent(uint8_t eventId);
     virtual void animateHurt();
-    virtual std::vector<std::shared_ptr<ItemInstance>> getEquipmentSlots();  // ItemInstance[]
+    virtual std::vector<std::shared_ptr<ItemInstance>>
+    getEquipmentSlots();  // ItemInstance[]
     virtual void setEquippedSlot(
         int slot, std::shared_ptr<ItemInstance>
                       item);  // 4J Stu - Brought forward change from 1.3 to fix
@@ -443,7 +444,7 @@ public:
     bool isExtraWanderingEnabled();
     int getWanderingQuadrant();
 
-    virtual std::vector<std::shared_ptr<Entity> >* getSubEntities();
+    virtual std::vector<std::shared_ptr<Entity>>* getSubEntities();
     virtual bool is(std::shared_ptr<Entity> other);
     virtual float getYHeadRot();
     virtual void setYHeadRot(float yHeadRot);

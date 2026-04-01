@@ -110,8 +110,10 @@ LevelChunk* HellFlatLevelSource::getChunk(int xOffs, int zOffs) {
     int chunksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(chunksSize);
     memset(tileData, 0, chunksSize);
-    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + chunksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
+    std::vector<uint8_t> blocks =
+        std::vector<uint8_t>(tileData, tileData + chunksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
+    //    16);
 
     prepareHeights(xOffs, zOffs, blocks);
     buildSurfaces(xOffs, zOffs, blocks);

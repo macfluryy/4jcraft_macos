@@ -123,8 +123,10 @@ Arrow::Arrow(Level* level, std::shared_ptr<LivingEntity> mob, float power)
     setPos(x, y, z);
     heightOffset = 0;
 
-    xd = -sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
-    zd = cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    xd = -sinf(yRot / 180 * std::numbers::pi) *
+         cosf(xRot / 180 * std::numbers::pi);
+    zd = cosf(yRot / 180 * std::numbers::pi) *
+         cosf(xRot / 180 * std::numbers::pi);
     yd = -sinf(xRot / 180 * std::numbers::pi);
 
     shoot(xd, yd, zd, power * 1.5f, 1);

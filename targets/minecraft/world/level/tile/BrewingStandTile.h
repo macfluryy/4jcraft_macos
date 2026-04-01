@@ -21,7 +21,8 @@ public:
     virtual std::shared_ptr<TileEntity> newTileEntity(Level* level);
     virtual bool isCubeShaped();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes,
+                          std::shared_ptr<Entity> source);
     virtual void updateDefaultShape();
     virtual bool use(Level* level, int x, int y, int z,
                      std::shared_ptr<Player> player, int clickedFace,

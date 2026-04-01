@@ -146,6 +146,5 @@ void Painting::dropItem(std::shared_ptr<Entity> causedBy) {
         }
     }
 
-    spawnAtLocation(
-        std::make_shared<ItemInstance>(Item::painting), 0.0f);
+    spawnAtLocation(std::make_shared<ItemInstance>(Item::painting), 0.0f);
 }

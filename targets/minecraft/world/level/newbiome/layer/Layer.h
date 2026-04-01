@@ -5,7 +5,6 @@
 #include <memory>
 #include <vector>
 
-
 class LevelType;
 
 #ifndef _CONTENT_PACKAGE
@@ -24,7 +23,8 @@ private:
     int64_t seedMixup;
 
 public:
-    static std::vector<std::shared_ptr<Layer>> getDefaultLayers(int64_t seed, LevelType* levelType);
+    static std::vector<std::shared_ptr<Layer>> getDefaultLayers(
+        int64_t seed, LevelType* levelType);
 
     Layer(int64_t seedMixup);
 

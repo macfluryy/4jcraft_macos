@@ -65,7 +65,7 @@ void ConsoleSaveFileOutputStream::write(const std::vector<uint8_t>& b) {
 
     bool result =
         m_saveFile->writeFile(m_file,
-                              b.data(),                // data buffer
+                              b.data(),              // data buffer
                               b.size(),              // number of bytes to write
                               &numberOfBytesWritten  // number of bytes written
         );
@@ -80,7 +80,8 @@ void ConsoleSaveFileOutputStream::write(const std::vector<uint8_t>& b) {
 // Writes len bytes from the specified byte array starting at offset off to this
 // file output stream. Parameters: b - the data. off - the start offset in the
 // data. len - the number of bytes to write.
-void ConsoleSaveFileOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
+void ConsoleSaveFileOutputStream::write(const std::vector<uint8_t>& b,
+                                        unsigned int offset,
                                         unsigned int length) {
     // 4J Stu - We don't want to write any more than the array buffer holds
     assert(length <= (b.size() - offset));

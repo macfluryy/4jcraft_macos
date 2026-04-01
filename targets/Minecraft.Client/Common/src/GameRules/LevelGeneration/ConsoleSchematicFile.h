@@ -54,7 +54,7 @@ public:
         Compression::ECompressionTypes compressionType;
 
         _XboxSchematicInitParam() {
-            memset(name, 0,  64 * (sizeof(wchar_t)));
+            memset(name, 0, 64 * (sizeof(wchar_t)));
             startX = startY = startZ = endX = endY = endZ = 0;
             bSaveMobs = false;
             compressionType = Compression::eCompressionType_None;
@@ -92,18 +92,19 @@ public:
                                       int xEnd, int yEnd, int zEnd,
                                       bool bSaveMobs,
                                       Compression::ECompressionTypes);
-    static void setBlocksAndData(LevelChunk* chunk, std::vector<uint8_t>& blockData,
-                                 std::vector<uint8_t>& dataData, std::vector<uint8_t> data, int x0,
-                                 int y0, int z0, int x1, int y1, int z1,
-                                 int& blocksP, int& dataP, int& blockLightP,
-                                 int& skyLightP);
+    static void setBlocksAndData(LevelChunk* chunk,
+                                 std::vector<uint8_t>& blockData,
+                                 std::vector<uint8_t>& dataData,
+                                 std::vector<uint8_t> data, int x0, int y0,
+                                 int z0, int x1, int y1, int z1, int& blocksP,
+                                 int& dataP, int& blockLightP, int& skyLightP);
 
 private:
     void save_tags(DataOutputStream* dos);
     void load_tags(DataInputStream* dis);
 
-    static void getBlocksAndData(LevelChunk* chunk, std::vector<uint8_t>* data, int x0,
-                                 int y0, int z0, int x1, int y1, int z1,
+    static void getBlocksAndData(LevelChunk* chunk, std::vector<uint8_t>* data,
+                                 int x0, int y0, int z0, int x1, int y1, int z1,
                                  int& blocksP, int& dataP, int& blockLightP,
                                  int& skyLightP);
     static std::vector<std::shared_ptr<TileEntity> >* getTileEntitiesInRegion(

@@ -26,9 +26,7 @@ public:
     static int floor(double v) { return (int)::floor(v); }
     static int64_t lfloor(double v) { return (int64_t)::floor(v); }
 
-    static int fastFloor(double x) {
-        return (int)(x + 1024.0) - 1024;
-    }
+    static int fastFloor(double x) { return (int)(x + 1024.0) - 1024; }
 
     static float abs(float v) { return v >= 0.0f ? v : -v; }
     static int abs(int v) { return v >= 0 ? v : -v; }

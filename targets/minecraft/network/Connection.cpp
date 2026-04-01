@@ -486,7 +486,6 @@ void Connection::tick() {
     // was locking up sometimes when disconnecting
     for (int i = 0; i < packetsToHandle.size(); i++) {
         packetsToHandle[i]->handle(packetListener);
-        
     }
     flush();
 

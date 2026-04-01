@@ -44,7 +44,8 @@ void HalfSlabTile::updateDefaultShape() {
 }
 
 void HalfSlabTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                            std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
+                            std::vector<AABB>* boxes,
+                            std::shared_ptr<Entity> source) {
     updateShape(level, x, y, z);
     Tile::addAABBs(level, x, y, z, box, boxes, source);
 }

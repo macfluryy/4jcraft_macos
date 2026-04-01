@@ -501,7 +501,8 @@ void ItemInHandRenderer::render(float a) {
 
             float swing1 = sinf(swing * std::numbers::pi);
             float swing2 = sinf((sqrt(swing)) * std::numbers::pi);
-            glTranslatef(-swing2 * 0.4f, sinf(sqrt(swing) * std::numbers::pi * 2) * 0.2f,
+            glTranslatef(-swing2 * 0.4f,
+                         sinf(sqrt(swing) * std::numbers::pi * 2) * 0.2f,
                          -swing1 * 0.2f);
         }
 
@@ -597,10 +598,9 @@ void ItemInHandRenderer::render(float a) {
 
         std::shared_ptr<MapItemSavedData> data =
             Item::map->getSavedData(item, minecraft->level);
-                if (data != nullptr)
+        if (data != nullptr)
             minimap->render(minecraft->player, minecraft->textures, data,
                             minecraft->player->entityId);
-        
 
         glPopMatrix();
     } else if (item != nullptr) {
@@ -635,7 +635,8 @@ void ItemInHandRenderer::render(float a) {
 
             float swing1 = sinf(swing * std::numbers::pi);
             float swing2 = sinf((sqrt(swing)) * std::numbers::pi);
-            glTranslatef(-swing2 * 0.4f, sinf(sqrt(swing) * std::numbers::pi * 2) * 0.2f,
+            glTranslatef(-swing2 * 0.4f,
+                         sinf(sqrt(swing) * std::numbers::pi * 2) * 0.2f,
                          -swing1 * 0.2f);
         }
 
@@ -673,10 +674,10 @@ void ItemInHandRenderer::render(float a) {
                 pow = ((pow * pow) + pow * 2) / 3;
                 if (pow > 1) pow = 1;
                 if (pow > 0.1f) {
-                    glTranslatef(0,
-                                 sinf((timeHeld - 0.1f) * 1.3f) * 0.01f *
-                                     (pow - 0.1f),
-                                 0);
+                    glTranslatef(
+                        0,
+                        sinf((timeHeld - 0.1f) * 1.3f) * 0.01f * (pow - 0.1f),
+                        0);
                 }
                 glTranslatef(0, 0, pow * 0.1f);
 
@@ -721,7 +722,8 @@ void ItemInHandRenderer::render(float a) {
 
             float swing1 = sinf(swing * std::numbers::pi);
             float swing2 = sinf((sqrt(swing)) * std::numbers::pi);
-            glTranslatef(-swing2 * 0.3f, sinf(sqrt(swing) * std::numbers::pi * 2) * 0.4f,
+            glTranslatef(-swing2 * 0.3f,
+                         sinf(sqrt(swing) * std::numbers::pi * 2) * 0.4f,
                          -swing1 * 0.4f);
         }
 

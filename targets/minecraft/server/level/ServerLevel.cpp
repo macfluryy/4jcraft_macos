@@ -240,7 +240,7 @@ void ServerLevel::tick() {
         awakenAllPlayers();
     }
 
-        // for Minecraft 1.8, spawn friendlies really rarely	- 4J - altered
+    // for Minecraft 1.8, spawn friendlies really rarely	- 4J - altered
     // from once every 400 ticks to 40 ticks as we depend on this a more than
     // the original since we don't have chunk post-process spawning
     if (getGameRules()->getBoolean(GameRules::RULE_DOMOBSPAWNING)) {
@@ -263,9 +263,9 @@ void ServerLevel::tick() {
         mobSpawner->tick(this, finalSpawnEnemies, finalSpawnFriendlies,
                          finalSpawnPersistent);
     }
-    
-        chunkSource->tick();
-    
+
+    chunkSource->tick();
+
     int newDark = getOldSkyDarken(1);
     if (newDark != skyDarken) {
         skyDarken = newDark;
@@ -293,8 +293,7 @@ void ServerLevel::tick() {
 #endif
     {
         // app.DebugPrintf("Incremental save\n");
-                save(false, nullptr);
-        
+        save(false, nullptr);
     }
 
     // 4J : WESTY : Changed so that time update goes through stats tracking
@@ -315,25 +314,20 @@ void ServerLevel::tick() {
         }
     }
 
-        // if (tickCount % 5 == 0) {
+    // if (tickCount % 5 == 0) {
     tickPendingTicks(false);
-    
 
-        tickTiles();
-    
+    tickTiles();
 
     chunkMap->tick();
 
-        villages->tick();
+    villages->tick();
     villageSiege->tick();
-    
 
-        portalForcer->tick(getGameTime());
-    
+    portalForcer->tick(getGameTime());
 
     // repeat after tile ticks
-        runTileEvents();
-    
+    runTileEvents();
 
     // 4J Added
     runQueuedSendTileUpdates();
@@ -930,8 +924,7 @@ void ServerLevel::save(bool force, ProgressListener* progressListener,
             progressListener->progressStartNoAbort(IDS_PROGRESS_SAVING_LEVEL);
         }
     }
-        saveLevelData();
-    
+    saveLevelData();
 
     if (progressListener != nullptr)
         progressListener->progressStage(IDS_PROGRESS_SAVING_CHUNKS);
@@ -1202,10 +1195,9 @@ void ServerLevel::sendParticles(const std::wstring& name, double x, double y,
 void ServerLevel::sendParticles(const std::wstring& name, double x, double y,
                                 double z, int count, double xDist, double yDist,
                                 double zDist, double speed) {
-    std::shared_ptr<Packet> packet =
-        std::make_shared<LevelParticlesPacket>(
-            name, (float)x, (float)y, (float)z, (float)xDist, (float)yDist,
-            (float)zDist, (float)speed, count);
+    std::shared_ptr<Packet> packet = std::make_shared<LevelParticlesPacket>(
+        name, (float)x, (float)y, (float)z, (float)xDist, (float)yDist,
+        (float)zDist, (float)speed, count);
 
     for (auto it = players.begin(); it != players.end(); ++it) {
         std::shared_ptr<ServerPlayer> player =
@@ -1418,7 +1410,7 @@ int ServerLevel::runUpdate(void* lpParam) {
         if (!ShutdownManager::ShouldRun(ShutdownManager::eRunUpdateThread))
             break;
 
-                // 4J Stu - Grass and Lava ticks currently take up the majority of all
+        // 4J Stu - Grass and Lava ticks currently take up the majority of all
         // tile updates, so I am limiting them
         int grassTicks = 0;
         int lavaTicks = 0;
@@ -1514,7 +1506,6 @@ int ServerLevel::runUpdate(void* lpParam) {
                 }
             }
         }
-        
     }
 
     ShutdownManager::HasFinished(ShutdownManager::eRunUpdateThread);

@@ -25,7 +25,8 @@ public:
     virtual bool shouldRenderFace(LevelSource* level, int x, int y, int z,
                                   int face);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes,
+                          std::shared_ptr<Entity> source);
     virtual void updateDefaultShape();
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,

@@ -5,9 +5,7 @@
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
-AwardStatPacket::AwardStatPacket() {
-    this->m_paramData.clear();
-}
+AwardStatPacket::AwardStatPacket() { this->m_paramData.clear(); }
 
 AwardStatPacket::AwardStatPacket(int statId, int count) {
     this->statId = statId;
@@ -26,9 +24,7 @@ AwardStatPacket::AwardStatPacket(int statId, std::vector<uint8_t>& paramData) {
     this->m_paramData = paramData;
 }
 
-AwardStatPacket::~AwardStatPacket() {
-    m_paramData.clear();
-}
+AwardStatPacket::~AwardStatPacket() { m_paramData.clear(); }
 
 void AwardStatPacket::handle(PacketListener* listener) {
     listener->handleAwardStat(shared_from_this());

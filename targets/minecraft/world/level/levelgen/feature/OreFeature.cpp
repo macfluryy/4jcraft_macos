@@ -26,7 +26,7 @@ OreFeature::OreFeature(int tile, int count, int targetTile) {
 }
 
 bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
-        float dir = random->nextFloat() * std::numbers::pi;
+    float dir = random->nextFloat() * std::numbers::pi;
 
     double x0 = x + 8 + Mth::sin(dir) * count / 8;
     double x1 = x + 8 - Mth::sin(dir) * count / 8;
@@ -147,6 +147,5 @@ bool OreFeature::place(Level* level, Random* random, int x, int y, int z) {
         }
     }
 
-    
     return true;
 }

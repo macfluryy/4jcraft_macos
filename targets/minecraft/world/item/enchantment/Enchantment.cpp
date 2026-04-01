@@ -7,7 +7,8 @@
 #include "strings.h"
 
 // Enchantment *Enchantment::enchantments[256];
-std::vector<Enchantment*> Enchantment::enchantments = std::vector<Enchantment*>(256);
+std::vector<Enchantment*> Enchantment::enchantments =
+    std::vector<Enchantment*>(256);
 std::vector<Enchantment*> Enchantment::validEnchantments;
 
 Enchantment* Enchantment::allDamageProtection = nullptr;

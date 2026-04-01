@@ -5,11 +5,11 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
-    // 	temps = std::vector<float>(ZONE_SIZE * ZONE_SIZE, false);		// MGH -
-    // added "no clear" flag to arrayWithLength 	downfall =
+    // 	temps = std::vector<float>(ZONE_SIZE * ZONE_SIZE, false);
+    // // MGH - added "no clear" flag to arrayWithLength 	downfall =
     // std::vector<float>(ZONE_SIZE
-    // * ZONE_SIZE, false); 	biomes = std::vector<Biome*>(ZONE_SIZE * ZONE_SIZE,
-    // false);
+    // * ZONE_SIZE, false); 	biomes = std::vector<Biome*>(ZONE_SIZE *
+    // ZONE_SIZE, false);
     biomeIndices = std::vector<uint8_t>(ZONE_SIZE * ZONE_SIZE, false);
 
     lastUse = 0;
@@ -27,8 +27,7 @@ BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {
         (unsigned)z << ZONE_SIZE_BITS, ZONE_SIZE, ZONE_SIZE, false);
 }
 
-BiomeCache::Block::~Block() {
-}
+BiomeCache::Block::~Block() {}
 
 Biome* BiomeCache::Block::getBiome(int x, int z) {
     //	return biomes[(x & ZONE_SIZE_MASK) | ((z & ZONE_SIZE_MASK) <<

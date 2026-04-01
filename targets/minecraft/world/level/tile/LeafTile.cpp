@@ -273,8 +273,8 @@ void LeafTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
 
         // drop leaf block instead of sapling
         popResource(level, x, y, z,
-                    std::make_shared<ItemInstance>(
-                        Tile::leaves_Id, 1, data & LEAF_TYPE_MASK));
+                    std::make_shared<ItemInstance>(Tile::leaves_Id, 1,
+                                                   data & LEAF_TYPE_MASK));
     } else {
         TransparentTile::playerDestroy(level, player, x, y, z, data);
     }

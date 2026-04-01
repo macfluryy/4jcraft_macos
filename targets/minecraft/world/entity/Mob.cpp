@@ -111,7 +111,6 @@ Mob::~Mob() {
     if (sensing != nullptr) delete sensing;
 
     if (leashInfoTag != nullptr) delete leashInfoTag;
-
 }
 
 void Mob::registerAttributes() {
@@ -319,7 +318,7 @@ void Mob::aiStep() {
     if (!level->isClientSide && canPickUpLoot() && !dead &&
         level->getGameRules()->getBoolean(GameRules::RULE_MOBGRIEFING)) {
         AABB grown = bb.grow(1, 0, 1);
-        std::vector<std::shared_ptr<Entity> >* entities =
+        std::vector<std::shared_ptr<Entity>>* entities =
             level->getEntitiesOfClass(typeid(ItemEntity), &grown);
         for (auto it = entities->begin(); it != entities->end(); ++it) {
             std::shared_ptr<ItemEntity> entity =
@@ -424,32 +423,30 @@ void Mob::checkDespawn() {
 }
 
 void Mob::newServerAiStep() {
-        noActionTime++;
-        checkDespawn();
-    
-        sensing->tick();
-    
-        targetSelector.tick();
-    
-        goalSelector.tick();
-    
-        navigation->tick();
-    
-        serverAiMobStep();
-    
-        moveControl->tick();
-    
-        lookControl->tick();
-    
-        jumpControl->tick();
-    
+    noActionTime++;
+    checkDespawn();
+
+    sensing->tick();
+
+    targetSelector.tick();
+
+    goalSelector.tick();
+
+    navigation->tick();
+
+    serverAiMobStep();
+
+    moveControl->tick();
+
+    lookControl->tick();
+
+    jumpControl->tick();
+
     // Consider this for extra strolling if it is protected against despawning.
     // We aren't interested in ones that aren't protected as the whole point of
     // this extra wandering is to potentially transition from protected to not
     // protected.
-        considerForExtraWandering(isDespawnProtected());
-    
-    
+    considerForExtraWandering(isDespawnProtected());
 }
 
 void Mob::serverAiStep() {
@@ -567,7 +564,9 @@ void Mob::setEquippedSlot(int slot, std::shared_ptr<ItemInstance> item) {
     equipment[slot] = item;
 }
 
-std::vector<std::shared_ptr<ItemInstance>> Mob::getEquipmentSlots() { return equipment; }
+std::vector<std::shared_ptr<ItemInstance>> Mob::getEquipmentSlots() {
+    return equipment;
+}
 
 void Mob::dropEquipment(bool byPlayer, int playerBonusLevel) {
     for (int slot = 0; slot < (int)getEquipmentSlots().size(); slot++) {
@@ -854,7 +853,7 @@ void Mob::restoreLeashFromSave() {
         if (leashInfoTag->contains(L"UUID")) {
             std::wstring leashUuid = leashInfoTag->getString(L"UUID");
             AABB grown = bb.grow(10, 10, 10);
-            std::vector<std::shared_ptr<Entity> >* livingEnts =
+            std::vector<std::shared_ptr<Entity>>* livingEnts =
                 level->getEntitiesOfClass(typeid(LivingEntity), &grown);
             for (auto it = livingEnts->begin(); it != livingEnts->end(); ++it) {
                 std::shared_ptr<LivingEntity> le =

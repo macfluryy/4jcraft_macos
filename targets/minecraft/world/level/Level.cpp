@@ -849,8 +849,6 @@ bool Level::setTileAndData(int x, int y, int z, int tile, int data,
     result = c->setTileAndData(x & 15, y, z & 15, tile, data);
     if (updateFlags != Tile::UPDATE_INVISIBLE_NO_LIGHT) {
         checkLight(x, y, z);
-        
-        
     }
     if (result) {
         if ((updateFlags & Tile::UPDATE_CLIENTS) != 0 &&
@@ -983,22 +981,18 @@ void Level::tileUpdated(int x, int y, int z, int tile) {
 }
 
 void Level::lightColumnChanged(int x, int z, int y0, int y1) {
-        if (y0 > y1) {
+    if (y0 > y1) {
         int tmp = y1;
         y1 = y0;
         y0 = tmp;
     }
 
     if (!dimension->hasCeiling) {
-                for (int y = y0; y <= y1; y++) {
-                        checkLight(LightLayer::Sky, x, y, z);
-            
+        for (int y = y0; y <= y1; y++) {
+            checkLight(LightLayer::Sky, x, y, z);
         }
-        
     }
-        setTilesDirty(x, y0, z, x, y1, z);
-    
-    
+    setTilesDirty(x, y0, z, x, y1, z);
 }
 
 void Level::setTileDirty(int x, int y, int z) {
@@ -1704,8 +1698,8 @@ void Level::removeListener(LevelListener* listener) {
 
 // 4J - added noEntities and blockAtEdge parameter
 std::vector<AABB>* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
-                          bool noEntities /* = false*/,
-                          bool blockAtEdge /* = false*/) {
+                                   bool noEntities /* = false*/,
+                                   bool blockAtEdge /* = false*/) {
     boxes.clear();
     int x0 = Mth::floor(box->x0);
     int x1 = Mth::floor(box->x1 + 1);
@@ -1791,7 +1785,8 @@ std::vector<AABB>* Level::getCubes(std::shared_ptr<Entity> source, AABB* box,
 
 // 4J Stu - Brought forward from 12w36 to fix #46282 - TU5: Gameplay: Exiting
 // the minecart in a tight corridor damages the player
-std::vector<AABB>* Level::getTileCubes(AABB* box, bool blockAtEdge /* = false */) {
+std::vector<AABB>* Level::getTileCubes(AABB* box,
+                                       bool blockAtEdge /* = false */) {
     return getCubes(nullptr, box, true, blockAtEdge);
     // boxes.clear();
     // int x0 = Mth::floor(box->x0);
@@ -2797,10 +2792,7 @@ void Level::setSpawnSettings(bool spawnEnemies, bool spawnFriendlies) {
     this->spawnFriendlies = spawnFriendlies;
 }
 
-void Level::tick() {
-        tickWeather();
-    
-}
+void Level::tick() { tickWeather(); }
 
 void Level::prepareWeather() {
     if (levelData->isRaining()) {
@@ -3770,8 +3762,9 @@ std::shared_ptr<Player> Level::getPlayerByUUID(const std::wstring& name) {
 }
 
 // 4J Stu - Removed in 1.2.3 ?
-std::vector<uint8_t> Level::getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
-                                  bool includeLighting /* = true*/) {
+std::vector<uint8_t> Level::getBlocksAndData(int x, int y, int z, int xs,
+                                             int ys, int zs,
+                                             bool includeLighting /* = true*/) {
     std::vector<uint8_t> result(xs * ys * zs * 5 / 2);
     int xc0 = x >> 4;
     int zc0 = z >> 4;
@@ -3804,7 +3797,8 @@ std::vector<uint8_t> Level::getBlocksAndData(int x, int y, int z, int xs, int ys
 
 // 4J Stu - Removed in 1.2.3 ?
 void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
-                             std::vector<uint8_t>& data, bool includeLighting /* = true*/) {
+                             std::vector<uint8_t>& data,
+                             bool includeLighting /* = true*/) {
     int xc0 = x >> 4;
     int zc0 = z >> 4;
     int xc1 = (x + xs - 1) >> 4;
@@ -3839,8 +3833,7 @@ void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
             }
             if (forceUnshare) {
                 int size = (x1 - x0) * (y1 - y0) * (z1 - z0);
-                                lc->stopSharingTilesAndData();
-                
+                lc->stopSharingTilesAndData();
             }
             if (p < data.size())
                 p = lc->setBlocksAndData(data, x0, y0, z0, x1, y1, z1, p,
@@ -3848,10 +3841,9 @@ void Level::setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
             setTilesDirty(xc * 16 + x0, y0, zc * 16 + z0, xc * 16 + x1, y1,
                           zc * 16 + z1);
 
-                        if (g_NetworkManager.IsHost() && isClientSide) {
+            if (g_NetworkManager.IsHost() && isClientSide) {
                 lc->startSharingTilesAndData();
             }
-            
         }
     }
 }

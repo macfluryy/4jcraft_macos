@@ -37,8 +37,10 @@ bool CaveFeature::place(Level* level, Random* random, int x, int y, int z) {
         double zz = z0 + (z1 - z0) * d / 16;
 
         double ss = random->nextDouble();
-        double r = (Mth::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
-        double hr = (Mth::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
+        double r =
+            (Mth::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
+        double hr =
+            (Mth::sin(d / 16.0f * std::numbers::pi) * radius + 1) * ss + 1;
 
         // 4J Stu Added to stop cave features generating areas previously place
         // by game rule generation

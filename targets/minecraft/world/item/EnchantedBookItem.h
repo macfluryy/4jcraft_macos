@@ -12,7 +12,8 @@ class CompoundTag;
 class Enchantment;
 class Random;
 class WeighedTreasure;
-template <class T> class ListTag;
+template <class T>
+class ListTag;
 
 class EnchantedBookItem : public Item {
 public:

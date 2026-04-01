@@ -71,7 +71,8 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         unsigned int inputSize = (256 * 16 * 16 * 5) / 2;
 
         Compression::getCompression()->CompressLZXRLE(
-            ucTemp, &inputSize, rawBuffer.data(), (unsigned int)rawBuffer.size());
+            ucTemp, &inputSize, rawBuffer.data(),
+            (unsigned int)rawBuffer.size());
         // app.DebugPrintf("Chunk (%d,%d) compressed from %d to size %d\n",
         // x>>4, z>>4, rawBuffer.size(), inputSize);
         unsigned char* ucTemp2 = new unsigned char[inputSize];

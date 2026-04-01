@@ -29,6 +29,7 @@ public:
     virtual double getValue(double x, double y);
     double getValue(double x, double y, double z);
 
-    void add(std::vector<double>& buffer, double _x, double _y, double _z, int xSize,
-             int ySize, int zSize, double xs, double ys, double zs, double pow);
+    void add(std::vector<double>& buffer, double _x, double _y, double _z,
+             int xSize, int ySize, int zSize, double xs, double ys, double zs,
+             double pow);
 };

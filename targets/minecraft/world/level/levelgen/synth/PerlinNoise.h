@@ -24,9 +24,10 @@ public:
 
     virtual double getValue(double x, double y);
     double getValue(double x, double y, double z);
-    std::vector<double> getRegion(std::vector<double>& buffer, int x, int y, int z, int xSize,
-                          int ySize, int zSize, double xScale, double yScale,
-                          double zScale);
-    std::vector<double> getRegion(std::vector<double>& sr, int x, int z, int xSize, int zSize,
-                          double xScale, double zScale, double pow);
+    std::vector<double> getRegion(std::vector<double>& buffer, int x, int y,
+                                  int z, int xSize, int ySize, int zSize,
+                                  double xScale, double yScale, double zScale);
+    std::vector<double> getRegion(std::vector<double>& sr, int x, int z,
+                                  int xSize, int zSize, double xScale,
+                                  double zScale, double pow);
 };

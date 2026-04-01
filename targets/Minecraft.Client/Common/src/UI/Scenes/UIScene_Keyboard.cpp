@@ -5,7 +5,6 @@
 
 #include "console_helpers/StringHelpers.h"
 
-
 #define KEYBOARD_DONE_TIMER_ID 0
 #define KEYBOARD_DONE_TIMER_TIME 100
 

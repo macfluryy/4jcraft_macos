@@ -81,7 +81,8 @@ Socket::Socket(bool response) {
         if (s_serverConnection != nullptr) {
             s_serverConnection->NewIncomingSocket(socket);
         } else {
-            fprintf(stderr,
+            fprintf(
+                stderr,
                 "SOCKET: Warning - attempted to notify server of new incoming "
                 "socket but s_serverConnection is nullptr\n");
         }
@@ -142,7 +143,8 @@ void Socket::pushDataToQueue(const std::uint8_t* pbData, std::size_t dataSize,
     if (!fromHost) queueIdx = SOCKET_SERVER_END;
 
     if (queueIdx != m_end && !m_hostLocal) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "SOCKET: Error pushing data to queue. End is %d but queue idx id "
             "%d\n",
             m_end, queueIdx);
@@ -177,9 +179,9 @@ InputStream* Socket::getInputStream(bool isServerConnection) {
     } else {
         if (s_hostInStream[m_end] == nullptr) {
             fprintf(stderr,
-                "SOCKET: Warning - s_hostInStream[%d] is nullptr in "
-                "getInputStream(); calling EnsureStreamsInitialised()\n",
-                m_end);
+                    "SOCKET: Warning - s_hostInStream[%d] is nullptr in "
+                    "getInputStream(); calling EnsureStreamsInitialised()\n",
+                    m_end);
             EnsureStreamsInitialised();
         }
         return s_hostInStream[m_end];
@@ -205,9 +207,9 @@ Socket::SocketOutputStream* Socket::getOutputStream(bool isServerConnection) {
         int outIdx = 1 - m_end;
         if (s_hostOutStream[outIdx] == nullptr) {
             fprintf(stderr,
-                "SOCKET: Warning - s_hostOutStream[%d] is nullptr in "
-                "getOutputStream(); calling EnsureStreamsInitialised()\n",
-                outIdx);
+                    "SOCKET: Warning - s_hostOutStream[%d] is nullptr in "
+                    "getOutputStream(); calling EnsureStreamsInitialised()\n",
+                    outIdx);
             EnsureStreamsInitialised();
         }
         return s_hostOutStream[outIdx];
@@ -275,7 +277,8 @@ int Socket::SocketInputStreamLocal::read(std::vector<uint8_t>& b) {
 
 // Try and get an input range of bytes, blocking until enough bytes are
 // available
-int Socket::SocketInputStreamLocal::read(std::vector<uint8_t>& b, unsigned int offset,
+int Socket::SocketInputStreamLocal::read(std::vector<uint8_t>& b,
+                                         unsigned int offset,
                                          unsigned int length) {
     while (m_streamOpen) {
         {
@@ -326,7 +329,8 @@ void Socket::SocketOutputStreamLocal::write(const std::vector<uint8_t>& b) {
     write(b, 0, b.size());
 }
 
-void Socket::SocketOutputStreamLocal::write(const std::vector<uint8_t>& b, unsigned int offset,
+void Socket::SocketOutputStreamLocal::write(const std::vector<uint8_t>& b,
+                                            unsigned int offset,
                                             unsigned int length) {
     if (m_streamOpen != true) {
         return;
@@ -386,7 +390,8 @@ int Socket::SocketInputStreamNetwork::read(std::vector<uint8_t>& b) {
 
 // Try and get an input range of bytes, blocking until enough bytes are
 // available
-int Socket::SocketInputStreamNetwork::read(std::vector<uint8_t>& b, unsigned int offset,
+int Socket::SocketInputStreamNetwork::read(std::vector<uint8_t>& b,
+                                           unsigned int offset,
                                            unsigned int length) {
     while (m_streamOpen) {
         {
@@ -431,15 +436,15 @@ void Socket::SocketOutputStreamNetwork::write(const std::vector<uint8_t>& b) {
     write(b, 0, b.size());
 }
 
-void Socket::SocketOutputStreamNetwork::write(const std::vector<uint8_t>& b, unsigned int offset,
+void Socket::SocketOutputStreamNetwork::write(const std::vector<uint8_t>& b,
+                                              unsigned int offset,
                                               unsigned int length) {
     writeWithFlags(b, offset, length, 0);
 }
 
-void Socket::SocketOutputStreamNetwork::writeWithFlags(const std::vector<uint8_t>& b,
-                                                       unsigned int offset,
-                                                       unsigned int length,
-                                                       int flags) {
+void Socket::SocketOutputStreamNetwork::writeWithFlags(
+    const std::vector<uint8_t>& b, unsigned int offset, unsigned int length,
+    int flags) {
     if (m_streamOpen != true) return;
     if (length == 0) return;
 
@@ -467,15 +472,16 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(const std::vector<uint8_t
 
         INetworkPlayer* hostPlayer = g_NetworkManager.GetHostPlayer();
         if (hostPlayer == nullptr) {
-            fprintf(stderr,
+            fprintf(
+                stderr,
                 "Trying to write to network, but the hostPlayer is nullptr\n");
             return;
         }
         INetworkPlayer* socketPlayer = m_socket->getPlayer();
         if (socketPlayer == nullptr) {
             fprintf(stderr,
-                "Trying to write to network, but the socketPlayer is "
-                "nullptr\n");
+                    "Trying to write to network, but the socketPlayer is "
+                    "nullptr\n");
             return;
         }
 

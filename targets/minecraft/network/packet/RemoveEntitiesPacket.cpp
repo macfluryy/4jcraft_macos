@@ -5,10 +5,11 @@
 
 RemoveEntitiesPacket::RemoveEntitiesPacket() {}
 
-RemoveEntitiesPacket::RemoveEntitiesPacket(std::vector<int>& ids) { this->ids = ids; }
-
-RemoveEntitiesPacket::~RemoveEntitiesPacket() {
+RemoveEntitiesPacket::RemoveEntitiesPacket(std::vector<int>& ids) {
+    this->ids = ids;
 }
+
+RemoveEntitiesPacket::~RemoveEntitiesPacket() {}
 
 void RemoveEntitiesPacket::read(DataInputStream* dis)  // throws IOException
 {

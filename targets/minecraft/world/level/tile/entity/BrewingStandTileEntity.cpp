@@ -12,7 +12,8 @@
 int slotsForUp[] = {BrewingStandTileEntity::INGREDIENT_SLOT};
 int slotsForOtherFaces[] = {0, 1, 2};
 
-std::vector<int> BrewingStandTileEntity::SLOTS_FOR_UP = std::vector<int>(slotsForUp, slotsForUp + 1);
+std::vector<int> BrewingStandTileEntity::SLOTS_FOR_UP =
+    std::vector<int>(slotsForUp, slotsForUp + 1);
 std::vector<int> BrewingStandTileEntity::SLOTS_FOR_OTHER_FACES =
     std::vector<int>(slotsForOtherFaces, slotsForOtherFaces + 3);
 

@@ -24,9 +24,10 @@ FastNoise::~FastNoise() {
     delete[] noiseMaps;
 }
 
-std::vector<double> FastNoise::getRegion(std::vector<double>& buffer, double x, double y,
-                                 double z, int xSize, int ySize, int zSize,
-                                 double xScale, double yScale, double zScale) {
+std::vector<double> FastNoise::getRegion(std::vector<double>& buffer, double x,
+                                         double y, double z, int xSize,
+                                         int ySize, int zSize, double xScale,
+                                         double yScale, double zScale) {
     if (buffer.empty())
         buffer = std::vector<double>(xSize * ySize * zSize);
     else

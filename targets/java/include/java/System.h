@@ -10,15 +10,15 @@ class Biome;
 class Node;
 
 // 4J Jev, just thought it would be easier this way.
-#define ArrayCopyFunctionDeclaration(x)                                      \
-    static void arraycopy(const std::vector<x>& src, unsigned int srcPos,    \
-                          std::vector<x>* dst, unsigned int dstPos,          \
+#define ArrayCopyFunctionDeclaration(x)                                   \
+    static void arraycopy(const std::vector<x>& src, unsigned int srcPos, \
+                          std::vector<x>* dst, unsigned int dstPos,       \
                           unsigned int length);
-#define ArrayCopyFunctionDefinition(x)                                        \
-    void System::arraycopy(const std::vector<x>& src, unsigned int srcPos,    \
-                           std::vector<x>* dst, unsigned int dstPos,          \
-                           unsigned int length) {                             \
-        arraycopy<x>(src, srcPos, dst, dstPos, length);                       \
+#define ArrayCopyFunctionDefinition(x)                                     \
+    void System::arraycopy(const std::vector<x>& src, unsigned int srcPos, \
+                           std::vector<x>* dst, unsigned int dstPos,       \
+                           unsigned int length) {                          \
+        arraycopy<x>(src, srcPos, dst, dstPos, length);                    \
     }
 
 class System {

@@ -10,7 +10,6 @@
 #include "minecraft/client/Minecraft.h"
 #include "UIScene_MainMenu.h"
 
-
 Random* UIScene_MainMenu::random = new Random();
 
 int UIScene_MainMenu::eNavigateWhenReady = -1;
@@ -242,13 +241,13 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
                 &UIScene_MainMenu::UnlockFullGame_SignInReturned;
             break;
         case eControl_Exit: {
-                unsigned int uiIDA[2];
-                uiIDA[0] = IDS_CONFIRM_CANCEL;
-                uiIDA[1] = IDS_CONFIRM_OK;
-                ui.RequestErrorMessage(
-                    IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                    XUSER_INDEX_ANY, &UIScene_MainMenu::ExitGameReturned, this);
-            } break;
+            unsigned int uiIDA[2];
+            uiIDA[0] = IDS_CONFIRM_CANCEL;
+            uiIDA[1] = IDS_CONFIRM_OK;
+            ui.RequestErrorMessage(IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA,
+                                   2, XUSER_INDEX_ANY,
+                                   &UIScene_MainMenu::ExitGameReturned, this);
+        } break;
 
         default:
             __debugbreak();
@@ -303,8 +302,7 @@ void UIScene_MainMenu::RunAction(int iPad) {
 
 void UIScene_MainMenu::customDraw(IggyCustomDrawCallbackRegion* region) {
     if (std::char_traits<char16_t>::compare(region->name, u"Splash", 6) == 0) {
-                customDrawSplash(region);
-        
+        customDrawSplash(region);
     }
 }
 
@@ -341,7 +339,7 @@ void UIScene_MainMenu::customDrawSplash(IggyCustomDrawCallbackRegion* region) {
 
     glRotatef(-17, 0, 0, 1);
     float sss = 1.8f - std::abs(sinf(System::currentTimeMillis() % 1000 /
-                                         1000.0f * std::numbers::pi * 2) *
+                                     1000.0f * std::numbers::pi * 2) *
                                 0.1f);
     sss *= (m_fScreenWidth / m_fRawWidth);
 
@@ -874,10 +872,10 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
                     // you can't see the store
                     unsigned int uiIDA[1];
                     uiIDA[0] = IDS_CONFIRM_OK;
-                    ui.RequestErrorMessage(
-                        IDS_ONLINE_SERVICE_TITLE, IDS_CONTENT_RESTRICTION,
-                        uiIDA, 1, ProfileManager.GetPrimaryPad(), nullptr,
-                        this);
+                    ui.RequestErrorMessage(IDS_ONLINE_SERVICE_TITLE,
+                                           IDS_CONTENT_RESTRICTION, uiIDA, 1,
+                                           ProfileManager.GetPrimaryPad(),
+                                           nullptr, this);
 #endif
                 } else {
                     ProfileManager.SetLockedProfile(iPad);
@@ -897,8 +895,8 @@ void UIScene_MainMenu::RunUnlockOrDLC(int iPad) {
     } else {
         unsigned int uiIDA[1];
         uiIDA[0] = IDS_OK;
-        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE,
-                               IDS_PRO_NOTONLINE_TEXT, uiIDA, 1);
+        ui.RequestErrorMessage(IDS_PRO_NOTONLINE_TITLE, IDS_PRO_NOTONLINE_TEXT,
+                               uiIDA, 1);
     }
 }
 

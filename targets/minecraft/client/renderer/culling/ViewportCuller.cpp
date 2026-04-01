@@ -11,8 +11,10 @@ ViewportCuller::Face::Face(double x, double y, double z, float yRot,
     this->yc = y;
     this->zc = z;
 
-    xd = sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
-    zd = -cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    xd = sinf(yRot / 180 * std::numbers::pi) *
+         cosf(xRot / 180 * std::numbers::pi);
+    zd = -cosf(yRot / 180 * std::numbers::pi) *
+         cosf(xRot / 180 * std::numbers::pi);
     yd = -sinf(xRot / 180 * std::numbers::pi);
 
     cullOffs = xc * xd + yc * yd + zc * zd;
@@ -59,8 +61,10 @@ ViewportCuller::ViewportCuller(std::shared_ptr<LivingEntity> mob,
     double y = mob->yOld + (mob->y - mob->yOld) * a;
     double z = mob->zOld + (mob->z - mob->zOld) * a;
 
-    double xd = sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
-    double zd = -cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi);
+    double xd = sinf(yRot / 180 * std::numbers::pi) *
+                cosf(xRot / 180 * std::numbers::pi);
+    double zd = -cosf(yRot / 180 * std::numbers::pi) *
+                cosf(xRot / 180 * std::numbers::pi);
     double yd = -sinf(xRot / 180 * std::numbers::pi);
 
     float xFov = 30;

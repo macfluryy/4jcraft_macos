@@ -379,9 +379,8 @@ void VineTile::playerDestroy(Level* level, std::shared_ptr<Player> player,
                           GenericStats::param_blocksMined(id, data, 1));
 
         // drop leaf block instead of sapling
-        popResource(
-            level, x, y, z,
-            std::make_shared<ItemInstance>(Tile::vine, 1, 0));
+        popResource(level, x, y, z,
+                    std::make_shared<ItemInstance>(Tile::vine, 1, 0));
     } else {
         Tile::playerDestroy(level, player, x, y, z, data);
     }

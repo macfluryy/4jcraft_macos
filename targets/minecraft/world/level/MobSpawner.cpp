@@ -41,7 +41,6 @@ std::unordered_map<ChunkPos, bool, ChunkPosKeyHash, ChunkPosKeyEq>
 
 const int MobSpawner::tick(ServerLevel* level, bool spawnEnemies,
                            bool spawnFriendlies, bool spawnPersistent) {
-
     if (!spawnEnemies && !spawnFriendlies && !spawnPersistent) {
         return 0;
     }

@@ -39,7 +39,7 @@ AttributeModifier* EnderMan::SPEED_MODIFIER_ATTACKING =
 bool EnderMan::MAY_TAKE[256];
 
 void EnderMan::staticCtor() {
-    memset(MAY_TAKE, 0,  sizeof(bool) * 256);
+    memset(MAY_TAKE, 0, sizeof(bool) * 256);
     MAY_TAKE[Tile::grass_Id] = true;
     MAY_TAKE[Tile::dirt_Id] = true;
     MAY_TAKE[Tile::sand_Id] = true;

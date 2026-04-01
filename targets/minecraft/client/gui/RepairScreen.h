@@ -2,7 +2,6 @@
 
 #include <memory>
 
-
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/world/inventory/AnvilMenu.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"

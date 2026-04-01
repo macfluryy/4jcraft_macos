@@ -35,7 +35,7 @@ void EnchantTableRenderer::render(std::shared_ptr<TileEntity> _table, double x,
     glTranslatef(0, 0.1f + sin(tt * 0.1f) * 0.01f, 0);
     float orot = (table->rot - table->oRot);
     while (orot >= std::numbers::pi) orot -= std::numbers::pi * 2;
-    while (orot < -std::numbers::pi ) orot += std::numbers::pi * 2;
+    while (orot < -std::numbers::pi) orot += std::numbers::pi * 2;
 
     float yRot = table->oRot + orot * a;
 

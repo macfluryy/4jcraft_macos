@@ -23,8 +23,8 @@ public:
 
     ChunkTilesUpdatePacket();
     ~ChunkTilesUpdatePacket();
-    ChunkTilesUpdatePacket(int xc, int zc, std::vector<short>& positions, uint8_t count,
-                           Level* level);
+    ChunkTilesUpdatePacket(int xc, int zc, std::vector<short>& positions,
+                           uint8_t count, Level* level);
 
     virtual void read(DataInputStream* dis);
     virtual void write(DataOutputStream* dos);

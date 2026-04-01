@@ -34,8 +34,7 @@ void BoatRenderer::render(std::shared_ptr<Entity> _boat, double x, double y,
     float dmg = boat->getDamage() - a;
     if (dmg < 0) dmg = 0;
     if (hurt > 0) {
-        glRotatef(sinf(hurt) * hurt * dmg / 10 * boat->getHurtDir(), 1, 0,
-                  0);
+        glRotatef(sinf(hurt) * hurt * dmg / 10 * boat->getHurtDir(), 1, 0, 0);
     }
 
     float ss = 12 / 16.0f;

@@ -99,12 +99,10 @@ void MultiplayerLocalPlayer::tick() {
     if (minecraft->localgameModes[m_iPad]->getTutorial()->canMoveToPosition(
             tempX, tempY, tempZ, x, y, z)) {
         if (isRiding()) {
-            connection->send(
-                std::make_shared<MovePlayerPacket::Rot>(
-                    yRot, xRot, onGround, abilities.flying));
-            connection->send(
-                std::make_shared<PlayerInputPacket>(
-                    xxa, yya, input->jumping, input->sneaking));
+            connection->send(std::make_shared<MovePlayerPacket::Rot>(
+                yRot, xRot, onGround, abilities.flying));
+            connection->send(std::make_shared<PlayerInputPacket>(
+                xxa, yya, input->jumping, input->sneaking));
         } else {
             sendPosition();
         }
@@ -119,13 +117,11 @@ void MultiplayerLocalPlayer::sendPosition() {
     bool sprinting = isSprinting();
     if (sprinting != lastSprinting) {
         if (sprinting)
-            connection->send(
-                std::make_shared<PlayerCommandPacket>(
-                    shared_from_this(), PlayerCommandPacket::START_SPRINTING));
+            connection->send(std::make_shared<PlayerCommandPacket>(
+                shared_from_this(), PlayerCommandPacket::START_SPRINTING));
         else
-            connection->send(
-                std::make_shared<PlayerCommandPacket>(
-                    shared_from_this(), PlayerCommandPacket::STOP_SPRINTING));
+            connection->send(std::make_shared<PlayerCommandPacket>(
+                shared_from_this(), PlayerCommandPacket::STOP_SPRINTING));
 
         lastSprinting = sprinting;
     }
@@ -133,13 +129,11 @@ void MultiplayerLocalPlayer::sendPosition() {
     bool sneaking = isSneaking();
     if (sneaking != lastSneaked) {
         if (sneaking)
-            connection->send(
-                std::make_shared<PlayerCommandPacket>(
-                    shared_from_this(), PlayerCommandPacket::START_SNEAKING));
+            connection->send(std::make_shared<PlayerCommandPacket>(
+                shared_from_this(), PlayerCommandPacket::START_SNEAKING));
         else
-            connection->send(
-                std::make_shared<PlayerCommandPacket>(
-                    shared_from_this(), PlayerCommandPacket::STOP_SNEAKING));
+            connection->send(std::make_shared<PlayerCommandPacket>(
+                shared_from_this(), PlayerCommandPacket::STOP_SNEAKING));
 
         lastSneaked = sneaking;
     }
@@ -147,13 +141,11 @@ void MultiplayerLocalPlayer::sendPosition() {
     bool idle = isIdle();
     if (idle != lastIdle) {
         if (idle)
-            connection->send(
-                std::make_shared<PlayerCommandPacket>(
-                    shared_from_this(), PlayerCommandPacket::START_IDLEANIM));
+            connection->send(std::make_shared<PlayerCommandPacket>(
+                shared_from_this(), PlayerCommandPacket::START_IDLEANIM));
         else
-            connection->send(
-                std::make_shared<PlayerCommandPacket>(
-                    shared_from_this(), PlayerCommandPacket::STOP_IDLEANIM));
+            connection->send(std::make_shared<PlayerCommandPacket>(
+                shared_from_this(), PlayerCommandPacket::STOP_IDLEANIM));
 
         lastIdle = idle;
     }
@@ -169,23 +161,19 @@ void MultiplayerLocalPlayer::sendPosition() {
                 positionReminder >= POSITION_REMINDER_INTERVAL;
     bool rot = rydd != 0 || rxdd != 0;
     if (riding != nullptr) {
-        connection->send(
-            std::make_shared<MovePlayerPacket::PosRot>(
-                xd, -999, -999, zd, yRot, xRot, onGround, abilities.flying));
+        connection->send(std::make_shared<MovePlayerPacket::PosRot>(
+            xd, -999, -999, zd, yRot, xRot, onGround, abilities.flying));
         move = false;
     } else {
         if (move && rot) {
-            connection->send(
-                std::make_shared<MovePlayerPacket::PosRot>(
-                    x, bb.y0, y, z, yRot, xRot, onGround, abilities.flying));
+            connection->send(std::make_shared<MovePlayerPacket::PosRot>(
+                x, bb.y0, y, z, yRot, xRot, onGround, abilities.flying));
         } else if (move) {
-            connection->send(
-                std::make_shared<MovePlayerPacket::Pos>(
-                    x, bb.y0, y, z, onGround, abilities.flying));
+            connection->send(std::make_shared<MovePlayerPacket::Pos>(
+                x, bb.y0, y, z, onGround, abilities.flying));
         } else if (rot) {
-            connection->send(
-                std::make_shared<MovePlayerPacket::Rot>(
-                    yRot, xRot, onGround, abilities.flying));
+            connection->send(std::make_shared<MovePlayerPacket::Rot>(
+                yRot, xRot, onGround, abilities.flying));
         } else {
             connection->send(std::shared_ptr<MovePlayerPacket>(
                 new MovePlayerPacket(onGround, abilities.flying)));
@@ -295,8 +283,7 @@ void MultiplayerLocalPlayer::clientSideCloseContainer() {
     LocalPlayer::closeContainer();
 }
 
-void MultiplayerLocalPlayer::hurtTo(float newHealth,
-                                    uint8_t damageSource) {
+void MultiplayerLocalPlayer::hurtTo(float newHealth, uint8_t damageSource) {
     if (flashOnSetHealth) {
         LocalPlayer::hurtTo(newHealth, damageSource);
     } else {
@@ -305,7 +292,8 @@ void MultiplayerLocalPlayer::hurtTo(float newHealth,
     }
 }
 
-void MultiplayerLocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
+void MultiplayerLocalPlayer::awardStat(Stat* stat,
+                                       const std::vector<uint8_t>& param) {
     if (stat == nullptr) {
         return;
     }
@@ -317,7 +305,8 @@ void MultiplayerLocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& p
     }
 }
 
-void MultiplayerLocalPlayer::awardStatFromServer(Stat* stat, std::vector<uint8_t>& param) {
+void MultiplayerLocalPlayer::awardStatFromServer(Stat* stat,
+                                                 std::vector<uint8_t>& param) {
     if (stat != nullptr && !stat->awardLocallyOnly) {
         LocalPlayer::awardStat(stat, param);
     }
@@ -331,16 +320,14 @@ void MultiplayerLocalPlayer::onUpdateAbilities() {
 bool MultiplayerLocalPlayer::isLocalPlayer() { return true; }
 
 void MultiplayerLocalPlayer::sendRidingJump() {
-    connection->send(
-        std::make_shared<PlayerCommandPacket>(
-            shared_from_this(), PlayerCommandPacket::RIDING_JUMP,
-            (int)(getJumpRidingScale() * 100.0f)));
+    connection->send(std::make_shared<PlayerCommandPacket>(
+        shared_from_this(), PlayerCommandPacket::RIDING_JUMP,
+        (int)(getJumpRidingScale() * 100.0f)));
 }
 
 void MultiplayerLocalPlayer::sendOpenInventory() {
-    connection->send(
-        std::make_shared<PlayerCommandPacket>(
-            shared_from_this(), PlayerCommandPacket::OPEN_INVENTORY));
+    connection->send(std::make_shared<PlayerCommandPacket>(
+        shared_from_this(), PlayerCommandPacket::OPEN_INVENTORY));
 }
 
 void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
@@ -371,9 +358,8 @@ void MultiplayerLocalPlayer::ride(std::shared_ptr<Entity> e) {
 }
 
 void MultiplayerLocalPlayer::StopSleeping() {
-    connection->send(
-        std::make_shared<PlayerCommandPacket>(
-            shared_from_this(), PlayerCommandPacket::STOP_SLEEPING));
+    connection->send(std::make_shared<PlayerCommandPacket>(
+        shared_from_this(), PlayerCommandPacket::STOP_SLEEPING));
 }
 
 // 4J Added
@@ -398,10 +384,9 @@ void MultiplayerLocalPlayer::setAndBroadcastCustomCape(std::uint32_t capeId) {
             customTextureUrl2.c_str());
 #endif
     if (getCustomCape() != oldCapeIndex)
-        connection->send(
-            std::make_shared<TextureChangePacket>(
-                shared_from_this(), TextureChangePacket::e_TextureChange_Cape,
-                app.GetPlayerCapeName(GetXboxPad())));
+        connection->send(std::make_shared<TextureChangePacket>(
+            shared_from_this(), TextureChangePacket::e_TextureChange_Cape,
+            app.GetPlayerCapeName(GetXboxPad())));
 }
 
 // 4J added for testing. This moves the player in a repeated sequence of 2

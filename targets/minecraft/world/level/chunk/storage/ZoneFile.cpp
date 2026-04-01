@@ -50,7 +50,6 @@ ZoneFile::ZoneFile(int64_t key, File file, File entityFile)
     //    }
 }
 
-
 void ZoneFile::readHeader() {
     ZoneIo* zoneIo = new ZoneIo(channel, 0);
     ByteBuffer* bb = zoneIo->read(FILE_HEADER_SIZE);

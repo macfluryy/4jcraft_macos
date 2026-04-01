@@ -23,7 +23,8 @@ public:
 
     virtual void write(unsigned int b);
     virtual void write(const std::vector<uint8_t>& b);
-    virtual void write(const std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
+    virtual void write(const std::vector<uint8_t>& b, unsigned int offset,
+                       unsigned int length);
     virtual void close();
     virtual void writeByte(uint8_t a);
     virtual void writeDouble(double a);

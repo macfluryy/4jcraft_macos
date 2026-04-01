@@ -69,7 +69,7 @@ RegionFile::RegionFile(ConsoleSaveFile* saveFile, File* path) {
         unsigned int numberOfBytesWritten = 0;
         unsigned int bytesToWrite = 0x1000 - (fileEntry->getFileSize() & 0xfff);
         std::uint8_t* zeroBytes = new std::uint8_t[bytesToWrite];
-        memset(zeroBytes, 0,  bytesToWrite);
+        memset(zeroBytes, 0, bytesToWrite);
 
         /* the file size is not a multiple of 4KB, grow it */
         m_saveFile->writeFile(fileEntry, zeroBytes, bytesToWrite,
@@ -271,8 +271,8 @@ DataInputStream* RegionFile::getChunkDataInputStream(
     // 4J - was InflaterInputStream in here too, but we've already decompressed
     std::vector<uint8_t> decompData(decomp, decomp + readDecompLength);
     delete[] decomp;
-    DataInputStream* ret = new DataInputStream(
-        new ByteArrayInputStream(decompData));
+    DataInputStream* ret =
+        new DataInputStream(new ByteArrayInputStream(decompData));
     return ret;
 
     //    } catch (IOException e) {
@@ -337,7 +337,7 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
             // better compressed until it is reused
             zero(sectorNumber, SECTOR_BYTES * sectorsAllocated);
 
-                        /* scan for a free space large enough to store this chunk */
+            /* scan for a free space large enough to store this chunk */
             int runStart =
                 (int)(find(sectorFree->begin(), sectorFree->end(), true) -
                       sectorFree
@@ -359,7 +359,6 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
                     }
                 }
             }
-            
 
             if (runLength >= sectorsNeeded) {
                 /* we found a free space large enough */
@@ -392,7 +391,6 @@ void RegionFile::write(int x, int z, std::uint8_t* data,
 
                 write(sectorNumber, compData, length, compLength);
                 setOffset(x, z, (sectorNumber << 8) | sectorsNeeded);
-                
             }
         }
         setTimestamp(x, z, (int)(System::currentTimeMillis() / 1000L));
@@ -454,7 +452,7 @@ void RegionFile::insertInitialSectors() {
     m_saveFile->setFilePointer(fileEntry, 0, SaveFileSeekOrigin::Begin);
     unsigned int numberOfBytesWritten = 0;
     std::uint8_t zeroBytes[SECTOR_BYTES];
-    memset(zeroBytes, 0,  SECTOR_BYTES);
+    memset(zeroBytes, 0, SECTOR_BYTES);
 
     /* we need to write the chunk offset table */
     m_saveFile->writeFile(fileEntry, zeroBytes, SECTOR_BYTES,

@@ -57,7 +57,8 @@
 class TileCompressData_SPU;
 class DataInputStream;
 class DataOutputStream;
-template <typename T> class XLockFreeStack;
+template <typename T>
+class XLockFreeStack;
 
 class SparseDataStorage {
     friend class TileCompressData_SPU;
@@ -90,13 +91,14 @@ public:
     typedef void (*tileUpdatedCallback)(int x, int y, int z, void* param,
                                         int yparam);
     int setDataRegion(
-        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
-        int offset, tileUpdatedCallback callback, void* param,
+        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1,
+        int z1, int offset, tileUpdatedCallback callback, void* param,
         int yparam);  // Sets a region of data values with the data at offset
                       // position in the array dataIn - external ordering
                       // compatible with java DataLayer
     int getDataRegion(
-        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1,
+        int z1,
         int offset);  // Updates the data at offset position dataInOut with a
                       // region of data information - external ordering
                       // compatible with java DataLayer

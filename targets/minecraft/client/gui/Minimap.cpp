@@ -252,7 +252,7 @@ void Minimap::render(std::shared_ptr<Player> player, Textures* textures,
     // DCR: Render the players current position here instead
     if (player != nullptr) {
         wchar_t playerPosText[32];
-        memset(&playerPosText, 0,  sizeof(wchar_t) * 32);
+        memset(&playerPosText, 0, sizeof(wchar_t) * 32);
         int posx = floor(player->x);
         int posy = floor(player->y);
         int posz = floor(player->z);

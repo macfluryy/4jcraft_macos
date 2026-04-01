@@ -89,8 +89,9 @@ public:
     static constexpr int MAX_LEVEL_SIZE = 30000000;
     static constexpr int maxMovementHeight = 512;  // 4J added
 
-    static constexpr int minBuildHeight = 0;    // 4J - brought forward from 1.2.3
-    static constexpr int maxBuildHeight = 256;  // 4J - brought forward from 1.2.3
+    static constexpr int minBuildHeight = 0;  // 4J - brought forward from 1.2.3
+    static constexpr int maxBuildHeight =
+        256;  // 4J - brought forward from 1.2.3
     static constexpr int genDepthBits = 7;
     static constexpr int genDepthBitsPlusFour = genDepthBits + 4;
     static constexpr int genDepth = 1 << genDepthBits;
@@ -573,10 +574,11 @@ public:
     std::shared_ptr<Player> getPlayerByName(const std::wstring& name);
     std::shared_ptr<Player> getPlayerByUUID(
         const std::wstring& name);  // 4J Added
-    std::vector<uint8_t> getBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
-                               bool includeLighting = true);
+    std::vector<uint8_t> getBlocksAndData(int x, int y, int z, int xs, int ys,
+                                          int zs, bool includeLighting = true);
     void setBlocksAndData(int x, int y, int z, int xs, int ys, int zs,
-                          std::vector<uint8_t>& data, bool includeLighting = true);
+                          std::vector<uint8_t>& data,
+                          bool includeLighting = true);
     virtual void disconnect(bool sendDisconnect = true);
     void checkSession();
     void setGameTime(int64_t time);

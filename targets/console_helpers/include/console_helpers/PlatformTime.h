@@ -25,14 +25,14 @@ inline std::int64_t QueryPerformanceCounter() {
 
 // Ticks per second for the high-resolution counter.
 inline std::int64_t QueryPerformanceFrequency() {
-    return static_cast<std::int64_t>(std::chrono::steady_clock::period::den)
-         / static_cast<std::int64_t>(std::chrono::steady_clock::period::num);
+    return static_cast<std::int64_t>(std::chrono::steady_clock::period::den) /
+           static_cast<std::int64_t>(std::chrono::steady_clock::period::num);
 }
 
 // Elapsed seconds between two counter values.
 inline double ElapsedSeconds(std::int64_t start, std::int64_t end) {
-    return static_cast<double>(end - start)
-         / static_cast<double>(QueryPerformanceFrequency());
+    return static_cast<double>(end - start) /
+           static_cast<double>(QueryPerformanceFrequency());
 }
 
 }  // namespace PlatformTime

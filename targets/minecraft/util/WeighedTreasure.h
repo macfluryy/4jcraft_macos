@@ -24,11 +24,13 @@ public:
     WeighedTreasure(std::shared_ptr<ItemInstance> item, int minCount,
                     int maxCount, int weight);
 
-    static void addChestItems(Random* random, const std::vector<WeighedTreasure*>& items,
+    static void addChestItems(Random* random,
+                              const std::vector<WeighedTreasure*>& items,
                               std::shared_ptr<Container> dest, int numRolls);
-    static void addDispenserItems(Random* random, const std::vector<WeighedTreasure*>& items,
+    static void addDispenserItems(Random* random,
+                                  const std::vector<WeighedTreasure*>& items,
                                   std::shared_ptr<DispenserTileEntity> dest,
                                   int numRolls);
-    static std::vector<WeighedTreasure*> addToTreasure(std::vector<WeighedTreasure*>& items,
-                                              WeighedTreasure* extra);
+    static std::vector<WeighedTreasure*> addToTreasure(
+        std::vector<WeighedTreasure*>& items, WeighedTreasure* extra);
 };

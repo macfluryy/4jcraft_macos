@@ -7,8 +7,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/ChestTileEntity.h"
 
-BonusChestFeature::BonusChestFeature(std::vector<WeighedTreasure*>& treasureList,
-                                     int numRolls)
+BonusChestFeature::BonusChestFeature(
+    std::vector<WeighedTreasure*>& treasureList, int numRolls)
     : treasureList(treasureList), numRolls(numRolls) {}
 
 // 4J - original virtual method

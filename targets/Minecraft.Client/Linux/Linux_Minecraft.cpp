@@ -547,7 +547,7 @@ int32_t InitDevice() {
     uint32_t numFeatureLevels = ARRAYSIZE(featureLevels);
 
     DXGI_SWAP_CHAIN_DESC sd;
-    memset(&sd, 0,  sizeof(sd));
+    memset(&sd, 0, sizeof(sd));
     sd.BufferCount = 1;
     sd.BufferDesc.Width = width;
     sd.BufferDesc.Height = height;
@@ -763,25 +763,22 @@ int main(int argc, const char* argv[]) {
             ui.setScreenSize(fbw, fbh);
         }
         app.UpdateTime();
-                InputManager.Tick();
-        
-                ProfileManager.Tick();
-        
-                StorageManager.Tick();
-        
-                RenderManager.Tick();
-        
+        InputManager.Tick();
+
+        ProfileManager.Tick();
+
+        StorageManager.Tick();
+
+        RenderManager.Tick();
 
         // Tick the social networking manager.
-                //		CSocialManager::Instance()->Tick();
-        
+        //		CSocialManager::Instance()->Tick();
 
         // Tick sentient.
-                //		SentientManager.Tick();
-        
+        //		SentientManager.Tick();
 
-                g_NetworkManager.DoWork();
-        
+        g_NetworkManager.DoWork();
+
         // Render game graphics.
 #if defined(ENABLE_JAVA_GUIS)
         pMinecraft->run_middle();
@@ -824,7 +821,7 @@ int main(int argc, const char* argv[]) {
         RenderManager.Present();
 
         ui.CheckMenuDisplayed();
-                // has the game defined profile data been changed (by a profile load)
+        // has the game defined profile data been changed (by a profile load)
         if (app.uiGameDefinedDataChangedBitmask != 0) {
             void* pData;
             for (int i = 0; i < XUSER_MAX_COUNT; i++) {
@@ -855,10 +852,8 @@ int main(int argc, const char* argv[]) {
             // clear the flag
             app.uiGameDefinedDataChangedBitmask = 0;
         }
-        
 
-                g_NetworkManager.DoWork();
-        
+        g_NetworkManager.DoWork();
 
         // Any threading type things to deal with from the xui side?
         app.HandleXuiActions();

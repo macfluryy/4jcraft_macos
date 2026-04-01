@@ -981,8 +981,8 @@ void LevelRenderer::renderSky(float alpha) {
         {
             glRotatef(90, 1, 0, 0);
             glRotatef(
-                sinf(level[playerIndex]->getSunAngle(alpha)) < 0 ? 180 : 0,
-                0, 0, 1);
+                sinf(level[playerIndex]->getSunAngle(alpha)) < 0 ? 180 : 0, 0,
+                0, 1);
             glRotatef(90, 0, 0, 1);
 
             float r = c[0];
@@ -1798,7 +1798,7 @@ bool LevelRenderer::updateDirtyChunks() {
         // chunk(s)
         if (dirtyChunkPresent) {
             lastDirtyChunkFound = System::currentTimeMillis();
-            
+
             // Find nearest chunk that is dirty
             for (int p = 0; p < XUSER_MAX_COUNT; p++) {
                 // It's possible that the localplayers member can be set to
@@ -1934,7 +1934,6 @@ bool LevelRenderer::updateDirtyChunks() {
                 }
                 //			app.DebugPrintf("[%d,%d,%d]\n",nearestClipChunks.empty(),considered,wouldBeNearButEmpty);
             }
-            
         }
     }
 
@@ -2016,7 +2015,7 @@ bool LevelRenderer::updateDirtyChunks() {
                 //		totalTime += (endTime - startTime);
                 //		countTime++;
                 //		printf("%d : %f\n", countTime, (float)totalTime
-                /// (float)countTime); 
+                /// (float)countTime);
             }
             // 4J Stu - Ignore this path when in constrained mode on Xbox One
             else {
@@ -2073,7 +2072,7 @@ bool LevelRenderer::updateDirtyChunks() {
         //		countTime++;
         //		printf("%d : %f\n", countTime, (float)totalTime /
         //(float)countTime);
-        
+
     }
 #endif
     else {
@@ -2127,8 +2126,7 @@ void LevelRenderer::renderHit(std::shared_ptr<Player> player, HitResult* h,
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glColor4f(
         1, 1, 1,
-        ((float)(sinf(Minecraft::currentTimeMillis() / 100.0f)) * 0.2f +
-         0.4f) *
+        ((float)(sinf(Minecraft::currentTimeMillis() / 100.0f)) * 0.2f + 0.4f) *
             0.5f);
     if (mode != 0 && inventoryItem != nullptr) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -2391,7 +2389,6 @@ void LevelRenderer::setDirty(int x0, int y0, int z0, int x1, int y1, int z1,
                     dirtyChunksLockFreeStack.Push(
                         (int*)(intptr_t)(uintptr_t)(index + 2));
 #endif
-
                 }
                 //				setGlobalChunkFlag(x * 16, y *
                 // 16, z * 16, level, CHUNK_FLAG_DIRTY);
@@ -3113,8 +3110,7 @@ std::shared_ptr<Particle> LevelRenderer::addParticleInternal(
                 new FlameParticle(lev, x, y, z, xa, ya, za));
             break;
         case eParticleType_lava:
-            particle =
-                std::make_shared<LavaParticle>(lev, x, y, z);
+            particle = std::make_shared<LavaParticle>(lev, x, y, z);
             break;
         case eParticleType_footstep:
             particle = std::shared_ptr<Particle>(
@@ -3349,7 +3345,8 @@ void LevelRenderer::levelEvent(std::shared_ptr<Player> source, int type, int x,
                             random->nextDouble() * 0.2,
                             random->nextGaussian() * .15);
             }
-            for (double a = 0; a < std::numbers::pi * 2.0; a += std::numbers::pi * 0.05) {
+            for (double a = 0; a < std::numbers::pi * 2.0;
+                 a += std::numbers::pi * 0.05) {
                 addParticle(eParticleType_ender, xp + cos(a) * 5, yp - .4,
                             zp + sin(a) * 5, cos(a) * -5, 0, sin(a) * -5);
                 addParticle(eParticleType_ender, xp + cos(a) * 5, yp - .4,

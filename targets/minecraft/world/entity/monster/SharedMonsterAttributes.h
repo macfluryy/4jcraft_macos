@@ -5,7 +5,8 @@ class AttributeInstance;
 class AttributeModifier;
 class BaseAttributeMap;
 class CompoundTag;
-template <class T> class ListTag;
+template <class T>
+class ListTag;
 
 class SharedMonsterAttributes {
 public:

@@ -95,7 +95,8 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
         if (width == -1 || height == -1) {
             valid = false;
         } else {
-            std::vector<uint8_t> tempBytes = std::vector<uint8_t>(width * height * depth * 4);
+            std::vector<uint8_t> tempBytes =
+                std::vector<uint8_t>(width * height * depth * 4);
             for (int index = 0; index < tempBytes.size(); index++) {
                 tempBytes[index] = 0;
             }
@@ -104,13 +105,13 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
             data[0]->put(tempBytes);
             data[0]->position(0)->limit(tempBytes.size());
 
-
             if (mipmapped) {
                 for (unsigned int level = 1; level < m_iMipLevels; ++level) {
                     int ww = width >> level;
                     int hh = height >> level;
 
-                    std::vector<uint8_t> tempBytes = std::vector<uint8_t>(ww * hh * depth * 4);
+                    std::vector<uint8_t> tempBytes =
+                        std::vector<uint8_t>(ww * hh * depth * 4);
                     for (int index = 0; index < tempBytes.size(); index++) {
                         tempBytes[index] = 0;
                     }
@@ -119,7 +120,6 @@ void Texture::_init(const std::wstring& name, int mode, int width, int height,
                     data[level]->clear();
                     data[level]->put(tempBytes);
                     data[level]->position(0)->limit(tempBytes.size());
-
                 }
             }
 
@@ -393,7 +393,6 @@ void Texture::transferFromImage(BufferedImage* image) {
     data[0]->put(tempBytes);
     data[0]->limit(tempBytes.size());
 
-
     if (mipmapped || image->getData(1) != nullptr) {
         mipmapped = true;
         for (unsigned int level = 1; level < MAX_MIP_LEVELS; ++level) {
@@ -477,7 +476,6 @@ void Texture::transferFromImage(BufferedImage* image) {
             delete[] tempData;
         }
     }
-
 
     if (immediateUpdate) {
         updateOnGPU();

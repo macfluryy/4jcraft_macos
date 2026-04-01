@@ -8,7 +8,6 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Iggy/gdraw/gdraw.h"
 
-
 ConsoleUIController ui;
 
 static void restoreFixedFunctionStateAfterIggy() {

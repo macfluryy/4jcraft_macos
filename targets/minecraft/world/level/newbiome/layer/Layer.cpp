@@ -25,14 +25,14 @@
 #include "minecraft/world/level/newbiome/layer/ZoomLayer.h"
 #include "platform/PlatformServices.h"
 
-std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelType* levelType) {
+std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(
+    int64_t seed, LevelType* levelType) {
     // 4J - Some changes moved here from 1.2.3. Temperature & downfall layers
     // are no longer created & returned, and a debug layer is isn't. For
     // reference with regard to future merging, things NOT brought forward from
     // the 1.2.3 version are new layer types that we don't have yet (shores,
     // swamprivers, region hills etc.)
-    std::shared_ptr<Layer> islandLayer =
-        std::make_shared<IslandLayer>(1);
+    std::shared_ptr<Layer> islandLayer = std::make_shared<IslandLayer>(1);
     islandLayer = std::make_shared<FuzzyZoomLayer>(2000, islandLayer);
     islandLayer = std::make_shared<AddIslandLayer>(1, islandLayer);
     islandLayer = std::make_shared<ZoomLayer>(2001, islandLayer);
@@ -59,19 +59,16 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
 
     std::shared_ptr<Layer> biomeLayer = islandLayer;
     biomeLayer = ZoomLayer::zoom(1000, biomeLayer, 0);
-    biomeLayer =
-        std::make_shared<BiomeInitLayer>(200, biomeLayer, levelType);
+    biomeLayer = std::make_shared<BiomeInitLayer>(200, biomeLayer, levelType);
 
     biomeLayer = ZoomLayer::zoom(1000, biomeLayer, 2);
     biomeLayer = std::make_shared<RegionHillsLayer>(1000, biomeLayer);
 
     for (int i = 0; i < zoomLevel; i++) {
-        biomeLayer =
-            std::make_shared<ZoomLayer>(1000 + i, biomeLayer);
+        biomeLayer = std::make_shared<ZoomLayer>(1000 + i, biomeLayer);
 
         if (i == 0)
-            biomeLayer =
-                std::make_shared<AddIslandLayer>(3, biomeLayer);
+            biomeLayer = std::make_shared<AddIslandLayer>(3, biomeLayer);
 
         if (i == 0) {
             // 4J - moved mushroom islands to here. This skips 3 zooms that the
@@ -97,11 +94,9 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
             // Note - this reduces the size of mushroom islands by turning their
             // edges into shores. We are doing this at i == 1 rather than i == 0
             // as the original does
-            biomeLayer =
-                std::make_shared<ShoreLayer>(1000, biomeLayer);
+            biomeLayer = std::make_shared<ShoreLayer>(1000, biomeLayer);
 
-            biomeLayer =
-                std::make_shared<SwampRiversLayer>(1000, biomeLayer);
+            biomeLayer = std::make_shared<SwampRiversLayer>(1000, biomeLayer);
         }
     }
 
@@ -115,8 +110,7 @@ std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(int64_t seed, LevelT
     if (app.DebugSettingsOn() &&
         app.GetGameSettingsDebugMask(PlatformInput.GetPrimaryPad()) &
             (1L << eDebugSetting_EnableBiomeOverride)) {
-        biomeLayer =
-            std::make_shared<BiomeOverrideLayer>(1);
+        biomeLayer = std::make_shared<BiomeOverrideLayer>(1);
     }
 #endif
 #endif

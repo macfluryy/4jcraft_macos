@@ -144,7 +144,6 @@ EntityHorse::EntityHorse(Level* level) : Animal(level) {
     createInventory();
 }
 
-
 void EntityHorse::defineSynchedData() {
     Animal::defineSynchedData();
     entityData->define(DATA_ID_HORSE_FLAGS, 0);
@@ -1285,9 +1284,8 @@ void EntityHorse::readAdditionalSaveData(CompoundTag* tag) {
             inventory->setItem(INV_SLOT_SADDLE, saddleItem);
         }
     } else if (tag->getBoolean(L"Saddle")) {
-        inventory->setItem(
-            INV_SLOT_SADDLE,
-            std::make_shared<ItemInstance>(Item::saddle));
+        inventory->setItem(INV_SLOT_SADDLE,
+                           std::make_shared<ItemInstance>(Item::saddle));
     }
     updateEquipment();
 }
@@ -1313,8 +1311,7 @@ std::shared_ptr<AgableMob> EntityHorse::getBreedOffspring(
     std::shared_ptr<AgableMob> partner) {
     std::shared_ptr<EntityHorse> horsePartner =
         std::dynamic_pointer_cast<EntityHorse>(partner);
-    std::shared_ptr<EntityHorse> baby =
-        std::make_shared<EntityHorse>(level);
+    std::shared_ptr<EntityHorse> baby = std::make_shared<EntityHorse>(level);
 
     int type = getType();
     int partnerType = horsePartner->getType();

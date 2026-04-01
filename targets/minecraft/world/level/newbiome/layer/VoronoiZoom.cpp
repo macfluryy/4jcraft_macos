@@ -78,8 +78,10 @@ std::vector<int> VoronoiZoom::getArea(int xo, int yo, int w, int h) {
     }
     std::vector<int> result(w * h);
     for (int y = 0; y < h; y++) {
-        std::copy(tmp.begin() + (y + (yo & (ss - 1))) * ((unsigned)pw << bits) + (xo & (ss - 1)),
-                  tmp.begin() + (y + (yo & (ss - 1))) * ((unsigned)pw << bits) + (xo & (ss - 1)) + w,
+        std::copy(tmp.begin() + (y + (yo & (ss - 1))) * ((unsigned)pw << bits) +
+                      (xo & (ss - 1)),
+                  tmp.begin() + (y + (yo & (ss - 1))) * ((unsigned)pw << bits) +
+                      (xo & (ss - 1)) + w,
                   result.begin() + y * w);
     }
     return result;

@@ -20,14 +20,16 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
         // assert(false);
         app.DebugPrintf("Biome override not found, using plains as default\n");
 
-        memset(m_biomeOverride.data(), Biome::plains->id, m_biomeOverride.size());
+        memset(m_biomeOverride.data(), Biome::plains->id,
+               m_biomeOverride.size());
     } else {
         auto fileSize = std::filesystem::file_size(path);
         if (fileSize > m_biomeOverride.size()) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
             __debugbreak();
         }
-        file.read(reinterpret_cast<char*>(m_biomeOverride.data()), static_cast<std::streamsize>(fileSize));
+        file.read(reinterpret_cast<char*>(m_biomeOverride.data()),
+                  static_cast<std::streamsize>(fileSize));
 
         if (!file) {
             app.FatalLoadError();

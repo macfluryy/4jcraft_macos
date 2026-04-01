@@ -113,7 +113,8 @@ void Input::tick(LocalPlayer* player) {
         }
         tx = ty = 0.0f;
     }
-    player->interpolateTurn(tx * std::abs(tx) * turnSpeed, ty * std::abs(ty) * turnSpeed);
+    player->interpolateTurn(tx * std::abs(tx) * turnSpeed,
+                            ty * std::abs(ty) * turnSpeed);
 
     // jumping = controller.isButtonPressed(0);
 

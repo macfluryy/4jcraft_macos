@@ -1944,7 +1944,7 @@ void Tutorial::debugResetPlayerSavedProgress(int iPad) {
     GAME_SETTINGS* pGameSettings =
         (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(iPad);
     memset(pGameSettings->ucTutorialCompletion, 0,
-               TUTORIAL_PROFILE_STORAGE_BYTES);
+           TUTORIAL_PROFILE_STORAGE_BYTES);
     pGameSettings->uiSpecialTutorialBitmask = 0;
 }
 
@@ -2366,8 +2366,8 @@ void Tutorial::tick() {
         }
     }
 
-    if (m_hintDisplayed &&
-        (lastMessageTime + m_iTutorialDisplayMessageTime) < PlatformTime::GetTickCount()) {
+    if (m_hintDisplayed && (lastMessageTime + m_iTutorialDisplayMessageTime) <
+                               PlatformTime::GetTickCount()) {
         m_hintDisplayed = false;
     }
 
@@ -2402,7 +2402,8 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         m_lastMessageState == m_CurrentState &&
         message->isSameContent(m_lastMessage) &&
         (!message->m_isReminder ||
-         ((lastMessageTime + m_iTutorialReminderTime) > PlatformTime::GetTickCount() &&
+         ((lastMessageTime + m_iTutorialReminderTime) >
+              PlatformTime::GetTickCount() &&
           message->m_isReminder))) {
         delete message;
         return false;
@@ -2412,7 +2413,8 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         (message->m_messageId > 0 || !message->m_messageString.empty())) {
         m_lastMessageState = m_CurrentState;
 
-        if (!message->m_replaceCurrent) lastMessageTime = PlatformTime::GetTickCount();
+        if (!message->m_replaceCurrent)
+            lastMessageTime = PlatformTime::GetTickCount();
 
         std::wstring text;
         if (!message->m_messageString.empty()) {

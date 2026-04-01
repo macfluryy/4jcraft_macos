@@ -31,7 +31,8 @@ void EnderDragonRenderer::setupRotations(std::shared_ptr<LivingEntity> _mob,
 
     // 4J - reorganised a bit so we can free allocations
     double lpComponents[3];
-    std::vector<double> lp = std::vector<double>(lpComponents, lpComponents + 3);
+    std::vector<double> lp =
+        std::vector<double>(lpComponents, lpComponents + 3);
     mob->getLatencyPos(lp, 7, a);
     float yr = lp[0];
     // mob->getLatencyPos(lp, 5, a);
@@ -124,8 +125,10 @@ void EnderDragonRenderer::render(std::shared_ptr<Entity> _mob, double x,
 
         glPushMatrix();
         glTranslatef((float)x, (float)y + 2, (float)z);
-        glRotatef((float)(-atan2(zd, xd)) * 180.0f / std::numbers::pi - 90.0f, 0, 1, 0);
-        glRotatef((float)(-atan2(sdd, yd)) * 180.0f / std::numbers::pi - 90.0f, 1, 0, 0);
+        glRotatef((float)(-atan2(zd, xd)) * 180.0f / std::numbers::pi - 90.0f,
+                  0, 1, 0);
+        glRotatef((float)(-atan2(sdd, yd)) * 180.0f / std::numbers::pi - 90.0f,
+                  1, 0, 0);
 
         // 4J-PB - Rotating the healing beam too
         static float fRot = 0.0f;

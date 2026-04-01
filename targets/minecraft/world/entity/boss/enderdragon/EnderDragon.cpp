@@ -168,7 +168,8 @@ void EnderDragon::defineSynchedData() {
                        e_EnderdragonAction_HoldingPattern);
 }
 
-void EnderDragon::getLatencyPos(std::vector<double>& result, int step, float a) {
+void EnderDragon::getLatencyPos(std::vector<double>& result, int step,
+                                float a) {
     if (getHealth() <= 0) {
         a = 0;
     }
@@ -319,7 +320,7 @@ void EnderDragon::aiStep() {
             // d < 3; ++d)
             {
                 Vec3 vN = Vec3{v.x, v.y, v.z}.normalize();
-                vN.yRot(-std::numbers::pi  / 4);
+                vN.yRot(-std::numbers::pi / 4);
 
                 for (unsigned int i = 0; i < 8; ++i) {
                     if (getSynchedAction() == e_EnderdragonAction_Landing) {
@@ -484,7 +485,8 @@ void EnderDragon::aiStep() {
                 Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
                                .normalize();
 
-                Vec3 dir = Vec3(sin(yRot * std::numbers::pi / 180), 0, -cos(yRot * std::numbers::pi / 180))
+                Vec3 dir = Vec3(sin(yRot * std::numbers::pi / 180), 0,
+                                -cos(yRot * std::numbers::pi / 180))
                                .normalize();
 
                 float dot = (float)dir.dot(aim);
@@ -498,7 +500,8 @@ void EnderDragon::aiStep() {
                     // 2);
                     double zdd = attackTarget->z - head->z;
 
-                    double yRotT = (180) - atan2(xdd, zdd) * 180 / std::numbers::pi;
+                    double yRotT =
+                        (180) - atan2(xdd, zdd) * 180 / std::numbers::pi;
                     double yRotD = Mth::wrapDegrees(yRotT - yRot);
 
                     if (yRotD > 50) yRotD = 50;
@@ -568,7 +571,8 @@ void EnderDragon::aiStep() {
             Vec3 aim =
                 Vec3((xTarget - x), (yTarget - y), (zTarget - z)).normalize();
 
-            Vec3 dir = Vec3(sin(yRot * std::numbers::pi / 180), yd, -cos(yRot * std::numbers::pi / 180))
+            Vec3 dir = Vec3(sin(yRot * std::numbers::pi / 180), yd,
+                            -cos(yRot * std::numbers::pi / 180))
                            .normalize();
             float dot = (float)(dir.dot(aim) + 0.5f) / 1.5f;
             if (dot < 0) dot = 0;
@@ -620,8 +624,9 @@ void EnderDragon::aiStep() {
     wing2->bbWidth = 4;
 
     // double latencyPosAcomponents[3],latencyPosBcomponents[3];
-    // std::vector<double> latencyPosA = std::vector<double>(latencyPosAcomponents,3);
-    // std::vector<double> latencyPosB = std::vector<double>(latencyPosBcomponents,3);
+    // std::vector<double> latencyPosA =
+    // std::vector<double>(latencyPosAcomponents,3); std::vector<double>
+    // latencyPosB = std::vector<double>(latencyPosBcomponents,3);
     // getLatencyPos(latencyPosA, 5, 1);
     // getLatencyPos(latencyPosB, 10, 1);
 
@@ -660,18 +665,21 @@ void EnderDragon::aiStep() {
     }
 
     double p1components[3];
-    std::vector<double> p1 = std::vector<double>(p1components, p1components + 3);
+    std::vector<double> p1 =
+        std::vector<double>(p1components, p1components + 3);
     getLatencyPos(p1, 5, 1);
 
     {
         // double p0components[3];
-        // std::vector<double> p0 = std::vector<double>(p0components, p0components + 3);
-        // getLatencyPos(p0, 0, 1);
+        // std::vector<double> p0 = std::vector<double>(p0components,
+        // p0components + 3); getLatencyPos(p0, 0, 1);
 
         double yRotDiff = getHeadYRotDiff(1);
 
-        float ss = sin((yRot + yRotDiff) * std::numbers::pi / 180 - yRotA * 0.01f);
-        float cc = cos((yRot + yRotDiff) * std::numbers::pi / 180 - yRotA * 0.01f);
+        float ss =
+            sin((yRot + yRotDiff) * std::numbers::pi / 180 - yRotA * 0.01f);
+        float cc =
+            cos((yRot + yRotDiff) * std::numbers::pi / 180 - yRotA * 0.01f);
         head->tick();
         neck->tick();
         double yOffset = getHeadYOffset(1);  // (p0[1] - p1[1]) * 1
@@ -715,10 +723,12 @@ void EnderDragon::aiStep() {
         if (i == 2) part = tail3;
 
         double p0components[3];
-        std::vector<double> p0 = std::vector<double>(p0components, p0components + 3);
+        std::vector<double> p0 =
+            std::vector<double>(p0components, p0components + 3);
         getLatencyPos(p0, 12 + i * 2, 1);
 
-        float rot = yRot * std::numbers::pi / 180 + rotWrap(p0[0] - p1[0]) * std::numbers::pi / 180 * (1);
+        float rot = yRot * std::numbers::pi / 180 +
+                    rotWrap(p0[0] - p1[0]) * std::numbers::pi / 180 * (1);
         float ss = sin(rot);
         float cc = cos(rot);
 
@@ -742,7 +752,8 @@ void EnderDragon::aiStep() {
                 Vec3 aim = Vec3((attackTarget->x - x), 0, (attackTarget->z - z))
                                .normalize();
 
-                Vec3 dir = Vec3(sin(yRot * std::numbers::pi / 180), 0, -cos(yRot * std::numbers::pi / 180))
+                Vec3 dir = Vec3(sin(yRot * std::numbers::pi / 180), 0,
+                                -cos(yRot * std::numbers::pi / 180))
                                .normalize();
 
                 float dot = (float)dir.dot(aim);
@@ -1532,18 +1543,24 @@ int EnderDragon::findClosestNode() {
             int yAdjustment = 5;
             multiplier = i;
             if (i < 12) {
-                nodeX = 60 * cosf(2 * (-std::numbers::pi  + (std::numbers::pi / 12) * multiplier));
-                nodeZ = 60 * sinf(2 * (-std::numbers::pi  + (std::numbers::pi / 12) * multiplier));
+                nodeX = 60 * cosf(2 * (-std::numbers::pi +
+                                       (std::numbers::pi / 12) * multiplier));
+                nodeZ = 60 * sinf(2 * (-std::numbers::pi +
+                                       (std::numbers::pi / 12) * multiplier));
             } else if (i < 20) {
                 multiplier -= 12;
-                nodeX = 40 * cosf(2 * (-std::numbers::pi  + (std::numbers::pi / 8) * multiplier));
-                nodeZ = 40 * sinf(2 * (-std::numbers::pi  + (std::numbers::pi / 8) * multiplier));
+                nodeX = 40 * cosf(2 * (-std::numbers::pi +
+                                       (std::numbers::pi / 8) * multiplier));
+                nodeZ = 40 * sinf(2 * (-std::numbers::pi +
+                                       (std::numbers::pi / 8) * multiplier));
                 yAdjustment +=
                     10;  // Make the target well above the top of the towers
             } else {
                 multiplier -= 20;
-                nodeX = 20 * cosf(2 * (-std::numbers::pi  + (std::numbers::pi / 4) * multiplier));
-                nodeZ = 20 * sinf(2 * (-std::numbers::pi  + (std::numbers::pi / 4) * multiplier));
+                nodeX = 20 * cosf(2 * (-std::numbers::pi +
+                                       (std::numbers::pi / 4) * multiplier));
+                nodeZ = 20 * sinf(2 * (-std::numbers::pi +
+                                       (std::numbers::pi / 4) * multiplier));
             }
             // Fix for #77202 - TU9: Content: Gameplay: The Ender Dragon
             // sometimes flies through terrain Add minimum height
@@ -1762,8 +1779,10 @@ float EnderDragon::getTilt(float a) {
     // else
     {
         double latencyPosAcomponents[3], latencyPosBcomponents[3];
-        std::vector<double> latencyPosA = std::vector<double>(latencyPosAcomponents, latencyPosAcomponents + 3);
-        std::vector<double> latencyPosB = std::vector<double>(latencyPosBcomponents, latencyPosBcomponents + 3);
+        std::vector<double> latencyPosA = std::vector<double>(
+            latencyPosAcomponents, latencyPosAcomponents + 3);
+        std::vector<double> latencyPosB = std::vector<double>(
+            latencyPosBcomponents, latencyPosBcomponents + 3);
         getLatencyPos(latencyPosA, 5, a);
         getLatencyPos(latencyPosB, 10, a);
 
@@ -1782,11 +1801,13 @@ double EnderDragon::getHeadYOffset(float a) {
         headYOffset = -1.0;
     } else {
         double p1components[3];
-        std::vector<double> p1 = std::vector<double>(p1components, p1components + 3);
+        std::vector<double> p1 =
+            std::vector<double>(p1components, p1components + 3);
         getLatencyPos(p1, 5, 1);
 
         double p0components[3];
-        std::vector<double> p0 = std::vector<double>(p0components, p0components + 3);
+        std::vector<double> p0 =
+            std::vector<double>(p0components, p0components + 3);
         getLatencyPos(p0, 0, 1);
 
         headYOffset = (p0[1] - p1[1]) * 1;
@@ -1806,7 +1827,8 @@ double EnderDragon::getHeadYRotDiff(float a) {
     return result;
 }
 
-double EnderDragon::getHeadPartYOffset(int partIndex, std::vector<double>& bodyPos,
+double EnderDragon::getHeadPartYOffset(int partIndex,
+                                       std::vector<double>& bodyPos,
                                        std::vector<double>& partPos) {
     double result = 0.0;
     if (getSynchedAction() == e_EnderdragonAction_Landing ||
@@ -1834,7 +1856,8 @@ double EnderDragon::getHeadPartYOffset(int partIndex, std::vector<double>& bodyP
     return result;
 }
 
-double EnderDragon::getHeadPartYRotDiff(int partIndex, std::vector<double>& bodyPos,
+double EnderDragon::getHeadPartYRotDiff(int partIndex,
+                                        std::vector<double>& bodyPos,
                                         std::vector<double>& partPos) {
     double result = 0.0;
     // if(	getSynchedAction() == e_EnderdragonAction_Sitting_Flaming ||

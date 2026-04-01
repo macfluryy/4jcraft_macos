@@ -51,18 +51,18 @@ double PerlinSimplexNoise::getValue(double x, double y, double z) {
     return value;
 }
 
-std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, double x,
-                                          double y, int xSize, int ySize,
-                                          double xScale, double yScale,
-                                          double sizeScale) {
+std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer,
+                                                  double x, double y, int xSize,
+                                                  int ySize, double xScale,
+                                                  double yScale,
+                                                  double sizeScale) {
     return getRegion(buffer, x, y, xSize, ySize, xScale, yScale, sizeScale,
                      0.5);
 }
 
-std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, double x,
-                                          double y, int xSize, int ySize,
-                                          double xScale, double yScale,
-                                          double sizeScale, double powScale) {
+std::vector<double> PerlinSimplexNoise::getRegion(
+    std::vector<double>& buffer, double x, double y, int xSize, int ySize,
+    double xScale, double yScale, double sizeScale, double powScale) {
     xScale /= 1.5;
     yScale /= 1.5;
 
@@ -83,10 +83,9 @@ std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, d
     return buffer;
 }
 
-std::vector<double> PerlinSimplexNoise::getRegion(std::vector<double>& buffer, double x,
-                                          double y, double z, int xSize,
-                                          int ySize, int zSize, double xScale,
-                                          double yScale, double zScale) {
+std::vector<double> PerlinSimplexNoise::getRegion(
+    std::vector<double>& buffer, double x, double y, double z, int xSize,
+    int ySize, int zSize, double xScale, double yScale, double zScale) {
     xScale /= 1.5;
     yScale /= 1.5;
 

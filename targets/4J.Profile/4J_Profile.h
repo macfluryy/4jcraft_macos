@@ -71,17 +71,25 @@ public:
 
     void Tick() {}
     unsigned int RequestSignInUI(bool, bool, bool, bool, bool,
-                                 int (*)(void*, const bool, const int),
-                                 void*, int = XUSER_INDEX_ANY) { return 0; }
+                                 int (*)(void*, const bool, const int), void*,
+                                 int = XUSER_INDEX_ANY) {
+        return 0;
+    }
     unsigned int DisplayOfflineProfile(int (*)(void*, const bool, const int),
-                                       void*, int = XUSER_INDEX_ANY) { return 0; }
-    unsigned int RequestConvertOfflineToGuestUI(
-        int (*)(void*, const bool, const int), void*,
-        int = XUSER_INDEX_ANY) { return 0; }
+                                       void*, int = XUSER_INDEX_ANY) {
+        return 0;
+    }
+    unsigned int RequestConvertOfflineToGuestUI(int (*)(void*, const bool,
+                                                        const int),
+                                                void*, int = XUSER_INDEX_ANY) {
+        return 0;
+    }
     void SetPrimaryPlayerChanged(bool) {}
     void ShowProfileCard(int, PlayerUID) {}
     bool GetProfileAvatar(int, int (*)(void*, std::uint8_t*, unsigned int),
-                          void*) { return false; }
+                          void*) {
+        return false;
+    }
     void CancelProfileAvatarRequest() {}
     void SetSignInChangeCallback(void (*)(void*, bool, unsigned int), void*) {}
     void SetNotificationsCallback(void (*)(void*, std::uint32_t, unsigned int),
@@ -93,13 +101,15 @@ public:
     void SetProfileReadErrorCallback(void (*)(void*), void*) {}
     int SetOldProfileVersionCallback(int (*)(void*, unsigned char*,
                                              const unsigned short, const int),
-                                     void*) { return 0; }
+                                     void*) {
+        return 0;
+    }
     void WriteToProfile(int, bool = false, bool = false) {}
     void ForceQueuedProfileWrites(int = XUSER_INDEX_ANY) {}
     void ResetProfileProcessState() {}
     void RegisterAward(int, int, EAwardType, bool = false,
-                       CXuiStringTable* = nullptr, int = -1, int = -1,
-                       int = -1, char* = nullptr, unsigned int = 0L) {}
+                       CXuiStringTable* = nullptr, int = -1, int = -1, int = -1,
+                       char* = nullptr, unsigned int = 0L) {}
     int GetAwardId(int) { return 0; }
     EAwardType GetAwardType(int) { return eAwardType_Achievement; }
     bool CanBeAwarded(int, int) { return false; }

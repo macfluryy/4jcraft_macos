@@ -65,8 +65,7 @@ void PendingConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
     fprintf(stderr, "[PENDING] disconnect called with reason=%d at tick=%d\n",
             reason, _tick);
     app.DebugPrintf("Pending connection disconnect: %d\n", reason);
-    connection->send(
-        std::make_shared<DisconnectPacket>(reason));
+    connection->send(std::make_shared<DisconnectPacket>(reason));
     connection->sendAndQuit();
     done = true;
     //    } catch (Exception e) {

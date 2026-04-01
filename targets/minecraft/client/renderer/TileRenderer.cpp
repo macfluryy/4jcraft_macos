@@ -800,7 +800,8 @@ bool TileRenderer::tesselateBrewingStandInWorld(BrewingStandTile* tt, int x,
     int data = level->getData(x, y, z);
 
     for (int arm = 0; arm < 3; arm++) {
-        float angle = arm * std::numbers::pi * 2.0f / 3.0f + std::numbers::pi * 0.5f;
+        float angle =
+            arm * std::numbers::pi * 2.0f / 3.0f + std::numbers::pi * 0.5f;
 
         float u0 = tex->getU(8, true);
         float u1 = tex->getU1(true);
@@ -2056,10 +2057,14 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
 
         corners[i].xRot(90 * std::numbers::pi / 180);
 
-        if (dir == Direction::NORTH) corners[i].yRot(0 * std::numbers::pi / 180);
-        if (dir == Direction::SOUTH) corners[i].yRot(180 * std::numbers::pi / 180);
-        if (dir == Direction::WEST) corners[i].yRot(90 * std::numbers::pi / 180);
-        if (dir == Direction::EAST) corners[i].yRot(-90 * std::numbers::pi / 180);
+        if (dir == Direction::NORTH)
+            corners[i].yRot(0 * std::numbers::pi / 180);
+        if (dir == Direction::SOUTH)
+            corners[i].yRot(180 * std::numbers::pi / 180);
+        if (dir == Direction::WEST)
+            corners[i].yRot(90 * std::numbers::pi / 180);
+        if (dir == Direction::EAST)
+            corners[i].yRot(-90 * std::numbers::pi / 180);
 
         corners[i].x += x + 0.5;
         corners[i].y += y + 5 / 16.0f;
@@ -2145,10 +2150,14 @@ bool TileRenderer::tesselateTripwireSourceInWorld(Tile* tt, int x, int y,
             corners[i].xRot(50 * std::numbers::pi / 180);
         }
 
-        if (dir == Direction::NORTH) corners[i].yRot(0 * std::numbers::pi / 180);
-        if (dir == Direction::SOUTH) corners[i].yRot(180 * std::numbers::pi / 180);
-        if (dir == Direction::WEST) corners[i].yRot(90 * std::numbers::pi / 180);
-        if (dir == Direction::EAST) corners[i].yRot(-90 * std::numbers::pi / 180);
+        if (dir == Direction::NORTH)
+            corners[i].yRot(0 * std::numbers::pi / 180);
+        if (dir == Direction::SOUTH)
+            corners[i].yRot(180 * std::numbers::pi / 180);
+        if (dir == Direction::WEST)
+            corners[i].yRot(90 * std::numbers::pi / 180);
+        if (dir == Direction::EAST)
+            corners[i].yRot(-90 * std::numbers::pi / 180);
 
         corners[i].x += x + 0.5;
         corners[i].y += y + 5 / 16.0f;

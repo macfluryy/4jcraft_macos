@@ -5,7 +5,8 @@
 
 class DataInputStream;
 class DataOutputStream;
-template <typename T> class XLockFreeStack;
+template <typename T>
+class XLockFreeStack;
 
 // This class is used for the compressed storage of tile data. Unlike the
 // SparseLightingStorage class, data is split into 512 blocks of 4x4x4 tiles.
@@ -134,17 +135,18 @@ public:
     typedef void (*tileUpdatedCallback)(int x, int y, int z, void* param,
                                         int yparam);
     int setDataRegion(
-        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
-        int offset, tileUpdatedCallback callback, void* param,
+        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1,
+        int z1, int offset, tileUpdatedCallback callback, void* param,
         int yparam);  // Sets a region of tile values with the data at offset
                       // position in the array dataIn - external ordering
                       // compatible with java DataLayer
-    bool testSetDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1,
-                           int y1, int z1,
+    bool testSetDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0, int z0,
+                           int x1, int y1, int z1,
                            int offset);  // Tests whether setting data would
                                          // actually change anything
     int getDataRegion(
-        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1,
+        int z1,
         int offset);  // Updates the data at offset position dataInOut with a
                       // region of tile information - external ordering
                       // compatible with java DataLayer

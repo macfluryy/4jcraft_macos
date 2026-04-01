@@ -91,7 +91,8 @@ void UIScene_PauseMenu::tick() { UIScene::tick(); }
 void UIScene_PauseMenu::updateTooltips() {
     // bool bUserisClientSide = ProfileManager.IsSignedInLive(m_iPad);
     // bool bIsisPrimaryHost =
-    //     g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() == m_iPad);
+    //     g_NetworkManager.IsHost() && (ProfileManager.GetPrimaryPad() ==
+    //     m_iPad);
 
     int iY = -1;
     int iRB = -1;
@@ -333,15 +334,13 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
                                 IDS_EXIT_GAME,
                                 IDS_CONFIRM_EXIT_GAME_CONFIRM_DISCONNECT_SAVE,
                                 uiIDA, 3, m_iPad,
-                                &UIScene_PauseMenu::
-                                    ExitGameSaveDialogReturned,
+                                &UIScene_PauseMenu::ExitGameSaveDialogReturned,
                                 (void*)GetCallbackUniqueId());
                         } else {
                             ui.RequestAlertMessage(
-                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA,
-                                3, m_iPad,
-                                &UIScene_PauseMenu::
-                                    ExitGameSaveDialogReturned,
+                                IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 3,
+                                m_iPad,
+                                &UIScene_PauseMenu::ExitGameSaveDialogReturned,
                                 (void*)GetCallbackUniqueId());
                         }
                     } else {
@@ -350,8 +349,7 @@ void UIScene_PauseMenu::handlePress(F64 controlId, F64 childId) {
 
                         ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2,
-                            m_iPad,
-                            &IUIScene_PauseMenu::ExitGameDialogReturned,
+                            m_iPad, &IUIScene_PauseMenu::ExitGameDialogReturned,
                             (void*)GetCallbackUniqueId());
                     }
                 }

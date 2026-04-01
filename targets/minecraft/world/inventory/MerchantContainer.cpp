@@ -19,7 +19,6 @@ MerchantContainer::MerchantContainer(std::shared_ptr<Player> player,
     selectionHint = 0;
 }
 
-
 unsigned int MerchantContainer::getContainerSize() { return items.size(); }
 
 std::shared_ptr<ItemInstance> MerchantContainer::getItem(unsigned int slot) {

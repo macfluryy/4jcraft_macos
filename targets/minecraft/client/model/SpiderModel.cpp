@@ -120,22 +120,38 @@ void SpiderModel::setupAnim(float time, float r, float bob, float yRot,
     leg7->yRot = +ur * 2.0f - ro;
 
     float c0 =
-        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 0 / 4.0f) * 0.4f) * r;
+        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 0 / 4.0f) *
+          0.4f) *
+        r;
     float c1 =
-        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 2 / 4.0f) * 0.4f) * r;
+        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 2 / 4.0f) *
+          0.4f) *
+        r;
     float c2 =
-        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 1 / 4.0f) * 0.4f) * r;
+        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 1 / 4.0f) *
+          0.4f) *
+        r;
     float c3 =
-        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 3 / 4.0f) * 0.4f) * r;
+        -((float)cosf(time * 0.6662f * 2 + std::numbers::pi * 2 * 3 / 4.0f) *
+          0.4f) *
+        r;
 
     float s0 =
-        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 0 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 0 / 4.0f) *
+                 0.4f) *
+        r;
     float s1 =
-        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 2 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 2 / 4.0f) *
+                 0.4f) *
+        r;
     float s2 =
-        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 1 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 1 / 4.0f) *
+                 0.4f) *
+        r;
     float s3 =
-        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 3 / 4.0f) * 0.4f) * r;
+        std::abs((float)sinf(time * 0.6662f + std::numbers::pi * 2 * 3 / 4.0f) *
+                 0.4f) *
+        r;
 
     leg0->yRot += +c0;
     leg1->yRot += -c0;

@@ -43,8 +43,9 @@ public:
 
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
                                  std::vector<uint8_t>& param);
-    static std::vector<uint8_t> createParamBlob(eAcquisitionMethod methodId, int itemId,
-                                     int itemAux, int itemCount);
+    static std::vector<uint8_t> createParamBlob(eAcquisitionMethod methodId,
+                                                int itemId, int itemAux,
+                                                int itemCount);
 };
 
 class DsMobKilled : public Stat {
@@ -63,8 +64,8 @@ public:
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
                                  std::vector<uint8_t>& param);
     static std::vector<uint8_t> createParamBlob(std::shared_ptr<Player> plr,
-                                     std::shared_ptr<Mob> mob,
-                                     DamageSource* dmgSrc);
+                                                std::shared_ptr<Mob> mob,
+                                                DamageSource* dmgSrc);
 };
 
 class DsMobInteract : public Stat {
@@ -88,7 +89,8 @@ public:
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
                                  std::vector<uint8_t>& param);
-    static std::vector<uint8_t> createParamBlob(eInteract interactionId, int entityId);
+    static std::vector<uint8_t> createParamBlob(eInteract interactionId,
+                                                int entityId);
 };
 
 class DsTravel : public Stat {
@@ -137,8 +139,8 @@ public:
     } Param;
     virtual void handleParamBlob(std::shared_ptr<LocalPlayer> plr,
                                  std::vector<uint8_t>& paramBlob);
-    static std::vector<uint8_t> createParamBlob(int itemId, int aux, int count, int health,
-                                     int hunger);
+    static std::vector<uint8_t> createParamBlob(int itemId, int aux, int count,
+                                                int health, int hunger);
 };
 
 class DsAchievement : public Stat {
@@ -276,17 +278,22 @@ protected:
 
     virtual std::vector<uint8_t> getParam_cowsMilked();
 
-    virtual std::vector<uint8_t> getParam_blocksPlaced(int blockId, int data, int count);
-    virtual std::vector<uint8_t> getParam_blocksMined(int blockId, int data, int count);
-    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsUsed(std::shared_ptr<Player> plr,
-                                         std::shared_ptr<ItemInstance> itm);
-    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_blocksPlaced(int blockId, int data,
+                                                       int count);
+    virtual std::vector<uint8_t> getParam_blocksMined(int blockId, int data,
+                                                      int count);
+    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux,
+                                                         int count);
+    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux,
+                                                       int count);
+    virtual std::vector<uint8_t> getParam_itemsUsed(
+        std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm);
+    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux,
+                                                      int count);
 
     virtual std::vector<uint8_t> getParam_mobKill(std::shared_ptr<Player> plr,
-                                       std::shared_ptr<Mob> mob,
-                                       DamageSource* dmgSrc);
+                                                  std::shared_ptr<Mob> mob,
+                                                  DamageSource* dmgSrc);
 
     virtual std::vector<uint8_t> getParam_breedEntity(eINSTANCEOF entityId);
     virtual std::vector<uint8_t> getParam_tamedEntity(eINSTANCEOF entityId);

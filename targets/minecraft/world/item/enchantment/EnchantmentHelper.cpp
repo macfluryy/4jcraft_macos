@@ -94,8 +94,8 @@ void EnchantmentHelper::setEnchantments(
     }
 }
 
-int EnchantmentHelper::getEnchantmentLevel(int enchantmentId,
-                                           std::vector<std::shared_ptr<ItemInstance>> inventory) {
+int EnchantmentHelper::getEnchantmentLevel(
+    int enchantmentId, std::vector<std::shared_ptr<ItemInstance>> inventory) {
     if (inventory.empty()) return 0;
     int bestLevel = 0;
     // for (ItemInstance piece : inventory)
@@ -130,7 +130,8 @@ void EnchantmentHelper::runIterationOnItem(
 }
 
 void EnchantmentHelper::runIterationOnInventory(
-    EnchantmentIterationMethod& method, std::vector<std::shared_ptr<ItemInstance>> inventory) {
+    EnchantmentIterationMethod& method,
+    std::vector<std::shared_ptr<ItemInstance>> inventory) {
     // for (ItemInstance piece : inventory)
     for (unsigned int i = 0; i < inventory.size(); ++i) {
         runIterationOnItem(method, inventory[i]);
@@ -152,8 +153,8 @@ EnchantmentHelper::GetDamageProtectionIteration
  * @param source
  * @return
  */
-int EnchantmentHelper::getDamageProtection(std::vector<std::shared_ptr<ItemInstance>> armor,
-                                           DamageSource* source) {
+int EnchantmentHelper::getDamageProtection(
+    std::vector<std::shared_ptr<ItemInstance>> armor, DamageSource* source) {
     getDamageProtectionIteration.sum = 0;
     getDamageProtectionIteration.source = source;
 
@@ -248,7 +249,8 @@ int EnchantmentHelper::getArmorThorns(std::shared_ptr<LivingEntity> source) {
 
 std::shared_ptr<ItemInstance> EnchantmentHelper::getRandomItemWith(
     Enchantment* enchantment, std::shared_ptr<LivingEntity> source) {
-    std::vector<std::shared_ptr<ItemInstance>> items = source->getEquipmentSlots();
+    std::vector<std::shared_ptr<ItemInstance>> items =
+        source->getEquipmentSlots();
     for (unsigned int i = 0; i < items.size(); ++i) {
         std::shared_ptr<ItemInstance> item = items[i];
         if (item != nullptr && getEnchantmentLevel(enchantment->id, item) > 0) {

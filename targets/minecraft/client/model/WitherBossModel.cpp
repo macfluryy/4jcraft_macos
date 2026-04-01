@@ -73,8 +73,8 @@ void WitherBossModel::prepareMobModel(std::shared_ptr<LivingEntity> mob,
         std::dynamic_pointer_cast<WitherBoss>(mob);
 
     for (int i = 1; i < 3; i++) {
-        heads[i]->yRot =
-            (boss->getHeadYRot(i - 1) - mob->yBodyRot) / (180 / std::numbers::pi);
+        heads[i]->yRot = (boss->getHeadYRot(i - 1) - mob->yBodyRot) /
+                         (180 / std::numbers::pi);
         heads[i]->xRot = boss->getHeadXRot(i - 1) / (180 / std::numbers::pi);
     }
 }

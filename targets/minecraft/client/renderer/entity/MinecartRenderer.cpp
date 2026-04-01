@@ -83,8 +83,7 @@ void MinecartRenderer::render(std::shared_ptr<Entity> _cart, double x, double y,
     float dmg = cart->getDamage() - a;
     if (dmg < 0) dmg = 0;
     if (hurt > 0) {
-        glRotatef(sinf(hurt) * hurt * dmg / 10 * cart->getHurtDir(), 1, 0,
-                  0);
+        glRotatef(sinf(hurt) * hurt * dmg / 10 * cart->getHurtDir(), 1, 0, 0);
     }
 
     int yOffset = cart->getDisplayOffset();

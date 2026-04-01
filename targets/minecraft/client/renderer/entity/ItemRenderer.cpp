@@ -78,8 +78,7 @@ void ItemRenderer::render(std::shared_ptr<Entity> _itemEntity, double x,
 
     glPushMatrix();
     float bob =
-        sinf((itemEntity->age + a) / 10.0f + itemEntity->bobOffs) * 0.1f +
-        0.1f;
+        sinf((itemEntity->age + a) / 10.0f + itemEntity->bobOffs) * 0.1f + 0.1f;
     float spin =
         ((itemEntity->age + a) / 20.0f + itemEntity->bobOffs) * Mth::RAD_TO_DEG;
 
@@ -234,8 +233,8 @@ void ItemRenderer::renderItemBillboard(std::shared_ptr<ItemEntity> entity,
             glRotatef(180, 0, 1, 0);
         } else {
             glRotatef(
-                ((entity->age + a) / 20.0f + entity->bobOffs) * Mth::RAD_TO_DEG, 0,
-                1, 0);
+                ((entity->age + a) / 20.0f + entity->bobOffs) * Mth::RAD_TO_DEG,
+                0, 1, 0);
         }
 
         float width = 1 / 16.0f;
@@ -364,7 +363,7 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
 
     if (item->getIconType() == Icon::TYPE_TERRAIN &&
         TileRenderer::canRender(Tile::tiles[itemId]->getRenderShape())) {
-                textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
+        textures->bindTexture(&TextureAtlas::LOCATION_BLOCKS);
 
         Tile* tile = Tile::tiles[itemId];
         glPushMatrix();
@@ -386,9 +385,9 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
         tileRenderer->renderTile(tile, itemAuxValue, 1, fAlpha, useCompiled);
 
         glPopMatrix();
-        
+
     } else if (Item::items[itemId]->hasMultipleSpriteLayers()) {
-                // special double-layered
+        // special double-layered
         glDisable(GL_LIGHTING);
 
         ResourceLocation* location = getTextureLocation(item->getIconType());
@@ -412,9 +411,9 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
             }
         }
         glEnable(GL_LIGHTING);
-        
+
     } else {
-                glDisable(GL_LIGHTING);
+        glDisable(GL_LIGHTING);
         if (item->getIconType() == Icon::TYPE_TERRAIN) {
             textures->bindTexture(
                 &TextureAtlas::LOCATION_BLOCKS);  // L"/terrain.png"));
@@ -441,7 +440,6 @@ void ItemRenderer::renderGuiItem(Font* font, Textures* textures,
             blit((int)x, (int)y, itemIcon, 16, 16);
         }
         glEnable(GL_LIGHTING);
-        
     }
     glEnable(GL_CULL_FACE);
 }

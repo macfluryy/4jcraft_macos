@@ -12,9 +12,12 @@
 
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 
-ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf, unsigned int offset,
+ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf,
+                                           unsigned int offset,
                                            unsigned int length)
-    : pos(offset), count(std::min(offset + length, (unsigned int)buf.size())), mark(offset) {
+    : pos(offset),
+      count(std::min(offset + length, (unsigned int)buf.size())),
+      mark(offset) {
     this->buf = buf;
 }
 
@@ -59,7 +62,9 @@ int ByteArrayInputStream::read() {
 // Returns:
 // the total number of bytes read into the buffer, or -1 is there is no more
 // data because the end of the stream has been reached.
-int ByteArrayInputStream::read(std::vector<uint8_t>& b) { return read(b, 0, b.size()); }
+int ByteArrayInputStream::read(std::vector<uint8_t>& b) {
+    return read(b, 0, b.size());
+}
 
 // Reads up to len bytes of data into an array of bytes from this input stream.
 // If pos equals count, then -1 is returned to indicate end of file. Otherwise,
@@ -110,5 +115,4 @@ int64_t ByteArrayInputStream::skip(int64_t n) {
     return k;
 }
 
-ByteArrayInputStream::~ByteArrayInputStream() {
-}
+ByteArrayInputStream::~ByteArrayInputStream() {}

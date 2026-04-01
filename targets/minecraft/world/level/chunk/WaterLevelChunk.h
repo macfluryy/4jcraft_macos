@@ -54,10 +54,11 @@ public:
     bool shouldSave(bool force);
     void setBlocks(std::vector<uint8_t>& newBlocks, int sub);
     int setBlocksAndData(
-        std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1, int z1, int p,
+        std::vector<uint8_t>& data, int x0, int y0, int z0, int x1, int y1,
+        int z1, int p,
         bool includeLighting = true);  // 4J - added includeLighting parameter;
-    bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0, int x1,
-                              int y1, int z1, int p);
+    bool testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
+                              int z0, int x1, int y1, int z1, int p);
     Random* getRandom(int64_t l);
     virtual Biome* getBiome(int x, int z, BiomeSource* biomeSource);
     virtual void reSyncLighting() {};  // 4J added

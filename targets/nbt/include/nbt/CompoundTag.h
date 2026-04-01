@@ -174,7 +174,8 @@ public:
     CompoundTag* getCompound(const std::wstring& name) {
         auto it = tags.find(name);
         if (it == tags.end()) {
-            auto [it2, inserted] = tags.emplace(name, std::make_unique<CompoundTag>(name));
+            auto [it2, inserted] =
+                tags.emplace(name, std::make_unique<CompoundTag>(name));
             return static_cast<CompoundTag*>(it2->second.get());
         }
         return static_cast<CompoundTag*>(it->second.get());
@@ -183,7 +184,8 @@ public:
     ListTag<Tag>* getList(const std::wstring& name) {
         auto it = tags.find(name);
         if (it == tags.end()) {
-            auto [it2, inserted] = tags.emplace(name, std::make_unique<ListTag<Tag>>(name));
+            auto [it2, inserted] =
+                tags.emplace(name, std::make_unique<ListTag<Tag>>(name));
             return static_cast<ListTag<Tag>*>(it2->second.get());
         }
         return static_cast<ListTag<Tag>*>(it->second.get());
@@ -191,9 +193,7 @@ public:
 
     bool getBoolean(const std::wstring& string) { return getByte(string) != 0; }
 
-    void remove(const std::wstring& name) {
-        tags.erase(name);
-    }
+    void remove(const std::wstring& name) { tags.erase(name); }
 
     std::wstring toString() {
         static const int bufSize = 32;

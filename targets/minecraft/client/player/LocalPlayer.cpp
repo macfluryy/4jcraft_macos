@@ -154,7 +154,8 @@ void LocalPlayer::serverAiStep() {
         // Don't bother for tiny inputs
         if (fMag >= 0.1f) {
             // Get angle (in player rotated space) of input controls
-            float yRotInput = atan2f(input->ya, input->xa) * (180.0f / std::numbers::pi);
+            float yRotInput =
+                atan2f(input->ya, input->xa) * (180.0f / std::numbers::pi);
             // Now get in world space
             float yRotFinal = yRotInput + yRot;
             // Snap this to nearest 90 degrees
@@ -165,8 +166,10 @@ void LocalPlayer::serverAiStep() {
             float yRotInputAdjust = yRotInput + yRotDiff;
 
             // Calculate final x/y player-space movement required
-            this->xxa = cos(yRotInputAdjust * (std::numbers::pi / 180.0f)) * fMag;
-            this->yya = sin(yRotInputAdjust * (std::numbers::pi / 180.0f)) * fMag;
+            this->xxa =
+                cos(yRotInputAdjust * (std::numbers::pi / 180.0f)) * fMag;
+            this->yya =
+                sin(yRotInputAdjust * (std::numbers::pi / 180.0f)) * fMag;
         } else {
             this->xxa = input->xa;
             this->yya = input->ya;
@@ -748,9 +751,8 @@ void LocalPlayer::magicCrit(std::shared_ptr<Entity> e) {
 }
 
 void LocalPlayer::take(std::shared_ptr<Entity> e, int orgCount) {
-    minecraft->particleEngine->add(
-        std::make_shared<TakeAnimationParticle>(
-            (Level*)minecraft->level, e, shared_from_this(), -0.5f));
+    minecraft->particleEngine->add(std::make_shared<TakeAnimationParticle>(
+        (Level*)minecraft->level, e, shared_from_this(), -0.5f));
 }
 
 void LocalPlayer::chat(const std::wstring& message) {}
@@ -822,7 +824,6 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
             // players cannot get theme/avatar/gamerpic and Trial players cannot
             // get any This causes some extreme flooding of some awards
             if (ProfileManager.CanBeAwarded(m_iPad, ach->getAchievementID())) {
-
                 // 4J Stu - Some awards cause a menu to popup. This can be bad,
                 // especially if you are surrounded by mobs! We cannot pause the
                 // game unless in offline single player, but lets at least do it

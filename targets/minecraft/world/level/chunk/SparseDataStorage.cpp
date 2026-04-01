@@ -125,7 +125,8 @@ SparseDataStorage::SparseDataStorage(SparseDataStorage* copyFrom) {
 
 // Set all data values from a data array of length 16384 (128 x 16 x 16 x 0.5).
 // Source data must have same order as original java game
-void SparseDataStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOffset) {
+void SparseDataStorage::setData(std::vector<uint8_t>& dataIn,
+                                unsigned int inOffset) {
     //  Original order is defined as:
     //  pos = (x << 11 | z << 7 | y);
     //  slot = pos >> 1;
@@ -203,7 +204,8 @@ void SparseDataStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOff
 
 // Gets all data values into an array of length 16384. Destination data will
 // have same order as original java game.
-void SparseDataStorage::getData(std::vector<uint8_t>& retArray, unsigned int retOffset) {
+void SparseDataStorage::getData(std::vector<uint8_t>& retArray,
+                                unsigned int retOffset) {
     memset(retArray.data() + +retOffset, 0, 16384);
     unsigned char *planeIndices, *data;
     getPlaneIndicesAndData(&planeIndices, &data);
@@ -303,10 +305,10 @@ void SparseDataStorage::set(int x, int y, int z, int val) {
 // packed in nyblles in this dimension, and the code didn't make any attempt to
 // unpack it. This behaviour is copied here for compatibility even though our
 // source data isn't packed this way. Returns size of data copied.
-int SparseDataStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0, int z0,
-                                     int x1, int y1, int z1, int offset,
-                                     tileUpdatedCallback callback, void* param,
-                                     int yparam) {
+int SparseDataStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0,
+                                     int y0, int z0, int x1, int y1, int z1,
+                                     int offset, tileUpdatedCallback callback,
+                                     void* param, int yparam) {
     // Actual setting of data happens when calling set method so no need to lock
     // here
     unsigned char* pucIn = &dataIn.data()[offset];
@@ -363,8 +365,8 @@ int SparseDataStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int y
 // packed in nyblles in this dimension, and the code didn't make any attempt to
 // unpack it. This behaviour is copied here for compatibility even though our
 // source data isn't packed this way Returns size of data copied.
-int SparseDataStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0, int y0,
-                                     int z0, int x1, int y1, int z1,
+int SparseDataStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0,
+                                     int y0, int z0, int x1, int y1, int z1,
                                      int offset) {
     unsigned char* pucOut = &dataInOut.data()[offset];
     for (int x = x0; x < x1; x++) {

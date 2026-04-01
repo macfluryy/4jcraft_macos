@@ -7,12 +7,14 @@ class IntArrayTag : public Tag {
 public:
     std::vector<int> data;
 
-    IntArrayTag(const std::wstring& name) : Tag(name) { data = std::vector<int>(); }
-
-    IntArrayTag(const std::wstring& name, const std::vector<int>& data) : Tag(name) {
-        this->data = data;
+    IntArrayTag(const std::wstring& name) : Tag(name) {
+        data = std::vector<int>();
     }
 
+    IntArrayTag(const std::wstring& name, const std::vector<int>& data)
+        : Tag(name) {
+        this->data = data;
+    }
 
     void write(DataOutput* dos) {
         dos->writeInt(data.size());

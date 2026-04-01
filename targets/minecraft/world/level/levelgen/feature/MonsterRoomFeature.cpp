@@ -102,11 +102,13 @@ bool MonsterRoomFeature::place(Level* level, Random* random, int x, int y,
 
             level->setTileAndData(xc, yc, zc, Tile::chest_Id, 0,
                                   Tile::UPDATE_CLIENTS);
-            std::vector<WeighedTreasure*> wrapperArray(monsterRoomTreasure,
-                                              monsterRoomTreasure + TREASURE_ITEMS_COUNT);
-            std::vector<WeighedTreasure*> treasure = WeighedTreasure::addToTreasure(
-                wrapperArray,
-                Item::enchantedBook->createForRandomTreasure(random));
+            std::vector<WeighedTreasure*> wrapperArray(
+                monsterRoomTreasure,
+                monsterRoomTreasure + TREASURE_ITEMS_COUNT);
+            std::vector<WeighedTreasure*> treasure =
+                WeighedTreasure::addToTreasure(
+                    wrapperArray,
+                    Item::enchantedBook->createForRandomTreasure(random));
             std::shared_ptr<ChestTileEntity> chest =
                 std::dynamic_pointer_cast<ChestTileEntity>(
                     level->getTileEntity(xc, yc, zc));

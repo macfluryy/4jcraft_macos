@@ -13,9 +13,8 @@
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 
-InfoTask::InfoTask(
-    Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
-    bool requiresUserInput /*= false*/, int iMapping /*= 0*/)
+InfoTask::InfoTask(Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
+                   bool requiresUserInput /*= false*/, int iMapping /*= 0*/)
     : TutorialTask(tutorial, descriptionId, false, nullptr, true, false,
                    false) {
     if (requiresUserInput == true) {

@@ -63,8 +63,8 @@ bool Squid::makeStepSound() { return false; }
 void Squid::dropDeathLoot(bool wasKilledByPlayer, int playerBonusLevel) {
     int count = random->nextInt(3 + playerBonusLevel) + 1;
     for (int i = 0; i < count; i++) {
-        spawnAtLocation(std::make_shared<ItemInstance>(
-                            Item::dye_powder, 1, DyePowderItem::BLACK),
+        spawnAtLocation(std::make_shared<ItemInstance>(Item::dye_powder, 1,
+                                                       DyePowderItem::BLACK),
                         0.0f);
     }
 }
@@ -95,7 +95,8 @@ void Squid::aiStep() {
         if (tentacleMovement < std::numbers::pi) {
             float tentacleScale = tentacleMovement / std::numbers::pi;
             tentacleAngle =
-                sinf(tentacleScale * tentacleScale * std::numbers::pi) * std::numbers::pi * 0.25f;
+                sinf(tentacleScale * tentacleScale * std::numbers::pi) *
+                std::numbers::pi * 0.25f;
 
             if (tentacleScale > .75) {
                 speed = 1.0f;
@@ -117,14 +118,18 @@ void Squid::aiStep() {
 
         double horizontalMovement = sqrt(xd * xd + zd * zd);
 
-        yBodyRot += ((-(float)atan2(xd, zd) * 180 / std::numbers::pi) - yBodyRot) * 0.1f;
+        yBodyRot +=
+            ((-(float)atan2(xd, zd) * 180 / std::numbers::pi) - yBodyRot) *
+            0.1f;
         yRot = yBodyRot;
         zBodyRot = zBodyRot + (float)std::numbers::pi * rotateSpeed * 1.5f;
         xBodyRot +=
-            ((-(float)atan2(horizontalMovement, yd) * 180 / std::numbers::pi) - xBodyRot) *
+            ((-(float)atan2(horizontalMovement, yd) * 180 / std::numbers::pi) -
+             xBodyRot) *
             0.1f;
     } else {
-        tentacleAngle = Mth::abs(sinf(tentacleMovement)) * std::numbers::pi * 0.25f;
+        tentacleAngle =
+            Mth::abs(sinf(tentacleMovement)) * std::numbers::pi * 0.25f;
 
         if (!level->isClientSide) {
             // unable to move, apply gravity

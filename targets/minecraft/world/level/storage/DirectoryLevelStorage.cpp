@@ -45,8 +45,8 @@
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 
 _MapDataMappings::_MapDataMappings() {
-    memset(xuids, 0,  sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
-    memset(dimensions, 0,  sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 4));
+    memset(xuids, 0, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
+    memset(dimensions, 0, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 4));
 }
 
 int _MapDataMappings::getDimension(int id) {
@@ -104,8 +104,8 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension) {
 
 // Old version the only used 1 bit for dimension indexing
 _MapDataMappings_old::_MapDataMappings_old() {
-    memset(xuids, 0,  sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
-    memset(dimensions, 0,  sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 8));
+    memset(xuids, 0, sizeof(PlayerUID) * MAXIMUM_MAP_SAVE_DATA);
+    memset(dimensions, 0, sizeof(uint8_t) * (MAXIMUM_MAP_SAVE_DATA / 8));
 }
 
 int _MapDataMappings_old::getDimension(int id) {
@@ -651,7 +651,7 @@ void DirectoryLevelStorage::saveMapIdLookup() {
         }
         dos.write(m_usedMappings);
         m_saveFile->writeFile(fileEntry,
-                              baos.buf.data(),         // data buffer
+                              baos.buf.data(),       // data buffer
                               baos.size(),           // number of bytes to write
                               &NumberOfBytesWritten  // number of bytes written
         );

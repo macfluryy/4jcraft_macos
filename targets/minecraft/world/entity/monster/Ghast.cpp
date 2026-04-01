@@ -164,7 +164,8 @@ void Ghast::serverAiStep() {
             if (charge > 0) charge--;
         }
     } else {
-        yBodyRot = yRot = -(float)atan2(this->xd, this->zd) * 180 / std::numbers::pi;
+        yBodyRot = yRot =
+            -(float)atan2(this->xd, this->zd) * 180 / std::numbers::pi;
         if (charge > 0) charge--;
     }
 

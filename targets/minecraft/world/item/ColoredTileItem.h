@@ -24,7 +24,8 @@ public:
     virtual Icon* getIcon(int auxValue);
     virtual int getLevelDataForAuxValue(int auxValue);
 
-    ColoredTileItem* setDescriptionPostfixes(std::vector<int>& descriptionPostfixes);
+    ColoredTileItem* setDescriptionPostfixes(
+        std::vector<int>& descriptionPostfixes);
     virtual unsigned int getDescriptionId(
         std::shared_ptr<ItemInstance> instance);
 };

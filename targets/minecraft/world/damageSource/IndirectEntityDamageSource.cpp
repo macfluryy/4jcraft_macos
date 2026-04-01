@@ -62,8 +62,8 @@ std::shared_ptr<ChatPacket> IndirectEntityDamageSource::getDeathMessagePacket(
             new ChatPacket(player->getNetworkName(), m_msgWithItemId, type,
                            additional, held->getHoverName()));
     } else {
-        return std::make_shared<ChatPacket>(
-            player->getNetworkName(), m_msgId, type, additional);
+        return std::make_shared<ChatPacket>(player->getNetworkName(), m_msgId,
+                                            type, additional);
     }
 }
 

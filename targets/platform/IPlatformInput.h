@@ -23,8 +23,8 @@ public:
                             unsigned char ucActionC,
                             unsigned char ucMenuActionC) = 0;
     virtual void Tick() = 0;
-    virtual void SetDeadzoneAndMovementRange(unsigned int uiDeadzone,
-                                             unsigned int uiMovementRangeMax) = 0;
+    virtual void SetDeadzoneAndMovementRange(
+        unsigned int uiDeadzone, unsigned int uiMovementRangeMax) = 0;
 
     // Joypad mapping
     virtual void SetGameJoypadMaps(unsigned char ucMap, unsigned char ucAction,
@@ -36,7 +36,8 @@ public:
     virtual void SetJoypadSensitivity(int iPad, float fSensitivity) = 0;
 
     // Input queries
-    [[nodiscard]] virtual unsigned int GetValue(int iPad, unsigned char ucAction,
+    [[nodiscard]] virtual unsigned int GetValue(int iPad,
+                                                unsigned char ucAction,
                                                 bool bRepeat = false) = 0;
     [[nodiscard]] virtual bool ButtonPressed(int iPad,
                                              unsigned char ucAction = 255) = 0;
@@ -51,9 +52,9 @@ public:
     virtual void SetJoypadStickTriggerMap(int iPad, unsigned int uiFrom,
                                           unsigned int uiTo) = 0;
     virtual void SetKeyRepeatRate(float fRepeatDelaySecs,
-                                   float fRepeatRateSecs) = 0;
+                                  float fRepeatRateSecs) = 0;
     virtual void SetDebugSequence(const char* chSequenceA, int (*Func)(void*),
-                                   void* lpParam) = 0;
+                                  void* lpParam) = 0;
     [[nodiscard]] virtual float GetIdleSeconds(int iPad) = 0;
     [[nodiscard]] virtual bool IsPadConnected(int iPad) = 0;
 
@@ -90,8 +91,9 @@ public:
     virtual bool VerifyStrings(wchar_t** pwStringA, int iStringC,
                                int (*Func)(void*, STRING_VERIFY_RESPONSE*),
                                void* lpParam) = 0;
-    virtual void CancelQueuedVerifyStrings(
-        int (*Func)(void*, STRING_VERIFY_RESPONSE*), void* lpParam) = 0;
+    virtual void CancelQueuedVerifyStrings(int (*Func)(void*,
+                                                       STRING_VERIFY_RESPONSE*),
+                                           void* lpParam) = 0;
     virtual void CancelAllVerifyInProgress() = 0;
 
     // Mouse

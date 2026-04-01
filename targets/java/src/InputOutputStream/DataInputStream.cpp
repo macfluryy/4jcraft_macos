@@ -21,8 +21,8 @@ DataInputStream::DataInputStream(InputStream* in) : stream(in) {}
 int DataInputStream::read() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::read() called but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::read() called but underlying stream is "
+                "nullptr\n");
         return -1;
     }
     return stream->read();
@@ -56,8 +56,9 @@ int DataInputStream::read() {
 int DataInputStream::read(std::vector<uint8_t>& b) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::read(std::vector<uint8_t>) called but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::read(std::vector<uint8_t>) called but "
+                "underlying stream is "
+                "nullptr\n");
         return -1;
     }
     return read(b, 0, b.size());
@@ -96,8 +97,9 @@ int DataInputStream::read(std::vector<uint8_t>& b, unsigned int offset,
                           unsigned int length) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::read(std::vector<uint8_t>,offset,length) called but "
-            "underlying stream is nullptr\n");
+                "DataInputStream::read(std::vector<uint8_t>,offset,length) "
+                "called but "
+                "underlying stream is nullptr\n");
         return -1;
     }
     return stream->read(b, offset, length);
@@ -108,8 +110,8 @@ int DataInputStream::read(std::vector<uint8_t>& b, unsigned int offset,
 void DataInputStream::close() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::close() called but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::close() called but underlying stream is "
+                "nullptr\n");
         return;
     }
     stream->close();
@@ -121,8 +123,8 @@ void DataInputStream::close() {
 bool DataInputStream::readBoolean() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readBoolean() but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::readBoolean() but underlying stream is "
+                "nullptr\n");
         return false;
     }
     return stream->read() != 0;
@@ -134,7 +136,8 @@ bool DataInputStream::readBoolean() {
 // the 8-bit value read.
 uint8_t DataInputStream::readByte() {
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataInputStream::readByte() but underlying stream is nullptr\n");
         return 0;
     }
@@ -144,8 +147,8 @@ uint8_t DataInputStream::readByte() {
 unsigned char DataInputStream::readUnsignedByte() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readUnsignedByte() but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::readUnsignedByte() but underlying stream is "
+                "nullptr\n");
         return 0;
     }
     return (unsigned char)stream->read();
@@ -159,7 +162,8 @@ unsigned char DataInputStream::readUnsignedByte() {
 // interface DataOutput. Returns: the char value read.
 wchar_t DataInputStream::readChar() {
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataInputStream::readChar() but underlying stream is nullptr\n");
         return 0;
     }
@@ -190,8 +194,9 @@ bool DataInputStream::readFully(std::vector<uint8_t>& b) {
     // InputStreams
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readFully(std::vector<uint8_t>) but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::readFully(std::vector<uint8_t>) but "
+                "underlying stream is "
+                "nullptr\n");
         return false;
     }
     for (unsigned int i = 0; i < b.size(); i++) {
@@ -212,8 +217,9 @@ bool DataInputStream::readFully(std::vector<char>& b) {
     // InputStreams
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readFully(std::vector<char>) but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::readFully(std::vector<char>) but underlying "
+                "stream is "
+                "nullptr\n");
         return false;
     }
     for (unsigned int i = 0; i < b.size(); i++) {
@@ -260,7 +266,8 @@ float DataInputStream::readFloat() {
 // interface DataOutput. Returns: the int value read.
 int DataInputStream::readInt() {
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataInputStream::readInt() but underlying stream is nullptr\n");
         return 0;
     }
@@ -292,7 +299,8 @@ int DataInputStream::readInt() {
 // the long value read.
 int64_t DataInputStream::readLong() {
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataInputStream::readLong() but underlying stream is nullptr\n");
         return 0;
     }
@@ -321,7 +329,8 @@ int64_t DataInputStream::readLong() {
 // method of interface DataOutput. Returns: the 16-bit value read.
 short DataInputStream::readShort() {
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataInputStream::readShort() but underlying stream is nullptr\n");
         return 0;
     }
@@ -333,8 +342,8 @@ short DataInputStream::readShort() {
 unsigned short DataInputStream::readUnsignedShort() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readUnsignedShort() but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::readUnsignedShort() but underlying stream is "
+                "nullptr\n");
         return 0;
     }
     int a = stream->read();
@@ -391,7 +400,8 @@ unsigned short DataInputStream::readUnsignedShort() {
 std::wstring DataInputStream::readUTF() {
     std::wstring outputString;
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataInputStream::readUTF() but underlying stream is nullptr\n");
         return outputString;
     }
@@ -519,8 +529,8 @@ int DataInputStream::readUTFChar() {
     int returnValue = -1;
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataInputStream::readUTFChar() but underlying stream is "
-            "nullptr\n");
+                "DataInputStream::readUTFChar() but underlying stream is "
+                "nullptr\n");
         return returnValue;
     }
     int firstByte = stream->read();

@@ -347,7 +347,8 @@ double WitherBoss::getHeadX(int index) {
     if (index <= 0) {
         return x;
     }
-    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * std::numbers::pi;
+    float headAngle =
+        (yBodyRot + 180 * (index - 1)) / 180.0f * std::numbers::pi;
     float cos = cosf(headAngle);
     return x + cos * 1.3;
 }
@@ -364,7 +365,8 @@ double WitherBoss::getHeadZ(int index) {
     if (index <= 0) {
         return z;
     }
-    float headAngle = (yBodyRot + 180 * (index - 1)) / 180.0f * std::numbers::pi;
+    float headAngle =
+        (yBodyRot + 180 * (index - 1)) / 180.0f * std::numbers::pi;
     float sin = sinf(headAngle);
     return z + sin * 1.3;
 }
@@ -400,10 +402,9 @@ void WitherBoss::performRangedAttack(int head, double tx, double ty, double tz,
     double yd = ty - hy;
     double zd = tz - hz;
 
-    std::shared_ptr<WitherSkull> ie =
-        std::make_shared<WitherSkull>(
-            level, std::dynamic_pointer_cast<LivingEntity>(shared_from_this()),
-            xd, yd, zd);
+    std::shared_ptr<WitherSkull> ie = std::make_shared<WitherSkull>(
+        level, std::dynamic_pointer_cast<LivingEntity>(shared_from_this()), xd,
+        yd, zd);
     if (dangerous) ie->setDangerous(true);
     ie->y = hy;
     ie->x = hx;

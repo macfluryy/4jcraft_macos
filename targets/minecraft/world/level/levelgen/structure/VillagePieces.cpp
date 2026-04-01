@@ -71,33 +71,32 @@ std::list<VillagePieces::PieceWeight*>* VillagePieces::createPieceSet(
     Random* random, int villageSize) {
     std::list<PieceWeight*>* newPieces = new std::list<PieceWeight*>;
 
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_SimpleHouse, 4,
-        random->nextInt(2 + villageSize, 4 + villageSize * 2)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_SmallTemple, 20,
-        random->nextInt(0 + villageSize, 1 + villageSize)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_BookHouse, 20,
-        random->nextInt(0 + villageSize, 2 + villageSize)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_SmallHut, 3,
-        random->nextInt(2 + villageSize, 5 + villageSize * 3)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_PigHouse, 15,
-        random->nextInt(0 + villageSize, 2 + villageSize)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_DoubleFarmland, 3,
-        random->nextInt(1 + villageSize, 4 + villageSize)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_Farmland, 3,
-        random->nextInt(2 + villageSize, 4 + villageSize * 2)));
     newPieces->push_back(
-        new PieceWeight(VillagePieces::EPieceClass_Smithy, 15,
-                        random->nextInt(0, 1 + villageSize)));
-    newPieces->push_back(new PieceWeight(
-        VillagePieces::EPieceClass_TwoRoomHouse, 8,
-        random->nextInt(0 + villageSize, 3 + villageSize * 2)));
+        new PieceWeight(VillagePieces::EPieceClass_SimpleHouse, 4,
+                        random->nextInt(2 + villageSize, 4 + villageSize * 2)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_SmallTemple, 20,
+                        random->nextInt(0 + villageSize, 1 + villageSize)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_BookHouse, 20,
+                        random->nextInt(0 + villageSize, 2 + villageSize)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_SmallHut, 3,
+                        random->nextInt(2 + villageSize, 5 + villageSize * 3)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_PigHouse, 15,
+                        random->nextInt(0 + villageSize, 2 + villageSize)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_DoubleFarmland, 3,
+                        random->nextInt(1 + villageSize, 4 + villageSize)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_Farmland, 3,
+                        random->nextInt(2 + villageSize, 4 + villageSize * 2)));
+    newPieces->push_back(new PieceWeight(VillagePieces::EPieceClass_Smithy, 15,
+                                         random->nextInt(0, 1 + villageSize)));
+    newPieces->push_back(
+        new PieceWeight(VillagePieces::EPieceClass_TwoRoomHouse, 8,
+                        random->nextInt(0 + villageSize, 3 + villageSize * 2)));
 
     // silly way of filtering "infinite" buildings
     auto it = newPieces->begin();
@@ -2103,10 +2102,8 @@ bool VillagePieces::DoubleFarmland::postProcess(Level* level, Random* random,
         placeBlock(level, cropsB, random->nextInt(2, 7), 5, 1, d, chunkBB);
         placeBlock(level, cropsC, random->nextInt(2, 7), 7, 1, d, chunkBB);
         placeBlock(level, cropsC, random->nextInt(2, 7), 8, 1, d, chunkBB);
-        placeBlock(level, cropsD, random->nextInt(2, 7), 10, 1, d,
-                   chunkBB);
-        placeBlock(level, cropsD, random->nextInt(2, 7), 11, 1, d,
-                   chunkBB);
+        placeBlock(level, cropsD, random->nextInt(2, 7), 10, 1, d, chunkBB);
+        placeBlock(level, cropsD, random->nextInt(2, 7), 11, 1, d, chunkBB);
     }
 
     for (int z = 0; z < depth; z++) {

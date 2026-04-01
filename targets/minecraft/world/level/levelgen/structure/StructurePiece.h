@@ -165,11 +165,13 @@ public:
     virtual void fillColumnDown(Level* level, int tile, int tileData, int x,
                                 int startY, int z, BoundingBox* chunkBB);
     virtual bool createChest(Level* level, BoundingBox* chunkBB, Random* random,
-                             int x, int y, int z, const std::vector<WeighedTreasure*>& treasure,
+                             int x, int y, int z,
+                             const std::vector<WeighedTreasure*>& treasure,
                              int numRolls);
     virtual bool createDispenser(Level* level, BoundingBox* chunkBB,
                                  Random* random, int x, int y, int z,
-                                 int facing, const std::vector<WeighedTreasure*>& items,
+                                 int facing,
+                                 const std::vector<WeighedTreasure*>& items,
                                  int numRolls);
 
 protected:

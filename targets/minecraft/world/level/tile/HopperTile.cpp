@@ -30,7 +30,8 @@ void HopperTile::updateShape(LevelSource* level, int x, int y, int z,
 }
 
 void HopperTile::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {
+                          std::vector<AABB>* boxes,
+                          std::shared_ptr<Entity> source) {
     setShape(0, 0, 0, 1, 10.0f / 16.0f, 1);
     BaseEntityTile::addAABBs(level, x, y, z, box, boxes, source);
     float thickness = 2.0f / 16.0f;

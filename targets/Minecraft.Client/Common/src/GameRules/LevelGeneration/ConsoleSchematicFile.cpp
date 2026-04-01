@@ -62,7 +62,6 @@ void ConsoleSchematicFile::save(DataOutputStream* dos) {
         dos->write(ba);
 
         save_tags(dos);
-
     }
 }
 
@@ -126,7 +125,6 @@ void ConsoleSchematicFile::load(DataInputStream* dis) {
                     Compression::getCompression()->SetDecompressionType(
                         APPROPRIATE_COMPRESSION_TYPE);
             };
-
         }
 
         // READ TAGS //
@@ -228,12 +226,13 @@ int64_t ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
     int rowBlockCount = getYSize() * getZSize();
     int totalBlockCount = getXSize() * rowBlockCount;
 
-    std::vector<uint8_t> blockData = std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
-        chunk->getBlockData(blockData);
-    
-    std::vector<uint8_t> dataData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
-        chunk->getDataData(dataData);
-    
+    std::vector<uint8_t> blockData =
+        std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
+    chunk->getBlockData(blockData);
+
+    std::vector<uint8_t> dataData =
+        std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+    chunk->getDataData(dataData);
 
     // Ignore light data
     int blockLightP = -1;
@@ -305,11 +304,10 @@ int64_t ConsoleSchematicFile::applyBlocksAndData(LevelChunk* chunk,
     //	}
     //}
 
-        chunk->setBlockData(blockData);
-    
+    chunk->setBlockData(blockData);
+
     chunk->recalcHeightmapOnly();
-        chunk->setDataData(dataData);
-    
+    chunk->setDataData(dataData);
 
     // A basic pass through to roughly do the lighting. At this point of
     // post-processing, we don't have all the neighbouring chunks loaded in, so
@@ -637,8 +635,8 @@ void ConsoleSchematicFile::generateSchematicFile(
     // Write zSize
     if (dos != nullptr) dos->writeInt(zSize);
 
-    // std::vector<uint8_t> rawBuffer = level->getBlocksAndData(xStart, yStart, zStart,
-    // xSize, ySize, zSize, false);
+    // std::vector<uint8_t> rawBuffer = level->getBlocksAndData(xStart, yStart,
+    // zStart, xSize, ySize, zSize, false);
     int xRowSize = ySize * zSize;
     int blockCount = xSize * xRowSize;
     std::vector<uint8_t> result(blockCount * 3 / 2);
@@ -701,7 +699,8 @@ void ConsoleSchematicFile::generateSchematicFile(
             break;
     };
 
-    std::vector<uint8_t> buffer = std::vector<uint8_t>(ucTemp, ucTemp + inputSize);
+    std::vector<uint8_t> buffer =
+        std::vector<uint8_t>(ucTemp, ucTemp + inputSize);
     delete[] ucTemp;
 
     if (dos != nullptr) dos->writeInt(inputSize);
@@ -794,11 +793,11 @@ void ConsoleSchematicFile::generateSchematicFile(
     if (dos != nullptr) NbtIo::write(&tag, dos);
 }
 
-void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8_t>* data,
-                                            int x0, int y0, int z0, int x1,
-                                            int y1, int z1, int& blocksP,
-                                            int& dataP, int& blockLightP,
-                                            int& skyLightP) {
+void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk,
+                                            std::vector<uint8_t>* data, int x0,
+                                            int y0, int z0, int x1, int y1,
+                                            int z1, int& blocksP, int& dataP,
+                                            int& blockLightP, int& skyLightP) {
     // 4J Stu - Needs updated to work with higher worlds, should still work with
     // non-optimised version below
     // int xs = x1 - x0;
@@ -806,22 +805,23 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
     // int zs = z1 - z0;
     // if (xs * ys * zs == LevelChunk::BLOCKS_LENGTH)
     //{
-    //	std::vector<uint8_t> blockData = std::vector<uint8_t>(data->data + blocksP,
+    //	std::vector<uint8_t> blockData = std::vector<uint8_t>(data->data +
+    // blocksP,
     // Level::CHUNK_TILE_COUNT); 	chunk->getBlockData(blockData);
     // blocksP  += blockData.size();
 
-    //	std::vector<uint8_t> dataData = std::vector<uint8_t>(data->data + dataP, 16384);
-    //	chunk->getBlockLightData(dataData);
-    //	dataP += dataData.size();
+    //	std::vector<uint8_t> dataData = std::vector<uint8_t>(data->data + dataP,
+    // 16384); 	chunk->getBlockLightData(dataData); 	dataP +=
+    // dataData.size();
 
-    //	std::vector<uint8_t> blockLightData = std::vector<uint8_t>(data->data + blockLightP, 16384);
-    //	chunk->getBlockLightData(blockLightData);
-    //	blockLightP += blockLightData.size();
+    //	std::vector<uint8_t> blockLightData = std::vector<uint8_t>(data->data +
+    // blockLightP, 16384); 	chunk->getBlockLightData(blockLightData);
+    // blockLightP
+    //+= blockLightData.size();
 
-    //	std::vector<uint8_t> skyLightData = std::vector<uint8_t>(data->data + skyLightP, 16384);
-    //	chunk->getSkyLightData(skyLightData);
-    //	skyLightP += skyLightData.size();
-    //	return;
+    //	std::vector<uint8_t> skyLightData = std::vector<uint8_t>(data->data +
+    // skyLightP, 16384); 	chunk->getSkyLightData(skyLightData); skyLightP
+    // += skyLightData.size(); 	return;
     //}
 
     bool bHasLower, bHasUpper;
@@ -843,7 +843,8 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
         bHasUpper = true;
     }
 
-    std::vector<uint8_t> blockData = std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
+    std::vector<uint8_t> blockData =
+        std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
     chunk->getBlockData(blockData);
     for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++) {
@@ -851,7 +852,9 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                 int slot = x << Level::genDepthBitsPlusFour |
                            z << Level::genDepthBits | lowerY0;
                 int len = lowerY1 - lowerY0;
-                std::copy(blockData.data() + slot, blockData.data() + slot + len, data->data() + blocksP);
+                std::copy(blockData.data() + slot,
+                          blockData.data() + slot + len,
+                          data->data() + blocksP);
                 blocksP += len;
             }
             if (bHasUpper) {
@@ -859,12 +862,15 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                             z << Level::genDepthBits | upperY0) +
                            Level::COMPRESSED_CHUNK_SECTION_TILES;
                 int len = upperY1 - upperY0;
-                std::copy(blockData.data() + slot, blockData.data() + slot + len, data->data() + blocksP);
+                std::copy(blockData.data() + slot,
+                          blockData.data() + slot + len,
+                          data->data() + blocksP);
                 blocksP += len;
             }
         }
 
-    std::vector<uint8_t> dataData = std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
+    std::vector<uint8_t> dataData =
+        std::vector<uint8_t>(Level::CHUNK_TILE_COUNT);
     chunk->getDataData(dataData);
     for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++) {
@@ -873,7 +879,8 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                             z << Level::genDepthBits | lowerY0) >>
                            1;
                 int len = (lowerY1 - lowerY0) / 2;
-                std::copy(dataData.data() + slot, dataData.data() + slot + len, data->data() + dataP);
+                std::copy(dataData.data() + slot, dataData.data() + slot + len,
+                          data->data() + dataP);
                 dataP += len;
             }
             if (bHasUpper) {
@@ -882,14 +889,16 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                             Level::COMPRESSED_CHUNK_SECTION_TILES) >>
                            1;
                 int len = (upperY1 - upperY0) / 2;
-                std::copy(dataData.data() + slot, dataData.data() + slot + len, data->data() + dataP);
+                std::copy(dataData.data() + slot, dataData.data() + slot + len,
+                          data->data() + dataP);
                 dataP += len;
             }
         }
 
     // 4J Stu - Allow ignoring light data
     if (blockLightP > -1) {
-        std::vector<uint8_t> blockLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+        std::vector<uint8_t> blockLightData =
+            std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
         chunk->getBlockLightData(blockLightData);
         for (int x = x0; x < x1; x++)
             for (int z = z0; z < z1; z++) {
@@ -898,7 +907,9 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                                 z << Level::genDepthBits | lowerY0) >>
                                1;
                     int len = (lowerY1 - lowerY0) / 2;
-                    std::copy(blockLightData.data() + slot, blockLightData.data() + slot + len, data->data() + blockLightP);
+                    std::copy(blockLightData.data() + slot,
+                              blockLightData.data() + slot + len,
+                              data->data() + blockLightP);
                     blockLightP += len;
                 }
                 if (bHasUpper) {
@@ -907,7 +918,9 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                                 1) +
                                (Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
                     int len = (upperY1 - upperY0) / 2;
-                    std::copy(blockLightData.data() + slot, blockLightData.data() + slot + len, data->data() + blockLightP);
+                    std::copy(blockLightData.data() + slot,
+                              blockLightData.data() + slot + len,
+                              data->data() + blockLightP);
                     blockLightP += len;
                 }
             }
@@ -915,7 +928,8 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
 
     // 4J Stu - Allow ignoring light data
     if (skyLightP > -1) {
-        std::vector<uint8_t> skyLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+        std::vector<uint8_t> skyLightData =
+            std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
         chunk->getSkyLightData(skyLightData);
         for (int x = x0; x < x1; x++)
             for (int z = z0; z < z1; z++) {
@@ -924,7 +938,9 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                                 z << Level::genDepthBits | lowerY0) >>
                                1;
                     int len = (lowerY1 - lowerY0) / 2;
-                    std::copy(skyLightData.data() + slot, skyLightData.data() + slot + len, data->data() + skyLightP);
+                    std::copy(skyLightData.data() + slot,
+                              skyLightData.data() + slot + len,
+                              data->data() + skyLightP);
                     skyLightP += len;
                 }
                 if (bHasUpper) {
@@ -933,7 +949,9 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
                                 1) +
                                (Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
                     int len = (upperY1 - upperY0) / 2;
-                    std::copy(skyLightData.data() + slot, skyLightData.data() + slot + len, data->data() + skyLightP);
+                    std::copy(skyLightData.data() + slot,
+                              skyLightData.data() + slot + len,
+                              data->data() + skyLightP);
                     skyLightP += len;
                 }
             }
@@ -943,9 +961,10 @@ void ConsoleSchematicFile::getBlocksAndData(LevelChunk* chunk, std::vector<uint8
 }
 
 void ConsoleSchematicFile::setBlocksAndData(
-    LevelChunk* chunk, std::vector<uint8_t>& blockData, std::vector<uint8_t>& dataData,
-    std::vector<uint8_t> inputData, int x0, int y0, int z0, int x1, int y1, int z1,
-    int& blocksP, int& dataP, int& blockLightP, int& skyLightP) {
+    LevelChunk* chunk, std::vector<uint8_t>& blockData,
+    std::vector<uint8_t>& dataData, std::vector<uint8_t> inputData, int x0,
+    int y0, int z0, int x1, int y1, int z1, int& blocksP, int& dataP,
+    int& blockLightP, int& skyLightP) {
     bool bHasLower, bHasUpper;
     bHasLower = bHasUpper = false;
     int lowerY0, lowerY1, upperY0, upperY1;
@@ -964,13 +983,15 @@ void ConsoleSchematicFile::setBlocksAndData(
         upperY1 = y1 - Level::COMPRESSED_CHUNK_SECTION_HEIGHT;
         bHasUpper = true;
     }
-        for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++) {
             if (bHasLower) {
                 int slot = x << Level::genDepthBitsPlusFour |
                            z << Level::genDepthBits | lowerY0;
                 int len = lowerY1 - lowerY0;
-                std::copy(inputData.data() + blocksP, inputData.data() + blocksP + len, blockData.data() + slot);
+                std::copy(inputData.data() + blocksP,
+                          inputData.data() + blocksP + len,
+                          blockData.data() + slot);
                 blocksP += len;
             }
             if (bHasUpper) {
@@ -978,20 +999,23 @@ void ConsoleSchematicFile::setBlocksAndData(
                             z << Level::genDepthBits | upperY0) +
                            Level::COMPRESSED_CHUNK_SECTION_TILES;
                 int len = upperY1 - upperY0;
-                std::copy(inputData.data() + blocksP, inputData.data() + blocksP + len, blockData.data() + slot);
+                std::copy(inputData.data() + blocksP,
+                          inputData.data() + blocksP + len,
+                          blockData.data() + slot);
                 blocksP += len;
             }
         }
-    
 
-        for (int x = x0; x < x1; x++)
+    for (int x = x0; x < x1; x++)
         for (int z = z0; z < z1; z++) {
             if (bHasLower) {
                 int slot = (x << Level::genDepthBitsPlusFour |
                             z << Level::genDepthBits | lowerY0) >>
                            1;
                 int len = (lowerY1 - lowerY0) / 2;
-                std::copy(inputData.data() + dataP, inputData.data() + dataP + len, dataData.data() + slot);
+                std::copy(inputData.data() + dataP,
+                          inputData.data() + dataP + len,
+                          dataData.data() + slot);
                 dataP += len;
             }
             if (bHasUpper) {
@@ -1000,14 +1024,17 @@ void ConsoleSchematicFile::setBlocksAndData(
                             Level::COMPRESSED_CHUNK_SECTION_TILES) >>
                            1;
                 int len = (upperY1 - upperY0) / 2;
-                std::copy(inputData.data() + dataP, inputData.data() + dataP + len, dataData.data() + slot);
+                std::copy(inputData.data() + dataP,
+                          inputData.data() + dataP + len,
+                          dataData.data() + slot);
                 dataP += len;
             }
         }
-    
+
     // 4J Stu - Allow ignoring light data
     if (blockLightP > -1) {
-        std::vector<uint8_t> blockLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+        std::vector<uint8_t> blockLightData =
+            std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
         chunk->getBlockLightData(blockLightData);
         for (int x = x0; x < x1; x++)
             for (int z = z0; z < z1; z++) {
@@ -1016,7 +1043,9 @@ void ConsoleSchematicFile::setBlocksAndData(
                                 z << Level::genDepthBits | lowerY0) >>
                                1;
                     int len = (lowerY1 - lowerY0) / 2;
-                    std::copy(inputData.data() + blockLightP, inputData.data() + blockLightP + len, blockLightData.data() + slot);
+                    std::copy(inputData.data() + blockLightP,
+                              inputData.data() + blockLightP + len,
+                              blockLightData.data() + slot);
                     blockLightP += len;
                 }
                 if (bHasUpper) {
@@ -1025,7 +1054,9 @@ void ConsoleSchematicFile::setBlocksAndData(
                                 1) +
                                (Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
                     int len = (upperY1 - upperY0) / 2;
-                    std::copy(inputData.data() + blockLightP, inputData.data() + blockLightP + len, blockLightData.data() + slot);
+                    std::copy(inputData.data() + blockLightP,
+                              inputData.data() + blockLightP + len,
+                              blockLightData.data() + slot);
                     blockLightP += len;
                 }
             }
@@ -1034,7 +1065,8 @@ void ConsoleSchematicFile::setBlocksAndData(
 
     // 4J Stu - Allow ignoring light data
     if (skyLightP > -1) {
-        std::vector<uint8_t> skyLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
+        std::vector<uint8_t> skyLightData =
+            std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
         chunk->getSkyLightData(skyLightData);
         for (int x = x0; x < x1; x++)
             for (int z = z0; z < z1; z++) {
@@ -1043,7 +1075,9 @@ void ConsoleSchematicFile::setBlocksAndData(
                                 z << Level::genDepthBits | lowerY0) >>
                                1;
                     int len = (lowerY1 - lowerY0) / 2;
-                    std::copy(inputData.data() + skyLightP, inputData.data() + skyLightP + len, skyLightData.data() + slot);
+                    std::copy(inputData.data() + skyLightP,
+                              inputData.data() + skyLightP + len,
+                              skyLightData.data() + slot);
                     skyLightP += len;
                 }
                 if (bHasUpper) {
@@ -1051,7 +1085,9 @@ void ConsoleSchematicFile::setBlocksAndData(
                                 z << Level::genDepthBits | upperY0) +
                                (Level::COMPRESSED_CHUNK_SECTION_TILES / 2);
                     int len = (upperY1 - upperY0) / 2;
-                    std::copy(inputData.data() + skyLightP, inputData.data() + skyLightP + len, skyLightData.data() + slot);
+                    std::copy(inputData.data() + skyLightP,
+                              inputData.data() + skyLightP + len,
+                              skyLightData.data() + slot);
                     skyLightP += len;
                 }
             }

@@ -104,7 +104,8 @@ void FireworksParticles::FireworksStarter::tick() {
         int type = compoundTag->getByte(FireworksItem::TAG_E_TYPE);
         bool trail = compoundTag->getBoolean(FireworksItem::TAG_E_TRAIL);
         bool flicker = compoundTag->getBoolean(FireworksItem::TAG_E_FLICKER);
-        std::vector<int> colors = compoundTag->getIntArray(FireworksItem::TAG_E_COLORS);
+        std::vector<int> colors =
+            compoundTag->getIntArray(FireworksItem::TAG_E_COLORS);
         std::vector<int> fadeColors =
             compoundTag->getIntArray(FireworksItem::TAG_E_FADECOLORS);
 
@@ -120,7 +121,8 @@ void FireworksParticles::FireworksStarter::tick() {
                 150.0 / 245.0, -197.0 / 245.0,
                 0.0,           -88.0 / 245.0,
             };
-            std::vector<std::vector<double>> coordsArray(6, std::vector<double>(2));
+            std::vector<std::vector<double>> coordsArray(
+                6, std::vector<double>(2));
             for (unsigned int i = 0; i < coordsArray.size(); ++i) {
                 for (unsigned int j = 0; j < coordsArray[i].size(); ++j) {
                     coordsArray[i][j] = coords[i][j];
@@ -137,7 +139,8 @@ void FireworksParticles::FireworksStarter::tick() {
                 0.0, 0.2, 0.2, 0.2, 0.2, 0.6,  0.6, 0.6,  0.6, 0.2,  0.2, 0.2,
                 0.2, 0.0, 0.4, 0.0, 0.4, -0.6, 0.2, -0.6, 0.2, -0.4, 0.0, -0.4,
             };
-            std::vector<std::vector<double>> coordsArray(12, std::vector<double>(2));
+            std::vector<std::vector<double>> coordsArray(
+                12, std::vector<double>(2));
             for (unsigned int i = 0; i < coordsArray.size(); ++i) {
                 for (unsigned int j = 0; j < coordsArray[i].size(); ++j) {
                     coordsArray[i][j] = coords[i][j];
@@ -195,7 +198,8 @@ bool FireworksParticles::FireworksStarter::isFarAwayFromCamera() {
 
 void FireworksParticles::FireworksStarter::createParticle(
     double x, double y, double z, double xa, double ya, double za,
-    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors, bool trail, bool flicker) {
+    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
+    bool trail, bool flicker) {
     std::shared_ptr<FireworksSparkParticle> fireworksSparkParticle =
         std::shared_ptr<FireworksSparkParticle>(
             new FireworksSparkParticle(level, x, y, z, xa, ya, za, engine));
@@ -213,8 +217,8 @@ void FireworksParticles::FireworksStarter::createParticle(
 }
 
 void FireworksParticles::FireworksStarter::createParticleBall(
-    double baseSpeed, int steps, const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
-    bool trail, bool flicker) {
+    double baseSpeed, int steps, const std::vector<int>& rgbColors,
+    const std::vector<int>& fadeColors, bool trail, bool flicker) {
     double xx = x;
     double yy = y;
     double zz = z;
@@ -244,8 +248,9 @@ void FireworksParticles::FireworksStarter::createParticleBall(
 }
 
 void FireworksParticles::FireworksStarter::createParticleShape(
-    double baseSpeed, std::vector<std::vector<double>> coords, const std::vector<int>& rgbColors,
-    const std::vector<int>& fadeColors, bool trail, bool flicker, bool flat) {
+    double baseSpeed, std::vector<std::vector<double>> coords,
+    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
+    bool trail, bool flicker, bool flat) {
     double sx = coords[0][0];
     double sy = coords[0][1];
 
@@ -285,7 +290,8 @@ void FireworksParticles::FireworksStarter::createParticleShape(
 }
 
 void FireworksParticles::FireworksStarter::createParticleBurst(
-    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors, bool trail, bool flicker) {
+    const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
+    bool trail, bool flicker) {
     double baseOffX = random->nextGaussian() * .05;
     double baseOffZ = random->nextGaussian() * .05;
 

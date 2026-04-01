@@ -97,11 +97,9 @@ void ConsoleUIController::render() {
 
 void ConsoleUIController::beginIggyCustomDraw4J(
     IggyCustomDrawCallbackRegion* region, CustomDrawData* customDrawRegion) {
-    
-        // get the correct object-to-world matrix from GDraw, and set the render
+    // get the correct object-to-world matrix from GDraw, and set the render
     // state to a normal state
     gdraw_D3D11_BeginCustomDraw_4J(region, customDrawRegion->mat);
-    
 }
 
 CustomDrawData* ConsoleUIController::setupCustomDraw(
@@ -112,7 +110,7 @@ CustomDrawData* ConsoleUIController::setupCustomDraw(
     customDrawRegion->y0 = region->y0;
     customDrawRegion->y1 = region->y1;
 
-        // get the correct object-to-world matrix from GDraw, and set the render
+    // get the correct object-to-world matrix from GDraw, and set the render
     // state to a normal state
     gdraw_D3D11_BeginCustomDraw_4J(region, customDrawRegion->mat);
 
@@ -138,7 +136,6 @@ void ConsoleUIController::endCustomDraw(IggyCustomDrawCallbackRegion* region) {
     endCustomDrawGameStateAndMatrices();
 
     gdraw_D3D11_EndCustomDraw(region);
-    
 }
 
 void ConsoleUIController::setTileOrigin(S32 xPos, S32 yPos) {

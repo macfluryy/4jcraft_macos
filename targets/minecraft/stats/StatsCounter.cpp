@@ -243,7 +243,6 @@ void StatsCounter::save(int player, bool force) {
         }
     }
 
-
     saveCounter = SAVE_DELAY;
 }
 

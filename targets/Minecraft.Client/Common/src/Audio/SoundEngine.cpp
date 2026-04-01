@@ -184,8 +184,9 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
         if (szId[i] == '.') szId[i] = '/';
 
     std::string base = PathHelper::GetExecutableDirA() + "/";
-    const char* roots[] = {"Sound/Minecraft/", "Minecraft.Client/Common/Sound/Minecraft/",
-                           "Minecraft.Client/Common/res/TitleUpdate/res/Sound/Minecraft/"};
+    const char* roots[] = {
+        "Sound/Minecraft/", "Minecraft.Client/Common/Sound/Minecraft/",
+        "Minecraft.Client/Common/res/TitleUpdate/res/Sound/Minecraft/"};
     char finalPath[512] = {0};
     bool found = false;
 
@@ -457,7 +458,8 @@ void SoundEngine::playMusicTick() {
                 bool found = false;
                 m_szStreamName[0] = '\0';
 
-                const char* roots[] = {"Minecraft.Client/Common/music/", "music/", "./"};
+                const char* roots[] = {"Minecraft.Client/Common/music/",
+                                       "music/", "./"};
 
                 for (const char* r : roots) {
                     for (const char* e : {".ogg", ".mp3", ".wav"}) {
@@ -1135,8 +1137,10 @@ void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
 
                 float yRot = players[i]->yRotO +
                              (players[i]->yRot - players[i]->yRotO) * a;
-                float yCos = (float)cos(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
-                float ySin = (float)sin(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
+                float yCos =
+                    (float)cos(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
+                float ySin =
+                    (float)sin(-yRot * Mth::DEG_TO_RAD - std::numbers::pi);
 
                 // store the listener positions for splitscreen
                 m_ListenerA[i].vPosition.x = x;

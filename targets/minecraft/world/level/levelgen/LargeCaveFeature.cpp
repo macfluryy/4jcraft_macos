@@ -9,16 +9,16 @@
 #include "minecraft/world/level/tile/Tile.h"
 
 void LargeCaveFeature::addRoom(int64_t seed, int xOffs, int zOffs,
-                               std::vector<uint8_t>& blocks, double xRoom, double yRoom,
-                               double zRoom) {
+                               std::vector<uint8_t>& blocks, double xRoom,
+                               double yRoom, double zRoom) {
     addTunnel(seed, xOffs, zOffs, blocks, xRoom, yRoom, zRoom,
               1 + random->nextFloat() * 6, 0, 0, -1, -1, 0.5);
 }
 
 void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
-                                 std::vector<uint8_t>& blocks, double xCave, double yCave,
-                                 double zCave, float thickness, float yRot,
-                                 float xRot, int step, int dist,
+                                 std::vector<uint8_t>& blocks, double xCave,
+                                 double yCave, double zCave, float thickness,
+                                 float yRot, float xRot, int step, int dist,
                                  double yScale) {
     double xMid = xOffs * 16 + 8;
     double zMid = zOffs * 16 + 8;
@@ -42,7 +42,8 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
     bool steep = random.nextInt(6) == 0;
 
     for (; step < dist; step++) {
-        double rad = 1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
+        double rad =
+            1.5 + (Mth::sin(step * std::numbers::pi / dist) * thickness) * 1;
         double yRad = rad * yScale;
 
         float xc = Mth::cos(xRot);
@@ -68,11 +69,11 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 
         if (!singleStep && step == splitPoint && thickness > 1 && dist > 0) {
             addTunnel(random.nextLong(), xOffs, zOffs, blocks, xCave, yCave,
-                      zCave, random.nextFloat() * 0.5f + 0.5f, yRot - std::numbers::pi / 2,
-                      xRot / 3, step, dist, 1.0);
+                      zCave, random.nextFloat() * 0.5f + 0.5f,
+                      yRot - std::numbers::pi / 2, xRot / 3, step, dist, 1.0);
             addTunnel(random.nextLong(), xOffs, zOffs, blocks, xCave, yCave,
-                      zCave, random.nextFloat() * 0.5f + 0.5f, yRot + std::numbers::pi / 2,
-                      xRot / 3, step, dist, 1.0);
+                      zCave, random.nextFloat() * 0.5f + 0.5f,
+                      yRot + std::numbers::pi / 2, xRot / 3, step, dist, 1.0);
             return;
         }
         if (!singleStep && random.nextInt(4) == 0) continue;

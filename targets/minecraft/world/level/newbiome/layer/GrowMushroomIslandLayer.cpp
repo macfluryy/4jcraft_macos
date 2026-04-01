@@ -13,7 +13,8 @@ GrowMushroomIslandLayer::GrowMushroomIslandLayer(int64_t seedMixup,
     this->parent = parent;
 }
 
-std::vector<int> GrowMushroomIslandLayer::getArea(int xo, int yo, int w, int h) {
+std::vector<int> GrowMushroomIslandLayer::getArea(int xo, int yo, int w,
+                                                  int h) {
     int px = xo - 1;
     int py = yo - 1;
     int pw = w + 2;

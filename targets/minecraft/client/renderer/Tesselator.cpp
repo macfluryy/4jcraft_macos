@@ -105,7 +105,8 @@ void Tesselator::end() {
         if (mode == GL_QUADS && TRIANGLE_MODE) {
             // glDrawArrays(GL_TRIANGLES, 0, vertices); // 4J - changed for xbox
             RenderManager.DrawVertices(
-                C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST, vertices, _array->data(),
+                C4JRender::PRIMITIVE_TYPE_TRIANGLE_LIST, vertices,
+                _array->data(),
                 useCompactFormat360
                     ? C4JRender::VERTEX_TYPE_COMPRESSED
                     : C4JRender::VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,
@@ -122,8 +123,8 @@ void Tesselator::end() {
             int vertexCount = vertices;
             if (useCompactFormat360) {
                 RenderManager.DrawVertices(
-                    (C4JRender::ePrimitiveType)mode, vertexCount, _array->data(),
-                    C4JRender::VERTEX_TYPE_COMPRESSED,
+                    (C4JRender::ePrimitiveType)mode, vertexCount,
+                    _array->data(), C4JRender::VERTEX_TYPE_COMPRESSED,
                     C4JRender::PIXEL_SHADER_TYPE_STANDARD);
             } else {
                 if (useProjectedTexturePixelShader) {

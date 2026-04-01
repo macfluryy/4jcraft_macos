@@ -222,9 +222,8 @@ void Chunk::makeCopyForRebuild(Chunk* source) {
 }
 
 void Chunk::rebuild() {
-    
     //	if (!dirty) return;
-    
+
 #if defined(_LARGE_WORLDS)
     Tesselator* t = Tesselator::getInstance();
 #else
@@ -257,9 +256,7 @@ void Chunk::rebuild() {
                 2;
     lists += levelRenderer->chunkLists;
 
-    
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 4J - optimisation begins.
 
     // Get the data for the level chunk that this render chunk is it (level
@@ -275,9 +272,12 @@ void Chunk::rebuild() {
 #endif
     std::vector<uint8_t> tileArray(16 * 16 * Level::maxBuildHeight);
     level->getChunkAt(x, z)->getBlockData(tileArray);
-    memcpy(tileIds, tileArray.data(), 16 * 16 * Level::maxBuildHeight);  // 4J - TODO - now our data has been re-arranged, we could
-                     // just extra the vertical slice of this chunk rather than
-                     // the whole thing
+    memcpy(
+        tileIds, tileArray.data(),
+        16 * 16 * Level::maxBuildHeight);  // 4J - TODO - now our data has been
+                                           // re-arranged, we could just extra
+                                           // the vertical slice of this chunk
+                                           // rather than the whole thing
 
     LevelSource* region =
         new Region(level, x0 - r, y0 - r, z0 - r, x1 + r, y1 + r, z1 + r, r);
@@ -404,7 +404,7 @@ void Chunk::rebuild() {
             }
         }
     }
-    
+
     // Nothing at all to do for this chunk?
     if (empty) {
         // 4J - added - clear any renderer data associated with this
@@ -428,7 +428,7 @@ void Chunk::rebuild() {
     // 4J - optimisation ends
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        Tesselator::Bounds bounds;  // 4J MGH - added
+    Tesselator::Bounds bounds;  // 4J MGH - added
     {
         // this was the old default clip bounds for the chunk, set in
         // Chunk::setPos.
@@ -546,8 +546,6 @@ void Chunk::rebuild() {
     delete tileRenderer;
     delete region;
 
-    
-    
     // 4J - have rewritten the way that tile entities are stored globally to
     // make it work more easily with split screen. Chunks are now stored
     // globally in the levelrenderer, in a hashmap with a special key made up
@@ -557,7 +555,6 @@ void Chunk::rebuild() {
         std::lock_guard<std::mutex> lock(*globalRenderableTileEntities_cs);
         reconcileRenderableTileEntities(renderableTileEntities);
     }
-    
 
     // 4J - These removed items are now also removed from
     // globalRenderableTileEntities
@@ -571,7 +568,7 @@ void Chunk::rebuild() {
     }
     levelRenderer->setGlobalChunkFlag(x, y, z, level,
                                       LevelRenderer::CHUNK_FLAG_COMPILED);
-    
+
     return;
 }
 

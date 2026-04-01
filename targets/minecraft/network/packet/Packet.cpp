@@ -456,7 +456,8 @@ std::shared_ptr<Packet> Packet::getPacket(int id) {
     return idToCreateMap[id]();
 }
 
-void Packet::writeBytes(DataOutputStream* dataoutputstream, const std::vector<uint8_t>& bytes) {
+void Packet::writeBytes(DataOutputStream* dataoutputstream,
+                        const std::vector<uint8_t>& bytes) {
     dataoutputstream->writeShort(bytes.size());
     dataoutputstream->write(bytes);
 }
@@ -670,8 +671,7 @@ std::shared_ptr<ItemInstance> Packet::readItem(DataInputStream* dis) {
         int count = dis->readByte();
         int damage = dis->readShort();
 
-        item =
-            std::make_shared<ItemInstance>(id, count, damage);
+        item = std::make_shared<ItemInstance>(id, count, damage);
         // 4J Stu - Always read/write the tag
         // if (Item.items[id].canBeDepleted() ||
         // Item.items[id].shouldOverrideMultiplayerNBT())

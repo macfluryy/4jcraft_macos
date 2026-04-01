@@ -544,8 +544,7 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
 
         Leg2B->y =
             Leg2A->y +
-            (sinf(r90 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) *
-             7.f);
+            (sinf(r90 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) * 7.f);
         Leg2B->z =
             Leg2A->z +
             (cosf(r270 + standAngle + iStanding * (legAnim1 * 0.5f * ws)) *
@@ -576,14 +575,16 @@ void ModelHorse::prepareMobModel(std::shared_ptr<LivingEntity> mob, float wp,
 
         Leg3A->xRot = rlegRot;
         Leg3B->xRot =
-            (Leg3A->xRot + std::numbers::pi * std::max(0.0f, (.2f + bobValue * .2f))) *
+            (Leg3A->xRot +
+             std::numbers::pi * std::max(0.0f, (.2f + bobValue * .2f))) *
                 standing +
             (legXRotAnim + std::max(0.0f, legAnim1 * 0.5f * ws)) * iStanding;
         Leg3C->xRot = Leg3B->xRot;
 
         Leg4A->xRot = llegRot;
         Leg4B->xRot =
-            (Leg4A->xRot + std::numbers::pi * std::max(0.0f, (.2f - bobValue * .2f))) *
+            (Leg4A->xRot +
+             std::numbers::pi * std::max(0.0f, (.2f - bobValue * .2f))) *
                 standing +
             (-legXRotAnim + std::max(0.0f, -legAnim1 * 0.5f * ws)) * iStanding;
         Leg4C->xRot = Leg4B->xRot;

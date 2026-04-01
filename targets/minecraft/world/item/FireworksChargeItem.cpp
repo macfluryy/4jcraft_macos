@@ -94,7 +94,8 @@ void FireworksChargeItem::appendHoverText(CompoundTag* expTag,
     }
 
     // colors
-    std::vector<int> colorList = expTag->getIntArray(FireworksItem::TAG_E_COLORS);
+    std::vector<int> colorList =
+        expTag->getIntArray(FireworksItem::TAG_E_COLORS);
     if (colorList.size() > 0) {
         bool first = true;
         std::wstring output = L"";
@@ -124,7 +125,8 @@ void FireworksChargeItem::appendHoverText(CompoundTag* expTag,
     }
 
     // has fade?
-    std::vector<int> fadeList = expTag->getIntArray(FireworksItem::TAG_E_FADECOLORS);
+    std::vector<int> fadeList =
+        expTag->getIntArray(FireworksItem::TAG_E_FADECOLORS);
     if (fadeList.size() > 0) {
         bool first = true;
         std::wstring output =

@@ -372,8 +372,8 @@ void Villager::addOffers(int addCount) {
                         new ItemInstance(Tile::gravel, 10)),
                     std::shared_ptr<ItemInstance>(
                         new ItemInstance(Item::emerald)),
-                    std::make_shared<ItemInstance>(
-                        Item::flint_Id, 4 + random->nextInt(2), 0)));
+                    std::make_shared<ItemInstance>(Item::flint_Id,
+                                                   4 + random->nextInt(2), 0)));
             }
             break;
         case PROFESSION_BUTCHER:
@@ -474,7 +474,7 @@ void Villager::addOffers(int addCount) {
                     Enchantment::validEnchantments[random->nextInt(
                         Enchantment::validEnchantments.size())];
                 int level = random->nextInt(enchantment->getMinLevel(),
-                                         enchantment->getMaxLevel());
+                                            enchantment->getMaxLevel());
                 std::shared_ptr<ItemInstance> book =
                     Item::enchantedBook->createForEnchantment(
                         new EnchantmentInstance(enchantment, level));
@@ -668,8 +668,7 @@ void Villager::addItemForPurchase(MerchantRecipeList* list, int itemId,
         } else {
             rubyItem = std::shared_ptr<ItemInstance>(
                 new ItemInstance(Item::emerald_Id, purchaseCost, 0));
-            resultItem =
-                std::make_shared<ItemInstance>(itemId, 1, 0);
+            resultItem = std::make_shared<ItemInstance>(itemId, 1, 0);
         }
         list->push_back(new MerchantRecipe(rubyItem, resultItem));
     }
@@ -729,8 +728,7 @@ std::shared_ptr<AgableMob> Villager::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
     // 4J - added limit to villagers that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
-        std::shared_ptr<Villager> villager =
-            std::make_shared<Villager>(level);
+        std::shared_ptr<Villager> villager = std::make_shared<Villager>(level);
         villager->finalizeMobSpawn(nullptr);
         return villager;
     } else {

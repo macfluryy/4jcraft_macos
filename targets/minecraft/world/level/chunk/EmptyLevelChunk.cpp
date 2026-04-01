@@ -17,7 +17,8 @@ EmptyLevelChunk::EmptyLevelChunk(Level* level, int x, int z)
                        LevelChunk::sTerrainPostPostProcessed;
 }
 
-EmptyLevelChunk::EmptyLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z)
+EmptyLevelChunk::EmptyLevelChunk(Level* level, std::vector<uint8_t>& blocks,
+                                 int x, int z)
     : LevelChunk(level, blocks, x, z) {
     dontSave = true;
     // Set this as fully post-processed, so we don't try and run post-processing
@@ -123,9 +124,9 @@ bool EmptyLevelChunk::shouldSave(bool force) { return false; }
 
 void EmptyLevelChunk::setBlocks(std::vector<uint8_t>& newBlocks, int sub) {}
 
-int EmptyLevelChunk::getBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
-                                      int x1, int y1, int z1, int p,
-                                      bool includeLighting /* = true*/) {
+int EmptyLevelChunk::getBlocksAndData(std::vector<uint8_t>& data, int x0,
+                                      int y0, int z0, int x1, int y1, int z1,
+                                      int p, bool includeLighting /* = true*/) {
     int xs = x1 - x0;
     int ys = y1 - y0;
     int zs = z1 - z0;
@@ -142,9 +143,9 @@ int EmptyLevelChunk::getBlocksAndData(std::vector<uint8_t>& data, int x0, int y0
     return len;
 }
 
-int EmptyLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
-                                      int x1, int y1, int z1, int p,
-                                      bool includeLighting /* = true*/) {
+int EmptyLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0,
+                                      int y0, int z0, int x1, int y1, int z1,
+                                      int p, bool includeLighting /* = true*/) {
     int xs = x1 - x0;
     int ys = y1 - y0;
     int zs = z1 - z0;
@@ -157,9 +158,9 @@ int EmptyLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0
     }
 }
 
-bool EmptyLevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
-                                           int z0, int x1, int y1, int z1,
-                                           int p) {
+bool EmptyLevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0,
+                                           int y0, int z0, int x1, int y1,
+                                           int z1, int p) {
     return false;
 }
 

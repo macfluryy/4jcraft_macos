@@ -899,7 +899,7 @@ void Player::aiStep() {
             pickupArea = bb.grow(1, .5, 1);
         }
 
-        std::vector<std::shared_ptr<Entity> >* entities =
+        std::vector<std::shared_ptr<Entity>>* entities =
             level->getEntities(shared_from_this(), &pickupArea);
         if (entities != nullptr) {
             auto itEnd = entities->end();
@@ -934,8 +934,7 @@ void Player::die(DamageSource* source) {
 
     // 4J - TODO need to use a xuid
     if (app.isXuidNotch(m_xuid)) {
-        drop(std::make_shared<ItemInstance>(Item::apple, 1),
-             true);
+        drop(std::make_shared<ItemInstance>(Item::apple, 1), true);
     }
     if (!level->getGameRules()->getBoolean(GameRules::RULE_KEEPINVENTORY)) {
         inventory->dropAll();
@@ -1012,8 +1011,10 @@ std::shared_ptr<ItemEntity> Player::drop(std::shared_ptr<ItemInstance> item,
 
     } else {
         pow = 0.3f;
-        thrownItem->xd = -sin(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi) * pow;
-        thrownItem->zd = cos(yRot / 180 * std::numbers::pi) * cos(xRot / 180 * std::numbers::pi) * pow;
+        thrownItem->xd = -sin(yRot / 180 * std::numbers::pi) *
+                         cos(xRot / 180 * std::numbers::pi) * pow;
+        thrownItem->zd = cos(yRot / 180 * std::numbers::pi) *
+                         cos(xRot / 180 * std::numbers::pi) * pow;
         thrownItem->yd = -sin(xRot / 180 * std::numbers::pi) * pow + 0.1f;
         pow = 0.02f;
 
@@ -1396,8 +1397,9 @@ void Player::attack(std::shared_ptr<Entity> entity) {
         delete damageSource;
         if (wasHurt) {
             if (knockback > 0) {
-                entity->push(-sinf(yRot * std::numbers::pi / 180) * knockback * .5f, 0.1,
-                             cosf(yRot * std::numbers::pi / 180) * knockback * .5f);
+                entity->push(
+                    -sinf(yRot * std::numbers::pi / 180) * knockback * .5f, 0.1,
+                    cosf(yRot * std::numbers::pi / 180) * knockback * .5f);
                 xd *= 0.6;
                 zd *= 0.6;
                 setSprinting(false);
@@ -1528,7 +1530,7 @@ Player::BedSleepingResult Player::startSleepInBed(int x, int y, int z,
             double vRange = 5;
             AABB monster_bb =
                 AABB(x, y, z, x, y, z).grow(hRange, vRange, hRange);
-            std::vector<std::shared_ptr<Entity> >* monsters =
+            std::vector<std::shared_ptr<Entity>>* monsters =
                 level->getEntitiesOfClass(typeid(Monster), &monster_bb);
             if (!monsters->empty()) {
                 delete monsters;
@@ -2241,7 +2243,9 @@ bool Player::isInvisibleTo(std::shared_ptr<Player> player) {
     return isInvisible();
 }
 
-std::vector<std::shared_ptr<ItemInstance>> Player::getEquipmentSlots() { return inventory->armor; }
+std::vector<std::shared_ptr<ItemInstance>> Player::getEquipmentSlots() {
+    return inventory->armor;
+}
 
 bool Player::isCapeHidden() { return getPlayerFlag(FLAG_HIDE_CAPE); }
 

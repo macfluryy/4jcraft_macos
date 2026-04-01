@@ -8,7 +8,9 @@
 
 MenuBackup::MenuBackup(std::shared_ptr<Inventory> inventory,
                        AbstractContainerMenu* menu) {
-    backups = new std::unordered_map<short, std::vector<std::shared_ptr<ItemInstance>>*>();
+    backups =
+        new std::unordered_map<short,
+                               std::vector<std::shared_ptr<ItemInstance>>*>();
 
     this->inventory = inventory;
     this->menu = menu;
@@ -16,7 +18,8 @@ MenuBackup::MenuBackup(std::shared_ptr<Inventory> inventory,
 
 void MenuBackup::save(short changeUid) {
     std::vector<std::shared_ptr<ItemInstance>>* backup =
-        new std::vector<std::shared_ptr<ItemInstance>>((int)menu->slots.size() + 1);
+        new std::vector<std::shared_ptr<ItemInstance>>((int)menu->slots.size() +
+                                                       1);
     (*backup)[0] = ItemInstance::clone(inventory->getCarried());
     for (unsigned int i = 0; i < menu->slots.size(); i++) {
         (*backup)[i + 1] = ItemInstance::clone(menu->slots.at(i)->getItem());

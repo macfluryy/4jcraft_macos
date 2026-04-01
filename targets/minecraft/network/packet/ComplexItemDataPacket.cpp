@@ -6,7 +6,6 @@
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
-
 ComplexItemDataPacket::~ComplexItemDataPacket() {}
 
 ComplexItemDataPacket::ComplexItemDataPacket() {
@@ -40,7 +39,8 @@ void ComplexItemDataPacket::write(DataOutputStream* dos)  // throws IOException
     dos->writeShort(itemId);
     dos->writeUnsignedShort(data.size());
 
-    std::vector<uint8_t> ba((uint8_t*)data.data(), (uint8_t*)data.data() + data.size());
+    std::vector<uint8_t> ba((uint8_t*)data.data(),
+                            (uint8_t*)data.data() + data.size());
     dos->write(ba);
 }
 

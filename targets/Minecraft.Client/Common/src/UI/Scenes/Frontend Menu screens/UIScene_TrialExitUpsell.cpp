@@ -42,7 +42,6 @@ void UIScene_TrialExitUpsell::handleInput(int iPad, int key, bool repeat,
             if (ProfileManager.IsSignedIn(iPad)) {
                 // CD - Added for audio
                 ui.PlayUISFX(eSFX_Press);
-
             }
             break;
     }

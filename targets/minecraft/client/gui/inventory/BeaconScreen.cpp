@@ -170,12 +170,12 @@ void BeaconScreen::renderBg(float a) {
     // Render payment item icons
     itemRenderer->renderGuiItem(
         font, minecraft->textures,
-        std::make_shared<ItemInstance>(Item::emerald_Id, 1, 0),
-        xo + 42, yo + 109);
+        std::make_shared<ItemInstance>(Item::emerald_Id, 1, 0), xo + 42,
+        yo + 109);
     itemRenderer->renderGuiItem(
         font, minecraft->textures,
-        std::make_shared<ItemInstance>(Item::diamond_Id, 1, 0),
-        xo + 42 + 22, yo + 109);
+        std::make_shared<ItemInstance>(Item::diamond_Id, 1, 0), xo + 42 + 22,
+        yo + 109);
     itemRenderer->renderGuiItem(font, minecraft->textures,
                                 std::shared_ptr<ItemInstance>(
                                     new ItemInstance(Item::goldIngot_Id, 1, 0)),

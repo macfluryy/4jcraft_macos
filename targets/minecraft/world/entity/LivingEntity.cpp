@@ -158,7 +158,6 @@ LivingEntity::~LivingEntity() {
 
     delete attributes;
     delete combatTracker;
-
 }
 
 void LivingEntity::defineSynchedData() {
@@ -1534,7 +1533,8 @@ void LivingEntity::aiStep() {
         // pop up the sides of walls, undersides of trees etc.
         AABB shrinkbb = bb.shrink(0.1, 0, 0.1);
         shrinkbb.y1 = shrinkbb.y0 + 0.1;
-        std::vector<AABB>* collisions = level->getCubes(shared_from_this(), &shrinkbb);
+        std::vector<AABB>* collisions =
+            level->getCubes(shared_from_this(), &shrinkbb);
         if (collisions->size() > 0) {
             double yTop = 0;
             auto itEnd = collisions->end();
@@ -1601,7 +1601,7 @@ void LivingEntity::newServerAiStep() {}
 
 void LivingEntity::pushEntities() {
     AABB grown = bb.grow(0.2, 0, 0.2);
-    std::vector<std::shared_ptr<Entity> >* entities =
+    std::vector<std::shared_ptr<Entity>>* entities =
         level->getEntities(shared_from_this(), &grown);
     if (entities != nullptr && !entities->empty()) {
         auto itEnd = entities->end();

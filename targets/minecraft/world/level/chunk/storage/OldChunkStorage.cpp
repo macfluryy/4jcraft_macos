@@ -45,8 +45,7 @@ OldChunkStorage::ThreadStorage::ThreadStorage() {
     blockLightData = std::vector<uint8_t>(Level::HALF_CHUNK_TILE_COUNT);
 }
 
-OldChunkStorage::ThreadStorage::~ThreadStorage() {
-}
+OldChunkStorage::ThreadStorage::~ThreadStorage() {}
 
 void OldChunkStorage::CreateNewThreadStorage() {
     ThreadStorage* tls = new ThreadStorage();
@@ -246,26 +245,23 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
     dos->writeLong(level->getGameTime());
     dos->writeLong(lc->inhabitedTime);
 
-        lc->writeCompressedBlockData(dos);
-    
+    lc->writeCompressedBlockData(dos);
 
-        lc->writeCompressedDataData(dos);
-    
+    lc->writeCompressedDataData(dos);
 
-        lc->writeCompressedSkyLightData(dos);
+    lc->writeCompressedSkyLightData(dos);
     lc->writeCompressedBlockLightData(dos);
-    
 
     dos->write(lc->heightmap);
     dos->writeShort(lc->terrainPopulated);
     dos->write(lc->getBiomes());
 
-        CompoundTag* tag = new CompoundTag();
+    CompoundTag* tag = new CompoundTag();
 #if !defined(SPLIT_SAVES)
     saveEntities(lc, level, tag);
 #endif
 
-        ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
+    ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
     auto itEnd = lc->tileEntities.end();
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
@@ -278,9 +274,8 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
         tileEntityTags->add(teTag);
     }
     tag->put(L"TileEntities", tileEntityTags);
-    
 
-        std::vector<TickNextTickData>* ticksInChunk =
+    std::vector<TickNextTickData>* ticksInChunk =
         level->fetchTicksInChunk(lc, false);
     if (ticksInChunk != nullptr) {
         int64_t levelTime = level->getGameTime();
@@ -300,11 +295,9 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level,
         tag->put(L"TileTicks", tickTags);
     }
     delete ticksInChunk;
-    
 
     NbtIo::write(tag, dos);
     delete tag;
-    
 }
 
 void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
@@ -327,23 +320,20 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     // moved to TLS
     ThreadStorage* tls = m_tlsStorage;
 
-        // static std::vector<uint8_t> blockData = std::vector<uint8_t>(32768);
+    // static std::vector<uint8_t> blockData = std::vector<uint8_t>(32768);
     lc->getBlockData(tls->blockData);
     tag->putByteArray(L"Blocks", tls->blockData);
-    
 
-        // static std::vector<uint8_t> dataData = std::vector<uint8_t>(16384);
+    // static std::vector<uint8_t> dataData = std::vector<uint8_t>(16384);
     lc->getDataData(tls->dataData);
     tag->putByteArray(L"Data", tls->dataData);
-    
 
-        // static std::vector<uint8_t> skyLightData = std::vector<uint8_t>(16384);
+    // static std::vector<uint8_t> skyLightData = std::vector<uint8_t>(16384);
     // static std::vector<uint8_t> blockLightData = std::vector<uint8_t>(16384);
     lc->getSkyLightData(tls->skyLightData);
     lc->getBlockLightData(tls->blockLightData);
     tag->putByteArray(L"SkyLight", tls->skyLightData);
     tag->putByteArray(L"BlockLight", tls->blockLightData);
-    
 
     tag->putByteArray(L"HeightMap", lc->heightmap);
     tag->putShort(
@@ -354,11 +344,11 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
     std::vector<uint8_t> biomeData = lc->getBiomes();
     tag->putByteArray(L"Biomes", biomeData);
 
-    #if !defined(SPLIT_SAVES)
+#if !defined(SPLIT_SAVES)
     saveEntities(lc, level, tag);
 #endif
 
-        ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
+    ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
     auto itEnd = lc->tileEntities.end();
     for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
@@ -371,9 +361,8 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
         tileEntityTags->add(teTag);
     }
     tag->put(L"TileEntities", tileEntityTags);
-    
 
-        std::vector<TickNextTickData>* ticksInChunk =
+    std::vector<TickNextTickData>* ticksInChunk =
         level->fetchTicksInChunk(lc, false);
     if (ticksInChunk != nullptr) {
         int64_t levelTime = level->getGameTime();
@@ -394,8 +383,6 @@ void OldChunkStorage::save(LevelChunk* lc, Level* level, CompoundTag* tag) {
         tag->put(L"TileTicks", tickTags);
     }
     delete ticksInChunk;
-    
-    
 }
 
 void OldChunkStorage::loadEntities(LevelChunk* lc, Level* level,
@@ -427,7 +414,7 @@ void OldChunkStorage::loadEntities(LevelChunk* lc, Level* level,
 }
 
 LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
-        short version = dis->readShort();
+    short version = dis->readShort();
     int x = dis->readInt();
     int z = dis->readInt();
     int time = dis->readLong();
@@ -475,7 +462,7 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
     loadEntities(levelChunk, level, tag);
 
     if (tag->contains(L"TileTicks")) {
-                ListTag<CompoundTag>* tileTicks =
+        ListTag<CompoundTag>* tileTicks =
             (ListTag<CompoundTag>*)tag->getList(L"TileTicks");
 
         if (tileTicks != nullptr) {
@@ -488,12 +475,9 @@ LevelChunk* OldChunkStorage::load(Level* level, DataInputStream* dis) {
                     teTag->getInt(L"t"), teTag->getInt(L"p"));
             }
         }
-        
     }
 
     delete tag;
-
-    
 
     return levelChunk;
 }

@@ -190,9 +190,8 @@ void PlayerConnection::disconnect(DisconnectPacket::eDisconnectReason reason) {
     // server->players->broadcastAll( std::shared_ptr<ChatPacket>( new
     // ChatPacket(L"§e" + player->name + L" left the game.") ) );
     if (getWasKicked()) {
-        server->getPlayers()->broadcastAll(
-            std::make_shared<ChatPacket>(
-                player->name, ChatPacket::e_ChatPlayerKickedFromGame));
+        server->getPlayers()->broadcastAll(std::make_shared<ChatPacket>(
+            player->name, ChatPacket::e_ChatPlayerKickedFromGame));
     } else {
         server->getPlayers()->broadcastAll(std::shared_ptr<ChatPacket>(
             new ChatPacket(player->name, ChatPacket::e_ChatPlayerLeftGame)));
@@ -294,7 +293,8 @@ void PlayerConnection::handleMovePlayer(
                 //                stance: " + yd);
                 return;
             }
-            if (std::abs(packet->x) > 32000000 || std::abs(packet->z) > 32000000) {
+            if (std::abs(packet->x) > 32000000 ||
+                std::abs(packet->z) > 32000000) {
                 disconnect(DisconnectPacket::eDisconnect_IllegalPosition);
                 return;
             }
@@ -435,9 +435,8 @@ void PlayerConnection::teleport(double x, double y, double z, float yRot,
     // end This is different to the way that height is sent back to the server,
     // where it represents the bottom of the player bounding volume
     if (sendPacket)
-        player->connection->send(
-            std::make_shared<MovePlayerPacket::PosRot>(
-                x, y + 1.62f, y, z, yRot, xRot, false, false));
+        player->connection->send(std::make_shared<MovePlayerPacket::PosRot>(
+            x, y + 1.62f, y, z, yRot, xRot, false, false));
 }
 
 void PlayerConnection::handlePlayerAction(
@@ -623,9 +622,8 @@ void PlayerConnection::onDisconnect(DisconnectPacket::eDisconnectReason reason,
     // server->players->broadcastAll( std::shared_ptr<ChatPacket>( new
     // ChatPacket(L"§e" + player->name + L" left the game.") ) );
     if (getWasKicked()) {
-        server->getPlayers()->broadcastAll(
-            std::make_shared<ChatPacket>(
-                player->name, ChatPacket::e_ChatPlayerKickedFromGame));
+        server->getPlayers()->broadcastAll(std::make_shared<ChatPacket>(
+            player->name, ChatPacket::e_ChatPlayerKickedFromGame));
     } else {
         server->getPlayers()->broadcastAll(std::shared_ptr<ChatPacket>(
             new ChatPacket(player->name, ChatPacket::e_ChatPlayerLeftGame)));
@@ -1202,9 +1200,8 @@ void PlayerConnection::handleContainerClick(
 
         if (ItemInstance::matches(packet->item, clicked)) {
             // Yep, you sure did click what you claimed to click!
-            player->connection->send(
-                std::make_shared<ContainerAckPacket>(
-                    packet->containerId, packet->uid, true));
+            player->connection->send(std::make_shared<ContainerAckPacket>(
+                packet->containerId, packet->uid, true));
             player->ignoreSlotUpdateHack = true;
             player->containerMenu->broadcastChanges();
             player->broadcastCarriedItem();
@@ -1212,9 +1209,8 @@ void PlayerConnection::handleContainerClick(
         } else {
             // No, you clicked the wrong thing!
             expectedAcks[player->containerMenu->containerId] = packet->uid;
-            player->connection->send(
-                std::make_shared<ContainerAckPacket>(
-                    packet->containerId, packet->uid, false));
+            player->connection->send(std::make_shared<ContainerAckPacket>(
+                packet->containerId, packet->uid, false));
             player->containerMenu->setSynched(player, false);
 
             std::vector<std::shared_ptr<ItemInstance> > items;
@@ -1269,8 +1265,7 @@ void PlayerConnection::handleSetCreativeModeSlot(
             swprintf(buf, 64, L"map_%d", item->getAuxValue());
             std::wstring id = std::wstring(buf);
             if (data == nullptr) {
-                data =
-                    std::make_shared<MapItemSavedData>(id);
+                data = std::make_shared<MapItemSavedData>(id);
             }
             player->level->setSavedData(id, (std::shared_ptr<SavedData>)data);
 
@@ -1743,10 +1738,9 @@ void PlayerConnection::handleCraftItem(
                 if (ingItemInst != nullptr) {
                     if (ingItemInst->getItem()->hasCraftingRemainingItem()) {
                         // replace item with remaining result
-                        player->inventory->add(
-                            std::make_shared<ItemInstance>(
-                                ingItemInst->getItem()
-                                    ->getCraftingRemainingItem()));
+                        player->inventory->add(std::make_shared<ItemInstance>(
+                            ingItemInst->getItem()
+                                ->getCraftingRemainingItem()));
                     }
                 }
             }

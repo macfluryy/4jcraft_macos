@@ -757,7 +757,8 @@ void Minecart::push(std::shared_ptr<Entity> e) {
             Vec3 dir(xo, 0, zo);
             dir = dir.normalize();
 
-            Vec3 facing(cos(yRot * std::numbers::pi / 180), 0, sin(yRot * std::numbers::pi / 180));
+            Vec3 facing(cos(yRot * std::numbers::pi / 180), 0,
+                        sin(yRot * std::numbers::pi / 180));
             facing = facing.normalize();
 
             double dot = abs(dir.dot(facing));

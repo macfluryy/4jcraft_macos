@@ -303,27 +303,33 @@ std::vector<uint8_t> CommonStats::getParam_pigOneM(int distance) {
     return makeParam(distance);
 }
 
-std::vector<uint8_t> CommonStats::getParam_blocksMined(int id, int data, int count) {
+std::vector<uint8_t> CommonStats::getParam_blocksMined(int id, int data,
+                                                       int count) {
     return makeParam(count);
 }
 
-std::vector<uint8_t> CommonStats::getParam_itemsCollected(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsCollected(int id, int aux,
+                                                          int count) {
     return makeParam(count);
 }
 
-std::vector<uint8_t> CommonStats::getParam_itemsCrafted(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsCrafted(int id, int aux,
+                                                        int count) {
     return makeParam(count);
 }
 
-std::vector<uint8_t> CommonStats::getParam_itemsSmelted(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsSmelted(int id, int aux,
+                                                        int count) {
     return makeParam(count);
 }
 
-std::vector<uint8_t> CommonStats::getParam_itemsUsed(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsUsed(int id, int aux,
+                                                     int count) {
     return makeParam(count);
 }
 
-std::vector<uint8_t> CommonStats::getParam_itemsBought(int id, int aux, int count) {
+std::vector<uint8_t> CommonStats::getParam_itemsBought(int id, int aux,
+                                                       int count) {
     return makeParam(count);
 }
 

@@ -24,7 +24,8 @@ public:
     void registerIcons(IconRegister* iconRegister);
     static Icon* getTexture(const std::wstring& name);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes,
+                          std::shared_ptr<Entity> source);
     virtual void updateDefaultShape();
     virtual bool isSolidRender(bool isServerLevel = false);
     virtual int getRenderShape();

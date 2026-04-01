@@ -14,8 +14,6 @@ ReadOnlyChunkCache::ReadOnlyChunkCache(Level* level, ChunkStorage* storage) {
 
 ReadOnlyChunkCache::~ReadOnlyChunkCache() {
     for (unsigned int i = 0; i < chunks.size(); ++i) delete chunks[i];
-
-
 }
 
 bool ReadOnlyChunkCache::hasChunk(int x, int z) {

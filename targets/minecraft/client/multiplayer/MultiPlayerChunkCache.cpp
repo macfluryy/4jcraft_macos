@@ -26,8 +26,7 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
     memset(hasData, 0, sizeof(bool) * XZSIZE * XZSIZE);
 
     std::vector<uint8_t> emptyBlocks(16 * 16 * Level::maxBuildHeight);
-    emptyChunk = new EmptyLevelChunk(
-        level, emptyBlocks, 0, 0);
+    emptyChunk = new EmptyLevelChunk(level, emptyBlocks, 0, 0);
 
     // For normal world dimension, create a chunk that can be used to create the
     // illusion of infinite water at the edge of the world
@@ -62,7 +61,6 @@ MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
         }
 
         waterChunk = new WaterLevelChunk(level, bytes, 0, 0);
-
 
         if (level->getLevelData()->getGenerator() == LevelType::lvl_flat) {
             for (int x = 0; x < 16; x++)

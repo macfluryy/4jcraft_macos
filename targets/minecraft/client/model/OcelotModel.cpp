@@ -162,19 +162,26 @@ void OcelotModel::setupAnim(float time, float r, float bob, float yRot,
             backLegL->xRot = ((float)cosf(time * 0.6662f) * 1.f) * r;
             backLegR->xRot = ((float)cosf(time * 0.6662f + 0.3f) * 1.f) * r;
             frontLegL->xRot =
-                ((float)cosf(time * 0.6662f + std::numbers::pi + 0.3f) * 1.f) * r;
-            frontLegR->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
-            tail2->xRot = 0.55f * std::numbers::pi + 0.1f * std::numbers::pi * cosf(time) * r;
+                ((float)cosf(time * 0.6662f + std::numbers::pi + 0.3f) * 1.f) *
+                r;
+            frontLegR->xRot =
+                ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
+            tail2->xRot = 0.55f * std::numbers::pi +
+                          0.1f * std::numbers::pi * cosf(time) * r;
         } else {
             backLegL->xRot = ((float)cosf(time * 0.6662f) * 1.f) * r;
-            backLegR->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
-            frontLegL->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
+            backLegR->xRot =
+                ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
+            frontLegL->xRot =
+                ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.f) * r;
             frontLegR->xRot = ((float)cosf(time * 0.6662f) * 1.f) * r;
 
             if (state == WALK_STATE)
-                tail2->xRot = 0.55f * std::numbers::pi + 0.25f * std::numbers::pi * cosf(time) * r;
+                tail2->xRot = 0.55f * std::numbers::pi +
+                              0.25f * std::numbers::pi * cosf(time) * r;
             else
-                tail2->xRot = 0.55f * std::numbers::pi + 0.15f * std::numbers::pi * cosf(time) * r;
+                tail2->xRot = 0.55f * std::numbers::pi +
+                              0.15f * std::numbers::pi * cosf(time) * r;
         }
     }
 }
@@ -226,11 +233,11 @@ void OcelotModel::prepareMobModel(std::shared_ptr<LivingEntity> mob, float time,
         tail1->xRot = std::numbers::pi * 0.55f;
         tail2->xRot = std::numbers::pi * 0.85f;
 
-        frontLegL->xRot = frontLegR->xRot = -std::numbers::pi  * 0.05f;
+        frontLegL->xRot = frontLegR->xRot = -std::numbers::pi * 0.05f;
         frontLegL->y = frontLegR->y = frontLegY + 2;
         frontLegL->z = frontLegR->z = -7;
 
-        backLegL->xRot = backLegR->xRot = -std::numbers::pi  * 0.5f;
+        backLegL->xRot = backLegR->xRot = -std::numbers::pi * 0.5f;
         backLegL->y = backLegR->y = backLegY + 3;
         backLegL->z = backLegR->z = backLegZ - 4;
         state = SITTING_STATE;

@@ -44,8 +44,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
         int aux = idNum;
 
         id = std::wstring(L"map_") + _toString(aux);
-        mapItemSavedData =
-            std::make_shared<MapItemSavedData>(id);
+        mapItemSavedData = std::make_shared<MapItemSavedData>(id);
 
         level->setSavedData(id, (std::shared_ptr<SavedData>)mapItemSavedData);
     }
@@ -69,8 +68,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
         // itemInstance->setAuxValue(level->getFreeAuxValueFor(L"map"));
 
         id = std::wstring(L"map_") + _toString(itemInstance->getAuxValue());
-        mapItemSavedData =
-            std::make_shared<MapItemSavedData>(id);
+        mapItemSavedData = std::make_shared<MapItemSavedData>(id);
 
         newData = true;
     }
@@ -304,13 +302,12 @@ std::shared_ptr<Packet> MapItem::getUpdatePacket(
     std::shared_ptr<ItemInstance> itemInstance, Level* level,
     std::shared_ptr<Player> player) {
     std::vector<char> data = MapItem::getSavedData(itemInstance, level)
-                         ->getUpdatePacket(itemInstance, level, player);
+                                 ->getUpdatePacket(itemInstance, level, player);
 
     if (data.empty()) return nullptr;
 
-    std::shared_ptr<Packet> retval =
-        std::make_shared<ComplexItemDataPacket>(
-            (short)Item::map->id, (short)itemInstance->getAuxValue(), data);
+    std::shared_ptr<Packet> retval = std::make_shared<ComplexItemDataPacket>(
+        (short)Item::map->id, (short)itemInstance->getAuxValue(), data);
     return retval;
 }
 

@@ -58,7 +58,7 @@ int ConsoleSaveFileInputStream::read(std::vector<uint8_t>& b) {
 
     bool result =
         m_saveFile->readFile(m_file,
-                             b.data(),             // data buffer
+                             b.data(),           // data buffer
                              b.size(),           // number of bytes to read
                              &numberOfBytesRead  // number of bytes read
         );
@@ -81,8 +81,8 @@ int ConsoleSaveFileInputStream::read(std::vector<uint8_t>& b) {
 // b len - the maximum number of bytes read. Returns: the total number of bytes
 // read into the buffer, or -1 if there is no more data because the end of the
 // file has been reached.
-int ConsoleSaveFileInputStream::read(std::vector<uint8_t>& b, unsigned int offset,
-                                     unsigned int length) {
+int ConsoleSaveFileInputStream::read(std::vector<uint8_t>& b,
+                                     unsigned int offset, unsigned int length) {
     // 4J Stu - We don't want to read any more than the array buffer can hold
     assert(length <= (b.size() - offset));
 

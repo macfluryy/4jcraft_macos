@@ -8,7 +8,8 @@
 class ParticleEngine;
 class CompoundTag;
 class Level;
-template <class T> class ListTag;
+template <class T>
+class ListTag;
 
 class FireworksParticles {
 public:
@@ -31,15 +32,21 @@ public:
         virtual void tick();
         bool isFarAwayFromCamera();
         void createParticle(double x, double y, double z, double xa, double ya,
-                            double za, const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
-                            bool trail, bool flicker);
-        void createParticleBall(double baseSpeed, int steps, const std::vector<int>& rgbColors,
-                                const std::vector<int>& fadeColors, bool trail, bool flicker);
-        void createParticleShape(double baseSpeed, std::vector<std::vector<double>> coords,
-                                 const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
-                                 bool trail, bool flicker, bool flat);
-        void createParticleBurst(const std::vector<int>& rgbColors, const std::vector<int>& fadeColors,
-                                 bool trail, bool flicker);
+                            double za, const std::vector<int>& rgbColors,
+                            const std::vector<int>& fadeColors, bool trail,
+                            bool flicker);
+        void createParticleBall(double baseSpeed, int steps,
+                                const std::vector<int>& rgbColors,
+                                const std::vector<int>& fadeColors, bool trail,
+                                bool flicker);
+        void createParticleShape(double baseSpeed,
+                                 std::vector<std::vector<double>> coords,
+                                 const std::vector<int>& rgbColors,
+                                 const std::vector<int>& fadeColors, bool trail,
+                                 bool flicker, bool flat);
+        void createParticleBurst(const std::vector<int>& rgbColors,
+                                 const std::vector<int>& fadeColors, bool trail,
+                                 bool flicker);
 
     public:
         int getParticleTexture();

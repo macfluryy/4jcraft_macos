@@ -25,8 +25,8 @@ void DataOutputStream::deleteChildStream() { delete stream; }
 void DataOutputStream::write(unsigned int b) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataOutputStream::write(unsigned int) called but underlying "
-            "stream is nullptr\n");
+                "DataOutputStream::write(unsigned int) called but underlying "
+                "stream is nullptr\n");
         return;
     }
     stream->write(b);
@@ -37,8 +37,8 @@ void DataOutputStream::write(unsigned int b) {
 void DataOutputStream::flush() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataOutputStream::flush() called but underlying stream is "
-            "nullptr\n");
+                "DataOutputStream::flush() called but underlying stream is "
+                "nullptr\n");
         return;
     }
     stream->flush();
@@ -47,7 +47,9 @@ void DataOutputStream::flush() {
 // Writes b.size() bytes from the specified byte array to this output stream.
 // The general contract for write(b) is that it should have exactly the same
 // effect as the call write(b, 0, b.size()). Parameters: b - the data.
-void DataOutputStream::write(const std::vector<uint8_t>& b) { write(b, 0, b.size()); }
+void DataOutputStream::write(const std::vector<uint8_t>& b) {
+    write(b, 0, b.size());
+}
 
 // Writes len bytes from the specified byte array starting at offset off to the
 // underlying output stream. If no exception is thrown, the counter written is
@@ -57,8 +59,9 @@ void DataOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
                              unsigned int length) {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataOutputStream::write(std::vector<uint8_t>,...) called but underlying "
-            "stream is nullptr\n");
+                "DataOutputStream::write(std::vector<uint8_t>,...) called but "
+                "underlying "
+                "stream is nullptr\n");
         return;
     }
     stream->write(b, offset, length);
@@ -72,8 +75,8 @@ void DataOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
 void DataOutputStream::close() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "DataOutputStream::close() called but underlying stream is "
-            "nullptr\n");
+                "DataOutputStream::close() called but underlying stream is "
+                "nullptr\n");
         return;
     }
     stream->close();
@@ -154,7 +157,8 @@ void DataOutputStream::writeShort(short a) {
 
 void DataOutputStream::writeUnsignedShort(unsigned short a) {
     if (stream == nullptr) {
-        fprintf(stderr,
+        fprintf(
+            stderr,
             "DataOutputStream::writeUnsignedShort() but underlying stream is "
             "nullptr\n");
         return;
@@ -258,4 +262,6 @@ void DataOutputStream::writeUTF(const std::wstring& str) {
 }
 
 // 4J Added
-void DataOutputStream::writePlayerUID(unsigned long long player) { writeLong(player); }
+void DataOutputStream::writePlayerUID(unsigned long long player) {
+    writeLong(player);
+}

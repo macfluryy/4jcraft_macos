@@ -21,8 +21,7 @@ FireworksMenu::FireworksMenu(std::shared_ptr<Inventory> inventory, Level* level,
     m_canMakeCharge = false;
     m_canMakeFade = false;
 
-    craftSlots =
-        std::make_shared<CraftingContainer>(this, 3, 3);
+    craftSlots = std::make_shared<CraftingContainer>(this, 3, 3);
     resultSlots = std::make_shared<ResultContainer>();
 
     this->level = level;

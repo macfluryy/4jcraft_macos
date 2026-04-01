@@ -316,17 +316,20 @@ UIController::EFont UIController::getFontForLanguage(int language) {
 UITTFFont* UIController::createFont(EFont fontLanguage) {
     switch (fontLanguage) {
         case eFont_Japanese:
-            return new UITTFFont("Mojangles_TTF_jaJP",
-                                 "Minecraft.Client/Common/Media/font/JPN/DFGMaruGothic-Md.ttf",
-                                 0x2022);  // JPN
+            return new UITTFFont(
+                "Mojangles_TTF_jaJP",
+                "Minecraft.Client/Common/Media/font/JPN/DFGMaruGothic-Md.ttf",
+                0x2022);  // JPN
         case eFont_TradChinese:
-            return new UITTFFont("Mojangles_TTF_cnTD",
-                                 "Minecraft.Client/Common/Media/font/CHT/DFHeiMedium-B5.ttf",
-                                 0x2022);  // CHT
+            return new UITTFFont(
+                "Mojangles_TTF_cnTD",
+                "Minecraft.Client/Common/Media/font/CHT/DFHeiMedium-B5.ttf",
+                0x2022);  // CHT
         case eFont_Korean:
-            return new UITTFFont("Mojangles_TTF_koKR",
-                                 "Minecraft.Client/Common/Media/font/KOR/BOKMSD.ttf",
-                                 0x2022);  // KOR
+            return new UITTFFont(
+                "Mojangles_TTF_koKR",
+                "Minecraft.Client/Common/Media/font/KOR/BOKMSD.ttf",
+                0x2022);  // KOR
         // 4J-JEV, Cyrillic characters have been added to this font now,
         // (4/July/14) XC_LANGUAGE_RUSSIAN and XC_LANGUAGE_GREEK:
         default:
@@ -795,20 +798,16 @@ UIController::ExternalFunctionCallback(void* user_callback_data, Iggy* player,
 
 // RENDERING
 void UIController::renderScenes() {
-        // Only render player scenes if the game is started
+    // Only render player scenes if the game is started
     if (app.GetGameStarted() &&
         !m_groups[eUIGroup_Fullscreen]->hidesLowerScenes()) {
         for (int i = eUIGroup_Player1; i < eUIGroup_COUNT; ++i) {
-                        m_groups[i]->render();
-            
+            m_groups[i]->render();
         }
     }
 
     // Always render the fullscreen group
-        m_groups[eUIGroup_Fullscreen]->render();
-    
-
-    
+    m_groups[eUIGroup_Fullscreen]->render();
 
 #if defined(ENABLE_IGGY_PERFMON)
     if (m_iggyPerfmonEnabled) {
@@ -939,8 +938,8 @@ void UIController::setupCustomDrawGameState() {
     m_customRenderingClearRect.bottom = LONG_MIN;
 
 #if defined(_WINDOWS64)
-        RenderManager.StartFrame();
-    
+    RenderManager.StartFrame();
+
     gdraw_D3D11_setViewport_4J();
 #elif defined(__linux__)
     RenderManager.StartFrame();
@@ -953,7 +952,7 @@ void UIController::setupCustomDrawGameState() {
     // RenderManager.Clear(GL_DEPTH_BUFFER_BIT, &m_customRenderingClearRect);
     // glClear(GL_DEPTH_BUFFER_BIT);
 
-        glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, m_fScreenWidth, m_fScreenHeight, 0, 1000, 3000);
     glMatrixMode(GL_MODELVIEW);
@@ -962,7 +961,6 @@ void UIController::setupCustomDrawGameState() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(true);
-    
 }
 
 void UIController::setupCustomDrawMatrices(UIScene* scene,
@@ -1142,7 +1140,8 @@ void UIController::registerSubstitutionTexture(const std::wstring& textureName,
     // Remove it if it already exists
     unregisterSubstitutionTexture(textureName, false);
 
-    m_substitutionTextures[textureName] = std::vector<uint8_t>(pbData, pbData + dwLength);
+    m_substitutionTextures[textureName] =
+        std::vector<uint8_t>(pbData, pbData + dwLength);
 }
 
 void UIController::unregisterSubstitutionTexture(

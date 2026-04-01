@@ -210,16 +210,17 @@ public:
 
     static std::vector<uint8_t> param_blocksPlaced(int id, int data, int count);
     static std::vector<uint8_t> param_blocksMined(int id, int data, int count);
-    static std::vector<uint8_t> param_itemsCollected(int id, int aux, int count);
+    static std::vector<uint8_t> param_itemsCollected(int id, int aux,
+                                                     int count);
     static std::vector<uint8_t> param_itemsCrafted(int id, int aux, int count);
     static std::vector<uint8_t> param_itemsSmelted(int id, int aux, int cound);
-    static std::vector<uint8_t> param_itemsUsed(std::shared_ptr<Player> plr,
-                                     std::shared_ptr<ItemInstance> itm);
+    static std::vector<uint8_t> param_itemsUsed(
+        std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm);
     static std::vector<uint8_t> param_itemsBought(int id, int aux, int count);
 
     static std::vector<uint8_t> param_mobKill(std::shared_ptr<Player> plr,
-                                   std::shared_ptr<Mob> mob,
-                                   DamageSource* dmgSrc);
+                                              std::shared_ptr<Mob> mob,
+                                              DamageSource* dmgSrc);
 
     static std::vector<uint8_t> param_breedEntity(eINSTANCEOF mobType);
     static std::vector<uint8_t> param_tamedEntity(eINSTANCEOF mobType);
@@ -369,18 +370,24 @@ protected:
 
     virtual std::vector<uint8_t> getParam_cowsMilked();
 
-    virtual std::vector<uint8_t> getParam_blocksPlaced(int id, int data, int count);
-    virtual std::vector<uint8_t> getParam_blocksMined(int id, int data, int count);
-    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsSmelted(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsUsed(std::shared_ptr<Player> plr,
-                                         std::shared_ptr<ItemInstance> itm);
-    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_blocksPlaced(int id, int data,
+                                                       int count);
+    virtual std::vector<uint8_t> getParam_blocksMined(int id, int data,
+                                                      int count);
+    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux,
+                                                         int count);
+    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux,
+                                                       int count);
+    virtual std::vector<uint8_t> getParam_itemsSmelted(int id, int aux,
+                                                       int count);
+    virtual std::vector<uint8_t> getParam_itemsUsed(
+        std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm);
+    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux,
+                                                      int count);
 
     virtual std::vector<uint8_t> getParam_mobKill(std::shared_ptr<Player> plr,
-                                       std::shared_ptr<Mob> mob,
-                                       DamageSource* dmgSrc);
+                                                  std::shared_ptr<Mob> mob,
+                                                  DamageSource* dmgSrc);
 
     virtual std::vector<uint8_t> getParam_breedEntity(eINSTANCEOF entityId);
     virtual std::vector<uint8_t> getParam_tamedEntity(eINSTANCEOF entityId);
@@ -398,7 +405,8 @@ protected:
     virtual std::vector<uint8_t> getParam_onARail(int distance);
     virtual std::vector<uint8_t> getParam_overkill(int damage);
     virtual std::vector<uint8_t> getParam_openInventory(int menuId);
-    virtual std::vector<uint8_t> getParam_chestfulOfCobblestone(int cobbleStone);
+    virtual std::vector<uint8_t> getParam_chestfulOfCobblestone(
+        int cobbleStone);
     virtual std::vector<uint8_t> getParam_musicToMyEars(int recordId);
 
     virtual std::vector<uint8_t> getParam_noArgs();

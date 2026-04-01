@@ -66,7 +66,8 @@ public:
         HoldingPlayer(std::shared_ptr<Player> player,
                       const MapItemSavedData* parent);
         ~HoldingPlayer();
-        std::vector<char> nextUpdatePacket(std::shared_ptr<ItemInstance> itemInstance);
+        std::vector<char> nextUpdatePacket(
+            std::shared_ptr<ItemInstance> itemInstance);
     };
 
 public:
@@ -101,8 +102,9 @@ public:
     void tickCarriedBy(std::shared_ptr<Player> player,
                        std::shared_ptr<ItemInstance> item);
 
-    std::vector<char> getUpdatePacket(std::shared_ptr<ItemInstance> itemInstance,
-                              Level* level, std::shared_ptr<Player> player);
+    std::vector<char> getUpdatePacket(
+        std::shared_ptr<ItemInstance> itemInstance, Level* level,
+        std::shared_ptr<Player> player);
 
     using SavedData::setDirty;
     void setDirty(int x, int y0, int y1);

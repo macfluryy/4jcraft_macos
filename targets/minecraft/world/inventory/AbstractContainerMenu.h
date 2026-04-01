@@ -44,7 +44,7 @@ public:
     static const int CONTAINER_ID_INVENTORY = 0;
     static const int CONTAINER_ID_CREATIVE = -2;
 
-    std::vector<std::shared_ptr<ItemInstance> > lastSlots;
+    std::vector<std::shared_ptr<ItemInstance>> lastSlots;
     std::vector<Slot*> slots;
     int containerId;
 
@@ -72,7 +72,7 @@ public:
     virtual ~AbstractContainerMenu();
     virtual void addSlotListener(ContainerListener* listener);
     virtual void removeSlotListener(ContainerListener* listener);
-    virtual std::vector<std::shared_ptr<ItemInstance> >* getItems();
+    virtual std::vector<std::shared_ptr<ItemInstance>>* getItems();
     virtual void sendData(int id, int value);
     virtual void broadcastChanges();
     virtual bool needsRendered();

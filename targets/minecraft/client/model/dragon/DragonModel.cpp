@@ -135,12 +135,15 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     float rotScale = 1.5f;
 
     double startComponents[3];
-    std::vector<double> start = std::vector<double>(startComponents, startComponents + 3);
+    std::vector<double> start =
+        std::vector<double>(startComponents, startComponents + 3);
     dragon->getLatencyPos(start, 6, a);
 
     double latencyPosAComponents[3], latencyPosBComponents[3];
-    std::vector<double> latencyPosA = std::vector<double>(latencyPosAComponents, latencyPosAComponents + 3);
-    std::vector<double> latencyPosB = std::vector<double>(latencyPosBComponents, latencyPosBComponents + 3);
+    std::vector<double> latencyPosA =
+        std::vector<double>(latencyPosAComponents, latencyPosAComponents + 3);
+    std::vector<double> latencyPosB =
+        std::vector<double>(latencyPosBComponents, latencyPosBComponents + 3);
     dragon->getLatencyPos(latencyPosA, 5, a);
     dragon->getLatencyPos(latencyPosB, 10, a);
     float rot2 = rotWrap(latencyPosA[0] - latencyPosB[0]);
@@ -159,14 +162,16 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
         dragon->getLatencyPos(p, 5 - i, a);
 
         rr = (float)cosf(i * 0.45f + roff) * 0.15f;
-        neck->yRot = rotWrap(dragon->getHeadPartYRotDiff(i, start, p)) * std::numbers::pi /
-                     180.0f * rotScale;  // 4J replaced "p[0] - start[0] with
-                                         // call to getHeadPartYRotDiff
+        neck->yRot = rotWrap(dragon->getHeadPartYRotDiff(i, start, p)) *
+                     std::numbers::pi / 180.0f *
+                     rotScale;  // 4J replaced "p[0] - start[0] with
+                                // call to getHeadPartYRotDiff
         neck->xRot = rr + (float)(dragon->getHeadPartYOffset(i, start, p)) *
                               std::numbers::pi / 180.0f * rotScale *
                               5.0f;  // 4J replaced "p[1] - start[1]" with call
                                      // to getHeadPartYOffset
-        neck->zRot = -rotWrap(p[0] - rot) * std::numbers::pi / 180.0f * rotScale;
+        neck->zRot =
+            -rotWrap(p[0] - rot) * std::numbers::pi / 180.0f * rotScale;
 
         neck->y = yy;
         neck->z = zz;
@@ -182,10 +187,11 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     head->x = xx;
     dragon->getLatencyPos(p, 0, a);
     head->yRot =
-        rotWrap(dragon->getHeadPartYRotDiff(6, start, p)) * std::numbers::pi / 180.0f *
+        rotWrap(dragon->getHeadPartYRotDiff(6, start, p)) * std::numbers::pi /
+        180.0f *
         1;  // 4J replaced "p[0] - start[0] with call to getHeadPartYRotDiff
-    head->xRot = (float)(dragon->getHeadPartYOffset(6, start, p)) * std::numbers::pi /
-                 180.0f * rotScale * 5.0f;  // 4J Added
+    head->xRot = (float)(dragon->getHeadPartYOffset(6, start, p)) *
+                 std::numbers::pi / 180.0f * rotScale * 5.0f;  // 4J Added
     head->zRot = -rotWrap(p[0] - rot) * std::numbers::pi / 180 * 1;
     head->render(scale, usecompiled);
     glPushMatrix();
@@ -231,8 +237,10 @@ void DragonModel::render(std::shared_ptr<Entity> entity, float time, float r,
     for (int i = 0; i < 12; i++) {
         dragon->getLatencyPos(p, 12 + i, a);
         rr += sinf(i * 0.45f + roff) * 0.05f;
-        neck->yRot = (rotWrap(p[0] - start[0]) * rotScale + 180) * std::numbers::pi / 180;
-        neck->xRot = rr + (float)(p[1] - start[1]) * std::numbers::pi / 180 * rotScale * 5;
+        neck->yRot = (rotWrap(p[0] - start[0]) * rotScale + 180) *
+                     std::numbers::pi / 180;
+        neck->xRot = rr + (float)(p[1] - start[1]) * std::numbers::pi / 180 *
+                              rotScale * 5;
         neck->zRot = rotWrap(p[0] - rot) * std::numbers::pi / 180 * rotScale;
         neck->y = yy;
         neck->z = zz;

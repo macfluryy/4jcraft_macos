@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 
-
 #include "StitchedTexture.h"
 
 // 4J Added this class to store the uv data that we have pre-calculated and

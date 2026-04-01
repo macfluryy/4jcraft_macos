@@ -24,9 +24,10 @@ gMin = ( (cMin>>8)&0xFF )/255.0, bMin = ( cMin&0xFF )/255.0; double rMax = (
 (cMax>>16)&0xFF )/255.0f, gMax = ( (cMax>>8)&0xFF )/255.0, bMax = ( cMax&0xFF
 )/255.0;
 
-rCol = sinf(((float) xa + 0.0f / 3) * std::numbers::pi * 2) * (rMax - rMin) + rMin;
-gCol = sinf(((float) xa + 1.0f / 3) * std::numbers::pi * 2) * (gMax - gMin) + gMin;
-bCol = sinf(((float) xa + 2.0f / 3) * std::numbers::pi * 2) * (bMax - bMin) + bMin;
+rCol = sinf(((float) xa + 0.0f / 3) * std::numbers::pi * 2) * (rMax - rMin) +
+rMin; gCol = sinf(((float) xa + 1.0f / 3) * std::numbers::pi * 2) * (gMax -
+gMin) + gMin; bCol = sinf(((float) xa + 2.0f / 3) * std::numbers::pi * 2) *
+(bMax - bMin) + bMin;
     */
 
     // 4J-JEV: Added,

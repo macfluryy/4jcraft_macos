@@ -11,7 +11,8 @@ Path::Path(std::vector<Node*>& nodes) {
     index = 0;
 
     length = nodes.size();
-    // 4J - copying these nodes over from a std::vector<Node*> (which is an array of Node
+    // 4J - copying these nodes over from a std::vector<Node*> (which is an
+    // array of Node
     // * references) to just a straight array of Nodes, so that this Path is no
     // longer dependent of Nodes allocated elsewhere and can handle its own
     // destruction Note: cameFrom pointer will be useless now but that isn't

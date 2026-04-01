@@ -21,8 +21,7 @@ CConsoleMinecraftApp app;
 
 CConsoleMinecraftApp::CConsoleMinecraftApp() : CMinecraftApp() {}
 
-void CConsoleMinecraftApp::SetRichPresenceContext(int iPad, int contextId) {
-}
+void CConsoleMinecraftApp::SetRichPresenceContext(int iPad, int contextId) {}
 
 void CConsoleMinecraftApp::StoreLaunchData() {}
 void CConsoleMinecraftApp::ExitGame() {

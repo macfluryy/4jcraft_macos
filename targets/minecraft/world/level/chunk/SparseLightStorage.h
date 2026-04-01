@@ -59,7 +59,8 @@
 class TileCompressData_SPU;
 class DataInputStream;
 class DataOutputStream;
-template <typename T> class XLockFreeStack;
+template <typename T>
+class XLockFreeStack;
 
 class SparseLightStorage {
     friend class TileCompressData_SPU;
@@ -92,12 +93,14 @@ public:
     void set(int x, int y, int z, int val);  // Set an individual lighting value
     void setAllBright();  // Set all lighting values to fully bright
     int setDataRegion(
-        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataIn, int x0, int y0, int z0, int x1, int y1,
+        int z1,
         int offset);  // Sets a region of lighting values with the data at
                       // offset position in the array dataIn - external ordering
                       // compatible with java DataLayer
     int getDataRegion(
-        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1, int z1,
+        std::vector<uint8_t>& dataInOut, int x0, int y0, int z0, int x1, int y1,
+        int z1,
         int offset);  // Updates the data at offset position dataInOut with a
                       // region of lighting information - external ordering
                       // compatible with java DataLayer

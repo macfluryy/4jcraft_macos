@@ -491,8 +491,8 @@ public:
     bool m_bChangingSessionType;
     bool m_bReallyChangingSessionType;
 
-                                         // trial, and trying to unlock full
-                                         // version on an upsell
+    // trial, and trying to unlock full
+    // version on an upsell
 
     void loadMediaArchive();
     void loadStringTable();

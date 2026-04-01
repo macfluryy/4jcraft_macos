@@ -547,7 +547,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                 // Setup GDraw, normal game render states and matrices
                 // CustomDrawData *customDrawRegion =
                 // ui.setupCustomDraw(this,region);
-                                CustomDrawData* customDrawRegion =
+                CustomDrawData* customDrawRegion =
                     ui.calculateCustomDraw(region);
                 ui.beginIggyCustomDraw4J(region, customDrawRegion);
                 ui.setupCustomDrawGameState();
@@ -558,14 +558,13 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
 
                 if (!useCommandBuffers || m_needsCacheRendered) {
                     if (useCommandBuffers) RenderManager.CBuffStart(list, true);
-                                        ui.setupCustomDrawMatrices(this, customDrawRegion);
+                    ui.setupCustomDrawMatrices(this, customDrawRegion);
                     _customDrawSlotControl(customDrawRegion, iPad, item, fAlpha,
                                            isFoil, bDecorations,
                                            useCommandBuffers);
                     delete customDrawRegion;
-                    
 
-                                        // Draw all the cached slots
+                    // Draw all the cached slots
                     for (auto it = m_cachedSlotDraw.begin();
                          it != m_cachedSlotDraw.end(); ++it) {
                         CachedSlotDrawData* drawData = *it;
@@ -578,7 +577,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                         delete drawData->customDrawRegion;
                         delete drawData;
                     }
-                    
+
                     if (useCommandBuffers) RenderManager.CBuffEnd();
                 }
                 m_cachedSlotDraw.clear();
@@ -590,7 +589,7 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
 
                 pMinecraft->player = oldPlayer;
             } else {
-                                CachedSlotDrawData* drawData = new CachedSlotDrawData();
+                CachedSlotDrawData* drawData = new CachedSlotDrawData();
                 drawData->item = item;
                 drawData->fAlpha = fAlpha;
                 drawData->isFoil = isFoil;
@@ -598,7 +597,6 @@ void UIScene::customDrawSlotControl(IggyCustomDrawCallbackRegion* region,
                 drawData->customDrawRegion = ui.calculateCustomDraw(region);
 
                 m_cachedSlotDraw.push_back(drawData);
-                
             }
         } else {
             // Setup GDraw, normal game render states and matrices
@@ -676,11 +674,10 @@ void UIScene::_customDrawSlotControl(CustomDrawData* region, int iPad,
         glTranslatef((float)-(sx + sxoffs), (float)-(sy + syoffs), 0);
     }
 
-        if (m_pItemRenderer == nullptr) m_pItemRenderer = new ItemRenderer();
+    if (m_pItemRenderer == nullptr) m_pItemRenderer = new ItemRenderer();
     m_pItemRenderer->renderAndDecorateItem(
         pMinecraft->font, pMinecraft->textures, item, x, y, scaleX, scaleY,
         fAlpha, isFoil, false, !usingCommandBuffer);
-    
 
     if (pop > 0) {
         glPopMatrix();

@@ -254,8 +254,7 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
 
     itemInHandRenderer->tick();
 
-        tickRain();
-    
+    tickRain();
 
     darkenWorldAmountO = darkenWorldAmount;
     if (BossMobGuiInfo::darkenWorld) {
@@ -459,7 +458,8 @@ void GameRenderer::bobView(float a) {
     glTranslatef((float)sinf(b * std::numbers::pi) * bob * 0.5f,
                  -(float)std::abs(cosf(b * std::numbers::pi) * bob), 0);
     glRotatef((float)sinf(b * std::numbers::pi) * bob * 3, 0, 0, 1);
-    glRotatef((float)std::abs(cosf(b * std::numbers::pi - 0.2f) * bob) * 5, 1, 0, 0);
+    glRotatef((float)std::abs(cosf(b * std::numbers::pi - 0.2f) * bob) * 5, 1,
+              0, 0);
     glRotatef((float)tilt, 1, 0, 0);
 }
 
@@ -530,10 +530,10 @@ void GameRenderer::moveCameraToPlayer(float a) {
                 xRot += 180.0f;
             }
 
-            double xd = -sinf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi) *
-                        cameraDist;
-            double zd = cosf(yRot / 180 * std::numbers::pi) * cosf(xRot / 180 * std::numbers::pi) *
-                        cameraDist;
+            double xd = -sinf(yRot / 180 * std::numbers::pi) *
+                        cosf(xRot / 180 * std::numbers::pi) * cameraDist;
+            double zd = cosf(yRot / 180 * std::numbers::pi) *
+                        cosf(xRot / 180 * std::numbers::pi) * cameraDist;
             double yd = -sinf(xRot / 180 * std::numbers::pi) * cameraDist;
 
             for (int i = 0; i < 8; i++) {
@@ -768,8 +768,8 @@ void GameRenderer::renderItemInHand(float a, int eye) {
             !mc->cameraTargetPlayer->isSleeping()) {
             if (!mc->options->hideGui && !mc->gameMode->isCutScene()) {
                 turnOnLightLayer(a, true);
-                                itemInHandRenderer->render(a);
-                
+                itemInHandRenderer->render(a);
+
                 turnOffLightLayer(a);
             }
         }
@@ -1165,7 +1165,7 @@ int GameRenderer::runUpdate(void* lpParam) {
             m_deleteStackSparseDataStorage.clear();
         }
 
-        //		
+        //
 
         m_updateEvents->set(eUpdateEventIsFinished);
     }
@@ -1278,7 +1278,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             GL11::glShadeModel(GL11::GL_SMOOTH);
         }
 
-                //		Culler *frustum = new FrustumCuller();
+        //		Culler *frustum = new FrustumCuller();
         FrustumCuller frustObj;
         Culler* frustum = &frustObj;
         frustum->prepare(xOff, yOff, zOff);
@@ -1287,16 +1287,15 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             FRAME_PROFILE_SCOPE(ChunkCull);
             mc->levelRenderer->cull(frustum, a);
         }
-        
 
 #if !defined(MULTITHREAD_ENABLE)
         if ((i == 0) && updateChunks)  // 4J - added updateChunks condition
         {
             int PIXPass = 0;
-                        do {
+            do {
                 bool retval =
                     mc->levelRenderer->updateDirtyChunks(cameraEntity, false);
-                
+
                 if (retval) break;
 
                 if (until == 0) break;
@@ -1305,7 +1304,6 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 if (diff < 0) break;
                 if (diff > 1000000000) break;
             } while (true);
-            
         }
 #endif
 
@@ -1323,14 +1321,13 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         mc->textures->bindTexture(
             &TextureAtlas::LOCATION_BLOCKS);  // 4J was L"/terrain.png"
         Lighting::turnOff();
-                levelRenderer->render(cameraEntity, 0, a, updateChunks);
-        
+        levelRenderer->render(cameraEntity, 0, a, updateChunks);
 
         GL11::glShadeModel(GL11::GL_FLAT);
 
         if (cameraFlip == 0) {
             Lighting::turnOn();
-                        // 4J - for entities, don't include the "a" factor that interpolates
+            // 4J - for entities, don't include the "a" factor that interpolates
             // from the old to new position, as the AABBs for the entities are
             // already fully at the new position This fixes flickering
             // minecarts, and pigs that you are riding on
@@ -1349,8 +1346,8 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 FRAME_PROFILE_SCOPE(Entity);
                 levelRenderer->renderEntities(&cameraPos, frustum, a);
             }
-            
-                        turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
+
+            turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
             {
                 FRAME_PROFILE_SCOPE(Particle);
                 particleEngine->renderLit(cameraEntity, a,
@@ -1363,7 +1360,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 particleEngine->render(cameraEntity, a,
                                        ParticleEngine::OPAQUE_LIST);
             }
-            
+
             turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
 
             if ((mc->hitResult != nullptr) &&
@@ -1401,29 +1398,27 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             }
 
             glBlendFunc(GL_ZERO, GL_ONE);
-                        int visibleWaterChunks =
+            int visibleWaterChunks =
                 levelRenderer->render(cameraEntity, 1, a, updateChunks);
-            
+
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             if (visibleWaterChunks > 0) {
-                                levelRenderer->render(
+                levelRenderer->render(
                     cameraEntity, 1, a,
                     updateChunks);  // 4J - chanaged, used to be
                                     // renderSameAsLast but we don't support
                                     // that anymore
-                
             }
 
             GL11::glShadeModel(GL11::GL_FLAT);
         } else {
-                        levelRenderer->render(cameraEntity, 1, a, updateChunks);
-            
+            levelRenderer->render(cameraEntity, 1, a, updateChunks);
         }
 
         // 4J - added - have split out translucent particle rendering so that it
         // happens after the water is rendered, primarily for fireworks
-                Lighting::turnOn();
+        Lighting::turnOn();
         turnOnLightLayer(a);  // 4J - brought forward from 1.8.2
         {
             FRAME_PROFILE_SCOPE(Particle);
@@ -1437,7 +1432,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             particleEngine->render(cameraEntity, a,
                                    ParticleEngine::TRANSLUCENT_LIST);
         }
-        
+
         turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
         ////////////////////////// End of 4J added section
 
@@ -1460,7 +1455,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 
         /* 4J - moved rain rendering to after clouds so that it alpha blends
         onto them properly         renderSnowAndRain(a);
-        
+
         glDisable(GL_FOG);
         */
 
@@ -1483,11 +1478,11 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         // blend properly onto them
         setupFog(0, a);
         glEnable(GL_FOG);
-                {
+        {
             FRAME_PROFILE_SCOPE(WeatherSky);
             renderSnowAndRain(a);
         }
-        
+
         glDisable(GL_FOG);
 
         if (zoom == 1) {
@@ -1508,8 +1503,8 @@ void GameRenderer::prepareAndRenderClouds(LevelRenderer* levelRenderer,
         glPushMatrix();
         setupFog(0, a);
         glEnable(GL_FOG);
-                levelRenderer->renderClouds(a);
-        
+        levelRenderer->renderClouds(a);
+
         glDisable(GL_FOG);
         setupFog(1, a);
         glPopMatrix();
@@ -1557,11 +1552,9 @@ void GameRenderer::tickRain() {
             float za = random->nextFloat();
             if (t > 0) {
                 if (Tile::tiles[t]->material == Material::lava) {
-                    mc->particleEngine->add(
-                        std::make_shared<SmokeParticle>(
-                            level, x + xa,
-                            y + 0.1f - Tile::tiles[t]->getShapeY0(), z + za, 0,
-                            0, 0));
+                    mc->particleEngine->add(std::make_shared<SmokeParticle>(
+                        level, x + xa, y + 0.1f - Tile::tiles[t]->getShapeY0(),
+                        z + za, 0, 0, 0));
                 } else {
                     if (random->nextInt(++rainPosSamples) == 0) {
                         rainPosX = x + xa;
@@ -1867,8 +1860,8 @@ void GameRenderer::setupClearColor(float a) {
     fb = (float)fogColor.z;
 
     if (mc->options->viewDistance < 2) {
-        Vec3 sunAngle = sinf(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0)
-                                                            : Vec3(1, 0, 0);
+        Vec3 sunAngle =
+            sinf(level->getSunAngle(a)) > 0 ? Vec3(-1, 0, 0) : Vec3(1, 0, 0);
         float d = (float)player->getViewVector(a).dot(sunAngle);
         if (d < 0) d = 0;
         if (d > 0) {

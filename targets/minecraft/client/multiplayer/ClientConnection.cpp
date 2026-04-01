@@ -990,7 +990,7 @@ void ClientConnection::handleChunkTilesUpdate(
     MultiPlayerLevel* dimensionLevel =
         (MultiPlayerLevel*)minecraft->levels[packet->levelIdx];
     if (dimensionLevel) {
-                LevelChunk* lc = dimensionLevel->getChunk(packet->xc, packet->zc);
+        LevelChunk* lc = dimensionLevel->getChunk(packet->xc, packet->zc);
         int xo = packet->xc * 16;
         int zo = packet->zc * 16;
         // 4J Stu - Unshare before we make any changes incase the server is
@@ -1011,8 +1011,8 @@ void ClientConnection::handleChunkTilesUpdate(
             // If this is going to actually change a tile, we'll need to unshare
             int prevTile = lc->getTile(x, y, z);
             if ((tile != prevTile && !forcedUnshare)) {
-                                dimensionLevel->unshareChunkAt(xo, zo);
-                
+                dimensionLevel->unshareChunkAt(xo, zo);
+
                 forcedUnshare = true;
             }
 
@@ -1056,12 +1056,9 @@ void ClientConnection::handleChunkTilesUpdate(
             dimensionLevel->removeUnusedTileEntitiesInRegion(
                 xo + x, y, zo + z, xo + x + 1, y + 1, zo + z + 1);
         }
-                dimensionLevel->shareChunkAt(xo,
+        dimensionLevel->shareChunkAt(xo,
                                      zo);  // 4J - added - only shares if chunks
                                            // are same on server & client
-        
-
-        
     }
 }
 
@@ -1071,32 +1068,28 @@ void ClientConnection::handleBlockRegionUpdate(
     MultiPlayerLevel* dimensionLevel =
         (MultiPlayerLevel*)minecraft->levels[packet->levelIdx];
     if (dimensionLevel) {
-        
         int y1 = packet->y + packet->ys;
         if (packet->bIsFullChunk) {
             y1 = Level::maxBuildHeight;
             if (packet->buffer.size() > 0) {
-                                LevelChunk::reorderBlocksAndDataToXZY(packet->y, packet->xs,
+                LevelChunk::reorderBlocksAndDataToXZY(packet->y, packet->xs,
                                                       packet->ys, packet->zs,
                                                       &packet->buffer);
-                
             }
         }
-                dimensionLevel->clearResetRegion(packet->x, packet->y, packet->z,
+        dimensionLevel->clearResetRegion(packet->x, packet->y, packet->z,
                                          packet->x + packet->xs - 1, y1 - 1,
                                          packet->z + packet->zs - 1);
-        
 
-                // Only full chunks send lighting information now - added flag to end of
+        // Only full chunks send lighting information now - added flag to end of
         // this call
         dimensionLevel->setBlocksAndData(packet->x, packet->y, packet->z,
                                          packet->xs, packet->ys, packet->zs,
                                          packet->buffer, packet->bIsFullChunk);
-        
 
         //		OutputDebugString("END BRU\n");
 
-                // 4J - remove any tite entities in this region which are associated
+        // 4J - remove any tite entities in this region which are associated
         // with a tile that is now no longer a tile entity. Without doing this
         // we end up with stray tile entities kicking round, which leads to a
         // bug where chests can't be properly placed again in a location after
@@ -1104,18 +1097,15 @@ void ClientConnection::handleBlockRegionUpdate(
         dimensionLevel->removeUnusedTileEntitiesInRegion(
             packet->x, packet->y, packet->z, packet->x + packet->xs, y1,
             packet->z + packet->zs);
-        
 
         // If this is a full packet for a chunk, make sure that the cache now
         // considers that it has data for this chunk - this is used to determine
         // whether to bother rendering mobs or not, so we don't have them in
         // crazy positions before the data is there
         if (packet->bIsFullChunk) {
-                        dimensionLevel->dataReceivedForChunk(packet->x >> 4,
+            dimensionLevel->dataReceivedForChunk(packet->x >> 4,
                                                  packet->z >> 4);
-            
         }
-        
     }
 }
 
@@ -1135,7 +1125,6 @@ void ClientConnection::handleTileUpdate(
     MultiPlayerLevel* dimensionLevel =
         (MultiPlayerLevel*)minecraft->levels[packet->levelIdx];
     if (dimensionLevel) {
-        
         if (g_NetworkManager.IsHost()) {
             // 4J Stu - Unshare before we make any changes incase the server is
             // already another step ahead of us Fix for #7904 - Gameplay:
@@ -1147,8 +1136,7 @@ void ClientConnection::handleTileUpdate(
             int prevData =
                 dimensionLevel->getData(packet->x, packet->y, packet->z);
             if (packet->block != prevTile || packet->data != prevData) {
-                                dimensionLevel->unshareChunkAt(packet->x, packet->z);
-                
+                dimensionLevel->unshareChunkAt(packet->x, packet->z);
             }
         }
 
@@ -1161,10 +1149,8 @@ void ClientConnection::handleTileUpdate(
                 dimensionLevel, packet->x, packet->y, packet->z);
         }
 
-                bool tileWasSet = dimensionLevel->doSetTileAndData(
+        bool tileWasSet = dimensionLevel->doSetTileAndData(
             packet->x, packet->y, packet->z, packet->block, packet->data);
-
-        
 
         // 4J - remove any tite entities in this region which are associated
         // with a tile that is now no longer a tile entity. Without doing this
@@ -1175,12 +1161,9 @@ void ClientConnection::handleTileUpdate(
             packet->x, packet->y, packet->z, packet->x + 1, packet->y + 1,
             packet->z + 1);
 
-                dimensionLevel->shareChunkAt(
+        dimensionLevel->shareChunkAt(
             packet->x, packet->z);  // 4J - added - only shares if chunks are
                                     // same on server & client
-        
-
-        
     }
 }
 
@@ -2438,9 +2421,9 @@ void ClientConnection::handleRespawn(std::shared_ptr<RespawnPacket> packet) {
 void ClientConnection::handleExplosion(std::shared_ptr<ExplodePacket> packet) {
     if (!packet->m_bKnockbackOnly) {
         // app.DebugPrintf("Received ExplodePacket with explosion data\n");
-                Explosion* e = new Explosion(minecraft->level, nullptr, packet->x,
+        Explosion* e = new Explosion(minecraft->level, nullptr, packet->x,
                                      packet->y, packet->z, packet->r);
-        
+
         // Fix for #81758 - TCR 006 BAS Non-Interactive Pause: TU9: Performance:
         // Gameplay: After detonating bunch of TNT, game enters unresponsive
         // state for couple of seconds. The changes we are making here have been
@@ -2453,8 +2436,7 @@ void ClientConnection::handleExplosion(std::shared_ptr<ExplodePacket> packet) {
         // rather than copying around
         e->finalizeExplosion(true, &packet->toBlow);
         mpLevel->enableResetChanges(true);
-        
-        
+
         delete e;
     } else {
         // app.DebugPrintf("Received ExplodePacket with knockback only data\n");
@@ -2708,8 +2690,8 @@ void ClientConnection::handleContainerAck(
     }
     if (menu != nullptr) {
         if (!packet->accepted) {
-            send(std::make_shared<ContainerAckPacket>(
-                packet->containerId, packet->uid, true));
+            send(std::make_shared<ContainerAckPacket>(packet->containerId,
+                                                      packet->uid, true));
         }
     }
 }
@@ -2833,9 +2815,8 @@ void ClientConnection::handleContainerClose(
 
 void ClientConnection::handleTileEvent(
     std::shared_ptr<TileEventPacket> packet) {
-        minecraft->level->tileEvent(packet->x, packet->y, packet->z, packet->tile,
+    minecraft->level->tileEvent(packet->x, packet->y, packet->z, packet->tile,
                                 packet->b0, packet->b1);
-    
 }
 
 void ClientConnection::handleTileDestruction(
@@ -2877,8 +2858,7 @@ void ClientConnection::handleGameEvent(
         app.DebugPrintf("handleGameEvent packet for WIN_GAME - %d\n",
                         m_userIndex);
         // This just allows it to be shown
-        if (minecraft->localgameModes[InputManager.GetPrimaryPad()] !=
-            nullptr)
+        if (minecraft->localgameModes[InputManager.GetPrimaryPad()] != nullptr)
             minecraft->localgameModes[InputManager.GetPrimaryPad()]
                 ->getTutorial()
                 ->showTutorialPopup(false);
@@ -3446,7 +3426,8 @@ void ClientConnection::checkDeferredEntityLinkPackets(int newEntityId) {
         bool remove = false;
 
         // Only consider recently deferred packets
-        int tickInterval = PlatformTime::GetTickCount() - deferred->m_recievedTick;
+        int tickInterval =
+            PlatformTime::GetTickCount() - deferred->m_recievedTick;
         if (tickInterval < MAX_ENTITY_LINK_DEFERRAL_INTERVAL) {
             // Note: we assume it's the destination entity
             if (deferred->m_packet->destId == newEntityId) {

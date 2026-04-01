@@ -15,7 +15,8 @@ private:
 public:
     FenceTile(int id, const std::wstring& texture, Material* material);
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes,
+                          std::shared_ptr<Entity> source);
     virtual void updateShape(
         LevelSource* level, int x, int y, int z, int forceData = -1,
         std::shared_ptr<TileEntity> forceEntity = std::shared_ptr<

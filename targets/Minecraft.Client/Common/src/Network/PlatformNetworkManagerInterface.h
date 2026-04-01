@@ -11,7 +11,6 @@
 #include "NetworkPlayerInterface.h"
 #include "SessionInfo.h"
 
-
 class ClientConnection;
 class Minecraft;
 class CGameNetworkManager;

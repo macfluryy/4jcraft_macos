@@ -11,8 +11,8 @@
 
 #include "java/InputOutputStream/InputStream.h"
 #include "java/InputOutputStream/OutputStream.h"
-#include "console_helpers/C4JThread.h" // 4jcraft TODO
-#include "console_helpers/ThreadName.h" // 4jcraft TODO
+#include "console_helpers/C4JThread.h"   // 4jcraft TODO
+#include "console_helpers/ThreadName.h"  // 4jcraft TODO
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 
@@ -30,8 +30,9 @@ public:
     class SocketOutputStream : public OutputStream {
     public:
         // The flags are those that can be used for the QNet SendData function
-        virtual void writeWithFlags(const std::vector<uint8_t>& b, unsigned int offset,
-                                    unsigned int length, int flags) {
+        virtual void writeWithFlags(const std::vector<uint8_t>& b,
+                                    unsigned int offset, unsigned int length,
+                                    int flags) {
             write(b, offset, length);
         }
     };
@@ -49,7 +50,8 @@ private:
 
         virtual int read();
         virtual int read(std::vector<uint8_t>& b);
-        virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
+        virtual int read(std::vector<uint8_t>& b, unsigned int offset,
+                         unsigned int length);
         virtual void close();
         virtual int64_t skip(int64_t n) {
             return n;
@@ -85,7 +87,8 @@ private:
 
         virtual int read();
         virtual int read(std::vector<uint8_t>& b);
-        virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
+        virtual int read(std::vector<uint8_t>& b, unsigned int offset,
+                         unsigned int length);
         virtual void close();
         virtual int64_t skip(int64_t n) {
             return n;
@@ -104,8 +107,9 @@ private:
         virtual void write(const std::vector<uint8_t>& b);
         virtual void write(const std::vector<uint8_t>& b, unsigned int offset,
                            unsigned int length);
-        virtual void writeWithFlags(const std::vector<uint8_t>& b, unsigned int offset,
-                                    unsigned int length, int flags);
+        virtual void writeWithFlags(const std::vector<uint8_t>& b,
+                                    unsigned int offset, unsigned int length,
+                                    int flags);
         virtual void close();
         virtual void flush() {}
     };

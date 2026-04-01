@@ -41,7 +41,7 @@ MinecartModel::MinecartModel() : Model() {
     cubes[1]->yRot = std::numbers::pi / 2 * 3;
     cubes[2]->yRot = std::numbers::pi / 2 * 1;
     cubes[3]->yRot = std::numbers::pi / 2 * 2;
-    cubes[5]->xRot = -std::numbers::pi  / 2;
+    cubes[5]->xRot = -std::numbers::pi / 2;
 
     // 4J added - compile now to avoid random performance hit first time cubes
     // are rendered

@@ -51,8 +51,8 @@ private:
 public:
     bool setStepShape(LevelSource* level, int x, int y, int z);
     bool setInnerPieceShape(LevelSource* level, int x, int y, int z);
-    void addAABBs(Level* level, int x, int y, int z, AABB* box, std::vector<AABB>* boxes,
-                  std::shared_ptr<Entity> source);
+    void addAABBs(Level* level, int x, int y, int z, AABB* box,
+                  std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
 
     /** DELEGATES: **/
 public:

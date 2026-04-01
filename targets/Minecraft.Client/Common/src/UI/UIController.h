@@ -147,7 +147,8 @@ private:
 
     static std::uint32_t m_dwTrialTimerLimitSecs;
 
-    std::unordered_map<std::wstring, std::vector<uint8_t>> m_substitutionTextures;
+    std::unordered_map<std::wstring, std::vector<uint8_t>>
+        m_substitutionTextures;
 
     typedef struct _CachedMovieData {
         std::vector<uint8_t> m_ba;

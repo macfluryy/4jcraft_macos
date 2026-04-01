@@ -15,5 +15,5 @@ void PerformanceTimer::PrintElapsedTime(const std::wstring& description) {
         std::chrono::steady_clock::now() - m_startTime;
 
     fprintf(stderr, "TIMER: %ls: Elapsed time %f\n", description.c_str(),
-                    elapsedTime.count());
+            elapsedTime.count());
 }

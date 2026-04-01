@@ -397,7 +397,7 @@ void TitleScreen::render(int xm, int ym, float a) {
 
     glRotatef(-20, 0, 0, 1);
     float sss = 1.8f - std::abs(sinf(System::currentTimeMillis() % 1000 /
-                                         1000.0f * std::numbers::pi * 2) *
+                                     1000.0f * std::numbers::pi * 2) *
                                 0.1f);
 
     sss = sss * 100 / (font->width(splash) + 8 * 4);

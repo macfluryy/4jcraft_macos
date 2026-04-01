@@ -630,7 +630,8 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
         }
         }
         */
-        std::vector<Recipy*>* recipes = ((Recipes*)Recipes::getInstance())->getRecipies();
+        std::vector<Recipy*>* recipes =
+            ((Recipes*)Recipes::getInstance())->getRecipies();
         Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
             Recipes::getInstance()->getRecipeIngredientsArray();
         int iRecipeC = (int)recipes->size();
@@ -871,7 +872,8 @@ void IUIScene_CraftingMenu::CheckRecipesAvailable() {
 
     // run through the canbemade list and update the icons displayed
     int iIndex = 0;
-    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes
+    // *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -993,7 +995,8 @@ void IUIScene_CraftingMenu::UpdateHighlight() {
 //
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::UpdateVerticalSlots() {
-    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes
+    // *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -1064,7 +1067,8 @@ void IUIScene_CraftingMenu::UpdateVerticalSlots() {
 //
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::DisplayIngredients() {
-    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes
+    // *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -1231,7 +1235,8 @@ void IUIScene_CraftingMenu::DisplayIngredients() {
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
     int iIDSString = 0;
-    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes
+    // *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
 
@@ -1319,7 +1324,8 @@ void IUIScene_CraftingMenu::UpdateDescriptionText(bool bCanBeMade) {
 //
 //////////////////////////////////////////////////////////////////////////
 void IUIScene_CraftingMenu::UpdateTooltips() {
-    // std::vector<Recipy*> *recipes = ((Recipes *)Recipes::getInstance())->getRecipies();
+    // std::vector<Recipy*> *recipes = ((Recipes
+    // *)Recipes::getInstance())->getRecipies();
     Recipy::INGREDIENTS_REQUIRED* pRecipeIngredientsRequired =
         Recipes::getInstance()->getRecipeIngredientsArray();
     // Update tooltips

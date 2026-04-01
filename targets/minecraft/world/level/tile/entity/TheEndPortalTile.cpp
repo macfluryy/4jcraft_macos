@@ -49,7 +49,8 @@ bool TheEndPortal::shouldRenderFace(LevelSource* level, int x, int y, int z,
 }
 
 void TheEndPortal::addAABBs(Level* level, int x, int y, int z, AABB* box,
-                            std::vector<AABB>* boxes, std::shared_ptr<Entity> source) {}
+                            std::vector<AABB>* boxes,
+                            std::shared_ptr<Entity> source) {}
 
 bool TheEndPortal::isSolidRender(bool isServerLevel) { return false; }
 

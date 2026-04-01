@@ -102,7 +102,8 @@ public:
     protected:
         virtual bool createChest(Level* level, BoundingBox* chunkBB,
                                  Random* random, int x, int y, int z,
-                                 const std::vector<WeighedTreasure*>& treasure, int numRolls);
+                                 const std::vector<WeighedTreasure*>& treasure,
+                                 int numRolls);
 
     public:
         virtual bool postProcess(Level* level, Random* random,

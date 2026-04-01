@@ -140,7 +140,8 @@ public:
 
     void updateLastModifiedTime() {
         auto now = std::chrono::system_clock::now().time_since_epoch();
-        data.lastModifiedTime = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
+        data.lastModifiedTime =
+            std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
     }
 
     /*

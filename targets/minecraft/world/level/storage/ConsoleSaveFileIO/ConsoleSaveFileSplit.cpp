@@ -445,8 +445,8 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
         unsigned int regionSizeCompressed;
 
         PlatformStorage.GetSubfileDetails(i, (int*)&regionIndex,
-                                         (void**)&regionDataCompressed,
-                                         &regionSizeCompressed);
+                                          (void**)&regionDataCompressed,
+                                          &regionSizeCompressed);
 
         RegionFileReference* regionFileRef = new RegionFileReference(
             i, regionIndex, regionSizeCompressed, regionDataCompressed);
@@ -507,7 +507,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
                 // 4J Stu - Saves created between 2/12/2011 and 7/12/2011 will
                 // have this problem
                 app.DebugPrintf("Invalid save data format\n");
-                memset(pvSaveMem, 0,  fileSize);
+                memset(pvSaveMem, 0, fileSize);
                 // Clear the first 8 bytes that reference the header
                 header.WriteHeader(pvSaveMem);
             } else {
@@ -544,7 +544,7 @@ void ConsoleSaveFileSplit::_init(const std::wstring& fileName, void* pvSaveData,
 #if !defined(_CONTENT_PACKAGE)
                     __debugbreak();
 #endif
-                    memset(pvSaveMem, 0,  fileSize);
+                    memset(pvSaveMem, 0, fileSize);
                     // Clear the first 8 bytes that reference the header
                     header.WriteHeader(pvSaveMem);
                 }
@@ -690,8 +690,7 @@ void ConsoleSaveFileSplit::PrepareForWrite(FileEntry* file,
     //	bytesToGrowBy = 1024;
 
     // Move all the data beyond us
-        MoveDataBeyond(file, bytesToGrowBy);
-    
+    MoveDataBeyond(file, bytesToGrowBy);
 
     // Update our length
     if (file->data.length < 0) file->data.length = 0;
@@ -973,8 +972,8 @@ void ConsoleSaveFileSplit::tick() {
         // as %d bytes\n",regionRef->fileEntry->getRegionFileIndex(),
         // regionRef->dataCompressedSize);
         PlatformStorage.UpdateSubfile(regionRef->index,
-                                     regionRef->dataCompressed,
-                                     regionRef->dataCompressedSize);
+                                      regionRef->dataCompressed,
+                                      regionRef->dataCompressedSize);
         regionRef->dirty = false;
         regionRef->lastWritten = System::currentTimeMillis();
 
@@ -1103,7 +1102,7 @@ void ConsoleSaveFileSplit::MoveDataBeyond(FileEntry* file,
                     uiCopyEnd = uiFromEnd;
                 }
                 memcpy((void*)(uiCopyStart + nNumberOfBytesToWrite),
-                        (void*)uiCopyStart, uiCopyEnd - uiCopyStart);
+                       (void*)uiCopyStart, uiCopyEnd - uiCopyStart);
             }
         }
     } else {
@@ -1244,7 +1243,7 @@ void ConsoleSaveFileSplit::processSubfilesForWrite() {
         if (region->dirty) {
             region->Compress();
             PlatformStorage.UpdateSubfile(region->index, region->dataCompressed,
-                                         region->dataCompressedSize);
+                                          region->dataCompressedSize);
             region->dirty = false;
             region->lastWritten = System::currentTimeMillis();
         }
@@ -1314,16 +1313,16 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         compLength = 0;
 
         // Pre-calculate the buffer size required for the compressed data
-                // Save the start time
+        // Save the start time
         qwTime = PlatformTime::QueryPerformanceCounter();
         Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
         qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-        fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
+        fElapsedTime =
+            static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
         app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
-        
 
         // We add 4 bytes to the start so that we can signal compressed data
         // And another 4 bytes to store the decompressed data size
@@ -1335,18 +1334,18 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
 
     if (compData != nullptr) {
         // Re-compress all save data before we save it to disk
-                // Save the start time
+        // Save the start time
         qwTime = PlatformTime::QueryPerformanceCounter();
         Compression::getCompression()->Compress(compData + 8, &compLength,
                                                 pvSaveMem, fileSize);
         qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-        fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
+        fElapsedTime =
+            static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
         app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
-        
 
-        memset(compData, 0,  8);
+        memset(compData, 0, 8);
         int saveVer = 0;
         memcpy(compData, &saveVer, sizeof(int));
         memcpy(compData + 4, &fileSize, sizeof(int));
@@ -1362,7 +1361,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             unsigned int dwDataSizeSaveImage = 0;
 
             std::uint8_t bTextMetadata[88];
-            memset(bTextMetadata, 0,  88);
+            memset(bTextMetadata, 0, 88);
 
             int64_t seed = 0;
             bool hasSeed = false;
@@ -1382,8 +1381,8 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
 
             // set the icon and save image
             PlatformStorage.SetSaveImages(pbThumbnailData, dwThumbnailDataSize,
-                                         pbDataSaveImage, dwDataSizeSaveImage,
-                                         bTextMetadata, iTextMetadataBytes);
+                                          pbDataSaveImage, dwDataSizeSaveImage,
+                                          bTextMetadata, iTextMetadataBytes);
             app.DebugPrintf("Save thumbnail size %d\n", dwThumbnailDataSize);
         }
 
@@ -1392,8 +1391,8 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             PlatformStorage.GetSaveUniqueNumber(&saveOrCheckpointId);
 
         // save the data
-        PlatformStorage.SaveSaveData(&ConsoleSaveFileSplit::SaveSaveDataCallback,
-                                    this);
+        PlatformStorage.SaveSaveData(
+            &ConsoleSaveFileSplit::SaveSaveDataCallback, this);
 #if !defined(_CONTENT_PACKAGE)
         if (app.DebugSettingsOn()) {
             if (app.GetWriteSavesToFolderEnabled()) {

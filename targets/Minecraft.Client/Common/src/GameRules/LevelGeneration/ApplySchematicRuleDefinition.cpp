@@ -166,7 +166,7 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
     if (m_completed) return;
     if (chunk->level->dimension->id != m_dimension) return;
 
-        if (m_schematic == nullptr)
+    if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     if (!m_locationBox.has_value()) updateLocationBox();
@@ -178,14 +178,12 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
         app.DebugPrintf("Applying schematic %ls to chunk (%d,%d)\n",
                         m_schematicName.c_str(), chunk->x, chunk->z);
 #endif
-                m_totalBlocksChanged += m_schematic->applyBlocksAndData(
+        m_totalBlocksChanged += m_schematic->applyBlocksAndData(
             chunk, chunkBox, &*m_locationBox, m_rotation);
-        
 
         // Add the tileEntities
-                m_schematic->applyTileEntities(chunk, chunkBox, &*m_locationBox,
+        m_schematic->applyTileEntities(chunk, chunkBox, &*m_locationBox,
                                        m_rotation);
-        
 
         // TODO This does not take into account things that go outside the
         // bounds of the world
@@ -199,7 +197,6 @@ void ApplySchematicRuleDefinition::processSchematic(AABB* chunkBox,
             // m_schematic = nullptr;
         }
     }
-    
 }
 
 void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
@@ -207,7 +204,7 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
     if (m_completed) return;
     if (chunk->level->dimension->id != m_dimension) return;
 
-        if (m_schematic == nullptr)
+    if (m_schematic == nullptr)
         m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
 
     if (!m_locationBox.has_value()) updateLocationBox();
@@ -219,9 +216,8 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
         app.DebugPrintf("Applying schematic %ls to chunk (%d,%d)\n",
                         m_schematicName.c_str(), chunk->x, chunk->z);
 #endif
-                m_totalBlocksChangedLighting += m_schematic->applyLighting(
+        m_totalBlocksChangedLighting += m_schematic->applyLighting(
             chunk, chunkBox, &*m_locationBox, m_rotation);
-        
 
         // TODO This does not take into account things that go outside the
         // bounds of the world
@@ -235,7 +231,6 @@ void ApplySchematicRuleDefinition::processSchematicLighting(AABB* chunkBox,
             // m_schematic = nullptr;
         }
     }
-    
 }
 
 bool ApplySchematicRuleDefinition::checkIntersects(int x0, int y0, int z0,

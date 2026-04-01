@@ -14,7 +14,8 @@ private:
     const int numRolls;
 
 public:
-    BonusChestFeature(std::vector<WeighedTreasure*>& treasureList, int numRolls);
+    BonusChestFeature(std::vector<WeighedTreasure*>& treasureList,
+                      int numRolls);
 
     virtual bool place(Level* level, Random* random, int x, int y, int z);
     bool place(Level* level, Random* random, int x, int y, int z,

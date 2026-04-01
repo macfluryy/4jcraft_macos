@@ -55,8 +55,8 @@ MultiPlayerLevel::ResetInfo::ResetInfo(int x, int y, int z, int tile,
 MultiPlayerLevel::MultiPlayerLevel(ClientConnection* connection,
                                    LevelSettings* levelSettings, int dimension,
                                    int difficulty)
-    : Level(std::make_shared<MockedLevelStorage>(),
-            L"MpServer", Dimension::getNew(dimension), levelSettings, false) {
+    : Level(std::make_shared<MockedLevelStorage>(), L"MpServer",
+            Dimension::getNew(dimension), levelSettings, false) {
     minecraft = Minecraft::GetInstance();
 
     // 4J - this this used to be called in parent ctor via a virtual fn
@@ -116,7 +116,7 @@ void MultiPlayerLevel::shareChunkAt(int x, int z) {
 }
 
 void MultiPlayerLevel::tick() {
-        setGameTime(getGameTime() + 1);
+    setGameTime(getGameTime() + 1);
     if (getGameRules()->getBoolean(GameRules::RULE_DAYLIGHT)) {
         // 4J: Debug setting added to keep it at day time
 #if !defined(_FINAL_BUILD)
@@ -140,9 +140,8 @@ void MultiPlayerLevel::tick() {
     listeners[i]->skyColorChanged();
     }
     }*/
-    
 
-        {
+    {
         std::lock_guard<std::recursive_mutex> lock(m_entitiesCS);
         for (int i = 0; i < 10 && !reEntries.empty(); i++) {
             std::shared_ptr<Entity> e = *(reEntries.begin());
@@ -151,18 +150,16 @@ void MultiPlayerLevel::tick() {
                 addEntity(e);
         }
     }
-    
 
-        // 4J HEG - Copy the connections vector to prevent crash when moving to
+    // 4J HEG - Copy the connections vector to prevent crash when moving to
     // Nether
     std::vector<ClientConnection*> connectionsTemp = connections;
     for (auto connection = connectionsTemp.begin();
          connection < connectionsTemp.end(); ++connection) {
         (*connection)->tick();
     }
-    
 
-        unsigned int lastIndexToRemove = 0;
+    unsigned int lastIndexToRemove = 0;
     bool eraseElements = false;
     for (unsigned int i = 0; i < updatesToReset.size(); i++) {
         ResetInfo& r = updatesToReset[i];
@@ -185,7 +182,6 @@ void MultiPlayerLevel::tick() {
         updatesToReset.erase(updatesToReset.begin(),
                              updatesToReset.begin() + lastIndexToRemove);
     }
-    
 
     chunkCache->tick();
     tickTiles();
@@ -409,10 +405,9 @@ void MultiPlayerLevel::tickTiles() {
                            // resets in buildAndPrepareChunksToPoll rather than
                            // the calling functions
 
-            Level::tickTiles();
-    
+    Level::tickTiles();
 
-        auto itEndCtp = chunksToPoll.end();
+    auto itEndCtp = chunksToPoll.end();
     for (auto it = chunksToPoll.begin(); it != itEndCtp; it++) {
         ChunkPos cp = *it;
         int xo = cp.x * 16;
@@ -422,8 +417,6 @@ void MultiPlayerLevel::tickTiles() {
 
         tickClientSideTiles(xo, zo, lc);
     }
-    
-    
 }
 
 void MultiPlayerLevel::setChunkVisible(int x, int z, bool visible) {
@@ -912,10 +905,9 @@ void MultiPlayerLevel::removeClientConnection(ClientConnection* c,
 }
 
 void MultiPlayerLevel::tickAllConnections() {
-        for (auto it = connections.begin(); it < connections.end(); ++it) {
+    for (auto it = connections.begin(); it < connections.end(); ++it) {
         (*it)->tick();
     }
-    
 }
 
 void MultiPlayerLevel::dataReceivedForChunk(int x, int z) {

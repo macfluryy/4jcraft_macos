@@ -8,13 +8,13 @@ public:
     bool m_ownData;
 
     ByteArrayTag(const std::wstring& name) : Tag(name) { m_ownData = false; }
-    ByteArrayTag(const std::wstring& name, std::vector<uint8_t>& data, bool ownData = false)
+    ByteArrayTag(const std::wstring& name, std::vector<uint8_t>& data,
+                 bool ownData = false)
         : Tag(name) {
         this->data = data;
         m_ownData = ownData;
     }  // 4J - added ownData param
-    ~ByteArrayTag() {
-    }
+    ~ByteArrayTag() {}
 
     void write(DataOutput* dos) {
         dos->writeInt(data.size());

@@ -86,8 +86,9 @@ public:
     virtual void lightChunk(LevelChunk* lc);  // 4J added
 
 private:
-    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y, int z, int xSize,
-                           int ySize, int zSize, std::vector<Biome*>& biomes);
+    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y,
+                                   int z, int xSize, int ySize, int zSize,
+                                   std::vector<Biome*>& biomes);
 
 public:
     virtual bool hasChunk(int x, int y);

@@ -25,8 +25,8 @@ BufferedOutputStream::~BufferedOutputStream() {
 void BufferedOutputStream::flush() {
     if (stream == nullptr) {
         fprintf(stderr,
-            "BufferedOutputStream::flush() called but underlying stream is "
-            "nullptr\n");
+                "BufferedOutputStream::flush() called but underlying stream is "
+                "nullptr\n");
         return;
     }
 
@@ -43,8 +43,8 @@ void BufferedOutputStream::close() {
     flush();
     if (stream == nullptr) {
         fprintf(stderr,
-            "BufferedOutputStream::close() called but underlying stream is "
-            "nullptr\n");
+                "BufferedOutputStream::close() called but underlying stream is "
+                "nullptr\n");
         return;
     }
     stream->close();
@@ -64,8 +64,8 @@ void BufferedOutputStream::close() {
 // b - the data.
 // off - the start offset in the data.
 // len - the number of bytes to write.
-void BufferedOutputStream::write(const std::vector<uint8_t>& b, unsigned int offset,
-                                 unsigned int length) {
+void BufferedOutputStream::write(const std::vector<uint8_t>& b,
+                                 unsigned int offset, unsigned int length) {
     // Over the length of what we can store in our buffer - just flush the
     // buffer and output directly
     if (length >= buf.size()) {
@@ -84,7 +84,9 @@ void BufferedOutputStream::write(const std::vector<uint8_t>& b, unsigned int off
 //
 // Note that this method does not call the one-argument write method of its
 // underlying stream with the single argument b.
-void BufferedOutputStream::write(const std::vector<uint8_t>& b) { write(b, 0, b.size()); }
+void BufferedOutputStream::write(const std::vector<uint8_t>& b) {
+    write(b, 0, b.size());
+}
 
 // Writes the specified byte to this buffered output stream.
 // Overrides:

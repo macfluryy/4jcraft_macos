@@ -24,8 +24,9 @@ public:
     static void setEnchantments(std::unordered_map<int, int>* enchantments,
                                 std::shared_ptr<ItemInstance> item);
 
-    static int getEnchantmentLevel(int enchantmentId,
-                                   std::vector<std::shared_ptr<ItemInstance>> inventory);
+    static int getEnchantmentLevel(
+        int enchantmentId,
+        std::vector<std::shared_ptr<ItemInstance>> inventory);
 
 private:
     class EnchantmentIterationMethod {
@@ -35,8 +36,9 @@ private:
 
     static void runIterationOnItem(EnchantmentIterationMethod& method,
                                    std::shared_ptr<ItemInstance> piece);
-    static void runIterationOnInventory(EnchantmentIterationMethod& method,
-                                        std::vector<std::shared_ptr<ItemInstance>> inventory);
+    static void runIterationOnInventory(
+        EnchantmentIterationMethod& method,
+        std::vector<std::shared_ptr<ItemInstance>> inventory);
 
     class GetDamageProtectionIteration : public EnchantmentIterationMethod {
     public:
@@ -56,8 +58,8 @@ private:
      * @return
      */
 public:
-    static int getDamageProtection(std::vector<std::shared_ptr<ItemInstance>> armor,
-                                   DamageSource* source);
+    static int getDamageProtection(
+        std::vector<std::shared_ptr<ItemInstance>> armor, DamageSource* source);
 
 private:
     class GetDamageBonusIteration : public EnchantmentIterationMethod {

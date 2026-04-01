@@ -255,9 +255,8 @@ int MinecraftServer::runPostUpdate(void* lpParam) {
                 server->m_postProcessRequests.pop_back();
                 lock.unlock();
                 static int count = 0;
-                                request.chunkSource->postProcess(request.chunkSource, request.x,
+                request.chunkSource->postProcess(request.chunkSource, request.x,
                                                  request.z);
-                
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -405,9 +404,8 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
         storage = std::shared_ptr<McRegionLevelStorage>(
             new McRegionLevelStorage(newFormatSave, File(L"."), name, true));
 #else
-        storage =
-            std::make_shared<McRegionLevelStorage>(
-                new ConsoleSaveFileOriginal(L""), File(L"."), name, true);
+        storage = std::make_shared<McRegionLevelStorage>(
+            new ConsoleSaveFileOriginal(L""), File(L"."), name, true);
 #endif
     }
 
@@ -582,11 +580,11 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
                         //                        lastTime = now;
                     }
                     static int count = 0;
-                                        level->cache->create((spawnPos->x + x) >> 4,
+                    level->cache->create((spawnPos->x + x) >> 4,
                                          (spawnPos->z + z) >> 4,
                                          true);  // 4J - added parameter to
                                                  // disable postprocessing here
-                    
+
                     //                    while (level->updateLights() &&
                     //                    running)
                     //                        ;
@@ -822,20 +820,18 @@ void MinecraftServer::saveGameRules() {
             unsigned int length;
             csf->writeFile(fe, ba.data(), ba.size(), &length);
 
-
             csf->closeHandle(fe);
         }
     }
 }
 
 void MinecraftServer::Suspend() {
-        m_suspending = true;
+    m_suspending = true;
     // Get the frequency of the timer
     float fElapsedTime = 0.0f;
     // Save the start time
     auto qwTime = PlatformTime::QueryPerformanceCounter();
-    if (m_bLoaded &&
-        (!StorageManager.GetSaveDisabled())) {
+    if (m_bLoaded && (!StorageManager.GetSaveDisabled())) {
         if (players != nullptr) {
             players->saveAll(nullptr);
         }
@@ -855,11 +851,11 @@ void MinecraftServer::Suspend() {
     }
     auto qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-    fElapsedTime = static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
+    fElapsedTime =
+        static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
     m_suspending = false;
     app.DebugPrintf("Suspend server: Elapsed time %f\n", fElapsedTime);
-    
 }
 
 bool MinecraftServer::IsSuspending() { return m_suspending; }
@@ -885,8 +881,7 @@ void MinecraftServer::stopServer(bool didInit) {
         // if trial version or saving is disabled, then don't save anything.
         // Also don't save anything if we didn't actually get through the server
         // initialisation.
-        if (m_saveOnExit &&
-            (!StorageManager.GetSaveDisabled()) && didInit) {
+        if (m_saveOnExit && (!StorageManager.GetSaveDisabled()) && didInit) {
             if (players != nullptr) {
                 players->saveAll(Minecraft::GetInstance()->progressRenderer,
                                  true);
@@ -1441,13 +1436,12 @@ void MinecraftServer::tick() {
             // #ifndef 0
             static int64_t stc = 0;
             int64_t st0 = System::currentTimeMillis();
-                        ((Level*)level)->tick();
+            ((Level*)level)->tick();
             int64_t st1 = System::currentTimeMillis();
-            
-            
+
             int64_t st2 = System::currentTimeMillis();
-            
-                        // 4J added to stop ticking entities in levels when players are not
+
+            // 4J added to stop ticking entities in levels when players are not
             // in those levels. Note: now changed so that we also tick if there
             // are entities to be removed, as this also happens as a result of
             // calling tickEntities. If we don't do this, then the entities get
@@ -1460,10 +1454,8 @@ void MinecraftServer::tick() {
                 (level->hasEntitiesToRemove())) {
                 level->tickEntities();
             }
-            
 
-                        level->getTracker()->tick();
-            
+            level->getTracker()->tick();
 
             int64_t st3 = System::currentTimeMillis();
             //			printf(">>>>>>>>>>>>>>>>>>>>>> Tick %d %d %d :
@@ -1474,10 +1466,9 @@ void MinecraftServer::tick() {
     }
     Entity::tickExtraWandering();  // 4J added
 
-        connection->tick();
-    
-        players->tick();
-    
+    connection->tick();
+
+    players->tick();
 
     // 4J - removed
 

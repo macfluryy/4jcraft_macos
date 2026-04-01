@@ -199,12 +199,12 @@ void DispenserTile::onRemove(Level* level, int x, int y, int z, int id,
                     item->count -= count;
 
                     std::shared_ptr<ItemInstance> newItem =
-                        std::make_shared<ItemInstance>(
-                            item->id, count, item->getAuxValue());
+                        std::make_shared<ItemInstance>(item->id, count,
+                                                       item->getAuxValue());
                     newItem->set4JData(item->get4JData());
                     std::shared_ptr<ItemEntity> itemEntity =
-                        std::make_shared<ItemEntity>(
-                            level, x + xo, y + yo, z + zo, newItem);
+                        std::make_shared<ItemEntity>(level, x + xo, y + yo,
+                                                     z + zo, newItem);
                     float pow = 0.05f;
                     itemEntity->xd = (float)random->nextGaussian() * pow;
                     itemEntity->yd = (float)random->nextGaussian() * pow + 0.2f;

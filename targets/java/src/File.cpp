@@ -9,8 +9,8 @@
 
 #include "java/FileFilter.h"
 #include "java/File.h"
-#include "console_helpers/PathHelper.h" // 4jcraft TODO
-#include "console_helpers/StringHelpers.h" // 4jcraft TODO
+#include "console_helpers/PathHelper.h"     // 4jcraft TODO
+#include "console_helpers/StringHelpers.h"  // 4jcraft TODO
 
 const wchar_t File::pathSeparator = L'/';
 

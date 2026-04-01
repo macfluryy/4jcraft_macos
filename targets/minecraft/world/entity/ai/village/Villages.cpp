@@ -121,8 +121,7 @@ void Villages::cluster() {
         if (found) continue;
 
         // create new Village
-        std::shared_ptr<Village> village =
-            std::make_shared<Village>(level);
+        std::shared_ptr<Village> village = std::make_shared<Village>(level);
         village->addDoorInfo(di);
         villages.push_back(village);
         setDirty();
@@ -206,8 +205,7 @@ void Villages::load(CompoundTag* tag) {
         (ListTag<CompoundTag>*)tag->getList(L"Villages");
     for (int i = 0; i < villageTags->size(); i++) {
         CompoundTag* compoundTag = villageTags->get(i);
-        std::shared_ptr<Village> village =
-            std::make_shared<Village>();
+        std::shared_ptr<Village> village = std::make_shared<Village>();
         village->readAdditionalSaveData(compoundTag);
         villages.push_back(village);
     }

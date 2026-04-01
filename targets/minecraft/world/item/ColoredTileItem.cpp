@@ -14,8 +14,7 @@ ColoredTileItem::ColoredTileItem(int id, bool stackedByData) : TileItem(id) {
     }
 }
 
-ColoredTileItem::~ColoredTileItem() {
-}
+ColoredTileItem::~ColoredTileItem() {}
 
 int ColoredTileItem::getColor(std::shared_ptr<ItemInstance> item,
                               int spriteLayer) {

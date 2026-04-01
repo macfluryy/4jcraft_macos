@@ -150,8 +150,8 @@ void CocoaTile::spawnResources(Level* level, int x, int y, int z, int data,
     }
     for (int i = 0; i < count; i++) {
         popResource(level, x, y, z,
-                    std::make_shared<ItemInstance>(
-                        Item::dye_powder, 1, DyePowderItem::BROWN));
+                    std::make_shared<ItemInstance>(Item::dye_powder, 1,
+                                                   DyePowderItem::BROWN));
     }
 }
 

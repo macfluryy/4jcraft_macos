@@ -10,7 +10,6 @@ DataLayer::DataLayer(std::vector<uint8_t>& data, int depthBits)
     this->data = data;
 }
 
-
 int DataLayer::get(int x, int y, int z) {
     int pos = (x << depthBitsPlusFour | z << depthBits | y);
     int slot = pos >> 1;

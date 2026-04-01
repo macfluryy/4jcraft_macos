@@ -145,7 +145,6 @@ void UILayer::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
             if (itRef != m_componentRefCount.end() && itRef->second.second) {
                 if ((*it)->isVisible()) {
                     (*it)->render(width, height, viewport);
-                    
                 }
             }
         }
@@ -162,7 +161,6 @@ void UILayer::render(S32 width, S32 height, C4JRender::eViewportType viewport) {
                  m_sceneStack[lowestRenderable]->getSceneType() ==
                      eUIScene_Timer)) {
                 m_sceneStack[lowestRenderable]->render(width, height, viewport);
-                
             }
         }
     }

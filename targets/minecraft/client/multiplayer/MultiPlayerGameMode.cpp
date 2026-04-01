@@ -129,21 +129,18 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
     }
 
     if (localPlayerMode->isCreative()) {
-        connection->send(
-            std::make_shared<PlayerActionPacket>(
-                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
+        connection->send(std::make_shared<PlayerActionPacket>(
+            PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         creativeDestroyBlock(minecraft, this, x, y, z, face);
         destroyDelay = 5;
     } else if (!isDestroying || !sameDestroyTarget(x, y, z)) {
         if (isDestroying) {
-            connection->send(
-                std::make_shared<PlayerActionPacket>(
-                    PlayerActionPacket::ABORT_DESTROY_BLOCK, xDestroyBlock,
-                    yDestroyBlock, zDestroyBlock, face));
+            connection->send(std::make_shared<PlayerActionPacket>(
+                PlayerActionPacket::ABORT_DESTROY_BLOCK, xDestroyBlock,
+                yDestroyBlock, zDestroyBlock, face));
         }
-        connection->send(
-            std::make_shared<PlayerActionPacket>(
-                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
+        connection->send(std::make_shared<PlayerActionPacket>(
+            PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         int t = minecraft->level->getTile(x, y, z);
         if (t > 0 && destroyProgress == 0)
             Tile::tiles[t]->attack(minecraft->level, x, y, z,
@@ -172,10 +169,9 @@ void MultiPlayerGameMode::startDestroyBlock(int x, int y, int z, int face) {
 
 void MultiPlayerGameMode::stopDestroyBlock() {
     if (isDestroying) {
-        connection->send(
-            std::make_shared<PlayerActionPacket>(
-                PlayerActionPacket::ABORT_DESTROY_BLOCK, xDestroyBlock,
-                yDestroyBlock, zDestroyBlock, -1));
+        connection->send(std::make_shared<PlayerActionPacket>(
+            PlayerActionPacket::ABORT_DESTROY_BLOCK, xDestroyBlock,
+            yDestroyBlock, zDestroyBlock, -1));
     }
 
     isDestroying = false;
@@ -199,9 +195,8 @@ void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face) {
 
     if (localPlayerMode->isCreative()) {
         destroyDelay = 5;
-        connection->send(
-            std::make_shared<PlayerActionPacket>(
-                PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
+        connection->send(std::make_shared<PlayerActionPacket>(
+            PlayerActionPacket::START_DESTROY_BLOCK, x, y, z, face));
         creativeDestroyBlock(minecraft, this, x, y, z, face);
         return;
     }
@@ -232,9 +227,8 @@ void MultiPlayerGameMode::continueDestroyBlock(int x, int y, int z, int face) {
 
         if (destroyProgress >= 1) {
             isDestroying = false;
-            connection->send(
-                std::make_shared<PlayerActionPacket>(
-                    PlayerActionPacket::STOP_DESTROY_BLOCK, x, y, z, face));
+            connection->send(std::make_shared<PlayerActionPacket>(
+                PlayerActionPacket::STOP_DESTROY_BLOCK, x, y, z, face));
             destroyBlock(x, y, z, face);
             destroyProgress = 0;
             destroyTicks = 0;
@@ -533,6 +527,5 @@ bool MultiPlayerGameMode::handleCraftItem(int recipe,
 void MultiPlayerGameMode::handleDebugOptions(unsigned int uiVal,
                                              std::shared_ptr<Player> player) {
     player->SetDebugOptions(uiVal);
-    connection->send(
-        std::make_shared<DebugOptionsPacket>(uiVal));
+    connection->send(std::make_shared<DebugOptionsPacket>(uiVal));
 }

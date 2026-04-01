@@ -64,7 +64,7 @@ int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
     // 0 - 254 - encodes a single byte
     // 255 followed by 0, 1, 2 - encodes a 1, 2, or 3 255s
     // 255 followed by 3-255, followed by a byte - encodes a run of n + 1 bytes
-        do {
+    do {
         unsigned char thisOne = *pucIn++;
 
         unsigned int count = 1;
@@ -89,10 +89,9 @@ int32_t Compression::CompressLZXRLE(void* pDestination, unsigned int* pDestSize,
         }
     } while (pucIn != pucEnd);
     unsigned int rleSize = (unsigned int)(pucOut - rleCompressBuf);
-    
 
-        Compress(pDestination, pDestSize, rleCompressBuf, rleSize);
-    
+    Compress(pDestination, pDestSize, rleCompressBuf, rleSize);
+
     //	printf("Compressed from %d to %d to %d\n",SrcSize,rleSize,*pDestSize);
 
     return 0;
@@ -114,7 +113,7 @@ int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
         // 255 followed by 0, 1, 2 - encodes a 1, 2, or 3 255s
         // 255 followed by 3-255, followed by a byte - encodes a run of n + 1
         // bytes
-                do {
+        do {
             unsigned char thisOne = *pucIn++;
 
             unsigned int count = 1;
@@ -139,7 +138,6 @@ int32_t Compression::CompressRLE(void* pDestination, unsigned int* pDestSize,
             }
         } while (pucIn != pucEnd);
         rleSize = (unsigned int)(pucOut - rleCompressBuf);
-        
     }
 
     // Return

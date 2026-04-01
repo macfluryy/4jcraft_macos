@@ -126,7 +126,8 @@ SparseLightStorage::SparseLightStorage(SparseLightStorage* copyFrom) {
 
 // Set all lighting values from a data array of length 16384 (128 x 16 x 16 x
 // 0.5). Source data must have same order as original java game
-void SparseLightStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOffset) {
+void SparseLightStorage::setData(std::vector<uint8_t>& dataIn,
+                                 unsigned int inOffset) {
     //  Original order is defined as:
     //  pos = (x << 11 | z << 7 | y);
     //  slot = pos >> 1;
@@ -205,7 +206,8 @@ void SparseLightStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOf
 
 // Gets all lighting values into an array of length 16384. Destination data will
 // have same order as original java game.
-void SparseLightStorage::getData(std::vector<uint8_t>& retArray, unsigned int retOffset) {
+void SparseLightStorage::getData(std::vector<uint8_t>& retArray,
+                                 unsigned int retOffset) {
     memset(retArray.data() + retOffset, 0, 16384);
     unsigned char *planeIndices, *data;
     getPlaneIndicesAndData(&planeIndices, &data);
@@ -332,8 +334,9 @@ void SparseLightStorage::setAllBright() {
 // code didn't make any attempt to unpack it. This behaviour is copied here for
 // compatibility even though our source data isn't packed this way. Returns size
 // of data copied.
-int SparseLightStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0, int z0,
-                                      int x1, int y1, int z1, int offset) {
+int SparseLightStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0,
+                                      int y0, int z0, int x1, int y1, int z1,
+                                      int offset) {
     // Actual setting of data happens when calling set method so no need to lock
     // here
     unsigned char* pucIn = &dataIn.data()[offset];
@@ -364,8 +367,8 @@ int SparseLightStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int 
 // packed in nyblles in this dimension, and the code didn't make any attempt to
 // unpack it. This behaviour is copied here for compatibility even though our
 // source data isn't packed this way Returns size of data copied.
-int SparseLightStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0, int y0,
-                                      int z0, int x1, int y1, int z1,
+int SparseLightStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0,
+                                      int y0, int z0, int x1, int y1, int z1,
                                       int offset) {
     unsigned char* pucOut = &dataInOut.data()[offset];
     for (int x = x0; x < x1; x++) {

@@ -141,7 +141,7 @@ void BasicTree::prepare() {
 
 void BasicTree::crossection(int x, int y, int z, float radius,
                             uint8_t direction, int material) {
-        // Create a circular cross section.
+    // Create a circular cross section.
     //
     // Used to nearly everything in the foliage, branches, and trunk.
     // This is a good target for performance optimization.
@@ -171,22 +171,21 @@ void BasicTree::crossection(int x, int y, int z, float radius,
                 continue;
             }
             position[secidx2] = center[secidx2] + offset2;
-                        thismat = thisLevel->getTile(position[0], position[1], position[2]);
-            
+            thismat = thisLevel->getTile(position[0], position[1], position[2]);
+
             if (!((thismat == 0) || (thismat == Tile::leaves_Id))) {
                 // If the material of the checked block is anything other than
                 // air or foliage, skip this tile.
                 offset2++;
                 continue;
             }
-                        placeBlock(thisLevel, position[0], position[1], position[2],
+            placeBlock(thisLevel, position[0], position[1], position[2],
                        material, 0);
-            
+
             offset2++;
         }
         offset1++;
     }
-    
 }
 
 float BasicTree::treeShape(int y) {
@@ -227,7 +226,7 @@ float BasicTree::foliageShape(int y) {
 }
 
 void BasicTree::foliageCluster(int x, int y, int z) {
-        // Generate a cluster of foliage, with the base at x, y, z.
+    // Generate a cluster of foliage, with the base at x, y, z.
     // The shape of the cluster is derived from  foliageShape
     // crossection is called to make each level.
     int topy = y + foliageHeight;
@@ -240,7 +239,6 @@ void BasicTree::foliageCluster(int x, int y, int z) {
         crossection(x, cury, z, radius, (uint8_t)1, Tile::leaves_Id);
         cury--;
     }
-    
 }
 
 void BasicTree::limb(int* start, int* end, int material) {
@@ -530,21 +528,21 @@ bool BasicTree::place(Level* level, Random* random, int x, int y, int z) {
         // System.out.println("Tree location failed");
         return false;
     }
-        // System.out.println("The height is");
+    // System.out.println("The height is");
     // System.out.println(height);
     // System.out.println("Trunk Height check done");
-        prepare();
-    
+    prepare();
+
     // System.out.println("Prepare done");
-        makeFoliage();
-    
+    makeFoliage();
+
     // System.out.println("Foliage done");
-        makeTrunk();
-    
+    makeTrunk();
+
     // System.out.println("Trunk done");
-        makeBranches();
-    
+    makeBranches();
+
     // System.out.println("Branches done");
-    
+
     return true;
 }

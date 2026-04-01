@@ -68,10 +68,7 @@ public:
 typedef void* XMEMDECOMPRESSION_CONTEXT;
 typedef void* XMEMCOMPRESSION_CONTEXT;
 
-enum XMEMCODEC_TYPE {
-    XMEMCODEC_DEFAULT = 0,
-    XMEMCODEC_LZX = 1
-};
+enum XMEMCODEC_TYPE { XMEMCODEC_DEFAULT = 0, XMEMCODEC_LZX = 1 };
 
 int32_t XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
                        size_t* pDestSize, void* pSource, size_t SrcSize);

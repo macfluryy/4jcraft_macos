@@ -78,7 +78,8 @@ void VillagerModel::setupAnim(float time, float r, float bob, float yRot,
     arms->xRot = -0.75f;
 
     leg0->xRot = ((float)cosf(time * 0.6662f) * 1.4f) * r * 0.5f;
-    leg1->xRot = ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r * 0.5f;
+    leg1->xRot =
+        ((float)cosf(time * 0.6662f + std::numbers::pi) * 1.4f) * r * 0.5f;
     leg0->yRot = 0;
     leg1->yRot = 0;
 }

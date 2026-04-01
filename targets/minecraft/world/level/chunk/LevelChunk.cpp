@@ -94,7 +94,6 @@ void LevelChunk::init(Level* level, int x, int z) {
         }
     }
 
-
     lowestHeightmap = 256;
     inhabitedTime = 0;
 
@@ -278,7 +277,6 @@ void LevelChunk::stopSharingTilesAndData() {
             return;
         }
 
-
         // Changed to used compressed storage - these CTORs make deep copies of
         // the storage passed as a parameter
         lowerBlocks = new CompressedTileStorage(lowerBlocks);
@@ -442,10 +440,8 @@ LevelChunk::~LevelChunk() {
     if (upperSkyLight) delete upperSkyLight;
     if (upperBlockLight) delete upperBlockLight;
 
-
     for (int i = 0; i < ENTITY_BLOCKS_LENGTH; ++i) delete entityBlocks[i];
     delete[] entityBlocks;
-
 
 #if defined(_LARGE_WORLDS)
     delete m_unloadedEntitiesTag;
@@ -832,12 +828,11 @@ void LevelChunk::recalcHeight(int x, int yStart, int z) {
     }
     if (height < lowestHeightmap) lowestHeightmap = height;
     if (!level->dimension->hasCeiling) {
-                lightGap(xOffs - 1, zOffs, y1, y2);
+        lightGap(xOffs - 1, zOffs, y1, y2);
         lightGap(xOffs + 1, zOffs, y1, y2);
         lightGap(xOffs, zOffs - 1, y1, y2);
         lightGap(xOffs, zOffs + 1, y1, y2);
         lightGap(xOffs, zOffs, y1, y2);
-        
     }
 
     this->setUnsaved(true);
@@ -896,8 +891,8 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
     if (old != 0 && !level->isClientSide) {
         Tile::tiles[old]->onRemoving(level, xOffs, y, zOffs, oldData);
     }
-        blocks->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, tile);
-    
+    blocks->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, tile);
+
     if (old != 0) {
         if (!level->isClientSide) {
             Tile::tiles[old]->onRemove(level, xOffs, y, zOffs, old, oldData);
@@ -905,8 +900,7 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
             level->removeTileEntity(xOffs, y, zOffs);
         }
     }
-        data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
-    
+    data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
 
     // 4J added - flag if something emissive is being added. This is used during
     // level creation to determine what chunks need extra lighting processing
@@ -914,30 +908,27 @@ bool LevelChunk::setTileAndData(int x, int y, int z, int _tile, int _data) {
         emissiveAdded = true;
     }
 
-        // 4J - There isn't any point in recalculating heights or updating sky
+    // 4J - There isn't any point in recalculating heights or updating sky
     // lighting if this tile has the same light-blocking capabilities as the one
     // it is replacing
     if (Tile::lightBlock[tile & 0xff] != Tile::lightBlock[old & 0xff]) {
         if (!level->dimension->hasCeiling) {
             if (Tile::lightBlock[tile & 0xff] != 0) {
                 if (y >= oldHeight) {
-                                        recalcHeight(x, y + 1, z);
-                    
+                    recalcHeight(x, y + 1, z);
                 }
             } else {
                 if (y == oldHeight - 1) {
-                                        recalcHeight(x, y, z);
-                    
+                    recalcHeight(x, y, z);
                 }
             }
         }
 
         // level.updateLight(LightLayer.Carried, xOffs, y, zOffs, xOffs, y,
         // zOffs);
-                lightGaps(x, z);
-        
+        lightGaps(x, z);
     }
-    
+
     data->set(x, y % Level::COMPRESSED_CHUNK_SECTION_HEIGHT, z, _data);
     if (_tile != 0) {
         if (!level->isClientSide) {
@@ -1450,7 +1441,7 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             // 4J Stu - Save out entities to a cached format that won't
             // interfere with other systems
             m_unloadedEntitiesTag = new CompoundTag();
-                        ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
+            ListTag<CompoundTag>* entityTags = new ListTag<CompoundTag>();
 
             {
                 std::lock_guard<std::recursive_mutex> lock(m_csEntities);
@@ -1472,9 +1463,8 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             }
 
             m_unloadedEntitiesTag->put(L"Entities", entityTags);
-            
 
-                        ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
+            ListTag<CompoundTag>* tileEntityTags = new ListTag<CompoundTag>();
 
             auto itEnd = tileEntities.end();
             for (std::unordered_map<TilePos, std::shared_ptr<TileEntity>,
@@ -1490,7 +1480,6 @@ void LevelChunk::unload(bool unloadTileEntities)  // 4J - added parameter
             tileEntities.clear();
 
             m_unloadedEntitiesTag->put(L"TileEntities", tileEntityTags);
-            
         }
     }
 #endif
@@ -1645,8 +1634,8 @@ bool LevelChunk::shouldSave(bool force) {
     return m_unsaved;
 }
 
-int LevelChunk::getBlocksAndData(std::vector<uint8_t>* data, int x0, int y0, int z0,
-                                 int x1, int y1, int z1, int p,
+int LevelChunk::getBlocksAndData(std::vector<uint8_t>* data, int x0, int y0,
+                                 int z0, int x1, int y1, int z1, int p,
                                  bool includeLighting /* = true*/) {
     int xs = x1 - x0;
     int ys = y1 - y0;
@@ -1716,8 +1705,9 @@ int LevelChunk::getBlocksAndData(std::vector<uint8_t>* data, int x0, int y0, int
 }
 
 // 4J added - return true if setBlocksAndData would change any blocks
-bool LevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
-                                      int x1, int y1, int z1, int p) {
+bool LevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0,
+                                      int y0, int z0, int x1, int y1, int z1,
+                                      int p) {
     bool changed = false;
 
     // 4J Stu - Added this because some "min" functions don't let us use our
@@ -1745,8 +1735,8 @@ void LevelChunk::tileUpdatedCallback(int x, int y, int z, void* param,
     lc->level->checkLight(xx, yy, zz);
 }
 
-int LevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0, int x1,
-                                 int y1, int z1, int p,
+int LevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
+                                 int z0, int x1, int y1, int z1, int p,
                                  bool includeLighting /* = true*/) {
     // If includeLighting is set, then this is a full chunk's worth of data that
     // we are receiving on the client. We'll have made this chunk initially as
@@ -2336,8 +2326,9 @@ int LevelChunk::getHighestNonEmptyY() {
     return highestNonEmptyY;
 }
 
-std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z0, int xs,
-                                                int& ys, int zs) {
+std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0,
+                                                           int z0, int xs,
+                                                           int& ys, int zs) {
     int highestNonEmpty = getHighestNonEmptyY();
 
     ys = std::min(highestNonEmpty - y0, ys);
@@ -2350,7 +2341,8 @@ std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z
     unsigned int tileCount = xs * ys * zs;
     unsigned int halfTileCount = tileCount / 2;
 
-    std::vector<uint8_t> data = std::vector<uint8_t>(tileCount + (3 * halfTileCount) + biomes.size());
+    std::vector<uint8_t> data =
+        std::vector<uint8_t>(tileCount + (3 * halfTileCount) + biomes.size());
     for (int x = 0; x < xs; x++) {
         for (int z = 0; z < zs; z++) {
             for (int y = 0; y < ys; y++) {
@@ -2398,8 +2390,9 @@ std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z
 
     return data;
 
-    // std::vector<uint8_t> rawBuffer = std::vector<uint8_t>( Level::CHUNK_TILE_COUNT + (3*
-    // Level::HALF_CHUNK_TILE_COUNT) ); for( int x = 0; x < 16; x++ )
+    // std::vector<uint8_t> rawBuffer = std::vector<uint8_t>(
+    // Level::CHUNK_TILE_COUNT + (3* Level::HALF_CHUNK_TILE_COUNT) ); for( int x
+    // = 0; x < 16; x++ )
     //{
     //	for( int z = 0; z < 16; z++ )
     //	{
@@ -2415,13 +2408,15 @@ std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0, int z
     // unsigned int offset = Level::CHUNK_TILE_COUNT;
     //// Don't bother reordering block data, block light or sky light as they
     /// don't seem to make much difference
-    // std::vector<uint8_t> dataData = std::vector<uint8_t>(rawBuffer.data()+offset,
+    // std::vector<uint8_t> dataData =
+    // std::vector<uint8_t>(rawBuffer.data()+offset,
     // Level::HALF_CHUNK_TILE_COUNT); lc->getDataData(dataData); offset +=
     // Level::HALF_CHUNK_TILE_COUNT; std::vector<uint8_t> blockLightData =
-    // std::vector<uint8_t>(rawBuffer.data() + offset, Level::HALF_CHUNK_TILE_COUNT); offset
+    // std::vector<uint8_t>(rawBuffer.data() + offset,
+    // Level::HALF_CHUNK_TILE_COUNT); offset
     // += Level::HALF_CHUNK_TILE_COUNT; std::vector<uint8_t> skyLightData =
-    // std::vector<uint8_t>(rawBuffer.data() + offset, Level::HALF_CHUNK_TILE_COUNT);
-    // lc->getBlockLightData(blockLightData);
+    // std::vector<uint8_t>(rawBuffer.data() + offset,
+    // Level::HALF_CHUNK_TILE_COUNT); lc->getBlockLightData(blockLightData);
     // lc->getSkyLightData(skyLightData);
     // return rawBuffer;
 }

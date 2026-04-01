@@ -144,11 +144,13 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
                             std::ifstream fileHandle(grfPath, std::ios::binary);
 
                             if (fileHandle) {
-                                auto dwFileSize = std::filesystem::file_size(grfPath);
+                                auto dwFileSize =
+                                    std::filesystem::file_size(grfPath);
                                 uint8_t* pbData =
                                     (uint8_t*)new uint8_t[dwFileSize];
-                                fileHandle.read(reinterpret_cast<char*>(pbData),
-                                                static_cast<std::streamsize>(dwFileSize));
+                                fileHandle.read(
+                                    reinterpret_cast<char*>(pbData),
+                                    static_cast<std::streamsize>(dwFileSize));
                                 if (!fileHandle) {
                                     app.FatalLoadError();
                                 }

@@ -54,8 +54,7 @@ void ItemFrame::dropItem(std::shared_ptr<Entity> causedBy) {
         }
     }
 
-    spawnAtLocation(
-        std::make_shared<ItemInstance>(Item::frame), 0);
+    spawnAtLocation(std::make_shared<ItemInstance>(Item::frame), 0);
     if ((item != nullptr) && (random->nextFloat() < dropChance)) {
         item = item->copy();
         removeFramedMap(item);

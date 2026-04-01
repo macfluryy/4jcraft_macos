@@ -238,8 +238,8 @@ float Wolf::getBodyRollAngle(float a, float offset) {
     } else if (progress > 1) {
         progress = 1;
     }
-    return sinf(progress * std::numbers::pi) * sinf(progress * std::numbers::pi * 11.0f) * 0.15f *
-           std::numbers::pi;
+    return sinf(progress * std::numbers::pi) *
+           sinf(progress * std::numbers::pi * 11.0f) * 0.15f * std::numbers::pi;
 }
 
 float Wolf::getHeadRollAngle(float a) {
@@ -461,8 +461,7 @@ std::shared_ptr<AgableMob> Wolf::getBreedOffspring(
     std::shared_ptr<AgableMob> target) {
     // 4J - added limit to wolves that can be bred
     if (level->canCreateMore(GetType(), Level::eSpawnType_Breed)) {
-        std::shared_ptr<Wolf> pBabyWolf =
-            std::make_shared<Wolf>(level);
+        std::shared_ptr<Wolf> pBabyWolf = std::make_shared<Wolf>(level);
 
         if (!getOwnerUUID().empty()) {
             // set the baby wolf to be tame, and assign the owner

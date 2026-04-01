@@ -66,12 +66,17 @@ protected:
     virtual std::vector<uint8_t> getParam_boatOneM(int distance);
     virtual std::vector<uint8_t> getParam_pigOneM(int distance);
 
-    virtual std::vector<uint8_t> getParam_blocksMined(int id, int data, int count);
-    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsSmelted(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_blocksMined(int id, int data,
+                                                      int count);
+    virtual std::vector<uint8_t> getParam_itemsCollected(int id, int aux,
+                                                         int count);
+    virtual std::vector<uint8_t> getParam_itemsCrafted(int id, int aux,
+                                                       int count);
+    virtual std::vector<uint8_t> getParam_itemsSmelted(int id, int aux,
+                                                       int count);
     virtual std::vector<uint8_t> getParam_itemsUsed(int id, int aux, int count);
-    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux, int count);
+    virtual std::vector<uint8_t> getParam_itemsBought(int id, int aux,
+                                                      int count);
 
     virtual std::vector<uint8_t> getParam_time(int timediff);
 

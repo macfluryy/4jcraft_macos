@@ -246,8 +246,8 @@ std::shared_ptr<ItemInstance> BeaconTileEntity::removeItem(unsigned int slot,
             return returnItem;
         } else {
             paymentItem->count -= count;
-            return std::make_shared<ItemInstance>(
-                paymentItem->id, count, paymentItem->getAuxValue());
+            return std::make_shared<ItemInstance>(paymentItem->id, count,
+                                                  paymentItem->getAuxValue());
         }
     }
     return nullptr;

@@ -74,8 +74,9 @@ void HellRandomLevelSource::prepareHeights(int xOffs, int zOffs,
     int xSize = xChunks + 1;
     int ySize = Level::genDepth / CHUNK_HEIGHT + 1;
     int zSize = xChunks + 1;
-    std::vector<double> buffer;  // 4J - used to be declared with class level scope but
-                         // tidying up for thread safety reasons
+    std::vector<double>
+        buffer;  // 4J - used to be declared with class level scope but
+                 // tidying up for thread safety reasons
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize);
 
@@ -161,9 +162,9 @@ void HellRandomLevelSource::buildSurfaces(int xOffs, int zOffs,
 
     double s = 1 / 32.0;
 
-    std::vector<double> sandBuffer(16 *
-                           16);  // 4J - used to be declared with class level
-                                 // scope but moved here for thread safety
+    std::vector<double> sandBuffer(
+        16 * 16);  // 4J - used to be declared with class level
+                   // scope but moved here for thread safety
     std::vector<double> gravelBuffer(16 * 16);
     std::vector<double> depthBuffer(16 * 16);
 
@@ -308,8 +309,10 @@ LevelChunk* HellRandomLevelSource::getChunk(int xOffs, int zOffs) {
     int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
-    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
+    std::vector<uint8_t> blocks =
+        std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
+    //    16);
 
     prepareHeights(xOffs, zOffs, blocks);
     buildSurfaces(xOffs, zOffs, blocks);
@@ -339,9 +342,9 @@ void HellRandomLevelSource::lightChunk(LevelChunk* lc) {
     lc->recalcHeightmap();
 }
 
-std::vector<double> HellRandomLevelSource::getHeights(std::vector<double>& buffer, int x, int y,
-                                              int z, int xSize, int ySize,
-                                              int zSize) {
+std::vector<double> HellRandomLevelSource::getHeights(
+    std::vector<double>& buffer, int x, int y, int z, int xSize, int ySize,
+    int zSize) {
     if (buffer.empty()) {
         buffer = std::vector<double>(xSize * ySize * zSize);
     }
@@ -436,7 +439,6 @@ std::vector<double> HellRandomLevelSource::getHeights(std::vector<double>& buffe
             }
         }
     }
-
 
     return buffer;
 }

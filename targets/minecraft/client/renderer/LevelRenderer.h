@@ -193,7 +193,7 @@ private:
     //    std::vector<Chunk *> *sortedChunks[4];	// 4J - removed - not
     //    sorting our chunks anymore
     std::vector<ClipChunk> chunks[4];  // 4J - now one per player
-    int lastPlayerCount[4];    // 4J - added
+    int lastPlayerCount[4];            // 4J - added
     int xChunks, yChunks, zChunks;
     int chunkLists;
     Minecraft* mc;
@@ -271,10 +271,11 @@ public:
             int veryNearCount);  // For chunk rebuilding to inform the manager
                                  // that a chunk (a 16x16x16 tile render chunk)
                                  // has been updated
-        void addAABBs(Level* level, AABB* box,
-                      std::vector<AABB>* boxes);  // For game to get any AABBs that the
-                                         // user should be colliding with as
-                                         // render data has not yet been updated
+        void addAABBs(
+            Level* level, AABB* box,
+            std::vector<AABB>* boxes);  // For game to get any AABBs that the
+                                        // user should be colliding with as
+                                        // render data has not yet been updated
         void tick();
         DestroyedTileManager();
         ~DestroyedTileManager();

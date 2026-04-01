@@ -53,8 +53,8 @@ public:
     virtual LevelChunk* getChunk(int xOffs, int zOffs);
 
 private:
-    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y, int z, int xSize,
-                           int ySize, int zSize);
+    std::vector<double> getHeights(std::vector<double>& buffer, int x, int y,
+                                   int z, int xSize, int ySize, int zSize);
 
 public:
     virtual bool hasChunk(int x, int y);

@@ -16,7 +16,8 @@ public:
     DataInputStream(InputStream* in);
     virtual int read();
     virtual int read(std::vector<uint8_t>& b);
-    virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
+    virtual int read(std::vector<uint8_t>& b, unsigned int offset,
+                     unsigned int length);
     virtual void close();
     virtual bool readBoolean();
     virtual uint8_t readByte();

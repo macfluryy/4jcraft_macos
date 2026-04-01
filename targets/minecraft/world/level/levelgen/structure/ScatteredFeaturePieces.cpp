@@ -470,7 +470,13 @@ bool ScatteredFeaturePieces::DesertPyramidPiece::postProcess(
             int zo = Direction::STEP_Z[i] * 2;
             hasPlacedChest[i] = createChest(
                 level, chunkBB, random, 10 + xo, -11, 10 + zo,
-                [&]() { auto items = std::vector<WeighedTreasure*>(treasureItems, treasureItems + TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random)); }(),
+                [&]() {
+                    auto items = std::vector<WeighedTreasure*>(
+                        treasureItems, treasureItems + TREASURE_ITEMS_COUNT);
+                    return WeighedTreasure::addToTreasure(
+                        items,
+                        Item::enchantedBook->createForRandomTreasure(random));
+                }(),
                 2 + random->nextInt(5));
         }
     }
@@ -721,7 +727,9 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     if (!placedTrap1) {
         placedTrap1 = createDispenser(
             level, chunkBB, random, 3, -2, 1, Facing::NORTH,
-            std::vector<WeighedTreasure*>(dispenserItems, dispenserItems + DISPENSER_ITEMS_COUNT), 2);
+            std::vector<WeighedTreasure*>(
+                dispenserItems, dispenserItems + DISPENSER_ITEMS_COUNT),
+            2);
     }
     placeBlock(level, Tile::vine_Id, 0xf, 3, -2, 2, chunkBB);
 
@@ -748,14 +756,22 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     if (!placedTrap2) {
         placedTrap2 = createDispenser(
             level, chunkBB, random, 9, -2, 3, Facing::WEST,
-            std::vector<WeighedTreasure*>(dispenserItems, dispenserItems + DISPENSER_ITEMS_COUNT), 2);
+            std::vector<WeighedTreasure*>(
+                dispenserItems, dispenserItems + DISPENSER_ITEMS_COUNT),
+            2);
     }
     placeBlock(level, Tile::vine_Id, 0xf, 8, -1, 3, chunkBB);
     placeBlock(level, Tile::vine_Id, 0xf, 8, -2, 3, chunkBB);
     if (!placedMainChest) {
         placedMainChest = createChest(
             level, chunkBB, random, 8, -3, 3,
-            [&]() { auto items = std::vector<WeighedTreasure*>(treasureItems, treasureItems + TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random)); }(),
+            [&]() {
+                auto items = std::vector<WeighedTreasure*>(
+                    treasureItems, treasureItems + TREASURE_ITEMS_COUNT);
+                return WeighedTreasure::addToTreasure(
+                    items,
+                    Item::enchantedBook->createForRandomTreasure(random));
+            }(),
             2 + random->nextInt(5));
     }
     placeBlock(level, Tile::mossyCobblestone_Id, 0, 9, -3, 2, chunkBB);
@@ -811,7 +827,13 @@ bool ScatteredFeaturePieces::JunglePyramidPiece::postProcess(
     if (!placedHiddenChest) {
         placedHiddenChest = createChest(
             level, chunkBB, random, 9, -3, 10,
-            [&]() { auto items = std::vector<WeighedTreasure*>(treasureItems, treasureItems + TREASURE_ITEMS_COUNT); return WeighedTreasure::addToTreasure(items, Item::enchantedBook->createForRandomTreasure(random)); }(),
+            [&]() {
+                auto items = std::vector<WeighedTreasure*>(
+                    treasureItems, treasureItems + TREASURE_ITEMS_COUNT);
+                return WeighedTreasure::addToTreasure(
+                    items,
+                    Item::enchantedBook->createForRandomTreasure(random));
+            }(),
             2 + random->nextInt(5));
     }
 
@@ -944,8 +966,7 @@ bool ScatteredFeaturePieces::SwamplandHut::postProcess(Level* level,
         if (chunkBB->isInside(wx, wy, wz)) {
             spawnedWitch = true;
 
-            std::shared_ptr<Witch> witch =
-                std::make_shared<Witch>(level);
+            std::shared_ptr<Witch> witch = std::make_shared<Witch>(level);
             witch->moveTo(wx + .5, wy, wz + .5, 0, 0);
             witch->finalizeMobSpawn(nullptr);
             level->addEntity(witch);

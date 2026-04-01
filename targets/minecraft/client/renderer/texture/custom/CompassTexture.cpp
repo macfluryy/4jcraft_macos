@@ -69,7 +69,7 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         rot = rott;
     } else {
         double rotd = rott - rot;
-        while (rotd < -std::numbers::pi ) rotd += std::numbers::pi * 2;
+        while (rotd < -std::numbers::pi) rotd += std::numbers::pi * 2;
         while (rotd >= std::numbers::pi) rotd -= std::numbers::pi * 2;
         if (rotd < -1) rotd = -1;
         if (rotd > 1) rotd = 1;
@@ -80,9 +80,9 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
 
     // 4J Stu - We share data with another texture
     if (m_dataTexture != nullptr) {
-        int newFrame =
-            (int)(((rot / (std::numbers::pi * 2)) + 1.0) * m_dataTexture->frames->size()) %
-            m_dataTexture->frames->size();
+        int newFrame = (int)(((rot / (std::numbers::pi * 2)) + 1.0) *
+                             m_dataTexture->frames->size()) %
+                       m_dataTexture->frames->size();
         while (newFrame < 0) {
             newFrame = (newFrame + m_dataTexture->frames->size()) %
                        m_dataTexture->frames->size();
@@ -95,7 +95,8 @@ void CompassTexture::updateFromPosition(Level* level, double x, double z,
         }
     } else {
         int newFrame =
-            (int)(((rot / (std::numbers::pi * 2)) + 1.0) * frames->size()) % frames->size();
+            (int)(((rot / (std::numbers::pi * 2)) + 1.0) * frames->size()) %
+            frames->size();
         while (newFrame < 0) {
             newFrame = (newFrame + frames->size()) % frames->size();
         }

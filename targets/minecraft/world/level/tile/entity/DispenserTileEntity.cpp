@@ -14,9 +14,7 @@ DispenserTileEntity::DispenserTileEntity() : TileEntity() {
     name = L"";
 }
 
-DispenserTileEntity::~DispenserTileEntity() {
-    delete random;
-}
+DispenserTileEntity::~DispenserTileEntity() { delete random; }
 
 unsigned int DispenserTileEntity::getContainerSize() { return 9; }
 

@@ -305,11 +305,12 @@ private:
 
 public:
     std::vector<int> loadTexturePixels(TEXTURE_NAME texId,
-                               const std::wstring& resourceName);
+                                       const std::wstring& resourceName);
 
 private:
     std::vector<int> loadTexturePixels(BufferedImage* img);
-    std::vector<int> loadTexturePixels(BufferedImage* img, std::vector<int>& pixels);
+    std::vector<int> loadTexturePixels(BufferedImage* img,
+                                       std::vector<int>& pixels);
     void setTextureFormat(const std::wstring& resourceName);  // 4J added
 
 public:
@@ -331,10 +332,10 @@ private:
 
 public:
     int loadTexture(int idx);  // 4J added
-    int getTexture(
-        BufferedImage* img,
-        IPlatformRender::eTextureFormat format = IPlatformRender::TEXTURE_FORMAT_RxGyBzAw,
-        bool mipmap = true);
+    int getTexture(BufferedImage* img,
+                   IPlatformRender::eTextureFormat format =
+                       IPlatformRender::TEXTURE_FORMAT_RxGyBzAw,
+                   bool mipmap = true);
     void loadTexture(BufferedImage* img, int id);
     void loadTexture(BufferedImage* img, int id, bool blur, bool clamp);
 

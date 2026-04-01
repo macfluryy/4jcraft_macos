@@ -184,11 +184,11 @@ FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
 
     // END OF BASIC TUTORIAL
 
-    addTask(e_Tutorial_State_Gameplay,
-            new ChoiceTask(this, IDS_TUTORIAL_TASK_BASIC_COMPLETE,
-                           IDS_TUTORIAL_PROMPT_BASIC_COMPLETE, true,
-                           ACTION_MENU_A, ACTION_MENU_B,
-                           e_Tutorial_Completion_Jump_To_Last_Task));
+    addTask(
+        e_Tutorial_State_Gameplay,
+        new ChoiceTask(this, IDS_TUTORIAL_TASK_BASIC_COMPLETE,
+                       IDS_TUTORIAL_PROMPT_BASIC_COMPLETE, true, ACTION_MENU_A,
+                       ACTION_MENU_B, e_Tutorial_Completion_Jump_To_Last_Task));
 
     // START OF FULL TUTORIAL
 

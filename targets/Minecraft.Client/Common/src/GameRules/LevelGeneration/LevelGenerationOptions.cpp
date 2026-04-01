@@ -277,7 +277,6 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
             delete bb;
         }
     }
-    
 }
 
 void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
@@ -288,12 +287,10 @@ void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
         ApplySchematicRuleDefinition* rule = *it;
         rule->processSchematicLighting(&chunkBox, chunk);
     }
-    
 }
 
 bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
                                              int y1, int z1) {
-    
     // As an optimisation, we can quickly discard things below a certain y which
     // makes most ore checks faster due to a) ores generally being below
     // ground/sea level and b) tutorial world additions generally being above
@@ -337,7 +334,7 @@ bool LevelGenerationOptions::checkIntersects(int x0, int y0, int z0, int x1,
             if (intersects) break;
         }
     }
-    
+
     return intersects;
 }
 
@@ -513,7 +510,9 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                     if (fileHandle) {
                         uint32_t dwFileSize = grf.length();
                         uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
-                        fileHandle.read(reinterpret_cast<char*>(pbData), static_cast<std::streamsize>(dwFileSize));
+                        fileHandle.read(
+                            reinterpret_cast<char*>(pbData),
+                            static_cast<std::streamsize>(dwFileSize));
                         if (!fileHandle) {
                             app.FatalLoadError();
                         }
@@ -540,7 +539,8 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                 if (saveHandle) {
                     auto dwFileSize = std::filesystem::file_size(savePath);
                     uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
-                    saveHandle.read(reinterpret_cast<char*>(pbData), static_cast<std::streamsize>(dwFileSize));
+                    saveHandle.read(reinterpret_cast<char*>(pbData),
+                                    static_cast<std::streamsize>(dwFileSize));
                     if (!saveHandle) {
                         app.FatalLoadError();
                     }

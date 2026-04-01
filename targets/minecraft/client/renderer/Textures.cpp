@@ -340,7 +340,7 @@ void Textures::loadIndexedTextures() {
 }
 
 std::vector<int> Textures::loadTexturePixels(TEXTURE_NAME texId,
-                                     const std::wstring& resourceName) {
+                                             const std::wstring& resourceName) {
     TexturePack* skin = skins->getSelected();
 
     {
@@ -383,7 +383,8 @@ std::vector<int> Textures::loadTexturePixels(BufferedImage* img) {
     return loadTexturePixels(img, pixels);
 }
 
-std::vector<int> Textures::loadTexturePixels(BufferedImage* img, std::vector<int>& pixels) {
+std::vector<int> Textures::loadTexturePixels(BufferedImage* img,
+                                             std::vector<int>& pixels) {
     int w = img->getWidth();
     int h = img->getHeight();
     img->getRGB(0, 0, w, h, pixels, 0, w);
@@ -461,7 +462,8 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
                 continue;
             }
 
-            std::wstring resourceName = std::wstring(preLoaded[textureName]) + L".png";
+            std::wstring resourceName =
+                std::wstring(preLoaded[textureName]) + L".png";
             BufferedImage* image = readImage(textureName, resourceName);
             if (image == nullptr) {
                 continue;
@@ -513,7 +515,6 @@ void Textures::bindTextureLayers(ResourceLocation* resource) {
                         (outA << 24) | (outR << 16) | (outG << 8) | outB;
                 }
             }
-
         }
 
         if (hasMergedPixels) {
@@ -729,7 +730,6 @@ void Textures::loadTexture(BufferedImage* img, int id, bool blur, bool clamp) {
     pixels->put(newPixels);
     pixels->position(0)->limit(newPixels.size());
 
-
     if (MIPMAP) {
         // 4J-PB - In the new XDK, the CreateTexture will fail if the number of
         // mipmaps is higher than the width & height passed in will allow!
@@ -827,11 +827,11 @@ std::vector<int> Textures::anaglyph(std::vector<int>& rawPixels) {
         result[i] = a << 24 | rr << 16 | gg << 8 | bb;
     }
 
-
     return result;
 }
 
-void Textures::replaceTexture(std::vector<int>& rawPixels, int w, int h, int id) {
+void Textures::replaceTexture(std::vector<int>& rawPixels, int w, int h,
+                              int id) {
     bind(id);
 
     // Removed in Java
@@ -887,7 +887,8 @@ void Textures::replaceTexture(std::vector<int>& rawPixels, int w, int h, int id)
 // 4J - added. This is a more minimal version of replaceTexture that assumes the
 // texture bytes are already in order, and so doesn't do any of the extra
 // copying round that the original java version does
-void Textures::replaceTextureDirect(const std::vector<int>& rawPixels, int w, int h, int id) {
+void Textures::replaceTextureDirect(const std::vector<int>& rawPixels, int w,
+                                    int h, int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
     // Remove in Java
@@ -899,14 +900,15 @@ void Textures::replaceTextureDirect(const std::vector<int>& rawPixels, int w, in
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    RenderManager.TextureDataUpdate(0, 0, w, h, const_cast<int*>(rawPixels.data()), 0);
+    RenderManager.TextureDataUpdate(0, 0, w, h,
+                                    const_cast<int*>(rawPixels.data()), 0);
 }
 
 // 4J - added. This is a more minimal version of replaceTexture that assumes the
 // texture bytes are already in order, and so doesn't do any of the extra
 // copying round that the original java version does
-void Textures::replaceTextureDirect(const std::vector<short>& rawPixels, int w, int h,
-                                    int id) {
+void Textures::replaceTextureDirect(const std::vector<short>& rawPixels, int w,
+                                    int h, int id) {
     glBindTexture(GL_TEXTURE_2D, id);
 
     // Remove in Java
@@ -918,7 +920,8 @@ void Textures::replaceTextureDirect(const std::vector<short>& rawPixels, int w, 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-    RenderManager.TextureDataUpdate(0, 0, w, h, const_cast<short*>(rawPixels.data()), 0);
+    RenderManager.TextureDataUpdate(0, 0, w, h,
+                                    const_cast<short*>(rawPixels.data()), 0);
 }
 
 void Textures::releaseTexture(int id) {

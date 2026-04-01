@@ -35,8 +35,7 @@ InventoryMenu::InventoryMenu(std::shared_ptr<Inventory> inventory, bool active,
 }
 
 void InventoryMenu::_init(std::shared_ptr<Inventory> inventory, bool active) {
-    craftSlots =
-        std::make_shared<CraftingContainer>(this, 2, 2);
+    craftSlots = std::make_shared<CraftingContainer>(this, 2, 2);
     resultSlots = std::make_shared<ResultContainer>();
 
     this->active = active;

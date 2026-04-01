@@ -100,7 +100,8 @@ bool Monster::doHurtTarget(std::shared_ptr<Entity> target) {
 
     if (wasHurt) {
         if (knockback > 0) {
-            target->push(-sinf(yRot * std::numbers::pi / 180) * knockback * .5f, 0.1,
+            target->push(-sinf(yRot * std::numbers::pi / 180) * knockback * .5f,
+                         0.1,
                          cosf(yRot * std::numbers::pi / 180) * knockback * .5f);
             xd *= 0.6;
             zd *= 0.6;

@@ -43,10 +43,7 @@ public:
         PRIMITIVE_TYPE_COUNT
     };
 
-    enum eTextureFormat {
-        TEXTURE_FORMAT_RxGyBzAw,
-        MAX_TEXTURE_FORMATS
-    };
+    enum eTextureFormat { TEXTURE_FORMAT_RxGyBzAw, MAX_TEXTURE_FORMATS };
 
     virtual ~IPlatformRender() = default;
 
@@ -80,9 +77,9 @@ public:
     virtual void MatrixRotate(float angle, float x, float y, float z) = 0;
     virtual void MatrixScale(float x, float y, float z) = 0;
     virtual void MatrixPerspective(float fovy, float aspect, float zNear,
-                                    float zFar) = 0;
+                                   float zFar) = 0;
     virtual void MatrixOrthogonal(float left, float right, float bottom,
-                                   float top, float zNear, float zFar) = 0;
+                                  float top, float zNear, float zFar) = 0;
     virtual void MatrixPop() = 0;
     virtual void MatrixPush() = 0;
     virtual void MatrixMult(float* mat) = 0;
@@ -91,8 +88,8 @@ public:
 
     // Draw calls
     virtual void DrawVertices(ePrimitiveType PrimitiveType, int count,
-                               void* dataIn, eVertexType vType,
-                               ePixelShaderType psType) = 0;
+                              void* dataIn, eVertexType vType,
+                              ePixelShaderType psType) = 0;
 
     // Command buffers
     virtual void CBuffLockStaticCreations() = 0;
@@ -114,28 +111,29 @@ public:
     virtual void TextureBindVertex(int idx, bool scaleLight = false) = 0;
     virtual void TextureSetTextureLevels(int levels) = 0;
     [[nodiscard]] virtual int TextureGetTextureLevels() = 0;
-    virtual void TextureData(int width, int height, void* data, int level,
-                              eTextureFormat format = TEXTURE_FORMAT_RxGyBzAw) = 0;
+    virtual void TextureData(
+        int width, int height, void* data, int level,
+        eTextureFormat format = TEXTURE_FORMAT_RxGyBzAw) = 0;
     virtual void TextureDataUpdate(int xoffset, int yoffset, int width,
-                                    int height, void* data, int level) = 0;
+                                   int height, void* data, int level) = 0;
     virtual void TextureSetParam(int param, int value) = 0;
     virtual void TextureDynamicUpdateStart() = 0;
     virtual void TextureDynamicUpdateEnd() = 0;
     [[nodiscard]] virtual int LoadTextureData(const char* szFilename,
-                                               D3DXIMAGE_INFO* pSrcInfo,
-                                               int** ppDataOut) = 0;
+                                              D3DXIMAGE_INFO* pSrcInfo,
+                                              int** ppDataOut) = 0;
     [[nodiscard]] virtual int LoadTextureData(std::uint8_t* pbData,
-                                               std::uint32_t byteCount,
-                                               D3DXIMAGE_INFO* pSrcInfo,
-                                               int** ppDataOut) = 0;
+                                              std::uint32_t byteCount,
+                                              D3DXIMAGE_INFO* pSrcInfo,
+                                              int** ppDataOut) = 0;
     [[nodiscard]] virtual int SaveTextureData(const char* szFilename,
-                                               D3DXIMAGE_INFO* pSrcInfo,
-                                               int* ppDataOut) = 0;
+                                              D3DXIMAGE_INFO* pSrcInfo,
+                                              int* ppDataOut) = 0;
     [[nodiscard]] virtual int SaveTextureDataToMemory(void* pOutput,
-                                                       int outputCapacity,
-                                                       int* outputLength,
-                                                       int width, int height,
-                                                       int* ppDataIn) = 0;
+                                                      int outputCapacity,
+                                                      int* outputLength,
+                                                      int width, int height,
+                                                      int* ppDataIn) = 0;
     virtual void ReadPixels(int x, int y, int w, int h, void* buf) = 0;
     virtual void TextureGetStats() = 0;
     [[nodiscard]] virtual void* TextureGetTexture(int idx) = 0;
@@ -152,7 +150,7 @@ public:
     virtual void StateSetFaceCullCW(bool enable) = 0;
     virtual void StateSetLineWidth(float width) = 0;
     virtual void StateSetWriteEnable(bool red, bool green, bool blue,
-                                      bool alpha) = 0;
+                                     bool alpha) = 0;
     virtual void StateSetDepthTestEnable(bool enable) = 0;
     virtual void StateSetAlphaTestEnable(bool enable) = 0;
     virtual void StateSetDepthSlopeAndBias(float slope, float bias) = 0;
@@ -169,21 +167,21 @@ public:
     virtual void StateSetLightingEnable(bool enable) = 0;
     virtual void StateSetVertexTextureUV(float u, float v) = 0;
     virtual void StateSetLightColour(int light, float red, float green,
-                                      float blue) = 0;
+                                     float blue) = 0;
     virtual void StateSetLightAmbientColour(float red, float green,
-                                             float blue) = 0;
+                                            float blue) = 0;
     virtual void StateSetLightDirection(int light, float x, float y,
-                                         float z) = 0;
+                                        float z) = 0;
     virtual void StateSetLightEnable(int light, bool enable) = 0;
 
     // Viewport & clipping
     virtual void StateSetViewport(eViewportType viewportType) = 0;
     virtual void StateSetEnableViewportClipPlanes(bool enable) = 0;
     virtual void StateSetTexGenCol(int col, float x, float y, float z, float w,
-                                    bool eyeSpace) = 0;
+                                   bool eyeSpace) = 0;
     virtual void StateSetStencil(int Function, std::uint8_t stencil_ref,
-                                  std::uint8_t stencil_func_mask,
-                                  std::uint8_t stencil_write_mask) = 0;
+                                 std::uint8_t stencil_func_mask,
+                                 std::uint8_t stencil_write_mask) = 0;
     virtual void StateSetForceLOD(int LOD) = 0;
     virtual void StateSetTextureEnable(bool enable) = 0;
     virtual void StateSetActiveTexture(int tex) = 0;
@@ -201,7 +199,7 @@ public:
     virtual void DoScreenGrabOnNextPresent() = 0;
     virtual void CaptureThumbnail(ImageFileBuffer* pngOut) = 0;
     virtual void CaptureScreen(ImageFileBuffer* jpgOut,
-                                XSOCIAL_PREVIEWIMAGE* previewOut) = 0;
+                               XSOCIAL_PREVIEWIMAGE* previewOut) = 0;
 
     // Events
     virtual void BeginEvent(const wchar_t* eventName) = 0;

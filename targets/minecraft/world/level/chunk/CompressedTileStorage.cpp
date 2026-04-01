@@ -49,7 +49,8 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
         std::lock_guard<std::recursive_mutex> lock(cs_write);
         allocatedSize = copyFrom->allocatedSize;
         if (allocatedSize > 0) {
-            indicesAndData = (unsigned char*)malloc(allocatedSize);  //(unsigned char *)malloc(allocatedSize);
+            indicesAndData = (unsigned char*)malloc(
+                allocatedSize);  //(unsigned char *)malloc(allocatedSize);
             memcpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
         } else {
             indicesAndData = nullptr;
@@ -244,7 +245,8 @@ inline void CompressedTileStorage::getBlock(int* block, int x, int y, int z) {
 }
 
 // Set all tile values from a data array of length 32768 (128 x 16 x 16).
-void CompressedTileStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOffset) {
+void CompressedTileStorage::setData(std::vector<uint8_t>& dataIn,
+                                    unsigned int inOffset) {
     unsigned short _blockIndices[512];
 
     std::lock_guard<std::recursive_mutex> lock(cs_write);
@@ -328,7 +330,8 @@ void CompressedTileStorage::setData(std::vector<uint8_t>& dataIn, unsigned int i
     // type8 / chunkTotal);
 
     memToAlloc += 1024;  // For the indices
-    unsigned char* newIndicesAndData = (unsigned char*)malloc(memToAlloc);  //(unsigned char *)malloc( memToAlloc );
+    unsigned char* newIndicesAndData = (unsigned char*)malloc(
+        memToAlloc);  //(unsigned char *)malloc( memToAlloc );
     unsigned char* pucData = newIndicesAndData + 1024;
     unsigned short usDataOffset = 0;
     unsigned short* newIndices = (unsigned short*)newIndicesAndData;
@@ -669,8 +672,8 @@ void CompressedTileStorage::set(int x, int y, int z, int val) {
 
 // Sets a region of tile values with the data at offset position in the array
 // dataIn - external ordering compatible with java DataLayer
-int CompressedTileStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0,
-                                         int z0, int x1, int y1, int z1,
+int CompressedTileStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0,
+                                         int y0, int z0, int x1, int y1, int z1,
                                          int offset,
                                          tileUpdatedCallback callback,
                                          void* param, int yparam) {
@@ -703,9 +706,9 @@ int CompressedTileStorage::setDataRegion(std::vector<uint8_t>& dataIn, int x0, i
 }
 
 // Tests whether setting data would actually change anything
-bool CompressedTileStorage::testSetDataRegion(std::vector<uint8_t>& dataIn, int x0, int y0,
-                                              int z0, int x1, int y1, int z1,
-                                              int offset) {
+bool CompressedTileStorage::testSetDataRegion(std::vector<uint8_t>& dataIn,
+                                              int x0, int y0, int z0, int x1,
+                                              int y1, int z1, int offset) {
     unsigned char* pucIn = &dataIn.data()[offset];
     for (int x = x0; x < x1; x++) {
         for (int z = z0; z < z1; z++) {
@@ -721,9 +724,9 @@ bool CompressedTileStorage::testSetDataRegion(std::vector<uint8_t>& dataIn, int 
 
 // Updates the data at offset position dataInOut with a region of tile
 // information - external ordering compatible with java DataLayer
-int CompressedTileStorage::getDataRegion(std::vector<uint8_t>& dataInOut, int x0, int y0,
-                                         int z0, int x1, int y1, int z1,
-                                         int offset) {
+int CompressedTileStorage::getDataRegion(std::vector<uint8_t>& dataInOut,
+                                         int x0, int y0, int z0, int x1, int y1,
+                                         int z1, int offset) {
     unsigned char* pucOut = &dataInOut.data()[offset];
     for (int x = x0; x < x1; x++) {
         for (int z = z0; z < z1; z++) {
@@ -944,7 +947,8 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
     // If we need to do something here, then lets allocate some memory
     if (needsCompressed) {
         memToAlloc += 1024;  // For the indices
-        unsigned char* newIndicesAndData = (unsigned char*)malloc(memToAlloc);  //(unsigned char *)malloc( memToAlloc );
+        unsigned char* newIndicesAndData = (unsigned char*)malloc(
+            memToAlloc);  //(unsigned char *)malloc( memToAlloc );
         if (newIndicesAndData == nullptr) {
             uint32_t lastError = GetLastError();
             MEMORYSTATUS memStatus;
@@ -1205,12 +1209,13 @@ void CompressedTileStorage::write(DataOutputStream* dos) {
 
             // Write the rest of the data
             if (allocatedSize > 1024) {
-                std::vector<uint8_t> dataWrapper(indicesAndData + 1024,
-                                      indicesAndData + allocatedSize);
+                std::vector<uint8_t> dataWrapper(
+                    indicesAndData + 1024, indicesAndData + allocatedSize);
                 dos->write(dataWrapper);
             }
         } else {
-            std::vector<uint8_t> wrapper(indicesAndData, indicesAndData + allocatedSize);
+            std::vector<uint8_t> wrapper(indicesAndData,
+                                         indicesAndData + allocatedSize);
             dos->write(wrapper);
         }
     }

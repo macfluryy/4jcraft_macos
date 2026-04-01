@@ -13,7 +13,8 @@ public:
     EGameCommand getId();
     int getPermissionLevel();
     std::wstring getUsage(CommandSender* source);
-    void execute(std::shared_ptr<CommandSender> source, std::vector<uint8_t>& commandData);
+    void execute(std::shared_ptr<CommandSender> source,
+                 std::vector<uint8_t>& commandData);
 
 protected:
     std::wstring getPlayerNames();

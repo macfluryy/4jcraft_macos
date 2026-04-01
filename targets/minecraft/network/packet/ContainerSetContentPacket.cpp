@@ -11,7 +11,7 @@ ContainerSetContentPacket::~ContainerSetContentPacket() {}
 ContainerSetContentPacket::ContainerSetContentPacket() { containerId = 0; }
 
 ContainerSetContentPacket::ContainerSetContentPacket(
-    int containerId, std::vector<std::shared_ptr<ItemInstance> >* newItems) {
+    int containerId, std::vector<std::shared_ptr<ItemInstance>>* newItems) {
     this->containerId = containerId;
     items = std::vector<std::shared_ptr<ItemInstance>>((int)newItems->size());
     for (unsigned int i = 0; i < items.size(); i++) {

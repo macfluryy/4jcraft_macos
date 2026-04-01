@@ -66,7 +66,6 @@
 #include <thread>
 #include <chrono>
 
-
 // CMinecraftApp app;
 unsigned int CMinecraftApp::m_uiLastSignInData = 0;
 
@@ -147,7 +146,7 @@ CMinecraftApp::CMinecraftApp() {
 
     m_xuidNotch = INVALID_XUID;
 
-    memset(&m_InviteData, 0,  sizeof(JoinFromInviteData));
+    memset(&m_InviteData, 0, sizeof(JoinFromInviteData));
 
     // 	m_bRead_TMS_XUIDS_XML=false;
     // 	m_bRead_TMS_DLCINFO_XML=false;
@@ -164,7 +163,7 @@ CMinecraftApp::CMinecraftApp() {
     m_iTotalDLCInstalled = 0;
     mfTrialPausedTime = 0.0f;
     m_uiAutosaveTimer = 0;
-    memset(m_pszUniqueMapName, 0,  14);
+    memset(m_pszUniqueMapName, 0, 14);
 
     m_bNewDLCAvailable = false;
     m_bSeenNewDLCTip = false;
@@ -177,7 +176,7 @@ CMinecraftApp::CMinecraftApp() {
     m_GameNewHellScale = 0;
 #endif
 
-    memset(m_playerColours, 0,  MINECRAFT_NET_MAX_PLAYERS);
+    memset(m_playerColours, 0, MINECRAFT_NET_MAX_PLAYERS);
 
     m_iDLCOfferC = 0;
     m_bAllDLCContentRetrieved = true;
@@ -2212,8 +2211,10 @@ void CMinecraftApp::HandleXuiActions(void) {
                 //             CSocialManager::Instance()
                 //                 ->AreAllUsersAllowedToPostImages()) {
                 //             // disable character name tags for the shot
-                //             // m_bwasHidingGui = pMinecraft->options->hideGui;
-                //             // // 4J Stu - Removed 1.8.2 bug fix (TU6) as don't
+                //             // m_bwasHidingGui =
+                //             pMinecraft->options->hideGui;
+                //             // // 4J Stu - Removed 1.8.2 bug fix (TU6) as
+                //             don't
                 //             // need this
                 //             pMinecraft->options->hideGui = true;
 
@@ -2577,8 +2578,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         return;
                     }
                     // flag to capture the save thumbnail
-                    SetAction(i, eAppAction_ExitWorldCapturedThumbnail,
-                              param);
+                    SetAction(i, eAppAction_ExitWorldCapturedThumbnail, param);
 
                     // Change the presence info
                     // Are we offline or online, and how many players are there
@@ -2878,7 +2878,8 @@ void CMinecraftApp::HandleXuiActions(void) {
                                 bool gameStarted = false;
                                 for (int j = 0; j < pMinecraft->levels.size();
                                      j++) {
-                                    if (pMinecraft->levels.data()[j] != nullptr) {
+                                    if (pMinecraft->levels.data()[j] !=
+                                        nullptr) {
                                         gameStarted = true;
                                         break;
                                     }
@@ -3078,9 +3079,8 @@ void CMinecraftApp::HandleXuiActions(void) {
                         uiIDA[0] = IDS_CONFIRM_CANCEL;
                         uiIDA[1] = IDS_CONFIRM_OK;
                         ui.RequestAlertMessage(
-                            IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE,
-                            uiIDA, 2, i,
-                            &CMinecraftApp::ExitAndJoinFromInvite, this);
+                            IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE, uiIDA,
+                            2, i, &CMinecraftApp::ExitAndJoinFromInvite, this);
                     }
                 } break;
                 case eAppAction_ExitAndJoinFromInviteConfirmed: {
@@ -3381,7 +3381,6 @@ void CMinecraftApp::HandleXuiActions(void) {
                     // can't ban the level at that point
                     if (g_NetworkManager.IsInGameplay() &&
                         !g_NetworkManager.IsLeavingGame()) {
-
                         // primary player would exit the world, secondary would
                         // exit the player
                         if (ProfileManager.GetPrimaryPad() == i) {
@@ -3636,7 +3635,8 @@ void CMinecraftApp::loadStringTable() {
     }
     std::wstring localisationFile = L"languages.loc";
     if (m_mediaArchive->hasFile(localisationFile)) {
-        std::vector<uint8_t> locFile = m_mediaArchive->getFile(localisationFile);
+        std::vector<uint8_t> locFile =
+            m_mediaArchive->getFile(localisationFile);
         m_stringTable = new StringTable(locFile.data(), locFile.size());
     } else {
         m_stringTable = nullptr;
@@ -4369,8 +4369,7 @@ void CMinecraftApp::UpdateTime() {
     m_Time.qwAppTime += qwDeltaTime;
     m_Time.qwTime = qwNewTime;
 
-    m_Time.fElapsedTime =
-        m_Time.fSecsPerTick * static_cast<float>(qwDeltaTime);
+    m_Time.fElapsedTime = m_Time.fSecsPerTick * static_cast<float>(qwDeltaTime);
     m_Time.fAppTime =
         m_Time.fSecsPerTick * static_cast<float>(m_Time.qwAppTime);
 }
@@ -4816,7 +4815,7 @@ int CMinecraftApp::TipsSortFunction(const void* a, const void* b) {
 void CMinecraftApp::InitialiseTips() {
     // We'll randomise the tips at start up based on their priority
 
-    memset(m_TipIDA, 0,  sizeof(m_TipIDA));
+    memset(m_TipIDA, 0, sizeof(m_TipIDA));
 
     // Make the first tip tell you that you can play splitscreen in HD modes if
     // you are in SD
@@ -4873,8 +4872,7 @@ void CMinecraftApp::InitialiseTips() {
 
 int CMinecraftApp::GetNextTip() {
     static bool bShowSkinDLCTip = true;
-    if (app.GetNewDLCAvailable() &&
-        app.DisplayNewDLCTip()) {
+    if (app.GetNewDLCAvailable() && app.DisplayNewDLCTip()) {
         return IDS_TIPS_GAMETIP_NEWDLC;
     } else {
         if (bShowSkinDLCTip) {
@@ -5261,7 +5259,7 @@ int32_t CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
 
     if (eTempXuid != eXUID_Undefined) {
         pMojangData = new MOJANG_DATA;
-        memset(pMojangData, 0,  sizeof(MOJANG_DATA));
+        memset(pMojangData, 0, sizeof(MOJANG_DATA));
         pMojangData->eXuid = eTempXuid;
 
         wcsncpy(pMojangData->wchSkin, pSkin, MAX_CAPENAME_SIZE);
@@ -5313,7 +5311,7 @@ int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        wchar_t* pDataFile) {
     int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
-    memset(pDLCData, 0,  sizeof(DLC_INFO));
+    memset(pDLCData, 0, sizeof(DLC_INFO));
     pDLCData->ullOfferID_Full = ullOfferID_Full;
     pDLCData->ullOfferID_Trial = ullOfferID_Trial;
     pDLCData->eDLCType = e_DLC_NotDefined;
@@ -5375,7 +5373,7 @@ int32_t CMinecraftApp::RegisterDLCData(char* pchDLCName,
     char chDLCType[3];
     int32_t hr = 0;
     DLC_INFO* pDLCData = new DLC_INFO;
-    memset(pDLCData, 0,  sizeof(DLC_INFO));
+    memset(pDLCData, 0, sizeof(DLC_INFO));
 
     chDLCType[0] = pchDLCName[0];
     chDLCType[1] = pchDLCName[1];
@@ -5702,7 +5700,6 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
         if (pBannedListData != nullptr) {
             if (IsEqualXUID(pBannedListData->xuid, xuid) &&
                 (strcmp(pBannedListData->pszLevelName, pszLevelName) == 0)) {
-
                 // match found, so remove this entry
                 it = m_vBannedListA[iPad]->erase(it);
             } else {
@@ -6203,7 +6200,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
             // check that it's the 4J text
             unsigned char* pszKeyword = &ucPtr[uiCount];
             while (pszKeyword < ucPtr + uiCount + uiChunkLen) {
-                memset(szKeyword, 0,  80);
+                memset(szKeyword, 0, 80);
                 unsigned int uiKeywordC = 0;
                 while (*pszKeyword != 0) {
                     szKeyword[uiKeywordC++] = *pszKeyword;
@@ -6225,7 +6222,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
                     unsigned int uiValueC = 0;
                     unsigned char pszHostOptions[9];  // Hex representation of
                                                       // unsigned int
-                    memset(&pszHostOptions, 0,  9);
+                    memset(&pszHostOptions, 0, 9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
                            uiValueC < 8) {
@@ -6242,7 +6239,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
                     unsigned int uiValueC = 0;
                     unsigned char pszTexturePack[9];  // Hex representation of
                                                       // unsigned int
-                    memset(&pszTexturePack, 0,  9);
+                    memset(&pszTexturePack, 0, 9);
                     while (*pszKeyword != 0 &&
                            (pszKeyword < ucPtr + uiCount + uiChunkLen) &&
                            uiValueC < 8) {
@@ -6653,7 +6650,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                             // app.DebugPrintf("Adding a request to the TMSPP
                             // download queue - %ls\n",pDLC->wchBanner);
                             TMSPPRequest* pTMSPPreq = new TMSPPRequest;
-                            memset(pTMSPPreq, 0,  sizeof(TMSPPRequest));
+                            memset(pTMSPPreq, 0, sizeof(TMSPPRequest));
 
                             pTMSPPreq->CallbackFunc =
                                 &CMinecraftApp::TMSPPFileReturned;
@@ -7115,7 +7112,8 @@ bool CMinecraftApp::hasArchiveFile(const std::wstring& filename) {
         return m_mediaArchive->hasFile(filename);
 }
 
-std::vector<uint8_t> CMinecraftApp::getArchiveFile(const std::wstring& filename) {
+std::vector<uint8_t> CMinecraftApp::getArchiveFile(
+    const std::wstring& filename) {
     TexturePack* tPack = nullptr;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft && pMinecraft->skins)

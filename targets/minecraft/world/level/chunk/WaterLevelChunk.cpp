@@ -6,7 +6,8 @@
 
 class Entity;
 
-WaterLevelChunk::WaterLevelChunk(Level* level, std::vector<uint8_t>& blocks, int x, int z)
+WaterLevelChunk::WaterLevelChunk(Level* level, std::vector<uint8_t>& blocks,
+                                 int x, int z)
     : LevelChunk(level, blocks, x, z) {
     dontSave = true;
     // Set this as fully post-processed, so we don't try and run post-processing
@@ -85,9 +86,9 @@ bool WaterLevelChunk::shouldSave(bool force) { return false; }
 
 void WaterLevelChunk::setBlocks(std::vector<uint8_t>& newBlocks, int sub) {}
 
-int WaterLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0, int z0,
-                                      int x1, int y1, int z1, int p,
-                                      bool includeLighting /* = true*/) {
+int WaterLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0,
+                                      int y0, int z0, int x1, int y1, int z1,
+                                      int p, bool includeLighting /* = true*/) {
     int xs = x1 - x0;
     int ys = y1 - y0;
     int zs = z1 - z0;
@@ -101,9 +102,9 @@ int WaterLevelChunk::setBlocksAndData(std::vector<uint8_t>& data, int x0, int y0
     }
 }
 
-bool WaterLevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0, int y0,
-                                           int z0, int x1, int y1, int z1,
-                                           int p) {
+bool WaterLevelChunk::testSetBlocksAndData(std::vector<uint8_t>& data, int x0,
+                                           int y0, int z0, int x1, int y1,
+                                           int z1, int p) {
     return false;
 }
 

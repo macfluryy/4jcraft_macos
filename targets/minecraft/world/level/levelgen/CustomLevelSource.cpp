@@ -40,7 +40,8 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
 #if defined(_OVERRIDE_HEIGHTMAP)
     m_XZSize = level->getLevelData()->getXZSize();
 
-    m_heightmapOverride = std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
+    m_heightmapOverride =
+        std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
 
     std::filesystem::path path = "GameRules/heightmap.bin";
     std::ifstream file(path, std::ios::binary);
@@ -53,14 +54,16 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
         }
-        file.read(reinterpret_cast<char*>(m_heightmapOverride.data()), static_cast<std::streamsize>(fileSize));
+        file.read(reinterpret_cast<char*>(m_heightmapOverride.data()),
+                  static_cast<std::streamsize>(fileSize));
 
         if (!file) {
             app.FatalLoadError();
         }
     }
 
-    m_waterheightOverride = std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
+    m_waterheightOverride =
+        std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
 
     std::filesystem::path waterHeightPath = "GameRules/waterheight.bin";
     std::ifstream waterHeightFile(waterHeightPath, std::ios::binary);
@@ -74,7 +77,9 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
         }
-        waterHeightFile.read(reinterpret_cast<char*>(m_waterheightOverride.data()), static_cast<std::streamsize>(waterFileSize));
+        waterHeightFile.read(
+            reinterpret_cast<char*>(m_waterheightOverride.data()),
+            static_cast<std::streamsize>(waterFileSize));
 
         if (!waterHeightFile) {
             app.FatalLoadError();
@@ -111,7 +116,8 @@ CustomLevelSource::~CustomLevelSource() {
 #endif
 }
 
-void CustomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t>& blocks) {
+void CustomLevelSource::prepareHeights(int xOffs, int zOffs,
+                                       std::vector<uint8_t>& blocks) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::maxBuildHeight / CHUNK_HEIGHT;
@@ -232,7 +238,8 @@ void CustomLevelSource::prepareHeights(int xOffs, int zOffs, std::vector<uint8_t
 #endif
 }
 
-void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+void CustomLevelSource::buildSurfaces(int xOffs, int zOffs,
+                                      std::vector<uint8_t>& blocks,
                                       std::vector<Biome*>& biomes) {
 #if defined(_OVERRIDE_HEIGHTMAP)
     int waterHeight = level->seaLevel;
@@ -241,9 +248,9 @@ void CustomLevelSource::buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>
 
     double s = 1 / 32.0;
 
-    std::vector<double> depthBuffer(16 *
-                            16);  // 4J - used to be declared with class level
-                                  // scope but moved here for thread safety
+    std::vector<double> depthBuffer(
+        16 * 16);  // 4J - used to be declared with class level
+                   // scope but moved here for thread safety
 
     depthBuffer = perlinNoise3->getRegion(depthBuffer, xOffs * 16, zOffs * 16,
                                           0, 16, 16, 1, s * 2, s * 2, s * 2);
@@ -355,8 +362,10 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
     int blocksSize = Level::maxBuildHeight * 16 * 16;
     uint8_t* tileData = (uint8_t*)malloc(blocksSize);
     memset(tileData, 0, blocksSize);
-    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
-    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
+    std::vector<uint8_t> blocks =
+        std::vector<uint8_t>(tileData, tileData + blocksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth *
+    //    16);
 
     // LevelChunk *levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     // // 4J - moved to below
@@ -370,7 +379,6 @@ LevelChunk* CustomLevelSource::getChunk(int xOffs, int zOffs) {
                                            16, true);
 
     buildSurfaces(xOffs, zOffs, blocks, biomes);
-
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
     // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
@@ -511,15 +519,14 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
 
     bool hasVillage = false;
 
-        if (generateStructures) {
+    if (generateStructures) {
         mineShaftFeature->postProcess(level, pprandom, xt, zt);
         hasVillage = villageFeature->postProcess(level, pprandom, xt, zt);
         strongholdFeature->postProcess(level, pprandom, xt, zt);
         scatteredFeature->postProcess(level, random, xt, zt);
     }
-    
 
-        for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         int x = xo + pprandom->nextInt(16) + 8;
         int y = pprandom->nextInt(Level::maxBuildHeight);
         int z = zo + pprandom->nextInt(16) + 8;
@@ -528,10 +535,8 @@ void CustomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
         }
         delete mrf;
     }
-    
 
-        biome->decorate(level, pprandom, xo, zo);
-    
+    biome->decorate(level, pprandom, xo, zo);
 
     app.processSchematics(parent->getChunk(xt, zt));
 

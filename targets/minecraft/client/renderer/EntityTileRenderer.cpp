@@ -11,8 +11,7 @@ EntityTileRenderer::EntityTileRenderer() {
     chest = std::make_shared<ChestTileEntity>();
     trappedChest = std::shared_ptr<ChestTileEntity>(
         new ChestTileEntity(ChestTile::TYPE_TRAP));
-    enderChest =
-        std::make_shared<EnderChestTileEntity>();
+    enderChest = std::make_shared<EnderChestTileEntity>();
 }
 
 void EntityTileRenderer::render(Tile* tile, int data, float brightness,

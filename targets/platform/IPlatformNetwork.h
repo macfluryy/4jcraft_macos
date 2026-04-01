@@ -58,7 +58,8 @@ public:
 
     // Hosting / joining
     virtual void HostGame(int localUsersMask, bool bOnlineGame, bool bIsPrivate,
-                          unsigned char publicSlots, unsigned char privateSlots) = 0;
+                          unsigned char publicSlots,
+                          unsigned char privateSlots) = 0;
     virtual int JoinGame(FriendSessionInfo* searchResult, int dwLocalUsersMask,
                          int dwPrimaryUserIndex) = 0;
     virtual void CancelJoinGame() {}
@@ -68,12 +69,10 @@ public:
 
     // Callbacks
     virtual void RegisterPlayerChangedCallback(
-        int iPad,
-        void (*callback)(void*, INetworkPlayer*, bool),
+        int iPad, void (*callback)(void*, INetworkPlayer*, bool),
         void* callbackParam) = 0;
     virtual void UnRegisterPlayerChangedCallback(
-        int iPad,
-        void (*callback)(void*, INetworkPlayer*, bool),
+        int iPad, void (*callback)(void*, INetworkPlayer*, bool),
         void* callbackParam) = 0;
 
     virtual void HandleSignInChange() = 0;

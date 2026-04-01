@@ -74,7 +74,8 @@ public:
     // 4J Added
     static bool canSendToAnyClient(std::shared_ptr<Packet> packet);
 
-    static void writeBytes(DataOutputStream* dataoutputstream, const std::vector<uint8_t>& bytes);
+    static void writeBytes(DataOutputStream* dataoutputstream,
+                           const std::vector<uint8_t>& bytes);
     static std::vector<uint8_t> readBytes(DataInputStream* datainputstream);
 
     virtual int getId() = 0;

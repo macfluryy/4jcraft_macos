@@ -21,7 +21,8 @@ private:
 protected:
     const Tier* tier;
 
-    DiggerItem(int id, float attackDamage, const Tier* tier, std::vector<Tile*>* tiles);
+    DiggerItem(int id, float attackDamage, const Tier* tier,
+               std::vector<Tile*>* tiles);
 
 public:
     virtual float getDestroySpeed(std::shared_ptr<ItemInstance> itemInstance,

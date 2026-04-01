@@ -193,13 +193,13 @@ bool Zombie::hurt(DamageSource* source, float dmg) {
 
             for (int i = 0; i < REINFORCEMENT_ATTEMPTS; i++) {
                 int xt = x + random->nextInt(REINFORCEMENT_RANGE_MIN,
-                                          REINFORCEMENT_RANGE_MAX) *
+                                             REINFORCEMENT_RANGE_MAX) *
                                  random->nextInt(-1, 1);
                 int yt = y + random->nextInt(REINFORCEMENT_RANGE_MIN,
-                                          REINFORCEMENT_RANGE_MAX) *
+                                             REINFORCEMENT_RANGE_MAX) *
                                  random->nextInt(-1, 1);
                 int zt = z + random->nextInt(REINFORCEMENT_RANGE_MIN,
-                                          REINFORCEMENT_RANGE_MAX) *
+                                             REINFORCEMENT_RANGE_MAX) *
                                  random->nextInt(-1, 1);
 
                 if (level->isTopSolidBlocking(xt, yt - 1, zt) &&
@@ -334,8 +334,7 @@ void Zombie::killed(std::shared_ptr<LivingEntity> mob) {
         if (level->difficulty == Difficulty::NORMAL && random->nextBoolean())
             return;
 
-        std::shared_ptr<Zombie> zombie =
-            std::make_shared<Zombie>(level);
+        std::shared_ptr<Zombie> zombie = std::make_shared<Zombie>(level);
         zombie->copyPosition(mob);
         level->removeEntity(mob);
         zombie->finalizeMobSpawn(nullptr);
@@ -473,8 +472,7 @@ bool Zombie::isConverting() {
 }
 
 void Zombie::finishConversion() {
-    std::shared_ptr<Villager> villager =
-        std::make_shared<Villager>(level);
+    std::shared_ptr<Villager> villager = std::make_shared<Villager>(level);
     villager->copyPosition(shared_from_this());
     villager->finalizeMobSpawn(nullptr);
     villager->setRewardPlayersInVillage();

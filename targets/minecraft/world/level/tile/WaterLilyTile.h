@@ -14,7 +14,8 @@ public:
 
     virtual int getRenderShape();
     virtual void addAABBs(Level* level, int x, int y, int z, AABB* box,
-                          std::vector<AABB>* boxes, std::shared_ptr<Entity> source);
+                          std::vector<AABB>* boxes,
+                          std::shared_ptr<Entity> source);
     virtual std::optional<AABB> getAABB(Level* level, int x, int y, int z);
     virtual int getColor() const;
     virtual int getColor(int auxData);

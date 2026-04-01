@@ -15,7 +15,8 @@ int furnaceSlotsForDown[] = {FurnaceTileEntity::SLOT_RESULT,
                              FurnaceTileEntity::SLOT_FUEL};
 int furnaceSlotsForSides[] = {FurnaceTileEntity::SLOT_FUEL};
 
-const std::vector<int> FurnaceTileEntity::SLOTS_FOR_UP = std::vector<int>(furnaceSlotsForUp, furnaceSlotsForUp + 1);
+const std::vector<int> FurnaceTileEntity::SLOTS_FOR_UP =
+    std::vector<int>(furnaceSlotsForUp, furnaceSlotsForUp + 1);
 const std::vector<int> FurnaceTileEntity::SLOTS_FOR_DOWN =
     std::vector<int>(furnaceSlotsForDown, furnaceSlotsForDown + 2);
 const std::vector<int> FurnaceTileEntity::SLOTS_FOR_SIDES =
@@ -35,7 +36,6 @@ FurnaceTileEntity::FurnaceTileEntity() : TileEntity() {
     m_charcoalUsed = false;
     name = L"";
 }
-
 
 unsigned int FurnaceTileEntity::getContainerSize() { return items.size(); }
 

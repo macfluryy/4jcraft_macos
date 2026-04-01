@@ -145,8 +145,8 @@ std::vector<uint8_t> ArchiveFile::getFile(const std::wstring& filename) {
                 uncompressedBuffer, &decompressedSize, out.data() + 4,
                 out.size() - 4);
 
-
-            out = std::vector<uint8_t>(uncompressedBuffer, uncompressedBuffer + decompressedSize);
+            out = std::vector<uint8_t>(uncompressedBuffer,
+                                       uncompressedBuffer + decompressedSize);
             delete[] uncompressedBuffer;
         }
 

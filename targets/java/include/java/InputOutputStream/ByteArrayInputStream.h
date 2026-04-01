@@ -8,8 +8,8 @@
 
 class ByteArrayInputStream : public InputStream {
 protected:
-    std::vector<uint8_t> buf;  // An array of bytes that was provided by the creator of the
-                    // stream.
+    std::vector<uint8_t> buf;  // An array of bytes that was provided by the
+                               // creator of the stream.
     unsigned int count;  // The index one greater than the last valid character
                          // in the input stream buffer.
     unsigned int mark;   // The currently marked position in the stream.
@@ -23,7 +23,8 @@ public:
     virtual ~ByteArrayInputStream();
     virtual int read();
     virtual int read(std::vector<uint8_t>& b);
-    virtual int read(std::vector<uint8_t>& b, unsigned int offset, unsigned int length);
+    virtual int read(std::vector<uint8_t>& b, unsigned int offset,
+                     unsigned int length);
     virtual void close();
     virtual int64_t skip(int64_t n);
 

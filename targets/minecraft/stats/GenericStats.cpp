@@ -428,40 +428,48 @@ std::vector<uint8_t> GenericStats::getParam_pigOneM(int distance) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_cowsMilked() { return getParam_noArgs(); }
+std::vector<uint8_t> GenericStats::getParam_cowsMilked() {
+    return getParam_noArgs();
+}
 
-std::vector<uint8_t> GenericStats::getParam_blocksPlaced(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::getParam_blocksPlaced(int id, int data,
+                                                         int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_blocksMined(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::getParam_blocksMined(int id, int data,
+                                                        int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_itemsCollected(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsCollected(int id, int aux,
+                                                           int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_itemsCrafted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsCrafted(int id, int aux,
+                                                         int count) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_itemsSmelted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsSmelted(int id, int aux,
+                                                         int count) {
     return this->getParam_itemsCrafted(id, aux, count);
 }
 
-std::vector<uint8_t> GenericStats::getParam_itemsUsed(std::shared_ptr<Player> plr,
-                                           std::shared_ptr<ItemInstance> itm) {
+std::vector<uint8_t> GenericStats::getParam_itemsUsed(
+    std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_itemsBought(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::getParam_itemsBought(int id, int aux,
+                                                        int count) {
     return getParam_noArgs();
 }
 
 std::vector<uint8_t> GenericStats::getParam_mobKill(std::shared_ptr<Player> plr,
-                                         std::shared_ptr<Mob> mob,
-                                         DamageSource* dmgSrc) {
+                                                    std::shared_ptr<Mob> mob,
+                                                    DamageSource* dmgSrc) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
@@ -477,11 +485,13 @@ std::vector<uint8_t> GenericStats::getParam_curedEntity(eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_craftedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_craftedEntity(
+    eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
-std::vector<uint8_t> GenericStats::getParam_shearedEntity(eINSTANCEOF entityId) {
+std::vector<uint8_t> GenericStats::getParam_shearedEntity(
+    eINSTANCEOF entityId) {
     return getParam_noArgs();  // Really just a count on most platforms.
 }
 
@@ -513,7 +523,8 @@ std::vector<uint8_t> GenericStats::getParam_openInventory(int menuId) {
     return getParam_achievement(eAward_TakingInventory);
 }
 
-std::vector<uint8_t> GenericStats::getParam_chestfulOfCobblestone(int cobbleStone) {
+std::vector<uint8_t> GenericStats::getParam_chestfulOfCobblestone(
+    int cobbleStone) {
 #if defined(_EXTENDED_ACHIEVEMENTS)
     return getParam_achievement(eAward_chestfulOfCobblestone);
 #else
@@ -565,41 +576,47 @@ std::vector<uint8_t> GenericStats::param_cowsMilked() {
     return instance->getParam_cowsMilked();
 }
 
-std::vector<uint8_t> GenericStats::param_blocksPlaced(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::param_blocksPlaced(int id, int data,
+                                                      int count) {
     return instance->getParam_blocksPlaced(id, data, count);
 }
 
-std::vector<uint8_t> GenericStats::param_blocksMined(int id, int data, int count) {
+std::vector<uint8_t> GenericStats::param_blocksMined(int id, int data,
+                                                     int count) {
     return instance->getParam_blocksMined(id, data, count);
 }
 
-std::vector<uint8_t> GenericStats::param_itemsCollected(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsCollected(int id, int aux,
+                                                        int count) {
     return instance->getParam_itemsCollected(id, aux, count);
 }
 
-std::vector<uint8_t> GenericStats::param_itemsCrafted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsCrafted(int id, int aux,
+                                                      int count) {
     return instance->getParam_itemsCrafted(id, aux, count);
 }
 
-std::vector<uint8_t> GenericStats::param_itemsSmelted(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsSmelted(int id, int aux,
+                                                      int count) {
     return instance->getParam_itemsSmelted(id, aux, count);
 }
 
-std::vector<uint8_t> GenericStats::param_itemsUsed(std::shared_ptr<Player> plr,
-                                        std::shared_ptr<ItemInstance> itm) {
+std::vector<uint8_t> GenericStats::param_itemsUsed(
+    std::shared_ptr<Player> plr, std::shared_ptr<ItemInstance> itm) {
     if ((plr != nullptr) && (itm != nullptr))
         return instance->getParam_itemsUsed(plr, itm);
     else
         return instance->getParam_noArgs();
 }
 
-std::vector<uint8_t> GenericStats::param_itemsBought(int id, int aux, int count) {
+std::vector<uint8_t> GenericStats::param_itemsBought(int id, int aux,
+                                                     int count) {
     return instance->getParam_itemsBought(id, aux, count);
 }
 
 std::vector<uint8_t> GenericStats::param_mobKill(std::shared_ptr<Player> plr,
-                                      std::shared_ptr<Mob> mob,
-                                      DamageSource* dmgSrc) {
+                                                 std::shared_ptr<Mob> mob,
+                                                 DamageSource* dmgSrc) {
     if ((plr != nullptr) && (mob != nullptr))
         return instance->getParam_mobKill(plr, mob, dmgSrc);
     else
@@ -638,7 +655,9 @@ std::vector<uint8_t> GenericStats::param_enteredBiome(int biomeId) {
     return instance->getParam_enteredBiome(biomeId);
 }
 
-std::vector<uint8_t> GenericStats::param_noArgs() { return instance->getParam_noArgs(); }
+std::vector<uint8_t> GenericStats::param_noArgs() {
+    return instance->getParam_noArgs();
+}
 
 std::vector<uint8_t> GenericStats::param_openInventory() {
     return instance->getParam_achievement(eAward_TakingInventory);
@@ -892,7 +911,8 @@ std::vector<uint8_t> GenericStats::param_stayinFrosty() {
 #endif
 }
 
-std::vector<uint8_t> GenericStats::param_chestfulOfCobblestone(int cobbleStone) {
+std::vector<uint8_t> GenericStats::param_chestfulOfCobblestone(
+    int cobbleStone) {
     return instance->getParam_chestfulOfCobblestone(cobbleStone);
 }
 

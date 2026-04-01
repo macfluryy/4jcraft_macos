@@ -99,7 +99,7 @@ void PlayerList::placeNewPlayer(Connection* connection,
     std::uint8_t playerIndex = 0;
     {
         bool usedIndexes[MINECRAFT_NET_MAX_PLAYERS];
-        memset(&usedIndexes, 0,  MINECRAFT_NET_MAX_PLAYERS * sizeof(bool));
+        memset(&usedIndexes, 0, MINECRAFT_NET_MAX_PLAYERS * sizeof(bool));
         for (auto it = players.begin(); it < players.end(); ++it) {
             usedIndexes[(int)(*it)->getPlayerIndex()] = true;
         }
@@ -449,8 +449,7 @@ void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
     // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
     // PlayerInfoPacket(player->name, true, 1000) ) );
     if (player->connection->getNetworkPlayer()) {
-        broadcastAll(
-            std::make_shared<PlayerInfoPacket>(player));
+        broadcastAll(std::make_shared<PlayerInfoPacket>(player));
     }
 
     players.push_back(player);
@@ -478,8 +477,7 @@ void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
         // player->connection->send(std::shared_ptr<PlayerInfoPacket>( new
         // PlayerInfoPacket(op->name, true, op->latency) ) );
         if (op->connection->getNetworkPlayer()) {
-            player->connection->send(
-                std::make_shared<PlayerInfoPacket>(op));
+            player->connection->send(std::make_shared<PlayerInfoPacket>(op));
         }
     }
 
@@ -490,9 +488,8 @@ void PlayerList::add(std::shared_ptr<ServerPlayer> player) {
             if (thisPlayer->isSleeping()) {
                 if (firstSleepingPlayer == nullptr)
                     firstSleepingPlayer = thisPlayer;
-                thisPlayer->connection->send(
-                    std::make_shared<ChatPacket>(
-                        thisPlayer->name, ChatPacket::e_ChatBedMeSleep));
+                thisPlayer->connection->send(std::make_shared<ChatPacket>(
+                    thisPlayer->name, ChatPacket::e_ChatBedMeSleep));
             }
         }
         player->connection->send(std::make_shared<ChatPacket>(
@@ -720,9 +717,8 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
                            respawnPosition->z + 0.5f, 0, 0);
             player->setRespawnPosition(bedPosition, spawnForced);
         } else {
-            player->connection->send(
-                std::make_shared<GameEventPacket>(
-                    GameEventPacket::NO_RESPAWN_BED_AVAILABLE, 0));
+            player->connection->send(std::make_shared<GameEventPacket>(
+                GameEventPacket::NO_RESPAWN_BED_AVAILABLE, 0));
         }
         delete bedPosition;
     }
@@ -743,10 +739,9 @@ std::shared_ptr<ServerPlayer> PlayerList::respawn(
         level->getLevelData()->getHellScale()));
     player->connection->teleport(player->x, player->y, player->z, player->yRot,
                                  player->xRot);
-    player->connection->send(
-        std::make_shared<SetExperiencePacket>(
-            player->experienceProgress, player->totalExperience,
-            player->experienceLevel));
+    player->connection->send(std::make_shared<SetExperiencePacket>(
+        player->experienceProgress, player->totalExperience,
+        player->experienceLevel));
 
     if (keepAllPlayerData) {
         std::vector<MobEffectInstance*>* activeEffects =
@@ -990,8 +985,7 @@ void PlayerList::tick() {
         // broadcastAll(std::shared_ptr<PlayerInfoPacket>( new
         // PlayerInfoPacket(op->name, true, op->latency) ) );
         if (op->connection->getNetworkPlayer()) {
-            broadcastAll(
-                std::make_shared<PlayerInfoPacket>(op));
+            broadcastAll(std::make_shared<PlayerInfoPacket>(op));
         }
     }
 
@@ -1284,8 +1278,7 @@ void PlayerList::sendMessage(const std::wstring& name,
                              const std::wstring& message) {
     std::shared_ptr<ServerPlayer> player = getPlayer(name);
     if (player != nullptr) {
-        player->connection->send(
-            std::make_shared<ChatPacket>(message));
+        player->connection->send(std::make_shared<ChatPacket>(message));
     }
 }
 
