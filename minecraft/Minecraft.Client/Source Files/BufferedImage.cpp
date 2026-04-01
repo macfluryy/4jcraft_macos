@@ -224,8 +224,8 @@ BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
 
     BufferedImage* img = new BufferedImage(w, h, 0);
 
-    // Copy pixel data directly into img->data[0].
-    // The old arrayWithLength was a non-owning wrapper — std::vector copies,
+    // 4jcraft: Copy pixel data directly into img->data[0].
+    // The old arrayWithLength.h (custom vector impl) was a non-owning wrapper, std::vector copies
     // so we write to the raw array directly instead.
     int srcW = width;
     for (int row = 0; row < h; row++) {
