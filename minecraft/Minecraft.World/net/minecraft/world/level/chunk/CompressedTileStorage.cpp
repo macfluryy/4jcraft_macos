@@ -47,9 +47,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
         std::lock_guard<std::recursive_mutex> lock(cs_write);
         allocatedSize = copyFrom->allocatedSize;
         if (allocatedSize > 0) {
-            indicesAndData = (unsigned char*)XPhysicalAlloc(
-                allocatedSize, MAXULONG_PTR, 4096,
-                PAGE_READWRITE);  //(unsigned char *)malloc(allocatedSize);
+            indicesAndData = (unsigned char*)malloc(allocatedSize);  //(unsigned char *)malloc(allocatedSize);
             memcpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
         } else {
             indicesAndData = nullptr;
@@ -68,8 +66,7 @@ CompressedTileStorage::CompressedTileStorage(std::vector<uint8_t>& initFrom,
 
     // We need 32768 bytes for a fully uncompressed chunk, plus 1024 for the
     // index. Rounding up to nearest 4096 bytes for allocation
-    indicesAndData = (unsigned char*)XPhysicalAlloc(32768 + 4096, MAXULONG_PTR,
-                                                    4096, PAGE_READWRITE);
+    indicesAndData = (unsigned char*)malloc(32768 + 4096);
 
     unsigned short* indices = (unsigned short*)indicesAndData;
     unsigned char* data = indicesAndData + 1024;
@@ -112,8 +109,7 @@ CompressedTileStorage::CompressedTileStorage(bool isEmpty) {
 
     // Empty and already compressed, so we only need 1K. Rounding up to nearest
     // 4096 bytes for allocation
-    indicesAndData = (unsigned char*)XPhysicalAlloc(4096, MAXULONG_PTR, 4096,
-                                                    PAGE_READWRITE);
+    indicesAndData = (unsigned char*)malloc(4096);
     unsigned short* indices = (unsigned short*)indicesAndData;
     // unsigned char *data = indicesAndData + 1024;
 
@@ -330,9 +326,7 @@ void CompressedTileStorage::setData(std::vector<uint8_t>& dataIn, unsigned int i
     // type8 / chunkTotal);
 
     memToAlloc += 1024;  // For the indices
-    unsigned char* newIndicesAndData = (unsigned char*)XPhysicalAlloc(
-        memToAlloc, MAXULONG_PTR, 4096,
-        PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
+    unsigned char* newIndicesAndData = (unsigned char*)malloc(memToAlloc);  //(unsigned char *)malloc( memToAlloc );
     unsigned char* pucData = newIndicesAndData + 1024;
     unsigned short usDataOffset = 0;
     unsigned short* newIndices = (unsigned short*)newIndicesAndData;
@@ -948,9 +942,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
     // If we need to do something here, then lets allocate some memory
     if (needsCompressed) {
         memToAlloc += 1024;  // For the indices
-        unsigned char* newIndicesAndData = (unsigned char*)XPhysicalAlloc(
-            memToAlloc, MAXULONG_PTR, 4096,
-            PAGE_READWRITE);  //(unsigned char *)malloc( memToAlloc );
+        unsigned char* newIndicesAndData = (unsigned char*)malloc(memToAlloc);  //(unsigned char *)malloc( memToAlloc );
         if (newIndicesAndData == nullptr) {
             uint32_t lastError = GetLastError();
             MEMORYSTATUS memStatus;
@@ -1231,8 +1223,7 @@ void CompressedTileStorage::read(DataInputStream* dis) {
         if (indicesAndData) {
             free(indicesAndData);
         }
-        indicesAndData = (unsigned char*)XPhysicalAlloc(
-            allocatedSize, MAXULONG_PTR, 4096, PAGE_READWRITE);
+        indicesAndData = (unsigned char*)malloc(allocatedSize);
 
         std::vector<uint8_t> wrapper(allocatedSize);
         dis->readFully(wrapper);

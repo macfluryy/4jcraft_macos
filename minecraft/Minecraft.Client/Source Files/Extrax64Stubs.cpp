@@ -38,10 +38,6 @@ int32_t XPartyGetUserList(void* pUserList) { return 0; }
 
 bool IsEqualXUID(PlayerUID a, PlayerUID b) { return false; }
 
-void* XPhysicalAlloc(size_t a, uintptr_t b, uintptr_t c, uint32_t d) {
-    return malloc(a);
-}
-
 D3DXVECTOR3::D3DXVECTOR3() {}
 D3DXVECTOR3::D3DXVECTOR3(float x, float y, float z) : x(x), y(y), z(z) {}
 D3DXVECTOR3& D3DXVECTOR3::operator+=(const D3DXVECTOR3& add) {

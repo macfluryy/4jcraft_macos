@@ -56,8 +56,6 @@ public:
     }
 };
 
-void* XPhysicalAlloc(size_t a, uintptr_t b, uintptr_t c, uint32_t d);
-
 class DLCManager;
 class LevelRuleset;
 class ModelPart;

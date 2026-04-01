@@ -92,8 +92,7 @@ void Level::enableLightingCache() {
     // results, plus 128K required for toCheck array. Rounding up to 256 to keep
     // as multiple of alignement - aligning to 128K boundary for possible cache
     // locking.
-    m_tlsLightCache = (lightCache_t*)XPhysicalAlloc(
-        256 * 1024, MAXULONG_PTR, 128 * 1024, PAGE_READWRITE | MEM_LARGE_PAGES);
+    m_tlsLightCache = (lightCache_t*)malloc(256 * 1024);
 }
 
 void Level::destroyLightingCache() { delete m_tlsLightCache; }
