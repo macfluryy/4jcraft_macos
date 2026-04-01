@@ -10,8 +10,8 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 CactusTile::CactusTile(int id) : Tile(id, Material::cactus, false) {
     setTicking(true);

@@ -1,7 +1,6 @@
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftHorse.h"
 
 #include <GL/gl.h>
-
 #include <cmath>
 #include <memory>
 
@@ -15,10 +14,9 @@
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 // #include
 // "../../../minecraft/net.minecraft.world.entity.animal.EntityHorse.h"
-
-#include "UIControl_MinecraftHorse.h"
 
 UIControl_MinecraftHorse::UIControl_MinecraftHorse() {
     UIControl::setControlType(UIControl::eMinecraftHorse);

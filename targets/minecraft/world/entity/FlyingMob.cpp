@@ -6,6 +6,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/Mob.h"
 
 FlyingMob::FlyingMob(Level* level) : Mob(level) {}
 

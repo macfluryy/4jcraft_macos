@@ -1,11 +1,20 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <unordered_map>
+
 #include "Entity.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/JavaIntHash.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "java/Class.h"
 
 class Level;
 class CompoundTag;
+struct eINSTANCEOFKeyEq;
+struct eINSTANCEOFKeyHash;
+
 typedef Entity* (*entityCreateFn)(Level*);
 class EntityIO {
 public:

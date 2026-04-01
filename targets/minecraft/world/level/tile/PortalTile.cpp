@@ -13,9 +13,9 @@
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/level/tile/HalfTransparentTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/phys/AABB.h"
 
 PortalTile::PortalTile(int id)
     : HalfTransparentTile(id, L"portal", Material::portal, false) {

@@ -1,8 +1,21 @@
 #pragma once
+#include <memory>
+#include <unordered_map>
+
 #include "EntityRenderer.h"
 #include "java/JavaIntHash.h"
 #include "minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+
 class font;
+class Entity;
+class Font;
+class IconRegister;
+class ItemInHandRenderer;
+class Level;
+class LivingEntity;
+class Options;
+class Textures;
 
 class EntityRenderDispatcher {
 public:

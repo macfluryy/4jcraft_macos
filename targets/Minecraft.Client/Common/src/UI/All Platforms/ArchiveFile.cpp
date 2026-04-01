@@ -1,11 +1,9 @@
 #include "ArchiveFile.h"
 
 #include <assert.h>
-
 #include <cstdlib>
 #include <utility>
 
-#include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/PortableFileIO.h"

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "GenericStats.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

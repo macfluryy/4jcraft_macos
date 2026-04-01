@@ -1,17 +1,16 @@
 #include "SpiderRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 
 #include "4J.Render/4J_Render.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/model/SpiderModel.h"
 #include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/monster/Spider.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
+#include "gl3_loader.h"
 
 ResourceLocation SpiderRenderer::SPIDER_LOCATION =
     ResourceLocation(TN_MOB_SPIDER);

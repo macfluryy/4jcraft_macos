@@ -1,7 +1,5 @@
 #include "FireballRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 
 #include "4J.Render/4J_Render.h"
@@ -16,6 +14,7 @@
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "gl3_loader.h"
 
 FireballRenderer::FireballRenderer(float scale) { this->scale = scale; }
 

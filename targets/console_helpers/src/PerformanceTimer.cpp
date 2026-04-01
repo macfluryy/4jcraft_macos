@@ -1,6 +1,7 @@
 
 #include "console_helpers/PerformanceTimer.h"
 
+#include <stdio.h>
 #include <chrono>
 #include <string>
 

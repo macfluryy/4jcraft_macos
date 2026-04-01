@@ -2,7 +2,6 @@
 
 #include <math.h>
 #include <stdint.h>
-
 #include <string>
 
 #include "java/JavaMath.h"
@@ -18,6 +17,7 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/Entity.h"
 
 const int ExperienceOrb::LIFETIME =
     5 * 60 * SharedConstants::TICKS_PER_SECOND;  // Five minutes!

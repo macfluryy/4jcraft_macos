@@ -1,13 +1,12 @@
 #include "HurtByTargetGoal.h"
 
-#include <format>
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/entity/PathfinderMob.h"
-#include "minecraft/world/entity/ai/goal/target/TargetGoal.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/ai/goal/target/TargetGoal.h"
 
 class Entity;
 

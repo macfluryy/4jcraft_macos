@@ -3,14 +3,10 @@
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
-
 #include <algorithm>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "ServerLevel.h"
 #include "console_helpers/compression.h"
 #include "minecraft/server/MinecraftServer.h"
@@ -22,6 +18,8 @@
 #include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
 
 ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
                                    ChunkSource* source) {

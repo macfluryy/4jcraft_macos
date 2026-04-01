@@ -1,8 +1,6 @@
 #include "ExperienceOrbRenderer.h"
 
-#include <GL/gl.h>
 #include <math.h>
-
 #include <memory>
 #include <numbers>
 
@@ -14,6 +12,7 @@
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
+#include "gl3_loader.h"
 
 ResourceLocation ExperienceOrbRenderer::XP_ORB_LOCATION =
     ResourceLocation(TN_ITEM_EXPERIENCE_ORB);

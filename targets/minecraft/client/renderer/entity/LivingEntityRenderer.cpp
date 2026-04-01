@@ -1,7 +1,5 @@
 #include "LivingEntityRenderer.h"
 
-#include <GL/gl.h>
-
 #include <cmath>
 #include <numbers>
 #include <vector>
@@ -27,6 +25,7 @@
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
+#include "gl3_loader.h"
 
 ResourceLocation LivingEntityRenderer::ENCHANT_GLINT_LOCATION =
     ResourceLocation(TN__BLUR__MISC_GLINT);

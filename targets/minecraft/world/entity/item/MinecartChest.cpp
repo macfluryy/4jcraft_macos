@@ -3,6 +3,7 @@
 #include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "minecraft/world/level/tile/ChestTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/entity/item/MinecartContainer.h"
 
 class Level;
 

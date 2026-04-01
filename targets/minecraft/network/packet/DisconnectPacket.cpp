@@ -1,13 +1,11 @@
 #include "minecraft/network/packet/DisconnectPacket.h"
 
 #include <stdio.h>
-
 #include <memory>
 
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
 
 DisconnectPacket::DisconnectPacket() { reason = eDisconnect_None; }
 

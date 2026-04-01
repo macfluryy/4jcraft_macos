@@ -1,10 +1,31 @@
 
 #include "UIScene_CraftingMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_HTMLLabel.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/CraftingMenu.h"
+#include "minecraft/world/inventory/InventoryMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/crafting/Recipy.h"
+#include "strings.h"
+
+class UILayer;
 
 UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)

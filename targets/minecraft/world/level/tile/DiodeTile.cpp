@@ -12,9 +12,9 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/redstone/Redstone.h"
 #include "minecraft/world/level/tile/ComparatorTile.h"
-#include "minecraft/world/level/tile/DirectionalTile.h"
 #include "minecraft/world/level/tile/HalfSlabTile.h"
 #include "minecraft/world/level/tile/RepeaterTile.h"
+#include "minecraft/world/level/tile/DirectionalTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 DiodeTile::DiodeTile(int id, bool on)

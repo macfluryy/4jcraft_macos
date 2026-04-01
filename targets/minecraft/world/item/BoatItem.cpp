@@ -1,13 +1,25 @@
 #include "BoatItem.h"
 
+#include <math.h>
+#include <format>
+#include <memory>
+#include <numbers>
+#include <vector>
+
 #include "ItemInstance.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "java/Class.h"
+#include "strings.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/item/Boat.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/HitResult.h"
 
 BoatItem::BoatItem(int id) : Item(id) { maxStackSize = 1; }
 

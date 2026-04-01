@@ -6,6 +6,8 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BitmapIcon.h"
 
 class UIControl_BitmapIcon : public UIControl {
 private:

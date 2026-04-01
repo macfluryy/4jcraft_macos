@@ -5,6 +5,8 @@
 
 #include "../4J.Common/4J_Compat.h"
 #include "../platform/IPlatformProfile.h"
+#include "../4J.Common/4J_Compat.h"
+#include "../platform/PlatformTypes.h"
 
 #define TITLEID_MINECRAFT 0x584111F7
 

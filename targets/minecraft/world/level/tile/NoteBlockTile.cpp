@@ -8,8 +8,8 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/entity/MusicTileEntity.h"
+#include "minecraft/world/level/tile/BaseEntityTile.h"
 
 NoteBlockTile::NoteBlockTile(int id) : BaseEntityTile(id, Material::wood) {}
 

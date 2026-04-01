@@ -2,12 +2,26 @@
 // using namespace std;
 #include <cstdint>
 #include <unordered_map>
+#include <memory>
+#include <ranges>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "TutorialEnum.h"
 #include "TutorialMessage.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+
+class Entity;
+class ItemInstance;
+class MobEffect;
+class Tile;
+class TutorialConstraint;
+class TutorialHint;
+class TutorialTask;
 
 // #define TUTORIAL_HINT_DELAY_TIME 14000 // How long we should wait from
 // displaying one hint to the next #define TUTORIAL_DISPLAY_MESSAGE_TIME 7000

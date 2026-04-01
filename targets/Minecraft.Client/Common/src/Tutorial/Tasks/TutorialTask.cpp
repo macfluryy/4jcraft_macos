@@ -3,7 +3,6 @@
 #include <compare>
 
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 
 TutorialTask::TutorialTask(Tutorial* tutorial, int descriptionId,

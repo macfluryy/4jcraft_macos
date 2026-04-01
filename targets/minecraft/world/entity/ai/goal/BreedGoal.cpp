@@ -1,6 +1,5 @@
 #include "BreedGoal.h"
 
-#include <format>
 #include <limits>
 #include <vector>
 

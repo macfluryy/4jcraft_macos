@@ -2,8 +2,6 @@
 
 #include <math.h>
 #include <stdint.h>
-
-#include <format>
 #include <numbers>
 #include <string>
 #include <vector>
@@ -25,6 +23,7 @@
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/Entity.h"
 
 // 4J - added common ctor code.
 void FishingHook::_init() {

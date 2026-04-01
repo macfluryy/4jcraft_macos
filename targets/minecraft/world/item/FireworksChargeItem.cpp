@@ -1,8 +1,19 @@
 #include "FireworksChargeItem.h"
 
-#include "minecraft/stdafx.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "net.minecraft.world.item.h"
+#include <stdint.h>
+
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntArrayTag.h"
+#include "strings.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/item/DyePowderItem.h"
+#include "minecraft/world/item/FireworksItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+
+class Tag;
 
 FireworksChargeItem::FireworksChargeItem(int id) : Item(id) {}
 

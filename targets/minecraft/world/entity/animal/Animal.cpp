@@ -1,21 +1,35 @@
 #include "Animal.h"
 
 #include <cmath>
+#include <numbers>
+#include <string>
+#include <typeinfo>
+#include <vector>
 
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "nbt/com.mojang.nbt.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "java/Class.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
+#include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/damageSource/EntityDamageSource.h"
+#include "minecraft/world/entity/AgeableMob.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/EntityEvent.h"
+#include "minecraft/world/entity/ExperienceOrb.h"
+#include "minecraft/world/entity/SyncedEntityData.h"
+#include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/projectile/Arrow.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
 
 Animal::Animal(Level* level) : AgableMob(level) {
     //	inLove = 0;

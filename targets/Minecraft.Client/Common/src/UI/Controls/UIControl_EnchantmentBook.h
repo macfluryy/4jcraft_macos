@@ -7,6 +7,8 @@
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl.h"
 #include "java/Random.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentBook.h"
 
 class UIScene_EnchantingMenu;
 class BookModel;

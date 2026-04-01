@@ -3,6 +3,7 @@
 #include <format>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/level/TilePos.h"

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 
 #include "BoundingBox.h"
 #include "StructureFeatureIO.h"
@@ -14,6 +15,8 @@ class BlockSelector;
 class ChestTileEntity;
 class WeighedTreasure;
 class TilePos;
+class BoundingBox;
+class CompoundTag;
 
 /**
  *

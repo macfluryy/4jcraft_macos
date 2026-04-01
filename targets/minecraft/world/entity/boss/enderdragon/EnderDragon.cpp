@@ -2,23 +2,34 @@
 
 #include <cmath>
 #include <limits>
-#include <optional>
+#include <algorithm>
+#include <numbers>
 
 #include "minecraft/SharedConstants.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/stdafx.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/world/entity/boss/net.minecraft.world.entity.boss.h"
-#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/pathfinder/net.minecraft.world.level.pathfinder.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/ExperienceOrb.h"
+#include "minecraft/world/entity/SyncedEntityData.h"
+#include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/boss/MultiEntityMob.h"
+#include "minecraft/world/entity/boss/MultiEntityMobPart.h"
+#include "minecraft/world/entity/boss/enderdragon/EnderCrystal.h"
+#include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/projectile/DragonFireball.h"
+#include "minecraft/world/level/GameRules.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/pathfinder/BinaryHeap.h"
+#include "minecraft/world/level/pathfinder/Node.h"
+#include "minecraft/world/level/pathfinder/Path.h"
+#include "minecraft/world/level/tile/LevelEvent.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TheEndPortalTile.h"
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 
@@ -518,11 +529,6 @@ void EnderDragon::aiStep() {
                     yRotA += yRotD * ((0.7f / distToTarget) / rotSpeed);
                     yRot += yRotA;
                 } else {
-                    // setSynchedAction(e_EnderdragonAction_Sitting_Flaming);
-#if PRINT_DRAGON_STATE_CHANGE_MESSAGES
-                    // app.DebugPrintf("Dragon action is now :
-                    // SittingFlaming\n");
-#endif
                     // m_actionTicks = FLAME_TICKS;
                 }
             } else {

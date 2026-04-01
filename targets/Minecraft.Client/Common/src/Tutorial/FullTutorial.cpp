@@ -1,18 +1,40 @@
 #include "FullTutorial.h"
 
+#include <string>
+#include <vector>
+
 #include "4J.Common/4J_InputActions.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
-#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraints.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/AreaHint.h"
-#include "Minecraft.Client/Common/src/Tutorial/Hints/DiggerItemHint.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTasks.h"
-#include "Minecraft.Client/include/stdafx.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
 #include "minecraft/world/item/alchemy/PotionMacros.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
+#include "Minecraft.Client/Common/src/Tutorial/Constraints/AreaConstraint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Constraints/ChangeStateConstraint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/AreaTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/ChoiceTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/CompleteUsingItemTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/ControllerTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/CraftTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/EffectChangedTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/FullTutorialActiveTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/InfoTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/PickupTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/ProcedureCompoundTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/ProgressFlagTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/StateChangeTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/UseItemTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/UseTileTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/XuiCraftingTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/crafting/Recipy.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
+#include "strings.h"
+
+class TutorialConstraint;
 
 FullTutorial::FullTutorial(int iPad, bool isTrial /*= false*/)
     : Tutorial(iPad, true) {

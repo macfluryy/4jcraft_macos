@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #ifdef __linux__
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -201,6 +202,7 @@ class Textures;
 class Font;
 class MapItemSavedData;
 class Mob;
+
 class Particles {
 public:
     void render(float) {}

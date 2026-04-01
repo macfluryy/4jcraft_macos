@@ -2,11 +2,11 @@
 
 #include <wchar.h>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/NamedAreaRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 
 NamedAreaRuleDefinition::NamedAreaRuleDefinition() {
     m_name = L"";

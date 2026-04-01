@@ -8,6 +8,8 @@
 #include "Minecraft.Client/Common/src/UI/UIString.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
 
 class UIControl_ButtonList : public UIControl_Base {
 protected:

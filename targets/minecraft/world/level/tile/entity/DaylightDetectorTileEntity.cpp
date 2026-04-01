@@ -6,6 +6,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DaylightDetectorTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 DaylightDetectorTileEntity::DaylightDetectorTileEntity() {}
 

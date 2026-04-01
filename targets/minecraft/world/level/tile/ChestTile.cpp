@@ -1,16 +1,33 @@
 #include "ChestTile.h"
 
+#include <format>
+#include <string>
+#include <vector>
+
 #include "minecraft/Facing.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/redstone/net.minecraft.world.level.redstone.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
+#include "minecraft/world/CompoundContainer.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Ocelot.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelSource.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/redstone/Redstone.h"
+#include "minecraft/world/level/tile/BaseEntityTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/ChestTileEntity.h"
+#include "minecraft/world/phys/AABB.h"
+
+class Entity;
 
 ChestTile::ChestTile(int id, int type)
     : BaseEntityTile(id, Material::wood, false) {

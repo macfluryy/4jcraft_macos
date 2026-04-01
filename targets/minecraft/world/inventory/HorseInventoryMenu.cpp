@@ -4,10 +4,11 @@
 
 #include "minecraft/world/entity/animal/EntityHorse.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/Slot.h"
 
 HorseSaddleSlot::HorseSaddleSlot(std::shared_ptr<Container> horseInventory)
     : Slot(horseInventory, EntityHorse::INV_SLOT_SADDLE, 8, 18) {}

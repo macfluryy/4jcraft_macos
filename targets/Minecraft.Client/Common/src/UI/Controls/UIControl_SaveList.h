@@ -6,6 +6,7 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
 
 class UIControl_SaveList : public UIControl_ButtonList {
 private:

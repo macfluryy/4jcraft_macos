@@ -1,8 +1,6 @@
 #include "minecraft/world/item/crafting/Recipes.h"
 
 #include <stdarg.h>
-
-#include <format>
 #include <memory>
 #include <string>
 #include <unordered_map>

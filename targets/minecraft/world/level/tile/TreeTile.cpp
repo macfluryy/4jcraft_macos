@@ -1,11 +1,15 @@
 #include "TreeTile.h"
 
+#include <memory>
+
 #include "LeafTile.h"
-#include "minecraft/net.minecraft.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/piston/net.minecraft.world.level.tile.piston.h"
-#include "minecraft/world/net.minecraft.world.h"
 #include "strings.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/RotatedPillarTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 const unsigned int TreeTile::TREE_NAMES[TreeTile::TREE_NAMES_LENGTH] = {
     IDS_TILE_LOG_OAK, IDS_TILE_LOG_SPRUCE, IDS_TILE_LOG_BIRCH,

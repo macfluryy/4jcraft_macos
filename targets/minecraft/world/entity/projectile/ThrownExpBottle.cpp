@@ -3,9 +3,9 @@
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
-#include "minecraft/world/entity/projectile/Throwable.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
+#include "minecraft/world/entity/projectile/Throwable.h"
 
 class LivingEntity;
 

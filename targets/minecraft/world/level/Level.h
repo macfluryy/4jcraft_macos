@@ -8,6 +8,7 @@
 #include <typeinfo>
 #include <unordered_set>
 #include <vector>
+#include <mutex>
 
 #include "4J.Common/4J_Compat.h"
 #include "ChunkPos.h"

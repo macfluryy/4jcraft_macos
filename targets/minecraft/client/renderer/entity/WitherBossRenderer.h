@@ -3,6 +3,7 @@
 
 class WitherBoss;
 class LivingEntity;
+class ResourceLocation;
 
 class WitherBossRenderer : public MobRenderer {
 private:

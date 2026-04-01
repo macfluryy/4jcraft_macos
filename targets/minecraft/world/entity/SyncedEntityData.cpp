@@ -1,14 +1,14 @@
 #include "SyncedEntityData.h"
 
 #include <assert.h>
-
 #include <vector>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/Packet.h"
-#include "minecraft/world/entity/SyncedEntityData.h"
+
+class ItemInstance;
 
 SynchedEntityData::SynchedEntityData() {
     m_isDirty = false;

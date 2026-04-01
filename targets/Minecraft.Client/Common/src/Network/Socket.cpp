@@ -1,17 +1,15 @@
 #include "Socket.h"
 
 #include <stdio.h>
-
 #include <chrono>
 #include <thread>
 #include <vector>
+
 // 4jcraft TODO
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "minecraft/server/network/ServerConnection.h"
 
 class SocketAddress {};

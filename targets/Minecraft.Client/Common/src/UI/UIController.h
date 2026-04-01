@@ -1,7 +1,12 @@
 #pragma once
+#include <stddef.h>
 // using namespace std;
 #include <cstdint>
 #include <mutex>
+#include <format>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #ifdef __linux__
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
@@ -17,12 +22,19 @@
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "UIGroup.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J_Render.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+#include "minecraft/sounds/SoundTypes.h"
 
 class UIAbstractBitmapFont;
 class UIBitmapFont;
 class UITTFFont;
 class UIComponent_DebugUIConsole;
 class UIComponent_DebugUIMarketingGuide;
+class C4JThread;
+class Tutorial;
+class UIScene;
 
 // Base class for all shared functions between UIControllers
 class UIController : public IUIController {

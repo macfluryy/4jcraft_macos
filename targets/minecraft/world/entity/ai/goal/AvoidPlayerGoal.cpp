@@ -1,6 +1,5 @@
 #include "AvoidPlayerGoal.h"
 
-#include <format>
 #include <optional>
 #include <vector>
 

@@ -12,6 +12,7 @@
 #include "minecraft/world/level/redstone/Redstone.h"
 #include "minecraft/world/level/tile/FenceTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
 
 BasePressurePlateTile::BasePressurePlateTile(int id, const std::wstring& tex,
                                              Material* material)

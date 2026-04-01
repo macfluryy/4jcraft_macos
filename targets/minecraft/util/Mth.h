@@ -1,8 +1,10 @@
 #pragma once
 
+#include <stdint.h>
 #include <algorithm>
 #include <cmath>
 #include <string>
+#include <numbers>
 
 class Random;
 

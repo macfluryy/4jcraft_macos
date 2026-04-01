@@ -1,10 +1,29 @@
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileConverter.h"
 
+#include <stdio.h>
+#include <wchar.h>
+#include <cstdint>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 #include "minecraft/util/ProgressListener.h"
-#include "minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
-#include "minecraft/world/level/storage/net.minecraft.world.level.storage.h"
+#include "java/InputOutputStream/BufferedOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/NbtIo.h"
+#include "strings.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/world/level/chunk/storage/RegionFile.h"
+#include "minecraft/world/level/chunk/storage/RegionFileCache.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "minecraft/world/level/storage/DirectoryLevelStorage.h"
+#include "minecraft/world/level/storage/LevelData.h"
 
 void ConsoleSaveFileConverter::ProcessSimpleFile(ConsoleSaveFile* sourceSave,
                                                  FileEntry* sourceFileEntry,

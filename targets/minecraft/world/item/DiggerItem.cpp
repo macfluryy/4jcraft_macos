@@ -5,9 +5,10 @@
 
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
+#include "minecraft/world/item/Item.h"
 
 DiggerItem::DiggerItem(int id, float attackDamage, const Tier* tier,
                        std::vector<Tile*>* tiles)

@@ -2,6 +2,7 @@
 #include "EntityRenderer.h"
 
 class Model;
+class ResourceLocation;
 
 class EnderCrystalRenderer : public EntityRenderer {
 private:

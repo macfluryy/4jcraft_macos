@@ -1,5 +1,15 @@
 #pragma once
+#include <stdint.h>
 #include <mutex>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "4J.Common/4J_Compat.h"
+#include "console_helpers/C4JThread.h"
+#include "java/File.h"
+#include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 
 class Timer;
 class MultiPlayerLevel;
@@ -39,12 +49,8 @@ class LevelSettings;
 class ColourTable;
 class MultiPlayerGameMode;
 class LivingEntity;
-
-#include "4J.Common/4J_Compat.h"
-#include "console_helpers/C4JThread.h"
-#include "java/File.h"
-#include "minecraft/client/resources/ResourceLocation.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
+class Level;
+class ResourceLocation;
 
 #if defined(linux)
 #undef linux

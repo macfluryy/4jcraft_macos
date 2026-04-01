@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FoodItem.h"
+#include "minecraft/world/item/Item.h"
 
 class GoldenAppleItem : public FoodItem {
 public:

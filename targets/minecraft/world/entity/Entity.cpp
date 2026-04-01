@@ -2,11 +2,9 @@
 
 #include <stdarg.h>
 #include <stdlib.h>
-
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
-#include <format>
 #include <memory>
 #include <numbers>
 #include <optional>
@@ -18,9 +16,6 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "SyncedEntityData.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
@@ -36,7 +31,6 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
-#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/ProtectionEnchantment.h"

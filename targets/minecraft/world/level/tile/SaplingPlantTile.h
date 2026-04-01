@@ -1,10 +1,14 @@
 #pragma once
 
+#include <string>
+
 #include "LeafTile.h"
 #include "PlantTile.h"
 
 class Random;
 class ChunkRebuildData;
+class Icon;
+class Level;
 
 class Sapling : public Bush {
     friend class Tile;

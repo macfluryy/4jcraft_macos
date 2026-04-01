@@ -13,10 +13,15 @@
 #include "console_helpers/compression.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
+#include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "UIScene_DebugCreateSchematic.h"
 #include "console_helpers/StringHelpers.h"
 
 UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad,

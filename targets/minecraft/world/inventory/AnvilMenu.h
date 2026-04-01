@@ -1,6 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "AbstractContainerMenu.h"
+
+class Container;
+class Inventory;
+class Level;
+class Player;
 
 class AnvilMenu : public AbstractContainerMenu {
     friend class RepairResultSlot;

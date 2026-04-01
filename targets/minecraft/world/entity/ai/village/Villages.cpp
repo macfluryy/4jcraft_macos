@@ -1,7 +1,6 @@
 #include "Villages.h"
 
 #include <stdlib.h>
-
 #include <limits>
 
 #include "minecraft/Pos.h"
@@ -10,6 +9,9 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/world/entity/ai/village/DoorInfo.h"
+#include "minecraft/world/entity/ai/village/Village.h"
+#include "minecraft/world/level/saveddata/SavedData.h"
 
 const std::wstring Villages::VILLAGE_FILE_ID = L"villages";
 

@@ -1,7 +1,5 @@
 #include "EnderChestRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 #include <numbers>
 
@@ -12,6 +10,7 @@
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/level/tile/entity/EnderChestTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "gl3_loader.h"
 
 ResourceLocation EnderChestRenderer::ENDER_CHEST_LOCATION =
     ResourceLocation(TN_TILE_ENDER_CHEST);

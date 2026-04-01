@@ -4,8 +4,8 @@
 
 #include "minecraft/client/model/SilverfishModel.h"
 #include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
 
 ResourceLocation SilverfishRenderer::SILVERFISH_LOCATION(TN_MOB_SILVERFISH);
 

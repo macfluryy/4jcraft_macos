@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

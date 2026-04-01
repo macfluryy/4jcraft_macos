@@ -3,6 +3,7 @@
 #include "Item.h"
 
 class ItemInstance;
+class Icon;
 
 class CoalItem : public Item {
 private:

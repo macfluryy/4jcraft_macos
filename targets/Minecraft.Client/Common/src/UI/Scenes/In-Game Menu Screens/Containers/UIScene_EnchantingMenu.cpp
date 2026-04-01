@@ -1,10 +1,25 @@
 
 #include "UIScene_EnchantingMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <assert.h>
+#include <memory>
+
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentBook.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentButton.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/world/inventory/EnchantmentMenu.h"
+#include "strings.h"
+
+class UILayer;
 
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,
                                                UILayer* parentLayer)

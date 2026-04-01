@@ -1,12 +1,12 @@
 #include "WoodSlabTile.h"
 
-#include "TreeTile.h"
-#include "WoodTile.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/biome/net.minecraft.world.level.biome.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
+#include <memory>
+
 #include "strings.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/HalfSlabTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 const unsigned int WoodSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
     IDS_TILE_STONESLAB_OAK,

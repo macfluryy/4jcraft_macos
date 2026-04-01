@@ -1,13 +1,28 @@
 
 #include "UIScene_JoinMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/net.minecraft.world.h"
+#include <stddef.h>
+#include <stdint.h>
+
+#include "4J.Common/4J_Compat.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/SessionInfo.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/Difficulty.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "strings.h"
 
 #define UPDATE_PLAYERS_TIMER_ID 0
 #define UPDATE_PLAYERS_TIMER_TIME 30000

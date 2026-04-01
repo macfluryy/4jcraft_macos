@@ -1,11 +1,19 @@
 #pragma once
 
+#include <string>
+
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_FireworksMenu.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 #include "UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 class InventoryMenu;
+class UILayer;
 
 class UIScene_FireworksMenu : public UIScene_AbstractContainerMenu,
                               public IUIScene_FireworksMenu {

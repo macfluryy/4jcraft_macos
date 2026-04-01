@@ -7,8 +7,4 @@ void Display::update() {}
 
 int CMinecraftApp::GetTPConfigVal(wchar_t* pwchDataFile) { return 0; }
 
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-
 #endif

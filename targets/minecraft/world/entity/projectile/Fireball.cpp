@@ -2,9 +2,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-
 #include <cmath>
-#include <format>
 #include <numbers>
 #include <optional>
 #include <string>
@@ -24,6 +22,7 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/world/entity/Entity.h"
 
 // 4J - added common ctor code.
 void Fireball::_init() {

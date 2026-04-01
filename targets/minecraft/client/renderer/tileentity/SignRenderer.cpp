@@ -1,16 +1,25 @@
 #include "SignRenderer.h"
 
+#include <cstdint>
+#include <memory>
+#include <string>
+
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/model/SignModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "4J_Render.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/resources/ResourceLocation.h"
+#include "gl3_loader.h"
+#include "strings.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/SignTileEntity.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 ResourceLocation SignRenderer::SIGN_LOCATION = ResourceLocation(TN_ITEM_SIGN);
 

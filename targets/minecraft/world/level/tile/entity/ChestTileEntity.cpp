@@ -1,18 +1,30 @@
 #include "ChestTileEntity.h"
 
+#include <stdint.h>
+#include <vector>
+
 #include "TileEntity.h"
 #include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "minecraft/stdafx.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "nbt/com.mojang.nbt.h"
+#include "Direction.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SharedConstants.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/world/CompoundContainer.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/ContainerMenu.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/ChestTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
+
+class Entity;
 
 int ChestTileEntity::getContainerType() {
     if (isBonusChest)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <format>
+#include <vector>
 
 #include "DiggerItem.h"
 

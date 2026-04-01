@@ -3,6 +3,7 @@
 #include "HalfSlabTile.h"
 
 class ChunkRebuildData;
+class Icon;
 
 class StoneSlabTile : public HalfSlabTile {
     friend ChunkRebuildData;

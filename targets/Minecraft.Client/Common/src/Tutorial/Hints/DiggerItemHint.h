@@ -1,9 +1,11 @@
 #pragma once
 
 #include "TutorialHint.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 class DiggerItem;
 class Level;
+class Tutorial;
 
 class DiggerItemHint : public TutorialHint {
 private:

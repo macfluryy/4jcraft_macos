@@ -2,13 +2,11 @@
 #include "LargeFeature.h"
 
 #include <stdint.h>
-
 #include <format>
 #include <string>
 
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/levelgen/LargeFeature.h"
 
 class ChunkSource;
 

@@ -2,9 +2,6 @@
 
 #include <optional>
 
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "PistonExtensionTile.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"

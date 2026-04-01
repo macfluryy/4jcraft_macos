@@ -11,6 +11,8 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/phys/AABB.h"
 
 PistonMovingPiece::PistonMovingPiece(int id)
     : BaseEntityTile(id, Material::piston, false) {

@@ -5,6 +5,7 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/entity/item/Minecart.h"
 
 MinecartRideable::MinecartRideable(Level* level) : Minecart(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

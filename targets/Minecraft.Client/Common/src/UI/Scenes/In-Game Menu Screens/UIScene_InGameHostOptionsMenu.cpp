@@ -1,12 +1,26 @@
 
 #include "UIScene_InGameHostOptionsMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <memory>
+
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/network/net.minecraft.network.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
+#include "4J.Common/4J_InputActions.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/network/packet/ServerSettingsChangedPacket.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "strings.h"
+
+class UILayer;
 
 UIScene_InGameHostOptionsMenu::UIScene_InGameHostOptionsMenu(
     int iPad, void* initData, UILayer* parentLayer)

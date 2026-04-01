@@ -6,6 +6,7 @@
 #include "minecraft/Pos.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/PathfinderMob.h"
+#include "minecraft/world/phys/Vec3.h"
 
 Vec3 RandomPos::tempDir = Vec3(0, 0, 0);
 

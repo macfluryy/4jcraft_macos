@@ -6,7 +6,6 @@
 #include <string>
 
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/phys/Vec3.h"
 
 Vec3 Vec3::vectorTo(const Vec3& p) const { return {p.x - x, p.y - y, p.z - z}; }
 

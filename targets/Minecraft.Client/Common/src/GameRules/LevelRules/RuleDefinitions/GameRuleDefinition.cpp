@@ -2,8 +2,6 @@
 
 #include <assert.h>
 #include <wchar.h>
-
-#include <format>
 #include <string>
 #include <unordered_map>
 #include <utility>

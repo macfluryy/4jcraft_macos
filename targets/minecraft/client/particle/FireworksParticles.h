@@ -1,5 +1,6 @@
 #pragma once
 #include <format>
+#include <vector>
 
 #include "Particle.h"
 #include "java/Class.h"

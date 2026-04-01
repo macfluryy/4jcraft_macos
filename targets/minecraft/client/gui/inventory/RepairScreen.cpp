@@ -1,7 +1,6 @@
 #include "RepairScreen.h"
 
 #include <GL/gl.h>
-
 #include <memory>
 #include <string>
 
@@ -20,6 +19,7 @@
 #include "minecraft/world/inventory/AnvilMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 class Inventory;
 class Level;

@@ -1,7 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "Enchantment.h"
 #include "java/Random.h"
+
+class ItemInstance;
+class Random;
 
 class DigDurabilityEnchantment : public Enchantment {
 public:

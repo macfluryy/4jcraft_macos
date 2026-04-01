@@ -1,9 +1,12 @@
 #pragma once
 
+#include <string>
+
 #include "RotatedPillarTile.h"
 
 class ChunkRebuildData;
 class Player;
+class Icon;
 
 class TreeTile : public RotatedPillarTile {
     friend class Tile;

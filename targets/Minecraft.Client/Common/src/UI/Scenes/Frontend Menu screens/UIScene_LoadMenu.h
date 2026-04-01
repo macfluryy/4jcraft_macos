@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 #include "IUIScene_StartGame.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
@@ -9,6 +10,16 @@
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TexturePackList.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class DLCPack;
+class LevelGenerationOptions;
+class UILayer;
 
 class UIScene_LoadMenu : public IUIScene_StartGame {
 private:

@@ -1,6 +1,8 @@
 #pragma once
 #include "TileEntityRenderer.h"
+
 class SignModel;
+class ResourceLocation;
 
 class SignRenderer : public TileEntityRenderer {
 private:

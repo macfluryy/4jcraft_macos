@@ -5,12 +5,13 @@
 #include "java/Random.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/util/WeighedTreasure.h"
-#include "minecraft/world/item/Item.h"
-#include "minecraft/world/item/Rarity.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentInstance.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Rarity.h"
 
 const std::wstring EnchantedBookItem::TAG_STORED_ENCHANTMENTS =
     L"StoredEnchantments";

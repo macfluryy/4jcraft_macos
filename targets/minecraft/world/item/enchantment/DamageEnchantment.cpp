@@ -1,8 +1,15 @@
 #include "DamageEnchantment.h"
 
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+#include <memory>
+
 #include "strings.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/MobType.h"
+#include "minecraft/world/item/HatchetItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/enchantment/Enchantment.h"
+#include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 
 const int DamageEnchantment::names[] = {IDS_ENCHANTMENT_DAMAGE_ALL,
                                         IDS_ENCHANTMENT_DAMAGE_UNDEAD,

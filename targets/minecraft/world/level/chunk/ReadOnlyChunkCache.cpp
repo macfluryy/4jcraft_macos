@@ -1,9 +1,10 @@
 #include "ReadOnlyChunkCache.h"
 
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/chunk/storage/ChunkStorage.h"
+#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/EmptyLevelChunk.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
-#include "minecraft/world/level/chunk/storage/ChunkStorage.h"
 
 ReadOnlyChunkCache::ReadOnlyChunkCache(Level* level, ChunkStorage* storage) {
     chunks = std::vector<LevelChunk*>(LEN * LEN);

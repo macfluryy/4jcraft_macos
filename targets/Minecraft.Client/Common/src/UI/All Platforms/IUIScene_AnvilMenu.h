@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+#include <string>
+
 #include "IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 

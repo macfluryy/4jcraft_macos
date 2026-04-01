@@ -1,14 +1,21 @@
 #pragma once
+#include <stdint.h>
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Biome.h"
 #include "BiomeCache.h"
 #include "BiomeSource.h"
 #include "minecraft/world/level/levelgen/synth/net.minecraft.world.level.levelgen.synth.h"
+#include "minecraft/world/level/biome/BiomeSource.h"
 
 class ChunkPos;
 class Level;
 class Layer;
 class TilePos;
 class LevelType;
+class Random;
 
 class BiomeSource {
 private:

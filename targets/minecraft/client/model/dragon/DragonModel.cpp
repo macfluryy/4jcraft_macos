@@ -1,8 +1,17 @@
 #include "DragonModel.h"
 
-#include "Minecraft.Client/include/stdafx.h"
-#include "minecraft/util/Mth.h"
+#include <math.h>
+#include <memory>
+#include <numbers>
+#include <string>
+#include <vector>
+
 #include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"
+#include "4J_Render.h"
+#include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "gl3_loader.h"
+#include "minecraft/world/entity/Entity.h"
 
 DragonModel::DragonModel(float g) : Model() {
     // 4J-PB

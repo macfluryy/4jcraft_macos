@@ -1,8 +1,8 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <format>
+#include <vector>
 
 #include "LargeFeature.h"
 #include "minecraft/world/level/levelgen/LargeFeature.h"

@@ -7,6 +7,8 @@
 
 class ItemInstance;
 class EnderChestTileEntity;
+class CompoundTag;
+template <class T> class ListTag;
 
 class PlayerEnderChestContainer : public SimpleContainer {
 private:

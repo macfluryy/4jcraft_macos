@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+
+class UILayer;
 
 class UIScene_TrialExitUpsell : public UIScene {
 private:

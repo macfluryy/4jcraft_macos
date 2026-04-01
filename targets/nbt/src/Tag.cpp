@@ -13,6 +13,9 @@
 #include "nbt/LongTag.h"
 #include "nbt/ShortTag.h"
 #include "nbt/StringTag.h"
+#include "java/InputOutputStream/DataInput.h"
+#include "java/InputOutputStream/DataOutput.h"
+#include "nbt/IntArrayTag.h"
 
 Tag::Tag(const std::wstring& name) {
     if (name.empty()) {

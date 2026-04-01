@@ -2,6 +2,7 @@
 #include "MobRenderer.h"
 
 class DragonModel;
+class ResourceLocation;
 
 class EnderDragonRenderer : public MobRenderer {
 private:

@@ -1,9 +1,12 @@
 #include "SandStoneTile.h"
 
-#include "minecraft/net.minecraft.h"
-#include "minecraft/world/level/material/net.minecraft.world.level.material.h"
-#include "minecraft/world/net.minecraft.world.h"
 #include "strings.h"
+#include "Facing.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 const std::wstring SandStoneTile::TEXTURE_TOP = L"sandstone_top";
 const std::wstring SandStoneTile::TEXTURE_BOTTOM = L"sandstone_bottom";

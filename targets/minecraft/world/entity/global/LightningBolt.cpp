@@ -1,8 +1,6 @@
 #include "LightningBolt.h"
 
 #include <math.h>
-
-#include <format>
 #include <memory>
 #include <vector>
 
@@ -12,13 +10,13 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/global/GlobalEntity.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/global/GlobalEntity.h"
 
 LightningBolt::LightningBolt(Level* level, double x, double y, double z)
     : life(0), seed(0), flashes(0), GlobalEntity(level) {

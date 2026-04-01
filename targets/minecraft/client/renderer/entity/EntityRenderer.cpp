@@ -1,6 +1,6 @@
 #include "EntityRenderer.h"
 
-#include <GL/gl.h>
+#include <cmath>
 
 #include "4J.Render/4J_Render.h"
 #include "EntityRenderDispatcher.h"
@@ -11,7 +11,6 @@
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/client/resources/ResourceLocation.h"
-#include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/Mob.h"
@@ -20,6 +19,7 @@
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "gl3_loader.h"
 
 ResourceLocation EntityRenderer::SHADOW_LOCATION =
     ResourceLocation(TN__CLAMP__MISC_SHADOW);

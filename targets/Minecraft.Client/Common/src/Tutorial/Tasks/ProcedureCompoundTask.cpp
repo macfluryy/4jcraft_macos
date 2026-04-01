@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 ProcedureCompoundTask::~ProcedureCompoundTask() {
     for (auto it = m_taskSequence.begin(); it < m_taskSequence.end(); ++it) {

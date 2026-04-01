@@ -2,11 +2,13 @@
 
 #include <format>
 #include <list>
+#include <vector>
 
 #include "StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 class BoundingBox;
 class Random;

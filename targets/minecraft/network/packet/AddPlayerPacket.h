@@ -4,6 +4,7 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "4J.Common/4J_Compat.h"
 #include "Packet.h"

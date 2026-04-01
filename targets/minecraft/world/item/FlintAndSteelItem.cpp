@@ -6,11 +6,11 @@
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/PortalTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/item/Item.h"
 
 FlintAndSteelItem::FlintAndSteelItem(int id) : Item(id) {
     maxStackSize = 1;

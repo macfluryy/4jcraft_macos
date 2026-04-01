@@ -2,6 +2,9 @@
 
 #include <cstdint>
 #include <optional>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "console_helpers/Definitions.h"
 #include "java/Class.h"
@@ -26,6 +29,9 @@ class Explosion;
 class Tesselator;
 class Tile;
 class ItemInstance;
+class DoubleTag;
+class FloatTag;
+template <class T> class ListTag;
 
 // 4J Stu Added this mainly to allow is to record telemetry for player deaths
 enum EEntityDamageType {

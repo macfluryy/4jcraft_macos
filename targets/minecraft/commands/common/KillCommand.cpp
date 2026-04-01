@@ -7,6 +7,7 @@
 #include "minecraft/commands/CommandSender.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/commands/CommandsEnum.h"
 
 EGameCommand KillCommand::getId() { return eGameCommand_Kill; }
 

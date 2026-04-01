@@ -1,5 +1,3 @@
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/include/MobSkinMemTextureProcessor.h"
 #include "console_helpers/PathHelper.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
@@ -7,44 +5,82 @@
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/client/renderer/GameRenderer.h"
-#include "minecraft/client/renderer/LevelRenderer.h"
 #include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/level/GameMode.h"
 #include "minecraft/stats/StatsCounter.h"
 #include "minecraft/world/Container.h"
-#include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/crafting/Recipy.h"
-#include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
-#include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
 #include "minecraft/world/level/tile/entity/HopperTileEntity.h"
-#include "minecraft/world/level/tile/entity/SignTileEntity.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/phys/Vec3.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "4J_Render.h"
+#include "4J_Storage.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Common/App_structs.h"
+#include "Common/Consoles_App.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/UIScene_FullscreenProgress.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "SkinBox.h"
+#include "XboxStubs.h"
+#include "java/Class.h"
+#include "java/File.h"
+#include "java/Random.h"
+#include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/world/entity/item/MinecartHopper.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 #if defined(_WINDOWS64)
 #include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
 #include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"
 #endif
+#include <assert.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <wchar.h>
 #include <cstring>
+#include <chrono>
+#include <thread>
+#include <compare>
+#include <cstdint>
+#include <memory>
+#include <mutex>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"
-#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft_Macros.h"
 #include "console_helpers/PlatformTime.h"
 #include "console_helpers/StringHelpers.h"
 #include "console_helpers/compression.h"
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/User.h"
 #include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
@@ -52,20 +88,22 @@
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/LevelSettings.h"
-#include "minecraft/world/level/storage/LevelData.h"
-
-#if defined(__linux__)
-#include <unistd.h>
-
-#include <climits>
-#endif
-#include <chrono>
-#include <thread>
-
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
+
+class BeaconTileEntity;
+class BrewingStandTileEntity;
+class DispenserTileEntity;
+class EntityHorse;
+class FurnaceTileEntity;
+class INVITE_INFO;
+class Inventory;
+class Level;
+class LevelChunk;
+class LevelGenerationOptions;
+class LocalPlayer;
+class Merchant;
+class ModelPart;
+class SignTileEntity;
 
 // CMinecraftApp app;
 unsigned int CMinecraftApp::m_uiLastSignInData = 0;
@@ -874,9 +912,6 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
             // updates
             app.DebugPrintf(
                 "Don't know what to do with this profile version!\n");
-#if !defined(_CONTENT_PACKAGE)
-            //		__debugbreak();
-#endif
 
             GAME_SETTINGS* pGameSettings = (GAME_SETTINGS*)pucData;
             pGameSettings->ucMenuSensitivity =
@@ -4420,10 +4455,6 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
         ++pData->ucRefCount;
         return;
     }
-
-#if !defined(_CONTENT_PACKAGE)
-    // wprintf(L"Adding the memory texture file data for %ls\n", wName.c_str());
-#endif
     // this is a texture (png) file
 
     // add this texture to the list of memory texture files - it will then be

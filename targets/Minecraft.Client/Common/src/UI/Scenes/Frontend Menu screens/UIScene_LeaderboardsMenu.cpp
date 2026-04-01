@@ -1,10 +1,29 @@
 
 #include "UIScene_LeaderboardsMenu.h"
 
+#include <assert.h>
+#include <limits.h>
+#include <string.h>
+#include <wchar.h>
+#include <memory>
+
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardInterface.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_LeaderboardList.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 
 #define PLAYER_ONLINE_TIMER_ID 0
 #define PLAYER_ONLINE_TIMER_TIME 100
@@ -641,9 +660,6 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
             unsigned int displayValue = leaderboardEntry->m_columns[i];
             if (displayValue > 99999) displayValue = 99999;
             swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%u", displayValue);
-#if defined(_DEBUG)
-            // app.DebugPrintf("Value - %d\n",leaderboardEntry->m_columns[i]);
-#endif
         } else {
             // check how many digits we have
             int iDigitC = 0;
@@ -655,34 +671,18 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
                 uiVal /= 10;
                 iDigitC++;
             }
-
-#if defined(_DEBUG)
-            // app.DebugPrintf("Value - %d\n",leaderboardEntry->m_columns[i]);
-#endif
             if (iDigitC < 4) {
                 // m
                 swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%um",
                          leaderboardEntry->m_columns[i]);
-#if defined(_DEBUG)
-                // app.DebugPrintf("Display - %um\n",
-                // leaderboardEntry->m_columns[i]);
-#endif
             } else if (iDigitC < 8) {
                 // km with a .X
                 swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%.1fkm",
                          ((float)leaderboardEntry->m_columns[i]) / 1000.f);
-#if defined(_DEBUG)
-                // app.DebugPrintf("Display - %.1fkm\n",
-                // ((float)leaderboardEntry->m_columns[i])/1000.f);
-#endif
             } else {
                 // bigger than that, so no decimal point
                 swprintf(leaderboardEntry->m_wcColumns[i], 12, L"%.0fkm",
                          ((float)leaderboardEntry->m_columns[i]) / 1000.f);
-#if defined(_DEBUG)
-                // app.DebugPrintf("Display - %.0fkm\n",
-                // ((float)leaderboardEntry->m_columns[i])/1000.f);
-#endif
             }
         }
     }

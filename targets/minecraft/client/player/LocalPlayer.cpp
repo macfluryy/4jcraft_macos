@@ -1,11 +1,10 @@
 #include "LocalPlayer.h"
 
-#include <math.h>
 #include <stdio.h>
-
 #include <iostream>
 #include <memory>
 #include <numbers>
+#include <cmath>
 
 #include "Input.h"
 #include "java/Random.h"
@@ -18,7 +17,6 @@
 #include "minecraft/client/renderer/GameRenderer.h"
 #include "minecraft/client/renderer/ItemInHandRenderer.h"
 #include "minecraft/stats/StatsCounter.h"
-#include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
@@ -29,7 +27,6 @@
 #include "4J.Render/4J_Render.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
-#include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
@@ -80,6 +77,12 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "4J.Common/4J_InputActions.h"
+#include "PlatformTypes.h"
+#include "Pos.h"
+#include "minecraft/commands/CommandsEnum.h"
+#include "minecraft/util/SmoothFloat.h"
+#include "minecraft/world/entity/player/Player.h"
 
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)

@@ -9,13 +9,14 @@
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/item/Minecart.h"
-#include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
 #include "nbt/Tag.h"
+#include "minecraft/util/WeighedRandom.h"
+#include "minecraft/world/entity/Entity.h"
 
 BaseMobSpawner::BaseMobSpawner() {
     spawnPotentials = nullptr;

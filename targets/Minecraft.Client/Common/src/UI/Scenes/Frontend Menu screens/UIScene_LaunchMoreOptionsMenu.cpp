@@ -1,9 +1,26 @@
 #include "UIScene_LaunchMoreOptionsMenu.h"
 
+#include <wchar.h>
+#include <utility>
+
 #include "4J_Input.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "console_helpers/StringHelpers.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "4J_Render.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_HTMLLabel.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "strings.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
 #define GAME_CREATE_ONLINE_TIMER_TIME 100

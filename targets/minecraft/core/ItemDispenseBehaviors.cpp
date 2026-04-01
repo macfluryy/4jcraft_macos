@@ -7,9 +7,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"
 #include "java/Random.h"
-#include "minecraft/core/AbstractProjectileDispenseBehavior.h"
 #include "minecraft/core/BlockSource.h"
-#include "minecraft/core/DefaultDispenseItemBehavior.h"
 #include "minecraft/core/FacingEnum.h"
 #include "minecraft/core/Position.h"
 #include "minecraft/world/entity/Entity.h"
@@ -35,6 +33,8 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
+#include "minecraft/core/AbstractProjectileDispenseBehavior.h"
+#include "minecraft/core/DefaultDispenseItemBehavior.h"
 
 /* Arrow */
 

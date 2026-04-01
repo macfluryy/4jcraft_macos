@@ -17,7 +17,6 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "minecraft/world/level/tile/FlowerPotTile.h"
 #include "minecraft/world/level/tile/LeverTile.h"
@@ -30,6 +29,8 @@
 #include "minecraft/world/level/tile/TripWireSourceTile.h"
 #include "minecraft/world/level/tile/TripWireTile.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 void ScatteredFeaturePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_DesertPyramidPiece,

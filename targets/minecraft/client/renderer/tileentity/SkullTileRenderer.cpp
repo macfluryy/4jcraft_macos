@@ -1,7 +1,5 @@
 #include "SkullTileRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 
 #include "4J.Render/4J_Render.h"
@@ -10,11 +8,12 @@
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/PlayerRenderer.h"
-#include "minecraft/client/renderer/tileentity/TileEntityRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/level/tile/SkullTile.h"
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/client/renderer/tileentity/TileEntityRenderer.h"
+#include "gl3_loader.h"
 
 SkullTileRenderer* SkullTileRenderer::instance = nullptr;
 

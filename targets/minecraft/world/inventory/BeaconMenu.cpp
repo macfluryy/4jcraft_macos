@@ -2,12 +2,12 @@
 
 #include <vector>
 
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "minecraft/world/inventory/Slot.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 
 class Container;
 

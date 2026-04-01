@@ -1,22 +1,54 @@
 #include "UIController.h"
 
+#include <assert.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <string.h>
+#include <wchar.h>
+#include <algorithm>
+#include <memory>
+#include <utility>
+
 #include "4J_Input.h"
 #include "Minecraft.Client/include/BufferedImage.h"
-#include "UI.h"
 #include "UIFontData.h"
-#include "UIScene.h"
 #include "console_helpers/PerformanceTimer.h"
 #include "console_helpers/PlatformTime.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/player/LocalPlayer.h"
-#include "minecraft/client/renderer/entity/EnderDragonRenderer.h"
 #include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/title/TitleScreen.h"
-#include "minecraft/stdafx.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "4J_Profile.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIConsole.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIMarketingGuide.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_PressStartToPlay.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_Tooltips.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_TutorialPopup.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIScene_HUD.h"
+#include "Minecraft.Client/Common/src/UI/UIBitmapFont.h"
+#include "Minecraft.Client/Common/src/UI/UIGroup.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/UIString.h"
+#include "Minecraft.Client/Common/src/UI/UITTFFont.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "XboxStubs.h"
+#include "console_helpers/C4JThread.h"
+#include "gl3_loader.h"
+#include "java/System.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "strings.h"
+
+class Tutorial;
 
 // 4J Stu - Enable this to override the Iggy Allocator
 // #define ENABLE_IGGY_ALLOCATOR
@@ -175,10 +207,6 @@ UIController::UIController() {
     // 4J-JEV: It's important that these remain the same, unless
     // updateCurrentLanguage is going to be called.
     m_eCurrentFont = m_eTargetFont = eFont_NotLoaded;
-
-#if defined(ENABLE_IGGY_ALLOCATOR)
-    // std::mutex is default-constructed, no initialization needed
-#endif
 
     // 4J Stu - This is a bit of a hack until we change the Minecraft
     // initialisation to store the proper screen size for other platforms

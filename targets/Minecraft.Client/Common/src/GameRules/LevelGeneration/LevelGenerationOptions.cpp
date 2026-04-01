@@ -1,22 +1,39 @@
 #include "LevelGenerationOptions.h"
 
+#include <limits.h>
+#include <wchar.h>
 #include <filesystem>
 #include <fstream>
 #include <unordered_set>
+#include <utility>
 
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/Pos.h"
-#include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "4J_Profile.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ApplySchematicRuleDefinition.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/BiomeOverride.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructure.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StartFeature.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/File.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/chunk/LevelChunk.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/phys/AABB.h"
+#include "strings.h"
 
 JustGrSource::JustGrSource() {
     m_displayName = L"Default_DisplayName";

@@ -1,20 +1,30 @@
 
 #include "UIScene_InventoryMenu.h"
 
+#include <assert.h>
+#include <format>
+#include <memory>
+#include <vector>
+
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/Options.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftPlayer.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/stats/GenericStats.h"
+#include "minecraft/world/effect/MobEffectInstance.h"
+#include "minecraft/world/inventory/InventoryMenu.h"
+#include "strings.h"
+
+class UILayer;
 
 #define INVENTORY_UPDATE_EFFECTS_TIMER_ID (10)
 #define INVENTORY_UPDATE_EFFECTS_TIMER_TIME (1000)  // 1 second

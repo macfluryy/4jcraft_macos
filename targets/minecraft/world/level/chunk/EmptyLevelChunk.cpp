@@ -3,8 +3,9 @@
 #include "java/Arrays.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/LightLayer.h"
+#include "minecraft/world/level/chunk/LevelChunk.h"
 
 class Entity;
 class EntitySelector;

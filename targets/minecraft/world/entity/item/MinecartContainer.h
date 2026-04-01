@@ -1,7 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Minecart.h"
 #include "minecraft/world/Container.h"
+
+class ItemInstance;
+class Level;
 
 class MinecartContainer : public Minecart, public virtual Container {
 private:

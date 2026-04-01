@@ -6,6 +6,7 @@
 
 class Random;
 class Entity;
+class LivingEntity;
 
 class ThornsEnchantment : public Enchantment {
 private:

@@ -1,9 +1,7 @@
 #include "ItemEntity.h"
 
 #include <stdint.h>
-
 #include <algorithm>
-#include <format>
 #include <numbers>
 #include <vector>
 
@@ -23,6 +21,9 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
+#include "SharedConstants.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 void ItemEntity::_init() {
     age = 0;

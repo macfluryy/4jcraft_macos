@@ -3,7 +3,6 @@
 #include "minecraft/world/level/TilePos.h"
 
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/phys/Vec3.h"
 
 TilePos::TilePos(int x, int y, int z) {

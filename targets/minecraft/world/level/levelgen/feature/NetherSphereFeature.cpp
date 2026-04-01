@@ -1,5 +1,7 @@
 #include "NetherSphereFeature.h"
 
+#include "minecraft/world/entity/Entity.h"
+
 class Level;
 
 NetherSphere::NetherSphere(Level* level) : Entity(level) {

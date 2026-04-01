@@ -1,7 +1,17 @@
 
 #include "UIScene_SettingsAudioMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <wchar.h>
+
+#include "4J.Common/4J_InputActions.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
+#include "strings.h"
 
 UIScene_SettingsAudioMenu::UIScene_SettingsAudioMenu(int iPad, void* initData,
                                                      UILayer* parentLayer)

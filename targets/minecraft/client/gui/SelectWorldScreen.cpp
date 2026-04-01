@@ -2,10 +2,8 @@
 
 #include <stdint.h>
 #include <wchar.h>
-
 #include <vector>
 
-#include "4J_Profile.h"
 #include "Button.h"
 #include "ConfirmScreen.h"
 #include "CreateWorldScreen.h"
@@ -14,11 +12,11 @@
 #include "RenameWorldScreen.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Screen.h"
-#include "minecraft/client/gui/ScrolledSelectionList.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/world/level/storage/LevelStorageSource.h"
 #include "minecraft/world/level/storage/LevelSummary.h"
+#include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/gui/ScrolledSelectionList.h"
 
 SelectWorldScreen::SelectWorldScreen(Screen* lastScreen) {
     // 4J - added initialisers

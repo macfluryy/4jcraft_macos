@@ -1,7 +1,5 @@
 #include "LightningBoltRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 
 #include "4J.Render/4J_Render.h"
@@ -9,6 +7,7 @@
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/global/LightningBolt.h"
+#include "gl3_loader.h"
 
 void LightningBoltRenderer::render(std::shared_ptr<Entity> _bolt, double x,
                                    double y, double z, float rot, float a) {

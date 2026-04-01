@@ -1,6 +1,7 @@
 #pragma once
 
 #include <format>
+#include <vector>
 
 #include "Item.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"

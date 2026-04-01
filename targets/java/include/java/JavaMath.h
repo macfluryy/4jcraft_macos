@@ -1,5 +1,9 @@
 #pragma once
+#include <stdint.h>
+
 #include "Random.h"
+
+class Random;
 
 class Math {
 private:

@@ -1,7 +1,6 @@
 #include "McRegionLevelStorageSource.h"
 
 #include <assert.h>
-
 #include <memory>
 
 #include "LevelData.h"

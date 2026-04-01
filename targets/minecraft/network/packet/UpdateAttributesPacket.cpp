@@ -7,6 +7,7 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
 
 UpdateAttributesPacket::UpdateAttributesPacket() { entityId = 0; }
 

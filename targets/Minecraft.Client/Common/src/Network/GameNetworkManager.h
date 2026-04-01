@@ -1,6 +1,9 @@
 #pragma once
+#include <stdint.h>
 // using namespace std;
 #include <vector>
+#include <format>
+#include <string>
 #if !defined(__linux__)
 #include <qnet.h>
 #endif
@@ -8,9 +11,15 @@
 #include "PlatformNetworkManagerStub.h"
 #include "SessionInfo.h"
 #include "console_helpers/C4JThread.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
+#include "Minecraft.Client/include/NetTypes.h"
 
 class ClientConnection;
 class Minecraft;
+class FriendSessionInfo;
+class INVITE_INFO;
+class INetworkPlayer;
 
 const int NON_QNET_SENDDATA_ACK_REQUIRED = 1;
 

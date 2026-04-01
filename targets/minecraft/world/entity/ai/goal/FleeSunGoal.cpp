@@ -9,6 +9,7 @@
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
 
 FleeSunGoal::FleeSunGoal(PathfinderMob* mob, double speedModifier) {
     this->mob = mob;

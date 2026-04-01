@@ -1,14 +1,30 @@
 #include "SkullTile.h"
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/net.minecraft.h"
+#include <optional>
+
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/boss/wither/WitherBoss.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/net.minecraft.world.h"
+#include "Facing.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "minecraft/world/Difficulty.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/SkullItem.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelSource.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/BaseEntityTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/SkullTileEntity.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/phys/AABB.h"
 
 SkullTile::SkullTile(int id) : BaseEntityTile(id, Material::decoration, false) {
     setShape(4.0f / 16.0f, 0, 4.0f / 16.0f, 12.0f / 16.0f, .5f, 12.0f / 16.0f);

@@ -4,10 +4,10 @@
 #include <string>
 
 #include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/BrewingStandMenu.h"
 #include "minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes

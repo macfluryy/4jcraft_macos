@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include <string>
+
 #include "Item.h"
 
 class FireworksItem : public Item {

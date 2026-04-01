@@ -1,12 +1,32 @@
 
 #include "UIScene_AnvilMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <assert.h>
+#include <wchar.h>
+#include <memory>
+#include <utility>
+
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AnvilMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "strings.h"
+
+class UILayer;
 
 UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
                                      UILayer* parentLayer)

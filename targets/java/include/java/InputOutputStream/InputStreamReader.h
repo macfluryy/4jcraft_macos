@@ -4,6 +4,7 @@
 #include "Reader.h"
 
 class InputStream;
+class DataInputStream;
 
 class InputStreamReader : public Reader {
 private:

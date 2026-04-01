@@ -1,8 +1,13 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "BaseEntityTile.h"
 
 class SkullTileEntity;
+class Level;
+class LivingEntity;
 
 class SkullTile : public BaseEntityTile {
     friend class Tile;

@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 
 class Tutorial;
 class TutorialConstraint;

@@ -1,8 +1,15 @@
 #pragma once
+#include <stdint.h>
+#include <vector>
+
 #include "CompoundTag.h"
 #include "Tag.h"
 
 class InputStream;
+class CompoundTag;
+class DataInput;
+class DataOutput;
+class OutputStream;
 
 class NbtIo {
 public:

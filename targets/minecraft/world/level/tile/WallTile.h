@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "Tile.h"
+
+class LevelSource;
 
 class WallTile : public Tile {
 public:

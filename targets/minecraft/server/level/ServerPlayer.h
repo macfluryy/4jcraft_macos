@@ -1,10 +1,19 @@
 #pragma once
 
+#include <stdint.h>
 #include <list>
+#include <memory>
+#include <string>
+#include <unordered_set>
+#include <vector>
 
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 #include "minecraft/world/level/ChunkPos.h"
+#include "minecraft/commands/CommandsEnum.h"
+#include "java/Class.h"
+#include "minecraft/network/packet/ChatPacket.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class PlayerConnection;
 class MinecraftServer;
@@ -20,6 +29,10 @@ class BeaconTileEntity;
 class EntityHorse;
 class Merchant;
 class ServerLevel;
+class AbstractContainerMenu;
+class Biome;
+class GameType;
+class Pos;
 
 class ServerPlayer : public Player,
                      public net_minecraft_world_inventory::ContainerListener {

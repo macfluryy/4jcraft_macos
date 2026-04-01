@@ -1,7 +1,7 @@
 #include "UIScene_Timer.h"
 
-#include "Minecraft.Client/Common/src/UI/Scenes/UIScene_Timer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 
 class UILayer;
 

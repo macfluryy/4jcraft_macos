@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "minecraft/world/SimpleContainer.h"
 
 class AnimalChest : public SimpleContainer {

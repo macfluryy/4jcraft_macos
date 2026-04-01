@@ -5,6 +5,7 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/network/packet/Packet.h"
 
 TeleportEntityPacket::TeleportEntityPacket() {
     id = -1;

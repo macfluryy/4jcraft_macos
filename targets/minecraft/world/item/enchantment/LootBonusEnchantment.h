@@ -2,6 +2,8 @@
 
 #include "Enchantment.h"
 
+class EnchantmentCategory;
+
 class LootBonusEnchantment : public Enchantment {
 public:
     LootBonusEnchantment(int id, int frequency, const EnchantmentCategory* cat);

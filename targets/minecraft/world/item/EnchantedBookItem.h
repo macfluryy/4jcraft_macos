@@ -3,6 +3,7 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Item.h"
 #include "minecraft/world/item/ItemInstance.h"

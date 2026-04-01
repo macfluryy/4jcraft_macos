@@ -1,5 +1,6 @@
 #pragma once
 #include "Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 #define FULL_TUTORIAL_PROGRESS_2_X_2_Crafting 1
 #define FULL_TUTORIAL_PROGRESS_3_X_3_Crafting 2

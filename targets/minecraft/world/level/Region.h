@@ -6,6 +6,7 @@
 #include "LevelSource.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/LightLayer.h"
+#include "minecraft/world/level/LightLayer.h"
 
 class Material;
 class TileEntity;

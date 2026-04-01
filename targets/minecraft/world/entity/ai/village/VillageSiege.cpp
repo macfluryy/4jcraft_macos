@@ -1,8 +1,6 @@
 #include "VillageSiege.h"
 
 #include <math.h>
-
-#include <format>
 #include <numbers>
 #include <optional>
 #include <vector>
@@ -16,6 +14,7 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/MobSpawner.h"
+#include "minecraft/world/phys/Vec3.h"
 
 VillageSiege::VillageSiege(Level* level) {
     hasSetupSiege = false;

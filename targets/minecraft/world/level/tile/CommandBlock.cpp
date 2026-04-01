@@ -8,10 +8,10 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/redstone/Redstone.h"
-#include "minecraft/world/level/tile/BaseEntityTile.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/CommandBlockEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/level/tile/BaseEntityTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 CommandBlock::CommandBlock(int id)
     : BaseEntityTile(id, Material::metal, false) {}

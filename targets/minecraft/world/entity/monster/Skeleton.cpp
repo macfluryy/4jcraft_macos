@@ -2,7 +2,6 @@
 
 #include <math.h>
 #include <stdint.h>
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -31,11 +30,9 @@
 #include "minecraft/world/entity/ai/goal/RestrictSunGoal.h"
 #include "minecraft/world/entity/ai/goal/target/HurtByTargetGoal.h"
 #include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
-#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
-#include "minecraft/world/item/BowItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
@@ -47,6 +44,9 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/MobType.h"
+#include "minecraft/world/entity/monster/Monster.h"
+#include "minecraft/world/item/BowItem.h"
 
 Skeleton::Skeleton(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

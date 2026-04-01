@@ -1,7 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "MinecartContainer.h"
 #include "minecraft/world/level/tile/entity/Hopper.h"
+#include "java/Class.h"
+
+class Entity;
+class Level;
 
 class MinecartHopper : public MinecartContainer, public Hopper {
 public:

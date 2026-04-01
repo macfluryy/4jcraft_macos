@@ -5,7 +5,7 @@
 #define XBOX_SCHEMATIC_CURRENT_VERSION 2
 
 #include <stdint.h>
-
+#include <string.h>
 #include <format>
 #include <memory>
 #include <ranges>

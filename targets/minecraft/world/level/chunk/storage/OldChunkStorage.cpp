@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <stdio.h>
-
 #include <format>
 #include <memory>
 #include <mutex>
@@ -12,9 +11,6 @@
 
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/Definitions.h"
 #include "java/File.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -34,6 +30,7 @@
 #include "nbt/ListTag.h"
 #include "nbt/NbtIo.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
 
 thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =
     nullptr;

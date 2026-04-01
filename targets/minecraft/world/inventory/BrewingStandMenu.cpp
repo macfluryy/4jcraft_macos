@@ -5,13 +5,13 @@
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "minecraft/world/inventory/Slot.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/alchemy/PotionBrewing.h"
 #include "minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
 
 BrewingStandMenu::BrewingStandMenu(
     std::shared_ptr<Inventory> inventory,

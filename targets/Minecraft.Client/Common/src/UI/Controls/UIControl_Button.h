@@ -7,6 +7,8 @@
 #include "Minecraft.Client/Common/src/UI/UIString.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 
 class UIControl_Button : public UIControl_Base {
 private:

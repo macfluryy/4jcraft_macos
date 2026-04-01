@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "minecraft/commands/CommandsEnum.h"
+
 EGameCommand DefaultGameModeCommand::getId() {
     return eGameCommand_DefaultGameMode;
 }

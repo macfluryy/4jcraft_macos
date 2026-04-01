@@ -8,6 +8,7 @@
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/include/SkinBox.h"
 #include "minecraft/client/model/HumanoidModel.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 
 class DLCSkinFile : public DLCFile {
 private:

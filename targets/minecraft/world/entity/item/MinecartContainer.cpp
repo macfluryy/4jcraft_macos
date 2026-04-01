@@ -1,11 +1,20 @@
 #include "MinecartContainer.h"
 
-#include "minecraft/stdafx.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/redstone/net.minecraft.world.level.redstone.h"
-#include "net.minecraft.world.entity.item.h"
+#include <stdint.h>
+
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
+#include "minecraft/world/entity/item/Minecart.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/redstone/Redstone.h"
 
 void MinecartContainer::_init() {
     items = std::vector<std::shared_ptr<ItemInstance>>(9 * 4);

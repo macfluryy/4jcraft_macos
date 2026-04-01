@@ -5,6 +5,7 @@
 #include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/world/item/trading/MerchantRecipe.h"
 #include "minecraft/world/item/trading/MerchantRecipeList.h"
+#include "minecraft/world/Container.h"
 
 MerchantContainer::~MerchantContainer() {}
 

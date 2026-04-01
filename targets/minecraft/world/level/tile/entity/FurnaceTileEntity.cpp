@@ -1,14 +1,27 @@
 #include "FurnaceTileEntity.h"
 
-#include "minecraft/net.minecraft.h"
-#include "minecraft/stdafx.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+#include <stdint.h>
+
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "nbt/com.mojang.nbt.h"
+#include "Facing.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/CoalItem.h"
+#include "minecraft/world/item/DiggerItem.h"
+#include "minecraft/world/item/HoeItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/WeaponItem.h"
+#include "minecraft/world/item/crafting/FurnaceRecipes.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/FurnaceTile.h"
+#include "minecraft/world/level/tile/HalfSlabTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 int furnaceSlotsForUp[] = {FurnaceTileEntity::SLOT_INPUT};
 int furnaceSlotsForDown[] = {FurnaceTileEntity::SLOT_RESULT,

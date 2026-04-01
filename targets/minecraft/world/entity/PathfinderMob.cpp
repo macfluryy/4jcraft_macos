@@ -19,6 +19,7 @@
 #include "minecraft/world/level/pathfinder/Path.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "minecraft/world/entity/Mob.h"
 
 AttributeModifier* PathfinderMob::SPEED_MODIFIER_FLEEING =
     (new AttributeModifier(eModifierId_MOB_FLEEING, 2.0f,

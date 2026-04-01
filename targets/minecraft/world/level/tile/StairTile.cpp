@@ -5,10 +5,10 @@
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 int StairTile::DEAD_SPACES[8][2] = {{2, 6}, {3, 7}, {2, 3}, {6, 7},
                                     {0, 4}, {1, 5}, {0, 1}, {4, 5}};

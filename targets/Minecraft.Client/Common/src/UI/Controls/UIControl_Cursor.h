@@ -6,6 +6,8 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Cursor.h"
 
 class UIControl_Cursor : public UIControl_Base {
 public:

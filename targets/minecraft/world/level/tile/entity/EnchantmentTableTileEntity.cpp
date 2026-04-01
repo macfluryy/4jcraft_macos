@@ -1,10 +1,16 @@
 #include "EnchantmentTableTileEntity.h"
 
 #include <cmath>
+#include <memory>
+#include <numbers>
 
-#include "minecraft/stdafx.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "strings.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 EnchantmentTableEntity::EnchantmentTableEntity() {
     random = new Random();

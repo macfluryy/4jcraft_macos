@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <wchar.h>
-
+#include <string.h>
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -20,9 +20,6 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/FrameProfiler.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
@@ -70,6 +67,10 @@
 #include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/scores/Scoreboard.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
+#include "minecraft/world/level/ChunkPos.h"
+#include "minecraft/world/level/LightLayer.h"
+#include "minecraft/world/phys/AABB.h"
 
 class CompoundTag;
 class ItemInstance;

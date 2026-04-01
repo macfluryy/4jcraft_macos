@@ -1,21 +1,19 @@
 #include "FallingTileRenderer.h"
 
-#include <GL/gl.h>
-#include <math.h>
-
 #include <memory>
+#include <cmath>
 
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/EntityRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
-#include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/item/FallingTile.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/AnvilTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
+#include "gl3_loader.h"
 
 FallingTileRenderer::FallingTileRenderer() : EntityRenderer() {
     tileRenderer = new TileRenderer();

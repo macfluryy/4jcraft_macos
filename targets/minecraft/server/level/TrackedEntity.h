@@ -2,6 +2,7 @@
 #include <format>
 #include <memory>
 #include <unordered_set>
+#include <vector>
 
 // class ServerPlayer;
 #include "ServerPlayer.h"

@@ -6,7 +6,6 @@
 #include "java/Class.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/EntityIO.h"
-#include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -15,6 +14,7 @@
 #include "minecraft/world/item/SpawnEggItem.h"
 #include "minecraft/world/level/Level.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/PathfinderMob.h"
 
 class Entity;
 

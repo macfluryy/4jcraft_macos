@@ -1,7 +1,5 @@
 #include "TileEntityRenderDispatcher.h"
 
-#include <GL/gl.h>
-
 #include <utility>
 
 #include "4J.Render/4J_Render.h"
@@ -19,6 +17,7 @@
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "gl3_loader.h"
 
 class Font;
 class Textures;

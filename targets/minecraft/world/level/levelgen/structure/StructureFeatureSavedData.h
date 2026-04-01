@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "minecraft/world/level/saveddata/SavedData.h"
+
+class CompoundTag;
 
 class StructureFeatureSavedData : public SavedData {
 private:

@@ -2,8 +2,6 @@
 
 #include <math.h>
 #include <stdint.h>
-
-#include <format>
 #include <numbers>
 #include <optional>
 #include <string>
@@ -33,6 +31,7 @@
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/Entity.h"
 
 // base damage, multiplied with velocity
 const double Arrow::ARROW_BASE_DAMAGE = 2.0f;

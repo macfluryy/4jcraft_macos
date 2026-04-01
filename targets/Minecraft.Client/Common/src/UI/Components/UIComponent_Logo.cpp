@@ -1,7 +1,6 @@
 #include "UIComponent_Logo.h"
 
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/Common/src/UI/Components/UIComponent_Logo.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 

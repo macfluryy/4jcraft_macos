@@ -2,8 +2,6 @@
 
 #include <assert.h>
 #include <stdint.h>
-
-#include <format>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -22,7 +20,6 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/BowItem.h"
-#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/item/UseAnim.h"
 #include "minecraft/world/item/alchemy/PotionMacros.h"

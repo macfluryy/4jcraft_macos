@@ -14,6 +14,9 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cwchar>
+#include <cstdlib>
+#include <ctime>
+#include <pthread.h>
 
 #define __cdecl
 #define _vsnprintf_s vsnprintf;

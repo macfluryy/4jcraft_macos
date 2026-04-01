@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <memory>
 #include <mutex>
 #include <queue>

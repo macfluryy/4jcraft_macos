@@ -1,7 +1,6 @@
 #include "Sheep.h"
 
 #include <math.h>
-
 #include <algorithm>
 #include <numbers>
 #include <string>
@@ -24,7 +23,6 @@
 #include "minecraft/world/entity/ai/goal/RandomStrollGoal.h"
 #include "minecraft/world/entity/ai/goal/TemptGoal.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
-#include "minecraft/world/entity/animal/Animal.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -38,6 +36,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/animal/Animal.h"
 
 const float Sheep::COLOR[Sheep::COLOR_LENGTH][3] = {
     {1.0f, 1.0f, 1.0f},    // white

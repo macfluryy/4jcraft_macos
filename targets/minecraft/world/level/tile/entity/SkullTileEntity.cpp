@@ -4,8 +4,8 @@
 #include <memory>
 
 #include "minecraft/network/packet/TileEntityDataPacket.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 SkullTileEntity::SkullTileEntity() {
     skullType = 0;

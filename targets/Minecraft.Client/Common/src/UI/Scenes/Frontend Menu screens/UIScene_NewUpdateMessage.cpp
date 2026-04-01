@@ -1,8 +1,19 @@
 
 #include "UIScene_NewUpdateMessage.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "console_helpers/StringHelpers.h"
+#include <vector>
+
+#include "4J.Common/4J_InputActions.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_DynamicLabel.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "strings.h"
 
 UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
                                                    UILayer* parentLayer)
@@ -23,7 +34,7 @@ UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
     std::vector<std::wstring> paragraphs;
     int lastIndex = 0;
     for (int index = message.find(L"\r\n", lastIndex, 2);
-         index != wstring::npos; index = message.find(L"\r\n", lastIndex, 2)) {
+         index != std::wstring::npos; index = message.find(L"\r\n", lastIndex, 2)) {
         paragraphs.push_back(message.substr(lastIndex, index - lastIndex) +
                              L" ");
         lastIndex = index + 2;

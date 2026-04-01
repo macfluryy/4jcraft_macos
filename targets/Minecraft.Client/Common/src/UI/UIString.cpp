@@ -1,8 +1,6 @@
 #include "UIString.h"
 
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 

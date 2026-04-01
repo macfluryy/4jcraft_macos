@@ -2,6 +2,7 @@
 
 #include <format>
 #include <unordered_map>
+#include <vector>
 
 #include "Stat.h"
 

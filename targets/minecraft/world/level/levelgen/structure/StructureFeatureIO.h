@@ -1,12 +1,14 @@
 #pragma once
 
 #include <unordered_map>
+#include <string>
 
 #include "nbt/CompoundTag.h"
 
 class StructurePiece;
 class StructureStart;
 class Level;
+class CompoundTag;
 
 typedef StructurePiece* (*structurePieceCreateFn)();
 typedef StructureStart* (*structureStartCreateFn)();

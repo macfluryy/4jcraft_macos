@@ -2,7 +2,6 @@
 
 #include <GL/gl.h>
 #include <wchar.h>
-
 #include <vector>
 
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"

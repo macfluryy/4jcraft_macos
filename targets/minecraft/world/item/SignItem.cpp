@@ -5,12 +5,12 @@
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
+#include "minecraft/world/item/Item.h"
 
 SignItem::SignItem(int id) : Item(id) {
     // 4J-PB - Changed for TU9

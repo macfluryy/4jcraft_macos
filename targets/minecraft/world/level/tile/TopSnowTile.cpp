@@ -11,8 +11,8 @@
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/LightLayer.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 const int TopSnowTile::MAX_HEIGHT = 6;
 const int TopSnowTile::HEIGHT_MASK = 7;  // max 8 steps

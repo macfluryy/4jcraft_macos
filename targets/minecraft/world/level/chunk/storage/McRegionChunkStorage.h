@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <deque>
 #include <format>
 #include <mutex>

@@ -1,12 +1,17 @@
 #pragma once
 
+#include <stdint.h>
 #include <optional>
 #include <unordered_map>
+#include <memory>
+#include <vector>
 
 #include "Entity.h"
 #include "MobType.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/ai/goal/GoalSelector.h"
+#include "java/Class.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class CombatTracker;
 class AttributeInstance;
@@ -19,6 +24,10 @@ class MobEffect;
 class HitResult;
 class Vec3;
 class Icon;
+class DamageSource;
+class Level;
+class Player;
+class Random;
 
 class LivingEntity : public Entity {
     friend class MobSpawner;

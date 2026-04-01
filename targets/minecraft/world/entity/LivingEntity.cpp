@@ -2,10 +2,8 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-
 #include <algorithm>
 #include <cmath>
-#include <format>
 #include <memory>
 #include <numbers>
 #include <optional>
@@ -33,12 +31,9 @@
 #include "minecraft/world/damageSource/EntityDamageSource.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
-#include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityEvent.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
-#include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
-#include "minecraft/world/entity/MobType.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
@@ -67,6 +62,8 @@
 #include "nbt/ListTag.h"
 #include "nbt/ShortTag.h"
 #include "nbt/Tag.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/MobType.h"
 
 class Icon;
 

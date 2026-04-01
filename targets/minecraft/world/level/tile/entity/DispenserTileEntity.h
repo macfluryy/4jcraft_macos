@@ -1,13 +1,19 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "TileEntity.h"
 #include "minecraft/world/Container.h"
 #include "nbt/com.mojang.nbt.h"
+#include "java/Class.h"
 
 class Player;
 class Random;
 class Level;
 class CompoundTag;
+class ItemInstance;
 
 class DispenserTileEntity : public TileEntity, public Container {
 public:

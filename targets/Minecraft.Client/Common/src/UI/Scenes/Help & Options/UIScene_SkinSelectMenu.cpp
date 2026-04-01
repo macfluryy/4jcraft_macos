@@ -1,11 +1,32 @@
 
 #include "UIScene_SkinSelectMenu.h"
 
+#include <wchar.h>
+#include <vector>
+
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "4J_Render.h"
+#include "Common/App_Defines.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_PlayerSkinPreview.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "SkinBox.h"
+#include "gl3_loader.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "strings.h"
+
+class ModelPart;
 
 #define SKIN_SELECT_PACK_DEFAULT 0
 #define SKIN_SELECT_PACK_FAVORITES 1

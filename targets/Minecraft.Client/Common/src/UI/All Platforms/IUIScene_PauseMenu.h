@@ -5,6 +5,8 @@
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/include/stdafx.h"
 
+class DLCPack;
+
 class IUIScene_PauseMenu {
 protected:
     DLCPack* m_pDLCPack;

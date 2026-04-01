@@ -3,6 +3,7 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/player/LocalPlayer.h"

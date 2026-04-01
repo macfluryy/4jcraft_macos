@@ -87,6 +87,7 @@
 #include "minecraft/network/packet/UpdateProgressPacket.h"
 #include "minecraft/network/packet/UseItemPacket.h"
 #include "minecraft/network/packet/XZPacket.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 
 void PacketListener::handleBlockRegionUpdate(
     std::shared_ptr<BlockRegionUpdatePacket> packet) {}

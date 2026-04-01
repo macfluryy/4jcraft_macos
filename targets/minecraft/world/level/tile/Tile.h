@@ -3,11 +3,13 @@
 #include <memory>
 #include <optional>
 #include <vector>
+#include <string>
 
 #include "console_helpers/Definitions.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "minecraft/world/phys/AABB.h"
 
 class GrassTile;
 class LeafTile;
@@ -48,6 +50,8 @@ class ChunkRebuildData;
 class Entity;
 class ItemInstance;
 class LivingEntity;
+class Material;
+class Vec3;
 
 class Tile {
     // 4J Stu - Stair tile accesses the protected members of a Tile object

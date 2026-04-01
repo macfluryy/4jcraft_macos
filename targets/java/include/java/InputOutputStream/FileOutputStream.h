@@ -1,6 +1,7 @@
 #pragma once
 // 4J Stu - Represents Java standard lib abstract
 
+#include <stdint.h>
 #include <cstdio>
 
 #include "OutputStream.h"

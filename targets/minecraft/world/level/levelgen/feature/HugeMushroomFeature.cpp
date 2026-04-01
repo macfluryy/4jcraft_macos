@@ -2,8 +2,8 @@
 
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/levelgen/feature/Feature.h"
 
 HugeMushroomFeature::HugeMushroomFeature(int forcedType) : Feature(true) {
     this->forcedType = forcedType;

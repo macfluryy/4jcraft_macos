@@ -1,5 +1,4 @@
 #include <sched.h>
-
 #include <algorithm>
 #include <atomic>
 #include <bit>
@@ -23,7 +22,6 @@
 
 #if defined(__linux__)
 #include <pthread.h>
-#include <sched.h>
 #include <sys/resource.h>
 #include <sys/syscall.h>
 #include <sys/types.h>
@@ -32,6 +30,8 @@
 
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "console_helpers/C4JThread.h"
+
+class Level;
 
 thread_local C4JThread* C4JThread::ms_currentThread = nullptr;
 

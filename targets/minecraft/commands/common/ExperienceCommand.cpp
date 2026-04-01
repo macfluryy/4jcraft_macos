@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "minecraft/commands/CommandsEnum.h"
+
 EGameCommand ExperienceCommand::getId() { return eGameCommand_Experience; }
 
 int ExperienceCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }

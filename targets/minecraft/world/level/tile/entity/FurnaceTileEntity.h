@@ -1,11 +1,17 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "TileEntity.h"
 #include "minecraft/world/WorldlyContainer.h"
 #include "minecraft/world/level/tile/FurnaceTile.h"
+#include "java/Class.h"
 
 class Player;
 class Level;
+class ItemInstance;
 
 class FurnaceTileEntity : public TileEntity, public WorldlyContainer {
 public:

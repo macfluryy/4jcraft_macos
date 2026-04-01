@@ -1,8 +1,12 @@
 #pragma once
+#include <string>
+
 #include "TransparentTile.h"
 
 class Random;
 class ChunkRebuildData;
+class Icon;
+class Level;
 
 class LeafTile : public TransparentTile {
     friend class Tile;

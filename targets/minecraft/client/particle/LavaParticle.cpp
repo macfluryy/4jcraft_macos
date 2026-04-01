@@ -2,9 +2,9 @@
 
 #include "java/JavaMath.h"
 #include "java/Random.h"
-#include "minecraft/client/particle/Particle.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/client/particle/Particle.h"
 
 LavaParticle::LavaParticle(Level* level, double x, double y, double z)
     : Particle(level, x, y, z, 0, 0, 0) {

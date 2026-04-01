@@ -3,6 +3,7 @@
 #include "java/Random.h"
 #include "minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
 #include "minecraft/world/level/levelgen/feature/TreeFeature.h"
+#include "minecraft/world/level/biome/Biome.h"
 
 RainforestBiome::RainforestBiome(int id) : Biome(id) {}
 

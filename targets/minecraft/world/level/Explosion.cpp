@@ -2,14 +2,10 @@
 
 #include <math.h>
 #include <stddef.h>
-
 #include <utility>
 #include <vector>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
@@ -23,6 +19,9 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/level/TilePos.h"
+#include "minecraft/world/phys/Vec3.h"
 
 Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
                      double y, double z, float r) {

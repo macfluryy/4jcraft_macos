@@ -1,19 +1,30 @@
 #include "SpawnEggItem.h"
 
+#include <unordered_map>
+#include <utility>
+
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/net.minecraft.h"
-#include "minecraft/stdafx.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/npc/net.minecraft.world.entity.npc.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "Facing.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "strings.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/entity/EntityIO.h"
+#include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll

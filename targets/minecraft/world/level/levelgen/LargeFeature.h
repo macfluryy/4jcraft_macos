@@ -1,7 +1,13 @@
 #pragma once
+#include <stdint.h>
+#include <format>
+#include <string>
+
 #include "minecraft/world/level/chunk/ChunkSource.h"
 
 class Level;
+class ChunkSource;
+class Random;
 
 class LargeFeature {
 public:

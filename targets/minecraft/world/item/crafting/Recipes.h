@@ -18,6 +18,7 @@ import net.minecraft.world.level.tile.Tile;
 #include <format>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "Recipy.h"
 #include "java/Class.h"

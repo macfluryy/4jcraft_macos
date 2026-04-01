@@ -1,11 +1,25 @@
 #include "UIScene_BeaconMenu.h"
 
+#include <assert.h>
+#include <memory>
+
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BeaconEffectButton.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/BeaconMenu.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "strings.h"
+
+class UILayer;
 
 UIScene_BeaconMenu::UIScene_BeaconMenu(int iPad, void* _initData,
                                        UILayer* parentLayer)

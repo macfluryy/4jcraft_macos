@@ -1,7 +1,10 @@
+#include <ctype.h>
 #include <algorithm>
 #include <cassert>
 #include <sstream>
 #include <vector>
+#include <cstddef>
+#include <string>
 
 #include "simdutf.h"
 

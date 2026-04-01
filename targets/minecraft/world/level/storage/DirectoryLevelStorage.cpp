@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <float.h>
 #include <stdio.h>
-
+#include <string.h>
 #include <algorithm>
 #include <format>
 #include <memory>
@@ -14,9 +14,6 @@
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
@@ -35,14 +32,15 @@
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
-#include "minecraft/world/level/storage/LevelStorage.h"
-#include "minecraft/world/level/storage/PlayerIO.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/ListTag.h"
 #include "nbt/NbtIo.h"
 #include "platform/IPlatformStorage.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
+#include "minecraft/world/level/storage/LevelStorage.h"
+#include "minecraft/world/level/storage/PlayerIO.h"
 
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");
 

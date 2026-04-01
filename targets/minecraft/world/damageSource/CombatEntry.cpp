@@ -4,9 +4,9 @@
 #include <memory>
 
 #include "java/Class.h"
-#include "minecraft/world/damageSource/CombatTracker.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/damageSource/CombatTracker.h"
 
 CombatEntry::CombatEntry(DamageSource* source, int time, float health,
                          float damage, CombatTracker::eLOCATION location,

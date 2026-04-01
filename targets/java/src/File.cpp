@@ -1,9 +1,6 @@
 #include "java/File.h"
 
-#include <stdint.h>
 #include <stdio.h>
-#include <unistd.h>
-
 #include <chrono>
 #include <filesystem>
 #include <string>

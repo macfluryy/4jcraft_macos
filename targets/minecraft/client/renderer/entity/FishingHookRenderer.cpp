@@ -1,7 +1,5 @@
 #include "FishingHookRenderer.h"
 
-#include <GL/gl.h>
-
 #include <cmath>
 #include <memory>
 #include <numbers>
@@ -17,6 +15,7 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/FishingHook.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "gl3_loader.h"
 
 ResourceLocation FishingHookRenderer::PARTICLE_LOCATION =
     ResourceLocation(TN_PARTICLES);

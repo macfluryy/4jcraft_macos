@@ -1,7 +1,6 @@
 #include "MapItemSavedData.h"
 
 #include <string.h>
-
 #include <algorithm>
 #include <utility>
 
@@ -15,6 +14,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/level/saveddata/SavedData.h"
 
 const int MapItemSavedData::END_PORTAL_DECORATION_KEY = -1;
 

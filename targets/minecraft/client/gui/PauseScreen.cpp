@@ -1,14 +1,12 @@
 #include "PauseScreen.h"
 
 #include <math.h>
-
 #include <memory>
 #include <numbers>
 #include <string>
 #include <vector>
 
 #include "4J_Input.h"
-#include "4J_Profile.h"
 #include "Button.h"
 #include "MessageScreen.h"
 #include "Minecraft.Client/Common/App_enums.h"
@@ -16,10 +14,10 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "OptionsScreen.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/locale/I18n.h"
 #include "minecraft/server/MinecraftServer.h"
+#include "minecraft/client/gui/Screen.h"
 
 PauseScreen::PauseScreen() {
     saveStep = 0;

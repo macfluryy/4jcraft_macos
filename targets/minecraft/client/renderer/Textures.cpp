@@ -1,8 +1,6 @@
 #include "Textures.h"
 
-#include <GL/gl.h>
 #include <assert.h>
-
 #include <cstdint>
 #include <cstring>
 #include <string>
@@ -19,7 +17,6 @@
 #include "java/ByteBuffer.h"
 #include "minecraft/client/MemoryTracker.h"
 #include "minecraft/client/Options.h"
-#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/texture/PreStitchedTextureMap.h"
 #include "minecraft/client/renderer/texture/Texture.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
@@ -30,6 +27,8 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "4J_Render.h"
+#include "gl3_loader.h"
 
 // Linux/PC port: disable mipmapping globally so textures are always sampled
 // from the full-resolution level 0 with GL_NEAREST, giving pixel-crisp

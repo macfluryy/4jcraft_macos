@@ -3,6 +3,7 @@
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 const float UseItemPacket::CLICK_ACCURACY = 16.0f;
 

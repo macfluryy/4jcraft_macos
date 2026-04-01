@@ -1,9 +1,29 @@
 #include "Enchantment.h"
 
-#include "minecraft/stdafx.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "net.minecraft.world.item.enchantment.h"
+#include <assert.h>
+#include <wchar.h>
+
 #include "strings.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/enchantment/ArrowDamageEnchantment.h"
+#include "minecraft/world/item/enchantment/ArrowFireEnchantment.h"
+#include "minecraft/world/item/enchantment/ArrowInfiniteEnchantment.h"
+#include "minecraft/world/item/enchantment/ArrowKnockbackEnchantment.h"
+#include "minecraft/world/item/enchantment/DamageEnchantment.h"
+#include "minecraft/world/item/enchantment/DigDurabilityEnchantment.h"
+#include "minecraft/world/item/enchantment/DiggingEnchantment.h"
+#include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "minecraft/world/item/enchantment/FireAspectEnchantment.h"
+#include "minecraft/world/item/enchantment/KnockbackEnchantment.h"
+#include "minecraft/world/item/enchantment/LootBonusEnchantment.h"
+#include "minecraft/world/item/enchantment/OxygenEnchantment.h"
+#include "minecraft/world/item/enchantment/ProtectionEnchantment.h"
+#include "minecraft/world/item/enchantment/ThornsEnchantment.h"
+#include "minecraft/world/item/enchantment/UntouchingEnchantment.h"
+#include "minecraft/world/item/enchantment/WaterWorkerEnchantment.h"
 
 // Enchantment *Enchantment::enchantments[256];
 std::vector<Enchantment*> Enchantment::enchantments =

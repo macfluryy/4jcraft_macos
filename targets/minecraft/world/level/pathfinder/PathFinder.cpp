@@ -4,8 +4,6 @@
 #include <utility>
 #include <vector>
 
-#include "BinaryHeap.h"
-#include "Node.h"
 #include "Path.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
@@ -14,6 +12,8 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/pathfinder/BinaryHeap.h"
+#include "minecraft/world/level/pathfinder/Node.h"
 
 PathFinder::PathFinder(LevelSource* level, bool canPassDoors, bool canOpenDoors,
                        bool avoidWater, bool canFloat) {

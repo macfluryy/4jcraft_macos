@@ -1,16 +1,17 @@
 #include "Particle.h"
 
 #include <stdio.h>
+#include <cmath>
 
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
+#include "minecraft/client/particle/ParticleEngine.h"
+#include "minecraft/world/entity/Entity.h"
 
 class Level;
 class Textures;

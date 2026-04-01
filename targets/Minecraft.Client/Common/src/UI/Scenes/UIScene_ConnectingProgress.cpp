@@ -1,8 +1,22 @@
 
 #include "UIScene_ConnectingProgress.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/Minecraft.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Progress.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "java/System.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
+#include "strings.h"
 
 UIScene_ConnectingProgress::UIScene_ConnectingProgress(int iPad,
                                                        void* _initData,

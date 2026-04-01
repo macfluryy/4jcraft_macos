@@ -16,6 +16,7 @@
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/commands/CommandsEnum.h"
 
 EGameCommand EnchantItemCommand::getId() { return eGameCommand_EnchantItem; }
 

@@ -7,8 +7,6 @@
 // length - the maximum number of bytes to read from the buffer.
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 
-#include <stdint.h>
-
 #include <algorithm>
 #include <cstring>
 #include <vector>

@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "minecraft/SharedConstants.h"
-
 const std::wstring SharedConstants::VERSION_STRING = L"1.6.4";
 const bool SharedConstants::TEXTURE_LIGHTING = true;
 

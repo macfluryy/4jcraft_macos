@@ -1,15 +1,24 @@
 #include "HangingEntityItem.h"
 
-#include "minecraft/net.minecraft.h"
+#include <string.h>
+#include <wchar.h>
+#include <string>
+#include <vector>
+
 #include "minecraft/stats/GenericStats.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "minecraft/world/entity/HangingEntity.h"
 #include "minecraft/world/entity/ItemFrame.h"
 #include "minecraft/world/entity/Painting.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "net.minecraft.world.item.h"
+#include "Direction.h"
+#include "Facing.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "strings.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
 
 HangingEntityItem::HangingEntityItem(int id, eINSTANCEOF eClassType)
     : Item(id) {

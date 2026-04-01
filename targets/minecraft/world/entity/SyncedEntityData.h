@@ -1,10 +1,10 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "minecraft/world/item/ItemInstance.h"
 

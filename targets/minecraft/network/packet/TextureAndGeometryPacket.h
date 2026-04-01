@@ -3,6 +3,7 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Minecraft.Client/include/SkinBox.h"
 #include "Packet.h"

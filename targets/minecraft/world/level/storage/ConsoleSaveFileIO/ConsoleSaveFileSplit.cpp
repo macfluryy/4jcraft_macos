@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
-
 #include <algorithm>
 #include <chrono>
 #include <compare>
@@ -19,9 +18,6 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/PlatformTime.h"
 #include "console_helpers/PortableFileIO.h"
 #include "console_helpers/StringHelpers.h"
@@ -40,6 +36,7 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "platform/IPlatformStorage.h"
 #include "platform/PlatformServices.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class ProgressListener;
 

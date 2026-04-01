@@ -8,12 +8,12 @@
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/crafting/Recipes.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/Slot.h"
 
 const int CraftingMenu::RESULT_SLOT = 0;
 const int CraftingMenu::CRAFT_SLOT_START = 1;

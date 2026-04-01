@@ -1,12 +1,31 @@
 #include "AnvilMenu.h"
 
+#include <algorithm>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "console_helpers/StringHelpers.h"
-#include "minecraft/stdafx.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.inventory.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/RepairContainer.h"
+#include "minecraft/world/inventory/RepairResultSlot.h"
+#include "minecraft/world/inventory/ResultContainer.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+#include "minecraft/world/item/EnchantedBookItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/enchantment/Enchantment.h"
+#include "minecraft/world/item/enchantment/EnchantmentHelper.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 AnvilMenu::AnvilMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,
                      int yt, int zt, std::shared_ptr<Player> player) {

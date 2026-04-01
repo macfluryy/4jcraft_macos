@@ -1,6 +1,9 @@
 #pragma once
 
 #include "minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+
+class Level;
 
 class EnderCrystal : public Entity {
 public:

@@ -2,6 +2,9 @@
 
 #include <cassert>
 #include <cstring>
+#include <algorithm>
+
+#include "java/InputOutputStream/Reader.h"
 
 // Creates a buffering character-input stream that uses a default-sized input
 // buffer. Parameters: in - A Reader

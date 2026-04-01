@@ -1,6 +1,5 @@
 #include "TakeFlowerGoal.h"
 
-#include <format>
 #include <vector>
 
 #include "java/Random.h"

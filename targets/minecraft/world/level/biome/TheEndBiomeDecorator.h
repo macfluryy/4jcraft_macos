@@ -1,6 +1,9 @@
 #pragma once
 #include "BiomeDecorator.h"
 
+class Biome;
+class Feature;
+
 class TheEndBiomeDecorator : public BiomeDecorator {
 public:
     typedef struct {

@@ -10,9 +10,7 @@
 #include "Player.h"
 
 #include <limits.h>
-#include <stdlib.h>
 #include <wchar.h>
-
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -27,9 +25,6 @@
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
@@ -57,8 +52,6 @@
 #include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
-#include "minecraft/world/entity/player/Abilities.h"
-#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
 #include "minecraft/world/food/FoodConstants.h"
 #include "minecraft/world/food/FoodData.h"
@@ -87,6 +80,10 @@
 #include "minecraft/world/scores/criteria/ObjectiveCriteria.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class ModelPart;
 class Objective;

@@ -1,6 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Item.h"
+
+class Icon;
+class ItemInstance;
+class Level;
+class Player;
 
 class SkullItem : public Item {
 private:

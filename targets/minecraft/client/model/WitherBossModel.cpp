@@ -1,9 +1,12 @@
 #include "WitherBossModel.h"
 
 #include <cmath>
+#include <memory>
+#include <numbers>
 
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/boss/wither/WitherBoss.h"
+#include "minecraft/world/entity/LivingEntity.h"
 
 WitherBossModel::WitherBossModel() {
     texWidth = 64;

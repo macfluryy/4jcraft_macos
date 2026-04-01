@@ -14,6 +14,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/Entity.h"
 
 void EyeOfEnderSignal::_init() {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

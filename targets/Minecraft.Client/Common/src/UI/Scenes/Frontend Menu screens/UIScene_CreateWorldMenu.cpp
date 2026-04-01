@@ -1,8 +1,11 @@
 
 #include "UIScene_CreateWorldMenu.h"
 
+#include <wchar.h>
+#include <cstdint>
+#include <utility>
+
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
@@ -11,8 +14,28 @@
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
-#include "minecraft/world/level/LevelType.h"
-#include "minecraft/world/level/biome/BiomeSource.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/Frontend Menu screens/IUIScene_StartGame.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/level/chunk/ChunkSource.h"
+#include "strings.h"
 
 #if defined(_WINDOWS64)
 

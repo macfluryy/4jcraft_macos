@@ -1,12 +1,11 @@
 #include "ZombieModel.h"
 
 #include <math.h>
-
 #include <memory>
 #include <numbers>
 
-#include "minecraft/client/model/HumanoidModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/model/HumanoidModel.h"
 
 ZombieModel::ZombieModel() : HumanoidModel(0, 0, 64, 32) {}
 

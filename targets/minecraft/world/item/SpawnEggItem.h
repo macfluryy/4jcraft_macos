@@ -1,6 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Item.h"
+#include "minecraft/world/entity/Entity.h"
+
+class Icon;
+class Level;
+class Player;
 
 class SpawnEggItem : public Item {
 private:

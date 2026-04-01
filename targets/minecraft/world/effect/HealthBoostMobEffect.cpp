@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/effect/MobEffect.h"
 
 HealthBoostMobEffect::HealthBoostMobEffect(int id, bool isHarmful,
                                            eMinecraftColour color)

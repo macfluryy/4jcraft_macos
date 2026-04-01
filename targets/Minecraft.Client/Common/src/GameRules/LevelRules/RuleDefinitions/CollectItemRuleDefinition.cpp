@@ -1,7 +1,5 @@
 #include "CollectItemRuleDefinition.h"
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CollectItemRuleDefinition.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
@@ -9,6 +7,9 @@
 #include "minecraft/network/Connection.h"
 #include "minecraft/network/packet/UpdateGameRuleProgressPacket.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 
 CollectItemRuleDefinition::CollectItemRuleDefinition() {
     m_itemId = 0;

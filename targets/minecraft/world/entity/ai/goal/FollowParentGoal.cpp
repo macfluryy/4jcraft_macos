@@ -1,6 +1,5 @@
 #include "FollowParentGoal.h"
 
-#include <format>
 #include <limits>
 #include <vector>
 

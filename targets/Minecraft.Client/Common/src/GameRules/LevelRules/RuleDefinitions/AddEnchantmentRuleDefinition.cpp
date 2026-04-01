@@ -3,8 +3,6 @@
 #include <algorithm>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddEnchantmentRuleDefinition.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
@@ -14,6 +12,8 @@
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 #include "minecraft/world/item/enchantment/EnchantmentInstance.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 
 AddEnchantmentRuleDefinition::AddEnchantmentRuleDefinition() {
     m_enchantmentId = m_enchantmentLevel = 0;

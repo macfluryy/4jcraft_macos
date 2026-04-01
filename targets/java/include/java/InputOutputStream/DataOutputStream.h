@@ -2,6 +2,7 @@
 // 4J Stu - Represents Java standard library class (although we miss out an
 // intermediate inheritance class that we don't care about)
 
+#include <stdint.h>
 #include <string>
 
 #include "DataOutput.h"

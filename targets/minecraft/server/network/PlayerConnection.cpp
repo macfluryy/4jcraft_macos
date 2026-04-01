@@ -1,7 +1,6 @@
 #include "PlayerConnection.h"
 
 #include <wchar.h>
-
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -16,9 +15,7 @@
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Network/Socket.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "ServerConnection.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
@@ -102,6 +99,7 @@
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 
 class SavedData;
 

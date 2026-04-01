@@ -1,6 +1,5 @@
 #pragma once
 #include <stdint.h>
-
 #include <string>
 
 #include "java/File.h"

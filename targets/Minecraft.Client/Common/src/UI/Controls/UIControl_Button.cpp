@@ -2,9 +2,10 @@
 
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "console_helpers/StringHelpers.h"
+#include "Minecraft.Client/Common/src/UI/UIString.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 UIControl_Button::UIControl_Button() {}
 

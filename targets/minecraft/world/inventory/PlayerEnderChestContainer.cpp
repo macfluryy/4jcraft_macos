@@ -1,7 +1,15 @@
 #include "PlayerEnderChestContainer.h"
 
+#include <stdint.h>
+#include <string>
+
 #include "minecraft/network/packet/ContainerOpenPacket.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/world/SimpleContainer.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/entity/EnderChestTileEntity.h"
 
 PlayerEnderChestContainer::PlayerEnderChestContainer()
     : SimpleContainer(IDS_TILE_ENDERCHEST, L"", false, 9 * 3) {

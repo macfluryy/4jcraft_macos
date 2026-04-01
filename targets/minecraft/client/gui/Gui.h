@@ -1,5 +1,9 @@
 #pragma once
+#include <stdint.h>
 #include <cstddef>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "4J.Common/4J_Compat.h"
 #include "GuiComponent.h"
@@ -8,6 +12,9 @@
 
 class Random;
 class Minecraft;
+class ItemInstance;
+class ItemRenderer;
+class ResourceLocation;
 
 class Gui : public GuiComponent {
 private:

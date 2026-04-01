@@ -7,17 +7,15 @@
 #include "ShapelessRecipy.h"
 
 #include <string.h>
-
 #include <algorithm>
 #include <memory>
 #include <vector>
 
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Recipes.h"
-#include "Recipy.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/crafting/Recipy.h"
 
 ShapelessRecipy::ShapelessRecipy(ItemInstance* result,
                                  std::vector<ItemInstance*>* ingredients,

@@ -2,9 +2,8 @@
 
 #include <cmath>
 
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 EndPodiumFeature::EndPodiumFeature(int tile) {
     this->tile = tile;

@@ -1,17 +1,15 @@
 #include "BiomeOverrideLayer.h"
 
 #include <string.h>
-
 #include <filesystem>
 #include <fstream>
-#include <string>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/world/level/newbiome/layer/Layer.h"
 #if defined(__linux__)
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #endif
 #include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/newbiome/layer/Layer.h"
 
 BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
     m_biomeOverride = std::vector<uint8_t>(width * height);

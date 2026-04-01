@@ -1,12 +1,20 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+#include <vector>
 
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_PlayerList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class INetworkPlayer;
+class UILayer;
 
 class UIScene_InGameInfoMenu : public UIScene {
 private:

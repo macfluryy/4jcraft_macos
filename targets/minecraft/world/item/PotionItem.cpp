@@ -1,19 +1,33 @@
 #include "PotionItem.h"
 
+#include <utility>
+
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "minecraft/stdafx.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
-#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "minecraft/world/item/alchemy/PotionMacros.h"
-#include "minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "net.minecraft.world.item.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
+#include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/projectile/ThrownPotion.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/alchemy/PotionBrewing.h"
+#include "minecraft/world/level/Level.h"
+
+class Icon;
 
 const std::wstring PotionItem::DEFAULT_ICON = L"potion";
 const std::wstring PotionItem::THROWABLE_ICON = L"potion_splash";

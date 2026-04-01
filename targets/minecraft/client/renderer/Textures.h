@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "4J.Render/4J_Render.h"
+#include "IPlatformRender.h"
 
 class Icon;
 class Entity;

@@ -3,7 +3,6 @@
 #include <ranges>
 #include <utility>
 
-#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

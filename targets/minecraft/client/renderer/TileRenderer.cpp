@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <assert.h>
 #include <stdint.h>
-
+#include <string.h>
 #include <array>
 #include <cmath>
 #include <numbers>
@@ -14,16 +14,11 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/include/FrameProfiler.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Tesselator.h"
-#include "Textures.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
@@ -68,6 +63,7 @@
 #include "minecraft/world/level/tile/piston/PistonBaseTile.h"
 #include "minecraft/world/level/tile/piston/PistonExtensionTile.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "minecraft/client/renderer/Textures.h"
 
 bool TileRenderer::fancy = true;
 

@@ -1,8 +1,6 @@
 #include "MobRenderer.h"
 
-#include <GL/gl.h>
 #include <math.h>
-
 #include <numbers>
 
 #include "4J.Render/4J_Render.h"
@@ -17,6 +15,7 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
+#include "gl3_loader.h"
 
 class Model;
 

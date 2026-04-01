@@ -3,6 +3,7 @@
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/PacketListener.h"
+#include "minecraft/network/packet/Packet.h"
 
 TileDestructionPacket::TileDestructionPacket() {
     id = 0;

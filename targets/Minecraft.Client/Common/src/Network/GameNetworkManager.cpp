@@ -1,15 +1,17 @@
 #include "GameNetworkManager.h"
 
+#include <assert.h>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <thread>
+#include <algorithm>
+#include <compare>
+#include <memory>
+#include <vector>
 
 #include "4J_Input.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "Socket.h"
 #include "console_helpers/StringHelpers.h"
 #include "console_helpers/ThreadName.h"
@@ -19,7 +21,6 @@
 #include "minecraft/client/User.h"
 #include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/LevelRenderer.h"
 #include "minecraft/client/skins/TexturePack.h"
@@ -32,9 +33,30 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/item/crafting/FireworksRecipe.h"
 #include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/phys/Vec3.h"
+#include "4J_Profile.h"
+#include "4J_Render.h"
+#include "4J_Storage.h"
+#include "Common/App_enums.h"
+#include "Common/Consoles_App.h"
+#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerStub.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "XboxStubs.h"
+#include "java/File.h"
+#include "minecraft/network/Connection.h"
+#include "minecraft/network/packet/PreLoginPacket.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
+
+class FriendSessionInfo;
+class INVITE_INFO;
 
 // Global instance
 CGameNetworkManager g_NetworkManager;

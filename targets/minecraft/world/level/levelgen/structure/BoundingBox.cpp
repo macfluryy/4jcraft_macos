@@ -1,15 +1,12 @@
 #include "BoundingBox.h"
 
 #include <limits.h>
-
-#include <format>
 #include <string>
 #include <vector>
 
 #include "console_helpers/StringHelpers.h"
 #include "java/JavaMath.h"
 #include "minecraft/Direction.h"
-#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "nbt/IntArrayTag.h"
 
 BoundingBox::BoundingBox() {

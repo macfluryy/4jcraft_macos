@@ -1,11 +1,16 @@
 #include "EnderCrystal.h"
 
+#include <memory>
+#include <vector>
+
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.entity.boss.enderdragon.h"
+#include "java/Random.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/SyncedEntityData.h"
+#include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 void EnderCrystal::_init(Level* level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

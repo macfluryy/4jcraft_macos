@@ -7,8 +7,11 @@
 #include "minecraft/network/packet/SignUpdatePacket.h"
 #include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "nbt/CompoundTag.h"
+#include "PlatformTypes.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+
+class Player;
 
 const int SignTileEntity::MAX_LINE_LENGTH = 15;
 

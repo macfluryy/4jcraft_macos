@@ -1,16 +1,30 @@
 #include "HopperTileEntity.h"
 
-#include "minecraft/net.minecraft.h"
-#include "minecraft/stdafx.h"
+#include <stdint.h>
+#include <algorithm>
+#include <format>
+
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "net.minecraft.world.level.tile.entity.h"
+#include "Facing.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/world/WorldlyContainer.h"
+#include "minecraft/world/entity/EntitySelector.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/ChestTile.h"
+#include "minecraft/world/level/tile/HopperTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/ChestTileEntity.h"
+#include "minecraft/world/level/tile/entity/Hopper.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/phys/AABB.h"
+
+class Entity;
 
 HopperTileEntity::HopperTileEntity() {
     items = std::vector<std::shared_ptr<ItemInstance>>(5);

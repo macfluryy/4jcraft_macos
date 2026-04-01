@@ -1,10 +1,14 @@
 #pragma once
+#include <memory>
+
 #include "DirectionalTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 class Pos;
 class Player;
 class Random;
 class Level;
+class Icon;
 
 class BedTile : public DirectionalTile {
 private:

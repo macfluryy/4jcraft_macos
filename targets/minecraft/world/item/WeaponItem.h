@@ -3,6 +3,7 @@
 #include "Item.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/item/UseAnim.h"
+#include "minecraft/world/item/UseAnim.h"
 
 class WeaponItem : public Item {
 private:

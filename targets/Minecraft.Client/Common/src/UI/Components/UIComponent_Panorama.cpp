@@ -1,10 +1,8 @@
 #include "UIComponent_Panorama.h"
 
 #include <stdint.h>
-
 #include <mutex>
 
-#include "Minecraft.Client/Common/src/UI/Components/UIComponent_Panorama.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
@@ -12,6 +10,9 @@
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/storage/LevelData.h"
+#include "4J_Render.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 UIComponent_Panorama::UIComponent_Panorama(int iPad, void* initData,
                                            UILayer* parentLayer)

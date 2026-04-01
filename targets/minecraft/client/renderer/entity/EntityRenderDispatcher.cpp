@@ -1,6 +1,8 @@
 #include "EntityRenderDispatcher.h"
 
+#include <assert.h>
 #include <cmath>
+#include <utility>
 
 #include "ArrowRenderer.h"
 #include "BatRenderer.h"
@@ -22,7 +24,6 @@
 #include "GhastRenderer.h"
 #include "GiantMobRenderer.h"
 #include "HorseRenderer.h"
-#include "HumanoidMobRenderer.h"
 #include "ItemFrameRenderer.h"
 #include "ItemRenderer.h"
 #include "ItemSpriteRenderer.h"
@@ -53,37 +54,36 @@
 #include "WitherSkullRenderer.h"
 #include "WolfRenderer.h"
 #include "ZombieRenderer.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/model/BoatModel.h"
 #include "minecraft/client/model/ChickenModel.h"
 #include "minecraft/client/model/CowModel.h"
-#include "minecraft/client/model/CreeperModel.h"
-#include "minecraft/client/model/GhastModel.h"
 #include "minecraft/client/model/HumanoidModel.h"
-#include "minecraft/client/model/MinecartModel.h"
 #include "minecraft/client/model/ModelHorse.h"
 #include "minecraft/client/model/OcelotModel.h"
 #include "minecraft/client/model/PigModel.h"
 #include "minecraft/client/model/SheepFurModel.h"
 #include "minecraft/client/model/SheepModel.h"
-#include "minecraft/client/model/SkeletonModel.h"
 #include "minecraft/client/model/SlimeModel.h"
-#include "minecraft/client/model/SpiderModel.h"
 #include "minecraft/client/model/SquidModel.h"
 #include "minecraft/client/model/WolfModel.h"
-#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/world/entity/global/net.minecraft.world.entity.global.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/npc/net.minecraft.world.entity.npc.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "4J_Render.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SharedConstants.h"
+#include "minecraft/client/model/ZombieModel.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "gl3_loader.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/PotionItem.h"
+#include "minecraft/world/item/alchemy/PotionBrewing.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
+
+class Font;
+class IconRegister;
+class Options;
+class Textures;
 
 double EntityRenderDispatcher::xOff = 0.0;
 double EntityRenderDispatcher::yOff = 0.0;

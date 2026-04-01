@@ -3,9 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <cmath>
-#include <format>
 #include <memory>
 #include <numbers>
 #include <optional>
@@ -21,7 +19,6 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
-#include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/item/MinecartChest.h"
 #include "minecraft/world/entity/item/MinecartFurnace.h"
 #include "minecraft/world/entity/item/MinecartHopper.h"

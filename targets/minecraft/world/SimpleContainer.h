@@ -3,12 +3,14 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Container.h"
 #include "minecraft/world/Container.h"
 #include "net.minecraft.world.ContainerListener.h"
 
 class ItemInstance;
+
 namespace net_minecraft_world {
 class ContainerListener;
 }  // namespace net_minecraft_world

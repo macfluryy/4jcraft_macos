@@ -7,8 +7,8 @@
 #include "minecraft/world/entity/animal/Pig.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/FishingRodItem.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Item.h"
 
 CarrotOnAStickItem::CarrotOnAStickItem(int id) : Item(id) {
     setMaxStackSize(1);

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <stdint.h>
-
 #include <format>
 #include <memory>
+#include <vector>
 
 #include "Packet.h"
 #include "minecraft/network/packet/Packet.h"

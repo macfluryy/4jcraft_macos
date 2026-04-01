@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
@@ -7,6 +9,10 @@
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/SkinBox.h"
 #include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 class UIScene_LanguageSelector : public UIScene {
 public:

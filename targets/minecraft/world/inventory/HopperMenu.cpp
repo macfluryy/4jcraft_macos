@@ -2,9 +2,10 @@
 
 #include <vector>
 
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 HopperMenu::HopperMenu(std::shared_ptr<Container> inventory,
                        std::shared_ptr<Container> hopper) {

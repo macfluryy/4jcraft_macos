@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_HTMLLabel.h"
@@ -7,6 +9,12 @@
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 class UIScene_LaunchMoreOptionsMenu : public UIScene {
 private:

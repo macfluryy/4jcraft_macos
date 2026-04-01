@@ -1,6 +1,7 @@
 #pragma once
 #include <format>
 #include <string>
+#include <vector>
 
 #include "Screen.h"
 #include "ScrolledSelectionList.h"

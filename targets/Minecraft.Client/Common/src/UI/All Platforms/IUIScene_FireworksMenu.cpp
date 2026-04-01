@@ -2,8 +2,8 @@
 
 #include <assert.h>
 
-#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/FireworksMenu.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection
 IUIScene_FireworksMenu::GetSectionAndSlotInDirection(ESceneSection eSection,

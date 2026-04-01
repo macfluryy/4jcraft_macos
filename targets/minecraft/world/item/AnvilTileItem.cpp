@@ -1,8 +1,8 @@
 #include "AnvilTileItem.h"
 
-#include "minecraft/world/item/MultiTextureTileItem.h"
 #include "minecraft/world/level/tile/AnvilTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/item/MultiTextureTileItem.h"
 
 AnvilTileItem::AnvilTileItem(Tile* tile)
     : MultiTextureTileItem(tile->id - 256, tile, (int*)AnvilTile::ANVIL_NAMES,

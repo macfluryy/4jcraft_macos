@@ -6,6 +6,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/commands/Command.h"
 #include "minecraft/commands/CommandSender.h"
+#include "minecraft/commands/CommandsEnum.h"
 
 int CommandDispatcher::performCommand(std::shared_ptr<CommandSender> sender,
                                       EGameCommand command,

@@ -1,20 +1,45 @@
 #include "WitherBoss.h"
 
+#include <assert.h>
+#include <math.h>
+#include <format>
+#include <numbers>
+#include <vector>
+
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/world/entity/ai/goal/net.minecraft.world.entity.ai.goal.h"
-#include "minecraft/world/entity/ai/goal/target/net.minecraft.world.entity.ai.goal.target.h"
-#include "minecraft/world/entity/ai/navigation/net.minecraft.world.entity.ai.navigation.h"
-#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "java/Random.h"
+#include "nbt/CompoundTag.h"
+#include "minecraft/world/Difficulty.h"
+#include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/SyncedEntityData.h"
+#include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/ai/goal/FloatGoal.h"
+#include "minecraft/world/entity/ai/goal/GoalSelector.h"
+#include "minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
+#include "minecraft/world/entity/ai/goal/RandomLookAroundGoal.h"
+#include "minecraft/world/entity/ai/goal/RandomStrollGoal.h"
+#include "minecraft/world/entity/ai/goal/RangedAttackGoal.h"
+#include "minecraft/world/entity/ai/goal/target/HurtByTargetGoal.h"
+#include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
+#include "minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "minecraft/world/entity/monster/Enemy.h"
+#include "minecraft/world/entity/monster/Monster.h"
+#include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/projectile/WitherSkull.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/GameRules.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/LevelEvent.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/phys/AABB.h"
 
 bool LivingEntitySelector::matches(std::shared_ptr<Entity> entity) const {
     if (entity->instanceof(eTYPE_LIVINGENTITY)) {

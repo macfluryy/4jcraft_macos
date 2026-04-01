@@ -8,7 +8,6 @@
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/goal/SitGoal.h"
 #include "minecraft/world/entity/animal/Animal.h"
-#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "nbt/CompoundTag.h"
 

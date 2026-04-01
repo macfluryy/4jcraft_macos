@@ -14,6 +14,7 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/commands/CommandsEnum.h"
 
 EGameCommand GiveItemCommand::getId() { return eGameCommand_Give; }
 

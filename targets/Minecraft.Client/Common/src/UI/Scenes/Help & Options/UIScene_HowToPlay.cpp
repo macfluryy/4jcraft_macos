@@ -1,8 +1,21 @@
 
 #include "UIScene_HowToPlay.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <stdint.h>
+#include <wchar.h>
+#include <vector>
+
 #include "console_helpers/StringHelpers.h"
+#include "4J.Common/4J_InputActions.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "strings.h"
+
+class UILayer;
 
 static UIScene_HowToPlay::SHowToPlayPageDef gs_aPageDefs[eHowToPlay_NumPages] =
     {
@@ -287,7 +300,7 @@ void UIScene_HowToPlay::StartPage(EHowToPlayPage ePage) {
     std::vector<std::wstring> paragraphs;
     int lastIndex = 0;
     for (int index = finalText.find(L"\r\n", lastIndex, 2);
-         index != wstring::npos;
+         index != std::wstring::npos;
          index = finalText.find(L"\r\n", lastIndex, 2)) {
         paragraphs.push_back(finalText.substr(lastIndex, index - lastIndex) +
                              L" ");

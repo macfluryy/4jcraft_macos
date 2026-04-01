@@ -1,7 +1,5 @@
 #include "LevelRules.h"
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/LevelRules.h"
-
 LevelRules::LevelRules() {}
 
 void LevelRules::addLevelRule(const std::wstring& displayName,

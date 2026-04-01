@@ -9,6 +9,7 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/IntArrayTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 StructureStart::StructureStart() {
     chunkX = chunkZ = 0;

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "java/Class.h"
+#include "minecraft/world/level/biome/Biome.h"
 
 HellBiome::HellBiome(int id) : Biome(id) {
     enemies.clear();

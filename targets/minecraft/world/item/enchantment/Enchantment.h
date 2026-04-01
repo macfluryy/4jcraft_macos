@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "EnchantmentCategory.h"
 #include "minecraft/util/HtmlString.h"
@@ -10,6 +11,7 @@ class DamageSource;
 class LivingEntity;
 class ItemInstance;
 class Mob;
+class EnchantmentCategory;
 
 class Enchantment  // implements Descriptive<Enchantment> {
 {

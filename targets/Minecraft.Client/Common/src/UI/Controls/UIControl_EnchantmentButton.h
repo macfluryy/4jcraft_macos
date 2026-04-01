@@ -8,6 +8,7 @@
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "UIControl_Button.h"
 #include "java/Random.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentButton.h"
 
 class UIControl_EnchantmentButton : public UIControl_Button {
 private:

@@ -1,8 +1,12 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "HeavyTile.h"
 
 class FallingTile;
+class Icon;
 
 class AnvilTile : public HeavyTile {
     friend class ChunkRebuildData;

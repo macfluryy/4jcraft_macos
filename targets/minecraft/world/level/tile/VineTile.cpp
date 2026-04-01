@@ -16,8 +16,8 @@
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 VineTile::VineTile(int id) : Tile(id, Material::replaceable_plant, false) {
     setTicking(true);

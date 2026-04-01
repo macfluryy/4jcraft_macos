@@ -1,7 +1,11 @@
 #include "SmoothStoneBrickTile.h"
 
-#include "minecraft/world/net.minecraft.world.h"
 #include "strings.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 const std::wstring SmoothStoneBrickTile::TEXTURE_NAMES[] = {
     L"", L"mossy", L"cracked", L"carved"};

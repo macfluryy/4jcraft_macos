@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <string.h>
-
 #include <chrono>
 #include <mutex>
 #include <thread>
@@ -10,9 +9,6 @@
 
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/C4JThread.h"
 #include "console_helpers/ThreadName.h"
 #include "console_helpers/compression.h"
@@ -23,8 +19,6 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
-#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
-#include "minecraft/world/level/chunk/storage/RegionFileCache.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
@@ -34,6 +28,9 @@
 #include "nbt/CompoundTag.h"
 #include "nbt/NbtIo.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
+#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
+#include "minecraft/world/level/chunk/storage/RegionFileCache.h"
 
 class DataInput;
 

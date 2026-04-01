@@ -1,10 +1,21 @@
 #include "SaplingPlantTile.h"
 
-#include "minecraft/world/level/levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "net.minecraft.world.level.tile.h"
 #include "strings.h"
+#include "java/Random.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/levelgen/feature/BasicTreeFeature.h"
+#include "minecraft/world/level/levelgen/feature/BirchFeature.h"
+#include "minecraft/world/level/levelgen/feature/Feature.h"
+#include "minecraft/world/level/levelgen/feature/MegaTreeFeature.h"
+#include "minecraft/world/level/levelgen/feature/SpruceFeature.h"
+#include "minecraft/world/level/levelgen/feature/TreeFeature.h"
+#include "minecraft/world/level/tile/LeafTile.h"
+#include "minecraft/world/level/tile/PlantTile.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/TreeTile.h"
+
+class Icon;
 
 int Sapling::SAPLING_NAMES[SAPLING_NAMES_SIZE] = {
     IDS_TILE_SAPLING_OAK, IDS_TILE_SAPLING_SPRUCE, IDS_TILE_SAPLING_BIRCH,

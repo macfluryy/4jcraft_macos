@@ -1,13 +1,26 @@
 #include "LeafTile.h"
 
+#include <memory>
+
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/biome/net.minecraft.world.level.biome.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/net.minecraft.world.h"
 #include "strings.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "java/Random.h"
+#include "minecraft/stats/GenericStats.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/ShearsItem.h"
+#include "minecraft/world/level/FoliageColor.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelSource.h"
+#include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/TransparentTile.h"
 
 const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {
     IDS_TILE_LEAVES_OAK,

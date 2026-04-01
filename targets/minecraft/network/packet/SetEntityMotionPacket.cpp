@@ -4,6 +4,7 @@
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/network/packet/Packet.h"
 
 void SetEntityMotionPacket::_init(int id, double xd, double yd, double zd) {
     this->id = id;

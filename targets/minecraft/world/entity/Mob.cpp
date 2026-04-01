@@ -2,17 +2,12 @@
 
 #include <math.h>
 #include <stdint.h>
-
 #include <algorithm>
-#include <format>
 #include <memory>
 #include <numbers>
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
@@ -26,7 +21,6 @@
 #include "minecraft/world/entity/HangingEntity.h"
 #include "minecraft/world/entity/LeashFenceKnotEntity.h"
 #include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/TamableAnimal.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"

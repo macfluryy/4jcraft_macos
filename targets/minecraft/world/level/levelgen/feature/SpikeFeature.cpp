@@ -1,8 +1,12 @@
 #include "SpikeFeature.h"
 
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include <memory>
+
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "minecraft/world/entity/boss/enderdragon/EnderCrystal.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 SpikeFeature::SpikeFeature(int tile) {
     this->tile = tile;

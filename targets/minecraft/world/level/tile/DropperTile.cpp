@@ -10,11 +10,11 @@
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
 #include "minecraft/world/level/tile/entity/DropperTileEntity.h"
 #include "minecraft/world/level/tile/entity/HopperTileEntity.h"
+#include "minecraft/world/level/tile/DispenserTile.h"
 
 class Container;
 

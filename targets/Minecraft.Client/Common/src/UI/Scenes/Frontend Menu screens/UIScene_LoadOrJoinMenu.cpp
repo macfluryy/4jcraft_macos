@@ -1,22 +1,35 @@
 #include "UIScene_LoadOrJoinMenu.h"
 
-#include <chrono>
-#include <thread>
+#include <stdlib.h>
+#include <string.h>
+#include <wchar.h>
+#include <compare>
 
 #include "Minecraft.Client/Common/src/Network/SessionInfo.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "console_helpers/PortableFileIO.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/server/MinecraftServer.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Input.h"
+#include "4J_Profile.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "java/File.h"
+#include "java/InputOutputStream/FileInputStream.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "strings.h"
 
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
 unsigned long UIScene_LoadOrJoinMenu::m_ulFileSize = 0L;

@@ -1,11 +1,17 @@
 #pragma once
 
 #include <unordered_map>
+#include <cstdint>
+#include <ranges>
+#include <string>
+#include <vector>
 
 #include "TexturePack.h"
 #include "java/File.h"
 
 class Minecraft;
+class DLCPack;
+class TexturePack;
 
 class TexturePackRepository {
 public:

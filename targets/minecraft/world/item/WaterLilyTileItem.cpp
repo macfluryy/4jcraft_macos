@@ -4,12 +4,12 @@
 
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/ColoredTileItem.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "minecraft/world/item/ColoredTileItem.h"
 
 WaterLilyTileItem::WaterLilyTileItem(int id) : ColoredTileItem(id, false) {}
 

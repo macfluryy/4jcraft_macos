@@ -1,7 +1,6 @@
 #include "PathNavigation.h"
 
 #include <stdlib.h>
-
 #include <cmath>
 
 #include "minecraft/util/Mth.h"
@@ -15,6 +14,7 @@
 #include "minecraft/world/level/pathfinder/Path.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class Entity;
 

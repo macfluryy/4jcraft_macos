@@ -2,9 +2,10 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 TakeItemHint::TakeItemHint(eTutorial_Hint id, Tutorial* tutorial, int items[],
                            unsigned int itemsLength)

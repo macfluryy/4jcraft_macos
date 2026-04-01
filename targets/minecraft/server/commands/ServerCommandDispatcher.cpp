@@ -17,6 +17,7 @@
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/network/packet/ChatPacket.h"
 
 ServerCommandDispatcher::ServerCommandDispatcher() {
     addCommand(new TimeCommand());

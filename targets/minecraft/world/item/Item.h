@@ -1,9 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Rarity.h"
 #include "UseAnim.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class MapItem;
 class Mob;
@@ -24,6 +29,7 @@ class LivingEntity;
 class HtmlString;
 class Tile;
 class Entity;
+class Rarity;
 
 #define ITEM_ICON_COLUMNS 16
 

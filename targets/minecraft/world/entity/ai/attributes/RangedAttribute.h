@@ -2,6 +2,7 @@
 
 #include "BaseAttribute.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
 
 class RangedAttribute : public BaseAttribute {
 private:

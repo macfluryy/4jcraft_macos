@@ -1,7 +1,6 @@
 #include "NetherBridgePieces.h"
 
 #include <stdlib.h>
-
 #include <algorithm>
 #include <memory>
 #include <string>
@@ -12,11 +11,12 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 void NetherBridgePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_BridgeCrossing,

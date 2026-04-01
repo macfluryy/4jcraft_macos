@@ -1,12 +1,11 @@
 #ifdef __linux__
 
-#include <cstring>
-
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "java/ByteBuffer.h"
 #include "java/FloatBuffer.h"
 #include "java/IntBuffer.h"
+#include "gl3_loader.h"
 
 extern C4JRender RenderManager;
 
@@ -107,9 +106,6 @@ void glVertexPointer_4J(int, int, FloatBuffer*) {}
 void glEndList_4J(int) {}
 void glTexGen_4J(int, int, FloatBuffer*) {}
 
-// query objects
-#include <GL/gl.h>
-#include <GL/glext.h>
 #include <dlfcn.h>
 #include <stdio.h>
 #include <string.h>

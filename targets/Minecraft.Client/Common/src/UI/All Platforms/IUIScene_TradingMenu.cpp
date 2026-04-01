@@ -1,16 +1,29 @@
 #include "IUIScene_TradingMenu.h"
 
+#include <limits.h>
+#include <algorithm>
+
 #include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/trading/net.minecraft.world.item.trading.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/network/packet/CustomPayloadPacket.h"
+#include "minecraft/network/packet/TradeItemPacket.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Rarity.h"
+#include "minecraft/world/item/trading/MerchantRecipe.h"
+#include "minecraft/world/item/trading/MerchantRecipeList.h"
+#include "strings.h"
 
 IUIScene_TradingMenu::IUIScene_TradingMenu() {
     m_validOffersCount = 0;

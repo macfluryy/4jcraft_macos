@@ -10,8 +10,8 @@
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/redstone/Redstone.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 LeverTile::LeverTile(int id) : Tile(id, Material::decoration, false) {}
 

@@ -4,6 +4,8 @@
 
 #include "java/Random.h"
 
+class Random;
+
 // 4J - this WeighedRandomItem class was a nested static class within
 // WeighedRandom, but we need to be able to refer to it externally
 

@@ -1,7 +1,6 @@
 #include "Creeper.h"
 
 #include <stdint.h>
-
 #include <memory>
 #include <string>
 
@@ -23,13 +22,13 @@
 #include "minecraft/world/entity/ai/goal/target/HurtByTargetGoal.h"
 #include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
 #include "minecraft/world/entity/animal/Ocelot.h"
-#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/monster/Monster.h"
 
 void Creeper::_init() {
     swell = 0;

@@ -1,9 +1,9 @@
 #pragma once
 #include <stdint.h>
-
 #include <format>
 #include <memory>
 #include <typeinfo>
+#include <vector>
 
 #include "LevelChunk.h"
 #include "console_helpers/Definitions.h"

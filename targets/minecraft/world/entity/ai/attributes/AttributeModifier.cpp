@@ -6,6 +6,7 @@
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/util/HtmlString.h"
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
 
 void AttributeModifier::_init(eMODIFIER_ID id, const std::wstring name,
                               double amount, int operation) {

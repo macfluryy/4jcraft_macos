@@ -1,6 +1,7 @@
 #include "MultiEntityMobPart.h"
 
 #include "MultiEntityMob.h"
+#include "minecraft/world/entity/Entity.h"
 
 MultiEntityMobPart::MultiEntityMobPart(
     std::shared_ptr<MultiEntityMob> parentMob, const std::wstring& id, float w,

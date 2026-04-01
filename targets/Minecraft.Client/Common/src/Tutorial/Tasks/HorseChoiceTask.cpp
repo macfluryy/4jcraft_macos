@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/ChoiceTask.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/ChoiceTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 class Tutorial;
 

@@ -16,7 +16,6 @@
 #include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
-#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/BaseRailTile.h"
 #include "minecraft/world/level/tile/ChestTile.h"

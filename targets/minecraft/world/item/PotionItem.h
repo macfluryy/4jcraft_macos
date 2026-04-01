@@ -1,8 +1,17 @@
 #pragma once
 
+#include <memory>
+#include <ranges>
+#include <string>
+#include <unordered_map>
+#include <vector>
+
 #include "Item.h"
+#include "minecraft/world/item/UseAnim.h"
 
 class MobEffectInstance;
+class Icon;
+class ItemInstance;
 
 class PotionItem : public Item {
 private:

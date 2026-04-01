@@ -4,7 +4,6 @@ class Options;
 class C4JThread;
 class Random;
 
-using namespace std;
 #include <string>
 
 #include "Minecraft.Client/Common/App_Defines.h"

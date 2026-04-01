@@ -5,8 +5,8 @@
 #include "java/Class.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/Pig.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Item.h"
 
 SaddleItem::SaddleItem(int id) : Item(id) { maxStackSize = 1; }
 

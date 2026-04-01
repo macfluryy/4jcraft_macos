@@ -1,13 +1,21 @@
 #include "AnvilTile.h"
 
-#include "minecraft/net.minecraft.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "net.minecraft.world.level.tile.h"
 #include "strings.h"
+#include "Direction.h"
+#include "Facing.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/item/FallingTile.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelSource.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/HeavyTile.h"
+#include "minecraft/world/level/tile/LevelEvent.h"
+#include "minecraft/world/level/tile/Tile.h"
+
+class Icon;
 
 const unsigned int AnvilTile::ANVIL_NAMES[ANVIL_NAMES_LENGTH] = {
     IDS_TILE_ANVIL_INTACT,

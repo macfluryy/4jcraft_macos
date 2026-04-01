@@ -4,8 +4,6 @@
 
 #include <math.h>
 
-#include "minecraft/Pos.h"
-
 Pos::Pos() { x = y = z = 0; }
 
 Pos::Pos(int x, int y, int z) {

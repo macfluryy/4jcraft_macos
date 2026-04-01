@@ -1,6 +1,12 @@
 #pragma once
 
+#include <stdint.h>
 #include <unordered_set>
+#include <memory>
+#include <string>
+#include <typeinfo>
+#include <unordered_map>
+#include <vector>
 
 #include "nbt/CompoundTag.h"
 
@@ -8,6 +14,7 @@ class Packet;
 class PacketListener;
 class DataInputStream;
 class DataOutputStream;
+class CompoundTag;
 
 #define PACKET_ENABLE_STAT_TRACKING 0
 

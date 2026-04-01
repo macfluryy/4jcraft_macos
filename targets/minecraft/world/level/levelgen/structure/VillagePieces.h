@@ -6,6 +6,7 @@
 #include "StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 
 class BiomeSource;
 class BoundingBox;

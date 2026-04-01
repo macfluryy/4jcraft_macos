@@ -1,7 +1,6 @@
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 
 #include <stdint.h>
-
 #include <memory>
 #include <vector>
 
@@ -26,6 +25,7 @@
 #include "minecraft/world/level/newbiome/layer/VoronoiZoom.h"
 #include "minecraft/world/level/newbiome/layer/ZoomLayer.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
 
 std::vector<std::shared_ptr<Layer>> Layer::getDefaultLayers(
     int64_t seed, LevelType* levelType) {

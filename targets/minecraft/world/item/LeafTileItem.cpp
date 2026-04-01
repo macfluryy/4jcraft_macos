@@ -3,10 +3,10 @@
 #include <memory>
 
 #include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/level/FoliageColor.h"
 #include "minecraft/world/level/tile/LeafTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/item/TileItem.h"
 
 LeafTileItem::LeafTileItem(int id) : TileItem(id) {
     setMaxDamage(0);

@@ -1,10 +1,15 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
 #include "Item.h"
 
 class Player;
 class Mob;
 class Level;
+class Icon;
+class ItemInstance;
 
 class DyePowderItem : public Item {
 public:

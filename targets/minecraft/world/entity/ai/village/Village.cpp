@@ -1,7 +1,6 @@
 #include "Village.h"
 
 #include <stdlib.h>
-
 #include <algorithm>
 #include <cmath>
 #include <limits>
@@ -20,6 +19,10 @@
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/ListTag.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/ai/village/DoorInfo.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class Entity;
 

@@ -3,6 +3,8 @@
 #include <string.h>
 
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/level/pathfinder/Node.h"
+#include "minecraft/world/phys/Vec3.h"
 
 Path::~Path() {
     for (size_t i = 0; i < nodes.size(); i++) delete nodes[i];

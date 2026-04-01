@@ -1,16 +1,13 @@
 #include "minecraft/util/Mth.h"
 
-#include <math.h>
 #include <stddef.h>
 #include <stdint.h>
-
 #include <array>
 #include <numbers>
 #include <sstream>
 #include <string>
 
 #include "java/Random.h"
-#include "minecraft/util/Mth.h"
 
 constexpr size_t SIN_TAB_CNT = 65536;
 constexpr float SIN_SCALE = SIN_TAB_CNT / (std::numbers::pi_v<float> * 2.0f);

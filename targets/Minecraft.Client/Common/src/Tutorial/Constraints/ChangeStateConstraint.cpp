@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/client/Minecraft.h"
@@ -15,6 +14,7 @@
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 
 ChangeStateConstraint::ChangeStateConstraint(
     Tutorial* tutorial, eTutorial_State targetState,

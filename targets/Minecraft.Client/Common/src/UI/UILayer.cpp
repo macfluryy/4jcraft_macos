@@ -76,10 +76,9 @@
 #include "Minecraft.Client/Common/src/UI/UIGroup.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "UIScene.h"
+#include "4J_Render.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 UILayer::UILayer(UIGroup* parent) {
     m_parentGroup = parent;

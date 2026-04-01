@@ -1,9 +1,14 @@
 #include "UIScene_LanguageSelector.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
+#include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "strings.h"
 
 // strings for buttons in the list
 const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[] = {

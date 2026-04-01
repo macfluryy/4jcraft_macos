@@ -3,14 +3,13 @@
 #include <GL/gl.h>
 #include <math.h>
 #include <wchar.h>
-
+#include <string.h>
 #include <string>
 
 #include "4J.Render/4J_Render.h"
 #include "Font.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/renderer/Tesselator.h"

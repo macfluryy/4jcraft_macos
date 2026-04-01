@@ -1,8 +1,16 @@
 
 #include "UIScene_Credits.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <string.h>
+#include <wchar.h>
+
 #include "console_helpers/StringHelpers.h"
+#include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "strings.h"
 
 #define CREDIT_ICON -2
 
@@ -115,8 +123,6 @@ SCreditTextItemDef UIScene_Credits::gs_aCreditDefs[MAX_CREDIT_STRINGS] = {
     {L"Roni Percy", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Anne Clarke", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
     {L"Anthony Kent", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING, eSmallText},
-#if defined(_WIN64)
-#endif
 
     // Miles & Iggy credits
     {L"", NO_TRANSLATED_STRING, NO_TRANSLATED_STRING,

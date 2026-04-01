@@ -1,7 +1,7 @@
 #include "AuxDataTileItem.h"
 
-#include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/item/TileItem.h"
 
 AuxDataTileItem::AuxDataTileItem(int id, Tile* parentTile) : TileItem(id) {
     this->parentTile = parentTile;

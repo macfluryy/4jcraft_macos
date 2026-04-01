@@ -1,7 +1,11 @@
 #pragma once
 
+#include <format>
+#include <memory>
+
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 
 class HtmlString;
 class ItemInstance;

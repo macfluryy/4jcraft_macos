@@ -1,7 +1,6 @@
 
 #include "minecraft/world/entity/item/MinecartHopper.h"
 
-#include <format>
 #include <memory>
 #include <string>
 #include <vector>
@@ -9,7 +8,6 @@
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/item/MinecartContainer.h"
-#include "minecraft/world/entity/item/MinecartHopper.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/HopperTile.h"

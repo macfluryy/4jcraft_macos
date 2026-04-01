@@ -1,8 +1,8 @@
 #include "Minecraft.Client/include/BufferedImage.h"
 
+#include <string.h>
 #include <cstdint>
 #include <filesystem>
-#include <format>
 #include <string>
 #include <vector>
 
@@ -14,6 +14,7 @@
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/PathHelper.h"
 #include "console_helpers/StringHelpers.h"
+#include "PlatformTypes.h"
 
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];

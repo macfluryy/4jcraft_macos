@@ -1,20 +1,16 @@
 #include "PendingConnection.h"
 
 #include <stdio.h>
-
 #include <cstdint>
 #include <vector>
 
 #include "4J.Common/4J_Compat.h"
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "PlayerConnection.h"
 #include "ServerConnection.h"
 #include "java/Random.h"
@@ -25,6 +21,9 @@
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
+#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 
 class Packet;
 // #if 0

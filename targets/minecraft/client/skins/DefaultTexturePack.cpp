@@ -1,8 +1,11 @@
 
 #include "DefaultTexturePack.h"
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/renderer/Textures.h"
+#include <cstdint>
+#include <vector>
+
+#include "minecraft/client/skins/AbstractTexturePack.h"
+#include "java/InputOutputStream/InputStream.h"
 
 DefaultTexturePack::DefaultTexturePack()
     : AbstractTexturePack(0, nullptr, L"Minecraft", nullptr) {

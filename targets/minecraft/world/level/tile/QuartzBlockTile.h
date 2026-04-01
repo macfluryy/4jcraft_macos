@@ -1,6 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "Tile.h"
+
+class Icon;
 
 class QuartzBlockTile : public Tile {
     friend class ChunkRebuildData;

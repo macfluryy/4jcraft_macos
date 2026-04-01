@@ -13,7 +13,6 @@
 #include "minecraft/world/level/levelgen/structure/ScatteredFeaturePieces.h"
 #include "minecraft/world/level/levelgen/structure/StrongholdFeature.h"
 #include "minecraft/world/level/levelgen/structure/StrongholdPieces.h"
-#include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
 #include "minecraft/world/level/levelgen/structure/VillageFeature.h"

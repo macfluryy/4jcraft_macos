@@ -1,7 +1,7 @@
 #include "PigModel.h"
 
-#include "minecraft/client/model/QuadrupedModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/model/QuadrupedModel.h"
 
 PigModel::PigModel() : QuadrupedModel(6, 0) {
     head->texOffs(16, 16)->addBox(-2.0f, 0.0f, -9.0f, 4, 3, 1, 0.0f);

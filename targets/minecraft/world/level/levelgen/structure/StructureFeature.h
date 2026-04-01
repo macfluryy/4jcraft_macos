@@ -1,8 +1,16 @@
 #pragma once
+#include <stdint.h>
+#include <format>
+#include <string>
+#include <unordered_map>
+
 #include "StructureFeatureSavedData.h"
 #include "minecraft/world/level/levelgen/LargeFeature.h"
 
 class StructureStart;
+class Level;
+class Random;
+class TilePos;
 
 // #define ENABLE_STRUCTURE_SAVING
 

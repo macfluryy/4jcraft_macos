@@ -8,6 +8,8 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "platform/IPlatformInput.h"
 
+struct STRING_VERIFY_RESPONSE;
+
 #define MAX_SIGN_LINES 4
 
 class SignTileEntity : public TileEntity {

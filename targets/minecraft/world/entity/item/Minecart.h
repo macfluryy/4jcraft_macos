@@ -1,10 +1,16 @@
 #pragma once
 #include <optional>
+#include <memory>
+#include <string>
 
 #include "minecraft/world/entity/Entity.h"
+#include "java/Class.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class DamageSource;
 class Tickable;
+class Level;
+class Tile;
 
 class Minecart : public Entity {
     friend class MinecartRenderer;

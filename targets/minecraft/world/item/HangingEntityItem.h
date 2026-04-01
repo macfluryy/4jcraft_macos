@@ -7,6 +7,7 @@
 #include "java/Class.h"
 
 class HangingEntity;
+class Level;
 
 class HangingEntityItem : public Item {
 private:

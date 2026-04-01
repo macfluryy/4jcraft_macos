@@ -9,10 +9,10 @@
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/InputConstraint.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 
 class Tutorial;
 

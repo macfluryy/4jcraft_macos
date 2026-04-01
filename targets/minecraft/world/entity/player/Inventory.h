@@ -1,10 +1,17 @@
 #pragma once
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "minecraft/world/Container.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "nbt/ListTag.h"
 
 class Player;
 class CompoundTag;
+class Item;
+class Tile;
+template <class T> class ListTag;
 
 class Inventory : public Container {
 public:

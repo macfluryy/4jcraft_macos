@@ -2,6 +2,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <format>
+#include <vector>
 #ifndef __linux__
 #include <qnet.h>
 #include <xrnm.h>

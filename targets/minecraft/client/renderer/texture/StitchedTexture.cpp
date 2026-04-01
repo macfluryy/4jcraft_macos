@@ -7,7 +7,6 @@
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "minecraft/SharedConstants.h"
-#include "minecraft/client/renderer/texture/StitchedTexture.h"
 #include "minecraft/client/renderer/texture/custom/ClockTexture.h"
 #include "minecraft/client/renderer/texture/custom/CompassTexture.h"
 

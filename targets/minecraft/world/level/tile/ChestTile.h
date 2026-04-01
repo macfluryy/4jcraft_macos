@@ -1,10 +1,13 @@
 #pragma once
+#include <memory>
+
 #include "BaseEntityTile.h"
 #include "minecraft/world/level/material/Material.h"
 
 class Player;
 class Random;
 class Container;
+class Level;
 
 class ChestTile : public BaseEntityTile {
     friend class Tile;

@@ -1,5 +1,6 @@
 #pragma once
 #include <format>
+#include <vector>
 
 #include "TutorialTask.h"
 #include "minecraft/world/item/crafting/Recipy.h"

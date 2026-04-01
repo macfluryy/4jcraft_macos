@@ -9,12 +9,11 @@
 
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Recipes.h"
-#include "Recipy.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/item/crafting/Recipy.h"
 
 // 4J-PB - for new crafting - Adding group to define type of item that the
 // recipe produces

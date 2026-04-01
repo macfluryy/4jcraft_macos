@@ -2,7 +2,6 @@
 
 #include <GL/gl.h>
 #include <string.h>
-
 #include <mutex>
 #include <unordered_map>
 #include <unordered_set>
@@ -13,11 +12,7 @@
 #include "LevelRenderer.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/FrameProfiler.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "TileRenderer.h"
-#include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/culling/Culler.h"
 #include "minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
 #include "minecraft/world/entity/Entity.h"
@@ -27,6 +22,8 @@
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/world/phys/AABB.h"
 
 int Chunk::updates = 0;
 

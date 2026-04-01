@@ -2,7 +2,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-
 #include <string>
 #include <vector>
 
@@ -17,18 +16,16 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
-#include "minecraft/client/gui/Screen.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/client/gui/Screen.h"
 
 CreateWorldScreen::CreateWorldScreen(Screen* lastScreen) {
     done = false;  // 4J added

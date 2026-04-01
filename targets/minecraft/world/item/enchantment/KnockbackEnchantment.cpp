@@ -1,6 +1,8 @@
 #include "KnockbackEnchantment.h"
 
 #include "strings.h"
+#include "minecraft/world/item/enchantment/Enchantment.h"
+#include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 
 KnockbackEnchantment::KnockbackEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::weapon) {

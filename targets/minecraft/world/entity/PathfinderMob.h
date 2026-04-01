@@ -5,6 +5,7 @@
 #include "Mob.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/Entity.h"
 
 class Level;
 class Path;

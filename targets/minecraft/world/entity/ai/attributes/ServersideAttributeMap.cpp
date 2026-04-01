@@ -6,6 +6,7 @@
 
 #include "AttributeInstance.h"
 #include "ModifiableAttributeInstance.h"
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
 
 AttributeInstance* ServersideAttributeMap::getInstance(Attribute* attribute) {

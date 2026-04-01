@@ -26,7 +26,6 @@
 #define END_DIMENSION_MAP_MAPPINGS_SAVE_VERSION 5
 
 #include <stdint.h>
-
 #include <string>
 #include <unordered_map>
 #include <vector>

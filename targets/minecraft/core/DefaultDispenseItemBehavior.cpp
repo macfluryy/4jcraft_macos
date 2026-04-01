@@ -8,6 +8,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 std::shared_ptr<ItemInstance> DefaultDispenseItemBehavior::dispense(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed) {

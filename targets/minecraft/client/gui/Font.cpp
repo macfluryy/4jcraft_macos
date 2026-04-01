@@ -1,7 +1,6 @@
 #include "Font.h"
 
 #include <string.h>
-
 #include <utility>
 #include <vector>
 
@@ -11,7 +10,6 @@
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Options.h"
-#include "minecraft/client/gui/Font.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"

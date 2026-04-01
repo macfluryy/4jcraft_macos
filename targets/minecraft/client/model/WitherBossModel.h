@@ -1,6 +1,10 @@
 #pragma once
+#include <vector>
+
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/model/geom/ModelPart.h"
+
+class ModelPart;
 
 class WitherBossModel : public Model {
 private:

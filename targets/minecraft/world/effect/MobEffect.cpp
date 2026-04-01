@@ -1,12 +1,33 @@
+#include <string.h>
+#include <wchar.h>
+#include <algorithm>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 #include "minecraft/SharedConstants.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/food/net.minecraft.world.food.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.effect.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "java/Class.h"
+#include "strings.h"
+#include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/effect/AbsoptionMobEffect.h"
+#include "minecraft/world/effect/AttackDamageMobEffect.h"
+#include "minecraft/world/effect/HealthBoostMobEffect.h"
+#include "minecraft/world/effect/InstantaneousMobEffect.h"
+#include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/effect/MobEffectInstance.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
+#include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
+#include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/food/FoodConstants.h"
+#include "minecraft/world/food/FoodData.h"
+#include "minecraft/world/level/Level.h"
+
+class Attribute;
 
 MobEffect* MobEffect::effects[NUM_EFFECTS];
 

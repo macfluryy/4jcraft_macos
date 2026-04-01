@@ -2,8 +2,8 @@
 
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 UIControl_SlotList::UIControl_SlotList() { m_lastHighlighted = -1; }
 

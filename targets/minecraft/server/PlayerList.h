@@ -5,6 +5,8 @@
 #include <mutex>
 #include <unordered_map>
 #include <vector>
+#include <format>
+#include <string>
 
 #include "4J.Common/4J_Compat.h"
 #include "nbt/CompoundTag.h"
@@ -26,6 +28,7 @@ class Entity;
 class Pos;
 class Player;
 class Level;
+class CompoundTag;
 
 class PlayerList {
 private:

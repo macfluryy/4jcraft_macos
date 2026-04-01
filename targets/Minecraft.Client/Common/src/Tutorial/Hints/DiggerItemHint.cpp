@@ -1,11 +1,14 @@
 
 #include "DiggerItemHint.h"
 
+#include <memory>
+
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
+#include "java/Class.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "strings.h"
 
 DiggerItemHint::DiggerItemHint(eTutorial_Hint id, Tutorial* tutorial,
                                int descriptionId, int items[],

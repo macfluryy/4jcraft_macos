@@ -1,5 +1,7 @@
 #include "ResultContainer.h"
 
+#include "minecraft/world/Container.h"
+
 ResultContainer::ResultContainer() : Container() {}
 
 unsigned int ResultContainer::getContainerSize() { return 1; }

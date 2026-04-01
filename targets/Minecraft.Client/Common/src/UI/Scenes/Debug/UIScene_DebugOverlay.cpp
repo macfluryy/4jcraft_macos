@@ -2,7 +2,6 @@
 #include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugOverlay.h"
 
 #include <wchar.h>
-
 #include <memory>
 
 #include "4J_Profile.h"
@@ -21,11 +20,16 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/level/storage/LevelData.h"
+#include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class Player;
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "UIScene_DebugOverlay.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"

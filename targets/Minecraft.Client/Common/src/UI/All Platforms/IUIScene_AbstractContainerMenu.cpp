@@ -1,20 +1,38 @@
 #include "IUIScene_AbstractContainerMenu.h"
 
+#include <assert.h>
 #include <cmath>
+#include <algorithm>
+#include <string>
+#include <vector>
 
 #include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "4J_Render.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/item/ArmorItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Rarity.h"
+#include "minecraft/world/item/crafting/ArmorRecipes.h"
+#include "minecraft/world/item/crafting/FurnaceRecipes.h"
+#include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
+#include "strings.h"
 
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = nullptr;

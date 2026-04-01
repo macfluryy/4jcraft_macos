@@ -1,7 +1,6 @@
 #include "McRegionLevelStorage.h"
 
 #include <stdint.h>
-
 #include <format>
 #include <vector>
 

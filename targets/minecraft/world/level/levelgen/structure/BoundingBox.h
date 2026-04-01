@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "nbt/IntArrayTag.h"
+
+class IntArrayTag;
 
 class BoundingBox {
 public:

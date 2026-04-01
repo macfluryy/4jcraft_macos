@@ -2,7 +2,6 @@
 
 #include <float.h>
 #include <stdint.h>
-
 #include <format>
 #include <list>
 #include <unordered_map>
@@ -16,7 +15,6 @@
 #include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
-#include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/storage/LevelData.h"
 

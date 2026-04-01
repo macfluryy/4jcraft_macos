@@ -1,9 +1,7 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 
 #include <stdio.h>
-
 #include <bit>
-#include <cstdint>
 #include <string>
 #include <vector>
 

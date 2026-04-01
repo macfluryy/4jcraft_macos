@@ -1,9 +1,7 @@
 #include "FallingTile.h"
 
 #include <stdint.h>
-
 #include <algorithm>
-#include <format>
 #include <memory>
 #include <string>
 #include <vector>
@@ -18,6 +16,7 @@
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/Tag.h"
+#include "minecraft/world/entity/Entity.h"
 
 // 4J - added for common ctor code
 void FallingTile::_init() {

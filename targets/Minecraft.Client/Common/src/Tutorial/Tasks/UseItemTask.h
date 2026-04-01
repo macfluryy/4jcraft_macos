@@ -2,6 +2,7 @@
 // using namespace std;
 
 #include <format>
+#include <vector>
 
 #include "TutorialTask.h"
 

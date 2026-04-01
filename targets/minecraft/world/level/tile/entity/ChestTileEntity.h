@@ -1,11 +1,17 @@
 #pragma once
 
+#include <format>
+#include <memory>
+#include <string>
+
 #include "TileEntity.h"
 #include "minecraft/world/Container.h"
 #include "nbt/ListTag.h"
+#include "java/Class.h"
 
 class Player;
 class CompoundTag;
+class ItemInstance;
 
 class ChestTileEntity : public TileEntity, public Container {
 public:

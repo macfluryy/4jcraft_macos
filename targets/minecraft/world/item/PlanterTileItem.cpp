@@ -7,11 +7,11 @@
 #include "minecraft/Facing.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TopSnowTile.h"
+#include "minecraft/world/item/Item.h"
 
 TilePlanterItem::TilePlanterItem(int id, Tile* tile) : Item(id) {
     this->tileId = tile->id;

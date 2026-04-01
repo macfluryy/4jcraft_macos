@@ -3,7 +3,6 @@
 #include <math.h>
 
 #include "minecraft/client/Options.h"
-#include "minecraft/client/gui/ScreenSizeCalculator.h"
 
 // who the fuck thought this was a good idea
 ScreenSizeCalculator::ScreenSizeCalculator(Options* options, int width,

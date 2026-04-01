@@ -8,6 +8,7 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/crafting/ArmorDyeRecipe.h"
 #include "minecraft/world/item/crafting/Recipes.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class Icon;
 class Player;

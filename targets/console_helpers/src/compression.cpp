@@ -1,13 +1,9 @@
 #include <assert.h>
 #include <string.h>
 #include <zconf.h>
-
 #include <cstdint>
 #include <mutex>
 
-// #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/compression.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"

@@ -1,10 +1,15 @@
 #pragma once
+#include <stdint.h>
+#include <memory>
+
 #include "minecraft/world/entity/AgeableMob.h"
 #include "minecraft/world/entity/Creature.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class Level;
 class CompoundTag;
 class DamageSource;
+class ItemInstance;
 
 class Animal : public AgableMob, public Creature {
 private:

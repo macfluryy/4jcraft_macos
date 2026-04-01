@@ -1,8 +1,12 @@
 #include "DigDurabilityEnchantment.h"
 
 #include "java/Random.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "strings.h"
+#include "minecraft/world/item/ArmorItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/enchantment/Enchantment.h"
+#include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 
 DigDurabilityEnchantment::DigDurabilityEnchantment(int id, int frequency)
     : Enchantment(id, frequency, EnchantmentCategory::digger) {

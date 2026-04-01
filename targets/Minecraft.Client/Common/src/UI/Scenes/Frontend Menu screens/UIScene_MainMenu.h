@@ -1,11 +1,20 @@
 #pragma once
 
+#include <stdint.h>
 #include <string>
 #include <vector>
 
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "java/Random.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class Random;
+class UILayer;
 
 class UIScene_MainMenu : public UIScene {
 private:

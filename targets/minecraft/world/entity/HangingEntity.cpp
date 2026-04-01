@@ -1,9 +1,7 @@
 #include "HangingEntity.h"
 
 #include <stdint.h>
-
 #include <algorithm>
-#include <format>
 #include <string>
 #include <vector>
 
@@ -17,6 +15,7 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/entity/Entity.h"
 
 void HangingEntity::_init(Level* level) {
     checkInterval = 0;

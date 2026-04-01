@@ -3,8 +3,6 @@
 #include <limits.h>
 
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/System.h"
 
 NetworkPlayerQNet::NetworkPlayerQNet(IQNetPlayer* qnetPlayer) {

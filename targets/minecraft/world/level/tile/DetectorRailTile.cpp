@@ -15,9 +15,9 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/redstone/Redstone.h"
+#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/level/tile/BaseRailTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/phys/AABB.h"
 
 class Icon;
 

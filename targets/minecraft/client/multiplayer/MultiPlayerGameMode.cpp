@@ -5,10 +5,8 @@
 #include "ClientConnection.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "MultiPlayerLevel.h"
-#include "MultiPlayerLocalPlayer.h"
 #include "java/Class.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/network/packet/ContainerButtonClickPacket.h"
 #include "minecraft/network/packet/ContainerClickPacket.h"
 #include "minecraft/network/packet/CraftItemPacket.h"
@@ -30,6 +28,8 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 MultiPlayerGameMode::MultiPlayerGameMode(Minecraft* minecraft,
                                          ClientConnection* connection) {

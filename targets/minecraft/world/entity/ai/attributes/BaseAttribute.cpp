@@ -1,5 +1,7 @@
 #include "BaseAttribute.h"
 
+#include "minecraft/world/entity/ai/attributes/Attribute.h"
+
 BaseAttribute::BaseAttribute(eATTRIBUTE_ID id, double defaultValue) {
     this->id = id;
     this->defaultValue = defaultValue;

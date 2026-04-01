@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Packet.h"
 
 class GameEventPacket : public Packet,

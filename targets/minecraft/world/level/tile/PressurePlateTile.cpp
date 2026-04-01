@@ -10,8 +10,8 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/redstone/Redstone.h"
-#include "minecraft/world/level/tile/BasePressurePlateTile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/tile/BasePressurePlateTile.h"
 
 class Material;
 

@@ -8,6 +8,7 @@
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/world/level/storage/LevelData.h"
+#include "minecraft/commands/CommandsEnum.h"
 
 EGameCommand ToggleDownfallCommand::getId() {
     return eGameCommand_ToggleDownfall;

@@ -1,13 +1,24 @@
 #include "BeaconTileEntity.h"
 
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "minecraft/stdafx.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include <format>
+#include <vector>
+
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "SharedConstants.h"
+#include "nbt/CompoundTag.h"
+#include "minecraft/network/packet/TileEntityDataPacket.h"
+#include "strings.h"
+#include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/effect/MobEffectInstance.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/phys/AABB.h"
+
+class Entity;
 
 std::shared_ptr<TileEntity> BeaconTileEntity::clone() {
     std::shared_ptr<BeaconTileEntity> result =

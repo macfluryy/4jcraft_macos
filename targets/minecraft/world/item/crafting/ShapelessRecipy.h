@@ -1,6 +1,7 @@
 #pragma once
 
 #include <format>
+#include <vector>
 
 #include "minecraft/world/item/crafting/Recipy.h"
 

@@ -1,7 +1,5 @@
 #include "TntRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 
 #include "4J.Render/4J_Render.h"
@@ -11,6 +9,7 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/item/PrimedTnt.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "gl3_loader.h"
 
 TntRenderer::TntRenderer() {
     renderer = new TileRenderer();

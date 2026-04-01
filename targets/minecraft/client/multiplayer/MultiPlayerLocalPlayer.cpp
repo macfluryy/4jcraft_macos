@@ -1,6 +1,7 @@
 #include "MultiPlayerLocalPlayer.h"
 
 #include <wchar.h>
+#include <cmath>
 
 #include "ClientConnection.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
@@ -23,7 +24,6 @@
 #include "minecraft/network/packet/TextureAndGeometryChangePacket.h"
 #include "minecraft/network/packet/TextureChangePacket.h"
 #include "minecraft/stats/Stat.h"
-#include "minecraft/util/Mth.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -32,8 +32,10 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class User;
+class ItemEntity;
 
 // 4J added for testing
 #if defined(STRESS_TEST_MOVE)

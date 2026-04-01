@@ -1,5 +1,6 @@
 #pragma once
 #include <format>
+#include <vector>
 
 // using namespace std;
 #include "TutorialTask.h"

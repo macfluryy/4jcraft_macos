@@ -1,8 +1,14 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "LivingEntity.h"
 #include "MobType.h"
 #include "minecraft/world/entity/ai/goal/GoalSelector.h"
+#include "java/Class.h"
+#include "minecraft/world/entity/Entity.h"
 
 class HitResult;
 class Level;
@@ -20,6 +26,8 @@ class Icon;
 class Pos;
 class MobGroupData;
 class Item;
+class ItemInstance;
+class Player;
 
 class Mob : public LivingEntity {
     friend class MobSpawner;

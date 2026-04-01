@@ -1,6 +1,10 @@
 #pragma once
 #include <cstdint>
 #include <mutex>
+#include <memory>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "ConsoleInputSource.h"
 #include "console_helpers/C4JThread.h"
@@ -22,6 +26,10 @@ class ProgressRenderer;
 class CommandDispatcher;
 class LevelGenerationOptions;
 class ServerLevel;
+class File;
+class Level;
+class Player;
+class Pos;
 
 #define MINECRAFT_SERVER_SLOW_QUEUE_DELAY 250
 

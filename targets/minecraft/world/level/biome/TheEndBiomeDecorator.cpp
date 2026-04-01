@@ -1,9 +1,17 @@
 #include "TheEndBiomeDecorator.h"
 
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/world/level/levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include <memory>
+
+#include "java/Random.h"
+#include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/biome/BiomeDecorator.h"
+#include "minecraft/world/level/levelgen/feature/EndPodiumFeature.h"
+#include "minecraft/world/level/levelgen/feature/Feature.h"
+#include "minecraft/world/level/levelgen/feature/SpikeFeature.h"
+#include "minecraft/world/level/tile/Tile.h"
+
+class Biome;
 
 // Spike centre positions, calculated using
 // for(int i=0;i<8;i++)

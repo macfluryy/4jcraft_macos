@@ -1,5 +1,9 @@
 #pragma once
+#include <string>
+
 #include "TileEntity.h"
+#include "java/Class.h"
+
 class Random;
 
 class EnchantmentTableEntity : public TileEntity {

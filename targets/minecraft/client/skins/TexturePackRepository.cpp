@@ -1,19 +1,21 @@
 #include "TexturePackRepository.h"
 
+#include <wchar.h>
+#include <algorithm>
+#include <utility>
+
 #include "4J_Input.h"
 #include "DLCTexturePack.h"
 #include "DefaultTexturePack.h"
-#include "FileTexturePack.h"
-#include "FolderTexturePack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/include/stdafx.h"
-#include "console_helpers/StringHelpers.h"
 #include "java/File.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Minimap.h"
-#include "strings.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/skins/TexturePack.h"
 
 TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = nullptr;
 
@@ -42,14 +44,6 @@ TexturePackRepository::TexturePackRepository(File workingDirectory,
 }
 
 void TexturePackRepository::addDebugPacks() {
-#if !defined(_CONTENT_PACKAGE)
-    // File *file = new File(L"DummyTexturePack"); // Path to the test texture
-    // pack m_dummyTexturePack = new
-    // FolderTexturePack(FOLDER_TEST_TEXTURE_PACK_ID, L"FolderTestPack", file,
-    // DEFAULT_TEXTURE_PACK); texturePacks->push_back(m_dummyTexturePack);
-    // cacheById[m_dummyTexturePack->getId()] = m_dummyTexturePack;
-
-#endif
 }
 
 void TexturePackRepository::createWorkingDirecoryUnlessExists() {
@@ -169,10 +163,6 @@ bool TexturePackRepository::selectTexturePackById(std::uint32_t id) {
     } else {
         app.DebugPrintf(
             "Failed to select texture pack %d as it is not in the list\n", id);
-#if !defined(_CONTENT_PACKAGE)
-        // TODO - 4J Stu: We should report this to the player in some way
-        //__debugbreak();
-#endif
         // Fail safely
         if (selectSkin(DEFAULT_TEXTURE_PACK)) {
             app.SetAction(InputManager.GetPrimaryPad(),

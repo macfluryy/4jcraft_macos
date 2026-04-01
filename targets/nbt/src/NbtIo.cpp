@@ -1,6 +1,17 @@
 #include "nbt/NbtIo.h"
 
-#include "java/InputOutputStream/InputOutputStream.h"
+#include "java/InputOutputStream/BufferedOutputStream.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "java/System.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/Tag.h"
+
+class DataInput;
+class DataOutput;
+class OutputStream;
 
 CompoundTag* NbtIo::readCompressed(InputStream* in) {
     // 4J - this was using a try/finally block

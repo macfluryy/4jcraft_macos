@@ -7,6 +7,7 @@
 #include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/levelgen/feature/OreFeature.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/biome/Biome.h"
 
 ExtremeHillsBiome::ExtremeHillsBiome(int id) : Biome(id) {
     silverfishFeature = new OreFeature(Tile::monsterStoneEgg_Id, 8);

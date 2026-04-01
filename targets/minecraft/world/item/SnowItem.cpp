@@ -4,11 +4,11 @@
 #include <optional>
 
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/item/AuxDataTileItem.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TopSnowTile.h"
+#include "minecraft/world/item/AuxDataTileItem.h"
 
 SnowItem::SnowItem(int id, Tile* parentTile)
     : AuxDataTileItem(id, parentTile) {}

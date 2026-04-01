@@ -1,8 +1,6 @@
 #include "GameRenderer.h"
 
-#include <GL/gl.h>
 #include <float.h>
-
 #include <algorithm>
 #include <cmath>
 #include <numbers>
@@ -10,7 +8,6 @@
 #include "4J.Common/4J_Compat.h"
 #include "4J.Render/4J_Render.h"
 #include "4J_Input.h"
-#include "4J_Profile.h"
 #include "BossMobGuiInfo.h"
 #include "Chunk.h"
 #include "ItemInHandRenderer.h"
@@ -22,12 +19,8 @@
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/include/FrameProfiler.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "Tesselator.h"
-#include "Textures.h"
 #include "console_helpers/compression.h"
 #include "java/Class.h"
 #include "java/FloatBuffer.h"
@@ -61,7 +54,6 @@
 #include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "minecraft/util/Mth.h"
 #include "minecraft/util/SmoothFloat.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
@@ -86,6 +78,9 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "gl3_loader.h"
+#include "minecraft/world/phys/Vec3.h"
 
 bool GameRenderer::anaglyph3d = false;
 int GameRenderer::anaglyphPass = 0;

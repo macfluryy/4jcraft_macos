@@ -1,17 +1,28 @@
 
 #include "UIScene_HUD.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <algorithm>
+#include <memory>
+
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/BossMobGuiInfo.h"
-#include "minecraft/client/renderer/entity/EnderDragonRenderer.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "4J_Profile.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
+#include "minecraft/world/inventory/InventoryMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "strings.h"
 
 UIScene_HUD::UIScene_HUD(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {

@@ -1,11 +1,21 @@
 #include "FireworksItem.h"
 
+#include <memory>
+#include <vector>
+
 #include "console_helpers/StringHelpers.h"
-#include "minecraft/stdafx.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.item.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "strings.h"
+#include "minecraft/util/HtmlString.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/projectile/FireworksRocketEntity.h"
+#include "minecraft/world/item/FireworksChargeItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
 
 const std::wstring FireworksItem::TAG_FIREWORKS = L"Fireworks";
 const std::wstring FireworksItem::TAG_EXPLOSION = L"Explosion";

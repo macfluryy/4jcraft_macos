@@ -3,7 +3,9 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/stdafx.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "strings.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 std::wstring DropperTileEntity::getName() {
     return hasCustomName() ? name : app.GetString(IDS_CONTAINER_DROPPER);

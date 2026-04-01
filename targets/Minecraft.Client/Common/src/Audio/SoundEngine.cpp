@@ -3,8 +3,6 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
-#include <unistd.h>
 
 #include <cmath>
 #include <cstdlib>
@@ -14,7 +12,9 @@
 #include <vector>
 
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
+#include "Common/App_Defines.h"
+#include "Minecraft.Client/Common/src/Audio/Consoles_SoundEngine.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/C4JThread.h"
 #include "console_helpers/PathHelper.h"
@@ -49,6 +49,7 @@ int strcasecmp(const char* a, const char* b) {
 
 #undef STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
+
 // stb_vorbis leaks single-letter macros (C, L, R, etc.) that collide with
 // identifiers in other translation units during unity builds.
 #undef C
@@ -355,8 +356,9 @@ int SoundEngine::getMusicID(const std::wstring& name) {
     return iCD + m_iStream_CD_1;
 }
 
-void SoundEngine::playStreaming(const wstring& name, float x, float y, float z,
-                                float volume, float pitch, bool bMusicDelay) {
+void SoundEngine::playStreaming(const std::wstring& name, float x, float y,
+                                float z, float volume, float pitch,
+                                bool bMusicDelay) {
     m_StreamingAudioInfo.x = x;
     m_StreamingAudioInfo.y = y;
     m_StreamingAudioInfo.z = z;
@@ -745,7 +747,7 @@ void SoundEngine::updateMiniAudio() {
     }
 }
 
-void SoundEngine::tick(shared_ptr<Mob>* players, float a) {
+void SoundEngine::tick(std::shared_ptr<Mob>* players, float a) {
     // update the listener positions
     int listenerCount = 0;
     if (players) {

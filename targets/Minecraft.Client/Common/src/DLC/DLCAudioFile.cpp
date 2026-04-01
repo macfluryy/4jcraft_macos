@@ -8,11 +8,9 @@
 #include "4J.Render/4J_Render.h"
 #include "4J_Storage.h"
 #include "DLCManager.h"
-#include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
 #include "Minecraft.Client/include/XboxStubs.h"
+#include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #if defined(_WINDOWS64)
 #include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
 #include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"

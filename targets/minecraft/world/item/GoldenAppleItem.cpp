@@ -1,9 +1,16 @@
 #include "GoldenAppleItem.h"
 
+#include <memory>
+
 #include "minecraft/SharedConstants.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "strings.h"
+#include "minecraft/world/effect/MobEffect.h"
+#include "minecraft/world/effect/MobEffectInstance.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/item/FoodItem.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Rarity.h"
+#include "minecraft/world/level/Level.h"
 
 GoldenAppleItem::GoldenAppleItem(int id, int nutrition, float saturationMod,
                                  bool isMeat)

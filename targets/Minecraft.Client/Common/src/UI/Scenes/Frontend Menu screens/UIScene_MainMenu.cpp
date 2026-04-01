@@ -1,7 +1,10 @@
 
 #include "UIScene_MainMenu.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
+#include <cmath>
+#include <format>
+#include <numbers>
+
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
@@ -9,7 +12,31 @@
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/ScreenSizeCalculator.h"
 #include "minecraft/server/MinecraftServer.h"
-#include "minecraft/util/Mth.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "4J_Render.h"
+#include "Common/App_Defines.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/UILayer.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/UIString.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "gl3_loader.h"
+#include "java/InputOutputStream/BufferedReader.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/InputStreamReader.h"
+#include "java/System.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "strings.h"
+
+class LevelGenerationOptions;
 
 Random* UIScene_MainMenu::random = new Random();
 

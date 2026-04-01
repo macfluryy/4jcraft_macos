@@ -7,13 +7,13 @@
 #include "GeneralStat.h"
 #include "ItemStat.h"
 #include "console_helpers/StringHelpers.h"
-#include "minecraft/stats/Stat.h"
 #include "minecraft/stats/StatsCounter.h"
 #include "minecraft/world/item/FishingRodItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/level/tile/GrassTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/stats/Stat.h"
 
 class StatFormatter;
 

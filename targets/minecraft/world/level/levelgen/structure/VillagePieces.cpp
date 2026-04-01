@@ -1,7 +1,6 @@
 #include "VillagePieces.h"
 
 #include <stdlib.h>
-
 #include <memory>
 #include <string>
 
@@ -17,11 +16,12 @@
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/SandStoneTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 std::vector<WeighedTreasure*> VillagePieces::Smithy::treasureItems;
 

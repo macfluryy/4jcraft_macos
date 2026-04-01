@@ -1,7 +1,6 @@
 #include "WitherSkull.h"
 
 #include <stdint.h>
-
 #include <algorithm>
 
 #include "minecraft/SharedConstants.h"
@@ -12,11 +11,11 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
-#include "minecraft/world/entity/projectile/Fireball.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "minecraft/world/entity/projectile/Fireball.h"
 
 WitherSkull::WitherSkull(Level* level) : Fireball(level) {
     defineSynchedData();

@@ -1,7 +1,6 @@
 #include "Zombie.h"
 
 #include <math.h>
-
 #include <algorithm>
 #include <memory>
 #include <string>
@@ -37,7 +36,6 @@
 #include "minecraft/world/entity/ai/goal/target/HurtByTargetGoal.h"
 #include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
-#include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/npc/Villager.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -50,6 +48,9 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
+#include "SharedConstants.h"
+#include "minecraft/world/entity/MobType.h"
+#include "minecraft/world/entity/monster/Monster.h"
 
 Attribute* Zombie::SPAWN_REINFORCEMENTS_CHANCE =
     (new RangedAttribute(eAttributeId_ZOMBIE_SPAWNREINFORCEMENTS, 0, 0, 1));

@@ -7,7 +7,6 @@
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/food/FoodData.h"
 #include "minecraft/world/item/FoodItem.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"

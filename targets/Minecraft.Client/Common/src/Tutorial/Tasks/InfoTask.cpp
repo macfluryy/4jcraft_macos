@@ -7,12 +7,12 @@
 
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/InputConstraint.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/level/material/Material.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 
 InfoTask::InfoTask(Tutorial* tutorial, int descriptionId, int promptId /*= -1*/,
                    bool requiresUserInput /*= false*/, int iMapping /*= 0*/)

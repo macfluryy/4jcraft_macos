@@ -9,11 +9,11 @@
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/item/Item.h"
 
 class Icon;
 

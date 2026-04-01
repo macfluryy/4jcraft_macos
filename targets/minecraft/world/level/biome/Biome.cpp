@@ -1,7 +1,6 @@
 #include "minecraft/world/level/biome/Biome.h"
 
 #include <stdint.h>
-
 #include <format>
 #include <string>
 #include <vector>
@@ -13,7 +12,6 @@
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/world/entity/MobCategory.h"
 #include "minecraft/world/level/biome/BeachBiome.h"
-#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeDecorator.h"
 #include "minecraft/world/level/biome/DesertBiome.h"
 #include "minecraft/world/level/biome/ExtremeHillsBiome.h"

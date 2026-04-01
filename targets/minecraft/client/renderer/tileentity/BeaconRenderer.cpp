@@ -1,7 +1,5 @@
 #include "BeaconRenderer.h"
 
-#include <GL/gl.h>
-
 #include <cmath>
 #include <memory>
 #include <numbers>
@@ -13,6 +11,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "gl3_loader.h"
 
 ResourceLocation BeaconRenderer::BEAM_LOCATION =
     ResourceLocation(TN_MISC_BEACON_BEAM);

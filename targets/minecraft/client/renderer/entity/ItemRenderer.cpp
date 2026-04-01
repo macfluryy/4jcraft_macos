@@ -1,16 +1,10 @@
 #include "ItemRenderer.h"
 
-#include <GL/gl.h>
-#include <GL/glext.h>
 #include <math.h>
-
 #include <vector>
 
 #include "4J.Render/4J_Render.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
@@ -23,8 +17,6 @@
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/EntityRenderer.h"
-#include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
@@ -33,6 +25,8 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
+#include "gl3_loader.h"
 
 class ResourceLocation;
 

@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <math.h>
-
 #include <list>
 #include <numbers>
 #include <utility>
@@ -23,6 +22,7 @@
 #include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/levelgen/LargeFeature.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
 

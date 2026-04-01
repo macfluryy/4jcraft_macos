@@ -3,7 +3,6 @@
 #include <stdint.h>
 #include <string.h>
 #include <wchar.h>
-
 #include <string>
 #include <vector>
 
@@ -15,8 +14,6 @@
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
-#include "minecraft/world/item/ComplexItem.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
@@ -26,6 +23,8 @@
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/item/ComplexItem.h"
+#include "minecraft/world/item/Item.h"
 
 class SavedData;
 

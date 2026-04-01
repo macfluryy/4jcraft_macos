@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/item/TileItem.h"
 
 ColoredTileItem::ColoredTileItem(int id, bool stackedByData) : TileItem(id) {
     this->colorTile = Tile::tiles[getTileId()];

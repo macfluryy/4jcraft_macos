@@ -5,9 +5,9 @@
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
 
 MobSpawnerTile::MobSpawnerTile(int id)
     : BaseEntityTile(id, Material::stone, false) {}

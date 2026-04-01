@@ -1,12 +1,28 @@
 
 #include "UIScene_EndPoem.h"
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/Common/src/UI/UIBitmapFont.h"
+#include <string.h>
+#include <wchar.h>
+#include <memory>
+
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Profile.h"
+#include "Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "java/Random.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "strings.h"
+
+class UILayer;
 
 UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {

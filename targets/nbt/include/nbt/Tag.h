@@ -1,7 +1,12 @@
 #pragma once
+#include <stdint.h>
 #include <ostream>
+#include <string>
 
 #include "java/InputOutputStream/InputOutputStream.h"
+
+class DataInput;
+class DataOutput;
 
 class Tag {
 public:

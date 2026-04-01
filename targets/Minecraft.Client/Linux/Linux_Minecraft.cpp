@@ -1,15 +1,14 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
-#include <assert.h>
 
-#include <mutex>
 
-#include "Minecraft.Client/include/stdafx.h"
 // #include <system_service.h>
+#include <csignal>
+
 #if defined(__linux__) && defined(__GLIBC__)
 #include <execinfo.h>
-#include <signal.h>
 #include <unistd.h>
+
 static void sigsegv_handler(int sig) {
     const char msg[] = "\n=== SIGNAL CAUGHT: ";
     write(STDERR_FILENO, msg, sizeof(msg) - 1);
@@ -38,24 +37,15 @@ static void sigsegv_handler(int sig) {
     _exit(139);
 }
 #endif
-#include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "console_helpers/StringHelpers.h"
-#include "console_helpers/ThreadName.h"
-#include "minecraft/client/User.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/multiplayer/ConnectScreen.h"
-#include "minecraft/client/player/LocalPlayer.h"
-#include "minecraft/locale/Language.h"
-#include "minecraft/server/MinecraftServer.h"
+#include <features.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <string>
+#include <vector>
+
 #include "minecraft/stats/StatsCounter.h"
-#include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/item/MapItem.h"
-#include "minecraft/world/item/crafting/Recipes.h"
-#include "minecraft/world/item/crafting/Recipy.h"
 #include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/phys/Vec3.h"
 // #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"
@@ -65,10 +55,18 @@ static void sigsegv_handler(int sig) {
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "console_helpers/compression.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/Options.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J_Render.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "strings.h"
 
 // #include "../Orbis/Leaderboards/OrbisLeaderboardManager.h"
 

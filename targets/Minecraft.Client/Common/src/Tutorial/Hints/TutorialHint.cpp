@@ -1,6 +1,5 @@
 #include "TutorialHint.h"
 
-#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/client/Minecraft.h"

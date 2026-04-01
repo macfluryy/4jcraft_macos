@@ -2,9 +2,10 @@
 
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "minecraft/world/item/Item.h"
+#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
 LookAtTileHint::LookAtTileHint(eTutorial_Hint id, Tutorial* tutorial,
                                int tiles[], unsigned int tilesLength,

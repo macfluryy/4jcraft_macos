@@ -1,7 +1,6 @@
 #include "PlayerChunkMap.h"
 
 #include <assert.h>
-
 #include <algorithm>
 #include <compare>
 #include <format>
@@ -27,6 +26,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "minecraft/world/level/ChunkPos.h"
 
 PlayerChunkMap::PlayerChunk::PlayerChunk(int x, int z, PlayerChunkMap* pcm)
     : pos(x, z) {

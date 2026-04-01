@@ -1,6 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include "DispenserTileEntity.h"
+#include "java/Class.h"
+
+class TileEntity;
 
 class DropperTileEntity : public DispenserTileEntity {
 public:

@@ -1,13 +1,10 @@
 #include "ItemSpriteRenderer.h"
 
-#include <GL/gl.h>
-
 #include <memory>
 
 #include "4J.Render/4J_Render.h"
 #include "EntityRenderDispatcher.h"
 #include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/client/renderer/entity/EntityRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/entity/Entity.h"
@@ -15,6 +12,8 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/PotionItem.h"
 #include "minecraft/world/item/alchemy/PotionBrewing.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
+#include "gl3_loader.h"
 
 ItemSpriteRenderer::ItemSpriteRenderer(Item* sourceItem,
                                        int sourceItemAuxValue /*= 0*/)

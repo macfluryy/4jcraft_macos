@@ -3,6 +3,8 @@
 #include <cmath>
 #include <limits>
 
+#include "java/Random.h"
+
 Random Math::rand = Random();
 
 // Returns a double value with a positive sign, greater than or equal to 0.0 and

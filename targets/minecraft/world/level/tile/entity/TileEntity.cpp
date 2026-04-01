@@ -24,7 +24,6 @@
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
 #include "minecraft/world/level/tile/entity/TheEndPortalTileEntity.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "nbt/CompoundTag.h"
 
 TileEntity::idToCreateMapType TileEntity::idCreateMap =

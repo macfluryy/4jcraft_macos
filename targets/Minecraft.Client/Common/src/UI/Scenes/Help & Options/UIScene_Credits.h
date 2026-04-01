@@ -1,6 +1,14 @@
 #pragma once
 
+#include <string>
+
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 #define PS3_CREDITS_COUNT 80
 #define PSVITA_CREDITS_COUNT 82

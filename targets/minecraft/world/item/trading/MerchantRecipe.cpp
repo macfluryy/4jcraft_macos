@@ -3,6 +3,7 @@
 #include <string>
 
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class Item;
 class Tile;

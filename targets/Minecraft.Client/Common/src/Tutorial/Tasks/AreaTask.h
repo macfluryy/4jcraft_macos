@@ -2,6 +2,7 @@
 // using namespace std;
 
 #include <format>
+#include <vector>
 
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "TutorialTask.h"

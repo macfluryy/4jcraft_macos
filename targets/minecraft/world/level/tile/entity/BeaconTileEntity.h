@@ -1,10 +1,16 @@
 #pragma once
 
+#include <stdint.h>
+#include <memory>
+#include <string>
+
 #include "TileEntity.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/Container.h"
+#include "java/Class.h"
 
 class MobEffect;
+class ItemInstance;
 
 class BeaconTileEntity : public TileEntity, public Container {
 public:

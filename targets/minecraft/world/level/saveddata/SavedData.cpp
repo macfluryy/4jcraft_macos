@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "minecraft/world/level/saveddata/SavedData.h"
-
 SavedData::SavedData(const std::wstring& id) : id(id) { dirty = false; }
 
 void SavedData::setDirty() { setDirty(true); }

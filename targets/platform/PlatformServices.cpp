@@ -5,6 +5,11 @@
 #include "../4J.Render/4J_Render.h"
 #include "../4J.Storage/4J_Storage.h"
 
+class IPlatformInput;
+class IPlatformProfile;
+class IPlatformRender;
+class IPlatformStorage;
+
 IPlatformInput& PlatformInput = InputManager;
 IPlatformProfile& PlatformProfile = ProfileManager;
 IPlatformRender& PlatformRender = RenderManager;

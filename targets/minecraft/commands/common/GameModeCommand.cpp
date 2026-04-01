@@ -1,5 +1,7 @@
 #include "GameModeCommand.h"
 
+#include "minecraft/commands/CommandsEnum.h"
+
 class CommandSender;
 
 EGameCommand GameModeCommand::getId() { return eGameCommand_GameMode; }

@@ -6,8 +6,8 @@
 #include "java/Class.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/Item.h"
 
 NameTagItem::NameTagItem(int id) : Item(id) {}
 

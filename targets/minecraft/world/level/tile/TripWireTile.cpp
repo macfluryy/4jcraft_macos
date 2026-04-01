@@ -12,9 +12,9 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TripWireSourceTile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 TripWireTile::TripWireTile(int id) : Tile(id, Material::decoration, false) {
     setShape(0, 0, 0, 1, 2.5f / 16.0f, 1);

@@ -4,13 +4,10 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
+#include "Common/App_enums.h"
 
 std::unordered_map<std::wstring, eMinecraftColour>
     ColourTable::s_colourNamesMap;

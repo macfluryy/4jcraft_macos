@@ -3,6 +3,7 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "minecraft/util/WeighedRandom.h"
 #include "minecraft/world/entity/Entity.h"

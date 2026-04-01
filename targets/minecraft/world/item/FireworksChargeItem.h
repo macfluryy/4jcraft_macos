@@ -2,10 +2,17 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 #include "Item.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/Tag.h"
+
+class CompoundTag;
+class HtmlString;
+class Icon;
+class ItemInstance;
+class Tag;
 
 class FireworksChargeItem : public Item {
 private:

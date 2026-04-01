@@ -1,7 +1,10 @@
 #pragma once
+#include <string>
+
 #include "Tile.h"
 
 class ChunkRebuildData;
+class Icon;
 
 class WoodTile : public Tile {
     friend class ChunkRebuildData;

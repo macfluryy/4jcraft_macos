@@ -2,6 +2,7 @@
 #include <format>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "minecraft/client/gui/Screen.h"
 

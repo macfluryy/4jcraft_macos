@@ -1,7 +1,6 @@
 #include "DaylightDetectorTile.h"
 
 #include <math.h>
-
 #include <numbers>
 #include <string>
 
@@ -14,8 +13,8 @@
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/redstone/Redstone.h"
-#include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/entity/DaylightDetectorTileEntity.h"
+#include "minecraft/world/level/tile/BaseEntityTile.h"
 
 DaylightDetectorTile::DaylightDetectorTile(int id)
     : BaseEntityTile(id, Material::wood, false) {

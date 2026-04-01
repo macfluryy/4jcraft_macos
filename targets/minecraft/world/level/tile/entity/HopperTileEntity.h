@@ -1,9 +1,17 @@
 #pragma once
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "Hopper.h"
 #include "TileEntity.h"
+#include "java/Class.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class ItemEntity;
+class Level;
 
 class HopperTileEntity : public TileEntity, public Hopper {
 public:

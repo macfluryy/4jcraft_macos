@@ -2,6 +2,8 @@
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
+class ModelPart;
+
 class DragonModel : public Model {
 public:
     static const int MODEL_ID = 4;

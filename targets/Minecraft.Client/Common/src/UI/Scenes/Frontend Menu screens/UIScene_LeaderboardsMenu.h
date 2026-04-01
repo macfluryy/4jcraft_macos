@@ -1,9 +1,20 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardInterface.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_LeaderboardList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "4J.Common/4J_Compat.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 class UIScene_LeaderboardsMenu : public UIScene,
                                  public LeaderboardReadListener {

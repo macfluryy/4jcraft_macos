@@ -1,7 +1,6 @@
 #include "ArmorItem.h"
 
 #include <stdio.h>
-
 #include <format>
 #include <vector>
 
@@ -17,12 +16,12 @@
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
-#include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/world/item/Item.h"
 
 class Entity;
 class Icon;

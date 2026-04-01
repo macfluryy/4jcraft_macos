@@ -1,7 +1,6 @@
 #include "SavedDataStorage.h"
 
 #include <assert.h>
-
 #include <algorithm>
 #include <utility>
 
@@ -21,6 +20,7 @@
 #include "nbt/NbtIo.h"
 #include "nbt/ShortTag.h"
 #include "nbt/Tag.h"
+#include "minecraft/world/level/saveddata/SavedData.h"
 
 SavedDataStorage::SavedDataStorage(LevelStorage* levelStorage) {
     /*

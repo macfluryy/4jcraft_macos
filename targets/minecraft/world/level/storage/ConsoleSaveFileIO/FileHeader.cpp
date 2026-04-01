@@ -4,12 +4,9 @@
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 #include <assert.h>
-#include <string.h>
 #include <wchar.h>
-
 #include <algorithm>
 #include <compare>
-#include <format>
 #include <string>
 #include <vector>
 
@@ -17,7 +14,6 @@
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "console_helpers/Definitions.h"
 #include "java/System.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 extern CConsoleMinecraftApp app;
 

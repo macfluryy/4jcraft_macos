@@ -1,7 +1,6 @@
 #include "PlayerRenderer.h"
 
 #include <cmath>
-#include <format>
 #include <numbers>
 #include <vector>
 
@@ -21,7 +20,6 @@
 #include "minecraft/client/renderer/ItemInHandRenderer.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/EntityRenderer.h"
 #include "minecraft/client/renderer/tileentity/SkullTileRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
@@ -35,6 +33,7 @@
 #include "minecraft/world/item/UseAnim.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
 
 const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
     {

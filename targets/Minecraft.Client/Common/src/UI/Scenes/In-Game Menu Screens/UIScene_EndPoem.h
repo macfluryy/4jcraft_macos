@@ -1,6 +1,14 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UILayer;
 
 class UIScene_EndPoem : public UIScene {
 private:

@@ -1,6 +1,5 @@
 #include "PlayGoal.h"
 
-#include <format>
 #include <limits>
 #include <optional>
 #include <vector>

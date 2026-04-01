@@ -1,7 +1,6 @@
 #include "Dimension.h"
 
 #include <math.h>
-
 #include <numbers>
 
 #include "HellDimension.h"
@@ -25,6 +24,8 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class Pos;
 

@@ -16,6 +16,7 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "platform/PlatformServices.h"
+#include "IPlatformInput.h"
 
 void HellDimension::init() {
     biomeSource = new FixedBiomeSource(Biome::hell, 1, 0);

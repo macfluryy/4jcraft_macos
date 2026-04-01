@@ -1,7 +1,5 @@
 #include "EnchantTableRenderer.h"
 
-#include <GL/gl.h>
-
 #include <cmath>
 #include <memory>
 #include <numbers>
@@ -13,6 +11,7 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "gl3_loader.h"
 
 ResourceLocation EnchantTableRenderer::BOOK_LOCATION =
     ResourceLocation(TN_ITEM_BOOK);

@@ -1,12 +1,18 @@
 #pragma once
 
+#include <string>
+
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_TradingMenu.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 class InventoryMenu;
+class UILayer;
 
 class UIScene_TradingMenu : public UIScene, public IUIScene_TradingMenu {
 private:

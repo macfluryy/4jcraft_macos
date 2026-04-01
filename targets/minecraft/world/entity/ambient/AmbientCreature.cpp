@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "minecraft/world/entity/Mob.h"
+
 class Level;
 
 AmbientCreature::AmbientCreature(Level* level) : Mob(level) {}

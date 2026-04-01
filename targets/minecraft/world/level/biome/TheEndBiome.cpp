@@ -1,12 +1,12 @@
 #include "TheEndBiome.h"
 
 #include <stdint.h>
-
 #include <vector>
 
 #include "TheEndBiomeDecorator.h"
 #include "java/Class.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/biome/Biome.h"
 
 TheEndBiome::TheEndBiome(int id) : Biome(id) {
     enemies.clear();

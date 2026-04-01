@@ -3,6 +3,8 @@
 #include <vector>
 
 #include "AbstractContainerMenu.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 CraftingContainer::~CraftingContainer() {}
 

@@ -7,6 +7,7 @@
 #include "minecraft/world/level/biome/BiomeDecorator.h"
 #include "minecraft/world/level/levelgen/feature/PineFeature.h"
 #include "minecraft/world/level/levelgen/feature/SpruceFeature.h"
+#include "minecraft/world/level/biome/Biome.h"
 
 TaigaBiome::TaigaBiome(int id) : Biome(id) {
     friendlies_wolf.push_back(new MobSpawnerData(

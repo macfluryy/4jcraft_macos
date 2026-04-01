@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "4J_Input.h"
-#include "4J_Profile.h"
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"

@@ -1,6 +1,7 @@
 #pragma once
 #include <format>
 #include <unordered_map>
+#include <vector>
 
 #include "java/JavaIntHash.h"
 #include "minecraft/world/level/pathfinder/BinaryHeap.h"

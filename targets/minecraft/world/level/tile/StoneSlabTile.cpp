@@ -1,10 +1,16 @@
 #include "StoneSlabTile.h"
 
-#include "minecraft/net.minecraft.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "net.minecraft.world.level.tile.h"
+#include <memory>
+#include <string>
+
 #include "strings.h"
+#include "Facing.h"
+#include "minecraft/world/IconRegister.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/HalfSlabTile.h"
+#include "minecraft/world/level/tile/SmoothStoneBrickTile.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 const unsigned int StoneSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {
     IDS_TILE_STONESLAB_STONE,       IDS_TILE_STONESLAB_SAND,

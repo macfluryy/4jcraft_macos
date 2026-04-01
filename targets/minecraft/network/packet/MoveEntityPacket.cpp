@@ -6,6 +6,7 @@
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/network/packet/Packet.h"
 
 MoveEntityPacket::MoveEntityPacket() {
     hasRot = false;

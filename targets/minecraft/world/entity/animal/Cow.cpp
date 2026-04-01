@@ -16,7 +16,6 @@
 #include "minecraft/world/entity/ai/goal/RandomStrollGoal.h"
 #include "minecraft/world/entity/ai/goal/TemptGoal.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
-#include "minecraft/world/entity/animal/Animal.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -24,6 +23,7 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/entity/animal/Animal.h"
 
 Cow::Cow(Level* level) : Animal(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

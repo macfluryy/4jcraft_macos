@@ -1,10 +1,20 @@
 #pragma once
+#include <memory>
+#include <ranges>
+#include <string>
+#include <utility>
+#include <vector>
+
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
 #include "minecraft/world/item/Rarity.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "minecraft/world/item/trading/Merchant.h"
 
 class MerchantRecipe;
+class HtmlString;
+class ItemInstance;
 
 class IUIScene_TradingMenu {
 protected:

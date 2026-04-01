@@ -4,8 +4,8 @@
 
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/entity/SpiderRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/client/renderer/entity/SpiderRenderer.h"
 
 ResourceLocation CaveSpiderRenderer::CAVE_SPIDER_LOCATION =
     ResourceLocation(TN_MOB_CAVE_SPIDER);

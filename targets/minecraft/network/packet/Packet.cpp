@@ -3,8 +3,6 @@
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
-
-#include <format>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -62,7 +60,6 @@
 #include "minecraft/network/packet/MoveEntityPacket.h"
 #include "minecraft/network/packet/MoveEntityPacketSmall.h"
 #include "minecraft/network/packet/MovePlayerPacket.h"
-#include "minecraft/network/packet/Packet.h"
 #include "minecraft/network/packet/PlayerAbilitiesPacket.h"
 #include "minecraft/network/packet/PlayerActionPacket.h"
 #include "minecraft/network/packet/PlayerCommandPacket.h"

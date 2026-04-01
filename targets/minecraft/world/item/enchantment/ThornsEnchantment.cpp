@@ -1,10 +1,17 @@
 #include "ThornsEnchantment.h"
 
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "net.minecraft.world.item.enchantment.h"
 #include "strings.h"
+#include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/item/ArmorItem.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/item/enchantment/Enchantment.h"
+#include "minecraft/world/item/enchantment/EnchantmentCategory.h"
+#include "minecraft/world/item/enchantment/EnchantmentHelper.h"
 
 const float ThornsEnchantment::CHANCE_PER_LEVEl = 0.15f;
 
