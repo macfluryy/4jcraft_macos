@@ -3,7 +3,7 @@
 
 #include "UpdatePlayerRuleDefinition.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/UpdatePlayerRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"

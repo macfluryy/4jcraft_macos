@@ -12,7 +12,7 @@
 #include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "net/minecraft/world/entity/item/ItemEntity.h"
 #include "net/minecraft/world/entity/Mob.h"
-#include "ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "nbt/CompoundTag.h"

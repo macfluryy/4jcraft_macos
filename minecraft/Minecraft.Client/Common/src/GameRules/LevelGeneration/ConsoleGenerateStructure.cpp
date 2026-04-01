@@ -2,7 +2,7 @@
 #include <algorithm>
 
 #include "ConsoleGenerateStructure.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructure.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionGenerateBox.h"

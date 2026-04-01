@@ -3,7 +3,7 @@
 #include <string>
 
 #include "LevelStorage.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 
 class MockedLevelStorage : public LevelStorage {
 public:

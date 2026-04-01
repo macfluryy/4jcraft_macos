@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "AddItemRuleDefinition.h"
 #include "AddEnchantmentRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"

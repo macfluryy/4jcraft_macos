@@ -6,7 +6,7 @@
 #include "CreateWorldScreen.h"
 #include "EditBox.h"
 #include "Button.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"

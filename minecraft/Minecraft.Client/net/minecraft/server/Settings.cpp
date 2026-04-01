@@ -1,5 +1,5 @@
 #include "Settings.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 // 4J - TODO - serialise/deserialise from file
 Settings::Settings(File* file) {}

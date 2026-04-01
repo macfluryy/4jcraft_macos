@@ -3,10 +3,10 @@
 #include <utility>
 
 #include "SavedDataStorage.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

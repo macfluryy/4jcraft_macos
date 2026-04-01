@@ -5,7 +5,7 @@
 #include "net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "FireworksItem.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 const std::wstring FireworksItem::TAG_FIREWORKS = L"Fireworks";
 const std::wstring FireworksItem::TAG_EXPLOSION = L"Explosion";

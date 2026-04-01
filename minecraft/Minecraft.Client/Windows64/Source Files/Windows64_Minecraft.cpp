@@ -12,7 +12,7 @@
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipes.h"
 #include "Minecraft.World/net/minecraft/world/item/crafting/Recipy.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
@@ -21,7 +21,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "Minecraft.World/ConsoleHelpers/ThreadName.h"
+#include "console_helpers/ThreadName.h"
 #include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ConnectScreen.h"
 // #include "Social/SocialManager.h"
@@ -33,7 +33,7 @@
 #include "Sentient/SentientManager.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "../Resource.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 
 HINSTANCE hMyInst;

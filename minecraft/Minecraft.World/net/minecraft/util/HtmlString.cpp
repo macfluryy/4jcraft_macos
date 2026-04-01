@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "HtmlString.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 
 HtmlString::HtmlString(std::wstring text, eMinecraftColour hexColor,

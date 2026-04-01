@@ -4,7 +4,7 @@
 
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "AbstractTexturePack.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

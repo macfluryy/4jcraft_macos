@@ -5,7 +5,7 @@
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"
 #include "Minecraft.World/net/minecraft/world/item/net.minecraft.world.item.h"
 #include "Minecraft.World/net/minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "AnvilMenu.h"
 
 AnvilMenu::AnvilMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,

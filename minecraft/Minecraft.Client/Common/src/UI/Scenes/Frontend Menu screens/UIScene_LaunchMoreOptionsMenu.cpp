@@ -1,7 +1,7 @@
 #include "Minecraft.Client/include/stdafx.h"
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "UIScene_LaunchMoreOptionsMenu.h"
 #include "4J_Input.h"
 

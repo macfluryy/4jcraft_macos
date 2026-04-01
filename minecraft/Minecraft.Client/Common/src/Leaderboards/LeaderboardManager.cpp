@@ -1,4 +1,4 @@
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "LeaderboardManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/NetTypes.h"

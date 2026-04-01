@@ -1,5 +1,5 @@
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
-#include "Minecraft.World/ConsoleHelpers/PathHelper.h"
+#include "console_helpers/StringHelpers.h"
+#include "console_helpers/PathHelper.h"
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"

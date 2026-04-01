@@ -30,8 +30,8 @@
 #endif
 
 #include "Minecraft.Client/Common/ShutdownManager.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 
 thread_local C4JThread* C4JThread::ms_currentThread = nullptr;
 

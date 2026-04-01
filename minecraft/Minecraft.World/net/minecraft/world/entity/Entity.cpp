@@ -19,7 +19,7 @@
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"

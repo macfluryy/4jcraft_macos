@@ -2,7 +2,7 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIComponent_PressStartToPlay.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 UIComponent_PressStartToPlay::UIComponent_PressStartToPlay(int iPad,
                                                            void* initData,

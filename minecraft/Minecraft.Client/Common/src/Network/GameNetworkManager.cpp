@@ -5,11 +5,11 @@
 #include <fstream>
 #include <filesystem>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 #include "Socket.h"
-#include "Minecraft.World/ConsoleHelpers/ThreadName.h"
+#include "console_helpers/ThreadName.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "Minecraft.World/net/minecraft/world/item/crafting/FireworksRecipe.h"
@@ -24,7 +24,7 @@
 #include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"

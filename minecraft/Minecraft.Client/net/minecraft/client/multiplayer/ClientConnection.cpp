@@ -1,5 +1,5 @@
 #include "Minecraft.Client/include/stdafx.h"
-#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
+#include "console_helpers/PlatformTime.h"
 #include "ClientConnection.h"
 #include <cfloat>
 #include <limits>
@@ -55,7 +55,7 @@
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/FullTutorialMode.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "4J_Input.h"
 
 ClientConnection::ClientConnection(Minecraft* minecraft, const std::wstring& ip,

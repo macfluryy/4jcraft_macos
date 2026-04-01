@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "ApplySchematicRuleDefinition.h"
 #include "LevelGenerationOptions.h"
 #include "ConsoleSchematicFile.h"

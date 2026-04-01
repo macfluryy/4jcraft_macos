@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.World/net/minecraft/world/level/LevelSettings.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 

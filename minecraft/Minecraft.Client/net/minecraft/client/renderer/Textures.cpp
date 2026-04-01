@@ -16,7 +16,7 @@
 #include "Minecraft.Client/include/MobSkinMemTextureProcessor.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/PreStitchedTextureMap.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/Texture.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/ItemEntity.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"

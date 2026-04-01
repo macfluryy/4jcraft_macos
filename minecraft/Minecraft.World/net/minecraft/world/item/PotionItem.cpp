@@ -9,7 +9,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/world/effect/MobEffectInstance.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "PotionItem.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"

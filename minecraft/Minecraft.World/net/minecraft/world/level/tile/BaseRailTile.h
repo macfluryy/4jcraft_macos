@@ -4,7 +4,7 @@
 
 #include "Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/TilePos.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 
 class Random;
 class HitResult;

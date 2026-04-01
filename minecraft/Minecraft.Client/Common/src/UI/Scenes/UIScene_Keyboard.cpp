@@ -3,7 +3,7 @@
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_Keyboard.h"
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 
 #define KEYBOARD_DONE_TIMER_ID 0

@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"

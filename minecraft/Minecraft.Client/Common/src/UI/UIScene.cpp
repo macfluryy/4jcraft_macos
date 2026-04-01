@@ -17,7 +17,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Inventory.h"
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"

@@ -1,5 +1,5 @@
 #include "Minecraft.World/stdafx.h"
-#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
+#include "console_helpers/PlatformTime.h"
 #include <memory>
 
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

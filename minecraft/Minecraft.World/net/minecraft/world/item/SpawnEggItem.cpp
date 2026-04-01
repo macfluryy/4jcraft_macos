@@ -14,7 +14,7 @@
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll

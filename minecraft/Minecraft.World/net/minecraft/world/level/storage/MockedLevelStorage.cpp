@@ -1,5 +1,5 @@
 #include "MockedLevelStorage.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 
 LevelData* MockedLevelStorage::prepareLevel() { return nullptr; }
 

@@ -3,7 +3,7 @@
 #include "RenameWorldScreen.h"
 #include "EditBox.h"
 #include "Button.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelStorageSource.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

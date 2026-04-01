@@ -4,7 +4,7 @@
 #include "Minecraft.Client/Common/src/UI/UIBitmapFont.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 
 UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)

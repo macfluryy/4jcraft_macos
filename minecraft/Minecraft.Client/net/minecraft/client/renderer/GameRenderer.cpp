@@ -34,7 +34,7 @@
 #include "Minecraft.Client/net/minecraft/client/Camera.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "BossMobGuiInfo.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"

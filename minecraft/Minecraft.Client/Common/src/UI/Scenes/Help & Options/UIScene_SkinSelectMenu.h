@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_PlayerSkinPreview.h"
 

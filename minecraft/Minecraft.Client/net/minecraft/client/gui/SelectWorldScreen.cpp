@@ -10,7 +10,7 @@
 #include "4J_Profile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelStorageSource.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelSummary.h"

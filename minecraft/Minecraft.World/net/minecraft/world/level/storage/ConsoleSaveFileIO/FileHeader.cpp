@@ -10,9 +10,9 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/System.h"

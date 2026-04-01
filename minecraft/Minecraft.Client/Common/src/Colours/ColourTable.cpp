@@ -3,7 +3,7 @@
 #include <cstring>
 
 #include "ColourTable.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"

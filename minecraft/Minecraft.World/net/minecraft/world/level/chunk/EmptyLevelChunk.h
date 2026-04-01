@@ -5,7 +5,7 @@
 #include <typeinfo>
 
 #include "LevelChunk.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.World/net/minecraft/world/level/LightLayer.h"
 
 class Level;

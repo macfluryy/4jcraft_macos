@@ -7,7 +7,7 @@
 
 #include "UIEnums.h"
 #include "Minecraft.Client/Common/App_Defines.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "4J.Storage/4J_Storage.h"
 
 class Container;

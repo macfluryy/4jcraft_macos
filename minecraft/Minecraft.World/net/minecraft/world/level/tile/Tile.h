@@ -1,7 +1,7 @@
 #pragma once
 #include "Minecraft.World/net/minecraft/world/level/material/Material.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include <cstdint>
 #include <optional>

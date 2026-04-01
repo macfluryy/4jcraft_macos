@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Tesselator.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Font.h"
 #include "4J.Render/4J_Render.h"

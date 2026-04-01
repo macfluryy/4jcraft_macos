@@ -61,6 +61,7 @@ client_dependencies = [
   dependency('zlib'),
   miniaudio_dep,
   stb_dep,
+  console_helpers_dep,
 ]
 
 if get_option('enable_vsync')

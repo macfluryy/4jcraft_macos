@@ -4,7 +4,7 @@
 #if !defined(__linux__)
 #include <qnet.h>
 #endif
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerStub.h"
 #include "SessionInfo.h"

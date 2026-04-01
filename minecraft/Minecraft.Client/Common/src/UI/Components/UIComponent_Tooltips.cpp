@@ -5,7 +5,7 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void* initData,
                                            UILayer* parentLayer)

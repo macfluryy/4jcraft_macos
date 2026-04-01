@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "ConsoleSchematicFile.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/entity/EntityIO.h"

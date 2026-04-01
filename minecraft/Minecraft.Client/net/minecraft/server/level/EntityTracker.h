@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Minecraft.World/ConsoleHelpers/HashExtension.h"
+#include "console_helpers/HashExtension.h"
 #include "java/JavaIntHash.h"
 
 #include <unordered_set>

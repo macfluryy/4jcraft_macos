@@ -1,4 +1,4 @@
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "StartFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StartFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"

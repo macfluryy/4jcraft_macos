@@ -9,7 +9,7 @@
 
 #include "java/File.h"
 #include "java/InputOutputStream/FileInputStream.h"
-#include "../../../Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 namespace {
 int64_t FileTell(std::FILE* file) {

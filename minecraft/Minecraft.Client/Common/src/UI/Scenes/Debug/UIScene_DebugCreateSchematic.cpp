@@ -9,14 +9,14 @@
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UIScene_DebugCreateSchematic.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad,
                                                            void* initData,

@@ -13,9 +13,9 @@
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
 #include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 
 int IUIScene_PauseMenu::ExitGameDialogReturned(

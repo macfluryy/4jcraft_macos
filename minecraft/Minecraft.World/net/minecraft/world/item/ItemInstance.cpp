@@ -11,7 +11,7 @@
 #include "Item.h"
 #include "Minecraft.World/net/minecraft/util/HtmlString.h"
 #include "Minecraft.World/net/minecraft/world/item/ItemInstance.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/item/alchemy/PotionMacros.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/IntTag.h"

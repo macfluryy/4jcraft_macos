@@ -1,5 +1,5 @@
 #include "UIControl_Label.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"

@@ -11,7 +11,7 @@
 #include "TerrainParticle.h"
 #include "Minecraft.Client/net/minecraft/client/resources/ResourceLocation.h"
 #include "Minecraft.Client/net/minecraft/client/Camera.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"

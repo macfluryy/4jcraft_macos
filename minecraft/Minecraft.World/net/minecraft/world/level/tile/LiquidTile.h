@@ -3,7 +3,7 @@
 #include <string>
 
 #include "Tile.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 class Random;

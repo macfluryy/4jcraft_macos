@@ -2,7 +2,7 @@
 
 #include "Stitcher.h"
 #include "Texture.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "TextureHolder.h"
 
 TextureHolder::TextureHolder(Texture* texture) {

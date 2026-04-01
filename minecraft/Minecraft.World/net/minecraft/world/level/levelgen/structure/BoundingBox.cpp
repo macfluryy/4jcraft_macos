@@ -6,7 +6,7 @@
 #include "BoundingBox.h"
 #include "Minecraft.World/net/minecraft/Direction.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "nbt/IntArrayTag.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/BoundingBox.h"
 

@@ -4,7 +4,7 @@
 #include <string>
 
 #include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
 #include "Minecraft.World/net/minecraft/world/level/ChunkPos.h"
 #include "Minecraft.World/net/minecraft/world/level/TilePos.h"

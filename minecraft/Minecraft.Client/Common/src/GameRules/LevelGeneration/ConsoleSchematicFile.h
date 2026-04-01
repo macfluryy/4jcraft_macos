@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
 
 class Level;

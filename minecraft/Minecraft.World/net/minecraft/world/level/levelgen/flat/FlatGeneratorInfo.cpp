@@ -1,5 +1,5 @@
 #include "FlatGeneratorInfo.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/flat/FlatLayerInfo.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"

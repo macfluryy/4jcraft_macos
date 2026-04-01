@@ -5,7 +5,7 @@
 
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
 #include "EntityHorse.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"

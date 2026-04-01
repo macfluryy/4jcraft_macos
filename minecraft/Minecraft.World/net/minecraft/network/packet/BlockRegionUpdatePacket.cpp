@@ -6,7 +6,7 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "Minecraft.World/net/minecraft/world/level/dimension/Dimension.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"

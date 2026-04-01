@@ -1,6 +1,6 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "UIScene_SignEntryMenu.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"

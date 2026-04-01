@@ -1,5 +1,5 @@
 #include "XboxStructureActionPlaceBlock.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"

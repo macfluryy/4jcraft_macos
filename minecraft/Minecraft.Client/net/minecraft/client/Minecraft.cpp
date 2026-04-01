@@ -84,7 +84,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/ConsoleGameMode.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/item/alchemy/PotionMacros.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"

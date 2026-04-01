@@ -49,7 +49,7 @@
 #include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "java/JavaMath.h"
 #include "java/System.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"

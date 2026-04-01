@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/network/Connection.h"
 #include "Minecraft.World/net/minecraft/network/packet/DisconnectPacket.h"
 #include "Minecraft.World/net/minecraft/network/packet/ServerSettingsChangedPacket.h"

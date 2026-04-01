@@ -2,7 +2,7 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
+#include "console_helpers/PlatformTime.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/entity/MobCategory.h"

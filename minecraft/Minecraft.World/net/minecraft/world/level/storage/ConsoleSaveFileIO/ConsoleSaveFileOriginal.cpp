@@ -9,8 +9,8 @@
 #include <format>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/PortableFileIO.h"
-#include "ConsoleSaveFileOriginal.h"
+#include "console_helpers/PortableFileIO.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
 #include "java/File.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
@@ -19,13 +19,13 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "4J.Common/4J_Compat.h"
 #include "platform/IPlatformStorage.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/ConsoleHelpers/compression.h"
+#include "console_helpers/compression.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"

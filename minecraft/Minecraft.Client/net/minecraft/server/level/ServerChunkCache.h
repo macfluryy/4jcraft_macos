@@ -10,7 +10,7 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
 #include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/RandomLevelSource.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "Minecraft.World/net/minecraft/world/level/biome/Biome.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 

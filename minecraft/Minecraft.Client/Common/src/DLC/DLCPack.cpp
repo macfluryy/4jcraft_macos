@@ -13,7 +13,7 @@
 #include "DLCGameRulesHeader.h"
 #include "DLCAudioFile.h"
 #include "DLCColourTableFile.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"

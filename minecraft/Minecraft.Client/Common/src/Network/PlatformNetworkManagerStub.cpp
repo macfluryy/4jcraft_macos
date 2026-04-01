@@ -9,7 +9,7 @@
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 
 CPlatformNetworkManagerStub* g_pPlatformNetworkManager;
 

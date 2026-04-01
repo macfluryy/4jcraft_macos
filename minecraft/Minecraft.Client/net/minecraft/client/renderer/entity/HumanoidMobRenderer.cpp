@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
 #include "EntityRenderDispatcher.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/Facing.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"

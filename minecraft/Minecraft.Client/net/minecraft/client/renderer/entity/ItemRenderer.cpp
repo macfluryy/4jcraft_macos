@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/renderer/TileRenderer.h"
 #include "EntityRenderDispatcher.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/TextureAtlas.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"

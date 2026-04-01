@@ -11,8 +11,8 @@
 
 #include "java/InputOutputStream/InputStream.h"
 #include "java/InputOutputStream/OutputStream.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h" // 4jcraft TODO
-#include "Minecraft.World/ConsoleHelpers/ThreadName.h" // 4jcraft TODO
+#include "console_helpers/C4JThread.h" // 4jcraft TODO
+#include "console_helpers/ThreadName.h" // 4jcraft TODO
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 

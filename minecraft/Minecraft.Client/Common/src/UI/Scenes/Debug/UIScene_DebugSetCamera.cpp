@@ -16,7 +16,7 @@ class UILayer;
 #include "UIScene_DebugSetCamera.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,
                                                UILayer* parentLayer)

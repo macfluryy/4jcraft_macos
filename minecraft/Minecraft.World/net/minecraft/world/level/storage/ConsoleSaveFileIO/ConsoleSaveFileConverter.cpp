@@ -1,7 +1,7 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "ConsoleSaveFileIO.h"
-#include "ConsoleSaveFileConverter.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileConverter.h"
 #include "Minecraft.World/net/minecraft/util/ProgressListener.h"
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 

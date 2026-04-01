@@ -6,7 +6,7 @@
 
 #include "MapItem.h"
 #include "java/JavaMath.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "Minecraft.World/net/minecraft/network/packet/ComplexItemDataPacket.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"

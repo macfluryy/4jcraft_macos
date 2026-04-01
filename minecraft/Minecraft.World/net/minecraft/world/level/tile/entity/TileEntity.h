@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "Minecraft.World/ConsoleHelpers/HashExtension.h"
+#include "console_helpers/HashExtension.h"
 #include "java/JavaIntHash.h"
 #include "java/Class.h"
 

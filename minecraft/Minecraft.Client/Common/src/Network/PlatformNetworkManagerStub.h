@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerInterface.h"
 #include "SessionInfo.h"

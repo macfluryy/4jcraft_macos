@@ -11,7 +11,7 @@
 
 #include "SoundEngine.h"
 #include <filesystem>
-#include "Minecraft.World/ConsoleHelpers/PathHelper.h"
+#include "console_helpers/PathHelper.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
@@ -19,7 +19,7 @@
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "Minecraft.World/net/minecraft/world/entity/Mob.h"
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"

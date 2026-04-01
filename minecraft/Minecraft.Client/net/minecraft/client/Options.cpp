@@ -9,7 +9,7 @@
 #include "java/InputOutputStream/FileInputStream.h"
 #include "java/InputOutputStream/FileOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/locale/I18n.h"

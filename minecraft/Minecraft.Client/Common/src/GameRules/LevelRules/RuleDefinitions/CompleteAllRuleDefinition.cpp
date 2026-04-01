@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "CompleteAllRuleDefinition.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/network/Connection.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompoundGameRuleDefinition.h"

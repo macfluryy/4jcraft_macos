@@ -2,7 +2,7 @@
 #include <string>
 
 #include "NetherWartTile.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "Minecraft.World/net/minecraft/world/IconRegister.h"
 #include "Minecraft.World/net/minecraft/world/item/Item.h"

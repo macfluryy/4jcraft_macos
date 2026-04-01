@@ -1,10 +1,10 @@
 #pragma once
 #include "Minecraft.World/net/minecraft/world/level/LevelListener.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "OffsettedRenderList.h"
 #include "java/JavaIntHash.h"
 #include "Minecraft.World/net/minecraft/world/level/Level.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/include/NetTypes.h"

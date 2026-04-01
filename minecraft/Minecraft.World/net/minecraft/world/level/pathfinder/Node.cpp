@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 #include "Minecraft.World/net/minecraft/world/level/pathfinder/Node.h"
 

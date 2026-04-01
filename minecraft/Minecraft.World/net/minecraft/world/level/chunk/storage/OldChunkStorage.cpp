@@ -9,8 +9,8 @@
 
 #include "java/File.h"
 #include "OldChunkStorage.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/InputOutputStream/DataInputStream.h"

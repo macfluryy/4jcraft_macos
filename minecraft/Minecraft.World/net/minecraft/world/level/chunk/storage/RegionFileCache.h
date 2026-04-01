@@ -5,7 +5,7 @@
 #include "RegionFile.h"
 #include "java/Reference.h"
 #include "java/File.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class ConsoleSaveFile;
 class DataInputStream;

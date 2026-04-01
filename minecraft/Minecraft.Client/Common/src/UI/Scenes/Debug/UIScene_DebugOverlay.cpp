@@ -30,7 +30,7 @@ class UILayer;
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
                                            UILayer* parentLayer)

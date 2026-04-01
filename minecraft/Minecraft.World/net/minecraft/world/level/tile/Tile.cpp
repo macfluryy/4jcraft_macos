@@ -17,7 +17,7 @@
 #include "Minecraft.World/net/minecraft/world/net.minecraft.world.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "Minecraft.World/net/minecraft/world/phys/Vec3.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Tile.h"
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";

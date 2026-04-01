@@ -1,6 +1,6 @@
 
 #include "Minecraft.World/net/minecraft/util/Mth.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/User.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"

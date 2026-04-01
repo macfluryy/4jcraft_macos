@@ -7,7 +7,7 @@
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.World/net/minecraft/stats/GenericStats.h"
 #include "Ocelot.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"

@@ -6,7 +6,7 @@
 #include "Minecraft.Client/net/minecraft/client/gui/SelectWorldScreen.h"
 #include "Minecraft.Client/net/minecraft/client/gui/JoinMultiplayerScreen.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "TitleScreen.h"
 #include "4J.Render/4J_Render.h"

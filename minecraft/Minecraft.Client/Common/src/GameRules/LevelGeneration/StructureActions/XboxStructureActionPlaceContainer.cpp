@@ -1,7 +1,7 @@
 #include <wchar.h>
 #include <memory>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "XboxStructureActionPlaceContainer.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceContainer.h"

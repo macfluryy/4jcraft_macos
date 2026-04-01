@@ -3,7 +3,7 @@
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIComponent_TutorialPopup.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/net.minecraft.world.level.tile.h"

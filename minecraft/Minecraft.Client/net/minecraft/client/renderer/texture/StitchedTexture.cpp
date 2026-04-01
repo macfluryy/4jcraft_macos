@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "Texture.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/custom/ClockTexture.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/texture/custom/CompassTexture.h"
 #include "StitchedTexture.h"

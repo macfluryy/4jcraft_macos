@@ -15,7 +15,7 @@
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 #define INVENTORY_UPDATE_EFFECTS_TIMER_ID (10)
 #define INVENTORY_UPDATE_EFFECTS_TIMER_TIME (1000)  // 1 second

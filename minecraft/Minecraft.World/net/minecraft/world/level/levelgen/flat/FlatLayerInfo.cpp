@@ -1,5 +1,5 @@
 #include "FlatLayerInfo.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 void FlatLayerInfo::_init(int height, int id) {
     this->height = height;

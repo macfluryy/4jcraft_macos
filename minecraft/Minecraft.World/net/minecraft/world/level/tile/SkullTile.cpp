@@ -6,7 +6,7 @@
 #include "Minecraft.World/net/minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "Minecraft.World/net/minecraft/net.minecraft.h"
 #include "SkullTile.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/util/Mth.h"
 
 SkullTile::SkullTile(int id) : BaseEntityTile(id, Material::decoration, false) {

@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include "java/InputOutputStream/InputStream.h"
-#include "ConsoleSavePath.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 
 class ConsoleSaveFile;
 class FileEntry;

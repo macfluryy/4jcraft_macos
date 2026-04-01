@@ -1,6 +1,6 @@
 #include "Minecraft.Client/include/stdafx.h"
 
-#include "Minecraft.World/ConsoleHelpers/PlatformTime.h"
+#include "console_helpers/PlatformTime.h"
 #include "Minecraft.World/net/minecraft/stats/net.minecraft.stats.h"
 #include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"
@@ -19,7 +19,7 @@
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTasks.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraints.h"
 #include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHints.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 #include "4J.Common/4J_InputActions.h"
 

@@ -2,8 +2,8 @@
 #include <cstdint>
 #include <vector>
 
-#include "ConsoleSaveFile.h"
-#include "ConsoleSaveFileInputStream.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
 
 class ConsoleSavePath;
 

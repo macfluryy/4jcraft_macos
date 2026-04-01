@@ -4,8 +4,8 @@
 
 #include "ConsoleInputSource.h"
 #include "Minecraft.World/net/minecraft/SharedConstants.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
+#include "console_helpers/C4JThread.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/ChunkSource.h"
 
 class ServerConnection;

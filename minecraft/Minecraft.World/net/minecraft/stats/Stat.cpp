@@ -6,7 +6,7 @@
 #include "StatFormatter.h"
 #include "Stats.h"
 #include "Stat.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 Stat::DefaultFormat* Stat::defaultFormatter = new DefaultFormat();
 Stat::TimeFormatter* Stat::timeFormatter = new TimeFormatter();

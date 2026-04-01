@@ -1,7 +1,7 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_DLCOffersMenu.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 #define PLAYER_ONLINE_TIMER_ID 0
 #define PLAYER_ONLINE_TIMER_TIME 100

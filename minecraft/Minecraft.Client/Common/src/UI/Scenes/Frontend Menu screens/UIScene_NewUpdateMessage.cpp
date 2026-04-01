@@ -1,7 +1,7 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_NewUpdateMessage.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 UIScene_NewUpdateMessage::UIScene_NewUpdateMessage(int iPad, void* initData,
                                                    UILayer* parentLayer)

@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "TextureHolder.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "StitchSlot.h"
 
 StitchSlot::StitchSlot(int originX, int originY, int width, int height)

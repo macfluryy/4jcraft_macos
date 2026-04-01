@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "AddEnchantmentRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddEnchantmentRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"

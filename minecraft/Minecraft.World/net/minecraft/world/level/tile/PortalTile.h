@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "HalfTransparentTile.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 
 class Random;
 class Level;

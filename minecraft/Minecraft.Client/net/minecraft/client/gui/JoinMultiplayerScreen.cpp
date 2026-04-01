@@ -4,7 +4,7 @@
 #include "Button.h"
 #include "EditBox.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/locale/Language.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"

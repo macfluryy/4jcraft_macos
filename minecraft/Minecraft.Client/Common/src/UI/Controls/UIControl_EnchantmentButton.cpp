@@ -7,7 +7,7 @@
 #include "UIControl_EnchantmentButton.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentButton.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"

@@ -6,14 +6,14 @@
 #include <string>
 
 #include "Minecraft.World/net/minecraft/world/entity/LivingEntity.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "Abilities.h"
 #include "Minecraft.World/net/minecraft/world/food/FoodData.h"
 #include "Minecraft.World/net/minecraft/world/inventory/PlayerEnderChestContainer.h"
 #include "Minecraft.World/net/minecraft/commands/CommandSender.h"
 #include "Minecraft.World/net/minecraft/world/scores/ScoreHolder.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "java/Class.h"
 #include "Minecraft.World/net/minecraft/network/packet/ChatPacket.h"
 #include "Minecraft.World/net/minecraft/world/entity/Entity.h"

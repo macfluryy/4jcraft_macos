@@ -13,7 +13,7 @@
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 
 CConsoleMinecraftApp app;
 

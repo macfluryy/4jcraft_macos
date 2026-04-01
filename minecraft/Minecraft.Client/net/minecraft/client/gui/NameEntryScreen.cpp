@@ -2,7 +2,7 @@
 
 #include "NameEntryScreen.h"
 #include "Button.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Screen.h"
 #include "Minecraft.Client/include/stubs.h"

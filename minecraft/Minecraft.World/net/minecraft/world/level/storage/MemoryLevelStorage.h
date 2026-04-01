@@ -9,7 +9,7 @@
 #include "Minecraft.World/net/minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "nbt/com.mojang.nbt.h"
 
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 
 class MemoryLevelStorage : public LevelStorage, public PlayerIO {
 public:

@@ -4,7 +4,7 @@
 
 #include "Minecraft.Client/include/stdafx.h"
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/Pos.h"
 #include "Minecraft.World/net/minecraft/world/phys/net.minecraft.world.phys.h"
 #include "Minecraft.World/net/minecraft/world/level/net.minecraft.world.level.h"

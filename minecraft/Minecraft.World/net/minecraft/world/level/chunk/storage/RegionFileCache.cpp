@@ -2,8 +2,8 @@
 
 #include "java/File.h"
 #include "RegionFileCache.h"
-#include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "Minecraft.World/net/minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFile.h"
 
 class DataInputStream;

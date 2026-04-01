@@ -1,10 +1,17 @@
 #pragma once
 
-#include "java/System.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 
 #include <cstring>
 #include <string>
+#include <vector>
+#include <chrono>
+
+#define MAKE_FOURCC(ch0, ch1, ch2, ch3)                                   \
+    (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch0)) |         \
+     (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch1)) << 8) |  \
+     (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch2)) << 16) | \
+     (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch3)) << 24))
 
 // The first 4 bytes is the location of the header (the header itself is at the
 // end of the file) Then 4 bytes for the size of the header Then 2 bytes for the
@@ -132,7 +139,8 @@ public:
     }  // When using ConsoleSaveFileSplit only
 
     void updateLastModifiedTime() {
-        data.lastModifiedTime = System::currentRealTimeMillis();
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        data.lastModifiedTime = std::chrono::duration_cast<std::chrono::milliseconds>(now).count();
     }
 
     /*

@@ -4,7 +4,7 @@
 #if !defined(__linux__)
 #include <qnet.h>
 #endif
-#include "Minecraft.World/ConsoleHelpers/C4JThread.h"
+#include "console_helpers/C4JThread.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"

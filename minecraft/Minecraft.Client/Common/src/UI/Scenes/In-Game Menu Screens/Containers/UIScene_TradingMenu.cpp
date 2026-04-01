@@ -5,7 +5,7 @@
 #include "Minecraft.World/net/minecraft/world/item/trading/net.minecraft.world.item.trading.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "UIScene_TradingMenu.h"
 

@@ -25,11 +25,6 @@ world_sources = run_command(
   check : true,
 ).stdout().strip().split('\n')
 
-simdutf_dep = dependency('simdutf', 
-  fallback: ['simdutf', 'simdutf_dep'], 
-  default_options: ['utf8=true', 'utf16=true', 'utf32=true']
-)
-
 lib_world = static_library('Minecraft.World',
   world_sources,
   dependencies : [
@@ -37,7 +32,7 @@ lib_world = static_library('Minecraft.World',
     java_dep,
     assets_localisation_dep,
     platform_dep,
-    simdutf_dep,
+    console_helpers_dep,
   ],
   include_directories : include_directories('..'),
   cpp_args : global_cpp_args + global_cpp_defs,

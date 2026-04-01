@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <string>
 
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 
 namespace PortableFileIO {
 enum class BinaryReadStatus {

@@ -4,7 +4,7 @@
 
 #include "Sheep.h"
 #include "Wolf.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.World/net/minecraft/core/particles/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"

@@ -1,7 +1,7 @@
 #include <string>
 
 #include "StructureFeatureSavedData.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "nbt/CompoundTag.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/structure/StructureFeatureSavedData.h"
 #include "Minecraft.World/net/minecraft/world/level/saveddata/SavedData.h"

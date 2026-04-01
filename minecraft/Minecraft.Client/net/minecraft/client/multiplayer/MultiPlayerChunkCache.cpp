@@ -3,7 +3,7 @@
 
 #include "MultiPlayerChunkCache.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerChunkCache.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"

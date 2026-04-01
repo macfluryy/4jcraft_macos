@@ -7,7 +7,7 @@
 #include "DLCTexturePack.h"
 #include "Minecraft.Client/net/minecraft/client/Options.h"
 #include "java/File.h"
-#include "Minecraft.World/ConsoleHelpers/StringHelpers.h"
+#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/net/minecraft/client/gui/Minimap.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"

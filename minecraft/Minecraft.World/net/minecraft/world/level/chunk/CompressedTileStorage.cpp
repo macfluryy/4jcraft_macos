@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "CompressedTileStorage.h"
-#include "Minecraft.World/ConsoleHelpers/Definitions.h"
+#include "console_helpers/Definitions.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
