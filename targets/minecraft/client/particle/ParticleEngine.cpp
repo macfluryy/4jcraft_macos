@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <numbers>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Particle.h"
 #include "TerrainParticle.h"
 #include "console_helpers/StringHelpers.h"

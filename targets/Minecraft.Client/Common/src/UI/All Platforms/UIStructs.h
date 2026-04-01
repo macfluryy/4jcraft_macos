@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <cstring>
 
-#include "4J.Storage/4J_Storage.h"
+#include "4J_Storage.h"
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "UIEnums.h"
 #include "console_helpers/C4JThread.h"

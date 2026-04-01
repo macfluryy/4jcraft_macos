@@ -1,6 +1,6 @@
 #ifdef __linux__
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "java/ByteBuffer.h"
 #include "java/FloatBuffer.h"

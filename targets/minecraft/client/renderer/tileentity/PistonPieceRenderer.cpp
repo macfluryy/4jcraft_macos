@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"

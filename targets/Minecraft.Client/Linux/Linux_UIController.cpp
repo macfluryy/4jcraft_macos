@@ -1,7 +1,7 @@
 #include <GL/gl.h>
 
 // GDraw GL backend for Linux
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Linux_UIController.h"
 #include "Minecraft.Client/Linux/Iggy/gdraw/gdraw.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

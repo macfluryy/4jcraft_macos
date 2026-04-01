@@ -4,7 +4,7 @@
 #include <cmath>
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_InventoryMenu.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"

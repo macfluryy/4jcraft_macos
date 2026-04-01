@@ -3,7 +3,7 @@
 #include <memory>
 #include <cmath>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"

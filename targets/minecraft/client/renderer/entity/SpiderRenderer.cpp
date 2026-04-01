@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/model/SpiderModel.h"
 #include "minecraft/client/renderer/Textures.h"

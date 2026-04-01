@@ -8,7 +8,7 @@
 #include <cmath>
 #include <numbers>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "EntityTileRenderer.h"
 #include "GameRenderer.h"
 #include "Minecraft.Client/Common/App_enums.h"

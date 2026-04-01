@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/client/model/LavaSlimeModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "EntityRenderDispatcher.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/model/WitchModel.h"

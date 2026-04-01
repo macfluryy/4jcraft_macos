@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/item/MinecartTNT.h"

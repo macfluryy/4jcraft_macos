@@ -5,7 +5,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "TextureManager.h"

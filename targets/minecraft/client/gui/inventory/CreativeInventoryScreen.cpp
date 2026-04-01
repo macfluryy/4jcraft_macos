@@ -5,8 +5,8 @@
 #include <string>
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J.Input/4J_Input.h"
-#include "4J.Render/4J_Render.h"
+#include "4J_Input.h"
+#include "4J_Render.h"
 #include "AbstractContainerScreen.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

@@ -6,7 +6,7 @@
 #include <string.h>
 #include <string>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Font.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"

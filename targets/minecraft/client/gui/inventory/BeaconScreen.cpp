@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "BeaconCancelButton.h"
 #include "BeaconConfirmButton.h"
 #include "BeaconPowerButton.h"

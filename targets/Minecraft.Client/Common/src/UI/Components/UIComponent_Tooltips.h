@@ -4,7 +4,7 @@
 
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"

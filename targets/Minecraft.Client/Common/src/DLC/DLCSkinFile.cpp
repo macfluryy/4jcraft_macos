@@ -3,7 +3,7 @@
 #include <wchar.h>
 #include <string.h>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "DLCManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/SkinBox.h"

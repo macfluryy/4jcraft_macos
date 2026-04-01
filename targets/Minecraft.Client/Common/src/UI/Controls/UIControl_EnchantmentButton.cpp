@@ -5,7 +5,7 @@
 #include <memory>
 #include <sstream>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"

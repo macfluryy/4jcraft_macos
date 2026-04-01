@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "4J_Profile.h"
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/Consoles_App.h"

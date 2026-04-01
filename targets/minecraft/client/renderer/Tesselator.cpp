@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "minecraft/client/MemoryTracker.h"

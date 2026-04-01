@@ -24,7 +24,7 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/Tile.h"
 // 4J Stu - Added for tutorial callbacks
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"

@@ -5,7 +5,7 @@
 #include "EntityRenderDispatcher.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 // #include "ItemFrame"
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "ItemFrameRenderer.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"

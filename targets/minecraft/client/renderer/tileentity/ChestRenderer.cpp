@@ -3,7 +3,7 @@
 #include <memory>
 #include <numbers>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/client/model/ChestModel.h"
 #include "minecraft/client/model/LargeChestModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"

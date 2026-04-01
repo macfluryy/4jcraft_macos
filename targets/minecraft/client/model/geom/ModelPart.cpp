@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <numbers>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Cube.h"
 #include "TexOffs.h"
 #include "minecraft/client/MemoryTracker.h"

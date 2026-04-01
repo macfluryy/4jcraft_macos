@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "TileEntityRenderDispatcher.h"
 #include "java/FloatBuffer.h"
 #include "java/Random.h"

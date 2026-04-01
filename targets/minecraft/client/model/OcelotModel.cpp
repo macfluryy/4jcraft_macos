@@ -6,7 +6,7 @@
 #include <numbers>
 #include <string>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/Ocelot.h"

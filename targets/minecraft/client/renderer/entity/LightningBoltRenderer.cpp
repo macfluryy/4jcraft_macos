@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "java/Random.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/world/entity/Entity.h"

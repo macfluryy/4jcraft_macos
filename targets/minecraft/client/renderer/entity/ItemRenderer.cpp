@@ -3,7 +3,7 @@
 #include <math.h>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "EntityRenderDispatcher.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/JavaMath.h"

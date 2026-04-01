@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"

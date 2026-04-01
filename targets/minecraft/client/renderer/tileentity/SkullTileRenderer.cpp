@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/Facing.h"
 #include "minecraft/client/model/SkeletonHeadModel.h"
 #include "minecraft/client/model/geom/Model.h"

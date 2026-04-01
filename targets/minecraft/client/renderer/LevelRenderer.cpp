@@ -13,7 +13,7 @@
 #include <utility>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "4J_Input.h"
 #include "Chunk.h"
 #include "GameRenderer.h"

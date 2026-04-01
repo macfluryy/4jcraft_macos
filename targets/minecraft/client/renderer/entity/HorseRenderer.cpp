@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "EntityRenderDispatcher.h"
 #include "MobRenderer.h"
 #include "minecraft/client/model/geom/Model.h"

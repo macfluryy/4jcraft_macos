@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"

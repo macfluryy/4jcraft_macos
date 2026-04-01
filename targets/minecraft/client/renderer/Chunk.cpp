@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "LevelRenderer.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/FrameProfiler.h"

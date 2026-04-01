@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "4J.Render/4J_Render.h"
+#include "4J_Render.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/client/Minecraft.h"
