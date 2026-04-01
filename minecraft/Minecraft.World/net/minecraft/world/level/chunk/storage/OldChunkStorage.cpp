@@ -28,7 +28,9 @@
 #include "Minecraft.World/net/minecraft/world/level/chunk/LevelChunk.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/entity/TileEntity.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =

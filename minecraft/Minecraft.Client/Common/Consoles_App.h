@@ -23,7 +23,9 @@
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.World/net/minecraft/world/entity/item/MinecartHopper.h"
 #include "Minecraft.Client/Common/App_structs.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 typedef struct _JoinFromInviteData {
     std::uint32_t dwUserIndex;       // dwUserIndex

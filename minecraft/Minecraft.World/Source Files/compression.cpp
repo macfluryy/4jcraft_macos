@@ -7,7 +7,9 @@
 #include "Minecraft.World/ConsoleHelpers/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "compression.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #if defined(_WIN64) || defined(__linux__)
 // zconf.h defines "typedef unsigned char Byte" which conflicts with the
 // project's "class Byte" from BasicTypeContainers.h (via stdafx.h).

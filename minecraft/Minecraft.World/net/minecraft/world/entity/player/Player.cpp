@@ -82,7 +82,9 @@
 #include "net/minecraft/world/scores/Scoreboard.h"
 #include "net/minecraft/world/scores/Team.h"
 #include "net/minecraft/world/scores/criteria/ObjectiveCriteria.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class ModelPart;
 class Objective;

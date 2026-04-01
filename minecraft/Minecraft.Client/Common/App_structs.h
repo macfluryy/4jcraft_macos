@@ -3,7 +3,9 @@
 #include <cstdint>
 
 #include "4J.Storage/4J_Storage.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "Minecraft.Client/Common/Source Files/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "Minecraft.Client/Common/Source Files/Tutorial/TutorialEnum.h"

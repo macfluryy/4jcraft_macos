@@ -9,7 +9,9 @@
 #include "PlatformNetworkManagerInterface.h"
 #include "SessionInfo.h"
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class C4JThread;
 class CGameNetworkManager;

@@ -14,7 +14,9 @@
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.World/Header Files/SoundTypes.h"
 #include "Minecraft.World/net/minecraft/world/SimpleContainer.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "Minecraft.Client/net/minecraft/client/Minecraft.h"
 
 class UILayer;

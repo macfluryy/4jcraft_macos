@@ -5,7 +5,9 @@
 #include <qnet.h>
 #endif
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "NetworkPlayerInterface.h"
 #include "SessionInfo.h"
 

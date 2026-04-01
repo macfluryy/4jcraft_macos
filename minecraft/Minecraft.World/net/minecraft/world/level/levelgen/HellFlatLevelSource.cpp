@@ -12,7 +12,9 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/HeavyTile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 HellFlatLevelSource::HellFlatLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();
@@ -103,13 +105,28 @@ LevelChunk* HellFlatLevelSource::create(int x, int z) { return getChunk(x, z); }
 LevelChunk* HellFlatLevelSource::getChunk(int xOffs, int zOffs) {
     random->setSeed(xOffs * 341873128712l + zOffs * 132897987541l);
 
+    // 4J - now allocating this with a physical alloc & bypassing general memory
+    // management so that it will get cleanly freed
     int chunksSize = Level::genDepth * 16 * 16;
-    std::vector<uint8_t> blocks(chunksSize, 0);
+    uint8_t* tileData = (uint8_t*)malloc(chunksSize);
+    memset(tileData, 0, chunksSize);
+    std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + chunksSize);
+    //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 
     prepareHeights(xOffs, zOffs, blocks);
     buildSurfaces(xOffs, zOffs, blocks);
 
+    //    caveFeature->apply(this, level, xOffs, zOffs, blocks);
+    // townFeature.apply(this, level, xOffs, zOffs, blocks);
+    // addCaves(xOffs, zOffs, blocks);
+    // addTowns(xOffs, zOffs, blocks);
+
+    // 4J - this now creates compressed block data from the blocks array passed
+    // in, so needs to be after data is finalised. Also now need to free the
+    // passed in blocks as the LevelChunk doesn't use the passed in allocation
+    // anymore.
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
+    free(tileData);
     return levelChunk;
 }
 

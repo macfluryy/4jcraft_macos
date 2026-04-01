@@ -11,7 +11,9 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/feature/Feature.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 uint8_t BasicTree::axisConversionArray[] = {2, 0, 0, 1, 2, 1};
 

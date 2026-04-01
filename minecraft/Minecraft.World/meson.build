@@ -49,5 +49,4 @@ crypto_dep = dependency('libcrypto')  # for MD5 in Hasher.cpp on Linux
 world_dep = declare_dependency(
   link_with : lib_world,
   dependencies : [crypto_dep, zlib_dep],
-  include_directories : include_directories('x64headers'),
 )

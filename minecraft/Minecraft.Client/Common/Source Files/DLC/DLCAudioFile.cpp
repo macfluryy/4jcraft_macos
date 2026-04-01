@@ -9,7 +9,9 @@
 #include "4J_Storage.h"
 #include "Minecraft.Client/Common/Source Files/DLC/DLCFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #if defined(_WINDOWS64)
 #include "Minecraft.Client/Windows64/XML/ATGXmlParser.h"
 #include "Minecraft.Client/Windows64/XML/xmlFilesCallback.h"

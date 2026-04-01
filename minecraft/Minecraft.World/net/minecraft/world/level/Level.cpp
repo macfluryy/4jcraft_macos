@@ -64,7 +64,9 @@
 #include "net/minecraft/world/phys/HitResult.h"
 #include "net/minecraft/world/phys/Vec3.h"
 #include "net/minecraft/world/scores/Scoreboard.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 class CompoundTag;

@@ -17,7 +17,9 @@
 #include "Minecraft.World/net/minecraft/network/packet/KeepAlivePacket.h"
 #include "Minecraft.World/net/minecraft/network/packet/Packet.h"
 #include "Minecraft.World/net/minecraft/network/packet/PacketListener.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class SocketAddress;
 

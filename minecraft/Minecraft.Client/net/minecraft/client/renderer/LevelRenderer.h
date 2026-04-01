@@ -7,7 +7,9 @@
 #include "Minecraft.World/ConsoleHelpers/C4JThread.h"
 #include "Minecraft.World/Header Files/ParticleTypes.h"
 #include "Minecraft.World/net/minecraft/world/phys/AABB.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class ClipChunk;
 class HitResult;

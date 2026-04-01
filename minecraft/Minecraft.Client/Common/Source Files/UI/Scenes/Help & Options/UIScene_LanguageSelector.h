@@ -2,7 +2,9 @@
 
 #include "Minecraft.Client/Common/Source Files/UI/UIScene.h"
 #include "Minecraft.Client/Common/App_Defines.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class UIScene_LanguageSelector : public UIScene {
 public:

@@ -50,7 +50,9 @@
 #include "net/minecraft/world/level/Level.h"
 #include "net/minecraft/world/level/tile/Tile.h"
 #include "net/minecraft/world/phys/AABB.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 const float Mob::MAX_WEARING_ARMOR_CHANCE = 0.15f;
 const float Mob::MAX_PICKUP_LOOT_CHANCE = 0.55f;

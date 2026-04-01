@@ -6,9 +6,6 @@
 class DataInputStream;
 class DataOutputStream;
 template <typename T> class XLockFreeStack;
-#if !defined(__linux__)
-#include "../../../../../x64headers/xmcore.h"
-#endif
 
 // This class is used for the compressed storage of tile data. Unlike the
 // SparseLightingStorage class, data is split into 512 blocks of 4x4x4 tiles.

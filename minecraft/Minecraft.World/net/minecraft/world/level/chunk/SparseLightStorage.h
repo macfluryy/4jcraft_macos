@@ -1,9 +1,6 @@
 #pragma once
 #include <stdint.h>
 #include <format>
-#if !defined(__linux__)
-#include "../../../../../x64headers/xmcore.h"
-#endif
 
 // 4J added - Storage for block & sky light data. Lighting data is normally
 // stored as 4-bits per tile, in a DataLayer class of 16384 bytes ( 128 x 16 x

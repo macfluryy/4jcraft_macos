@@ -33,7 +33,9 @@
 #include "Minecraft.World/net/minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/MockedLevelStorage.h"
 #include "Minecraft.World/net/minecraft/world/level/storage/SavedDataStorage.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "java/Random.h"
 #include "Minecraft.Client/net/minecraft/client/particle/ParticleEngine.h"
 

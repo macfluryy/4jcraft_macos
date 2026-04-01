@@ -4,7 +4,9 @@
 
 #include "MobRenderer.h"
 #include "Minecraft.World/net/minecraft/world/entity/player/Player.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "Minecraft.Client/net/minecraft/client/renderer/entity/LivingEntityRenderer.h"
 
 class HumanoidModel;

@@ -35,7 +35,9 @@
 #include "java/System.h"
 #include "java/File.h"
 #include "Minecraft.World/net/minecraft/world/level/chunk/storage/RegionFile.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 class ProgressListener;

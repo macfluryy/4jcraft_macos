@@ -18,7 +18,9 @@
 #include "Minecraft.World/net/minecraft/network/Connection.h"
 #include "Minecraft.World/net/minecraft/network/packet/LoginPacket.h"
 #include "Minecraft.World/net/minecraft/network/packet/PreLoginPacket.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 #include "Minecraft.Client/Common/Source Files/BuildVer/BuildVer.h"
 #include "java/Random.h"
 

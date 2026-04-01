@@ -15,7 +15,9 @@
 #include "Minecraft.World/net/minecraft/world/level/tile/TallGrassPlantTile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/TreeTile.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 JungleBiome::JungleBiome(int id) : Biome(id) {
     decorator->treeCount = 50;

@@ -9,7 +9,9 @@
 #include "Minecraft.Client/net/minecraft/server/network/ServerConnection.h"
 #include "Minecraft.Client/Common/Source Files/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/Source Files/Network/NetworkPlayerInterface.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 class SocketAddress {};
 

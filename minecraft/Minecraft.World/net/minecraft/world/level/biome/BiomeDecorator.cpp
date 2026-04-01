@@ -18,7 +18,9 @@
 #include "Minecraft.World/net/minecraft/world/level/levelgen/feature/SandFeature.h"
 #include "Minecraft.World/net/minecraft/world/level/levelgen/feature/SpringFeature.h"
 #include "Minecraft.World/net/minecraft/world/level/tile/Tile.h"
-#include "Minecraft.World/x64headers/extraX64.h"
+#include "Minecraft.Client/Header Files/NetTypes.h"
+#include "Minecraft.Client/Header Files/XboxStubs.h"
+#include "Minecraft.Client/Header Files/SkinBox.h"
 
 BiomeDecorator::BiomeDecorator(Biome* biome) {
     _init();
