@@ -1,8 +1,8 @@
 #pragma once
 
 #include "UseAnim.h"
-#include "nbt/com.mojang.nbt.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
+#include "nbt/com.mojang.nbt.h"
 
 class Entity;
 class Level;

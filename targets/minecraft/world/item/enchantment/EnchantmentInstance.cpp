@@ -1,8 +1,8 @@
+#include "EnchantmentInstance.h"
+
 #include <vector>
 
-#include "EnchantmentInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
-
 #include "strings.h"
 
 EnchantmentInstance::EnchantmentInstance(Enchantment* enchantment, int level)

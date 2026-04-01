@@ -1,6 +1,7 @@
+#include "BaseRailTile.h"
+
 #include <optional>
 
-#include "BaseRailTile.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"

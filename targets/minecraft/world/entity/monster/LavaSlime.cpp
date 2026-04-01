@@ -1,9 +1,10 @@
+#include "LavaSlime.h"
+
 #include <memory>
 #include <vector>
 
-#include "LavaSlime.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"

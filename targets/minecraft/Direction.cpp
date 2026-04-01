@@ -1,4 +1,5 @@
 #include "Direction.h"
+
 #include "Facing.h"
 #include "minecraft/util/Mth.h"
 

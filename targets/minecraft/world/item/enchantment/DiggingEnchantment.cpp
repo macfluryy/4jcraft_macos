@@ -1,6 +1,6 @@
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "DiggingEnchantment.h"
 
+#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "strings.h"
 
 DiggingEnchantment::DiggingEnchantment(int id, int frequency)

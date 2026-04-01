@@ -1,7 +1,8 @@
+#include "BoatModel.h"
+
 #include <memory>
 #include <numbers>
 
-#include "BoatModel.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 

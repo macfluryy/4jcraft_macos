@@ -4,7 +4,6 @@
 #include <string>
 
 #include "minecraft/world/Container.h"
-#include "minecraft/world/Container.h"
 
 class ItemInstance;
 

@@ -1,4 +1,5 @@
 #include "RestrictOpenDoorGoal.h"
+
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"

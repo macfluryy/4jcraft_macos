@@ -1,6 +1,6 @@
 #pragma once
-#include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/Creature.h"
+#include "minecraft/world/entity/PathfinderMob.h"
 
 class Player;
 class Level;

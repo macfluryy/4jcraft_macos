@@ -1,5 +1,6 @@
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "XuiCraftingTask.h"
+
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_CraftingMenu.h"
 
 bool XuiCraftingTask::isCompleted() {

@@ -1,7 +1,8 @@
+#include "TrapMenu.h"
+
 #include <vector>
 
 #include "Slot.h"
-#include "TrapMenu.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "PlatformTypes.h"
 #include "IPlatformInput.h"
 #include "IPlatformNetwork.h"
 #include "IPlatformProfile.h"
@@ -8,3 +7,4 @@
 #include "IPlatformSound.h"
 #include "IPlatformStorage.h"
 #include "IPlatformUIController.h"
+#include "PlatformTypes.h"

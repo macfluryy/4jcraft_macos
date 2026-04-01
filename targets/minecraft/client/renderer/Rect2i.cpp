@@ -1,6 +1,6 @@
-#include <algorithm>
-
 #include "Rect2i.h"
+
+#include <algorithm>
 
 Rect2i::Rect2i(int x, int y, int width, int height) {
     xPos = x;

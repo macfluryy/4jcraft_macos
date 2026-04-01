@@ -1,7 +1,9 @@
+#include "MoveControl.h"
+
 #include <math.h>
+
 #include <numbers>
 
-#include "MoveControl.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"

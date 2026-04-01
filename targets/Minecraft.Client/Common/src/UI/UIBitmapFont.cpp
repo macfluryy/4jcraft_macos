@@ -1,6 +1,7 @@
+#include "UIBitmapFont.h"
+
 #include "Minecraft.Client/include/BufferedImage.h"
 #include "UIFontData.h"
-#include "UIBitmapFont.h"
 
 /////////////////////////////
 // UI Abstract Bitmap Font //

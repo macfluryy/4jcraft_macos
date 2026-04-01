@@ -1,6 +1,7 @@
+#include "CocoaTile.h"
+
 #include <optional>
 
-#include "CocoaTile.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"

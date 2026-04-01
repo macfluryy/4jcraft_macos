@@ -1,13 +1,14 @@
+#include "UIComponent_Chat.h"
+
 #include <memory>
 
-#include "UIComponent_Chat.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Gui.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Gui.h"
 
 UIComponent_Chat::UIComponent_Chat(int iPad, void* initData,
                                    UILayer* parentLayer)

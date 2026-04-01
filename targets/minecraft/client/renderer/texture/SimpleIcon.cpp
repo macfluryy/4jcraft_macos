@@ -1,4 +1,5 @@
 #include "SimpleIcon.h"
+
 #include "minecraft/client/renderer/texture/StitchedTexture.h"
 
 SimpleIcon::SimpleIcon(const std::wstring& name, const std::wstring& filename,

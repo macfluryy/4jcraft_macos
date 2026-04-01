@@ -1,8 +1,10 @@
+#include "Squid.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "Squid.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/util/Mth.h"

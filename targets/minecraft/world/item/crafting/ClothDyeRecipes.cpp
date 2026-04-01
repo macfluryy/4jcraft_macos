@@ -1,7 +1,8 @@
+#include "ClothDyeRecipes.h"
+
 #include <vector>
 
 #include "Recipes.h"
-#include "ClothDyeRecipes.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

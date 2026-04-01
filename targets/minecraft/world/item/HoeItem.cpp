@@ -1,6 +1,7 @@
+#include "HoeItem.h"
+
 #include <memory>
 
-#include "HoeItem.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

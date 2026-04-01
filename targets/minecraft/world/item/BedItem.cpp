@@ -1,9 +1,10 @@
+#include "BedItem.h"
+
 #include <memory>
 
+#include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
 #include "minecraft/stats/GenericStats.h"
-#include "BedItem.h"
-#include "minecraft/Direction.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"

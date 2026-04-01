@@ -1,11 +1,11 @@
 #pragma once
 
-#include "console_helpers/Definitions.h"
-
+#include <chrono>
 #include <cstring>
 #include <string>
 #include <vector>
-#include <chrono>
+
+#include "console_helpers/Definitions.h"
 
 #define MAKE_FOURCC(ch0, ch1, ch2, ch3)                                   \
     (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch0)) |         \

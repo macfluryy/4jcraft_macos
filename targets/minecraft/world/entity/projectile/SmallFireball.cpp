@@ -1,4 +1,5 @@
 #include "SmallFireball.h"
+
 #include "minecraft/Facing.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"

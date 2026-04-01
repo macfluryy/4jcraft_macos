@@ -1,13 +1,14 @@
+#include "ExperienceOrb.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <string>
 
 #include "java/JavaMath.h"
-#include "ExperienceOrb.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/player/Player.h"
@@ -16,6 +17,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 const int ExperienceOrb::LIFETIME =
     5 * 60 * SharedConstants::TICKS_PER_SECOND;  // Five minutes!

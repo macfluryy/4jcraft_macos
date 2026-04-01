@@ -6,6 +6,7 @@
 
 #include <format>
 #include <string>
+#include <vector>
 
 #define MAX_TOOL_RECIPES 5
 

@@ -1,6 +1,7 @@
+#include "DoorInteractGoal.h"
+
 #include <algorithm>
 
-#include "DoorInteractGoal.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"

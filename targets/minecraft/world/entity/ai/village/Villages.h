@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "minecraft/world/level/saveddata/SavedData.h"
 #include "minecraft/world/entity/ai/village/DoorInfo.h"
 #include "minecraft/world/entity/ai/village/Village.h"
 #include "minecraft/world/level/saveddata/SavedData.h"

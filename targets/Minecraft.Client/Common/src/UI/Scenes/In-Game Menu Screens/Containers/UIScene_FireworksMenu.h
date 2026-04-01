@@ -1,7 +1,9 @@
 #pragma once
 
-#include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_FireworksMenu.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "UIScene_AbstractContainerMenu.h"
 
 class InventoryMenu;
 

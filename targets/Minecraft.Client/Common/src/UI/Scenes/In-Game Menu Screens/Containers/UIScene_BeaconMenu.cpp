@@ -1,11 +1,11 @@
-#include "Minecraft.Client/include/stdafx.h"
-
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/client/Minecraft.h"
 #include "UIScene_BeaconMenu.h"
+
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "Minecraft.Client/include/stdafx.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 
 UIScene_BeaconMenu::UIScene_BeaconMenu(int iPad, void* _initData,
                                        UILayer* parentLayer)

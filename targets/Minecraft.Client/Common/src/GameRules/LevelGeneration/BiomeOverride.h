@@ -4,8 +4,8 @@
 #include <cstdint>
 #include <string>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 
 class BiomeOverride : public GameRuleDefinition {
 private:

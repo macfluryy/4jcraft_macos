@@ -1,4 +1,5 @@
 #include "EnchantmentCategory.h"
+
 #include "minecraft/world/item/ArmorItem.h"
 #include "minecraft/world/item/BowItem.h"
 #include "minecraft/world/item/DiggerItem.h"

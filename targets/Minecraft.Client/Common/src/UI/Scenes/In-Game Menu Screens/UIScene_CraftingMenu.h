@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_HTMLLabel.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CraftingMenu.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_HTMLLabel.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 #define CRAFTING_INVENTORY_SLOT_START 0
 #define CRAFTING_INVENTORY_SLOT_END (CRAFTING_INVENTORY_SLOT_START + 27)

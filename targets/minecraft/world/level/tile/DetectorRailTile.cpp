@@ -1,9 +1,10 @@
+#include "DetectorRailTile.h"
+
 #include <format>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "DetectorRailTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/IconRegister.h"

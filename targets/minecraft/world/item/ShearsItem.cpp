@@ -1,9 +1,10 @@
+#include "ShearsItem.h"
+
 #include <memory>
 
-#include "ShearsItem.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 ShearsItem::ShearsItem(int itemId) : Item(itemId) {
     setMaxStackSize(1);

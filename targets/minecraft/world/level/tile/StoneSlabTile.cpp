@@ -1,9 +1,9 @@
-#include "minecraft/net.minecraft.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
 #include "StoneSlabTile.h"
 
+#include "minecraft/net.minecraft.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/net.minecraft.world.h"
+#include "net.minecraft.world.level.tile.h"
 #include "strings.h"
 
 const unsigned int StoneSlabTile::SLAB_NAMES[SLAB_NAMES_LENGTH] = {

@@ -1,7 +1,8 @@
+#include "ContainerClickPacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "ContainerClickPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/item/ItemInstance.h"

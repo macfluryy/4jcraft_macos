@@ -1,8 +1,10 @@
+#include "BookModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "BookModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
 BookModel::BookModel() {

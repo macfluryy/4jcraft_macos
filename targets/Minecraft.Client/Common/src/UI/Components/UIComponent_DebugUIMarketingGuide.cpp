@@ -1,4 +1,5 @@
 #include "UIComponent_DebugUIMarketingGuide.h"
+
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIMarketingGuide.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"

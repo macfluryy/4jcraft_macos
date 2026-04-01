@@ -1,13 +1,13 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 
 #include "Animal.h"
-#include "minecraft/SharedConstants.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "java/Class.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 class Random;
 class EatTileGoal;

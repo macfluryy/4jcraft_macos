@@ -2,11 +2,10 @@
 #include <string>
 #include <vector>
 
-#include "minecraft/client/model/Vertex.h"
-#include "minecraft/client/model/Polygon.h"
+#include "Minecraft.Client/include/SkinBox.h"
 #include "Model.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "minecraft/client/model/Polygon.h"
+#include "minecraft/client/model/Vertex.h"
 
 class Cube;
 class Model;

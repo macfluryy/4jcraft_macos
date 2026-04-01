@@ -1,33 +1,37 @@
+#include "Level.h"
+
 #include <stdlib.h>
 #include <wchar.h>
-#include <mutex>
+
+#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <limits>
-#include <optional>
-#include <algorithm>
+#include <mutex>
 #include <numbers>
+#include <optional>
 
 #include "Explosion.h"
 #include "LevelListener.h"
-#include "Level.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/renderer/LevelRenderer.h"
-#include "Minecraft.Client/include/FrameProfiler.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
+#include "Minecraft.Client/include/FrameProfiler.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/renderer/LevelRenderer.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
@@ -47,6 +51,7 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/pathfinder/PathFinder.h"
 #include "minecraft/world/level/redstone/Redstone.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/storage/LevelStorage.h"
 #include "minecraft/world/level/storage/SavedDataStorage.h"
@@ -64,9 +69,6 @@
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/scores/Scoreboard.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 #include "platform/PlatformServices.h"
 
 class CompoundTag;

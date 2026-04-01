@@ -1,7 +1,8 @@
+#include "OcelotSitOnTileGoal.h"
+
 #include <limits>
 #include <memory>
 
-#include "OcelotSitOnTileGoal.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/ai/control/Control.h"

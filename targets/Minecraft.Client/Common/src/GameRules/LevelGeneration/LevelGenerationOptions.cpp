@@ -1,23 +1,22 @@
-#include <fstream>
+#include "LevelGenerationOptions.h"
+
 #include <filesystem>
+#include <fstream>
 #include <unordered_set>
 
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/stdafx.h"
-
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/Pos.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
-#include "LevelGenerationOptions.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-
-#include "4J_Storage.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
 
 JustGrSource::JustGrSource() {
     m_displayName = L"Default_DisplayName";

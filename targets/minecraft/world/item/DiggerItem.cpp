@@ -1,7 +1,8 @@
+#include "DiggerItem.h"
+
 #include <memory>
 #include <vector>
 
-#include "DiggerItem.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/item/Item.h"

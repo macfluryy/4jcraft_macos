@@ -1,12 +1,12 @@
-#include "minecraft/stdafx.h"
-
-#include "net.minecraft.world.inventory.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
-#include "console_helpers/StringHelpers.h"
 #include "AnvilMenu.h"
+
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/stdafx.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "net.minecraft.world.inventory.h"
 
 AnvilMenu::AnvilMenu(std::shared_ptr<Inventory> inventory, Level* level, int xt,
                      int yt, int zt, std::shared_ptr<Player> player) {

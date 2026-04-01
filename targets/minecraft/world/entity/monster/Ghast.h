@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "minecraft/world/entity/FlyingMob.h"
 #include "Enemy.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/FlyingMob.h"
 
 class GhastClass;
 class Level;

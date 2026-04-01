@@ -1,9 +1,9 @@
 #pragma once
 
-#include "minecraft/world/entity/AgeableMob.h"
 #include "Npc.h"
-#include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/entity/AgeableMob.h"
+#include "minecraft/world/item/trading/Merchant.h"
 
 class Level;
 class Village;

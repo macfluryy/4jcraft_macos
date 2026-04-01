@@ -3,12 +3,12 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "../platform/IPlatformRender.h"
-
-#ifdef __linux__
+#include "gl3_loader.h"
+// NOTE: gl3_loader.h must be included before these two
 #include <GL/gl.h>
 #include <GL/glu.h>
-#endif
+
+#include "../platform/IPlatformRender.h"
 
 class C4JRender : public IPlatformRender {
 public:

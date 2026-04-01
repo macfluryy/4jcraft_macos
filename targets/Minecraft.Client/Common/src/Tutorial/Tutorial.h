@@ -1,13 +1,13 @@
 #pragma once
 // using namespace std;
-#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
-#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
-#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
-#include "TutorialMessage.h"
-#include "TutorialEnum.h"
-
 #include <cstdint>
 #include <unordered_map>
+
+#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "TutorialEnum.h"
+#include "TutorialMessage.h"
 
 // #define TUTORIAL_HINT_DELAY_TIME 14000 // How long we should wait from
 // displaying one hint to the next #define TUTORIAL_DISPLAY_MESSAGE_TIME 7000

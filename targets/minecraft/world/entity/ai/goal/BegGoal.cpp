@@ -1,4 +1,5 @@
 #include "BegGoal.h"
+
 #include "java/Random.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/control/LookControl.h"

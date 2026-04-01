@@ -1,9 +1,11 @@
+#include "SilverfishModel.h"
+
 #include <math.h>
 #include <stdlib.h>
+
 #include <memory>
 #include <numbers>
 
-#include "SilverfishModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
 const int SilverfishModel::BODY_SIZES[BODY_COUNT][3] = {

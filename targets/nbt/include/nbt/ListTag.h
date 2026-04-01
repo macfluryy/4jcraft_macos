@@ -1,9 +1,9 @@
 #pragma once
-#include "Tag.h"
-
+#include <cstring>
 #include <memory>
 #include <vector>
-#include <cstring>
+
+#include "Tag.h"
 
 template <class T>
 class ListTag : public Tag {

@@ -1,9 +1,10 @@
 
+#include "minecraft/world/damageSource/DamageSource.h"
+
 #include <memory>
 #include <string>
 
 #include "minecraft/network/packet/ChatPacket.h"
-#include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
 #include "minecraft/world/damageSource/IndirectEntityDamageSource.h"
 #include "minecraft/world/entity/LivingEntity.h"

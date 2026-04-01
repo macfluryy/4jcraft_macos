@@ -6,7 +6,6 @@
 #include "BowItem.h"
 #include "BowlFoodItem.h"
 #include "BucketItem.h"
-#include "WoolTileItem.h"
 #include "CoalItem.h"
 #include "ComplexItem.h"
 #include "DiggerItem.h"
@@ -23,9 +22,11 @@
 #include "LeafTileItem.h"
 #include "MapItem.h"
 #include "MinecartItem.h"
+#include "WoolTileItem.h"
 // #include "PaintingItem.h"
 #include "PickaxeItem.h"
 #include "PistonTileItem.h"
+#include "PlanterTileItem.h"
 #include "RecordingItem.h"
 #include "RedStoneItem.h"
 #include "SaddleItem.h"
@@ -37,7 +38,6 @@
 #include "SnowballItem.h"
 #include "StoneSlabTileItem.h"
 #include "TileItem.h"
-#include "PlanterTileItem.h"
 #include "WeaponItem.h"
 
 // 1.8.2
@@ -49,18 +49,18 @@
 #include "BottleItem.h"
 #include "EnderEyeItem.h"
 #include "EnderpearlItem.h"
+#include "ExperienceItem.h"  // 4J Stu brought forward
 #include "GoldenAppleItem.h"
 #include "MilkBucketItem.h"
 #include "PotionItem.h"
 #include "Rarity.h"
 #include "WaterLilyTileItem.h"
-#include "ExperienceItem.h"  // 4J Stu brought forward
 
 // TU9
 #include "FireChargeItem.h"
-#include "minecraft/world/entity/ItemFrame.h"
-#include "SpawnEggItem.h"
 #include "MultiTextureTileItem.h"
+#include "SpawnEggItem.h"
+#include "minecraft/world/entity/ItemFrame.h"
 
 // TU12
 #include "SkullItem.h"
@@ -73,13 +73,13 @@
 #include "SeedFoodItem.h"
 
 // 1.6.4
+#include "EmptyMapItem.h"
 #include "FireworksChargeItem.h"
 #include "FireworksItem.h"
 #include "LeashItem.h"
 #include "NameTagItem.h"
 #include "SimpleFoiledItem.h"
 #include "SnowItem.h"
-#include "EmptyMapItem.h"
 
 // 4J Added
 #include "ClockItem.h"

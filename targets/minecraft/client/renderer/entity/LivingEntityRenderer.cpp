@@ -1,31 +1,32 @@
+#include "LivingEntityRenderer.h"
+
 #include <GL/gl.h>
+
 #include <cmath>
 #include <numbers>
 #include <vector>
 
-#include "LivingEntityRenderer.h"
-#include "minecraft/client/Lighting.h"
-#include "minecraft/client/model/geom/Cube.h"
-#include "minecraft/client/model/geom/ModelPart.h"
-#include "EntityRenderDispatcher.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/entity/projectile/Arrow.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/player/Player.h"
 #include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/LivingEntity.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
+#include "minecraft/client/model/geom/Cube.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/projectile/Arrow.h"
 
 ResourceLocation LivingEntityRenderer::ENCHANT_GLINT_LOCATION =
     ResourceLocation(TN__BLUR__MISC_GLINT);

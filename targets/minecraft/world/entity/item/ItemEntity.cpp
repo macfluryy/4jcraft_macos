@@ -1,15 +1,16 @@
+#include "ItemEntity.h"
+
 #include <stdint.h>
+
 #include <algorithm>
 #include <format>
 #include <numbers>
 #include <vector>
 
-#include "java/JavaMath.h"
-#include "ItemEntity.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
+#include "java/JavaMath.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -21,6 +22,7 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 void ItemEntity::_init() {
     age = 0;

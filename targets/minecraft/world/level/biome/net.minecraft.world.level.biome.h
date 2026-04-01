@@ -1,19 +1,19 @@
 #pragma once
 
 #include "Biome.h"
+#include "BiomeSource.h"
+#include "FixedBiomeSource.h"
 #include "ForestBiome.h"
 #include "HellBiome.h"
-#include "RainforestBiome.h"
 #include "IceBiome.h"
 #include "MushroomIslandBiome.h"
+#include "RainforestBiome.h"
+#include "SwampBiome.h"
+#include "TaigaBiome.h"
 #include "TheEndBiome.h"
 #include "TheEndBiomeDecorator.h"
 #include "WaterlilyFeature.h"
-#include "SwampBiome.h"
-#include "TaigaBiome.h"
 #include "minecraft/world/level/LevelSource.h"
-#include "BiomeSource.h"
-#include "FixedBiomeSource.h"
 
 // 1.8.2
 #include "BiomeCache.h"

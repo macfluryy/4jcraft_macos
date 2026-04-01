@@ -1,10 +1,10 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
 #include <algorithm>
-#include <cstring>
 #include <cassert>
+#include <cstdint>
+#include <cstring>
+#include <vector>
 
 class Biome;
 class Node;

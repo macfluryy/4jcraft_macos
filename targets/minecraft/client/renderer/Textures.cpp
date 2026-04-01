@@ -1,33 +1,35 @@
+#include "Textures.h"
+
 #include <GL/gl.h>
 #include <assert.h>
-#include <string>
-#include <cstring>
+
 #include <cstdint>
+#include <cstring>
+#include <string>
 #include <utility>
 
-#include "Textures.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
 #include "HttpTexture.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/include/MemTexture.h"
-#include "java/ByteBuffer.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/Options.h"
 #include "Minecraft.Client/include/MemTextureProcessor.h"
 #include "Minecraft.Client/include/MobSkinMemTextureProcessor.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/Buffer.h"
+#include "java/ByteBuffer.h"
+#include "minecraft/client/MemoryTracker.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/texture/PreStitchedTextureMap.h"
 #include "minecraft/client/renderer/texture/Texture.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/resources/ResourceLocation.h"
-#include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "Minecraft.Client/include/BufferedImage.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "java/Buffer.h"
-#include "minecraft/client/MemoryTracker.h"
 
 // Linux/PC port: disable mipmapping globally so textures are always sampled
 // from the full-resolution level 0 with GL_NEAREST, giving pixel-crisp

@@ -4,7 +4,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include "minecraft/world/level/TilePos.h"
 #include "Packet.h"
 #include "minecraft/network/packet/Packet.h"
 #include "minecraft/world/level/TilePos.h"

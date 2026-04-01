@@ -1,4 +1,5 @@
 #include "java/Buffer.h"
+
 #include <cassert>
 
 Buffer::Buffer(unsigned int capacity)

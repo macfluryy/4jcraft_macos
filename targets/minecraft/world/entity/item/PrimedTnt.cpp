@@ -1,13 +1,15 @@
+#include "PrimedTnt.h"
+
 #include <stdint.h>
+
 #include <cmath>
 #include <numbers>
 #include <string>
 
 #include "java/JavaMath.h"
-#include "PrimedTnt.h"
 #include "minecraft/core/particles/ParticleTypes.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
 
 void PrimedTnt::_init() {
     life = 0;

@@ -1,4 +1,5 @@
 #include "ThinFenceTile.h"
+
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"

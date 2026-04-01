@@ -1,6 +1,7 @@
+#include "MoveTowardsTargetGoal.h"
+
 #include <optional>
 
-#include "MoveTowardsTargetGoal.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/PathfinderMob.h"

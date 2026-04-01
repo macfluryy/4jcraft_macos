@@ -1,6 +1,7 @@
+#include "GiantMobRenderer.h"
+
 #include <memory>
 
-#include "GiantMobRenderer.h"
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"

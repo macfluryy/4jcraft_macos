@@ -1,6 +1,7 @@
+#include "SitGoal.h"
+
 #include <memory>
 
-#include "SitGoal.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/TamableAnimal.h"
 #include "minecraft/world/entity/ai/control/Control.h"

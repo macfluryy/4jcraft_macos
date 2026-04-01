@@ -1,12 +1,13 @@
+#include "TheEndPortalTile.h"
+
 #include <string>
 
-#include "TheEndPortalTile.h"
-#include "TheEndPortalTileEntity.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
+#include "TheEndPortalTileEntity.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"

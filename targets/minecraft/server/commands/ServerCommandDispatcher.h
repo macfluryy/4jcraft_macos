@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "minecraft/commands/CommandDispatcher.h"
 #include "minecraft/commands/AdminLogCommand.h"
+#include "minecraft/commands/CommandDispatcher.h"
 #include "minecraft/network/packet/ChatPacket.h"
 
 class ServerCommandDispatcher : public CommandDispatcher,

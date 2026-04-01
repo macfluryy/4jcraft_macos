@@ -1,7 +1,8 @@
+#include "TopSnowTile.h"
+
 #include <optional>
 #include <string>
 
-#include "TopSnowTile.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"

@@ -1,11 +1,11 @@
 #pragma once
 #include <stdint.h>
+
 #include <string>
 
-#include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/phys/Vec3.h"
-#include "minecraft/Pos.h"
 #include "java/File.h"
+#include "minecraft/Pos.h"
+#include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/Vec3.h"
 
 class BiomeSource;

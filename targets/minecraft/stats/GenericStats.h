@@ -1,13 +1,14 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <vector>
 
+#include "Minecraft.Client/Common/src/Console_Awards_enum.h"
 #include "Stat.h"
 #include "Stats.h"
-#include "Minecraft.Client/Common/src/Console_Awards_enum.h"
 #include "java/Class.h"
 
 class DamageSource;

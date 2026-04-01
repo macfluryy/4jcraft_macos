@@ -1,7 +1,8 @@
+#include "DropperTile.h"
+
 #include <memory>
 #include <string>
 
-#include "DropperTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/core/BlockSourceImpl.h"
 #include "minecraft/core/DefaultDispenseItemBehavior.h"

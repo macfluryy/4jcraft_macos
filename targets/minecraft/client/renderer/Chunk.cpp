@@ -1,18 +1,25 @@
+#include "Chunk.h"
+
 #include <GL/gl.h>
 #include <string.h>
-#include <unordered_set>
+
 #include <mutex>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
-#include "Chunk.h"
-#include "TileRenderer.h"
-#include "minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
-#include "LevelRenderer.h"
-#include "Minecraft.Client/include/FrameProfiler.h"
 #include "4J.Render/4J_Render.h"
+#include "LevelRenderer.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/FrameProfiler.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "TileRenderer.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/client/renderer/culling/Culler.h"
+#include "minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
@@ -20,11 +27,6 @@
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/client/renderer/culling/Culler.h"
 
 int Chunk::updates = 0;
 

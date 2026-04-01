@@ -1,6 +1,7 @@
+#include "MoveIndoorsGoal.h"
+
 #include <optional>
 
-#include "MoveIndoorsGoal.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/PathfinderMob.h"

@@ -1,17 +1,18 @@
+#include "Painting.h"
+
 #include <format>
 #include <memory>
 #include <vector>
 
-#include "Painting.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/HangingEntity.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "nbt/CompoundTag.h"
 
 typedef Painting::Motive _Motive;
 const _Motive* Painting::Motive::values[] = {

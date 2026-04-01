@@ -1,17 +1,17 @@
 #pragma once
 #include <stdint.h>
 // using namespace std;
-#include <vector>
 #include <string>
+#include <vector>
 
-#include "console_helpers/C4JThread.h"
+#include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerInterface.h"
 #include "SessionInfo.h"
-#include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "console_helpers/C4JThread.h"
 
 class C4JThread;
 class CGameNetworkManager;

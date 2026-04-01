@@ -1,9 +1,10 @@
+#include "GameCommandPacket.h"
+
 #include <limits>
 
-#include "PacketListener.h"
-#include "GameCommandPacket.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/commands/CommandsEnum.h"

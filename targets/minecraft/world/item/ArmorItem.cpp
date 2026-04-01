@@ -1,13 +1,14 @@
+#include "ArmorItem.h"
+
 #include <stdio.h>
+
 #include <format>
 #include <vector>
 
-#include "minecraft/client/Minecraft.h"
-#include "ArmorItem.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/Class.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/core/BehaviorRegistry.h"
 #include "minecraft/core/BlockSource.h"
 #include "minecraft/core/DefaultDispenseItemBehavior.h"
@@ -21,6 +22,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 class Entity;
 class Icon;

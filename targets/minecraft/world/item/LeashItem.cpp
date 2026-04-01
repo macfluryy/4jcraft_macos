@@ -1,7 +1,8 @@
+#include "LeashItem.h"
+
 #include <format>
 #include <vector>
 
-#include "LeashItem.h"
 #include "minecraft/world/entity/LeashFenceKnotEntity.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/player/Player.h"

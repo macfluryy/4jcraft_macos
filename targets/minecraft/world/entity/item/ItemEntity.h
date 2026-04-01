@@ -2,8 +2,6 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/SharedConstants.h"
 #include "java/Class.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/Entity.h"

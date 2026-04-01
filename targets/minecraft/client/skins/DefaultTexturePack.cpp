@@ -1,7 +1,8 @@
 
 #include "DefaultTexturePack.h"
-#include "minecraft/client/renderer/Textures.h"
+
 #include "console_helpers/StringHelpers.h"
+#include "minecraft/client/renderer/Textures.h"
 
 DefaultTexturePack::DefaultTexturePack()
     : AbstractTexturePack(0, nullptr, L"Minecraft", nullptr) {

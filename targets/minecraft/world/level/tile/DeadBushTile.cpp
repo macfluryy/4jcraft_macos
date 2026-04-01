@@ -1,6 +1,7 @@
+#include "DeadBushTile.h"
+
 #include <memory>
 
-#include "DeadBushTile.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"

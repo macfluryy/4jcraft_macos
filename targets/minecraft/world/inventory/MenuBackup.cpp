@@ -1,8 +1,9 @@
+#include "MenuBackup.h"
+
 #include <vector>
 
 #include "AbstractContainerMenu.h"
 #include "Slot.h"
-#include "MenuBackup.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/item/ItemInstance.h"
 

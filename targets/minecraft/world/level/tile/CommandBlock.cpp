@@ -1,7 +1,8 @@
+#include "CommandBlock.h"
+
 #include <memory>
 #include <string>
 
-#include "CommandBlock.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"

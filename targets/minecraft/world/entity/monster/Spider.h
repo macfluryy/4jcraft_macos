@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Monster.h"
-#include "minecraft/world/entity/MobGroupData.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/MobGroupData.h"
 #include "minecraft/world/entity/MobType.h"
 
 class Entity;

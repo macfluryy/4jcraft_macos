@@ -2,9 +2,10 @@
 
 #include <string>
 
-#include "UIControl.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BeaconEffectButton.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "UIControl.h"
 
 class UIControl_BeaconEffectButton : public UIControl {
 private:

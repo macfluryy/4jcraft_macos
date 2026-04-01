@@ -1,17 +1,17 @@
+#include "EntityHorse.h"
+
 #include <math.h>
-#include <limits>
+
 #include <algorithm>
+#include <limits>
 #include <numbers>
 
-#include "minecraft/client/renderer/Textures.h"
-#include "EntityHorse.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/Random.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/effect/MobEffect.h"
@@ -48,6 +48,8 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 class EntitySelector;
 class Path;

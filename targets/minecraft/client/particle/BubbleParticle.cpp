@@ -1,10 +1,11 @@
 #include "BubbleParticle.h"
-#include "java/Random.h"
-#include "minecraft/util/Mth.h"
+
 #include "java/JavaMath.h"
+#include "java/Random.h"
+#include "minecraft/client/particle/Particle.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
-#include "minecraft/client/particle/Particle.h"
 
 BubbleParticle::BubbleParticle(Level* level, double x, double y, double z,
                                double xa, double ya, double za)

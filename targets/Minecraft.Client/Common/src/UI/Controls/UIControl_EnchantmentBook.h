@@ -2,9 +2,10 @@
 
 #include <memory>
 
-#include "UIControl.h"
-#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentBook.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "UIControl.h"
 #include "java/Random.h"
 
 class UIScene_EnchantingMenu;

@@ -1,21 +1,22 @@
+#include "ApplySchematicRuleDefinition.h"
+
 #include <algorithm>
 #include <cmath>
 
-#include "console_helpers/StringHelpers.h"
-#include "ApplySchematicRuleDefinition.h"
-#include "LevelGenerationOptions.h"
 #include "ConsoleSchematicFile.h"
-#include "minecraft/world/phys/AABB.h"
+#include "LevelGenerationOptions.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ApplySchematicRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/world/phys/AABB.h"
 
 ApplySchematicRuleDefinition::ApplySchematicRuleDefinition(
     LevelGenerationOptions* levelGenOptions) {

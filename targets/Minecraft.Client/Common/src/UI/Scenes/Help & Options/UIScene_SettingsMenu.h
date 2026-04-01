@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 #define BUTTON_ALL_OPTIONS 0

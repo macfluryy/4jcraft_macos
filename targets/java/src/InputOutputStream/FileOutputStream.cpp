@@ -1,11 +1,11 @@
+#include "java/InputOutputStream/FileOutputStream.h"
+
 #include <cassert>
 #include <cstdint>
 #include <vector>
 
-#include "java/File.h"
-#include "java/InputOutputStream/FileOutputStream.h"
-
 #include "console_helpers/StringHelpers.h"  // 4jcraft TODO
+#include "java/File.h"
 
 // Creates a file output stream to write to the file represented by the
 // specified File object. A new FileDescriptor object is created to represent

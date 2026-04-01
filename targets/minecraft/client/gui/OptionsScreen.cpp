@@ -1,15 +1,16 @@
+#include "OptionsScreen.h"
+
 #include <vector>
 
-#include "OptionsScreen.h"
-#include "SmallButton.h"
-#include "SlideButton.h"
-#include "minecraft/client/Options.h"
 #include "ControlsScreen.h"
+#include "SlideButton.h"
+#include "SmallButton.h"
 #include "VideoSettingsScreen.h"
-#include "minecraft/locale/Language.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/locale/Language.h"
 
 OptionsScreen::OptionsScreen(Screen* lastScreen, Options* options) {
     title = L"Options";  // 4J added

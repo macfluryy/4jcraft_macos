@@ -1,20 +1,19 @@
-#include "minecraft/stdafx.h"
+#include "SpawnEggItem.h"
 
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/net.minecraft.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/stdafx.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/Difficulty.h"
 #include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/entity/npc/net.minecraft.world.entity.npc.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "minecraft/world/net.minecraft.world.h"
 #include "minecraft/world/phys/HitResult.h"
-#include "SpawnEggItem.h"
-#include "minecraft/world/Difficulty.h"
-#include "minecraft/util/Mth.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-
-#include "console_helpers/StringHelpers.h"
 
 SpawnEggItem::SpawnEggItem(int id) : Item(id) {
     setMaxStackSize(16);  // 4J-PB brought forward. It is 64 on PC, but we'll

@@ -2,8 +2,8 @@
 #include <cstdint>
 #include <memory>
 
-#include "minecraft/world/level/tile/EntityTile.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
+#include "minecraft/world/level/tile/EntityTile.h"
 
 class IconRegister;
 class Material;

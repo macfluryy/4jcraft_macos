@@ -1,9 +1,10 @@
+#include "MycelTile.h"
+
 #include <string>
 
-#include "MycelTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"

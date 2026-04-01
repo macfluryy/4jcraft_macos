@@ -1,11 +1,12 @@
-#include <utility>
+#include "Stat.h"
+
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include "NumberFormatters.h"
 #include "StatFormatter.h"
 #include "Stats.h"
-#include "Stat.h"
 #include "console_helpers/StringHelpers.h"
 
 Stat::DefaultFormat* Stat::defaultFormatter = new DefaultFormat();

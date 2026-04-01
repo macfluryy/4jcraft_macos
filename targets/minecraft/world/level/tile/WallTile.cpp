@@ -1,10 +1,10 @@
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/net.minecraft.h"
 #include "WallTile.h"
 
+#include "minecraft/net.minecraft.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/net.minecraft.world.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "net.minecraft.world.level.tile.h"
 #include "strings.h"
 
 const float WallTile::WALL_WIDTH = 3.0f / 16.0f;

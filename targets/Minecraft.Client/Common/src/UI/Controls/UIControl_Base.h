@@ -2,10 +2,10 @@
 
 #include <string>
 
-#include "UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Common/src/UI/UIString.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 // This class maps to the FJ_Base class in actionscript
 class UIControl_Base : public UIControl {

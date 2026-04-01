@@ -1,14 +1,16 @@
+#include "FireworksRecipe.h"
+
 #include <stdint.h>
+
 #include <vector>
 
-#include "FireworksRecipe.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/FireworksItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 thread_local FireworksRecipe::ThreadStorage* FireworksRecipe::m_tlsStorage =
     nullptr;

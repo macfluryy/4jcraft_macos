@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "minecraft/world/Container.h"
-#include "minecraft/world/Container.h"
 
 class Merchant;
 class Player;

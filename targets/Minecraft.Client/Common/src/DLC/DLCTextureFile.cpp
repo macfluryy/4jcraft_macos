@@ -1,5 +1,6 @@
-#include "DLCManager.h"
 #include "DLCTextureFile.h"
+
+#include "DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 
 DLCTextureFile::DLCTextureFile(const std::wstring& path)

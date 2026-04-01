@@ -1,12 +1,13 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 
 #include "Packet.h"
-#include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/network/packet/Packet.h"
+#include "minecraft/world/entity/SyncedEntityData.h"
 
 class LivingEntity;
 

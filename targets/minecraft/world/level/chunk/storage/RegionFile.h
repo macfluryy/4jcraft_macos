@@ -1,11 +1,12 @@
 #pragma once
 #include <stdint.h>
+
 #include <format>
 #include <vector>
 
 #include "console_helpers/compression.h"
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 class FileEntry;
 class ConsoleSaveFile;

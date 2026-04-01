@@ -1,17 +1,19 @@
+#include "LevelData.h"
+
 #include <assert.h>
+
 #include <algorithm>
 #include <cmath>
 
-#include "java/System.h"
-#include "LevelData.h"
-#include "minecraft/world/level/LevelType.h"
-#include "minecraft/world/level/LevelSettings.h"
 #include "Minecraft.Client/Common/App_Defines.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
+#include "java/System.h"
 #include "minecraft/world/level/GameRules.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
+#include "nbt/CompoundTag.h"
 
 LevelData::LevelData() {}
 

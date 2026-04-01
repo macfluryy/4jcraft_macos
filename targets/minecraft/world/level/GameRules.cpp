@@ -1,6 +1,7 @@
+#include "GameRules.h"
+
 #include <assert.h>
 
-#include "GameRules.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 

@@ -1,6 +1,7 @@
+#include "ScreenSizeCalculator.h"
+
 #include <math.h>
 
-#include "ScreenSizeCalculator.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/gui/ScreenSizeCalculator.h"
 

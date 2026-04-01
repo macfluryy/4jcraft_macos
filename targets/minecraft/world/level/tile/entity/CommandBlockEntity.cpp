@@ -1,11 +1,13 @@
+#include "CommandBlockEntity.h"
+
 #include <assert.h>
+
 #include <memory>
 
-#include "CommandBlockEntity.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/Pos.h"
 #include "minecraft/network/packet/TileEntityDataPacket.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 class Level;
 

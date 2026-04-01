@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 class UIScene_DLCMainMenu : public UIScene {

@@ -1,11 +1,13 @@
+#include "Monster.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "Monster.h"
-#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"

@@ -1,10 +1,10 @@
+#include "EnchantmentTableTile.h"
+
 #include <memory>
 
-#include "EnchantmentTableTile.h"
-#include "minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
@@ -12,6 +12,7 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/EnchantmentTableTileEntity.h"
 
 const std::wstring EnchantmentTableTile::TEXTURE_SIDE = L"enchantment_side";
 const std::wstring EnchantmentTableTile::TEXTURE_TOP = L"enchantment_top";

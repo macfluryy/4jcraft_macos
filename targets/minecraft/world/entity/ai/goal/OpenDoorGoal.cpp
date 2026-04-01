@@ -1,4 +1,5 @@
 #include "OpenDoorGoal.h"
+
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/goal/DoorInteractGoal.h"
 #include "minecraft/world/level/tile/DoorTile.h"

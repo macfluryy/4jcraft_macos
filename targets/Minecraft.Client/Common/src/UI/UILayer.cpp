@@ -1,7 +1,7 @@
+#include "UILayer.h"
+
 #include <algorithm>
 
-#include "UILayer.h"
-#include "UIScene.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIConsole.h"
@@ -77,8 +77,9 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "UIScene.h"
 
 UILayer::UILayer(UIGroup* parent) {
     m_parentGroup = parent;

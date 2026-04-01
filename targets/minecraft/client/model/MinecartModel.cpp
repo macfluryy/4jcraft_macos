@@ -1,9 +1,10 @@
+#include "MinecartModel.h"
+
 #include <memory>
 #include <numbers>
 
-#include "MinecartModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 MinecartModel::MinecartModel() : Model() {
     cubes[0] = new ModelPart(this, 0, 10);

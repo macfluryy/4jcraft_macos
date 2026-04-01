@@ -1,6 +1,7 @@
+#include "FlameParticle.h"
+
 #include "java/JavaMath.h"
 #include "java/Random.h"
-#include "FlameParticle.h"
 #include "minecraft/client/particle/Particle.h"
 
 class Level;

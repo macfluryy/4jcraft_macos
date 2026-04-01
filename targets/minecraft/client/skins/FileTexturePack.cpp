@@ -1,4 +1,5 @@
 #include "FileTexturePack.h"
+
 #include "java/File.h"
 #include "minecraft/client/skins/AbstractTexturePack.h"
 

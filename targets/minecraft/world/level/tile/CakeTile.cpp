@@ -1,7 +1,8 @@
+#include "CakeTile.h"
+
 #include <optional>
 #include <string>
 
-#include "CakeTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"

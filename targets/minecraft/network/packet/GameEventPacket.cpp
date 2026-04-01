@@ -1,7 +1,9 @@
-#include <iostream>
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "PacketListener.h"
 #include "GameEventPacket.h"
+
+#include <iostream>
+
+#include "PacketListener.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 const int GameEventPacket::NO_RESPAWN_BED_AVAILABLE = 0;
 const int GameEventPacket::START_RAINING = 1;

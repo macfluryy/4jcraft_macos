@@ -10,12 +10,12 @@
 #include "Minecraft.Client/Windows64/Iggy/include/iggy.h"
 #endif
 
-#include "4J_Storage.h"
 #include "4J.Common/4J_InputActions.h"
-
+#include "4J_Storage.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIController.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "UIGroup.h"
 
 class UIAbstractBitmapFont;
@@ -23,7 +23,6 @@ class UIBitmapFont;
 class UITTFFont;
 class UIComponent_DebugUIConsole;
 class UIComponent_DebugUIMarketingGuide;
-class UIControl;
 
 // Base class for all shared functions between UIControllers
 class UIController : public IUIController {

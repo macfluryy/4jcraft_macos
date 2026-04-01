@@ -1,8 +1,9 @@
-#include <limits>
+#include "BinaryHeap.h"
+
 #include <algorithm>
+#include <limits>
 
 #include "Node.h"
-#include "BinaryHeap.h"
 
 // 4J Jev, add common ctor code.
 void BinaryHeap::_init() {

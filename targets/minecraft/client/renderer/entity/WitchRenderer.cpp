@@ -1,12 +1,19 @@
+#include "WitchRenderer.h"
+
 #include <memory>
 #include <vector>
 
-#include "EntityRenderDispatcher.h"
-#include "WitchRenderer.h"
-#include "minecraft/client/model/WitchModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/model/WitchModel.h"
+#include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/renderer/ItemInHandRenderer.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
@@ -14,12 +21,6 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/model/geom/Model.h"
-#include "minecraft/client/renderer/ItemInHandRenderer.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation WitchRenderer::WITCH_LOCATION = ResourceLocation(TN_MOB_WITCH);
 

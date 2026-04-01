@@ -1,12 +1,14 @@
+#include "Tesselator.h"
+
 #include <GL/gl.h>
+
 #include <vector>
 
-#include "Tesselator.h"
-#include "minecraft/client/renderer/Tesselator.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/client/MemoryTracker.h"
 #include "Minecraft.Client/include/stubs.h"
+#include "minecraft/client/MemoryTracker.h"
+#include "minecraft/client/renderer/Tesselator.h"
 
 bool Tesselator::TRIANGLE_MODE = false;
 bool Tesselator::USE_VBO = false;

@@ -1,7 +1,8 @@
 
+#include "UIScene_Credits.h"
+
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
-#include "UIScene_Credits.h"
 
 #define CREDIT_ICON -2
 

@@ -1,7 +1,8 @@
+#include "BodyControl.h"
+
 #include <algorithm>
 #include <cstdlib>
 
-#include "BodyControl.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/control/MoveControl.h"

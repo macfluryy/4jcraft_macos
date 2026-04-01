@@ -1,21 +1,23 @@
+#include "AbstractContainerScreen.h"
+
 #include <wchar.h>
+
 #include <vector>
 
-#include "AbstractContainerScreen.h"
-#include "minecraft/client/renderer/entity/ItemRenderer.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/KeyMapping.h"
-#include "minecraft/client/Options.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/stubs.h"
+#include "minecraft/client/KeyMapping.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/Rarity.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/Screen.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "Minecraft.Client/include/stubs.h"
 
 ItemRenderer* AbstractContainerScreen::itemRenderer = new ItemRenderer();
 

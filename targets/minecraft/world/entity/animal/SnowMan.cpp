@@ -1,9 +1,10 @@
+#include "SnowMan.h"
+
 #include <memory>
 
-#include "SnowMan.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/LivingEntity.h"

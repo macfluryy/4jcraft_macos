@@ -1,7 +1,8 @@
+#include "EnchantmentMenu.h"
+
 #include <format>
 #include <vector>
 
-#include "EnchantmentMenu.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"

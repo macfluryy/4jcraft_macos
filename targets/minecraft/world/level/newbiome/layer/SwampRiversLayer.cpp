@@ -1,6 +1,7 @@
+#include "SwampRiversLayer.h"
+
 #include <vector>
 
-#include "SwampRiversLayer.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 

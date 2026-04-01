@@ -1,6 +1,7 @@
+#include "IUIScene_FireworksMenu.h"
+
 #include <assert.h>
 
-#include "IUIScene_FireworksMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/FireworksMenu.h"
 

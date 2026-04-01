@@ -1,15 +1,14 @@
 #pragma once
-#include <mutex>
 #include <cstdint>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "console_helpers/Definitions.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class ProgressRenderer;
 class ProgressListener;

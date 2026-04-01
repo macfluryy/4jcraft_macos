@@ -1,6 +1,7 @@
+#include "BlockReplacements.h"
+
 #include <vector>
 
-#include "BlockReplacements.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 std::vector<uint8_t> BlockReplacements::replacements =

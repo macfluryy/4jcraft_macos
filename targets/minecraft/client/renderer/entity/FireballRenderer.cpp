@@ -1,10 +1,14 @@
+#include "FireballRenderer.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 
-#include "FireballRenderer.h"
-#include "EntityRenderDispatcher.h"
-#include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
+#include "java/Class.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/projectile/Fireball.h"
@@ -12,8 +16,6 @@
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "java/Class.h"
-#include "minecraft/client/renderer/Tesselator.h"
 
 FireballRenderer::FireballRenderer(float scale) { this->scale = scale; }
 

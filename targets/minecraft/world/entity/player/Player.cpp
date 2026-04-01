@@ -7,36 +7,38 @@
 // derives from, and not to find the derived class itself (which should own the
 // virtual GetType function)
 
+#include "Player.h"
+
 #include <limits.h>
 #include <stdlib.h>
 #include <wchar.h>
-#include <string>
+
 #include <algorithm>
 #include <cmath>
 #include <numbers>
 #include <sstream>
+#include <string>
 #include <vector>
 
-#include "java/JavaMath.h"
 #include "Inventory.h"
-#include "Player.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/model/HumanoidModel.h"
-#include "minecraft/world/entity/player/Player.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "java/JavaMath.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/model/HumanoidModel.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
@@ -56,6 +58,7 @@
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/Arrow.h"
 #include "minecraft/world/food/FoodConstants.h"
 #include "minecraft/world/food/FoodData.h"
@@ -82,9 +85,8 @@
 #include "minecraft/world/scores/Scoreboard.h"
 #include "minecraft/world/scores/Team.h"
 #include "minecraft/world/scores/criteria/ObjectiveCriteria.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 class ModelPart;
 class Objective;

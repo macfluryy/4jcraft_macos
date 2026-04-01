@@ -1,12 +1,14 @@
 
+#include "minecraft/world/effect/MobEffectInstance.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/effect/MobEffect.h"
-#include "minecraft/world/effect/MobEffectInstance.h"
+#include "nbt/CompoundTag.h"
 
 class LivingEntity;
 

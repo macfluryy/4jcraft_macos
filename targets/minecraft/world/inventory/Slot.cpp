@@ -1,6 +1,7 @@
+#include "Slot.h"
+
 #include <vector>
 
-#include "Slot.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ArmorItem.h"

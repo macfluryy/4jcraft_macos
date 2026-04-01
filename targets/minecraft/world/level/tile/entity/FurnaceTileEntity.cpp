@@ -1,14 +1,14 @@
-#include "minecraft/stdafx.h"
+#include "FurnaceTileEntity.h"
 
-#include "nbt/com.mojang.nbt.h"
 #include "minecraft/net.minecraft.h"
+#include "minecraft/stdafx.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/level/material/Material.h"
-#include "FurnaceTileEntity.h"
+#include "nbt/com.mojang.nbt.h"
 
 int furnaceSlotsForUp[] = {FurnaceTileEntity::SLOT_INPUT};
 int furnaceSlotsForDown[] = {FurnaceTileEntity::SLOT_RESULT,

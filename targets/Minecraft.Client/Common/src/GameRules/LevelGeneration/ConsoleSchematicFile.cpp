@@ -1,13 +1,21 @@
+#include "ConsoleSchematicFile.h"
+
 #include <assert.h>
 #include <string.h>
-#include <vector>
+
 #include <algorithm>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
-#include "ConsoleSchematicFile.h"
-#include "console_helpers/compression.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/compression.h"
+#include "java/Class.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/ItemFrame.h"
@@ -19,12 +27,6 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "java/Class.h"
-#include "java/InputOutputStream/DataInputStream.h"
-#include "java/InputOutputStream/DataOutputStream.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/IntTag.h"

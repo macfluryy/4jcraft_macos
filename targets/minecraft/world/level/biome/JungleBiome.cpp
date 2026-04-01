@@ -1,6 +1,10 @@
+#include "JungleBiome.h"
+
 #include <vector>
 
-#include "JungleBiome.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
@@ -15,9 +19,6 @@
 #include "minecraft/world/level/tile/TallGrassPlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 JungleBiome::JungleBiome(int id) : Biome(id) {
     decorator->treeCount = 50;

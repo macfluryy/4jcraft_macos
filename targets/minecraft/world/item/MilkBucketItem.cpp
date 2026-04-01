@@ -1,6 +1,7 @@
+#include "MilkBucketItem.h"
+
 #include <memory>
 
-#include "MilkBucketItem.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"

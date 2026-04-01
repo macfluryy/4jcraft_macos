@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <string>
 
-#include "minecraft/client/model/Vertex.h"
 #include "minecraft/client/model/Polygon.h"
+#include "minecraft/client/model/Vertex.h"
 
 class Model;
 class ModelPart;

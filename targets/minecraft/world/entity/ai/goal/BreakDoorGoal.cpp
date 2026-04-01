@@ -1,4 +1,5 @@
 #include "BreakDoorGoal.h"
+
 #include "java/Random.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/entity/Mob.h"

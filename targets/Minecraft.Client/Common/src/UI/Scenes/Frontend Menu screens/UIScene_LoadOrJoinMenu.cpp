@@ -1,22 +1,22 @@
-#include <thread>
-#include <chrono>
-
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_LoadOrJoinMenu.h"
 
+#include <chrono>
+#include <thread>
+
+#include "Minecraft.Client/Common/src/Network/SessionInfo.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "console_helpers/PortableFileIO.h"
 #include "console_helpers/StringHelpers.h"
+#include "minecraft/client/ProgressRenderer.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
-#include "console_helpers/PortableFileIO.h"
-#include "minecraft/client/ProgressRenderer.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "Minecraft.Client/Common/src/Network/SessionInfo.h"
 
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)
 unsigned long UIScene_LoadOrJoinMenu::m_ulFileSize = 0L;

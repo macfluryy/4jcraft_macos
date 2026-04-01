@@ -1,10 +1,12 @@
+#include "RemotePlayer.h"
+
 #include <math.h>
+
 #include <memory>
 #include <vector>
 
-#include "RemotePlayer.h"
-#include "minecraft/util/Mth.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

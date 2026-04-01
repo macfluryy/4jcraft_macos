@@ -1,7 +1,8 @@
+#include "SnowItem.h"
+
 #include <memory>
 #include <optional>
 
-#include "SnowItem.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/AuxDataTileItem.h"
 #include "minecraft/world/item/ItemInstance.h"

@@ -5,8 +5,8 @@
 #include <unordered_map>
 
 #include "console_helpers/HashExtension.h"
-#include "java/JavaIntHash.h"
 #include "java/Class.h"
+#include "java/JavaIntHash.h"
 
 class Level;
 class Packet;

@@ -1,8 +1,9 @@
+#include "KillCommand.h"
+
 #include <limits>
 #include <memory>
 #include <string>
 
-#include "KillCommand.h"
 #include "minecraft/commands/CommandSender.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/player/Player.h"

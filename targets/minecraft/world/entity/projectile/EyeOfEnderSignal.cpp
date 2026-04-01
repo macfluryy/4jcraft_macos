@@ -1,12 +1,13 @@
+#include "EyeOfEnderSignal.h"
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
 #include "java/JavaMath.h"
-#include "EyeOfEnderSignal.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

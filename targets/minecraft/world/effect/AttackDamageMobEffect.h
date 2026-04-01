@@ -1,7 +1,7 @@
 #pragma once
 
-#include "MobEffect.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "MobEffect.h"
 
 class AttributeModifier;
 

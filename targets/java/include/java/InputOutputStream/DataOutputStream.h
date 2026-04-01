@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "OutputStream.h"
 #include "DataOutput.h"
+#include "OutputStream.h"
 
 class DataOutputStream : public OutputStream, public DataOutput {
 private:

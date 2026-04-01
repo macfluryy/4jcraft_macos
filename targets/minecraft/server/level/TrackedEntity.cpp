@@ -1,20 +1,22 @@
+#include "TrackedEntity.h"
+
 #include <assert.h>
 #include <math.h>
 #include <stdint.h>
 #include <stdlib.h>
+
 #include <string>
 #include <vector>
 
-#include "TrackedEntity.h"
-#include "ServerPlayer.h"
-#include "minecraft/server/network/PlayerConnection.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/PlayerList.h"
-#include "EntityTracker.h"
 #include "4J.Common/4J_Compat.h"
+#include "EntityTracker.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "ServerPlayer.h"
+#include "java/Class.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/network/packet/AddEntityPacket.h"
 #include "minecraft/network/packet/AddExperienceOrbPacket.h"
@@ -33,6 +35,10 @@
 #include "minecraft/network/packet/TeleportEntityPacket.h"
 #include "minecraft/network/packet/UpdateAttributesPacket.h"
 #include "minecraft/network/packet/UpdateMobEffectPacket.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/network/PlayerConnection.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Creature.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
@@ -53,10 +59,6 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "java/Class.h"
 
 class AttributeInstance;
 class MobEffectInstance;

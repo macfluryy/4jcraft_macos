@@ -1,11 +1,12 @@
+#include "Polygon.h"
+
 #include <algorithm>
 #include <span>
 #include <vector>
 
 #include "Vertex.h"
-#include "Polygon.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/world/phys/Vec3.h"
 
 _Polygon::_Polygon(const std::span<const Vertex> vertices)
     : vertexCount(vertices.size()),

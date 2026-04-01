@@ -1,13 +1,15 @@
+#include "UIComponent_Panorama.h"
+
 #include <stdint.h>
+
 #include <mutex>
 
-#include "UIComponent_Panorama.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Panorama.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/storage/LevelData.h"
 

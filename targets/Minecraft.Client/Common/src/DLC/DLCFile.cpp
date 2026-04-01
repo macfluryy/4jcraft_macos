@@ -1,6 +1,7 @@
+#include "DLCFile.h"
+
 #include <sstream>
 
-#include "DLCFile.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 

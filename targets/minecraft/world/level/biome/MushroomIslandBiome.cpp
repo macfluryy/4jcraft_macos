@@ -1,7 +1,9 @@
+#include "MushroomIslandBiome.h"
+
 #include <stdint.h>
+
 #include <vector>
 
-#include "MushroomIslandBiome.h"
 #include "BiomeDecorator.h"
 #include "java/Class.h"
 #include "minecraft/world/level/tile/Tile.h"

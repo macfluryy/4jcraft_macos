@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_FullscreenProgress.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"
 

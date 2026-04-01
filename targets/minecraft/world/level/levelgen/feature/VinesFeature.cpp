@@ -1,4 +1,5 @@
 #include "VinesFeature.h"
+
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"

@@ -1,17 +1,18 @@
+#include "nbt/Tag.h"
+
 #include <cstdio>
 
-#include "nbt/Tag.h"
-#include "nbt/EndTag.h"
-#include "nbt/ByteTag.h"
 #include "nbt/ByteArrayTag.h"
+#include "nbt/ByteTag.h"
+#include "nbt/CompoundTag.h"
 #include "nbt/DoubleTag.h"
+#include "nbt/EndTag.h"
 #include "nbt/FloatTag.h"
 #include "nbt/IntTag.h"
+#include "nbt/ListTag.h"
 #include "nbt/LongTag.h"
 #include "nbt/ShortTag.h"
 #include "nbt/StringTag.h"
-#include "nbt/ListTag.h"
-#include "nbt/CompoundTag.h"
 
 Tag::Tag(const std::wstring& name) {
     if (name.empty()) {

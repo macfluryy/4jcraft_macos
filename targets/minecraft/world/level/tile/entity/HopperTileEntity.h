@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TileEntity.h"
 #include "Hopper.h"
+#include "TileEntity.h"
 
 class ItemEntity;
 

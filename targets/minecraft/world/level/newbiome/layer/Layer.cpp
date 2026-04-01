@@ -1,4 +1,7 @@
+#include "minecraft/world/level/newbiome/layer/Layer.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
@@ -13,7 +16,6 @@
 #include "minecraft/world/level/newbiome/layer/FuzzyZoomLayer.h"
 #include "minecraft/world/level/newbiome/layer/GrowMushroomIslandLayer.h"
 #include "minecraft/world/level/newbiome/layer/IslandLayer.h"
-#include "minecraft/world/level/newbiome/layer/Layer.h"
 #include "minecraft/world/level/newbiome/layer/RegionHillsLayer.h"
 #include "minecraft/world/level/newbiome/layer/RiverInitLayer.h"
 #include "minecraft/world/level/newbiome/layer/RiverLayer.h"

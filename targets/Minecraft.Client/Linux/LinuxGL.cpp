@@ -3,10 +3,10 @@
 #include <cstring>
 
 #include "4J.Render/4J_Render.h"
-#include "java/IntBuffer.h"
-#include "java/FloatBuffer.h"
-#include "java/ByteBuffer.h"
 #include "Minecraft.Client/include/stubs.h"
+#include "java/ByteBuffer.h"
+#include "java/FloatBuffer.h"
+#include "java/IntBuffer.h"
 
 extern C4JRender RenderManager;
 
@@ -108,9 +108,9 @@ void glEndList_4J(int) {}
 void glTexGen_4J(int, int, FloatBuffer*) {}
 
 // query objects
-#include <dlfcn.h>
 #include <GL/gl.h>
 #include <GL/glext.h>
+#include <dlfcn.h>
 #include <stdio.h>
 #include <string.h>
 

@@ -1,6 +1,7 @@
+#include "GeneralStat.h"
+
 #include <vector>
 
-#include "GeneralStat.h"
 #include "minecraft/stats/Stat.h"
 #include "minecraft/stats/Stats.h"
 

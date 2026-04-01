@@ -1,10 +1,11 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "minecraft/world/level/GameRules.h"
 

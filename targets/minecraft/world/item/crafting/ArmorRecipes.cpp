@@ -1,9 +1,10 @@
 // package net.minecraft.world.item.crafting;
 
+#include "ArmorRecipes.h"
+
 #include <vector>
 
 #include "Recipes.h"
-#include "ArmorRecipes.h"
 #include "java/Class.h"
 #include "minecraft/world/item/ArmorItem.h"
 #include "minecraft/world/item/Item.h"

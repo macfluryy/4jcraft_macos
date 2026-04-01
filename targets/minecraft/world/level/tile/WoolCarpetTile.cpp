@@ -1,6 +1,7 @@
+#include "WoolCarpetTile.h"
+
 #include <optional>
 
-#include "WoolCarpetTile.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"

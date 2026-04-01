@@ -1,12 +1,11 @@
+#include "EnchantmentHelper.h"
+
 #include <algorithm>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "EnchantmentHelper.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/util/WeighedRandom.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/item/EnchantedBookItem.h"
@@ -15,6 +14,8 @@
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentCategory.h"
 #include "minecraft/world/item/enchantment/EnchantmentInstance.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 Random EnchantmentHelper::random;
 

@@ -1,6 +1,7 @@
+#include "WaterAnimal.h"
+
 #include <memory>
 
-#include "WaterAnimal.h"
 #include "java/Random.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/PathfinderMob.h"

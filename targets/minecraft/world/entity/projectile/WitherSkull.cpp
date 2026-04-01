@@ -1,7 +1,9 @@
+#include "WitherSkull.h"
+
 #include <stdint.h>
+
 #include <algorithm>
 
-#include "WitherSkull.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"

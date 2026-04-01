@@ -1,8 +1,9 @@
+#include "FurnaceResultSlot.h"
+
 #include <algorithm>
 #include <cmath>
 
 #include "java/JavaMath.h"
-#include "FurnaceResultSlot.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
 #include "minecraft/world/entity/player/Player.h"

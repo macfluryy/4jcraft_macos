@@ -1,14 +1,19 @@
+#include "Explosion.h"
+
 #include <math.h>
 #include <stddef.h>
+
 #include <utility>
 #include <vector>
 
-#include "Explosion.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
@@ -18,9 +23,6 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 Explosion::Explosion(Level* level, std::shared_ptr<Entity> source, double x,
                      double y, double z, float r) {

@@ -1,9 +1,10 @@
+#include "SetPlayerTeamPacket.h"
+
 #include <unordered_set>
 
-#include "PacketListener.h"
-#include "SetPlayerTeamPacket.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/player/Player.h"

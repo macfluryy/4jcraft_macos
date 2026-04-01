@@ -1,13 +1,15 @@
+#include "Blaze.h"
+
 #include <stdint.h>
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
-#include "Blaze.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/Mob.h"

@@ -1,15 +1,16 @@
+#include "OreFeature.h"
+
 #include <numbers>
 
-#include "OreFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 void OreFeature::_init(int tile, int count, int targetTile) {
     this->tile = tile;

@@ -1,6 +1,7 @@
+#include "PathfinderMob.h"
+
 #include <cstdlib>
 
-#include "PathfinderMob.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/Pos.h"

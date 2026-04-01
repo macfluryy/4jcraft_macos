@@ -1,7 +1,9 @@
+#include "PathNavigation.h"
+
 #include <stdlib.h>
+
 #include <cmath>
 
-#include "PathNavigation.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"

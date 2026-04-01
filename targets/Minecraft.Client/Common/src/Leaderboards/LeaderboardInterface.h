@@ -1,7 +1,7 @@
 #pragma once
 
-#include "LeaderboardManager.h"
 #include "4J.Common/4J_Compat.h"
+#include "LeaderboardManager.h"
 
 // 4J-JEV: Simple interface for handling ReadStat failures.
 class LeaderboardInterface {

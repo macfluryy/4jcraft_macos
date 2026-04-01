@@ -1,10 +1,12 @@
 
+#include "minecraft/world/level/newbiome/layer/FuzzyZoomLayer.h"
+
 #include <stdint.h>
+
 #include <algorithm>
 #include <memory>
 #include <vector>
 
-#include "minecraft/world/level/newbiome/layer/FuzzyZoomLayer.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 
 FuzzyZoomLayer::FuzzyZoomLayer(int64_t seedMixup, std::shared_ptr<Layer> parent)

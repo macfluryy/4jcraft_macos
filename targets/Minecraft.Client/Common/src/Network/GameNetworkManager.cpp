@@ -1,42 +1,40 @@
-#include "Minecraft.Client/include/stdafx.h"
+#include "GameNetworkManager.h"
 
-#include <thread>
 #include <chrono>
-#include <fstream>
 #include <filesystem>
+#include <fstream>
+#include <thread>
 
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/phys/Vec3.h"
+#include "4J_Input.h"
+#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "Minecraft.Client/include/stdafx.h"
 #include "Socket.h"
+#include "console_helpers/StringHelpers.h"
 #include "console_helpers/ThreadName.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/item/crafting/FireworksRecipe.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "console_helpers/compression.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/User.h"
+#include "minecraft/client/gui/Gui.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/LevelRenderer.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/server/network/PlayerConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/client/ProgressRenderer.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/item/crafting/FireworksRecipe.h"
 #include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/skins/TexturePack.h"
-
-#include "minecraft/client/gui/Gui.h"
-#include "minecraft/client/renderer/LevelRenderer.h"
-#include "Minecraft.Client/Common/src/GameRules/ConsoleGameRules.h"
-#include "GameNetworkManager.h"
-
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
-#include "4J_Input.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
 
 // Global instance
 CGameNetworkManager g_NetworkManager;

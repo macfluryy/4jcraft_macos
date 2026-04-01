@@ -1,6 +1,7 @@
+#include "MerchantMenu.h"
+
 #include <vector>
 
-#include "MerchantMenu.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"

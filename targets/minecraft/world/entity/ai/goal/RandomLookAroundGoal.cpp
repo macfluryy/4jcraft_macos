@@ -1,7 +1,9 @@
+#include "RandomLookAroundGoal.h"
+
 #include <math.h>
+
 #include <numbers>
 
-#include "RandomLookAroundGoal.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/control/Control.h"

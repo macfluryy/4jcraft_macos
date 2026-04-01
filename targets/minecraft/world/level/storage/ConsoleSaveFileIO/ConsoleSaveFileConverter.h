@@ -1,8 +1,11 @@
 #pragma once
+
 #include "java/File.h"
+
 class FileEntry;
 class ConsoleSaveFile;
 class ProgressRenderer;
+class ProgressListener;
 
 // 4J Stu - This code is taken from the standalone save converter tool, and
 // modified slightly

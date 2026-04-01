@@ -1,7 +1,9 @@
+#include "ModifiableAttributeInstance.h"
+
 #include <assert.h>
+
 #include <utility>
 
-#include "ModifiableAttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
 

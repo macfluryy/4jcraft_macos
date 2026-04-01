@@ -1,8 +1,9 @@
 
+#include "minecraft/world/level/levelgen/structure/MineShaftStart.h"
+
 #include <list>
 
 #include "minecraft/world/level/levelgen/structure/MineShaftPieces.h"
-#include "minecraft/world/level/levelgen/structure/MineShaftStart.h"
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
 
 class Level;

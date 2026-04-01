@@ -1,9 +1,10 @@
+#include "VillagerGolemModel.h"
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
 #include "minecraft/client/model/geom/ModelPart.h"
-#include "VillagerGolemModel.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/VillagerGolem.h"
 

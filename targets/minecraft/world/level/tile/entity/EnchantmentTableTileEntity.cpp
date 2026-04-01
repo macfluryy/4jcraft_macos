@@ -1,8 +1,8 @@
+#include "EnchantmentTableTileEntity.h"
+
 #include <cmath>
 
 #include "minecraft/stdafx.h"
-
-#include "EnchantmentTableTileEntity.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 

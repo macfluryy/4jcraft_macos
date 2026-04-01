@@ -1,7 +1,11 @@
 #pragma once
 
-#include "minecraft/world/SimpleContainer.h"
+#include <memory>
 
+#include "minecraft/world/SimpleContainer.h"
+#include "nbt/CompoundTag.h"
+
+class ItemInstance;
 class EnderChestTileEntity;
 
 class PlayerEnderChestContainer : public SimpleContainer {

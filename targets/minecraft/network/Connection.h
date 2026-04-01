@@ -1,20 +1,20 @@
 #pragma once
 
 #include <stdint.h>
-#include <queue>
-#include <mutex>
+
 #include <memory>
+#include <mutex>
+#include <queue>
 #include <string>
 
-#include "java/System.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "console_helpers/C4JThread.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "console_helpers/C4JThread.h"
-#include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "console_helpers/C4JThread.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/System.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
 
 class DataInputStream;
 class DataOutputStream;

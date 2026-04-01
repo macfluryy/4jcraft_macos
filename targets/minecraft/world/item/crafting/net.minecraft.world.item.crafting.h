@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Recipes.h"
-#include "Recipy.h"
 #include "ArmorDyeRecipe.h"
 #include "ArmorRecipes.h"
 #include "ClothDyeRecipes.h"
-#include "FoodRecipes.h"
 #include "FireworksRecipe.h"
+#include "FoodRecipes.h"
 #include "FurnaceRecipes.h"
 #include "OreRecipes.h"
+#include "Recipes.h"
+#include "Recipy.h"
 #include "ShapedRecipy.h"
 #include "ShapelessRecipy.h"
 #include "StructureRecipes.h"

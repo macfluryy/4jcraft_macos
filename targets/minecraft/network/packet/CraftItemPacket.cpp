@@ -1,5 +1,6 @@
-#include "PacketListener.h"
 #include "CraftItemPacket.h"
+
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

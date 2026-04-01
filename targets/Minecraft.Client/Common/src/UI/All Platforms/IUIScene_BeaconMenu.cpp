@@ -1,21 +1,23 @@
+#include "IUIScene_BeaconMenu.h"
+
 #include <assert.h>
+
 #include <string>
 #include <vector>
 
-#include "minecraft/network/packet/CustomPayloadPacket.h"
-#include "minecraft/util/HtmlString.h"
-#include "IUIScene_BeaconMenu.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/network/packet/CustomPayloadPacket.h"
+#include "minecraft/util/HtmlString.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/inventory/BeaconMenu.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
-#include "java/InputOutputStream/ByteArrayOutputStream.h"
-#include "java/InputOutputStream/DataOutputStream.h"
 
 IUIScene_BeaconMenu::IUIScene_BeaconMenu() {
     m_beacon = nullptr;

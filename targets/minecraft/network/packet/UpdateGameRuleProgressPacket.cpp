@@ -1,7 +1,8 @@
+#include "UpdateGameRuleProgressPacket.h"
+
 #include <string.h>
 
 #include "PacketListener.h"
-#include "UpdateGameRuleProgressPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

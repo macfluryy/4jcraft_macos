@@ -1,7 +1,8 @@
+#include "CommandDispatcher.h"
+
 #include <string>
 #include <utility>
 
-#include "CommandDispatcher.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/commands/Command.h"
 #include "minecraft/commands/CommandSender.h"

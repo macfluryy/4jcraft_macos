@@ -1,6 +1,7 @@
+#include "IUIScene_DispenserMenu.h"
+
 #include <assert.h>
 
-#include "IUIScene_DispenserMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 
 IUIScene_AbstractContainerMenu::ESceneSection

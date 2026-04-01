@@ -1,18 +1,19 @@
+#include "SharedMonsterAttributes.h"
+
 #include <limits>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
-#include "SharedMonsterAttributes.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttribute.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
 #include "minecraft/world/entity/ai/attributes/RangedAttribute.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 Attribute* SharedMonsterAttributes::MAX_HEALTH =
     (new RangedAttribute(eAttributeId_GENERIC_MAXHEALTH, 20, 0,

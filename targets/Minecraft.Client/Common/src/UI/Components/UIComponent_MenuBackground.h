@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class UILayer;

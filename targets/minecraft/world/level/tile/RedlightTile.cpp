@@ -1,6 +1,7 @@
+#include "RedlightTile.h"
+
 #include <string>
 
-#include "RedlightTile.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"

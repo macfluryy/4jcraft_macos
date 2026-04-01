@@ -1,7 +1,9 @@
+#include "SimplexNoise.h"
+
 #include <math.h>
+
 #include <vector>
 
-#include "SimplexNoise.h"
 #include "java/Random.h"
 
 int SimplexNoise::grad3[12][3] = {

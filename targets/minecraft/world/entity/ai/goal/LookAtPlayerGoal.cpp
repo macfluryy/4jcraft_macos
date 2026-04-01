@@ -1,4 +1,5 @@
 #include "LookAtPlayerGoal.h"
+
 #include "java/Random.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/Mob.h"

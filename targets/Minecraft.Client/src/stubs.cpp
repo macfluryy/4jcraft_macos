@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/stubs.h"
+
+#include "Minecraft.Client/Linux/Linux_App.h"
 #if defined(__linux__)
 
 void LinuxLogStubLightmapProbe() {

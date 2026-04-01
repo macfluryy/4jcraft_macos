@@ -1,8 +1,9 @@
+#include "Achievement.h"
+
 #include <vector>
 
 #include "Achievements.h"
 #include "DescFormatter.h"
-#include "Achievement.h"
 #include "minecraft/locale/I18n.h"
 #include "minecraft/stats/Stat.h"
 #include "minecraft/world/item/ItemInstance.h"

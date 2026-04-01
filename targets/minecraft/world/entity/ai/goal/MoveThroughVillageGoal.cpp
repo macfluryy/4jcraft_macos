@@ -1,9 +1,9 @@
-#include <limits>
+#include "MoveThroughVillageGoal.h"
+
 #include <format>
+#include <limits>
 #include <optional>
 
-#include "MoveThroughVillageGoal.h"
-#include "minecraft/world/level/pathfinder/Path.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/control/Control.h"
@@ -13,6 +13,7 @@
 #include "minecraft/world/entity/ai/village/Village.h"
 #include "minecraft/world/entity/ai/village/Villages.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/pathfinder/Path.h"
 #include "minecraft/world/phys/Vec3.h"
 
 MoveThroughVillageGoal::MoveThroughVillageGoal(PathfinderMob* mob,

@@ -1,5 +1,6 @@
-#include "MerchantMenu.h"
 #include "MerchantContainer.h"
+
+#include "MerchantMenu.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/trading/Merchant.h"
 #include "minecraft/world/item/trading/MerchantRecipe.h"

@@ -1,6 +1,6 @@
 #include "SmoothStoneBrickTile.h"
-#include "minecraft/world/net.minecraft.world.h"
 
+#include "minecraft/world/net.minecraft.world.h"
 #include "strings.h"
 
 const std::wstring SmoothStoneBrickTile::TEXTURE_NAMES[] = {

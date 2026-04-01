@@ -1,12 +1,13 @@
 #pragma once
-#include "minecraft/world/level/material/Material.h"
-#include "minecraft/world/phys/Vec3.h"
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <vector>
+
 #include "console_helpers/Definitions.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include <cstdint>
-#include <optional>
-#include <memory>
-#include <vector>
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/phys/Vec3.h"
 
 class GrassTile;
 class LeafTile;

@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "minecraft/world/entity/TamableAnimal.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/TamableAnimal.h"
 
 class TemptGoal;
 class Entity;

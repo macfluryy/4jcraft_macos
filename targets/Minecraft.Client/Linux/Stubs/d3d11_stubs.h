@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include "winapi_stubs.h"
 #include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMath.h"
+#include "winapi_stubs.h"
 
 using namespace DirectX;
 

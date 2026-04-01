@@ -1,8 +1,9 @@
-#include <optional>
+#include "TripWireTile.h"
+
 #include <format>
+#include <optional>
 #include <vector>
 
-#include "TripWireTile.h"
 #include "minecraft/Direction.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Player.h"

@@ -1,5 +1,6 @@
-#include "gl3_loader.h"
 #include "4J_Render.h"
+
+#include "gl3_loader.h"
 
 // undefine macros from header to avoid argument mismatch
 #undef glGenTextures
@@ -21,18 +22,18 @@
 #include "stb_image.h"
 
 #define GLM_FORCE_RADIANS
+#include <dlfcn.h>
+#include <pthread.h>
+
+#include <cassert>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
-#include <cstring>
-#include <cstdlib>
-#include <cstdio>
-#include <cassert>
 #include <unordered_map>
 #include <vector>
-#include <pthread.h>
-#include <dlfcn.h>
 
 C4JRender RenderManager;
 

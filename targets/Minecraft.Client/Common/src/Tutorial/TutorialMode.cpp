@@ -1,17 +1,18 @@
-#include "minecraft/stdafx.h"
-#include "console_helpers/PlatformTime.h"
+#include "TutorialMode.h"
+
 #include <memory>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/world/entity/player/Inventory.h"
-#include "TutorialMode.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "console_helpers/PlatformTime.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/stdafx.h"
+#include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 class ClientConnection;
 

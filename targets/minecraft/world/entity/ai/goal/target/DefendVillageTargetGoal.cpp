@@ -1,4 +1,5 @@
 #include "DefendVillageTargetGoal.h"
+
 #include "java/Random.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/PathfinderMob.h"

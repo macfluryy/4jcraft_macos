@@ -1,3 +1,5 @@
+#include "PathFinder.h"
+
 #include <cmath>
 #include <utility>
 #include <vector>
@@ -5,7 +7,6 @@
 #include "BinaryHeap.h"
 #include "Node.h"
 #include "Path.h"
-#include "PathFinder.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"

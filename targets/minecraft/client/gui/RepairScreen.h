@@ -3,9 +3,9 @@
 #include <memory>
 
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/AnvilMenu.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 class EditBox;
 class AnvilMenu;

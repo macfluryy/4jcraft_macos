@@ -1,11 +1,12 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/TamableAnimal.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/TamableAnimal.h"
 
 class DamageSource;
 class Entity;

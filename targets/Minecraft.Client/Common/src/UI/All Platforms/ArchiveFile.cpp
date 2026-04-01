@@ -1,13 +1,15 @@
+#include "ArchiveFile.h"
+
 #include <assert.h>
+
 #include <cstdlib>
 #include <utility>
 
-#include "console_helpers/PortableFileIO.h"
-#include "console_helpers/compression.h"
-#include "ArchiveFile.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/ArchiveFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "console_helpers/PortableFileIO.h"
+#include "console_helpers/compression.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/FileInputStream.h"

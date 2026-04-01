@@ -1,10 +1,11 @@
+#include "TextureAndGeometryPacket.h"
+
 #include <sstream>
 #include <vector>
 
-#include "PacketListener.h"
-#include "TextureAndGeometryPacket.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

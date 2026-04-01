@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/server/level/GameMode.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 class ClientConnection;
 class GameType;

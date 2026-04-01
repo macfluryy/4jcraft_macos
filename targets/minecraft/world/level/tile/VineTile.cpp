@@ -1,11 +1,11 @@
+#include "VineTile.h"
+
 #include <optional>
 
-#include "VineTile.h"
-#include "minecraft/world/level/material/Material.h"
 #include "java/JavaMath.h"
-#include "minecraft/Facing.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
+#include "minecraft/Facing.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
@@ -15,6 +15,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 

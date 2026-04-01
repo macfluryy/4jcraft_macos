@@ -1,8 +1,9 @@
 #include "TheEndBiomeDecorator.h"
+
+#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/level/levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/level/levelgen/feature/net.minecraft.world.level.levelgen.feature.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
 
 // Spike centre positions, calculated using
 // for(int i=0;i<8;i++)

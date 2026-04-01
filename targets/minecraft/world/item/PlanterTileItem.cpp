@@ -1,10 +1,11 @@
+#include "PlanterTileItem.h"
+
 #include <memory>
 
-#include "PlanterTileItem.h"
-#include "minecraft/stats/GenericStats.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/Facing.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

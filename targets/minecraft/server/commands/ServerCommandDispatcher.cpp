@@ -1,11 +1,9 @@
+#include "ServerCommandDispatcher.h"
+
 #include <memory>
 #include <vector>
 
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/PlayerList.h"
-#include "minecraft/server/level/ServerPlayer.h"
 #include "TeleportCommand.h"
-#include "ServerCommandDispatcher.h"
 #include "minecraft/commands/Command.h"
 #include "minecraft/commands/CommandSender.h"
 #include "minecraft/commands/common/DefaultGameModeCommand.h"
@@ -16,6 +14,9 @@
 #include "minecraft/commands/common/KillCommand.h"
 #include "minecraft/commands/common/TimeCommand.h"
 #include "minecraft/commands/common/ToggleDownfallCommand.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/level/ServerPlayer.h"
 
 ServerCommandDispatcher::ServerCommandDispatcher() {
     addCommand(new TimeCommand());

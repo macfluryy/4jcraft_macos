@@ -1,10 +1,12 @@
+#include "VillageSiege.h"
+
 #include <math.h>
-#include <optional>
+
 #include <format>
 #include <numbers>
+#include <optional>
 #include <vector>
 
-#include "VillageSiege.h"
 #include "java/Random.h"
 #include "minecraft/Pos.h"
 #include "minecraft/world/entity/MobCategory.h"

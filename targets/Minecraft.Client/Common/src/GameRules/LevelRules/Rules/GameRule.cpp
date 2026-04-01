@@ -1,12 +1,14 @@
 
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRule.h"
+
 #include <wchar.h>
+
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <utility>
 
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

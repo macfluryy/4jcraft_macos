@@ -1,12 +1,13 @@
 
 
+#include "TileItem.h"
+
 #include <string>
 
-#include "TileItem.h"
-#include "minecraft/Facing.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"
+#include "minecraft/Facing.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/IconRegister.h"

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/Creature.h"
 #include "minecraft/world/entity/Mob.h"
 

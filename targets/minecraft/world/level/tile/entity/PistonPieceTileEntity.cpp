@@ -1,17 +1,18 @@
+#include "PistonPieceTileEntity.h"
+
 #include <format>
 #include <memory>
 #include <optional>
 #include <string>
 #include <vector>
 
-#include "PistonPieceTileEntity.h"
 #include "PistonMovingTileEntity.h"
 #include "minecraft/Facing.h"
-#include "minecraft/world/level/tile/Tile.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 PistonPieceEntity::PistonPieceEntity() {
     // for the tile entity loader

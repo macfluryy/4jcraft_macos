@@ -1,8 +1,9 @@
+#include "MelonTile.h"
+
 #include <string>
 
-#include "MelonTile.h"
-#include "minecraft/Facing.h"
 #include "java/Random.h"
+#include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/material/Material.h"

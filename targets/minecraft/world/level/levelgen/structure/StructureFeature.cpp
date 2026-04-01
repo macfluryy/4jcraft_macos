@@ -1,5 +1,8 @@
+#include "minecraft/world/level/levelgen/structure/StructureFeature.h"
+
 #include <float.h>
 #include <stdint.h>
+
 #include <format>
 #include <list>
 #include <unordered_map>
@@ -7,8 +10,6 @@
 #include <vector>
 
 #include "StructureStart.h"
-#include "minecraft/world/level/storage/LevelData.h"
-#include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "java/Random.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/Level.h"
@@ -17,6 +18,7 @@
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
+#include "minecraft/world/level/storage/LevelData.h"
 
 StructureFeature::StructureFeature() {
 #ifdef ENABLE_STRUCTURE_SAVING

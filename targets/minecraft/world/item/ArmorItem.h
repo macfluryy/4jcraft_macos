@@ -4,8 +4,8 @@
 #include <string>
 
 #include "Item.h"
-#include "minecraft/core/DefaultDispenseItemBehavior.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "minecraft/core/DefaultDispenseItemBehavior.h"
 
 class Icon;
 class ItemInstance;

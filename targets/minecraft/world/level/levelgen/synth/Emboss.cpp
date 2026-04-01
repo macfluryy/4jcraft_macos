@@ -1,4 +1,5 @@
 #include "Emboss.h"
+
 #include "minecraft/world/level/levelgen/synth/Synth.h"
 
 Emboss::Emboss(Synth* synth) { this->synth = synth; }

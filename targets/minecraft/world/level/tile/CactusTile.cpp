@@ -1,8 +1,9 @@
+#include "CactusTile.h"
+
 #include <memory>
 #include <optional>
 #include <string>
 
-#include "CactusTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/damageSource/DamageSource.h"

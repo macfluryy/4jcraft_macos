@@ -1,9 +1,10 @@
+#include "TextureHolder.h"
+
 #include <algorithm>
 
 #include "Stitcher.h"
 #include "Texture.h"
 #include "console_helpers/StringHelpers.h"
-#include "TextureHolder.h"
 
 TextureHolder::TextureHolder(Texture* texture) {
     scale = 1.0f;

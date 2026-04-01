@@ -3,11 +3,12 @@
 #include <string>
 #include <vector>
 
-#include "UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Common/src/UI/UIString.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "UIControl_Base.h"
 
 class UIControl_Slider : public UIControl_Base {
 private:

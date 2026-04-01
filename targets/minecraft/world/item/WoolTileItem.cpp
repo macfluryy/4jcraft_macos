@@ -1,7 +1,8 @@
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "ItemInstance.h"
-#include "DyePowderItem.h"
 #include "WoolTileItem.h"
+
+#include "DyePowderItem.h"
+#include "ItemInstance.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 const unsigned int WoolTileItem::COLOR_DESCS[] = {
     IDS_TILE_CLOTH_BLACK,      IDS_TILE_CLOTH_RED,     IDS_TILE_CLOTH_GREEN,

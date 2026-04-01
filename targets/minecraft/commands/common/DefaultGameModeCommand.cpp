@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "DefaultGameModeCommand.h"
+
+#include <memory>
 
 EGameCommand DefaultGameModeCommand::getId() {
     return eGameCommand_DefaultGameMode;

@@ -1,4 +1,5 @@
 #include "ComplexItem.h"
+
 #include "minecraft/world/item/Item.h"
 
 class ItemInstance;

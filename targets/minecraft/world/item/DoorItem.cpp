@@ -1,15 +1,16 @@
 
+#include "DoorItem.h"
+
 #include <memory>
 
 #include "minecraft/Facing.h"
-#include "minecraft/world/level/material/Material.h"
 #include "minecraft/stats/GenericStats.h"
-#include "DoorItem.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 DoorItem::DoorItem(int id, Material* material) : Item(id) {

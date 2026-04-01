@@ -1,7 +1,7 @@
 #pragma once
-#include "AttributeModifier.h"
-
 #include <unordered_set>
+
+#include "AttributeModifier.h"
 
 class AttributeInstance {
 public:

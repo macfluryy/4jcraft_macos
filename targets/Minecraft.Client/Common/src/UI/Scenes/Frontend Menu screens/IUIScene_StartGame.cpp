@@ -1,15 +1,17 @@
+#include "IUIScene_StartGame.h"
+
 #include <wchar.h>
+
 #include <cstdint>
 
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/Minecraft.h"
-#include "IUIScene_StartGame.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 
 class UILayer;
 

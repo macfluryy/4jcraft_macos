@@ -1,4 +1,5 @@
 #include "HitResult.h"
+
 #include "minecraft/world/entity/Entity.h"
 
 HitResult::HitResult(int x, int y, int z, int f, const Vec3& pos) {

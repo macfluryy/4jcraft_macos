@@ -1,6 +1,7 @@
+#include "SimpleFoiledItem.h"
+
 #include <memory>
 
-#include "SimpleFoiledItem.h"
 #include "minecraft/world/item/Item.h"
 
 SimpleFoiledItem::SimpleFoiledItem(int id) : Item(id) {}

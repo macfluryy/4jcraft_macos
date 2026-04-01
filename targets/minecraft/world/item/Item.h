@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Rarity.h"
+#include "UseAnim.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
-#include "UseAnim.h"
-#include "Rarity.h"
 
 class MapItem;
 class Mob;

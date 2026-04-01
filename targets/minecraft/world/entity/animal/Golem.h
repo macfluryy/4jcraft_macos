@@ -1,7 +1,7 @@
 #pragma once
 
-#include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/Creature.h"
+#include "minecraft/world/entity/PathfinderMob.h"
 
 class Level;
 class CompoundTag;

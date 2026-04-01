@@ -1,11 +1,11 @@
-#include "Minecraft.Client/include/stdafx.h"
-
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_ControlsMenu.h"
+
+#include "4J_Input.h"
+#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
-#include "4J_Input.h"
 
 UIScene_ControlsMenu::UIScene_ControlsMenu(int iPad, void* initData,
                                            UILayer* parentLayer)

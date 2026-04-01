@@ -1,16 +1,17 @@
 #pragma once
 #include <stdint.h>
-#include <mutex>
+
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include "minecraft/server/ConsoleInputSource.h"
-#include "minecraft/network/packet/PacketListener.h"
-#include "java/JavaIntHash.h"
 #include "4J.Common/4J_Compat.h"
+#include "java/JavaIntHash.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/network/packet/PacketListener.h"
+#include "minecraft/server/ConsoleInputSource.h"
 
 class MinecraftServer;
 class Connection;

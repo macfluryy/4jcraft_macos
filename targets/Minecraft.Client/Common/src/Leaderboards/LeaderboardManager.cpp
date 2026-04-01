@@ -1,9 +1,10 @@
-#include "console_helpers/StringHelpers.h"
 #include "LeaderboardManager.h"
+
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/StringHelpers.h"
 
 const std::wstring LeaderboardManager::filterNames[eNumFilterModes] = {
     L"Friends", L"MyScore", L"TopRank"};

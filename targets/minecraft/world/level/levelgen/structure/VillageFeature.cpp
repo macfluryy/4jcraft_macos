@@ -1,14 +1,14 @@
+#include "VillageFeature.h"
+
 #include <list>
 #include <utility>
 #include <vector>
 
-#include "VillageFeature.h"
-#include "VillagePieces.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "VillagePieces.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/Biome.h"
@@ -17,6 +17,7 @@
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
+#include "nbt/CompoundTag.h"
 
 const std::wstring VillageFeature::OPTION_SIZE_MODIFIER = L"size";
 const std::wstring VillageFeature::OPTION_SPACING = L"distance";

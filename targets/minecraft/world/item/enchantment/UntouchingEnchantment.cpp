@@ -1,6 +1,6 @@
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "UntouchingEnchantment.h"
 
+#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "strings.h"
 
 UntouchingEnchantment::UntouchingEnchantment(int id, int frequency)

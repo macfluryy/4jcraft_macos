@@ -1,4 +1,5 @@
 #include "ArmorSlot.h"
+
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ArmorItem.h"
 #include "minecraft/world/item/Item.h"

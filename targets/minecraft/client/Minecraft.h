@@ -40,11 +40,11 @@ class ColourTable;
 class MultiPlayerGameMode;
 class LivingEntity;
 
-#include "java/File.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
-#include "console_helpers/C4JThread.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 #include "4J.Common/4J_Compat.h"
+#include "console_helpers/C4JThread.h"
+#include "java/File.h"
+#include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/network/packet/DisconnectPacket.h"
 
 #if defined(linux)
 #undef linux

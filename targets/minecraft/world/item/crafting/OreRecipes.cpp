@@ -1,10 +1,11 @@
-#include "minecraft/world/item/DyePowderItem.h"
-#include "minecraft/world/level/tile/Tile.h"
-#include "Recipes.h"
 #include "OreRecipes.h"
+
+#include "Recipes.h"
 #include "minecraft/world/item/CoalItem.h"
+#include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 void OreRecipies::_init() {
     ADD_OBJECT(map[0], Tile::goldBlock);

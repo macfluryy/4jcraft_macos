@@ -1,6 +1,7 @@
+#include "BrewingStandMenu.h"
+
 #include <vector>
 
-#include "BrewingStandMenu.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"

@@ -1,12 +1,13 @@
+#include "ReceivingLevelScreen.h"
+
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "ReceivingLevelScreen.h"
 #include "ClientConnection.h"
+#include "minecraft/client/gui/Screen.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/network/packet/KeepAlivePacket.h"
-#include "minecraft/client/gui/Screen.h"
 
 ReceivingLevelScreen::ReceivingLevelScreen(ClientConnection* connection) {
     tickCount = 0;

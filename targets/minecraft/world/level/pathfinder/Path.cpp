@@ -1,6 +1,7 @@
+#include "Path.h"
+
 #include <string.h>
 
-#include "Path.h"
 #include "minecraft/world/entity/Entity.h"
 
 Path::~Path() {

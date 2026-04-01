@@ -1,7 +1,8 @@
+#include "NameTagItem.h"
+
 #include <memory>
 #include <string>
 
-#include "NameTagItem.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"

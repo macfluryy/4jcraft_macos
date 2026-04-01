@@ -1,11 +1,13 @@
+#include "GhastModel.h"
+
 #include <math.h>
+
 #include <memory>
 
-#include "java/Random.h"
-#include "GhastModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "4J.Render/4J_Render.h"
+#include "java/Random.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 GhastModel::GhastModel() : Model() {
     int yoffs = -16;

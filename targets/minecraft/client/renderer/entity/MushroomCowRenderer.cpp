@@ -1,19 +1,21 @@
+#include "MushroomCowRenderer.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 
-#include "minecraft/client/model/geom/ModelPart.h"
-#include "MushroomCowRenderer.h"
-#include "minecraft/client/renderer/texture/TextureAtlas.h"
-#include "minecraft/client/model/QuadrupedModel.h"
 #include "4J.Render/4J_Render.h"
+#include "minecraft/client/model/QuadrupedModel.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
+#include "minecraft/client/renderer/texture/TextureAtlas.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/MushroomCow.h"
 #include "minecraft/world/level/tile/PlantTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 
 class Model;
 

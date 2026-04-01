@@ -1,14 +1,16 @@
+#include "ArrowRenderer.h"
+
 #include <GL/gl.h>
 #include <math.h>
+
 #include <memory>
 
-#include "ArrowRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/projectile/Arrow.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/projectile/Arrow.h"
 
 ResourceLocation ArrowRenderer::ARROW_LOCATION =
     ResourceLocation(TN_ITEM_ARROWS);

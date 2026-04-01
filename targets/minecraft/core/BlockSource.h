@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "LocatableSource.h"
 
 class Tile;

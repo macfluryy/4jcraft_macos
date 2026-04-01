@@ -1,8 +1,9 @@
 #include "minecraft/StaticConstructors.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/stats/CommonStats.h"
+
 #include "minecraft/SharedConstants.h"
 #include "minecraft/network/packet/Packet.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/stats/CommonStats.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/stats/Stats.h"
 #include "minecraft/world/effect/MobEffect.h"

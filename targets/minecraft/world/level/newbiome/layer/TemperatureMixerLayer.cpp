@@ -1,10 +1,11 @@
 
+#include "minecraft/world/level/newbiome/layer/TemperatureMixerLayer.h"
+
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
-#include "minecraft/world/level/newbiome/layer/TemperatureMixerLayer.h"
 
 TemperatureMixerLayer::TemperatureMixerLayer(std::shared_ptr<Layer> temp,
                                              std::shared_ptr<Layer> parent,

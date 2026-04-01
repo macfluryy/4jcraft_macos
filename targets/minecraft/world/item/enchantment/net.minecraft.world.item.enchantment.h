@@ -20,5 +20,4 @@
 #include "ArrowFireEnchantment.h"
 #include "ArrowInfiniteEnchantment.h"
 #include "ArrowKnockbackEnchantment.h"
-
 #include "ThornsEnchantment.h"

@@ -1,17 +1,19 @@
+#include "CompoundGameRuleDefinition.h"
+
 #include <wchar.h>
+
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <utility>
 
-#include "console_helpers/StringHelpers.h"
-#include "CompoundGameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CollectItemRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/UpdatePlayerRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/UseTileRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRule.h"
+#include "console_helpers/StringHelpers.h"
 
 CompoundGameRuleDefinition::CompoundGameRuleDefinition() {
     m_lastRuleStatusChanged = nullptr;

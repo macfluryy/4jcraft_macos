@@ -1,10 +1,9 @@
 
-#include "Minecraft.Client/include/stdafx.h"
+#include "UIScene_MessageBox.h"
 
 #include "4J_Profile.h"
-
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "UIScene_MessageBox.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 UIScene_MessageBox::UIScene_MessageBox(int iPad, void* initData,
                                        UILayer* parentLayer)

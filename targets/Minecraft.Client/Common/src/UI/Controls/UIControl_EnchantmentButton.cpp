@@ -1,24 +1,26 @@
-#include <GL/gl.h>
-#include <iterator>
-#include <sstream>
-#include <algorithm>
-#include <memory>
-
 #include "UIControl_EnchantmentButton.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentButton.h"
+
+#include <GL/gl.h>
+
+#include <algorithm>
+#include <iterator>
+#include <memory>
+#include <sstream>
+
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentButton.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/inventory/EnchantmentMenu.h"
-#include "minecraft/client/gui/Font.h"
 
 UIControl_EnchantmentButton::UIControl_EnchantmentButton() {
     m_index = 0;

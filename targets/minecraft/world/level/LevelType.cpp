@@ -10,9 +10,9 @@
 // 	private bool selectable;
 // 	private bool replacement;
 
-#include <string>
-
 #include "minecraft/world/level/LevelType.h"
+
+#include <string>
 
 LevelType* LevelType::levelTypes[16];  // = new LevelType[16];
 LevelType* LevelType::lvl_normal =

@@ -1,5 +1,8 @@
+#include "minecraft/world/item/ItemInstance.h"
+
 #include <assert.h>
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <sstream>
@@ -9,14 +12,9 @@
 #include <vector>
 
 #include "Item.h"
-#include "minecraft/util/HtmlString.h"
-#include "minecraft/world/item/ItemInstance.h"
 #include "console_helpers/StringHelpers.h"
-#include "minecraft/world/item/alchemy/PotionMacros.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/IntTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/stats/GenericStats.h"
+#include "minecraft/util/HtmlString.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
@@ -27,10 +25,14 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/item/UseAnim.h"
+#include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "minecraft/world/item/enchantment/DigDurabilityEnchantment.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
 #include "minecraft/world/item/enchantment/EnchantmentHelper.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntTag.h"
+#include "nbt/ListTag.h"
 
 class Tag;
 

@@ -1,6 +1,7 @@
+#include "TheEndPortalFrameTile.h"
+
 #include <memory>
 
-#include "TheEndPortalFrameTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/IconRegister.h"

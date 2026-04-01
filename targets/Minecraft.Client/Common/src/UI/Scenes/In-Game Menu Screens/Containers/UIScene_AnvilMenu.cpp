@@ -1,11 +1,12 @@
 
+#include "UIScene_AnvilMenu.h"
+
 #include "Minecraft.Client/Common/src/UI/UI.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/Minecraft.h"
-#include "console_helpers/StringHelpers.h"
-#include "UIScene_AnvilMenu.h"
 
 UIScene_AnvilMenu::UIScene_AnvilMenu(int iPad, void* _initData,
                                      UILayer* parentLayer)

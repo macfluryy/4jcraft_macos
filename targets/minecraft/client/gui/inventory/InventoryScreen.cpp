@@ -1,16 +1,17 @@
+#include "InventoryScreen.h"
+
 #include <string>
 #include <vector>
 
-#include "InventoryScreen.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"
+#include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/achievement/AchievementScreen.h"
 #include "minecraft/client/gui/achievement/StatsScreen.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 InventoryScreen::InventoryScreen(std::shared_ptr<Player> player)
     : AbstractContainerScreen(player->inventoryMenu) {

@@ -1,6 +1,7 @@
+#include "HayBlockTile.h"
+
 #include <string>
 
-#include "HayBlockTile.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/RotatedPillarTile.h"

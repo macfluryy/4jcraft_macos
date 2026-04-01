@@ -1,8 +1,9 @@
+#include "MoveEntityPacket.h"
+
 #include <stdint.h>
 
-#include "PacketListener.h"
-#include "MoveEntityPacket.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

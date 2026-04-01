@@ -2,7 +2,6 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/Entity.h"
 

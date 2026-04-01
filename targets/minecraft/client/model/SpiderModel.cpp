@@ -1,10 +1,11 @@
+#include "SpiderModel.h"
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
-#include "SpiderModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 SpiderModel::SpiderModel() : Model() {
     float g = 0;

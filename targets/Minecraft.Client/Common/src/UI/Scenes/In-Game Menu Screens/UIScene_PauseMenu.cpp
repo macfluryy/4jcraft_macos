@@ -1,14 +1,15 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_PauseMenu.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/skins/DLCTexturePack.h"
-#include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/server/MinecraftServer.h"
 
 UIScene_PauseMenu::UIScene_PauseMenu(int iPad, void* initData,
                                      UILayer* parentLayer)

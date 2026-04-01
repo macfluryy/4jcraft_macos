@@ -1,10 +1,10 @@
+#include "StructureFeatureIO.h"
+
 #include <string>
 #include <unordered_map>
 #include <utility>
 
-#include "StructureFeatureIO.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/level/levelgen/structure/MineShaftPieces.h"
 #include "minecraft/world/level/levelgen/structure/MineShaftStart.h"
 #include "minecraft/world/level/levelgen/structure/NetherBridgeFeature.h"
@@ -18,6 +18,7 @@
 #include "minecraft/world/level/levelgen/structure/StructureStart.h"
 #include "minecraft/world/level/levelgen/structure/VillageFeature.h"
 #include "minecraft/world/level/levelgen/structure/VillagePieces.h"
+#include "nbt/CompoundTag.h"
 
 class Level;
 

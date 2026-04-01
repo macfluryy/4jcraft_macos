@@ -1,23 +1,25 @@
+#include "RepairScreen.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 #include <string>
 
-#include "RepairScreen.h"
-#include "EditBox.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/inventory/AnvilMenu.h"
-#include "minecraft/world/inventory/Slot.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/Minecraft.h"
 #include "4J.Render/4J_Render.h"
+#include "EditBox.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/inventory/AnvilMenu.h"
+#include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "java/InputOutputStream/ByteArrayOutputStream.h"
-#include "java/InputOutputStream/DataOutputStream.h"
-#include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 class Inventory;
 class Level;

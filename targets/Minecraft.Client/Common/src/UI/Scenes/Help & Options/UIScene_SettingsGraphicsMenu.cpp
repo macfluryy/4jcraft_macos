@@ -1,7 +1,7 @@
-#include "Minecraft.Client/include/stdafx.h"
+#include "UIScene_SettingsGraphicsMenu.h"
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "UIScene_SettingsGraphicsMenu.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 UIScene_SettingsGraphicsMenu::UIScene_SettingsGraphicsMenu(int iPad,
                                                            void* initData,

@@ -1,6 +1,7 @@
+#include "RegionHillsLayer.h"
+
 #include <vector>
 
-#include "RegionHillsLayer.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 

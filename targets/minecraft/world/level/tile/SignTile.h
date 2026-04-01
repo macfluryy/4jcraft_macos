@@ -1,12 +1,12 @@
 #pragma once
 
-#include <optional>
 #include <memory>
+#include <optional>
 
 #include "BaseEntityTile.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "minecraft/world/level/material/Material.h"
 #include "java/Class.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 class SignTile : public BaseEntityTile {
     friend class Tile;

@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_HowToPlayMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 
 // strings for buttons in the list
 unsigned int UIScene_HowToPlayMenu::m_uiHTPButtonNameA[] = {

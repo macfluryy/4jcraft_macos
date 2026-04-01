@@ -3,7 +3,6 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/Entity.h"
 #include "Projectile.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"

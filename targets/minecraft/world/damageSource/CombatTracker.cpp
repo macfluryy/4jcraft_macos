@@ -1,6 +1,7 @@
+#include "CombatTracker.h"
+
 #include <string>
 
-#include "CombatTracker.h"
 #include "java/Class.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/util/Mth.h"

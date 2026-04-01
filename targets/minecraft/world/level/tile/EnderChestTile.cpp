@@ -1,10 +1,11 @@
+#include "EnderChestTile.h"
+
 #include <memory>
 #include <string>
 
-#include "EnderChestTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/LivingEntity.h"

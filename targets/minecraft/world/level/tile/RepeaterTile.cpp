@@ -1,9 +1,10 @@
+#include "RepeaterTile.h"
+
 #include <memory>
 
-#include "RepeaterTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/redstone/Redstone.h"

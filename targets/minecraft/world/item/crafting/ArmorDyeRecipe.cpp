@@ -1,8 +1,10 @@
+#include "ArmorDyeRecipe.h"
+
 #include <string.h>
+
 #include <algorithm>
 #include <vector>
 
-#include "ArmorDyeRecipe.h"
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "minecraft/world/entity/animal/Sheep.h"

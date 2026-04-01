@@ -1,6 +1,7 @@
+#include "BehaviorRegistry.h"
+
 #include <utility>
 
-#include "BehaviorRegistry.h"
 #include "minecraft/core/DispenseItemBehavior.h"
 
 class Item;

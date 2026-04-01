@@ -121,8 +121,8 @@
 #pragma warning(disable : 4514 4820)
 // C4514/4820: Off by default noise
 #endif
-#include <math.h>
 #include <float.h>
+#include <math.h>
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
@@ -147,8 +147,8 @@
 #endif
 
 #ifdef _XM_SSE_INTRINSICS_
-#include <xmmintrin.h>
 #include <emmintrin.h>
+#include <xmmintrin.h>
 
 #ifdef _XM_SSE3_INTRINSICS_
 #include <pmmintrin.h>
@@ -172,8 +172,9 @@
 #endif
 #endif  // !_XM_NO_INTRINSICS_
 
-#include "sal.h"
 #include <assert.h>
+
+#include "sal.h"
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -3074,9 +3075,9 @@ XMVectorSplatConstantInt(int32_t IntConstant) noexcept {
 }
 
 #include "DirectXMathConvert.inl"
-#include "DirectXMathVector.inl"
 #include "DirectXMathMatrix.inl"
 #include "DirectXMathMisc.inl"
+#include "DirectXMathVector.inl"
 
 #ifdef __clang__
 #pragma clang diagnostic pop

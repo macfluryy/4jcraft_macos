@@ -3,6 +3,7 @@
 #include <format>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 class AbstractContainerMenu;
 class Inventory;

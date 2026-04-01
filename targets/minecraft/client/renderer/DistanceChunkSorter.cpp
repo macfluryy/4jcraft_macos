@@ -1,4 +1,5 @@
 #include "DistanceChunkSorter.h"
+
 #include "Chunk.h"
 #include "minecraft/world/entity/Entity.h"
 

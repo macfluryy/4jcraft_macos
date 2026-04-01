@@ -1,10 +1,11 @@
 #include "CritParticle.h"
+
 #include "java/Random.h"
+#include "minecraft/client/particle/Particle.h"
+#include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/client/particle/Particle.h"
-#include "minecraft/client/particle/ParticleEngine.h"
 
 void CritParticle::_init(Level* level, std::shared_ptr<Entity> entity,
                          ePARTICLE_TYPE type) {

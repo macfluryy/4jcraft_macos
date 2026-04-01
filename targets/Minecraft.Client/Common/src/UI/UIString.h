@@ -1,8 +1,8 @@
 #pragma once
 
-#include <set>
 #include <functional>
 #include <memory>
+#include <set>
 #include <string>
 
 typedef std::function<std::wstring(void)> StringBuilder;

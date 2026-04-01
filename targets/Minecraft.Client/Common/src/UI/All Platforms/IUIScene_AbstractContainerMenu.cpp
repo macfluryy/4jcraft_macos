@@ -1,22 +1,20 @@
-#include <cmath>
-
-#include "Minecraft.Client/include/stdafx.h"
-
 #include "IUIScene_AbstractContainerMenu.h"
 
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/phys/Vec3.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include <cmath>
+
+#include "4J.Common/4J_InputActions.h"
+#include "4J_Input.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-
-#include "4J_Input.h"
-#include "4J.Common/4J_InputActions.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+#include "minecraft/world/phys/Vec3.h"
 
 IUIScene_AbstractContainerMenu::IUIScene_AbstractContainerMenu() {
     m_menu = nullptr;

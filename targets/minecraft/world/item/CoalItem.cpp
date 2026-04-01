@@ -1,8 +1,9 @@
-#include "net.minecraft.world.item.h"
+#include "CoalItem.h"
+
 #include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/net.minecraft.world.h"
-#include "CoalItem.h"
+#include "net.minecraft.world.item.h"
 
 CoalItem::CoalItem(int id) : Item(id) {
     setStackedByData(true);

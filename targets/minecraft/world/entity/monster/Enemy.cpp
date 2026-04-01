@@ -1,6 +1,7 @@
+#include "Enemy.h"
+
 #include <memory>
 
-#include "Enemy.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/Entity.h"
 

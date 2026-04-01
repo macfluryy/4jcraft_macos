@@ -1,4 +1,5 @@
 #include "InteractGoal.h"
+
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
 

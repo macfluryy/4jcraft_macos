@@ -1,11 +1,12 @@
+#include "HorseInventoryScreen.h"
+
 #include <string>
 
-#include "HorseInventoryScreen.h"
-#include "minecraft/world/inventory/HorseInventoryMenu.h"
-#include "minecraft/world/Container.h"
-#include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/world/Container.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/HorseInventoryMenu.h"
 
 class EntityHorse;
 

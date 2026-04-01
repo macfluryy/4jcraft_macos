@@ -1,9 +1,10 @@
+#include "SimpleContainer.h"
+
 #include <vector>
 
-#include "net.minecraft.world.ContainerListener.h"
-#include "SimpleContainer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "net.minecraft.world.ContainerListener.h"
 
 SimpleContainer::SimpleContainer(int name, std::wstring stringName,
                                  bool customName, int size) {

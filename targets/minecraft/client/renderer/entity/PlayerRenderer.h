@@ -2,12 +2,12 @@
 #include <memory>
 #include <string>
 
-#include "MobRenderer.h"
-#include "minecraft/world/entity/player/Player.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "MobRenderer.h"
 #include "minecraft/client/renderer/entity/LivingEntityRenderer.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class HumanoidModel;
 class LivingEntity;

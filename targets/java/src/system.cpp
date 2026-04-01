@@ -1,12 +1,12 @@
-#include <chrono>
+#include "java/System.h"
 
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
-#include <algorithm>
-#include <vector>
 
-#include "java/System.h"
+#include <algorithm>
+#include <chrono>
+#include <vector>
 
 class Biome;
 class Node;

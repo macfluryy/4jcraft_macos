@@ -1,13 +1,15 @@
+#include "LightningBolt.h"
+
 #include <math.h>
+
 #include <format>
 #include <memory>
 #include <vector>
 
-#include "LightningBolt.h"
+#include "java/Random.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/global/GlobalEntity.h"

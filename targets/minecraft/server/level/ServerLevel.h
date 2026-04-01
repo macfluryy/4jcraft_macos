@@ -1,10 +1,11 @@
 #pragma once
 
 #include <list>
-#include <set>
 #include <mutex>
-#include "minecraft/world/level/net.minecraft.world.level.h"
+#include <set>
+
 #include "java/JavaIntHash.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 
 class ServerChunkCache;
 class MinecraftServer;

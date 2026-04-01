@@ -1,17 +1,16 @@
-#include "Minecraft.Client/include/stdafx.h"
-
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
-#include "minecraft/world/item/trading/net.minecraft.world.item.trading.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "IUIScene_TradingMenu.h"
 
 #include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/include/stdafx.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/item/trading/net.minecraft.world.item.trading.h"
 
 IUIScene_TradingMenu::IUIScene_TradingMenu() {
     m_validOffersCount = 0;

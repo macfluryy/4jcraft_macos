@@ -1,14 +1,16 @@
+#include "FireTile.h"
+
 #include <string.h>
+
 #include <optional>
 
-#include "FireTile.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/PlayerList.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"

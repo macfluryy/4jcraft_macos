@@ -1,8 +1,9 @@
+#include "EnderCrystalRenderer.h"
+
 #include <cmath>
 
 #include "minecraft/client/model/dragon/EnderCrystalModel.h"
 #include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "EnderCrystalRenderer.h"
 
 ResourceLocation EnderCrystalRenderer::ENDER_CRYSTAL_LOCATION =
     ResourceLocation(TN_MOB_ENDERDRAGON_ENDERCRYSTAL);

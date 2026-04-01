@@ -1,7 +1,8 @@
+#include "HealthCriteria.h"
+
 #include <memory>
 #include <vector>
 
-#include "HealthCriteria.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/scores/criteria/DummyCriteria.h"

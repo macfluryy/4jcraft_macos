@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_SettingsOptionsMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 
 int UIScene_SettingsOptionsMenu::m_iDifficultySettingA[4] = {
     IDS_DIFFICULTY_PEACEFUL, IDS_DIFFICULTY_EASY, IDS_DIFFICULTY_NORMAL,

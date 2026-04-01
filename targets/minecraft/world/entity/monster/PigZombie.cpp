@@ -1,12 +1,12 @@
+#include "PigZombie.h"
+
 #include <format>
 #include <string>
 #include <vector>
 
-#include "PigZombie.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
@@ -19,6 +19,7 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 AttributeModifier* PigZombie::SPEED_MODIFIER_ATTACKING =
     (new AttributeModifier(eModifierId_MOB_PIG_ATTACKSPEED, 0.45,

@@ -1,6 +1,7 @@
+#include "WaterLilyTileItem.h"
+
 #include <memory>
 
-#include "WaterLilyTileItem.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ColoredTileItem.h"

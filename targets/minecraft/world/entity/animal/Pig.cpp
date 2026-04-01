@@ -1,11 +1,12 @@
+#include "Pig.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
-#include "Pig.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
@@ -28,6 +29,7 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
 
 Pig::Pig(Level* level) : Animal(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

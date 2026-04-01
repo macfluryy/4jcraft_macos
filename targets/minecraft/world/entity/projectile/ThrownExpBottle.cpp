@@ -1,5 +1,6 @@
-#include "java/JavaMath.h"
 #include "ThrownExpBottle.h"
+
+#include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
 #include "minecraft/world/entity/projectile/Throwable.h"

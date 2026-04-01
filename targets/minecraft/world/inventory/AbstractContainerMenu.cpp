@@ -1,7 +1,8 @@
+#include "AbstractContainerMenu.h"
+
 #include <algorithm>
 
 #include "Slot.h"
-#include "AbstractContainerMenu.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Abilities.h"

@@ -1,12 +1,12 @@
-#include "Minecraft.Client/include/stdafx.h"
-
 #include "IUIScene_AnvilMenu.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+
+#include "Minecraft.Client/include/stdafx.h"
 #include "java/InputOutputStream/InputOutputStream.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 
 IUIScene_AnvilMenu::IUIScene_AnvilMenu() {
     m_inventory = nullptr;

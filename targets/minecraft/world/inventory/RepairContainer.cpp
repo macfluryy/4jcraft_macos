@@ -1,7 +1,8 @@
+#include "RepairContainer.h"
+
 #include <string>
 
 #include "AnvilMenu.h"
-#include "RepairContainer.h"
 #include "minecraft/world/SimpleContainer.h"
 
 RepairContainer::RepairContainer(AnvilMenu* menu, int name, bool customName,

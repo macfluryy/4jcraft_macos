@@ -1,5 +1,6 @@
-#include "PacketListener.h"
 #include "SetScorePacket.h"
+
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/player/Player.h"

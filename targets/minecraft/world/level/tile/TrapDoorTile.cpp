@@ -1,6 +1,7 @@
+#include "TrapDoorTile.h"
+
 #include <optional>
 
-#include "TrapDoorTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"

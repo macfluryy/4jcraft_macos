@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 // 4J Stu - Represents Java standard lib abstract
 

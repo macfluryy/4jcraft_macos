@@ -1,12 +1,14 @@
+#include "Spider.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <limits>
 #include <memory>
 
-#include "Spider.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"

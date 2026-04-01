@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 
 class Level;
 class Random;

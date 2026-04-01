@@ -1,10 +1,11 @@
+#include "MultiTextureTileItem.h"
+
 #include <memory>
 
-#include "minecraft/world/level/tile/Tile.h"
-#include "MultiTextureTileItem.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/item/crafting/Recipes.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 MultiTextureTileItem::MultiTextureTileItem(int id, Tile* parentTile,
                                            int* nameExtensions, int iLength,

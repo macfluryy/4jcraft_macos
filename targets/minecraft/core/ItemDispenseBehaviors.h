@@ -1,6 +1,6 @@
 #pragma once
-#include "DefaultDispenseItemBehavior.h"
 #include "AbstractProjectileDispenseBehavior.h"
+#include "DefaultDispenseItemBehavior.h"
 
 class ArrowDispenseBehavior : public AbstractProjectileDispenseBehavior {
 protected:

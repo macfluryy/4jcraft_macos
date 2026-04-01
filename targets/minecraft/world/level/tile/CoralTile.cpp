@@ -1,6 +1,7 @@
+#include "CoralTile.h"
+
 #include <string>
 
-#include "CoralTile.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/HalfTransparentTile.h"
 

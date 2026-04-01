@@ -1,14 +1,16 @@
+#include "MerchantRecipeList.h"
+
 #include <stdint.h>
+
 #include <string>
 
-#include "MerchantRecipeList.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/network/packet/Packet.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/trading/MerchantRecipe.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 MerchantRecipeList::MerchantRecipeList() {}
 

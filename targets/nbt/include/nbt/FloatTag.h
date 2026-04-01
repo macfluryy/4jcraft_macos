@@ -1,6 +1,6 @@
 #pragma once
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "Tag.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 
 class FloatTag : public Tag {
 public:

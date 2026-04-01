@@ -1,4 +1,5 @@
 #include "RangedAttribute.h"
+
 #include "minecraft/world/entity/ai/attributes/BaseAttribute.h"
 
 RangedAttribute::RangedAttribute(eATTRIBUTE_ID id, double defaultValue,

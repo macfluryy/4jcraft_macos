@@ -1,10 +1,11 @@
+#include "SheepModel.h"
+
 #include <memory>
 
-#include "SheepModel.h"
+#include "minecraft/client/model/QuadrupedModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/Sheep.h"
-#include "minecraft/client/model/QuadrupedModel.h"
 
 SheepModel::SheepModel() : QuadrupedModel(12, 0) {
     headXRot = 0.0f;

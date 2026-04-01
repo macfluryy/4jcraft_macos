@@ -1,15 +1,16 @@
+#include "HumanoidModel.h"
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
-#include "HumanoidModel.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/client/model/geom/ModelPart.h"
-#include "minecraft/client/model/HumanoidModel.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/model/HumanoidModel.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/Entity.h"
 
 // 4J added
 

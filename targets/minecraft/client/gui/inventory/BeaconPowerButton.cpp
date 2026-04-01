@@ -1,10 +1,11 @@
+#include "BeaconPowerButton.h"
+
 #include <string>
 
-#include "BeaconPowerButton.h"
 #include "BeaconScreen.h"
-#include "minecraft/world/effect/MobEffect.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/client/gui/inventory/AbstractBeaconButton.h"
+#include "minecraft/world/effect/MobEffect.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4)
 #ifdef ENABLE_JAVA_GUIS

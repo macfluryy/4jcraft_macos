@@ -1,9 +1,9 @@
-#include "Minecraft.Client/include/stdafx.h"
-
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "console_helpers/StringHelpers.h"
 #include "UIScene_LaunchMoreOptionsMenu.h"
+
 #include "4J_Input.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "Minecraft.Client/include/stdafx.h"
+#include "console_helpers/StringHelpers.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0
 #define GAME_CREATE_ONLINE_TIMER_TIME 100

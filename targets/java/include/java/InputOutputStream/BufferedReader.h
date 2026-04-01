@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Reader.h"
-
 #include <string>
+
+#include "Reader.h"
 
 class BufferedReader : public Reader {
 private:

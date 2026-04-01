@@ -1,8 +1,9 @@
+#include "RedStoneOreTile.h"
+
 #include <memory>
 
-#include "RedStoneOreTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"

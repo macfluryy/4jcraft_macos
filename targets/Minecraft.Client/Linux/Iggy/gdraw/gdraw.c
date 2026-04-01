@@ -1,19 +1,18 @@
 #define GDRAW_ASSERTS
 
-#include <stdbool.h>
-
 #include "gdraw.h"
 
 #include <GL/gl.h>
-#include <string.h>
+#include <dlfcn.h>
+#include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dlfcn.h>
-#include <stddef.h>
+#include <string.h>
 
-#include "SDL_video.h"
 #include "Minecraft.Client/Linux/Iggy/gdraw/gdraw.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "SDL_video.h"
 
 #ifndef _ENABLEIGGY
 void* IggyGDrawMallocAnnotated(SINTa size, const char* file, int line) {

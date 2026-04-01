@@ -1,10 +1,11 @@
+#include "ConfirmScreen.h"
+
 #include <vector>
 
-#include "ConfirmScreen.h"
 #include "SmallButton.h"
-#include "minecraft/locale/Language.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/locale/Language.h"
 
 ConfirmScreen::ConfirmScreen(Screen* parent, const std::wstring& title1,
                              const std::wstring& title2, int id) {

@@ -1,4 +1,5 @@
 #include "Scale.h"
+
 #include "minecraft/world/level/levelgen/synth/Synth.h"
 
 Scale::Scale(Synth* synth, double xScale, double yScale) {

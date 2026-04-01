@@ -1,7 +1,8 @@
+#include "TileEntityDataPacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "TileEntityDataPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "nbt/CompoundTag.h"

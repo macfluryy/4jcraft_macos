@@ -1,9 +1,11 @@
 
+#include "minecraft/world/level/ChunkPos.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
-#include "minecraft/world/level/ChunkPos.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/ChunkPos.h"

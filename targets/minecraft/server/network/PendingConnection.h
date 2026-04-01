@@ -2,8 +2,8 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/network/packet/PacketListener.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
+#include "minecraft/network/packet/PacketListener.h"
 
 class MinecraftServer;
 class Socket;

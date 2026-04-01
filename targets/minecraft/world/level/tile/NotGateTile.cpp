@@ -1,8 +1,9 @@
 #include "NotGateTile.h"
+
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/redstone/Redstone.h"

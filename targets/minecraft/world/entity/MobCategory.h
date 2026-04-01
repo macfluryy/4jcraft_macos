@@ -2,6 +2,7 @@
 
 #include <format>
 #include <typeinfo>
+#include <vector>
 
 #include "java/Class.h"
 

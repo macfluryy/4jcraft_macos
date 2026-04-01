@@ -1,12 +1,13 @@
+#include "GroundBushFeature.h"
+
 #include <stdlib.h>
 
-#include "GroundBushFeature.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 GroundBushFeature::GroundBushFeature(int trunkType, int leafType) {
     trunkTileType = trunkType;

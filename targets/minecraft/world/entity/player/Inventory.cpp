@@ -1,10 +1,11 @@
+#include "Inventory.h"
+
+#include "minecraft/stats/net.minecraft.stats.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/material/Material.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "nbt/com.mojang.nbt.h"
 #include "net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/world/level/material/Material.h"
-#include "Inventory.h"
 
 const int Inventory::POP_TIME_DURATION = 5;
 const int Inventory::MAX_INVENTORY_STACK_SIZE = 64;

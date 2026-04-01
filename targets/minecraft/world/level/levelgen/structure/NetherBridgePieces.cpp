@@ -1,13 +1,14 @@
+#include "NetherBridgePieces.h"
+
 #include <stdlib.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
 
-#include "minecraft/util/WeighedTreasure.h"
-#include "NetherBridgePieces.h"
-#include "minecraft/Direction.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/Direction.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
@@ -15,6 +16,7 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
+#include "nbt/CompoundTag.h"
 
 void NetherBridgePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_BridgeCrossing,

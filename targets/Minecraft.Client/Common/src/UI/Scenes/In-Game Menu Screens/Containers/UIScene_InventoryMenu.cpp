@@ -1,21 +1,20 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_InventoryMenu.h"
 
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "minecraft/client/Lighting.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
-
-#include "console_helpers/StringHelpers.h"
+#include "minecraft/stats/net.minecraft.stats.h"
+#include "minecraft/world/effect/net.minecraft.world.effect.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
 
 #define INVENTORY_UPDATE_EFFECTS_TIMER_ID (10)
 #define INVENTORY_UPDATE_EFFECTS_TIMER_TIME (1000)  // 1 second

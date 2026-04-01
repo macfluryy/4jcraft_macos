@@ -1,30 +1,33 @@
+#include "PlayerConnection.h"
+
 #include <wchar.h>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <format>
 #include <utility>
 
-#include "PlayerConnection.h"
-#include "minecraft/server/level/ServerPlayer.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/server/level/ServerPlayerGameMode.h"
-#include "minecraft/server/PlayerList.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/SharedConstants.h"
-#include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "ServerConnection.h"
-#include "minecraft/stats/GenericStats.h"
-#include "java/JavaMath.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "ServerConnection.h"
+#include "java/Class.h"
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/JavaMath.h"
+#include "java/Random.h"
+#include "java/System.h"
 #include "minecraft/Facing.h"
+#include "minecraft/SharedConstants.h"
 #include "minecraft/commands/CommandDispatcher.h"
 #include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/Connection.h"
@@ -61,6 +64,12 @@
 #include "minecraft/network/packet/TileUpdatePacket.h"
 #include "minecraft/network/packet/TradeItemPacket.h"
 #include "minecraft/network/packet/UseItemPacket.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/level/ServerPlayerGameMode.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
@@ -92,15 +101,7 @@
 #include "minecraft/world/level/tile/entity/CommandBlockEntity.h"
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "java/Class.h"
-#include "java/InputOutputStream/ByteArrayInputStream.h"
-#include "java/InputOutputStream/DataInputStream.h"
-#include "java/Random.h"
-#include "java/System.h"
+#include "minecraft/world/phys/AABB.h"
 
 class SavedData;
 

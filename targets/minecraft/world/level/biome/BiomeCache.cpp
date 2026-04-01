@@ -1,7 +1,8 @@
+#include "BiomeCache.h"
+
 #include <utility>
 
 #include "BiomeSource.h"
-#include "BiomeCache.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {

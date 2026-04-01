@@ -1,5 +1,6 @@
-#include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
+
+#include "java/InputOutputStream/DataInputStream.h"
 
 class InputStream;
 

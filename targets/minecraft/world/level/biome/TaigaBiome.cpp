@@ -1,6 +1,7 @@
+#include "TaigaBiome.h"
+
 #include <vector>
 
-#include "TaigaBiome.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/world/level/biome/BiomeDecorator.h"

@@ -1,14 +1,15 @@
+#include "Input.h"
+
 #include <cmath>
 
-#include "minecraft/client/Minecraft.h"
-#include "Input.h"
-#include "LocalPlayer.h"
-#include "4J_Input.h"
 #include "4J.Common/4J_InputActions.h"
+#include "4J_Input.h"
+#include "LocalPlayer.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/world/entity/player/Abilities.h"
 
 Input::Input() {
     xa = 0;

@@ -1,6 +1,7 @@
 #include "ClientConstants.h"
-#include "minecraft/client/ClientConstants.h"
+
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
+#include "minecraft/client/ClientConstants.h"
 
 const std::wstring ClientConstants::VERSION_STRING =
     std::wstring(L"Minecraft Xbox ") + VER_FILEVERSION_STR_W +

@@ -1,6 +1,7 @@
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 
 #include <assert.h>
+
 #include <algorithm>
 #include <cstring>
 

@@ -1,12 +1,12 @@
 #include "UIScene_DebugOptions.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugOptions.h"
+
+#include "4J.Common/4J_InputActions.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugOptions.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-
-#include "4J.Common/4J_InputActions.h"
 
 class UILayer;
 

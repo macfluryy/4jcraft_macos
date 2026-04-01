@@ -1,15 +1,17 @@
 
+#include "java/InputOutputStream/FileInputStream.h"
+
 #include <assert.h>
 #include <sys/types.h>
+
 #include <algorithm>
 #include <cstdint>
 #include <cstdio>
 #include <string>
 #include <vector>
 
-#include "java/File.h"
-#include "java/InputOutputStream/FileInputStream.h"
 #include "console_helpers/StringHelpers.h"
+#include "java/File.h"
 
 namespace {
 int64_t FileTell(std::FILE* file) {

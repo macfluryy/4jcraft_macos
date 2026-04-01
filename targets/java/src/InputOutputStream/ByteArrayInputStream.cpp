@@ -5,12 +5,13 @@
 // mark is set to the specified offset. Parameters: buf - the input buffer.
 // offset - the offset in the buffer of the first byte to read.
 // length - the maximum number of bytes to read from the buffer.
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+
 #include <stdint.h>
+
 #include <algorithm>
 #include <cstring>
 #include <vector>
-
-#include "java/InputOutputStream/ByteArrayInputStream.h"
 
 ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf,
                                            unsigned int offset,

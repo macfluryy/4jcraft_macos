@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <cstdint>
+#include <string>
 #include <vector>
 
 // 4J Stu - Represents java standard library class

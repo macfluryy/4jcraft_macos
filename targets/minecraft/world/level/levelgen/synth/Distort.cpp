@@ -1,4 +1,5 @@
 #include "Distort.h"
+
 #include "minecraft/world/level/levelgen/synth/Synth.h"
 
 Distort::Distort(Synth* source, Synth* distort) {

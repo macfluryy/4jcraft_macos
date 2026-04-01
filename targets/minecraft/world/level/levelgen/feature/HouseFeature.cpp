@@ -1,6 +1,7 @@
+#include "HouseFeature.h"
+
 #include <memory>
 
-#include "HouseFeature.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/monster/PigZombie.h"
 #include "minecraft/world/item/DoorItem.h"

@@ -1,11 +1,12 @@
+#include "HopperScreen.h"
+
 #include <string>
 
-#include "HopperScreen.h"
 #include "Font.h"
-#include "minecraft/world/inventory/HopperMenu.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/world/inventory/HopperMenu.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes

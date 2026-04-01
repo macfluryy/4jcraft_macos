@@ -1,6 +1,6 @@
-#include <cmath>
-
 #include "DoorInfo.h"
+
+#include <cmath>
 
 DoorInfo::DoorInfo(int x, int y, int z, int insideDx, int insideDy,
                    int timeStamp)

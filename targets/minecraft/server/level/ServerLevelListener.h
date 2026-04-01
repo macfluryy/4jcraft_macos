@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#include "minecraft/world/level/LevelListener.h"
 #include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/level/LevelListener.h"
 
 class Player;
 class TileEntity;

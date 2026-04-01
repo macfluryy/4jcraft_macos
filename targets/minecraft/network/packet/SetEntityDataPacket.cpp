@@ -1,7 +1,8 @@
+#include "SetEntityDataPacket.h"
+
 #include <vector>
 
 #include "PacketListener.h"
-#include "SetEntityDataPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/SyncedEntityData.h"

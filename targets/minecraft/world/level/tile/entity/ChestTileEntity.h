@@ -2,7 +2,6 @@
 
 #include "TileEntity.h"
 #include "minecraft/world/Container.h"
-
 #include "nbt/ListTag.h"
 
 class Player;

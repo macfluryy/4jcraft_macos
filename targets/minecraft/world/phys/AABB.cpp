@@ -5,13 +5,14 @@
 
 // TODO: use brace initialization everywhere
 
+#include "minecraft/world/phys/AABB.h"
+
+#include <algorithm>
 #include <format>
 #include <optional>
-#include <algorithm>
 #include <string>
 
 #include "HitResult.h"
-#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
 

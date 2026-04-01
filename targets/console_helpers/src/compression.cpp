@@ -1,15 +1,16 @@
 #include <assert.h>
 #include <string.h>
 #include <zconf.h>
+
 #include <cstdint>
 #include <mutex>
 
 // #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
-#include "console_helpers/compression.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #if defined(_WIN64) || defined(__linux__)
 // zconf.h defines "typedef unsigned char Byte" which conflicts with the
 // project's "class Byte" from BasicTypeContainers.h (via stdafx.h).

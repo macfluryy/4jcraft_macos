@@ -1,17 +1,17 @@
 #pragma once
 
 #include <stdint.h>
-#include <mutex>
+
 #include <format>
 #include <memory>
+#include <mutex>
 #include <typeinfo>
 #include <unordered_map>
 #include <vector>
 
-#include "SparseLightStorage.h"
 #include "CompressedTileStorage.h"
 #include "SparseDataStorage.h"
-#include "minecraft/world/level/LightLayer.h"
+#include "SparseLightStorage.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LightLayer.h"

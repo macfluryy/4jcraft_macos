@@ -1,7 +1,8 @@
+#include "MoveTowardsRestrictionGoal.h"
+
 #include <memory>
 #include <optional>
 
-#include "MoveTowardsRestrictionGoal.h"
 #include "minecraft/Pos.h"
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/control/Control.h"

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "OutputStream.h"
-
-#include <vector>
 #include <cstdint>
+#include <vector>
+
+#include "OutputStream.h"
 
 class ByteArrayOutputStream : public OutputStream {
     // Note - when actually implementing, std::vector<uint8_t> will need to grow

@@ -1,17 +1,18 @@
+#include "TreeFeature.h"
+
 #include <stdlib.h>
 
-#include "TreeFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/VineTile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 TreeFeature::TreeFeature(bool doUpdate)
     : Feature(doUpdate),

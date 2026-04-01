@@ -1,6 +1,7 @@
+#include "LeaderboardInterface.h"
+
 #include <assert.h>
 
-#include "LeaderboardInterface.h"
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 
 LeaderboardInterface::LeaderboardInterface(LeaderboardManager* man) {

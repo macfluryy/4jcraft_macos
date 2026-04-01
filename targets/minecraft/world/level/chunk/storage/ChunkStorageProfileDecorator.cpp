@@ -1,8 +1,9 @@
+#include "ChunkStorageProfileDecorator.h"
+
 #include <stdio.h>
 
-#include "java/System.h"
-#include "ChunkStorageProfileDecorator.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/System.h"
 #include "minecraft/world/level/chunk/storage/ChunkStorage.h"
 
 ChunkStorageProfilerDecorator::ChunkStorageProfilerDecorator(

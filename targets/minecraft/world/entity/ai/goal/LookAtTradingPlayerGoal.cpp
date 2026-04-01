@@ -1,6 +1,7 @@
+#include "LookAtTradingPlayerGoal.h"
+
 #include <memory>
 
-#include "LookAtTradingPlayerGoal.h"
 #include "minecraft/world/entity/ai/goal/LookAtPlayerGoal.h"
 #include "minecraft/world/entity/npc/Villager.h"
 #include "minecraft/world/entity/player/Player.h"

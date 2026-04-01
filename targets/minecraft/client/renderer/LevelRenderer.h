@@ -1,15 +1,15 @@
 #pragma once
-#include "minecraft/world/level/LevelListener.h"
-#include "console_helpers/Definitions.h"
-#include "OffsettedRenderList.h"
-#include "java/JavaIntHash.h"
-#include "minecraft/world/level/Level.h"
-#include "console_helpers/C4JThread.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "OffsettedRenderList.h"
+#include "console_helpers/C4JThread.h"
+#include "console_helpers/Definitions.h"
+#include "java/JavaIntHash.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelListener.h"
+#include "minecraft/world/phys/AABB.h"
 
 class ClipChunk;
 class HitResult;
@@ -23,12 +23,13 @@ class ResourceLocation;
 #endif
 #include <stddef.h>
 #include <stdint.h>
-#include <unordered_set>
-#include <mutex>
+
 #include <format>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 class MultiPlayerLevel;

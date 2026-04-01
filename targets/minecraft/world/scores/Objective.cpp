@@ -1,4 +1,5 @@
 #include "Objective.h"
+
 #include "minecraft/world/scores/Scoreboard.h"
 
 Objective::Objective(Scoreboard* scoreboard, const std::wstring& name,

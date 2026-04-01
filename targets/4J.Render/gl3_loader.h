@@ -5,6 +5,7 @@
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <SDL2/SDL.h>
+
 #include <cstdio>
 #ifndef GL_ARRAY_BUFFER
 #define GL_ARRAY_BUFFER 0x8892

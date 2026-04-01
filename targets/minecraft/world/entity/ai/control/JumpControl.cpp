@@ -1,4 +1,5 @@
 #include "JumpControl.h"
+
 #include "minecraft/world/entity/Mob.h"
 
 JumpControl::JumpControl(Mob* mob) {

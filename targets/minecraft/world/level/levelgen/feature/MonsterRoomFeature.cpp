@@ -1,9 +1,10 @@
+#include "MonsterRoomFeature.h"
+
 #include <memory>
 #include <vector>
 
-#include "minecraft/util/WeighedTreasure.h"
-#include "MonsterRoomFeature.h"
 #include "java/Random.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/item/EnchantedBookItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/BaseMobSpawner.h"

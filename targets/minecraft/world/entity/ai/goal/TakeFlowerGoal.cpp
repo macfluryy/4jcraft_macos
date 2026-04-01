@@ -1,7 +1,8 @@
+#include "TakeFlowerGoal.h"
+
 #include <format>
 #include <vector>
 
-#include "TakeFlowerGoal.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/control/LookControl.h"

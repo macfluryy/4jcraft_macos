@@ -1,4 +1,5 @@
 #include "AttackDamageMobEffect.h"
+
 #include "minecraft/world/effect/MobEffect.h"
 
 AttackDamageMobEffect::AttackDamageMobEffect(int id, bool isHarmful,

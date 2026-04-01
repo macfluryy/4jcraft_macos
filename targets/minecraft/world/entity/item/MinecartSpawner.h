@@ -3,9 +3,9 @@
 #include <stdint.h>
 
 #include "Minecart.h"
-#include "minecraft/world/level/BaseMobSpawner.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/item/Minecart.h"
+#include "minecraft/world/level/BaseMobSpawner.h"
 
 class Entity;
 class Level;

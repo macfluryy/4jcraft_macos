@@ -1,8 +1,8 @@
 #pragma once
 
-#include "minecraft/world/entity/PathfinderMob.h"
 #include "Enemy.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/PathfinderMob.h"
 
 class Level;
 class CompoundTag;

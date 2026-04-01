@@ -1,20 +1,21 @@
+#include "SnowManRenderer.h"
+
 #include <memory>
 
+#include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
 #include "minecraft/client/model/SnowManModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
-#include "EntityRenderDispatcher.h"
-#include "SnowManRenderer.h"
-#include "4J.Render/4J_Render.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/animal/SnowMan.h"
-#include "minecraft/world/item/Item.h"
-#include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/client/renderer/ItemInHandRenderer.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/SnowMan.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 ResourceLocation SnowManRenderer::SNOWMAN_LOCATION =
     ResourceLocation(TN_MOB_SNOWMAN);

@@ -1,7 +1,8 @@
 #include "FoodItem.h"
-#include "minecraft/sounds/SoundTypes.h"
+
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/food/FoodConstants.h"

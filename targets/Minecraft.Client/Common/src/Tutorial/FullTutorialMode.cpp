@@ -1,9 +1,10 @@
-#include "minecraft/client/Minecraft.h"
-#include "FullTutorial.h"
 #include "FullTutorialMode.h"
+
+#include "FullTutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/FullTutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "minecraft/client/Minecraft.h"
 
 class ClientConnection;
 

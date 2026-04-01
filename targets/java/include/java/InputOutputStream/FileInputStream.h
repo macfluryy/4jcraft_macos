@@ -1,8 +1,8 @@
 #pragma once
 // 4J Stu - Represents Java standard library class
 
-#include <cstdio>
 #include <cstdint>
+#include <cstdio>
 
 #include "InputStream.h"
 

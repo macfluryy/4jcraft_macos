@@ -1,7 +1,7 @@
+#include "GiveItemCommand.h"
+
 #include <vector>
 
-#include "minecraft/server/level/ServerPlayer.h"
-#include "GiveItemCommand.h"
 #include "4J.Common/4J_Compat.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
@@ -9,6 +9,7 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/GameCommandPacket.h"
+#include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"

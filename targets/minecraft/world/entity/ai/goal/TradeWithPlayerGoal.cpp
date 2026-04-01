@@ -1,6 +1,7 @@
+#include "TradeWithPlayerGoal.h"
+
 #include <memory>
 
-#include "TradeWithPlayerGoal.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/entity/npc/Villager.h"

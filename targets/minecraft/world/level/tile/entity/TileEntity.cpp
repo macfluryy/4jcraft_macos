@@ -1,10 +1,9 @@
+#include "TileEntity.h"
+
 #include <utility>
 
-#include "TileEntity.h"
-#include "PistonPieceTileEntity.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "nbt/CompoundTag.h"
+#include "PistonPieceTileEntity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/JukeboxTile.h"
 #include "minecraft/world/level/tile/Tile.h"
@@ -25,6 +24,8 @@
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
 #include "minecraft/world/level/tile/entity/TheEndPortalTileEntity.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 TileEntity::idToCreateMapType TileEntity::idCreateMap =
     std::unordered_map<std::wstring, tileEntityCreateFn>();

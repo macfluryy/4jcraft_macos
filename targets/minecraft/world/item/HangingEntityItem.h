@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "Item.h"
+#include "java/Class.h"
 
 class HangingEntity;
 

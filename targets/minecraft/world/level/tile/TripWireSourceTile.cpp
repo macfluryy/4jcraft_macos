@@ -1,9 +1,9 @@
 #include "TripWireSourceTile.h"
-#include "optional"
-#include "minecraft/sounds/SoundTypes.h"
+
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/material/Material.h"
@@ -11,6 +11,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TripWireTile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "optional"
 
 TripWireSourceTile::TripWireSourceTile(int id)
     : Tile(id, Material::decoration, false) {

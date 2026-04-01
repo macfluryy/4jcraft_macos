@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "minecraft/SharedConstants.h"
-#include "minecraft/SharedConstants.h"
 
 class CombatEntry;
 class LivingEntity;

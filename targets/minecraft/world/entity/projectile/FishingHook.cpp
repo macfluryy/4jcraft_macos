@@ -1,15 +1,16 @@
+#include "FishingHook.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <format>
 #include <numbers>
 #include <string>
 #include <vector>
 
-#include "FishingHook.h"
+#include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/ExperienceOrb.h"
@@ -23,6 +24,7 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 // 4J - added common ctor code.
 void FishingHook::_init() {

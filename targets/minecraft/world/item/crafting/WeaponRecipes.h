@@ -7,6 +7,7 @@
 
 #include <format>
 #include <string>
+#include <vector>
 
 class Object;
 class Recipes;

@@ -1,6 +1,7 @@
+#include "DummyCriteria.h"
+
 #include <unordered_map>
 
-#include "DummyCriteria.h"
 #include "minecraft/world/scores/criteria/ObjectiveCriteria.h"
 
 DummyCriteria::DummyCriteria(const std::wstring& name) {

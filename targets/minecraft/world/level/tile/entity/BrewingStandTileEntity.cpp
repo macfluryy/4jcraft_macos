@@ -1,13 +1,13 @@
-#include "minecraft/stdafx.h"
-
-#include "nbt/com.mojang.nbt.h"
 #include "BrewingStandTileEntity.h"
+
 #include "minecraft/SharedConstants.h"
 #include "minecraft/net.minecraft.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
+#include "minecraft/stdafx.h"
 #include "minecraft/world/item/alchemy/PotionMacros.h"
+#include "minecraft/world/item/alchemy/net.minecraft.world.item.alchemy.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "nbt/com.mojang.nbt.h"
 
 int slotsForUp[] = {BrewingStandTileEntity::INGREDIENT_SLOT};
 int slotsForOtherFaces[] = {0, 1, 2};

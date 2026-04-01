@@ -1,7 +1,8 @@
 #include "FrustumCuller.h"
-#include "minecraft/world/phys/AABB.h"
+
 #include "minecraft/client/renderer/culling/Frustum.h"
 #include "minecraft/client/renderer/culling/FrustumData.h"
+#include "minecraft/world/phys/AABB.h"
 
 FrustumCuller::FrustumCuller() { frustum = Frustum::getFrustum(); }
 

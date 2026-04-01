@@ -1,12 +1,13 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <vector>
 
-#include "minecraft/commands/CommandsEnum.h"
 #include "Packet.h"
+#include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/packet/Packet.h"
 
 class GameCommandPacket

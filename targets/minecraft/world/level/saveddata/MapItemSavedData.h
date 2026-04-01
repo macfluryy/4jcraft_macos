@@ -1,14 +1,15 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include "minecraft/world/entity/player/Player.h"
 #include "SavedData.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/saveddata/SavedData.h"
 
 class ItemInstance;

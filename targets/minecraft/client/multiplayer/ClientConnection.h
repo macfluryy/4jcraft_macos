@@ -1,6 +1,6 @@
 #pragma once
-#include "minecraft/network/net.minecraft.network.h"
 #include "4J_Storage.h"
+#include "minecraft/network/net.minecraft.network.h"
 
 class Minecraft;
 class MultiPlayerLevel;

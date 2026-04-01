@@ -1,8 +1,9 @@
+#include "PressurePlateTile.h"
+
 #include <format>
 #include <memory>
 #include <vector>
 
-#include "PressurePlateTile.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"

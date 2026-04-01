@@ -1,21 +1,22 @@
-#include <memory>
-#include <string>
-#include <iterator>
-#include <algorithm>
-#include <sstream>
-
 #include "EnchantmentScreen.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/inventory/EnchantmentMenu.h"
-#include "minecraft/world/inventory/Slot.h"
+
+#include <algorithm>
+#include <iterator>
+#include <memory>
+#include <sstream>
+#include <string>
+
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/locale/Language.h"
-#include "minecraft/world/entity/player/Abilities.h"
-#include "minecraft/world/entity/player/Inventory.h"
-#include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/locale/Language.h"
+#include "minecraft/world/entity/player/Abilities.h"
+#include "minecraft/world/entity/player/Inventory.h"
+#include "minecraft/world/inventory/EnchantmentMenu.h"
+#include "minecraft/world/inventory/Slot.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class Level;
 

@@ -1,7 +1,8 @@
+#include "ExplodePacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "ExplodePacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/phys/Vec3.h"

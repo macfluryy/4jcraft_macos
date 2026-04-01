@@ -1,13 +1,14 @@
+#include "ColourTable.h"
+
+#include <cstring>
 #include <utility>
 #include <vector>
-#include <cstring>
 
-#include "ColourTable.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 

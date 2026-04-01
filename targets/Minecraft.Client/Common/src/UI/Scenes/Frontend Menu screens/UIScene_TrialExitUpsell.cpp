@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_TrialExitUpsell.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 
 UIScene_TrialExitUpsell::UIScene_TrialExitUpsell(int iPad, void* initData,
                                                  UILayer* parentLayer)

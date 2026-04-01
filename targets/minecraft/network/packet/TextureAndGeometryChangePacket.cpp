@@ -1,8 +1,9 @@
+#include "TextureAndGeometryChangePacket.h"
+
 #include <sstream>
 
-#include "PacketListener.h"
-#include "TextureAndGeometryChangePacket.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/Entity.h"

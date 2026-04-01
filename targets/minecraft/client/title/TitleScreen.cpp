@@ -1,23 +1,25 @@
+#include "TitleScreen.h"
+
 #include <stdint.h>
+
 #include <vector>
 
-#include "minecraft/client/gui/Button.h"
-#include "minecraft/client/gui/OptionsScreen.h"
-#include "minecraft/client/gui/SelectWorldScreen.h"
-#include "minecraft/client/gui/JoinMultiplayerScreen.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "console_helpers/StringHelpers.h"
-#include "java/Random.h"
-#include "TitleScreen.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/include/BufferedImage.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "minecraft/locale/Language.h"
+#include "Minecraft.Client/include/BufferedImage.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
+#include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Button.h"
+#include "minecraft/client/gui/JoinMultiplayerScreen.h"
+#include "minecraft/client/gui/OptionsScreen.h"
+#include "minecraft/client/gui/SelectWorldScreen.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/locale/Language.h"
 
 Random* TitleScreen::random = new Random();
 

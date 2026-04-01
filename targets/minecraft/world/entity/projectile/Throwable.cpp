@@ -1,20 +1,22 @@
+#include "Throwable.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <format>
 #include <numbers>
 #include <vector>
 
-#include "Throwable.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 void Throwable::_throwableInit() {
     xTile = -1;

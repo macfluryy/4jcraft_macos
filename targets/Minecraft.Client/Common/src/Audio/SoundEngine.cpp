@@ -1,29 +1,30 @@
-﻿#include <ctype.h>
+﻿#include "SoundEngine.h"
+
+#include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <strings.h>
 #include <unistd.h>
+
 #include <cmath>
 #include <cstdlib>
+#include <filesystem>
 #include <initializer_list>
 #include <memory>
 #include <vector>
 
-#include "SoundEngine.h"
-#include <filesystem>
-#include "console_helpers/PathHelper.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/world/level/storage/LevelData.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/C4JThread.h"
-#include "minecraft/world/entity/Mob.h"
+#include "console_helpers/PathHelper.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/level/storage/LevelData.h"
 
 #if defined(__linux__)
 #define STB_VORBIS_HEADER_ONLY
@@ -57,8 +58,8 @@ int strcasecmp(const char* a, const char* b) {
 #undef FALSE
 #endif
 #if defined(_WINDOWS64)
-#include "Minecraft.Client/Windows64/Windows64_App.h"
 #include "Minecraft.Client/Platform/Windows64/Miles/include/imssapi.h"
+#include "Minecraft.Client/Windows64/Windows64_App.h"
 #endif
 
 // ASSETS

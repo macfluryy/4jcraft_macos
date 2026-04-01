@@ -1,6 +1,7 @@
+#include "FleeSunGoal.h"
+
 #include <optional>
 
-#include "FleeSunGoal.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/PathfinderMob.h"

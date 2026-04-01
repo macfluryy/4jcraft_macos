@@ -1,13 +1,14 @@
+#include "Slime.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <numbers>
 #include <string>
 
-#include "Slime.h"
+#include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -22,6 +23,7 @@
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 void Slime::_init() {
     jumpDelay = 0;

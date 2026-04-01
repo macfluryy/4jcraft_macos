@@ -1,7 +1,8 @@
+#include "IceTile.h"
+
 #include <memory>
 #include <string>
 
-#include "IceTile.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/food/FoodConstants.h"

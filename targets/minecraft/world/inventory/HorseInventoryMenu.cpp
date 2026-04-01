@@ -1,6 +1,7 @@
+#include "HorseInventoryMenu.h"
+
 #include <vector>
 
-#include "HorseInventoryMenu.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"

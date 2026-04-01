@@ -4,6 +4,11 @@
 
 #include "IUIScene_StartGame.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BitmapIcon.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_CheckBox.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Slider.h"
 
 class UIScene_LoadMenu : public IUIScene_StartGame {
 private:

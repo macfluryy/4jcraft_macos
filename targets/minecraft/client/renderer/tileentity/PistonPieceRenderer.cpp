@@ -1,20 +1,22 @@
+#include "PistonPieceRenderer.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 
-#include "PistonPieceRenderer.h"
+#include "4J.Render/4J_Render.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/client/renderer/texture/TextureAtlas.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/world/level/tile/entity/PistonPieceTileEntity.h"
-#include "4J.Render/4J_Render.h"
+#include "minecraft/client/renderer/texture/TextureAtlas.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/PistonPieceTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/level/tile/piston/PistonBaseTile.h"
 #include "minecraft/world/level/tile/piston/PistonExtensionTile.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 
 ResourceLocation PistonPieceRenderer::SIGN_LOCATION =
     ResourceLocation(TN_ITEM_SIGN);

@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+
 #include <string>
 
 #include "minecraft/client/gui/GuiComponent.h"

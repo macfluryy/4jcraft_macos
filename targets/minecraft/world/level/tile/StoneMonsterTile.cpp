@@ -1,9 +1,9 @@
-#include "minecraft/stdafx.h"
+#include "StoneMonsterTile.h"
 
+#include "minecraft/stdafx.h"
 #include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "net.minecraft.world.level.tile.h"
-#include "StoneMonsterTile.h"
 
 const unsigned int
     StoneMonsterTile::STONE_MONSTER_NAMES[STONE_MONSTER_NAMES_LENGTH] = {

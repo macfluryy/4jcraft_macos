@@ -1,11 +1,12 @@
+#include "NameEntryScreen.h"
+
 #include <vector>
 
-#include "NameEntryScreen.h"
 #include "Button.h"
+#include "Minecraft.Client/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
-#include "Minecraft.Client/include/stubs.h"
 
 const std::wstring NameEntryScreen::allowedChars =
     L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 "

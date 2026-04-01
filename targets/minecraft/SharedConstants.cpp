@@ -1,7 +1,8 @@
 ﻿
+#include "minecraft/SharedConstants.h"
+
 #include <string>
 
-#include "minecraft/SharedConstants.h"
 #include "minecraft/SharedConstants.h"
 
 const std::wstring SharedConstants::VERSION_STRING = L"1.6.4";

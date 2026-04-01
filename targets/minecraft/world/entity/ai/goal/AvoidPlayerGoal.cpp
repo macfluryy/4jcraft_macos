@@ -1,8 +1,9 @@
+#include "AvoidPlayerGoal.h"
+
 #include <format>
 #include <optional>
 #include <vector>
 
-#include "AvoidPlayerGoal.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/PathfinderMob.h"

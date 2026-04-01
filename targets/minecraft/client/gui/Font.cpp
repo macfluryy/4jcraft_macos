@@ -1,18 +1,20 @@
+#include "Font.h"
+
 #include <string.h>
+
 #include <utility>
 #include <vector>
 
-#include "minecraft/client/renderer/Textures.h"
-#include "Font.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/client/resources/ResourceLocation.h"
-#include "console_helpers/StringHelpers.h"
-#include "java/Random.h"
-#include "minecraft/client/gui/Font.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/include/BufferedImage.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 
 Font::Font(Options* options, const std::wstring& name, Textures* textures,
            bool enforceUnicode, ResourceLocation* textureLocation, int cols,

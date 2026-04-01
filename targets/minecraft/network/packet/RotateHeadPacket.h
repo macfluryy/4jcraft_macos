@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "java/InputOutputStream/InputOutputStream.h"
-#include "PacketListener.h"
 #include "Packet.h"
+#include "PacketListener.h"
+#include "java/InputOutputStream/InputOutputStream.h"
 #include "minecraft/network/packet/Packet.h"
 
 class RotateHeadPacket : public Packet,

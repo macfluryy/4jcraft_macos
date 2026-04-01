@@ -1,4 +1,5 @@
 #include "FollowOwnerGoal.h"
+
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"

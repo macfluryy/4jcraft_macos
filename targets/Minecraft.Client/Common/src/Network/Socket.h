@@ -3,18 +3,18 @@
 #include <cstdint>
 #include <format>
 #ifndef __linux__
-#include <xrnm.h>
 #include <qnet.h>
+#include <xrnm.h>
 #endif
 #include <mutex>
 #include <queue>
 
-#include "java/InputOutputStream/InputStream.h"
-#include "java/InputOutputStream/OutputStream.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "console_helpers/C4JThread.h"   // 4jcraft TODO
 #include "console_helpers/ThreadName.h"  // 4jcraft TODO
-#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
+#include "java/InputOutputStream/InputStream.h"
+#include "java/InputOutputStream/OutputStream.h"
 
 class INetworkPlayer;
 

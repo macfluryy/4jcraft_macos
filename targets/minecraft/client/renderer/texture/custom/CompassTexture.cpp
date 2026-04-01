@@ -1,19 +1,21 @@
+#include "CompassTexture.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 #include <string>
 #include <vector>
 
+#include "4J.Common/4J_Compat.h"
+#include "java/JavaMath.h"
+#include "minecraft/Pos.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "java/JavaMath.h"
+#include "minecraft/client/renderer/texture/StitchedTexture.h"
 #include "minecraft/client/renderer/texture/Texture.h"
-#include "CompassTexture.h"
-#include "4J.Common/4J_Compat.h"
-#include "minecraft/Pos.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/client/renderer/texture/StitchedTexture.h"
 
 CompassTexture* CompassTexture::instance = nullptr;
 

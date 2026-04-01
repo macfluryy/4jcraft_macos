@@ -1,19 +1,21 @@
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
+
 #include <assert.h>
 #include <wchar.h>
+
 #include <format>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/CompleteAllRuleDefinition.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 
 class Connection;

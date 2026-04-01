@@ -1,10 +1,11 @@
+#include "MemoryTracker.h"
+
 #include <utility>
 #include <vector>
 
-#include "MemoryTracker.h"
+#include "4J.Render/4J_Render.h"
 #include "java/ByteBuffer.h"
 #include "minecraft/client/MemoryTracker.h"
-#include "4J.Render/4J_Render.h"
 
 std::unordered_map<int, int> MemoryTracker::GL_LIST_IDS;
 std::vector<int> MemoryTracker::TEXTURE_IDS;

@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_DLCMainMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 
 #define PLAYER_ONLINE_TIMER_ID 0
 #define PLAYER_ONLINE_TIMER_TIME 100

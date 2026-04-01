@@ -1,45 +1,47 @@
+#include "DirectoryLevelStorage.h"
+
 #include <assert.h>
 #include <float.h>
 #include <stdio.h>
+
 #include <algorithm>
 #include <format>
 #include <memory>
 #include <utility>
 
-#include "java/System.h"
-#include "java/File.h"
-#include "java/InputOutputStream/DataInputStream.h"
 #include "LevelData.h"
-#include "DirectoryLevelStorage.h"
-#include "platform/IPlatformStorage.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/InputOutputStream/FileOutputStream.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/DoubleTag.h"
-#include "nbt/ListTag.h"
-#include "nbt/NbtIo.h"
+#include "java/System.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/dimension/HellDimension.h"
 #include "minecraft/world/level/dimension/TheEndDimension.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "minecraft/world/level/storage/LevelStorage.h"
 #include "minecraft/world/level/storage/PlayerIO.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/NbtIo.h"
+#include "platform/IPlatformStorage.h"
 #include "platform/PlatformServices.h"
 
 const std::wstring DirectoryLevelStorage::sc_szPlayerDir(L"players/");

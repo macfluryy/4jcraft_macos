@@ -1,9 +1,9 @@
-#include <cassert>
-#include <cmath>
-#include <chrono>
-#include <cstdint>  // for int64_t
-
 #include "java/Random.h"
+
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstdint>  // for int64_t
 
 Random::Random() {
     // 4J - jave now uses the system nanosecond counter added to a

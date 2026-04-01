@@ -1,8 +1,8 @@
 #pragma once
 
 class TileEntity;
-#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/entity/player/Player.h"
 
 class LevelListener {
 public:

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
-#include "Minecraft.Client/Common/App_enums.h"
-
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
+
+#include "Minecraft.Client/Common/App_enums.h"
+#include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 
 class Mob;
 class MobEffectInstance;

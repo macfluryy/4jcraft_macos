@@ -1,11 +1,11 @@
-#include "Minecraft.Client/include/stdafx.h"
+#include "UIScene_FireworksMenu.h"
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/player/LocalPlayer.h"
-#include "UIScene_FireworksMenu.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 
 UIScene_FireworksMenu::UIScene_FireworksMenu(int iPad, void* _initData,
                                              UILayer* parentLayer)

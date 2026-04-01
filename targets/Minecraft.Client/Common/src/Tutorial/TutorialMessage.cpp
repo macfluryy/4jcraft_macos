@@ -1,4 +1,5 @@
 #include "TutorialMessage.h"
+
 #include "Minecraft.Client/Linux/Linux_App.h"
 
 TutorialMessage::TutorialMessage(

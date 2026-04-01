@@ -1,7 +1,8 @@
+#include "PanicGoal.h"
+
 #include <memory>
 #include <optional>
 
-#include "PanicGoal.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/control/Control.h"

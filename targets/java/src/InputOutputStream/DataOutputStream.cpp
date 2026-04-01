@@ -1,10 +1,12 @@
+#include "java/InputOutputStream/DataOutputStream.h"
+
 #include <stdio.h>
+
 #include <bit>
 #include <cstdint>
 #include <string>
 #include <vector>
 
-#include "java/InputOutputStream/DataOutputStream.h"
 #include "java/InputOutputStream/OutputStream.h"
 
 // Creates a new data output stream to write data to the specified underlying

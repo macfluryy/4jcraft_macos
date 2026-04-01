@@ -1,12 +1,14 @@
 // Minecraft.cpp : Defines the entry point for the application.
 //
-#include "Minecraft.Client/include/stdafx.h"
 #include <assert.h>
+
 #include <mutex>
+
+#include "Minecraft.Client/include/stdafx.h"
 // #include <system_service.h>
 #if defined(__linux__) && defined(__GLIBC__)
-#include <signal.h>
 #include <execinfo.h>
+#include <signal.h>
 #include <unistd.h>
 static void sigsegv_handler(int sig) {
     const char msg[] = "\n=== SIGNAL CAUGHT: ";
@@ -36,39 +38,37 @@ static void sigsegv_handler(int sig) {
     _exit(139);
 }
 #endif
-#include "minecraft/server/MinecraftServer.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
+#include "console_helpers/StringHelpers.h"
+#include "console_helpers/ThreadName.h"
+#include "minecraft/client/User.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/ConnectScreen.h"
 #include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/locale/Language.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/stats/StatsCounter.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/item/crafting/Recipes.h"
 #include "minecraft/world/item/crafting/Recipy.h"
-#include "minecraft/locale/Language.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-
-#include "minecraft/client/multiplayer/ClientConnection.h"
-#include "minecraft/client/User.h"
-#include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "console_helpers/ThreadName.h"
-#include "minecraft/stats/StatsCounter.h"
-#include "minecraft/client/multiplayer/ConnectScreen.h"
+#include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
 // #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 // #include "../Common/XUI/XUI_Scene_Container.h"
 // #include "NetworkManager.h"
-#include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "console_helpers/compression.h"
-#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
-#include "minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Common/App_Defines.h"
-
+#include "4J.Common/4J_InputActions.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
-#include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/App_Defines.h"
+#include "console_helpers/compression.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 
 // #include "../Orbis/Leaderboards/OrbisLeaderboardManager.h"
 

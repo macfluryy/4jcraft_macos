@@ -1,16 +1,18 @@
+#include "RedStoneDustTile.h"
+
 #include <stdint.h>
+
 #include <optional>
 #include <vector>
 
-#include "minecraft/client/Minecraft.h"
-#include "RedStoneDustTile.h"
-#include "minecraft/Direction.h"
 #include "DiodeTile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
+#include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"

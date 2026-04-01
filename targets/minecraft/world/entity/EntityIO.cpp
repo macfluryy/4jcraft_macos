@@ -1,19 +1,20 @@
-#include "java/Class.h"
-#include "Painting.h"
-#include "java/System.h"
+#include "EntityIO.h"
+
 #include "Entity.h"
-#include "minecraft/world/entity/boss/wither/WitherBoss.h"
+#include "Painting.h"
+#include "java/Class.h"
+#include "java/System.h"
 #include "minecraft/world/entity/ambient/net.minecraft.world.entity.ambient.h"
 #include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/entity/boss/wither/WitherBoss.h"
 #include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
 #include "minecraft/world/entity/npc/net.minecraft.world.entity.npc.h"
-#include "net.minecraft.world.entity.h"
+#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "nbt/com.mojang.nbt.h"
-#include "EntityIO.h"
+#include "net.minecraft.world.entity.h"
 
 std::unordered_map<std::wstring, entityCreateFn>* EntityIO::idCreateMap =
     new std::unordered_map<std::wstring, entityCreateFn>;

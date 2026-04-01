@@ -1,13 +1,14 @@
+#include "Stats.h"
+
 #include <string>
 #include <vector>
 
 #include "Achievements.h"
-#include "ItemStat.h"
 #include "GeneralStat.h"
-#include "Stats.h"
-#include "minecraft/stats/StatsCounter.h"
+#include "ItemStat.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/stats/Stat.h"
+#include "minecraft/stats/StatsCounter.h"
 #include "minecraft/world/item/FishingRodItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/MapItem.h"

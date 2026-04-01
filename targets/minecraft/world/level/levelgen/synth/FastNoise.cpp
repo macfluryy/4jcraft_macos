@@ -1,4 +1,5 @@
 #include "FastNoise.h"
+
 #include "java/Random.h"
 
 FastNoise::FastNoise(int levels) {

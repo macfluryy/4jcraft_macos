@@ -1,7 +1,8 @@
+#include "EntityActionAtPositionPacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "EntityActionAtPositionPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/Entity.h"

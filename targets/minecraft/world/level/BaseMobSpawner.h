@@ -5,7 +5,6 @@
 #include <string>
 
 #include "minecraft/util/WeighedRandom.h"
-#include "minecraft/util/WeighedRandom.h"
 #include "minecraft/world/entity/Entity.h"
 
 class CompoundTag;

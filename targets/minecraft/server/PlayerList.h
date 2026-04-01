@@ -1,13 +1,13 @@
 #pragma once
 #include <cstdint>
 #include <deque>
-#include <mutex>
-#include <vector>
 #include <memory>
+#include <mutex>
 #include <unordered_map>
+#include <vector>
 
-#include "nbt/CompoundTag.h"
 #include "4J.Common/4J_Compat.h"
+#include "nbt/CompoundTag.h"
 
 class ServerPlayer;
 class PlayerChunkMap;

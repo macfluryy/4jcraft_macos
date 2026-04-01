@@ -1,5 +1,6 @@
-#include "PacketListener.h"
 #include "AddEntityPacket.h"
+
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/Entity.h"

@@ -1,15 +1,16 @@
+#include "DLCSkinFile.h"
+
 #include <wchar.h>
 
-#include "DLCManager.h"
-#include "DLCSkinFile.h"
-#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "4J.Render/4J_Render.h"
+#include "DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
+#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 
 DLCSkinFile::DLCSkinFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_Skin, path) {

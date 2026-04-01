@@ -1,8 +1,10 @@
 
+#include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugSetCamera.h"
+
 #include <wchar.h>
+
 #include <memory>
 
-#include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugSetCamera.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
@@ -14,9 +16,9 @@
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UIScene_DebugSetCamera.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "console_helpers/StringHelpers.h"
 
 UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,
                                                UILayer* parentLayer)

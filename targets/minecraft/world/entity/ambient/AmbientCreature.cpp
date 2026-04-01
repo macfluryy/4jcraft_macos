@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "AmbientCreature.h"
+
+#include <memory>
 
 class Level;
 

@@ -1,20 +1,21 @@
+#include "EnchantItemCommand.h"
+
 #include <string>
 #include <vector>
 
-#include "minecraft/server/level/ServerPlayer.h"
-#include "EnchantItemCommand.h"
 #include "4J.Common/4J_Compat.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/GameCommandPacket.h"
+#include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/Enchantment.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 EGameCommand EnchantItemCommand::getId() { return eGameCommand_EnchantItem; }
 

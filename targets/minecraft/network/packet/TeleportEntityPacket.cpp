@@ -1,5 +1,6 @@
-#include "PacketListener.h"
 #include "TeleportEntityPacket.h"
+
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/util/Mth.h"

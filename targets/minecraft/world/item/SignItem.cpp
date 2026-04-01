@@ -1,6 +1,7 @@
+#include "SignItem.h"
+
 #include <memory>
 
-#include "SignItem.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/player/Player.h"

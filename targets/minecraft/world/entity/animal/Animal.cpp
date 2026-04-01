@@ -1,20 +1,21 @@
+#include "Animal.h"
+
 #include <cmath>
 
-#include "nbt/com.mojang.nbt.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "java/Random.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
+#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
+#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/storage/net.minecraft.world.level.storage.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
-#include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/util/Mth.h"
-#include "java/Random.h"
-#include "Animal.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "nbt/com.mojang.nbt.h"
 
 Animal::Animal(Level* level) : AgableMob(level) {
     //	inLove = 0;

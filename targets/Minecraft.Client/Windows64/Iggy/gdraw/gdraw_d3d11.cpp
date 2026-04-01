@@ -41,13 +41,13 @@
 #pragma warning(disable \
                 : 4201)  // nonstandard extension used : nameless struct/union
 
-#include <windows.h>
 #include <d3d11.h>
+#include <math.h>
+#include <string.h>
+#include <windows.h>
+
 #include "../include/gdraw.h"
 #include "../include/iggy.h"
-#include <string.h>
-#include <math.h>
-
 #include "gdraw_d3d11.h"
 
 #pragma warning(pop)

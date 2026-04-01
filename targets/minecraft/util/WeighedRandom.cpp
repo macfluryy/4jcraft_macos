@@ -1,8 +1,9 @@
 
+#include "minecraft/util/WeighedRandom.h"
+
 #include <format>
 #include <vector>
 
-#include "minecraft/util/WeighedRandom.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/Random.h"
 #include "minecraft/util/WeighedRandom.h"

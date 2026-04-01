@@ -1,4 +1,5 @@
 #include "GlowstoneTile.h"
+
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/item/Item.h"

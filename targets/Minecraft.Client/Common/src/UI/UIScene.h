@@ -6,23 +6,25 @@
 //  different sized movies)
 
 #include <stddef.h>
+
 #include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 
 class ItemRenderer;
 class UILayer;
 class ItemInstance;
-class UIControl;
 class UIControl_Base;
+class UIControl;
 
 // 4J Stu - Setup some defines for quickly mapping elements in the scene
 

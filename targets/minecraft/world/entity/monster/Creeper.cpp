@@ -1,11 +1,12 @@
+#include "Creeper.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
-#include "Creeper.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
@@ -28,6 +29,7 @@
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
 
 void Creeper::_init() {
     swell = 0;

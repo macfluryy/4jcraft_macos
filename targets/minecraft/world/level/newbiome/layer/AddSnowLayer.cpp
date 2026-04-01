@@ -1,10 +1,12 @@
 
+#include "minecraft/world/level/newbiome/layer/AddSnowLayer.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/newbiome/layer/AddSnowLayer.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 
 AddSnowLayer::AddSnowLayer(int64_t seedMixup, std::shared_ptr<Layer> parent)

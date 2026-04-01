@@ -1,4 +1,5 @@
 #include "EffectChangedTask.h"
+
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 
 class Tutorial;

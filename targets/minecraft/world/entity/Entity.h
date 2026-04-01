@@ -3,15 +3,13 @@
 #include <cstdint>
 #include <optional>
 
-#include "nbt/ListTag.h"
+#include "console_helpers/Definitions.h"
+#include "java/Class.h"
+#include "minecraft/world/phys/AABB.h"
+#include "minecraft/world/phys/Vec3.h"
 #include "nbt/DoubleTag.h"
 #include "nbt/FloatTag.h"
-
-#include "java/Class.h"
-
-#include "minecraft/world/phys/Vec3.h"
-#include "console_helpers/Definitions.h"
-#include "minecraft/world/phys/AABB.h"
+#include "nbt/ListTag.h"
 
 class LivingEntity;
 class LightningBolt;

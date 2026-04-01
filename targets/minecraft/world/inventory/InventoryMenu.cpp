@@ -1,10 +1,11 @@
+#include "InventoryMenu.h"
+
 #include <vector>
 
-#include "ResultSlot.h"
 #include "ArmorSlot.h"
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
-#include "InventoryMenu.h"
+#include "ResultSlot.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"

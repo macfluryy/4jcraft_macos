@@ -1,9 +1,10 @@
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/PlayerList.h"
 #include "Command.h"
+
 #include "minecraft/commands/AdminLogCommand.h"
 #include "minecraft/commands/CommandSender.h"
 #include "minecraft/network/packet/ChatPacket.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
 
 AdminLogCommand* Command::logger;
 

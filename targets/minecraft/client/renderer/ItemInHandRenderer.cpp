@@ -1,25 +1,35 @@
+#include "ItemInHandRenderer.h"
+
 #include <GL/gl.h>
+
 #include <cmath>
 #include <numbers>
 #include <vector>
 
-#include "ItemInHandRenderer.h"
-#include "TileRenderer.h"
-#include "Tesselator.h"
-#include "Textures.h"
-#include "minecraft/client/renderer/texture/TextureAtlas.h"
-#include "minecraft/client/renderer/entity/PlayerRenderer.h"
-#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "minecraft/client/Lighting.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/gui/Minimap.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/client/renderer/ItemInHandRenderer.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "Tesselator.h"
+#include "Textures.h"
+#include "TileRenderer.h"
+#include "java/System.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Lighting.h"
+#include "minecraft/client/MemoryTracker.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Minimap.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/client/renderer/ItemInHandRenderer.h"
+#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "minecraft/client/renderer/entity/PlayerRenderer.h"
+#include "minecraft/client/renderer/texture/TextureAtlas.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -33,14 +43,6 @@
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "java/System.h"
-#include "minecraft/client/MemoryTracker.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/player/LocalPlayer.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 
 class EntityRenderer;
 class MapItemSavedData;

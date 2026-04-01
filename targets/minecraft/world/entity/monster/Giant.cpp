@@ -1,4 +1,5 @@
 #include "Giant.h"
+
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"

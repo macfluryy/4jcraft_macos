@@ -1,8 +1,8 @@
+#include "RunAroundLikeCrazyGoal.h"
+
 #include <memory>
 #include <optional>
 
-#include "minecraft/world/entity/ai/util/RandomPos.h"
-#include "RunAroundLikeCrazyGoal.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/Entity.h"
@@ -11,6 +11,7 @@
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
+#include "minecraft/world/entity/ai/util/RandomPos.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"

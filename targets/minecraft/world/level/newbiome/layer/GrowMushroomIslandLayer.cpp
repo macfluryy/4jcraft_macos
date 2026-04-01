@@ -1,10 +1,12 @@
 
+#include "minecraft/world/level/newbiome/layer/GrowMushroomIslandLayer.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/newbiome/layer/GrowMushroomIslandLayer.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 
 GrowMushroomIslandLayer::GrowMushroomIslandLayer(int64_t seedMixup,

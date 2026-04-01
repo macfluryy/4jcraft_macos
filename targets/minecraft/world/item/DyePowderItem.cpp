@@ -1,17 +1,18 @@
 
-#include "nbt/com.mojang.nbt.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.item.h"
+#include "DyePowderItem.h"
+
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "minecraft/world/entity/global/net.minecraft.world.entity.global.h"
 #include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/global/net.minecraft.world.entity.global.h"
-#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "minecraft/world/net.minecraft.world.h"
 #include "minecraft/world/level/material/Material.h"
-#include "DyePowderItem.h"
-#include "minecraft/util/Mth.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/net.minecraft.world.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "nbt/com.mojang.nbt.h"
+#include "net.minecraft.world.item.h"
 
 DyePowderItem::DyePowderItem(int id) : Item(id) {
     setStackedByData(true);

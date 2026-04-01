@@ -1,8 +1,9 @@
+#include "EnderpearlItem.h"
+
 #include <memory>
 
-#include "EnderpearlItem.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/ThrownEnderpearl.h"

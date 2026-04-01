@@ -1,14 +1,15 @@
+#include "CraftingScreen.h"
+
 #include <string>
 
-#include "CraftingScreen.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/CraftingMenu.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 class Player;
 

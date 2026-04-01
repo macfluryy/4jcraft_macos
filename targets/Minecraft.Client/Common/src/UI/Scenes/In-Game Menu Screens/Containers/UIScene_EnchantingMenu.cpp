@@ -1,9 +1,10 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/client/Minecraft.h"
 #include "UIScene_EnchantingMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 
 UIScene_EnchantingMenu::UIScene_EnchantingMenu(int iPad, void* _initData,
                                                UILayer* parentLayer)

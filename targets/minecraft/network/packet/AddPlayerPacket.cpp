@@ -1,16 +1,17 @@
+#include "AddPlayerPacket.h"
+
 #include <vector>
 
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "PacketListener.h"
-#include "AddPlayerPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 AddPlayerPacket::AddPlayerPacket() {
     id = -1;

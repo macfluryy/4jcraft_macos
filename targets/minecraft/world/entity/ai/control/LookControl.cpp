@@ -1,7 +1,9 @@
+#include "LookControl.h"
+
 #include <math.h>
+
 #include <numbers>
 
-#include "LookControl.h"
 #include "java/Class.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"

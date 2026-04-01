@@ -1,7 +1,8 @@
+#include "SoulSandTile.h"
+
 #include <memory>
 #include <optional>
 
-#include "SoulSandTile.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/Tile.h"

@@ -1,6 +1,7 @@
+#include "SlimeModel.h"
+
 #include <memory>
 
-#include "SlimeModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
 SlimeModel::SlimeModel(int vOffs) {

@@ -1,10 +1,12 @@
+#include "ControlledByPlayerGoal.h"
+
 #include <math.h>
+
 #include <algorithm>
 #include <memory>
 #include <numbers>
 #include <vector>
 
-#include "ControlledByPlayerGoal.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"

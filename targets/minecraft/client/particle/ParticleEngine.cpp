@@ -1,25 +1,27 @@
+#include "ParticleEngine.h"
+
 #include <GL/gl.h>
 #include <math.h>
+
 #include <algorithm>
 #include <numbers>
 
-#include "ParticleEngine.h"
+#include "4J.Render/4J_Render.h"
 #include "Particle.h"
+#include "TerrainParticle.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/Class.h"
+#include "java/Random.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/client/Camera.h"
+#include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
-#include "minecraft/client/renderer/Tesselator.h"
-#include "TerrainParticle.h"
 #include "minecraft/client/resources/ResourceLocation.h"
-#include "minecraft/client/Camera.h"
-#include "console_helpers/StringHelpers.h"
-#include "4J.Render/4J_Render.h"
-#include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "java/Class.h"
-#include "java/Random.h"
 
 ResourceLocation ParticleEngine::PARTICLES_LOCATION =
     ResourceLocation(TN_PARTICLES);

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "minecraft/world/level/LevelSource.h"
-#include "minecraft/world/entity/Mob.h"
-#include "minecraft/util/WeighedRandom.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "minecraft/util/WeighedRandom.h"
+#include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/level/LevelSource.h"
 
 class Feature;
 class MobCategory;

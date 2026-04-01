@@ -1,4 +1,5 @@
 #include "FenceTile.h"
+
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/LeashItem.h"
 #include "minecraft/world/level/Level.h"

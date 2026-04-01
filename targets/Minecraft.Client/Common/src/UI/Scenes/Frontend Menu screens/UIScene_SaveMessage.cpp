@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_SaveMessage.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 
 #define PROFILE_LOADED_TIMER_ID 0
 #define PROFILE_LOADED_TIMER_TIME 50

@@ -1,6 +1,7 @@
+#include "CowRenderer.h"
+
 #include <memory>
 
-#include "CowRenderer.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"

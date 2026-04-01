@@ -1,17 +1,18 @@
-#include <unordered_map>
+#include "ControllerTask.h"
+
 #include <cmath>
 #include <memory>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "ControllerTask.h"
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/InputConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 class Tutorial;
 

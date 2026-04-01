@@ -1,13 +1,13 @@
-#include "Minecraft.Client/include/stdafx.h"
-#include "4J.Common/4J_InputActions.h"
+#include "IUIScene_CraftingMenu.h"
 
+#include "4J.Common/4J_InputActions.h"
+#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
+#include "Minecraft.Client/include/stdafx.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/stats/net.minecraft.stats.h"
 #include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/client/player/LocalPlayer.h"
-#include "IUIScene_CraftingMenu.h"
-#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
-#include "minecraft/client/Minecraft.h"
 
 Recipy::_eGroupType IUIScene_CraftingMenu::m_GroupTypeMapping4GridA
     [IUIScene_CraftingMenu::m_iMaxGroup2x2] = {

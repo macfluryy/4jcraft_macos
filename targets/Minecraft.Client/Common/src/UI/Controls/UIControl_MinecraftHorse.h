@@ -1,7 +1,8 @@
 #pragma once
 
-#include "UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftHorse.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
+#include "UIControl.h"
 
 class UIControl_MinecraftHorse : public UIControl {
 private:

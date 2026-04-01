@@ -1,15 +1,16 @@
+#include "EnderMan.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <string>
 #include <vector>
 
-#include "EnderMan.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
@@ -30,6 +31,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 AttributeModifier* EnderMan::SPEED_MODIFIER_ATTACKING =
     (new AttributeModifier(eModifierId_MOB_ENDERMAN_ATTACKSPEED, 6.2f,

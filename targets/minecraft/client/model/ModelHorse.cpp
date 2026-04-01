@@ -1,17 +1,17 @@
+#include "ModelHorse.h"
+
 #include <algorithm>
 #include <cmath>
 #include <memory>
 #include <numbers>
 
-#include "minecraft/util/Mth.h"
-#include "ModelHorse.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "4J.Render/4J_Render.h"
+#include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
-#include "minecraft/client/model/geom/Model.h"
-#include "minecraft/util/Mth.h"
 
 ModelHorse::ModelHorse() {
     texWidth = 128;

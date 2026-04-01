@@ -1,14 +1,16 @@
+#include "MultiPlayerLocalPlayer.h"
+
 #include <wchar.h>
 
-#include "MultiPlayerLocalPlayer.h"
 #include "ClientConnection.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/client/player/Input.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/player/Input.h"
+#include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/network/packet/AnimatePacket.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/network/packet/ClientCommandPacket.h"
@@ -21,6 +23,7 @@
 #include "minecraft/network/packet/TextureAndGeometryChangePacket.h"
 #include "minecraft/network/packet/TextureChangePacket.h"
 #include "minecraft/stats/Stat.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
 #include "minecraft/world/entity/player/Abilities.h"
@@ -28,9 +31,7 @@
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
-#include "minecraft/client/player/LocalPlayer.h"
+#include "minecraft/world/phys/AABB.h"
 
 class User;
 

@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Enchantment.h"
+
+class Random;
+class Entity;
 
 class ThornsEnchantment : public Enchantment {
 private:

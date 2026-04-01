@@ -1,7 +1,8 @@
+#include "RandomStrollGoal.h"
+
 #include <memory>
 #include <optional>
 
-#include "RandomStrollGoal.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/PathfinderMob.h"

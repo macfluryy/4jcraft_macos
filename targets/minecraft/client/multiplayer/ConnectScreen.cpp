@@ -1,15 +1,16 @@
+#include "ConnectScreen.h"
+
 #include <memory>
 #include <vector>
 
-#include "ConnectScreen.h"
 #include "ClientConnection.h"
-#include "minecraft/client/title/TitleScreen.h"
-#include "minecraft/client/gui/Button.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/User.h"
+#include "minecraft/client/gui/Button.h"
+#include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/title/TitleScreen.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/network/packet/PreLoginPacket.h"
-#include "minecraft/client/gui/Screen.h"
 
 ConnectScreen::ConnectScreen(Minecraft* minecraft, const std::wstring& ip,
                              int port) {

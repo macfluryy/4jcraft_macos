@@ -1,8 +1,8 @@
 
+#include "console_helpers/PerformanceTimer.h"
+
 #include <chrono>
 #include <string>
-
-#include "console_helpers/PerformanceTimer.h"
 
 PerformanceTimer::PerformanceTimer() { Reset(); }
 

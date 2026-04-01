@@ -1,4 +1,5 @@
 #include "PlayerTeam.h"
+
 #include "minecraft/world/scores/Scoreboard.h"
 #include "minecraft/world/scores/Team.h"
 

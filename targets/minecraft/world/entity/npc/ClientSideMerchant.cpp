@@ -1,4 +1,5 @@
 #include "ClientSideMerchant.h"
+
 #include "minecraft/world/inventory/MerchantContainer.h"
 #include "minecraft/world/item/trading/MerchantRecipe.h"
 #include "minecraft/world/item/trading/MerchantRecipeList.h"

@@ -1,9 +1,10 @@
 
+#include "UIScene_CraftingMenu.h"
+
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "UIScene_CraftingMenu.h"
 
 UIScene_CraftingMenu::UIScene_CraftingMenu(int iPad, void* _initData,
                                            UILayer* parentLayer)

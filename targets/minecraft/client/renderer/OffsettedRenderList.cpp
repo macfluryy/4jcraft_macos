@@ -1,6 +1,7 @@
-#include "java/IntBuffer.h"
 #include "OffsettedRenderList.h"
+
 #include "4J.Render/4J_Render.h"
+#include "java/IntBuffer.h"
 #include "minecraft/client/MemoryTracker.h"
 
 // 4J added

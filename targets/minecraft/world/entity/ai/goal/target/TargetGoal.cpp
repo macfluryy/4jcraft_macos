@@ -1,6 +1,7 @@
+#include "TargetGoal.h"
+
 #include <string>
 
-#include "TargetGoal.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"

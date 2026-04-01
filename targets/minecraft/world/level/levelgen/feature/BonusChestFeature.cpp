@@ -1,8 +1,9 @@
+#include "BonusChestFeature.h"
+
 #include <memory>
 
-#include "BonusChestFeature.h"
-#include "minecraft/util/WeighedTreasure.h"
 #include "java/Random.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/ChestTileEntity.h"

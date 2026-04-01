@@ -1,21 +1,23 @@
+#include "RegionFile.h"
+
 #include <string.h>
+
 #include <algorithm>
 #include <cstdint>
 #include <string>
 
-#include "java/System.h"
-#include "java/File.h"
-#include "RegionFile.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/compression.h"
+#include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "java/System.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 std::vector<uint8_t> RegionFile::emptySector(SECTOR_BYTES);
 

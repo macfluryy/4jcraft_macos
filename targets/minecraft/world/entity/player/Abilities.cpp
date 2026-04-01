@@ -1,6 +1,7 @@
+#include "Abilities.h"
+
 #include <string>
 
-#include "Abilities.h"
 #include "nbt/CompoundTag.h"
 
 Abilities::Abilities() {

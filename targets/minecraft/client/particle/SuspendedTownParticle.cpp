@@ -1,6 +1,7 @@
 #include "SuspendedTownParticle.h"
-#include "java/Random.h"
+
 #include "java/JavaMath.h"
+#include "java/Random.h"
 #include "minecraft/client/particle/Particle.h"
 
 class Level;

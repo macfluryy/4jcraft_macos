@@ -1,6 +1,7 @@
+#include "IUIScene_HopperMenu.h"
+
 #include <assert.h>
 
-#include "IUIScene_HopperMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/HopperMenu.h"
 

@@ -1,7 +1,8 @@
+#include "SignUpdatePacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "SignUpdatePacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"

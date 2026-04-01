@@ -1,9 +1,10 @@
-#include <limits>
+#include "PlayGoal.h"
+
 #include <format>
+#include <limits>
 #include <optional>
 #include <vector>
 
-#include "PlayGoal.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"

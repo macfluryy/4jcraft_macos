@@ -1,6 +1,7 @@
+#include "IUIScene_FurnaceMenu.h"
+
 #include <assert.h>
 
-#include "IUIScene_FurnaceMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/FurnaceMenu.h"
 

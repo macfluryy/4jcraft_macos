@@ -1,16 +1,16 @@
+#include "ScatteredFeaturePieces.h"
+
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minecraft/util/WeighedTreasure.h"
-#include "ScatteredFeaturePieces.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/entity/monster/Witch.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/EnchantedBookItem.h"
@@ -29,6 +29,7 @@
 #include "minecraft/world/level/tile/TreeTile.h"
 #include "minecraft/world/level/tile/TripWireSourceTile.h"
 #include "minecraft/world/level/tile/TripWireTile.h"
+#include "nbt/CompoundTag.h"
 
 void ScatteredFeaturePieces::loadStatic() {
     StructureFeatureIO::setPieceId(eStructurePiece_DesertPyramidPiece,

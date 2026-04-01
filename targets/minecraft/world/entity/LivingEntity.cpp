@@ -1,35 +1,32 @@
+#include "LivingEntity.h"
+
 #include <stdint.h>
 #include <stdlib.h>
-#include <optional>
+
 #include <algorithm>
 #include <cmath>
 #include <format>
 #include <memory>
 #include <numbers>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
-#include "java/JavaMath.h"
-#include "LivingEntity.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/server/level/EntityTracker.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/stats/GenericStats.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Class.h"
+#include "java/JavaMath.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/FloatTag.h"
-#include "nbt/ListTag.h"
-#include "nbt/ShortTag.h"
-#include "nbt/Tag.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/AnimatePacket.h"
 #include "minecraft/network/packet/SetEquippedItemPacket.h"
 #include "minecraft/network/packet/TakeItemEntityPacket.h"
+#include "minecraft/server/level/EntityTracker.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/CombatTracker.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -65,6 +62,11 @@
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/scores/Team.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/FloatTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/ShortTag.h"
+#include "nbt/Tag.h"
 
 class Icon;
 

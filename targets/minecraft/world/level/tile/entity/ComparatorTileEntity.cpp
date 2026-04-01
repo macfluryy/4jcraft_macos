@@ -1,9 +1,10 @@
+#include "ComparatorTileEntity.h"
+
 #include <memory>
 #include <string>
 
-#include "ComparatorTileEntity.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 void ComparatorTileEntity::save(CompoundTag* tag) {
     TileEntity::save(tag);

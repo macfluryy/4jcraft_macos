@@ -1,9 +1,11 @@
+#include "LeashKnotRenderer.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 
-#include "LeashKnotRenderer.h"
-#include "minecraft/client/model/LeashKnotModel.h"
 #include "4J.Render/4J_Render.h"
+#include "minecraft/client/model/LeashKnotModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/EntityRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"

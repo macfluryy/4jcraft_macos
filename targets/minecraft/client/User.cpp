@@ -1,6 +1,7 @@
+#include "User.h"
+
 #include <vector>
 
-#include "User.h"
 #include "minecraft/world/level/tile/HalfSlabTile.h"
 #include "minecraft/world/level/tile/LeafTile.h"
 #include "minecraft/world/level/tile/PlantTile.h"

@@ -1,12 +1,12 @@
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/net.minecraft.h"
 #include "AnvilTile.h"
-#include "minecraft/util/Mth.h"
 
+#include "minecraft/net.minecraft.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/net.minecraft.world.h"
+#include "net.minecraft.world.level.tile.h"
 #include "strings.h"
 
 const unsigned int AnvilTile::ANVIL_NAMES[ANVIL_NAMES_LENGTH] = {

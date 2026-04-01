@@ -1,5 +1,6 @@
-#include "java/JavaMath.h"
 #include "RedDustParticle.h"
+
+#include "java/JavaMath.h"
 #include "minecraft/client/particle/Particle.h"
 
 class Level;

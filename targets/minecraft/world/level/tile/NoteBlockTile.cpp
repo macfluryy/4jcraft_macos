@@ -1,7 +1,8 @@
+#include "NoteBlockTile.h"
+
 #include <cmath>
 #include <memory>
 
-#include "NoteBlockTile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"

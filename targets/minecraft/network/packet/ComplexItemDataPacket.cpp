@@ -1,8 +1,9 @@
+#include "ComplexItemDataPacket.h"
+
 #include <stdint.h>
 #include <string.h>
 
 #include "PacketListener.h"
-#include "ComplexItemDataPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Golem.h"
-#include "minecraft/world/entity/monster/RangedAttackMob.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/monster/RangedAttackMob.h"
 
 class Entity;
 class Level;

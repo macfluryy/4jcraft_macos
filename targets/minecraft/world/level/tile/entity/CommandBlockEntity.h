@@ -3,8 +3,8 @@
 #include <string>
 
 #include "TileEntity.h"
-#include "minecraft/commands/CommandSender.h"
 #include "java/Class.h"
+#include "minecraft/commands/CommandSender.h"
 #include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/packet/ChatPacket.h"
 

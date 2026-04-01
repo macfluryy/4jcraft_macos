@@ -1,6 +1,7 @@
+#include "MerchantResultSlot.h"
+
 #include <algorithm>
 
-#include "MerchantResultSlot.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/inventory/MerchantContainer.h"
 #include "minecraft/world/inventory/MerchantMenu.h"

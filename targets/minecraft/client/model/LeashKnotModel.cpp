@@ -1,9 +1,10 @@
+#include "LeashKnotModel.h"
+
 #include <memory>
 #include <numbers>
 
-#include "LeashKnotModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 LeashKnotModel::LeashKnotModel() { _init(0, 0, 32, 32); }
 

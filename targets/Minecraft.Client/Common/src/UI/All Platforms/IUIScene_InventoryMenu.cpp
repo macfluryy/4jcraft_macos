@@ -1,6 +1,7 @@
+#include "IUIScene_InventoryMenu.h"
+
 #include <assert.h>
 
-#include "IUIScene_InventoryMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/InventoryMenu.h"
 

@@ -1,6 +1,7 @@
+#include "BowlFoodItem.h"
+
 #include <memory>
 
-#include "BowlFoodItem.h"
 #include "minecraft/world/item/FoodItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

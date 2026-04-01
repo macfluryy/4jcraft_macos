@@ -1,6 +1,7 @@
+#include "RandomPos.h"
+
 #include <optional>
 
-#include "RandomPos.h"
 #include "java/Random.h"
 #include "minecraft/Pos.h"
 #include "minecraft/util/Mth.h"

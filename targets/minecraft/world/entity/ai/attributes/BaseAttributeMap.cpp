@@ -1,7 +1,8 @@
+#include "BaseAttributeMap.h"
+
 #include <utility>
 #include <vector>
 
-#include "BaseAttributeMap.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/item/ItemInstance.h"

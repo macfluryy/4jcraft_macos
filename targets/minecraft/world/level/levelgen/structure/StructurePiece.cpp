@@ -1,17 +1,16 @@
+#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
+
 #include <list>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minecraft/util/WeighedTreasure.h"
-#include "minecraft/Direction.h"
 #include "java/JavaMath.h"
-#include "minecraft/Facing.h"
-#include "minecraft/world/item/DoorItem.h"
-#include "minecraft/world/level/levelgen/structure/StructurePiece.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/IntArrayTag.h"
+#include "minecraft/Direction.h"
+#include "minecraft/Facing.h"
+#include "minecraft/util/WeighedTreasure.h"
+#include "minecraft/world/item/DoorItem.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/TilePos.h"
@@ -25,6 +24,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/ChestTileEntity.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntArrayTag.h"
 
 /**
  *

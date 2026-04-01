@@ -1,7 +1,8 @@
+#include "NetherWartTile.h"
+
 #include <memory>
 #include <string>
 
-#include "NetherWartTile.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/world/IconRegister.h"

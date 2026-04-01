@@ -1,5 +1,6 @@
-#include "PacketListener.h"
 #include "GetInfoPacket.h"
+
+#include "PacketListener.h"
 
 void GetInfoPacket::read(DataInputStream* dis) {}
 

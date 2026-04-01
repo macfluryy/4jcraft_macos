@@ -1,7 +1,8 @@
+#include "DungeonFeature.h"
+
 #include <numbers>
 #include <vector>
 
-#include "DungeonFeature.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"

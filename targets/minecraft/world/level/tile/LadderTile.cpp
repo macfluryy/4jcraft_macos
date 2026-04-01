@@ -1,6 +1,7 @@
+#include "LadderTile.h"
+
 #include <optional>
 
-#include "LadderTile.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/material/Material.h"

@@ -1,18 +1,19 @@
+#include "ChangeStateConstraint.h"
+
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "ChangeStateConstraint.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/network/packet/PlayerInfoPacket.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
 
 ChangeStateConstraint::ChangeStateConstraint(

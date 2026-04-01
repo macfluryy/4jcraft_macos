@@ -1,19 +1,21 @@
+#include "TheEndPortalRenderer.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 
-#include "java/Random.h"
-#include "minecraft/client/renderer/Tesselator.h"
-#include "TileEntityRenderDispatcher.h"
-#include "minecraft/client/Camera.h"
-#include "java/FloatBuffer.h"
-#include "TheEndPortalRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "minecraft/world/level/tile/entity/TheEndPortalTileEntity.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "TileEntityRenderDispatcher.h"
+#include "java/FloatBuffer.h"
+#include "java/Random.h"
 #include "java/System.h"
+#include "minecraft/client/Camera.h"
 #include "minecraft/client/MemoryTracker.h"
+#include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/level/tile/entity/TheEndPortalTileEntity.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 ResourceLocation TheEndPortalRenderer::END_SKY_LOCATION =
     ResourceLocation(TN_MISC_TUNNEL);

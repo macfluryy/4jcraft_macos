@@ -1,6 +1,7 @@
+#include "PickupTask.h"
+
 #include <memory>
 
-#include "PickupTask.h"
 #include "minecraft/world/item/ItemInstance.h"
 
 void PickupTask::onTake(std::shared_ptr<ItemInstance> item,

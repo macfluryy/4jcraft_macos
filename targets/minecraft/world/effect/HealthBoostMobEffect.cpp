@@ -1,6 +1,7 @@
+#include "HealthBoostMobEffect.h"
+
 #include <memory>
 
-#include "HealthBoostMobEffect.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/entity/LivingEntity.h"
 

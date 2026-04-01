@@ -1,20 +1,21 @@
 #include <sched.h>
+
+#include <algorithm>
+#include <atomic>
 #include <bit>
 #include <cassert>
 #include <cerrno>
 #include <chrono>
-#include <cstdio>
-#include <limits>
-#include <thread>
-#include <vector>
-#include <algorithm>
-#include <atomic>
 #include <condition_variable>
 #include <cstdint>
+#include <cstdio>
+#include <limits>
 #include <memory>
 #include <mutex>
 #include <queue>
 #include <string>
+#include <thread>
+#include <vector>
 
 #if defined(_WIN32)
 #include <Windows.h>
@@ -30,7 +31,6 @@
 #endif
 
 #include "Minecraft.Client/Common/ShutdownManager.h"
-#include "console_helpers/C4JThread.h"
 #include "console_helpers/C4JThread.h"
 
 thread_local C4JThread* C4JThread::ms_currentThread = nullptr;

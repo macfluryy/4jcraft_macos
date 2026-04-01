@@ -1,6 +1,7 @@
+#include "CompassItem.h"
+
 #include <memory>
 
-#include "CompassItem.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/IconRegister.h"

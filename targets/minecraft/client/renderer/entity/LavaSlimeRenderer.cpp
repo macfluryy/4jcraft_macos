@@ -1,13 +1,14 @@
+#include "LavaSlimeRenderer.h"
+
 #include <memory>
 
-#include "minecraft/client/model/LavaSlimeModel.h"
-#include "LavaSlimeRenderer.h"
 #include "4J.Render/4J_Render.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/monster/LavaSlime.h"
+#include "minecraft/client/model/LavaSlimeModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/monster/LavaSlime.h"
 
 ResourceLocation LavaSlimeRenderer::MAGMACUBE_LOCATION =
     ResourceLocation(TN_MOB_LAVA);

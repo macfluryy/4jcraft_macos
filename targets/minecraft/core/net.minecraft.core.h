@@ -1,14 +1,14 @@
 #pragma once
 
+#include "AbstractProjectileDispenseBehavior.h"
 #include "Behavior.h"
+#include "BehaviorRegistry.h"
 #include "BlockSource.h"
 #include "BlockSourceImpl.h"
-#include "BehaviorRegistry.h"
-#include "DispenseItemBehavior.h"
 #include "DefaultDispenseItemBehavior.h"
-#include "AbstractProjectileDispenseBehavior.h"
-#include "ItemDispenseBehaviors.h"
+#include "DispenseItemBehavior.h"
 #include "FacingEnum.h"
+#include "ItemDispenseBehaviors.h"
 #include "LocatableSource.h"
 #include "Location.h"
 #include "Position.h"

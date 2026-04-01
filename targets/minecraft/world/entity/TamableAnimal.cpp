@@ -1,15 +1,16 @@
-#include "SyncedEntityData.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "TamableAnimal.h"
+
+#include "SyncedEntityData.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityEvent.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/goal/SitGoal.h"
 #include "minecraft/world/entity/animal/Animal.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
 
 TamableAnimal::TamableAnimal(Level* level) : Animal(level) {
     sitGoal = new SitGoal(this);

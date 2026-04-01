@@ -1,8 +1,9 @@
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_LanguageSelector.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 
 // strings for buttons in the list
 const unsigned int UIScene_LanguageSelector::m_uiHTPButtonNameA[] = {

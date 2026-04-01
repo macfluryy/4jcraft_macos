@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <exception>
+#include <string>
 
 class EOFException : public std::exception {};
 

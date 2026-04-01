@@ -4,9 +4,9 @@
 #include <string>
 
 #include "TileEntity.h"
-#include "platform/IPlatformInput.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "platform/IPlatformInput.h"
 
 #define MAX_SIGN_LINES 4
 

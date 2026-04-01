@@ -1,17 +1,18 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "Animal.h"
-#include "minecraft/world/net.minecraft.world.ContainerListener.h"
-#include "minecraft/world/entity/MobGroupData.h"
-#include "minecraft/world/entity/EntitySelector.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/EntitySelector.h"
+#include "minecraft/world/entity/MobGroupData.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/net.minecraft.world.ContainerListener.h"
 
 class Attribute;
 class AnimalChest;

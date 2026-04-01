@@ -1,15 +1,17 @@
+#include "SparseDataStorage.h"
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <vector>
 
-#include "SparseDataStorage.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 // Note: See header for an overview of this class
 

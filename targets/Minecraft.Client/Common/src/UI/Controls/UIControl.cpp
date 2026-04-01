@@ -1,7 +1,8 @@
 #include "UIControl.h"
-#include "java/JavaMath.h"
+
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/JavaMath.h"
 
 UIControl::UIControl() {
     m_parentScene = nullptr;

@@ -1,6 +1,7 @@
+#include "CarrotTile.h"
+
 #include <string>
 
-#include "CarrotTile.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"

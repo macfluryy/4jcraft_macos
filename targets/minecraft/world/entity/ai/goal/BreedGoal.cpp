@@ -1,14 +1,15 @@
-#include <limits>
+#include "BreedGoal.h"
+
 #include <format>
+#include <limits>
 #include <vector>
 
-#include "BreedGoal.h"
-#include "minecraft/world/entity/ExperienceOrb.h"
-#include "minecraft/stats/GenericStats.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/AgeableMob.h"
+#include "minecraft/world/entity/ExperienceOrb.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/control/LookControl.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"

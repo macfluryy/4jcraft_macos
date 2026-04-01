@@ -1,7 +1,8 @@
+#include "CombatEntry.h"
+
 #include <limits>
 #include <memory>
 
-#include "CombatEntry.h"
 #include "java/Class.h"
 #include "minecraft/world/damageSource/CombatTracker.h"
 #include "minecraft/world/damageSource/DamageSource.h"

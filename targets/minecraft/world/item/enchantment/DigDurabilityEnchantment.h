@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Enchantment.h"
-
 #include "java/Random.h"
 
 class DigDurabilityEnchantment : public Enchantment {

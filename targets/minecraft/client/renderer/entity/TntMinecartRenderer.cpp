@@ -1,13 +1,15 @@
+#include "TntMinecartRenderer.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 
-#include "TntMinecartRenderer.h"
 #include "4J.Render/4J_Render.h"
+#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MinecartRenderer.h"
 #include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/item/MinecartTNT.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/MinecartRenderer.h"
 
 void TntMinecartRenderer::renderMinecartContents(
     std::shared_ptr<Minecart> _cart, float a, Tile* tile, int tileData) {

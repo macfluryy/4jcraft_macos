@@ -1,6 +1,7 @@
+#include "MinecartRideable.h"
+
 #include <memory>
 
-#include "MinecartRideable.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"

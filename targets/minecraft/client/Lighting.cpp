@@ -1,10 +1,11 @@
+#include "Lighting.h"
+
 #include <GL/gl.h>
 
-#include "Lighting.h"
-#include "java/FloatBuffer.h"
-#include "minecraft/world/phys/Vec3.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/include/stubs.h"
+#include "java/FloatBuffer.h"
+#include "minecraft/world/phys/Vec3.h"
 
 FloatBuffer* Lighting::lb = new FloatBuffer(16);
 

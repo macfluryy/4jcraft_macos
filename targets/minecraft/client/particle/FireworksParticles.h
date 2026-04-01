@@ -2,8 +2,8 @@
 #include <format>
 
 #include "Particle.h"
-#include "nbt/CompoundTag.h"
 #include "java/Class.h"
+#include "nbt/CompoundTag.h"
 
 class ParticleEngine;
 class CompoundTag;

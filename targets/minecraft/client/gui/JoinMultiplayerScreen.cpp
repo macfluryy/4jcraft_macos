@@ -1,14 +1,15 @@
+#include "JoinMultiplayerScreen.h"
+
 #include <vector>
 
-#include "JoinMultiplayerScreen.h"
 #include "Button.h"
 #include "EditBox.h"
-#include "minecraft/client/Options.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/locale/Language.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Screen.h"
 #include "Minecraft.Client/include/stubs.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/gui/Screen.h"
+#include "minecraft/locale/Language.h"
 
 JoinMultiplayerScreen::JoinMultiplayerScreen(Screen* lastScreen) {
     ipEdit = nullptr;

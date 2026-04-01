@@ -1,10 +1,11 @@
+#include "Silverfish.h"
+
 #include <memory>
 
-#include "Silverfish.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"

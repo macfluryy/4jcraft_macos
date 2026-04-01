@@ -1,6 +1,7 @@
+#include "MessageScreen.h"
+
 #include <vector>
 
-#include "MessageScreen.h"
 #include "minecraft/client/gui/Screen.h"
 
 MessageScreen::MessageScreen(const std::wstring& message) {

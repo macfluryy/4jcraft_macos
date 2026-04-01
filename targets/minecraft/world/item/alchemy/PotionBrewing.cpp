@@ -1,9 +1,10 @@
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/world/effect/net.minecraft.world.effect.h"
+#include "PotionBrewing.h"
+
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/JavaMath.h"
 #include "minecraft/SharedConstants.h"
-#include "PotionBrewing.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/world/effect/net.minecraft.world.effect.h"
 
 const int PotionBrewing::DEFAULT_APPEARANCES[] = {
     IDS_POTION_PREFIX_MUNDANE,  IDS_POTION_PREFIX_UNINTERESTING,

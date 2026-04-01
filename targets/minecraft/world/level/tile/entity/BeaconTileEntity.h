@@ -1,8 +1,8 @@
 #pragma once
 
 #include "TileEntity.h"
-#include "minecraft/world/Container.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/world/Container.h"
 
 class MobEffect;
 

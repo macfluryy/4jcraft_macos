@@ -1,6 +1,7 @@
+#include "ImprovedNoise.h"
+
 #include <vector>
 
-#include "ImprovedNoise.h"
 #include "java/Random.h"
 
 ImprovedNoise::ImprovedNoise() {

@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/player/Player.h"
 

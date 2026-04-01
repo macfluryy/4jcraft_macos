@@ -1,4 +1,5 @@
 #include "CritParticle2.h"
+
 #include "java/JavaMath.h"
 #include "minecraft/client/particle/Particle.h"
 

@@ -1,4 +1,5 @@
 #include "Score.h"
+
 #include "minecraft/world/scores/Objective.h"
 #include "minecraft/world/scores/Scoreboard.h"
 #include "minecraft/world/scores/criteria/ObjectiveCriteria.h"

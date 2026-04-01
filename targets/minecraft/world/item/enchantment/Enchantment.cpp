@@ -1,9 +1,8 @@
-#include "minecraft/stdafx.h"
-
-#include "net.minecraft.world.item.enchantment.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "Enchantment.h"
 
+#include "minecraft/stdafx.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "net.minecraft.world.item.enchantment.h"
 #include "strings.h"
 
 // Enchantment *Enchantment::enchantments[256];

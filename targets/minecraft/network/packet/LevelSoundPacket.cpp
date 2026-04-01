@@ -1,6 +1,7 @@
+#include "LevelSoundPacket.h"
+
 #include <limits>
 
-#include "LevelSoundPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/PacketListener.h"

@@ -3,9 +3,9 @@
 #include <vector>
 
 #include "AbstractContainerScreen.h"
-#include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/world/inventory/AbstractContainerMenu.h"
 
 class Player;
 class SimpleContainer;

@@ -3,10 +3,10 @@
 #include <string>
 
 #include "minecraft/client/model/geom/Model.h"
-#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/ItemInHandRenderer.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/ItemInHandRenderer.h"
+#include "minecraft/client/renderer/TileRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 
 class Tile;

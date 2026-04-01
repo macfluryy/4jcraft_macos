@@ -1,7 +1,8 @@
+#include "LargeCaveFeature.h"
+
 #include <numbers>
 #include <vector>
 
-#include "LargeCaveFeature.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"

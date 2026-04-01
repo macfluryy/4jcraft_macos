@@ -1,21 +1,22 @@
-#include <thread>
-#include <chrono>
-
 #include "IUIScene_PauseMenu.h"
+
+#include <chrono>
+#include <thread>
+
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "console_helpers/StringHelpers.h"
+#include "console_helpers/compression.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/client/ProgressRenderer.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/skins/DLCTexturePack.h"
-#include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "console_helpers/compression.h"
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 
 int IUIScene_PauseMenu::ExitGameDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {

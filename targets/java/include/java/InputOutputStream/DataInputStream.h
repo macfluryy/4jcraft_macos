@@ -2,11 +2,11 @@
 // 4J Stu - Represents Java standard library class (although we miss out an
 // intermediate inheritance class that we don't care about)
 
-#include <string>
 #include <cstdint>
+#include <string>
 
-#include "InputStream.h"
 #include "DataInput.h"
+#include "InputStream.h"
 
 class DataInputStream : public InputStream, public DataInput {
 private:

@@ -1,9 +1,10 @@
+#include "FishingRodItem.h"
+
 #include <memory>
 #include <string>
 
-#include "FishingRodItem.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/FishingHook.h"

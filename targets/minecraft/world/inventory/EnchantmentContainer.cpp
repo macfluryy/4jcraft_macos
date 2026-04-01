@@ -1,5 +1,6 @@
-#include "net.minecraft.world.inventory.h"
 #include "EnchantmentContainer.h"
+
+#include "net.minecraft.world.inventory.h"
 
 EnchantmentContainer::EnchantmentContainer(EnchantmentMenu* menu)
     : SimpleContainer(IDS_ENCHANT, L"", false, 1), m_menu(menu) {}

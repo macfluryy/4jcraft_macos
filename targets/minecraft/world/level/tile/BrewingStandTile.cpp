@@ -1,11 +1,10 @@
+#include "BrewingStandTile.h"
+
 #include <memory>
 #include <string>
 
-#include "BrewingStandTile.h"
-#include "minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
@@ -16,7 +15,9 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/level/tile/BaseEntityTile.h"
+#include "minecraft/world/level/tile/entity/BrewingStandTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 class Icon;
 

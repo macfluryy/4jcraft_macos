@@ -1,6 +1,7 @@
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
 #include "MemoryChunkStorage.h"
+
+#include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 
 LevelChunk* MemoryChunkStorage::load(Level* level, int x,
                                      int z)  // throws IOException

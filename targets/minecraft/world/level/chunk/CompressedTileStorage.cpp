@@ -1,17 +1,19 @@
+#include "CompressedTileStorage.h"
+
 #include <assert.h>
 #include <stddef.h>
 #include <string.h>
+
 #include <vector>
 
-#include "CompressedTileStorage.h"
-#include "console_helpers/Definitions.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/Definitions.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 // Note: See header for an overview of this class
 

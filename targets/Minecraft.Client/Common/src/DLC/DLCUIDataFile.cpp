@@ -1,5 +1,6 @@
-#include "DLCManager.h"
 #include "DLCUIDataFile.h"
+
+#include "DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 

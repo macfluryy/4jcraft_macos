@@ -1,17 +1,18 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
 #include "console_helpers/HashExtension.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "java/JavaIntHash.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 
 class ClientConnection;
 class MultiPlayerChunkCache;

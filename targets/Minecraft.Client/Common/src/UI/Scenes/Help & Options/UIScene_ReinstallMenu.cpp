@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_ReinstallMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 
 UIScene_ReinstallMenu::UIScene_ReinstallMenu(int iPad, void* initData,
                                              UILayer* parentLayer)

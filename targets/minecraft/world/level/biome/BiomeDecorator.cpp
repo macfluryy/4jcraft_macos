@@ -1,10 +1,14 @@
 
+#include "minecraft/world/level/biome/BiomeDecorator.h"
+
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/biome/BiomeDecorator.h"
 #include "minecraft/world/level/biome/WaterlilyFeature.h"
 #include "minecraft/world/level/levelgen/feature/CactusFeature.h"
 #include "minecraft/world/level/levelgen/feature/ClayFeature.h"
@@ -18,9 +22,6 @@
 #include "minecraft/world/level/levelgen/feature/SandFeature.h"
 #include "minecraft/world/level/levelgen/feature/SpringFeature.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 BiomeDecorator::BiomeDecorator(Biome* biome) {
     _init();

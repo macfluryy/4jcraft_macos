@@ -2,13 +2,14 @@
 // IndirectEntityDamageSource::IndirectEntityDamageSource(const wstring &msgId,
 // shared_ptr<Entity> entity, shared_ptr<Entity> owner) :
 // EntityDamageSource(msgId, entity)
+#include "minecraft/world/damageSource/IndirectEntityDamageSource.h"
+
 #include <memory>
 #include <string>
 
 #include "java/Class.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
-#include "minecraft/world/damageSource/IndirectEntityDamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Player.h"

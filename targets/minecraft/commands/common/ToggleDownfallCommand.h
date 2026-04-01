@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+
 #include <memory>
 
 #include "minecraft/commands/Command.h"

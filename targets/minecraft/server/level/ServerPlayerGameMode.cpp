@@ -1,13 +1,15 @@
+#include "ServerPlayerGameMode.h"
+
 #include <vector>
 
-#include "ServerPlayerGameMode.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
-#include "minecraft/server/network/PlayerConnection.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/client/renderer/LevelRenderer.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 #include "minecraft/network/packet/TileUpdatePacket.h"
+#include "minecraft/server/network/PlayerConnection.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
@@ -19,7 +21,6 @@
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/Minecraft.h"
 
 ServerPlayerGameMode::ServerPlayerGameMode(Level* level) {
     // 4J - added initialisers

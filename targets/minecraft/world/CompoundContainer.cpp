@@ -1,6 +1,7 @@
-#include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "CompoundContainer.h"
+
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/network/packet/ContainerOpenPacket.h"
 
 CompoundContainer::CompoundContainer(int name, std::shared_ptr<Container> c1,
                                      std::shared_ptr<Container> c2) {

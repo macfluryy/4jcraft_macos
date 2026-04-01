@@ -1,6 +1,7 @@
+#include "BlockGenMethods.h"
+
 #include <vector>
 
-#include "BlockGenMethods.h"
 #include "minecraft/Direction.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"

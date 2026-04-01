@@ -1,24 +1,26 @@
+#include "SavedDataStorage.h"
+
 #include <assert.h>
+
 #include <algorithm>
 #include <utility>
 
-#include "SavedDataStorage.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/world/entity/ai/village/Villages.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeatureSavedData.h"
+#include "minecraft/world/level/saveddata/MapItemSavedData.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileInputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "java/InputOutputStream/DataInputStream.h"
-#include "java/InputOutputStream/DataOutputStream.h"
+#include "minecraft/world/level/storage/DirectoryLevelStorage.h"
+#include "minecraft/world/level/storage/LevelStorage.h"
 #include "nbt/CompoundTag.h"
 #include "nbt/NbtIo.h"
 #include "nbt/ShortTag.h"
 #include "nbt/Tag.h"
-#include "minecraft/world/entity/ai/village/Villages.h"
-#include "minecraft/world/level/levelgen/structure/StructureFeatureSavedData.h"
-#include "minecraft/world/level/saveddata/MapItemSavedData.h"
-#include "minecraft/world/level/storage/DirectoryLevelStorage.h"
-#include "minecraft/world/level/storage/LevelStorage.h"
 
 SavedDataStorage::SavedDataStorage(LevelStorage* levelStorage) {
     /*

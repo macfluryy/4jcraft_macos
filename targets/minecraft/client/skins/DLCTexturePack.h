@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <string>
 
-#include "AbstractTexturePack.h"
 #include "4J.Common/4J_Compat.h"
+#include "AbstractTexturePack.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 
 class DLCPack;

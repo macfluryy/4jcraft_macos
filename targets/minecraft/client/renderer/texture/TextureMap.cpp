@@ -1,28 +1,30 @@
+#include "TextureMap.h"
+
 #include <wchar.h>
+
 #include <format>
 #include <utility>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/renderer/LevelRenderer.h"
-#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "Stitcher.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/BufferedImage.h"
 #include "StitchSlot.h"
 #include "StitchedTexture.h"
+#include "Stitcher.h"
 #include "Texture.h"
 #include "TextureHolder.h"
 #include "TextureManager.h"
-#include "minecraft/client/skins/TexturePack.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "TextureMap.h"
-#include "Minecraft.Client/include/BufferedImage.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "minecraft/world/Icon.h"
-#include "minecraft/world/item/Item.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/InputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/renderer/LevelRenderer.h"
+#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/world/Icon.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 const std::wstring TextureMap::NAME_MISSING_TEXTURE = L"missingno";
 

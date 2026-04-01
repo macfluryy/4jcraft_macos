@@ -1,6 +1,7 @@
+#include "StainedGlassBlock.h"
+
 #include <string>
 
-#include "StainedGlassBlock.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/level/tile/HalfTransparentTile.h"

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "4J.Common/4J_Compat.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 
 class LinuxLeaderboardManager : public LeaderboardManager {
 public:

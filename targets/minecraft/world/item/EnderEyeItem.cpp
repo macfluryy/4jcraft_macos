@@ -1,12 +1,12 @@
+#include "EnderEyeItem.h"
+
 #include <memory>
 
-#include "EnderEyeItem.h"
-#include "minecraft/world/level/storage/LevelData.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/projectile/EyeOfEnderSignal.h"
@@ -14,6 +14,7 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
+#include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/TheEndPortalFrameTile.h"
 #include "minecraft/world/level/tile/Tile.h"

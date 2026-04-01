@@ -1,12 +1,14 @@
+#include "ChickenRenderer.h"
+
 #include <math.h>
+
 #include <memory>
 
-#include "ChickenRenderer.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/animal/Chicken.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Chicken.h"
 
 class Model;
 

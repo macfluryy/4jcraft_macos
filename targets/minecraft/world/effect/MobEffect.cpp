@@ -1,12 +1,12 @@
+#include "minecraft/SharedConstants.h"
+#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
 #include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/food/net.minecraft.world.food.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "net.minecraft.world.effect.h"
-#include "minecraft/SharedConstants.h"
 
 MobEffect* MobEffect::effects[NUM_EFFECTS];
 

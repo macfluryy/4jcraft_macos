@@ -1,6 +1,7 @@
+#include "FlyingMob.h"
+
 #include <math.h>
 
-#include "FlyingMob.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"

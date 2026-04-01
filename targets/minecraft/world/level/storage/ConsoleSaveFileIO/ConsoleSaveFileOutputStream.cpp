@@ -1,8 +1,10 @@
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
+
 #include <assert.h>
+
 #include <cstdint>
 #include <vector>
 
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOutputStream.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
 
 class ConsoleSavePath;

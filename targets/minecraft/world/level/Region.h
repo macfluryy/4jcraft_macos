@@ -1,6 +1,7 @@
 #pragma once
 
 #include <format>
+#include <vector>
 
 #include "LevelSource.h"
 #include "minecraft/world/level/LevelSource.h"
@@ -11,6 +12,7 @@ class TileEntity;
 class BiomeSource;
 class Level;
 class LevelChunk;
+class ProgressListener;
 
 class Region : public LevelSource {
 private:

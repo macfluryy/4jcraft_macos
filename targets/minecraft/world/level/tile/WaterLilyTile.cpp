@@ -1,11 +1,12 @@
+#include "WaterLilyTile.h"
+
 #include <memory>
 #include <optional>
 
-#include "WaterLilyTile.h"
-#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Class.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"

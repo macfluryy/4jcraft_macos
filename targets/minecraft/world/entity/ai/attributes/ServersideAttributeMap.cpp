@@ -1,10 +1,11 @@
+#include "ServersideAttributeMap.h"
+
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
 #include "AttributeInstance.h"
 #include "ModifiableAttributeInstance.h"
-#include "ServersideAttributeMap.h"
 #include "minecraft/world/entity/ai/attributes/BaseAttributeMap.h"
 
 AttributeInstance* ServersideAttributeMap::getInstance(Attribute* attribute) {

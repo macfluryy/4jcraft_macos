@@ -1,12 +1,13 @@
+#include "BatModel.h"
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
-#include "BatModel.h"
+#include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/ambient/Bat.h"
-#include "minecraft/client/model/geom/Model.h"
 
 BatModel::BatModel() : Model() {
     texWidth = 64;

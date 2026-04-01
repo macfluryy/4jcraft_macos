@@ -1,4 +1,5 @@
 #include "SignModel.h"
+
 #include "minecraft/client/model/geom/ModelPart.h"
 
 SignModel::SignModel() {

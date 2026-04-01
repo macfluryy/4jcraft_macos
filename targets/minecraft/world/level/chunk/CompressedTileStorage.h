@@ -1,7 +1,9 @@
 #pragma once
-#include <stdint.h>
-#include <mutex>
+
+#include <cstdint>
 #include <format>
+#include <mutex>
+#include <vector>
 
 class DataInputStream;
 class DataOutputStream;

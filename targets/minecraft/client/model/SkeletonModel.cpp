@@ -1,10 +1,11 @@
+#include "SkeletonModel.h"
+
 #include <memory>
 
-#include "SkeletonModel.h"
+#include "minecraft/client/model/ZombieModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/monster/Skeleton.h"
-#include "minecraft/client/model/ZombieModel.h"
 
 void SkeletonModel::_init(float g) {
     arm0 = new ModelPart(this, 24 + 16, 16);

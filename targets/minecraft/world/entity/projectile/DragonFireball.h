@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "Fireball.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 
 class HitResult;
 class Entity;

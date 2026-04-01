@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_EULA.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
 
 UIScene_EULA::UIScene_EULA(int iPad, void* initData, UILayer* parentLayer)

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Reader.h"
 #include "DataInputStream.h"
+#include "Reader.h"
 
 class InputStream;
 

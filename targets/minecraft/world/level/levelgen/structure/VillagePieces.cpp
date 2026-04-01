@@ -1,25 +1,27 @@
+#include "VillagePieces.h"
+
 #include <stdlib.h>
+
 #include <memory>
 #include <string>
 
-#include "minecraft/util/WeighedTreasure.h"
-#include "VillagePieces.h"
 #include "VillageFeature.h"
-#include "minecraft/Direction.h"
 #include "java/JavaMath.h"
-#include "minecraft/world/level/biome/BiomeSource.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/Direction.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/entity/npc/Villager.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/SandStoneTile.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
 
 std::vector<WeighedTreasure*> VillagePieces::Smithy::treasureItems;
 

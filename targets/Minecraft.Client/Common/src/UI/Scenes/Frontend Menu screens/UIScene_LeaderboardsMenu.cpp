@@ -1,9 +1,10 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_LeaderboardsMenu.h"
+
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 #define PLAYER_ONLINE_TIMER_ID 0
 #define PLAYER_ONLINE_TIMER_TIME 100

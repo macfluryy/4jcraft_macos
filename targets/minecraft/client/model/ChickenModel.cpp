@@ -1,11 +1,13 @@
+#include "ChickenModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "ChickenModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 ChickenModel::ChickenModel() : Model() {
     int yo = 16;

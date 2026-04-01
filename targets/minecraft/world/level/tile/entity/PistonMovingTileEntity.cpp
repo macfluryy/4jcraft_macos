@@ -1,7 +1,8 @@
+#include "PistonMovingTileEntity.h"
+
 #include <optional>
 #include <string>
 
-#include "PistonMovingTileEntity.h"
 #include "PistonPieceTileEntity.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"

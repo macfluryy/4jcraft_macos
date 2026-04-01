@@ -1,13 +1,18 @@
+#include "Connection.h"
+
 #include <stdio.h>
 #include <unistd.h>
+
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "Connection.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
+#include "Minecraft.Client/Common/src/Network/Socket.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/StringHelpers.h"
 #include "console_helpers/compression.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
@@ -17,9 +22,6 @@
 #include "minecraft/network/packet/KeepAlivePacket.h"
 #include "minecraft/network/packet/Packet.h"
 #include "minecraft/network/packet/PacketListener.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 class SocketAddress;
 

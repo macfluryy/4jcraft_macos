@@ -1,12 +1,14 @@
+#include "MultiPlayerGameMode.h"
+
 #include <vector>
 
-#include "MultiPlayerGameMode.h"
-#include "MultiPlayerLocalPlayer.h"
-#include "MultiPlayerLevel.h"
-#include "minecraft/client/Minecraft.h"
 #include "ClientConnection.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
+#include "MultiPlayerLevel.h"
+#include "MultiPlayerLocalPlayer.h"
+#include "java/Class.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/network/packet/ContainerButtonClickPacket.h"
 #include "minecraft/network/packet/ContainerClickPacket.h"
 #include "minecraft/network/packet/CraftItemPacket.h"
@@ -28,7 +30,6 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "java/Class.h"
 
 MultiPlayerGameMode::MultiPlayerGameMode(Minecraft* minecraft,
                                          ClientConnection* connection) {

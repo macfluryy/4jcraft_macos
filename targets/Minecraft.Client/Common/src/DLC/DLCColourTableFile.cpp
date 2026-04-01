@@ -1,11 +1,12 @@
-#include "DLCManager.h"
 #include "DLCColourTableFile.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/skins/TexturePackRepository.h"
-#include "minecraft/client/skins/TexturePack.h"
+
+#include "DLCManager.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 
 DLCColourTableFile::DLCColourTableFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_ColourTable, path) {

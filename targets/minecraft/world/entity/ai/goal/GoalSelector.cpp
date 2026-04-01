@@ -1,9 +1,10 @@
+#include "minecraft/world/entity/ai/goal/GoalSelector.h"
+
 #include <algorithm>
 #include <format>
 #include <vector>
 
 #include "Goal.h"
-#include "minecraft/world/entity/ai/goal/GoalSelector.h"
 #include "minecraft/world/entity/ai/goal/GoalSelector.h"
 
 class Level;

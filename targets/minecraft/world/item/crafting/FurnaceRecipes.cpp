@@ -1,11 +1,12 @@
+#include "FurnaceRecipes.h"
+
 #include <utility>
 
-#include "minecraft/world/level/tile/Tile.h"
-#include "FurnaceRecipes.h"
 #include "minecraft/world/item/CoalItem.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 FurnaceRecipes* FurnaceRecipes::instance = nullptr;
 

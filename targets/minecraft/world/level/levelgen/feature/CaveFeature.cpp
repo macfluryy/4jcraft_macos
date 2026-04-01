@@ -1,8 +1,10 @@
+#include "CaveFeature.h"
+
 #include <stdint.h>
+
 #include <numbers>
 #include <vector>
 
-#include "CaveFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"

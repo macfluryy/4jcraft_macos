@@ -1,13 +1,14 @@
+#include "FurnaceTile.h"
+
 #include <stdio.h>
+
 #include <memory>
 #include <string>
 
 #include "FurnaceTile.h"
-#include "minecraft/Facing.h"
-#include "FurnaceTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/Facing.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/IconRegister.h"
@@ -22,6 +23,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 bool FurnaceTile::noDrop = false;
 

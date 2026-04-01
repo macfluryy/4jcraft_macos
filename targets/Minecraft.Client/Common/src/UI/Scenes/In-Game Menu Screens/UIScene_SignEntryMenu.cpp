@@ -1,14 +1,15 @@
 
+#include "UIScene_SignEntryMenu.h"
+
+#include "4J_Input.h"
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
-#include "UIScene_SignEntryMenu.h"
 #include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "4J_Input.h"
 
 UIScene_SignEntryMenu::UIScene_SignEntryMenu(int iPad, void* _initData,
                                              UILayer* parentLayer)

@@ -1,19 +1,21 @@
+#include "AchievementScreen.h"
+
 #include <GL/gl.h>
+
 #include <string>
 #include <vector>
 
-#include "AchievementScreen.h"
-#include "minecraft/client/gui/SmallButton.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/KeyMapping.h"
-#include "minecraft/client/gui/Font.h"
 #include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/include/stubs.h"
+#include "minecraft/client/KeyMapping.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/gui/Button.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/gui/SmallButton.h"
 #include "minecraft/locale/I18n.h"
 #include "minecraft/stats/Achievement.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Button.h"
-#include "minecraft/client/gui/Screen.h"
-#include "Minecraft.Client/include/stubs.h"
 
 AchievementScreen::AchievementScreen(StatsCounter* statsCounter) {
     // 4J - added initialisers

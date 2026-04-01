@@ -1,4 +1,5 @@
 #include "UIComponent_DebugUIConsole.h"
+
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIConsole.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"

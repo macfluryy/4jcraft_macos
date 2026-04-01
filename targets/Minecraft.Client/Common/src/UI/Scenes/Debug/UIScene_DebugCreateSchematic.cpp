@@ -1,7 +1,8 @@
 
+#include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugCreateSchematic.h"
+
 #include <wchar.h>
 
-#include "Minecraft.Client/Common/src/UI/Scenes/Debug/UIScene_DebugCreateSchematic.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"

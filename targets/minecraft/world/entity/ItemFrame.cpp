@@ -1,12 +1,13 @@
+#include "ItemFrame.h"
+
 #include <stdint.h>
+
 #include <string>
 
-#include "ItemFrame.h"
-#include "minecraft/world/entity/ItemFrame.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/HangingEntity.h"
+#include "minecraft/world/entity/ItemFrame.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -15,6 +16,7 @@
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"
+#include "nbt/CompoundTag.h"
 
 // 4J - added for common ctor code
 void ItemFrame::_init() {

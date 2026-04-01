@@ -1,13 +1,14 @@
 
 // EntityDamageSource::EntityDamageSource(const wstring &msgId,
 // shared_ptr<Entity> entity) : DamageSource(msgId)
+#include "minecraft/world/damageSource/EntityDamageSource.h"
+
 #include <memory>
 #include <string>
 
 #include "java/Class.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/world/damageSource/DamageSource.h"
-#include "minecraft/world/damageSource/EntityDamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"

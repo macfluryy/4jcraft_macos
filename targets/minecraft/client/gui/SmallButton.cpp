@@ -1,4 +1,5 @@
 #include "SmallButton.h"
+
 #include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Button.h"
 

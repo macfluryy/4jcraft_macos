@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GeneralStat.h"
-
 #include "GenericStats.h"
 
 enum ELeaderboardId {

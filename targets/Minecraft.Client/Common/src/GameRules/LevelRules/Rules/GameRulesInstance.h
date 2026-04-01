@@ -1,6 +1,7 @@
 #pragma once
 // using namespace std;
 #include <vector>
+
 #include "GameRule.h"
 
 class GameRuleDefinition;

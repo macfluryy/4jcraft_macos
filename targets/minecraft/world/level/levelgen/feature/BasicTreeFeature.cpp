@@ -1,19 +1,21 @@
+#include "BasicTreeFeature.h"
+
 #include <stdlib.h>
+
 #include <algorithm>
 #include <cmath>
 
-#include "BasicTreeFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/TreeTile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 uint8_t BasicTree::axisConversionArray[] = {2, 0, 0, 1, 2, 1};
 

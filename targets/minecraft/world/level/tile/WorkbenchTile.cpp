@@ -1,7 +1,8 @@
+#include "WorkbenchTile.h"
+
 #include <memory>
 #include <string>
 
-#include "WorkbenchTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"

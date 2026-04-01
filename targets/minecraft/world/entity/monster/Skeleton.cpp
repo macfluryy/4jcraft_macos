@@ -1,14 +1,15 @@
+#include "Skeleton.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "Skeleton.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -45,6 +46,7 @@
 #include "minecraft/world/level/dimension/HellDimension.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/SkullTileEntity.h"
+#include "nbt/CompoundTag.h"
 
 Skeleton::Skeleton(Level* level) : Monster(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

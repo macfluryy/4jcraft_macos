@@ -1,30 +1,33 @@
+#include "LevelChunk.h"
+
 #include <string.h>
+
+#include <algorithm>
 #include <limits>
 #include <mutex>
-#include <algorithm>
 #include <string>
 #include <utility>
 
-#include "java/System.h"
-#include "SparseLightStorage.h"
-#include "LevelChunk.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/server/level/ServerChunkCache.h"
-#include "minecraft/client/renderer/GameRenderer.h"
-#include "minecraft/world/entity/item/ItemEntity.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "SparseLightStorage.h"
 #include "java/Class.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
+#include "java/System.h"
+#include "minecraft/client/renderer/GameRenderer.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/level/ServerChunkCache.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/item/Minecart.h"
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/Zombie.h"
@@ -43,9 +46,8 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 class DataInputStream;
 class DataOutputStream;

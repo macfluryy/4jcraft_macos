@@ -1,4 +1,5 @@
 #include "FloatGoal.h"
+
 #include "java/Random.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/control/Control.h"

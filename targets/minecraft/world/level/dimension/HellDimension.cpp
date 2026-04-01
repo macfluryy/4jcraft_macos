@@ -1,11 +1,12 @@
+#include "HellDimension.h"
+
 #include <cmath>
 
-#include "HellDimension.h"
-#include "minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/biome/Biome.h"

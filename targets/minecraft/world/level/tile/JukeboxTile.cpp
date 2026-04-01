@@ -1,9 +1,9 @@
+#include "JukeboxTile.h"
+
 #include <string>
 
-#include "JukeboxTile.h"
 #include "LevelEvent.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
@@ -14,6 +14,7 @@
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 JukeboxTile::Entity::Entity() : TileEntity() { record = nullptr; }
 

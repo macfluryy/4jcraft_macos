@@ -5,8 +5,8 @@
 #include <string>
 
 #include "Container.h"
-#include "net.minecraft.world.ContainerListener.h"
 #include "minecraft/world/Container.h"
+#include "net.minecraft.world.ContainerListener.h"
 
 class ItemInstance;
 namespace net_minecraft_world {

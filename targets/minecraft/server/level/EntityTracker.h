@@ -1,11 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <unordered_map>
+#include <unordered_set>
+
 #include "console_helpers/HashExtension.h"
 #include "java/JavaIntHash.h"
-
-#include <unordered_set>
-#include <unordered_map>
-#include <memory>
 
 class Entity;
 class ServerLevel;

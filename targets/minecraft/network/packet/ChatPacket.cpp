@@ -1,9 +1,10 @@
-#include "PacketListener.h"
 #include "ChatPacket.h"
-#include "minecraft/network/packet/ChatPacket.h"
+
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/world/entity/player/Player.h"
 
 // longest allowed string is "<" + name + "> " + message

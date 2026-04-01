@@ -1,7 +1,7 @@
+#include "MeleeAttackGoal.h"
+
 #include <algorithm>
 
-#include "minecraft/world/level/pathfinder/Path.h"
-#include "MeleeAttackGoal.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -10,6 +10,7 @@
 #include "minecraft/world/entity/ai/control/LookControl.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/entity/ai/sensing/Sensing.h"
+#include "minecraft/world/level/pathfinder/Path.h"
 #include "minecraft/world/phys/AABB.h"
 
 void MeleeAttackGoal::_init(PathfinderMob* mob, double speedModifier,

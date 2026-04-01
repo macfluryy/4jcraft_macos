@@ -1,6 +1,6 @@
-#include "Minecraft.Client/include/stdafx.h"
-
 #include "DragonModel.h"
+
+#include "Minecraft.Client/include/stdafx.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/boss/enderdragon/EnderDragon.h"
 

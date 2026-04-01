@@ -1,13 +1,14 @@
+#include "AddMobPacket.h"
+
 #include <vector>
 
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "PacketListener.h"
-#include "AddMobPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
 AddMobPacket::AddMobPacket() {
     id = -1;

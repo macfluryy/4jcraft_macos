@@ -1,6 +1,7 @@
+#include "HopperMenu.h"
+
 #include <vector>
 
-#include "HopperMenu.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"

@@ -1,10 +1,11 @@
+#include "StemTile.h"
+
 #include <stdint.h>
 
-#include "minecraft/client/Minecraft.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "StemTile.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

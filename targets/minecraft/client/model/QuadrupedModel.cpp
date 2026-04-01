@@ -1,11 +1,13 @@
+#include "QuadrupedModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "QuadrupedModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 QuadrupedModel::QuadrupedModel(int legSize, float g) : Model() {
     yHeadOffs = 8;

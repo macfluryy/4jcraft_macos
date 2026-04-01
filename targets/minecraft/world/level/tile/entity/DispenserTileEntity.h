@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nbt/com.mojang.nbt.h"
 #include "TileEntity.h"
 #include "minecraft/world/Container.h"
+#include "nbt/com.mojang.nbt.h"
 
 class Player;
 class Random;

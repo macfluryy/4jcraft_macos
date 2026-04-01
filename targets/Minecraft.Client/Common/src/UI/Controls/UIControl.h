@@ -2,9 +2,10 @@
 
 #include <string>
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
+
+class UIScene;
 
 // This class for any name object in the flash scene
 class UIControl {

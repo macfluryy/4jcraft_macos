@@ -1,10 +1,11 @@
+#include "AreaConstraint.h"
+
 #include <memory>
 
+#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "AreaConstraint.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "minecraft/world/phys/Vec3.h"
 
 AreaConstraint::AreaConstraint(int descriptionId, double x0, double y0,

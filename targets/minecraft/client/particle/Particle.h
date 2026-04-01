@@ -3,9 +3,9 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "ParticleEngine.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/world/entity/Entity.h"
 
 class Tesselator;
 class CompoundTag;

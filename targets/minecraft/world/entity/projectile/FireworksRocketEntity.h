@@ -1,9 +1,9 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 
-#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/Entity.h"
 

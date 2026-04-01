@@ -1,24 +1,25 @@
+#include "EntityRenderer.h"
+
 #include <GL/gl.h>
 
-#include "EntityRenderer.h"
-#include "EntityRenderDispatcher.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/renderer/texture/TextureAtlas.h"
-#include "minecraft/world/level/Level.h"
-#include "minecraft/world/phys/AABB.h"
-#include "minecraft/util/Mth.h"
 #include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
+#include "java/Class.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/texture/TextureAtlas.h"
+#include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/animal/Animal.h"
+#include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/FireTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "java/Class.h"
-#include "minecraft/client/renderer/Tesselator.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/phys/AABB.h"
 
 ResourceLocation EntityRenderer::SHADOW_LOCATION =
     ResourceLocation(TN__CLAMP__MISC_SHADOW);

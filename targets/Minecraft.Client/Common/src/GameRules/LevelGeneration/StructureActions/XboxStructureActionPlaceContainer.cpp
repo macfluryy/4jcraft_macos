@@ -1,12 +1,14 @@
+#include "XboxStructureActionPlaceContainer.h"
+
 #include <wchar.h>
+
 #include <memory>
 
-#include "console_helpers/StringHelpers.h"
-#include "XboxStructureActionPlaceContainer.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceContainer.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceContainer.h"
+#include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"

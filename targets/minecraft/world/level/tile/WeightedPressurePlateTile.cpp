@@ -1,7 +1,8 @@
+#include "WeightedPressurePlateTile.h"
+
 #include <algorithm>
 #include <vector>
 
-#include "WeightedPressurePlateTile.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"

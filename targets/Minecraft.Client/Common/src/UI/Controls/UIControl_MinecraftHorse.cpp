@@ -1,16 +1,18 @@
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftHorse.h"
+
 #include <GL/gl.h>
+
 #include <cmath>
 #include <memory>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/ScreenSizeCalculator.h"
-#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "minecraft/client/Lighting.h"
-#include "minecraft/client/Options.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftHorse.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HorseInventoryMenu.h"
+#include "minecraft/client/Lighting.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/EntityHorse.h"
 // #include

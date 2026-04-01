@@ -1,6 +1,7 @@
+#include "GlassTile.h"
+
 #include <string>
 
-#include "GlassTile.h"
 #include "minecraft/world/level/tile/HalfTransparentTile.h"
 
 class Material;

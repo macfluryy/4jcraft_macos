@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_HowToPlay.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
 
 static UIScene_HowToPlay::SHowToPlayPageDef gs_aPageDefs[eHowToPlay_NumPages] =

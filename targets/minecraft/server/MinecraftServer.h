@@ -3,10 +3,10 @@
 #include <mutex>
 
 #include "ConsoleInputSource.h"
-#include "minecraft/SharedConstants.h"
 #include "console_helpers/C4JThread.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
+#include "minecraft/SharedConstants.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 
 class ServerConnection;
 class Settings;

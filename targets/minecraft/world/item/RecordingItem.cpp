@@ -1,11 +1,13 @@
+#include "RecordingItem.h"
+
 #include <wchar.h>
+
 #include <memory>
 #include <utility>
 #include <vector>
 
-#include "RecordingItem.h"
-#include "minecraft/stats/GenericStats.h"
 #include "Minecraft.Client/Common/App_enums.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/player/Player.h"

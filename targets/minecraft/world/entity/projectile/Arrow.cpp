@@ -1,20 +1,21 @@
+#include "Arrow.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <format>
 #include <numbers>
 #include <optional>
 #include <string>
 #include <vector>
 
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/network/packet/GameEventPacket.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/server/network/PlayerConnection.h"
-#include "Arrow.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "minecraft/network/packet/GameEventPacket.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -31,6 +32,7 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 // base damage, multiplied with velocity
 const double Arrow::ARROW_BASE_DAMAGE = 2.0f;

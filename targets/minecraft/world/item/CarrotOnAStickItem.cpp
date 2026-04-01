@@ -1,6 +1,7 @@
+#include "CarrotOnAStickItem.h"
+
 #include <memory>
 
-#include "CarrotOnAStickItem.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/ai/goal/ControlledByPlayerGoal.h"
 #include "minecraft/world/entity/animal/Pig.h"

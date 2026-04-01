@@ -1,9 +1,10 @@
+#include "minecraft/world/phys/Vec3.h"
+
+#include <cmath>
 #include <format>
 #include <optional>
-#include <cmath>
 #include <string>
 
-#include "minecraft/world/phys/Vec3.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
 

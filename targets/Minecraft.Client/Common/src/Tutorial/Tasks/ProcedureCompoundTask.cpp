@@ -1,7 +1,8 @@
+#include "ProcedureCompoundTask.h"
+
 #include <compare>
 #include <memory>
 
-#include "ProcedureCompoundTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 
 ProcedureCompoundTask::~ProcedureCompoundTask() {

@@ -1,6 +1,7 @@
+#include "CaveSpiderRenderer.h"
+
 #include <memory>
 
-#include "CaveSpiderRenderer.h"
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/SpiderRenderer.h"

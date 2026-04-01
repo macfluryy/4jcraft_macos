@@ -1,13 +1,15 @@
+#include "MapItem.h"
+
 #include <stdint.h>
 #include <string.h>
 #include <wchar.h>
+
 #include <string>
 #include <vector>
 
-#include "MapItem.h"
-#include "java/JavaMath.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
+#include "java/JavaMath.h"
 #include "minecraft/network/packet/ComplexItemDataPacket.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/Entity.h"

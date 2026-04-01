@@ -3,10 +3,10 @@
 #include <memory>
 
 #include "BaseEntityTile.h"
-#include "nbt/CompoundTag.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "java/Class.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 class CompoundTag;
 class ChunkRebuildData;

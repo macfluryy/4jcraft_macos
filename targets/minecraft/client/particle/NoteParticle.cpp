@@ -1,6 +1,7 @@
+#include "NoteParticle.h"
+
 #include <math.h>
 
-#include "NoteParticle.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "minecraft/client/Minecraft.h"

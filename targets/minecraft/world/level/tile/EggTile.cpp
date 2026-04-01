@@ -1,8 +1,9 @@
+#include "EggTile.h"
+
 #include <memory>
 
-#include "EggTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/item/FallingTile.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"

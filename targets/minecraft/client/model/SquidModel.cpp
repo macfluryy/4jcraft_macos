@@ -1,10 +1,12 @@
+#include "SquidModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "SquidModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 SquidModel::SquidModel() : Model() {
     int yoffs = -16;

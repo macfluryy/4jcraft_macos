@@ -5,8 +5,8 @@
 
 #include "Entity.h"
 #include "MobType.h"
-#include "minecraft/world/entity/ai/goal/GoalSelector.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/world/entity/ai/goal/GoalSelector.h"
 
 class CombatTracker;
 class AttributeInstance;

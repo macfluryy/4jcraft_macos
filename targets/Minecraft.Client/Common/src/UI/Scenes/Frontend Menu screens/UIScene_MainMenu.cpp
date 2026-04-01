@@ -1,14 +1,15 @@
 
-#include "minecraft/util/Mth.h"
+#include "UIScene_MainMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/User.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/ScreenSizeCalculator.h"
-#include "minecraft/client/Minecraft.h"
-#include "UIScene_MainMenu.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/util/Mth.h"
 
 Random* UIScene_MainMenu::random = new Random();
 

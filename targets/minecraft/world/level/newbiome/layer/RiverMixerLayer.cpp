@@ -1,11 +1,13 @@
 
+#include "minecraft/world/level/newbiome/layer/RiverMixerLayer.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
-#include "minecraft/world/level/newbiome/layer/RiverMixerLayer.h"
 
 RiverMixerLayer::RiverMixerLayer(int64_t seed, std::shared_ptr<Layer> biomes,
                                  std::shared_ptr<Layer> rivers)

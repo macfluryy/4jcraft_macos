@@ -3,8 +3,8 @@
 #include <string>
 
 #include "TileEntity.h"
-#include "minecraft/world/level/BaseMobSpawner.h"
 #include "java/Class.h"
+#include "minecraft/world/level/BaseMobSpawner.h"
 
 class Packet;
 class Entity;

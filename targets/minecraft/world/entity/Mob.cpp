@@ -1,5 +1,8 @@
+#include "minecraft/world/entity/Mob.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <algorithm>
 #include <format>
 #include <memory>
@@ -7,18 +10,16 @@
 #include <string>
 #include <vector>
 
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/server/level/EntityTracker.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/world/entity/item/ItemEntity.h"
-#include "minecraft/world/entity/Mob.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/FloatTag.h"
-#include "nbt/ListTag.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/SetEntityLinkPacket.h"
+#include "minecraft/server/level/EntityTracker.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/entity/Entity.h"
@@ -37,6 +38,7 @@
 #include "minecraft/world/entity/ai/goal/GoalSelector.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/entity/ai/sensing/Sensing.h"
+#include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -50,9 +52,9 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/FloatTag.h"
+#include "nbt/ListTag.h"
 
 const float Mob::MAX_WEARING_ARMOR_CHANCE = 0.15f;
 const float Mob::MAX_PICKUP_LOOT_CHANCE = 0.55f;

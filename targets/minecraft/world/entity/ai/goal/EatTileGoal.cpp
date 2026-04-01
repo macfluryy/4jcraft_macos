@@ -1,6 +1,7 @@
+#include "EatTileGoal.h"
+
 #include <algorithm>
 
-#include "EatTileGoal.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/EntityEvent.h"

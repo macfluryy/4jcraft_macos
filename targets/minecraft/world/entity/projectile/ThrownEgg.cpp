@@ -1,6 +1,7 @@
 #include "ThrownEgg.h"
-#include "minecraft/core/particles/ParticleTypes.h"
+
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"

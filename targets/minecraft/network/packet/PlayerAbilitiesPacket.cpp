@@ -1,6 +1,7 @@
+#include "PlayerAbilitiesPacket.h"
+
 #include <stdint.h>
 
-#include "PlayerAbilitiesPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/PacketListener.h"

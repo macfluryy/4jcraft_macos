@@ -5,8 +5,8 @@
 #include <unordered_set>
 
 #include "TilePos.h"
-#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/phys/Vec3.h"
 

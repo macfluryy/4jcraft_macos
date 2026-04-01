@@ -1,12 +1,13 @@
+#include "MinecartFurnace.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
-#include "MinecartFurnace.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -18,6 +19,7 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
 
 MinecartFurnace::MinecartFurnace(Level* level) : Minecart(level) {
     defineSynchedData();

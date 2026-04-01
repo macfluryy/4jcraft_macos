@@ -1,7 +1,8 @@
+#include "CanyonFeature.h"
+
 #include <numbers>
 #include <vector>
 
-#include "CanyonFeature.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"

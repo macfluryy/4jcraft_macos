@@ -1,18 +1,18 @@
 #pragma once
-#include "Tag.h"
-#include "ListTag.h"
+#include <memory>
+#include <unordered_map>
+
+#include "ByteArrayTag.h"
 #include "ByteTag.h"
 #include "DoubleTag.h"
 #include "FloatTag.h"
+#include "IntArrayTag.h"
 #include "IntTag.h"
+#include "ListTag.h"
 #include "LongTag.h"
 #include "ShortTag.h"
 #include "StringTag.h"
-#include "ByteArrayTag.h"
-#include "IntArrayTag.h"
-
-#include <memory>
-#include <unordered_map>
+#include "Tag.h"
 
 class CompoundTag : public Tag {
 private:

@@ -1,10 +1,11 @@
+#include "SkullTileEntity.h"
+
 #include <cstdint>
 #include <memory>
 
-#include "SkullTileEntity.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/network/packet/TileEntityDataPacket.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 SkullTileEntity::SkullTileEntity() {
     skullType = 0;

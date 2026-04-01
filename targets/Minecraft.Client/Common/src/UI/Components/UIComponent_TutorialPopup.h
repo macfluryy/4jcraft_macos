@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 #define TUTORIAL_POPUP_FADE_TIMER_ID 0

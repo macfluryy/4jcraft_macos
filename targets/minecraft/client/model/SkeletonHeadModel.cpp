@@ -1,9 +1,10 @@
+#include "SkeletonHeadModel.h"
+
 #include <memory>
 #include <numbers>
 
-#include "minecraft/client/model/geom/ModelPart.h"
-#include "SkeletonHeadModel.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 void SkeletonHeadModel::_init(int u, int v, int tw, int th) {
     texWidth = tw;

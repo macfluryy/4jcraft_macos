@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 class UILayer;
 

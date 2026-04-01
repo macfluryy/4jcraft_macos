@@ -1,10 +1,11 @@
+#include "RandomScatteredLargeFeature.h"
+
 #include <list>
 #include <utility>
 
-#include "ScatteredFeaturePieces.h"
-#include "RandomScatteredLargeFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "ScatteredFeaturePieces.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"

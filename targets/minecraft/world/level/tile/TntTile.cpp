@@ -1,12 +1,13 @@
+#include "TntTile.h"
+
 #include <string>
 
-#include "TntTile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"

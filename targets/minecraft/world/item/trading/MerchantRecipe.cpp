@@ -1,6 +1,7 @@
+#include "MerchantRecipe.h"
+
 #include <string>
 
-#include "MerchantRecipe.h"
 #include "nbt/CompoundTag.h"
 
 class Item;

@@ -2,7 +2,6 @@
 
 #include "DoorInteractGoal.h"
 #include "minecraft/SharedConstants.h"
-#include "minecraft/SharedConstants.h"
 
 class Mob;
 

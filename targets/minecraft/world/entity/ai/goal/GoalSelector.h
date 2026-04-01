@@ -1,6 +1,9 @@
 #pragma once
 
+#include <vector>
+
 class Goal;
+class Level;
 
 class GoalSelector {
 private:

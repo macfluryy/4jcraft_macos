@@ -1,20 +1,29 @@
+#include "PlayerRenderer.h"
+
 #include <cmath>
 #include <format>
 #include <numbers>
 #include <vector>
 
-#include "PlayerRenderer.h"
-#include "minecraft/client/renderer/tileentity/SkullTileRenderer.h"
-#include "HumanoidMobRenderer.h"
-#include "minecraft/client/model/HumanoidModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "EntityRenderDispatcher.h"
 #include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
+#include "HumanoidMobRenderer.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "java/Class.h"
 #include "minecraft/Facing.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/model/HumanoidModel.h"
+#include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/ItemInHandRenderer.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
+#include "minecraft/client/renderer/tileentity/SkullTileRenderer.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Inventory.h"
@@ -25,15 +34,7 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/UseAnim.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "java/Class.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/model/geom/Model.h"
-#include "minecraft/client/renderer/ItemInHandRenderer.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/EntityRenderer.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 
 const unsigned int PlayerRenderer::s_nametagColors[MINECRAFT_NET_MAX_PLAYERS] =
     {

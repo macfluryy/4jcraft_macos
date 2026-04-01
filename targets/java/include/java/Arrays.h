@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <cassert>
 #include <cstdint>
+#include <vector>
 
 class Biome;
 

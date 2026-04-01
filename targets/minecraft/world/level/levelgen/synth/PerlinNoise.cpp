@@ -1,6 +1,7 @@
+#include "PerlinNoise.h"
+
 #include <stdint.h>
 
-#include "PerlinNoise.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/levelgen/synth/ImprovedNoise.h"

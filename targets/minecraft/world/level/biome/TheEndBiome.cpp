@@ -1,7 +1,9 @@
+#include "TheEndBiome.h"
+
 #include <stdint.h>
+
 #include <vector>
 
-#include "TheEndBiome.h"
 #include "TheEndBiomeDecorator.h"
 #include "java/Class.h"
 #include "minecraft/world/level/tile/Tile.h"

@@ -1,7 +1,8 @@
+#include "AddGlobalEntityPacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "AddGlobalEntityPacket.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

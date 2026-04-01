@@ -1,7 +1,8 @@
+#include "SkiModel.h"
+
 #include <cmath>
 #include <numbers>
 
-#include "SkiModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
 class Entity;

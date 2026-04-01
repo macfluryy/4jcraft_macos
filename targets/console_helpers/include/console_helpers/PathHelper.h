@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 #if defined(__linux__)
-#include <unistd.h>
 #include <limits.h>
+#include <unistd.h>
 #endif
 
 namespace PathHelper {

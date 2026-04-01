@@ -4,16 +4,18 @@
 //
 // import net.minecraft.world.inventory.CraftingContainer;
 // import net.minecraft.world.item.ItemInstance;
+#include "ShapelessRecipy.h"
+
 #include <string.h>
+
 #include <algorithm>
 #include <memory>
 #include <vector>
 
-#include "Recipy.h"
-#include "Recipes.h"
-#include "ShapelessRecipy.h"
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Recipes.h"
+#include "Recipy.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"
 

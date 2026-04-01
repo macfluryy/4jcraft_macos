@@ -1,14 +1,15 @@
+#include "PumpkinTile.h"
+
 #include <memory>
 
-#include "PumpkinTile.h"
-#include "minecraft/world/entity/animal/SnowMan.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/Facing.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/SnowMan.h"
 #include "minecraft/world/entity/animal/VillagerGolem.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/material/Material.h"

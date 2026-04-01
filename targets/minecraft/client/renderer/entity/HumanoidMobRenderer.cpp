@@ -1,15 +1,21 @@
+#include "HumanoidMobRenderer.h"
+
 #include <utility>
 #include <vector>
 
-#include "HumanoidMobRenderer.h"
-#include "minecraft/client/renderer/tileentity/SkullTileRenderer.h"
-#include "minecraft/client/model/HumanoidModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
-#include "EntityRenderDispatcher.h"
 #include "4J.Render/4J_Render.h"
+#include "EntityRenderDispatcher.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/Facing.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/model/HumanoidModel.h"
+#include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/renderer/ItemInHandRenderer.h"
+#include "minecraft/client/renderer/TileRenderer.h"
+#include "minecraft/client/renderer/entity/MobRenderer.h"
+#include "minecraft/client/renderer/tileentity/SkullTileRenderer.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/item/ArmorItem.h"
@@ -17,11 +23,6 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "nbt/CompoundTag.h"
-#include "minecraft/client/model/geom/Model.h"
-#include "minecraft/client/renderer/ItemInHandRenderer.h"
-#include "minecraft/client/renderer/TileRenderer.h"
-#include "minecraft/client/renderer/entity/MobRenderer.h"
-#include "minecraft/client/resources/ResourceLocation.h"
 
 const std::wstring HumanoidMobRenderer::MATERIAL_NAMES[5] = {
     L"cloth", L"chain", L"iron", L"diamond", L"gold"};

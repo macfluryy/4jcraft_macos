@@ -1,6 +1,7 @@
 #pragma once
-#include <stdint.h>
+#include <cstdint>
 #include <format>
+#include <vector>
 
 // 4J added - Storage for data (ie the extra per tile storage). Data is normally
 // stored as 4-bits per tile, in a DataLayer class of 16384 bytes ( 128 x 16 x

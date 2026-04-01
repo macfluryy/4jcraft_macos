@@ -1,5 +1,8 @@
 
+#include "minecraft/world/level/levelgen/structure/MineShaftFeature.h"
+
 #include <stdlib.h>
+
 #include <algorithm>
 #include <string>
 #include <unordered_map>
@@ -10,7 +13,6 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/level/levelgen/structure/MineShaftFeature.h"
 #include "minecraft/world/level/levelgen/structure/MineShaftStart.h"
 
 const std::wstring MineShaftFeature::OPTION_CHANCE = L"chance";

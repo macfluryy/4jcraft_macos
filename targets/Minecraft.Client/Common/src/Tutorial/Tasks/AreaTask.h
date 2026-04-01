@@ -3,8 +3,8 @@
 
 #include <format>
 
-#include "TutorialTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
+#include "TutorialTask.h"
 
 class Tutorial;
 class TutorialConstraint;

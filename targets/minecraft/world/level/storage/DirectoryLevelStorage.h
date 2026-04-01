@@ -26,17 +26,17 @@
 #define END_DIMENSION_MAP_MAPPINGS_SAVE_VERSION 5
 
 #include <stdint.h>
+
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-#include "java/File.h"
-#include "nbt/CompoundTag.h"
-
+#include "4J.Common/4J_Compat.h"
 #include "LevelStorage.h"
 #include "PlayerIO.h"
+#include "java/File.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
-#include "4J.Common/4J_Compat.h"
+#include "nbt/CompoundTag.h"
 
 class ConsoleSaveFile;
 class ByteArrayOutputStream;

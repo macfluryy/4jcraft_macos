@@ -2,8 +2,8 @@
 #include <format>
 #include <vector>
 
-#include "Synth.h"
 #include "SimplexNoise.h"
+#include "Synth.h"
 
 class Random;
 class SimplexNoise;

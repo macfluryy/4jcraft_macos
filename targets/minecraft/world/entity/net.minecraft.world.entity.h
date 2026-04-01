@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Creature.h"
-#include "SyncedEntityData.h"
 #include "Entity.h"
 #include "EntityEvent.h"
 #include "EntityIO.h"
@@ -11,6 +10,7 @@
 #include "MobCategory.h"
 #include "Painting.h"
 #include "PathfinderMob.h"
+#include "SyncedEntityData.h"
 
 // 1.8.2
 #include "DelayedRelease.h"
@@ -27,8 +27,8 @@
 #include "TamableAnimal.h"
 
 // 1.6.4
+#include "EntitySelector.h"
 #include "LeashFenceKnotEntity.h"
+#include "LivingEntity.h"
 #include "MobGroupData.h"
 #include "OwnableEntity.h"
-#include "EntitySelector.h"
-#include "LivingEntity.h"

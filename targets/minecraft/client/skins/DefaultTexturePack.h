@@ -1,10 +1,7 @@
 #pragma once
-#include "Minecraft.Client/include/stdafx.h"
-
 #include "AbstractTexturePack.h"
-
+#include "Minecraft.Client/include/stdafx.h"
 #include "java/InputOutputStream/InputStream.h"
-
 #include "strings.h"
 
 class DefaultTexturePack : public AbstractTexturePack {

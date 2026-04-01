@@ -1,28 +1,30 @@
+#include "BeaconScreen.h"
+
 #include <GL/gl.h>
+
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "BeaconScreen.h"
-#include "BeaconConfirmButton.h"
+#include "4J.Render/4J_Render.h"
 #include "BeaconCancelButton.h"
+#include "BeaconConfirmButton.h"
 #include "BeaconPowerButton.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "4J.Render/4J_Render.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Button.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/inventory/AbstractBeaconButton.h"
+#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/locale/Language.h"
 #include "minecraft/network/packet/CustomPayloadPacket.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/BeaconMenu.h"
 #include "minecraft/world/level/tile/entity/BeaconTileEntity.h"
-#include "minecraft/client/gui/Button.h"
-#include "minecraft/client/gui/Font.h"
-#include "minecraft/client/gui/inventory/AbstractBeaconButton.h"
-#include "minecraft/client/gui/inventory/AbstractContainerScreen.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4) and the existing
 // container classes (and iggy too)

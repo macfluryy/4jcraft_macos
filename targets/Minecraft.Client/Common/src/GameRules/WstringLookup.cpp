@@ -1,7 +1,7 @@
 
-#include <utility>
-
 #include "WstringLookup.h"
+
+#include <utility>
 
 WstringLookup::WstringLookup() { numIDs = 0; }
 

@@ -3,17 +3,18 @@
 // import net.minecraft.world.inventory.CraftingContainer;
 // import net.minecraft.world.item.ItemInstance;
 
+#include "ShapedRecipy.h"
+
 #include <string.h>
 
-#include "Recipy.h"
-#include "Recipes.h"
-#include "ShapedRecipy.h"
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "nbt/CompoundTag.h"
+#include "Recipes.h"
+#include "Recipy.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "nbt/CompoundTag.h"
 
 // 4J-PB - for new crafting - Adding group to define type of item that the
 // recipe produces

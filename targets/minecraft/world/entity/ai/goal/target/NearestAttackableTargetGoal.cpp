@@ -1,8 +1,9 @@
+#include "NearestAttackableTargetGoal.h"
+
 #include <algorithm>
 #include <format>
 #include <vector>
 
-#include "NearestAttackableTargetGoal.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/Entity.h"

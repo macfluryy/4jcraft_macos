@@ -1,8 +1,10 @@
+#include "BeachBiome.h"
+
 #include <stdint.h>
+
 #include <vector>
 
 #include "BiomeDecorator.h"
-#include "BeachBiome.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 BeachBiome::BeachBiome(int id) : Biome(id) {

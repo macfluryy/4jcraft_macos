@@ -1,4 +1,5 @@
 #include "ErrorScreen.h"
+
 #include "minecraft/client/gui/Screen.h"
 
 ErrorScreen::ErrorScreen(const std::wstring& title,

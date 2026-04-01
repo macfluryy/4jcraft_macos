@@ -1,9 +1,10 @@
+#include "CustomPayloadPacket.h"
+
 #include <limits>
 
-#include "PacketListener.h"
-#include "CustomPayloadPacket.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

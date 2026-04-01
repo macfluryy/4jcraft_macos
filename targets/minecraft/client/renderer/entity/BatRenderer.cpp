@@ -1,15 +1,16 @@
+#include "BatRenderer.h"
+
 #include <cmath>
 #include <memory>
 
-#include "BatRenderer.h"
-#include "minecraft/client/model/BatModel.h"
 #include "4J.Render/4J_Render.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/ambient/Bat.h"
+#include "minecraft/client/model/BatModel.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/ambient/Bat.h"
 
 ResourceLocation BatRenderer::BAT_LOCATION = ResourceLocation(TN_MOB_BAT);
 

@@ -1,6 +1,7 @@
+#include "LeapAtTargetGoal.h"
+
 #include <math.h>
 
-#include "LeapAtTargetGoal.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"

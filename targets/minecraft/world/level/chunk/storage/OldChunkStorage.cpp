@@ -1,36 +1,38 @@
+#include "OldChunkStorage.h"
+
 #include <assert.h>
 #include <stdio.h>
-#include <mutex>
+
 #include <format>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <unordered_map>
 #include <utility>
 
-#include "java/File.h"
-#include "OldChunkStorage.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
-#include "console_helpers/Definitions.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "console_helpers/Definitions.h"
+#include "java/File.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/InputOutputStream/FileInputStream.h"
 #include "java/InputOutputStream/FileOutputStream.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
-#include "nbt/NbtIo.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/TickNextTickData.h"
 #include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
+#include "nbt/NbtIo.h"
 #include "platform/PlatformServices.h"
 
 thread_local OldChunkStorage::ThreadStorage* OldChunkStorage::m_tlsStorage =

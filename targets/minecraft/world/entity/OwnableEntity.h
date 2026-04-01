@@ -1,5 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <string>
+
+class Entity;
+
 class OwnableEntity {
 public:
     virtual std::wstring getOwnerUUID() = 0;

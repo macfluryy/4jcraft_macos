@@ -1,13 +1,13 @@
-#include "minecraft/stdafx.h"
+#include "BeaconTileEntity.h"
 
 #include "minecraft/network/packet/net.minecraft.network.packet.h"
+#include "minecraft/stdafx.h"
 #include "minecraft/world/effect/net.minecraft.world.effect.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "BeaconTileEntity.h"
 
 std::shared_ptr<TileEntity> BeaconTileEntity::clone() {
     std::shared_ptr<BeaconTileEntity> result =

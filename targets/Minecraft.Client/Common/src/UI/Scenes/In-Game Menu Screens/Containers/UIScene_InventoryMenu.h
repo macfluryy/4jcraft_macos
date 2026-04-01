@@ -1,9 +1,9 @@
 #pragma once
 
-#include "UIScene_AbstractContainerMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_InventoryMenu.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftPlayer.h"
-
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "UIScene_AbstractContainerMenu.h"
 #include "minecraft/world/effect/MobEffect.h"
 
 class InventoryMenu;

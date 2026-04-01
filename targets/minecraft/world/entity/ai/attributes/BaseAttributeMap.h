@@ -1,9 +1,9 @@
 #pragma once
 
 #include <format>
-#include <vector>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 

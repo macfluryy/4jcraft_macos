@@ -1,10 +1,12 @@
+#include "SnowManModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "SnowManModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 SnowManModel::SnowManModel() : Model() {
     float yOffset = 4;

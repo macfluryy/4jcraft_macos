@@ -1,4 +1,5 @@
 #include "Golem.h"
+
 #include "minecraft/world/entity/PathfinderMob.h"
 
 Golem::Golem(Level* level) : PathfinderMob(level) {}

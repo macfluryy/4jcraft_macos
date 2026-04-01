@@ -1,5 +1,5 @@
 #include "HopperTile.h"
-#include "nbt/CompoundTag.h"
+
 #include "minecraft/Facing.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/IconRegister.h"
@@ -13,6 +13,7 @@
 #include "minecraft/world/level/tile/BaseEntityTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/HopperTileEntity.h"
+#include "nbt/CompoundTag.h"
 
 class Icon;
 

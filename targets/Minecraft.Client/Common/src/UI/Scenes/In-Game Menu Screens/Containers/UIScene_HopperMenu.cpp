@@ -1,14 +1,16 @@
+#include "UIScene_HopperMenu.h"
+
 #include <assert.h>
+
 #include <memory>
 
-#include "minecraft/client/Minecraft.h"
-#include "UIScene_HopperMenu.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HopperMenu.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HopperMenu.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/HopperMenu.h"

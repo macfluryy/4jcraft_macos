@@ -1,4 +1,5 @@
 #include "SwellGoal.h"
+
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"

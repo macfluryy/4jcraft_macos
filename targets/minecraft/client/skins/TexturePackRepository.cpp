@@ -1,19 +1,18 @@
-#include "Minecraft.Client/include/stdafx.h"
-
 #include "TexturePackRepository.h"
+
+#include "4J_Input.h"
+#include "DLCTexturePack.h"
 #include "DefaultTexturePack.h"
 #include "FileTexturePack.h"
 #include "FolderTexturePack.h"
-#include "DLCTexturePack.h"
-#include "minecraft/client/Options.h"
-#include "java/File.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/gui/Minimap.h"
-#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "4J_Input.h"
-
+#include "Minecraft.Client/include/stdafx.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/File.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/gui/Minimap.h"
 #include "strings.h"
 
 TexturePack* TexturePackRepository::DEFAULT_TEXTURE_PACK = nullptr;

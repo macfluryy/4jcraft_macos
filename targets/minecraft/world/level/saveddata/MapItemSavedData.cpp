@@ -1,18 +1,20 @@
+#include "MapItemSavedData.h"
+
 #include <string.h>
+
 #include <algorithm>
 #include <utility>
 
-#include "MapItemSavedData.h"
-#include "minecraft/server/PlayerList.h"
 #include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/entity/ItemFrame.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/MapItem.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/storage/LevelData.h"
+#include "nbt/CompoundTag.h"
 
 const int MapItemSavedData::END_PORTAL_DECORATION_KEY = -1;
 

@@ -1,8 +1,9 @@
+#include "FlintAndSteelItem.h"
+
 #include <memory>
 
-#include "FlintAndSteelItem.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"

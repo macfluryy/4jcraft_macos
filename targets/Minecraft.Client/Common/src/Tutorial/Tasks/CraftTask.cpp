@@ -1,8 +1,10 @@
+#include "CraftTask.h"
+
 #include <wchar.h>
+
 #include <memory>
 #include <string>
 
-#include "CraftTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "minecraft/world/item/ItemInstance.h"
 

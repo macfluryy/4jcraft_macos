@@ -1,15 +1,15 @@
+#include "Ghast.h"
+
 #include <math.h>
 #include <stdint.h>
+
 #include <numbers>
 #include <string>
 #include <vector>
 
-#include "Ghast.h"
-#include "minecraft/world/level/tile/LevelEvent.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/network/packet/ChatPacket.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -24,8 +24,10 @@
 #include "minecraft/world/entity/projectile/LargeFireball.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 void Ghast::_init() {
     explosionPower = 1;

@@ -1,9 +1,11 @@
+#include "DaylightDetectorTile.h"
+
 #include <math.h>
+
 #include <numbers>
 #include <string>
 
 #include "java/JavaMath.h"
-#include "DaylightDetectorTile.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/Level.h"

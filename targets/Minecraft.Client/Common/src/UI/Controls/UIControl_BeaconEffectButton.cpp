@@ -1,6 +1,7 @@
 #include "UIControl_BeaconEffectButton.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BeaconEffectButton.h"
+
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BeaconEffectButton.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 UIControl_BeaconEffectButton::UIControl_BeaconEffectButton() {

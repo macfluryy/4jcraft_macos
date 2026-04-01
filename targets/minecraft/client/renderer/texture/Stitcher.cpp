@@ -1,12 +1,13 @@
+#include "Stitcher.h"
+
 #include <algorithm>
 
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "StitchSlot.h"
 #include "Texture.h"
 #include "TextureHolder.h"
 #include "TextureManager.h"
-#include "Stitcher.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 
 void Stitcher::_init(const std::wstring& name, int maxWidth, int maxHeight,
                      bool forcePowerOfTwo, int forcedScale) {

@@ -1,9 +1,9 @@
+#include "AgeableMob.h"
+
 #include <string>
 
 #include "SyncedEntityData.h"
-#include "AgeableMob.h"
 #include "java/Class.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/EntityIO.h"
 #include "minecraft/world/entity/PathfinderMob.h"
@@ -14,6 +14,7 @@
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/SpawnEggItem.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
 
 class Entity;
 

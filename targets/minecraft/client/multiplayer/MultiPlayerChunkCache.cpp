@@ -1,22 +1,23 @@
+#include "MultiPlayerChunkCache.h"
+
 #include <stdint.h>
 #include <string.h>
 
-#include "MultiPlayerChunkCache.h"
-#include "minecraft/server/level/ServerChunkCache.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/chunk/WaterLevelChunk.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/level/ServerChunkCache.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/LightLayer.h"
 #include "minecraft/world/level/chunk/EmptyLevelChunk.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
+#include "minecraft/world/level/chunk/WaterLevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/storage/LevelData.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 MultiPlayerChunkCache::MultiPlayerChunkCache(Level* level) {
     XZSIZE = level->dimension->getXZSize();  // 4J Added

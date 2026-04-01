@@ -1,25 +1,26 @@
+#include "EntityTracker.h"
+
 #include <unordered_set>
 
-#include "EntityTracker.h"
+#include "ServerLevel.h"
+#include "ServerPlayer.h"
+#include "TrackedEntity.h"
+#include "minecraft/network/net.minecraft.network.h"
+#include "minecraft/network/packet/net.minecraft.network.packet.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
-#include "TrackedEntity.h"
-#include "ServerPlayer.h"
-#include "ServerLevel.h"
+#include "minecraft/server/network/PlayerConnection.h"
 #include "minecraft/util/Mth.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
+#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/entity/global/net.minecraft.world.entity.global.h"
 #include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
 #include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "minecraft/world/entity/global/net.minecraft.world.entity.global.h"
 #include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "minecraft/network/net.minecraft.network.h"
-#include "minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 #include "minecraft/world/level/chunk/net.minecraft.world.level.chunk.h"
-#include "minecraft/server/network/PlayerConnection.h"
+#include "minecraft/world/level/dimension/net.minecraft.world.level.dimension.h"
 
 EntityTracker::EntityTracker(ServerLevel* level) {
     this->level = level;

@@ -1,7 +1,7 @@
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "DamageEnchantment.h"
 
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "strings.h"
 
 const int DamageEnchantment::names[] = {IDS_ENCHANTMENT_DAMAGE_ALL,

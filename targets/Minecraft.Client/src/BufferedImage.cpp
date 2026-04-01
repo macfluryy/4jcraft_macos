@@ -1,18 +1,19 @@
-#include "console_helpers/StringHelpers.h"
-#include "console_helpers/PathHelper.h"
 #include "Minecraft.Client/include/BufferedImage.h"
+
+#include <cstdint>
+#include <filesystem>
+#include <format>
+#include <string>
+#include <vector>
+
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-
-#include <filesystem>
-#include <vector>
-#include <string>
-#include <cstdint>
-#include <format>
+#include "console_helpers/PathHelper.h"
+#include "console_helpers/StringHelpers.h"
 
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];

@@ -1,4 +1,5 @@
 #include "HugeMushroomFeature.h"
+
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/feature/Feature.h"

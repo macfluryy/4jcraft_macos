@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
+#include "Minecraft.Client/include/SkinBox.h"
 #include "Packet.h"
 #include "minecraft/client/model/geom/Model.h"
-#include "Minecraft.Client/include/SkinBox.h"
 #include "minecraft/network/packet/Packet.h"
 
 class DLCSkinFile;

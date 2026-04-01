@@ -1,12 +1,14 @@
+#include "McRegionLevelStorageSource.h"
+
 #include <assert.h>
+
 #include <memory>
 
-#include "java/JavaMath.h"
-#include "minecraft/util/ProgressListener.h"
+#include "LevelData.h"
 #include "McRegionLevelStorage.h"
 #include "java/File.h"
-#include "LevelData.h"
-#include "McRegionLevelStorageSource.h"
+#include "java/JavaMath.h"
+#include "minecraft/util/ProgressListener.h"
 #include "minecraft/world/level/storage/DirectoryLevelStorageSource.h"
 
 McRegionLevelStorageSource::McRegionLevelStorageSource(File dir)

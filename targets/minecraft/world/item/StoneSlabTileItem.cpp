@@ -1,6 +1,7 @@
+#include "StoneSlabTileItem.h"
+
 #include <optional>
 
-#include "StoneSlabTileItem.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ItemInstance.h"

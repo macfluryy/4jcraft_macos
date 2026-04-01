@@ -11,8 +11,8 @@
 #include "SmallFireball.h"
 #include "Throwable.h"
 #include "ThrownEnderpearl.h"
-#include "ThrownPotion.h"
 #include "ThrownExpBottle.h"  // Brought forward from 1.2
+#include "ThrownPotion.h"
 
 // Added TU 9
 #include "DragonFireball.h"

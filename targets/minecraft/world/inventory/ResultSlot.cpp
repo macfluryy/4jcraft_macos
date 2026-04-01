@@ -1,6 +1,7 @@
+#include "ResultSlot.h"
+
 #include <algorithm>
 
-#include "ResultSlot.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"

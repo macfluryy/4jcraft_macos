@@ -1,12 +1,13 @@
+#include "Witch.h"
+
 #include <format>
 #include <memory>
 #include <vector>
 
-#include "Witch.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/effect/MobEffect.h"

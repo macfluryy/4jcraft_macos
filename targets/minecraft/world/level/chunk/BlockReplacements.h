@@ -1,7 +1,9 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <format>
+#include <vector>
 
 class BlockReplacements {
 public:

@@ -1,6 +1,7 @@
+#include "ChestModel.h"
+
 #include <GL/gl.h>
 
-#include "ChestModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
 ChestModel::ChestModel() {

@@ -1,13 +1,14 @@
 
+#include "UIScene_TradingMenu.h"
+
 #include "Minecraft.Client/Common/src/UI/UI.h"
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "minecraft/world/item/trading/net.minecraft.world.item.trading.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "console_helpers/StringHelpers.h"
-#include "minecraft/client/Minecraft.h"
-#include "UIScene_TradingMenu.h"
 
 UIScene_TradingMenu::UIScene_TradingMenu(int iPad, void* _initData,
                                          UILayer* parentLayer)

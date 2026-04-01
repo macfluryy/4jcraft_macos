@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_HUD.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 #define CHAT_LINES_COUNT 10
 

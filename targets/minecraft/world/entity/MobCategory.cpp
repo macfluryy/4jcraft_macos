@@ -1,7 +1,8 @@
+#include "MobCategory.h"
+
 #include <vector>
 
 #include "minecraft/world/level/material/Material.h"
-#include "MobCategory.h"
 
 MobCategory* MobCategory::monster = nullptr;
 MobCategory* MobCategory::creature = nullptr;

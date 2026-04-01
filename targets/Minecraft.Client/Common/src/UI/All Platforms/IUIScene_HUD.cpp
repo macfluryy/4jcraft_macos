@@ -1,15 +1,18 @@
+#include "IUIScene_HUD.h"
+
 #include <cmath>
 #include <memory>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "IUIScene_HUD.h"
-#include "4J_Profile.h"
 #include "4J.Render/4J_Render.h"
+#include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
+#include "java/Class.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -19,8 +22,6 @@
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/food/FoodData.h"
 #include "minecraft/world/level/material/Material.h"
-#include "java/Class.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 IUIScene_HUD::IUIScene_HUD() {
     m_lastActiveSlot = -1;

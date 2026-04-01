@@ -1,7 +1,7 @@
+#include "LargeFireball.h"
+
 #include <string>
 
-#include "LargeFireball.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -9,6 +9,7 @@
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "nbt/CompoundTag.h"
 
 LargeFireball::LargeFireball(Level* level) : Fireball(level) {
     explosionPower = 1;

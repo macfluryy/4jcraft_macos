@@ -1,14 +1,15 @@
-#include "minecraft/net.minecraft.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "HangingEntityItem.h"
-#include "minecraft/world/entity/HangingEntity.h"
-#include "minecraft/world/entity/Painting.h"
+
+#include "minecraft/net.minecraft.h"
 #include "minecraft/stats/GenericStats.h"
+#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
+#include "minecraft/world/entity/HangingEntity.h"
 #include "minecraft/world/entity/ItemFrame.h"
+#include "minecraft/world/entity/Painting.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "net.minecraft.world.item.h"
 
 HangingEntityItem::HangingEntityItem(int id, eINSTANCEOF eClassType)
     : Item(id) {

@@ -1,6 +1,7 @@
 #include "UIComponent_Tooltips.h"
-#include "Minecraft.Client/Common/src/UI/Components/UIComponent_Tooltips.h"
+
 #include "4J_Profile.h"
+#include "Minecraft.Client/Common/src/UI/Components/UIComponent_Tooltips.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

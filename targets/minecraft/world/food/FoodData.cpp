@@ -1,16 +1,17 @@
+#include "FoodData.h"
+
 #include <algorithm>
 #include <string>
 
 #include "FoodConstants.h"
-#include "FoodData.h"
-#include "minecraft/world/food/FoodData.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/food/FoodData.h"
 #include "minecraft/world/item/FoodItem.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/Level.h"
+#include "nbt/CompoundTag.h"
 
 FoodData::FoodData() {
     exhaustionLevel = 0;

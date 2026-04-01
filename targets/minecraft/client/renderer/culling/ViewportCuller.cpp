@@ -1,7 +1,9 @@
+#include "ViewportCuller.h"
+
 #include <math.h>
+
 #include <numbers>
 
-#include "ViewportCuller.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/phys/AABB.h"
 

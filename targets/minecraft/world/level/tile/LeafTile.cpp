@@ -1,12 +1,12 @@
-#include "minecraft/client/Minecraft.h"
 #include "LeafTile.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/biome/net.minecraft.world.level.biome.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/stats/net.minecraft.stats.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 
+#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/stats/net.minecraft.stats.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/biome/net.minecraft.world.level.biome.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/net.minecraft.world.h"
 #include "strings.h"
 
 const unsigned int LeafTile::LEAF_NAMES[LEAF_NAMES_LENGTH] = {

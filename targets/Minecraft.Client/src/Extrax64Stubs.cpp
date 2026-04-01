@@ -1,11 +1,10 @@
 
 
+#include <pthread.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include <sys/time.h>
-#include <pthread.h>
 
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"

@@ -1,6 +1,7 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_SettingsMenu.h"
+
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/Minecraft.h"
 
 UIScene_SettingsMenu::UIScene_SettingsMenu(int iPad, void* initData,

@@ -2,9 +2,8 @@
 
 #include <memory>
 
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/Entity.h"
 
 class HitResult;

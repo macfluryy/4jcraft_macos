@@ -1,10 +1,13 @@
 #include "4J_Input.h"
-#include "../4J.Common/4J_InputActions.h"
+
 #include <SDL2/SDL.h>
 #include <math.h>
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
+
 #include <string>
+
+#include "../4J.Common/4J_InputActions.h"
 
 C_4JInput InputManager;
 

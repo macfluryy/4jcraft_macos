@@ -1,4 +1,5 @@
 #include "Timer.h"
+
 #include "java/System.h"
 
 Timer::Timer(float ticksPerSecond) {

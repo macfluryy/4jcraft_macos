@@ -1,10 +1,11 @@
+#include "EnderCrystal.h"
+
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/damageSource/DamageSource.h"
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "net.minecraft.world.entity.boss.enderdragon.h"
-#include "EnderCrystal.h"
-#include "minecraft/world/damageSource/DamageSource.h"
-#include "minecraft/util/Mth.h"
 
 void EnderCrystal::_init(Level* level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

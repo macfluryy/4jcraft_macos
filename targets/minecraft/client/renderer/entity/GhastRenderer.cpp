@@ -1,14 +1,15 @@
+#include "GhastRenderer.h"
+
 #include <memory>
 
-#include "GhastRenderer.h"
-#include "minecraft/client/model/GhastModel.h"
 #include "4J.Render/4J_Render.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/monster/Ghast.h"
+#include "minecraft/client/model/GhastModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/monster/Ghast.h"
 
 ResourceLocation GhastRenderer::GHAST_LOCATION = ResourceLocation(TN_MOB_GHAST);
 ResourceLocation GhastRenderer::GHAST_SHOOTING_LOCATION =

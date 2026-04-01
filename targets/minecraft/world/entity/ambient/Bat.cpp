@@ -1,13 +1,14 @@
+#include "Bat.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 #include <string>
 
-#include "Bat.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/Pos.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
@@ -17,6 +18,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 Bat::Bat(Level* level) : AmbientCreature(level) {
     // 4J Stu - This function call had to be moved here from the Entity ctor to

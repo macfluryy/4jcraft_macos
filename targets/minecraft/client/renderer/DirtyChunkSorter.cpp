@@ -1,4 +1,5 @@
 #include "DirtyChunkSorter.h"
+
 #include "Chunk.h"
 #include "minecraft/world/entity/LivingEntity.h"
 

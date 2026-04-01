@@ -1,8 +1,9 @@
+#include "GoldenAppleItem.h"
+
+#include "minecraft/SharedConstants.h"
 #include "minecraft/world/effect/net.minecraft.world.effect.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/SharedConstants.h"
-#include "GoldenAppleItem.h"
 
 GoldenAppleItem::GoldenAppleItem(int id, int nutrition, float saturationMod,
                                  bool isMeat)

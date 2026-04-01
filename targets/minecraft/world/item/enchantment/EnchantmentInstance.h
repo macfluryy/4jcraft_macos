@@ -1,7 +1,6 @@
 #pragma once
 
 #include "minecraft/util/WeighedRandom.h"
-#include "minecraft/util/WeighedRandom.h"
 
 class Enchantment;
 

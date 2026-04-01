@@ -1,19 +1,21 @@
+#include "Linux_App.h"
+
 #include <assert.h>
+
 #include <string>
 
-#include "Minecraft.Client/Common/Consoles_App.h"
-#include "minecraft/client/User.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/world/level/LevelSettings.h"
-#include "Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "4J_Profile.h"
 #include "4J.Render/4J_Render.h"
+#include "4J_Profile.h"
 #include "4J_Storage.h"
+#include "Minecraft.Client/Common/Consoles_App.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/C4JThread.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/User.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/world/level/LevelSettings.h"
 
 CConsoleMinecraftApp app;
 

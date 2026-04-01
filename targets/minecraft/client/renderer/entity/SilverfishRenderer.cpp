@@ -1,6 +1,7 @@
+#include "SilverfishRenderer.h"
+
 #include <memory>
 
-#include "SilverfishRenderer.h"
 #include "minecraft/client/model/SilverfishModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"

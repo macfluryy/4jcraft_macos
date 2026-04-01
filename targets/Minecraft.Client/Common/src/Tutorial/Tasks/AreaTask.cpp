@@ -1,9 +1,10 @@
+#include "AreaTask.h"
+
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "AreaTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 
 AreaTask::AreaTask(eTutorial_State state, Tutorial* tutorial,
                    std::vector<TutorialConstraint*>* inConstraints,

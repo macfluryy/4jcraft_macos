@@ -1,9 +1,10 @@
+#include "LeafTileItem.h"
+
 #include <memory>
 
-#include "LeafTileItem.h"
-#include "minecraft/world/level/FoliageColor.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/TileItem.h"
+#include "minecraft/world/level/FoliageColor.h"
 #include "minecraft/world/level/tile/LeafTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 

@@ -1,7 +1,8 @@
+#include "PotatoTile.h"
+
 #include <memory>
 #include <string>
 
-#include "PotatoTile.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/world/IconRegister.h"

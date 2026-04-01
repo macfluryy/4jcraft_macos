@@ -1,10 +1,12 @@
 
+#include "minecraft/world/level/newbiome/layer/RiverInitLayer.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/newbiome/layer/Layer.h"
-#include "minecraft/world/level/newbiome/layer/RiverInitLayer.h"
 
 RiverInitLayer::RiverInitLayer(int64_t seed, std::shared_ptr<Layer> parent)
     : Layer(seed) {

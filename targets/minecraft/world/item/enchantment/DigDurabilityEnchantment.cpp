@@ -1,7 +1,7 @@
-#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "DigDurabilityEnchantment.h"
-#include "java/Random.h"
 
+#include "java/Random.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "strings.h"
 
 DigDurabilityEnchantment::DigDurabilityEnchantment(int id, int frequency)

@@ -1,14 +1,16 @@
 
+#include "java/ByteBuffer.h"
+
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
+
 #include <algorithm>
 #include <vector>
 
-#include "java/IntBuffer.h"
-#include "java/FloatBuffer.h"
-#include "java/ByteBuffer.h"
 #include "java/Buffer.h"
+#include "java/FloatBuffer.h"
+#include "java/IntBuffer.h"
 
 ByteBuffer::ByteBuffer(unsigned int capacity) : Buffer(capacity) {
     hasBackingArray = false;

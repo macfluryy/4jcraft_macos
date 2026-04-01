@@ -2,9 +2,9 @@
 #include <memory>
 #include <unordered_map>
 
-#include "minecraft/client/renderer/Textures.h"
-#include "java/JavaIntHash.h"
 #include "java/Class.h"
+#include "java/JavaIntHash.h"
+#include "minecraft/client/renderer/Textures.h"
 
 class Mob;
 class Level;

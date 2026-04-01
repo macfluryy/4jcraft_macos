@@ -1,6 +1,7 @@
+#include "BeaconMenu.h"
+
 #include <vector>
 
-#include "BeaconMenu.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"

@@ -1,7 +1,8 @@
 
+#include "minecraft/world/level/newbiome/layer/FlatLayer.h"
+
 #include <vector>
 
-#include "minecraft/world/level/newbiome/layer/FlatLayer.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 
 FlatLayer::FlatLayer(int val) : Layer(0) { this->val = val; }

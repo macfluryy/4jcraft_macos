@@ -2,27 +2,27 @@
 
 #include <cstdint>
 // #include <mutex>
-#include <unordered_set>
 #include <format>
 #include <memory>
 #include <string>
 #include <typeinfo>
+#include <unordered_set>
 #include <vector>
 
+#include "4J.Common/4J_Compat.h"
+#include "ChunkPos.h"
 #include "LevelSource.h"
 #include "LightLayer.h"
-#include "ChunkPos.h"
 #include "TickNextTickData.h"
-#include "minecraft/world/level/saveddata/SavedData.h"
-#include "console_helpers/Definitions.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/world/level/biome/Biome.h"
 #include "console_helpers/C4JThread.h"
-#include "4J.Common/4J_Compat.h"
+#include "console_helpers/Definitions.h"
 #include "java/Class.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/LevelSource.h"
 #include "minecraft/world/level/LightLayer.h"
+#include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/saveddata/SavedData.h"
 #include "minecraft/world/phys/AABB.h"
 
 class CompoundTag;

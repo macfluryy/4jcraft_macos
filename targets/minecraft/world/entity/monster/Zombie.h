@@ -3,10 +3,9 @@
 #include <stdint.h>
 
 #include "Monster.h"
-#include "minecraft/SharedConstants.h"
-#include "minecraft/world/entity/MobGroupData.h"
 #include "java/Class.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/world/entity/MobGroupData.h"
 #include "minecraft/world/entity/MobType.h"
 
 class Attribute;

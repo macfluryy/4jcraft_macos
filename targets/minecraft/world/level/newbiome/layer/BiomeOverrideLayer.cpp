@@ -1,9 +1,11 @@
-#include <string.h>
-#include <string>
-#include <fstream>
-#include <filesystem>
-
 #include "BiomeOverrideLayer.h"
+
+#include <string.h>
+
+#include <filesystem>
+#include <fstream>
+#include <string>
+
 #include "Minecraft.Client/Linux/Linux_App.h"
 #if defined(__linux__)
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"

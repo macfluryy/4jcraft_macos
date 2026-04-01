@@ -1,23 +1,24 @@
+#include "Ocelot.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
-#include "minecraft/world/entity/SyncedEntityData.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/Random.h"
+#include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/stats/GenericStats.h"
-#include "Ocelot.h"
-#include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "minecraft/SharedConstants.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/EntityEvent.h"
 #include "minecraft/world/entity/Mob.h"
+#include "minecraft/world/entity/SyncedEntityData.h"
 #include "minecraft/world/entity/TamableAnimal.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/control/MoveControl.h"
@@ -46,6 +47,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 #include "platform/PlatformServices.h"
 
 const double Ocelot::SNEAK_SPEED_MOD = 0.6;

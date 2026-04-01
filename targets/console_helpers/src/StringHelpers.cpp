@@ -1,9 +1,9 @@
-#include "simdutf.h"
-
 #include <algorithm>
 #include <cassert>
-#include <vector>
 #include <sstream>
+#include <vector>
+
+#include "simdutf.h"
 
 std::wstring toLower(const std::wstring& a) {
     std::wstring out = std::wstring(a);

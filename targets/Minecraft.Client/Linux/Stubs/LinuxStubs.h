@@ -3,32 +3,33 @@
 
 #pragma once
 
-#include <cstdint>
-#include <cstring>
-#include <cstdlib>
-#include <string>
-#include <cerrno>
-#include <atomic>
-#include <climits>
-#include <cfloat>
-#include <cmath>
-#include <pthread.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 #include <dirent.h>
+#include <fcntl.h>
 #include <fnmatch.h>
-#include <time.h>
-#include <stdio.h>
-#include <sys/time.h>
-#include <locale>
 #include <linux/mman.h>
+#include <pthread.h>
+#include <stdio.h>
 #include <sys/mman.h>
-#include <codecvt>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
 
-#include "winapi_stubs.h"
+#include <atomic>
+#include <cerrno>
+#include <cfloat>
+#include <climits>
+#include <cmath>
+#include <codecvt>
+#include <cstdint>
+#include <cstdlib>
+#include <cstring>
+#include <locale>
+#include <string>
+
 #include "d3d11_stubs.h"
+#include "winapi_stubs.h"
 #include "xbox_stubs.h"
 
 #ifndef _ENABLEIGGY

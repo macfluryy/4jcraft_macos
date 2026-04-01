@@ -3,8 +3,8 @@
 #include <stdint.h>
 
 #include "GlobalEntity.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "java/Class.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 class Level;
 

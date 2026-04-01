@@ -1,12 +1,13 @@
+#include "ToolRecipes.h"
+
 #include <vector>
 
-#include "minecraft/world/level/tile/Tile.h"
 #include "Recipes.h"
-#include "ToolRecipes.h"
 #include "java/Class.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/ShearsItem.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 // 4J-PB - adding "" on the end of these so we can detect it
 std::wstring ToolRecipies::shapes[][4] = {

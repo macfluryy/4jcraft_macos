@@ -1,6 +1,7 @@
+#include "TickNextTickData.h"
+
 #include <cstdint>
 
-#include "TickNextTickData.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 int64_t TickNextTickData::C = 0;

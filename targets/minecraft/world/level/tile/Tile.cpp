@@ -1,24 +1,25 @@
+#include "Tile.h"
+
 #include <optional>
 
-#include "minecraft/stats/net.minecraft.stats.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/locale/net.minecraft.locale.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
+#include "minecraft/net.minecraft.h"
+#include "minecraft/stats/net.minecraft.stats.h"
 #include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/food/net.minecraft.world.food.h"
 #include "minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
 #include "minecraft/world/level/material/net.minecraft.world.level.material.h"
-#include "net.minecraft.world.level.tile.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/redstone/net.minecraft.world.level.redstone.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/world/food/net.minecraft.world.food.h"
+#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/net.minecraft.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "console_helpers/StringHelpers.h"
-#include "Tile.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "net.minecraft.world.level.tile.h"
 
 std::wstring Tile::TILE_DESCRIPTION_PREFIX = L"Tile.";
 

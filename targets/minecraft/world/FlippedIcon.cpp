@@ -1,4 +1,5 @@
 #include "FlippedIcon.h"
+
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/Icon.h"
 

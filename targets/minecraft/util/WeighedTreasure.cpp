@@ -1,4 +1,5 @@
 #include "WeighedTreasure.h"
+
 #include "java/Random.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/item/ItemInstance.h"

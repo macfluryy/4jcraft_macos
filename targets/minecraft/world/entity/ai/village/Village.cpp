@@ -1,14 +1,14 @@
+#include "Village.h"
+
 #include <stdlib.h>
-#include <limits>
-#include <optional>
+
 #include <algorithm>
 #include <cmath>
+#include <limits>
+#include <optional>
 #include <utility>
 
-#include "Village.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/util/Mth.h"
@@ -18,6 +18,8 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/ListTag.h"
 
 class Entity;
 

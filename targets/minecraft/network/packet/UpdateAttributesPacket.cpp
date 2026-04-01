@@ -1,7 +1,8 @@
+#include "UpdateAttributesPacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "UpdateAttributesPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"

@@ -1,8 +1,8 @@
+#include "DispenserTile.h"
+
 #include <string>
 
-#include "DispenserTile.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/Facing.h"
 #include "minecraft/core/BehaviorRegistry.h"
 #include "minecraft/core/BlockSource.h"
@@ -24,6 +24,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
 #include "minecraft/world/level/tile/piston/PistonBaseTile.h"
+#include "nbt/CompoundTag.h"
 
 class Position;
 

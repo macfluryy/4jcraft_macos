@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_BitmapIcon.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_DLCList.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_HTMLLabel.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 class UIScene_DLCOffersMenu : public UIScene {
 private:

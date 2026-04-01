@@ -1,10 +1,12 @@
 
+#include "minecraft/commands/common/EffectCommand.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
 #include "minecraft/commands/CommandsEnum.h"
-#include "minecraft/commands/common/EffectCommand.h"
 
 class CommandSender;
 

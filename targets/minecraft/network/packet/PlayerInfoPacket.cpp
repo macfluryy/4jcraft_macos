@@ -1,9 +1,9 @@
-#include "minecraft/server/level/ServerPlayer.h"
-#include "minecraft/server/network/PlayerConnection.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/PacketListener.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/network/PlayerConnection.h"
 #ifndef __linux__
 #include <qnet.h>
 #endif  // __linux__

@@ -1,14 +1,15 @@
 #pragma once
 #include <stdint.h>
-#include <mutex>
+
 #include <format>
 #include <memory>
+#include <mutex>
 #include <vector>
 
-#include "minecraft/util/SmoothFloat.h"
+#include "Minecraft.Client/Common/App_Defines.h"
 #include "console_helpers/C4JThread.h"
 #include "minecraft/client/resources/ResourceLocation.h"
-#include "Minecraft.Client/Common/App_Defines.h"
+#include "minecraft/util/SmoothFloat.h"
 #include "minecraft/world/phys/Vec3.h"
 
 class Minecraft;

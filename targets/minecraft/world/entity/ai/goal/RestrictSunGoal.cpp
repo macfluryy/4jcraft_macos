@@ -1,4 +1,5 @@
 #include "RestrictSunGoal.h"
+
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/level/Level.h"

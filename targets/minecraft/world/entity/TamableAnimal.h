@@ -1,11 +1,12 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/animal/Animal.h"
 #include "OwnableEntity.h"
+#include "minecraft/world/entity/animal/Animal.h"
 
 class SitGoal;
 class Level;

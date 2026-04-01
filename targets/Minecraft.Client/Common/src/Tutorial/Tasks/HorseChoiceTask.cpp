@@ -1,10 +1,11 @@
+#include "HorseChoiceTask.h"
+
 #include <memory>
 
-#include "minecraft/world/entity/animal/EntityHorse.h"
-#include "HorseChoiceTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/ChoiceTask.h"
-#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/animal/EntityHorse.h"
 
 class Tutorial;
 

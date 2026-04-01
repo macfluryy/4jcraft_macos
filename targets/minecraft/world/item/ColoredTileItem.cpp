@@ -1,6 +1,7 @@
+#include "ColoredTileItem.h"
+
 #include <memory>
 
-#include "ColoredTileItem.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/TileItem.h"
 #include "minecraft/world/level/tile/Tile.h"

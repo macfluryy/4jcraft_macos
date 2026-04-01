@@ -1,6 +1,7 @@
+#include "SaddleItem.h"
+
 #include <memory>
 
-#include "SaddleItem.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/animal/Pig.h"

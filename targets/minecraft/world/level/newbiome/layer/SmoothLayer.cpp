@@ -1,10 +1,12 @@
 
+#include "minecraft/world/level/newbiome/layer/SmoothLayer.h"
+
 #include <stdint.h>
+
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/newbiome/layer/Layer.h"
-#include "minecraft/world/level/newbiome/layer/SmoothLayer.h"
 
 SmoothLayer::SmoothLayer(int64_t seedMixup, std::shared_ptr<Layer> parent)
     : Layer(seedMixup) {

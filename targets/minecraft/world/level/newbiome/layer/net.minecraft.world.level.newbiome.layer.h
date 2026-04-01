@@ -8,6 +8,7 @@
 #include "DownfallMixerLayer.h"
 #include "FlatLayer.h"
 #include "FuzzyZoomLayer.h"
+#include "GrowMushroomIslandLayer.h"  // 4J added
 #include "IslandLayer.h"
 #include "Layer.h"
 #include "RiverInitLayer.h"
@@ -20,7 +21,6 @@
 #include "TemperatureMixerLayer.h"
 #include "VoronoiZoom.h"
 #include "ZoomLayer.h"
-#include "GrowMushroomIslandLayer.h"  // 4J added
 
 // 1.1.
 #include "RegionHillsLayer.h"

@@ -1,4 +1,5 @@
 #include "OwnerHurtTargetGoal.h"
+
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/TamableAnimal.h"

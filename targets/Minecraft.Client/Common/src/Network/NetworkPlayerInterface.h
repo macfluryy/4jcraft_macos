@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Socket;
 
 // This is the platform independent interface for dealing with players within a

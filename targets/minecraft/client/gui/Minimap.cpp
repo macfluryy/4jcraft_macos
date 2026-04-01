@@ -1,18 +1,20 @@
+#include "Minimap.h"
+
 #include <GL/gl.h>
 #include <math.h>
 #include <wchar.h>
+
 #include <string>
 
-#include "minecraft/client/Minecraft.h"
-#include "Minimap.h"
-#include "Font.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "minecraft/client/renderer/Tesselator.h"
 #include "4J.Render/4J_Render.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "Font.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/BufferedImage.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/renderer/Tesselator.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/material/MaterialColor.h"
 #include "minecraft/world/level/saveddata/MapItemSavedData.h"

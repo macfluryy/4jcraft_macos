@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 
 class UIScene_InGameSaveManagementMenu : public UIScene {

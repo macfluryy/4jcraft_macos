@@ -1,5 +1,6 @@
-#include "java/Arrays.h"
 #include "EmptyLevelChunk.h"
+
+#include "java/Arrays.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"

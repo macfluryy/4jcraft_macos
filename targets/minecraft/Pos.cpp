@@ -1,8 +1,9 @@
 
 
+#include "minecraft/Pos.h"
+
 #include <math.h>
 
-#include "minecraft/Pos.h"
 #include "minecraft/Pos.h"
 
 Pos::Pos() { x = y = z = 0; }

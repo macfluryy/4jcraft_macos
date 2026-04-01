@@ -1,12 +1,13 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "Packet.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
+#include "Packet.h"
 #include "minecraft/network/packet/Packet.h"
 
 class UpdateGameRuleProgressPacket

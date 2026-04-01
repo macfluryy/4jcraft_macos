@@ -1,7 +1,8 @@
+#include "ContainerClosePacket.h"
+
 #include <stdint.h>
 
 #include "PacketListener.h"
-#include "ContainerClosePacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 

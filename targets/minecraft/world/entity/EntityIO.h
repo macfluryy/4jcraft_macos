@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Entity.h"
-#include "java/JavaIntHash.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "java/JavaIntHash.h"
 
 class Level;
 class CompoundTag;

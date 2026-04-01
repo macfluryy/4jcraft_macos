@@ -1,4 +1,5 @@
 #include "ProgressRenderer.h"
+
 #include "java/System.h"
 #include "minecraft/client/Minecraft.h"
 

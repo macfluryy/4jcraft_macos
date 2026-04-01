@@ -3,6 +3,7 @@
 #include <format>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 class Texture;
 class Stitcher;

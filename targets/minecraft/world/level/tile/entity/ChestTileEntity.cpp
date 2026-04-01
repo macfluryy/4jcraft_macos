@@ -1,18 +1,18 @@
-#include "minecraft/stdafx.h"
-
-#include "nbt/com.mojang.nbt.h"
-#include "minecraft/world/net.minecraft.world.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "TileEntity.h"
-#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
 #include "ChestTileEntity.h"
+
+#include "TileEntity.h"
 #include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/stdafx.h"
+#include "minecraft/world/entity/item/net.minecraft.world.entity.item.h"
+#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+#include "minecraft/world/inventory/net.minecraft.world.inventory.h"
+#include "minecraft/world/item/net.minecraft.world.item.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/net.minecraft.world.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "nbt/com.mojang.nbt.h"
 
 int ChestTileEntity::getContainerType() {
     if (isBonusChest)

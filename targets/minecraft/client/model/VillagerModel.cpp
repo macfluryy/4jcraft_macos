@@ -1,10 +1,12 @@
+#include "VillagerModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "VillagerModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 void VillagerModel::_init(float g, float yOffset, int xTexSize, int yTexSize) {
     head = (new ModelPart(this))->setTexSize(xTexSize, yTexSize);

@@ -1,35 +1,34 @@
+#include "LocalPlayer.h"
+
 #include <math.h>
 #include <stdio.h>
+
 #include <iostream>
 #include <memory>
 #include <numbers>
 
-#include "LocalPlayer.h"
-#include "minecraft/client/User.h"
 #include "Input.h"
-#include "minecraft/stats/StatsCounter.h"
+#include "java/Random.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/User.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/particle/CritParticle.h"
 #include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/particle/TakeAnimationParticle.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/GameRenderer.h"
 #include "minecraft/client/renderer/ItemInHandRenderer.h"
+#include "minecraft/stats/StatsCounter.h"
+#include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/level/storage/LevelData.h"
-#include "java/Random.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "minecraft/util/Mth.h"
-#include "minecraft/client/particle/CritParticle.h"
 // 4J : WESTY : Added for new achievements.
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/Tile.h"
 // 4J Stu - Added for tutorial callbacks
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/world/level/dimension/Dimension.h"
-#include "minecraft/stats/CommonStats.h"
+#include "4J.Render/4J_Render.h"
 #include "4J_Input.h"
 #include "4J_Profile.h"
-#include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
@@ -40,10 +39,14 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Gui.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
-#include "minecraft/SharedConstants.h"
 #include "minecraft/stats/Achievement.h"
+#include "minecraft/stats/CommonStats.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/stats/Stat.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -58,13 +61,12 @@
 #include "minecraft/world/item/BowItem.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/tile/entity/CommandBlockEntity.h"
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "minecraft/client/gui/Gui.h"
-#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 LocalPlayer::LocalPlayer(Minecraft* minecraft, Level* level, User* user,
                          int dimension)

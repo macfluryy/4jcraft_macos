@@ -1,8 +1,12 @@
+#include "TheEndLevelRandomLevelSource.h"
+
 #include <cmath>
 
-#include "TheEndLevelRandomLevelSource.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
@@ -10,9 +14,6 @@
 #include "minecraft/world/level/levelgen/synth/PerlinNoise.h"
 #include "minecraft/world/level/tile/HeavyTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 TheEndLevelRandomLevelSource::TheEndLevelRandomLevelSource(Level* level,
                                                            int64_t seed) {

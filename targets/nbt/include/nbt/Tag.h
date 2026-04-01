@@ -1,5 +1,6 @@
 #pragma once
 #include <ostream>
+
 #include "java/InputOutputStream/InputOutputStream.h"
 
 class Tag {

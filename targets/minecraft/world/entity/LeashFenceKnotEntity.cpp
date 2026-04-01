@@ -1,7 +1,8 @@
+#include "LeashFenceKnotEntity.h"
+
 #include <format>
 #include <vector>
 
-#include "LeashFenceKnotEntity.h"
 #include "minecraft/world/entity/HangingEntity.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/player/Abilities.h"

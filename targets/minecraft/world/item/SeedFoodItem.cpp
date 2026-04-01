@@ -1,6 +1,7 @@
+#include "SeedFoodItem.h"
+
 #include <memory>
 
-#include "SeedFoodItem.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/FoodItem.h"

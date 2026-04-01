@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <string>
-#include <string>
 
 #include "EnchantmentCategory.h"
 #include "minecraft/util/HtmlString.h"

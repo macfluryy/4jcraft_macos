@@ -1,6 +1,7 @@
+#include "TheEndPortalTileEntity.h"
+
 #include <memory>
 
-#include "TheEndPortalTileEntity.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 
 // 4J Added

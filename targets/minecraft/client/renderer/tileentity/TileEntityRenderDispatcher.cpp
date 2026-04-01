@@ -1,18 +1,20 @@
+#include "TileEntityRenderDispatcher.h"
+
 #include <GL/gl.h>
+
 #include <utility>
 
-#include "TileEntityRenderDispatcher.h"
-#include "TileEntityRenderer.h"
-#include "SignRenderer.h"
-#include "MobSpawnerRenderer.h"
-#include "PistonPieceRenderer.h"
+#include "4J.Render/4J_Render.h"
+#include "BeaconRenderer.h"
 #include "ChestRenderer.h"
 #include "EnchantTableRenderer.h"
-#include "TheEndPortalRenderer.h"
-#include "SkullTileRenderer.h"
 #include "EnderChestRenderer.h"
-#include "BeaconRenderer.h"
-#include "4J.Render/4J_Render.h"
+#include "MobSpawnerRenderer.h"
+#include "PistonPieceRenderer.h"
+#include "SignRenderer.h"
+#include "SkullTileRenderer.h"
+#include "TheEndPortalRenderer.h"
+#include "TileEntityRenderer.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/level/Level.h"

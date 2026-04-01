@@ -1,4 +1,5 @@
 #include "UIComponent_MenuBackground.h"
+
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_MenuBackground.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"

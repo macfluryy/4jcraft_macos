@@ -1,11 +1,12 @@
+#include "PigRenderer.h"
+
 #include <memory>
 
-#include "PigRenderer.h"
-#include "minecraft/world/entity/LivingEntity.h"
-#include "minecraft/world/entity/animal/Pig.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/entity/animal/Pig.h"
 
 class Model;
 

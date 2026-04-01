@@ -1,18 +1,19 @@
+#include "TextEditScreen.h"
+
 #include <vector>
 
-#include "TextEditScreen.h"
+#include "4J.Render/4J_Render.h"
+#include "Minecraft.Client/include/stubs.h"
+#include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"
-#include "minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
+#include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "minecraft/world/level/tile/entity/SignTileEntity.h"
-#include "minecraft/SharedConstants.h"
-#include "4J.Render/4J_Render.h"
+#include "minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
 #include "minecraft/network/packet/SignUpdatePacket.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/gui/Screen.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "minecraft/world/level/tile/entity/SignTileEntity.h"
 
 const std::wstring TextEditScreen::allowedChars =
     SharedConstants::acceptableLetters;

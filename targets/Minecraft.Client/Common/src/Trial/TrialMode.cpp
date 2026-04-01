@@ -1,6 +1,7 @@
 #include "TrialMode.h"
-#include "Minecraft.Client/Common/src/Tutorial/FullTutorial.h"
+
 #include "Minecraft.Client/Common/src/Trial/TrialMode.h"
+#include "Minecraft.Client/Common/src/Tutorial/FullTutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/FullTutorialMode.h"
 
 class ClientConnection;

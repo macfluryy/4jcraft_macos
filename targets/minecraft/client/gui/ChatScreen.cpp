@@ -1,13 +1,14 @@
+#include "ChatScreen.h"
+
 #include <memory>
 
-#include "ChatScreen.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "minecraft/SharedConstants.h"
+#include "Minecraft.Client/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
+#include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/gui/Screen.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 const std::wstring ChatScreen::allowedChars =
     SharedConstants::acceptableLetters;

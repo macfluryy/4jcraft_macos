@@ -1,7 +1,8 @@
+#include "StringTable.h"
+
 #include <ranges>
 #include <utility>
 
-#include "StringTable.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"

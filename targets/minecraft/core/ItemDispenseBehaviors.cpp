@@ -1,7 +1,8 @@
+#include "ItemDispenseBehaviors.h"
+
 #include <memory>
 #include <string>
 
-#include "ItemDispenseBehaviors.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Class.h"

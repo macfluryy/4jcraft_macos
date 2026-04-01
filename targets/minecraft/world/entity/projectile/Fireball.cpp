@@ -1,5 +1,8 @@
+#include "Fireball.h"
+
 #include <stdint.h>
 #include <stdlib.h>
+
 #include <cmath>
 #include <format>
 #include <numbers>
@@ -7,14 +10,10 @@
 #include <string>
 #include <vector>
 
-#include "Fireball.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/DoubleTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/level/Level.h"
@@ -22,6 +21,9 @@
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/ListTag.h"
 
 // 4J - added common ctor code.
 void Fireball::_init() {

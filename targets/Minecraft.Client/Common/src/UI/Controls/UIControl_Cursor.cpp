@@ -1,7 +1,8 @@
 #include "UIControl_Cursor.h"
-#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Cursor.h"
+
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Cursor.h"
 
 UIControl_Cursor::UIControl_Cursor() {}
 

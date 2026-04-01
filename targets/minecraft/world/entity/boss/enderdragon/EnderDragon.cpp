@@ -1,23 +1,24 @@
-#include "minecraft/stdafx.h"
+#include "EnderDragon.h"
 
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/entity/net.minecraft.world.entity.h"
+#include <cmath>
+#include <limits>
+#include <optional>
+
+#include "minecraft/SharedConstants.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/stdafx.h"
+#include "minecraft/util/Mth.h"
+#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
 #include "minecraft/world/entity/ai/attributes/net.minecraft.world.entity.ai.attributes.h"
 #include "minecraft/world/entity/boss/net.minecraft.world.entity.boss.h"
 #include "minecraft/world/entity/monster/net.minecraft.world.entity.monster.h"
+#include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "minecraft/world/phys/net.minecraft.world.phys.h"
-#include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "minecraft/client/renderer/Textures.h"
-#include "net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/pathfinder/net.minecraft.world.level.pathfinder.h"
-#include "minecraft/SharedConstants.h"
-#include "minecraft/util/Mth.h"
-#include "EnderDragon.h"
-#include <limits>
-#include <optional>
-#include <cmath>
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+#include "minecraft/world/phys/net.minecraft.world.phys.h"
+#include "net.minecraft.world.entity.boss.enderdragon.h"
 
 #define PRINT_DRAGON_STATE_CHANGE_MESSAGES 1
 

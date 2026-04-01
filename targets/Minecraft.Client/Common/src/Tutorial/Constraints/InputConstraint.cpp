@@ -1,6 +1,7 @@
 #include "InputConstraint.h"
-#include "4J_Input.h"
+
 #include "4J.Common/4J_InputActions.h"
+#include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"
 
 bool InputConstraint::isMappingConstrained(int iPad, int mapping) {

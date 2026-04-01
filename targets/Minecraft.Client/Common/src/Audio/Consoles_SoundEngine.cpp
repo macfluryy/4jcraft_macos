@@ -1,4 +1,5 @@
 #include "Consoles_SoundEngine.h"
+
 #include "Minecraft.Client/Common/src/Audio/Consoles_SoundEngine.h"
 
 bool ConsoleSoundEngine::GetIsPlayingStreamingCDMusic() {

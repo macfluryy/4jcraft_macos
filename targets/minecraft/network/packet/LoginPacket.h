@@ -4,8 +4,8 @@
 #include <memory>
 #include <string>
 
-#include "Packet.h"
 #include "4J.Common/4J_Compat.h"
+#include "Packet.h"
 #include "minecraft/network/packet/Packet.h"
 
 class LevelType;

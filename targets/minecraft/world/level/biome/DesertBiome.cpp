@@ -1,4 +1,6 @@
 
+#include "minecraft/world/level/biome/DesertBiome.h"
+
 #include <cstdint>
 #include <vector>
 
@@ -6,7 +8,6 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeDecorator.h"
-#include "minecraft/world/level/biome/DesertBiome.h"
 #include "minecraft/world/level/levelgen/feature/DesertWellFeature.h"
 #include "minecraft/world/level/levelgen/feature/Feature.h"
 #include "minecraft/world/level/tile/Tile.h"

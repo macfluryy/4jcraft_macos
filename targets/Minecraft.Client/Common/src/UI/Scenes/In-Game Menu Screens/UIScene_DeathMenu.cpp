@@ -1,7 +1,8 @@
 
-#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_DeathMenu.h"
+
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_PauseMenu.h"
+#include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 

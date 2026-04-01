@@ -1,4 +1,5 @@
 #include "Snowball.h"
+
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"

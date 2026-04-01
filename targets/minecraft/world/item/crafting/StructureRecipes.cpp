@@ -1,5 +1,6 @@
-#include "Recipes.h"
 #include "StructureRecipes.h"
+
+#include "Recipes.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/level/tile/BeaconTile.h"

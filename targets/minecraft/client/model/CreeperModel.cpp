@@ -1,10 +1,12 @@
+#include "CreeperModel.h"
+
 #include <math.h>
+
 #include <memory>
 #include <numbers>
 
-#include "CreeperModel.h"
-#include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/model/geom/Model.h"
+#include "minecraft/client/model/geom/ModelPart.h"
 
 // 4J - added
 void CreeperModel::_init(float g) {

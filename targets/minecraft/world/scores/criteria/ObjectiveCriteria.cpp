@@ -1,4 +1,5 @@
 #include "ObjectiveCriteria.h"
+
 #include "minecraft/world/scores/criteria/DummyCriteria.h"
 #include "minecraft/world/scores/criteria/HealthCriteria.h"
 

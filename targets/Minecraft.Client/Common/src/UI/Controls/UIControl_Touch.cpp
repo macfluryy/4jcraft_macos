@@ -1,4 +1,5 @@
 #include "UIControl_Touch.h"
+
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Base.h"
 

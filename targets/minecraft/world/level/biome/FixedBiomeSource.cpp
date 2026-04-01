@@ -1,8 +1,9 @@
+#include "FixedBiomeSource.h"
+
 #include <algorithm>
 #include <vector>
 
 #include "java/Arrays.h"
-#include "FixedBiomeSource.h"
 #include "java/Random.h"
 #include "minecraft/world/level/TilePos.h"
 #include "minecraft/world/level/biome/Biome.h"

@@ -1,20 +1,22 @@
+#include "FishingHookRenderer.h"
+
 #include <GL/gl.h>
+
 #include <cmath>
 #include <memory>
 #include <numbers>
 
-#include "FishingHookRenderer.h"
-#include "EntityRenderDispatcher.h"
-#include "minecraft/world/phys/Vec3.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "4J.Render/4J_Render.h"
-#include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/entity/projectile/FishingHook.h"
+#include "EntityRenderDispatcher.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/projectile/FishingHook.h"
+#include "minecraft/world/phys/Vec3.h"
 
 ResourceLocation FishingHookRenderer::PARTICLE_LOCATION =
     ResourceLocation(TN_PARTICLES);

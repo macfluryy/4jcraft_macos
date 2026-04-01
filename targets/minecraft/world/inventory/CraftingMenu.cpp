@@ -1,9 +1,10 @@
+#include "CraftingMenu.h"
+
 #include <vector>
 
 #include "CraftingContainer.h"
 #include "ResultContainer.h"
 #include "ResultSlot.h"
-#include "CraftingMenu.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"

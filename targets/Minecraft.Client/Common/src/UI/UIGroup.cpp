@@ -1,4 +1,5 @@
 #include "UIGroup.h"
+
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"

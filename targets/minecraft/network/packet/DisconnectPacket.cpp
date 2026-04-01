@@ -1,8 +1,10 @@
+#include "minecraft/network/packet/DisconnectPacket.h"
+
 #include <stdio.h>
+
 #include <memory>
 
 #include "PacketListener.h"
-#include "minecraft/network/packet/DisconnectPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/DisconnectPacket.h"

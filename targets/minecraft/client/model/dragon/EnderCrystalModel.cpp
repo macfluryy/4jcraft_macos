@@ -1,7 +1,8 @@
+#include "EnderCrystalModel.h"
+
 #include <memory>
 #include <string>
 
-#include "EnderCrystalModel.h"
 #include "4J.Render/4J_Render.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 

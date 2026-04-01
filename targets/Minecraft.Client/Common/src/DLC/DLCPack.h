@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "DLCManager.h"
 #include "4J.Common/4J_Compat.h"
+#include "DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
 
 class DLCFile;

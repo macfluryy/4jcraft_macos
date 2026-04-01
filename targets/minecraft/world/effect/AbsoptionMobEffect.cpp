@@ -1,6 +1,7 @@
+#include "AbsoptionMobEffect.h"
+
 #include <memory>
 
-#include "AbsoptionMobEffect.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/entity/LivingEntity.h"
 

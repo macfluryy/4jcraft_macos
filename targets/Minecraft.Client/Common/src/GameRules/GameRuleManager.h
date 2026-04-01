@@ -1,9 +1,9 @@
 #pragma once
 ////using namespace std;
 
+#include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerators.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/LevelRules.h"
-#include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
 
 class LevelGenerationOptions;
 class RootGameRulesDefinition;

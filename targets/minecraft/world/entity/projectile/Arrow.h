@@ -2,7 +2,6 @@
 
 #include <memory>
 
-#include "minecraft/world/entity/Entity.h"
 #include "Projectile.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/Entity.h"

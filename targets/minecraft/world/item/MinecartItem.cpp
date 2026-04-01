@@ -1,7 +1,8 @@
+#include "MinecartItem.h"
+
 #include <memory>
 #include <string>
 
-#include "MinecartItem.h"
 #include "java/Class.h"
 #include "minecraft/core/BehaviorRegistry.h"
 #include "minecraft/core/BlockSource.h"

@@ -1,6 +1,7 @@
 #include "UIScene_Intro.h"
-#include "Minecraft.Client/Common/src/UI/Scenes/Frontend Menu screens/UIScene_Intro.h"
+
 #include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/src/UI/Scenes/Frontend Menu screens/UIScene_Intro.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
 

@@ -1,6 +1,7 @@
 #include "BossMobGuiInfo.h"
-#include "minecraft/world/entity/boss/BossMob.h"
+
 #include "minecraft/SharedConstants.h"
+#include "minecraft/world/entity/boss/BossMob.h"
 
 float BossMobGuiInfo::healthProgress = 0.0f;
 int BossMobGuiInfo::displayTicks = 0;

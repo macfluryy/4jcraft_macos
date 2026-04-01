@@ -1,6 +1,7 @@
+#include "ZoneFile.h"
+
 #include "java/ByteBuffer.h"
 #include "java/File.h"
-#include "ZoneFile.h"
 
 namespace {
 std::FILE* OpenBinaryFileForReadWrite(const File& file) {

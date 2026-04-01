@@ -1,9 +1,10 @@
-#include "minecraft/world/item/DyePowderItem.h"
-#include "minecraft/world/level/tile/Tile.h"
-#include "Recipes.h"
 #include "FoodRecipes.h"
+
+#include "Recipes.h"
+#include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 void FoodRecipies::addRecipes(Recipes* r) {
     // 4J-JEV: Bumped up in the list to avoid a colision with the title.

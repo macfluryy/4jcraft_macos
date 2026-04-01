@@ -1,12 +1,13 @@
+#include "MobSpawnerTileEntity.h"
+
 #include <memory>
 
-#include "MobSpawnerTileEntity.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/network/packet/TileEntityDataPacket.h"
 #include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
+#include "nbt/CompoundTag.h"
 
 MobSpawnerTileEntity::TileEntityMobSpawner::TileEntityMobSpawner(
     MobSpawnerTileEntity* parent) {

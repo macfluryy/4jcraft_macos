@@ -1,6 +1,7 @@
+#include "EmptyMapItem.h"
+
 #include <memory>
 
-#include "EmptyMapItem.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/ComplexItem.h"

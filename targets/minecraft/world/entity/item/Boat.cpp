@@ -1,12 +1,14 @@
+#include "Boat.h"
+
 #include <math.h>
+
 #include <format>
 #include <memory>
 #include <numbers>
 #include <vector>
 
-#include "Boat.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"

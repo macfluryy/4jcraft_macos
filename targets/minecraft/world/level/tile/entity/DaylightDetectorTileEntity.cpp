@@ -1,6 +1,7 @@
+#include "DaylightDetectorTileEntity.h"
+
 #include <memory>
 
-#include "DaylightDetectorTileEntity.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/DaylightDetectorTile.h"

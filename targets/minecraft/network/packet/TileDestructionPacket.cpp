@@ -1,4 +1,5 @@
 #include "TileDestructionPacket.h"
+
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/packet/PacketListener.h"

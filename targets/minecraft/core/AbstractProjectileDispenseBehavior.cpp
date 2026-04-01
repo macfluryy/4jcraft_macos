@@ -1,15 +1,16 @@
 #include "AbstractProjectileDispenseBehavior.h"
-#include "minecraft/world/level/tile/DispenserTile.h"
-#include "minecraft/world/entity/projectile/Projectile.h"
-#include "minecraft/world/level/Level.h"
-#include "minecraft/world/level/tile/LevelEvent.h"
+
 #include "java/Class.h"
 #include "minecraft/core/BlockSource.h"
 #include "minecraft/core/DefaultDispenseItemBehavior.h"
 #include "minecraft/core/FacingEnum.h"
 #include "minecraft/core/Position.h"
 #include "minecraft/world/entity/Entity.h"
+#include "minecraft/world/entity/projectile/Projectile.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/tile/DispenserTile.h"
+#include "minecraft/world/level/tile/LevelEvent.h"
 
 std::shared_ptr<ItemInstance> AbstractProjectileDispenseBehavior::execute(
     BlockSource* source, std::shared_ptr<ItemInstance> dispensed,

@@ -1,10 +1,11 @@
+#include "NetherBridgeFeature.h"
+
 #include <list>
 #include <unordered_map>
 
-#include "NetherBridgeFeature.h"
-#include "NetherBridgePieces.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "NetherBridgePieces.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/world/level/ChunkPos.h"

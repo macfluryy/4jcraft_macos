@@ -1,4 +1,5 @@
 #include "LinuxLeaderboardManager.h"
+
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 
 LeaderboardManager* LeaderboardManager::m_instance =

@@ -1,16 +1,18 @@
+#include "java/File.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
+
 #include <chrono>
 #include <filesystem>
 #include <string>
 #include <system_error>
 #include <vector>
 
-#include "java/FileFilter.h"
-#include "java/File.h"
 #include "console_helpers/PathHelper.h"     // 4jcraft TODO
 #include "console_helpers/StringHelpers.h"  // 4jcraft TODO
+#include "java/FileFilter.h"
 
 const wchar_t File::pathSeparator = L'/';
 

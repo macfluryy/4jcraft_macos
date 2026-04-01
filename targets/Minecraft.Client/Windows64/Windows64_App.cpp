@@ -1,15 +1,16 @@
 ﻿
+#include "Windows64_App.h"
+
 #include "Minecraft.Client/Common/Consoles_App.h"
-#include "minecraft/client/User.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/User.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/PlayerList.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSettings.h"
-#include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/LevelType.h"
-#include "Windows64_App.h"
+#include "minecraft/world/level/biome/BiomeSource.h"
 
 CConsoleMinecraftApp app;
 

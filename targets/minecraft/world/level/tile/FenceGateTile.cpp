@@ -1,6 +1,7 @@
+#include "FenceGateTile.h"
+
 #include <optional>
 
-#include "FenceGateTile.h"
 #include "LevelEvent.h"
 #include "minecraft/Direction.h"
 #include "minecraft/util/Mth.h"

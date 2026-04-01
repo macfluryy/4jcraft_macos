@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Minecraft.Client/include/stdafx.h"
-
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "4J_Storage.h"
 #include "4J_Profile.h"
+#include "4J_Storage.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/include/stdafx.h"
 
 class IUIScene_PauseMenu {
 protected:

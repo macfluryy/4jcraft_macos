@@ -1,10 +1,13 @@
 #pragma once
 
-#include "UIScene_AbstractContainerMenu.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AnvilMenu.h"
-#include "minecraft/world/inventory/MerchantMenu.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "4J_Input.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
+#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AnvilMenu.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_SlotList.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_TextInput.h"
+#include "UIScene_AbstractContainerMenu.h"
+#include "minecraft/world/inventory/MerchantMenu.h"
 
 class InventoryMenu;
 

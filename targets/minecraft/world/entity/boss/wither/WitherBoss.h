@@ -1,10 +1,9 @@
 #pragma once
 
 #include "minecraft/stdafx.h"
-
+#include "minecraft/world/entity/boss/BossMob.h"
 #include "minecraft/world/entity/monster/Monster.h"
 #include "minecraft/world/entity/monster/RangedAttackMob.h"
-#include "minecraft/world/entity/boss/BossMob.h"
 
 class LivingEntitySelector : public EntitySelector {
 public:

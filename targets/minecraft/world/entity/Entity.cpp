@@ -1,38 +1,39 @@
+#include "Entity.h"
+
 #include <stdarg.h>
 #include <stdlib.h>
-#include <cstdint>
-#include <optional>
+
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
 #include <format>
 #include <memory>
 #include <numbers>
+#include <optional>
 #include <string>
 #include <vector>
 
-#include "SyncedEntityData.h"
 #include "EntityIO.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "EntityPos.h"
-#include "Entity.h"
-#include "minecraft/client/model/HumanoidModel.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/server/level/ServerLevel.h"
-#include "minecraft/server/PlayerList.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "minecraft/sounds/SoundTypes.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "SyncedEntityData.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/DoubleTag.h"
-#include "nbt/FloatTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Pos.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/model/HumanoidModel.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/Entity.h"
@@ -46,9 +47,10 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/DoubleTag.h"
+#include "nbt/FloatTag.h"
+#include "nbt/ListTag.h"
 
 thread_local bool Entity::m_tlsUseSmallIds = false;
 

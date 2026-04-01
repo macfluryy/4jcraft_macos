@@ -1,11 +1,12 @@
+#include "ThrownPotion.h"
+
 #include <math.h>
+
 #include <format>
 #include <string>
 #include <vector>
 
 #include "java/JavaMath.h"
-#include "ThrownPotion.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/effect/MobEffectInstance.h"
@@ -18,6 +19,7 @@
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
+#include "nbt/CompoundTag.h"
 
 class Entity;
 

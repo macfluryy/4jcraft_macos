@@ -2,10 +2,9 @@
 
 #include <memory>
 
-#include "minecraft/world/entity/Mob.h"
 #include "Enemy.h"
-#include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Class.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/Mob.h"
 
 class Entity;

@@ -1,10 +1,11 @@
+#include "Cube.h"
+
 #include <array>
 #include <span>
 
 #include "ModelPart.h"
-#include "minecraft/client/model/Vertex.h"
-#include "Cube.h"
 #include "minecraft/client/model/Polygon.h"
+#include "minecraft/client/model/Vertex.h"
 
 class Tesselator;
 

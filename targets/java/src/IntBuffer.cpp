@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <string.h>
+
 #include <algorithm>
 
 #include "java/Buffer.h"

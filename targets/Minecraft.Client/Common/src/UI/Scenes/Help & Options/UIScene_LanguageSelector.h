@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Common/App_Defines.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
+#include "Minecraft.Client/Common/src/UI/Controls/UIControl_ButtonList.h"
+#include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 
 class UIScene_LanguageSelector : public UIScene {
 public:

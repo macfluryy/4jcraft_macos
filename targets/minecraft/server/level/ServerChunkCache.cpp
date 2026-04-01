@@ -1,25 +1,27 @@
+#include "ServerChunkCache.h"
+
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
+
 #include <algorithm>
 
-#include "ServerChunkCache.h"
-#include "ServerLevel.h"
-#include "minecraft/server/MinecraftServer.h"
-#include "minecraft/util/ProgressListener.h"
-#include "console_helpers/compression.h"
-#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
-#include "minecraft/world/level/tile/Tile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "ServerLevel.h"
+#include "console_helpers/compression.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/util/ProgressListener.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/EmptyLevelChunk.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/chunk/storage/ChunkStorage.h"
+#include "minecraft/world/level/chunk/storage/OldChunkStorage.h"
 #include "minecraft/world/level/dimension/Dimension.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
+#include "minecraft/world/level/tile/Tile.h"
 
 ServerChunkCache::ServerChunkCache(ServerLevel* level, ChunkStorage* storage,
                                    ChunkSource* source) {

@@ -1,7 +1,9 @@
-﻿#include <assert.h>
+﻿#include "UIFontData.h"
+
+#include <assert.h>
+
 #include <utility>
 
-#include "UIFontData.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 
 /////////////////////////////////////////////////////

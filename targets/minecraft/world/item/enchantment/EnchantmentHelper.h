@@ -3,12 +3,14 @@
 #include <format>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 class ItemInstance;
 class Inventory;
 class DamageSource;
 class Enchantment;
 class EnchantmentInstance;
+class Entity;
 class LivingEntity;
 class Random;
 

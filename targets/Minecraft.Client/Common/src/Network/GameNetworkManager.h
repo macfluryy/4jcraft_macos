@@ -4,10 +4,10 @@
 #if !defined(__linux__)
 #include <qnet.h>
 #endif
-#include "console_helpers/C4JThread.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerStub.h"
 #include "SessionInfo.h"
+#include "console_helpers/C4JThread.h"
 
 class ClientConnection;
 class Minecraft;

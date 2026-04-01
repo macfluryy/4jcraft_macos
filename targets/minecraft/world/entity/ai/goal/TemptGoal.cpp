@@ -1,6 +1,7 @@
+#include "TemptGoal.h"
+
 #include <cstdlib>
 
-#include "TemptGoal.h"
 #include "minecraft/world/entity/PathfinderMob.h"
 #include "minecraft/world/entity/ai/control/Control.h"
 #include "minecraft/world/entity/ai/control/LookControl.h"

@@ -1,14 +1,15 @@
+#include "Zombie.h"
+
 #include <math.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "Zombie.h"
-#include "minecraft/stats/GenericStats.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
+#include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/damageSource/DamageSource.h"
@@ -48,6 +49,7 @@
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 #include "minecraft/world/level/tile/Tile.h"
+#include "nbt/CompoundTag.h"
 
 Attribute* Zombie::SPAWN_REINFORCEMENTS_CHANCE =
     (new RangedAttribute(eAttributeId_ZOMBIE_SPAWNREINFORCEMENTS, 0, 0, 1));

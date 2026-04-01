@@ -1,13 +1,13 @@
 #pragma once
 // using namespace std;
-#include <unordered_map>
-#include <string>
 #include <format>
 #include <memory>
+#include <string>
+#include <unordered_map>
 
-#include "minecraft/world/item/ItemInstance.h"
 #include "Minecraft.Client/Common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
+#include "minecraft/world/item/ItemInstance.h"
 
 class GameRule;
 class LevelRuleset;

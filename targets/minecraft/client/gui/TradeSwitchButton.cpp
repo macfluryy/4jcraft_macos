@@ -1,6 +1,7 @@
+#include "TradeSwitchButton.h"
+
 #include <string>
 
-#include "TradeSwitchButton.h"
 #include "minecraft/client/gui/Button.h"
 
 // 4jcraft: referenced from MCP 8.11 (JE 1.6.4)

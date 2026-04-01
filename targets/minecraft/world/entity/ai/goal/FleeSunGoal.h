@@ -2,7 +2,6 @@
 
 #include <optional>
 
-#include "minecraft/world/phys/Vec3.h"
 #include "Goal.h"
 #include "minecraft/world/phys/Vec3.h"
 

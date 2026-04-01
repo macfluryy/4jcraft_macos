@@ -1,16 +1,16 @@
-#include "Minecraft.Client/include/stdafx.h"
-
-#include "console_helpers/compression.h"
-#include "console_helpers/StringHelpers.h"
-#include "java/File.h"
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
-#include "Minecraft.Client/Common/src/DLC/DLCLocalisationFile.h"
-#include "Minecraft.Client/Common/src/DLC/DLCGameRulesFile.h"
-#include "Minecraft.Client/Common/src/DLC/DLCGameRules.h"
-#include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
-#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
-#include "ConsoleGameRules.h"
 #include "GameRuleManager.h"
+
+#include "ConsoleGameRules.h"
+#include "Minecraft.Client/Common/src/DLC/DLCGameRules.h"
+#include "Minecraft.Client/Common/src/DLC/DLCGameRulesFile.h"
+#include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
+#include "Minecraft.Client/Common/src/DLC/DLCLocalisationFile.h"
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "Minecraft.Client/Common/src/Localisation/StringTable.h"
+#include "Minecraft.Client/include/stdafx.h"
+#include "console_helpers/StringHelpers.h"
+#include "console_helpers/compression.h"
+#include "java/File.h"
 
 const wchar_t* GameRuleManager::wchTagNameA[] = {
     L"",                   // eGameRuleType_Root

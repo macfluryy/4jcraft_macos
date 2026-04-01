@@ -1,4 +1,7 @@
+#include "minecraft/world/item/crafting/Recipes.h"
+
 #include <stdarg.h>
+
 #include <format>
 #include <memory>
 #include <string>
@@ -6,17 +9,16 @@
 #include <utility>
 #include <vector>
 
+#include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/CoalItem.h"
 #include "minecraft/world/item/Item.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/crafting/ArmorRecipes.h"
 #include "minecraft/world/item/crafting/ClothDyeRecipes.h"
 #include "minecraft/world/item/crafting/FireworksRecipe.h"
 #include "minecraft/world/item/crafting/FoodRecipes.h"
 #include "minecraft/world/item/crafting/OreRecipes.h"
-#include "minecraft/world/item/crafting/Recipes.h"
 #include "minecraft/world/item/crafting/Recipy.h"
 #include "minecraft/world/item/crafting/ShapedRecipy.h"
 #include "minecraft/world/item/crafting/ShapelessRecipy.h"

@@ -1,11 +1,12 @@
+#include "PlayerCloudParticle.h"
+
 #include <memory>
 
-#include "PlayerCloudParticle.h"
 #include "java/JavaMath.h"
+#include "minecraft/client/particle/Particle.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/phys/AABB.h"
-#include "minecraft/client/particle/Particle.h"
 
 PlayerCloudParticle::PlayerCloudParticle(Level* level, double x, double y,
                                          double z, double xa, double ya,

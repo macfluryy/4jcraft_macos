@@ -1,6 +1,7 @@
+#include "PoweredRailTile.h"
+
 #include <string>
 
-#include "PoweredRailTile.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/BaseRailTile.h"

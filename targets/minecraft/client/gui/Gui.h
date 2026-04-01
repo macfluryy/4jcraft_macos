@@ -1,8 +1,11 @@
 #pragma once
 #include <cstddef>
+
+#include "4J.Common/4J_Compat.h"
 #include "GuiComponent.h"
 #include "minecraft/client/GuiMessage.h"
 #include "minecraft/client/renderer/entity/ItemRenderer.h"
+
 class Random;
 class Minecraft;
 

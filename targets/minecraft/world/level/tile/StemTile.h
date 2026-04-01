@@ -2,8 +2,8 @@
 #include <memory>
 #include <string>
 
-#include "Tile.h"
 #include "PlantTile.h"
+#include "Tile.h"
 
 class ChunkRebuildData;
 class Icon;

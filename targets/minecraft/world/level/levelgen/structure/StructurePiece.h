@@ -2,9 +2,9 @@
 
 #include <list>
 
-#include "minecraft/util/WeighedRandom.h"
 #include "BoundingBox.h"
 #include "StructureFeatureIO.h"
+#include "minecraft/util/WeighedRandom.h"
 #include "nbt/CompoundTag.h"
 
 class Level;

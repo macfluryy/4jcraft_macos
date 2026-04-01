@@ -1,6 +1,6 @@
-#include <memory>
-
 #include "ExperienceCommand.h"
+
+#include <memory>
 
 EGameCommand ExperienceCommand::getId() { return eGameCommand_Experience; }
 

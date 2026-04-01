@@ -5,11 +5,10 @@
 
 #include <cstdint>
 
-#include "minecraft/world/level/levelgen/structure/StructureFeature.h"
-
+#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/Localisation/StringTable.h"
-#include "Minecraft.Client/Common/src/DLC/DLCPack.h"
+#include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 
 class ApplySchematicRuleDefinition;
 class LevelChunk;

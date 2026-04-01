@@ -1,6 +1,7 @@
+#include "CaveSpider.h"
+
 #include <memory>
 
-#include "CaveSpider.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/Difficulty.h"
 #include "minecraft/world/effect/MobEffect.h"

@@ -1,6 +1,7 @@
+#include "ColoredTile.h"
+
 #include <string>
 
-#include "ColoredTile.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/DyePowderItem.h"
 #include "minecraft/world/level/tile/Tile.h"

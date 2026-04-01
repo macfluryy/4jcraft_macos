@@ -1,7 +1,8 @@
+#include "RedStoneItem.h"
+
 #include <memory>
 
 #include "minecraft/stats/GenericStats.h"
-#include "RedStoneItem.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"

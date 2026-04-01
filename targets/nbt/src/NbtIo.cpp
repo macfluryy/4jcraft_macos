@@ -1,5 +1,6 @@
-#include "java/InputOutputStream/InputOutputStream.h"
 #include "nbt/NbtIo.h"
+
+#include "java/InputOutputStream/InputOutputStream.h"
 
 CompoundTag* NbtIo::readCompressed(InputStream* in) {
     // 4J - this was using a try/finally block

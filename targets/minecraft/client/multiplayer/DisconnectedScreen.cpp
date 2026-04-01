@@ -1,11 +1,12 @@
+#include "DisconnectedScreen.h"
+
 #include <vector>
 
-#include "DisconnectedScreen.h"
-#include "minecraft/client/title/TitleScreen.h"
-#include "minecraft/client/gui/Button.h"
-#include "minecraft/locale/Language.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/title/TitleScreen.h"
+#include "minecraft/locale/Language.h"
 
 DisconnectedScreen::DisconnectedScreen(const std::wstring& title,
                                        const std::wstring reason,

@@ -1,8 +1,8 @@
+#include "SandStoneTile.h"
+
 #include "minecraft/net.minecraft.h"
 #include "minecraft/world/level/material/net.minecraft.world.level.material.h"
 #include "minecraft/world/net.minecraft.world.h"
-#include "SandStoneTile.h"
-
 #include "strings.h"
 
 const std::wstring SandStoneTile::TEXTURE_TOP = L"sandstone_top";

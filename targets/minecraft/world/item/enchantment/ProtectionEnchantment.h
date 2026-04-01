@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "Enchantment.h"
+
+class Entity;
 
 class ProtectionEnchantment : public Enchantment {
 public:

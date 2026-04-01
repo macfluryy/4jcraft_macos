@@ -1,19 +1,20 @@
+#include "Minecart.h"
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <optional>
+
 #include <cmath>
 #include <format>
 #include <memory>
 #include <numbers>
+#include <optional>
 #include <string>
 #include <vector>
 
+#include "java/Class.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/level/ServerLevel.h"
-#include "Minecart.h"
-#include "java/Class.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/damageSource/EntityDamageSource.h"
@@ -37,6 +38,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"
+#include "nbt/CompoundTag.h"
 
 const int Minecart::EXITS[][2][3] = {
     //

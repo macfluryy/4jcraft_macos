@@ -1,14 +1,16 @@
+#include "minecraft/world/level/biome/Biome.h"
+
 #include <stdint.h>
+
 #include <format>
 #include <string>
 #include <vector>
 
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/world/level/biome/Biome.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/entity/MobCategory.h"
 #include "minecraft/world/level/biome/BeachBiome.h"
 #include "minecraft/world/level/biome/Biome.h"

@@ -1,8 +1,10 @@
 
+#include "minecraft/world/level/newbiome/layer/IslandLayer.h"
+
 #include <stdint.h>
+
 #include <vector>
 
-#include "minecraft/world/level/newbiome/layer/IslandLayer.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 
 IslandLayer::IslandLayer(int64_t seedMixup) : Layer(seedMixup) {}

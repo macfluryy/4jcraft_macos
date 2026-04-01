@@ -1,7 +1,8 @@
+#include "CraftingContainer.h"
+
 #include <vector>
 
 #include "AbstractContainerMenu.h"
-#include "CraftingContainer.h"
 
 CraftingContainer::~CraftingContainer() {}
 

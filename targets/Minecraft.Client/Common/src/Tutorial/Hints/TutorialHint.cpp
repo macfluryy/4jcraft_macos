@@ -1,9 +1,10 @@
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "TutorialHint.h"
+
+#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
+#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
+#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/Common/src/Tutorial/Hints/TutorialHint.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "minecraft/world/level/material/Material.h"
 
 class Entity;

@@ -2,8 +2,8 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/client/resources/ResourceLocation.h"
 #include "EntityRenderer.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/world/entity/LivingEntity.h"
 
 class LivingEntity;

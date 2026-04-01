@@ -1,10 +1,12 @@
+#include "UITTFFont.h"
+
 #include <assert.h>
+
 #include <cstdio>
 
-#include "console_helpers/PortableFileIO.h"
-#include "UITTFFont.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/PortableFileIO.h"
 #include "console_helpers/StringHelpers.h"
 
 UITTFFont::UITTFFont(const std::string& name, const std::string& path,

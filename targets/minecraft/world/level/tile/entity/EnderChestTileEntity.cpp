@@ -1,6 +1,7 @@
 #include "EnderChestTileEntity.h"
-#include "minecraft/sounds/SoundTypes.h"
+
 #include "java/Random.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/ChestTile.h"

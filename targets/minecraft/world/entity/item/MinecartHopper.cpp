@@ -1,11 +1,11 @@
 
+#include "minecraft/world/entity/item/MinecartHopper.h"
+
 #include <format>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minecraft/world/entity/item/MinecartHopper.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/world/entity/EntitySelector.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/item/MinecartContainer.h"
@@ -16,6 +16,7 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/HopperTileEntity.h"
 #include "minecraft/world/phys/AABB.h"
+#include "nbt/CompoundTag.h"
 
 class Entity;
 

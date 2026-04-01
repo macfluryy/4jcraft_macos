@@ -1,6 +1,7 @@
+#include "BookItem.h"
+
 #include <memory>
 
-#include "BookItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/ItemInstance.h"
 

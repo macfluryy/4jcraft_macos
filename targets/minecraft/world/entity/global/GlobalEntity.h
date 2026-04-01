@@ -1,6 +1,5 @@
 #pragma once
 #include "minecraft/world/entity/Entity.h"
-#include "minecraft/world/entity/Entity.h"
 
 class Level;
 

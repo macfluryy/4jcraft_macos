@@ -1,7 +1,7 @@
 #pragma once
+#include "minecraft/core/net.minecraft.core.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
-#include "minecraft/core/net.minecraft.core.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 
 class DispenserBootstrap {

@@ -1,11 +1,13 @@
 
+#include "minecraft/world/level/newbiome/layer/SmoothZoomLayer.h"
+
 #include <stdint.h>
+
 #include <algorithm>
 #include <memory>
 #include <vector>
 
 #include "minecraft/world/level/newbiome/layer/Layer.h"
-#include "minecraft/world/level/newbiome/layer/SmoothZoomLayer.h"
 
 SmoothZoomLayer::SmoothZoomLayer(int64_t seedMixup,
                                  std::shared_ptr<Layer> parent)

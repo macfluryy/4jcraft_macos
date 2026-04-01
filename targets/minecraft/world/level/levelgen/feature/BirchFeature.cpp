@@ -1,6 +1,7 @@
+#include "BirchFeature.h"
+
 #include <stdlib.h>
 
-#include "BirchFeature.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"

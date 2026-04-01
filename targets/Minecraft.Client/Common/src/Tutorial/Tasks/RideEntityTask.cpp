@@ -1,9 +1,10 @@
+#include "RideEntityTask.h"
+
 #include <memory>
 
-#include "RideEntityTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
-#include "minecraft/world/entity/Entity.h"
 #include "java/Class.h"
+#include "minecraft/world/entity/Entity.h"
 
 class Tutorial;
 class TutorialConstraint;

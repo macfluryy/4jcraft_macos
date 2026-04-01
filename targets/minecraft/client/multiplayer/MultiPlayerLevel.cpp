@@ -1,29 +1,34 @@
+#include "MultiPlayerLevel.h"
+
 #include <float.h>
-#include <mutex>
+
 #include <algorithm>
 #include <cmath>
 #include <compare>
+#include <mutex>
 #include <string>
 #include <utility>
 
-#include "MultiPlayerLevel.h"
-#include "MultiPlayerLocalPlayer.h"
-#include "ClientConnection.h"
-#include "MultiPlayerChunkCache.h"
-#include "minecraft/client/Minecraft.h"
-#include "minecraft/client/particle/FireworksParticles.h"
-#include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/tile/entity/TileEntity.h"
-#include "java/JavaMath.h"
 #include "4J.Common/4J_Compat.h"
-#include "4J_Profile.h"
 #include "4J_Input.h"
+#include "4J_Profile.h"
+#include "ClientConnection.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
-#include "minecraft/core/particles/ParticleTypes.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
+#include "MultiPlayerChunkCache.h"
+#include "MultiPlayerLocalPlayer.h"
+#include "java/JavaMath.h"
+#include "java/Random.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/particle/FireworksParticles.h"
+#include "minecraft/client/particle/ParticleEngine.h"
+#include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/GameRules.h"
@@ -33,11 +38,8 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/storage/MockedLevelStorage.h"
 #include "minecraft/world/level/storage/SavedDataStorage.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
-#include "java/Random.h"
-#include "minecraft/client/particle/ParticleEngine.h"
+#include "minecraft/world/level/tile/Tile.h"
+#include "minecraft/world/level/tile/entity/TileEntity.h"
 
 class LevelSettings;
 class Scoreboard;

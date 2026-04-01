@@ -1,10 +1,11 @@
 #pragma once
 
 #include <stdint.h>
+
 #include <string>
 
-#include "NetworkPlayerInterface.h"
 #include "4J.Common/4J_Compat.h"
+#include "NetworkPlayerInterface.h"
 
 class IQNetPlayer;
 class Socket;

@@ -1,15 +1,16 @@
+#include "DeathScreen.h"
+
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
-#include "DeathScreen.h"
-#include "Button.h"
-#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "PauseScreen.h"
 #include "4J.Render/4J_Render.h"
+#include "Button.h"
+#include "PauseScreen.h"
+#include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
 void DeathScreen::init() {
     buttons.clear();

@@ -1,21 +1,24 @@
+#include "StatsCounter.h"
+
 #include <assert.h>
 #include <limits.h>
-#include <cstring>
+
 #include <cstdint>
+#include <cstring>
 #include <string>
 #include <utility>
 #include <vector>
 
-#include "StatsCounter.h"
-#include "minecraft/stats/Stat.h"
-#include "minecraft/stats/Stats.h"
+#include "4J_Profile.h"
+#include "Minecraft.Client/Common/App_enums.h"
+#include "Minecraft.Client/Common/App_structs.h"
+#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
+#include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/stats/Achievement.h"
 #include "minecraft/stats/Achievements.h"
-#include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
-#include "4J_Profile.h"
-#include "Minecraft.Client/Common/App_structs.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/stats/GenericStats.h"
+#include "minecraft/stats/Stat.h"
+#include "minecraft/stats/Stats.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/tile/Tile.h"
 

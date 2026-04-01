@@ -1,6 +1,7 @@
+#include "ClockItem.h"
+
 #include <memory>
 
-#include "ClockItem.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/IconRegister.h"

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "minecraft/stdafx.h"
-
 #include "minecraft/world/entity/boss/BossMob.h"
 #include "minecraft/world/entity/boss/MultiEntityMob.h"
 #include "minecraft/world/entity/monster/Enemy.h"

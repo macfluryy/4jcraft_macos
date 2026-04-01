@@ -1,5 +1,6 @@
-#include "java/File.h"
 #include "NbtSlotFile.h"
+
+#include "java/File.h"
 
 namespace {
 std::FILE* OpenBinaryFileForReadWrite(const File& file) {

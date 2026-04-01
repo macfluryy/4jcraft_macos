@@ -1,13 +1,14 @@
+#include "VideoSettingsScreen.h"
+
 #include <vector>
 
-#include "VideoSettingsScreen.h"
-#include "SmallButton.h"
 #include "SlideButton.h"
-#include "minecraft/client/Options.h"
-#include "minecraft/locale/Language.h"
+#include "SmallButton.h"
 #include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/locale/Language.h"
 
 // 4jcraft
 #define ITEM_COUNT 10

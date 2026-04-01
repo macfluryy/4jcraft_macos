@@ -1,7 +1,8 @@
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "SpikeFeature.h"
+
+#include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
+#include "minecraft/world/level/net.minecraft.world.level.h"
+#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 
 SpikeFeature::SpikeFeature(int tile) {
     this->tile = tile;

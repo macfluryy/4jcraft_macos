@@ -1,7 +1,8 @@
+#include "UpdateMobEffectPacket.h"
+
 #include <limits>
 
 #include "PacketListener.h"
-#include "UpdateMobEffectPacket.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/effect/MobEffectInstance.h"

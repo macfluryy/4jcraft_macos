@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "Tile.h"
-#include "minecraft/world/level/TilePos.h"
 #include "console_helpers/Definitions.h"
+#include "minecraft/world/level/TilePos.h"
 
 class Random;
 class HitResult;

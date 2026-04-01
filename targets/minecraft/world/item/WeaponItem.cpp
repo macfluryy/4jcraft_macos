@@ -1,6 +1,7 @@
+#include "WeaponItem.h"
+
 #include <memory>
 
-#include "WeaponItem.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 #include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
 #include "minecraft/world/entity/player/Player.h"

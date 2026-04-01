@@ -1,8 +1,9 @@
-#include <limits>
+#include "FollowParentGoal.h"
+
 #include <format>
+#include <limits>
 #include <vector>
 
-#include "FollowParentGoal.h"
 #include "minecraft/world/entity/ai/navigation/PathNavigation.h"
 #include "minecraft/world/entity/animal/Animal.h"
 #include "minecraft/world/level/Level.h"

@@ -1,24 +1,25 @@
+#include "StrongholdPieces.h"
+
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <memory>
 #include <string>
 
-#include "StrongholdPieces.h"
-#include "minecraft/util/WeighedTreasure.h"
-#include "minecraft/Facing.h"
-#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
 #include "minecraft/Direction.h"
+#include "minecraft/Facing.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/item/CoalItem.h"
 #include "minecraft/world/item/EnchantedBookItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/level/BaseMobSpawner.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/DoorTile.h"
 #include "minecraft/world/level/tile/SmoothStoneBrickTile.h"
@@ -27,6 +28,7 @@
 #include "minecraft/world/level/tile/TheEndPortalFrameTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
+#include "nbt/CompoundTag.h"
 
 int StrongholdPieces::totalWeight = 0;
 std::list<StrongholdPieces::PieceWeight*> StrongholdPieces::currentPieces;

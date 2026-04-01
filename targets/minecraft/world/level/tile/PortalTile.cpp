@@ -1,11 +1,12 @@
+#include "PortalTile.h"
+
 #include <optional>
 #include <string>
 
-#include "PortalTile.h"
-#include "minecraft/core/particles/ParticleTypes.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/core/particles/ParticleTypes.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/item/SpawnEggItem.h"
 #include "minecraft/world/level/Level.h"

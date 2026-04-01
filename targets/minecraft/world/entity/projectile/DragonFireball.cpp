@@ -1,9 +1,11 @@
+#include "DragonFireball.h"
+
 #include <math.h>
+
 #include <format>
 #include <vector>
 
 #include "java/JavaMath.h"
-#include "DragonFireball.h"
 #include "minecraft/world/damageSource/DamageSource.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/projectile/Fireball.h"

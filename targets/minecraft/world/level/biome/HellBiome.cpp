@@ -1,6 +1,7 @@
+#include "HellBiome.h"
+
 #include <vector>
 
-#include "HellBiome.h"
 #include "java/Class.h"
 
 HellBiome::HellBiome(int id) : Biome(id) {

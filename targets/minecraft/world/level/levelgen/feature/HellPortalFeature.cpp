@@ -1,4 +1,5 @@
 #include "HellPortalFeature.h"
+
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"

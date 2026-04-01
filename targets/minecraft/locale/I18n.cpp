@@ -1,5 +1,6 @@
-#include "Language.h"
 #include "I18n.h"
+
+#include "Language.h"
 
 Language* I18n::lang = Language::getInstance();
 // 4jcraft const & into va_start is ub

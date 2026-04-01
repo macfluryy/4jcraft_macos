@@ -1,6 +1,11 @@
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include "Item.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/Tag.h"
 
 class FireworksChargeItem : public Item {
 private:

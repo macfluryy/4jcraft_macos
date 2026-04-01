@@ -1,10 +1,11 @@
+#include "CauldronTile.h"
+
 #include <memory>
 
-#include "CauldronTile.h"
-#include "minecraft/Facing.h"
-#include "minecraft/server/level/ServerPlayer.h"
 #include "java/Class.h"
 #include "java/Random.h"
+#include "minecraft/Facing.h"
+#include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/player/Abilities.h"

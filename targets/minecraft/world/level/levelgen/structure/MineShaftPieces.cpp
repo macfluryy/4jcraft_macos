@@ -1,16 +1,15 @@
+#include "MineShaftPieces.h"
+
 #include <stdlib.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
-#include "minecraft/util/WeighedTreasure.h"
-#include "MineShaftPieces.h"
 #include "java/Random.h"
-#include "nbt/CompoundTag.h"
-#include "nbt/IntArrayTag.h"
-#include "nbt/ListTag.h"
 #include "minecraft/Direction.h"
+#include "minecraft/util/WeighedTreasure.h"
 #include "minecraft/world/entity/item/MinecartChest.h"
 #include "minecraft/world/item/CoalItem.h"
 #include "minecraft/world/item/DyePowderItem.h"
@@ -23,6 +22,9 @@
 #include "minecraft/world/level/tile/RailTile.h"
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/MobSpawnerTileEntity.h"
+#include "nbt/CompoundTag.h"
+#include "nbt/IntArrayTag.h"
+#include "nbt/ListTag.h"
 
 std::vector<WeighedTreasure*> MineShaftPieces::smallTreasureItems;
 ;

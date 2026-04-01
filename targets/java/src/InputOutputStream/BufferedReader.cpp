@@ -1,7 +1,7 @@
 #include "java/InputOutputStream/BufferedReader.h"
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 // Creates a buffering character-input stream that uses a default-sized input
 // buffer. Parameters: in - A Reader

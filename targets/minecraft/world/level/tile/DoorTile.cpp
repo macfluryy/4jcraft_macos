@@ -1,6 +1,7 @@
+#include "DoorTile.h"
+
 #include <optional>
 
-#include "DoorTile.h"
 #include "LevelEvent.h"
 #include "minecraft/Facing.h"
 #include "minecraft/world/FlippedIcon.h"

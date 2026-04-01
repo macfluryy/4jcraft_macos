@@ -1,10 +1,14 @@
+#include "HellRandomLevelSource.h"
+
 #include <algorithm>
 #include <cmath>
 #include <numbers>
 
-#include "HellRandomLevelSource.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "Minecraft.Client/include/NetTypes.h"
+#include "Minecraft.Client/include/SkinBox.h"
+#include "Minecraft.Client/include/XboxStubs.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/MobCategory.h"
 #include "minecraft/world/level/Level.h"
@@ -22,9 +26,6 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/HeavyTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "Minecraft.Client/include/NetTypes.h"
-#include "Minecraft.Client/include/XboxStubs.h"
-#include "Minecraft.Client/include/SkinBox.h"
 
 HellRandomLevelSource::HellRandomLevelSource(Level* level, int64_t seed) {
     int xzSize = level->getLevelData()->getXZSize();

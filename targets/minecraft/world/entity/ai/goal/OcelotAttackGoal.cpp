@@ -1,6 +1,7 @@
+#include "OcelotAttackGoal.h"
+
 #include <algorithm>
 
-#include "OcelotAttackGoal.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/entity/ai/control/Control.h"

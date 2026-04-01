@@ -1,4 +1,5 @@
 #include "NonTameRandomTargetGoal.h"
+
 #include "minecraft/world/entity/TamableAnimal.h"
 #include "minecraft/world/entity/ai/goal/target/NearestAttackableTargetGoal.h"
 

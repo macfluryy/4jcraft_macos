@@ -1,6 +1,9 @@
+#include "Packet.h"
+
 #include <assert.h>
 #include <stdint.h>
 #include <string.h>
+
 #include <format>
 #include <memory>
 #include <sstream>
@@ -10,14 +13,12 @@
 #include <unordered_set>
 #include <vector>
 
-#include "java/System.h"
-#include "Packet.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "java/Exceptions.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
-#include "nbt/NbtIo.h"
+#include "java/System.h"
 #include "minecraft/network/packet/AddEntityPacket.h"
 #include "minecraft/network/packet/AddExperienceOrbPacket.h"
 #include "minecraft/network/packet/AddGlobalEntityPacket.h"
@@ -107,6 +108,7 @@
 #include "minecraft/network/packet/UseItemPacket.h"
 #include "minecraft/network/packet/XZPacket.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "nbt/NbtIo.h"
 
 class CompoundTag;
 

@@ -6,7 +6,6 @@
 #include "StructureFeature.h"
 #include "StructureStart.h"
 #include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeature.h"
 #include "minecraft/world/level/levelgen/structure/StructureFeatureIO.h"
 

@@ -1,8 +1,9 @@
+#include "ConsoleGenerateStructure.h"
+
 #include <wchar.h>
+
 #include <algorithm>
 
-#include "ConsoleGenerateStructure.h"
-#include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructure.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionGenerateBox.h"
@@ -11,11 +12,12 @@
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceSpawner.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
+#include "console_helpers/StringHelpers.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/Direction.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
-#include "java/InputOutputStream/DataOutputStream.h"
 
 ConsoleGenerateStructure::ConsoleGenerateStructure() : StructurePiece(0) {
     m_x = m_y = m_z = 0;

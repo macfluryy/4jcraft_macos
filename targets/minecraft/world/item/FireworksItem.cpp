@@ -1,11 +1,11 @@
-#include "minecraft/stdafx.h"
+#include "FireworksItem.h"
 
+#include "console_helpers/StringHelpers.h"
+#include "minecraft/stdafx.h"
 #include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
-#include "net.minecraft.world.item.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
-#include "FireworksItem.h"
-#include "console_helpers/StringHelpers.h"
+#include "net.minecraft.world.item.h"
 
 const std::wstring FireworksItem::TAG_FIREWORKS = L"Fireworks";
 const std::wstring FireworksItem::TAG_EXPLOSION = L"Explosion";

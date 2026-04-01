@@ -5,20 +5,18 @@
 #include <memory>
 #include <string>
 
-#include "minecraft/world/entity/LivingEntity.h"
-#include "console_helpers/Definitions.h"
-#include "Abilities.h"
-#include "minecraft/world/food/FoodData.h"
-#include "minecraft/world/inventory/PlayerEnderChestContainer.h"
-#include "minecraft/commands/CommandSender.h"
-#include "minecraft/world/scores/ScoreHolder.h"
 #include "4J.Common/4J_Compat.h"
+#include "Abilities.h"
 #include "console_helpers/Definitions.h"
 #include "java/Class.h"
+#include "minecraft/commands/CommandSender.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
+#include "minecraft/world/food/FoodData.h"
+#include "minecraft/world/inventory/PlayerEnderChestContainer.h"
 #include "minecraft/world/item/ItemInstance.h"
+#include "minecraft/world/scores/ScoreHolder.h"
 
 class AbstractContainerMenu;
 class Stats;

@@ -1,9 +1,10 @@
+#include "BasePressurePlateTile.h"
+
 #include <optional>
 
-#include "BasePressurePlateTile.h"
-#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/Facing.h"
 #include "minecraft/SharedConstants.h"
+#include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LevelSource.h"
