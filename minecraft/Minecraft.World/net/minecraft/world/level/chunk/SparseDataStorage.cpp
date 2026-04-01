@@ -47,7 +47,7 @@ SparseDataStorage::SparseDataStorage() {
     for (int i = 1; i < 128; i++) {
         planeIndices[i] = i - 1;
     }
-    XMemSet(data, 0, 128 * 127);
+    memset(data, 0, 128 * 127);
 
     // Data and count packs together the pointer to our data and the count of
     // planes allocated - 127 planes allocated in this case
@@ -202,7 +202,7 @@ void SparseDataStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOff
 // Gets all data values into an array of length 16384. Destination data will
 // have same order as original java game.
 void SparseDataStorage::getData(std::vector<uint8_t>& retArray, unsigned int retOffset) {
-    XMemSet(retArray.data() + +retOffset, 0, 16384);
+    memset(retArray.data() + +retOffset, 0, 16384);
     unsigned char *planeIndices, *data;
     getPlaneIndicesAndData(&planeIndices, &data);
 
@@ -409,7 +409,7 @@ void SparseDataStorage::addNewPlane(int y) {
         unsigned char* dataPointer =
             (unsigned char*)malloc(linesUsed * 128 + 128);
         memcpy(dataPointer, lastDataPointer, 128 * lastLinesUsed + 128);
-        XMemSet(dataPointer + (128 * lastLinesUsed) + 128, 0, 128);
+        memset(dataPointer + (128 * lastLinesUsed) + 128, 0, 128);
         dataPointer[y] = lastLinesUsed;
 
         // Get new data and count packed info

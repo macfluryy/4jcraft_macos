@@ -179,7 +179,7 @@ LevelChunk* TheEndLevelRandomLevelSource::getChunk(int xOffs, int zOffs) {
     unsigned int blocksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(blocksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
-    XMemSet128(tileData, 0, blocksSize);
+    memset(tileData, 0, blocksSize);
     std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + blocksSize);
     //    std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
 

@@ -386,8 +386,8 @@ void CompressedTileStorage::setData(std::vector<uint8_t>& dataIn, unsigned int i
 
             unsigned char* tile_types = pucData + usDataOffset;
             repacked = tile_types + tiletypecount;
-            XMemSet(tile_types, 255, tiletypecount);
-            XMemSet(repacked, 0, tiledatasize);
+            memset(tile_types, 255, tiletypecount);
+            memset(repacked, 0, tiledatasize);
             newIndices[i] |= (usDataOffset & INDEX_OFFSET_MASK)
                              << INDEX_OFFSET_SHIFT;
             usDataOffset += tiletypecount + tiledatasize;
@@ -1017,7 +1017,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                         unpacked_data = tempdata;
                         int value = (blockIndices[i] >> INDEX_TILE_SHIFT) &
                                     INDEX_TILE_MASK;
-                        XMemSet(tempdata, value, 64);
+                        memset(tempdata, value, 64);
                     } else {
                         unpacked_data =
                             data + ((blockIndices[i] >> INDEX_OFFSET_SHIFT) &
@@ -1102,8 +1102,8 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
 
                     tile_types = pucData + usDataOffset;
                     repacked = tile_types + tiletypecount;
-                    XMemSet(tile_types, 255, tiletypecount);
-                    XMemSet(repacked, 0, tiledatasize);
+                    memset(tile_types, 255, tiletypecount);
+                    memset(repacked, 0, tiledatasize);
                     newIndices[i] |= (usDataOffset & INDEX_OFFSET_MASK)
                                      << INDEX_OFFSET_SHIFT;
                     usDataOffset += tiletypecount + tiledatasize;

@@ -145,7 +145,7 @@ void Level::initCacheComplete(lightCache_t* cache, int xc, int yc, int zc) {
         old[4] = cache[GetIndex(xc, yc + 1, zc)];
     }
 
-    XMemSet128(cache, 0, 16 * 16 * 16 * sizeof(lightCache_t));
+    memset(cache, 0, 16 * 16 * 16 * sizeof(lightCache_t));
 
     if (!(yc & 0xffffff00)) {
         cache[GetIndex(xc, yc, zc)] = old[0];

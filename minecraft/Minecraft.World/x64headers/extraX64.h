@@ -56,8 +56,6 @@ public:
     }
 };
 
-void XMemSet(void* a, int t, size_t s);
-void XMemSet128(void* a, int t, size_t s);
 void* XPhysicalAlloc(size_t a, uintptr_t b, uintptr_t c, uint32_t d);
 
 class DLCManager;

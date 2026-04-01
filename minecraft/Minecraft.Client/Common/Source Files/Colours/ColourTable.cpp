@@ -1,5 +1,6 @@
 #include <utility>
 #include <vector>
+#include <cstring>
 
 #include "ColourTable.h"
 #include "Minecraft.World/ConsoleHelpers/StringHelpers.h"

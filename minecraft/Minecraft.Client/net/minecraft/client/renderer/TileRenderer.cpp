@@ -210,7 +210,7 @@ TileRenderer::TileRenderer(LevelSource* level, int xMin, int yMin, int zMin,
     this->zMin2 = zMin - 2;
     this->tileIds = tileIds;
     cache = new unsigned int[32 * 32 * 32];
-    XMemSet(cache, 0, 32 * 32 * 32 * sizeof(unsigned int));
+    memset(cache, 0, 32 * 32 * 32 * sizeof(unsigned int));
 }
 
 TileRenderer::~TileRenderer() {

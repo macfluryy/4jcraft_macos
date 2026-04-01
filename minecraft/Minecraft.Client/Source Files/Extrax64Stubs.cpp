@@ -38,8 +38,6 @@ int32_t XPartyGetUserList(void* pUserList) { return 0; }
 
 bool IsEqualXUID(PlayerUID a, PlayerUID b) { return false; }
 
-void XMemSet(void* a, int t, size_t s) { memset(a, t, s); }
-void XMemSet128(void* a, int t, size_t s) { memset(a, t, s); }
 void* XPhysicalAlloc(size_t a, uintptr_t b, uintptr_t c, uint32_t d) {
     return malloc(a);
 }

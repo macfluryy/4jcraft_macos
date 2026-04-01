@@ -61,7 +61,7 @@ LevelChunk* FlatLevelSource::getChunk(int xOffs, int zOffs) {
     int chunksSize = Level::genDepth * 16 * 16;
     uint8_t* tileData = (uint8_t*)XPhysicalAlloc(chunksSize, MAXULONG_PTR, 4096,
                                                  PAGE_READWRITE);
-    XMemSet128(tileData, 0, chunksSize);
+    memset(tileData, 0, chunksSize);
     std::vector<uint8_t> blocks = std::vector<uint8_t>(tileData, tileData + chunksSize);
     //	std::vector<uint8_t> blocks = std::vector<uint8_t>(16 * level->depth * 16);
     prepareHeights(blocks);
