@@ -223,20 +223,32 @@ BufferedImage* BufferedImage::getSubimage(int x, int y, int w, int h) {
     // TODO - 4J Implement
 
     BufferedImage* img = new BufferedImage(w, h, 0);
-    std::vector<int> arrayWrapper(img->data[0], img->data[0] + w * h);
-    this->getRGB(x, y, w, h, arrayWrapper, 0, w);
+
+    // Copy pixel data directly into img->data[0].
+    // The old arrayWithLength was a non-owning wrapper — std::vector copies,
+    // so we write to the raw array directly instead.
+    int srcW = width;
+    for (int row = 0; row < h; row++) {
+        for (int col = 0; col < w; col++) {
+            img->data[0][row * w + col] =
+                data[0][(y + row) * srcW + (x + col)];
+        }
+    }
 
     int level = 1;
-    // prevent overflow
     while (level < 10 && getData(level) != nullptr) {
         int ww = w >> level;
         int hh = h >> level;
         int xx = x >> level;
         int yy = y >> level;
+        int srcW = width >> level;
         img->data[level] = new int[ww * hh];
-        std::vector<int> levelWrapper(img->data[level], img->data[level] + ww * hh);
-        this->getRGB(xx, yy, ww, hh, levelWrapper, 0, ww, level);
-
+        for (int row = 0; row < hh; row++) {
+            for (int col = 0; col < ww; col++) {
+                img->data[level][row * ww + col] =
+                    data[level][(yy + row) * srcW + (xx + col)];
+            }
+        }
         ++level;
     }
 
