@@ -48,6 +48,13 @@ int strcasecmp(const char* a, const char* b) {
 
 #undef STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
+// stb_vorbis leaks single-letter macros (C, L, R, etc.) that collide with
+// identifiers in other translation units during unity builds.
+#undef C
+#undef L
+#undef R
+#undef TRUE
+#undef FALSE
 #endif
 #if defined(_WINDOWS64)
 #include "Minecraft.Client/Windows64/Windows64_App.h"
