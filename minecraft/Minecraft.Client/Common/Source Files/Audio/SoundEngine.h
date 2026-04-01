@@ -169,7 +169,7 @@ private:
 
     C4JThread* m_openStreamThread;
     static int OpenStreamThreadProc(void* lpParameter);
-    char m_szStreamName[255];
+    char m_szStreamName[1024];
     int CurrentSoundsPlaying[static_cast<int>(eSoundType_MAX) +
                              static_cast<int>(eSFX_MAX)];
 
