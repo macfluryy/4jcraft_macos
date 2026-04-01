@@ -19,7 +19,7 @@ output_stamp = Path(sys.argv[5])
 #
 # this script doesn't handle copying the same way `meson install` does but it should be good enough
 dest_common = Path(client_build_dir / "Common")
-src_assets = Path(project_source_root / "minecraft" / "resources")
+src_assets = Path(project_source_root / "targets" / "resources")
 
 # clear out any old assets
 if dest_common.exists():

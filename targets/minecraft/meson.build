@@ -12,6 +12,10 @@ exclude_sources = [
   '! -name ZoneFile.cpp',
   '! -name ZoneIo.cpp',
   '! -name LevelConflictException.cpp',
+  '! -name "SurvivalMode.cpp"',
+  '! -name "CreativeMode.cpp"',
+  '! -name "GameMode.cpp"',
+  '! -name "DemoMode.cpp"',
 ]
 
 # GET IT ALLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
@@ -24,6 +28,21 @@ minecraft_sources = run_command(
     + ' '.join(exclude_sources),
   check : true,
 ).stdout().strip().split('\n')
+
+occlusion_mode = get_option('occlusion_culling')
+if occlusion_mode == 'off'
+  global_cpp_defs += ['-DOCCLUSION_MODE_NONE']
+elif occlusion_mode == 'frustum'
+  global_cpp_defs += ['-DOCCLUSION_MODE_FRUSTUM']
+elif occlusion_mode == 'bfs'
+  global_cpp_defs += ['-DOCCLUSION_MODE_BFS', '-DUSE_OCCLUSION_CULLING']
+elif occlusion_mode == 'hardware'
+  global_cpp_defs += ['-DOCCLUSION_MODE_HARDWARE', '-DUSE_OCCLUSION_CULLING']
+endif
+
+if get_option('ui_backend') == 'java'
+  global_cpp_defs += '-DENABLE_JAVA_GUIS'
+endif
 
 lib_minecraft = static_library('minecraft',
   minecraft_sources,

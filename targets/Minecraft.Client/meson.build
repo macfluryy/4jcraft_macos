@@ -2,10 +2,6 @@ exclude_sources = [
   ' ! -path "*/Common/*"', # added by platform_sources
   ' ! -path "*/Linux/*"', # added by platform_sources
   ' ! -path "*/Windows64/*"', # added by platform_sources
-  ' ! -name "SurvivalMode.cpp"',
-  ' ! -name "CreativeMode.cpp"',
-  ' ! -name "GameMode.cpp"',
-  ' ! -name "DemoMode.cpp"',
 ]
 
 # all sources except ./Platform/*
@@ -64,41 +60,12 @@ client_dependencies = [
   console_helpers_dep,
 ]
 
-if get_option('enable_vsync')
-  global_cpp_defs += ['-DENABLE_VSYNC']
-endif
-
-if get_option('classic_panorama')
-    global_cpp_defs += '-DCLASSIC_PANORAMA'
-endif
-
-if get_option('enable_frame_profiler')
-  global_cpp_defs += ['-DENABLE_FRAME_PROFILER']
-endif
-
 if get_option('ui_backend') == 'shiggy'
   shiggy_dep = dependency(
     'shiggy',
     fallback: ['shiggy', 'shiggy_dep'],
   )
-
-  global_cpp_defs += ['-D_ENABLEIGGY']
   client_dependencies += shiggy_dep
-endif
-
-if get_option('ui_backend') == 'java'
-  global_cpp_defs += '-DENABLE_JAVA_GUIS'
-endif
-
-occlusion_mode = get_option('occlusion_culling')
-if occlusion_mode == 'off'
-  global_cpp_defs += ['-DOCCLUSION_MODE_NONE']
-elif occlusion_mode == 'frustum'
-  global_cpp_defs += ['-DOCCLUSION_MODE_FRUSTUM']
-elif occlusion_mode == 'bfs'
-  global_cpp_defs += ['-DOCCLUSION_MODE_BFS', '-DUSE_OCCLUSION_CULLING']
-elif occlusion_mode == 'hardware'
-  global_cpp_defs += ['-DOCCLUSION_MODE_HARDWARE', '-DUSE_OCCLUSION_CULLING']
 endif
 
 platform_services_src = files('../platform/PlatformServices.cpp')

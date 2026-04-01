@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 class Minecraft;
 class Level;
 class Player;

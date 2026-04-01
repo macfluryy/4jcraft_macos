@@ -18,8 +18,6 @@ python = pymod.find_installation('python3', required: true)
 
 cc = meson.get_compiler('cpp')
 
-use_gles = get_option('renderer') == 'gles'
-
 global_cpp_defs = [
   '-DSPLIT_SAVES',
   '-D_LARGE_WORLDS',
@@ -33,8 +31,33 @@ if host_machine.system() == 'linux'
   global_cpp_defs += ['-Dlinux', '-D__linux', '-D__linux__']
 endif
 
-if use_gles
+if get_option('renderer') == 'gles'
   global_cpp_defs += ['-DGLES']
+  gl_dep = dependency('glesv2', required: true)
+  glu_dep = dependency('', required: false)
+else
+  gl_dep = dependency('gl', required: true)
+  glu_dep = dependency('glu', required: true)
+endif
+
+if get_option('enable_vsync')
+  global_cpp_defs += ['-DENABLE_VSYNC']
+endif
+
+if get_option('classic_panorama')
+    global_cpp_defs += '-DCLASSIC_PANORAMA'
+endif
+
+if get_option('enable_frame_profiler')
+  global_cpp_defs += ['-DENABLE_FRAME_PROFILER']
+endif
+
+if get_option('ui_backend') == 'shiggy'
+  global_cpp_defs += ['-D_ENABLEIGGY']
+endif
+
+if get_option('ui_backend') == 'java'
+  global_cpp_defs += '-DENABLE_JAVA_GUIS'
 endif
 
 add_project_arguments(global_cpp_defs, language: ['cpp', 'c'])
@@ -48,15 +71,6 @@ add_project_arguments(global_cpp_args, language: 'cpp')
 sdl2_dep = dependency('sdl2')
 thread_dep = dependency('threads')
 dl_dep = cc.find_library('dl', required: true)
-
-# GLES vs Desktop GL
-if use_gles
-  gl_dep = dependency('glesv2', required: true)
-  glu_dep = dependency('', required: false)
-else
-  gl_dep = dependency('gl', required: true)
-  glu_dep = dependency('glu', required: true)
-endif
 
 stb = subproject('stb').get_variable('stb_inc')
 stb_dep = declare_dependency(include_directories: stb)
