@@ -2,12 +2,12 @@
 #include "minecraft/util/Mth.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
-#include "Minecraft.Client/net/minecraft/client/User.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "minecraft/client/User.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
-#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/client/Minecraft.h"
 #include "UIScene_MainMenu.h"
 
 

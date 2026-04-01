@@ -2,9 +2,9 @@
 #include <string>
 
 #include "Minecraft.Client/Common/Consoles_App.h"
-#include "Minecraft.Client/net/minecraft/client/User.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "minecraft/client/User.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

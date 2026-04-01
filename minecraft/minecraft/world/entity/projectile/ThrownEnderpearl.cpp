@@ -1,5 +1,5 @@
-#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
-#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/network/PlayerConnection.h"
 #include "ThrownEnderpearl.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "java/Random.h"

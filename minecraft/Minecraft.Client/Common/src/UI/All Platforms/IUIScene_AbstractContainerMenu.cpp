@@ -9,9 +9,9 @@
 #include "minecraft/world/item/crafting/net.minecraft.world.item.crafting.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "minecraft/world/phys/Vec3.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 

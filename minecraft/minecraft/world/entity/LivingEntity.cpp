@@ -13,8 +13,8 @@
 
 #include "java/JavaMath.h"
 #include "LivingEntity.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "Minecraft.Client/net/minecraft/server/level/EntityTracker.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/EntityTracker.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/stats/GenericStats.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

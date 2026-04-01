@@ -1,10 +1,10 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_JoinMenu.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/net/minecraft/client/Options.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/net.minecraft.world.h"
 

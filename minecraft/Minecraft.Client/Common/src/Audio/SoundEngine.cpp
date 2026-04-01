@@ -12,17 +12,17 @@
 #include "SoundEngine.h"
 #include <filesystem>
 #include "console_helpers/PathHelper.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/util/Mth.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "console_helpers/C4JThread.h"
 #include "minecraft/world/entity/Mob.h"
 #include "java/Random.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/util/Mth.h"
 
 #if defined(__linux__)

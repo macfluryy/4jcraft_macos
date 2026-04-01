@@ -1,8 +1,8 @@
 #include <memory>
 
 #include "CompassItem.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"
 

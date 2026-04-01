@@ -3,7 +3,7 @@
 
 #include "TheEndDimension.h"
 #include "minecraft/world/level/biome/FixedBiomeSource.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "minecraft/Pos.h"

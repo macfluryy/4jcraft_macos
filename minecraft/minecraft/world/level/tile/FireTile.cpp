@@ -2,8 +2,8 @@
 #include <optional>
 
 #include "FireTile.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/core/particles/ParticleTypes.h"

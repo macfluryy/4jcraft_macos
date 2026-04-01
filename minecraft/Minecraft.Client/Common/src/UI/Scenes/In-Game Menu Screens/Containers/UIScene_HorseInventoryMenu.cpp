@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <memory>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "UIScene_HorseInventoryMenu.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HorseInventoryMenu.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"

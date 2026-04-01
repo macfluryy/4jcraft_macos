@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "Minecart.h"
 #include "java/Class.h"
 #include "nbt/CompoundTag.h"

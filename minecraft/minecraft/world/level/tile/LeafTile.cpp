@@ -1,4 +1,4 @@
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "LeafTile.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/biome/net.minecraft.world.level.biome.h"

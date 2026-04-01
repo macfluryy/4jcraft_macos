@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "UIScene_ContainerMenu.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "PortalForcer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "java/Random.h"

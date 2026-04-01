@@ -14,8 +14,8 @@
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UIScene_DebugSetCamera.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "console_helpers/StringHelpers.h"
 
 UIScene_DebugSetCamera::UIScene_DebugSetCamera(int iPad, void* initData,

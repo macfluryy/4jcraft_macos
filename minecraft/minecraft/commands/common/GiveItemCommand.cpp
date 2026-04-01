@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/level/ServerPlayer.h"
 #include "GiveItemCommand.h"
 #include "4J.Common/4J_Compat.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

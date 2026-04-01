@@ -6,7 +6,7 @@
 #include "Socket.h"
 // 4jcraft TODO
 #include "Minecraft.Client/Common/ShutdownManager.h"
-#include "Minecraft.Client/net/minecraft/server/network/ServerConnection.h"
+#include "minecraft/server/network/ServerConnection.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/include/NetTypes.h"

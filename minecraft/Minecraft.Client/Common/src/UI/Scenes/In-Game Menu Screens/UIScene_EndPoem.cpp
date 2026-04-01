@@ -2,10 +2,10 @@
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_EndPoem.h"
 #include "Minecraft.Client/Common/src/UI/UIBitmapFont.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/Font.h"
 
 UIScene_EndPoem::UIScene_EndPoem(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {

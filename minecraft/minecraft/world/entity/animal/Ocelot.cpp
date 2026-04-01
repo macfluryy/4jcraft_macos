@@ -3,8 +3,8 @@
 #include <vector>
 
 #include "minecraft/world/entity/SyncedEntityData.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/stats/GenericStats.h"
 #include "Ocelot.h"
 #include "console_helpers/StringHelpers.h"

@@ -4,8 +4,8 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "ControllerTask.h"
 #include "4J_Input.h"
 #include "Minecraft.Client/Common/App_enums.h"

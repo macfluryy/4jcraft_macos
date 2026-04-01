@@ -3,9 +3,9 @@
 #include <utility>
 
 #include "MapItemSavedData.h"
-#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/PlayerList.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/level/ServerPlayer.h"
 #include "nbt/CompoundTag.h"
 #include "minecraft/world/entity/ItemFrame.h"
 #include "minecraft/world/entity/player/Player.h"

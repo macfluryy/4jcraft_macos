@@ -1,7 +1,7 @@
 #include <memory>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "AreaConstraint.h"
 #include "minecraft/world/phys/AABB.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"

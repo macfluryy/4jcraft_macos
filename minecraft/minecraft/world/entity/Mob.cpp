@@ -7,8 +7,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
-#include "Minecraft.Client/net/minecraft/server/level/EntityTracker.h"
+#include "minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/EntityTracker.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/world/entity/item/ItemEntity.h"
 #include "minecraft/world/entity/Mob.h"

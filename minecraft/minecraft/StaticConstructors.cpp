@@ -1,5 +1,5 @@
 #include "minecraft/StaticConstructors.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/stats/CommonStats.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/network/packet/Packet.h"

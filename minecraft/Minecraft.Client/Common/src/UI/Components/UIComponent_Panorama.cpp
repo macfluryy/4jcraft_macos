@@ -2,8 +2,8 @@
 #include <mutex>
 
 #include "UIComponent_Panorama.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Panorama.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"

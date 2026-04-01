@@ -4,8 +4,8 @@
 #include <utility>
 
 #include "UIScene.h"
-#include "Minecraft.Client/net/minecraft/client/Lighting.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/entity/ItemRenderer.h"
+#include "minecraft/client/Lighting.h"
+#include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "4J.Common/4J_Compat.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
@@ -25,7 +25,7 @@
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
 #include "java/System.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 
 class MultiplayerLocalPlayer;
 

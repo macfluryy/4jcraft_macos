@@ -2,7 +2,7 @@
 #include "minecraft/world/item/crafting/Recipy.h"
 #include "minecraft/world/item/Item.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 class LocalPlayer;
 

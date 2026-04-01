@@ -1,5 +1,5 @@
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/stats/StatsCounter.h"
 #include "StatTask.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"

@@ -2,7 +2,7 @@
 #include <optional>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "RedStoneDustTile.h"
 #include "minecraft/Direction.h"
 #include "DiodeTile.h"

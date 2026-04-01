@@ -5,8 +5,8 @@
 #include <memory>
 
 #include "UIControl_EnchantmentButton.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentButton.h"
 #include "4J.Render/4J_Render.h"
@@ -18,7 +18,7 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/inventory/EnchantmentMenu.h"
-#include "Minecraft.Client/net/minecraft/client/gui/Font.h"
+#include "minecraft/client/gui/Font.h"
 
 UIControl_EnchantmentButton::UIControl_EnchantmentButton() {
     m_index = 0;

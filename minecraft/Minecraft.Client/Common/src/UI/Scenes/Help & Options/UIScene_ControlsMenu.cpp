@@ -2,8 +2,8 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_ControlsMenu.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "4J_Input.h"
 

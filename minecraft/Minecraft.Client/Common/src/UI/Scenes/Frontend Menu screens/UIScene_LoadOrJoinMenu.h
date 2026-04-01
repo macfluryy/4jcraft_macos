@@ -5,7 +5,7 @@
 
 #include "java/File.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_SaveList.h"
 
 #include "4J_Storage.h"

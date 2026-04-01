@@ -1,7 +1,7 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "UIScene_CraftingMenu.h"
 

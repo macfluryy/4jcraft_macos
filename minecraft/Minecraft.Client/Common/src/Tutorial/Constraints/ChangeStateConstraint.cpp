@@ -1,11 +1,11 @@
 #include <memory>
 
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "ChangeStateConstraint.h"
 #include "minecraft/world/phys/AABB.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"

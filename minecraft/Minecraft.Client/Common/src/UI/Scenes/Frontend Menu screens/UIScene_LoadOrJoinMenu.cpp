@@ -13,10 +13,10 @@
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileOriginal.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
 #include "console_helpers/PortableFileIO.h"
-#include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/ProgressRenderer.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/skins/TexturePack.h"
 #include "Minecraft.Client/Common/src/Network/SessionInfo.h"
 
 #if defined(SONY_REMOTE_STORAGE_DOWNLOAD)

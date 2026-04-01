@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "TimeCommand.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"

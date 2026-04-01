@@ -28,6 +28,11 @@ minecraft_sources = run_command(
 lib_minecraft = static_library('minecraft',
   minecraft_sources,
   dependencies : [
+    miniaudio_dep, # TODO: remove once a SoundEngine facade is present
+    render_dep,
+    input_dep,
+    profile_dep,
+    storage_dep,
     nbt_dep,
     java_dep,
     assets_localisation_dep,

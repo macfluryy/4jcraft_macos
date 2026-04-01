@@ -2,8 +2,8 @@
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
 #include "console_helpers/StringHelpers.h"
 #include "UIScene_AnvilMenu.h"
 

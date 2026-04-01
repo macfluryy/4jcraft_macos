@@ -2,9 +2,9 @@
 
 #include "Slot.h"
 #include "minecraft/stats/GenericStats.h"
-#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
+#include "minecraft/stats/StatsCounter.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/player/LocalPlayer.h"
 #include "ContainerMenu.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Player.h"

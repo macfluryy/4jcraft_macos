@@ -1,16 +1,16 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_HUD.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/BossMobGuiInfo.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/renderer/BossMobGuiInfo.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/entity/boss/enderdragon/net.minecraft.world.entity.boss.enderdragon.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/entity/EnderDragonRenderer.h"
+#include "minecraft/client/renderer/entity/EnderDragonRenderer.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
 #include "minecraft/world/effect/net.minecraft.world.effect.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "minecraft/client/gui/Gui.h"
 
 UIScene_HUD::UIScene_HUD(int iPad, void* initData, UILayer* parentLayer)
     : UIScene(iPad, parentLayer) {

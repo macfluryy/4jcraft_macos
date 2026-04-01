@@ -1,11 +1,11 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_TeleportMenu.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
-#include "Minecraft.Client/net/minecraft/server/commands/TeleportCommand.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/server/commands/TeleportCommand.h"
 
 UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void* initData,
                                            UILayer* parentLayer)

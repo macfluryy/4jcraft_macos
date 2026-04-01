@@ -1,8 +1,8 @@
 #include <memory>
 
 #include "UIComponent_Chat.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/gui/Gui.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/Gui.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"

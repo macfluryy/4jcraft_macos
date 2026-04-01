@@ -2,11 +2,11 @@
 #include <cmath>
 
 #include "UIControl_EnchantmentBook.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/tileentity/EnchantTableRenderer.h"
-#include "Minecraft.Client/net/minecraft/client/Lighting.h"
-#include "Minecraft.Client/net/minecraft/client/model/BookModel.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/renderer/tileentity/TileEntityRenderDispatcher.h"
+#include "minecraft/client/renderer/tileentity/EnchantTableRenderer.h"
+#include "minecraft/client/Lighting.h"
+#include "minecraft/client/model/BookModel.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_EnchantmentBook.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
@@ -15,7 +15,7 @@
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "java/Class.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/Textures.h"
 
 UIControl_EnchantmentBook::UIControl_EnchantmentBook() {
     UIControl::setControlType(UIControl::eEnchantmentBook);

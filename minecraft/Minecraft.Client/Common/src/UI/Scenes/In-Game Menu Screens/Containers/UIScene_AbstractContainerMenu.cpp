@@ -4,7 +4,7 @@
 
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "minecraft/world/item/net.minecraft.world.item.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 
 UIScene_AbstractContainerMenu::UIScene_AbstractContainerMenu(

@@ -16,7 +16,7 @@
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/util/Mth.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "Villager.h"
 
 namespace {

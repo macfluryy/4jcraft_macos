@@ -8,7 +8,7 @@
 #include "HellDimension.h"
 #include "NormalDimension.h"
 #include "TheEndDimension.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"

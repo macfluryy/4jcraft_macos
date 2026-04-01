@@ -6,8 +6,8 @@
 #include "Minecraft.Client/Common/src/UI/UILayer.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.Client/net/minecraft/client/MemoryTracker.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/MemoryTracker.h"
+#include "minecraft/client/Minecraft.h"
 
 class UIScene;
 

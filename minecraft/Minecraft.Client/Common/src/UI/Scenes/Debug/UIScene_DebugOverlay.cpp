@@ -24,12 +24,12 @@ class Player;
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
 #include "UIScene_DebugOverlay.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/GameRenderer.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLevel.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/client/renderer/GameRenderer.h"
+#include "minecraft/client/multiplayer/MultiPlayerLevel.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "console_helpers/StringHelpers.h"
 
 UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,

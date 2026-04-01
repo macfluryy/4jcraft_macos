@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "LightningBolt.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"

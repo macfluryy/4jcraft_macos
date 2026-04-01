@@ -4,8 +4,8 @@
 
 #include "IUIScene_CreativeMenu.h"
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
@@ -13,7 +13,7 @@
 #include "minecraft/world/item/enchantment/net.minecraft.world.item.enchantment.h"
 #include "minecraft/world/entity/net.minecraft.world.entity.h"
 #include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/world/item/alchemy/PotionMacros.h"
 #include "java/JavaMath.h"
 #include "4J.Common/4J_InputActions.h"

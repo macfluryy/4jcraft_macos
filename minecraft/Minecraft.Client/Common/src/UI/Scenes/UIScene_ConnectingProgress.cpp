@@ -1,7 +1,7 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_ConnectingProgress.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 
 UIScene_ConnectingProgress::UIScene_ConnectingProgress(int iPad,
                                                        void* _initData,

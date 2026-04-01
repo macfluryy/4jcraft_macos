@@ -1,4 +1,4 @@
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "FullTutorial.h"
 #include "FullTutorialMode.h"
 #include "Minecraft.Client/Common/src/Tutorial/FullTutorialMode.h"

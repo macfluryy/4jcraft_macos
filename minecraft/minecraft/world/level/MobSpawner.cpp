@@ -3,7 +3,7 @@
 
 #include "minecraft/world/Difficulty.h"
 #include "Level.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "MobSpawner.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "java/Class.h"

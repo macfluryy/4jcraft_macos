@@ -1,16 +1,16 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_CreateWorldMenu.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/Options.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
 #include "minecraft/world/level/LevelType.h"
-#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 
 #if defined(_WINDOWS64)

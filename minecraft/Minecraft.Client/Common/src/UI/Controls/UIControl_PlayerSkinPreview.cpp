@@ -4,13 +4,13 @@
 #include <numbers>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "Minecraft.Client/net/minecraft/client/model/HumanoidModel.h"
-#include "Minecraft.Client/net/minecraft/client/Lighting.h"
-#include "Minecraft.Client/net/minecraft/client/model/geom/ModelPart.h"
-#include "Minecraft.Client/net/minecraft/client/Options.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "minecraft/client/model/HumanoidModel.h"
+#include "minecraft/client/Lighting.h"
+#include "minecraft/client/model/geom/ModelPart.h"
+#include "minecraft/client/Options.h"
 #include "UIControl_PlayerSkinPreview.h"
 #include "4J.Render/4J_Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
@@ -18,8 +18,8 @@
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "java/Class.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderer.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/entity/EntityRenderer.h"
 
 // #define SKIN_PREVIEW_BOB_ANIM
 #define SKIN_PREVIEW_WALKING_ANIM

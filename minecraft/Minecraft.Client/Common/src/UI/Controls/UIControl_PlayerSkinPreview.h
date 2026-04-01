@@ -5,7 +5,7 @@
 #include <string>
 
 #include "UIControl.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"
 
 class ModelPart;

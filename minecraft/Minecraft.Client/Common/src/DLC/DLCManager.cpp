@@ -8,8 +8,8 @@
 #include "console_helpers/StringHelpers.h"
 #include "console_helpers/PortableFileIO.h"
 #include "Minecraft.Client/Common/src/UI/UIController.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include <cstring>
 #include <limits>
 #include <cstddef>

@@ -5,7 +5,7 @@
 #include "ItemStat.h"
 #include "GeneralStat.h"
 #include "Stats.h"
-#include "Minecraft.Client/net/minecraft/stats/StatsCounter.h"
+#include "minecraft/stats/StatsCounter.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/stats/Stat.h"
 #include "minecraft/world/item/FishingRodItem.h"

@@ -6,8 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/net/minecraft/server/level/ServerPlayer.h"
-#include "Minecraft.Client/net/minecraft/server/network/PlayerConnection.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/network/PlayerConnection.h"
 #include "Arrow.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "minecraft/core/particles/ParticleTypes.h"

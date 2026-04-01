@@ -1,5 +1,5 @@
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
-#include "Minecraft.Client/net/minecraft/server/PlayerList.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/PlayerList.h"
 #include "Command.h"
 #include "minecraft/commands/AdminLogCommand.h"
 #include "minecraft/commands/CommandSender.h"

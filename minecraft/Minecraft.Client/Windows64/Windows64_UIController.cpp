@@ -2,8 +2,8 @@
 #include "Windows64_UIController.h"
 
 // Temp
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/renderer/Textures.h"
 
 #define _ENABLEIGGY
 

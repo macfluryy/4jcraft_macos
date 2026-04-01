@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "UIScene_CreativeMenu.h"
-#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
+#include "minecraft/client/player/LocalPlayer.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_CreativeMenu.h"
@@ -17,7 +17,7 @@
 #include "Minecraft.Client/include/NetTypes.h"
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "Minecraft.Client/include/SkinBox.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 
 class UILayer;
 

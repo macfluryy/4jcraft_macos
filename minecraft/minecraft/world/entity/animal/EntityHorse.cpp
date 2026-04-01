@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <numbers>
 
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "EntityHorse.h"
 #include "console_helpers/StringHelpers.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

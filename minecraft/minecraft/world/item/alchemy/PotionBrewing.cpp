@@ -1,4 +1,4 @@
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/world/effect/net.minecraft.world.effect.h"
 #include "java/JavaMath.h"
 #include "minecraft/SharedConstants.h"

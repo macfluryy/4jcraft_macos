@@ -4,9 +4,9 @@
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
 #include "java/InputOutputStream/InputOutputStream.h"
 #include "minecraft/network/packet/net.minecraft.network.packet.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/ClientConnection.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/multiplayer/ClientConnection.h"
 
 IUIScene_AnvilMenu::IUIScene_AnvilMenu() {
     m_inventory = nullptr;

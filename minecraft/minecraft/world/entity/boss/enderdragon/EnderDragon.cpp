@@ -9,7 +9,7 @@
 #include "minecraft/world/entity/projectile/net.minecraft.world.entity.projectile.h"
 #include "minecraft/world/phys/net.minecraft.world.phys.h"
 #include "minecraft/world/damageSource/net.minecraft.world.damagesource.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/Textures.h"
+#include "minecraft/client/renderer/Textures.h"
 #include "net.minecraft.world.entity.boss.enderdragon.h"
 #include "minecraft/world/level/pathfinder/net.minecraft.world.level.pathfinder.h"
 #include "minecraft/SharedConstants.h"

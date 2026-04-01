@@ -3,8 +3,8 @@
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/player/LocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/player/LocalPlayer.h"
 #include "UIScene_FireworksMenu.h"
 
 UIScene_FireworksMenu::UIScene_FireworksMenu(int iPad, void* _initData,

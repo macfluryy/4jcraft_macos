@@ -1,8 +1,8 @@
 #include <wchar.h>
 
 #include "SignTileEntity.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/server/level/ServerLevel.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/world/level/Level.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "nbt/CompoundTag.h"

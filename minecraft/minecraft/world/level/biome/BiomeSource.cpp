@@ -6,8 +6,8 @@
 #include "minecraft/world/level/newbiome/layer/net.minecraft.world.level.newbiome.layer.h"
 #include "java/System.h"
 #include "BiomeSource.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/ProgressRenderer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/ProgressRenderer.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "platform/PlatformServices.h"
 

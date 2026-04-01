@@ -1,6 +1,6 @@
 #include "minecraft/stdafx.h"
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/Minecraft.h"
 #include "minecraft/net.minecraft.h"
 #include "minecraft/world/level/net.minecraft.world.level.h"
 #include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"

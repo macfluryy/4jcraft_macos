@@ -1,13 +1,13 @@
 
 #include "Minecraft.Client/Common/src/UI/UI.h"
 #include "UIScene_LoadMenu.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/net/minecraft/client/Options.h"
-#include "Minecraft.Client/net/minecraft/server/MinecraftServer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
 #include "console_helpers/StringHelpers.h"
-#include "Minecraft.Client/net/minecraft/client/skins/DLCTexturePack.h"
+#include "minecraft/client/skins/DLCTexturePack.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 
 #define GAME_CREATE_ONLINE_TIMER_ID 0

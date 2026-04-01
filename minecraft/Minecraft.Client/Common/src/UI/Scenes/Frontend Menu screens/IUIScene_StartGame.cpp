@@ -1,9 +1,9 @@
 #include <wchar.h>
 #include <cstdint>
 
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePack.h"
-#include "Minecraft.Client/net/minecraft/client/skins/TexturePackRepository.h"
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/Minecraft.h"
 #include "IUIScene_StartGame.h"
 #include "4J_Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"

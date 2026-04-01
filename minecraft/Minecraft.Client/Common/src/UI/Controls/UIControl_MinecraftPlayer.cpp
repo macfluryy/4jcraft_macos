@@ -2,12 +2,12 @@
 #include <cmath>
 #include <memory>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/gui/ScreenSizeCalculator.h"
-#include "Minecraft.Client/net/minecraft/client/renderer/entity/EntityRenderDispatcher.h"
-#include "Minecraft.Client/net/minecraft/client/Lighting.h"
-#include "Minecraft.Client/net/minecraft/client/Options.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
+#include "minecraft/client/Lighting.h"
+#include "minecraft/client/Options.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "UIControl_MinecraftPlayer.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_MinecraftPlayer.h"
 #include "4J.Render/4J_Render.h"

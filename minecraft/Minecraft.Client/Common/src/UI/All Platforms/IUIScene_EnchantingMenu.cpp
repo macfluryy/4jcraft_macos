@@ -1,13 +1,13 @@
 #include <assert.h>
 #include <memory>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "IUIScene_EnchantingMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 #include "minecraft/world/inventory/EnchantmentMenu.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 class Player;
 

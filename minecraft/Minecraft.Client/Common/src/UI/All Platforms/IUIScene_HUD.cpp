@@ -1,8 +1,8 @@
 #include <cmath>
 #include <memory>
 
-#include "Minecraft.Client/net/minecraft/client/Minecraft.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
+#include "minecraft/client/Minecraft.h"
+#include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "IUIScene_HUD.h"
 #include "4J_Profile.h"
 #include "4J.Render/4J_Render.h"
@@ -20,7 +20,7 @@
 #include "minecraft/world/food/FoodData.h"
 #include "minecraft/world/level/material/Material.h"
 #include "java/Class.h"
-#include "Minecraft.Client/net/minecraft/client/multiplayer/MultiPlayerGameMode.h"
+#include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 
 IUIScene_HUD::IUIScene_HUD() {
     m_lastActiveSlot = -1;
