@@ -14,7 +14,7 @@ install_subdir('DurangoMedia/Sound', install_dir : get_option('prefix'))
 #
 
 # TODO: Need to make this take inputs
-localisation = custom_target('Minecraft.Assets_Localisation',
+localisation = custom_target('resources_Localisation',
   output : [ 'languages.loc', 'strings.h' ],
   command : [
     python, meson.project_source_root() / 'scripts/pack_loc.py',
@@ -24,7 +24,7 @@ localisation = custom_target('Minecraft.Assets_Localisation',
   ]
 )
 
-colour_table = custom_target('Minecraft.Assets_Colour_Table',
+colour_table = custom_target('resources_Colour_Table',
   output : 'HTMLColours.col',
   input : meson.current_source_dir() / 'Common/Media/HTMLColours.xml',
   command : [

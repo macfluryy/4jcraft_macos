@@ -72,7 +72,7 @@ subdir('minecraft/4J.Render')
 subdir('minecraft/4J.Input')
 subdir('minecraft/4J.Profile')
 subdir('minecraft/4J.Storage')
-subdir('minecraft/Minecraft.Assets')
+subdir('minecraft/resources')
 subdir('minecraft/minecraft')
 subdir('minecraft/Minecraft.Client')
 

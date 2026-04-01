@@ -11,7 +11,7 @@ client_build_dir = Path(sys.argv[3])
 media_archive = Path(sys.argv[4])
 output_stamp = Path(sys.argv[5])
 
-# At runtime, the client expects a `Common/` folder from the Minecraft.Assets source and a compiled
+# At runtime, the client expects a `Common/` folder from the resources source and a compiled
 # media archive (LinuxMedia.arc) inside of said folder at its current working directory to launch.
 #
 # `meson install` also handles this, but installs it to system folders, which can be annoying for
@@ -19,7 +19,7 @@ output_stamp = Path(sys.argv[5])
 #
 # this script doesn't handle copying the same way `meson install` does but it should be good enough
 dest_common = Path(client_build_dir / "Common")
-src_assets = Path(project_source_root / "minecraft" / "Minecraft.Assets")
+src_assets = Path(project_source_root / "minecraft" / "resources")
 
 # clear out any old assets
 if dest_common.exists():
@@ -29,7 +29,7 @@ if dest_common.exists():
     # XXX: Check "copy DLC" bellow for info
     # shutil.rmtree(client_build_dir / "DurangoMedia", ignore_errors=True)
 
-# copy `Minecraft.Assets/Common` into the build directory for the client.
+# copy `resources/Common` into the build directory for the client.
 shutil.copytree(
     src_assets / "Common",
     dest_common,

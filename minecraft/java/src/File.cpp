@@ -80,7 +80,7 @@ File::File(const std::wstring& pathname) {
                            "/Common/Media/",
                            "/Common/res/",
                            "/Common/",
-                           "Minecraft.Assets/"};
+                           "resources/"};
 
     for (const char* base : bases) {
         std::string tryFull = exeDir + base + request;

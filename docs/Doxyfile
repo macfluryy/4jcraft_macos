@@ -2,7 +2,7 @@
 # File Config
 #---------------------------------------------------------------------------
 PROJECT_NAME           = "4JCraft"
-INPUT                  = ../Minecraft.Assets \
+INPUT                  = ../resources \
                          ../Minecraft.Client \
                          ../Minecraft.World  \
                          ./doxymain.md

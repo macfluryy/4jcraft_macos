@@ -120,7 +120,7 @@ client = executable(
 )
 
 # To support actually running the client from the build folder, we need to
-# copy the generated assets from Minecraft.Assets into the working directory
+# copy the generated assets from resources into the working directory
 # of the client.
 custom_target(
   'copy_assets_to_client',
