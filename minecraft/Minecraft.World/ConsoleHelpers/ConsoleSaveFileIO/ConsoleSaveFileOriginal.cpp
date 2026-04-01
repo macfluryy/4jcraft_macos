@@ -501,7 +501,7 @@ void ConsoleSaveFileOriginal::MoveDataBeyond(
                     // Needs to be clamped to the end of our region
                     uiCopyEnd = uiFromEnd;
                 }
-                XMemCpy((void*)(uiCopyStart + nNumberOfBytesToWrite),
+                memcpy((void*)(uiCopyStart + nNumberOfBytesToWrite),
                         (void*)uiCopyStart, uiCopyEnd - uiCopyStart);
             }
         }

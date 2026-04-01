@@ -322,7 +322,7 @@ LevelChunk* HellRandomLevelSource::getChunk(int xOffs, int zOffs) {
     // anymore.
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
     levelChunk->setCheckAllLight();
-    XPhysicalFree(tileData);
+    free(tileData);
     return levelChunk;
 }
 

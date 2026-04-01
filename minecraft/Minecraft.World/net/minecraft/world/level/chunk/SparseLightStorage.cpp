@@ -41,7 +41,7 @@ SparseLightStorage::SparseLightStorage(bool sky) {
     // from the pool of 4KB pages, the address will in the range of
     // MM_PHYSICAL_4KB_BASE upwards. We can use this fact to identify the
     // allocation later, and so free it with the corresponding call to
-    // XPhysicalFree.
+    // free.
     unsigned char* planeIndices = (unsigned char*)malloc(128 * 128);
     unsigned char* data = planeIndices + 128;
     planeIndices[127] = sky ? ALL_15_INDEX : ALL_0_INDEX;
@@ -66,7 +66,7 @@ SparseLightStorage::SparseLightStorage(bool sky, bool isUpper) {
     // from the pool of 4KB pages, the address will in the range of
     // MM_PHYSICAL_4KB_BASE upwards. We can use this fact to identify the
     // allocation later, and so free it with the corresponding call to
-    // XPhysicalFree.
+    // free.
     unsigned char* planeIndices = (unsigned char*)malloc(128);
     for (int i = 0; i < 128; i++) {
         planeIndices[i] = sky ? ALL_15_INDEX : ALL_0_INDEX;
@@ -115,7 +115,7 @@ SparseLightStorage::SparseLightStorage(SparseLightStorage* copyFrom) {
     dataAndCount = (sourceDataAndCount & 0xffff000000000000L) |
                    (((int64_t)destIndicesAndData) & 0x0000ffffffffffffL);
 
-    XMemCpy(destIndicesAndData, sourceIndicesAndData, sourceCount * 128 + 128);
+    memcpy(destIndicesAndData, sourceIndicesAndData, sourceCount * 128 + 128);
 
 #if defined(LIGHT_COMPRESSION_STATS)
     count = sourceCount;
@@ -164,7 +164,7 @@ void SparseLightStorage::setData(std::vector<uint8_t>& dataIn, unsigned int inOf
     unsigned char* planeIndices =
         (unsigned char*)malloc(128 * allocatedPlaneCount + 128);
     unsigned char* data = planeIndices + 128;
-    XMemCpy(planeIndices, _planeIndices, 128);
+    memcpy(planeIndices, _planeIndices, 128);
 
     // Second pass through to actually copy the data in to the storage allocated
     // for the required planes
@@ -411,7 +411,7 @@ void SparseLightStorage::addNewPlane(int y) {
         // initialise remainder
         unsigned char* dataPointer =
             (unsigned char*)malloc(linesUsed * 128 + 128);
-        XMemCpy(dataPointer, lastDataPointer, 128 * lastLinesUsed + 128);
+        memcpy(dataPointer, lastDataPointer, 128 * lastLinesUsed + 128);
         XMemSet(dataPointer + (128 * lastLinesUsed) + 128, prefill, 128);
         dataPointer[y] = lastLinesUsed;
 
@@ -561,11 +561,11 @@ int SparseLightStorage::compress() {
         unsigned char* newIndicesAndData =
             (unsigned char*)malloc(128 + 128 * planesToAlloc);
         unsigned char* pucData = newIndicesAndData + 128;
-        XMemCpy(newIndicesAndData, _planeIndices, 128);
+        memcpy(newIndicesAndData, _planeIndices, 128);
 
         for (int i = 0; i < 128; i++) {
             if (newIndicesAndData[i] < ALL_0_INDEX) {
-                XMemCpy(pucData, &data[128 * planeIndices[i]], 128);
+                memcpy(pucData, &data[128 * planeIndices[i]], 128);
                 pucData += 128;
             }
         }

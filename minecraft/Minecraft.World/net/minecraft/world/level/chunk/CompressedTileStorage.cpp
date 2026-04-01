@@ -50,7 +50,7 @@ CompressedTileStorage::CompressedTileStorage(CompressedTileStorage* copyFrom) {
             indicesAndData = (unsigned char*)XPhysicalAlloc(
                 allocatedSize, MAXULONG_PTR, 4096,
                 PAGE_READWRITE);  //(unsigned char *)malloc(allocatedSize);
-            XMemCpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
+            memcpy(indicesAndData, copyFrom->indicesAndData, allocatedSize);
         } else {
             indicesAndData = nullptr;
         }
@@ -195,7 +195,7 @@ bool CompressedTileStorage::isSameAs(CompressedTileStorage* other) {
 }
 
 CompressedTileStorage::~CompressedTileStorage() {
-    if (indicesAndData) XPhysicalFree(indicesAndData);
+    if (indicesAndData) free(indicesAndData);
 }
 
 // Get an index into the normal ordering of tiles for the java game, given a
@@ -767,7 +767,7 @@ void CompressedTileStorage::tick() {
     do {
         toFree = deleteQueue[freeIndex].Pop();
         //		if( toFree ) printf("Deleting 0x%x\n", toFree);
-        if (toFree) XPhysicalFree(toFree);
+        if (toFree) free(toFree);
     } while (toFree);
 
     deleteQueueIndex = (deleteQueueIndex + 1) % 3;
@@ -981,7 +981,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                                                    INDEX_OFFSET_SHIFT) &
                                                   INDEX_OFFSET_MASK);
                             usDataOffset = (usDataOffset + 3) & 0xfffc;
-                            XMemCpy(pucData + usDataOffset, packed_data, 64);
+                            memcpy(pucData + usDataOffset, packed_data, 64);
                             newIndices[i] |= (usDataOffset & INDEX_OFFSET_MASK)
                                              << INDEX_OFFSET_SHIFT;
                             usDataOffset += 64;
@@ -1000,7 +1000,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                                                          // store each tile type
                     newIndices[i] |= (usDataOffset & INDEX_OFFSET_MASK)
                                      << INDEX_OFFSET_SHIFT;
-                    XMemCpy(pucData + usDataOffset, packed_data, dataSize);
+                    memcpy(pucData + usDataOffset, packed_data, dataSize);
                     usDataOffset += dataSize;
                     done = true;
                 }
@@ -1072,7 +1072,7 @@ void CompressedTileStorage::compress(int upgradeBlock /*=-1*/) {
                         usDataOffset =
                             (usDataOffset + 3) &
                             0xfffc;  // Make sure offset is 4 byte aligned
-                        XMemCpy(pucData + usDataOffset, unpacked_data, 64);
+                        memcpy(pucData + usDataOffset, unpacked_data, 64);
                         newIndices[i] |= (usDataOffset & INDEX_OFFSET_MASK)
                                          << INDEX_OFFSET_SHIFT;
                         usDataOffset += 64;
@@ -1229,7 +1229,7 @@ void CompressedTileStorage::read(DataInputStream* dis) {
         // chunk is fully read before any external reference is available to it
         // from another thread
         if (indicesAndData) {
-            XPhysicalFree(indicesAndData);
+            free(indicesAndData);
         }
         indicesAndData = (unsigned char*)XPhysicalAlloc(
             allocatedSize, MAXULONG_PTR, 4096, PAGE_READWRITE);

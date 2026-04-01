@@ -295,11 +295,11 @@ void LevelChunk::stopSharingTilesAndData() {
 
         /*
         newDataLayer = new DataLayer(skyLight->data.size()*2, level->depthBits);
-        XMemCpy(newDataLayer->data.data(), skyLight->data.data(),
+        memcpy(newDataLayer->data.data(), skyLight->data.data(),
         skyLight->data.size()); skyLight = newDataLayer;
 
         newDataLayer = new DataLayer(blockLight->data.size()*2,
-        level->depthBits); XMemCpy(newDataLayer->data.data(),
+        level->depthBits); memcpy(newDataLayer->data.data(),
         blockLight->data.data(), blockLight->data.size()); blockLight =
         newDataLayer;
         */

@@ -34,25 +34,15 @@ void ATG::XMLParser::RegisterSAXCallbackInterface(ISAXCallback* pISAXCallback) {
 }
 #endif
 
-uint32_t XShowPartyUI(uint32_t dwUserIndex) { return 0; }
-uint32_t XShowFriendsUI(uint32_t dwUserIndex) { return 0; }
 int32_t XPartyGetUserList(void* pUserList) { return 0; }
-uint32_t XContentGetThumbnail(uint32_t dwUserIndex,
-                              const XCONTENT_DATA* pContentData,
-                              uint8_t* pbThumbnail, uint32_t* pcbThumbnail,
-                              PXOVERLAPPED* pOverlapped) {
-    return 0;
-}
 
 bool IsEqualXUID(PlayerUID a, PlayerUID b) { return false; }
 
-void XMemCpy(void* a, const void* b, size_t s) { memcpy(a, b, s); }
 void XMemSet(void* a, int t, size_t s) { memset(a, t, s); }
 void XMemSet128(void* a, int t, size_t s) { memset(a, t, s); }
 void* XPhysicalAlloc(size_t a, uintptr_t b, uintptr_t c, uint32_t d) {
     return malloc(a);
 }
-void XPhysicalFree(void* a) { free(a); }
 
 D3DXVECTOR3::D3DXVECTOR3() {}
 D3DXVECTOR3::D3DXVECTOR3(float x, float y, float z) : x(x), y(y), z(z) {}

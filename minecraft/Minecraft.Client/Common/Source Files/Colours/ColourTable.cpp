@@ -343,7 +343,7 @@ ColourTable::ColourTable(std::uint8_t* pbData, std::uint32_t dataLength) {
 ColourTable::ColourTable(ColourTable* defaultColours, std::uint8_t* pbData,
                          std::uint32_t dataLength) {
     // 4J Stu - Default the colours that of the table passed in
-    XMemCpy((void*)m_colourValues, (void*)defaultColours->m_colourValues,
+    memcpy((void*)m_colourValues, (void*)defaultColours->m_colourValues,
             sizeof(int) * eMinecraftColour_COUNT);
     loadColoursFromData(pbData, dataLength);
 }

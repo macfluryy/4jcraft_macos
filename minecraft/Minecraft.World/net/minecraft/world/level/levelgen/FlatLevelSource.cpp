@@ -79,7 +79,7 @@ LevelChunk* FlatLevelSource::getChunk(int xOffs, int zOffs) {
     // now need to free the passed in blocks as the LevelChunk doesn't use the
     // passed in allocation anymore.
     LevelChunk* levelChunk = new LevelChunk(level, blocks, xOffs, zOffs);
-    XPhysicalFree(tileData);
+    free(tileData);
 
     levelChunk->recalcHeightmap();
 
