@@ -54,16 +54,17 @@ zPlayerOffs = position->get(2);
     // this is just working out how to get a (0,0,0) point in clip space to pass
     // into the inverted combined model/view/projection matrix, so we just need
     // to get this matrix and get its translation as an equivalent.
+    // 4jcraft: swapped from dxmath to glm
     glm::mat4 _modelview, _proj, _final, _invert;
     glm::vec4 trans;
 
     memcpy(&_modelview, modelview->_getDataPointer(), 64);
     memcpy(&_proj, projection->_getDataPointer(), 64);
 
-    _final = _proj * _modelview;  // GLM is column-major; reverse multiply order
+    _final = _proj * _modelview;
     _invert = glm::inverse(_final);
 
-    trans = _invert[3];  // column 3 = translation column in column-major
+    trans = _invert[3];
 
     xPlayerOffs = trans.x / trans.w;
     yPlayerOffs = trans.y / trans.w;

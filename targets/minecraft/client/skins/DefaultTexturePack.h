@@ -3,7 +3,6 @@
 
 #include "AbstractTexturePack.h"
 #include "app/linux/Linux_App.h"
-#include "app/include/stdafx.h"
 #include "java/InputOutputStream/InputStream.h"
 #include "strings.h"
 

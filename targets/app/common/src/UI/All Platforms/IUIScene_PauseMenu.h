@@ -3,7 +3,6 @@
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Storage.h"
 #include "app/common/src/DLC/DLCPack.h"
-#include "app/include/stdafx.h"
 
 class DLCPack;
 
