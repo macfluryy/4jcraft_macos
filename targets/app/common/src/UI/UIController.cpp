@@ -47,6 +47,7 @@
 #include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/title/TitleScreen.h"
 #include "strings.h"
 
 class Tutorial;

@@ -1,6 +1,7 @@
 #include "Gui.h"
 
 #include <cmath>
+#include <algorithm>
 
 #include "platform/PlatformTypes.h"
 #include "platform/sdl2/Input.h"
@@ -513,7 +514,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 int NUM_HEARTS_PER_ROW = 10;  // 4jcraft: missing definition
                 int numHealthRows = Mth::ceil((maxHealth + totalAbsorption) /
                                               2 / (float)NUM_HEARTS_PER_ROW);
-                int healthRowHeight = max(10 - (numHealthRows - 2), 3);
+                int healthRowHeight = std::max(10 - (numHealthRows - 2), 3);
                 yLine2 = yLine1 - (numHealthRows - 1) * healthRowHeight - 10;
                 double absorption = totalAbsorption;
 
@@ -649,7 +650,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                     int baseHealth = 0;
 
                     while (hearts > 0) {
-                        int rowHearts = min(hearts, 10);
+                        int rowHearts = std::min(hearts, 10);
                         hearts -= rowHearts;
 
                         for (int i = 0; i < rowHearts; i++) {

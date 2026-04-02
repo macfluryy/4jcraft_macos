@@ -10,6 +10,7 @@
 #include "minecraft/client/renderer/entity/ItemRenderer.h"
 #include "minecraft/locale/I18n.h"
 #include "minecraft/stats/Achievement.h"
+#include "minecraft/client/Lighting.h"
 
 AchievementPopup::AchievementPopup(Minecraft* mc) {
     // 4J - added initialisers
