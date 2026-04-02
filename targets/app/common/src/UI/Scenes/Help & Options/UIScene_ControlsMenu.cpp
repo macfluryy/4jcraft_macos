@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/BuildVer/BuildVer.h"

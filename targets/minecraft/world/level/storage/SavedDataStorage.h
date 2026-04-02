@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "minecraft/world/level/saveddata/SavedData.h"
 
 class ConsoleSaveFile;

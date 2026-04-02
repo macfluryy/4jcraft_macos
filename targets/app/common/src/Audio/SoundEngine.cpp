@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "app/common/App_Defines.h"
 #include "app/common/src/Audio/Consoles_SoundEngine.h"
 #include "app/linux/Iggy/include/rrCore.h"

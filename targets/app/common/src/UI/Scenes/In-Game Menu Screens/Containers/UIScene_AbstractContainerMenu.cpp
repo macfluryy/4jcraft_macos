@@ -4,7 +4,7 @@
 #include <cmath>
 #include <memory>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/Tutorial/TutorialMode.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"

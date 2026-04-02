@@ -10,7 +10,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "ChunkPos.h"
 #include "LevelSource.h"
 #include "LightLayer.h"

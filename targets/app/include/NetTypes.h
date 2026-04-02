@@ -5,7 +5,7 @@
 #include <mutex>
 #include <vector>
 
-#include "../../4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 
 inline constexpr int MINECRAFT_NET_MAX_PLAYERS = 8;
 

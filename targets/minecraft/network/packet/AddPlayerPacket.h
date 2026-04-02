@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "Packet.h"
 #include "minecraft/network/packet/Packet.h"
 #include "minecraft/world/entity/SyncedEntityData.h"

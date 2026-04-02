@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <string>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Render.h"
 #include "AbstractContainerScreen.h"

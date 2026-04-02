@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "CommandsEnum.h"
 #include "minecraft/network/packet/ChatPacket.h"
 

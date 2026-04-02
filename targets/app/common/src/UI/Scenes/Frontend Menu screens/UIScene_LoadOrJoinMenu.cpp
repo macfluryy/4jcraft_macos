@@ -6,7 +6,7 @@
 
 #include <compare>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Profile.h"
 #include "app/common/App_Defines.h"

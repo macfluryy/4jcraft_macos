@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstring>
 
-#include "../../4J.Common/4J_ProfileConstants.h"
+#include "../ProfileConstants.h"
 #include "../sdl2/Input.h"
 
 C_4JProfile ProfileManager;

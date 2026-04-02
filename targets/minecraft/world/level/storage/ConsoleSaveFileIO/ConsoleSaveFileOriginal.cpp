@@ -12,7 +12,7 @@
 #include <format>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/BuildVer/BuildVer.h"
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"

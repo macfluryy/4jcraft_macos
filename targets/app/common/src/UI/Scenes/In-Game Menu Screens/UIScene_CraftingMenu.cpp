@@ -1,7 +1,7 @@
 
 #include "UIScene_CraftingMenu.h"
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Profile.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/Tutorial/TutorialEnum.h"

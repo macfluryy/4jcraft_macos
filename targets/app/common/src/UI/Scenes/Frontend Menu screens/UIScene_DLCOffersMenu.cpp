@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#include "4J.Common/4J_Compat.h"
-#include "4J.Common/4J_InputActions.h"
+#include "platform/PlatformTypes.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Render.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "app/common/src/UI/Controls/UIControl_DLCList.h"

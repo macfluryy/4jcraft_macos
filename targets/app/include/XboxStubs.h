@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "../../4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 
 // XUI forward declarations
 typedef struct _XUIOBJ* HXUIOBJ;

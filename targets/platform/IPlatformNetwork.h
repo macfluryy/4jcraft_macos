@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../4J.Common/4J_Compat.h"
+#include "PlatformTypes.h"
 #include "app/include/NetTypes.h"
 
 #ifndef VER_NETWORK

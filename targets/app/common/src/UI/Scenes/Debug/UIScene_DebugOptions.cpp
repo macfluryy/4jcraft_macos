@@ -1,6 +1,6 @@
 #include "UIScene_DebugOptions.h"
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/common/src/UI/Controls/UIControl_CheckBox.h"
 #include "app/common/src/UI/UIScene.h"

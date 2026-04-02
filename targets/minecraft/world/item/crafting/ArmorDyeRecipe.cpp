@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "minecraft/world/entity/animal/Sheep.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ArmorItem.h"

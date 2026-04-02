@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "../4J.Common/4J_Compat.h"
+#include "PlatformTypes.h"
 #include "PlatformTypes.h"
 
 class CXuiStringTable;

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "../4J.Common/4J_Compat.h"
+#include "PlatformTypes.h"
 
 struct SAVE_INFO;
 using PSAVE_INFO = SAVE_INFO*;

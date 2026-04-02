@@ -1,6 +1,6 @@
 #include "UIScene_Keyboard.h"
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/App_Defines.h"
 #include "app/common/src/UI/Controls/UIControl_Button.h"
 #include "app/common/src/UI/Controls/UIControl_Label.h"

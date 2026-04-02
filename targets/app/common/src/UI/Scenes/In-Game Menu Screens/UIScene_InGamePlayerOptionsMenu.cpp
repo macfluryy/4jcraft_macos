@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"

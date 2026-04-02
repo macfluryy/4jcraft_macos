@@ -1,6 +1,6 @@
 #include "UIScene_Intro.h"
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"

@@ -10,7 +10,7 @@
 #include <thread>
 #include <utility>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Storage.h"
 #include "ConsoleInput.h"

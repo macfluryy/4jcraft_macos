@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"

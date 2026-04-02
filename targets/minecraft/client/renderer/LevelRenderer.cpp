@@ -13,7 +13,7 @@
 #include <ranges>
 #include <utility>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Render.h"
 #include "Chunk.h"

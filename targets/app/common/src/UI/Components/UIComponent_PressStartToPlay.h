@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/Controls/UIControl_Label.h"

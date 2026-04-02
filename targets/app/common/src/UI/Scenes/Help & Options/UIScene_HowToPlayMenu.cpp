@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/src/UI/Controls/UIControl_ButtonList.h"
 #include "app/common/src/UI/UILayer.h"
 #include "app/common/src/UI/UIScene.h"

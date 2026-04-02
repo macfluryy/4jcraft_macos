@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSavePath.h"
 
 class PlayerIO;

@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "console_helpers/C4JThread.h"
 #include "java/File.h"
 #include "minecraft/client/resources/ResourceLocation.h"

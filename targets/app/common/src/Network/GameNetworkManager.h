@@ -7,7 +7,7 @@
 #if !defined(__linux__)
 #include <qnet.h>
 #endif
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "platform/IPlatformNetwork.h"
 #include "app/include/NetTypes.h"
 #include "NetworkPlayerInterface.h"

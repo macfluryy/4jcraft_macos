@@ -6,8 +6,8 @@
 #include <cstdint>
 #include <utility>
 
-#include "4J.Common/4J_Compat.h"
-#include "4J.Common/4J_InputActions.h"
+#include "platform/PlatformTypes.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Profile.h"
 #include "app/common/App_Defines.h"

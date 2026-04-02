@@ -1,6 +1,6 @@
 #pragma once
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "app/common/src/Leaderboards/LeaderboardManager.h"
 
 class LinuxLeaderboardManager : public LeaderboardManager {

@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "EntityTracker.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/linux/Linux_App.h"

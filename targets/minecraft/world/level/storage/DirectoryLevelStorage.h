@@ -31,7 +31,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "LevelStorage.h"
 #include "PlayerIO.h"
 #include "java/File.h"

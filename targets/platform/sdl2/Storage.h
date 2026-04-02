@@ -6,7 +6,7 @@
 #include <vector>
 // #include <xtms.h>
 
-#include "../../4J.Common/4J_Compat.h"
+#include "../PlatformTypes.h"
 #include "../IPlatformStorage.h"
 
 class C4JStringTable;

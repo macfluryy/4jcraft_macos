@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "GuiComponent.h"
 #include "minecraft/client/GuiMessage.h"
 #include "minecraft/client/renderer/entity/ItemRenderer.h"

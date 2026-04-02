@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "Recipes.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"

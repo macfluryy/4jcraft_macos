@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "platform/sdl2/Input.h"
 #include "ClientConnection.h"
 #include "app/common/src/Audio/SoundEngine.h"

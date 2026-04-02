@@ -1,6 +1,6 @@
 #include "InputConstraint.h"
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 
 bool InputConstraint::isMappingConstrained(int iPad, int mapping) {

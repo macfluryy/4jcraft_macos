@@ -3,7 +3,7 @@
 
 #include <wchar.h>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Render.h"
 #include "app/common/App_enums.h"

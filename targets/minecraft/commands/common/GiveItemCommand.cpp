@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"

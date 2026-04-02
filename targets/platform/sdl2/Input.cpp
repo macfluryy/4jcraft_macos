@@ -16,7 +16,7 @@
 
 #include <string>
 
-#include "../../4J.Common/4J_InputActions.h"
+#include "../InputActions.h"
 #include "../PlatformTypes.h"
 
 C_4JInput InputManager;

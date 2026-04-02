@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "4J.Common/4J_Compat.h"
+#include "platform/PlatformTypes.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
 #include "app/include/XboxStubs.h"

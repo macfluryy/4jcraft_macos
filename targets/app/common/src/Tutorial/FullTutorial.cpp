@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "4J.Common/4J_InputActions.h"
+#include "platform/InputActions.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "app/common/src/Tutorial/Constraints/AreaConstraint.h"
 #include "app/common/src/Tutorial/Constraints/ChangeStateConstraint.h"
