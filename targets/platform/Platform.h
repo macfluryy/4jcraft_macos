@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IPlatformInput.h"
+#include "IPlatformLeaderboard.h"
 #include "IPlatformNetwork.h"
 #include "IPlatformProfile.h"
 #include "IPlatformRenderer.h"

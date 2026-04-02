@@ -80,7 +80,7 @@ void LeaderboardManager::printStats(ReadView& view) {
         "\tnumQueries=%i\n",
         view.m_numQueries);
 
-    for (int i = 0; i < view.m_numQueries; i++) {
+    for (unsigned int i = 0; i < view.m_numQueries; i++) {
         ReadScore score = view.m_queries[i];
 
         app.DebugPrintf("\tname='%s'\n",
@@ -95,8 +95,8 @@ void LeaderboardManager::printStats(ReadView& view) {
 }
 
 bool DebugReadListener::OnStatsReadComplete(
-    LeaderboardManager::eStatsReturn success, int numResults,
-    LeaderboardManager::ViewOut results) {
+    IPlatformLeaderboard::eStatsReturn success, int numResults,
+    IPlatformLeaderboard::ViewOut results) {
     app.DebugPrintf("[DebugReadListener] OnStatsReadComplete, %s:\n",
                     (success ? "success" : "FAILED"));
     LeaderboardManager::printStats(results);

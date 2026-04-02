@@ -78,7 +78,7 @@ private:
 
     unsigned int
         m_currentLeaderboard;  // The current leaderboard selected for view
-    LeaderboardManager::EFilterMode
+    IPlatformLeaderboard::EFilterMode
         m_currentFilter;               // The current filter selected
     unsigned int m_currentDifficulty;  // The current difficulty selected
 
@@ -146,16 +146,16 @@ private:
     // Copy the stats from the raw m_stats structure into the m_leaderboards
     // structure
     int m_numStats;
-    LeaderboardManager::ViewOut m_stats;
+    IPlatformLeaderboard::ViewOut m_stats;
     bool RetrieveStats();
 
     // Copy a leaderboard entry from the stats row
-    void CopyLeaderboardEntry(LeaderboardManager::ReadScore* statsRow,
+    void CopyLeaderboardEntry(IPlatformLeaderboard::ReadScore* statsRow,
                               int leaderboardEntryIndex,
                               bool isDistanceLeaderboard);
 
     // Populate the XUI leaderboard with the contents of m_leaderboards
-    void PopulateLeaderboard(LeaderboardManager::eStatsReturn ret);
+    void PopulateLeaderboard(IPlatformLeaderboard::eStatsReturn ret);
 
     // Set the header text of the leaderboard
     void SetLeaderboardHeader();
@@ -165,9 +165,9 @@ private:
 
     // Callback function called when stats read completes, userdata contains
     // pointer to instance of CScene_Leaderboards
-    virtual bool OnStatsReadComplete(LeaderboardManager::eStatsReturn ret,
+    virtual bool OnStatsReadComplete(IPlatformLeaderboard::eStatsReturn ret,
                                      int numResults,
-                                     LeaderboardManager::ViewOut results);
+                                     IPlatformLeaderboard::ViewOut results);
 
     virtual void customDraw(IggyCustomDrawCallbackRegion* region);
 

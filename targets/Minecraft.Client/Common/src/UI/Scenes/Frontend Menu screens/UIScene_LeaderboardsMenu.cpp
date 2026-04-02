@@ -120,7 +120,7 @@ UIScene_LeaderboardsMenu::UIScene_LeaderboardsMenu(int iPad, void* initData,
     m_currentLeaderboard = 0;
     m_currentDifficulty = 2;
     SetLeaderboardHeader();
-    m_currentFilter = LeaderboardManager::eFM_Friends;
+    m_currentFilter = IPlatformLeaderboard::eFM_Friends;
 
     wchar_t filterBuffer[40];
     swprintf(filterBuffer, 40, L"%ls%ls", app.GetString(IDS_LEADERBOARD_FILTER),
@@ -293,24 +293,24 @@ void UIScene_LeaderboardsMenu::handleInput(int iPad, int key, bool repeat,
                 ui.PlayUISFX(eSFX_Scroll);
 
                 switch (m_currentFilter) {
-                    case LeaderboardManager::eFM_Friends: {
-                        m_currentFilter = LeaderboardManager::eFM_MyScore;
+                    case IPlatformLeaderboard::eFM_Friends: {
+                        m_currentFilter = IPlatformLeaderboard::eFM_MyScore;
                         wchar_t filterBuffer[40];
                         swprintf(filterBuffer, 40, L"%ls%ls",
                                  app.GetString(IDS_LEADERBOARD_FILTER),
                                  app.GetString(IDS_LEADERBOARD_FILTER_MYSCORE));
                         m_labelFilter.setLabel(filterBuffer);
                     } break;
-                    case LeaderboardManager::eFM_MyScore: {
-                        m_currentFilter = LeaderboardManager::eFM_TopRank;
+                    case IPlatformLeaderboard::eFM_MyScore: {
+                        m_currentFilter = IPlatformLeaderboard::eFM_TopRank;
                         wchar_t filterBuffer[40];
                         swprintf(filterBuffer, 40, L"%ls%ls",
                                  app.GetString(IDS_LEADERBOARD_FILTER),
                                  app.GetString(IDS_LEADERBOARD_FILTER_OVERALL));
                         m_labelFilter.setLabel(filterBuffer);
                     } break;
-                    case LeaderboardManager::eFM_TopRank: {
-                        m_currentFilter = LeaderboardManager::eFM_Friends;
+                    case IPlatformLeaderboard::eFM_TopRank: {
+                        m_currentFilter = IPlatformLeaderboard::eFM_Friends;
                         wchar_t filterBuffer[40];
                         swprintf(filterBuffer, 40, L"%ls%ls",
                                  app.GetString(IDS_LEADERBOARD_FILTER),
@@ -354,39 +354,39 @@ void UIScene_LeaderboardsMenu::ReadStats(int startIndex) {
 
     // app.DebugPrintf("Requesting stats read %d - %d - %d\n",
     // m_currentLeaderboard, startIndex == -1 ? m_currentFilter :
-    // LeaderboardManager::eFM_TopRank, m_currentDifficulty);
+    // IPlatformLeaderboard::eFM_TopRank, m_currentDifficulty);
 
-    LeaderboardManager::EFilterMode filtermode;
-    if (m_currentFilter == LeaderboardManager::eFM_MyScore ||
-        m_currentFilter == LeaderboardManager::eFM_TopRank) {
+    IPlatformLeaderboard::EFilterMode filtermode;
+    if (m_currentFilter == IPlatformLeaderboard::eFM_MyScore ||
+        m_currentFilter == IPlatformLeaderboard::eFM_TopRank) {
         filtermode = (startIndex == -1 ? m_currentFilter
-                                       : LeaderboardManager::eFM_TopRank);
+                                       : IPlatformLeaderboard::eFM_TopRank);
     } else {
         // 4J-JEV: Friends filter shouldn't switch to toprank.
         filtermode = m_currentFilter;
     }
 
     switch (filtermode) {
-        case LeaderboardManager::eFM_TopRank: {
+        case IPlatformLeaderboard::eFM_TopRank: {
             m_interface.ReadStats_TopRank(
                 this, m_currentDifficulty,
-                (LeaderboardManager::EStatsType)m_currentLeaderboard,
+                (IPlatformLeaderboard::EStatsType)m_currentLeaderboard,
                 m_newEntryIndex, m_newReadSize);
         } break;
-        case LeaderboardManager::eFM_MyScore: {
+        case IPlatformLeaderboard::eFM_MyScore: {
             PlayerUID uid;
             ProfileManager.GetXUID(ProfileManager.GetPrimaryPad(), &uid, true);
             m_interface.ReadStats_MyScore(
                 this, m_currentDifficulty,
-                (LeaderboardManager::EStatsType)m_currentLeaderboard,
+                (IPlatformLeaderboard::EStatsType)m_currentLeaderboard,
                 uid /*ignored on PS3*/, m_newReadSize);
         } break;
-        case LeaderboardManager::eFM_Friends: {
+        case IPlatformLeaderboard::eFM_Friends: {
             PlayerUID uid;
             ProfileManager.GetXUID(ProfileManager.GetPrimaryPad(), &uid, true);
             m_interface.ReadStats_Friends(
                 this, m_currentDifficulty,
-                (LeaderboardManager::EStatsType)m_currentLeaderboard,
+                (IPlatformLeaderboard::EStatsType)m_currentLeaderboard,
                 uid /*ignored on PS3*/, m_newEntryIndex, m_newReadSize);
         } break;
         default:
@@ -399,15 +399,15 @@ void UIScene_LeaderboardsMenu::ReadStats(int startIndex) {
 }
 
 bool UIScene_LeaderboardsMenu::OnStatsReadComplete(
-    LeaderboardManager::eStatsReturn retIn, int numResults,
-    LeaderboardManager::ViewOut results) {
+    IPlatformLeaderboard::eStatsReturn retIn, int numResults,
+    IPlatformLeaderboard::ViewOut results) {
     // CScene_Leaderboards* scene =
     // reinterpret_cast<CScene_Leaderboards*>(userdata);
 
     m_isProcessingStatsRead = true;
 
     // bool noResults = LeaderboardManager::Instance()->GetStatsState() !=
-    // XboxLeaderboardManager::eStatsState_Ready;
+    // XboxIPlatformLeaderboard::eStatsState_Ready;
     bool ret;
 
     // app.DebugPrintf("Leaderboards read %d stats\n", numResults);
@@ -495,7 +495,7 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
     // assert( LeaderboardManager::Instance()->GetStats() != nullptr );
     // PXUSER_STATS_READ_RESULTS stats =
     // LeaderboardManager::Instance()->GetStats(); if( m_currentFilter ==
-    // LeaderboardManager::eFM_Friends  )
+    // IPlatformLeaderboard::eFM_Friends  )
     // LeaderboardManager::Instance()->SortFriendStats();
 
     bool isDistanceLeaderboard =
@@ -509,7 +509,7 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
         m_leaderboard.m_entries.clear();
 
         m_leaderboard.m_totalEntryCount =
-            (m_currentFilter == LeaderboardManager::eFM_Friends)
+            (m_currentFilter == IPlatformLeaderboard::eFM_Friends)
                 ? m_newEntriesCount
                 : m_numStats;
 
@@ -536,7 +536,7 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
 
         // If the filter mode is "My Score" then centre the list around the
         // entries and select the player's score
-        if (m_currentFilter == LeaderboardManager::eFM_MyScore) {
+        if (m_currentFilter == IPlatformLeaderboard::eFM_MyScore) {
             // Centre the leaderboard list on the entries
             m_newTop = GetEntryStartIndex();
 
@@ -615,7 +615,7 @@ bool UIScene_LeaderboardsMenu::RetrieveStats() {
 }
 
 void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
-    LeaderboardManager::ReadScore* statsRow, int leaderboardEntryIndex,
+    IPlatformLeaderboard::ReadScore* statsRow, int leaderboardEntryIndex,
     bool isDistanceLeaderboard) {
     LeaderboardEntry* leaderboardEntry =
         &(m_leaderboard.m_entries[leaderboardEntryIndex]);
@@ -632,7 +632,7 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
     leaderboardEntry->m_idsErrorMessage = statsRow->m_idsErrorMessage;
 
     // Build a row ID
-    if (m_currentFilter == LeaderboardManager::eFM_Friends) {
+    if (m_currentFilter == IPlatformLeaderboard::eFM_Friends) {
         // If friends don't ID rows by rank
         leaderboardEntry->m_row = leaderboardEntryIndex;
     } else {
@@ -690,9 +690,9 @@ void UIScene_LeaderboardsMenu::CopyLeaderboardEntry(
 }
 
 void UIScene_LeaderboardsMenu::PopulateLeaderboard(
-    LeaderboardManager::eStatsReturn ret) {
+    IPlatformLeaderboard::eStatsReturn ret) {
     int iValidSlots = SetLeaderboardTitleIcons();
-    if (ret == LeaderboardManager::eStatsReturn_Success &&
+    if (ret == IPlatformLeaderboard::eStatsReturn_Success &&
         m_leaderboard.m_totalEntryCount > 0) {
         m_listEntries.setupTitles(app.GetString(IDS_LEADERBOARD_RANK),
                                   app.GetString(IDS_LEADERBOARD_GAMERTAG));
@@ -771,7 +771,7 @@ void UIScene_LeaderboardsMenu::PopulateLeaderboard(
         // Show the no results message
 #if !defined(_WINDOWS64)
         // so we check this for other platforms
-        if (ret == LeaderboardManager::eStatsReturn_NetworkError)
+        if (ret == IPlatformLeaderboard::eStatsReturn_NetworkError)
             m_labelInfo.setLabel(app.GetString(IDS_ERROR_NETWORK));
         else
 #endif

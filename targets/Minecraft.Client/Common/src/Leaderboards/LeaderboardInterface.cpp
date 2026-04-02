@@ -4,14 +4,14 @@
 
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 
-LeaderboardInterface::LeaderboardInterface(LeaderboardManager* man) {
+LeaderboardInterface::LeaderboardInterface(IPlatformLeaderboard* man) {
     m_manager = man;
     m_pending = false;
 
-    m_filter = (LeaderboardManager::EFilterMode)-1;
+    m_filter = (IPlatformLeaderboard::EFilterMode)-1;
     m_callback = nullptr;
     m_difficulty = 0;
-    m_type = LeaderboardManager::eStatsType_UNDEFINED;
+    m_type = IPlatformLeaderboard::eStatsType_UNDEFINED;
     m_startIndex = 0;
     m_readCount = 0;
 
@@ -25,9 +25,9 @@ LeaderboardInterface::~LeaderboardInterface() {
 
 void LeaderboardInterface::ReadStats_Friends(
     LeaderboardReadListener* callback, int difficulty,
-    LeaderboardManager::EStatsType type, PlayerUID myUID,
+    IPlatformLeaderboard::EStatsType type, PlayerUID myUID,
     unsigned int startIndex, unsigned int readCount) {
-    m_filter = LeaderboardManager::eFM_Friends;
+    m_filter = IPlatformLeaderboard::eFM_Friends;
     m_pending = true;
 
     m_callback = callback;
@@ -42,9 +42,9 @@ void LeaderboardInterface::ReadStats_Friends(
 
 void LeaderboardInterface::ReadStats_MyScore(
     LeaderboardReadListener* callback, int difficulty,
-    LeaderboardManager::EStatsType type, PlayerUID myUID,
+    IPlatformLeaderboard::EStatsType type, PlayerUID myUID,
     unsigned int readCount) {
-    m_filter = LeaderboardManager::eFM_MyScore;
+    m_filter = IPlatformLeaderboard::eFM_MyScore;
     m_pending = true;
 
     m_callback = callback;
@@ -58,9 +58,9 @@ void LeaderboardInterface::ReadStats_MyScore(
 
 void LeaderboardInterface::ReadStats_TopRank(
     LeaderboardReadListener* callback, int difficulty,
-    LeaderboardManager::EStatsType type, unsigned int startIndex,
+    IPlatformLeaderboard::EStatsType type, unsigned int startIndex,
     unsigned int readCount) {
-    m_filter = LeaderboardManager::eFM_TopRank;
+    m_filter = IPlatformLeaderboard::eFM_TopRank;
     m_pending = true;
 
     m_callback = callback;
@@ -83,14 +83,14 @@ void LeaderboardInterface::tick() {
 
 bool LeaderboardInterface::callManager() {
     switch (m_filter) {
-        case LeaderboardManager::eFM_Friends:
+        case IPlatformLeaderboard::eFM_Friends:
             return m_manager->ReadStats_Friends(m_callback, m_difficulty,
                                                 m_type, m_myUID, m_startIndex,
                                                 m_readCount);
-        case LeaderboardManager::eFM_MyScore:
+        case IPlatformLeaderboard::eFM_MyScore:
             return m_manager->ReadStats_MyScore(m_callback, m_difficulty,
                                                 m_type, m_myUID, m_readCount);
-        case LeaderboardManager::eFM_TopRank:
+        case IPlatformLeaderboard::eFM_TopRank:
             return m_manager->ReadStats_TopRank(
                 m_callback, m_difficulty, m_type, m_startIndex, m_readCount);
         default:
