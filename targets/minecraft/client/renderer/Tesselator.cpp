@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "minecraft/client/MemoryTracker.h"

@@ -11,8 +11,8 @@
 #include <unordered_set>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Input.h"
-#include "4J_Profile.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/ConsoleGameMode.h"

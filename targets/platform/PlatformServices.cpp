@@ -1,9 +1,9 @@
 #include "PlatformServices.h"
 
-#include "../4J.Input/4J_Input.h"
-#include "../4J.Profile/4J_Profile.h"
-#include "../4J.Render/4J_Render.h"
-#include "../4J.Storage/4J_Storage.h"
+#include "../platform/sdl2/Input.h"
+#include "../platform/sdl2/Profile.h"
+#include "../platform/sdl2/Render.h"
+#include "../platform/sdl2/Storage.h"
 
 class IPlatformInput;
 class IPlatformProfile;

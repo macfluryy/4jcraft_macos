@@ -1,10 +1,10 @@
-#include "4J_Profile.h"
+#include "Profile.h"
 
 #include <cstdio>
 #include <cstring>
 
-#include "../4J.Common/4J_ProfileConstants.h"
-#include "../4J.Input/4J_Input.h"
+#include "../../4J.Common/4J_ProfileConstants.h"
+#include "../sdl2/Input.h"
 
 C_4JProfile ProfileManager;
 

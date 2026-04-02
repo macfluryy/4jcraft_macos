@@ -1,6 +1,6 @@
 #pragma once
 
-#include "4J_Storage.h"
+#include "platform/sdl2/Storage.h"
 #include "UIEnums.h"
 #include "UIStructs.h"
 #include "minecraft/sounds/SoundTypes.h"

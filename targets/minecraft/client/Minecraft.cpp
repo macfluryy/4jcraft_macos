@@ -11,9 +11,9 @@
 #include <thread>
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Profile.h"
-#include "4J_Render.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Render.h"
+#include "platform/sdl2/Storage.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
@@ -101,7 +101,7 @@
 #if defined(ENABLE_JAVA_GUIS)
 #include "minecraft/client/gui/inventory/CreativeInventoryScreen.h"
 #endif
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "Minecraft.Client/Common/Minecraft_Macros.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "Minecraft.Client/Common/src/ConsoleGameMode.h"

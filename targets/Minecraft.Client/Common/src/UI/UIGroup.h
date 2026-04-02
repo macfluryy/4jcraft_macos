@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Linux/Iggy/include/rrCore.h"
 #include "UILayer.h"

@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <mutex>
 
-#include "4J_Input.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Storage.h"
 #include "EntityTracker.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"

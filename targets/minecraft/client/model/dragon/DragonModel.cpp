@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "gl3_loader.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/model/geom/ModelPart.h"

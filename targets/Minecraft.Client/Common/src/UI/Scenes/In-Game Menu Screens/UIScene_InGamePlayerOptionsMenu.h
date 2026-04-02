@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "4J_Storage.h"
+#include "platform/sdl2/Storage.h"
 #include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"

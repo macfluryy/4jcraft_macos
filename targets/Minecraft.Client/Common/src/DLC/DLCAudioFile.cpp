@@ -5,8 +5,8 @@
 #include <cstring>
 #include <unordered_map>
 
-#include "4J_Render.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Render.h"
+#include "platform/sdl2/Storage.h"
 #include "DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

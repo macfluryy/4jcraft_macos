@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
 #include "minecraft/client/model/SnowManModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"

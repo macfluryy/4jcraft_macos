@@ -1,6 +1,6 @@
 #include "SlideButton.h"
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Button.h"

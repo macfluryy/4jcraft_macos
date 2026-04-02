@@ -7,8 +7,8 @@
 #include <numbers>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Input.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Render.h"
 #include "BossMobGuiInfo.h"
 #include "Chunk.h"
 #include "ItemInHandRenderer.h"

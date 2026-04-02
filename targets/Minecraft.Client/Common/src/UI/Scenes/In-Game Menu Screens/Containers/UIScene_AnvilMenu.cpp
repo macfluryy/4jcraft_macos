@@ -7,8 +7,8 @@
 #include <memory>
 #include <utility>
 
-#include "4J_Input.h"
-#include "4J_Profile.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"

@@ -1,4 +1,4 @@
-#include "4J_Input.h"
+#include "Input.h"
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
@@ -16,8 +16,8 @@
 
 #include <string>
 
-#include "../4J.Common/4J_InputActions.h"
-#include "../platform/PlatformTypes.h"
+#include "../../4J.Common/4J_InputActions.h"
+#include "../PlatformTypes.h"
 
 C_4JInput InputManager;
 

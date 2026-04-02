@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Input.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Render.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <wchar.h>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCFile.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

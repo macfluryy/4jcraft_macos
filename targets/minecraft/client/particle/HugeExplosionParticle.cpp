@@ -2,7 +2,7 @@
 
 #include <GL/gl.h>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Colours/ColourTable.h"
 #include "java/Random.h"

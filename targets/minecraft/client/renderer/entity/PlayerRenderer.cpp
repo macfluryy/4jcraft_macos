@@ -4,7 +4,7 @@
 #include <numbers>
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
 #include "HumanoidMobRenderer.h"
 #include "Minecraft.Client/Common/App_enums.h"

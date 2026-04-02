@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J_Storage.h"
+#include "platform/sdl2/Storage.h"
 #include "Button.h"
 #include "EditBox.h"
 #include "MessageScreen.h"

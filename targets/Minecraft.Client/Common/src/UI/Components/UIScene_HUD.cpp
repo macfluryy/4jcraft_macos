@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <memory>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Label.h"

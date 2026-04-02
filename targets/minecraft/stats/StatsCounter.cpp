@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/Leaderboards/LeaderboardManager.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

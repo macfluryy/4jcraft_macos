@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 
 EnderCrystalModel::EnderCrystalModel(float g) {

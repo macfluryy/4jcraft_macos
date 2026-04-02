@@ -2,7 +2,7 @@
 
 #include <GL/gl.h>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "java/FloatBuffer.h"
 #include "minecraft/world/phys/Vec3.h"

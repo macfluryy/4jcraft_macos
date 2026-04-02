@@ -3,7 +3,7 @@
 #include <utility>
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "java/ByteBuffer.h"
 
 std::unordered_map<int, int> MemoryTracker::GL_LIST_IDS;

@@ -6,8 +6,8 @@
 #include <memory>
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Input.h"
-#include "4J_Profile.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"

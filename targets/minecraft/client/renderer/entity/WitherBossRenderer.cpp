@@ -3,7 +3,7 @@
 #include <cmath>
 #include <memory>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "MobRenderer.h"
 #include "SharedConstants.h"
 #include "gl3_loader.h"

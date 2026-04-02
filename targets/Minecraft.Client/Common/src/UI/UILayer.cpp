@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_Chat.h"
 #include "Minecraft.Client/Common/src/UI/Components/UIComponent_DebugUIConsole.h"

@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_AnvilMenu.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"

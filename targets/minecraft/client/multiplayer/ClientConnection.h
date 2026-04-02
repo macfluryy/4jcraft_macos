@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "4J_Storage.h"
+#include "platform/sdl2/Storage.h"
 #include "minecraft/network/Connection.h"
 
 #include "minecraft/network/packet/DisconnectPacket.h"

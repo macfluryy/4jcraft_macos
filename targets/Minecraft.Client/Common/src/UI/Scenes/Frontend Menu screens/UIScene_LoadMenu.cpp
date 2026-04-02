@@ -6,8 +6,8 @@
 
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Profile.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Render.h"
 #include "Common/App_Defines.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"

@@ -8,7 +8,7 @@
 #include <cmath>
 #include <format>
 
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "EntityTracker.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"

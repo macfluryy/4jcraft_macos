@@ -3,8 +3,8 @@
 #include <cstdint>
 #include <mutex>
 
-#include "4J_Profile.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Storage.h"
 
 // using namespace std;
 

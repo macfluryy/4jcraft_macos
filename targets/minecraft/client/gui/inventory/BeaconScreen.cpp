@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "BeaconCancelButton.h"
 #include "BeaconConfirmButton.h"
 #include "BeaconPowerButton.h"

@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <utility>
 
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "DLCTexturePack.h"
 #include "DefaultTexturePack.h"
 #include "Minecraft.Client/Common/App_enums.h"

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "../platform/IPlatformInput.h"
+#include "../IPlatformInput.h"
 
 #define MAP_STYLE_0 0
 #define MAP_STYLE_1 1

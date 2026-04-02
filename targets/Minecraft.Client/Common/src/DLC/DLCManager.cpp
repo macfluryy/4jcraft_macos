@@ -13,8 +13,8 @@
 #include <unordered_map>
 #include <utility>
 
-#include "4J_Profile.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Storage.h"
 #include "DLCFile.h"
 #include "DLCPack.h"
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"

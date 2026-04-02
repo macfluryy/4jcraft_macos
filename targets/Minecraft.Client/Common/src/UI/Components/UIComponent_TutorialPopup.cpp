@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"

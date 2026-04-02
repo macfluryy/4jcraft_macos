@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "Button.h"
 #include "MessageScreen.h"
 #include "Minecraft.Client/Common/App_enums.h"

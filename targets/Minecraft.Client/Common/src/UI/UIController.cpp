@@ -10,8 +10,8 @@
 #include <memory>
 #include <utility>
 
-#include "4J_Input.h"
-#include "4J_Profile.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"

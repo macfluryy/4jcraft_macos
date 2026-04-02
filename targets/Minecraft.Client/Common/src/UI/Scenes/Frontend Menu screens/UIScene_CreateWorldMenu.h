@@ -4,7 +4,7 @@
 
 #include <string>
 
-#include "4J_Storage.h"
+#include "platform/sdl2/Storage.h"
 #include "IUIScene_StartGame.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"

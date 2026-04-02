@@ -5,7 +5,7 @@
 #include <cmath>
 #include <memory>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl.h"
 #include "Minecraft.Client/Common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_HorseInventoryMenu.h"
 #include "Minecraft.Client/Linux/Iggy/include/iggy.h"

@@ -8,8 +8,8 @@
 #include <unordered_set>
 #include <utility>
 
-#include "4J_Profile.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Storage.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/DLC/DLCGameRulesHeader.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"

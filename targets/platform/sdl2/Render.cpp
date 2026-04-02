@@ -1,6 +1,6 @@
-#include "4J_Render.h"
+#include "Render.h"
 
-#include "../platform/PlatformTypes.h"
+#include "../PlatformTypes.h"
 #include "SDL.h"
 #include "SDL_error.h"
 #include "SDL_events.h"

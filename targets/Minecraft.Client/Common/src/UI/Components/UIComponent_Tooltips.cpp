@@ -1,7 +1,7 @@
 #include "UIComponent_Tooltips.h"
 
-#include "4J_Profile.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Render.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/UILayer.h"

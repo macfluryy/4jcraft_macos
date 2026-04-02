@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "ClientConnection.h"
 #include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"

@@ -2,7 +2,7 @@
 #include "UIScene_TrialExitUpsell.h"
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Common/App_Defines.h"
 #include "Minecraft.Client/Common/src/UI/UIScene.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Storage.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"

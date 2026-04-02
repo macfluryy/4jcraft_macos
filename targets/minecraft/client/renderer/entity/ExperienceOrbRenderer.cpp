@@ -5,7 +5,7 @@
 #include <memory>
 #include <numbers>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
 #include "gl3_loader.h"
 #include "minecraft/SharedConstants.h"

@@ -9,7 +9,7 @@
 #include <cmath>
 #include <numbers>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "EntityTileRenderer.h"
 #include "GameRenderer.h"
 #include "Minecraft.Client/Common/App_enums.h"

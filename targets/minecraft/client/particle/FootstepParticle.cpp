@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "minecraft/client/particle/Particle.h"
 #include "minecraft/client/particle/ParticleEngine.h"
 #include "minecraft/client/renderer/Tesselator.h"

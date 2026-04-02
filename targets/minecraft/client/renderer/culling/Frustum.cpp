@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "java/FloatBuffer.h"
 #include "minecraft/client/MemoryTracker.h"
 

@@ -11,10 +11,10 @@
 #include <thread>
 #include <vector>
 
-#include "4J_Input.h"
-#include "4J_Profile.h"
-#include "4J_Render.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Render.h"
+#include "platform/sdl2/Storage.h"
 #include "Common/App_enums.h"
 #include "Common/Consoles_App.h"
 #include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"

@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/DLC/DLCPack.h"

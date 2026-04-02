@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "BeaconRenderer.h"
 #include "ChestRenderer.h"
 #include "EnchantTableRenderer.h"

@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "IPlatformRenderer.h"
 
 class Icon;

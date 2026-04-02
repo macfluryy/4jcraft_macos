@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Profile.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Storage.h"
 #include "ConsoleInput.h"
 #include "DispenserBootstrap.h"
 #include "Minecraft.Client/Common/App_enums.h"
@@ -64,7 +64,7 @@
 #if defined(SPLIT_SAVES)
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileSplit.h"
 #endif
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "Minecraft.Client/Common/ShutdownManager.h"
 #include "Minecraft.Client/Common/src/Console_Debug_enum.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"

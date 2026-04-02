@@ -1,7 +1,7 @@
 #include "InputConstraint.h"
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 
 bool InputConstraint::isMappingConstrained(int iPad, int mapping) {
     // If it's a menu button, then we ignore all inputs

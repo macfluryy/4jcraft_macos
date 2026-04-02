@@ -1,6 +1,6 @@
 #include "MobSpawnerRenderer.h"
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/BaseMobSpawner.h"

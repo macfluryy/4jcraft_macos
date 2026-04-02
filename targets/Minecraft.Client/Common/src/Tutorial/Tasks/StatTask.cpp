@@ -1,6 +1,6 @@
 #include "StatTask.h"
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/stats/StatsCounter.h"

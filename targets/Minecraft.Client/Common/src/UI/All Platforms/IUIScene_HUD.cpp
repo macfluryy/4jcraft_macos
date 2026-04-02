@@ -3,8 +3,8 @@
 #include <cmath>
 #include <memory>
 
-#include "4J_Profile.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Linux_UIController.h"

@@ -3,8 +3,8 @@
 #include <cmath>
 
 #include "4J.Common/4J_Compat.h"
-#include "4J_Input.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Input.h"
+#include "platform/sdl2/Render.h"
 #include "Facing.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/App_structs.h"

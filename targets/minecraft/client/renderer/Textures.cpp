@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "HttpTexture.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/include/BufferedImage.h"

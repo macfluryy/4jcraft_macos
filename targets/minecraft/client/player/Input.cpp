@@ -3,7 +3,7 @@
 #include <cmath>
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "LocalPlayer.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Linux/Linux_App.h"

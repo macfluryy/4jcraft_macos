@@ -6,7 +6,7 @@
 #include <sstream>
 #include <utility>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "DLCAudioFile.h"
 #include "DLCCapeFile.h"
 #include "DLCColourTableFile.h"

@@ -5,7 +5,7 @@
 #include <cmath>
 #include <utility>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "ArrowRenderer.h"
 #include "BatRenderer.h"
 #include "BlazeRenderer.h"

@@ -4,7 +4,7 @@
 
 #include <cstdint>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/App_structs.h"
 #include "Minecraft.Client/Common/src/DLC/DLCManager.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_BitmapIcon.h"

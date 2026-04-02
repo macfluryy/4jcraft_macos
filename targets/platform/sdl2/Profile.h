@@ -3,9 +3,9 @@
 #include <cstdint>
 #include <string>
 
-#include "../4J.Common/4J_Compat.h"
-#include "../platform/IPlatformProfile.h"
-#include "../platform/PlatformTypes.h"
+#include "../../4J.Common/4J_Compat.h"
+#include "../IPlatformProfile.h"
+#include "../PlatformTypes.h"
 
 #define TITLEID_MINECRAFT 0x584111F7
 

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "Minecraft.Client/Common/src/Tutorial/Constraints/InputConstraint.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tasks/TutorialTask.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"

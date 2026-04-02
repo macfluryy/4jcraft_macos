@@ -8,7 +8,7 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "../platform/IPlatformRenderer.h"
+#include "../IPlatformRenderer.h"
 
 class C4JRender : public IPlatformRenderer {
 public:

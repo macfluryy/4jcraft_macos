@@ -8,7 +8,7 @@
 #include <compare>
 #include <cstdint>
 
-#include "4J_Profile.h"
+#include "platform/sdl2/Profile.h"
 #include "Minecraft.Client/Common/App_enums.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "Minecraft.Client/Common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"

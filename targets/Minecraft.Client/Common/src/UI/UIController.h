@@ -17,8 +17,8 @@
 
 #include "4J.Common/4J_Compat.h"
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Render.h"
-#include "4J_Storage.h"
+#include "platform/sdl2/Render.h"
+#include "platform/sdl2/Storage.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/IUIController.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIStructs.h"

@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
 #include "console_helpers/StringHelpers.h"
 #include "gl3_loader.h"

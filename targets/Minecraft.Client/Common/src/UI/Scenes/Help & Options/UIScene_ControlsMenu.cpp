@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "4J.Common/4J_InputActions.h"
-#include "4J_Input.h"
+#include "platform/sdl2/Input.h"
 #include "Common/App_enums.h"
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
 #include "Minecraft.Client/Common/src/UI/Controls/UIControl_Button.h"

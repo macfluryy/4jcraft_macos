@@ -1,7 +1,7 @@
 #include "UIGroup.h"
 
-#include "4J_Profile.h"
-#include "4J_Render.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
 #include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
 #include "Minecraft.Client/Common/src/UI/All Platforms/UIEnums.h"

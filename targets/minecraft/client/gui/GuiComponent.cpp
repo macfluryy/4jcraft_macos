@@ -3,7 +3,7 @@
 #include <GL/gl.h>
 #include <math.h>
 
-#include "4J_Render.h"
+#include "platform/sdl2/Render.h"
 #include "Minecraft.Client/include/stubs.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
