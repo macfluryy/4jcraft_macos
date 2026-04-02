@@ -7,7 +7,7 @@
 #include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
+
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"

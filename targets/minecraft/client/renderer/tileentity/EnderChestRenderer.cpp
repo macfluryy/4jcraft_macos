@@ -4,7 +4,7 @@
 #include <numbers>
 
 #include "platform/sdl2/Render.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/model/ChestModel.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/client/renderer/Textures.h"

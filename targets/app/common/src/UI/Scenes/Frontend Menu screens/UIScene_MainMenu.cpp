@@ -22,7 +22,7 @@
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
+
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/InputStreamReader.h"

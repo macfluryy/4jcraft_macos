@@ -81,6 +81,7 @@
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/tile/entity/CommandBlockEntity.h"
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
+#include "minecraft/world/level/tile/entity/HopperTileEntity.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/HitResult.h"
 #include "minecraft/world/phys/Vec3.h"

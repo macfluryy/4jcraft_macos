@@ -9,7 +9,7 @@
 #include "LivingEntityRenderer.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/Colours/ColourTable.h"
-#include "gl3_loader.h"
+
 #include "java/Class.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/renderer/Tesselator.h"

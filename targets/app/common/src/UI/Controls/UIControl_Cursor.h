@@ -6,6 +6,9 @@
 #include "app/common/src/UI/Controls/UIControl_Cursor.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "UIControl_Base.h"
 
 class UIControl_Cursor : public UIControl_Base {

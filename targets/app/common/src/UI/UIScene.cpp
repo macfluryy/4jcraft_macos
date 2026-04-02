@@ -15,12 +15,14 @@
 #include "app/common/src/UI/UIGroup.h"
 #include "app/common/src/UI/UILayer.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
 #include "java/System.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"

@@ -7,6 +7,8 @@
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/TrapMenu.h"
 #include "minecraft/world/level/tile/entity/DispenserTileEntity.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/resources/ResourceLocation.h"
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_TRAP_LOCATION = ResourceLocation(TN_GUI_TRAP);

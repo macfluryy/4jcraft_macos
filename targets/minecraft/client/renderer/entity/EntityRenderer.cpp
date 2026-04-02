@@ -4,7 +4,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
-#include "gl3_loader.h"
+
 #include "java/Class.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/renderer/Tesselator.h"

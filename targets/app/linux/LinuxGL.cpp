@@ -2,7 +2,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "app/include/stubs.h"
-#include "gl3_loader.h"
+
 #include "java/ByteBuffer.h"
 #include "java/FloatBuffer.h"
 #include "java/IntBuffer.h"

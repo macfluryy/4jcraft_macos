@@ -19,6 +19,7 @@
 #include "minecraft/world/inventory/Slot.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/Rarity.h"
+#include "minecraft/world/entity/player/Inventory.h"
 
 ItemRenderer* AbstractContainerScreen::itemRenderer = new ItemRenderer();
 

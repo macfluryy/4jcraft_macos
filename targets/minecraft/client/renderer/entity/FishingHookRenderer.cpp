@@ -6,7 +6,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/client/renderer/Tesselator.h"

@@ -8,6 +8,9 @@
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 
 class UILayer;
 

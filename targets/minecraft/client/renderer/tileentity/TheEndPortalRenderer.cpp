@@ -4,7 +4,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "TileEntityRenderDispatcher.h"
-#include "gl3_loader.h"
+
 #include "java/FloatBuffer.h"
 #include "java/Random.h"
 #include "java/System.h"

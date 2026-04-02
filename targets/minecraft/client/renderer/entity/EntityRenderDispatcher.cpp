@@ -58,7 +58,7 @@
 #include "WitherSkullRenderer.h"
 #include "WolfRenderer.h"
 #include "ZombieRenderer.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/model/ChickenModel.h"
 #include "minecraft/client/model/CowModel.h"
 #include "minecraft/client/model/HumanoidModel.h"

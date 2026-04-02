@@ -13,6 +13,9 @@
 #include "app/common/src/UI/Controls/UIControl_SlotList.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"

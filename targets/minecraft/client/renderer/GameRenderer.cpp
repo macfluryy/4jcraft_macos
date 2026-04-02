@@ -23,7 +23,7 @@
 #include "app/include/stubs.h"
 #include "Tesselator.h"
 #include "console_helpers/compression.h"
-#include "gl3_loader.h"
+
 #include "java/Class.h"
 #include "java/FloatBuffer.h"
 #include "java/JavaMath.h"

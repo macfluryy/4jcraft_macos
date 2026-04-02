@@ -7,6 +7,9 @@
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/inventory/FurnaceMenu.h"
 #include "minecraft/world/level/tile/entity/FurnaceTileEntity.h"
+#include "minecraft/client/renderer/Textures.h"
+#include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/client/Minecraft.h"
 
 #ifdef ENABLE_JAVA_GUIS
 ResourceLocation GUI_FURNACE_LOCATION = ResourceLocation(TN_GUI_FURNACE);

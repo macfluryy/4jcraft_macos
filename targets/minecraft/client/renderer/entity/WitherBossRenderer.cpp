@@ -6,7 +6,7 @@
 #include "platform/sdl2/Render.h"
 #include "MobRenderer.h"
 #include "SharedConstants.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/model/WitherBossModel.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/renderer/BossMobGuiInfo.h"

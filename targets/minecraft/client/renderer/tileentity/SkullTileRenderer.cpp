@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "platform/sdl2/Render.h"
-#include "gl3_loader.h"
+
 #include "minecraft/Facing.h"
 #include "minecraft/client/model/SkeletonHeadModel.h"
 #include "minecraft/client/model/geom/Model.h"

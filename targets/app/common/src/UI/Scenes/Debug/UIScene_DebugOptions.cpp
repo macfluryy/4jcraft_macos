@@ -5,6 +5,9 @@
 #include "app/common/src/UI/Controls/UIControl_CheckBox.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Linux_App.h"
 
 class UILayer;

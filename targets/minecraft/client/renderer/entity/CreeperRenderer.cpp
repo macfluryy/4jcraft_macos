@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "platform/sdl2/Render.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/model/CreeperModel.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/renderer/entity/MobRenderer.h"

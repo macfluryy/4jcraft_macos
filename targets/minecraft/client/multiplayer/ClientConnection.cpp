@@ -57,6 +57,7 @@
 #include "minecraft/client/renderer/LevelRenderer.h"
 #include "minecraft/client/skins/DLCTexturePack.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
+#include "minecraft/client/gui/inventory/MerchantScreen.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/AddEntityPacket.h"
 #include "minecraft/network/packet/AddExperienceOrbPacket.h"

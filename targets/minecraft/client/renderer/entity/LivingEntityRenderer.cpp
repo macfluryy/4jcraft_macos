@@ -8,7 +8,7 @@
 #include "EntityRenderDispatcher.h"
 #include "app/common/App_enums.h"
 #include "app/linux/Linux_App.h"
-#include "gl3_loader.h"
+
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/client/Lighting.h"

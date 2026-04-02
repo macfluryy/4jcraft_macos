@@ -12,9 +12,12 @@
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"

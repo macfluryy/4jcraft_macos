@@ -7,7 +7,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "SharedConstants.h"
-#include "gl3_loader.h"
+
 #include "java/Random.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/model/dragon/DragonModel.h"

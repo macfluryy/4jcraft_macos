@@ -13,6 +13,8 @@
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/gui/particle/GuiParticles.h"
 #include "minecraft/sounds/SoundTypes.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
+#include "minecraft/client/renderer/Tesselator.h"
 
 Screen::Screen()  // 4J added
 {

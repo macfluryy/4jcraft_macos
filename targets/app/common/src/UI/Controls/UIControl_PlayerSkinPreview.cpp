@@ -10,8 +10,11 @@
 #include "app/common/App_enums.h"
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Linux_App.h"
-#include "gl3_loader.h"
+
 #include "java/Class.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"

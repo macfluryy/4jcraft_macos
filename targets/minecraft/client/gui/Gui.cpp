@@ -12,9 +12,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/include/XboxStubs.h"
-#include "app/include/stdafx.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "java/System.h"
@@ -45,6 +43,9 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
+#include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
+#include "minecraft/world/entity/monster/SharedMonsterAttributes.h"
+#include "minecraft/world/food/FoodConstants.h"
 
 #include "minecraft/world/item/ItemInstance.h"
 
@@ -54,7 +55,7 @@
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/PortalTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-
+#include "app/include/stubs.h"
 
 #include "strings.h"
 

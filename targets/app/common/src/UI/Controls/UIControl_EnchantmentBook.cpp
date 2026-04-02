@@ -6,7 +6,10 @@
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
 #include "app/linux/Iggy/include/iggy.h"
-#include "gl3_loader.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
+
 #include "java/Class.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"

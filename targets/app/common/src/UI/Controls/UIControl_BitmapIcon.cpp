@@ -3,6 +3,9 @@
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "console_helpers/StringHelpers.h"
 
 bool UIControl_BitmapIcon::setupControl(UIScene* scene, IggyValuePath* parent,

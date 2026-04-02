@@ -15,7 +15,7 @@
 #include "app/include/MemTextureProcessor.h"
 #include "app/include/MobSkinMemTextureProcessor.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
+
 #include "java/Buffer.h"
 #include "java/ByteBuffer.h"
 #include "minecraft/client/MemoryTracker.h"

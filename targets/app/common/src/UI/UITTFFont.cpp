@@ -5,6 +5,9 @@
 #include <cstdio>
 
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
 #include "console_helpers/PortableFileIO.h"

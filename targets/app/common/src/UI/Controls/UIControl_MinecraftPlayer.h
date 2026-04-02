@@ -2,6 +2,9 @@
 
 #include "app/common/src/UI/Controls/UIControl_MinecraftPlayer.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "UIControl.h"
 
 class UIControl_MinecraftPlayer : public UIControl {

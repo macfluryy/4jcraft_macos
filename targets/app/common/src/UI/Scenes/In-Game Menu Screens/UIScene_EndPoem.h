@@ -6,6 +6,9 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Iggy/include/rrCore.h"
 
 class UILayer;

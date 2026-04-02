@@ -9,6 +9,9 @@
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_InventoryMenu.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"

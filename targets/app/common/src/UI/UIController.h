@@ -10,6 +10,9 @@
 
 #ifdef __linux__
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "app/linux/Stubs/d3d11_stubs.h"
 #elif defined(_WINDOWS64)
 #include "app/windows/Iggy/include/iggy.h"

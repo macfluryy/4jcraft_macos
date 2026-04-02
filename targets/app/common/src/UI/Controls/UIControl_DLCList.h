@@ -5,6 +5,9 @@
 #include "app/common/src/UI/Controls/UIControl_DLCList.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/iggy.h"
+#ifndef _ENABLEIGGY
+#include "app/linux/Stubs/iggy_stubs.h"
+#endif
 #include "UIControl_ButtonList.h"
 
 class UIControl_DLCList : public UIControl_ButtonList {

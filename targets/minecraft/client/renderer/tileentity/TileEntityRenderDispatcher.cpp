@@ -13,7 +13,7 @@
 #include "SkullTileRenderer.h"
 #include "TheEndPortalRenderer.h"
 #include "TileEntityRenderer.h"
-#include "gl3_loader.h"
+
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/level/Level.h"

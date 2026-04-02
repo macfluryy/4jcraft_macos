@@ -22,7 +22,7 @@
 #include "app/linux/Linux_UIController.h"
 #include "SkinBox.h"
 #include "console_helpers/StringHelpers.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"

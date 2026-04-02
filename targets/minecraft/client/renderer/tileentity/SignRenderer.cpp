@@ -9,7 +9,7 @@
 #include "app/common/src/Colours/ColourTable.h"
 #include "app/linux/Linux_App.h"
 #include "app/include/XboxStubs.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/model/SignModel.h"

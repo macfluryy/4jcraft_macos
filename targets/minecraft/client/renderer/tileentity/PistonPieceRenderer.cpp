@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "platform/sdl2/Render.h"
-#include "gl3_loader.h"
+
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
