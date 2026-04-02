@@ -61,7 +61,7 @@ class INVITE_INFO;
 
 // Global instance
 CGameNetworkManager g_NetworkManager;
-CPlatformNetworkManager* CGameNetworkManager::s_pPlatformNetworkManager;
+IPlatformNetwork* CGameNetworkManager::s_pPlatformNetworkManager;
 
 int64_t CGameNetworkManager::messageQueue[512];
 int64_t CGameNetworkManager::byteQueue[512];
@@ -80,7 +80,7 @@ void CGameNetworkManager::Initialise() {
         LevelRenderer::getGlobalChunkCount() /
         (Level::maxBuildHeight /
          16);  // dividing here by number of renderer chunks in one column
-    s_pPlatformNetworkManager = new CPlatformNetworkManagerStub();
+    s_pPlatformNetworkManager = new IPlatformNetworkStub();
     s_pPlatformNetworkManager->Initialise(this, flagIndexSize);
     m_bNetworkThreadRunning = false;
     m_bInitialised = true;
@@ -1073,13 +1073,13 @@ void CGameNetworkManager::StateChange_AnyToJoining() {
 }
 
 void CGameNetworkManager::StateChange_JoiningToIdle(
-    CPlatformNetworkManager::eJoinFailedReason reason) {
+    IPlatformNetwork::eJoinFailedReason reason) {
     DisconnectPacket::eDisconnectReason disconnectReason;
     switch (reason) {
-        case CPlatformNetworkManager::JOIN_FAILED_SERVER_FULL:
+        case IPlatformNetwork::JOIN_FAILED_SERVER_FULL:
             disconnectReason = DisconnectPacket::eDisconnect_ServerFull;
             break;
-        case CPlatformNetworkManager::JOIN_FAILED_INSUFFICIENT_PRIVILEGES:
+        case IPlatformNetwork::JOIN_FAILED_INSUFFICIENT_PRIVILEGES:
             disconnectReason =
                 DisconnectPacket::eDisconnect_NoMultiplayerPrivilegesJoin;
             app.SetAction(ProfileManager.GetPrimaryPad(),

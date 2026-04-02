@@ -15,7 +15,7 @@ public:
     static IPlatformLeaderboard* Instance() { return m_instance; }
     static void DeleteInstance();
 
-    // IPlatformLeaderboard pure virtuals — subclasses must implement:
+    // IPlatformLeaderboard pure virtuals - subclasses must implement:
     //   Tick, OpenSession, CloseSession, DeleteSession, WriteStats,
     //   FlushStats, CancelOperation, isIdle
 

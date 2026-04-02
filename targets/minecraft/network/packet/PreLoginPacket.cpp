@@ -4,7 +4,7 @@
 #include <cstring>
 
 #include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
-#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
+#include "platform/IPlatformNetwork.h"
 #include "Minecraft.Client/Linux/Linux_App.h"
 #include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
 #include "PacketListener.h"

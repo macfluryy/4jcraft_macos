@@ -9,7 +9,7 @@
 #include "Minecraft.Client/include/SkinBox.h"
 #include "Minecraft.Client/include/XboxStubs.h"
 #include "NetworkPlayerInterface.h"
-#include "PlatformNetworkManagerInterface.h"
+#include "platform/IPlatformNetwork.h"
 #include "SessionInfo.h"
 #include "console_helpers/C4JThread.h"
 
@@ -17,7 +17,7 @@ class C4JThread;
 class CGameNetworkManager;
 class INetworkPlayer;
 
-class CPlatformNetworkManagerStub : public CPlatformNetworkManager {
+class IPlatformNetworkStub : public IPlatformNetwork {
     friend class CGameNetworkManager;
 
 public:

@@ -14,9 +14,9 @@
 #include "Socket.h"
 #include "console_helpers/C4JThread.h"
 
-CPlatformNetworkManagerStub* g_pPlatformNetworkManager;
+IPlatformNetworkStub* g_pPlatformNetworkManager;
 
-void CPlatformNetworkManagerStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
+void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     const char* pszDescription;
 
     // 4J Stu - We create a fake socket for every where that we need an INBOUND
@@ -109,7 +109,7 @@ void CPlatformNetworkManagerStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     }
 }
 
-bool CPlatformNetworkManagerStub::Initialise(
+bool IPlatformNetworkStub::Initialise(
     CGameNetworkManager* pGameNetworkManager, int flagIndexSize) {
     m_pGameNetworkManager = pGameNetworkManager;
     m_flagIndexSize = flagIndexSize;
@@ -147,58 +147,58 @@ bool CPlatformNetworkManagerStub::Initialise(
     return true;
 }
 
-void CPlatformNetworkManagerStub::Terminate() {
+void IPlatformNetworkStub::Terminate() {
     // TODO: 4jcraft, no release of ressources
 }
 
-int CPlatformNetworkManagerStub::GetJoiningReadyPercentage() { return 100; }
+int IPlatformNetworkStub::GetJoiningReadyPercentage() { return 100; }
 
-int CPlatformNetworkManagerStub::CorrectErrorIDS(int IDS) { return IDS; }
+int IPlatformNetworkStub::CorrectErrorIDS(int IDS) { return IDS; }
 
-bool CPlatformNetworkManagerStub::isSystemPrimaryPlayer(
+bool IPlatformNetworkStub::isSystemPrimaryPlayer(
     IQNetPlayer* pQNetPlayer) {
     return true;
 }
 
 // We call this twice a frame, either side of the render call so is a good place
 // to "tick" things
-void CPlatformNetworkManagerStub::DoWork() {}
+void IPlatformNetworkStub::DoWork() {}
 
-int CPlatformNetworkManagerStub::GetPlayerCount() {
+int IPlatformNetworkStub::GetPlayerCount() {
     return m_pIQNet->GetPlayerCount();
 }
 
-bool CPlatformNetworkManagerStub::ShouldMessageForFullSession() {
+bool IPlatformNetworkStub::ShouldMessageForFullSession() {
     return false;
 }
 
-int CPlatformNetworkManagerStub::GetOnlinePlayerCount() { return 1; }
+int IPlatformNetworkStub::GetOnlinePlayerCount() { return 1; }
 
-int CPlatformNetworkManagerStub::GetLocalPlayerMask(int playerIndex) {
+int IPlatformNetworkStub::GetLocalPlayerMask(int playerIndex) {
     return 1 << playerIndex;
 }
 
-bool CPlatformNetworkManagerStub::AddLocalPlayerByUserIndex(int userIndex) {
+bool IPlatformNetworkStub::AddLocalPlayerByUserIndex(int userIndex) {
     NotifyPlayerJoined(m_pIQNet->GetLocalPlayerByUserIndex(userIndex));
     return (m_pIQNet->AddLocalPlayerByUserIndex(userIndex) == 0);
 }
 
-bool CPlatformNetworkManagerStub::RemoveLocalPlayerByUserIndex(int userIndex) {
+bool IPlatformNetworkStub::RemoveLocalPlayerByUserIndex(int userIndex) {
     return true;
 }
 
-bool CPlatformNetworkManagerStub::IsInStatsEnabledSession() { return true; }
+bool IPlatformNetworkStub::IsInStatsEnabledSession() { return true; }
 
-bool CPlatformNetworkManagerStub::SessionHasSpace(
+bool IPlatformNetworkStub::SessionHasSpace(
     unsigned int spaceRequired /*= 1*/) {
     return true;
 }
 
-void CPlatformNetworkManagerStub::SendInviteGUI(int quadrant) {}
+void IPlatformNetworkStub::SendInviteGUI(int quadrant) {}
 
-bool CPlatformNetworkManagerStub::IsAddingPlayer() { return false; }
+bool IPlatformNetworkStub::IsAddingPlayer() { return false; }
 
-bool CPlatformNetworkManagerStub::LeaveGame(bool bMigrateHost) {
+bool IPlatformNetworkStub::LeaveGame(bool bMigrateHost) {
     if (m_bLeavingGame) return true;
 
     m_bLeavingGame = true;
@@ -212,12 +212,12 @@ bool CPlatformNetworkManagerStub::LeaveGame(bool bMigrateHost) {
     return true;
 }
 
-bool CPlatformNetworkManagerStub::_LeaveGame(bool bMigrateHost,
+bool IPlatformNetworkStub::_LeaveGame(bool bMigrateHost,
                                              bool bLeaveRoom) {
     return true;
 }
 
-void CPlatformNetworkManagerStub::HostGame(
+void IPlatformNetworkStub::HostGame(
     int localUsersMask, bool bOnlineGame, bool bIsPrivate,
     unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
     unsigned char privateSlots /*= 0*/) {
@@ -238,30 +238,30 @@ void CPlatformNetworkManagerStub::HostGame(
     // #endif
 }
 
-void CPlatformNetworkManagerStub::_HostGame(
+void IPlatformNetworkStub::_HostGame(
     int usersMask, unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
     unsigned char privateSlots /*= 0*/) {}
 
-bool CPlatformNetworkManagerStub::_StartGame() { return true; }
+bool IPlatformNetworkStub::_StartGame() { return true; }
 
-int CPlatformNetworkManagerStub::JoinGame(FriendSessionInfo* searchResult,
+int IPlatformNetworkStub::JoinGame(FriendSessionInfo* searchResult,
                                           int localUsersMask,
                                           int primaryUserIndex) {
     return CGameNetworkManager::JOINGAME_SUCCESS;
 }
 
-bool CPlatformNetworkManagerStub::SetLocalGame(bool isLocal) {
+bool IPlatformNetworkStub::SetLocalGame(bool isLocal) {
     m_bIsOfflineGame = isLocal;
 
     return true;
 }
 
-void CPlatformNetworkManagerStub::SetPrivateGame(bool isPrivate) {
+void IPlatformNetworkStub::SetPrivateGame(bool isPrivate) {
     app.DebugPrintf("Setting as private game: %s\n", isPrivate ? "yes" : "no");
     m_bIsPrivateGame = isPrivate;
 }
 
-void CPlatformNetworkManagerStub::RegisterPlayerChangedCallback(
+void IPlatformNetworkStub::RegisterPlayerChangedCallback(
     int iPad,
     void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
                      bool leaving),
@@ -270,7 +270,7 @@ void CPlatformNetworkManagerStub::RegisterPlayerChangedCallback(
     playerChangedCallbackParam[iPad] = callbackParam;
 }
 
-void CPlatformNetworkManagerStub::UnRegisterPlayerChangedCallback(
+void IPlatformNetworkStub::UnRegisterPlayerChangedCallback(
     int iPad,
     void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
                      bool leaving),
@@ -281,11 +281,11 @@ void CPlatformNetworkManagerStub::UnRegisterPlayerChangedCallback(
     }
 }
 
-void CPlatformNetworkManagerStub::HandleSignInChange() { return; }
+void IPlatformNetworkStub::HandleSignInChange() { return; }
 
-bool CPlatformNetworkManagerStub::_RunNetworkGame() { return true; }
+bool IPlatformNetworkStub::_RunNetworkGame() { return true; }
 
-void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(
+void IPlatformNetworkStub::UpdateAndSetGameSessionData(
     INetworkPlayer* pNetworkPlayerLeaving /*= nullptr*/) {
     // 	uint32_t playerCount = m_pIQNet->GetPlayerCount();
     //
@@ -332,7 +332,7 @@ void CPlatformNetworkManagerStub::UpdateAndSetGameSessionData(
     // app.GetGameHostOption(eGameHostOption_All);
 }
 
-int CPlatformNetworkManagerStub::RemovePlayerOnSocketClosedThreadProc(
+int IPlatformNetworkStub::RemovePlayerOnSocketClosedThreadProc(
     void* lpParam) {
     INetworkPlayer* pNetworkPlayer = (INetworkPlayer*)lpParam;
 
@@ -351,12 +351,12 @@ int CPlatformNetworkManagerStub::RemovePlayerOnSocketClosedThreadProc(
     return g_pPlatformNetworkManager->RemoveLocalPlayer(pNetworkPlayer);
 }
 
-bool CPlatformNetworkManagerStub::RemoveLocalPlayer(
+bool IPlatformNetworkStub::RemoveLocalPlayer(
     INetworkPlayer* pNetworkPlayer) {
     return true;
 }
 
-CPlatformNetworkManagerStub::PlayerFlags::PlayerFlags(
+IPlatformNetworkStub::PlayerFlags::PlayerFlags(
     INetworkPlayer* pNetworkPlayer, unsigned int count) {
     // 4J Stu - Don't assert, just make it a multiple of 8! This count is
     // calculated from a load of separate values, and makes tweaking
@@ -368,11 +368,11 @@ CPlatformNetworkManagerStub::PlayerFlags::PlayerFlags(
     memset(this->flags, 0, count / 8);
     this->count = count;
 }
-CPlatformNetworkManagerStub::PlayerFlags::~PlayerFlags() { delete[] flags; }
+IPlatformNetworkStub::PlayerFlags::~PlayerFlags() { delete[] flags; }
 
 // Add a player to the per system flag storage - if we've already got a player
 // from that system, copy its flags over
-void CPlatformNetworkManagerStub::SystemFlagAddPlayer(
+void IPlatformNetworkStub::SystemFlagAddPlayer(
     INetworkPlayer* pNetworkPlayer) {
     PlayerFlags* newPlayerFlags =
         new PlayerFlags(pNetworkPlayer, m_flagIndexSize);
@@ -390,7 +390,7 @@ void CPlatformNetworkManagerStub::SystemFlagAddPlayer(
 
 // Remove a player from the per system flag storage - just maintains the
 // m_playerFlags vector without any gaps in it
-void CPlatformNetworkManagerStub::SystemFlagRemovePlayer(
+void IPlatformNetworkStub::SystemFlagRemovePlayer(
     INetworkPlayer* pNetworkPlayer) {
     for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
         if (m_playerFlags[i]->m_pNetworkPlayer == pNetworkPlayer) {
@@ -402,7 +402,7 @@ void CPlatformNetworkManagerStub::SystemFlagRemovePlayer(
     }
 }
 
-void CPlatformNetworkManagerStub::SystemFlagReset() {
+void IPlatformNetworkStub::SystemFlagReset() {
     for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
         delete m_playerFlags[i];
     }
@@ -411,7 +411,7 @@ void CPlatformNetworkManagerStub::SystemFlagReset() {
 
 // Set a per system flag - this is done by setting the flag on every player that
 // shares that system
-void CPlatformNetworkManagerStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
+void IPlatformNetworkStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
                                                 int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return;
     if (pNetworkPlayer == nullptr) return;
@@ -426,7 +426,7 @@ void CPlatformNetworkManagerStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
 // Get value of a per system flag - can be read from the flags of the passed in
 // player as anything else sent to that system should also have been duplicated
 // here
-bool CPlatformNetworkManagerStub::SystemFlagGet(INetworkPlayer* pNetworkPlayer,
+bool IPlatformNetworkStub::SystemFlagGet(INetworkPlayer* pNetworkPlayer,
                                                 int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return false;
     if (pNetworkPlayer == nullptr) {
@@ -442,9 +442,9 @@ bool CPlatformNetworkManagerStub::SystemFlagGet(INetworkPlayer* pNetworkPlayer,
     return false;
 }
 
-std::wstring CPlatformNetworkManagerStub::GatherStats() { return L""; }
+std::wstring IPlatformNetworkStub::GatherStats() { return L""; }
 
-std::wstring CPlatformNetworkManagerStub::GatherRTTStats() {
+std::wstring IPlatformNetworkStub::GatherRTTStats() {
     std::wstring stats(L"Rtt: ");
 
     wchar_t stat[32];
@@ -462,20 +462,20 @@ std::wstring CPlatformNetworkManagerStub::GatherRTTStats() {
     return stats;
 }
 
-void CPlatformNetworkManagerStub::TickSearch() {}
+void IPlatformNetworkStub::TickSearch() {}
 
-void CPlatformNetworkManagerStub::SearchForGames() {}
+void IPlatformNetworkStub::SearchForGames() {}
 
-int CPlatformNetworkManagerStub::SearchForGamesThreadProc(void* lpParameter) {
+int IPlatformNetworkStub::SearchForGamesThreadProc(void* lpParameter) {
     return 0;
 }
 
-void CPlatformNetworkManagerStub::SetSearchResultsReady(int resultCount) {
+void IPlatformNetworkStub::SetSearchResultsReady(int resultCount) {
     m_bSearchResultsReady = true;
     m_searchResultsCount[m_lastSearchPad] = resultCount;
 }
 
-std::vector<FriendSessionInfo*>* CPlatformNetworkManagerStub::GetSessionList(
+std::vector<FriendSessionInfo*>* IPlatformNetworkStub::GetSessionList(
     int iPad, int localPlayers, bool partyOnly) {
     std::vector<FriendSessionInfo*>* filteredList =
         new std::vector<FriendSessionInfo*>();
@@ -483,24 +483,24 @@ std::vector<FriendSessionInfo*>* CPlatformNetworkManagerStub::GetSessionList(
     return filteredList;
 }
 
-bool CPlatformNetworkManagerStub::GetGameSessionInfo(
+bool IPlatformNetworkStub::GetGameSessionInfo(
     int iPad, SessionID sessionId, FriendSessionInfo* foundSessionInfo) {
     return false;
 }
 
-void CPlatformNetworkManagerStub::SetSessionsUpdatedCallback(
+void IPlatformNetworkStub::SetSessionsUpdatedCallback(
     void (*SessionsUpdatedCallback)(void* pParam), void* pSearchParam) {
     m_SessionsUpdatedCallback = SessionsUpdatedCallback;
     m_pSearchParam = pSearchParam;
 }
 
-void CPlatformNetworkManagerStub::GetFullFriendSessionInfo(
+void IPlatformNetworkStub::GetFullFriendSessionInfo(
     FriendSessionInfo* foundSession,
     void (*FriendSessionUpdatedFn)(bool success, void* pParam), void* pParam) {
     FriendSessionUpdatedFn(true, pParam);
 }
 
-void CPlatformNetworkManagerStub::ForceFriendsSessionRefresh() {
+void IPlatformNetworkStub::ForceFriendsSessionRefresh() {
     app.DebugPrintf("Resetting friends session search data\n");
 
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
@@ -511,7 +511,7 @@ void CPlatformNetworkManagerStub::ForceFriendsSessionRefresh() {
     }
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::addNetworkPlayer(
+INetworkPlayer* IPlatformNetworkStub::addNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
     NetworkPlayerQNet* pNetworkPlayer = new NetworkPlayerQNet(pQNetPlayer);
     pQNetPlayer->SetCustomDataValue((uintptr_t)pNetworkPlayer);
@@ -519,7 +519,7 @@ INetworkPlayer* CPlatformNetworkManagerStub::addNetworkPlayer(
     return pNetworkPlayer;
 }
 
-void CPlatformNetworkManagerStub::removeNetworkPlayer(
+void IPlatformNetworkStub::removeNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
     INetworkPlayer* pNetworkPlayer = getNetworkPlayer(pQNetPlayer);
     for (auto it = currentNetworkPlayers.begin();
@@ -531,60 +531,60 @@ void CPlatformNetworkManagerStub::removeNetworkPlayer(
     }
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::getNetworkPlayer(
+INetworkPlayer* IPlatformNetworkStub::getNetworkPlayer(
     IQNetPlayer* pQNetPlayer) {
     return pQNetPlayer ? (INetworkPlayer*)(pQNetPlayer->GetCustomDataValue())
                        : nullptr;
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::GetLocalPlayerByUserIndex(
+INetworkPlayer* IPlatformNetworkStub::GetLocalPlayerByUserIndex(
     int userIndex) {
     return getNetworkPlayer(m_pIQNet->GetLocalPlayerByUserIndex(userIndex));
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::GetPlayerByIndex(int playerIndex) {
+INetworkPlayer* IPlatformNetworkStub::GetPlayerByIndex(int playerIndex) {
     return getNetworkPlayer(m_pIQNet->GetPlayerByIndex(playerIndex));
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::GetPlayerByXuid(PlayerUID xuid) {
+INetworkPlayer* IPlatformNetworkStub::GetPlayerByXuid(PlayerUID xuid) {
     return getNetworkPlayer(m_pIQNet->GetPlayerByXuid(xuid));
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::GetPlayerBySmallId(
+INetworkPlayer* IPlatformNetworkStub::GetPlayerBySmallId(
     unsigned char smallId) {
     return getNetworkPlayer(m_pIQNet->GetPlayerBySmallId(smallId));
 }
 
-INetworkPlayer* CPlatformNetworkManagerStub::GetHostPlayer() {
+INetworkPlayer* IPlatformNetworkStub::GetHostPlayer() {
     return getNetworkPlayer(m_pIQNet->GetHostPlayer());
 }
 
-bool CPlatformNetworkManagerStub::IsHost() {
+bool IPlatformNetworkStub::IsHost() {
     return m_pIQNet->IsHost() && !m_bHostChanged;
 }
 
-bool CPlatformNetworkManagerStub::JoinGameFromInviteInfo(
+bool IPlatformNetworkStub::JoinGameFromInviteInfo(
     int userIndex, int userMask, const INVITE_INFO* pInviteInfo) {
     return (m_pIQNet->JoinGameFromInviteInfo(userIndex, userMask,
                                              pInviteInfo) == 0);
 }
 
-void CPlatformNetworkManagerStub::SetSessionTexturePackParentId(int id) {
+void IPlatformNetworkStub::SetSessionTexturePackParentId(int id) {
     m_hostGameSessionData.texturePackParentId = id;
 }
 
-void CPlatformNetworkManagerStub::SetSessionSubTexturePackId(int id) {
+void IPlatformNetworkStub::SetSessionSubTexturePackId(int id) {
     m_hostGameSessionData.subTexturePackId = id;
 }
 
-void CPlatformNetworkManagerStub::Notify(int ID, uintptr_t Param) {}
+void IPlatformNetworkStub::Notify(int ID, uintptr_t Param) {}
 
-bool CPlatformNetworkManagerStub::IsInSession() {
+bool IPlatformNetworkStub::IsInSession() {
     return m_pIQNet->GetState() != QNET_STATE_IDLE;
 }
 
-bool CPlatformNetworkManagerStub::IsInGameplay() {
+bool IPlatformNetworkStub::IsInGameplay() {
     return m_pIQNet->GetState() == QNET_STATE_GAME_PLAY;
 }
 
-bool CPlatformNetworkManagerStub::IsReadyToPlayOrIdle() { return true; }
+bool IPlatformNetworkStub::IsReadyToPlayOrIdle() { return true; }

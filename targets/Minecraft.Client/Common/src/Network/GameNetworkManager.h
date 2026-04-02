@@ -8,7 +8,7 @@
 #include <qnet.h>
 #endif
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Common/src/Network/PlatformNetworkManagerInterface.h"
+#include "platform/IPlatformNetwork.h"
 #include "Minecraft.Client/include/NetTypes.h"
 #include "NetworkPlayerInterface.h"
 #include "PlatformNetworkManagerStub.h"
@@ -30,7 +30,7 @@ const int NON_QNET_SENDDATA_ACK_REQUIRED = 1;
 // implementation of PlatformNetworkManager to provide this functionality.
 
 class CGameNetworkManager {
-    friend class CPlatformNetworkManagerStub;
+    friend class IPlatformNetworkStub;
 
 public:
     CGameNetworkManager();
@@ -175,7 +175,7 @@ private:
     void StateChange_AnyToHosting();
     void StateChange_AnyToJoining();
     void StateChange_JoiningToIdle(
-        CPlatformNetworkManager::eJoinFailedReason reason);
+        IPlatformNetwork::eJoinFailedReason reason);
     void StateChange_AnyToStarting();
     void StateChange_AnyToEnding(bool bStateWasPlaying);
     void StateChange_AnyToIdle();
@@ -202,7 +202,7 @@ private:
 
 private:
     float m_lastPlayerEventTimeStart;  // For telemetry
-    static CPlatformNetworkManager* s_pPlatformNetworkManager;
+    static IPlatformNetwork* s_pPlatformNetworkManager;
     bool m_bNetworkThreadRunning;
     int GetJoiningReadyPercentage();
     bool m_bLastDisconnectWasLostRoomOnly;

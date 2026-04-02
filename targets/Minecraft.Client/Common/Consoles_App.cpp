@@ -3203,7 +3203,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     SetAction(i, eAppAction_Idle);
 
                     // 4J Stu - Move this state block from
-                    // CPlatformNetworkManager::ExitAndJoinFromInviteThreadProc,
+                    // IPlatformNetwork::ExitAndJoinFromInviteThreadProc,
                     // as g_NetworkManager.JoinGameFromInviteInfo ultimately can
                     // call NavigateToScene,
                     /// and we should only be calling that from the main thread

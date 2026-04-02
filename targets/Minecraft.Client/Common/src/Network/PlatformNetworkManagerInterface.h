@@ -31,7 +31,7 @@ typedef struct _SearchForGamesData {
     XOVERLAPPED* pOverlapped;
 } SearchForGamesData;
 
-class CPlatformNetworkManager {
+class IPlatformNetwork {
     friend class CGameNetworkManager;
 
 public:
