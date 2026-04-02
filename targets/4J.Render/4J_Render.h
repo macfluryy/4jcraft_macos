@@ -8,9 +8,9 @@
 #include <cstdint>
 #include <cstdlib>
 
-#include "../platform/IPlatformRender.h"
+#include "../platform/IPlatformRenderer.h"
 
-class C4JRender : public IPlatformRender {
+class C4JRender : public IPlatformRenderer {
 public:
     void Tick();
     void UpdateGamma(unsigned short usGamma);

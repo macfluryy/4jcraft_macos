@@ -4,7 +4,7 @@
 
 #include "PlatformTypes.h"
 
-class IPlatformRender {
+class IPlatformRenderer {
 public:
     enum eVertexType {
         VERTEX_TYPE_PF3_TF2_CB4_NB4_XW1,
@@ -45,7 +45,7 @@ public:
 
     enum eTextureFormat { TEXTURE_FORMAT_RxGyBzAw, MAX_TEXTURE_FORMATS };
 
-    virtual ~IPlatformRender() = default;
+    virtual ~IPlatformRenderer() = default;
 
     // Lifecycle
     virtual void Initialise() = 0;

@@ -7,10 +7,10 @@
 
 class IPlatformInput;
 class IPlatformProfile;
-class IPlatformRender;
+class IPlatformRenderer;
 class IPlatformStorage;
 
 IPlatformInput& PlatformInput = InputManager;
 IPlatformProfile& PlatformProfile = ProfileManager;
-IPlatformRender& PlatformRender = RenderManager;
+IPlatformRenderer& PlatformRender = RenderManager;
 IPlatformStorage& PlatformStorage = StorageManager;

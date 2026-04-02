@@ -2,12 +2,12 @@
 
 #include "IPlatformInput.h"
 #include "IPlatformProfile.h"
-#include "IPlatformRender.h"
+#include "IPlatformRenderer.h"
 #include "IPlatformStorage.h"
 
 class IPlatformInput;
 class IPlatformProfile;
-class IPlatformRender;
+class IPlatformRenderer;
 class IPlatformStorage;
 
 // Interface references to platform services. World code uses these
@@ -16,5 +16,5 @@ class IPlatformStorage;
 
 extern IPlatformInput& PlatformInput;
 extern IPlatformProfile& PlatformProfile;
-extern IPlatformRender& PlatformRender;
+extern IPlatformRenderer& PlatformRender;
 extern IPlatformStorage& PlatformStorage;

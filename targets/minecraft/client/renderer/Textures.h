@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "4J_Render.h"
-#include "IPlatformRender.h"
+#include "IPlatformRenderer.h"
 
 class Icon;
 class Entity;
@@ -273,7 +273,7 @@ typedef enum _TEXTURE_NAME {
 class Textures {
 public:
     static bool MIPMAP;
-    static IPlatformRender::eTextureFormat TEXTURE_FORMAT;
+    static IPlatformRenderer::eTextureFormat TEXTURE_FORMAT;
 
 private:
     static const wchar_t* preLoaded[TN_COUNT];
@@ -334,8 +334,8 @@ private:
 public:
     int loadTexture(int idx);  // 4J added
     int getTexture(BufferedImage* img,
-                   IPlatformRender::eTextureFormat format =
-                       IPlatformRender::TEXTURE_FORMAT_RxGyBzAw,
+                   IPlatformRenderer::eTextureFormat format =
+                       IPlatformRenderer::TEXTURE_FORMAT_RxGyBzAw,
                    bool mipmap = true);
     void loadTexture(BufferedImage* img, int id);
     void loadTexture(BufferedImage* img, int id, bool blur, bool clamp);
