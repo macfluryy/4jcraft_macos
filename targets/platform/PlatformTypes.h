@@ -55,18 +55,6 @@ enum class EAwardType {
     AvatarItem,
 };
 
-// Backwards-compatible aliases for call sites still using the old
-// unscoped names. Remove these as call sites are migrated.
-inline constexpr auto EKeyboard_Pending = EKeyboardResult::Pending;
-inline constexpr auto EKeyboard_Cancelled = EKeyboardResult::Cancelled;
-inline constexpr auto EKeyboard_ResultAccept = EKeyboardResult::ResultAccept;
-inline constexpr auto EKeyboard_ResultDecline = EKeyboardResult::ResultDecline;
-
-inline constexpr auto eAwardType_Achievement = EAwardType::Achievement;
-inline constexpr auto eAwardType_GamerPic = EAwardType::GamerPic;
-inline constexpr auto eAwardType_Theme = EAwardType::Theme;
-inline constexpr auto eAwardType_AvatarItem = EAwardType::AvatarItem;
-
 inline constexpr int XUSER_INDEX_ANY = 255;
 inline constexpr int XUSER_MAX_COUNT = 4;
 inline constexpr int XUSER_NAME_SIZE = 32;

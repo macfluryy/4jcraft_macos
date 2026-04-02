@@ -850,7 +850,7 @@ void LocalPlayer::awardStat(Stat* stat, const std::vector<uint8_t>& param) {
                 if (g_NetworkManager.IsLocalGame() &&
                     g_NetworkManager.GetPlayerCount() == 1 &&
                     ProfileManager.GetAwardType(ach->getAchievementID()) !=
-                        eAwardType_Achievement) {
+                        EAwardType::Achievement) {
                     ui.CloseUIScenes(m_iPad);
                     ui.NavigateToScene(m_iPad, eUIScene_PauseMenu);
                 }

@@ -112,7 +112,7 @@ public:
                        CXuiStringTable* = nullptr, int = -1, int = -1, int = -1,
                        char* = nullptr, unsigned int = 0L) {}
     int GetAwardId(int) { return 0; }
-    EAwardType GetAwardType(int) { return eAwardType_Achievement; }
+    EAwardType GetAwardType(int) { return EAwardType::Achievement; }
     bool CanBeAwarded(int, int) { return false; }
     void Award(int, int, bool = false) {}
     bool IsAwardsFlagSet(int, int) { return false; }

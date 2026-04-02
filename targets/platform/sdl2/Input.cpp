@@ -656,7 +656,7 @@ EKeyboardResult C_4JInput::RequestKeyboard(const wchar_t*, const wchar_t*, int,
     s_keyboardCallback = callback;
     s_keyboardCallbackParam = scene;
     SDL_StartTextInput();
-    return EKeyboard_Pending;
+    return EKeyboardResult::Pending;
 }
 bool C_4JInput::GetMenuDisplayed(int iPad) {
     if (iPad >= 0 && iPad < 4) return s_menuDisplayed[iPad];
