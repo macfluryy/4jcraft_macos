@@ -7,7 +7,7 @@
 
 
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFile.h"
-#include "nbt/com.mojang.nbt.h"
+#include "nbt/NbtIo.h"
 
 class MemoryLevelStorage : public LevelStorage, public PlayerIO {
 public:

@@ -3,7 +3,7 @@
 
 #include "ZonedChunkStorage.h"
 #include "nbt/CompoundTag.h"
-#include "nbt/com.mojang.nbt.h"
+#include "nbt/NbtIo.h"
 
 class NbtSlotFile {
 private:

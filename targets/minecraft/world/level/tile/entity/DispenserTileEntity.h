@@ -7,7 +7,7 @@
 #include "TileEntity.h"
 #include "java/Class.h"
 #include "minecraft/world/Container.h"
-#include "nbt/com.mojang.nbt.h"
+#include "nbt/NbtIo.h"
 
 class Player;
 class Random;

@@ -6,7 +6,7 @@
 
 #include "UseAnim.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
-#include "nbt/com.mojang.nbt.h"
+#include "nbt/NbtIo.h"
 
 class Entity;
 class Level;

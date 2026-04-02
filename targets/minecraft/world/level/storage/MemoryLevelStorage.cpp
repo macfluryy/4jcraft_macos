@@ -5,7 +5,7 @@
 
 
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/ConsoleSaveFileIO.h"
-#include "nbt/com.mojang.nbt.h"
+#include "nbt/NbtIo.h"
 
 MemoryLevelStorage::MemoryLevelStorage() {}
 
