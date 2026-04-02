@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "BaseEntityTile.h"
-#include "minecraft/core/net.minecraft.core.h"
+
 
 class Player;
 class Mob;

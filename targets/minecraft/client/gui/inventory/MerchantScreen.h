@@ -4,7 +4,7 @@
 
 #include "AbstractContainerScreen.h"
 #include "minecraft/world/inventory/MerchantMenu.h"
-#include "minecraft/world/item/trading/net.minecraft.world.item.trading.h"
+
 
 class TradeSwitchButton;
 class Inventory;

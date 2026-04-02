@@ -6,7 +6,7 @@
 #include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/util/SmoothFloat.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
+
 
 class Input;
 class Level;

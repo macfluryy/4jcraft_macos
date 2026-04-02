@@ -1,7 +1,7 @@
 
 #include "DemoMode.h"
 
-#include "minecraft/world/level/net.minecraft.world.level.h"
+
 
 DemoMode::DemoMode(Minecraft* minecraft) : SurvivalMode(minecraft) {
     demoHasEnded = false;

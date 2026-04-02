@@ -2,7 +2,7 @@
 
 #include "LevelSummary.h"
 #include "MemoryLevelStorage.h"
-#include "minecraft/world/level/chunk/storage/net.minecraft.world.level.chunk.storage.h"
+
 
 MemoryLevelStorageSource::MemoryLevelStorageSource() {}
 

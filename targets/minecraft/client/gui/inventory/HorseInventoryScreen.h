@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "AbstractContainerScreen.h"
-#include "minecraft/world/entity/animal/net.minecraft.world.entity.animal.h"
+
 
 class Container;
 class EntityHorse;

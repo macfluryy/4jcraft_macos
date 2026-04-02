@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 
-#include "net.minecraft.world.level.h"
-
 class LevelType {
 public:
     static LevelType* levelTypes[16];  // = new LevelType[16];

@@ -12,8 +12,9 @@
 #include "minecraft/commands/CommandsEnum.h"
 #include "minecraft/network/packet/ChatPacket.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
 #include "minecraft/world/inventory/net.minecraft.world.inventory.ContainerListener.h"
+
+
 #include "minecraft/world/level/ChunkPos.h"
 
 class PlayerConnection;

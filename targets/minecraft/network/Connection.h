@@ -14,7 +14,7 @@
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"
 #include "minecraft/network/packet/DisconnectPacket.h"
-#include "minecraft/network/packet/net.minecraft.network.packet.h"
+
 
 class DataInputStream;
 class DataOutputStream;

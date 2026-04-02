@@ -9,7 +9,7 @@
 #include "BiomeCache.h"
 #include "BiomeSource.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
-#include "minecraft/world/level/levelgen/synth/net.minecraft.world.level.levelgen.synth.h"
+
 
 class ChunkPos;
 class Level;

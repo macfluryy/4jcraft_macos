@@ -1,7 +1,7 @@
 #pragma once
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/stats/Achievements.h"
-#include "minecraft/stats/net.minecraft.stats.h"
+
 
 class StatsCounter;
 

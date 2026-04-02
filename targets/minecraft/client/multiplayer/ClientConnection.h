@@ -7,7 +7,7 @@
 
 #include "4J_Storage.h"
 #include "minecraft/network/Connection.h"
-#include "minecraft/network/net.minecraft.network.h"
+
 #include "minecraft/network/packet/DisconnectPacket.h"
 #include "minecraft/network/packet/PacketListener.h"
 #include "minecraft/world/entity/Entity.h"

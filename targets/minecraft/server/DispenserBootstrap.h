@@ -1,6 +1,9 @@
 #pragma once
-#include "minecraft/core/net.minecraft.core.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+
+#include "minecraft/core/BehaviorRegistry.h"
+#include "minecraft/core/ItemDispenseBehaviors.h"
+#include "minecraft/world/item/Item.h"
+#include "minecraft/world/item/PotionItem.h"
 #include "minecraft/world/level/tile/DispenserTile.h"
 #include "minecraft/world/level/tile/LevelEvent.h"
 

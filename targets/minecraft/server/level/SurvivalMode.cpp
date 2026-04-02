@@ -5,10 +5,10 @@
 #include "minecraft/client/ClientConstants.h"
 #include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/client/renderer/LevelRenderer.h"
-#include "minecraft/world/entity/player/net.minecraft.world.entity.player.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
+
+
+
+
 
 SurvivalMode::SurvivalMode(Minecraft* minecraft) : GameMode(minecraft) {
     // 4J - added initialisers

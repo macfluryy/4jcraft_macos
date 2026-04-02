@@ -36,7 +36,7 @@
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
 #include "minecraft/client/renderer/texture/TextureAtlas.h"
 #include "minecraft/client/resources/ResourceLocation.h"
-#include "minecraft/net.minecraft.h"
+
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/Icon.h"
 #include "minecraft/world/effect/MobEffect.h"
@@ -44,17 +44,17 @@
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"
-#include "minecraft/world/food/net.minecraft.world.food.h"
+
 #include "minecraft/world/item/ItemInstance.h"
-#include "minecraft/world/item/net.minecraft.world.item.h"
+
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/PortalTile.h"
 #include "minecraft/world/level/tile/Tile.h"
-#include "minecraft/world/level/tile/net.minecraft.world.level.tile.h"
-#include "minecraft/world/net.minecraft.world.h"
+
+
 #include "strings.h"
 
 ResourceLocation Gui::PUMPKIN_BLUR_LOCATION =

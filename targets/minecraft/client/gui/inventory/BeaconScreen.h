@@ -4,7 +4,7 @@
 
 #include "AbstractContainerScreen.h"
 #include "minecraft/world/inventory/BeaconMenu.h"
-#include "minecraft/world/level/tile/entity/net.minecraft.world.level.tile.entity.h"
+
 
 class BeaconConfirmButton;
 class BeaconCancelButton;

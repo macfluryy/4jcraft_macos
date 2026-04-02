@@ -19,7 +19,7 @@
 #include "minecraft/world/level/TickNextTickData.h"
 #include "minecraft/world/level/TileEventData.h"
 #include "minecraft/world/level/biome/Biome.h"
-#include "minecraft/world/level/net.minecraft.world.level.h"
+
 
 class ServerChunkCache;
 class MinecraftServer;
