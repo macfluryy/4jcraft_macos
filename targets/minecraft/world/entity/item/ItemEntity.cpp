@@ -6,7 +6,7 @@
 #include <numbers>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "SharedConstants.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

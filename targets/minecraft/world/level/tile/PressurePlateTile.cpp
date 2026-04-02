@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Player.h"

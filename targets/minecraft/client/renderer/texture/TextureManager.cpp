@@ -5,8 +5,8 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "app/linux/Linux_App.h"
+#include "app/include/BufferedImage.h"
 #include "Stitcher.h"
 #include "Texture.h"
 #include "java/File.h"

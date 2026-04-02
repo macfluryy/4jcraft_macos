@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "PacketListener.h"
 #include "console_helpers/compression.h"
 #include "java/InputOutputStream/DataInputStream.h"

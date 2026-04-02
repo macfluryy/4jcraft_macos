@@ -4,8 +4,8 @@
 #include <utility>
 
 #include "Facing.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Colours/ColourTable.h"
+#include "app/linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"

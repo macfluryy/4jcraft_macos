@@ -6,7 +6,7 @@
 #include <mutex>
 #include <vector>
 
-#include "Minecraft.Client/Common/App_Defines.h"
+#include "app/common/App_Defines.h"
 #include "console_helpers/C4JThread.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/util/SmoothFloat.h"

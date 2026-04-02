@@ -5,11 +5,11 @@
 
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Linux_UIController.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "app/common/src/Colours/ColourTable.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Linux_UIController.h"
+#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/include/BufferedImage.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/File.h"
 #include "java/InputOutputStream/BufferedReader.h"

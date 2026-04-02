@@ -5,9 +5,9 @@
 #include <algorithm>
 #include <cmath>
 
-#include "Minecraft.Client/Common/App_Defines.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_Defines.h"
+#include "app/common/App_enums.h"
+#include "app/linux/Linux_App.h"
 #include "java/System.h"
 #include "minecraft/world/level/GameRules.h"
 #include "minecraft/world/level/LevelSettings.h"

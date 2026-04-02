@@ -8,8 +8,8 @@
 #include <string>
 #include <utility>
 
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Network/GameNetworkManager.h"
+#include "app/linux/Linux_App.h"
 #include "SparseLightStorage.h"
 #include "java/Class.h"
 #include "java/Random.h"

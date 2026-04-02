@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"

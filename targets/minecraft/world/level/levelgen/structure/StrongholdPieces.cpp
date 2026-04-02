@@ -6,8 +6,8 @@
 #include <memory>
 #include <string>
 
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_enums.h"
+#include "app/linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"

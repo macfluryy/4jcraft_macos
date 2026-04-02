@@ -8,10 +8,10 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "StrongholdPieces.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

@@ -6,8 +6,8 @@
 
 #include <algorithm>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "ServerLevel.h"
 #include "console_helpers/compression.h"
 #include "minecraft/server/MinecraftServer.h"

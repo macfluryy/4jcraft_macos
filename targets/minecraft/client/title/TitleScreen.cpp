@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "platform/sdl2/Render.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/include/BufferedImage.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

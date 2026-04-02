@@ -5,8 +5,8 @@
 #include <algorithm>
 
 #include "IPlatformInput.h"
-#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Console_Debug_enum.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "java/System.h"
 #include "minecraft/client/Minecraft.h"

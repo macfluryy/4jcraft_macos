@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "Button.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "app/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"

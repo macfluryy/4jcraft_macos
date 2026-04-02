@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "AbstractContainerScreen.h"
-#include "Minecraft.Client/Common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
+#include "app/common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/inventory/AbstractContainerMenu.h"
 

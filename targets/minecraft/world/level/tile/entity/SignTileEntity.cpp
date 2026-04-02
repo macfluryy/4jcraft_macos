@@ -2,7 +2,7 @@
 
 #include <wchar.h>
 
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "PlatformTypes.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/network/packet/SignUpdatePacket.h"

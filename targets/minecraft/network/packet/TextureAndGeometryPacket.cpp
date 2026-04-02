@@ -3,8 +3,8 @@
 #include <sstream>
 #include <vector>
 
-#include "Minecraft.Client/Common/Minecraft_Macros.h"
-#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
+#include "app/common/Minecraft_Macros.h"
+#include "app/common/src/DLC/DLCSkinFile.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

@@ -5,10 +5,10 @@
 #include <cmath>
 
 #include "ClientConnection.h"
-#include "Minecraft.Client/Common/src/Tutorial/Tutorial.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialEnum.h"
-#include "Minecraft.Client/Common/src/Tutorial/TutorialMode.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Tutorial/Tutorial.h"
+#include "app/common/src/Tutorial/TutorialEnum.h"
+#include "app/common/src/Tutorial/TutorialMode.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/player/Input.h"

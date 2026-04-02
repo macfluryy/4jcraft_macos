@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "TileEntity.h"
 #include "java/Random.h"
 #include "minecraft/world/Container.h"

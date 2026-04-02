@@ -3,8 +3,8 @@
 #include <assert.h>
 #include <wchar.h>
 
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_enums.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 

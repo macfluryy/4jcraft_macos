@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/System.h"
 #include "minecraft/world/level/chunk/storage/ChunkStorage.h"
 

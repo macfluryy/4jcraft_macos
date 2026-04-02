@@ -7,8 +7,8 @@
 #include <numbers>
 
 #include "MemoryTracker.h"
-#include "Minecraft.Client/Linux/Stubs/DirectXMath/DirectXMath.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "app/linux/Stubs/DirectXMath/DirectXMath.h"
+#include "app/include/stubs.h"
 #include "java/FloatBuffer.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Player.h"

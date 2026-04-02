@@ -1,9 +1,9 @@
 #include "Options.h"
 
 #include "KeyMapping.h"
-#include "Minecraft.Client/Common/src/Audio/SoundEngine.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "app/common/src/Audio/SoundEngine.h"
+#include "app/linux/Linux_App.h"
+#include "app/include/stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/File.h"
 #include "java/InputOutputStream/BufferedReader.h"

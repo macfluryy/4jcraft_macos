@@ -11,8 +11,8 @@
 #include <utility>
 
 #include "IPlatformInput.h"
-#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Console_Debug_enum.h"
+#include "app/linux/Linux_App.h"
 #include "console_helpers/Definitions.h"
 #include "java/File.h"
 #include "java/InputOutputStream/DataInputStream.h"

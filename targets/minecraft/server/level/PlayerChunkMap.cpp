@@ -9,9 +9,9 @@
 #include <unordered_set>
 #include <utility>
 
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
-#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Network/GameNetworkManager.h"
+#include "app/common/src/Network/NetworkPlayerInterface.h"
+#include "app/linux/Linux_App.h"
 #include "ServerChunkCache.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"

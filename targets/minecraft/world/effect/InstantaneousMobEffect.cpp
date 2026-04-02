@@ -1,7 +1,7 @@
 
 #include "minecraft/world/effect/InstantaneousMobEffect.h"
 
-#include "Minecraft.Client/Common/App_enums.h"
+#include "app/common/App_enums.h"
 #include "minecraft/world/effect/MobEffect.h"
 
 InstantenousMobEffect::InstantenousMobEffect(int id, bool isHarmful,

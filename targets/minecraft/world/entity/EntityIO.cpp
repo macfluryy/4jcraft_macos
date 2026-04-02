@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "Entity.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "Painting.h"
 #include "java/Class.h"
 #include "java/JavaIntHash.h"

@@ -14,9 +14,9 @@
 
 #include "EntityIO.h"
 #include "EntityPos.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/common/App_enums.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "SyncedEntityData.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"

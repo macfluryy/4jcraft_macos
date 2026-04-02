@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "Minecraft.Client/Common/src/Network/GameNetworkManager.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/common/src/Network/GameNetworkManager.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/level/ServerChunkCache.h"

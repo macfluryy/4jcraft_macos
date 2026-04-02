@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "GenericStats.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "StatFormatter.h"
 
 class DecimalFormat;

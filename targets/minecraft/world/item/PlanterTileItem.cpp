@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Common/src/Console_Debug_enum.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Console_Debug_enum.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/Facing.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/player/Player.h"

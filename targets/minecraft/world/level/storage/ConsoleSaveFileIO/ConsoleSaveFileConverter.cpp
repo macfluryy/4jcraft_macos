@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/GameRules/GameRuleManager.h"
+#include "app/common/src/GameRules/GameRuleManager.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

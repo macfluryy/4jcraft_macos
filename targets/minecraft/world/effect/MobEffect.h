@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "Minecraft.Client/Common/App_enums.h"
+#include "app/common/App_enums.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"
 
 class Mob;

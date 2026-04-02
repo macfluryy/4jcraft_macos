@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "LevelData.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/File.h"
 #include "minecraft/world/level/chunk/storage/McRegionChunkStorage.h"
 #include "minecraft/world/level/chunk/storage/RegionFileCache.h"

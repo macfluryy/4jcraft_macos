@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/include/SkinBox.h"
+#include "app/include/SkinBox.h"
 #include "Packet.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/network/packet/Packet.h"

@@ -3,9 +3,9 @@
 #include <format>
 #include <utility>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/include/BufferedImage.h"
 #include "SimpleIcon.h"
 #include "StitchedTexture.h"
 #include "Texture.h"

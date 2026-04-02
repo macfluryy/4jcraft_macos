@@ -5,7 +5,7 @@
 #pragma once
 
 #ifdef _WINDOWS64
-#include "Minecraft.Client/Windows64/Windows64_App.h"
+#include "app/windows/Windows64_App.h"
 #else
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #endif

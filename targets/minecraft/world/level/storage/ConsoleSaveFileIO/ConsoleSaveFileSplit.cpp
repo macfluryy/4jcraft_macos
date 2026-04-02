@@ -14,11 +14,11 @@
 #include <utility>
 
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/BuildVer/BuildVer.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/PlatformTime.h"
 #include "console_helpers/PortableFileIO.h"
 #include "console_helpers/StringHelpers.h"

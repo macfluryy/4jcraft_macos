@@ -9,7 +9,7 @@ std::wstring TexturePack::getPath(
         // Make the content package point to to the UPDATE: drive is needed
         wDrive = L"Common\\res\\TitleUpdate\\";
     } else {
-        wDrive = L"Minecraft.Client/Common/";
+        wDrive = L"app/common/";
     }
 
     return wDrive;

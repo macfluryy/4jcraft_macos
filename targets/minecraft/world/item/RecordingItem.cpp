@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Common/App_enums.h"
+#include "app/common/App_enums.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/IconRegister.h"

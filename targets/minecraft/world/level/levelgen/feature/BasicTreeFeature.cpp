@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <cmath>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"

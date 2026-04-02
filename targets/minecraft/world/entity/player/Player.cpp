@@ -20,12 +20,12 @@
 #include <vector>
 
 #include "Inventory.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/App_structs.h"
-#include "Minecraft.Client/Common/Minecraft_Macros.h"
-#include "Minecraft.Client/Common/src/DLC/DLCManager.h"
-#include "Minecraft.Client/Common/src/DLC/DLCSkinFile.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_enums.h"
+#include "app/common/App_structs.h"
+#include "app/common/Minecraft_Macros.h"
+#include "app/common/src/DLC/DLCManager.h"
+#include "app/common/src/DLC/DLCSkinFile.h"
+#include "app/linux/Linux_App.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"

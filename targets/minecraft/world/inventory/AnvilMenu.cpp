@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Abilities.h"

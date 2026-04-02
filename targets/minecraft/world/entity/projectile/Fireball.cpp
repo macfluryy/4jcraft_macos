@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/core/particles/ParticleTypes.h"

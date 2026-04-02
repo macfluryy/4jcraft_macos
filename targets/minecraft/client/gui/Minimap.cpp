@@ -9,9 +9,9 @@
 
 #include "platform/sdl2/Render.h"
 #include "Font.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/Colours/ColourTable.h"
+#include "app/include/BufferedImage.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"

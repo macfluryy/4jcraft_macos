@@ -3,8 +3,8 @@
 #include <list>
 #include <unordered_map>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
 #include "NetherBridgePieces.h"
 #include "java/Class.h"
 #include "java/Random.h"

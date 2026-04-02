@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/Definitions.h"
 #include "java/System.h"
 

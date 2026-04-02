@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "app/linux/Linux_App.h"
+#include "app/include/stubs.h"
 #include "minecraft/client/KeyMapping.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"

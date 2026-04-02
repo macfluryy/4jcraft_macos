@@ -5,10 +5,10 @@
 #include <string>
 
 #include "platform/sdl2/Render.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/XboxStubs.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/Colours/ColourTable.h"
+#include "app/linux/Linux_App.h"
+#include "app/include/XboxStubs.h"
 #include "gl3_loader.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Font.h"

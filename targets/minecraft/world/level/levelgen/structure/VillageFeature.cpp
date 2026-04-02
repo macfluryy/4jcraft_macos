@@ -4,9 +4,9 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
 #include "VillagePieces.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"

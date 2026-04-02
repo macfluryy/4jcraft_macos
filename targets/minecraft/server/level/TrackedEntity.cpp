@@ -10,8 +10,8 @@
 
 #include "4J.Common/4J_Compat.h"
 #include "EntityTracker.h"
-#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/Network/NetworkPlayerInterface.h"
+#include "app/linux/Linux_App.h"
 #include "ServerPlayer.h"
 #include "java/Class.h"
 #include "minecraft/SharedConstants.h"

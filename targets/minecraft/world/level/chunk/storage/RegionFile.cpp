@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <string>
 
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/compression.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

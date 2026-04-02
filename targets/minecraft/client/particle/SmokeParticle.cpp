@@ -1,7 +1,7 @@
 #include "SmokeParticle.h"
 
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/Colours/ColourTable.h"
 #include "java/JavaMath.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/particle/Particle.h"

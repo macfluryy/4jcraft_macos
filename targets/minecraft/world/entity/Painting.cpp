@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/entity/HangingEntity.h"

@@ -7,12 +7,12 @@
 #include <filesystem>
 #include <fstream>
 
-#include "Minecraft.Client/Common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #if defined(__linux__)
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #endif
 #include "java/Random.h"
 #include "minecraft/world/entity/MobCategory.h"

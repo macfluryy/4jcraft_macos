@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "Achievement.h"
-#include "Minecraft.Client/Common/src/Console_Awards_enum.h"
+#include "app/common/src/Console_Awards_enum.h"
 #include "minecraft/world/item/BowItem.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/PotionItem.h"

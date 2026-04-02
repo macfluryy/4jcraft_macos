@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "BiomeSource.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/world/level/biome/Biome.h"
 
 BiomeCache::Block::Block(int x, int z, BiomeCache* parent) {

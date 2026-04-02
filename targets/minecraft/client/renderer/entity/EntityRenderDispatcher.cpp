@@ -34,7 +34,7 @@
 #include "LightningBoltRenderer.h"
 #include "MinecartRenderer.h"
 #include "MinecartSpawnerRenderer.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "MobRenderer.h"
 #include "MushroomCowRenderer.h"
 #include "OcelotRenderer.h"

@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/DyePowderItem.h"

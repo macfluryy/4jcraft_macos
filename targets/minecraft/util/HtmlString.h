@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Common/App_enums.h"
+#include "app/common/App_enums.h"
 
 // 4J: Simple std::string wrapper that includes basic formatting information
 class HtmlString {

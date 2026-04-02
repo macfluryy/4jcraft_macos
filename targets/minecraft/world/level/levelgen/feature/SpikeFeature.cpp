@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/world/entity/boss/enderdragon/EnderCrystal.h"
 #include "minecraft/world/level/Level.h"

@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "Pos.h"
 #include "minecraft/world/entity/player/Inventory.h"
 #include "minecraft/world/entity/player/Player.h"

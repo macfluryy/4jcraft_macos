@@ -4,7 +4,7 @@
 
 #include <format>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Abilities.h"

@@ -29,7 +29,7 @@
 #include <unistd.h>
 #endif
 
-#include "Minecraft.Client/Common/ShutdownManager.h"
+#include "app/common/ShutdownManager.h"
 #include "console_helpers/C4JThread.h"
 
 class Level;

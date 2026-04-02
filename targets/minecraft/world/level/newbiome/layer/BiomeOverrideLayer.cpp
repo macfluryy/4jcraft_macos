@@ -5,10 +5,10 @@
 #include <filesystem>
 #include <fstream>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 #if defined(__linux__)
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #endif
 #include "minecraft/world/level/biome/Biome.h"
 

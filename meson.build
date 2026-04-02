@@ -84,5 +84,5 @@ subdir('targets/platform')
 
 subdir('targets/resources')
 subdir('targets/minecraft')
-subdir('targets/Minecraft.Client')
+subdir('targets/app')
 

@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <mutex>
 
-#include "Minecraft.Client/include/XboxStubs.h"
+#include "app/include/XboxStubs.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
 #if defined(_WIN64) || defined(__linux__)
 // zconf.h defines "typedef unsigned char Byte" which conflicts with the

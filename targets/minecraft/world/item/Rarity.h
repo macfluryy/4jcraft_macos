@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "Minecraft.Client/Common/App_enums.h"
+#include "app/common/App_enums.h"
 
 class Rarity {
 public:

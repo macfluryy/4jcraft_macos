@@ -5,7 +5,7 @@
 #include <memory>
 #include <numbers>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/util/Mth.h"

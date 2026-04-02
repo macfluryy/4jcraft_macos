@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "EntityTracker.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "PlayerChunkMap.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"

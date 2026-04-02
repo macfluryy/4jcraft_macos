@@ -7,8 +7,8 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Common/src/Network/NetworkPlayerInterface.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/common/src/Network/NetworkPlayerInterface.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"
 #include "TrackedEntity.h"

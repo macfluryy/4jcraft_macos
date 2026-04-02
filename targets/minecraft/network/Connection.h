@@ -7,8 +7,8 @@
 #include <queue>
 #include <string>
 
-#include "Minecraft.Client/Common/src/Network/Socket.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/common/src/Network/Socket.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/C4JThread.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

@@ -4,7 +4,7 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "Pos.h"
 #include "SharedConstants.h"
 #include "java/Random.h"

@@ -13,7 +13,7 @@
 #include <utility>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/Class.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

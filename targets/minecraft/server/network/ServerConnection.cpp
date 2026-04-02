@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "PendingConnection.h"
 #include "PlayerConnection.h"
 #include "console_helpers/StringHelpers.h"

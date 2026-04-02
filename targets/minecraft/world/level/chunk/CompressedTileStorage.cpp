@@ -7,8 +7,8 @@
 
 #include <vector>
 
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
-#include "Minecraft.Client/include/NetTypes.h"
+#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/include/NetTypes.h"
 #include "console_helpers/Definitions.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

@@ -7,9 +7,9 @@
 #include <vector>
 
 #include "platform/sdl2/Render.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Common/src/Colours/ColourTable.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_enums.h"
+#include "app/common/src/Colours/ColourTable.h"
+#include "app/linux/Linux_App.h"
 #include "Tesselator.h"
 #include "Textures.h"
 #include "TileRenderer.h"

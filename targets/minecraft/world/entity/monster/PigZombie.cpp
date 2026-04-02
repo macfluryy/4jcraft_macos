@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "java/Random.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/Difficulty.h"

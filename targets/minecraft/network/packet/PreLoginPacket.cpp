@@ -3,10 +3,10 @@
 #include <cstdint>
 #include <cstring>
 
-#include "Minecraft.Client/Common/src/BuildVer/BuildVer.h"
+#include "app/common/src/BuildVer/BuildVer.h"
 #include "platform/IPlatformNetwork.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/Linux/Stubs/winapi_stubs.h"
+#include "app/linux/Linux_App.h"
+#include "app/linux/Stubs/winapi_stubs.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

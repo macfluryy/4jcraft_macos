@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "Minecraft.Client/Common/Minecraft_Macros.h"
+#include "app/common/Minecraft_Macros.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

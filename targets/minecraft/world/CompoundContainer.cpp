@@ -1,6 +1,6 @@
 #include "CompoundContainer.h"
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "minecraft/world/Container.h"
 

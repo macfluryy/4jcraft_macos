@@ -6,8 +6,8 @@
 
 #include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
-#include "Minecraft.Client/Common/App_enums.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/common/App_enums.h"
+#include "app/linux/Linux_App.h"
 #include "gl3_loader.h"
 #include "java/Class.h"
 #include "java/Random.h"

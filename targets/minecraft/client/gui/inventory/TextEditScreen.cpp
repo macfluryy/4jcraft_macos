@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "platform/sdl2/Render.h"
-#include "Minecraft.Client/include/stubs.h"
+#include "app/include/stubs.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"

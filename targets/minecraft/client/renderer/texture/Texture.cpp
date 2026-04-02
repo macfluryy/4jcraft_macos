@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "platform/sdl2/Render.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/BufferedImage.h"
+#include "app/linux/Linux_App.h"
+#include "app/include/BufferedImage.h"
 #include "TextureManager.h"
 #include "java/Buffer.h"
 #include "java/ByteBuffer.h"

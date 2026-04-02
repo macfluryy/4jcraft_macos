@@ -2,8 +2,8 @@
 #include <string>
 
 #include "AbstractTexturePack.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
-#include "Minecraft.Client/include/stdafx.h"
+#include "app/linux/Linux_App.h"
+#include "app/include/stdafx.h"
 #include "java/InputOutputStream/InputStream.h"
 #include "strings.h"
 

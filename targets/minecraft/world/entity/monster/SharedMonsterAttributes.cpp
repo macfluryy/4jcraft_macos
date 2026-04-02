@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "minecraft/world/entity/ai/attributes/Attribute.h"
 #include "minecraft/world/entity/ai/attributes/AttributeInstance.h"
 #include "minecraft/world/entity/ai/attributes/AttributeModifier.h"

@@ -8,7 +8,7 @@
 #include <string.h>
 
 #include "4J.Common/4J_Compat.h"
-#include "Minecraft.Client/Linux/Linux_App.h"
+#include "app/linux/Linux_App.h"
 #include "Recipes.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"

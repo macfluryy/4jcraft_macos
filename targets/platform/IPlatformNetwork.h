@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "../4J.Common/4J_Compat.h"
-#include "Minecraft.Client/include/NetTypes.h"
+#include "app/include/NetTypes.h"
 
 #ifndef VER_NETWORK
 #define VER_NETWORK 560
