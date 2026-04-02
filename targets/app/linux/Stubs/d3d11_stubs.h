@@ -3,10 +3,7 @@
 
 #pragma once
 
-#include "app/linux/Stubs/DirectXMath/DirectXMath.h"
 #include "winapi_stubs.h"
-
-using namespace DirectX;
 
 typedef struct _RECT {
     LONG left;

@@ -7,7 +7,6 @@ platform_dep = declare_dependency(
 # SDL2-based platform implementations (formerly 4J.* modules)
 _sdl2 = dependency('sdl2')
 _threads = dependency('threads')
-_glm = dependency('glm')
 _defs = []
 
 if get_option('renderer') == 'gles'
@@ -28,7 +27,7 @@ sdl2_sources = files(
 lib_platform_sdl2 = static_library('platform_sdl2',
   sdl2_sources,
   include_directories: [platform_inc, include_directories('sdl2')],
-  dependencies: [_sdl2, _gl, _threads, _glm, stb_dep],
+  dependencies: [_sdl2, _gl, _threads, glm_dep, stb_dep],
   cpp_args: _defs + global_cpp_args + global_cpp_defs,
 )
 
@@ -37,7 +36,7 @@ lib_platform_sdl2 = static_library('platform_sdl2',
 render_dep = declare_dependency(
   link_with: lib_platform_sdl2,
   include_directories: [platform_inc, include_directories('sdl2')],
-  dependencies: [_sdl2, _gl, _threads, _glm],
+  dependencies: [_sdl2, _gl, _threads, glm_dep],
 )
 input_dep = render_dep
 profile_dep = render_dep

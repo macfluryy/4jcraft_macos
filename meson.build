@@ -71,6 +71,7 @@ add_project_arguments(global_cpp_args, language: 'cpp')
 sdl2_dep = dependency('sdl2')
 thread_dep = dependency('threads')
 dl_dep = cc.find_library('dl', required: true)
+glm_dep = dependency('glm')
 
 stb = subproject('stb').get_variable('stb_inc')
 stb_dep = declare_dependency(include_directories: stb)

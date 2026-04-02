@@ -1,13 +1,13 @@
 #include "Camera.h"
 
 #include <GL/gl.h>
+#include <glm/glm.hpp>
 #include <math.h>
 #include <string.h>
 
 #include <numbers>
 
 #include "MemoryTracker.h"
-#include "app/linux/Stubs/DirectXMath/DirectXMath.h"
 #include "app/include/stubs.h"
 #include "java/FloatBuffer.h"
 #include "minecraft/world/entity/LivingEntity.h"
@@ -54,18 +54,16 @@ zPlayerOffs = position->get(2);
     // this is just working out how to get a (0,0,0) point in clip space to pass
     // into the inverted combined model/view/projection matrix, so we just need
     // to get this matrix and get its translation as an equivalent.
-    DirectX::XMMATRIX _modelview, _proj, _final, _invert;
-    DirectX::XMVECTOR _det;
-    DirectX::XMFLOAT4 trans;
+    glm::mat4 _modelview, _proj, _final, _invert;
+    glm::vec4 trans;
 
     memcpy(&_modelview, modelview->_getDataPointer(), 64);
     memcpy(&_proj, projection->_getDataPointer(), 64);
 
-    _final = XMMatrixMultiply(_modelview, _proj);
-    _det = XMMatrixDeterminant(_final);
-    _invert = XMMatrixInverse(&_det, _final);
+    _final = _proj * _modelview;  // GLM is column-major; reverse multiply order
+    _invert = glm::inverse(_final);
 
-    XMStoreFloat4(&trans, _invert.r[3]);
+    trans = _invert[3];  // column 3 = translation column in column-major
 
     xPlayerOffs = trans.x / trans.w;
     yPlayerOffs = trans.y / trans.w;
