@@ -81,7 +81,7 @@
 #include "app/common/src/UI/All Platforms/ArchiveFile.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/UIScene_PauseMenu.h"
 #include "Minecraft_Macros.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
 #include "console_helpers/StringHelpers.h"
 #include "console_helpers/compression.h"
 #include "minecraft/client/User.h"
@@ -203,7 +203,7 @@ CMinecraftApp::CMinecraftApp() {
     m_iTotalDLC = 0;
     m_iTotalDLCInstalled = 0;
     mfTrialPausedTime = 0.0f;
-    m_uiAutosaveTimer = 0;
+    m_uiAutosaveTimer = {};
     memset(m_pszUniqueMapName, 0, 14);
 
     m_bNewDLCAvailable = false;
@@ -4383,15 +4383,11 @@ void CMinecraftApp::HandleDLC(DLCPack* pack) {
 // Desc: Initializes the timer variables
 //-------------------------------------------------------------------------------------
 void CMinecraftApp::InitTime() {
-    // Get the frequency of the timer
-    auto freq = PlatformTime::QueryPerformanceFrequency();
-    m_Time.fSecsPerTick = 1.0f / static_cast<float>(freq);
-
     // Save the start time
-    m_Time.qwTime = PlatformTime::QueryPerformanceCounter();
+    m_Time.qwTime = time_util::clock::now();
 
     // Zero out the elapsed and total time
-    m_Time.qwAppTime = 0;
+    m_Time.qwAppTime = {};
     m_Time.fAppTime = 0.0f;
     m_Time.fElapsedTime = 0.0f;
 }
@@ -4401,15 +4397,14 @@ void CMinecraftApp::InitTime() {
 // Desc: Updates the elapsed time since our last frame.
 //-------------------------------------------------------------------------------------
 void CMinecraftApp::UpdateTime() {
-    auto qwNewTime = PlatformTime::QueryPerformanceCounter();
+    auto qwNewTime = time_util::clock::now();
     auto qwDeltaTime = qwNewTime - m_Time.qwTime;
 
     m_Time.qwAppTime += qwDeltaTime;
     m_Time.qwTime = qwNewTime;
 
-    m_Time.fElapsedTime = m_Time.fSecsPerTick * static_cast<float>(qwDeltaTime);
-    m_Time.fAppTime =
-        m_Time.fSecsPerTick * static_cast<float>(m_Time.qwAppTime);
+    m_Time.fElapsedTime = std::chrono::duration<float>(qwDeltaTime).count();
+    m_Time.fAppTime = std::chrono::duration<float>(m_Time.qwAppTime).count();
 }
 
 bool CMinecraftApp::isXuidNotch(PlayerUID xuid) {
@@ -7175,18 +7170,18 @@ int CMinecraftApp::GetDLCInfoTexturesOffersCount() {
 
 // AUTOSAVE
 void CMinecraftApp::SetAutosaveTimerTime(void) {
+    int settingValue = GetGameSettings(ProfileManager.GetPrimaryPad(), eGameSetting_Autosave);
     m_uiAutosaveTimer =
-        PlatformTime::GetTickCount() +
-        GetGameSettings(ProfileManager.GetPrimaryPad(), eGameSetting_Autosave) *
-            1000 * 60 * 15;
-}  // value x 15 to get mins, x60 for secs
+        time_util::clock::now() +
+        std::chrono::minutes(settingValue * 15);
+}  // value x 15 to get mins
 
 bool CMinecraftApp::AutosaveDue(void) {
-    return (PlatformTime::GetTickCount() > m_uiAutosaveTimer);
+    return (time_util::clock::now() > m_uiAutosaveTimer);
 }
 
-unsigned int CMinecraftApp::SecondsToAutosave() {
-    return (m_uiAutosaveTimer - PlatformTime::GetTickCount()) / 1000;
+int64_t CMinecraftApp::SecondsToAutosave() {
+    return std::chrono::duration_cast<std::chrono::seconds>(m_uiAutosaveTimer - time_util::clock::now()).count();
 }
 
 void CMinecraftApp::SetTrialTimerStart(void) {

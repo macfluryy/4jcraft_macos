@@ -1,5 +1,6 @@
 #pragma once
 // using namespace std;
+#include <chrono>
 #include <cstdint>
 #include <memory>
 #include <ranges>
@@ -7,6 +8,8 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
+#include "console_helpers/Timer.h"
 
 #include "app/common/src/Tutorial/Constraints/TutorialConstraint.h"
 #include "app/common/src/Tutorial/Hints/TutorialHint.h"
@@ -87,7 +90,7 @@ private:
     bool m_bSceneIsSplitscreen;
 
     bool m_bHasTickedOnce;
-    int m_firstTickTime;
+    time_util::time_point m_firstTickTime;
 
 protected:
     std::unordered_map<int, TutorialMessage*> messages;
@@ -108,8 +111,8 @@ protected:
     // D3DXVECTOR3 m_OriginalPosition;
 
 public:
-    std::uint32_t lastMessageTime;
-    std::uint32_t m_lastHintDisplayedTime;
+    time_util::time_point lastMessageTime;
+    time_util::time_point m_lastHintDisplayedTime;
 
 private:
     PopupMessageDetails* m_lastMessage;

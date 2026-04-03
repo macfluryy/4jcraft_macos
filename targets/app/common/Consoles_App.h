@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <mutex>
 
+#include "console_helpers/Timer.h"
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Storage.h"
 
@@ -610,12 +611,11 @@ private:
     // Trial timer
     float m_fTrialTimerStart, mfTrialPausedTime;
     typedef struct TimeInfo {
-        std::int64_t qwTime;
-        std::int64_t qwAppTime;
+        time_util::time_point qwTime;
+        time_util::clock::duration qwAppTime{};
 
         float fAppTime;
         float fElapsedTime;
-        float fSecsPerTick;
     } TIMEINFO;
 
     TimeInfo m_Time;
@@ -749,10 +749,10 @@ public:
 public:
     void SetAutosaveTimerTime(void);
     bool AutosaveDue(void);
-    unsigned int SecondsToAutosave();
+    int64_t SecondsToAutosave();
 
 private:
-    unsigned int m_uiAutosaveTimer;
+    time_util::time_point m_uiAutosaveTimer;
     unsigned int m_uiOpacityCountDown[XUSER_MAX_COUNT];
 
     // DLC

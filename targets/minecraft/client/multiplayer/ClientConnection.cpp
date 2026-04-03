@@ -35,7 +35,7 @@
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "MultiPlayerLevel.h"
 #include "ReceivingLevelScreen.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
@@ -3575,8 +3575,8 @@ void ClientConnection::checkDeferredEntityLinkPackets(int newEntityId) {
         bool remove = false;
 
         // Only consider recently deferred packets
-        int tickInterval =
-            PlatformTime::GetTickCount() - deferred->m_recievedTick;
+        auto tickInterval =
+            std::chrono::duration_cast<std::chrono::milliseconds>(time_util::clock::now() - deferred->m_recievedTick).count();
         if (tickInterval < MAX_ENTITY_LINK_DEFERRAL_INTERVAL) {
             // Note: we assume it's the destination entity
             if (deferred->m_packet->destId == newEntityId) {
@@ -3599,6 +3599,6 @@ void ClientConnection::checkDeferredEntityLinkPackets(int newEntityId) {
 
 ClientConnection::DeferredEntityLinkPacket::DeferredEntityLinkPacket(
     std::shared_ptr<SetEntityLinkPacket> packet) {
-    m_recievedTick = PlatformTime::GetTickCount();
+    m_recievedTick = time_util::clock::now();
     m_packet = packet;
 }

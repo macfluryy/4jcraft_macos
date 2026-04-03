@@ -39,8 +39,8 @@
 #include "UIFontData.h"
 #include "XboxStubs.h"
 #include "console_helpers/C4JThread.h"
-#include "console_helpers/PerformanceTimer.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
+
 #include "console_helpers/StringHelpers.h"
 
 #include "java/System.h"
@@ -235,7 +235,7 @@ UIController::UIController() {
         m_bMenuToBeClosed[i] = false;
 
         for (unsigned int key = 0; key <= ACTION_MAX_MENU; ++key) {
-            m_actionRepeatTimer[i][key] = 0;
+            m_actionRepeatTimer[i][key] = {};
         }
     }
 
@@ -627,7 +627,6 @@ void UIController::ReloadSkin() {
 
     m_reloadSkinThread =
         new C4JThread(reloadSkinThreadProc, (void*)this, "Reload skin thread");
-    m_reloadSkinThread->setProcessor(CPU_CORE_UI_SCENE);
 
     // Navigate to the timer scene so that we can display something while the
     // loading is happening
@@ -776,19 +775,19 @@ void UIController::handleKeyPress(unsigned int iPad, unsigned int key) {
     if (pressed) {
         // Start repeat timer
         m_actionRepeatTimer[iPad][key] =
-            PlatformTime::GetTickCount() + UI_REPEAT_KEY_DELAY_MS;
+            time_util::clock::now() + std::chrono::milliseconds(UI_REPEAT_KEY_DELAY_MS);
     } else if (released) {
         // Stop repeat timer
-        m_actionRepeatTimer[iPad][key] = 0;
+        m_actionRepeatTimer[iPad][key] = {};
     } else if (down) {
         // Check is enough time has elapsed to be a repeat key
-        std::uint32_t currentTime = PlatformTime::GetTickCount();
-        if (m_actionRepeatTimer[iPad][key] > 0 &&
-            currentTime > m_actionRepeatTimer[iPad][key]) {
+        auto now = time_util::clock::now();
+        if (m_actionRepeatTimer[iPad][key] != time_util::time_point{} &&
+            now > m_actionRepeatTimer[iPad][key]) {
             repeat = true;
             pressed = true;
             m_actionRepeatTimer[iPad][key] =
-                currentTime + UI_REPEAT_KEY_REPEAT_RATE_MS;
+                now + std::chrono::milliseconds(UI_REPEAT_KEY_REPEAT_RATE_MS);
         }
     }
 
@@ -1275,7 +1274,7 @@ bool UIController::NavigateToScene(int iPad, EUIScene scene, void* initData,
         }
     }
 
-    PerformanceTimer timer;
+    time_util::Timer timer;
 
     bool success;
     {
@@ -1287,7 +1286,8 @@ bool UIController::NavigateToScene(int iPad, EUIScene scene, void* initData,
             setFullscreenMenuDisplayed(true);
     }
 
-    timer.PrintElapsedTime(L"Navigate to scene");
+    std::println(stderr, "TIMER: Navigate to scene: Elapsed time {:.6f}",
+                 timer.elapsed_seconds());
 
     return success;
     // return true;
@@ -1404,9 +1404,8 @@ UIScene* UIController::GetTopScene(int iPad, EUILayer layer, EUIGroup group) {
 
 size_t UIController::RegisterForCallbackId(UIScene* scene) {
     std::lock_guard<std::mutex> lock(m_registeredCallbackScenesCS);
-    size_t newId = PlatformTime::GetTickCount();
-    newId &= 0xFFFFFF;  // Chop off the top byte, we don't need any more
-                        // accuracy than that
+    static std::atomic<std::uint32_t> s_nextId{1};
+    size_t newId = s_nextId.fetch_add(1, std::memory_order_relaxed) & 0xFFFFFF;
     newId |= (scene->getSceneType()
               << 24);  // Add in the scene's type to help keep this unique
     m_registeredCallbackScenes[newId] = scene;

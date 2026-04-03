@@ -8,6 +8,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "console_helpers/Timer.h"
+
 #ifdef __linux__
 #include "app/linux/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
@@ -60,7 +62,7 @@ private:
         300;  // How long from press until the first repeat
     static const int UI_REPEAT_KEY_REPEAT_RATE_MS =
         100;  // How long in between repeats
-    std::uint32_t m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU + 1];
+    time_util::time_point m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU + 1];
 
     float m_fScreenWidth;
     float m_fScreenHeight;

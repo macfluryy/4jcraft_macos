@@ -1,8 +1,6 @@
 console_helpers_sources = files(
     'src/C4JThread.cpp',
-    'src/PerformanceTimer.cpp',
     'src/StringHelpers.cpp',
-    'src/ThreadName.cpp',
     'src/compression.cpp',
 )
 

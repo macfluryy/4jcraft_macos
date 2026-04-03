@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "console_helpers/Timer.h"
 #include "platform/sdl2/Storage.h"
 #include "minecraft/network/Connection.h"
 
@@ -216,7 +217,7 @@ private:
     // 4J: Entity link packet deferred
     class DeferredEntityLinkPacket {
     public:
-        uint32_t m_recievedTick;
+        time_util::time_point m_recievedTick;
         std::shared_ptr<SetEntityLinkPacket> m_packet;
 
         DeferredEntityLinkPacket(std::shared_ptr<SetEntityLinkPacket> packet);

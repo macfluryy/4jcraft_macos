@@ -25,7 +25,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "TutorialMessage.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
 #include "console_helpers/StringHelpers.h"
 #include "java/Class.h"
 #include "minecraft/client/Minecraft.h"
@@ -397,14 +397,14 @@ Tutorial::Tutorial(int iPad, bool isFullTutorial /*= false*/) : m_iPad(iPad) {
     m_UIScene = nullptr;
     m_allowShow = true;
     m_bHasTickedOnce = false;
-    m_firstTickTime = 0;
+    m_firstTickTime = {};
 
     // 4jcraft added, not initialized
     m_bSceneIsSplitscreen = false;
 
     m_lastMessage = nullptr;
 
-    lastMessageTime = 0;
+    lastMessageTime = {};
     m_iTaskReminders = 0;
     m_lastMessageState = e_Tutorial_State_Gameplay;
 
@@ -2079,10 +2079,10 @@ void Tutorial::tick() {
     // Don't do anything for the first 2 seconds so that the loading screen is
     // gone
     if (!m_bHasTickedOnce) {
-        int time = PlatformTime::GetTickCount();
-        if (m_firstTickTime == 0) {
-            m_firstTickTime = time;
-        } else if (time - m_firstTickTime > 1500) {
+        auto now = time_util::clock::now();
+        if (m_firstTickTime == time_util::time_point{}) {
+            m_firstTickTime = now;
+        } else if (now - m_firstTickTime > std::chrono::milliseconds(1500)) {
             m_bHasTickedOnce = true;
         }
     }
@@ -2132,8 +2132,8 @@ void Tutorial::tick() {
     if (!m_allowShow) {
         if (currentTask[m_CurrentState] != nullptr &&
             (!currentTask[m_CurrentState]->AllowFade() ||
-             (lastMessageTime + m_iTutorialDisplayMessageTime) >
-                 PlatformTime::GetTickCount())) {
+             (lastMessageTime + std::chrono::milliseconds(m_iTutorialDisplayMessageTime)) >
+                 time_util::clock::now())) {
             uiTempDisabled = true;
         }
         ui.SetTutorialVisible(m_iPad, false);
@@ -2153,8 +2153,8 @@ void Tutorial::tick() {
     if (ui.IsPauseMenuDisplayed(m_iPad)) {
         if (currentTask[m_CurrentState] != nullptr &&
             (!currentTask[m_CurrentState]->AllowFade() ||
-             (lastMessageTime + m_iTutorialDisplayMessageTime) >
-                 PlatformTime::GetTickCount())) {
+             (lastMessageTime + std::chrono::milliseconds(m_iTutorialDisplayMessageTime)) >
+                 time_util::clock::now())) {
             uiTempDisabled = true;
         }
         ui.SetTutorialVisible(m_iPad, false);
@@ -2162,7 +2162,7 @@ void Tutorial::tick() {
     }
     if (uiTempDisabled) {
         ui.SetTutorialVisible(m_iPad, true);
-        lastMessageTime = PlatformTime::GetTickCount();
+        lastMessageTime = time_util::clock::now();
         uiTempDisabled = false;
     }
 
@@ -2233,8 +2233,8 @@ void Tutorial::tick() {
                 isCurrentTask = false;
                 if ((!task->ShowMinimumTime() ||
                      (task->hasBeenActivated() &&
-                      (lastMessageTime + m_iTutorialMinimumDisplayMessageTime) <
-                          PlatformTime::GetTickCount())) &&
+                      (lastMessageTime + std::chrono::milliseconds(m_iTutorialMinimumDisplayMessageTime)) <
+                          time_util::clock::now())) &&
                     task->isCompleted()) {
                     eTutorial_CompletionAction compAction =
                         task->getCompletionAction();
@@ -2324,8 +2324,8 @@ void Tutorial::tick() {
                 }
                 if (task != nullptr && task->ShowMinimumTime() &&
                     task->hasBeenActivated() &&
-                    (lastMessageTime + m_iTutorialMinimumDisplayMessageTime) <
-                        PlatformTime::GetTickCount()) {
+                    (lastMessageTime + std::chrono::milliseconds(m_iTutorialMinimumDisplayMessageTime)) <
+                        time_util::clock::now()) {
                     task->setShownForMinimumTime();
 
                     if (!m_hintDisplayed) {
@@ -2393,15 +2393,15 @@ void Tutorial::tick() {
         }
     }
 
-    if (m_hintDisplayed && (lastMessageTime + m_iTutorialDisplayMessageTime) <
-                               PlatformTime::GetTickCount()) {
+    if (m_hintDisplayed && (lastMessageTime + std::chrono::milliseconds(m_iTutorialDisplayMessageTime)) <
+                               time_util::clock::now()) {
         m_hintDisplayed = false;
     }
 
     if (currentFailedConstraint[m_CurrentState] == nullptr &&
         currentTask[m_CurrentState] != nullptr && (m_iTaskReminders != 0) &&
-        (lastMessageTime + (m_iTaskReminders * m_iTutorialReminderTime)) <
-            PlatformTime::GetTickCount()) {
+        (lastMessageTime + std::chrono::milliseconds(m_iTaskReminders * m_iTutorialReminderTime)) <
+            time_util::clock::now()) {
         // Reminder
         PopupMessageDetails* message = new PopupMessageDetails();
         message->m_messageId = currentTask[m_CurrentState]->getDescriptionId();
@@ -2429,8 +2429,8 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         m_lastMessageState == m_CurrentState &&
         message->isSameContent(m_lastMessage) &&
         (!message->m_isReminder ||
-         ((lastMessageTime + m_iTutorialReminderTime) >
-              PlatformTime::GetTickCount() &&
+         ((lastMessageTime + std::chrono::milliseconds(m_iTutorialReminderTime)) >
+              time_util::clock::now() &&
           message->m_isReminder))) {
         delete message;
         return false;
@@ -2441,7 +2441,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
         m_lastMessageState = m_CurrentState;
 
         if (!message->m_replaceCurrent)
-            lastMessageTime = PlatformTime::GetTickCount();
+            lastMessageTime = time_util::clock::now();
 
         std::wstring text;
         if (!message->m_messageString.empty()) {
@@ -2501,7 +2501,7 @@ bool Tutorial::setMessage(PopupMessageDetails* message) {
     } else if ((m_lastMessage != nullptr &&
                 m_lastMessage->m_messageId !=
                     -1))  //&& (lastMessageTime + m_iTutorialReminderTime ) >
-                          // PlatformTime::GetTickCount() )
+                          // time_util::tick_count32() )
     {
         // This should cause the popup to dissappear
         TutorialPopupInfo popupInfo;
@@ -2524,17 +2524,17 @@ bool Tutorial::setMessage(TutorialHint* hint, PopupMessageDetails* message) {
                     app.GetGameSettings(m_iPad, eGameSetting_DisplayHUD));
 
     bool messageShown = false;
-    std::uint32_t time = PlatformTime::GetTickCount();
+    auto now = time_util::clock::now();
     if (message != nullptr && (message->m_forceDisplay || hintsOn) &&
         (!message->m_delay ||
          ((m_hintDisplayed &&
-           (time - m_lastHintDisplayedTime) > m_iTutorialHintDelayTime) ||
+           (now - m_lastHintDisplayedTime) > std::chrono::milliseconds(m_iTutorialHintDelayTime)) ||
           (!m_hintDisplayed &&
-           (time - lastMessageTime) > m_iTutorialMinimumDisplayMessageTime)))) {
+           (now - lastMessageTime) > std::chrono::milliseconds(m_iTutorialMinimumDisplayMessageTime))))) {
         messageShown = setMessage(message);
 
         if (messageShown) {
-            m_lastHintDisplayedTime = time;
+            m_lastHintDisplayedTime = now;
             m_hintDisplayed = true;
             if (hint != nullptr) setHintCompleted(hint);
         }
@@ -2559,8 +2559,8 @@ void Tutorial::showTutorialPopup(bool show) {
     if (!show) {
         if (currentTask[m_CurrentState] != nullptr &&
             (!currentTask[m_CurrentState]->AllowFade() ||
-             (lastMessageTime + m_iTutorialDisplayMessageTime) >
-                 PlatformTime::GetTickCount())) {
+             (lastMessageTime + std::chrono::milliseconds(m_iTutorialDisplayMessageTime)) >
+                 time_util::clock::now())) {
             uiTempDisabled = true;
         }
         ui.SetTutorialVisible(m_iPad, show);

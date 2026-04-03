@@ -7,7 +7,7 @@
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/MobCategory.h"
@@ -102,8 +102,8 @@ RandomLevelSource::~RandomLevelSource() {
 }
 
 int g_numPrepareHeightCalls = 0;
-std::int64_t g_totalPrepareHeightsTime = 0;
-std::int64_t g_averagePrepareHeightsTime = 0;
+time_util::clock::duration g_totalPrepareHeightsTime{};
+time_util::clock::duration g_averagePrepareHeightsTime{};
 
 #if defined(_LARGE_WORLDS)
 
@@ -243,7 +243,6 @@ float RandomLevelSource::getHeightFalloff(int xxx, int zzz, int* pEMin) {
 
 void RandomLevelSource::prepareHeights(int xOffs, int zOffs,
                                        std::vector<uint8_t>& blocks) {
-    std::int64_t startTime;
     int xChunks = 16 / CHUNK_WIDTH;
     int yChunks = Level::genDepth / CHUNK_HEIGHT;
     int waterHeight = level->seaLevel;
@@ -265,7 +264,7 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs,
     buffer = getHeights(buffer, xOffs * xChunks, 0, zOffs * xChunks, xSize,
                         ySize, zSize, biomes);
 
-    startTime = PlatformTime::QueryPerformanceCounter();
+    time_util::Timer timer;
     for (int xc = 0; xc < xChunks; xc++) {
         for (int zc = 0; zc < xChunks; zc++) {
             for (int yc = 0; yc < yChunks; yc++) {
@@ -377,10 +376,8 @@ void RandomLevelSource::prepareHeights(int xOffs, int zOffs,
             }
         }
     }
-    auto endTime = PlatformTime::QueryPerformanceCounter();
-    auto timeInFunc = endTime - startTime;
     g_numPrepareHeightCalls++;
-    g_totalPrepareHeightsTime += timeInFunc;
+    g_totalPrepareHeightsTime += timer.elapsed();
     g_averagePrepareHeightsTime =
         g_totalPrepareHeightsTime / g_numPrepareHeightCalls;
 }

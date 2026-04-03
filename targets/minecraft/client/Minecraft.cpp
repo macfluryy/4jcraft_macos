@@ -271,7 +271,6 @@ Minecraft::Minecraft(Component* mouseComponent, Canvas* parent,
     levelTickEventQueue =
         new C4JThread::EventQueue(levelTickUpdateFunc, levelTickThreadInitFunc,
                                   "LevelTick_EventQueuePoll");
-    levelTickEventQueue->setProcessor(3);
     levelTickEventQueue->setPriority(C4JThread::ThreadPriority::Normal);
 #endif
 }
@@ -1146,7 +1145,7 @@ void Minecraft::run_middle() {
                                         }
 #endif
                                     } else {
-                                        unsigned int uiTimeToAutosave =
+                                        int64_t uiTimeToAutosave =
                                             app.SecondsToAutosave();
 
                                         if (uiTimeToAutosave < 6) {
@@ -3960,7 +3959,7 @@ void Minecraft::fileDownloaded(const std::wstring& name, File* file) {
 std::wstring Minecraft::gatherStats1() {
     // return levelRenderer->gatherStats1();
     return L"Time to autosave: " +
-           _toString<unsigned int>(app.SecondsToAutosave()) + L"s";
+           _toString<int64_t>(app.SecondsToAutosave()) + L"s";
 }
 
 std::wstring Minecraft::gatherStats2() {

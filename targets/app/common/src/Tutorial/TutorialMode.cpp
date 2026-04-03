@@ -63,7 +63,7 @@ void TutorialMode::tick() {
 
     /*
     if( tutorial.m_allTutorialsComplete && (tutorial.lastMessageTime +
-    m_iTutorialDisplayMessageTime) < PlatformTime::GetTickCount() )
+    m_iTutorialDisplayMessageTime) < time_util::tick_count32() )
     {
             // Exit tutorial
             minecraft->gameMode = new SurvivalMode( this );

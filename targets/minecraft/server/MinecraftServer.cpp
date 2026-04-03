@@ -23,7 +23,7 @@
 #include "app/linux/Linux_App.h"
 #include "PlayerList.h"
 #include "Settings.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
 #include "java/Class.h"
 #include "java/File.h"
 #include "java/InputOutputStream/DataOutputStream.h"
@@ -102,7 +102,7 @@ int64_t MinecraftServer::s_tickStartTime = 0;
 std::vector<INetworkPlayer*> MinecraftServer::s_sentTo;
 #else
 int MinecraftServer::s_slowQueuePlayerIndex = 0;
-int MinecraftServer::s_slowQueueLastTime = 0;
+time_util::time_point MinecraftServer::s_slowQueueLastTime = {};
 bool MinecraftServer::s_slowQueuePacketSent = false;
 #endif
 
@@ -528,7 +528,6 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
         new C4JThread(runPostUpdate, this, "Post processing", 256 * 1024);
 
     m_postUpdateTerminate = false;
-    m_postUpdateThread->setProcessor(CPU_CORE_POST_PROCESSING);
     m_postUpdateThread->setPriority(C4JThread::ThreadPriority::AboveNormal);
     m_postUpdateThread->run();
 
@@ -858,10 +857,7 @@ void MinecraftServer::saveGameRules() {
 
 void MinecraftServer::Suspend() {
     m_suspending = true;
-    // Get the frequency of the timer
-    float fElapsedTime = 0.0f;
-    // Save the start time
-    auto qwTime = PlatformTime::QueryPerformanceCounter();
+    time_util::Timer timer;
     if (m_bLoaded && (!StorageManager.GetSaveDisabled())) {
         if (players != nullptr) {
             players->saveAll(nullptr);
@@ -880,13 +876,10 @@ void MinecraftServer::Suspend() {
             levels[0]->saveToDisc(nullptr, true);
         }
     }
-    auto qwNewTime = PlatformTime::QueryPerformanceCounter();
-
-    fElapsedTime =
-        static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
 
     m_suspending = false;
-    app.DebugPrintf("Suspend server: Elapsed time %f\n", fElapsedTime);
+    app.DebugPrintf("Suspend server: Elapsed time %f\n",
+                    static_cast<float>(timer.elapsed_seconds()));
 }
 
 bool MinecraftServer::IsSuspending() { return m_suspending; }
@@ -1644,9 +1637,9 @@ void MinecraftServer::chunkPacketManagement_PostTick() {}
 bool MinecraftServer::chunkPacketManagement_CanSendTo(INetworkPlayer* player) {
     if (player == nullptr) return false;
 
-    int time = PlatformTime::GetTickCount();
+    auto now = time_util::clock::now();
     if (player->GetSessionIndex() == s_slowQueuePlayerIndex &&
-        (time - s_slowQueueLastTime) > MINECRAFT_SERVER_SLOW_QUEUE_DELAY) {
+        (now - s_slowQueueLastTime) > std::chrono::milliseconds(MINECRAFT_SERVER_SLOW_QUEUE_DELAY)) {
         //		app.DebugPrintf("Slow queue OK for player #%d\n",
         // player->GetSessionIndex());
         return true;
@@ -1664,15 +1657,15 @@ void MinecraftServer::chunkPacketManagement_PreTick() {}
 void MinecraftServer::chunkPacketManagement_PostTick() {
     // 4J Ensure that the slow queue owner keeps cycling if it's not been used
     // in a while
-    int time = PlatformTime::GetTickCount();
-    if ((s_slowQueuePacketSent) || ((time - s_slowQueueLastTime) >
-                                    (2 * MINECRAFT_SERVER_SLOW_QUEUE_DELAY))) {
+    auto now = time_util::clock::now();
+    if ((s_slowQueuePacketSent) || ((now - s_slowQueueLastTime) >
+                                    std::chrono::milliseconds(2 * MINECRAFT_SERVER_SLOW_QUEUE_DELAY))) {
         //		app.DebugPrintf("Considering cycling: (%d) %d - %d -> %d
         //> %d\n",s_slowQueuePacketSent, time, s_slowQueueLastTime, (time -
         // s_slowQueueLastTime), (2*MINECRAFT_SERVER_SLOW_QUEUE_DELAY));
         MinecraftServer::cycleSlowQueueIndex();
         s_slowQueuePacketSent = false;
-        s_slowQueueLastTime = time;
+        s_slowQueueLastTime = now;
     }
     //	else
     //	{

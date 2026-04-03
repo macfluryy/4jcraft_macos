@@ -8,6 +8,7 @@
 
 #include "ConsoleInputSource.h"
 #include "console_helpers/C4JThread.h"
+#include "console_helpers/Timer.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"
@@ -293,7 +294,7 @@ private:
     static const int MAX_TICK_TIME_FOR_PACKET_SENDS = 35;
 #else
     static int s_slowQueuePlayerIndex;
-    static int s_slowQueueLastTime;
+    static time_util::time_point s_slowQueueLastTime;
     static bool s_slowQueuePacketSent;
 #endif
 

@@ -19,7 +19,7 @@
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/PlatformTime.h"
+#include "console_helpers/Timer.h"
 #include "console_helpers/StringHelpers.h"
 #include "console_helpers/compression.h"
 #include "java/File.h"
@@ -1282,10 +1282,7 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
     m_autosave = autosave;
     if (!m_autosave) processSubfilesForWrite();
 
-    // Get the frequency of the timer
-    auto qwTime = PlatformTime::QueryPerformanceCounter();
-    auto qwNewTime = qwTime;
-    float fElapsedTime = 0.0f;
+    time_util::Timer timer;
 
     unsigned int fileSize = header.GetFileSize();
 
@@ -1311,16 +1308,12 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
         compLength = 0;
 
         // Pre-calculate the buffer size required for the compressed data
-        // Save the start time
-        qwTime = PlatformTime::QueryPerformanceCounter();
+        timer.reset();
         Compression::getCompression()->Compress(nullptr, &compLength, pvSaveMem,
                                                 fileSize);
-        qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-        fElapsedTime =
-            static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
-
-        app.DebugPrintf("Check buffer size: Elapsed time %f\n", fElapsedTime);
+        app.DebugPrintf("Check buffer size: Elapsed time %f\n",
+                        static_cast<float>(timer.elapsed_seconds()));
 
         // We add 4 bytes to the start so that we can signal compressed data
         // And another 4 bytes to store the decompressed data size
@@ -1332,16 +1325,12 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
 
     if (compData != nullptr) {
         // Re-compress all save data before we save it to disk
-        // Save the start time
-        qwTime = PlatformTime::QueryPerformanceCounter();
+        timer.reset();
         Compression::getCompression()->Compress(compData + 8, &compLength,
                                                 pvSaveMem, fileSize);
-        qwNewTime = PlatformTime::QueryPerformanceCounter();
 
-        fElapsedTime =
-            static_cast<float>(PlatformTime::ElapsedSeconds(qwTime, qwNewTime));
-
-        app.DebugPrintf("Compress: Elapsed time %f\n", fElapsedTime);
+        app.DebugPrintf("Compress: Elapsed time %f\n",
+                        static_cast<float>(timer.elapsed_seconds()));
 
         memset(compData, 0, 8);
         int saveVer = 0;
