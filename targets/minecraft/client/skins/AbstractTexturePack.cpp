@@ -160,9 +160,10 @@ std::wstring AbstractTexturePack::getAnimationString(
 BufferedImage* AbstractTexturePack::getImageResource(
     const std::wstring& File, bool filenameHasExtension /*= false*/,
     bool bTitleUpdateTexture /*=false*/, const std::wstring& drive /*=L""*/) {
-    const char* pchTexture = wstringtofilename(File);
+    std::string pchTexture = wstringtofilename(File);
+    std::string pchDrive = wstringtofilename(drive);
     app.DebugPrintf("AbstractTexturePack::getImageResource - %s, drive is %s\n",
-                    pchTexture, wstringtofilename(drive));
+                    pchTexture.c_str(), pchDrive.c_str());
 
     return new BufferedImage(TexturePack::getResource(L"/" + File),
                              filenameHasExtension, bTitleUpdateTexture, drive);

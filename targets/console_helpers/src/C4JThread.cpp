@@ -1,5 +1,3 @@
-#include <sched.h>
-
 #include <algorithm>
 #include <atomic>
 #include <bit>
@@ -15,7 +13,6 @@
 #include <queue>
 #include <string>
 #include <thread>
-#include <vector>
 
 #if defined(_WIN32)
 #include <Windows.h>
@@ -75,12 +72,6 @@ void formatThreadName(std::string& out, const char* name) {
     out = buf;
 }
 
-bool isProcessorIndexPlausible(int proc) {
-    if (proc < 0) return true;
-    const unsigned hw = std::thread::hardware_concurrency();
-    return hw == 0U || static_cast<unsigned>(proc) < hw;
-}
-
 std::int64_t getNativeThreadId() {
 #if defined(__linux__)
     return static_cast<std::int64_t>(::syscall(SYS_gettid));
@@ -135,63 +126,6 @@ void setThreadNamePlatform([[maybe_unused]] std::uint32_t threadId,
     char truncated[16];
     std::snprintf(truncated, sizeof(truncated), "%s", name);
     (void)::pthread_setname_np(::pthread_self(), truncated);
-#endif
-}
-
-#if defined(_WIN32)
-thread_local std::vector<DWORD_PTR> g_affinityMaskStack;
-#elif defined(__linux__)
-thread_local std::vector<cpu_set_t> g_affinityMaskStack;
-#endif
-
-void setAffinityPlatform(std::thread& threadHandle, bool isSelf, int proc) {
-#if defined(_WIN32)
-    void* handle = nullptr;
-    if (threadHandle.joinable())
-        handle = threadHandle.native_handle();
-    else if (isSelf)
-        handle = ::GetCurrentThread();
-    else
-        return;
-
-    DWORD_PTR mask = 0;
-    if (proc < 0) {
-        DWORD_PTR processMask = 0, systemMask = 0;
-        if (!::GetProcessAffinityMask(::GetCurrentProcess(), &processMask,
-                                      &systemMask) ||
-            processMask == 0)
-            return;
-        mask = processMask;
-    } else {
-        constexpr auto bitCount =
-            static_cast<unsigned>(sizeof(DWORD_PTR) * CHAR_BIT);
-        if (static_cast<unsigned>(proc) >= bitCount) return;
-        mask = static_cast<DWORD_PTR>(1) << static_cast<unsigned>(proc);
-    }
-    (void)::SetThreadAffinityMask(handle, mask);
-
-#elif defined(__linux__)
-    pthread_t handle;
-    if (threadHandle.joinable())
-        handle = threadHandle.native_handle();
-    else if (isSelf)
-        handle = ::pthread_self();
-    else
-        return;
-
-    cpu_set_t cpuset;
-    CPU_ZERO(&cpuset);
-    if (proc < 0) {
-        if (::sched_getaffinity(0, sizeof(cpuset), &cpuset) != 0) return;
-    } else {
-        if (proc >= CPU_SETSIZE) return;
-        CPU_SET(proc, &cpuset);
-    }
-    (void)::pthread_setaffinity_np(handle, sizeof(cpuset), &cpuset);
-#else
-    (void)threadHandle;
-    (void)isSelf;
-    (void)proc;
 #endif
 }
 
@@ -276,7 +210,6 @@ C4JThread::C4JThread(C4JThreadStartFunc* startFunc, void* param,
       m_threadID(),
       m_threadHandle(),
       m_completionFlag(std::make_unique<Event>(Event::Mode::ManualClear)),
-      m_requestedProcessor(-1),
       m_requestedPriority(kUnsetPriority),
       m_nativeTid(0) {
     formatThreadName(m_threadName, threadName);
@@ -293,7 +226,6 @@ C4JThread::C4JThread(const char* mainThreadName)
       m_threadID(std::this_thread::get_id()),
       m_threadHandle(),
       m_completionFlag(std::make_unique<Event>(Event::Mode::ManualClear)),
-      m_requestedProcessor(-1),
       m_requestedPriority(kUnsetPriority),
       m_nativeTid(getNativeThreadId()) {
     formatThreadName(m_threadName, mainThreadName);
@@ -326,12 +258,6 @@ void C4JThread::entryPoint(C4JThread* pThread) {
     pThread->m_nativeTid.store(getNativeThreadId(), std::memory_order_release);
 
     setCurrentThreadName(pThread->m_threadName.c_str());
-
-    const int requestedProcessor =
-        pThread->m_requestedProcessor.load(std::memory_order_acquire);
-    if (requestedProcessor >= 0) {
-        pThread->setProcessor(requestedProcessor);
-    }
 
     const auto requestedPriority =
         pThread->m_requestedPriority.load(std::memory_order_acquire);
@@ -368,23 +294,11 @@ void C4JThread::run() {
     m_threadHandle = std::thread(&C4JThread::entryPoint, this);
     m_threadID = m_threadHandle.get_id();
 
-    const int requestedProcessor =
-        m_requestedProcessor.load(std::memory_order_acquire);
-    if (requestedProcessor >= 0) {
-        setProcessor(requestedProcessor);
-    }
-
     const auto requestedPriority =
         m_requestedPriority.load(std::memory_order_acquire);
     if (requestedPriority != kUnsetPriority) {
         setPriority(requestedPriority);
     }
-}
-
-void C4JThread::setProcessor(int proc) {
-    m_requestedProcessor.store(proc, std::memory_order_release);
-    if (!isProcessorIndexPlausible(proc)) return;
-    setAffinityPlatform(m_threadHandle, ms_currentThread == this, proc);
 }
 
 void C4JThread::setPriority(ThreadPriority priority) {
@@ -547,7 +461,6 @@ C4JThread::EventQueue::EventQueue(UpdateFunc* updateFunc,
       m_updateFunc(updateFunc),
       m_threadInitFunc(threadInitFunc),
       m_threadName(threadName ? threadName : "Unnamed"),
-      m_processor(-1),
       m_priority(kUnsetPriority),
       m_busy(false),
       m_initOnce(),
@@ -561,11 +474,6 @@ C4JThread::EventQueue::~EventQueue() {
     if (m_thread) (void)m_thread->waitForCompletion(kInfiniteTimeout);
 }
 
-void C4JThread::EventQueue::setProcessor(int proc) {
-    m_processor = proc;
-    if (m_thread) m_thread->setProcessor(proc);
-}
-
 void C4JThread::EventQueue::setPriority(ThreadPriority priority) {
     m_priority = priority;
     if (m_thread) m_thread->setPriority(priority);
@@ -575,7 +483,6 @@ void C4JThread::EventQueue::init() {
     std::call_once(m_initOnce, [this]() {
         m_thread =
             std::make_unique<C4JThread>(threadFunc, this, m_threadName.c_str());
-        if (m_processor >= 0) m_thread->setProcessor(m_processor);
         if (m_priority != kUnsetPriority) m_thread->setPriority(m_priority);
         m_thread->run();
     });
@@ -657,43 +564,3 @@ void C4JThread::EventQueue::threadPoll() {
     ShutdownManager::HasFinished(ShutdownManager::eEventQueueThreads);
 }
 
-void C4JThread::pushAffinityAllCores() {
-#if defined(_WIN32)
-    DWORD_PTR processMask = 0, systemMask = 0;
-    if (!::GetProcessAffinityMask(::GetCurrentProcess(), &processMask,
-                                  &systemMask) ||
-        processMask == 0)
-        return;
-    const DWORD_PTR prev =
-        ::SetThreadAffinityMask(::GetCurrentThread(), processMask);
-    if (prev != 0) g_affinityMaskStack.push_back(prev);
-
-#elif defined(__linux__)
-    cpu_set_t prev;
-    if (::pthread_getaffinity_np(::pthread_self(), sizeof(prev), &prev) != 0)
-        return;
-    g_affinityMaskStack.push_back(prev);
-
-    cpu_set_t all;
-    if (::sched_getaffinity(0, sizeof(all), &all) != 0) {
-        g_affinityMaskStack.pop_back();
-        return;
-    }
-    (void)::pthread_setaffinity_np(::pthread_self(), sizeof(all), &all);
-#endif
-}
-
-void C4JThread::popAffinity() {
-#if defined(_WIN32)
-    if (g_affinityMaskStack.empty()) return;
-    const DWORD_PTR prev = g_affinityMaskStack.back();
-    g_affinityMaskStack.pop_back();
-    (void)::SetThreadAffinityMask(::GetCurrentThread(), prev);
-
-#elif defined(__linux__)
-    if (g_affinityMaskStack.empty()) return;
-    const cpu_set_t prev = g_affinityMaskStack.back();
-    g_affinityMaskStack.pop_back();
-    (void)::pthread_setaffinity_np(::pthread_self(), sizeof(prev), &prev);
-#endif
-}

@@ -202,7 +202,6 @@ GameRenderer::GameRenderer(Minecraft* mc) {
     m_updateEvents->set(eUpdateEventIsFinished);
 
     m_updateThread = new C4JThread(runUpdate, nullptr, "Chunk update");
-    m_updateThread->setProcessor(CPU_CORE_CHUNK_UPDATE);
     m_updateThread->run();
 #endif
 }

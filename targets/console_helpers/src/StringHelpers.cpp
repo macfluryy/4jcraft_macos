@@ -1,7 +1,6 @@
-#include <ctype.h>
-
 #include <algorithm>
 #include <cassert>
+#include <cwctype>
 #include <cstddef>
 #include <sstream>
 #include <string>
@@ -11,10 +10,14 @@
 
 std::wstring toLower(const std::wstring& a) {
     std::wstring out = std::wstring(a);
-    std::transform(out.begin(), out.end(), out.begin(), ::tolower);
+    std::transform(out.begin(), out.end(), out.begin(), std::towlower);
     return out;
 }
 
+// 4jcraft TODO: this intentionally returns the original string (not empty)
+// for whitespace-only input. Callers in animation file parsing
+// (AbstractTexturePack::getAnimationString) depend on this behavior -
+// returning empty here breaks clock/compass texture frame loading.
 std::wstring trimString(const std::wstring& a) {
     std::wstring b;
     int start = (int)a.find_first_not_of(L" \t\n\r");
@@ -132,26 +135,18 @@ std::u8string wstring_to_u8string(const std::wstring& converting) {
     }
 }
 
-// Convert for filename std::wstrings to a straight character pointer for Xbox
-// APIs. The returned string is only valid until this function is called again,
-// and it isn't thread-safe etc. as I'm just storing the returned name in a
-// local static to save having to clear it up everywhere this is used.
-const char* wstringtofilename(const std::wstring& name) {
-    static char buf[256];
-    assert(name.length() < 256);
-    for (unsigned int i = 0; i < name.length(); i++) {
-        wchar_t c = name[i];
+std::string wstringtofilename(const std::wstring& name) {
+    std::string result;
+    result.reserve(name.size());
+    for (wchar_t c : name) {
 #if defined(__linux__)
-        if (c == '\\') c = '/';
+        if (c == L'\\') c = L'/';
 #else
-        if (c == '/') c = '\\';
+        if (c == L'/') c = L'\\';
 #endif
-        assert(c < 128);  // Will we have to do any conversion of non-ASCII
-                          // characters in filenames?
-        buf[i] = (char)c;
+        result += static_cast<char>(c);
     }
-    buf[name.length()] = 0;
-    return buf;
+    return result;
 }
 
 std::wstring filenametowstring(const char* name) {

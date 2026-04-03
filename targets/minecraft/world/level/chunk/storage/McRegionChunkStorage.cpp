@@ -12,7 +12,6 @@
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/linux/Linux_App.h"
 #include "console_helpers/C4JThread.h"
-#include "console_helpers/ThreadName.h"
 #include "console_helpers/compression.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
@@ -324,7 +323,7 @@ void McRegionChunkStorage::staticCtor() {
     for (unsigned int i = 0; i < 3; ++i) {
         char threadName[256];
         sprintf(threadName, "McRegion Save thread %d\n", i);
-        SetThreadName(0, threadName);
+        C4JThread::setThreadName(0, threadName);
 
         // saveThreads[j] =
         // CreateThread(nullptr,0,runSaveThreadProc,&threadData[j],CREATE_SUSPENDED,&threadId[j]);
@@ -332,14 +331,6 @@ void McRegionChunkStorage::staticCtor() {
             new C4JThread(runSaveThreadProc, nullptr, threadName);
 
         // app.DebugPrintf("Created new thread: %s\n",threadName);
-
-        // Threads 1,3 and 5 are generally idle so use them
-        if (i == 0)
-            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_A);
-        else if (i == 1) {
-            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_B);
-        } else if (i == 2)
-            s_saveThreads[i]->setProcessor(CPU_CORE_SAVE_THREAD_C);
 
         // ResumeThread( saveThreads[j] );
         s_saveThreads[i]->run();

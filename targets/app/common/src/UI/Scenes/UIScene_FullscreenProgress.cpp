@@ -83,8 +83,6 @@ UIScene_FullscreenProgress::UIScene_FullscreenProgress(int iPad, void* initData,
     m_labelTip.setVisible(m_CompletionData->bShowTips);
 
     thread = new C4JThread(params->func, params->lpParam, "FullscreenProgress");
-    thread->setProcessor(CPU_CORE_UI_SCENE);  // TODO 4J Stu - Make sure this is
-                                              // a good thread/core to use
 
     m_threadCompleted = false;
     thread->run();

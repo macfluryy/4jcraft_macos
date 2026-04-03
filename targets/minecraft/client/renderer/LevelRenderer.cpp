@@ -4029,14 +4029,6 @@ void LevelRenderer::staticCtor() {
 
         s_activationEventA[i] = new C4JThread::Event();
 
-        // Threads 1,3 and 5 are generally idle so use them
-        if ((i % 3) == 0)
-            rebuildThreads[i]->setProcessor(CPU_CORE_CHUNK_REBUILD_A);
-        else if ((i % 3) == 1) {
-            rebuildThreads[i]->setProcessor(CPU_CORE_CHUNK_REBUILD_B);
-        } else if ((i % 3) == 2)
-            rebuildThreads[i]->setProcessor(CPU_CORE_CHUNK_REBUILD_C);
-
         // ResumeThread( saveThreads[j] );
         rebuildThreads[i]->run();
     }

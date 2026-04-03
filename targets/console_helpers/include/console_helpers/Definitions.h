@@ -6,7 +6,7 @@ enum ByteOrder {
     BIGENDIAN,
     LITTLEENDIAN,
 
-    LOCALSYTEM_ENDIAN = LITTLEENDIAN,
+    LOCALSYSTEM_ENDIAN = LITTLEENDIAN,
 };
 enum EDefaultSkins {
     eDefaultSkins_ServerSelected,

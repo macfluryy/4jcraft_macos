@@ -7,7 +7,6 @@
 #include <unordered_set>
 #include <vector>
 
-#include "console_helpers/HashExtension.h"
 #include "java/JavaIntHash.h"
 #include "minecraft/world/entity/Entity.h"
 

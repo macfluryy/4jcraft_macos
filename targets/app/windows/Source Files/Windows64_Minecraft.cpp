@@ -7,7 +7,6 @@
 
 #include "app/common/src/Network/Socket.h"
 #include "console_helpers/StringHelpers.h"
-#include "console_helpers/ThreadName.h"
 #include "minecraft/client/User.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/ConnectScreen.h"

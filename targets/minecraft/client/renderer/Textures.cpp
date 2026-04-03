@@ -1228,12 +1228,9 @@ BufferedImage* Textures::readImage(
             name, false, isTu,
             drive);  // new BufferedImage(name,false,isTu,drive);
     } else {
-        const char* pchName = wstringtofilename(name);
         {
             drive = skins->getDefault()->getPath(isTu);
         }
-
-        const char* pchDrive = wstringtofilename(drive);
 
         if (IsOriginalImage(texId, name) || isTu) {
             img = skins->getDefault()->getImageResource(

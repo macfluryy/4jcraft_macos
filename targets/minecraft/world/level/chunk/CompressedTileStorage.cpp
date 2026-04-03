@@ -1200,7 +1200,7 @@ int CompressedTileStorage::getHighestNonEmptyY() {
 void CompressedTileStorage::write(DataOutputStream* dos) {
     dos->writeInt(allocatedSize);
     if (indicesAndData) {
-        if (LOCALSYTEM_ENDIAN == BIGENDIAN) {
+        if (LOCALSYSTEM_ENDIAN == BIGENDIAN) {
             // The first 1024 bytes are an array of shorts, so we need to
             // reverse the endianness
             std::vector<uint8_t> indicesCopy(1024);
@@ -1236,7 +1236,7 @@ void CompressedTileStorage::read(DataInputStream* dis) {
         std::vector<uint8_t> wrapper(allocatedSize);
         dis->readFully(wrapper);
         memcpy(indicesAndData, wrapper.data(), allocatedSize);
-        if (LOCALSYTEM_ENDIAN == BIGENDIAN) {
+        if (LOCALSYSTEM_ENDIAN == BIGENDIAN) {
             reverseIndices(indicesAndData);
         }
 

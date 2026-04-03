@@ -4,7 +4,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "console_helpers/HashExtension.h"
 #include "java/Class.h"
 #include "java/JavaIntHash.h"
 

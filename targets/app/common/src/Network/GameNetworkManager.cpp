@@ -29,7 +29,6 @@
 #include "XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
 #include "platform/PlatformServices.h"
-#include "console_helpers/ThreadName.h"
 #include "console_helpers/compression.h"
 #include "java/File.h"
 #include "minecraft/client/Minecraft.h"
@@ -196,7 +195,6 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
             new C4JThread(&CGameNetworkManager::ServerThreadProc, lpParameter,
                           "Server", 256 * 1024);
 
-        thread->setProcessor(CPU_CORE_SERVER);
         thread->run();
 
         app.DebugPrintf("[NET] Waiting for server ready...\n");
@@ -828,7 +826,7 @@ int CGameNetworkManager::ServerThreadProc(void* lpParameter) {
         }
     }
 
-    SetThreadName(-1, "Minecraft Server thread");
+    C4JThread::setThreadName(static_cast<std::uint32_t>(-1), "Minecraft Server thread");
     Compression::UseDefaultThreadStorage();
     OldChunkStorage::UseDefaultThreadStorage();
     Entity::useSmallIds();

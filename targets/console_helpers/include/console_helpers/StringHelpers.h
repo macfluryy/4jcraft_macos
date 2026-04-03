@@ -36,7 +36,7 @@ std::wstring convStringToWstring(const std::string& converting);
 std::wstring u16string_to_wstring(const std::u16string& converting);
 std::u16string wstring_to_u16string(const std::wstring& converting);
 std::u8string wstring_to_u8string(const std::wstring& converting);
-const char* wstringtofilename(const std::wstring& name);
+std::string wstringtofilename(const std::wstring& name);
 std::wstring filenametowstring(const char* name);
 
 std::vector<std::wstring>& stringSplit(const std::wstring& s, wchar_t delim,

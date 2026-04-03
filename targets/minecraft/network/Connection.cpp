@@ -116,19 +116,16 @@ Connection::Connection(Socket* socket, const std::wstring& id,
     m_hWakeReadThread = new C4JThread::Event;
     m_hWakeWriteThread = new C4JThread::Event;
 
-    const char* szId = wstringtofilename(id);
+    std::string szId = wstringtofilename(id);
     char readThreadName[256];
     char writeThreadName[256];
-    sprintf(readThreadName, "%s read\n", szId);
-    sprintf(writeThreadName, "%s write\n", szId);
+    sprintf(readThreadName, "%s read\n", szId.c_str());
+    sprintf(writeThreadName, "%s write\n", szId.c_str());
 
     readThread =
         new C4JThread(runRead, (void*)this, readThreadName, READ_STACK_SIZE);
     writeThread =
         new C4JThread(runWrite, this, writeThreadName, WRITE_STACK_SIZE);
-    readThread->setProcessor(CPU_CORE_CONNECTIONS);
-    writeThread->setProcessor(CPU_CORE_CONNECTIONS);
-
     readThread->run();
     writeThread->run();
 

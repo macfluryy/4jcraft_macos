@@ -91,7 +91,6 @@ void ServerLevel::staticCtor() {
     m_updateTrigger = new C4JThread::EventArray(3);
 
     m_updateThread = new C4JThread(runUpdate, nullptr, "Tile update");
-    m_updateThread->setProcessor(CPU_CORE_TILE_UPDATE);
     m_updateThread->run();
 
     RANDOM_BONUS_ITEMS = std::vector<WeighedTreasure*>(20);

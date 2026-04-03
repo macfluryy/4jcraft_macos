@@ -13,27 +13,6 @@ using C4JThreadStartFunc = int(void* lpThreadParameter);
 
 class Level;
 
-inline constexpr int CPU_CORE_MAIN_THREAD = 0;
-
-inline constexpr int CPU_CORE_CHUNK_REBUILD_A = 1;
-inline constexpr int CPU_CORE_SAVE_THREAD_A = 1;
-inline constexpr int CPU_CORE_TILE_UPDATE = 1;
-inline constexpr int CPU_CORE_CONNECTIONS = 1;
-
-inline constexpr int CPU_CORE_CHUNK_UPDATE = 2;
-inline constexpr int CPU_CORE_REMOVE_PLAYER = 2;
-
-inline constexpr int CPU_CORE_CHUNK_REBUILD_B = 3;
-inline constexpr int CPU_CORE_SAVE_THREAD_B = 3;
-inline constexpr int CPU_CORE_UI_SCENE = 3;
-inline constexpr int CPU_CORE_POST_PROCESSING = 3;
-
-inline constexpr int CPU_CORE_SERVER = 4;
-
-inline constexpr int CPU_CORE_CHUNK_REBUILD_C = 5;
-inline constexpr int CPU_CORE_SAVE_THREAD_C = 5;
-inline constexpr int CPU_CORE_LEADERBOARDS = 5;
-
 class C4JThread {
 public:
     struct WaitResult {
@@ -106,7 +85,6 @@ public:
         EventQueue(const EventQueue&) = delete;
         EventQueue& operator=(const EventQueue&) = delete;
 
-        void setProcessor(int proc);
         void setPriority(ThreadPriority priority);
         void sendEvent(Level* pLevel);
         void waitForFinish();
@@ -124,7 +102,6 @@ public:
         UpdateFunc* m_updateFunc;
         ThreadInitFunc* m_threadInitFunc;
         std::string m_threadName;
-        int m_processor;
         ThreadPriority m_priority;
         bool m_busy;
         std::once_flag m_initOnce;
@@ -148,7 +125,6 @@ public:
         return m_hasStarted.load(std::memory_order_acquire);
     }
 
-    void setProcessor(int proc);
     void setPriority(ThreadPriority priority);
 
     std::uint32_t waitForCompletion(int timeoutMs);
@@ -168,9 +144,6 @@ public:
 
     static void setThreadName(std::uint32_t threadId, const char* threadName);
     static void setCurrentThreadName(const char* threadName);
-
-    static void pushAffinityAllCores();
-    static void popAffinity();
 
     // TODO(C++26): When we switch to C++26, replace EventQueue with
     // std::execution (senders/receivers) for structured concurrency.
@@ -193,7 +166,6 @@ private:
     std::thread m_threadHandle;
     std::unique_ptr<Event> m_completionFlag;
 
-    std::atomic<int> m_requestedProcessor;
     std::atomic<ThreadPriority> m_requestedPriority;
     std::atomic<std::int64_t> m_nativeTid;
 

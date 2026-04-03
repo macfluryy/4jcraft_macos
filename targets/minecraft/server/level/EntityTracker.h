@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "console_helpers/HashExtension.h"
 #include "java/JavaIntHash.h"
 
 class Entity;
