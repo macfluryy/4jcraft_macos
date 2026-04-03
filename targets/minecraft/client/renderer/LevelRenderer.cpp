@@ -2676,7 +2676,7 @@ void LevelRenderer::cull(Culler* culler, float a) {
     if (m_bfsVisitedFaces[playerIndex].size() < visitedSize) {
         m_bfsVisitedFaces[playerIndex].resize(visitedSize, 0);
     }
-    memset(m_bfsVisitedFaces[playerIndex].data(), 0, visitedSize);
+    std::fill(m_bfsVisitedFaces[playerIndex].data(), 0, visitedSize);
 
     q.push_back({startChunk, -1});
     m_bfsVisitedFaces[playerIndex][startChunk - chunks[playerIndex].data()] =
