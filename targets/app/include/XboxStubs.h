@@ -64,31 +64,6 @@ public:
     int32_t Load(const wchar_t* szId);
 };
 
-// Compression context stubs
-typedef void* XMEMDECOMPRESSION_CONTEXT;
-typedef void* XMEMCOMPRESSION_CONTEXT;
-
-enum XMEMCODEC_TYPE { XMEMCODEC_DEFAULT = 0, XMEMCODEC_LZX = 1 };
-
-int32_t XMemDecompress(XMEMDECOMPRESSION_CONTEXT Context, void* pDestination,
-                       size_t* pDestSize, void* pSource, size_t SrcSize);
-int32_t XMemCompress(XMEMCOMPRESSION_CONTEXT Context, void* pDestination,
-                     size_t* pDestSize, void* pSource, size_t SrcSize);
-int32_t XMemCreateCompressionContext(XMEMCODEC_TYPE CodecType,
-                                     const void* pCodecParams, uint32_t Flags,
-                                     XMEMCOMPRESSION_CONTEXT* pContext);
-int32_t XMemCreateDecompressionContext(XMEMCODEC_TYPE CodecType,
-                                       const void* pCodecParams, uint32_t Flags,
-                                       XMEMDECOMPRESSION_CONTEXT* pContext);
-void XMemDestroyCompressionContext(XMEMCOMPRESSION_CONTEXT Context);
-void XMemDestroyDecompressionContext(XMEMDECOMPRESSION_CONTEXT Context);
-
-struct XMEMCODEC_PARAMETERS_LZX {
-    uint32_t Flags;
-    uint32_t WindowSize;
-    uint32_t CompressionPartitionSize;
-};
-
 // User sign-in
 struct XUSER_SIGNIN_INFO {
     PlayerUID xuid;
