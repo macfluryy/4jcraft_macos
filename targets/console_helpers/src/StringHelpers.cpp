@@ -70,7 +70,7 @@ std::wstring u16string_to_wstring(const std::u16string& converting) {
 
         return result;
     } else {
-        static_assert(sizeof(wchar_t) != 2 || sizeof(wchar_t) != 4,
+        static_assert(sizeof(wchar_t) == 2 || sizeof(wchar_t) == 4,
                       "Here's a nickel, Kid. Go buy yourself a real computer.");
     }
 }
@@ -85,19 +85,49 @@ std::u16string wstring_to_u16string(const std::wstring& converting) {
         // POSIX, UTF-32
         if (converting.empty()) return {};
 
-        const char32_t* data32 =
-            reinterpret_cast<const char32_t*>(converting.data());
-        const std::size_t len32 = converting.size();
+        auto data32 = reinterpret_cast<const char32_t*>(converting.data());
+        auto len32 = converting.size();
 
         std::u16string result(simdutf::utf16_length_from_utf32(data32, len32),
                               u'\0');
-        std::size_t convertedLength =
+        auto len =
             simdutf::convert_utf32_to_utf16(data32, len32, result.data());
-        result.resize(convertedLength);
+        result.resize(len);
 
         return result;
     } else {
-        static_assert(sizeof(wchar_t) != 2 || sizeof(wchar_t) != 4,
+        static_assert(sizeof(wchar_t) == 2 || sizeof(wchar_t) == 4,
+                      "Here's a nickel, Kid. Go buy yourself a real computer.");
+    }
+}
+
+std::u8string wstring_to_u8string(const std::wstring& converting) {
+    if (converting.empty()) return {};
+
+    if constexpr (sizeof(wchar_t) == 2) {
+        auto data16 = reinterpret_cast<const char16_t*>(converting.data());
+        auto len16 = converting.size();
+
+        std::u8string result(simdutf::utf8_length_from_utf16le(data16, len16),
+                             u'\0');
+        auto len =
+            simdutf::convert_utf16_to_utf8(data16, len16, reinterpret_cast<char*>(result.data()));
+        result.resize(len);
+
+        return result;
+    } else if constexpr (sizeof(wchar_t) == 4) {
+        auto data32 = reinterpret_cast<const char32_t*>(converting.data());
+        auto len32 = converting.size();
+
+        std::u8string result(simdutf::utf8_length_from_utf32(data32, len32),
+                             u'\0');
+        auto len =
+            simdutf::convert_utf32_to_utf8(data32, len32, reinterpret_cast<char*>(result.data()));
+        result.resize(len);
+
+        return result;
+    } else {
+        static_assert(sizeof(wchar_t) == 2 || sizeof(wchar_t) == 4,
                       "Here's a nickel, Kid. Go buy yourself a real computer.");
     }
 }
