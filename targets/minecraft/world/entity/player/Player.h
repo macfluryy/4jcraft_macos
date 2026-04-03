@@ -8,7 +8,7 @@
 
 #include "platform/PlatformTypes.h"
 #include "Abilities.h"
-#include "util/Definitions.h"
+#include "minecraft/world/entity/player/SkinTypes.h"
 #include "java/Class.h"
 #include "minecraft/commands/CommandSender.h"
 #include "minecraft/network/packet/ChatPacket.h"

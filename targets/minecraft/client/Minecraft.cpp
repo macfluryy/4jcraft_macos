@@ -32,7 +32,7 @@
 #include "SharedConstants.h"
 #include "Timer.h"
 #include "User.h"
-#include "util/Definitions.h"
+#include "minecraft/world/entity/player/SkinTypes.h"
 #include "minecraft/world/level/storage/compression.h"
 #include "java/Class.h"
 #include "java/Random.h"

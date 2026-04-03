@@ -16,7 +16,7 @@
 #endif
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/include/SkinBox.h"
-#include "util/Definitions.h"
+#include "minecraft/world/entity/player/SkinTypes.h"
 #include "minecraft/client/renderer/Textures.h"
 
 class DLCPack;
