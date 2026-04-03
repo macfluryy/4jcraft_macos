@@ -83,7 +83,7 @@
 typedef Item::Tier _Tier;
 
 // const UUID Item::BASE_ATTACK_DAMAGE_UUID =
-// UUID::fromString(L"CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+// UUID::fromWString(L"CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
 
 std::wstring Item::ICON_DESCRIPTION_PREFIX = L"item.";
 

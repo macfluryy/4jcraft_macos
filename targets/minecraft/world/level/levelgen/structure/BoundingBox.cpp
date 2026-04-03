@@ -167,9 +167,9 @@ int BoundingBox::getYCenter() { return y0 + (y1 - y0 + 1) / 2; }
 int BoundingBox::getZCenter() { return z0 + (z1 - z0 + 1) / 2; }
 
 std::wstring BoundingBox::toString() {
-    return L"(" + _toString<int>(x0) + L", " + _toString<int>(y0) + L", " +
-           _toString<int>(z0) + L"; " + _toString<int>(x1) + L", " +
-           _toString<int>(y1) + L", " + _toString<int>(z1) + L")";
+    return L"(" + toWString<int>(x0) + L", " + toWString<int>(y0) + L", " +
+           toWString<int>(z0) + L"; " + toWString<int>(x1) + L", " +
+           toWString<int>(y1) + L", " + toWString<int>(z1) + L")";
 }
 
 IntArrayTag* BoundingBox::createTag(const std::wstring& name) {

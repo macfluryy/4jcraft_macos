@@ -73,7 +73,7 @@ ResourceLocation* HumanoidMobRenderer::getArmorLocation(ArmorItem* armorItem,
     std::wstring path =
         std::wstring(L"armor/" + MATERIAL_NAMES[armorItem->modelIndex])
             .append(L"_")
-            .append(_toString<int>(layer == 2 ? 2 : 1))
+            .append(toWString<int>(layer == 2 ? 2 : 1))
             .append((overlay ? L"_b" : L""))
             .append(L".png");
 

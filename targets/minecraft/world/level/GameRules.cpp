@@ -167,9 +167,9 @@ GameRules::GameRule::GameRule(const std::wstring &startValue)
 void GameRules::GameRule::set(const std::wstring &newValue)
 {
         value = newValue;
-        booleanValue = _fromString<bool>(newValue);
-        intValue = _fromString<int>(newValue);
-        doubleValue = _fromString<double>(newValue);
+        booleanValue = fromWString<bool>(newValue);
+        intValue = fromWString<int>(newValue);
+        doubleValue = fromWString<double>(newValue);
 }
 
 std::wstring GameRules::GameRule::get()

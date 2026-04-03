@@ -47,6 +47,6 @@ void PotatoTile::spawnResources(Level* level, int x, int y, int z, int data,
 void PotatoTile::registerIcons(IconRegister* iconRegister) {
     for (int i = 0; i < 4; i++) {
         icons[i] = iconRegister->registerIcon(getIconName() + L"_stage_" +
-                                              _toString<int>(i));
+                                              toWString<int>(i));
     }
 }

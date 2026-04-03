@@ -65,7 +65,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
 
     for (int l = 0; l < 10; l++) {
         std::wstring mipSuffix =
-            (l != 0) ? L"MipMapLevel" + _toString<int>(l + 1) : L"";
+            (l != 0) ? L"MipMapLevel" + toWString<int>(l + 1) : L"";
         std::wstring fileName = baseName + mipSuffix + L".png";
         std::wstring finalPath;
         bool foundOnDisk = false;
@@ -133,7 +133,7 @@ BufferedImage::BufferedImage(DLCPack* dlcPack, const std::wstring& File,
     for (int l = 0; l < 10; l++) {
         std::wstring name;
         std::wstring mipMapPath =
-            (l != 0) ? L"MipMapLevel" + _toString<int>(l + 1) : L"";
+            (l != 0) ? L"MipMapLevel" + toWString<int>(l + 1) : L"";
         name = L"res" + (filenameHasExtension
                              ? filePath
                              : filePath.substr(0, filePath.length() - 4) +

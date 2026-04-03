@@ -142,7 +142,7 @@ int UIScene_DebugSetCamera::KeyboardCompleteCallback(void* lpParam, bool bRes) {
     if (text[0] != '\0') {
         std::wstring value = convStringToWstring(text);
         double val = 0;
-        if (!value.empty()) val = _fromString<double>(value);
+        if (!value.empty()) val = fromWString<double>(value);
         switch (pClass->m_keyboardCallbackControl) {
             case eControl_CamX:
                 pClass->m_textInputX.setLabel(value);

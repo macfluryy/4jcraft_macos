@@ -24,27 +24,27 @@ void CollectItemRuleDefinition::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttributes + 3);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_itemId);
-    dos->writeUTF(_toString(m_itemId));
+    dos->writeUTF(toWString(m_itemId));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_auxValue);
-    dos->writeUTF(_toString(m_auxValue));
+    dos->writeUTF(toWString(m_auxValue));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_quantity);
-    dos->writeUTF(_toString(m_quantity));
+    dos->writeUTF(toWString(m_quantity));
 }
 
 void CollectItemRuleDefinition::addAttribute(
     const std::wstring& attributeName, const std::wstring& attributeValue) {
     if (attributeName.compare(L"itemId") == 0) {
-        m_itemId = _fromString<int>(attributeValue);
+        m_itemId = fromWString<int>(attributeValue);
         app.DebugPrintf("CollectItemRule: Adding parameter itemId=%d\n",
                         m_itemId);
     } else if (attributeName.compare(L"auxValue") == 0) {
-        m_auxValue = _fromString<int>(attributeValue);
+        m_auxValue = fromWString<int>(attributeValue);
         app.DebugPrintf("CollectItemRule: Adding parameter m_auxValue=%d\n",
                         m_auxValue);
     } else if (attributeName.compare(L"quantity") == 0) {
-        m_quantity = _fromString<int>(attributeValue);
+        m_quantity = fromWString<int>(attributeValue);
         app.DebugPrintf("CollectItemRule: Adding parameter m_quantity=%d\n",
                         m_quantity);
     } else {
@@ -107,14 +107,14 @@ std::wstring CollectItemRuleDefinition::generateXml(
     // 4J Stu - This should be kept in sync with the GameRulesDefinition.xsd
     std::wstring xml = L"";
     if (item != nullptr) {
-        xml = L"<CollectItemRule itemId=\"" + _toString<int>(item->id) +
+        xml = L"<CollectItemRule itemId=\"" + toWString<int>(item->id) +
               L"\" quantity=\"SET\" descriptionName=\"OPTIONAL\" "
               L"promptName=\"OPTIONAL\"";
         if (item->getAuxValue() != 0)
             xml +=
-                L" auxValue=\"" + _toString<int>(item->getAuxValue()) + L"\"";
+                L" auxValue=\"" + toWString<int>(item->getAuxValue()) + L"\"";
         if (item->get4JData() != 0)
-            xml += L" dataTag=\"" + _toString<int>(item->get4JData()) + L"\"";
+            xml += L" dataTag=\"" + toWString<int>(item->get4JData()) + L"\"";
         xml += L"/>\n";
     }
     return xml;

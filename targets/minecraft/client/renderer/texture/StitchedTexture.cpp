@@ -226,11 +226,11 @@ void StitchedTexture::loadAnimationFrames(BufferedReader* bufferedReader) {
                 std::wstring token = *it;
                 int multiPos = token.find_first_of('*');
                 if (multiPos > 0) {
-                    int frame = _fromString<int>(token.substr(0, multiPos));
-                    int count = _fromString<int>(token.substr(multiPos + 1));
+                    int frame = fromWString<int>(token.substr(0, multiPos));
+                    int count = fromWString<int>(token.substr(multiPos + 1));
                     results->push_back(intPairVector::value_type(frame, count));
                 } else {
-                    int tokenVal = _fromString<int>(token);
+                    int tokenVal = fromWString<int>(token);
                     results->push_back(intPairVector::value_type(tokenVal, 1));
                 }
             }
@@ -266,11 +266,11 @@ void StitchedTexture::loadAnimationFrames(const std::wstring& string) {
         std::wstring token = trimString(*it);
         int multiPos = token.find_first_of('*');
         if (multiPos > 0) {
-            int frame = _fromString<int>(token.substr(0, multiPos));
-            int count = _fromString<int>(token.substr(multiPos + 1));
+            int frame = fromWString<int>(token.substr(0, multiPos));
+            int count = fromWString<int>(token.substr(multiPos + 1));
             results->push_back(intPairVector::value_type(frame, count));
         } else if (!token.empty()) {
-            int tokenVal = _fromString<int>(token);
+            int tokenVal = fromWString<int>(token);
             results->push_back(intPairVector::value_type(tokenVal, 1));
         }
     }

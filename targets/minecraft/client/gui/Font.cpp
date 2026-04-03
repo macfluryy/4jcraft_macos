@@ -505,7 +505,7 @@ void Font::loadUnicodePage(int page)
         //try
         //{
         //	image =
-ImageIO.read(Textures.class.getResourceAsStream(fileName.toString()));
+ImageIO.read(Textures.class.getResourceAsStream(fileName.toWString()));
         //}
         //catch (IOException e)
         //{

@@ -31,7 +31,7 @@ const int ZonedChunkStorage::CHUNK_SIZE_BYTES =
     ZonedChunkStorage::CHUNK_SIZE * ZonedChunkStorage::CHUNK_LAYERS +
     ZonedChunkStorage::CHUNK_HEADER_SIZE;
 
-const ByteOrder ZonedChunkStorage::BYTEORDER = BIGENDIAN;
+const std::endian ZonedChunkStorage::BYTEORDER = std::endian::big;
 
 ZonedChunkStorage::ZonedChunkStorage(File dir) {
     tickCount = 0;
@@ -62,8 +62,8 @@ ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
         wchar_t zRadix36[64];
         _itow(x, xRadix36, 36);
         _itow(z, zRadix36, 36);
-        File file = File(dir, std::wstring(L"zone_") + _toString(xRadix36) +
-                                  L"_" + _toString(zRadix36) + L".dat");
+        File file = File(dir, std::wstring(L"zone_") + toString(xRadix36) +
+                                  L"_" + toString(zRadix36) + L".dat");
 
         if (!file.exists()) {
             if (!create) return nullptr;
@@ -74,8 +74,8 @@ ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
         }
 
         File entityFile =
-            File(dir, std::wstring(L"entities_") + _toString(xRadix36) + L"_" +
-                          _toString(zRadix36) + L".dat");
+            File(dir, std::wstring(L"entities_") + toString(xRadix36) + L"_" +
+                          toString(zRadix36) + L".dat");
 
         zoneFiles[key] = new ZoneFile(key, file, entityFile);
     }

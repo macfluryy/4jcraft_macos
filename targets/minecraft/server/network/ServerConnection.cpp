@@ -28,7 +28,7 @@ void ServerConnection::NewIncomingSocket(Socket* socket) {
     std::shared_ptr<PendingConnection> unconnectedClient =
         std::make_shared<PendingConnection>(
             server, socket,
-            L"Connection #" + _toString<int>(connectionCounter++));
+            L"Connection #" + toWString<int>(connectionCounter++));
     handleConnection(unconnectedClient);
 }
 

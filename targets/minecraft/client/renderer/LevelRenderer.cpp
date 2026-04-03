@@ -674,18 +674,18 @@ void LevelRenderer::renderEntities(Vec3* cam, Culler* culler, float a) {
 }
 
 std::wstring LevelRenderer::gatherStats1() {
-    return L"C: " + _toString<int>(renderedChunks) + L"/" +
-           _toString<int>(totalChunks) + L". F: " +
-           _toString<int>(offscreenChunks) + L", O: " +
-           _toString<int>(occludedChunks) + L", E: " +
-           _toString<int>(emptyChunks);
+    return L"C: " + toWString<int>(renderedChunks) + L"/" +
+           toWString<int>(totalChunks) + L". F: " +
+           toWString<int>(offscreenChunks) + L", O: " +
+           toWString<int>(occludedChunks) + L", E: " +
+           toWString<int>(emptyChunks);
 }
 
 std::wstring LevelRenderer::gatherStats2() {
-    return L"E: " + _toString<int>(renderedEntities) + L"/" +
-           _toString<int>(totalEntities) + L". B: " +
-           _toString<int>(culledEntities) + L", I: " +
-           _toString<int>((totalEntities - culledEntities) - renderedEntities);
+    return L"E: " + toWString<int>(renderedEntities) + L"/" +
+           toWString<int>(totalEntities) + L". B: " +
+           toWString<int>(culledEntities) + L", I: " +
+           toWString<int>((totalEntities - culledEntities) - renderedEntities);
 }
 
 void LevelRenderer::resortChunks(int xc, int yc, int zc) {
@@ -3618,7 +3618,7 @@ void LevelRenderer::registerTextures(IconRegister* iconRegister) {
 
     for (int i = 0; i < 10; i++) {
         breakingTextures[i] =
-            iconRegister->registerIcon(L"destroy_" + _toString(i));
+            iconRegister->registerIcon(L"destroy_" + toWString(i));
     }
 }
 

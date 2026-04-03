@@ -17,26 +17,26 @@ void BiomeOverride::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttrs + 3);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_biomeId);
-    dos->writeUTF(_toString(m_biomeId));
+    dos->writeUTF(toWString(m_biomeId));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_tileId);
-    dos->writeUTF(_toString(m_tile));
+    dos->writeUTF(toWString(m_tile));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_topTileId);
-    dos->writeUTF(_toString(m_topTile));
+    dos->writeUTF(toWString(m_topTile));
 }
 
 void BiomeOverride::addAttribute(const std::wstring& attributeName,
                                  const std::wstring& attributeValue) {
     if (attributeName.compare(L"tileId") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_tile = value;
         app.DebugPrintf("BiomeOverride: Adding parameter tileId=%d\n", m_tile);
     } else if (attributeName.compare(L"topTileId") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_topTile = value;
         app.DebugPrintf("BiomeOverride: Adding parameter topTileId=%d\n",
                         m_topTile);
     } else if (attributeName.compare(L"biomeId") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_biomeId = value;
         app.DebugPrintf("BiomeOverride: Adding parameter biomeId=%d\n",
                         m_biomeId);

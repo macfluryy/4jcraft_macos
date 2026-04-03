@@ -15,7 +15,7 @@ ByteBuffer::ByteBuffer(unsigned int capacity) : Buffer(capacity) {
     hasBackingArray = false;
     buffer = new uint8_t[capacity];
     memset(buffer, 0, sizeof(uint8_t) * capacity);
-    byteOrder = BIGENDIAN;
+    byteOrder = std::endian::big;
 }
 
 // Allocates a new direct byte buffer.
@@ -71,8 +71,8 @@ ByteBuffer* ByteBuffer::allocate(unsigned int capacity) {
 
 // Modifies this buffer's byte order.
 // Parameters:
-// bo - The new byte order, either BIGENDIAN or LITTLEENDIAN
-void ByteBuffer::order(ByteOrder bo) { byteOrder = bo; }
+// bo - The new byte order, either std::endian::big or std::endian::little
+void ByteBuffer::order(std::endian bo) { byteOrder = bo; }
 
 // Flips this buffer. The limit is set to the current position and then the
 // position is set to zero. If the mark is defined then it is discarded.
@@ -128,9 +128,9 @@ int ByteBuffer::getInt() {
 
     m_position += 4;
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         value = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         value = b1 | (b2 << 8) | (b3 << 16) | (b4 << 24);
     }
     return value;
@@ -153,9 +153,9 @@ int ByteBuffer::getInt(unsigned int index) {
     int b3 = static_cast<int>(buffer[index + 2]);
     int b4 = static_cast<int>(buffer[index + 3]);
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         value = (b1 << 24) | (b2 << 16) | (b3 << 8) | b4;
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         value = b1 | (b2 << 8) | (b3 << 16) | (b4 << 24);
     }
     return value;
@@ -184,10 +184,10 @@ int64_t ByteBuffer::getLong() {
 
     m_position += 8;
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         value = (b1 << 56) | (b2 << 48) | (b3 << 40) | (b4 << 32) | (b5 << 24) |
                 (b6 << 16) | (b7 << 8) | b8;
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         value = b1 | (b2 << 8) | (b3 << 16) | (b4 << 24) | (b5 << 32) |
                 (b6 << 40) | (b7 << 48) | (b8 << 56);
     }
@@ -211,9 +211,9 @@ short ByteBuffer::getShort() {
 
     m_position += 2;
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         value = (b1 << 8) | b2;
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         value = b1 | (b2 << 8);
     }
     return value;
@@ -259,12 +259,12 @@ ByteBuffer* ByteBuffer::put(int index, uint8_t b) {
 ByteBuffer* ByteBuffer::putInt(int value) {
     assert(m_position + 3 < m_limit);
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         buffer[m_position] = static_cast<uint8_t>((value >> 24) & 0xFF);
         buffer[m_position + 1] = static_cast<uint8_t>((value >> 16) & 0xFF);
         buffer[m_position + 2] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[m_position + 3] = static_cast<uint8_t>(value & 0xFF);
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         buffer[m_position] = static_cast<uint8_t>(value & 0xFF);
         buffer[m_position + 1] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[m_position + 2] = static_cast<uint8_t>((value >> 16) & 0xFF);
@@ -288,12 +288,12 @@ ByteBuffer* ByteBuffer::putInt(int value) {
 ByteBuffer* ByteBuffer::putInt(unsigned int index, int value) {
     assert(index + 3 < m_limit);
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         buffer[index] = static_cast<uint8_t>((value >> 24) & 0xFF);
         buffer[index + 1] = static_cast<uint8_t>((value >> 16) & 0xFF);
         buffer[index + 2] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[index + 3] = static_cast<uint8_t>(value & 0xFF);
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         buffer[index] = static_cast<uint8_t>(value & 0xFF);
         buffer[index + 1] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[index + 2] = static_cast<uint8_t>((value >> 16) & 0xFF);
@@ -315,10 +315,10 @@ ByteBuffer* ByteBuffer::putInt(unsigned int index, int value) {
 ByteBuffer* ByteBuffer::putShort(short value) {
     assert(m_position + 1 < m_limit);
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         buffer[m_position] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[m_position + 1] = static_cast<uint8_t>(value & 0xFF);
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         buffer[m_position] = static_cast<uint8_t>(value & 0xFF);
         buffer[m_position + 1] = static_cast<uint8_t>((value >> 8) & 0xFF);
     }
@@ -351,7 +351,7 @@ ByteBuffer* ByteBuffer::putShortArray(std::vector<short>& s) {
 ByteBuffer* ByteBuffer::putLong(int64_t value) {
     assert(m_position + 7 < m_limit);
 
-    if (byteOrder == BIGENDIAN) {
+    if (byteOrder == std::endian::big) {
         buffer[m_position] = static_cast<uint8_t>((value >> 56) & 0xFF);
         buffer[m_position + 1] = static_cast<uint8_t>((value >> 48) & 0xFF);
         buffer[m_position + 2] = static_cast<uint8_t>((value >> 40) & 0xFF);
@@ -360,7 +360,7 @@ ByteBuffer* ByteBuffer::putLong(int64_t value) {
         buffer[m_position + 5] = static_cast<uint8_t>((value >> 16) & 0xFF);
         buffer[m_position + 6] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[m_position + 7] = static_cast<uint8_t>(value & 0xFF);
-    } else if (byteOrder == LITTLEENDIAN) {
+    } else if (byteOrder == std::endian::little) {
         buffer[m_position] = static_cast<uint8_t>((value & 0xFF));
         buffer[m_position + 1] = static_cast<uint8_t>((value >> 8) & 0xFF);
         buffer[m_position + 2] = static_cast<uint8_t>((value >> 16) & 0xFF);

@@ -39,23 +39,23 @@ void UpdatePlayerRuleDefinition::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttributes + attrCount);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnX);
-    dos->writeUTF(_toString(m_spawnPos->x));
+    dos->writeUTF(toWString(m_spawnPos->x));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnY);
-    dos->writeUTF(_toString(m_spawnPos->y));
+    dos->writeUTF(toWString(m_spawnPos->y));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnZ);
-    dos->writeUTF(_toString(m_spawnPos->z));
+    dos->writeUTF(toWString(m_spawnPos->z));
 
     if (m_bUpdateYRot) {
         ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_yRot);
-        dos->writeUTF(_toString(m_yRot));
+        dos->writeUTF(toWString(m_yRot));
     }
     if (m_bUpdateHealth) {
         ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_food);
-        dos->writeUTF(_toString(m_health));
+        dos->writeUTF(toWString(m_health));
     }
     if (m_bUpdateFood) {
         ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_health);
-        dos->writeUTF(_toString(m_food));
+        dos->writeUTF(toWString(m_food));
     }
 }
 
@@ -87,36 +87,36 @@ void UpdatePlayerRuleDefinition::addAttribute(
     const std::wstring& attributeName, const std::wstring& attributeValue) {
     if (attributeName.compare(L"spawnX") == 0) {
         if (m_spawnPos == nullptr) m_spawnPos = new Pos();
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_spawnPos->x = value;
         app.DebugPrintf(
             "UpdatePlayerRuleDefinition: Adding parameter spawnX=%d\n", value);
     } else if (attributeName.compare(L"spawnY") == 0) {
         if (m_spawnPos == nullptr) m_spawnPos = new Pos();
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_spawnPos->y = value;
         app.DebugPrintf(
             "UpdatePlayerRuleDefinition: Adding parameter spawnY=%d\n", value);
     } else if (attributeName.compare(L"spawnZ") == 0) {
         if (m_spawnPos == nullptr) m_spawnPos = new Pos();
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_spawnPos->z = value;
         app.DebugPrintf(
             "UpdatePlayerRuleDefinition: Adding parameter spawnZ=%d\n", value);
     } else if (attributeName.compare(L"health") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_health = value;
         m_bUpdateHealth = true;
         app.DebugPrintf(
             "UpdatePlayerRuleDefinition: Adding parameter health=%d\n", value);
     } else if (attributeName.compare(L"food") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_food = value;
         m_bUpdateFood = true;
         app.DebugPrintf(
             "UpdatePlayerRuleDefinition: Adding parameter health=%d\n", value);
     } else if (attributeName.compare(L"yRot") == 0) {
-        float value = _fromString<float>(attributeValue);
+        float value = fromWString<float>(attributeValue);
         m_yRot = value;
         m_bUpdateYRot = true;
         app.DebugPrintf(

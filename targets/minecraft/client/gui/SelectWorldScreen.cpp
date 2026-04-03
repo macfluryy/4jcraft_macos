@@ -65,7 +65,7 @@ std::wstring SelectWorldScreen::getWorldName(int id) {
     if (levelName.length() == 0) {
         Language* language = Language::getInstance();
         levelName = language->getElement(L"selectWorld.world") + L" " +
-                    _toString<int>(id + 1);
+                    toWString<int>(id + 1);
     }
 
     return levelName;
@@ -142,7 +142,7 @@ void SelectWorldScreen::worldSelected(int id) {
     std::wstring worldFolderName = getWorldId(id);
     if (worldFolderName == L"")  // 4J - was nullptr comparison
     {
-        worldFolderName = L"World" + _toString<int>(id);
+        worldFolderName = L"World" + toWString<int>(id);
     }
     // 4J Stu - Not used, so commenting to stop the build failing
 }
@@ -253,7 +253,7 @@ void SelectWorldScreen::WorldSelectionList::renderItem(int i, int x, int y,
 
     std::wstring name = levelSummary->getLevelName();
     if (name.length() == 0) {
-        name = parent->worldLang + L" " + _toString<int>(i + 1);
+        name = parent->worldLang + L" " + toWString<int>(i + 1);
     }
 
     std::wstring id = levelSummary->getLevelId();
@@ -276,7 +276,7 @@ void SelectWorldScreen::WorldSelectionList::renderItem(int i, int x, int y,
     id = id + L" (" + buffer;
 
     int64_t size = levelSummary->getSizeOnDisk();
-    id = id + L", " + _toString<float>(size / 1024 * 100 / 1024 / 100.0f) +
+    id = id + L", " + toWString<float>(size / 1024 * 100 / 1024 / 100.0f) +
          L" MB)";
     std::wstring info;
 

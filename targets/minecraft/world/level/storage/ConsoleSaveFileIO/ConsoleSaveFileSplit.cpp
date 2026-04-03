@@ -1227,8 +1227,8 @@ std::wstring ConsoleSaveFileSplit::GetNameFromNumericIdentifier(
     }
     signed char regionX = (idIn >> 8) & 255;
     signed char regionZ = idIn & 255;
-    std::wstring region = (prefix + std::wstring(L"r.") + _toString(regionX) +
-                           L"." + _toString(regionZ) + L".mcr");
+    std::wstring region = (prefix + std::wstring(L"r.") + toWString(regionX) +
+                           L"." + toWString(regionZ) + L".mcr");
 
     return region;
 }
@@ -1528,15 +1528,15 @@ void ConsoleSaveFileSplit::setPlatform(ESavePlatform plat) {
     header.setPlatform(plat);
 }
 
-ByteOrder ConsoleSaveFileSplit::getSaveEndian() {
+std::endian ConsoleSaveFileSplit::getSaveEndian() {
     return header.getSaveEndian();
 }
 
-ByteOrder ConsoleSaveFileSplit::getLocalEndian() {
+std::endian ConsoleSaveFileSplit::getLocalEndian() {
     return header.getLocalEndian();
 }
 
-void ConsoleSaveFileSplit::setEndian(ByteOrder endian) {
+void ConsoleSaveFileSplit::setEndian(std::endian endian) {
     header.setEndian(endian);
 }
 

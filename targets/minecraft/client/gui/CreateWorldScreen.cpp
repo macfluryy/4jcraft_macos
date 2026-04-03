@@ -215,7 +215,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         if (seedString.length() != 0) {
             // try to convert it to a long first
             //            try {	// 4J - removed try/catch
-            int64_t value = _fromString<int64_t>(seedString);
+            int64_t value = fromWString<int64_t>(seedString);
 
             bool isNumber = true;
             for (unsigned int i = 0; i < seedString.length(); ++i) {
@@ -227,7 +227,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
                 }
             }
 
-            if (isNumber) value = _fromString<int64_t>(seedString);
+            if (isNumber) value = fromWString<int64_t>(seedString);
 
             if (value != 0) {
                 seedValue = value;

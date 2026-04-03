@@ -4,6 +4,8 @@
 // #include <system_service.h>
 #include <csignal>
 
+#include "util/StringHelpers.h"
+
 #if defined(__linux__) && defined(__GLIBC__)
 #include <execinfo.h>
 #include <unistd.h>

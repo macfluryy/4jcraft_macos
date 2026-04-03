@@ -162,7 +162,7 @@ int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void* lpParam,
     if (text[0] != '\0') {
         std::wstring value = convStringToWstring(text);
         int iVal = 0;
-        if (!value.empty()) iVal = _fromString<int>(value);
+        if (!value.empty()) iVal = fromWString<int>(value);
         switch (pClass->m_keyboardCallbackControl) {
             case eControl_Name:
                 pClass->m_textInputName.setLabel(value);

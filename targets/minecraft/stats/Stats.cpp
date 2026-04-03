@@ -624,7 +624,7 @@ void Stats::buildAdditionalStats() {
         rainbowCollection = std::vector<Stat*>(16);
         for (unsigned int i = 0; i < 16; i++) {
             generalStat = new GeneralStat(
-                offset++, L"rainbowCollection." + _toString<unsigned int>(i));
+                offset++, L"rainbowCollection." + toWString<unsigned int>(i));
             generalStats->push_back(generalStat);
             rainbowCollection[i] = generalStat;
             generalStat->postConstruct();
@@ -633,7 +633,7 @@ void Stats::buildAdditionalStats() {
         biomesVisisted = std::vector<Stat*>(23);
         for (unsigned int i = 0; i < 23; i++) {
             generalStat = new GeneralStat(
-                offset++, L"biomesVisited." + _toString<unsigned int>(i));
+                offset++, L"biomesVisited." + toWString<unsigned int>(i));
             generalStats->push_back(generalStat);
             biomesVisisted[i] = generalStat;
             generalStat->postConstruct();

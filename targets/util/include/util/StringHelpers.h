@@ -10,22 +10,21 @@ std::wstring replaceAll(const std::wstring& in, const std::wstring& replace,
                         const std::wstring& with);
 
 bool equalsIgnoreCase(const std::wstring& a, const std::wstring& b);
-// 4J-PB - for use in the ::toString
 template <class T>
-std::wstring _toString(T t) {
+std::wstring toWString(T t) {
     std::wostringstream oss;
     oss << std::dec << t;
     return oss.str();
 }
 template <class T>
-T _fromString(const std::wstring& s) {
+T fromWString(const std::wstring& s) {
     std::wistringstream stream(s);
     T t;
     stream >> t;
     return t;
 }
 template <class T>
-T _fromHEXString(const std::wstring& s) {
+T fromHexWString(const std::wstring& s) {
     std::wistringstream stream(s);
     T t;
     stream >> std::hex >> t;

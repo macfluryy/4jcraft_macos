@@ -110,7 +110,7 @@ void UIControl_EnchantmentButton::render(IggyCustomDrawCallbackRegion* region) {
         glEnable(GL_ALPHA_TEST);
         glAlphaFunc(GL_GREATER, 0.1f);
         Minecraft* pMinecraft = Minecraft::GetInstance();
-        std::wstring line = _toString<int>(cost);
+        std::wstring line = toWString<int>(cost);
         Font* font = pMinecraft->altFont;
         // int col = 0x685E4A;
         unsigned int col = m_textColour;
@@ -169,7 +169,7 @@ void UIControl_EnchantmentButton::updateState() {
     }
 
     if (cost != m_lastCost) {
-        setLabel(_toString<int>(cost));
+        setLabel(toWString<int>(cost));
         m_lastCost = cost;
         m_enchantmentString = EnchantmentNames::instance.getRandomName();
     }

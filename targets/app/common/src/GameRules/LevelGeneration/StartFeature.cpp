@@ -18,32 +18,32 @@ void StartFeature::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttrs + 4);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_chunkX);
-    dos->writeUTF(_toString(m_chunkX));
+    dos->writeUTF(toWString(m_chunkX));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_chunkZ);
-    dos->writeUTF(_toString(m_chunkZ));
+    dos->writeUTF(toWString(m_chunkZ));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_feature);
-    dos->writeUTF(_toString((int)m_feature));
+    dos->writeUTF(toWString((int)m_feature));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_orientation);
-    dos->writeUTF(_toString(m_orientation));
+    dos->writeUTF(toWString(m_orientation));
 }
 
 void StartFeature::addAttribute(const std::wstring& attributeName,
                                 const std::wstring& attributeValue) {
     if (attributeName.compare(L"chunkX") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_chunkX = value;
         app.DebugPrintf("StartFeature: Adding parameter chunkX=%d\n", m_chunkX);
     } else if (attributeName.compare(L"chunkZ") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_chunkZ = value;
         app.DebugPrintf("StartFeature: Adding parameter chunkZ=%d\n", m_chunkZ);
     } else if (attributeName.compare(L"orientation") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_orientation = value;
         app.DebugPrintf("StartFeature: Adding parameter orientation=%d\n",
                         m_orientation);
     } else if (attributeName.compare(L"feature") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_feature = (StructureFeature::EFeatureTypes)value;
         app.DebugPrintf("StartFeature: Adding parameter feature=%d\n",
                         m_feature);

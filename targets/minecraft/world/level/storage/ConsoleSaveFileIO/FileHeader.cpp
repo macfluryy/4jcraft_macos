@@ -141,13 +141,13 @@ void FileHeader::ReadHeader(
     switch (m_savePlatform) {
         case SAVE_FILE_PLATFORM_X360:
         case SAVE_FILE_PLATFORM_PS3:
-            m_saveEndian = BIGENDIAN;
+            m_saveEndian = std::endian::big;
             break;
         case SAVE_FILE_PLATFORM_XBONE:
         case SAVE_FILE_PLATFORM_WIN64:
         case SAVE_FILE_PLATFORM_PS4:
         case SAVE_FILE_PLATFORM_PSVITA:
-            m_saveEndian = LITTLEENDIAN;
+            m_saveEndian = std::endian::little;
             break;
         default:
             assert(0);
@@ -354,12 +354,12 @@ std::vector<FileEntry*>* FileHeader::getFilesWithPrefix(
     return files;
 }
 
-ByteOrder FileHeader::getEndian(ESavePlatform plat) {
-    ByteOrder platEndian;
+std::endian FileHeader::getEndian(ESavePlatform plat) {
+    std::endian platEndian;
     switch (plat) {
         case SAVE_FILE_PLATFORM_X360:
         case SAVE_FILE_PLATFORM_PS3:
-            return BIGENDIAN;
+            return std::endian::big;
             break;
 
         case SAVE_FILE_PLATFORM_NONE:
@@ -367,11 +367,11 @@ ByteOrder FileHeader::getEndian(ESavePlatform plat) {
         case SAVE_FILE_PLATFORM_PS4:
         case SAVE_FILE_PLATFORM_PSVITA:
         case SAVE_FILE_PLATFORM_WIN64:
-            return LITTLEENDIAN;
+            return std::endian::little;
             break;
         default:
             assert(0);
             break;
     }
-    return LITTLEENDIAN;
+    return std::endian::little;
 }

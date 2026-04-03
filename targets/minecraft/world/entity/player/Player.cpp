@@ -172,7 +172,7 @@ Player::Player(Level* level, const std::wstring& name) : LivingEntity(level) {
     rotOffs = 180;
     flameTime = 20;
 
-    m_skinIndex = eDefaultSkins_Skin0;
+    m_skinIndex = EDefaultSkins::Skin0;
     m_playerIndex = 0;
     m_dwSkinId = 0;
     m_dwCapeId = 0;
@@ -533,7 +533,7 @@ void Player::ride(std::shared_ptr<Entity> e) {
 
 void Player::setPlayerDefaultSkin(EDefaultSkins skin) {
 #if !defined(_CONTENT_PACKAGE)
-    wprintf(L"Setting default skin to %d for player %ls\n", skin, name.c_str());
+    wprintf(L"Setting default skin to %d for player %ls\n", std::to_underlying(skin), name.c_str());
 #endif
     m_skinIndex = skin;
 }
@@ -543,7 +543,7 @@ void Player::setCustomSkin(std::uint32_t skinId) {
     wprintf(L"Attempting to set skin to %08X for player %ls\n", skinId,
             name.c_str());
 #endif
-    EDefaultSkins playerSkin = eDefaultSkins_ServerSelected;
+    EDefaultSkins playerSkin = EDefaultSkins::ServerSelected;
 
     // reset the idle
     setIsIdle(false);
@@ -556,12 +556,12 @@ void Player::setCustomSkin(std::uint32_t skinId) {
         std::uint32_t defaultSkinIndex =
             GET_DEFAULT_SKIN_ID_FROM_BITMASK(skinId);
         if (ugcSkinIndex == 0 && defaultSkinIndex > 0) {
-            playerSkin = (EDefaultSkins)defaultSkinIndex;
+            playerSkin = static_cast<EDefaultSkins>(defaultSkinIndex);
         }
     }
 
-    if (playerSkin == eDefaultSkins_ServerSelected) {
-        playerSkin = (EDefaultSkins)(m_playerIndex + 1);
+    if (playerSkin == EDefaultSkins::ServerSelected) {
+        playerSkin = static_cast<EDefaultSkins>(m_playerIndex + 1);
     }
 
     // We always set a default skin, since we may be waiting for the player's
@@ -2266,21 +2266,21 @@ float Player::getAbsorptionAmount() {
 
 int Player::getTexture() {
     switch (m_skinIndex) {
-        case eDefaultSkins_Skin0:
+        case EDefaultSkins::Skin0:
             return TN_MOB_CHAR;  // 4J - was L"/mob/char.png";
-        case eDefaultSkins_Skin1:
+        case EDefaultSkins::Skin1:
             return TN_MOB_CHAR1;  // 4J - was L"/mob/char1.png";
-        case eDefaultSkins_Skin2:
+        case EDefaultSkins::Skin2:
             return TN_MOB_CHAR2;  // 4J - was L"/mob/char2.png";
-        case eDefaultSkins_Skin3:
+        case EDefaultSkins::Skin3:
             return TN_MOB_CHAR3;  // 4J - was L"/mob/char3.png";
-        case eDefaultSkins_Skin4:
+        case EDefaultSkins::Skin4:
             return TN_MOB_CHAR4;  // 4J - was L"/mob/char4.png";
-        case eDefaultSkins_Skin5:
+        case EDefaultSkins::Skin5:
             return TN_MOB_CHAR5;  // 4J - was L"/mob/char5.png";
-        case eDefaultSkins_Skin6:
+        case EDefaultSkins::Skin6:
             return TN_MOB_CHAR6;  // 4J - was L"/mob/char6.png";
-        case eDefaultSkins_Skin7:
+        case EDefaultSkins::Skin7:
             return TN_MOB_CHAR7;  // 4J - was L"/mob/char7.png";
 
         default:

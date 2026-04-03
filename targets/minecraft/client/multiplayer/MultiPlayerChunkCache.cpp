@@ -295,7 +295,7 @@ std::wstring MultiPlayerChunkCache::gatherStats() {
         std::lock_guard<std::mutex> lock(m_csLoadCreate);
         size = (int)loadedChunkList.size();
     }
-    return L"MultiplayerChunkCache: " + _toString<int>(size);
+    return L"MultiplayerChunkCache: " + toWString<int>(size);
 }
 
 void MultiPlayerChunkCache::dataReceived(int x, int z) {

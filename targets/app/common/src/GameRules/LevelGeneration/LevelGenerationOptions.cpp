@@ -131,16 +131,16 @@ void LevelGenerationOptions::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnX);
-    dos->writeUTF(_toString(m_spawnPos->x));
+    dos->writeUTF(toWString(m_spawnPos->x));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnY);
-    dos->writeUTF(_toString(m_spawnPos->y));
+    dos->writeUTF(toWString(m_spawnPos->y));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_spawnZ);
-    dos->writeUTF(_toString(m_spawnPos->z));
+    dos->writeUTF(toWString(m_spawnPos->z));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_seed);
-    dos->writeUTF(_toString(m_seed));
+    dos->writeUTF(toWString(m_seed));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_flatworld);
-    dos->writeUTF(_toString(m_useFlatWorld));
+    dos->writeUTF(toWString(m_useFlatWorld));
 }
 
 void LevelGenerationOptions::getChildren(
@@ -190,24 +190,24 @@ GameRuleDefinition* LevelGenerationOptions::addChild(
 void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
                                           const std::wstring& attributeValue) {
     if (attributeName.compare(L"seed") == 0) {
-        m_seed = _fromString<int64_t>(attributeValue);
+        m_seed = fromWString<int64_t>(attributeValue);
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter m_seed=%I64d\n", m_seed);
     } else if (attributeName.compare(L"spawnX") == 0) {
         if (m_spawnPos == nullptr) m_spawnPos = new Pos();
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_spawnPos->x = value;
         app.DebugPrintf("LevelGenerationOptions: Adding parameter spawnX=%d\n",
                         value);
     } else if (attributeName.compare(L"spawnY") == 0) {
         if (m_spawnPos == nullptr) m_spawnPos = new Pos();
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_spawnPos->y = value;
         app.DebugPrintf("LevelGenerationOptions: Adding parameter spawnY=%d\n",
                         value);
     } else if (attributeName.compare(L"spawnZ") == 0) {
         if (m_spawnPos == nullptr) m_spawnPos = new Pos();
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_spawnPos->z = value;
         app.DebugPrintf("LevelGenerationOptions: Adding parameter spawnZ=%d\n",
                         value);
@@ -244,7 +244,7 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
             "LevelGenerationOptions: Adding parameter displayName=%ls\n",
             getDisplayName());
     } else if (attributeName.compare(L"texturePackId") == 0) {
-        setRequiredTexturePackId(_fromString<unsigned int>(attributeValue));
+        setRequiredTexturePackId(fromWString<unsigned int>(attributeValue));
         setRequiresTexturePack(true);
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter texturePackId=%0x\n",
@@ -260,7 +260,7 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
             "LevelGenerationOptions: Adding parameter baseSaveName=%ls\n",
             getBaseSavePath().c_str());
     } else if (attributeName.compare(L"hasBeenInCreative") == 0) {
-        bool value = _fromString<bool>(attributeValue);
+        bool value = fromWString<bool>(attributeValue);
         m_bHasBeenInCreative = value;
         app.DebugPrintf(
             "LevelGenerationOptions: Adding parameter gameMode=%d\n",

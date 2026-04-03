@@ -41,25 +41,25 @@ void ApplySchematicRuleDefinition::writeAttributes(DataOutputStream* dos,
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_filename);
     dos->writeUTF(m_schematicName);
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_x);
-    dos->writeUTF(_toString(m_location.x));
+    dos->writeUTF(toWString(m_location.x));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_y);
-    dos->writeUTF(_toString(m_location.y));
+    dos->writeUTF(toWString(m_location.y));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_z);
-    dos->writeUTF(_toString(m_location.z));
+    dos->writeUTF(toWString(m_location.z));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_rot);
 
     switch (m_rotation) {
         case ConsoleSchematicFile::eSchematicRot_0:
-            dos->writeUTF(_toString(0));
+            dos->writeUTF(toWString(0));
             break;
         case ConsoleSchematicFile::eSchematicRot_90:
-            dos->writeUTF(_toString(90));
+            dos->writeUTF(toWString(90));
             break;
         case ConsoleSchematicFile::eSchematicRot_180:
-            dos->writeUTF(_toString(180));
+            dos->writeUTF(toWString(180));
             break;
         case ConsoleSchematicFile::eSchematicRot_270:
-            dos->writeUTF(_toString(270));
+            dos->writeUTF(toWString(270));
             break;
     }
 }
@@ -81,23 +81,23 @@ void ApplySchematicRuleDefinition::addAttribute(
             m_schematic = m_levelGenOptions->getSchematicFile(m_schematicName);
         }
     } else if (attributeName.compare(L"x") == 0) {
-        m_location.x = _fromString<int>(attributeValue);
+        m_location.x = fromWString<int>(attributeValue);
         if (((int)std::abs(m_location.x)) % 2 != 0) m_location.x -= 1;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // x=%f\n",m_location->x);
     } else if (attributeName.compare(L"y") == 0) {
-        m_location.y = _fromString<int>(attributeValue);
+        m_location.y = fromWString<int>(attributeValue);
         if (((int)std::abs(m_location.y)) % 2 != 0) m_location.y -= 1;
         if (m_location.y < 0) m_location.y = 0;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // y=%f\n",m_location->y);
     } else if (attributeName.compare(L"z") == 0) {
-        m_location.z = _fromString<int>(attributeValue);
+        m_location.z = fromWString<int>(attributeValue);
         if (((int)std::abs(m_location.z)) % 2 != 0) m_location.z -= 1;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // z=%f\n",m_location->z);
     } else if (attributeName.compare(L"rot") == 0) {
-        int degrees = _fromString<int>(attributeValue);
+        int degrees = fromWString<int>(attributeValue);
 
         while (degrees < 0) degrees += 360;
         while (degrees >= 360) degrees -= 360;
@@ -123,7 +123,7 @@ void ApplySchematicRuleDefinition::addAttribute(
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // rot=%d\n",m_rotation);
     } else if (attributeName.compare(L"dim") == 0) {
-        m_dimension = _fromString<int>(attributeValue);
+        m_dimension = fromWString<int>(attributeValue);
         if (m_dimension > 1 || m_dimension < -1) m_dimension = 0;
         // app.DebugPrintf("ApplySchematicRuleDefinition: Adding parameter
         // dimension=%d\n",m_dimension);

@@ -47,7 +47,7 @@ void MemoryTracker::release() {
 }
 
 ByteBuffer* MemoryTracker::createByteBuffer(int size) {
-    // 4J - was ByteBuffer.allocateDirect(size).order(ByteOrder.nativeOrder())
+    // 4J - was ByteBuffer.allocateDirect(size).order(std::endian.nativeOrder())
     ByteBuffer* bb = ByteBuffer::allocate(size);
     return bb;
 }

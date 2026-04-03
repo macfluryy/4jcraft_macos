@@ -23,7 +23,7 @@ public:
     static const int CHUNK_LAYERS;
     static const int CHUNK_SIZE_BYTES;
 
-    static const ByteOrder BYTEORDER;
+    static const std::endian BYTEORDER;
 
     File dir;
 

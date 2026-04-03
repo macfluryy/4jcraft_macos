@@ -56,7 +56,7 @@ void GameRuleDefinition::writeAttributes(DataOutputStream* dos,
     dos->writeUTF(m_promptId);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_dataTag);
-    dos->writeUTF(_toString(m_4JDataValue));
+    dos->writeUTF(toWString(m_4JDataValue));
 }
 
 void GameRuleDefinition::getChildren(
@@ -86,7 +86,7 @@ void GameRuleDefinition::addAttribute(const std::wstring& attributeName,
                 m_promptId.c_str());
 #endif
     } else if (attributeName.compare(L"dataTag") == 0) {
-        m_4JDataValue = _fromString<int>(attributeValue);
+        m_4JDataValue = fromWString<int>(attributeValue);
         app.DebugPrintf(
             "GameRuleDefinition: Adding parameter m_4JDataValue=%d\n",
             m_4JDataValue);

@@ -514,7 +514,7 @@ std::vector<std::wstring>* ItemInstance::getHoverText(
     //{
     //	if (id == Item::map_Id)
     //	{
-    //		title += L" #" + _toString(auxValue);
+    //		title += L" #" + toWString(auxValue);
     //	}
     //}
 
@@ -579,7 +579,7 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
 
     /*if (!hasCustomHoverName() && id == Item::map_Id)
     {
-            title.text += L" #" + _toString(auxValue);
+            title.text += L" #" + toWString(auxValue);
     }*/
 
     lines->push_back(title);
@@ -661,8 +661,8 @@ std::vector<HtmlString>* ItemInstance::getHoverText(
         if (isDamaged()) {
             std::wstring damageStr =
                 L"Durability: LOCALISE " +
-                _toString<int>((getMaxDamage()) - getDamageValue()) + L" / " +
-                _toString<int>(getMaxDamage());
+                toWString<int>((getMaxDamage()) - getDamageValue()) + L" / " +
+                toWString<int>(getMaxDamage());
             lines->push_back(HtmlString(damageStr));
         }
     }

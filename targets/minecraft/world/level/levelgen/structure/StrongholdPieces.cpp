@@ -283,12 +283,12 @@ StrongholdPieces::StrongholdPiece::StrongholdPiece(int genDepth)
 }
 
 void StrongholdPieces::StrongholdPiece::addAdditonalSaveData(CompoundTag* tag) {
-    tag->putString(L"EntryDoor", _toString<int>(entryDoor));
+    tag->putString(L"EntryDoor", toWString<int>(entryDoor));
 }
 
 void StrongholdPieces::StrongholdPiece::readAdditonalSaveData(
     CompoundTag* tag) {
-    entryDoor = (SmallDoorType)_fromString<int>(tag->getString(L"EntryDoor"));
+    entryDoor = (SmallDoorType)fromWString<int>(tag->getString(L"EntryDoor"));
 }
 
 void StrongholdPieces::StrongholdPiece::generateSmallDoor(

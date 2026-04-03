@@ -2623,8 +2623,8 @@ Tile* Tile::setIconName(const std::wstring& iconName) {
 }
 
 std::wstring Tile::getIconName() {
-    return iconName.empty() ? L"MISSING_ICON_TILE_" + _toString<int>(id) +
-                                  L"_" + _toString<int>(descriptionId)
+    return iconName.empty() ? L"MISSING_ICON_TILE_" + toWString<int>(id) +
+                                  L"_" + toWString<int>(descriptionId)
                             : iconName;
 }
 

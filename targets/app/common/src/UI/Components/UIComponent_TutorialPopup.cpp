@@ -274,10 +274,10 @@ std::wstring UIComponent_TutorialPopup::_SetIcon(int icon, int iAuxVal,
 
                 std::vector<std::wstring> idAndAux = stringSplit(id, L':');
 
-                int iconId = _fromString<int>(idAndAux[0]);
+                int iconId = fromWString<int>(idAndAux[0]);
 
                 if (idAndAux.size() > 1) {
-                    iAuxVal = _fromString<int>(idAndAux[1]);
+                    iAuxVal = fromWString<int>(idAndAux[1]);
                 } else {
                     iAuxVal = 0;
                 }

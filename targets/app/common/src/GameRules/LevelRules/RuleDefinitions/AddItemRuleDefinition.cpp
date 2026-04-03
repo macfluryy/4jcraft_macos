@@ -22,19 +22,19 @@ void AddItemRuleDefinition::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_itemId);
-    dos->writeUTF(_toString(m_itemId));
+    dos->writeUTF(toWString(m_itemId));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_quantity);
-    dos->writeUTF(_toString(m_quantity));
+    dos->writeUTF(toWString(m_quantity));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_auxValue);
-    dos->writeUTF(_toString(m_auxValue));
+    dos->writeUTF(toWString(m_auxValue));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_dataTag);
-    dos->writeUTF(_toString(m_dataTag));
+    dos->writeUTF(toWString(m_dataTag));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_slot);
-    dos->writeUTF(_toString(m_slot));
+    dos->writeUTF(toWString(m_slot));
 }
 
 void AddItemRuleDefinition::getChildren(
@@ -58,27 +58,27 @@ GameRuleDefinition* AddItemRuleDefinition::addChild(
 void AddItemRuleDefinition::addAttribute(const std::wstring& attributeName,
                                          const std::wstring& attributeValue) {
     if (attributeName.compare(L"itemId") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_itemId = value;
         // app.DebugPrintf(2,"AddItemRuleDefinition: Adding parameter
         // itemId=%d\n",m_itemId);
     } else if (attributeName.compare(L"quantity") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_quantity = value;
         // app.DebugPrintf(2,"AddItemRuleDefinition: Adding parameter
         // quantity=%d\n",m_quantity);
     } else if (attributeName.compare(L"auxValue") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_auxValue = value;
         // app.DebugPrintf(2,"AddItemRuleDefinition: Adding parameter
         // auxValue=%d\n",m_auxValue);
     } else if (attributeName.compare(L"dataTag") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_dataTag = value;
         // app.DebugPrintf(2,"AddItemRuleDefinition: Adding parameter
         // dataTag=%d\n",m_dataTag);
     } else if (attributeName.compare(L"slot") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_slot = value;
         // app.DebugPrintf(2,"AddItemRuleDefinition: Adding parameter
         // slot=%d\n",m_slot);

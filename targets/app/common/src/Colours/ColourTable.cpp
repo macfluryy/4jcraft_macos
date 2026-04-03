@@ -377,7 +377,7 @@ void ColourTable::setColour(const std::wstring& colourName, int value) {
 
 void ColourTable::setColour(const std::wstring& colourName,
                             const std::wstring& value) {
-    setColour(colourName, _fromHEXString<int>(value));
+    setColour(colourName, fromHexWString<int>(value));
 }
 
 unsigned int ColourTable::getColour(eMinecraftColour id) {

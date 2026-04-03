@@ -650,7 +650,7 @@ void EntityHorse::rebuildLayeredTextureInfo() {
         }
     } else {
         layerTextureLayers[0] = -1;
-        layerTextureHashName += L"_" + _toString<int>(type) + L"_";
+        layerTextureHashName += L"_" + toWString<int>(type) + L"_";
         armorIndex = 1;
     }
 

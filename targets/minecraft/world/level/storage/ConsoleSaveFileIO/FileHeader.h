@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "util/Definitions.h"
+#include <bit>
 
 #define MAKE_FOURCC(ch0, ch1, ch2, ch3)                                   \
     (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch0)) |         \
@@ -164,8 +164,8 @@ class FileHeader {
 private:
     std::vector<FileEntry*> fileTable;
     ESavePlatform m_savePlatform;
-    ByteOrder m_saveEndian;
-    static const ByteOrder m_localEndian = LITTLEENDIAN;
+    std::endian m_saveEndian;
+    static const std::endian m_localEndian = std::endian::little;
 
     short m_saveVersion;
     short m_originalSaveVersion;
@@ -210,10 +210,10 @@ protected:
         m_savePlatform = SAVE_FILE_PLATFORM_LOCAL;
         m_saveEndian = m_localEndian;
     }
-    ByteOrder getSaveEndian() { return m_saveEndian; }
-    static ByteOrder getLocalEndian() { return m_localEndian; }
-    void setEndian(ByteOrder endian) { m_saveEndian = endian; }
-    static ByteOrder getEndian(ESavePlatform plat);
+    std::endian getSaveEndian() { return m_saveEndian; }
+    static std::endian getLocalEndian() { return m_localEndian; }
+    void setEndian(std::endian endian) { m_saveEndian = endian; }
+    static std::endian getEndian(ESavePlatform plat);
     bool isLocalEndianDifferent(ESavePlatform plat) {
         return m_localEndian != getEndian(plat);
     }

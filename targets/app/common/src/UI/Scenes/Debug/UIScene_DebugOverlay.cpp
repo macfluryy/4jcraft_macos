@@ -93,7 +93,7 @@ UIScene_DebugOverlay::UIScene_DebugOverlay(int iPad, void* initData,
                 std::pair<int, int>(ench->id, level));
             m_buttonListEnchantments.addItem(
                 app.GetString(ench->getDescriptionId()) +
-                _toString<int>(level));
+                toWString<int>(level));
         }
     }
 

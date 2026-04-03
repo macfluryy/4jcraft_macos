@@ -142,6 +142,6 @@ void CropTile::registerIcons(IconRegister* iconRegister) {
     icons = new Icon*[8];
 
     for (int i = 0; i < 8; i++) {
-        icons[i] = iconRegister->registerIcon(L"crops_" + _toString(i));
+        icons[i] = iconRegister->registerIcon(L"crops_" + toWString(i));
     }
 }

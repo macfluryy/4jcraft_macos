@@ -590,7 +590,7 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
             case SKIN_SELECT_PACK_DEFAULT:
                 backupTexture = getTextureId(m_skinIndex);
 
-                if (m_skinIndex == eDefaultSkins_ServerSelected) {
+                if (m_skinIndex == std::to_underlying(EDefaultSkins::ServerSelected)) {
                     skinName = app.GetString(IDS_DEFAULT_SKINS);
                 } else {
                     skinName = wchDefaultNamesA[m_skinIndex];
@@ -860,30 +860,30 @@ void UIScene_SkinSelectMenu::handleSkinIndexChanged() {
 
 TEXTURE_NAME UIScene_SkinSelectMenu::getTextureId(int skinIndex) {
     TEXTURE_NAME texture = TN_MOB_CHAR;
-    switch (skinIndex) {
-        case eDefaultSkins_ServerSelected:
-        case eDefaultSkins_Skin0:
+    switch (static_cast<EDefaultSkins>(skinIndex)) {
+        case EDefaultSkins::ServerSelected:
+        case EDefaultSkins::Skin0:
             texture = TN_MOB_CHAR;
             break;
-        case eDefaultSkins_Skin1:
+        case EDefaultSkins::Skin1:
             texture = TN_MOB_CHAR1;
             break;
-        case eDefaultSkins_Skin2:
+        case EDefaultSkins::Skin2:
             texture = TN_MOB_CHAR2;
             break;
-        case eDefaultSkins_Skin3:
+        case EDefaultSkins::Skin3:
             texture = TN_MOB_CHAR3;
             break;
-        case eDefaultSkins_Skin4:
+        case EDefaultSkins::Skin4:
             texture = TN_MOB_CHAR4;
             break;
-        case eDefaultSkins_Skin5:
+        case EDefaultSkins::Skin5:
             texture = TN_MOB_CHAR5;
             break;
-        case eDefaultSkins_Skin6:
+        case EDefaultSkins::Skin6:
             texture = TN_MOB_CHAR6;
             break;
-        case eDefaultSkins_Skin7:
+        case EDefaultSkins::Skin7:
             texture = TN_MOB_CHAR7;
             break;
     };
@@ -907,8 +907,8 @@ int UIScene_SkinSelectMenu::getNextSkinIndex(int sourceIndex) {
             ++nextSkin;
 
             if (m_packIndex == SKIN_SELECT_PACK_DEFAULT &&
-                nextSkin >= eDefaultSkins_Count) {
-                nextSkin = eDefaultSkins_ServerSelected;
+                nextSkin >= std::to_underlying(EDefaultSkins::Count)) {
+                nextSkin = std::to_underlying(EDefaultSkins::ServerSelected);
             } else if (m_currentPack != nullptr &&
                        nextSkin >= m_currentPack->getSkinCount()) {
                 nextSkin = 0;
@@ -932,7 +932,7 @@ int UIScene_SkinSelectMenu::getPreviousSkinIndex(int sourceIndex) {
         default:
             if (previousSkin == 0) {
                 if (m_packIndex == SKIN_SELECT_PACK_DEFAULT) {
-                    previousSkin = eDefaultSkins_Count - 1;
+                    previousSkin = std::to_underlying(EDefaultSkins::Count) - 1;
                 } else if (m_currentPack != nullptr) {
                     previousSkin = m_currentPack->getSkinCount() - 1;
                 }
@@ -967,7 +967,7 @@ void UIScene_SkinSelectMenu::handlePackIndexChanged() {
                     std::uint32_t defaultSkinIndex =
                         GET_DEFAULT_SKIN_ID_FROM_BITMASK(m_originalSkinId);
                     if (ugcSkinIndex == 0) {
-                        m_skinIndex = (EDefaultSkins)defaultSkinIndex;
+                        m_skinIndex = static_cast<int>(defaultSkinIndex);
                     }
                 }
                 break;

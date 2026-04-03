@@ -802,15 +802,15 @@ void ConsoleSaveFileOriginal::setPlatform(ESavePlatform plat) {
     header.setPlatform(plat);
 }
 
-ByteOrder ConsoleSaveFileOriginal::getSaveEndian() {
+std::endian ConsoleSaveFileOriginal::getSaveEndian() {
     return header.getSaveEndian();
 }
 
-ByteOrder ConsoleSaveFileOriginal::getLocalEndian() {
+std::endian ConsoleSaveFileOriginal::getLocalEndian() {
     return header.getLocalEndian();
 }
 
-void ConsoleSaveFileOriginal::setEndian(ByteOrder endian) {
+void ConsoleSaveFileOriginal::setEndian(std::endian endian) {
     header.setEndian(endian);
 }
 

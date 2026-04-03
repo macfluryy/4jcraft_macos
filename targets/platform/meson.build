@@ -1,9 +1,10 @@
 platform_inc = include_directories('.')
+_threads = dependency('threads')
 
 lib_platform_core = static_library('platform_core',
   files('C4JThread.cpp', 'ShutdownManager.cpp'),
   include_directories: [platform_inc, include_directories('..')],
-  dependencies: [dependency('threads')],
+  dependencies: [_threads],
   cpp_args: global_cpp_args + global_cpp_defs,
 )
 
@@ -14,7 +15,6 @@ platform_dep = declare_dependency(
 
 # SDL2-based platform implementations (formerly 4J.* modules)
 _sdl2 = dependency('sdl2')
-_threads = dependency('threads')
 _defs = []
 
 if get_option('renderer') == 'gles'

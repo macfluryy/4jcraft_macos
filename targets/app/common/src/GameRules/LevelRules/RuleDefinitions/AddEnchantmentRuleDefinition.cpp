@@ -24,17 +24,17 @@ void AddEnchantmentRuleDefinition::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttributes + 2);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_enchantmentId);
-    dos->writeUTF(_toString(m_enchantmentId));
+    dos->writeUTF(toWString(m_enchantmentId));
 
     ConsoleGameRules::write(dos,
                             ConsoleGameRules::eGameRuleAttr_enchantmentLevel);
-    dos->writeUTF(_toString(m_enchantmentLevel));
+    dos->writeUTF(toWString(m_enchantmentLevel));
 }
 
 void AddEnchantmentRuleDefinition::addAttribute(
     const std::wstring& attributeName, const std::wstring& attributeValue) {
     if (attributeName.compare(L"enchantmentId") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         if (value < 0) value = 0;
         if (value >= 256) value = 255;
         m_enchantmentId = value;
@@ -42,7 +42,7 @@ void AddEnchantmentRuleDefinition::addAttribute(
             "AddEnchantmentRuleDefinition: Adding parameter enchantmentId=%d\n",
             m_enchantmentId);
     } else if (attributeName.compare(L"enchantmentLevel") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         if (value < 0) value = 0;
         m_enchantmentLevel = value;
         app.DebugPrintf(

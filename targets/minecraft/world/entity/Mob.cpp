@@ -244,7 +244,7 @@ void Mob::addAdditonalSaveData(CompoundTag* entityTag) {
 
     ListTag<FloatTag>* dropChanceList = new ListTag<FloatTag>();
     for (int i = 0; i < dropChances.size(); i++) {
-        dropChanceList->add(new FloatTag(_toString(i), dropChances[i]));
+        dropChanceList->add(new FloatTag(toWString(i), dropChances[i]));
     }
     entityTag->put(L"DropChances", dropChanceList);
     entityTag->putString(L"CustomName", getCustomName());

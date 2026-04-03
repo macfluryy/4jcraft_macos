@@ -33,15 +33,15 @@ RegionFile* RegionFileCache::_getRegionFile(
 
     // File regionDir(basePath, L"region");
 
-    // File file(regionDir, wstring(L"r.") + _toString(chunkX>>5) + L"." +
-    // _toString(chunkZ>>5) + L".mcr" );
+    // File file(regionDir, wstring(L"r.") + toWString(chunkX>>5) + L"." +
+    // toWString(chunkZ>>5) + L".mcr" );
     File file;
     if (useSplitSaves(saveFile->getSavePlatform())) {
-        file = File(prefix + std::wstring(L"r.") + _toString(chunkX >> 4) +
-                    L"." + _toString(chunkZ >> 4) + L".mcr");
+        file = File(prefix + std::wstring(L"r.") + toWString(chunkX >> 4) +
+                    L"." + toWString(chunkZ >> 4) + L".mcr");
     } else {
-        file = File(prefix + std::wstring(L"r.") + _toString(chunkX >> 5) +
-                    L"." + _toString(chunkZ >> 5) + L".mcr");
+        file = File(prefix + std::wstring(L"r.") + toWString(chunkX >> 5) +
+                    L"." + toWString(chunkZ >> 5) + L".mcr");
     }
 
     RegionFile* ref = nullptr;

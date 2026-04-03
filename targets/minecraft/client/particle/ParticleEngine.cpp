@@ -288,5 +288,5 @@ std::wstring ParticleEngine::countParticles() {
             total += particles[l][tt][list].size();
         }
     }
-    return _toString<int>(total);
+    return toWString<int>(total);
 }

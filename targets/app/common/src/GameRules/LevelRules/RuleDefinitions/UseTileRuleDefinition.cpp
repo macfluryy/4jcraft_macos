@@ -16,40 +16,40 @@ void UseTileRuleDefinition::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttributes + 5);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_tileId);
-    dos->writeUTF(_toString(m_tileId));
+    dos->writeUTF(toWString(m_tileId));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_useCoords);
-    dos->writeUTF(_toString(m_useCoords));
+    dos->writeUTF(toWString(m_useCoords));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_x);
-    dos->writeUTF(_toString(m_coordinates.x));
+    dos->writeUTF(toWString(m_coordinates.x));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_y);
-    dos->writeUTF(_toString(m_coordinates.y));
+    dos->writeUTF(toWString(m_coordinates.y));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_z);
-    dos->writeUTF(_toString(m_coordinates.z));
+    dos->writeUTF(toWString(m_coordinates.z));
 }
 
 void UseTileRuleDefinition::addAttribute(const std::wstring& attributeName,
                                          const std::wstring& attributeValue) {
     if (attributeName.compare(L"tileId") == 0) {
-        m_tileId = _fromString<int>(attributeValue);
+        m_tileId = fromWString<int>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter tileId=%d\n", m_tileId);
     } else if (attributeName.compare(L"useCoords") == 0) {
-        m_useCoords = _fromString<bool>(attributeValue);
+        m_useCoords = fromWString<bool>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter useCoords=%s\n",
                         m_useCoords ? "true" : "false");
     } else if (attributeName.compare(L"x") == 0) {
-        m_coordinates.x = _fromString<int>(attributeValue);
+        m_coordinates.x = fromWString<int>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter x=%d\n",
                         m_coordinates.x);
     } else if (attributeName.compare(L"y") == 0) {
-        m_coordinates.y = _fromString<int>(attributeValue);
+        m_coordinates.y = fromWString<int>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter y=%d\n",
                         m_coordinates.y);
     } else if (attributeName.compare(L"z") == 0) {
-        m_coordinates.z = _fromString<int>(attributeValue);
+        m_coordinates.z = fromWString<int>(attributeValue);
         app.DebugPrintf("UseTileRule: Adding parameter z=%d\n",
                         m_coordinates.z);
     } else {

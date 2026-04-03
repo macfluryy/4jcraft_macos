@@ -597,9 +597,9 @@ void ItemRenderer::renderGuiItemDecorations(Font* font, Textures* textures,
         if (amount.empty()) {
             int count = item->count;
             if (count > 64) {
-                amount = _toString<int>(64) + L"+";
+                amount = toWString<int>(64) + L"+";
             } else {
-                amount = _toString<int>(item->count);
+                amount = toWString<int>(item->count);
             }
         }
         glDisable(GL_LIGHTING);

@@ -145,7 +145,7 @@ bool DLCPack::getParameterAsUInt(DLCManager::EDLCParameterType type,
                 ss >> param;
             } break;
             default:
-                param = _fromString<unsigned int>(it->second);
+                param = fromWString<unsigned int>(it->second);
         }
         return true;
     }

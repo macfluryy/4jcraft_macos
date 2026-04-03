@@ -53,7 +53,7 @@ void DeathScreen::render(int xm, int ym, float a) {
     drawCenteredString(font, L"Game over!", width / 2 / 2, 60 / 2, 0xffffff);
     glPopMatrix();
     drawCenteredString(font,
-                       L"Score: &e" + _toString(minecraft->player->getScore()),
+                       L"Score: &e" + toWString(minecraft->player->getScore()),
                        width / 2, 100, 0xffffff);
 
     Screen::render(xm, ym, a);

@@ -71,7 +71,7 @@ std::wstring CompleteAllRuleDefinition::generateDescriptionString(
     PacketData* values = (PacketData*)data;
     std::wstring newDesc = description;
     newDesc =
-        replaceAll(newDesc, L"{*progress*}", _toString<int>(values->progress));
-    newDesc = replaceAll(newDesc, L"{*goal*}", _toString<int>(values->goal));
+        replaceAll(newDesc, L"{*progress*}", toWString<int>(values->progress));
+    newDesc = replaceAll(newDesc, L"{*goal*}", toWString<int>(values->goal));
     return newDesc;
 }

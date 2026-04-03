@@ -312,7 +312,7 @@ std::wstring Options::getMessage(const Options::Option* item) {
                 return caption +
                        language->getElement(L"options.sensitivity.max");
             }
-            return caption + _toString<int>((int)(progressValue * 200)) + L"%";
+            return caption + toWString<int>((int)(progressValue * 200)) + L"%";
         } else if (item == Option::FOV) {
             if (progressValue == 0) {
                 return caption + language->getElement(L"options.fov.min");
@@ -320,7 +320,7 @@ std::wstring Options::getMessage(const Options::Option* item) {
             if (progressValue == 1) {
                 return caption + language->getElement(L"options.fov.max");
             }
-            return caption + _toString<int>((int)(70 + progressValue * 40));
+            return caption + toWString<int>((int)(70 + progressValue * 40));
         } else if (item == Option::GAMMA) {
             if (progressValue == 0) {
                 return caption + language->getElement(L"options.gamma.min");
@@ -328,13 +328,13 @@ std::wstring Options::getMessage(const Options::Option* item) {
             if (progressValue == 1) {
                 return caption + language->getElement(L"options.gamma.max");
             }
-            return caption + L"+" + _toString<int>((int)(progressValue * 100)) +
+            return caption + L"+" + toWString<int>((int)(progressValue * 100)) +
                    L"%";
         } else {
             if (progressValue == 0) {
                 return caption + language->getElement(L"options.off");
             }
-            return caption + _toString<int>((int)(progressValue * 100)) + L"%";
+            return caption + toWString<int>((int)(progressValue * 100)) + L"%";
         }
     } else if (item->isBoolean()) {
         bool booleanValue = getBooleanValue(item);
@@ -395,14 +395,14 @@ void Options::load() {
         if (cmds[0] == L"gamma") gamma = readFloat(cmds[1]);
         if (cmds[0] == L"invertYMouse") invertYMouse = cmds[1] == L"true";
         if (cmds[0] == L"viewDistance")
-            viewDistance = _fromString<int>(cmds[1]);
-        if (cmds[0] == L"guiScale") guiScale = _fromString<int>(cmds[1]);
-        if (cmds[0] == L"particles") particles = _fromString<int>(cmds[1]);
+            viewDistance = fromWString<int>(cmds[1]);
+        if (cmds[0] == L"guiScale") guiScale = fromWString<int>(cmds[1]);
+        if (cmds[0] == L"particles") particles = fromWString<int>(cmds[1]);
         if (cmds[0] == L"bobView") bobView = cmds[1] == L"true";
         if (cmds[0] == L"anaglyph3d") anaglyph3d = cmds[1] == L"true";
         if (cmds[0] == L"advancedOpengl") advancedOpengl = cmds[1] == L"true";
-        if (cmds[0] == L"fpsLimit") framerateLimit = _fromString<int>(cmds[1]);
-        if (cmds[0] == L"difficulty") difficulty = _fromString<int>(cmds[1]);
+        if (cmds[0] == L"fpsLimit") framerateLimit = fromWString<int>(cmds[1]);
+        if (cmds[0] == L"difficulty") difficulty = fromWString<int>(cmds[1]);
         if (cmds[0] == L"fancyGraphics") fancyGraphics = cmds[1] == L"true";
         if (cmds[0] == L"ao") ambientOcclusion = cmds[1] == L"true";
         if (cmds[0] == L"clouds") renderClouds = cmds[1] == L"true";
@@ -411,7 +411,7 @@ void Options::load() {
 
         for (int i = 0; i < keyMappings_length; i++) {
             if (cmds[0] == (L"key_" + keyMappings[i]->name)) {
-                keyMappings[i]->key = _fromString<int>(cmds[1]);
+                keyMappings[i]->key = fromWString<int>(cmds[1]);
             }
         }
         //            } catch (Exception e) {
@@ -429,7 +429,7 @@ void Options::load() {
 float Options::readFloat(std::wstring string) {
     if (string == L"true") return 1;
     if (string == L"false") return 0;
-    return _fromString<float>(string);
+    return fromWString<float>(string);
 }
 
 void Options::save() {
@@ -442,34 +442,34 @@ void Options::save() {
     DataOutputStream dos = DataOutputStream(&fos);
     //        PrintWriter pw = new PrintWriter(new FileWriter(optionsFile));
 
-    dos.writeChars(L"music:" + _toString<float>(music) + L"\n");
-    dos.writeChars(L"sound:" + _toString<float>(sound) + L"\n");
+    dos.writeChars(L"music:" + toWString<float>(music) + L"\n");
+    dos.writeChars(L"sound:" + toWString<float>(sound) + L"\n");
     dos.writeChars(L"invertYMouse:" +
                    std::wstring(invertYMouse ? L"true" : L"false") + L"\n");
-    dos.writeChars(L"mouseSensitivity:" + _toString<float>(sensitivity));
-    dos.writeChars(L"fov:" + _toString<float>(fov));
-    dos.writeChars(L"gamma:" + _toString<float>(gamma));
-    dos.writeChars(L"viewDistance:" + _toString<int>(viewDistance));
-    dos.writeChars(L"guiScale:" + _toString<int>(guiScale));
-    dos.writeChars(L"particles:" + _toString<int>(particles));
+    dos.writeChars(L"mouseSensitivity:" + toWString<float>(sensitivity));
+    dos.writeChars(L"fov:" + toWString<float>(fov));
+    dos.writeChars(L"gamma:" + toWString<float>(gamma));
+    dos.writeChars(L"viewDistance:" + toWString<int>(viewDistance));
+    dos.writeChars(L"guiScale:" + toWString<int>(guiScale));
+    dos.writeChars(L"particles:" + toWString<int>(particles));
     dos.writeChars(L"bobView:" + std::wstring(bobView ? L"true" : L"false"));
     dos.writeChars(L"anaglyph3d:" +
                    std::wstring(anaglyph3d ? L"true" : L"false"));
     dos.writeChars(L"advancedOpengl:" +
                    std::wstring(advancedOpengl ? L"true" : L"false"));
-    dos.writeChars(L"fpsLimit:" + _toString<int>(framerateLimit));
-    dos.writeChars(L"difficulty:" + _toString<int>(difficulty));
+    dos.writeChars(L"fpsLimit:" + toWString<int>(framerateLimit));
+    dos.writeChars(L"difficulty:" + toWString<int>(difficulty));
     dos.writeChars(L"fancyGraphics:" +
                    std::wstring(fancyGraphics ? L"true" : L"false"));
     dos.writeChars(L"ao:" +
                    std::wstring(ambientOcclusion ? L"true" : L"false"));
-    dos.writeChars(L"clouds:" + _toString<bool>(renderClouds));
+    dos.writeChars(L"clouds:" + toWString<bool>(renderClouds));
     dos.writeChars(L"skin:" + skin);
     dos.writeChars(L"lastServer:" + lastMpIp);
 
     for (int i = 0; i < keyMappings_length; i++) {
         dos.writeChars(L"key_" + keyMappings[i]->name + L":" +
-                       _toString<int>(keyMappings[i]->key));
+                       toWString<int>(keyMappings[i]->key));
     }
 
     dos.close();

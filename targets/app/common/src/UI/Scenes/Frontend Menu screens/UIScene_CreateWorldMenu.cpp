@@ -741,7 +741,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
         }
 
         // If the input string is a numerical value, convert it to a number
-        if (isNumber) value = _fromString<int64_t>(wSeed);
+        if (isNumber) value = fromWString<int64_t>(wSeed);
 
         // If the value is not 0 use it, otherwise use the algorithm from the
         // java String.hashCode() function to hash it

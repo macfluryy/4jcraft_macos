@@ -1772,8 +1772,8 @@ void Minecraft::run_middle() {
 
 #if !defined(_CONTENT_PACKAGE)
                 while (System::nanoTime() >= lastTime + 1000000000) {
-                    fpsString = _toString<int>(frames) + L" fps, " +
-                                _toString<int>(Chunk::updates) +
+                    fpsString = toWString<int>(frames) + L" fps, " +
+                                toWString<int>(Chunk::updates) +
                                 L" chunk updates";
                     Chunk::updates = 0;
                     lastTime += 1000000000;
@@ -3959,7 +3959,7 @@ void Minecraft::fileDownloaded(const std::wstring& name, File* file) {
 std::wstring Minecraft::gatherStats1() {
     // return levelRenderer->gatherStats1();
     return L"Time to autosave: " +
-           _toString<int64_t>(app.SecondsToAutosave()) + L"s";
+           toWString<int64_t>(app.SecondsToAutosave()) + L"s";
 }
 
 std::wstring Minecraft::gatherStats2() {
@@ -4135,7 +4135,7 @@ void Minecraft::startAndConnectTo(const std::wstring& name,
             minecraft->user = new User(userName, sid);
         } else {
             minecraft->user = new User(
-                L"Player" + _toString<int>(System::currentTimeMillis() % 1000),
+                L"Player" + toWString<int>(System::currentTimeMillis() % 1000),
                 L"");
         }
     }
@@ -4206,7 +4206,7 @@ void Minecraft::main() {
     // 4J-PB - Can't call this for the first 5 seconds of a game - MS rule
     {
         name =
-            L"Player" + _toString<int64_t>(System::currentTimeMillis() % 1000);
+            L"Player" + toWString<int64_t>(System::currentTimeMillis() % 1000);
         sessionId = L"-";
         /* 4J - TODO - get a session ID from somewhere?
         if (args.size() > 0) name = args[0];

@@ -57,7 +57,7 @@ GameRuleDefinition* XboxStructureActionPlaceContainer::addChild(
 void XboxStructureActionPlaceContainer::addAttribute(
     const std::wstring& attributeName, const std::wstring& attributeValue) {
     if (attributeName.compare(L"facing") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_data = value;
         app.DebugPrintf(
             "XboxStructureActionPlaceContainer: Adding parameter facing=%d\n",

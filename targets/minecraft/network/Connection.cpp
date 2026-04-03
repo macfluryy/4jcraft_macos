@@ -362,7 +362,7 @@ bool Connection::readTick() {
 void handleException(Exception e)
 {
 e.printStackTrace();
-close("disconnect.genericReason", "Internal exception: " + e.toString());
+close("disconnect.genericReason", "Internal exception: " + e.toWString());
 }*/
 
 void Connection::close(DisconnectPacket::eDisconnectReason reason) {

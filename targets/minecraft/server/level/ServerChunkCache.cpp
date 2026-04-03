@@ -821,8 +821,8 @@ bool ServerChunkCache::tick() {
 bool ServerChunkCache::shouldSave() { return !level->noSave; }
 
 std::wstring ServerChunkCache::gatherStats() {
-    return L"ServerChunkCache: ";  // + _toString<int>(loadedChunks.size()) + L"
-                                   // Drop: " + _toString<int>(toDrop.size());
+    return L"ServerChunkCache: ";  // + toWString<int>(loadedChunks.size()) + L"
+                                   // Drop: " + toWString<int>(toDrop.size());
 }
 
 std::vector<Biome::MobSpawnerData*>* ServerChunkCache::getMobsAt(

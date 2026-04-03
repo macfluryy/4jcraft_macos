@@ -519,13 +519,13 @@ std::shared_ptr<Packet> Packet::readPacket(
         __debugbreak();
         assert(false);
         //            throw new IOException(wstring(L"Bad packet id ") +
-        //            _toString<int>(id));
+        //            toWString<int>(id));
     }
 
     packet = getPacket(id);
     if (packet == nullptr)
         assert(false);  // throw new IOException(wstring(L"Bad packet id ") +
-                        // _toString<int>(id));
+                        // toWString<int>(id));
 
     // app.DebugPrintf("%s reading packet %d\n", isServer ? "Server" : "Client",
     // packet->getId());

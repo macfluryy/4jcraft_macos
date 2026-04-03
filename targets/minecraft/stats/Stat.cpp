@@ -73,7 +73,7 @@ std::wstring Stat::TimeFormatter::format(int value) {
         return decimalFormat->format(minutes) + L" m";
     }
 
-    return _toString<double>(seconds) + L" s";
+    return toWString<double>(seconds) + L" s";
 }
 
 std::wstring Stat::DefaultFormat::format(int value) {
@@ -90,5 +90,5 @@ std::wstring Stat::DistanceFormatter::format(int cm) {
     } else if (meters > 0.5) {
         return decimalFormat->format(meters) + L" m";
     }
-    return _toString<int>(cm) + L" cm";
+    return toWString<int>(cm) + L" cm";
 }

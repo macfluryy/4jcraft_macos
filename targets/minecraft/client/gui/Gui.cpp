@@ -955,7 +955,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                          iSafezoneXHalf + 2, 20, 0xffffff);
         font->drawShadow(
             L"Seed: " +
-                _toString<int64_t>(minecraft->level->getLevelData()->getSeed()),
+                toWString<int64_t>(minecraft->level->getLevelData()->getSeed()),
             iSafezoneXHalf + 2, 32 + 00, 0xffffff);
         font->drawShadow(minecraft->gatherStats1(), iSafezoneXHalf + 2, 32 + 10,
                          0xffffff);
@@ -981,8 +981,8 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
                 FEATURE_DATA* pFeatureData = app.m_vTerrainFeatures[i];
 
                 std::wstring itemInfo =
-                    L"[" + _toString<int>(pFeatureData->x * 16) + L", " +
-                    _toString<int>(pFeatureData->z * 16) + L"] ";
+                    L"[" + toWString<int>(pFeatureData->x * 16) + L", " +
+                    toWString<int>(pFeatureData->z * 16) + L"] ";
                 wfeature[pFeatureData->eTerrainFeature] += itemInfo;
             }
 
@@ -1014,28 +1014,28 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
         double yBlockPos = floor(minecraft->player->y);
         double zBlockPos = floor(minecraft->player->z);
         drawString(font,
-                   L"x: " + _toString<double>(minecraft->player->x) +
-                       L"/ Head: " + _toString<double>(xBlockPos) +
+                   L"x: " + toWString<double>(minecraft->player->x) +
+                       L"/ Head: " + toWString<double>(xBlockPos) +
                        L"/ Chunk: " +
-                       _toString<double>(minecraft->player->xChunk),
+                       toWString<double>(minecraft->player->xChunk),
                    iSafezoneXHalf + 2, iYPos + 8 * 0, 0xe0e0e0);
         drawString(font,
-                   L"y: " + _toString<double>(minecraft->player->y) +
-                       L"/ Head: " + _toString<double>(yBlockPos),
+                   L"y: " + toWString<double>(minecraft->player->y) +
+                       L"/ Head: " + toWString<double>(yBlockPos),
                    iSafezoneXHalf + 2, iYPos + 8 * 1, 0xe0e0e0);
         drawString(font,
-                   L"z: " + _toString<double>(minecraft->player->z) +
-                       L"/ Head: " + _toString<double>(zBlockPos) +
+                   L"z: " + toWString<double>(minecraft->player->z) +
+                       L"/ Head: " + toWString<double>(zBlockPos) +
                        L"/ Chunk: " +
-                       _toString<double>(minecraft->player->zChunk),
+                       toWString<double>(minecraft->player->zChunk),
                    iSafezoneXHalf + 2, iYPos + 8 * 2, 0xe0e0e0);
         drawString(
             font,
             L"f: " +
-                _toString<double>(
+                toWString<double>(
                     Mth::floor(minecraft->player->yRot * 4.0f / 360.0f + 0.5) &
                     0x3) +
-                L"/ yRot: " + _toString<double>(minecraft->player->yRot),
+                L"/ yRot: " + toWString<double>(minecraft->player->yRot),
             iSafezoneXHalf + 2, iYPos + 8 * 3, 0xe0e0e0);
         iYPos += 8 * 4;
 
@@ -1049,7 +1049,7 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
                 px & 15, pz & 15, minecraft->level->getBiomeSource());
             drawString(font,
                        L"b: " + biome->m_name + L" (" +
-                           _toString<int>(biome->id) + L")",
+                           toWString<int>(biome->id) + L")",
                        iSafezoneXHalf + 2, iYPos, 0xe0e0e0);
         }
 

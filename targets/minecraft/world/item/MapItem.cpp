@@ -33,7 +33,7 @@ MapItem::MapItem(int id) : ComplexItem(id) { setStackedByData(true); }
 
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
                                                         Level* level) {
-    std::wstring id = std::wstring(L"map_") + _toString(idNum);
+    std::wstring id = std::wstring(L"map_") + toWString(idNum);
     std::shared_ptr<MapItemSavedData> mapItemSavedData =
         std::dynamic_pointer_cast<MapItemSavedData>(
             level->getSavedData(typeid(MapItemSavedData), id));
@@ -45,7 +45,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
         // int aux = level->getFreeAuxValueFor(L"map");
         int aux = idNum;
 
-        id = std::wstring(L"map_") + _toString(aux);
+        id = std::wstring(L"map_") + toWString(aux);
         mapItemSavedData = std::make_shared<MapItemSavedData>(id);
 
         level->setSavedData(id, (std::shared_ptr<SavedData>)mapItemSavedData);
@@ -57,7 +57,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(short idNum,
 std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
     std::shared_ptr<ItemInstance> itemInstance, Level* level) {
     std::wstring id =
-        std::wstring(L"map_") + _toString(itemInstance->getAuxValue());
+        std::wstring(L"map_") + toWString(itemInstance->getAuxValue());
     std::shared_ptr<MapItemSavedData> mapItemSavedData =
         std::dynamic_pointer_cast<MapItemSavedData>(
             level->getSavedData(typeid(MapItemSavedData), id));
@@ -69,7 +69,7 @@ std::shared_ptr<MapItemSavedData> MapItem::getSavedData(
         // map setup
         // itemInstance->setAuxValue(level->getFreeAuxValueFor(L"map"));
 
-        id = std::wstring(L"map_") + _toString(itemInstance->getAuxValue());
+        id = std::wstring(L"map_") + toWString(itemInstance->getAuxValue());
         mapItemSavedData = std::make_shared<MapItemSavedData>(id);
 
         newData = true;

@@ -89,9 +89,9 @@ public:
     virtual bool isSaveEndianDifferent();
     virtual void setLocalPlatform();
     virtual void setPlatform(ESavePlatform plat);
-    virtual ByteOrder getSaveEndian();
-    virtual ByteOrder getLocalEndian();
-    virtual void setEndian(ByteOrder endian);
+    virtual std::endian getSaveEndian();
+    virtual std::endian getLocalEndian();
+    virtual void setEndian(std::endian endian);
     virtual bool isLocalEndianDifferent(ESavePlatform plat);
 
     virtual void ConvertRegionFile(File sourceFile);

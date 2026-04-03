@@ -20,22 +20,22 @@ std::wstring Settings::getString(const std::wstring& key,
 
 int Settings::getInt(const std::wstring& key, int defaultValue) {
     if (properties.find(key) == properties.end()) {
-        properties[key] = _toString<int>(defaultValue);
+        properties[key] = toWString<int>(defaultValue);
         saveProperties();
     }
-    return _fromString<int>(properties[key]);
+    return fromWString<int>(properties[key]);
 }
 
 bool Settings::getBoolean(const std::wstring& key, bool defaultValue) {
     if (properties.find(key) == properties.end()) {
-        properties[key] = _toString<bool>(defaultValue);
+        properties[key] = toWString<bool>(defaultValue);
         saveProperties();
     }
-    bool retval = _fromString<bool>(properties[key]);
+    bool retval = fromWString<bool>(properties[key]);
     return retval;
 }
 
 void Settings::setBooleanAndSave(const std::wstring& key, bool value) {
-    properties[key] = _toString<bool>(value);
+    properties[key] = toWString<bool>(value);
     saveProperties();
 }

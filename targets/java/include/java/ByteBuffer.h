@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Buffer.h"
-#include "util/Definitions.h"  // 4jcraft TODO
+#include <bit>
 
 class IntBuffer;
 class FloatBuffer;
@@ -12,7 +12,7 @@ class FloatBuffer;
 class ByteBuffer : public Buffer {
 protected:
     uint8_t* buffer;
-    ByteOrder byteOrder;
+    std::endian byteOrder;
 
 public:
     ByteBuffer(unsigned int capacity);
@@ -22,7 +22,7 @@ public:
 
     static ByteBuffer* wrap(std::vector<uint8_t>& b);
     static ByteBuffer* allocate(unsigned int capacity);
-    void order(ByteOrder a);
+    void order(std::endian a);
     ByteBuffer* flip();
     uint8_t* getBuffer();
     int getSize();

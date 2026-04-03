@@ -137,8 +137,8 @@ void StitchSlot::collectAssignments(std::vector<StitchSlot*>* result) {
 
 //@Override
 std::wstring StitchSlot::toString() {
-    return L"Slot{originX=" + _toString(originX) + L", originY=" +
-           _toString(originY) + L", width=" + _toString(width) + L", height=" +
-           _toString(height) + L", texture=" + _toString(textureHolder) +
-           L", subSlots=" + _toString(subSlots) + L'}';
+    return L"Slot{originX=" + toWString(originX) + L", originY=" +
+           toWString(originY) + L", width=" + toWString(width) + L", height=" +
+           toWString(height) + L", texture=" + toWString(textureHolder) +
+           L", subSlots=" + toWString(subSlots) + L'}';
 }

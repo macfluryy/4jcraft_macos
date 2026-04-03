@@ -65,43 +65,43 @@ void ConsoleGenerateStructure::writeAttributes(DataOutputStream* dos,
     GameRuleDefinition::writeAttributes(dos, numAttrs + 5);
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_x);
-    dos->writeUTF(_toString(m_x));
+    dos->writeUTF(toWString(m_x));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_y);
-    dos->writeUTF(_toString(m_y));
+    dos->writeUTF(toWString(m_y));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_z);
-    dos->writeUTF(_toString(m_z));
+    dos->writeUTF(toWString(m_z));
 
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_orientation);
-    dos->writeUTF(_toString(orientation));
+    dos->writeUTF(toWString(orientation));
     ConsoleGameRules::write(dos, ConsoleGameRules::eGameRuleAttr_dimension);
-    dos->writeUTF(_toString(m_dimension));
+    dos->writeUTF(toWString(m_dimension));
 }
 
 void ConsoleGenerateStructure::addAttribute(
     const std::wstring& attributeName, const std::wstring& attributeValue) {
     if (attributeName.compare(L"x") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_x = value;
         app.DebugPrintf("ConsoleGenerateStructure: Adding parameter x=%d\n",
                         m_x);
     } else if (attributeName.compare(L"y") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_y = value;
         app.DebugPrintf("ConsoleGenerateStructure: Adding parameter y=%d\n",
                         m_y);
     } else if (attributeName.compare(L"z") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         m_z = value;
         app.DebugPrintf("ConsoleGenerateStructure: Adding parameter z=%d\n",
                         m_z);
     } else if (attributeName.compare(L"orientation") == 0) {
-        int value = _fromString<int>(attributeValue);
+        int value = fromWString<int>(attributeValue);
         orientation = value;
         app.DebugPrintf(
             "ConsoleGenerateStructure: Adding parameter orientation=%d\n",
             orientation);
     } else if (attributeName.compare(L"dim") == 0) {
-        m_dimension = _fromString<int>(attributeValue);
+        m_dimension = fromWString<int>(attributeValue);
         if (m_dimension > 1 || m_dimension < -1) m_dimension = 0;
         app.DebugPrintf(
             "ApplySchematicRuleDefinition: Adding parameter dimension=%d\n",

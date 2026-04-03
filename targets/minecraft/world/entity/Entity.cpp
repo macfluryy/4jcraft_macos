@@ -1737,7 +1737,7 @@ std::wstring Entity::getAName() {
 #ifdef _DEBUG
     std::wstring id = EntityIO::getEncodeId(shared_from_this());
     if (id.empty()) id = L"generic";
-    return L"entity." + id + _toString(entityId);
+    return L"entity." + id + toWString(entityId);
 #else
     return L"";
 #endif
