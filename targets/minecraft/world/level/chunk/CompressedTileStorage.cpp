@@ -1,6 +1,7 @@
 #include "CompressedTileStorage.h"
 
 #include <assert.h>
+#include <bit>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>

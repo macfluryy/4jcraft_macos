@@ -1,4 +1,6 @@
 #pragma once
+#include <bit>
+
 #include "ChunkStorage.h"
 #include "java/File.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
