@@ -490,6 +490,12 @@ extern C4JRender RenderManager;
             RenderManager.StateSetAlphaTestEnable(true);                \
         else if ((cap) == 0x0DE1 /*GL_TEXTURE_2D*/)                     \
             RenderManager.StateSetTextureEnable(true);                  \
+        else if ((cap) == 0x0BE2 /*GL_BLEND*/)                          \
+            RenderManager.StateSetBlendEnable(true);                    \
+        else if ((cap) == 0x0B44 /*GL_CULL_FACE*/)                      \
+            RenderManager.StateSetFaceCull(true);                       \
+        else if ((cap) == 0x0B71 /*GL_DEPTH_TEST*/)                     \
+            RenderManager.StateSetDepthTestEnable(true);                \
         else if ((cap) == 0x4000 /*GL_LIGHT0*/)                         \
             RenderManager.StateSetLightEnable(0, true);                 \
         else if ((cap) == 0x4001 /*GL_LIGHT1*/)                         \
@@ -516,6 +522,12 @@ extern C4JRender RenderManager;
             RenderManager.StateSetAlphaTestEnable(false);               \
         else if ((cap) == 0x0DE1 /*GL_TEXTURE_2D*/)                     \
             RenderManager.StateSetTextureEnable(false);                 \
+        else if ((cap) == 0x0BE2 /*GL_BLEND*/)                          \
+            RenderManager.StateSetBlendEnable(false);                   \
+        else if ((cap) == 0x0B44 /*GL_CULL_FACE*/)                      \
+            RenderManager.StateSetFaceCull(false);                      \
+        else if ((cap) == 0x0B71 /*GL_DEPTH_TEST*/)                     \
+            RenderManager.StateSetDepthTestEnable(false);               \
         else if ((cap) == 0x4000 /*GL_LIGHT0*/)                         \
             RenderManager.StateSetLightEnable(0, false);                \
         else if ((cap) == 0x4001 /*GL_LIGHT1*/)                         \

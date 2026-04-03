@@ -106,6 +106,12 @@ ResourceLocation GameRenderer::SNOW_LOCATION =
 
 // dirty light tracking
 static bool s_lightTexDirty[XUSER_MAX_COUNT] = {true, true, true, true};
+static uint64_t s_lightTexKey[XUSER_MAX_COUNT] = {};
+static bool s_lightTexKeyValid[XUSER_MAX_COUNT] = {};
+static inline uint8_t light_q8(float v) {
+    v = std::clamp(v, 0.0f, 1.0f);
+    return (uint8_t)(v * 255.0f + 0.5f);
+}
 
 GameRenderer::GameRenderer(Minecraft* mc) {
     // 4J - added this block of initialisers
@@ -877,6 +883,23 @@ void GameRenderer::updateLightTexture(float a) {
         Level* level = player->level;
 
         float skyDarken1 = level->getSkyDarken((float)1);
+        float amount =
+            darkenWorldAmountO + (darkenWorldAmount - darkenWorldAmountO) * a;
+        bool hasNV = player->hasEffect(MobEffect::nightVision);
+        float nvScale = hasNV ? getNightVisionScale(player, a) : 0.0f;
+
+        uint64_t key = 0;
+        key |= (uint64_t)light_q8(skyDarken1);
+        key |= (uint64_t)light_q8(blr) << 8;
+        key |= (uint64_t)light_q8(blg) << 16;
+        key |= (uint64_t)light_q8(amount) << 24;
+        key |= (uint64_t)light_q8(nvScale) << 32;
+        key |= (uint64_t)(level->skyFlashTime > 0 ? 1 : 0) << 40;
+        key |= (uint64_t)((unsigned int)level->dimension->id & 0xFF) << 48;
+
+        if (s_lightTexKeyValid[j] && s_lightTexKey[j] == key) continue;
+        s_lightTexKey[j] = key;
+        s_lightTexKeyValid[j] = true;
         for (int i = 0; i < 256; i++) {
             float darken = skyDarken1 * 0.95f + 0.05f;
             float sky = level->dimension->brightnessRamp[i / 16] * darken;
@@ -1240,9 +1263,9 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         if (mc->options->anaglyph3d) {
             GameRenderer::anaglyphPass = i;
             if (GameRenderer::anaglyphPass == 0)
-                glColorMask(false, true, true, false);
+                RenderManager.StateSetWriteEnable(false, true, true, false);
             else
-                glColorMask(true, false, false, false);
+                RenderManager.StateSetWriteEnable(true, false, false, false);
         }
 
         glViewport(0, 0, mc->width, mc->height);
@@ -1376,8 +1399,8 @@ void GameRenderer::renderLevel(float a, int64_t until) {
 
         glDisable(GL_BLEND);
         glEnable(GL_CULL_FACE);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glDepthMask(true);
+        RenderManager.StateSetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        RenderManager.StateSetDepthMask(true);
         setupFog(0, a);
         glEnable(GL_BLEND);
         glDisable(GL_CULL_FACE);
@@ -1394,11 +1417,11 @@ void GameRenderer::renderLevel(float a, int64_t until) {
                 GL11::glShadeModel(GL11::GL_SMOOTH);
             }
 
-            glBlendFunc(GL_ZERO, GL_ONE);
+            RenderManager.StateSetBlendFunc(GL_ZERO, GL_ONE);
             int visibleWaterChunks =
                 levelRenderer->render(cameraEntity, 1, a, updateChunks);
 
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            RenderManager.StateSetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
             if (visibleWaterChunks > 0) {
                 levelRenderer->render(
@@ -1433,7 +1456,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         turnOffLightLayer(a);  // 4J - brought forward from 1.8.2
         ////////////////////////// End of 4J added section
 
-        glDepthMask(true);
+        RenderManager.StateSetDepthMask(true);
         glEnable(GL_CULL_FACE);
         glDisable(GL_BLEND);
 
@@ -1457,7 +1480,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         */
 
         glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+        RenderManager.StateSetBlendFunc(GL_SRC_ALPHA, GL_ONE);
         {
             FRAME_PROFILE_SCOPE(WeatherSky);
             levelRenderer->renderDestroyAnimation(
@@ -1491,7 +1514,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
             return;
         }
     }
-    glColorMask(true, true, true, false);
+    RenderManager.StateSetWriteEnable(true, true, true, false);
 }
 
 void GameRenderer::prepareAndRenderClouds(LevelRenderer* levelRenderer,
@@ -1620,7 +1643,7 @@ void GameRenderer::renderSnowAndRain(float a) {
     glDisable(GL_CULL_FACE);
     glNormal3f(0, 1, 0);
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    RenderManager.StateSetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glAlphaFunc(GL_GREATER, 0.01f);
 
     mc->textures->bindTexture(
@@ -1811,8 +1834,8 @@ void GameRenderer::setupGuiScreen(int forceScale /*=-1*/) {
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER, 0.1f);
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
-    glDepthMask(true);
+    RenderManager.StateSetDepthFunc(GL_LEQUAL);
+    RenderManager.StateSetDepthMask(true);
 
     RenderManager.TextureBindVertex(-1);
 

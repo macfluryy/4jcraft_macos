@@ -23,6 +23,16 @@
 #undef glVertexPointer
 #undef glGenQueriesARB
 #undef glGetQueryObjectuARB
+#undef glEnable
+#undef glDisable
+#undef glBlendFunc
+#undef glDepthMask
+#undef glColorMask
+#undef glLineWidth
+#undef glFrontFace
+#undef glPolygonOffset
+#undef glStencilFunc
+#undef glStencilMask
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -92,7 +102,45 @@ static pthread_mutex_t s_sharedMtx = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t s_glCallMtx = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t s_mainThread;
 static bool s_mainThreadSet = false;
-static thread_local bool s_rs_dirty = true;
+static thread_local unsigned int s_rs_dirty_mask = 0xFFFFFFFF;
+
+struct GLShadowState {
+    bool blend;
+    bool cull;
+    bool depth;
+    bool polygon;
+    bool stencil;
+    GLint blendSrc;
+    GLint blendDst;
+    GLboolean depthMask;
+    GLboolean colorMask[4];
+    float lineWidth;
+    GLenum frontFace;
+    float polySlope;
+    float polyBias;
+    GLenum stencilFunc;
+    GLint stencilRef;
+    GLuint stencilMask;
+    GLuint stencilWriteMask;
+};
+
+static GLShadowState s_gl_state;
+static unsigned int s_gl_shadow_mask = 0;
+
+enum GLShadowBits {
+    SHADOW_BLEND = 1 << 0,
+    SHADOW_CULL = 1 << 1,
+    SHADOW_DEPTH = 1 << 2,
+    SHADOW_BLEND_FUNC = 1 << 3,
+    SHADOW_DEPTH_MASK = 1 << 4,
+    SHADOW_COLOR_MASK = 1 << 5,
+    SHADOW_LINE_WIDTH = 1 << 6,
+    SHADOW_FRONT_FACE = 1 << 7,
+    SHADOW_POLY_OFFSET = 1 << 8,
+    SHADOW_POLY_OFFSET_PARAMS = 1 << 9,
+    SHADOW_STENCIL = 1 << 10,
+    SHADOW_STENCIL_PARAMS = 1 << 11,
+};
 
 static void onFramebufferResize(int w, int h) {
     if (w < 1) w = 1;
@@ -221,7 +269,9 @@ static thread_local int s_matMode = 0;  // 0=MV 1=proj 2=tex0 3=tex1
 static thread_local bool s_normalMatDirty = true;
 static thread_local glm::mat3 s_cachedNormalMat;
 static thread_local float s_cachedNormalSign = 1.0f;
+static thread_local bool s_matDirty = true;
 static inline void markNormalDirty() { s_normalMatDirty = true; }
+static inline void markMatrixDirty() { s_matDirty = true; }
 
 static MatrixStack& activeStack() {
     switch (s_matMode) {
@@ -236,22 +286,23 @@ static MatrixStack& activeStack() {
 }
 
 static void flushMatrices() {
-    glm::mat4 mvp = s_proj.cur() * s_mv.cur();
-    glUniformMatrix4fv(s_shader.uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
-    glUniformMatrix4fv(s_shader.uMV, 1, GL_FALSE, glm::value_ptr(s_mv.cur()));
+    if (s_matDirty) {
+        glm::mat4 mvp = s_proj.cur() * s_mv.cur();
+        glUniformMatrix4fv(s_shader.uMVP, 1, GL_FALSE, glm::value_ptr(mvp));
+        glUniformMatrix4fv(s_shader.uMV, 1, GL_FALSE,
+                           glm::value_ptr(s_mv.cur()));
 
-    // Send the texture matrix to the depths of hell...
-    glUniformMatrix4fv(s_shader.uTexMat0, 1, GL_FALSE,
-                       glm::value_ptr(s_tex[0].cur()));
+        // Send the texture matrix to the depths of hell...
+        glUniformMatrix4fv(s_shader.uTexMat0, 1, GL_FALSE,
+                           glm::value_ptr(s_tex[0].cur()));
+        s_matDirty = false;
+    }
 
-    // if (s_shader.uLighting)
-    if (s_shader.uNormalMatrix >= 0) {
-        if (s_normalMatDirty) {
-            glm::mat3 m3 = glm::mat3(s_mv.cur());
-            s_cachedNormalMat = glm::transpose(glm::inverse(m3));
-            s_cachedNormalSign = glm::determinant(m3) < 0.0f ? -1.0f : 1.0f;
-            s_normalMatDirty = false;
-        }
+    if (s_shader.uNormalMatrix >= 0 && s_normalMatDirty) {
+        glm::mat3 m3 = glm::mat3(s_mv.cur());
+        s_cachedNormalMat = glm::transpose(glm::inverse(m3));
+        s_cachedNormalSign = glm::determinant(m3) < 0.0f ? -1.0f : 1.0f;
+        s_normalMatDirty = false;
         glUniformMatrix3fv(s_shader.uNormalMatrix, 1, GL_FALSE,
                            glm::value_ptr(s_cachedNormalMat));
         glUniform1f(s_shader.uNormalSign, s_cachedNormalSign);
@@ -275,26 +326,153 @@ struct RenderState {
     glm::vec4 lmt = {1, 1, 0, 0};
     glm::vec2 globalLM = {240.f, 240.f};  // fullbright default
     int activeTexture = 0;
-    // we MAKE sure everything is FINE.
-    bool operator!=(const RenderState& o) const {
-        return baseColor != o.baseColor || fogColor != o.fogColor ||
-               fogStart != o.fogStart || fogEnd != o.fogEnd ||
-               fogDensity != o.fogDensity || fogMode != o.fogMode ||
-               fogEnable != o.fogEnable || alphaRef != o.alphaRef ||
-               gamma != o.gamma || useTexture != o.useTexture ||
-               useLightmap != o.useLightmap || lighting != o.lighting ||
-               l0 != o.l0 || l1 != o.l1 || ldiff != o.ldiff || lamb != o.lamb ||
-               lmt != o.lmt || globalLM != o.globalLM ||
-               activeTexture != o.activeTexture;
-    }
 };
 
+enum RenderDirtyBits {
+    DIRTY_BASECOLOR = 1 << 0,
+    DIRTY_LIGHTING = 1 << 1,
+    DIRTY_FOG = 1 << 2,
+    DIRTY_ALPHA = 1 << 3,
+    DIRTY_GAMMA = 1 << 4,
+    DIRTY_TEXTURE = 1 << 5,
+    DIRTY_LMT = 1 << 6,
+    DIRTY_GLOBAL_LM = 1 << 7,
+};
+
+static inline void markDirty(unsigned int bit) { s_rs_dirty_mask |= bit; }
+
 static thread_local RenderState s_rs;
-static RenderState s_gpu_state;
-static bool s_gpu_state_valid = false;
 
 // track currently bound program to avoid iggy shitting up
 static GLuint s_boundProgram = 0;
+
+static void glShadowSetBlend(bool e) {
+    if (!(s_gl_shadow_mask & SHADOW_BLEND) || s_gl_state.blend != e) {
+        if (e)
+            ::glEnable(GL_BLEND);
+        else
+            ::glDisable(GL_BLEND);
+        s_gl_state.blend = e;
+        s_gl_shadow_mask |= SHADOW_BLEND;
+    }
+}
+
+static void glShadowSetCull(bool e) {
+    if (!(s_gl_shadow_mask & SHADOW_CULL) || s_gl_state.cull != e) {
+        if (e)
+            ::glEnable(GL_CULL_FACE);
+        else
+            ::glDisable(GL_CULL_FACE);
+        s_gl_state.cull = e;
+        s_gl_shadow_mask |= SHADOW_CULL;
+    }
+}
+
+static void glShadowSetDepthTest(bool e) {
+    if (!(s_gl_shadow_mask & SHADOW_DEPTH) || s_gl_state.depth != e) {
+        if (e)
+            ::glEnable(GL_DEPTH_TEST);
+        else
+            ::glDisable(GL_DEPTH_TEST);
+        s_gl_state.depth = e;
+        s_gl_shadow_mask |= SHADOW_DEPTH;
+    }
+}
+
+static void glShadowSetBlendFunc(GLint s, GLint d) {
+    if (!(s_gl_shadow_mask & SHADOW_BLEND_FUNC) ||
+        s_gl_state.blendSrc != s || s_gl_state.blendDst != d) {
+        ::glBlendFunc(s, d);
+        s_gl_state.blendSrc = s;
+        s_gl_state.blendDst = d;
+        s_gl_shadow_mask |= SHADOW_BLEND_FUNC;
+    }
+}
+
+static void glShadowSetDepthMask(GLboolean e) {
+    if (!(s_gl_shadow_mask & SHADOW_DEPTH_MASK) ||
+        s_gl_state.depthMask != e) {
+        ::glDepthMask(e);
+        s_gl_state.depthMask = e;
+        s_gl_shadow_mask |= SHADOW_DEPTH_MASK;
+    }
+}
+
+static void glShadowSetColorMask(GLboolean r, GLboolean g, GLboolean b,
+                                 GLboolean a) {
+    if (!(s_gl_shadow_mask & SHADOW_COLOR_MASK) ||
+        s_gl_state.colorMask[0] != r || s_gl_state.colorMask[1] != g ||
+        s_gl_state.colorMask[2] != b || s_gl_state.colorMask[3] != a) {
+        ::glColorMask(r, g, b, a);
+        s_gl_state.colorMask[0] = r;
+        s_gl_state.colorMask[1] = g;
+        s_gl_state.colorMask[2] = b;
+        s_gl_state.colorMask[3] = a;
+        s_gl_shadow_mask |= SHADOW_COLOR_MASK;
+    }
+}
+
+static void glShadowSetLineWidth(float w) {
+    if (!(s_gl_shadow_mask & SHADOW_LINE_WIDTH) || s_gl_state.lineWidth != w) {
+        ::glLineWidth(w);
+        s_gl_state.lineWidth = w;
+        s_gl_shadow_mask |= SHADOW_LINE_WIDTH;
+    }
+}
+
+static void glShadowSetFrontFace(GLenum mode) {
+    if (!(s_gl_shadow_mask & SHADOW_FRONT_FACE) ||
+        s_gl_state.frontFace != mode) {
+        ::glFrontFace(mode);
+        s_gl_state.frontFace = mode;
+        s_gl_shadow_mask |= SHADOW_FRONT_FACE;
+    }
+}
+
+static void glShadowSetPolygonOffset(float slope, float bias) {
+    bool enable = (slope != 0.0f || bias != 0.0f);
+    if (!(s_gl_shadow_mask & SHADOW_POLY_OFFSET) ||
+        s_gl_state.polygon != enable) {
+        if (enable)
+            ::glEnable(GL_POLYGON_OFFSET_FILL);
+        else
+            ::glDisable(GL_POLYGON_OFFSET_FILL);
+        s_gl_state.polygon = enable;
+        s_gl_shadow_mask |= SHADOW_POLY_OFFSET;
+    }
+    if (enable) {
+        if (!(s_gl_shadow_mask & SHADOW_POLY_OFFSET_PARAMS) ||
+            s_gl_state.polySlope != slope || s_gl_state.polyBias != bias) {
+            ::glPolygonOffset(slope, bias);
+            s_gl_state.polySlope = slope;
+            s_gl_state.polyBias = bias;
+            s_gl_shadow_mask |= SHADOW_POLY_OFFSET_PARAMS;
+        }
+    }
+}
+
+static void glShadowSetStencil(GLenum fn, uint8_t ref, uint8_t fmask,
+                               uint8_t wmask) {
+    if (!(s_gl_shadow_mask & SHADOW_STENCIL) || !s_gl_state.stencil) {
+        ::glEnable(GL_STENCIL_TEST);
+        s_gl_state.stencil = true;
+        s_gl_shadow_mask |= SHADOW_STENCIL;
+    }
+    if (!(s_gl_shadow_mask & SHADOW_STENCIL_PARAMS) ||
+        s_gl_state.stencilFunc != fn || s_gl_state.stencilRef != (GLint)ref ||
+        s_gl_state.stencilMask != fmask ||
+        s_gl_state.stencilWriteMask != wmask) {
+        ::glStencilFunc(fn, ref, fmask);
+        ::glStencilMask(wmask);
+        s_gl_state.stencilFunc = fn;
+        s_gl_state.stencilRef = (GLint)ref;
+        s_gl_state.stencilMask = fmask;
+        s_gl_state.stencilWriteMask = wmask;
+        s_gl_shadow_mask |= SHADOW_STENCIL_PARAMS;
+    }
+}
+static thread_local bool s_chunkOffsetValid = false;
+static thread_local glm::vec3 s_chunkOffset;
 
 static void pushRenderState() {
     if (!s_shader.prog) return;
@@ -303,35 +481,53 @@ static void pushRenderState() {
     if (s_boundProgram != s_shader.prog) {
         glUseProgram(s_shader.prog);
         s_boundProgram = s_shader.prog;
+        s_matDirty = true;
+        s_normalMatDirty = true;
+        s_rs_dirty_mask = 0xFFFFFFFF;
     }
 
-    if (!s_gpu_state_valid || s_gpu_state != s_rs) {
-        glUniform4fv(s_shader.uBaseColor, 1, glm::value_ptr(s_rs.baseColor));
-        glUniform1i(s_shader.uLighting, s_rs.lighting ? 1 : 0);
-        glUniform3fv(s_shader.uLight0Dir, 1, glm::value_ptr(s_rs.l0));
-        glUniform3fv(s_shader.uLight1Dir, 1, glm::value_ptr(s_rs.l1));
-        glUniform3fv(s_shader.uLightDiffuse, 1, glm::value_ptr(s_rs.ldiff));
-        glUniform3fv(s_shader.uLightAmbient, 1, glm::value_ptr(s_rs.lamb));
-        glUniform1i(s_shader.uFogMode, s_rs.fogMode);
-        glUniform1f(s_shader.uFogStart, s_rs.fogStart);
-        glUniform1f(s_shader.uFogEnd, s_rs.fogEnd);
-        glUniform1f(s_shader.uFogDensity, s_rs.fogDensity);
-        glUniform4fv(s_shader.uFogColor, 1, glm::value_ptr(s_rs.fogColor));
-        glUniform1i(s_shader.uFogEnable, s_rs.fogEnable ? 1 : 0);
-        glUniform1i(s_shader.uUseTexture, s_rs.useTexture ? 1 : 0);
-        glUniform1i(s_shader.uUseLightmap, s_rs.useLightmap ? 1 : 0);
-        glUniform1f(s_shader.uAlphaRef, s_rs.alphaRef);
-        glUniform1f(s_shader.uInvGamma, 1.0f / s_rs.gamma);
-        glUniform4fv(s_shader.uLMTransform, 1, glm::value_ptr(s_rs.lmt));
-        glUniform2fv(s_shader.uGlobalLM, 1, glm::value_ptr(s_rs.globalLM));
-        s_gpu_state = s_rs;
-        s_gpu_state_valid = true;
-        s_rs_dirty = false;
+    if (s_rs_dirty_mask) {
+        if (s_rs_dirty_mask & DIRTY_BASECOLOR)
+            glUniform4fv(s_shader.uBaseColor, 1,
+                         glm::value_ptr(s_rs.baseColor));
+        if (s_rs_dirty_mask & DIRTY_LIGHTING) {
+            glUniform1i(s_shader.uLighting, s_rs.lighting ? 1 : 0);
+            glUniform3fv(s_shader.uLight0Dir, 1, glm::value_ptr(s_rs.l0));
+            glUniform3fv(s_shader.uLight1Dir, 1, glm::value_ptr(s_rs.l1));
+            glUniform3fv(s_shader.uLightDiffuse, 1, glm::value_ptr(s_rs.ldiff));
+            glUniform3fv(s_shader.uLightAmbient, 1, glm::value_ptr(s_rs.lamb));
+        }
+        if (s_rs_dirty_mask & DIRTY_FOG) {
+            glUniform1i(s_shader.uFogMode, s_rs.fogMode);
+            glUniform1f(s_shader.uFogStart, s_rs.fogStart);
+            glUniform1f(s_shader.uFogEnd, s_rs.fogEnd);
+            glUniform1f(s_shader.uFogDensity, s_rs.fogDensity);
+            glUniform4fv(s_shader.uFogColor, 1,
+                         glm::value_ptr(s_rs.fogColor));
+            glUniform1i(s_shader.uFogEnable, s_rs.fogEnable ? 1 : 0);
+        }
+        if (s_rs_dirty_mask & DIRTY_TEXTURE) {
+            glUniform1i(s_shader.uUseTexture, s_rs.useTexture ? 1 : 0);
+            glUniform1i(s_shader.uUseLightmap, s_rs.useLightmap ? 1 : 0);
+        }
+        if (s_rs_dirty_mask & DIRTY_ALPHA)
+            glUniform1f(s_shader.uAlphaRef, s_rs.alphaRef);
+        if (s_rs_dirty_mask & DIRTY_GAMMA)
+            glUniform1f(s_shader.uInvGamma, 1.0f / s_rs.gamma);
+        if (s_rs_dirty_mask & DIRTY_LMT)
+            glUniform4fv(s_shader.uLMTransform, 1,
+                         glm::value_ptr(s_rs.lmt));
+        if (s_rs_dirty_mask & DIRTY_GLOBAL_LM)
+            glUniform2fv(s_shader.uGlobalLM, 1,
+                         glm::value_ptr(s_rs.globalLM));
+        s_rs_dirty_mask = 0;
     }
     flushMatrices();
 }
 
 static GLuint s_sVAO_std = 0, s_sVBO_std = 0;
+static GLsizeiptr s_streamVBOSize = 0;
+static bool s_useMapRange = false;
 
 static void bindStdAttribs() {
     glEnableVertexAttribArray(0);
@@ -472,18 +668,18 @@ void C4JRender::Initialise() {
     int fw, fh;
     SDL_GetWindowSize(s_window, &fw, &fh);
     onFramebufferResize(fw, fh);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+    glShadowSetDepthTest(true);
+    ::glDepthFunc(GL_LEQUAL);
 #ifdef GLES
     glClearDepthf(1.0f);
 #else
     glClearDepth(1.0);
 #endif
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glClearColor(0, 0, 0, 1);
+    glShadowSetBlend(true);
+    glShadowSetBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glShadowSetCull(true);
+    ::glCullFace(GL_BACK);
+    ::glClearColor(0, 0, 0, 1);
     glViewport(0, 0, s_windowWidth, s_windowHeight);
     s_shader.build(VERT_SRC, FRAG_SRC);
     initStreamingVAOs();
@@ -548,6 +744,7 @@ void C4JRender::InitialiseContext() {
 }
 
 void C4JRender::StartFrame() {
+    Set_matrixDirty();
     int w, h;
     SDL_GetWindowSize(s_window, &w, &h);
     s_windowWidth = w > 0 ? w : 1;
@@ -706,11 +903,27 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
 
     glBindVertexArray(s_sVAO_std);
     glBindBuffer(GL_ARRAY_BUFFER, s_sVBO_std);
-
     // orphan buffer
-    glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, nullptr, GL_STREAM_DRAW);
-    glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, dataIn, GL_STREAM_DRAW);
-    bindStdAttribs();
+    if ((GLsizeiptr)bytes != s_streamVBOSize) {
+        s_streamVBOSize = (GLsizeiptr)bytes;
+        glBufferData(GL_ARRAY_BUFFER, s_streamVBOSize, nullptr, GL_STREAM_DRAW);
+    }
+
+    if (s_useMapRange) {
+        void* dst = glMapBufferRange(
+            GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes,
+            GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT |
+                GL_MAP_UNSYNCHRONIZED_BIT);
+        if (dst) {
+            memcpy(dst, dataIn, bytes);
+            glUnmapBuffer(GL_ARRAY_BUFFER);
+        } else {
+            s_useMapRange = false;
+        }
+    }
+    if (!s_useMapRange) {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
+    }
 
     glDrawArrays(glMode, 0, count);
 
@@ -828,39 +1041,48 @@ void C4JRender::MatrixMode(int t) {
 
 void C4JRender::MatrixSetIdentity() {
     activeStack().load(glm::mat4(1.f));
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 void C4JRender::MatrixPush() {
     activeStack().push();
     // push doesn't change cur() so no dirty needed but mark anyway to be safe
     // ;w;
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 void C4JRender::MatrixPop() {
     activeStack().pop();
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 void C4JRender::MatrixTranslate(float x, float y, float z) {
     activeStack().mul(glm::translate(glm::mat4(1.f), {x, y, z}));
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 void C4JRender::MatrixRotate(float a, float x, float y, float z) {
     activeStack().mul(glm::rotate(glm::mat4(1.f), a, {x, y, z}));
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 void C4JRender::MatrixScale(float x, float y, float z) {
     activeStack().mul(glm::scale(glm::mat4(1.f), {x, y, z}));
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 void C4JRender::MatrixPerspective(float fovy, float asp, float zn, float zf) {
     s_proj.cur() = glm::perspective(glm::radians(fovy), asp, zn, zf);
+    markMatrixDirty();
 }
 void C4JRender::MatrixOrthogonal(float l, float r, float b, float t, float zn,
                                  float zf) {
     s_proj.cur() = glm::ortho(l, r, b, t, zn, zf);
+    markMatrixDirty();
 }
 void C4JRender::MatrixMult(float* m) {
     activeStack().mul(glm::make_mat4(m));
+    markMatrixDirty();
     if (s_matMode == 0) markNormalDirty();
 }
 const float* C4JRender::MatrixGet(int t) {
@@ -875,8 +1097,11 @@ const float* C4JRender::MatrixGet(int t) {
 void C4JRender::Set_matrixDirty() {
     // iggy wipes opengl state
     s_boundProgram = 0;
-    s_gpu_state_valid = false;
-    s_normalMatDirty = true;  // normal matrix dirt after iggy reset
+    s_rs_dirty_mask = 0xFFFFFFFF;
+    s_gl_shadow_mask = 0;
+    s_normalMatDirty = true; // normal matrix dirt after iggy reset
+    s_matDirty = true;
+    s_chunkOffsetValid = false;
     if (s_shader.prog) {
         glUseProgram(s_shader.prog);
         s_boundProgram = s_shader.prog;
@@ -890,56 +1115,61 @@ void C4JRender::SetClearColour(const float c[4]) {
 bool C4JRender::IsWidescreen() { return true; }
 bool C4JRender::IsHiDef() { return true; }
 void C4JRender::StateSetColour(float r, float g, float b, float a) {
-    s_rs.baseColor = {r, g, b, a};
+    glm::vec4 v = {r, g, b, a};
+    if (s_rs.baseColor != v) {
+        s_rs.baseColor = v;
+        markDirty(DIRTY_BASECOLOR);
+    }
 }
 void C4JRender::SetChunkOffset(float x, float y, float z) {
-    if (s_shader.uChunkOffset >= 0) glUniform3f(s_shader.uChunkOffset, x, y, z);
+    if (s_shader.uChunkOffset < 0) return;
+    glm::vec3 v = {x, y, z};
+    if (!s_chunkOffsetValid || s_chunkOffset != v) {
+        s_chunkOffset = v;
+        s_chunkOffsetValid = true;
+    }
+    if (s_boundProgram == s_shader.prog) {
+        glUniform3f(s_shader.uChunkOffset, x, y, z);
+    }
 }
 void C4JRender::StateSetDepthMask(bool e) {
-    glDepthMask(e ? GL_TRUE : GL_FALSE);
+    glShadowSetDepthMask(e ? GL_TRUE : GL_FALSE);
 }
-void C4JRender::StateSetBlendEnable(bool e) {
-    if (e)
-        glEnable(GL_BLEND);
-    else
-        glDisable(GL_BLEND);
+void C4JRender::StateSetBlendEnable(bool e) { glShadowSetBlend(e); }
+void C4JRender::StateSetBlendFunc(int s, int d) {
+    glShadowSetBlendFunc(s, d);
 }
-void C4JRender::StateSetBlendFunc(int s, int d) { glBlendFunc(s, d); }
-void C4JRender::StateSetDepthFunc(int f) { glDepthFunc(f); }
-void C4JRender::StateSetFaceCull(bool e) {
-    if (e)
-        glEnable(GL_CULL_FACE);
-    else
-        glDisable(GL_CULL_FACE);
+void C4JRender::StateSetDepthFunc(int f) { ::glDepthFunc(f); }
+void C4JRender::StateSetFaceCull(bool e) { glShadowSetCull(e); }
+void C4JRender::StateSetFaceCullCW(bool e) {
+    glShadowSetFrontFace(e ? GL_CW : GL_CCW);
 }
-void C4JRender::StateSetFaceCullCW(bool e) { glFrontFace(e ? GL_CW : GL_CCW); }
 void C4JRender::StateSetLineWidth(float w) {
 #ifndef GLES
-    glLineWidth(w);
+    glShadowSetLineWidth(w);
 #else
     (void)w;
 #endif
 }
 void C4JRender::StateSetWriteEnable(bool r, bool g, bool b, bool a) {
-    glColorMask(r, g, b, a);
+    glShadowSetColorMask(r, g, b, a);
 }
-void C4JRender::StateSetDepthTestEnable(bool e) {
-    if (e)
-        glEnable(GL_DEPTH_TEST);
-    else
-        glDisable(GL_DEPTH_TEST);
-}
+void C4JRender::StateSetDepthTestEnable(bool e) { glShadowSetDepthTest(e); }
 void C4JRender::StateSetAlphaTestEnable(bool e) {
-    s_rs.alphaRef = e ? 0.1f : 0.f;
-}
-void C4JRender::StateSetAlphaFunc(int, float p) { s_rs.alphaRef = p; }
-void C4JRender::StateSetDepthSlopeAndBias(float s, float b) {
-    if (s || b) {
-        glEnable(GL_POLYGON_OFFSET_FILL);
-        glPolygonOffset(s, b);
-    } else {
-        glDisable(GL_POLYGON_OFFSET_FILL);
+    float v = e ? 0.1f : 0.f;
+    if (s_rs.alphaRef != v) {
+        s_rs.alphaRef = v;
+        markDirty(DIRTY_ALPHA);
     }
+}
+void C4JRender::StateSetAlphaFunc(int, float p) {
+    if (s_rs.alphaRef != p) {
+        s_rs.alphaRef = p;
+        markDirty(DIRTY_ALPHA);
+    }
+}
+void C4JRender::StateSetDepthSlopeAndBias(float s, float b) {
+    glShadowSetPolygonOffset(s, b);
 }
 void C4JRender::StateSetBlendFactor(unsigned int col) {
     float a = ((col >> 24) & 0xFF) / 255.f;
@@ -948,58 +1178,96 @@ void C4JRender::StateSetBlendFactor(unsigned int col) {
     float b = (col & 0xFF) / 255.f;
     glBlendColor(r, g, b, a);
 }
-void C4JRender::StateSetFogEnable(bool e) { s_rs.fogEnable = e; }
-void C4JRender::StateSetFogMode(int mode) {
-    s_rs.fogMode = (mode == GL_LINEAR) ? 1
-                   : (mode == GL_EXP)  ? 2
-                   : (mode == 0x0801)  ? 3
-                                       : 0;
+void C4JRender::StateSetFogEnable(bool e) {
+    if (s_rs.fogEnable != e) {
+        s_rs.fogEnable = e;
+        markDirty(DIRTY_FOG);
+    }
 }
-void C4JRender::StateSetFogNearDistance(float d) { s_rs.fogStart = d; }
-void C4JRender::StateSetFogFarDistance(float d) { s_rs.fogEnd = d; }
-void C4JRender::StateSetFogDensity(float d) { s_rs.fogDensity = d; }
+void C4JRender::StateSetFogMode(int mode) {
+    int v = (mode == GL_LINEAR) ? 1 : (mode == GL_EXP) ? 2 : (mode == 0x0801) ? 3 : 0;
+    if (s_rs.fogMode != v) {
+        s_rs.fogMode = v;
+        markDirty(DIRTY_FOG);
+    }
+}
+void C4JRender::StateSetFogNearDistance(float d) {
+    if (s_rs.fogStart != d) {
+        s_rs.fogStart = d;
+        markDirty(DIRTY_FOG);
+    }
+}
+void C4JRender::StateSetFogFarDistance(float d) {
+    if (s_rs.fogEnd != d) {
+        s_rs.fogEnd = d;
+        markDirty(DIRTY_FOG);
+    }
+}
+void C4JRender::StateSetFogDensity(float d) {
+    if (s_rs.fogDensity != d) {
+        s_rs.fogDensity = d;
+        markDirty(DIRTY_FOG);
+    }
+}
 void C4JRender::StateSetFogColour(float r, float g, float b) {
-    s_rs.fogColor = {r, g, b, 1};
+    glm::vec4 v = {r, g, b, 1};
+    if (s_rs.fogColor != v) {
+        s_rs.fogColor = v;
+        markDirty(DIRTY_FOG);
+    }
 }
 void C4JRender::StateSetLightingEnable(bool e) {
-    s_rs.lighting = e;
-    s_rs_dirty = true;
+    if (s_rs.lighting != e) {
+        s_rs.lighting = e;
+        markDirty(DIRTY_LIGHTING);
+    }
 }
 void C4JRender::StateSetLightColour(int, float r, float g, float b) {
-    s_rs.ldiff = {r, g, b};
-    s_rs_dirty = true;
+    glm::vec3 v = {r, g, b};
+    if (s_rs.ldiff != v) {
+        s_rs.ldiff = v;
+        markDirty(DIRTY_LIGHTING);
+    }
 }
 void C4JRender::StateSetLightAmbientColour(float r, float g, float b) {
-    s_rs.lamb = {r, g, b};
-    s_rs_dirty = true;
+    glm::vec3 v = {r, g, b};
+    if (s_rs.lamb != v) {
+        s_rs.lamb = v;
+        markDirty(DIRTY_LIGHTING);
+    }
 }
 void C4JRender::StateSetLightDirection(int light, float x, float y, float z) {
     glm::vec3 d = glm::normalize(glm::mat3(s_mv.cur()) * glm::vec3(x, y, z));
-    if (light == 0)
-        s_rs.l0 = d;
-    else
-        s_rs.l1 = d;
+    if (light == 0) {
+        if (s_rs.l0 != d) {
+            s_rs.l0 = d;
+            markDirty(DIRTY_LIGHTING);
+        }
+    } else {
+        if (s_rs.l1 != d) {
+            s_rs.l1 = d;
+            markDirty(DIRTY_LIGHTING);
+        }
+    }
 }
 void C4JRender::StateSetViewport(eViewportType) {
     glViewport(0, 0, s_windowWidth, s_windowHeight);
 }
 void C4JRender::StateSetVertexTextureUV(float u, float v) {
-    s_rs.globalLM = {u, v};
+    glm::vec2 val = {u, v};
+    if (s_rs.globalLM != val) {
+        s_rs.globalLM = val;
+        markDirty(DIRTY_GLOBAL_LM);
+    }
 }
 void C4JRender::StateSetStencil(int fn, uint8_t ref, uint8_t fmask,
                                 uint8_t wmask) {
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(fn, ref, fmask);
-    glStencilMask(wmask);
+    glShadowSetStencil(fn, ref, fmask, wmask);
 }
 void C4JRender::StateSetTextureEnable(bool e) {
-    if (s_rs.activeTexture == 0) {
+    if (s_rs.activeTexture == 0 && s_rs.useTexture != e) {
         s_rs.useTexture = e;
-        if (s_shader.prog) {
-            glUseProgram(s_shader.prog);
-            s_boundProgram = s_shader.prog;
-            glUniform1i(s_shader.uUseTexture, e ? 1 : 0);
-        }
+        markDirty(DIRTY_TEXTURE);
     }
 }
 void C4JRender::StateSetActiveTexture(int tex) {
@@ -1021,7 +1289,10 @@ void C4JRender::TextureBind(int idx) {
 }
 void C4JRender::TextureBindVertex(int idx, bool scaleLight) {
     if (idx < 0) {
-        s_rs.useLightmap = false;
+        if (s_rs.useLightmap) {
+            s_rs.useLightmap = false;
+            markDirty(DIRTY_TEXTURE);
+        }
         glActiveTexture(GL_TEXTURE0);
         return;
     }
@@ -1032,9 +1303,17 @@ void C4JRender::TextureBindVertex(int idx, bool scaleLight) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glActiveTexture(GL_TEXTURE0);
-    s_rs.useLightmap = true;
-    s_rs.lmt = scaleLight ? glm::vec4{1.f, 1.f, 8.f / 256.f, 8.f / 256.f}
-                          : glm::vec4{1.f, 1.f, 0.f, 0.f};
+    if (!s_rs.useLightmap) {
+        s_rs.useLightmap = true;
+        markDirty(DIRTY_TEXTURE);
+    }
+    glm::vec4 newLmt =
+        scaleLight ? glm::vec4{1.f, 1.f, 8.f / 256.f, 8.f / 256.f}
+                   : glm::vec4{1.f, 1.f, 0.f, 0.f};
+    if (s_rs.lmt != newLmt) {
+        s_rs.lmt = newLmt;
+        markDirty(DIRTY_LMT);
+    }
 }
 void C4JRender::TextureSetTextureLevels(int l) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, l > 0 ? l - 1 : 0);
@@ -1098,6 +1377,7 @@ int C4JRender::LoadTextureData(uint8_t* pb, uint32_t nb, D3DXIMAGE_INFO* i,
     return hr;
 }
 
+// TODO: TO REMOVE SOON.
 void C4JRender::UpdateGamma(unsigned short usGamma) {
     constexpr unsigned short GAMMA_MAX = 32768;
     s_rs.gamma = 0.5f + ((float)(usGamma) * (1.0f / GAMMA_MAX));

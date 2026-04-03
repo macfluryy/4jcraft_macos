@@ -377,7 +377,14 @@ static char* gdraw_strreplace(char* src, const char* find, const char* rep) {
     }
     if (!count) return src;
 
-    result = (char*)malloc(strlen(src) + count * (rep_len + 1) + 1);
+    size_t src_len = strlen(src);
+    ptrdiff_t delta = (ptrdiff_t)rep_len - (ptrdiff_t)find_len;
+    size_t new_len = src_len + 1;
+    if (delta > 0)
+        new_len += (size_t)delta * count;
+    else
+        new_len -= (size_t)(-delta) * count;
+    result = (char*)malloc(new_len);
     if (!result) return src;
 
     tmp = result;
@@ -389,7 +396,7 @@ static char* gdraw_strreplace(char* src, const char* find, const char* rep) {
         tmp += rep_len;
         src = pos + find_len;
     }
-    strcpy(tmp, src);
+    memcpy(tmp, src, strlen(src) + 1);
     free(base);
     return result;
 }
@@ -409,13 +416,15 @@ static void gdraw_ShaderSourceUpgraded(GLuint shader, GLsizei count,
         return;
     }
 
-    src[0] = '\0';
+    char* dst = src;
     for (int i = 0; i < count; i++) {
         size_t len = lengths ? (lengths[i] >= 0 ? (size_t)lengths[i]
                                                 : strlen(strings[i]))
                              : strlen(strings[i]);
-        strncat(src, strings[i], len);
+        memcpy(dst, strings[i], len);
+        dst += len;
     }
+    *dst = '\0';
 
     int is_vert = (gdraw_get_shader_type(shader) == GL_VERTEX_SHADER);
 
