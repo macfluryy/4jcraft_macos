@@ -702,7 +702,7 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
 
             glEnable(GL_RESCALE_NORMAL);
 
-            Lighting::turnOnGui();
+            Lighting::turnOn();
 
             int x, y;
 

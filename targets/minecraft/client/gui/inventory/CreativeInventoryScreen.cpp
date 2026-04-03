@@ -572,7 +572,7 @@ void CreativeInventoryScreen::renderTab(int tab) {
     y += 8 + (tabFirstRow ? 1 : -1);
     glEnable(GL_LIGHTING);
     glEnable(GL_RESCALE_NORMAL);
-    Lighting::turnOnGui();
+    Lighting::turnOn();
     itemRenderer->renderGuiItem(font, minecraft->textures, tabIcons[tab], x, y);
     itemRenderer->renderGuiItemDecorations(font, minecraft->textures,
                                            tabIcons[tab], x, y);

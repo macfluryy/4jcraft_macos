@@ -111,7 +111,7 @@ void MerchantScreen::render(int xm, int ym, float a) {
             glPushMatrix();
             glTranslatef((float)xo, (float)yo, 0.0f);
 
-            Lighting::turnOnGui();
+            Lighting::turnOn();
             glEnable(GL_RESCALE_NORMAL);
             glEnable(GL_LIGHTING);
 

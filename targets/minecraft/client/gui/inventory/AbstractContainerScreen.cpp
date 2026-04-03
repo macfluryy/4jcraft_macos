@@ -56,7 +56,7 @@ void AbstractContainerScreen::render(int xm, int ym, float a) {
 
     glColor4f(1, 1, 1, 1);
     glEnable(GL_RESCALE_NORMAL);
-    Lighting::turnOnGui();
+    Lighting::turnOn();
 
     Slot* hoveredSlot = nullptr;
 
