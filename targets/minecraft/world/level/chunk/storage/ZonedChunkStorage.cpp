@@ -1,5 +1,6 @@
 #include "ZonedChunkStorage.h"
 
+#include <filesystem>
 #include <mutex>
 
 #include "ZoneFile.h"
@@ -66,7 +67,7 @@ ZoneFile* ZonedChunkStorage::getZoneFile(int x, int z, bool create) {
 
         if (!file.exists()) {
             if (!create) return nullptr;
-            void* ch = CreateFile(wstringtofilename(file.getPath()),
+            void* ch = CreateFile(std::filesystem::path(file.getPath()).string().c_str(),
                                   GENERIC_READ | GENERIC_WRITE, 0, nullptr,
                                   OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
             CloseHandle(ch);

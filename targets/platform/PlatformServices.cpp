@@ -1,15 +1,14 @@
 #include "PlatformServices.h"
+#include "StdFileIO.h"
 
-#include "../platform/sdl2/Input.h"
-#include "../platform/sdl2/Profile.h"
-#include "../platform/sdl2/Render.h"
-#include "../platform/sdl2/Storage.h"
+#include "sdl2/Input.h"
+#include "sdl2/Profile.h"
+#include "sdl2/Render.h"
+#include "sdl2/Storage.h"
 
-class IPlatformInput;
-class IPlatformProfile;
-class IPlatformRenderer;
-class IPlatformStorage;
+static StdFileIO s_stdFileIO;
 
+IPlatformFileIO& PlatformFileIO = s_stdFileIO;
 IPlatformInput& PlatformInput = InputManager;
 IPlatformProfile& PlatformProfile = ProfileManager;
 IPlatformRenderer& PlatformRender = RenderManager;

@@ -20,7 +20,7 @@
 #include "app/common/src/GameRules/GameRuleManager.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
-#include "console_helpers/PortableFileIO.h"
+#include "platform/PlatformServices.h"
 #include "console_helpers/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
@@ -105,40 +105,20 @@ bool readOwnedDlcFile(const std::string& path, std::uint8_t** ppData,
     *pBytesRead = 0;
 
     const std::wstring readPath = getMountedDlcReadPath(path);
-    std::FILE* file = PortableFileIO::OpenBinaryFileForRead(readPath);
-    if (file == nullptr) {
+    const std::size_t fSize = PlatformFileIO.fileSize(readPath);
+    if (fSize == 0 || fSize > std::numeric_limits<unsigned int>::max()) {
         return false;
     }
 
-    if (!PortableFileIO::Seek(file, 0, SEEK_END)) {
-        std::fclose(file);
-        return false;
-    }
-
-    const int64_t endPosition = PortableFileIO::Tell(file);
-    if (endPosition <= 0 ||
-        endPosition > std::numeric_limits<unsigned int>::max()) {
-        std::fclose(file);
-        return false;
-    }
-
-    const unsigned int fileSize = static_cast<unsigned int>(endPosition);
-    if (!PortableFileIO::Seek(file, 0, SEEK_SET)) {
-        std::fclose(file);
-        return false;
-    }
-
-    std::uint8_t* data = new std::uint8_t[fileSize];
-    const std::size_t bytesRead = std::fread(data, 1, fileSize, file);
-    const bool failed = std::ferror(file) != 0 || bytesRead != fileSize;
-    std::fclose(file);
-    if (failed) {
+    std::uint8_t* data = new std::uint8_t[fSize];
+    auto result = PlatformFileIO.readFile(readPath, data, fSize);
+    if (result.status != IPlatformFileIO::ReadStatus::Ok) {
         delete[] data;
         return false;
     }
 
     *ppData = data;
-    *pBytesRead = static_cast<unsigned int>(bytesRead);
+    *pBytesRead = static_cast<unsigned int>(result.bytesRead);
     return true;
 }
 }  // namespace
@@ -398,7 +378,8 @@ unsigned int DLCManager::checkForCorruptDLCAndAlert(
 bool DLCManager::readDLCDataFile(unsigned int& dwFilesProcessed,
                                  const std::wstring& path, DLCPack* pack,
                                  bool fromArchive) {
-    return readDLCDataFile(dwFilesProcessed, wstringtofilename(path), pack,
+    return readDLCDataFile(dwFilesProcessed,
+                           std::filesystem::path(path).string(), pack,
                            fromArchive);
 }
 

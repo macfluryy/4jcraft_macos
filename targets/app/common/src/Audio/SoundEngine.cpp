@@ -6,7 +6,6 @@
 
 #include <cmath>
 #include <cstdlib>
-#include <filesystem>
 #include <initializer_list>
 #include <memory>
 #include <vector>
@@ -17,7 +16,7 @@
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
 #include "console_helpers/C4JThread.h"
-#include "console_helpers/PathHelper.h"
+#include "platform/PlatformServices.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
@@ -184,7 +183,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
     for (int i = 0; szId[i]; i++)
         if (szId[i] == '.') szId[i] = '/';
 
-    std::string base = PathHelper::GetExecutableDirA() + "/";
+    std::string base = PlatformFileIO.getBasePath().string() + "/";
     const char* roots[] = {
         "Sound/Minecraft/", "app/common/Sound/Minecraft/",
         "app/common/res/TitleUpdate/res/Sound/Minecraft/"};
@@ -198,7 +197,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
             for (int i = 1; i <= 16; i++) {
                 char tryP[512];
                 snprintf(tryP, 512, "%s%s%d%s", fullRoot.c_str(), szId, i, ext);
-                if (std::filesystem::exists(tryP))
+                if (PlatformFileIO.exists(tryP))
                     count = i;
                 else
                     break;
@@ -211,7 +210,7 @@ void SoundEngine::play(int iSound, float x, float y, float z, float volume,
             }
             char tryP[512];
             snprintf(tryP, 512, "%s%s%s", fullRoot.c_str(), szId, ext);
-            if (std::filesystem::exists(tryP)) {
+            if (PlatformFileIO.exists(tryP)) {
                 strncpy(finalPath, tryP, 511);
                 found = true;
                 break;
@@ -251,7 +250,7 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
         wcstombs(szIdentifier, wchUISoundNames[iSound], 255);
     for (int i = 0; szIdentifier[i]; i++)
         if (szIdentifier[i] == '.') szIdentifier[i] = '/';
-    std::string base = PathHelper::GetExecutableDirA() + "/";
+    std::string base = PlatformFileIO.getBasePath().string() + "/";
     const char* roots[] = {
         "Sound/Minecraft/UI/",
         "Sound/Minecraft/",
@@ -266,7 +265,7 @@ void SoundEngine::playUI(int iSound, float volume, float pitch) {
             char tryP[512];
             snprintf(tryP, 512, "%s%s%s%s", base.c_str(), root, szIdentifier,
                      ext);
-            if (std::filesystem::exists(tryP)) {
+            if (PlatformFileIO.exists(tryP)) {
                 strncpy(finalPath, tryP, 511);
                 found = true;
                 break;
@@ -453,7 +452,7 @@ void SoundEngine::playMusicTick() {
                 return;
             }
             if (m_musicID != -1) {
-                std::string base = PathHelper::GetExecutableDirA() + "/";
+                std::string base = PlatformFileIO.getBasePath().string() + "/";
                 bool isCD = (m_musicID >= m_iStream_CD_1);
                 const char* folder = isCD ? "cds/" : "music/";
                 const char* track = m_szStreamFileA[m_musicID];
@@ -469,14 +468,14 @@ void SoundEngine::playMusicTick() {
                         // try with folder prefix (music/ or cds/)
                         snprintf(c, 512, "%s%s%s%s%s", base.c_str(), r, folder,
                                  track, e);
-                        if (std::filesystem::exists(c)) {
+                        if (PlatformFileIO.exists(c)) {
                             strncpy(m_szStreamName, c, 511);
                             found = true;
                             break;
                         }
                         // try without folder prefix
                         snprintf(c, 512, "%s%s%s%s", base.c_str(), r, track, e);
-                        if (std::filesystem::exists(c)) {
+                        if (PlatformFileIO.exists(c)) {
                             strncpy(m_szStreamName, c, 511);
                             found = true;
                             break;

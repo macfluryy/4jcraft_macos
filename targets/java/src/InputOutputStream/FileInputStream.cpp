@@ -10,7 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
+#include <filesystem>
+
 #include "java/File.h"
 
 namespace {
@@ -52,7 +53,7 @@ FileInputStream::FileInputStream(const File& file) : m_fileHandle(nullptr) {
 #if defined(_WIN32)
     m_fileHandle = _wfopen(file.getPath().c_str(), L"rb");
 #else
-    const std::string nativePath = wstringtofilename(file.getPath());
+    const std::string nativePath = std::filesystem::path(file.getPath()).string();
     m_fileHandle = std::fopen(nativePath.c_str(), "rb");
 #endif
 

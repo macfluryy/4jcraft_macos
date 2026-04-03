@@ -2,10 +2,8 @@
 
 #include <string.h>
 
-#include <filesystem>
-#include <fstream>
-
 #include "app/linux/Linux_App.h"
+#include "platform/PlatformServices.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 #if defined(__linux__)
 #include "app/linux/Stubs/winapi_stubs.h"
@@ -15,24 +13,18 @@
 BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
     m_biomeOverride = std::vector<uint8_t>(width * height);
 
-    std::filesystem::path path = "GameRules/biomemap.bin";
-    std::ifstream file(path, std::ios::binary);
-    if (!file) {
-        // assert(false);
-        app.DebugPrintf("Biome override not found, using plains as default\n");
-
-        memset(m_biomeOverride.data(), Biome::plains->id,
-               m_biomeOverride.size());
-    } else {
-        auto fileSize = std::filesystem::file_size(path);
-        if (fileSize > m_biomeOverride.size()) {
+    {
+        const char* path = "GameRules/biomemap.bin";
+        auto result = PlatformFileIO.readFile(
+            path, m_biomeOverride.data(), m_biomeOverride.size());
+        if (result.status == IPlatformFileIO::ReadStatus::NotFound) {
+            app.DebugPrintf("Biome override not found, using plains as default\n");
+            memset(m_biomeOverride.data(), Biome::plains->id,
+                   m_biomeOverride.size());
+        } else if (result.status == IPlatformFileIO::ReadStatus::TooLarge) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
             __debugbreak();
-        }
-        file.read(reinterpret_cast<char*>(m_biomeOverride.data()),
-                  static_cast<std::streamsize>(fileSize));
-
-        if (!file) {
+        } else if (result.status != IPlatformFileIO::ReadStatus::Ok) {
             app.FatalLoadError();
         }
     }

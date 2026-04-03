@@ -26,7 +26,7 @@ lib_java = static_library('java',
   java_sources,
   dependencies: [console_helpers_dep],
   # TODO: remove the .. path once arrayWithLength are evaporated
-  include_directories: include_directories('include'),
+  include_directories: include_directories('include', '..'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )
 

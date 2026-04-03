@@ -4,11 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <filesystem>
-#include <fstream>
-
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/linux/Linux_App.h"
+#include "platform/PlatformServices.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #if defined(__linux__)
@@ -45,45 +43,34 @@ CustomLevelSource::CustomLevelSource(Level* level, int64_t seed,
     m_heightmapOverride =
         std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
 
-    std::filesystem::path path = "GameRules/heightmap.bin";
-    std::ifstream file(path, std::ios::binary);
-    if (!file) {
-        app.FatalLoadError();
-        assert(false);
-    } else {
-        auto fileSize = std::filesystem::file_size(path);
-        if (fileSize > m_heightmapOverride.size()) {
+    {
+        const char* path = "GameRules/heightmap.bin";
+        auto result = PlatformFileIO.readFile(
+            path, m_heightmapOverride.data(), m_heightmapOverride.size());
+        if (result.status == IPlatformFileIO::ReadStatus::TooLarge) {
             app.DebugPrintf("Heightmap binary is too large!!\n");
             __debugbreak();
-        }
-        file.read(reinterpret_cast<char*>(m_heightmapOverride.data()),
-                  static_cast<std::streamsize>(fileSize));
-
-        if (!file) {
+        } else if (result.status != IPlatformFileIO::ReadStatus::Ok) {
             app.FatalLoadError();
+            assert(false);
         }
     }
 
     m_waterheightOverride =
         std::vector<uint8_t>((m_XZSize * 16) * (m_XZSize * 16));
 
-    std::filesystem::path waterHeightPath = "GameRules/waterheight.bin";
-    std::ifstream waterHeightFile(waterHeightPath, std::ios::binary);
-    if (!waterHeightFile) {
-        // assert(false);
-        memset(m_waterheightOverride.data(), level->seaLevel,
-               m_waterheightOverride.size());
-    } else {
-        auto waterFileSize = std::filesystem::file_size(waterHeightPath);
-        if (waterFileSize > m_waterheightOverride.size()) {
+    {
+        const char* waterHeightPath = "GameRules/waterheight.bin";
+        auto result = PlatformFileIO.readFile(
+            waterHeightPath, m_waterheightOverride.data(),
+            m_waterheightOverride.size());
+        if (result.status == IPlatformFileIO::ReadStatus::NotFound) {
+            memset(m_waterheightOverride.data(), level->seaLevel,
+                   m_waterheightOverride.size());
+        } else if (result.status == IPlatformFileIO::ReadStatus::TooLarge) {
             app.DebugPrintf("waterheight binary is too large!!\n");
             __debugbreak();
-        }
-        waterHeightFile.read(
-            reinterpret_cast<char*>(m_waterheightOverride.data()),
-            static_cast<std::streamsize>(waterFileSize));
-
-        if (!waterHeightFile) {
+        } else if (result.status != IPlatformFileIO::ReadStatus::Ok) {
             app.FatalLoadError();
         }
     }

@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include <cstdint>
-#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -14,8 +13,8 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "PlatformTypes.h"
-#include "console_helpers/PathHelper.h"
 #include "console_helpers/StringHelpers.h"
+#include "platform/PlatformServices.h"
 
 BufferedImage::BufferedImage(int width, int height, int type) {
     data[0] = new int[width * height];
@@ -62,7 +61,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
         baseName = baseName.substr(1);
     if (baseName.find(L"res/") == 0) baseName = baseName.substr(4);
 
-    std::wstring exeDir = PathHelper::GetExecutableDirW();
+    std::wstring exeDir = PlatformFileIO.getBasePath().wstring();
 
     for (int l = 0; l < 10; l++) {
         std::wstring mipSuffix =
@@ -83,7 +82,7 @@ BufferedImage::BufferedImage(const std::wstring& File,
             size_t p;
             while ((p = attempt.find(L"//")) != std::wstring::npos)
                 attempt.replace(p, 2, L"/");
-            if (std::filesystem::exists(wstringtofilename(attempt))) {
+            if (PlatformFileIO.exists(attempt)) {
                 finalPath = attempt;
                 foundOnDisk = true;
                 break;
@@ -94,7 +93,8 @@ BufferedImage::BufferedImage(const std::wstring& File,
         memset(&ImageInfo, 0, sizeof(D3DXIMAGE_INFO));
 
         if (foundOnDisk) {
-            hr = RenderManager.LoadTextureData(wstringtofilename(finalPath),
+            std::string nativePath = std::filesystem::path(finalPath).string();
+            hr = RenderManager.LoadTextureData(nativePath.c_str(),
                                                &ImageInfo, &data[l]);
         } else {
             std::wstring archiveKey = L"res/" + fileName;

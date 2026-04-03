@@ -3,8 +3,6 @@
 #include <limits.h>
 #include <wchar.h>
 
-#include <filesystem>
-#include <fstream>
 #include <unordered_set>
 #include <utility>
 
@@ -25,6 +23,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "console_helpers/StringHelpers.h"
+#include "platform/PlatformServices.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -521,16 +520,13 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                                          dlcFile->getGrfPath(), true,
                                          L"WPACK:"));
                 if (grf.exists()) {
-                    std::filesystem::path grfPath = grf.getPath();
-                    std::ifstream fileHandle(grfPath, std::ios::binary);
-
-                    if (fileHandle) {
-                        uint32_t dwFileSize = grf.length();
+                    uint32_t dwFileSize = grf.length();
+                    if (dwFileSize > 0) {
                         uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
-                        fileHandle.read(
-                            reinterpret_cast<char*>(pbData),
-                            static_cast<std::streamsize>(dwFileSize));
-                        if (!fileHandle) {
+                        auto readResult = PlatformFileIO.readFile(
+                            grf.getPath(), pbData, dwFileSize);
+                        if (readResult.status !=
+                            IPlatformFileIO::ReadStatus::Ok) {
                             app.FatalLoadError();
                         }
 
@@ -550,15 +546,14 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
             File save(app.getFilePath(lgo->m_parentDLCPack->GetPackID(),
                                       lgo->getBaseSavePath(), true, L"WPACK:"));
             if (save.exists()) {
-                std::filesystem::path savePath = save.getPath();
-                std::ifstream saveHandle(savePath, std::ios::binary);
-
-                if (saveHandle) {
-                    auto dwFileSize = std::filesystem::file_size(savePath);
+                std::size_t dwFileSize =
+                    PlatformFileIO.fileSize(save.getPath());
+                if (dwFileSize > 0) {
                     uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
-                    saveHandle.read(reinterpret_cast<char*>(pbData),
-                                    static_cast<std::streamsize>(dwFileSize));
-                    if (!saveHandle) {
+                    auto readResult = PlatformFileIO.readFile(
+                        save.getPath(), pbData, dwFileSize);
+                    if (readResult.status !=
+                        IPlatformFileIO::ReadStatus::Ok) {
                         app.FatalLoadError();
                     }
 

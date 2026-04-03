@@ -24,7 +24,7 @@
 #include "app/include/NetTypes.h"
 #include "SkinBox.h"
 #include "XboxStubs.h"
-#include "console_helpers/PathHelper.h"
+#include "platform/PlatformServices.h"
 #include "java/Class.h"
 #include "java/File.h"
 #include "java/Random.h"
@@ -3653,7 +3653,7 @@ void CMinecraftApp::loadMediaArchive() {
     if (!mediapath.empty()) {
         // boom headshot
 #if defined(__linux__)
-        std::wstring exeDirW = PathHelper::GetExecutableDirW();
+        std::wstring exeDirW = PlatformFileIO.getBasePath().wstring();
         std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
         if (File(candidate).exists()) {
             m_mediaArchive = new ArchiveFile(File(candidate));

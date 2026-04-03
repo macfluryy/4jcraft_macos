@@ -8,8 +8,8 @@
 #include <system_error>
 #include <vector>
 
-#include "console_helpers/PathHelper.h"     // 4jcraft TODO
 #include "console_helpers/StringHelpers.h"  // 4jcraft TODO
+#include "platform/PlatformServices.h"
 #include "java/FileFilter.h"
 
 const wchar_t File::pathSeparator = L'/';
@@ -21,8 +21,7 @@ namespace {
 namespace fs = std::filesystem;
 
 fs::path ToFilesystemPath(const std::wstring& path) {
-    const std::string nativePath = wstringtofilename(path);
-    return fs::path(nativePath);
+    return fs::path(path);
 }
 
 std::wstring ToFilename(const fs::path& path) {
@@ -65,11 +64,11 @@ File::File(const std::wstring& pathname) {
     m_abstractPathName = fixedPath;
 
 #if defined(__linux__)
-    std::string request = wstringtofilename(m_abstractPathName);
+    std::string request = std::filesystem::path(m_abstractPathName).string();
     while (!request.empty() && request[0] == '/') request.erase(0, 1);
     if (request.find("res/") == 0) request.erase(0, 4);
 
-    std::string exeDir = PathHelper::GetExecutableDirA();
+    std::string exeDir = PlatformFileIO.getBasePath().string();
     std::string fileName = request;
     size_t lastSlash = fileName.find_last_of('/');
     if (lastSlash != std::string::npos)
@@ -85,11 +84,11 @@ File::File(const std::wstring& pathname) {
     for (const char* base : bases) {
         std::string tryFull = exeDir + base + request;
         std::string tryFile = exeDir + base + fileName;
-        if (std::filesystem::exists(tryFull)) {
+        if (PlatformFileIO.exists(tryFull)) {
             m_abstractPathName = convStringToWstring(tryFull);
             return;
         }
-        if (std::filesystem::exists(tryFile)) {
+        if (PlatformFileIO.exists(tryFile)) {
             m_abstractPathName = convStringToWstring(tryFile);
             return;
         }
@@ -97,7 +96,7 @@ File::File(const std::wstring& pathname) {
 #endif
 
 #ifdef _WINDOWS64
-    std::string path = wstringtofilename(m_abstractPathName);
+    std::string path = std::filesystem::path(m_abstractPathName).string();
     std::string finalPath = StorageManager.GetMountedPath(path.c_str());
     if (finalPath.size() == 0) finalPath = path;
     m_abstractPathName = convStringToWstring(finalPath);

@@ -18,7 +18,6 @@
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/PortableFileIO.h"
 #include "console_helpers/compression.h"
 #include "java/File.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -744,13 +743,13 @@ void ConsoleSaveFileOriginal::DebugFlushToFile(
     bool writeSucceeded = false;
 
     if (compressedData != nullptr && compressedDataSize > 0) {
-        writeSucceeded = PortableFileIO::WriteBinaryFile(
+        writeSucceeded = PlatformFileIO.writeFile(
             outputPath, compressedData, compressedDataSize);
         numberOfBytesWritten = writeSucceeded ? compressedDataSize : 0;
         assert(numberOfBytesWritten == compressedDataSize);
     } else {
         writeSucceeded =
-            PortableFileIO::WriteBinaryFile(outputPath, pvSaveMem, fileSize);
+            PlatformFileIO.writeFile(outputPath, pvSaveMem, fileSize);
         numberOfBytesWritten = writeSucceeded ? fileSize : 0;
         assert(numberOfBytesWritten == fileSize);
     }

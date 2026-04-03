@@ -5,8 +5,6 @@
 #include <algorithm>
 #include <chrono>
 #include <compare>
-#include <filesystem>
-#include <fstream>
 #include <memory>
 #include <thread>
 #include <vector>
@@ -30,6 +28,7 @@
 #include "Socket.h"
 #include "XboxStubs.h"
 #include "console_helpers/StringHelpers.h"
+#include "platform/PlatformServices.h"
 #include "console_helpers/ThreadName.h"
 #include "console_helpers/compression.h"
 #include "java/File.h"
@@ -161,18 +160,15 @@ bool CGameNetworkManager::StartNetworkGame(Minecraft* minecraft,
 #endif
                         File grf(fileRoot);
                         if (grf.exists()) {
-                            std::filesystem::path grfPath = grf.getPath();
-                            std::ifstream fileHandle(grfPath, std::ios::binary);
-
-                            if (fileHandle) {
-                                auto dwFileSize =
-                                    std::filesystem::file_size(grfPath);
+                            std::size_t dwFileSize =
+                                PlatformFileIO.fileSize(grf.getPath());
+                            if (dwFileSize > 0) {
                                 uint8_t* pbData =
                                     (uint8_t*)new uint8_t[dwFileSize];
-                                fileHandle.read(
-                                    reinterpret_cast<char*>(pbData),
-                                    static_cast<std::streamsize>(dwFileSize));
-                                if (!fileHandle) {
+                                auto readResult = PlatformFileIO.readFile(
+                                    grf.getPath(), pbData, dwFileSize);
+                                if (readResult.status !=
+                                    IPlatformFileIO::ReadStatus::Ok) {
                                     app.FatalLoadError();
                                 }
 

@@ -5,7 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"  // 4jcraft TODO
+#include <filesystem>
+
 #include "java/File.h"
 
 // Creates a file output stream to write to the file represented by the
@@ -29,7 +30,7 @@ FileOutputStream::FileOutputStream(const File& file) : m_fileHandle(nullptr) {
 #if defined(_WIN32)
     m_fileHandle = _wfopen(file.getPath().c_str(), L"wb");
 #else
-    const std::string nativePath = wstringtofilename(file.getPath());
+    const std::string nativePath = std::filesystem::path(file.getPath()).string();
     m_fileHandle = std::fopen(nativePath.c_str(), "wb");
 #endif
 

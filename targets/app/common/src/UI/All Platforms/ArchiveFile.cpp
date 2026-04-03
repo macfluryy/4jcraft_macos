@@ -7,7 +7,7 @@
 
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/PortableFileIO.h"
+#include "platform/PlatformServices.h"
 #include "console_helpers/compression.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -116,12 +116,12 @@ std::vector<uint8_t> ArchiveFile::getFile(const std::wstring& filename) {
         const unsigned int fileSize = static_cast<unsigned int>(data->filesize);
         std::uint8_t* pbData = new std::uint8_t[fileSize == 0 ? 1 : fileSize];
         out = std::vector<uint8_t>(pbData, pbData + fileSize);
-        const PortableFileIO::BinaryReadResult readResult =
-            PortableFileIO::ReadBinaryFileSegment(
+        auto readResult =
+            PlatformFileIO.readFileSegment(
                 m_sourcefile.getPath(), static_cast<std::size_t>(data->ptr),
                 out.data(), static_cast<std::size_t>(data->filesize));
 
-        if (readResult.status != PortableFileIO::BinaryReadStatus::ok) {
+        if (readResult.status != IPlatformFileIO::ReadStatus::Ok) {
             app.DebugPrintf("Failed to read archive file segment\n");
             app.FatalLoadError();
         }

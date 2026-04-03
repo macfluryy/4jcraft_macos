@@ -1,5 +1,7 @@
 #include "NbtSlotFile.h"
 
+#include <filesystem>
+
 #include "java/File.h"
 
 namespace {
@@ -10,7 +12,7 @@ std::FILE* OpenBinaryFileForReadWrite(const File& file) {
         stream = _wfopen(file.getPath().c_str(), L"w+b");
     }
 #else
-    const std::string nativePath = wstringtofilename(file.getPath());
+    const std::string nativePath = std::filesystem::path(file.getPath()).string();
     std::FILE* stream = std::fopen(nativePath.c_str(), "r+b");
     if (stream == nullptr) {
         stream = std::fopen(nativePath.c_str(), "w+b");
