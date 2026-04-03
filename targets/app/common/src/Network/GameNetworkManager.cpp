@@ -529,20 +529,13 @@ INetworkPlayer* CGameNetworkManager::GetHostPlayer() {
 
 void CGameNetworkManager::RegisterPlayerChangedCallback(
     int iPad,
-    void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                     bool leaving),
-    void* callbackParam) {
-    s_pPlatformNetworkManager->RegisterPlayerChangedCallback(iPad, callback,
-                                                             callbackParam);
+    std::function<void(INetworkPlayer* pPlayer, bool leaving)> callback) {
+    s_pPlatformNetworkManager->RegisterPlayerChangedCallback(
+        iPad, std::move(callback));
 }
 
-void CGameNetworkManager::UnRegisterPlayerChangedCallback(
-    int iPad,
-    void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                     bool leaving),
-    void* callbackParam) {
-    s_pPlatformNetworkManager->UnRegisterPlayerChangedCallback(iPad, callback,
-                                                               callbackParam);
+void CGameNetworkManager::UnRegisterPlayerChangedCallback(int iPad) {
+    s_pPlatformNetworkManager->UnRegisterPlayerChangedCallback(iPad);
 }
 
 void CGameNetworkManager::HandleSignInChange() {
@@ -620,16 +613,15 @@ bool CGameNetworkManager::GetGameSessionInfo(int iPad, SessionID sessionId,
 }
 
 void CGameNetworkManager::SetSessionsUpdatedCallback(
-    void (*SessionsUpdatedCallback)(void* pParam), void* pSearchParam) {
-    s_pPlatformNetworkManager->SetSessionsUpdatedCallback(
-        SessionsUpdatedCallback, pSearchParam);
+    std::function<void()> callback) {
+    s_pPlatformNetworkManager->SetSessionsUpdatedCallback(std::move(callback));
 }
 
 void CGameNetworkManager::GetFullFriendSessionInfo(
     FriendSessionInfo* foundSession,
-    void (*FriendSessionUpdatedFn)(bool success, void* pParam), void* pParam) {
+    std::function<void(bool success)> callback) {
     s_pPlatformNetworkManager->GetFullFriendSessionInfo(
-        foundSession, FriendSessionUpdatedFn, pParam);
+        foundSession, std::move(callback));
 }
 
 void CGameNetworkManager::ForceFriendsSessionRefresh() {
@@ -1400,8 +1392,10 @@ void CGameNetworkManager::HandleInviteWhenInMenus(
             // the FromInvite will make the lib decide how many panes to display
             // based on connected pads/signed in players
             SignInInfo info;
-            info.Func = &CGameNetworkManager::JoinFromInvite_SignInReturned;
-            info.lpParam = (void*)pInviteInfo;
+            info.Func = [pInviteInfo](bool bContinue, int pad) {
+                return JoinFromInvite_SignInReturned(
+                    const_cast<INVITE_INFO*>(pInviteInfo), bContinue, pad);
+            };
             info.requireOnline = true;
             app.DebugPrintf("Using fullscreen layer\n");
             ui.NavigateToScene(ProfileManager.GetPrimaryPad(),

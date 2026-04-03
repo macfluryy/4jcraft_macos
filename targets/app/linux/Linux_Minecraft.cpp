@@ -454,10 +454,13 @@ int main(int argc, const char* argv[]) {
     // fuck you
     ui.init(1920, 1080);
     // storage manager is needed for the trial key check
-    StorageManager.Init(0, app.GetString(IDS_DEFAULT_SAVENAME),
-                        (char*)"savegame.dat", FIFTY_ONE_MB,
-                        &CConsoleMinecraftApp::DisplaySavingMessage,
-                        (void*)&app, (char*)"");
+    StorageManager.Init(
+        0, app.GetString(IDS_DEFAULT_SAVENAME), (char*)"savegame.dat",
+        FIFTY_ONE_MB,
+        [](const C4JStorage::ESavingMessage eMsg, int iPad) {
+            return app.displaySavingMessage(eMsg, iPad);
+        },
+        (char*)"");
 
     ////////////////
     // Initialise //
@@ -486,7 +489,9 @@ int main(int argc, const char* argv[]) {
     // set a function to be called when there's a sign in change, so we can exit
     // a level if the primary player signs out
     ProfileManager.SetSignInChangeCallback(
-        &CConsoleMinecraftApp::SignInChangeCallback, &app);
+        [](bool bVal, unsigned int uiSignInData) {
+            CConsoleMinecraftApp::SignInChangeCallback(&app, bVal, uiSignInData);
+        });
 
     // Set a callback for when there is a read error on profile data
     // StorageManager.SetProfileReadErrorCallback(&CConsoleMinecraftApp::ProfileReadErrorCallback,

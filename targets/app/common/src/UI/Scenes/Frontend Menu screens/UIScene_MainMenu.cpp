@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <format>
+#include <functional>
 #include <numbers>
 
 #include "platform/PlatformTypes.h"
@@ -229,7 +230,7 @@ void UIScene_MainMenu::handleInput(int iPad, int key, bool repeat, bool pressed,
 void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
     int primaryPad = ProfileManager.GetPrimaryPad();
 
-    int (*signInReturnedFunc)(void*, const bool, const int iPad) = nullptr;
+    std::function<int(bool, int)> signInReturnedFunc;
 
     switch ((int)controlId) {
         case eControl_PlayGame:
@@ -237,36 +238,44 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
 
-            signInReturnedFunc = &UIScene_MainMenu::CreateLoad_SignInReturned;
+            signInReturnedFunc = [this](bool bContinue, int pad) {
+                return CreateLoad_SignInReturned(this, bContinue, pad);
+            };
             break;
         case eControl_Leaderboards:
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
             m_eAction = eAction_RunLeaderboards;
-            signInReturnedFunc = &UIScene_MainMenu::Leaderboards_SignInReturned;
+            signInReturnedFunc = [this](bool bContinue, int pad) {
+                return Leaderboards_SignInReturned(this, bContinue, pad);
+            };
             break;
         case eControl_Achievements:
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
 
             m_eAction = eAction_RunAchievements;
-            signInReturnedFunc = &UIScene_MainMenu::Achievements_SignInReturned;
+            signInReturnedFunc = [this](bool bContinue, int pad) {
+                return Achievements_SignInReturned(this, bContinue, pad);
+            };
             break;
         case eControl_HelpAndOptions:
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
 
             m_eAction = eAction_RunHelpAndOptions;
-            signInReturnedFunc =
-                &UIScene_MainMenu::HelpAndOptions_SignInReturned;
+            signInReturnedFunc = [this](bool bContinue, int pad) {
+                return HelpAndOptions_SignInReturned(this, bContinue, pad);
+            };
             break;
         case eControl_UnlockOrDLC:
             // CD - Added for audio
             ui.PlayUISFX(eSFX_Press);
 
             m_eAction = eAction_RunUnlockOrDLC;
-            signInReturnedFunc =
-                &UIScene_MainMenu::UnlockFullGame_SignInReturned;
+            signInReturnedFunc = [this](bool bContinue, int pad) {
+                return UnlockFullGame_SignInReturned(this, bContinue, pad);
+            };
             break;
         case eControl_Exit: {
             unsigned int uiIDA[2];
@@ -284,11 +293,11 @@ void UIScene_MainMenu::handlePress(F64 controlId, F64 childId) {
     bool confirmUser = false;
 
     // Note: if no sign in returned func, assume this isn't required
-    if (signInReturnedFunc != nullptr) {
+    if (signInReturnedFunc) {
         if (ProfileManager.IsSignedIn(primaryPad)) {
             if (confirmUser) {
                 ProfileManager.RequestSignInUI(false, false, true, false, true,
-                                               signInReturnedFunc, this,
+                                               signInReturnedFunc,
                                                primaryPad);
             } else {
                 RunAction(primaryPad);
@@ -396,30 +405,41 @@ int UIScene_MainMenu::MustSignInReturned(void* pParam, int iPad,
             case eAction_RunGame:
                 ProfileManager.RequestSignInUI(
                     false, true, false, false, true,
-                    &UIScene_MainMenu::CreateLoad_SignInReturned, pClass, iPad);
+                    [pClass](bool b, int p) {
+                        return CreateLoad_SignInReturned(pClass, b, p);
+                    },
+                    iPad);
                 break;
             case eAction_RunHelpAndOptions:
                 ProfileManager.RequestSignInUI(
                     false, false, true, false, true,
-                    &UIScene_MainMenu::HelpAndOptions_SignInReturned, pClass,
+                    [pClass](bool b, int p) {
+                        return HelpAndOptions_SignInReturned(pClass, b, p);
+                    },
                     iPad);
                 break;
             case eAction_RunLeaderboards:
                 ProfileManager.RequestSignInUI(
                     false, false, true, false, true,
-                    &UIScene_MainMenu::Leaderboards_SignInReturned, pClass,
+                    [pClass](bool b, int p) {
+                        return Leaderboards_SignInReturned(pClass, b, p);
+                    },
                     iPad);
                 break;
             case eAction_RunAchievements:
                 ProfileManager.RequestSignInUI(
                     false, false, true, false, true,
-                    &UIScene_MainMenu::Achievements_SignInReturned, pClass,
+                    [pClass](bool b, int p) {
+                        return Achievements_SignInReturned(pClass, b, p);
+                    },
                     iPad);
                 break;
             case eAction_RunUnlockOrDLC:
                 ProfileManager.RequestSignInUI(
                     false, false, true, false, true,
-                    &UIScene_MainMenu::UnlockFullGame_SignInReturned, pClass,
+                    [pClass](bool b, int p) {
+                        return UnlockFullGame_SignInReturned(pClass, b, p);
+                    },
                     iPad);
                 break;
             default:
@@ -589,7 +609,10 @@ int UIScene_MainMenu::CreateLoad_SignInReturned(void* pParam, bool bContinue,
 #if TO_BE_IMPLEMENTED
                     // offline
                     ProfileManager.DisplayOfflineProfile(
-                        &CScene_Main::CreateLoad_OfflineProfileReturned, pClass,
+                        [pClass](bool b, int p) {
+                            return CScene_Main::CreateLoad_OfflineProfileReturned(
+                                pClass, b, p);
+                        },
                         ProfileManager.GetPrimaryPad());
 #else
                     app.DebugPrintf(

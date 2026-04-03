@@ -2189,11 +2189,8 @@ void CMinecraftApp::ActionDebugMask(int iPad, bool bSetAllClear) {
 }
 #endif
 
-int CMinecraftApp::DisplaySavingMessage(void* pParam,
-                                        C4JStorage::ESavingMessage eVal,
+int CMinecraftApp::displaySavingMessage(C4JStorage::ESavingMessage eVal,
                                         int iPad) {
-    // CMinecraftApp* pClass = (CMinecraftApp*)pParam;
-
     ui.ShowSavingMessage(iPad, eVal);
 
     return 0;
@@ -4134,24 +4131,21 @@ bool CMinecraftApp::DebugArtToolsOn() {
 #endif
 
 void CMinecraftApp::SetDebugSequence(const char* pchSeq) {
-    InputManager.SetDebugSequence(pchSeq, &CMinecraftApp::DebugInputCallback,
-                                  this);
-}
-int CMinecraftApp::DebugInputCallback(void* pParam) {
-    CMinecraftApp* pClass = (CMinecraftApp*)pParam;
-    // printf("sequence matched\n");
-    pClass->m_bDebugOptions = !pClass->m_bDebugOptions;
+    InputManager.SetDebugSequence(pchSeq, [this]() -> int {
+        // printf("sequence matched\n");
+        m_bDebugOptions = !m_bDebugOptions;
 
-    for (int i = 0; i < XUSER_MAX_COUNT; i++) {
-        if (app.DebugSettingsOn()) {
-            app.ActionDebugMask(i);
-        } else {
-            // force debug mask off
-            app.ActionDebugMask(i, true);
+        for (int i = 0; i < XUSER_MAX_COUNT; i++) {
+            if (app.DebugSettingsOn()) {
+                app.ActionDebugMask(i);
+            } else {
+                // force debug mask off
+                app.ActionDebugMask(i, true);
+            }
         }
-    }
 
-    return 0;
+        return 0;
+    });
 }
 
 int CMinecraftApp::GetLocalPlayerCount(void) {
@@ -4201,7 +4195,9 @@ bool CMinecraftApp::StartInstallDLCProcess(int iPad) {
             "StorageManager.GetInstalledDLC\n");
 
         StorageManager.GetInstalledDLC(
-            iPad, &CMinecraftApp::DLCInstalledCallback, this);
+            iPad, [this](int iInstalledC, int pad) {
+                return dlcInstalledCallback(iInstalledC, pad);
+            });
         return true;
     } else {
         app.DebugPrintf(
@@ -4212,13 +4208,12 @@ bool CMinecraftApp::StartInstallDLCProcess(int iPad) {
 }
 
 // Installed DLC callback
-int CMinecraftApp::DLCInstalledCallback(void* pParam, int iInstalledC,
-                                        int iPad) {
-    app.DebugPrintf(
-        "--- CMinecraftApp::DLCInstalledCallback: totalDLC=%i, pad=%i.\n",
+int CMinecraftApp::dlcInstalledCallback(int iInstalledC, int iPad) {
+    DebugPrintf(
+        "--- CMinecraftApp::dlcInstalledCallback: totalDLC=%i, pad=%i.\n",
         iInstalledC, iPad);
-    app.m_iTotalDLC = iInstalledC;
-    app.MountNextDLC(iPad);
+    m_iTotalDLC = iInstalledC;
+    MountNextDLC(iPad);
     return 0;
 }
 
@@ -4230,9 +4225,12 @@ void CMinecraftApp::MountNextDLC(int iPad) {
         // installed DLC We're supposed to use a generic save game as a cache of
         // these to do this, with XUSER_ANY
 
-        if (StorageManager.MountInstalledDLC(iPad, m_iTotalDLCInstalled,
-                                             &CMinecraftApp::DLCMountedCallback,
-                                             this) != ERROR_IO_PENDING) {
+        if (StorageManager.MountInstalledDLC(
+                iPad, m_iTotalDLCInstalled,
+                [this](int pad, std::uint32_t dwErr,
+                       std::uint32_t dwLicenceMask) {
+                    return dlcMountedCallback(pad, dwErr, dwLicenceMask);
+                }) != ERROR_IO_PENDING) {
             // corrupt DLC
             app.DebugPrintf("Failed to mount DLC %d for pad %d\n",
                             m_iTotalDLCInstalled, iPad);
@@ -4264,11 +4262,10 @@ void CMinecraftApp::MountNextDLC(int iPad) {
 #define CONTENT_DATA_DISPLAY_NAME(a) (a.wszDisplayName)
 #endif
 
-int CMinecraftApp::DLCMountedCallback(void* pParam, int iPad,
-                                      std::uint32_t dwErr,
+int CMinecraftApp::dlcMountedCallback(int iPad, std::uint32_t dwErr,
                                       std::uint32_t dwLicenceMask) {
 #if defined(_WINDOWS64)
-    app.DebugPrintf("--- CMinecraftApp::DLCMountedCallback\n");
+    DebugPrintf("--- CMinecraftApp::dlcMountedCallback\n");
 
     if (dwErr != ERROR_SUCCESS) {
         // corrupt DLC
@@ -6762,7 +6759,10 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
 
                 C4JStorage::EDLCStatus status = StorageManager.GetDLCOffers(
                     ProfileManager.GetPrimaryPad(),
-                    &CMinecraftApp::DLCOffersReturned, this, pCurrent->dwType);
+                    [this](int iOfferC, std::uint32_t dwType, int pad) {
+                        return dlcOffersReturned(iOfferC, dwType, pad);
+                    },
+                    pCurrent->dwType);
                 if (status == C4JStorage::EDLC_Pending) {
                     pCurrent->eState = e_DLC_ContentState_Retrieving;
                 } else {
@@ -6882,22 +6882,20 @@ void CMinecraftApp::ClearTMSPPFilesRetrieved() {
     }
 }
 
-int CMinecraftApp::DLCOffersReturned(void* pParam, int iOfferC,
-                                     std::uint32_t dwType, int iPad) {
-    CMinecraftApp* pClass = (CMinecraftApp*)pParam;
-
+int CMinecraftApp::dlcOffersReturned(int iOfferC, std::uint32_t dwType,
+                                     int iPad) {
     // find the right one in the vector
     {
-        std::lock_guard<std::mutex> lock(pClass->csTMSPPDownloadQueue);
-        for (auto it = pClass->m_DLCDownloadQueue.begin();
-             it != pClass->m_DLCDownloadQueue.end(); ++it) {
+        std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
+        for (auto it = m_DLCDownloadQueue.begin();
+             it != m_DLCDownloadQueue.end(); ++it) {
             DLCRequest* pCurrent = *it;
 
             // avatar items are coming back as type Content, so we can't trust
             // the type setting
             if (pCurrent->dwType == static_cast<std::uint32_t>(dwType)) {
-                pClass->m_iDLCOfferC = iOfferC;
-                app.DebugPrintf(
+                m_iDLCOfferC = iOfferC;
+                DebugPrintf(
                     "DLCOffersReturned - type %u, count %d - setting to "
                     "retrieved\n",
                     dwType, iOfferC);

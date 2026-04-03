@@ -101,8 +101,6 @@ private:
     bool IsLocalMultiplayerAvailable();
 
 protected:
-    static int KeyboardCompleteWorldNameCallback(void* lpParam,
-                                                 const bool bRes);
     void handlePress(F64 controlId, F64 childId);
     void handleSliderMove(F64 sliderId, F64 currentValue);
 

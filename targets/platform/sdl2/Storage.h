@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <ctime>
+#include <functional>
 #include <string>
 #include <vector>
 // #include <xtms.h>
@@ -111,20 +112,21 @@ public:
     C4JStorage::EMessageResult RequestMessageBox(
         unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
         unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
-        int (*Func)(void*, int, const C4JStorage::EMessageResult) = nullptr,
-        void* lpParam = nullptr, C4JStringTable* pStringTable = nullptr,
+        std::function<int(int, const C4JStorage::EMessageResult)> callback =
+            nullptr,
+        C4JStringTable* pStringTable = nullptr,
         wchar_t* pwchFormatString = nullptr, unsigned int focusButton = 0);
 
     C4JStorage::EMessageResult GetMessageBoxResult();
 
     // save device
-    bool SetSaveDevice(int (*Func)(void*, const bool), void* lpParam,
+    bool SetSaveDevice(std::function<int(const bool)> callback,
                        bool bForceResetOfSaveDevice = false);
 
     // savegame
     void Init(unsigned int uiSaveVersion, const wchar_t* pwchDefaultSaveName,
               char* pszSavePackName, int iMinimumSaveSize,
-              int (*Func)(void*, const ESavingMessage, int), void* lpParam,
+              std::function<int(const ESavingMessage, int)> callback,
               const char* szGroupID);
     void ResetSaveData();  // Call before a new save to clear out stored save
                            // file name
@@ -135,7 +137,7 @@ public:
     bool GetSaveUniqueFilename(char* pszName);
     void SetSaveUniqueFilename(char* szFilename);
     void SetState(ESaveGameControlState eControlState,
-                  int (*Func)(void*, const bool), void* lpParam);
+                  std::function<int(const bool)> callback);
     void SetSaveDisabled(bool bDisable);
     bool GetSaveDisabled(void);
     unsigned int GetSaveSize();
@@ -148,11 +150,11 @@ public:
         unsigned int textDataBytes);  // Sets the thumbnail & image for the
                                       // save, optionally setting the
                                       // metadata in the png
-    C4JStorage::ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
-                                            void* lpParam);
+    C4JStorage::ESaveGameState SaveSaveData(
+        std::function<int(const bool)> callback);
     void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
                                unsigned int cbThumbnail, wchar_t* wchNewName,
-                               int (*Func)(void* lpParam, bool), void* lpParam);
+                               std::function<int(bool)> callback);
     void SetSaveDeviceSelected(unsigned int uiPad, bool bSelected);
     bool GetSaveDeviceSelected(unsigned int iPad);
     C4JStorage::ESaveGameState DoesSaveExist(bool* pbExists);
@@ -164,16 +166,16 @@ public:
     // Get the info for the saves
     C4JStorage::ESaveGameState GetSavesInfo(
         int iPad,
-        int (*Func)(void* lpParam, SAVE_DETAILS* pSaveDetails, const bool),
-        void* lpParam, char* pszSavePackName);
+        std::function<int(SAVE_DETAILS* pSaveDetails, const bool)> callback,
+        char* pszSavePackName);
     PSAVE_DETAILS ReturnSavesInfo();
     void ClearSavesInfo();  // Clears results
     C4JStorage::ESaveGameState LoadSaveDataThumbnail(
         PSAVE_INFO pSaveInfo,
-        int (*Func)(void* lpParam, std::uint8_t* thumbnailData,
-                    unsigned int thumbnailBytes),
-        void* lpParam);  // Get the thumbnail for an individual save referenced
-                         // by pSaveInfo
+        std::function<int(std::uint8_t* thumbnailData,
+                          unsigned int thumbnailBytes)>
+            callback);  // Get the thumbnail for an individual save referenced
+                        // by pSaveInfo
 
     void GetSaveCacheFileInfo(unsigned int fileIndex,
                               XCONTENT_DATA& xContentData);
@@ -182,41 +184,36 @@ public:
                               unsigned int* pImageBytes);
 
     // Load the save. Need to call GetSaveData once the callback is called
-    C4JStorage::ESaveGameState LoadSaveData(PSAVE_INFO pSaveInfo,
-                                            int (*Func)(void* lpParam,
-                                                        const bool, const bool),
-                                            void* lpParam);
-    C4JStorage::ESaveGameState DeleteSaveData(PSAVE_INFO pSaveInfo,
-                                              int (*Func)(void* lpParam,
-                                                          const bool),
-                                              void* lpParam);
+    C4JStorage::ESaveGameState LoadSaveData(
+        PSAVE_INFO pSaveInfo,
+        std::function<int(const bool, const bool)> callback);
+    C4JStorage::ESaveGameState DeleteSaveData(
+        PSAVE_INFO pSaveInfo,
+        std::function<int(const bool)> callback);
 
     // DLC
     void RegisterMarketplaceCountsCallback(
-        int (*Func)(void* lpParam, C4JStorage::DLC_TMS_DETAILS*, int),
-        void* lpParam);
+        std::function<int(C4JStorage::DLC_TMS_DETAILS*, int)> callback);
     void SetDLCPackageRoot(char* pszDLCRoot);
     C4JStorage::EDLCStatus GetDLCOffers(
-        int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
+        int iPad, std::function<int(int, std::uint32_t, int)> callback,
         std::uint32_t dwOfferTypesBitmask = XMARKETPLACE_OFFERING_TYPE_CONTENT);
     unsigned int CancelGetDLCOffers();
     void ClearDLCOffers();
     XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(unsigned int dw);
     int GetOfferCount();
     unsigned int InstallOffer(int iOfferIDC, std::uint64_t* ullOfferIDA,
-                              int (*Func)(void*, int, int), void* lpParam,
+                              std::function<int(int, int)> callback,
                               bool bTrial = false);
     unsigned int GetAvailableDLCCount(int iPad);
 
-    C4JStorage::EDLCStatus GetInstalledDLC(int iPad,
-                                           int (*Func)(void*, int, int),
-                                           void* lpParam);
+    C4JStorage::EDLCStatus GetInstalledDLC(
+        int iPad, std::function<int(int, int)> callback);
     XCONTENT_DATA& GetDLC(unsigned int dw);
-    std::uint32_t MountInstalledDLC(int iPad, std::uint32_t dwDLC,
-                                    int (*Func)(void*, int, std::uint32_t,
-                                                std::uint32_t),
-                                    void* lpParam,
-                                    const char* szMountDrive = nullptr);
+    std::uint32_t MountInstalledDLC(
+        int iPad, std::uint32_t dwDLC,
+        std::function<int(int, std::uint32_t, std::uint32_t)> callback,
+        const char* szMountDrive = nullptr);
     unsigned int UnmountInstalledDLC(const char* szMountDrive = nullptr);
     void GetMountedDLCFileList(const char* szMountDrive,
                                std::vector<std::string>& fileList);
@@ -227,8 +224,8 @@ public:
         int iQuadrant, eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FileType eFileType, wchar_t* pwchFilename,
         std::uint8_t** ppBuffer, unsigned int* pBufferSize,
-        int (*Func)(void*, wchar_t*, int, bool, int) = nullptr,
-        void* lpParam = nullptr, int iAction = 0);
+        std::function<int(wchar_t*, int, bool, int)> callback = nullptr,
+        int iAction = 0);
     bool WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
                       wchar_t* pwchFilename, std::uint8_t* pBuffer,
                       unsigned int bufferSize);
@@ -250,8 +247,9 @@ public:
     C4JStorage::ETMSStatus TMSPP_ReadFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, const char* szFilename,
-        int (*Func)(void*, int, int, PTMSPP_FILEDATA, const char*) = nullptr,
-        void* lpParam = nullptr, int iUserData = 0);
+        std::function<int(int, int, PTMSPP_FILEDATA, const char*)> callback =
+            nullptr,
+        int iUserData = 0);
     // Older TMS++ list/delete helpers stayed platform-specific. The shared
     // surface keeps the read path plus CRC/subfile helpers below.
 
@@ -273,7 +271,7 @@ public:
                            unsigned int* size);
     void ResetSubfiles();
     void UpdateSubfile(int index, void* data, unsigned int size);
-    void SaveSubfiles(int (*Func)(void*, const bool), void* param);
+    void SaveSubfiles(std::function<int(const bool)> callback);
     ESaveGameState GetSaveState();
 
     void ContinueIncompleteOperation();

@@ -54,8 +54,10 @@ void UIScene_JoinMenu::updateTooltips() {
 void UIScene_JoinMenu::tick() {
     if (!m_friendInfoRequestIssued) {
         ui.NavigateToScene(m_iPad, eUIScene_Timer);
-        g_NetworkManager.GetFullFriendSessionInfo(m_selectedSession,
-                                                  &friendSessionUpdated, this);
+        g_NetworkManager.GetFullFriendSessionInfo(
+            m_selectedSession, [this](bool success) {
+                friendSessionUpdated(success, this);
+            });
         m_friendInfoRequestIssued = true;
     }
 
@@ -295,8 +297,9 @@ void UIScene_JoinMenu::StartSharedLaunchFlow() {
         // false,&UIScene_JoinMenu::StartGame_SignInReturned,
         // this,ProfileManager.GetPrimaryPad());
         SignInInfo info;
-        info.Func = &UIScene_JoinMenu::StartGame_SignInReturned;
-        info.lpParam = this;
+        info.Func = [this](bool bContinue, int pad) {
+            return StartGame_SignInReturned(this, bContinue, pad);
+        };
         info.requireOnline = true;
         ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                            eUIScene_QuadrantSignin, &info);

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <ctime>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -13,8 +14,6 @@ struct SAVE_DETAILS;
 using PSAVE_DETAILS = SAVE_DETAILS*;
 class C4JStringTable;
 
-// TODO: migrate C-style callbacks (int (*Func)(void*, ...), void* lpParam)
-// to std::function or std::function_ref (C++26).
 class IPlatformStorage {
 public:
     // Enums live here so both the interface consumer and the concrete
@@ -120,21 +119,21 @@ public:
     virtual void Init(unsigned int uiSaveVersion,
                       const wchar_t* pwchDefaultSaveName, char* pszSavePackName,
                       int iMinimumSaveSize,
-                      int (*Func)(void*, const ESavingMessage, int),
-                      void* lpParam, const char* szGroupID) = 0;
+                      std::function<int(const ESavingMessage, int)> callback,
+                      const char* szGroupID) = 0;
     virtual void ResetSaveData() = 0;
 
     // Messages
     virtual EMessageResult RequestMessageBox(
         unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
         unsigned int uiOptionC, unsigned int pad = XUSER_INDEX_ANY,
-        int (*Func)(void*, int, const EMessageResult) = nullptr,
-        void* lpParam = nullptr, C4JStringTable* pStringTable = nullptr,
+        std::function<int(int, const EMessageResult)> callback = nullptr,
+        C4JStringTable* pStringTable = nullptr,
         wchar_t* pwchFormatString = nullptr, unsigned int focusButton = 0) = 0;
     virtual EMessageResult GetMessageBoxResult() = 0;
 
     // Save device
-    virtual bool SetSaveDevice(int (*Func)(void*, const bool), void* lpParam,
+    virtual bool SetSaveDevice(std::function<int(const bool)> callback,
                                bool bForceResetOfSaveDevice = false) = 0;
     virtual void SetSaveDeviceSelected(unsigned int uiPad, bool bSelected) = 0;
     virtual bool GetSaveDeviceSelected(unsigned int iPad) = 0;
@@ -147,7 +146,7 @@ public:
     virtual bool GetSaveUniqueFilename(char* pszName) = 0;
     virtual void SetSaveUniqueFilename(char* szFilename) = 0;
     virtual void SetState(ESaveGameControlState eControlState,
-                          int (*Func)(void*, const bool), void* lpParam) = 0;
+                          std::function<int(const bool)> callback) = 0;
     virtual void SetSaveDisabled(bool bDisable) = 0;
     virtual bool GetSaveDisabled() = 0;
     virtual unsigned int GetSaveSize() = 0;
@@ -158,64 +157,60 @@ public:
                                std::uint8_t* pbImage, unsigned int imageBytes,
                                std::uint8_t* pbTextData,
                                unsigned int textDataBytes) = 0;
-    virtual ESaveGameState SaveSaveData(int (*Func)(void*, const bool),
-                                        void* lpParam) = 0;
-    virtual void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
-                                       unsigned int cbThumbnail,
-                                       wchar_t* wchNewName,
-                                       int (*Func)(void* lpParam, bool),
-                                       void* lpParam) = 0;
+    virtual ESaveGameState SaveSaveData(
+        std::function<int(const bool)> callback) = 0;
+    virtual void CopySaveDataToNewSave(
+        std::uint8_t* pbThumbnail, unsigned int cbThumbnail,
+        wchar_t* wchNewName, std::function<int(bool)> callback) = 0;
     virtual ESaveGameState DoesSaveExist(bool* pbExists) = 0;
     virtual bool EnoughSpaceForAMinSaveGame() = 0;
     virtual void SetSaveMessageVPosition(float fY) = 0;
     virtual ESaveGameState GetSavesInfo(
         int iPad,
-        int (*Func)(void* lpParam, SAVE_DETAILS* pSaveDetails, const bool),
-        void* lpParam, char* pszSavePackName) = 0;
+        std::function<int(SAVE_DETAILS* pSaveDetails, const bool)> callback,
+        char* pszSavePackName) = 0;
     virtual PSAVE_DETAILS ReturnSavesInfo() = 0;
     virtual void ClearSavesInfo() = 0;
     virtual ESaveGameState LoadSaveDataThumbnail(
         PSAVE_INFO pSaveInfo,
-        int (*Func)(void* lpParam, std::uint8_t* thumbnailData,
-                    unsigned int thumbnailBytes),
-        void* lpParam) = 0;
+        std::function<int(std::uint8_t* thumbnailData,
+                          unsigned int thumbnailBytes)>
+            callback) = 0;
     virtual void GetSaveCacheFileInfo(unsigned int fileIndex,
                                       XCONTENT_DATA& xContentData) = 0;
     virtual void GetSaveCacheFileInfo(unsigned int fileIndex,
                                       std::uint8_t** ppbImageData,
                                       unsigned int* pImageBytes) = 0;
-    virtual ESaveGameState LoadSaveData(PSAVE_INFO pSaveInfo,
-                                        int (*Func)(void* lpParam, const bool,
-                                                    const bool),
-                                        void* lpParam) = 0;
-    virtual ESaveGameState DeleteSaveData(PSAVE_INFO pSaveInfo,
-                                          int (*Func)(void* lpParam,
-                                                      const bool),
-                                          void* lpParam) = 0;
+    virtual ESaveGameState LoadSaveData(
+        PSAVE_INFO pSaveInfo,
+        std::function<int(const bool, const bool)> callback) = 0;
+    virtual ESaveGameState DeleteSaveData(
+        PSAVE_INFO pSaveInfo,
+        std::function<int(const bool)> callback) = 0;
 
     // DLC
     virtual void RegisterMarketplaceCountsCallback(
-        int (*Func)(void* lpParam, DLC_TMS_DETAILS*, int), void* lpParam) = 0;
+        std::function<int(DLC_TMS_DETAILS*, int)> callback) = 0;
     virtual void SetDLCPackageRoot(char* pszDLCRoot) = 0;
-    virtual EDLCStatus GetDLCOffers(int iPad,
-                                    int (*Func)(void*, int, std::uint32_t, int),
-                                    void* lpParam,
-                                    std::uint32_t dwOfferTypesBitmask =
-                                        XMARKETPLACE_OFFERING_TYPE_CONTENT) = 0;
+    virtual EDLCStatus GetDLCOffers(
+        int iPad,
+        std::function<int(int, std::uint32_t, int)> callback,
+        std::uint32_t dwOfferTypesBitmask =
+            XMARKETPLACE_OFFERING_TYPE_CONTENT) = 0;
     virtual unsigned int CancelGetDLCOffers() = 0;
     virtual void ClearDLCOffers() = 0;
     virtual XMARKETPLACE_CONTENTOFFER_INFO& GetOffer(unsigned int dw) = 0;
     virtual int GetOfferCount() = 0;
     virtual unsigned int InstallOffer(int iOfferIDC, std::uint64_t* ullOfferIDA,
-                                      int (*Func)(void*, int, int),
-                                      void* lpParam, bool bTrial = false) = 0;
+                                      std::function<int(int, int)> callback,
+                                      bool bTrial = false) = 0;
     virtual unsigned int GetAvailableDLCCount(int iPad) = 0;
-    virtual EDLCStatus GetInstalledDLC(int iPad, int (*Func)(void*, int, int),
-                                       void* lpParam) = 0;
+    virtual EDLCStatus GetInstalledDLC(
+        int iPad, std::function<int(int, int)> callback) = 0;
     virtual XCONTENT_DATA& GetDLC(unsigned int dw) = 0;
     virtual std::uint32_t MountInstalledDLC(
         int iPad, std::uint32_t dwDLC,
-        int (*Func)(void*, int, std::uint32_t, std::uint32_t), void* lpParam,
+        std::function<int(int, std::uint32_t, std::uint32_t)> callback,
         const char* szMountDrive = nullptr) = 0;
     virtual unsigned int UnmountInstalledDLC(
         const char* szMountDrive = nullptr) = 0;
@@ -228,8 +223,8 @@ public:
         int iQuadrant, eGlobalStorage eStorageFacility, eTMS_FileType eFileType,
         wchar_t* pwchFilename, std::uint8_t** ppBuffer,
         unsigned int* pBufferSize,
-        int (*Func)(void*, wchar_t*, int, bool, int) = nullptr,
-        void* lpParam = nullptr, int iAction = 0) = 0;
+        std::function<int(wchar_t*, int, bool, int)> callback = nullptr,
+        int iAction = 0) = 0;
     virtual bool WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
                               wchar_t* pwchFilename, std::uint8_t* pBuffer,
                               unsigned int bufferSize) = 0;
@@ -239,8 +234,9 @@ public:
     virtual ETMSStatus TMSPP_ReadFile(
         int iPad, eGlobalStorage eStorageFacility,
         eTMS_FILETYPEVAL eFileTypeVal, const char* szFilename,
-        int (*Func)(void*, int, int, PTMSPP_FILEDATA, const char*) = nullptr,
-        void* lpParam = nullptr, int iUserData = 0) = 0;
+        std::function<int(int, int, PTMSPP_FILEDATA, const char*)> callback =
+            nullptr,
+        int iUserData = 0) = 0;
 
     // Subfile management (save splitting)
     virtual int AddSubfile(int regionIndex) = 0;
@@ -249,7 +245,7 @@ public:
                                    void** data, unsigned int* size) = 0;
     virtual void ResetSubfiles() = 0;
     virtual void UpdateSubfile(int index, void* data, unsigned int size) = 0;
-    virtual void SaveSubfiles(int (*Func)(void*, const bool), void* param) = 0;
+    virtual void SaveSubfiles(std::function<int(const bool)> callback) = 0;
     virtual ESaveGameState GetSaveState() = 0;
 
     // Misc

@@ -1418,9 +1418,11 @@ void Minecraft::run_middle() {
                                                         g_NetworkManager
                                                             .IsLocalGame(),
                                                         true, false, true,
-                                                        &Minecraft::
-                                                            InGame_SignInReturned,
-                                                        this, i);
+                                                        [this](bool b, int p) {
+                                                            return InGame_SignInReturned(
+                                                                this, b, p);
+                                                        },
+                                                        i);
                                                 } else {
                                                 }
                                             } else {
@@ -1450,9 +1452,11 @@ void Minecraft::run_middle() {
                                                          i)) {
                                                 ProfileManager
                                                     .RequestConvertOfflineToGuestUI(
-                                                        &Minecraft::
-                                                            InGame_SignInReturned,
-                                                        this, i);
+                                                        [this](bool b, int p) {
+                                                            return InGame_SignInReturned(
+                                                                this, b, p);
+                                                        },
+                                                        i);
                                                 // 4J Stu - Don't allow
                                                 // converting to guests as we
                                                 // don't allow any guest sign-in
@@ -1490,9 +1494,11 @@ void Minecraft::run_middle() {
                                                     g_NetworkManager
                                                         .IsLocalGame(),
                                                     true, false, true,
-                                                    &Minecraft::
-                                                        InGame_SignInReturned,
-                                                    this, i);
+                                                    [this](bool b, int p) {
+                                                        return InGame_SignInReturned(
+                                                            this, b, p);
+                                                    },
+                                                    i);
                                             }
                                         }
                                     } else {
@@ -1503,8 +1509,11 @@ void Minecraft::run_middle() {
                                             false,
                                             g_NetworkManager.IsLocalGame(),
                                             true, false, true,
-                                            &Minecraft::InGame_SignInReturned,
-                                            this, i);
+                                            [this](bool b, int p) {
+                                                return InGame_SignInReturned(
+                                                    this, b, p);
+                                            },
+                                            i);
                                     }
                                 }
                             }

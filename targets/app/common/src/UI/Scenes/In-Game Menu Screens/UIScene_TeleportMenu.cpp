@@ -93,7 +93,9 @@ UIScene_TeleportMenu::UIScene_TeleportMenu(int iPad, void* initData,
     }
 
     g_NetworkManager.RegisterPlayerChangedCallback(
-        m_iPad, &UIScene_TeleportMenu::OnPlayerChanged, this);
+        m_iPad, [this](INetworkPlayer* pPlayer, bool leaving) {
+            OnPlayerChanged(this, pPlayer, leaving);
+        });
 
     parentLayer->addComponent(iPad, eUIComponent_MenuBackground);
 
@@ -114,8 +116,7 @@ void UIScene_TeleportMenu::updateTooltips() {
 }
 
 void UIScene_TeleportMenu::handleDestroy() {
-    g_NetworkManager.UnRegisterPlayerChangedCallback(
-        m_iPad, &UIScene_TeleportMenu::OnPlayerChanged, this);
+    g_NetworkManager.UnRegisterPlayerChangedCallback(m_iPad);
 
     m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
@@ -123,7 +124,9 @@ void UIScene_TeleportMenu::handleDestroy() {
 void UIScene_TeleportMenu::handleGainFocus(bool navBack) {
     if (navBack)
         g_NetworkManager.RegisterPlayerChangedCallback(
-            m_iPad, &UIScene_TeleportMenu::OnPlayerChanged, this);
+            m_iPad, [this](INetworkPlayer* pPlayer, bool leaving) {
+                OnPlayerChanged(this, pPlayer, leaving);
+            });
 }
 
 void UIScene_TeleportMenu::handleReload() {

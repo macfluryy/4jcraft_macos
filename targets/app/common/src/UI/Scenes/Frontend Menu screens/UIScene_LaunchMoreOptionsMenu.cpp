@@ -541,20 +541,6 @@ void UIScene_LaunchMoreOptionsMenu::handleTimerComplete(int id) {
     };*/
 }
 
-int UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback(void* lpParam,
-                                                                bool bRes) {
-    UIScene_LaunchMoreOptionsMenu* pClass =
-        (UIScene_LaunchMoreOptionsMenu*)lpParam;
-    // 4J HEG - No reason to set value if keyboard was cancelled
-    if (bRes) {
-        std::wstring str = convStringToWstring(InputManager.GetText());
-        pClass->m_editSeed.setLabel(str);
-        pClass->m_params->seed = std::move(str);
-    }
-    pClass->m_bIgnoreInput = false;
-    return 0;
-}
-
 void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
     if (m_bIgnoreInput) return;
 
@@ -564,8 +550,18 @@ void UIScene_LaunchMoreOptionsMenu::handlePress(F64 controlId, F64 childId) {
             InputManager.RequestKeyboard(
                 app.GetString(IDS_CREATE_NEW_WORLD_SEED), m_editSeed.getLabel(),
                 0, 60,
-                &UIScene_LaunchMoreOptionsMenu::KeyboardCompleteSeedCallback,
-                this, C_4JInput::EKeyboardMode_Default);
+                [this](bool bRes) -> int {
+                    // 4J HEG - No reason to set value if keyboard was cancelled
+                    if (bRes) {
+                        std::wstring str =
+                            convStringToWstring(InputManager.GetText());
+                        m_editSeed.setLabel(str);
+                        m_params->seed = std::move(str);
+                    }
+                    m_bIgnoreInput = false;
+                    return 0;
+                },
+                C_4JInput::EKeyboardMode_Default);
         } break;
     }
 }

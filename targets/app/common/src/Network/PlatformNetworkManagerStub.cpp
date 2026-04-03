@@ -90,9 +90,8 @@ void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     }
 
     for (int idx = 0; idx < XUSER_MAX_COUNT; ++idx) {
-        if (playerChangedCallback[idx] != nullptr)
-            playerChangedCallback[idx](playerChangedCallbackParam[idx],
-                                       networkPlayer, false);
+        if (playerChangedCallback[idx])
+            playerChangedCallback[idx](networkPlayer, false);
     }
 
     if (m_pIQNet->GetState() == QNET_STATE_GAME_PLAY) {
@@ -128,7 +127,6 @@ bool IPlatformNetworkStub::Initialise(
     m_bSearchPending = false;
 
     m_bIsOfflineGame = false;
-    m_pSearchParam = nullptr;
     m_SessionsUpdatedCallback = nullptr;
 
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
@@ -263,22 +261,12 @@ void IPlatformNetworkStub::SetPrivateGame(bool isPrivate) {
 
 void IPlatformNetworkStub::RegisterPlayerChangedCallback(
     int iPad,
-    void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                     bool leaving),
-    void* callbackParam) {
-    playerChangedCallback[iPad] = callback;
-    playerChangedCallbackParam[iPad] = callbackParam;
+    std::function<void(INetworkPlayer* pPlayer, bool leaving)> callback) {
+    playerChangedCallback[iPad] = std::move(callback);
 }
 
-void IPlatformNetworkStub::UnRegisterPlayerChangedCallback(
-    int iPad,
-    void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                     bool leaving),
-    void* callbackParam) {
-    if (playerChangedCallbackParam[iPad] == callbackParam) {
-        playerChangedCallback[iPad] = nullptr;
-        playerChangedCallbackParam[iPad] = nullptr;
-    }
+void IPlatformNetworkStub::UnRegisterPlayerChangedCallback(int iPad) {
+    playerChangedCallback[iPad] = nullptr;
 }
 
 void IPlatformNetworkStub::HandleSignInChange() { return; }
@@ -489,15 +477,14 @@ bool IPlatformNetworkStub::GetGameSessionInfo(
 }
 
 void IPlatformNetworkStub::SetSessionsUpdatedCallback(
-    void (*SessionsUpdatedCallback)(void* pParam), void* pSearchParam) {
-    m_SessionsUpdatedCallback = SessionsUpdatedCallback;
-    m_pSearchParam = pSearchParam;
+    std::function<void()> callback) {
+    m_SessionsUpdatedCallback = std::move(callback);
 }
 
 void IPlatformNetworkStub::GetFullFriendSessionInfo(
     FriendSessionInfo* foundSession,
-    void (*FriendSessionUpdatedFn)(bool success, void* pParam), void* pParam) {
-    FriendSessionUpdatedFn(true, pParam);
+    std::function<void(bool success)> callback) {
+    callback(true);
 }
 
 void IPlatformNetworkStub::ForceFriendsSessionRefresh() {

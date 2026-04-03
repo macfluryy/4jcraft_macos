@@ -90,12 +90,11 @@ protected:
     virtual std::wstring getMoviePath();
 
 public:
-    static int LoadSaveDataThumbnailReturned(void* lpParam,
-                                             std::uint8_t* pbThumbnail,
-                                             unsigned int thumbnailBytes);
+    int loadSaveDataThumbnailReturned(std::uint8_t* pbThumbnail,
+                                     unsigned int thumbnailBytes);
     static int DeleteSaveDialogReturned(void* pParam, int iPad,
                                         C4JStorage::EMessageResult result);
-    static int DeleteSaveDataReturned(void* lpParam, bool bRes);
+    int deleteSaveDataReturned(bool bRes);
 
 protected:
     void handlePress(F64 controlId, F64 childId);

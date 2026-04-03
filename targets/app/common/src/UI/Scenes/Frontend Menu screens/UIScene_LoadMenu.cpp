@@ -39,36 +39,26 @@
 #define GAME_CREATE_ONLINE_TIMER_TIME 100
 // 4J-PB - Only Xbox will not have trial DLC patched into the game
 
-namespace {
-int LoadMenuThumbnailReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
-                                   unsigned int thumbnailBytes) {
-    return UIScene_LoadMenu::LoadSaveDataThumbnailReturned(
-        lpParam, thumbnailData, thumbnailBytes);
-}
-}  // namespace
-
 int UIScene_LoadMenu::m_iDifficultyTitleSettingA[4] = {
     IDS_DIFFICULTY_TITLE_PEACEFUL, IDS_DIFFICULTY_TITLE_EASY,
     IDS_DIFFICULTY_TITLE_NORMAL, IDS_DIFFICULTY_TITLE_HARD};
 
-int UIScene_LoadMenu::LoadSaveDataThumbnailReturned(
-    void* lpParam, std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes) {
-    UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)lpParam;
-
+int UIScene_LoadMenu::loadSaveDataThumbnailReturned(
+    std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes) {
     app.DebugPrintf("Received data for a thumbnail\n");
 
     if (pbThumbnail && dwThumbnailBytes) {
-        pClass->registerSubstitutionTexture(pClass->m_thumbnailName,
-                                            pbThumbnail, dwThumbnailBytes);
+        registerSubstitutionTexture(m_thumbnailName, pbThumbnail,
+                                    dwThumbnailBytes);
 
-        pClass->m_pbThumbnailData = pbThumbnail;
-        pClass->m_uiThumbnailSize = dwThumbnailBytes;
-        pClass->m_bSaveThumbnailReady = true;
+        m_pbThumbnailData = pbThumbnail;
+        m_uiThumbnailSize = dwThumbnailBytes;
+        m_bSaveThumbnailReady = true;
     } else {
         app.DebugPrintf("Thumbnail data is nullptr, or has size 0\n");
-        pClass->m_bThumbnailGetFailed = true;
+        m_bThumbnailGetFailed = true;
     }
-    pClass->m_bRetrievingSaveThumbnail = false;
+    m_bRetrievingSaveThumbnail = false;
 
     return 0;
 }
@@ -453,8 +443,9 @@ void UIScene_LoadMenu::tick() {
     if (m_bRequestQuadrantSignin) {
         m_bRequestQuadrantSignin = false;
         SignInInfo info;
-        info.Func = &UIScene_LoadMenu::StartGame_SignInReturned;
-        info.lpParam = this;
+        info.Func = [this](bool bContinue, int pad) {
+            return StartGame_SignInReturned(this, bContinue, pad);
+        };
         info.requireOnline = m_MoreOptionsParams.bOnlineGame;
         ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                            eUIScene_QuadrantSignin, &info);
@@ -785,7 +776,9 @@ void UIScene_LoadMenu::LaunchGame(void) {
                             StorageManager.LoadSaveData(
                                 &pSaveDetails
                                      ->SaveInfoA[(int)m_iSaveGameInfoIndex],
-                                &LoadSaveDataReturned, this);
+                                [this](bool bCorrupt, bool bOwner) {
+                                    return loadSaveDataReturned(bCorrupt, bOwner);
+                                });
 
 #if TO_BE_IMPLEMENTED
                         if (eLoadStatus ==
@@ -833,7 +826,9 @@ void UIScene_LoadMenu::LaunchGame(void) {
             C4JStorage::ESaveGameState eLoadStatus =
                 StorageManager.LoadSaveData(
                     &pSaveDetails->SaveInfoA[(int)m_iSaveGameInfoIndex],
-                    &LoadSaveDataReturned, this);
+                    [this](bool bCorrupt, bool bOwner) {
+                        return loadSaveDataReturned(bCorrupt, bOwner);
+                    });
 
 #if TO_BE_IMPLEMENTED
             if (eLoadStatus == C4JStorage::ELoadGame_DeviceRemoved) {
@@ -893,7 +888,9 @@ int UIScene_LoadMenu::ConfirmLoadReturned(void* pParam, int iPad,
             C4JStorage::ESaveGameState eLoadStatus =
                 StorageManager.LoadSaveData(
                     &pSaveDetails->SaveInfoA[(int)pClass->m_iSaveGameInfoIndex],
-                    &LoadSaveDataReturned, pClass);
+                    [pClass](const bool bCorrupt, const bool bOwner) {
+                        return pClass->loadSaveDataReturned(bCorrupt, bOwner);
+                    });
 
 #if TO_BE_IMPLEMENTED
             if (eLoadStatus == C4JStorage::ELoadGame_DeviceRemoved) {
@@ -1016,17 +1013,14 @@ int UIScene_LoadMenu::LoadDataComplete(void* pParam) {
     return 0;
 }
 
-int UIScene_LoadMenu::LoadSaveDataReturned(void* pParam, bool bIsCorrupt,
-                                           bool bIsOwner) {
-    UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)pParam;
-
-    pClass->m_bIsCorrupt = bIsCorrupt;
+int UIScene_LoadMenu::loadSaveDataReturned(bool bIsCorrupt, bool bIsOwner) {
+    m_bIsCorrupt = bIsCorrupt;
 
     if (bIsOwner) {
-        LoadDataComplete(pClass);
+        LoadDataComplete(this);
     } else {
         // messagebox
-        pClass->m_bIgnoreInput = false;
+        m_bIgnoreInput = false;
     }
 
     return 0;
@@ -1047,18 +1041,18 @@ int UIScene_LoadMenu::DeleteSaveDialogReturned(
         PSAVE_DETAILS pSaveDetails = StorageManager.ReturnSavesInfo();
         StorageManager.DeleteSaveData(
             &pSaveDetails->SaveInfoA[(int)pClass->m_iSaveGameInfoIndex],
-            UIScene_LoadMenu::DeleteSaveDataReturned, pClass);
+            [pClass](const bool bSuccess) {
+                return pClass->deleteSaveDataReturned(bSuccess);
+            });
     } else {
         pClass->m_bIgnoreInput = false;
     }
     return 0;
 }
 
-int UIScene_LoadMenu::DeleteSaveDataReturned(void* pParam, bool bSuccess) {
-    UIScene_LoadMenu* pClass = (UIScene_LoadMenu*)pParam;
-
+int UIScene_LoadMenu::deleteSaveDataReturned(bool bSuccess) {
     app.SetCorruptSaveDeleted(true);
-    pClass->navigateBack();
+    navigateBack();
 
     return 0;
 }

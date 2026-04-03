@@ -995,7 +995,9 @@ void ConsoleSaveFileSplit::tick() {
 #endif
 
     if (writeRequired) {
-        PlatformStorage.SaveSubfiles(SaveRegionFilesCallback, this);
+        PlatformStorage.SaveSubfiles([this](bool bRes) {
+            return SaveRegionFilesCallback(this, bRes);
+        });
     }
 
     ReleaseSaveAccess();
@@ -1378,8 +1380,9 @@ void ConsoleSaveFileSplit::Flush(bool autosave, bool updateThumbnail) {
             PlatformStorage.GetSaveUniqueNumber(&saveOrCheckpointId);
 
         // save the data
-        PlatformStorage.SaveSaveData(
-            &ConsoleSaveFileSplit::SaveSaveDataCallback, this);
+        PlatformStorage.SaveSaveData([this](bool bRes) {
+            return SaveSaveDataCallback(this, bRes);
+        });
 #if !defined(_CONTENT_PACKAGE)
         if (app.DebugSettingsOn()) {
             if (app.GetWriteSavesToFolderEnabled()) {
@@ -1398,7 +1401,9 @@ int ConsoleSaveFileSplit::SaveSaveDataCallback(void* lpParam, bool bRes) {
     if (!pClass->m_autosave) {
         // This is called from the PlatformStorage.Tick() which should always be
         // on the main thread
-        PlatformStorage.SaveSubfiles(SaveRegionFilesCallback, pClass);
+        PlatformStorage.SaveSubfiles([pClass](bool bRes) {
+            return SaveRegionFilesCallback(pClass, bRes);
+        });
     }
     return 0;
 }

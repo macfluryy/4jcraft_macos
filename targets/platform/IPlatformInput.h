@@ -1,9 +1,9 @@
 #pragma once
 
+#include <functional>
+
 #include "PlatformTypes.h"
 
-// TODO: migrate C-style callbacks (int (*Func)(void*, ...), void* lpParam)
-// to std::function or std::function_ref (C++26).
 class IPlatformInput {
 public:
     enum EKeyboardMode {
@@ -53,8 +53,8 @@ public:
                                           unsigned int uiTo) = 0;
     virtual void SetKeyRepeatRate(float fRepeatDelaySecs,
                                   float fRepeatRateSecs) = 0;
-    virtual void SetDebugSequence(const char* chSequenceA, int (*Func)(void*),
-                                  void* lpParam) = 0;
+    virtual void SetDebugSequence(const char* chSequenceA,
+                                  std::function<int()> callback) = 0;
     [[nodiscard]] virtual float GetIdleSeconds(int iPad) = 0;
     [[nodiscard]] virtual bool IsPadConnected(int iPad) = 0;
 
@@ -82,18 +82,16 @@ public:
     virtual EKeyboardResult RequestKeyboard(const wchar_t* Title,
                                             const wchar_t* Text, int iPad,
                                             unsigned int uiMaxChars,
-                                            int (*Func)(void*, const bool),
-                                            void* lpParam,
+                                            std::function<int(bool)> callback,
                                             EKeyboardMode eMode) = 0;
     [[nodiscard]] virtual const char* GetText() = 0;
 
     // String verification (TCR 92)
-    virtual bool VerifyStrings(wchar_t** pwStringA, int iStringC,
-                               int (*Func)(void*, STRING_VERIFY_RESPONSE*),
-                               void* lpParam) = 0;
-    virtual void CancelQueuedVerifyStrings(int (*Func)(void*,
-                                                       STRING_VERIFY_RESPONSE*),
-                                           void* lpParam) = 0;
+    virtual bool VerifyStrings(
+        wchar_t** pwStringA, int iStringC,
+        std::function<int(STRING_VERIFY_RESPONSE*)> callback) = 0;
+    virtual void CancelQueuedVerifyStrings(
+        std::function<int(STRING_VERIFY_RESPONSE*)> callback) = 0;
     virtual void CancelAllVerifyInProgress() = 0;
 
     // Mouse

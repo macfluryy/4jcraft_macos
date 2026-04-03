@@ -314,26 +314,22 @@ UIControl* UIScene_AnvilMenu::getSection(ESceneSection eSection) {
     return control;
 }
 
-int UIScene_AnvilMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
-    // 4J HEG - No reason to set value if keyboard was cancelled
-    UIScene_AnvilMenu* pClass = (UIScene_AnvilMenu*)lpParam;
-    pClass->setIgnoreInput(false);
-
-    if (bRes) {
-        std::wstring str = convStringToWstring(InputManager.GetText());
-        pClass->setEditNameValue(str);
-        pClass->m_itemName = std::move(str);
-        pClass->updateItemName();
-    }
-    return 0;
-}
-
 void UIScene_AnvilMenu::handleEditNamePressed() {
     setIgnoreInput(true);
-    InputManager.RequestKeyboard(app.GetString(IDS_TITLE_RENAME),
-                                 m_textInputAnvil.getLabel(), m_iPad, 30,
-                                 &UIScene_AnvilMenu::KeyboardCompleteCallback,
-                                 this, C_4JInput::EKeyboardMode_Default);
+    InputManager.RequestKeyboard(
+        app.GetString(IDS_TITLE_RENAME), m_textInputAnvil.getLabel(), m_iPad, 30,
+        [this](bool bRes) -> int {
+            // 4J HEG - No reason to set value if keyboard was cancelled
+            setIgnoreInput(false);
+            if (bRes) {
+                std::wstring str = convStringToWstring(InputManager.GetText());
+                setEditNameValue(str);
+                m_itemName = std::move(str);
+                updateItemName();
+            }
+            return 0;
+        },
+        C_4JInput::EKeyboardMode_Default);
 }
 
 void UIScene_AnvilMenu::setEditNameValue(const std::wstring& name) {

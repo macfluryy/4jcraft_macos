@@ -62,16 +62,10 @@ public:
     INetworkPlayer* GetPlayerBySmallId(unsigned char smallId);
     std::wstring GetDisplayNameByGamertag(std::wstring gamertag);
     INetworkPlayer* GetHostPlayer();
-    void RegisterPlayerChangedCallback(int iPad,
-                                       void (*callback)(void* callbackParam,
-                                                        INetworkPlayer* pPlayer,
-                                                        bool leaving),
-                                       void* callbackParam);
-    void UnRegisterPlayerChangedCallback(
+    void RegisterPlayerChangedCallback(
         int iPad,
-        void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                         bool leaving),
-        void* callbackParam);
+        std::function<void(INetworkPlayer* pPlayer, bool leaving)> callback);
+    void UnRegisterPlayerChangedCallback(int iPad);
     void HandleSignInChange();
     bool ShouldMessageForFullSession();
 
@@ -101,12 +95,10 @@ public:
                                                     bool partyOnly);
     bool GetGameSessionInfo(int iPad, SessionID sessionId,
                             FriendSessionInfo* foundSession);
-    void SetSessionsUpdatedCallback(
-        void (*SessionsUpdatedCallback)(void* pParam), void* pSearchParam);
-    void GetFullFriendSessionInfo(FriendSessionInfo* foundSession,
-                                  void (*FriendSessionUpdatedFn)(bool success,
-                                                                 void* pParam),
-                                  void* pParam);
+    void SetSessionsUpdatedCallback(std::function<void()> callback);
+    void GetFullFriendSessionInfo(
+        FriendSessionInfo* foundSession,
+        std::function<void(bool success)> callback);
     void ForceFriendsSessionRefresh();
 
     // Session joining and leaving

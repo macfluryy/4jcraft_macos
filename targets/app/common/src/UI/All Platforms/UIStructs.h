@@ -4,6 +4,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <functional>
 
 #include "platform/sdl2/Storage.h"
 #include "app/common/App_Defines.h"
@@ -376,8 +377,7 @@ typedef struct _TutorialPopupInfo {
 
 // Quadrant sign in
 typedef struct _SignInInfo {
-    int (*Func)(void*, const bool, const int iPad);
-    void* lpParam;
+    std::function<int(bool, int)> Func;
     bool requireOnline;
 } SignInInfo;
 

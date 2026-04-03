@@ -236,10 +236,12 @@ void DLCTexturePack::loadData() {
     int mountIndex = m_dlcInfoPack->GetDLCMountIndex();
 
     if (mountIndex > -1) {
-        if (StorageManager.MountInstalledDLC(InputManager.GetPrimaryPad(),
-                                             mountIndex,
-                                             &DLCTexturePack::packMounted, this,
-                                             "TPACK") != ERROR_IO_PENDING) {
+        if (StorageManager.MountInstalledDLC(
+                InputManager.GetPrimaryPad(), mountIndex,
+                [this](int pad, std::uint32_t err, std::uint32_t lic) {
+                    return onPackMounted(pad, err, lic);
+                },
+                "TPACK") != ERROR_IO_PENDING) {
             // corrupt DLC
             m_bHasLoadedData = true;
             if (app.getLevelGenerationOptions())
@@ -266,9 +268,9 @@ std::wstring DLCTexturePack::getFilePath(std::uint32_t packId,
     return app.getFilePath(packId, filename, bAddDataFolder);
 }
 
-int DLCTexturePack::packMounted(void* pParam, int iPad, std::uint32_t dwErr,
-                                std::uint32_t dwLicenceMask) {
-    DLCTexturePack* texturePack = static_cast<DLCTexturePack*>(pParam);
+int DLCTexturePack::onPackMounted(int iPad, std::uint32_t dwErr,
+                                  std::uint32_t dwLicenceMask) {
+    DLCTexturePack* texturePack = this;
     texturePack->m_bLoadingData = false;
     if (dwErr != ERROR_SUCCESS) {
         // corrupt DLC

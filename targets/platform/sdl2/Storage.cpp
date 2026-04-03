@@ -18,7 +18,7 @@ void C4JStorage::Tick(void) {}
 C4JStorage::EMessageResult C4JStorage::RequestMessageBox(
     unsigned int uiTitle, unsigned int uiText, unsigned int* uiOptionA,
     unsigned int uiOptionC, unsigned int pad,
-    int (*Func)(void*, int, const C4JStorage::EMessageResult), void* lpParam,
+    std::function<int(int, const C4JStorage::EMessageResult)> callback,
     C4JStringTable* pStringTable, wchar_t* pwchFormatString,
     unsigned int focusButton) {
     return EMessage_ResultAccept;
@@ -28,7 +28,7 @@ C4JStorage::EMessageResult C4JStorage::GetMessageBoxResult() {
     return EMessage_Undefined;
 }
 
-bool C4JStorage::SetSaveDevice(int (*Func)(void*, const bool), void* lpParam,
+bool C4JStorage::SetSaveDevice(std::function<int(const bool)> callback,
                                bool bForceResetOfSaveDevice) {
     return true;
 }
@@ -36,8 +36,8 @@ bool C4JStorage::SetSaveDevice(int (*Func)(void*, const bool), void* lpParam,
 void C4JStorage::Init(unsigned int uiSaveVersion,
                       const wchar_t* pwchDefaultSaveName, char* pszSavePackName,
                       int iMinimumSaveSize,
-                      int (*Func)(void*, const ESavingMessage, int),
-                      void* lpParam, const char* szGroupID) {}
+                      std::function<int(const ESavingMessage, int)> callback,
+                      const char* szGroupID) {}
 void C4JStorage::ResetSaveData() {}
 void C4JStorage::SetDefaultSaveNameForKeyboardDisplay(
     const wchar_t* pwchDefaultSaveName) {}
@@ -52,7 +52,7 @@ bool C4JStorage::GetSaveUniqueFilename(char* pszName) {
 }
 void C4JStorage::SetSaveUniqueFilename(char* szFilename) {}
 void C4JStorage::SetState(ESaveGameControlState eControlState,
-                          int (*Func)(void*, const bool), void* lpParam) {}
+                          std::function<int(const bool)> callback) {}
 void C4JStorage::SetSaveDisabled(bool bDisable) {}
 bool C4JStorage::GetSaveDisabled(void) { return false; }
 unsigned int C4JStorage::GetSaveSize() { return 0; }
@@ -67,16 +67,14 @@ void C4JStorage::SetSaveImages(std::uint8_t* pbThumbnail,
                                std::uint8_t* pbImage, unsigned int imageBytes,
                                std::uint8_t* pbTextData,
                                unsigned int textDataBytes) {}
-C4JStorage::ESaveGameState C4JStorage::SaveSaveData(int (*Func)(void*,
-                                                                const bool),
-                                                    void* lpParam) {
+C4JStorage::ESaveGameState C4JStorage::SaveSaveData(
+    std::function<int(const bool)> callback) {
     return ESaveGame_Idle;
 }
 void C4JStorage::CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
                                        unsigned int cbThumbnail,
                                        wchar_t* wchNewName,
-                                       int (*Func)(void* lpParam, bool),
-                                       void* lpParam) {}
+                                       std::function<int(bool)> callback) {}
 void C4JStorage::SetSaveDeviceSelected(unsigned int uiPad, bool bSelected) {}
 bool C4JStorage::GetSaveDeviceSelected(unsigned int iPad) { return true; }
 C4JStorage::ESaveGameState C4JStorage::DoesSaveExist(bool* pbExists) {
@@ -87,17 +85,17 @@ bool C4JStorage::EnoughSpaceForAMinSaveGame() { return true; }
 void C4JStorage::SetSaveMessageVPosition(float fY) {}
 C4JStorage::ESaveGameState C4JStorage::GetSavesInfo(
     int iPad,
-    int (*Func)(void* lpParam, SAVE_DETAILS* pSaveDetails, const bool),
-    void* lpParam, char* pszSavePackName) {
+    std::function<int(SAVE_DETAILS* pSaveDetails, const bool)> callback,
+    char* pszSavePackName) {
     return ESaveGame_Idle;
 }
 PSAVE_DETAILS C4JStorage::ReturnSavesInfo() { return nullptr; }
 void C4JStorage::ClearSavesInfo() {}
 C4JStorage::ESaveGameState C4JStorage::LoadSaveDataThumbnail(
     PSAVE_INFO pSaveInfo,
-    int (*Func)(void* lpParam, std::uint8_t* thumbnailData,
-                unsigned int thumbnailBytes),
-    void* lpParam) {
+    std::function<int(std::uint8_t* thumbnailData,
+                      unsigned int thumbnailBytes)>
+        callback) {
     return ESaveGame_Idle;
 }
 void C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,
@@ -111,22 +109,20 @@ void C4JStorage::GetSaveCacheFileInfo(unsigned int fileIndex,
     if (pImageBytes) *pImageBytes = 0;
 }
 C4JStorage::ESaveGameState C4JStorage::LoadSaveData(
-    PSAVE_INFO pSaveInfo, int (*Func)(void* lpParam, const bool, const bool),
-    void* lpParam) {
+    PSAVE_INFO pSaveInfo,
+    std::function<int(const bool, const bool)> callback) {
     return ESaveGame_Idle;
 }
-C4JStorage::ESaveGameState C4JStorage::DeleteSaveData(PSAVE_INFO pSaveInfo,
-                                                      int (*Func)(void* lpParam,
-                                                                  const bool),
-                                                      void* lpParam) {
+C4JStorage::ESaveGameState C4JStorage::DeleteSaveData(
+    PSAVE_INFO pSaveInfo,
+    std::function<int(const bool)> callback) {
     return ESaveGame_Idle;
 }
 void C4JStorage::RegisterMarketplaceCountsCallback(
-    int (*Func)(void* lpParam, C4JStorage::DLC_TMS_DETAILS*, int),
-    void* lpParam) {}
+    std::function<int(C4JStorage::DLC_TMS_DETAILS*, int)> callback) {}
 void C4JStorage::SetDLCPackageRoot(char* pszDLCRoot) {}
 C4JStorage::EDLCStatus C4JStorage::GetDLCOffers(
-    int iPad, int (*Func)(void*, int, std::uint32_t, int), void* lpParam,
+    int iPad, std::function<int(int, std::uint32_t, int)> callback,
     std::uint32_t dwOfferTypesBitmask) {
     return EDLC_NoOffers;
 }
@@ -137,16 +133,15 @@ XMARKETPLACE_CONTENTOFFER_INFO& C4JStorage::GetOffer(unsigned int dw) {
 }
 int C4JStorage::GetOfferCount() { return 0; }
 unsigned int C4JStorage::InstallOffer(int iOfferIDC, std::uint64_t* ullOfferIDA,
-                                      int (*Func)(void*, int, int),
-                                      void* lpParam, bool bTrial) {
+                                      std::function<int(int, int)> callback,
+                                      bool bTrial) {
     return 0;
 }
 unsigned int C4JStorage::GetAvailableDLCCount(int iPad) { return 0; }
-C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(int iPad,
-                                                   int (*Func)(void*, int, int),
-                                                   void* lpParam) {
-    if (Func) {
-        Func(lpParam, 0, iPad);
+C4JStorage::EDLCStatus C4JStorage::GetInstalledDLC(
+    int iPad, std::function<int(int, int)> callback) {
+    if (callback) {
+        callback(0, iPad);
     }
     return EDLC_NoInstalledDLC;
 }
@@ -155,7 +150,7 @@ XCONTENT_DATA& C4JStorage::GetDLC(unsigned int dw) {
 }
 std::uint32_t C4JStorage::MountInstalledDLC(
     int iPad, std::uint32_t dwDLC,
-    int (*Func)(void*, int, std::uint32_t, std::uint32_t), void* lpParam,
+    std::function<int(int, std::uint32_t, std::uint32_t)> callback,
     const char* szMountDrive) {
     return 0;
 }
@@ -171,7 +166,7 @@ C4JStorage::ETMSStatus C4JStorage::ReadTMSFile(
     int iQuadrant, eGlobalStorage eStorageFacility,
     C4JStorage::eTMS_FileType eFileType, wchar_t* pwchFilename,
     std::uint8_t** ppBuffer, unsigned int* pBufferSize,
-    int (*Func)(void*, wchar_t*, int, bool, int), void* lpParam, int iAction) {
+    std::function<int(wchar_t*, int, bool, int)> callback, int iAction) {
     return ETMSStatus_Fail;
 }
 bool C4JStorage::WriteTMSFile(int iQuadrant, eGlobalStorage eStorageFacility,
@@ -187,7 +182,7 @@ void C4JStorage::StoreTMSPathName(wchar_t* pwchName) {}
 C4JStorage::ETMSStatus C4JStorage::TMSPP_ReadFile(
     int iPad, C4JStorage::eGlobalStorage eStorageFacility,
     C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, const char* szFilename,
-    int (*Func)(void*, int, int, PTMSPP_FILEDATA, const char*), void* lpParam,
+    std::function<int(int, int, PTMSPP_FILEDATA, const char*)> callback,
     int iUserData) {
     return ETMSStatus_Fail;
 }
@@ -220,8 +215,8 @@ void C4JStorage::UpdateSubfile(int index, void* data, unsigned int size) {
     (void)data;
     (void)size;
 }
-void C4JStorage::SaveSubfiles(int (*Func)(void*, const bool), void* param) {
-    if (Func) Func(param, true);
+void C4JStorage::SaveSubfiles(std::function<int(const bool)> callback) {
+    if (callback) callback(true);
 }
 C4JStorage::ESaveGameState C4JStorage::GetSaveState() { return ESaveGame_Idle; }
 void C4JStorage::ContinueIncompleteOperation() {}

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -24,7 +25,6 @@ struct SearchForGamesData {
     XOVERLAPPED* pOverlapped;
 };
 
-// TODO: migrate C-style callbacks to std::function or std::function_ref (C++26).
 class IPlatformNetwork {
 public:
     enum eJoinFailedReason {
@@ -90,14 +90,9 @@ public:
     // Callbacks
     virtual void RegisterPlayerChangedCallback(
         int iPad,
-        void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                         bool leaving),
-        void* callbackParam) = 0;
-    virtual void UnRegisterPlayerChangedCallback(
-        int iPad,
-        void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                         bool leaving),
-        void* callbackParam) = 0;
+        std::function<void(INetworkPlayer* pPlayer, bool leaving)>
+            callback) = 0;
+    virtual void UnRegisterPlayerChangedCallback(int iPad) = 0;
 
     virtual void HandleSignInChange() = 0;
 
@@ -134,12 +129,10 @@ public:
     [[nodiscard]] virtual bool GetGameSessionInfo(
         int iPad, SessionID sessionId, FriendSessionInfo* foundSession) = 0;
     virtual void SetSessionsUpdatedCallback(
-        void (*SessionsUpdatedCallback)(void* pParam),
-        void* pSearchParam) = 0;
+        std::function<void()> callback) = 0;
     virtual void GetFullFriendSessionInfo(
         FriendSessionInfo* foundSession,
-        void (*FriendSessionUpdatedFn)(bool success, void* pParam),
-        void* pParam) = 0;
+        std::function<void(bool success)> callback) = 0;
     virtual void ForceFriendsSessionRefresh() = 0;
 
     virtual void FakeLocalPlayerJoined() {}

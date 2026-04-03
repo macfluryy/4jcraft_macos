@@ -297,7 +297,9 @@ UIScene_InGamePlayerOptionsMenu::UIScene_InGamePlayerOptionsMenu(
     addTimer(CHECKBOXES_TIMER_ID, CHECKBOXES_TIMER_TIME);
 
     g_NetworkManager.RegisterPlayerChangedCallback(
-        m_iPad, &UIScene_InGamePlayerOptionsMenu::OnPlayerChanged, this);
+        m_iPad, [this](INetworkPlayer* pPlayer, bool leaving) {
+            OnPlayerChanged(this, pPlayer, leaving);
+        });
 }
 
 std::wstring UIScene_InGamePlayerOptionsMenu::getMoviePath() {
@@ -405,8 +407,7 @@ void UIScene_InGamePlayerOptionsMenu::tick() {
 }
 
 void UIScene_InGamePlayerOptionsMenu::handleDestroy() {
-    g_NetworkManager.UnRegisterPlayerChangedCallback(
-        m_iPad, &UIScene_InGamePlayerOptionsMenu::OnPlayerChanged, this);
+    g_NetworkManager.UnRegisterPlayerChangedCallback(m_iPad);
 }
 
 void UIScene_InGamePlayerOptionsMenu::handleInput(int iPad, int key,

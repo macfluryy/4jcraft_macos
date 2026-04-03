@@ -188,7 +188,7 @@ void UIScene_DLCOffersMenu::handlePress(F64 controlId, F64 childId) {
 
             uint64_t ullIndexA[1];
             ullIndexA[0] = StorageManager.GetOffer(iIndex).qwOfferID;
-            StorageManager.InstallOffer(1, ullIndexA, nullptr, nullptr);
+            StorageManager.InstallOffer(1, ullIndexA, nullptr);
         } break;
     }
 }

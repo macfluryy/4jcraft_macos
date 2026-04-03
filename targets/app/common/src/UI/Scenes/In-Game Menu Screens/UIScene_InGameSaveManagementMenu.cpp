@@ -1,38 +1,23 @@
 
 #include "UIScene_InGameSaveManagementMenu.h"
 
-namespace {
-int InGameSaveManagementThumbnailReturnedThunk(void* lpParam,
-                                               std::uint8_t* thumbnailData,
-                                               unsigned int thumbnailBytes) {
-    return UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(
-        lpParam, thumbnailData, thumbnailBytes);
-}
-}  // namespace
-
-int UIScene_InGameSaveManagementMenu::LoadSaveDataThumbnailReturned(
-    void* lpParam, std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes) {
-    UIScene_InGameSaveManagementMenu* pClass =
-        (UIScene_InGameSaveManagementMenu*)lpParam;
-
+int UIScene_InGameSaveManagementMenu::loadSaveDataThumbnailReturned(
+    std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes) {
     app.DebugPrintf("Received data for save thumbnail\n");
 
     if (pbThumbnail && dwThumbnailBytes) {
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .pbThumbnailData = new std::uint8_t[dwThumbnailBytes];
-        memcpy(pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-                   .pbThumbnailData,
+        m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData =
+            new std::uint8_t[dwThumbnailBytes];
+        memcpy(m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData,
                pbThumbnail, dwThumbnailBytes);
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .dwThumbnailSize = dwThumbnailBytes;
+        m_saveDetails[m_iRequestingThumbnailId].dwThumbnailSize =
+            dwThumbnailBytes;
     } else {
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .pbThumbnailData = nullptr;
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .dwThumbnailSize = 0;
+        m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData = nullptr;
+        m_saveDetails[m_iRequestingThumbnailId].dwThumbnailSize = 0;
         app.DebugPrintf("Save thumbnail data is nullptr, or has size 0\n");
     }
-    pClass->m_bSaveThumbnailReady = true;
+    m_bSaveThumbnailReady = true;
 
     return 0;
 }
@@ -213,7 +198,9 @@ void UIScene_InGameSaveManagementMenu::tick() {
                 C4JStorage::ESaveGameState eLoadStatus =
                     StorageManager.LoadSaveDataThumbnail(
                         &pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],
-                        &InGameSaveManagementThumbnailReturnedThunk, this);
+                        [this](std::uint8_t* data, unsigned int bytes) {
+                            return loadSaveDataThumbnailReturned(data, bytes);
+                        });
 
                 if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
                     // something went wrong
@@ -277,7 +264,10 @@ void UIScene_InGameSaveManagementMenu::tick() {
                         StorageManager.LoadSaveDataThumbnail(
                             &pSaveDetails
                                  ->SaveInfoA[(int)m_iRequestingThumbnailId],
-                            &InGameSaveManagementThumbnailReturnedThunk, this);
+                            [this](std::uint8_t* data, unsigned int bytes) {
+                                return loadSaveDataThumbnailReturned(data,
+                                                                     bytes);
+                            });
                     if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
                         // something went wrong
                         m_bRetrievingSaveThumbnails = false;
@@ -327,7 +317,7 @@ void UIScene_InGameSaveManagementMenu::GetSaveInfo() {
     m_pSaveDetails = StorageManager.ReturnSavesInfo();
     if (m_pSaveDetails == nullptr) {
         C4JStorage::ESaveGameState eSGIStatus =
-            StorageManager.GetSavesInfo(m_iPad, nullptr, this, (char*)"save");
+            StorageManager.GetSavesInfo(m_iPad, nullptr, (char*)"save");
     }
 
     return;
@@ -415,8 +405,9 @@ int UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned(
         } else {
             StorageManager.DeleteSaveData(
                 &pClass->m_pSaveDetails->SaveInfoA[pClass->m_iSaveListIndex],
-                UIScene_InGameSaveManagementMenu::DeleteSaveDataReturned,
-                pClass);
+                [pClass](const bool bRes) {
+                    return pClass->deleteSaveDataReturned(bRes);
+                });
             pClass->m_controlSavesTimer.setVisible(true);
         }
     } else {
@@ -426,18 +417,14 @@ int UIScene_InGameSaveManagementMenu::DeleteSaveDialogReturned(
     return 0;
 }
 
-int UIScene_InGameSaveManagementMenu::DeleteSaveDataReturned(void* lpParam,
-                                                             bool bRes) {
-    UIScene_InGameSaveManagementMenu* pClass =
-        (UIScene_InGameSaveManagementMenu*)lpParam;
-
+int UIScene_InGameSaveManagementMenu::deleteSaveDataReturned(bool bRes) {
     if (bRes) {
         // wipe the list and repopulate it
-        pClass->m_iState = e_SavesRepopulateAfterDelete;
+        m_iState = e_SavesRepopulateAfterDelete;
     } else
-        pClass->m_bIgnoreInput = false;
+        m_bIgnoreInput = false;
 
-    pClass->updateTooltips();
+    updateTooltips();
 
     return 0;
 }

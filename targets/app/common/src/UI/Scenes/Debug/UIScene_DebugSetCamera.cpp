@@ -121,7 +121,9 @@ void UIScene_DebugSetCamera::handlePress(F64 controlId, F64 childId) {
             m_keyboardCallbackControl = (eControls)((int)controlId);
             InputManager.RequestKeyboard(
                 L"Enter something", L"", 0, 25,
-                &UIScene_DebugSetCamera::KeyboardCompleteCallback, this,
+                [this](bool bRes) -> int {
+                    return handleKeyboardComplete(bRes);
+                },
                 C_4JInput::EKeyboardMode_Default);
             break;
     };
@@ -136,33 +138,32 @@ void UIScene_DebugSetCamera::handleCheckboxToggled(F64 controlId,
     }
 }
 
-int UIScene_DebugSetCamera::KeyboardCompleteCallback(void* lpParam, bool bRes) {
-    UIScene_DebugSetCamera* pClass = (UIScene_DebugSetCamera*)lpParam;
+int UIScene_DebugSetCamera::handleKeyboardComplete(bool bRes) {
     const char* text = InputManager.GetText();
     if (text[0] != '\0') {
         std::wstring value = convStringToWstring(text);
         double val = 0;
         if (!value.empty()) val = fromWString<double>(value);
-        switch (pClass->m_keyboardCallbackControl) {
+        switch (m_keyboardCallbackControl) {
             case eControl_CamX:
-                pClass->m_textInputX.setLabel(value);
-                pClass->currentPosition->m_camX = val;
+                m_textInputX.setLabel(value);
+                currentPosition->m_camX = val;
                 break;
             case eControl_CamY:
-                pClass->m_textInputY.setLabel(value);
-                pClass->currentPosition->m_camY = val;
+                m_textInputY.setLabel(value);
+                currentPosition->m_camY = val;
                 break;
             case eControl_CamZ:
-                pClass->m_textInputZ.setLabel(value);
-                pClass->currentPosition->m_camZ = val;
+                m_textInputZ.setLabel(value);
+                currentPosition->m_camZ = val;
                 break;
             case eControl_YRot:
-                pClass->m_textInputYRot.setLabel(value);
-                pClass->currentPosition->m_yRot = val;
+                m_textInputYRot.setLabel(value);
+                currentPosition->m_yRot = val;
                 break;
             case eControl_Elevation:
-                pClass->m_textInputElevation.setLabel(value);
-                pClass->currentPosition->m_elev = val;
+                m_textInputElevation.setLabel(value);
+                currentPosition->m_elev = val;
                 break;
             default:
                 break;

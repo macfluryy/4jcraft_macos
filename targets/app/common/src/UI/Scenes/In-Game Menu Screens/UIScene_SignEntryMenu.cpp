@@ -147,18 +147,6 @@ void UIScene_SignEntryMenu::handleInput(int iPad, int key, bool repeat,
     }
 }
 
-int UIScene_SignEntryMenu::KeyboardCompleteCallback(void* lpParam, bool bRes) {
-    // 4J HEG - No reason to set value if keyboard was cancelled
-    UIScene_SignEntryMenu* pClass = (UIScene_SignEntryMenu*)lpParam;
-    pClass->m_bIgnoreInput = false;
-    if (bRes && pClass->m_iEditingLine >= 0 && pClass->m_iEditingLine < 4) {
-        std::wstring str = convStringToWstring(InputManager.GetText());
-        if (str.size() > 15) str.resize(15);
-        pClass->m_textInputLines[pClass->m_iEditingLine].setLabel(str);
-    }
-    return 0;
-}
-
 void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
     switch ((int)controlId) {
         case eControl_Confirm: {
@@ -173,7 +161,17 @@ void UIScene_SignEntryMenu::handlePress(F64 controlId, F64 childId) {
             InputManager.RequestKeyboard(
                 app.GetString(IDS_SIGN_TITLE),
                 m_textInputLines[m_iEditingLine].getLabel(), m_iPad, 15,
-                &UIScene_SignEntryMenu::KeyboardCompleteCallback, this,
+                [this](bool bRes) -> int {
+                    // 4J HEG - No reason to set value if keyboard was cancelled
+                    m_bIgnoreInput = false;
+                    if (bRes && m_iEditingLine >= 0 && m_iEditingLine < 4) {
+                        std::wstring str =
+                            convStringToWstring(InputManager.GetText());
+                        if (str.size() > 15) str.resize(15);
+                        m_textInputLines[m_iEditingLine].setLabel(str);
+                    }
+                    return 0;
+                },
                 C_4JInput::EKeyboardMode_Alphabet);
         } break;
     }

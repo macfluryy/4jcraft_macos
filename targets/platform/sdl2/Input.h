@@ -75,8 +75,8 @@ public:
     void SetJoypadStickTriggerMap(int iPad, unsigned int uiFrom,
                                   unsigned int uiTo);
     void SetKeyRepeatRate(float fRepeatDelaySecs, float fRepeatRateSecs);
-    void SetDebugSequence(const char* chSequenceA, int (*Func)(void*),
-                          void* lpParam);
+    void SetDebugSequence(const char* chSequenceA,
+                          std::function<int()> callback);
     float GetIdleSeconds(int iPad);
     bool IsPadConnected(int iPad);
 
@@ -97,8 +97,7 @@ public:
     // live here. The remaining public API keeps the direct text/callback form.
     EKeyboardResult RequestKeyboard(const wchar_t* Title, const wchar_t* Text,
                                     int iPad, unsigned int uiMaxChars,
-                                    int (*Func)(void*, const bool),
-                                    void* lpParam,
+                                    std::function<int(bool)> callback,
                                     C_4JInput::EKeyboardMode eMode);
     bool GetMenuDisplayed(int);
     const char* GetText();
@@ -127,10 +126,9 @@ public:
     //
     // 		Intent Protect players from inappropriate language.
     bool VerifyStrings(wchar_t** pwStringA, int iStringC,
-                       int (*Func)(void*, STRING_VERIFY_RESPONSE*),
-                       void* lpParam);
-    void CancelQueuedVerifyStrings(int (*Func)(void*, STRING_VERIFY_RESPONSE*),
-                                   void* lpParam);
+                       std::function<int(STRING_VERIFY_RESPONSE*)> callback);
+    void CancelQueuedVerifyStrings(
+        std::function<int(STRING_VERIFY_RESPONSE*)> callback);
     void CancelAllVerifyInProgress(void);
 
     int GetMouseX();

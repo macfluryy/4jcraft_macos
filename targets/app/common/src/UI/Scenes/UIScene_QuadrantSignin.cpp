@@ -80,7 +80,7 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
                 if (pressed) {
                     {
                         m_bIgnoreInput = true;
-                        m_signInInfo.Func(m_signInInfo.lpParam, false, iPad);
+                        m_signInInfo.Func(false, iPad);
                         ProfileManager.CancelProfileAvatarRequest();
 
                         navigateBack();
@@ -95,13 +95,15 @@ void UIScene_QuadrantSignin::handleInput(int iPad, int key, bool repeat,
                         ProfileManager.CancelProfileAvatarRequest();
 
                         navigateBack();
-                        m_signInInfo.Func(m_signInInfo.lpParam, true, m_iPad);
+                        m_signInInfo.Func(true, m_iPad);
                     } else {
                         {
                             app.DebugPrintf("Non-signed in pad pressed\n");
                             ProfileManager.RequestSignInUI(
                                 false, false, false, true, true,
-                                &UIScene_QuadrantSignin::SignInReturned, this,
+                                [this](bool bContinue, int pad) {
+                                    return SignInReturned(this, bContinue, pad);
+                                },
                                 iPad);
                         }
                     }
@@ -133,14 +135,6 @@ int UIScene_QuadrantSignin::SignInReturned(void* pParam, bool bContinue,
     return 0;
 }
 
-namespace {
-int AvatarReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
-                        unsigned int thumbnailBytes) {
-    return UIScene_QuadrantSignin::AvatarReturned(lpParam, thumbnailData,
-                                                  thumbnailBytes);
-}
-}  // namespace
-
 void UIScene_QuadrantSignin::updateState() {
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
         if (ProfileManager.IsSignedIn(i) && InputManager.IsPadConnected(i)) {
@@ -156,8 +150,11 @@ void UIScene_QuadrantSignin::updateState() {
 
             if (!m_iconRequested[i]) {
                 app.DebugPrintf(app.USER_SR, "Requesting avatar for %d\n", i);
-                if (ProfileManager.GetProfileAvatar(i, &AvatarReturnedThunk,
-                                                    this)) {
+                if (ProfileManager.GetProfileAvatar(
+                        i,
+                        [this](std::uint8_t* data, unsigned int bytes) {
+                            return AvatarReturned(this, data, bytes);
+                        })) {
                     m_iconRequested[i] = true;
                     m_lastRequestedAvatar = i;
                 }

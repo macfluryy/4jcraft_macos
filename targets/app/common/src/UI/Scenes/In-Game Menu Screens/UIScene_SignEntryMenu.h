@@ -61,6 +61,5 @@ public:
 
 protected:
     void handlePress(F64 controlId, F64 childId);
-    static int KeyboardCompleteCallback(void* lpParam, const bool bRes);
     virtual void handleDestroy();
 };

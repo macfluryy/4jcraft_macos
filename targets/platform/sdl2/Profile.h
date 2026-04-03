@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <string>
 
 #include "../PlatformTypes.h"
@@ -58,9 +59,8 @@ public:
                                        bool* pbContentRestricted, int* piAge);
     char* GetGamertag(int iPad);
     std::wstring GetDisplayName(int iPad);
-    int SetDefaultOptionsCallback(int (*Func)(void*, PROFILESETTINGS*,
-                                              const int iPad),
-                                  void* lpParam);
+    int SetDefaultOptionsCallback(
+        std::function<int(PROFILESETTINGS*, int)> callback);
     PROFILESETTINGS* GetDashboardProfileSettings(int iPad);
     void* GetGameDefinedProfileData(int iQuadrant);
     void AllowedPlayerCreatedContent(int iPad, bool thisQuadrantOnly,
@@ -72,37 +72,34 @@ public:
 
     void Tick() {}
     unsigned int RequestSignInUI(bool, bool, bool, bool, bool,
-                                 int (*)(void*, const bool, const int), void*,
+                                 std::function<int(bool, int)>,
                                  int = XUSER_INDEX_ANY) {
         return 0;
     }
-    unsigned int DisplayOfflineProfile(int (*)(void*, const bool, const int),
-                                       void*, int = XUSER_INDEX_ANY) {
+    unsigned int DisplayOfflineProfile(std::function<int(bool, int)>,
+                                       int = XUSER_INDEX_ANY) {
         return 0;
     }
-    unsigned int RequestConvertOfflineToGuestUI(int (*)(void*, const bool,
-                                                        const int),
-                                                void*, int = XUSER_INDEX_ANY) {
+    unsigned int RequestConvertOfflineToGuestUI(std::function<int(bool, int)>,
+                                                int = XUSER_INDEX_ANY) {
         return 0;
     }
     void SetPrimaryPlayerChanged(bool) {}
     void ShowProfileCard(int, PlayerUID) {}
-    bool GetProfileAvatar(int, int (*)(void*, std::uint8_t*, unsigned int),
-                          void*) {
+    bool GetProfileAvatar(int, std::function<int(std::uint8_t*, unsigned int)>) {
         return false;
     }
     void CancelProfileAvatarRequest() {}
-    void SetSignInChangeCallback(void (*)(void*, bool, unsigned int), void*) {}
-    void SetNotificationsCallback(void (*)(void*, std::uint32_t, unsigned int),
-                                  void*) {}
+    void SetSignInChangeCallback(std::function<void(bool, unsigned int)>) {}
+    void SetNotificationsCallback(
+        std::function<void(std::uint32_t, unsigned int)>) {}
     bool RegionIsNorthAmerica() { return false; }
     bool LocaleIsUSorCanada() { return false; }
     int GetLiveConnectionStatus() { return 0; }
     bool IsSystemUIDisplayed() { return false; }
-    void SetProfileReadErrorCallback(void (*)(void*), void*) {}
-    int SetOldProfileVersionCallback(int (*)(void*, unsigned char*,
-                                             const unsigned short, const int),
-                                     void*) {
+    void SetProfileReadErrorCallback(std::function<void()>) {}
+    int SetOldProfileVersionCallback(
+        std::function<int(unsigned char*, unsigned short, int)>) {
         return 0;
     }
     void WriteToProfile(int, bool = false, bool = false) {}

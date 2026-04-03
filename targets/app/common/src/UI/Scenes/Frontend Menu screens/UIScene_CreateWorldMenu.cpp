@@ -356,8 +356,21 @@ void UIScene_CreateWorldMenu::handlePress(F64 controlId, F64 childId) {
             InputManager.RequestKeyboard(
                 app.GetString(IDS_CREATE_NEW_WORLD), m_editWorldName.getLabel(),
                 0, 25,
-                &UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback,
-                this, C_4JInput::EKeyboardMode_Default);
+                [this](bool bRes) -> int {
+                    m_bIgnoreInput = false;
+                    // 4J HEG - No reason to set value if keyboard was cancelled
+                    if (bRes) {
+                        std::wstring str =
+                            convStringToWstring(InputManager.GetText());
+                        if (!str.empty()) {
+                            m_editWorldName.setLabel(str);
+                            m_worldName = std::move(str);
+                        }
+                        m_buttonCreateWorld.setEnable(!m_worldName.empty());
+                    }
+                    return 0;
+                },
+                C_4JInput::EKeyboardMode_Default);
         } break;
         case eControl_GameModeToggle:
             switch (m_iGameModeId) {
@@ -559,22 +572,6 @@ void UIScene_CreateWorldMenu::handleGainFocus(bool navBack) {
     }
 }
 
-int UIScene_CreateWorldMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
-                                                               bool bRes) {
-    UIScene_CreateWorldMenu* pClass = (UIScene_CreateWorldMenu*)lpParam;
-    pClass->m_bIgnoreInput = false;
-    // 4J HEG - No reason to set value if keyboard was cancelled
-    if (bRes) {
-        std::wstring str = convStringToWstring(InputManager.GetText());
-        if (!str.empty()) {
-            pClass->m_editWorldName.setLabel(str);
-            pClass->m_worldName = std::move(str);
-        }
-
-        pClass->m_buttonCreateWorld.setEnable(!pClass->m_worldName.empty());
-    }
-    return 0;
-}
 
 void UIScene_CreateWorldMenu::checkStateAndStartGame() {
     int primaryPad = ProfileManager.GetPrimaryPad();
@@ -662,8 +659,9 @@ void UIScene_CreateWorldMenu::checkStateAndStartGame() {
                 // false,&CScene_MultiGameCreate::StartGame_SignInReturned,
                 // this,ProfileManager.GetPrimaryPad());
                 SignInInfo info;
-                info.Func = &UIScene_CreateWorldMenu::StartGame_SignInReturned;
-                info.lpParam = this;
+                info.Func = [this](bool bContinue, int pad) {
+                    return StartGame_SignInReturned(this, bContinue, pad);
+                };
                 info.requireOnline = m_MoreOptionsParams.bOnlineGame;
                 ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                                    eUIScene_QuadrantSignin, &info);
@@ -1001,8 +999,9 @@ int UIScene_CreateWorldMenu::ConfirmCreateReturned(
             // false,&UIScene_CreateWorldMenu::StartGame_SignInReturned,
             // pClass,ProfileManager.GetPrimaryPad());
             SignInInfo info;
-            info.Func = &UIScene_CreateWorldMenu::StartGame_SignInReturned;
-            info.lpParam = pClass;
+            info.Func = [pClass](bool bContinue, int pad) {
+                return StartGame_SignInReturned(pClass, bContinue, pad);
+            };
             info.requireOnline = pClass->m_MoreOptionsParams.bOnlineGame;
             ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
                                eUIScene_QuadrantSignin, &info);

@@ -130,9 +130,7 @@ public:
 
     bool IsAppPaused();
     void SetAppPaused(bool val);
-    static int DisplaySavingMessage(void* pParam,
-                                    const C4JStorage::ESavingMessage eMsg,
-                                    int iPad);
+    int displaySavingMessage(const C4JStorage::ESavingMessage eMsg, int iPad);
     bool GetGameStarted() { return m_bGameStarted; }
     void SetGameStarted(bool bVal) {
         if (bVal)
@@ -372,16 +370,15 @@ public:
     bool DebugArtToolsOn() { return false; }
 #endif
     void SetDebugSequence(const char* pchSeq);
-    static int DebugInputCallback(void* pParam);
     // bool			UploadFileToGlobalStorage(int iQuadrant,
     // C4JStorage::eGlobalStorage eStorageFacility, std::wstring *wsFile  );
 
     // Installed DLC
     bool StartInstallDLCProcess(int iPad);
-    static int DLCInstalledCallback(void* pParam, int iOfferC, int iPad);
+    int dlcInstalledCallback(int iOfferC, int iPad);
     void HandleDLCLicenseChange();
-    static int DLCMountedCallback(void* pParam, int iPad, std::uint32_t dwErr,
-                                  std::uint32_t dwLicenceMask);
+    int dlcMountedCallback(int iPad, std::uint32_t dwErr,
+                           std::uint32_t dwLicenceMask);
     void MountNextDLC(int iPad);
     // static int DLCReadCallback(void* pParam,C4JStorage::DLC_FILE_DETAILS
     // *pDLCData);
@@ -842,8 +839,7 @@ public:
                                bool bPromote = false);
     bool RetrieveNextDLCContent();
     bool CheckTMSDLCCanStop();
-    static int DLCOffersReturned(void* pParam, int iOfferC,
-                                 std::uint32_t dwType, int iPad);
+    int dlcOffersReturned(int iOfferC, std::uint32_t dwType, int iPad);
     std::uint32_t GetDLCContentType(eDLCContentType eType) {
         return m_dwContentTypeA[eType];
     }

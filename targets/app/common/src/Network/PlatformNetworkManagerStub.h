@@ -67,14 +67,9 @@ public:
 
     virtual void RegisterPlayerChangedCallback(
         int iPad,
-        void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                         bool leaving),
-        void* callbackParam);
-    virtual void UnRegisterPlayerChangedCallback(
-        int iPad,
-        void (*callback)(void* callbackParam, INetworkPlayer* pPlayer,
-                         bool leaving),
-        void* callbackParam);
+        std::function<void(INetworkPlayer* pPlayer, bool leaving)>
+            callback);
+    virtual void UnRegisterPlayerChangedCallback(int iPad);
 
     virtual void HandleSignInChange();
 
@@ -114,11 +109,8 @@ public:
         INetworkPlayer* pNetworkPlayerLeaving = nullptr);
 
 private:
-    // TODO 4J Stu - Do we need to be able to have more than one of these?
-    void (*playerChangedCallback[XUSER_MAX_COUNT])(void* callbackParam,
-                                                   INetworkPlayer* pPlayer,
-                                                   bool leaving);
-    void* playerChangedCallbackParam[XUSER_MAX_COUNT];
+    std::function<void(INetworkPlayer* pPlayer, bool leaving)>
+        playerChangedCallback[XUSER_MAX_COUNT];
 
     static int RemovePlayerOnSocketClosedThreadProc(void* lpParam);
     virtual bool RemoveLocalPlayer(INetworkPlayer* pNetworkPlayer);
@@ -167,8 +159,7 @@ private:
     int m_lastSearchPad;
     bool m_bSearchResultsReady;
     bool m_bSearchPending;
-    void* m_pSearchParam;
-    void (*m_SessionsUpdatedCallback)(void* pParam);
+    std::function<void()> m_SessionsUpdatedCallback;
 
     C4JThread* m_SearchingThread;
 
@@ -194,11 +185,10 @@ public:
     virtual bool GetGameSessionInfo(int iPad, SessionID sessionId,
                                     FriendSessionInfo* foundSession);
     virtual void SetSessionsUpdatedCallback(
-        void (*SessionsUpdatedCallback)(void* pParam), void* pSearchParam);
+        std::function<void()> callback);
     virtual void GetFullFriendSessionInfo(
         FriendSessionInfo* foundSession,
-        void (*FriendSessionUpdatedFn)(bool success, void* pParam),
-        void* pParam);
+        std::function<void(bool success)> callback);
     virtual void ForceFriendsSessionRefresh();
 
 private:

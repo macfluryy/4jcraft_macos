@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cstring>
+#include <functional>
 
 #include "../ProfileConstants.h"
 #include "../sdl2/Input.h"
@@ -49,9 +50,8 @@ C_4JProfile::PROFILESETTINGS s_dashboardSettings[XUSER_MAX_COUNT] = {};
 char s_gamertags[XUSER_MAX_COUNT][16] = {};
 std::wstring s_displayNames[XUSER_MAX_COUNT];
 int s_lockedProfile = 0;
-int (*s_defaultOptionsCallback)(void*, C_4JProfile::PROFILESETTINGS*,
-                                const int iPad) = nullptr;
-void* s_defaultOptionsCallbackParam = nullptr;
+std::function<int(C_4JProfile::PROFILESETTINGS*, int)>
+    s_defaultOptionsCallback;
 
 bool isValidPad(int iPad) { return iPad >= 0 && iPad < XUSER_MAX_COUNT; }
 
@@ -160,11 +160,9 @@ std::wstring C_4JProfile::GetDisplayName(int iPad) {
     return s_displayNames[p];
 }
 
-int C_4JProfile::SetDefaultOptionsCallback(int (*Func)(void*, PROFILESETTINGS*,
-                                                       const int iPad),
-                                           void* lpParam) {
-    s_defaultOptionsCallback = Func;
-    s_defaultOptionsCallbackParam = lpParam;
+int C_4JProfile::SetDefaultOptionsCallback(
+    std::function<int(PROFILESETTINGS*, int)> callback) {
+    s_defaultOptionsCallback = std::move(callback);
     return 0;
 }
 

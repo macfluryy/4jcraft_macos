@@ -132,7 +132,9 @@ void UIScene_DebugCreateSchematic::handlePress(F64 controlId, F64 childId) {
             m_keyboardCallbackControl = (eControls)((int)controlId);
             InputManager.RequestKeyboard(
                 L"Enter something", L"", 0, 25,
-                &UIScene_DebugCreateSchematic::KeyboardCompleteCallback, this,
+                [this](bool bRes) -> int {
+                    return handleKeyboardComplete(bRes);
+                },
                 C_4JInput::EKeyboardMode_Default);
             break;
     };
@@ -153,71 +155,67 @@ void UIScene_DebugCreateSchematic::handleCheckboxToggled(F64 controlId,
     }
 }
 
-int UIScene_DebugCreateSchematic::KeyboardCompleteCallback(void* lpParam,
-                                                           bool bRes) {
-    UIScene_DebugCreateSchematic* pClass =
-        (UIScene_DebugCreateSchematic*)lpParam;
-
+int UIScene_DebugCreateSchematic::handleKeyboardComplete(bool bRes) {
     const char* text = InputManager.GetText();
     if (text[0] != '\0') {
         std::wstring value = convStringToWstring(text);
         int iVal = 0;
         if (!value.empty()) iVal = fromWString<int>(value);
-        switch (pClass->m_keyboardCallbackControl) {
+        switch (m_keyboardCallbackControl) {
             case eControl_Name:
-                pClass->m_textInputName.setLabel(value);
+                m_textInputName.setLabel(value);
                 if (!value.empty()) {
-                    swprintf(pClass->m_data->name, 64, L"%ls", value.c_str());
+                    swprintf(m_data->name, 64, L"%ls", value.c_str());
                 } else {
-                    swprintf(pClass->m_data->name, 64, L"schematic");
+                    swprintf(m_data->name, 64, L"schematic");
                 }
                 break;
             case eControl_StartX:
-                pClass->m_textInputStartX.setLabel(value);
+                m_textInputStartX.setLabel(value);
 
                 if (iVal >= (LEVEL_MAX_WIDTH * -16) ||
                     iVal < (LEVEL_MAX_WIDTH * 16)) {
-                    pClass->m_data->startX = iVal;
+                    m_data->startX = iVal;
                 }
                 break;
             case eControl_StartY:
-                pClass->m_textInputStartY.setLabel(value);
+                m_textInputStartY.setLabel(value);
 
                 if (iVal >= (LEVEL_MAX_WIDTH * -16) ||
                     iVal < (LEVEL_MAX_WIDTH * 16)) {
-                    pClass->m_data->startY = iVal;
+                    m_data->startY = iVal;
                 }
                 break;
             case eControl_StartZ:
-                pClass->m_textInputStartZ.setLabel(value);
+                m_textInputStartZ.setLabel(value);
 
                 if (iVal >= (LEVEL_MAX_WIDTH * -16) ||
                     iVal < (LEVEL_MAX_WIDTH * 16)) {
-                    pClass->m_data->startZ = iVal;
+                    m_data->startZ = iVal;
                 }
                 break;
             case eControl_EndX:
-                pClass->m_textInputEndX.setLabel(value);
+                m_textInputEndX.setLabel(value);
 
                 if (iVal >= (LEVEL_MAX_WIDTH * -16) ||
                     iVal < (LEVEL_MAX_WIDTH * 16)) {
-                    pClass->m_data->endX = iVal;
+                    m_data->endX = iVal;
                 }
                 break;
             case eControl_EndY:
-                pClass->m_textInputEndY.setLabel(value);
+                m_textInputEndY.setLabel(value);
 
                 if (iVal >= (LEVEL_MAX_WIDTH * -16) ||
                     iVal < (LEVEL_MAX_WIDTH * 16)) {
-                    pClass->m_data->endY = iVal;
+                    m_data->endY = iVal;
                 }
                 break;
             case eControl_EndZ:
-                pClass->m_textInputEndZ.setLabel(value);
+                m_textInputEndZ.setLabel(value);
 
                 if (iVal >= (LEVEL_MAX_WIDTH * -16) ||
                     iVal < (LEVEL_MAX_WIDTH * 16)) {
-                    pClass->m_data->endZ = iVal;
+                    m_data->endZ = iVal;
                 }
                 break;
             default:

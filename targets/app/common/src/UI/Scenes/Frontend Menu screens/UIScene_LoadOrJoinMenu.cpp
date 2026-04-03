@@ -41,36 +41,23 @@ bool UIScene_LoadOrJoinMenu::m_bSaveTransferRunning = false;
 #define JOIN_LOAD_ONLINE_TIMER_ID 0
 #define JOIN_LOAD_ONLINE_TIMER_TIME 100
 
-namespace {
-int LoadOrJoinThumbnailReturnedThunk(void* lpParam, std::uint8_t* thumbnailData,
-                                     unsigned int thumbnailBytes) {
-    return UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(
-        lpParam, thumbnailData, thumbnailBytes);
-}
-}  // namespace
-
-int UIScene_LoadOrJoinMenu::LoadSaveDataThumbnailReturned(
-    void* lpParam, std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes) {
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
-
+int UIScene_LoadOrJoinMenu::loadSaveDataThumbnailReturned(
+    std::uint8_t* pbThumbnail, unsigned int dwThumbnailBytes) {
     app.DebugPrintf("Received data for save thumbnail\n");
 
     if (pbThumbnail && dwThumbnailBytes) {
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .pbThumbnailData = new std::uint8_t[dwThumbnailBytes];
-        memcpy(pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-                   .pbThumbnailData,
+        m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData =
+            new std::uint8_t[dwThumbnailBytes];
+        memcpy(m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData,
                pbThumbnail, dwThumbnailBytes);
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .dwThumbnailSize = dwThumbnailBytes;
+        m_saveDetails[m_iRequestingThumbnailId].dwThumbnailSize =
+            dwThumbnailBytes;
     } else {
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .pbThumbnailData = nullptr;
-        pClass->m_saveDetails[pClass->m_iRequestingThumbnailId]
-            .dwThumbnailSize = 0;
+        m_saveDetails[m_iRequestingThumbnailId].pbThumbnailData = nullptr;
+        m_saveDetails[m_iRequestingThumbnailId].dwThumbnailSize = 0;
         app.DebugPrintf("Save thumbnail data is nullptr, or has size 0\n");
     }
-    pClass->m_bSaveThumbnailReady = true;
+    m_bSaveThumbnailReady = true;
 
     return 0;
 }
@@ -145,7 +132,8 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
 
     UpdateGamesList();
 
-    g_NetworkManager.SetSessionsUpdatedCallback(&UpdateGamesListCallback, this);
+    g_NetworkManager.SetSessionsUpdatedCallback(
+        [this]() { UpdateGamesList(); });
 
     m_initData = new JoinMenuInitData();
 
@@ -169,7 +157,7 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
 }
 
 UIScene_LoadOrJoinMenu::~UIScene_LoadOrJoinMenu() {
-    g_NetworkManager.SetSessionsUpdatedCallback(nullptr, nullptr);
+    g_NetworkManager.SetSessionsUpdatedCallback(nullptr);
     app.SetLiveLinkRequired(false);
 
     if (m_currentSessions) {
@@ -436,7 +424,9 @@ void UIScene_LoadOrJoinMenu::tick() {
                 C4JStorage::ESaveGameState eLoadStatus =
                     StorageManager.LoadSaveDataThumbnail(
                         &pSaveDetails->SaveInfoA[(int)m_iRequestingThumbnailId],
-                        &LoadOrJoinThumbnailReturnedThunk, this);
+                        [this](std::uint8_t* data, unsigned int bytes) {
+                            return loadSaveDataThumbnailReturned(data, bytes);
+                        });
 
                 if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
                     // something went wrong
@@ -501,7 +491,10 @@ void UIScene_LoadOrJoinMenu::tick() {
                         StorageManager.LoadSaveDataThumbnail(
                             &pSaveDetails
                                  ->SaveInfoA[(int)m_iRequestingThumbnailId],
-                            &LoadOrJoinThumbnailReturnedThunk, this);
+                            [this](std::uint8_t* data, unsigned int bytes) {
+                                return loadSaveDataThumbnailReturned(data,
+                                                                     bytes);
+                            });
                     if (eLoadStatus != C4JStorage::ESaveGame_GetSaveThumbnail) {
                         // something went wrong
                         m_bRetrievingSaveThumbnails = false;
@@ -608,7 +601,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         m_pSaveDetails = StorageManager.ReturnSavesInfo();
         if (m_pSaveDetails == nullptr) {
             C4JStorage::ESaveGameState eSGIStatus = StorageManager.GetSavesInfo(
-                m_iPad, nullptr, this, (char*)"save");
+                m_iPad, nullptr, (char*)"save");
         }
 
 #if TO_BE_IMPLEMENTED
@@ -826,22 +819,20 @@ void UIScene_LoadOrJoinMenu::handleInput(int iPad, int key, bool repeat,
     }
 }
 
-int UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback(void* lpParam,
-                                                              bool bRes) {
+int UIScene_LoadOrJoinMenu::handleKeyboardCompleteWorldName(bool bRes) {
     // 4J HEG - No reason to set value if keyboard was cancelled
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
-    pClass->m_bIgnoreInput = false;
+    m_bIgnoreInput = false;
     if (bRes) {
         const char* text = InputManager.GetText();
         // check the name is valid
         if (text[0] != '\0') {
         } else {
-            pClass->m_bIgnoreInput = false;
-            pClass->updateTooltips();
+            m_bIgnoreInput = false;
+            updateTooltips();
         }
     } else {
-        pClass->m_bIgnoreInput = false;
-        pClass->updateTooltips();
+        m_bIgnoreInput = false;
+        updateTooltips();
     }
 
     return 0;
@@ -1431,11 +1422,23 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(
         if (app.DebugSettingsOn() && app.GetLoadSavesFromFolderEnabled()) {
             pClass->m_bIgnoreInput = false;
         } else {
-            StorageManager.DeleteSaveData(
-                &pClass->m_pSaveDetails->SaveInfoA[pClass->m_iSaveListIndex -
-                                                   pClass->m_iDefaultButtonsC],
-                UIScene_LoadOrJoinMenu::DeleteSaveDataReturned,
-                reinterpret_cast<void*>(pClass->GetCallbackUniqueId()));
+            {
+                size_t cbId = pClass->GetCallbackUniqueId();
+                StorageManager.DeleteSaveData(
+                    &pClass->m_pSaveDetails
+                         ->SaveInfoA[pClass->m_iSaveListIndex -
+                                     pClass->m_iDefaultButtonsC],
+                    [cbId](const bool bRes) {
+                        ui.lockCallbackScenes();
+                        auto* p = (UIScene_LoadOrJoinMenu*)
+                            ui.GetSceneFromCallbackId(cbId);
+                        if (p) {
+                            p->deleteSaveDataReturned(bRes);
+                        }
+                        ui.unlockCallbackScenes();
+                        return 0;
+                    });
+            }
             pClass->m_controlSavesTimer.setVisible(true);
         }
     } else {
@@ -1445,33 +1448,24 @@ int UIScene_LoadOrJoinMenu::DeleteSaveDialogReturned(
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::DeleteSaveDataReturned(void* lpParam, bool bRes) {
-    ui.lockCallbackScenes();
-    UIScene_LoadOrJoinMenu* pClass =
-        (UIScene_LoadOrJoinMenu*)ui.GetSceneFromCallbackId((size_t)lpParam);
+int UIScene_LoadOrJoinMenu::deleteSaveDataReturned(bool bRes) {
+    if (bRes) {
+        // wipe the list and repopulate it
+        m_iState = e_SavesRepopulateAfterDelete;
+    } else
+        m_bIgnoreInput = false;
 
-    if (pClass) {
-        if (bRes) {
-            // wipe the list and repopulate it
-            pClass->m_iState = e_SavesRepopulateAfterDelete;
-        } else
-            pClass->m_bIgnoreInput = false;
-
-        pClass->updateTooltips();
-    }
-    ui.unlockCallbackScenes();
+    updateTooltips();
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::RenameSaveDataReturned(void* lpParam, bool bRes) {
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
-
+int UIScene_LoadOrJoinMenu::renameSaveDataReturned(bool bRes) {
     if (bRes) {
-        pClass->m_iState = e_SavesRepopulate;
+        m_iState = e_SavesRepopulate;
     } else
-        pClass->m_bIgnoreInput = false;
+        m_bIgnoreInput = false;
 
-    pClass->updateTooltips();
+    updateTooltips();
 
     return 0;
 }
@@ -1500,8 +1494,10 @@ int UIScene_LoadOrJoinMenu::SaveOptionsDialogReturned(
             wchar_t* ptr = wSaveName;
             InputManager.RequestKeyboard(
                 app.GetString(IDS_RENAME_WORLD_TITLE), wSaveName, 0, 25,
-                &UIScene_LoadOrJoinMenu::KeyboardCompleteWorldNameCallback,
-                pClass, C_4JInput::EKeyboardMode_Default);
+                [pClass](bool bRes) -> int {
+                    return pClass->handleKeyboardCompleteWorldName(bRes);
+                },
+                C_4JInput::EKeyboardMode_Default);
         } break;
 
         case C4JStorage::EMessage_ResultThirdOption:  // delete -
@@ -1578,39 +1574,34 @@ void UIScene_LoadOrJoinMenu::LaunchSaveTransfer() {
     ui.NavigateToScene(m_iPad, eUIScene_FullscreenProgress, loadingParams);
 }
 
-int UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback(void* lpParam,
-                                                        bool bRes) {
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
+int UIScene_LoadOrJoinMenu::createDummySaveDataCallback(bool bRes) {
     if (bRes) {
-        pClass->m_eSaveTransferState = eSaveTransfer_GetSavesInfo;
+        m_eSaveTransferState = eSaveTransfer_GetSavesInfo;
     } else {
-        pClass->m_eSaveTransferState = eSaveTransfer_Error;
-        app.DebugPrintf("CreateDummySaveDataCallback failed\n");
+        m_eSaveTransferState = eSaveTransfer_Error;
+        app.DebugPrintf("createDummySaveDataCallback failed\n");
     }
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CrossSaveGetSavesInfoCallback(
-    void* lpParam, SAVE_DETAILS* pSaveDetails, bool bRes) {
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
+int UIScene_LoadOrJoinMenu::crossSaveGetSavesInfoCallback(
+    SAVE_DETAILS* pSaveDetails, bool bRes) {
     if (bRes) {
-        pClass->m_eSaveTransferState = eSaveTransfer_GetFileData;
+        m_eSaveTransferState = eSaveTransfer_GetFileData;
     } else {
-        pClass->m_eSaveTransferState = eSaveTransfer_Error;
-        app.DebugPrintf("CrossSaveGetSavesInfoCallback failed\n");
+        m_eSaveTransferState = eSaveTransfer_Error;
+        app.DebugPrintf("crossSaveGetSavesInfoCallback failed\n");
     }
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::LoadCrossSaveDataCallback(void* pParam,
-                                                      bool bIsCorrupt,
+int UIScene_LoadOrJoinMenu::loadCrossSaveDataCallback(bool bIsCorrupt,
                                                       bool bIsOwner) {
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)pParam;
     if (bIsCorrupt == false && bIsOwner) {
-        pClass->m_eSaveTransferState = eSaveTransfer_CreatingNewSave;
+        m_eSaveTransferState = eSaveTransfer_CreatingNewSave;
     } else {
-        pClass->m_eSaveTransferState = eSaveTransfer_Error;
-        app.DebugPrintf("LoadCrossSaveDataCallback failed \n");
+        m_eSaveTransferState = eSaveTransfer_Error;
+        app.DebugPrintf("loadCrossSaveDataCallback failed \n");
     }
     return 0;
 }
@@ -1622,10 +1613,8 @@ int UIScene_LoadOrJoinMenu::CrossSaveFinishedCallback(
     return 0;
 }
 
-int UIScene_LoadOrJoinMenu::CrossSaveDeleteOnErrorReturned(void* lpParam,
-                                                           bool bRes) {
-    UIScene_LoadOrJoinMenu* pClass = (UIScene_LoadOrJoinMenu*)lpParam;
-    pClass->m_eSaveTransferState = eSaveTransfer_ErrorMesssage;
+int UIScene_LoadOrJoinMenu::crossSaveDeleteOnErrorReturned(bool bRes) {
+    m_eSaveTransferState = eSaveTransfer_ErrorMesssage;
     return 0;
 }
 
@@ -1750,8 +1739,9 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 app.getRemoteStorage()->waitForStorageManagerIdle();
                 C4JStorage::ESaveGameState saveState =
                     StorageManager.SaveSaveData(
-                        &UIScene_LoadOrJoinMenu::CreateDummySaveDataCallback,
-                        lpParameter);
+                        [pClass](const bool bRes) {
+                            return pClass->createDummySaveDataCallback(bRes);
+                        });
                 if (saveState == C4JStorage::ESaveGame_Save) {
                     pClass->m_eSaveTransferState =
                         eSaveTransfer_CreatingDummyFile;
@@ -1782,8 +1772,11 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                 C4JStorage::ESaveGameState eSGIStatus =
                     StorageManager.GetSavesInfo(
                         pClass->m_iPad,
-                        &UIScene_LoadOrJoinMenu::CrossSaveGetSavesInfoCallback,
-                        pClass, "save");
+                        [pClass](SAVE_DETAILS* pSaveDetails, const bool bRes) {
+                            return pClass->crossSaveGetSavesInfoCallback(
+                                pSaveDetails, bRes);
+                        },
+                        "save");
                 pClass->m_eSaveTransferState = eSaveTransfer_GettingSavesInfo;
             } break;
             case eSaveTransfer_GettingSavesInfo:
@@ -1872,7 +1865,11 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                     C4JStorage::ESaveGameState eLoadStatus =
                         StorageManager.LoadSaveData(
                             &pSaveDetails->SaveInfoA[saveInfoIndex],
-                            &LoadCrossSaveDataCallback, pClass);
+                            [pClass](const bool bIsCorrupt,
+                                     const bool bIsOwner) {
+                                return pClass->loadCrossSaveDataCallback(
+                                    bIsCorrupt, bIsOwner);
+                            });
                     if (eLoadStatus == C4JStorage::ESaveGame_Load) {
                         pClass->m_eSaveTransferState =
                             eSaveTransfer_LoadingSaveFromDisc;
@@ -2041,9 +2038,10 @@ int UIScene_LoadOrJoinMenu::DownloadSonyCrossSaveThreadProc(void* lpParameter) {
                         C4JStorage::ESaveGameState eDeleteStatus =
                             StorageManager.DeleteSaveData(
                                 &pSaveDetails->SaveInfoA[saveInfoIndex],
-                                UIScene_LoadOrJoinMenu::
-                                    CrossSaveDeleteOnErrorReturned,
-                                pClass);
+                                [pClass](const bool bRes) {
+                                    return pClass
+                                        ->crossSaveDeleteOnErrorReturned(bRes);
+                                });
                         if (eDeleteStatus == C4JStorage::ESaveGame_Delete) {
                             pClass->m_eSaveTransferState =
                                 eSaveTransfer_ErrorDeletingSave;

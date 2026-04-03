@@ -33,7 +33,7 @@ SignTileEntity::SignTileEntity() : TileEntity() {
 SignTileEntity::~SignTileEntity() {
     // TODO ORBIS_STUBBED;
     // 4J-PB - we don't need to verify strings anymore -
-    // PlatformInput.CancelQueuedVerifyStrings(&SignTileEntity::StringVerifyCallback,(void*)this);
+    // PlatformInput.CancelQueuedVerifyStrings([this](STRING_VERIFY_RESPONSE* r) { return handleStringVerify(r); });
 }
 
 void SignTileEntity::save(CompoundTag* tag) {
@@ -124,7 +124,7 @@ sizeof(wchar_t)*(MAX_LINE_LENGTH+1)); if(m_wsmessages[i].length()>0)
             // at this point, we can ask the online string verifier if our sign
 text is ok #if 0 m_bVerified=true; #else
 
-            if(!PlatformInput.VerifyStrings((wchar_t**)&wcMessages,MAX_SIGN_LINES,&SignTileEntity::StringVerifyCallback,(void*)this))
+            if(!PlatformInput.VerifyStrings((wchar_t**)&wcMessages,MAX_SIGN_LINES,[this](STRING_VERIFY_RESPONSE* r) { return handleStringVerify(r); }))
             {
                     // Nothing to verify
                     m_bVerified=true;
@@ -148,26 +148,23 @@ void SignTileEntity::SetMessage(int iIndex, std::wstring& wsText) {
 }
 
 // 4J-PB - added for string verification
-int SignTileEntity::StringVerifyCallback(void* lpParam,
-                                         STRING_VERIFY_RESPONSE* pResults) {
+int SignTileEntity::handleStringVerify(STRING_VERIFY_RESPONSE* pResults) {
     // results will be in m_pStringVerifyResponse
-    SignTileEntity* pClass = (SignTileEntity*)lpParam;
-
-    pClass->m_bVerified = true;
-    pClass->m_bCensored = false;
+    m_bVerified = true;
+    m_bCensored = false;
     for (int i = 0; i < pResults->wNumStrings; i++) {
         if (pResults->pStringResult[i] != ERROR_SUCCESS) {
-            pClass->m_bCensored = true;
+            m_bCensored = true;
         }
     }
 
-    if (!pClass->level->isClientSide) {
-        ServerLevel* serverLevel = (ServerLevel*)pClass->level;
+    if (!level->isClientSide) {
+        ServerLevel* serverLevel = (ServerLevel*)level;
         // 4J Stu - This callback gets called on the main thread, but tried to
         // access things on the server thread. Change to go through the
         // protected method.
-        // pClass->level->sendTileUpdated(pClass->x, pClass->y, pClass->z);
-        serverLevel->queueSendTileUpdate(pClass->x, pClass->y, pClass->z);
+        // level->sendTileUpdated(x, y, z);
+        serverLevel->queueSendTileUpdate(x, y, z);
     }
 
     return 0;

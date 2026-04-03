@@ -136,9 +136,8 @@ protected:
     virtual std::wstring getMoviePath();
 
 public:
-    static int LoadSaveDataThumbnailReturned(void* lpParam,
-                                             std::uint8_t* pbThumbnail,
-                                             unsigned int thumbnailBytes);
+    int loadSaveDataThumbnailReturned(std::uint8_t* pbThumbnail,
+                                     unsigned int thumbnailBytes);
     static int LoadSaveCallback(void* lpParam, bool bRes);
     static int DeleteSaveDialogReturned(void* pParam, int iPad,
                                         C4JStorage::EMessageResult result);
@@ -146,9 +145,9 @@ public:
                                          C4JStorage::EMessageResult result);
     static int TexturePackDialogReturned(void* pParam, int iPad,
                                          C4JStorage::EMessageResult result);
-    static int DeleteSaveDataReturned(void* lpParam, bool bRes);
-    static int RenameSaveDataReturned(void* lpParam, bool bRes);
-    static int KeyboardCompleteWorldNameCallback(void* lpParam, bool bRes);
+    int deleteSaveDataReturned(bool bRes);
+    int renameSaveDataReturned(bool bRes);
+    int handleKeyboardCompleteWorldName(bool bRes);
 
 protected:
     void handlePress(F64 controlId, F64 childId);
@@ -199,15 +198,12 @@ private:
         m_downloadedUniqueFilename[64];  // SCE_SAVE_DATA_DIRNAME_DATA_MAXSIZE];
     bool m_saveTransferDownloadCancelled;
     void LaunchSaveTransfer();
-    static int CreateDummySaveDataCallback(void* lpParam, bool bRes);
-    static int CrossSaveGetSavesInfoCallback(void* lpParam,
-                                             SAVE_DETAILS* pSaveDetails,
-                                             bool bRes);
-    static int LoadCrossSaveDataCallback(void* pParam, bool bIsCorrupt,
-                                         bool bIsOwner);
+    int createDummySaveDataCallback(bool bRes);
+    int crossSaveGetSavesInfoCallback(SAVE_DETAILS* pSaveDetails, bool bRes);
+    int loadCrossSaveDataCallback(bool bIsCorrupt, bool bIsOwner);
     static int CrossSaveFinishedCallback(void* pParam, int iPad,
                                          C4JStorage::EMessageResult result);
-    static int CrossSaveDeleteOnErrorReturned(void* lpParam, bool bRes);
+    int crossSaveDeleteOnErrorReturned(bool bRes);
     static int RemoteSaveNotFoundCallback(void* pParam, int iPad,
                                           C4JStorage::EMessageResult result);
     static int DownloadSonyCrossSaveThreadProc(void* lpParameter);

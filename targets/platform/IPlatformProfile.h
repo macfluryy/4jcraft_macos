@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <string>
 
 #include "PlatformTypes.h"
@@ -8,8 +9,6 @@
 
 class CXuiStringTable;
 
-// TODO: migrate C-style callbacks (int (*Func)(void*, ...), void* lpParam)
-// to std::function or std::function_ref (C++26).
 class IPlatformProfile {
 public:
     struct PROFILESETTINGS {
@@ -40,13 +39,13 @@ public:
     virtual unsigned int RequestSignInUI(
         bool bFromInvite, bool bLocalGame, bool bNoGuestsAllowed,
         bool bMultiplayerSignIn, bool bAddUser,
-        int (*Func)(void*, const bool, const int iPad), void* lpParam,
+        std::function<int(bool, int)> callback,
         int iQuadrant = XUSER_INDEX_ANY) = 0;
     virtual unsigned int DisplayOfflineProfile(
-        int (*Func)(void*, const bool, const int iPad), void* lpParam,
+        std::function<int(bool, int)> callback,
         int iQuadrant = XUSER_INDEX_ANY) = 0;
     virtual unsigned int RequestConvertOfflineToGuestUI(
-        int (*Func)(void*, const bool, const int iPad), void* lpParam,
+        std::function<int(bool, int)> callback,
         int iQuadrant = XUSER_INDEX_ANY) = 0;
     virtual void SetPrimaryPlayerChanged(bool bVal) = 0;
     [[nodiscard]] virtual bool QuerySigninStatus() = 0;
@@ -64,27 +63,22 @@ public:
     virtual void SetPrimaryPad(int iPad) = 0;
     [[nodiscard]] virtual char* GetGamertag(int iPad) = 0;
     [[nodiscard]] virtual std::wstring GetDisplayName(int iPad) = 0;
-    virtual void SetSignInChangeCallback(void (*Func)(void*, bool,
-                                                      unsigned int),
-                                         void* lpParam) = 0;
-    virtual void SetNotificationsCallback(void (*Func)(void*, std::uint32_t,
-                                                       unsigned int),
-                                          void* lpParam) = 0;
+    virtual void SetSignInChangeCallback(
+        std::function<void(bool, unsigned int)> callback) = 0;
+    virtual void SetNotificationsCallback(
+        std::function<void(std::uint32_t, unsigned int)> callback) = 0;
     [[nodiscard]] virtual bool RegionIsNorthAmerica() = 0;
     [[nodiscard]] virtual bool LocaleIsUSorCanada() = 0;
     [[nodiscard]] virtual int GetLiveConnectionStatus() = 0;
     [[nodiscard]] virtual bool IsSystemUIDisplayed() = 0;
-    virtual void SetProfileReadErrorCallback(void (*Func)(void*),
-                                             void* lpParam) = 0;
+    virtual void SetProfileReadErrorCallback(
+        std::function<void()> callback) = 0;
 
     // Profile data
-    virtual int SetDefaultOptionsCallback(int (*Func)(void*, PROFILESETTINGS*,
-                                                      const int iPad),
-                                          void* lpParam) = 0;
-    virtual int SetOldProfileVersionCallback(int (*Func)(void*, unsigned char*,
-                                                         const unsigned short,
-                                                         const int),
-                                             void* lpParam) = 0;
+    virtual int SetDefaultOptionsCallback(
+        std::function<int(PROFILESETTINGS*, int)> callback) = 0;
+    virtual int SetOldProfileVersionCallback(
+        std::function<int(unsigned char*, unsigned short, int)> callback) = 0;
     [[nodiscard]] virtual PROFILESETTINGS* GetDashboardProfileSettings(
         int iPad) = 0;
     virtual void WriteToProfile(int iQuadrant,
@@ -104,9 +98,7 @@ public:
     virtual void ShowProfileCard(int iPad, PlayerUID targetUid) = 0;
     [[nodiscard]] virtual bool GetProfileAvatar(
         int iPad,
-        int (*Func)(void* lpParam, std::uint8_t* thumbnailData,
-                    unsigned int thumbnailBytes),
-        void* lpParam) = 0;
+        std::function<int(std::uint8_t*, unsigned int)> callback) = 0;
     virtual void CancelProfileAvatarRequest() = 0;
 
     // Achievements

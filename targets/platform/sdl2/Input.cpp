@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <functional>
 #include <string>
 
 #include "../InputActions.h"
@@ -51,8 +52,7 @@ static bool s_scrollSnapTaken = false;
 // Text input state (non-blocking keyboard)
 static bool s_keyboardActive = false;
 static std::string s_textInputBuf;
-static int (*s_keyboardCallback)(void*, const bool) = nullptr;
-static void* s_keyboardCallbackParam = nullptr;
+static std::function<int(bool)> s_keyboardCallback;
 
 // We set all the watched keys
 // I don't know if I'll need to change this if we add chat support soon.
@@ -357,9 +357,8 @@ void C_4JInput::Tick() {
             s_keysCurrent[SDL_SCANCODE_RETURN] = false;
             s_keysCurrent[SDL_SCANCODE_KP_ENTER] = false;
             if (s_keyboardCallback) {
-                s_keyboardCallback(s_keyboardCallbackParam, true);
+                s_keyboardCallback(true);
                 s_keyboardCallback = nullptr;
-                s_keyboardCallbackParam = nullptr;
             }
         } else if (KPressed(SDL_SCANCODE_ESCAPE)) {
             s_keyboardActive = false;
@@ -368,9 +367,8 @@ void C_4JInput::Tick() {
             // Consume the key so it doesn't also trigger ACTION_MENU_CANCEL
             s_keysCurrent[SDL_SCANCODE_ESCAPE] = false;
             if (s_keyboardCallback) {
-                s_keyboardCallback(s_keyboardCallbackParam, false);
+                s_keyboardCallback(false);
                 s_keyboardCallback = nullptr;
-                s_keyboardCallbackParam = nullptr;
             }
         }
     }
@@ -642,19 +640,17 @@ void C_4JInput::SetJoypadSensitivity(int, float) {}
 void C_4JInput::SetJoypadStickAxisMap(int, unsigned int, unsigned int) {}
 void C_4JInput::SetJoypadStickTriggerMap(int, unsigned int, unsigned int) {}
 void C_4JInput::SetKeyRepeatRate(float, float) {}
-void C_4JInput::SetDebugSequence(const char*, int (*)(void*), void*) {}
+void C_4JInput::SetDebugSequence(const char*, std::function<int()>) {}
 float C_4JInput::GetIdleSeconds(int) { return 0.f; }
 bool C_4JInput::IsPadConnected(int iPad) { return iPad == 0; }
 
 EKeyboardResult C_4JInput::RequestKeyboard(const wchar_t*, const wchar_t*, int,
                                            unsigned int,
-                                           int (*callback)(void*, const bool),
-                                           void* scene,
+                                           std::function<int(bool)> callback,
                                            C_4JInput::EKeyboardMode) {
     s_keyboardActive = true;
     s_textInputBuf.clear();
-    s_keyboardCallback = callback;
-    s_keyboardCallbackParam = scene;
+    s_keyboardCallback = std::move(callback);
     SDL_StartTextInput();
     return EKeyboardResult::Pending;
 }
@@ -664,12 +660,11 @@ bool C_4JInput::GetMenuDisplayed(int iPad) {
 }
 const char* C_4JInput::GetText() { return s_textInputBuf.c_str(); }
 bool C_4JInput::VerifyStrings(wchar_t**, int,
-                              int (*)(void*, STRING_VERIFY_RESPONSE*), void*) {
+                              std::function<int(STRING_VERIFY_RESPONSE*)>) {
     return true;
 }
-void C_4JInput::CancelQueuedVerifyStrings(int (*)(void*,
-                                                  STRING_VERIFY_RESPONSE*),
-                                          void*) {}
+void C_4JInput::CancelQueuedVerifyStrings(
+    std::function<int(STRING_VERIFY_RESPONSE*)>) {}
 void C_4JInput::CancelAllVerifyInProgress() {}
 
 // Primary pad (moved from Profile)

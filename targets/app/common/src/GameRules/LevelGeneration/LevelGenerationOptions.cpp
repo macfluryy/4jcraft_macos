@@ -553,7 +553,9 @@ void LevelGenerationOptions::loadBaseSaveData() {
     if (mountIndex > -1) {
         if (StorageManager.MountInstalledDLC(
                 ProfileManager.GetPrimaryPad(), mountIndex,
-                &LevelGenerationOptions::packMounted, this,
+                [this](int pad, std::uint32_t err, std::uint32_t lic) {
+                    return onPackMounted(pad, err, lic);
+                },
                 "WPACK") != ERROR_IO_PENDING) {
             // corrupt DLC
             setLoadedData();
@@ -571,9 +573,9 @@ void LevelGenerationOptions::loadBaseSaveData() {
     }
 }
 
-int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
-                                        uint32_t dwLicenceMask) {
-    LevelGenerationOptions* lgo = (LevelGenerationOptions*)pParam;
+int LevelGenerationOptions::onPackMounted(int iPad, uint32_t dwErr,
+                                          uint32_t dwLicenceMask) {
+    LevelGenerationOptions* lgo = this;
     lgo->m_bLoadingData = false;
     if (dwErr != ERROR_SUCCESS) {
         // corrupt DLC

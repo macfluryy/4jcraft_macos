@@ -53,7 +53,9 @@ UIScene_InGameInfoMenu::UIScene_InGameInfoMenu(int iPad, void* initData,
     }
 
     g_NetworkManager.RegisterPlayerChangedCallback(
-        m_iPad, &UIScene_InGameInfoMenu::OnPlayerChanged, this);
+        m_iPad, [this](INetworkPlayer* pPlayer, bool leaving) {
+            OnPlayerChanged(this, pPlayer, leaving);
+        });
 
     INetworkPlayer* thisPlayer =
         g_NetworkManager.GetLocalPlayerByUserIndex(m_iPad);
@@ -156,8 +158,7 @@ void UIScene_InGameInfoMenu::updateTooltips() {
 }
 
 void UIScene_InGameInfoMenu::handleDestroy() {
-    g_NetworkManager.UnRegisterPlayerChangedCallback(
-        m_iPad, &UIScene_InGameInfoMenu::OnPlayerChanged, this);
+    g_NetworkManager.UnRegisterPlayerChangedCallback(m_iPad);
 
     m_parentLayer->removeComponent(eUIComponent_MenuBackground);
 }
@@ -166,7 +167,9 @@ void UIScene_InGameInfoMenu::handleGainFocus(bool navBack) {
     UIScene::handleGainFocus(navBack);
     if (navBack)
         g_NetworkManager.RegisterPlayerChangedCallback(
-            m_iPad, &UIScene_InGameInfoMenu::OnPlayerChanged, this);
+            m_iPad, [this](INetworkPlayer* pPlayer, bool leaving) {
+                OnPlayerChanged(this, pPlayer, leaving);
+            });
 }
 
 void UIScene_InGameInfoMenu::handleReload() {

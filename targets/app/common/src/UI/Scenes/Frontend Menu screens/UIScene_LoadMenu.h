@@ -122,8 +122,7 @@ private:
     static int ConfirmLoadReturned(void* pParam, int iPad,
                                    C4JStorage::EMessageResult result);
     static void StartGameFromSave(UIScene_LoadMenu* pClass, int localUsersMask);
-    static int LoadSaveDataReturned(void* pParam, bool bIsCorrupt,
-                                    bool bIsOwner);
+    int loadSaveDataReturned(bool bIsCorrupt, bool bIsOwner);
     static int TrophyDialogReturned(void* pParam, int iPad,
                                     C4JStorage::EMessageResult result);
     static int LoadDataComplete(void* pParam);
@@ -131,15 +130,12 @@ private:
                                         C4JStorage::EMessageResult result);
     static int DeleteSaveDialogReturned(void* pParam, int iPad,
                                         C4JStorage::EMessageResult result);
-    static int DeleteSaveDataReturned(void* pParam, bool bSuccess);
+    int deleteSaveDataReturned(bool bSuccess);
     static int MustSignInReturnedPSN(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result);
 
 public:
-    // 4jcraft: made public for the thunk system we have for thumbnail loading,
-    // probably a FIXME for when this gets cleaned up
-    static int LoadSaveDataThumbnailReturned(void* lpParam,
-                                             std::uint8_t* pbThumbnail,
-                                             unsigned int thumbnailBytes);
+    int loadSaveDataThumbnailReturned(std::uint8_t* pbThumbnail,
+                                     unsigned int thumbnailBytes);
     static int StartGame_SignInReturned(void* pParam, bool, int);
 };
