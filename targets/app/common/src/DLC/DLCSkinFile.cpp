@@ -6,7 +6,7 @@
 #include "platform/sdl2/Render.h"
 #include "DLCManager.h"
 #include "app/common/src/DLC/DLCFile.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/include/SkinBox.h"
 #include "app/include/XboxStubs.h"
 

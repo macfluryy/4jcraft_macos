@@ -6,7 +6,7 @@
 
 #include "app/common/App_enums.h"
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "VillagePieces.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"

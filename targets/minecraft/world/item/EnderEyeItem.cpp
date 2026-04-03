@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/core/particles/ParticleTypes.h"

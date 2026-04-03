@@ -4,7 +4,7 @@
 #include <wchar.h>
 
 #include "app/common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/client/Minecraft.h"

@@ -12,7 +12,7 @@
 #include "app/common/src/UI/Controls/UIControl_CheckBox.h"
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"

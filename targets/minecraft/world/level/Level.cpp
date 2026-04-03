@@ -19,7 +19,7 @@
 #include "app/common/src/Colours/ColourTable.h"
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/common/src/Network/GameNetworkManager.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/FrameProfiler.h"
 #include "java/Random.h"

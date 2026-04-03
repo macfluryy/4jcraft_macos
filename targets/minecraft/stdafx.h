@@ -5,7 +5,7 @@
 #pragma once
 
 #ifdef _WINDOWS64
-#include "app/windows/Windows64_App.h"
+#include "app/windows/WindowsGame.h"
 #else
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #endif

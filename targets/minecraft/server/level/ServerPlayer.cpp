@@ -14,7 +14,7 @@
 #include "app/common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "ServerLevel.h"
 #include "ServerPlayerGameMode.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

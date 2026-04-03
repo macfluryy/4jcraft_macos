@@ -18,7 +18,7 @@
 #include "app/common/src/GameRules/LevelGeneration/StartFeature.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "app/common/src/Localisation/StringTable.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

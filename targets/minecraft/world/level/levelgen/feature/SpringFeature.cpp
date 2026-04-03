@@ -1,7 +1,7 @@
 #include "SpringFeature.h"
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/tile/Tile.h"
 

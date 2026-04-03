@@ -1,7 +1,7 @@
 ﻿
-#include "Windows64_App.h"
+#include "WindowsGame.h"
 
-#include "app/common/Consoles_App.h"
+#include "app/common/Game.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/User.h"
 #include "minecraft/server/MinecraftServer.h"
@@ -12,31 +12,31 @@
 #include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
 
-CConsoleMinecraftApp app;
+WindowsGame app;
 
 #define CONTEXT_GAME_STATE 0
 
-CConsoleMinecraftApp::CConsoleMinecraftApp() : CMinecraftApp() {}
+WindowsGame::WindowsGame() : Game() {}
 
-void CConsoleMinecraftApp::SetRichPresenceContext(int iPad, int contextId) {
+void WindowsGame::SetRichPresenceContext(int iPad, int contextId) {
     ProfileManager.SetRichPresenceContextValue(iPad, CONTEXT_GAME_STATE,
                                                contextId);
 }
 
-void CConsoleMinecraftApp::StoreLaunchData() {}
-void CConsoleMinecraftApp::ExitGame() {}
-void CConsoleMinecraftApp::FatalLoadError() {}
+void WindowsGame::StoreLaunchData() {}
+void WindowsGame::ExitGame() {}
+void WindowsGame::FatalLoadError() {}
 
-void CConsoleMinecraftApp::CaptureSaveThumbnail() {}
-void CConsoleMinecraftApp::GetSaveThumbnail(std::uint8_t** thumbnailData,
+void WindowsGame::CaptureSaveThumbnail() {}
+void WindowsGame::GetSaveThumbnail(std::uint8_t** thumbnailData,
                                             unsigned int* thumbnailSize) {}
-void CConsoleMinecraftApp::ReleaseSaveThumbnail() {}
+void WindowsGame::ReleaseSaveThumbnail() {}
 
-void CConsoleMinecraftApp::GetScreenshot(int iPad,
+void WindowsGame::GetScreenshot(int iPad,
                                          std::uint8_t** screenshotData,
                                          unsigned int* screenshotSize) {}
 
-void CConsoleMinecraftApp::TemporaryCreateGameStart() {
+void WindowsGame::TemporaryCreateGameStart() {
     //////////////////////////////////////////////////////////////////////////////////////////////
     /// From CScene_Main::OnInit
 
@@ -112,17 +112,17 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart() {
     thread->run();
 }
 
-int CConsoleMinecraftApp::GetLocalTMSFileIndex(wchar_t* wchTMSFile,
+int WindowsGame::GetLocalTMSFileIndex(wchar_t* wchTMSFile,
                                                bool bFilenameIncludesExtension,
                                                eFileExtensionType eEXT) {
     return -1;
 }
 
-int CConsoleMinecraftApp::LoadLocalTMSFile(wchar_t* wchTMSFile) { return -1; }
+int WindowsGame::LoadLocalTMSFile(wchar_t* wchTMSFile) { return -1; }
 
-int CConsoleMinecraftApp::LoadLocalTMSFile(wchar_t* wchTMSFile,
+int WindowsGame::LoadLocalTMSFile(wchar_t* wchTMSFile,
                                            eFileExtensionType eExt) {
     return -1;
 }
 
-void CConsoleMinecraftApp::FreeLocalTMSFiles(eTMSFileType eType) {}
+void WindowsGame::FreeLocalTMSFiles(eTMSFileType eType) {}

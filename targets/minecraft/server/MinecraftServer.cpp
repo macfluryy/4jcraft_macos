@@ -20,7 +20,7 @@
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "PlayerList.h"
 #include "Settings.h"
 #include "util/Timer.h"

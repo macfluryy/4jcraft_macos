@@ -12,7 +12,7 @@
 #include "platform/sdl2/Profile.h"
 #include "app/common/App_structs.h"
 #include "app/common/src/Leaderboards/LeaderboardManager.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/stats/Achievement.h"
 #include "minecraft/stats/Achievements.h"
 #include "minecraft/stats/GenericStats.h"
@@ -185,7 +185,7 @@ void StatsCounter::save(int player, bool force) {
         (LARGE_STATS_COUNT * 4 *
          (sizeof(unsigned int) - sizeof(unsigned short)));
     assert(uiTotalStatsSize <=
-           (CConsoleMinecraftApp::GAME_DEFINED_PROFILE_DATA_BYTES -
+           (Game::GAME_DEFINED_PROFILE_DATA_BYTES -
             sizeof(GAME_SETTINGS)));
 
     // Retrieve the data pointer from the profile
@@ -198,7 +198,7 @@ void StatsCounter::save(int player, bool force) {
 
     // Reset all the data to 0 (we're going to replace it with the map data)
     memset(statData, 0,
-           CConsoleMinecraftApp::GAME_DEFINED_PROFILE_DATA_BYTES -
+           Game::GAME_DEFINED_PROFILE_DATA_BYTES -
                sizeof(GAME_SETTINGS));
 
     // For each stat

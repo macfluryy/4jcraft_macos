@@ -22,7 +22,7 @@
 #include "app/common/src/Tutorial/Tasks/RideEntityTask.h"
 #include "app/common/src/Tutorial/Tasks/TutorialTask.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "TutorialMessage.h"
 #include "util/Timer.h"

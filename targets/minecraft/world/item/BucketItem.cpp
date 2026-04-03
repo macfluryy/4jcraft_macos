@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Class.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

@@ -14,7 +14,7 @@
 #include "LevelData.h"
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/common/src/GameRules/GameRuleManager.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "util/StringHelpers.h"
 #include "java/File.h"

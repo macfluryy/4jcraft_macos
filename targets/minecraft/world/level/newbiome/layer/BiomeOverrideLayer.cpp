@@ -2,7 +2,7 @@
 
 #include <string.h>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "platform/PlatformServices.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 #if defined(__linux__)

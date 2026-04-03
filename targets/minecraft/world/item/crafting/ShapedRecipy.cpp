@@ -8,7 +8,7 @@
 #include <string.h>
 
 #include "platform/PlatformTypes.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "Recipes.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/ItemInstance.h"

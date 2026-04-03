@@ -11,12 +11,12 @@
 #include <string>
 #include <vector>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "util/Definitions.h"
 #include "java/System.h"
 
-extern CConsoleMinecraftApp app;
+extern LinuxGame app;
 
 FileHeader::FileHeader() {
     lastFile = nullptr;

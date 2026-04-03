@@ -7,7 +7,7 @@
 #include "app/common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "app/common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/level/Level.h"

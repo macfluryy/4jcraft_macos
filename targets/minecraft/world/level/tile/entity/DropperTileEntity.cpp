@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/world/level/tile/entity/TileEntity.h"
 #include "strings.h"
 

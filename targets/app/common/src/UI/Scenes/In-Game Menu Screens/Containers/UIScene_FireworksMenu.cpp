@@ -10,7 +10,7 @@
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/Controls/UIControl_SlotList.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/player/LocalPlayer.h"
 #include "minecraft/world/inventory/FireworksMenu.h"

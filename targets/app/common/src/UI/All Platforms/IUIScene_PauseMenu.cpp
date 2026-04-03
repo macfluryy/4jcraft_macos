@@ -16,7 +16,7 @@
 #include "app/common/src/GameRules/GameRuleManager.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"

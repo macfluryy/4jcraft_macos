@@ -5,7 +5,7 @@
 #include <optional>
 
 #include "app/common/App_enums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/server/MinecraftServer.h"

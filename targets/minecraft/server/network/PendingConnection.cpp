@@ -11,7 +11,7 @@
 #include "app/common/src/BuildVer/BuildVer.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "platform/IPlatformNetwork.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
 #include "PlayerConnection.h"

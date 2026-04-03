@@ -25,7 +25,7 @@
 #include "app/common/Minecraft_Macros.h"
 #include "app/common/src/DLC/DLCManager.h"
 #include "app/common/src/DLC/DLCSkinFile.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"

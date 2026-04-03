@@ -10,7 +10,7 @@
 #include "platform/sdl2/Render.h"
 #include "AbstractContainerScreen.h"
 #include "app/common/src/UI/All Platforms/IUIScene_CreativeMenu.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/include/stubs.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Lighting.h"

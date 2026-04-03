@@ -1,6 +1,6 @@
 #include "LoginPacket.h"
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

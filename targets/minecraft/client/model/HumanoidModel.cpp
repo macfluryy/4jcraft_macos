@@ -5,7 +5,7 @@
 #include <numbers>
 
 #include "platform/sdl2/Render.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/client/model/geom/Model.h"
 #include "minecraft/client/model/geom/ModelPart.h"
 #include "minecraft/world/entity/Entity.h"

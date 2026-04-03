@@ -14,7 +14,7 @@
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/include/NetTypes.h"
 #include "app/include/stubs.h"

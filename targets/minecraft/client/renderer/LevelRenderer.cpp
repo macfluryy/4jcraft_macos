@@ -22,7 +22,7 @@
 #include "app/common/src/Audio/SoundEngine.h"
 #include "app/common/src/Colours/ColourTable.h"
 #include "app/common/src/Console_Debug_enum.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/include/FrameProfiler.h"
 #include "app/include/MobSkinMemTextureProcessor.h"
 #include "app/include/stubs.h"

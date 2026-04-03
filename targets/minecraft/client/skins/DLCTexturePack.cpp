@@ -23,7 +23,7 @@
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/common/src/Localisation/StringTable.h"
 #include "app/common/src/UI/All Platforms/ArchiveFile.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/BufferedImage.h"

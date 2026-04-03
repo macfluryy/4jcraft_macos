@@ -20,7 +20,7 @@
 #include "app/common/src/DLC/DLCManager.h"
 #include "app/common/src/DLC/DLCSkinFile.h"
 #include "app/common/src/Localisation/StringTable.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "util/StringHelpers.h"
 

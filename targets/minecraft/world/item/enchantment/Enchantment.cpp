@@ -4,7 +4,7 @@
 #include <wchar.h>
 
 #include "app/common/App_enums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "minecraft/world/item/enchantment/ArrowDamageEnchantment.h"

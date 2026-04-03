@@ -5,7 +5,7 @@
 #include <optional>
 
 #include "Facing.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"

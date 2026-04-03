@@ -9,7 +9,7 @@
 #include "platform/sdl2/Storage.h"
 #include "DLCManager.h"
 #include "app/common/src/DLC/DLCFile.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/include/XboxStubs.h"
 #if defined(_WINDOWS64)
 #include "app/windows/XML/ATGXmlParser.h"

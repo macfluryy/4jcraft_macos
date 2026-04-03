@@ -3,7 +3,7 @@
 #include <string>
 
 #include "BeaconScreen.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/client/gui/inventory/AbstractBeaconButton.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/client/renderer/Textures.h"

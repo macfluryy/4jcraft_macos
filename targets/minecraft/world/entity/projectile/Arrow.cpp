@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/network/packet/GameEventPacket.h"

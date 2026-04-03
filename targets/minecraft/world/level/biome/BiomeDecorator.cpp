@@ -1,7 +1,7 @@
 
 #include "minecraft/world/level/biome/BiomeDecorator.h"
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"

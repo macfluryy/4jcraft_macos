@@ -1,6 +1,6 @@
 #include "TutorialMessage.h"
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 
 TutorialMessage::TutorialMessage(
     int messageId, bool limitRepeats /*= false*/,

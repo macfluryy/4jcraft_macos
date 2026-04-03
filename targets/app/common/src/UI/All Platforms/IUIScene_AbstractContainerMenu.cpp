@@ -14,7 +14,7 @@
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/Tutorial/TutorialMode.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"

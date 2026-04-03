@@ -1,15 +1,8 @@
 #pragma once
 
-#include <cstdint>
-
-#include "app/common/App_enums.h"
-#include "app/common/Consoles_App.h"
-
-class C4JStringTable;
-
-class CConsoleMinecraftApp : public CMinecraftApp {
+class WindowsGame : public Game {
 public:
-    CConsoleMinecraftApp();
+    WindowsGame();
 
     virtual void SetRichPresenceContext(int iPad, int contextId);
 
@@ -42,4 +35,5 @@ public:
     virtual void TemporaryCreateGameStart();
 };
 
-extern CConsoleMinecraftApp app;
+extern WindowsGame app;
+

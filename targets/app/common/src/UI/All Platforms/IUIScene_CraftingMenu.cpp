@@ -14,7 +14,7 @@
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "minecraft/client/Minecraft.h"

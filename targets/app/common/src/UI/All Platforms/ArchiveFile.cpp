@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <utility>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "platform/PlatformServices.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"

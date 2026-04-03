@@ -7,7 +7,7 @@
 #include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
 #include "app/common/App_enums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 
 #include "java/Class.h"
 #include "java/Random.h"

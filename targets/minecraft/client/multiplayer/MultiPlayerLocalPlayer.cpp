@@ -8,7 +8,7 @@
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/Tutorial/TutorialEnum.h"
 #include "app/common/src/Tutorial/TutorialMode.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/client/player/Input.h"

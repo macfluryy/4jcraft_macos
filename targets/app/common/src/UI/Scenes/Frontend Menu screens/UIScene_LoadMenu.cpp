@@ -22,7 +22,7 @@
 #include "app/common/src/UI/Controls/UIControl_Slider.h"
 #include "app/common/src/UI/Scenes/Frontend Menu screens/IUIScene_StartGame.h"
 #include "app/common/src/UI/UILayer.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/include/NetTypes.h"
 #include "minecraft/client/Minecraft.h"

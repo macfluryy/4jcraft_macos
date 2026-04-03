@@ -18,7 +18,7 @@
 #include "app/common/src/Network/Socket.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/Tutorial/TutorialEnum.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
 #include "MinecraftServer.h"

@@ -10,7 +10,7 @@
 #include "app/common/src/DLC/DLCFile.h"
 #include "app/common/src/DLC/DLCManager.h"
 #include "app/common/src/DLC/DLCPack.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "PlatformTypes.h"
 #include "util/StringHelpers.h"

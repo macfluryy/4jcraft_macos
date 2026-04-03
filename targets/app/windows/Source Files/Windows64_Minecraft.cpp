@@ -736,8 +736,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
     // no profile data for the player
     ProfileManager.SetDefaultOptionsCallback(
         [](C_4JProfile::PROFILESETTINGS* pSettings, int iPad) {
-            return CConsoleMinecraftApp::DefaultOptionsCallback(&app, pSettings,
-                                                                iPad);
+            return Game::DefaultOptionsCallback(&app, pSettings,
+                                                iPad);
         });
     // QNet needs to be setup after profile manager, as we do not want its
     // Notify listener to handle XN_SYS_SIGNINCHANGED notifications. This does

@@ -24,7 +24,7 @@
 #include "app/common/src/Tutorial/Tasks/UseTileTask.h"
 #include "app/common/src/Tutorial/Tasks/XuiCraftingTask.h"
 #include "app/common/src/Tutorial/Tutorial.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "minecraft/world/item/Item.h"
 #include "minecraft/world/item/alchemy/PotionMacros.h"

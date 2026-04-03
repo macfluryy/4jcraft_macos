@@ -15,7 +15,7 @@
 #include "EntityIO.h"
 #include "EntityPos.h"
 #include "app/common/App_enums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "SyncedEntityData.h"
 #include "util/StringHelpers.h"

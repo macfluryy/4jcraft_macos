@@ -15,7 +15,7 @@
 #include "app/common/src/UI/Controls/UIControl_Progress.h"
 #include "app/common/src/UI/UILayer.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "platform/C4JThread.h"
@@ -170,7 +170,7 @@ void UIScene_FullscreenProgress::tick() {
             if (exitcode == ERROR_CANCELLED) {
                 // Current thread cancelled for whatever reason
                 // Currently used only for the
-                // CConsoleMinecraftApp::RemoteSaveThreadProc thread Assume to
+                // Game::RemoteSaveThreadProc thread Assume to
                 // just ignore this thread as something else is now running that
                 // will cause another action
             } else {

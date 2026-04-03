@@ -1,4 +1,4 @@
-#include "app/common/Consoles_App.h"
+#include "app/common/Game.h"
 
 #include "platform/PlatformTypes.h"
 #include "platform/InputActions.h"
@@ -18,7 +18,7 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "app/common/src/UI/Scenes/UIScene_FullscreenProgress.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
@@ -107,17 +107,17 @@ class Merchant;
 class ModelPart;
 class SignTileEntity;
 
-// CMinecraftApp app;
-unsigned int CMinecraftApp::m_uiLastSignInData = 0;
+// Game app;
+unsigned int Game::m_uiLastSignInData = 0;
 
-const float CMinecraftApp::fSafeZoneX = 64.0f;  // 5% of 1280
-const float CMinecraftApp::fSafeZoneY = 36.0f;  // 5% of 720
+const float Game::fSafeZoneX = 64.0f;  // 5% of 1280
+const float Game::fSafeZoneY = 36.0f;  // 5% of 720
 
-int CMinecraftApp::s_iHTMLFontSizesA[eHTMLSize_COUNT] = {
+int Game::s_iHTMLFontSizesA[eHTMLSize_COUNT] = {
     // 20,15,20,24
     20, 13, 20, 26};
 
-CMinecraftApp::CMinecraftApp() {
+Game::Game() {
     if (GAME_SETTINGS_PROFILE_DATA_BYTES != sizeof(GAME_SETTINGS)) {
         // 4J Stu - See comment for GAME_SETTINGS_PROFILE_DATA_BYTES in
         // Xbox_App.h
@@ -242,7 +242,7 @@ CMinecraftApp::CMinecraftApp() {
     LocaleAndLanguageInit();
 }
 
-void CMinecraftApp::DebugPrintf(const char* szFormat, ...) {
+void Game::DebugPrintf(const char* szFormat, ...) {
 #if !defined(_FINAL_BUILD)
     char buf[1024];
     va_list ap;
@@ -253,7 +253,7 @@ void CMinecraftApp::DebugPrintf(const char* szFormat, ...) {
 #endif
 }
 
-void CMinecraftApp::DebugPrintf(int user, const char* szFormat, ...) {
+void Game::DebugPrintf(int user, const char* szFormat, ...) {
 #if !defined(_FINAL_BUILD)
     if (user == USER_NONE) return;
     char buf[1024];
@@ -268,13 +268,13 @@ void CMinecraftApp::DebugPrintf(int user, const char* szFormat, ...) {
 #endif
 }
 
-const wchar_t* CMinecraftApp::GetString(int iID) {
+const wchar_t* Game::GetString(int iID) {
     // return L"Değişiklikler ve Yenilikler";
     // return L"ÕÕÕÕÖÖÖÖ";
     return app.m_stringTable->getString(iID);
 }
 
-void CMinecraftApp::SetAction(int iPad, eXuiAction action, void* param) {
+void Game::SetAction(int iPad, eXuiAction action, void* param) {
     if ((m_eXuiAction[iPad] == eAppAction_ReloadTexturePack) &&
         (action == eAppAction_EthernetDisconnected)) {
         app.DebugPrintf(
@@ -298,17 +298,17 @@ void CMinecraftApp::SetAction(int iPad, eXuiAction action, void* param) {
     }
 }
 
-bool CMinecraftApp::IsAppPaused() { return m_bIsAppPaused; }
+bool Game::IsAppPaused() { return m_bIsAppPaused; }
 
-void CMinecraftApp::SetAppPaused(bool val) { m_bIsAppPaused = val; }
+void Game::SetAppPaused(bool val) { m_bIsAppPaused = val; }
 
-void CMinecraftApp::HandleButtonPresses() {
+void Game::HandleButtonPresses() {
     for (int i = 0; i < 4; i++) {
         HandleButtonPresses(i);
     }
 }
 
-void CMinecraftApp::HandleButtonPresses(int iPad) {
+void Game::HandleButtonPresses(int iPad) {
     // 		// test an update of the profile data
     // 		void *pData=ProfileManager.GetGameDefinedProfileData(iPad);
     //
@@ -322,7 +322,7 @@ void CMinecraftApp::HandleButtonPresses(int iPad) {
     //  		ProfileManager.WriteToProfile(iPad,true);
 }
 
-bool CMinecraftApp::LoadInventoryMenu(int iPad,
+bool Game::LoadInventoryMenu(int iPad,
                                       std::shared_ptr<LocalPlayer> player,
                                       bool bNavigateBack) {
     bool success = true;
@@ -343,7 +343,7 @@ bool CMinecraftApp::LoadInventoryMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadCreativeMenu(int iPad,
+bool Game::LoadCreativeMenu(int iPad,
                                      std::shared_ptr<LocalPlayer> player,
                                      bool bNavigateBack) {
     bool success = true;
@@ -364,7 +364,7 @@ bool CMinecraftApp::LoadCreativeMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadCrafting2x2Menu(int iPad,
+bool Game::LoadCrafting2x2Menu(int iPad,
                                         std::shared_ptr<LocalPlayer> player) {
     bool success = true;
 
@@ -387,7 +387,7 @@ bool CMinecraftApp::LoadCrafting2x2Menu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadCrafting3x3Menu(int iPad,
+bool Game::LoadCrafting3x3Menu(int iPad,
                                         std::shared_ptr<LocalPlayer> player,
                                         int x, int y, int z) {
     bool success = true;
@@ -411,7 +411,7 @@ bool CMinecraftApp::LoadCrafting3x3Menu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadFireworksMenu(int iPad,
+bool Game::LoadFireworksMenu(int iPad,
                                       std::shared_ptr<LocalPlayer> player,
                                       int x, int y, int z) {
     bool success = true;
@@ -434,7 +434,7 @@ bool CMinecraftApp::LoadFireworksMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadEnchantingMenu(int iPad,
+bool Game::LoadEnchantingMenu(int iPad,
                                        std::shared_ptr<Inventory> inventory,
                                        int x, int y, int z, Level* level,
                                        const std::wstring& name) {
@@ -460,7 +460,7 @@ bool CMinecraftApp::LoadEnchantingMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadFurnaceMenu(
+bool Game::LoadFurnaceMenu(
     int iPad, std::shared_ptr<Inventory> inventory,
     std::shared_ptr<FurnaceTileEntity> furnace) {
     bool success = true;
@@ -483,7 +483,7 @@ bool CMinecraftApp::LoadFurnaceMenu(
     return success;
 }
 
-bool CMinecraftApp::LoadBrewingStandMenu(
+bool Game::LoadBrewingStandMenu(
     int iPad, std::shared_ptr<Inventory> inventory,
     std::shared_ptr<BrewingStandTileEntity> brewingStand) {
     bool success = true;
@@ -506,7 +506,7 @@ bool CMinecraftApp::LoadBrewingStandMenu(
     return success;
 }
 
-bool CMinecraftApp::LoadContainerMenu(int iPad,
+bool Game::LoadContainerMenu(int iPad,
                                       std::shared_ptr<Container> inventory,
                                       std::shared_ptr<Container> container) {
     bool success = true;
@@ -538,7 +538,7 @@ bool CMinecraftApp::LoadContainerMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadTrapMenu(int iPad, std::shared_ptr<Container> inventory,
+bool Game::LoadTrapMenu(int iPad, std::shared_ptr<Container> inventory,
                                  std::shared_ptr<DispenserTileEntity> trap) {
     bool success = true;
 
@@ -560,7 +560,7 @@ bool CMinecraftApp::LoadTrapMenu(int iPad, std::shared_ptr<Container> inventory,
     return success;
 }
 
-bool CMinecraftApp::LoadSignEntryMenu(int iPad,
+bool Game::LoadSignEntryMenu(int iPad,
                                       std::shared_ptr<SignTileEntity> sign) {
     bool success = true;
 
@@ -576,7 +576,7 @@ bool CMinecraftApp::LoadSignEntryMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadRepairingMenu(int iPad,
+bool Game::LoadRepairingMenu(int iPad,
                                       std::shared_ptr<Inventory> inventory,
                                       Level* level, int x, int y, int z) {
     bool success = true;
@@ -598,7 +598,7 @@ bool CMinecraftApp::LoadRepairingMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadTradingMenu(int iPad,
+bool Game::LoadTradingMenu(int iPad,
                                     std::shared_ptr<Inventory> inventory,
                                     std::shared_ptr<Merchant> trader,
                                     Level* level, const std::wstring& name) {
@@ -619,7 +619,7 @@ bool CMinecraftApp::LoadTradingMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadHopperMenu(int iPad,
+bool Game::LoadHopperMenu(int iPad,
                                    std::shared_ptr<Inventory> inventory,
                                    std::shared_ptr<HopperTileEntity> hopper) {
     bool success = true;
@@ -638,7 +638,7 @@ bool CMinecraftApp::LoadHopperMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadHopperMenu(int iPad,
+bool Game::LoadHopperMenu(int iPad,
                                    std::shared_ptr<Inventory> inventory,
                                    std::shared_ptr<MinecartHopper> hopper) {
     bool success = true;
@@ -657,7 +657,7 @@ bool CMinecraftApp::LoadHopperMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadHorseMenu(int iPad,
+bool Game::LoadHorseMenu(int iPad,
                                   std::shared_ptr<Inventory> inventory,
                                   std::shared_ptr<Container> container,
                                   std::shared_ptr<EntityHorse> horse) {
@@ -678,7 +678,7 @@ bool CMinecraftApp::LoadHorseMenu(int iPad,
     return success;
 }
 
-bool CMinecraftApp::LoadBeaconMenu(int iPad,
+bool Game::LoadBeaconMenu(int iPad,
                                    std::shared_ptr<Inventory> inventory,
                                    std::shared_ptr<BeaconTileEntity> beacon) {
     bool success = true;
@@ -700,7 +700,7 @@ bool CMinecraftApp::LoadBeaconMenu(int iPad,
 //////////////////////////////////////////////
 // GAME SETTINGS
 //////////////////////////////////////////////
-void CMinecraftApp::InitGameSettings() {
+void Game::InitGameSettings() {
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
         GameSettingsA[i] =
             (GAME_SETTINGS*)ProfileManager.GetGameDefinedProfileData(i);
@@ -729,7 +729,7 @@ void CMinecraftApp::InitGameSettings() {
     }
 }
 
-int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
+int Game::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
                                      const int iPad) {
     SetGameSettings(iPad, eGameSetting_MusicVolume, DEFAULT_VOLUME_LEVEL);
     SetGameSettings(iPad, eGameSetting_SoundFXVolume, DEFAULT_VOLUME_LEVEL);
@@ -827,9 +827,9 @@ int CMinecraftApp::SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
     return 0;
 }
 
-int CMinecraftApp::DefaultOptionsCallback(
+int Game::DefaultOptionsCallback(
     void* pParam, C_4JProfile::PROFILESETTINGS* pSettings, const int iPad) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    Game* pApp = (Game*)pParam;
 
     // flag the default options to be set
 
@@ -845,7 +845,7 @@ int CMinecraftApp::DefaultOptionsCallback(
     return 0;
 }
 
-int CMinecraftApp::OldProfileVersionCallback(void* pParam,
+int Game::OldProfileVersionCallback(void* pParam,
                                              unsigned char* pucData,
                                              const unsigned short usVersion,
                                              const int iPad) {
@@ -983,7 +983,7 @@ int CMinecraftApp::OldProfileVersionCallback(void* pParam,
     return 0;
 }
 
-void CMinecraftApp::ApplyGameSettingsChanged(int iPad) {
+void Game::ApplyGameSettingsChanged(int iPad) {
     ActionGameSettings(iPad, eGameSetting_MusicVolume);
     ActionGameSettings(iPad, eGameSetting_SoundFXVolume);
     ActionGameSettings(iPad, eGameSetting_Gamma);
@@ -1016,7 +1016,7 @@ void CMinecraftApp::ApplyGameSettingsChanged(int iPad) {
     ActionGameSettings(iPad, eGameSetting_PS3_EULA_Read);
 }
 
-void CMinecraftApp::ActionGameSettings(int iPad, eGameSetting eVal) {
+void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     switch (eVal) {
         case eGameSetting_MusicVolume:
@@ -1256,13 +1256,13 @@ void CMinecraftApp::ActionGameSettings(int iPad, eGameSetting eVal) {
     }
 }
 
-void CMinecraftApp::SetPlayerSkin(int iPad, const std::wstring& name) {
+void Game::SetPlayerSkin(int iPad, const std::wstring& name) {
     std::uint32_t skinId = app.getSkinIdFromPath(name);
 
     SetPlayerSkin(iPad, skinId);
 }
 
-void CMinecraftApp::SetPlayerSkin(int iPad, std::uint32_t dwSkinId) {
+void Game::SetPlayerSkin(int iPad, std::uint32_t dwSkinId) {
     DebugPrintf("Setting skin for %d to %08X\n", iPad, dwSkinId);
 
     GameSettingsA[iPad]->dwSelectedSkin = dwSkinId;
@@ -1273,11 +1273,11 @@ void CMinecraftApp::SetPlayerSkin(int iPad, std::uint32_t dwSkinId) {
             dwSkinId);
 }
 
-std::wstring CMinecraftApp::GetPlayerSkinName(int iPad) {
+std::wstring Game::GetPlayerSkinName(int iPad) {
     return app.getSkinPathFromId(GameSettingsA[iPad]->dwSelectedSkin);
 }
 
-std::uint32_t CMinecraftApp::GetPlayerSkinId(int iPad) {
+std::uint32_t Game::GetPlayerSkinId(int iPad) {
     // 4J-PB -check the user has rights to use this skin - they may have had at
     // some point but the entitlement has been removed.
     DLCPack* Pack = nullptr;
@@ -1312,17 +1312,17 @@ std::uint32_t CMinecraftApp::GetPlayerSkinId(int iPad) {
     return dwSkin;
 }
 
-std::uint32_t CMinecraftApp::GetAdditionalModelParts(int iPad) {
+std::uint32_t Game::GetAdditionalModelParts(int iPad) {
     return m_dwAdditionalModelParts[iPad];
 }
 
-void CMinecraftApp::SetPlayerCape(int iPad, const std::wstring& name) {
+void Game::SetPlayerCape(int iPad, const std::wstring& name) {
     std::uint32_t capeId = Player::getCapeIdFromPath(name);
 
     SetPlayerCape(iPad, capeId);
 }
 
-void CMinecraftApp::SetPlayerCape(int iPad, std::uint32_t dwCapeId) {
+void Game::SetPlayerCape(int iPad, std::uint32_t dwCapeId) {
     DebugPrintf("Setting cape for %d to %08X\n", iPad, dwCapeId);
 
     GameSettingsA[iPad]->dwSelectedCape = dwCapeId;
@@ -1336,15 +1336,15 @@ void CMinecraftApp::SetPlayerCape(int iPad, std::uint32_t dwCapeId) {
             dwCapeId);
 }
 
-std::wstring CMinecraftApp::GetPlayerCapeName(int iPad) {
+std::wstring Game::GetPlayerCapeName(int iPad) {
     return Player::getCapePathFromId(GameSettingsA[iPad]->dwSelectedCape);
 }
 
-std::uint32_t CMinecraftApp::GetPlayerCapeId(int iPad) {
+std::uint32_t Game::GetPlayerCapeId(int iPad) {
     return GameSettingsA[iPad]->dwSelectedCape;
 }
 
-void CMinecraftApp::SetPlayerFavoriteSkin(int iPad, int iIndex,
+void Game::SetPlayerFavoriteSkin(int iPad, int iIndex,
                                           unsigned int uiSkinID) {
     DebugPrintf("Setting favorite skin for %d to %08X\n", iPad, uiSkinID);
 
@@ -1352,20 +1352,20 @@ void CMinecraftApp::SetPlayerFavoriteSkin(int iPad, int iIndex,
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-unsigned int CMinecraftApp::GetPlayerFavoriteSkin(int iPad, int iIndex) {
+unsigned int Game::GetPlayerFavoriteSkin(int iPad, int iIndex) {
     return GameSettingsA[iPad]->uiFavoriteSkinA[iIndex];
 }
 
-unsigned char CMinecraftApp::GetPlayerFavoriteSkinsPos(int iPad) {
+unsigned char Game::GetPlayerFavoriteSkinsPos(int iPad) {
     return GameSettingsA[iPad]->ucCurrentFavoriteSkinPos;
 }
 
-void CMinecraftApp::SetPlayerFavoriteSkinsPos(int iPad, int iPos) {
+void Game::SetPlayerFavoriteSkinsPos(int iPad, int iPos) {
     GameSettingsA[iPad]->ucCurrentFavoriteSkinPos = (unsigned char)iPos;
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-unsigned int CMinecraftApp::GetPlayerFavoriteSkinsCount(int iPad) {
+unsigned int Game::GetPlayerFavoriteSkinsCount(int iPad) {
     unsigned int uiCount = 0;
     for (int i = 0; i < MAX_FAVORITE_SKINS; i++) {
         if (GameSettingsA[iPad]->uiFavoriteSkinA[i] != 0xFFFFFFFF) {
@@ -1377,7 +1377,7 @@ unsigned int CMinecraftApp::GetPlayerFavoriteSkinsCount(int iPad) {
     return uiCount;
 }
 
-void CMinecraftApp::ValidateFavoriteSkins(int iPad) {
+void Game::ValidateFavoriteSkins(int iPad) {
     unsigned int uiCount = GetPlayerFavoriteSkinsCount(iPad);
 
     // remove invalid skins
@@ -1413,27 +1413,27 @@ void CMinecraftApp::ValidateFavoriteSkins(int iPad) {
 }
 
 // Mash-up pack worlds
-void CMinecraftApp::HideMashupPackWorld(int iPad, unsigned int iMashupPackID) {
+void Game::HideMashupPackWorld(int iPad, unsigned int iMashupPackID) {
     unsigned int uiPackID = iMashupPackID - 1024;  // mash-up ids start at 1024
     GameSettingsA[iPad]->uiMashUpPackWorldsDisplay &= ~(1 << uiPackID);
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-void CMinecraftApp::EnableMashupPackWorlds(int iPad) {
+void Game::EnableMashupPackWorlds(int iPad) {
     GameSettingsA[iPad]->uiMashUpPackWorldsDisplay = 0xFFFFFFFF;
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-unsigned int CMinecraftApp::GetMashupPackWorlds(int iPad) {
+unsigned int Game::GetMashupPackWorlds(int iPad) {
     return GameSettingsA[iPad]->uiMashUpPackWorldsDisplay;
 }
 
-void CMinecraftApp::SetMinecraftLanguage(int iPad, unsigned char ucLanguage) {
+void Game::SetMinecraftLanguage(int iPad, unsigned char ucLanguage) {
     GameSettingsA[iPad]->ucLanguage = ucLanguage;
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-unsigned char CMinecraftApp::GetMinecraftLanguage(int iPad) {
+unsigned char Game::GetMinecraftLanguage(int iPad) {
     // if there are no game settings read yet, return the default language
     if (GameSettingsA[iPad] == nullptr) {
         return 0;
@@ -1442,12 +1442,12 @@ unsigned char CMinecraftApp::GetMinecraftLanguage(int iPad) {
     }
 }
 
-void CMinecraftApp::SetMinecraftLocale(int iPad, unsigned char ucLocale) {
+void Game::SetMinecraftLocale(int iPad, unsigned char ucLocale) {
     GameSettingsA[iPad]->ucLocale = ucLocale;
     GameSettingsA[iPad]->bSettingsChanged = true;
 }
 
-unsigned char CMinecraftApp::GetMinecraftLocale(int iPad) {
+unsigned char Game::GetMinecraftLocale(int iPad) {
     // if there are no game settings read yet, return the default language
     if (GameSettingsA[iPad] == nullptr) {
         return 0;
@@ -1456,7 +1456,7 @@ unsigned char CMinecraftApp::GetMinecraftLocale(int iPad) {
     }
 }
 
-void CMinecraftApp::SetGameSettings(int iPad, eGameSetting eVal,
+void Game::SetGameSettings(int iPad, eGameSetting eVal,
                                     unsigned char ucVal) {
     // Minecraft *pMinecraft=Minecraft::GetInstance();
 
@@ -1863,13 +1863,13 @@ void CMinecraftApp::SetGameSettings(int iPad, eGameSetting eVal,
     }
 }
 
-unsigned char CMinecraftApp::GetGameSettings(eGameSetting eVal) {
+unsigned char Game::GetGameSettings(eGameSetting eVal) {
     int iPad = ProfileManager.GetPrimaryPad();
 
     return GetGameSettings(iPad, eVal);
 }
 
-unsigned char CMinecraftApp::GetGameSettings(int iPad, eGameSetting eVal) {
+unsigned char Game::GetGameSettings(int iPad, eGameSetting eVal) {
     switch (eVal) {
         case eGameSetting_MusicVolume:
             return GameSettingsA[iPad]->ucMusicVolume;
@@ -2009,7 +2009,7 @@ unsigned char CMinecraftApp::GetGameSettings(int iPad, eGameSetting eVal) {
     return 0;
 }
 
-void CMinecraftApp::CheckGameSettingsChanged(bool bOverride5MinuteTimer,
+void Game::CheckGameSettingsChanged(bool bOverride5MinuteTimer,
                                              int iPad) {
     // If the settings have changed, write them to the profile
 
@@ -2028,7 +2028,7 @@ void CMinecraftApp::CheckGameSettingsChanged(bool bOverride5MinuteTimer,
     }
 }
 
-void CMinecraftApp::ClearGameSettingsChangedFlag(int iPad) {
+void Game::ClearGameSettingsChangedFlag(int iPad) {
     GameSettingsA[iPad]->bSettingsChanged = false;
 }
 
@@ -2038,20 +2038,20 @@ void CMinecraftApp::ClearGameSettingsChangedFlag(int iPad) {
 //
 ////////////////////////////
 #if !defined(_DEBUG_MENUS_ENABLED)
-unsigned int CMinecraftApp::GetGameSettingsDebugMask(
+unsigned int Game::GetGameSettingsDebugMask(
     int iPad, bool bOverridePlayer)  // bOverridePlayer is to force the send for
                                      // the server to get the read options
 {
     return 0;
 }
 
-void CMinecraftApp::SetGameSettingsDebugMask(int iPad, unsigned int uiVal) {}
+void Game::SetGameSettingsDebugMask(int iPad, unsigned int uiVal) {}
 
-void CMinecraftApp::ActionDebugMask(int iPad, bool bSetAllClear) {}
+void Game::ActionDebugMask(int iPad, bool bSetAllClear) {}
 
 #else
 
-unsigned int CMinecraftApp::GetGameSettingsDebugMask(
+unsigned int Game::GetGameSettingsDebugMask(
     int iPad, bool bOverridePlayer)  // bOverridePlayer is to force the send for
                                      // the server to get the read options
 {
@@ -2070,7 +2070,7 @@ unsigned int CMinecraftApp::GetGameSettingsDebugMask(
     }
 }
 
-void CMinecraftApp::SetGameSettingsDebugMask(int iPad, unsigned int uiVal) {
+void Game::SetGameSettingsDebugMask(int iPad, unsigned int uiVal) {
 #if !defined(_CONTENT_PACKAGE)
     GameSettingsA[iPad]->bSettingsChanged = true;
     GameSettingsA[iPad]->uiDebugBitmask = uiVal;
@@ -2086,7 +2086,7 @@ void CMinecraftApp::SetGameSettingsDebugMask(int iPad, unsigned int uiVal) {
 #endif
 }
 
-void CMinecraftApp::ActionDebugMask(int iPad, bool bSetAllClear) {
+void Game::ActionDebugMask(int iPad, bool bSetAllClear) {
     unsigned int ulBitmask = app.GetGameSettingsDebugMask(iPad);
 
     if (bSetAllClear) ulBitmask = 0L;
@@ -2189,19 +2189,19 @@ void CMinecraftApp::ActionDebugMask(int iPad, bool bSetAllClear) {
 }
 #endif
 
-int CMinecraftApp::displaySavingMessage(C4JStorage::ESavingMessage eVal,
+int Game::displaySavingMessage(C4JStorage::ESavingMessage eVal,
                                         int iPad) {
     ui.ShowSavingMessage(iPad, eVal);
 
     return 0;
 }
 
-void CMinecraftApp::SetActionConfirmed(void* param) {
+void Game::SetActionConfirmed(void* param) {
     XuiActionParam* actionInfo = (XuiActionParam*)param;
     app.SetAction(actionInfo->iPad, actionInfo->action);
 }
 
-void CMinecraftApp::HandleXuiActions(void) {
+void Game::HandleXuiActions(void) {
     eXuiAction eAction;
     eTMSAction eTMS;
     void* param;
@@ -2860,7 +2860,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     //
                     // 					ui.RequestMessageBox(IDS_RETURNEDTOMENU_TITLE,
                     // IDS_RETURNEDTOTITLESCREEN_TEXT, uiIDA, 1,
-                    // i,&CMinecraftApp::PrimaryPlayerSignedOutReturned,this,app.GetStringTable());
+                    // i,&Game::PrimaryPlayerSignedOutReturned,this,app.GetStringTable());
                     if (g_NetworkManager.IsInSession()) {
                         app.SetAction(
                             i, eAppAction_PrimaryPlayerSignedOutReturned);
@@ -2947,7 +2947,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                                         g_NetworkManager.CorrectErrorIDS(
                                             IDS_CONNECTION_LOST_LIVE),
                                         uiIDA, 1, i,
-                                        &CMinecraftApp::
+                                        &Game::
                                             EthernetDisconnectReturned,
                                         this);
                                 } else {
@@ -2975,7 +2975,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                                     g_NetworkManager.CorrectErrorIDS(
                                         IDS_CONNECTION_LOST_LIVE),
                                     uiIDA, 1, i,
-                                    &CMinecraftApp::EthernetDisconnectReturned,
+                                    &Game::EthernetDisconnectReturned,
                                     this);
                             }
                         }
@@ -3027,7 +3027,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         LoadingInputParams* loadingParams =
                             new LoadingInputParams();
                         loadingParams->func =
-                            &CMinecraftApp::SignoutExitWorldThreadProc;
+                            &Game::SignoutExitWorldThreadProc;
 
                         UIFullscreenProgressCompletionData* completionData =
                             new UIFullscreenProgressCompletionData();
@@ -3077,7 +3077,7 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     ui.RequestErrorMessage(
                         IDS_TRIALOVER_TITLE, IDS_TRIALOVER_TEXT, uiIDA, 2, i,
-                        &CMinecraftApp::TrialOverReturned, this);
+                        &Game::TrialOverReturned, this);
                 } break;
 
                     // INVITES
@@ -3089,7 +3089,7 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     ui.RequestErrorMessage(
                         IDS_UNLOCK_TITLE, IDS_UNLOCK_ACCEPT_INVITE, uiIDA, 2, i,
-                        &CMinecraftApp::UnlockFullInviteReturned, this);
+                        &Game::UnlockFullInviteReturned, this);
                 } break;
                 case eAppAction_ExitAndJoinFromInvite: {
                     unsigned int uiIDA[3];
@@ -3107,7 +3107,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE, uiIDA,
                             3, i,
-                            &CMinecraftApp::
+                            &Game::
                                 ExitAndJoinFromInviteSaveDialogReturned,
                             this);
                     } else {
@@ -3115,7 +3115,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         uiIDA[1] = IDS_CONFIRM_OK;
                         ui.RequestAlertMessage(
                             IDS_EXIT_GAME, IDS_CONFIRM_LEAVE_VIA_INVITE, uiIDA,
-                            2, i, &CMinecraftApp::ExitAndJoinFromInvite, this);
+                            2, i, &Game::ExitAndJoinFromInvite, this);
                     }
                 } break;
                 case eAppAction_ExitAndJoinFromInviteConfirmed: {
@@ -3350,7 +3350,7 @@ void CMinecraftApp::HandleXuiActions(void) {
 
                     LoadingInputParams* loadingParams =
                         new LoadingInputParams();
-                    loadingParams->func = &CMinecraftApp::RemoteSaveThreadProc;
+                    loadingParams->func = &Game::RemoteSaveThreadProc;
                     loadingParams->lpParam = nullptr;
 
                     UIFullscreenProgressCompletionData* completionData =
@@ -3371,7 +3371,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                     loadingParams->completionData = completionData;
 
                     loadingParams->cancelFunc =
-                        &CMinecraftApp::ExitGameFromRemoteSave;
+                        &Game::ExitGameFromRemoteSave;
                     loadingParams->cancelText = IDS_TOOLTIPS_EXIT;
 
                     ui.NavigateToScene(ProfileManager.GetPrimaryPad(),
@@ -3446,7 +3446,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                             ui.RequestErrorMessage(
                                 IDS_BANNED_LEVEL_TITLE, IDS_PLAYER_BANNED_LEVEL,
                                 uiIDA, 2, i,
-                                &CMinecraftApp::BannedLevelDialogReturned, this,
+                                &Game::BannedLevelDialogReturned, this,
                                 wchFormat);
                         if (result != C4JStorage::EMessage_Busy)
                             SetAction(i, eAppAction_Idle);
@@ -3516,7 +3516,7 @@ void CMinecraftApp::HandleXuiActions(void) {
                         IDS_DLC_TEXTUREPACK_NOT_PRESENT_TITLE,
                         IDS_DLC_TEXTUREPACK_NOT_PRESENT, uiIDA, 2,
                         ProfileManager.GetPrimaryPad(),
-                        &CMinecraftApp::TexturePackDialogReturned, this);
+                        &Game::TexturePackDialogReturned, this);
                     SetAction(i, eAppAction_Idle);
                 }
 
@@ -3622,9 +3622,9 @@ void CMinecraftApp::HandleXuiActions(void) {
     }
 }
 
-int CMinecraftApp::BannedLevelDialogReturned(
+int Game::BannedLevelDialogReturned(
     void* pParam, int iPad, const C4JStorage::EMessageResult result) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    Game* pApp = (Game*)pParam;
     // Minecraft *pMinecraft=Minecraft::GetInstance();
 
     if (result == C4JStorage::EMessage_ResultAccept) {
@@ -3638,7 +3638,7 @@ int CMinecraftApp::BannedLevelDialogReturned(
 
     return 0;
 }
-void CMinecraftApp::loadMediaArchive() {
+void Game::loadMediaArchive() {
     std::wstring mediapath = L"";
 
 #if _WINDOWS64
@@ -3663,7 +3663,7 @@ void CMinecraftApp::loadMediaArchive() {
     }
 }
 
-void CMinecraftApp::loadStringTable() {
+void Game::loadStringTable() {
     if (m_stringTable != nullptr) {
         // we need to unload the current std::string table, this is a reload
         delete m_stringTable;
@@ -3680,9 +3680,9 @@ void CMinecraftApp::loadStringTable() {
     }
 }
 
-int CMinecraftApp::PrimaryPlayerSignedOutReturned(
+int Game::PrimaryPlayerSignedOutReturned(
     void* pParam, int iPad, const C4JStorage::EMessageResult) {
-    // CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    // Game* pApp = (Game*)pParam;
     // Minecraft *pMinecraft=Minecraft::GetInstance();
 
     // if the player is null, we're in the menus
@@ -3699,9 +3699,9 @@ int CMinecraftApp::PrimaryPlayerSignedOutReturned(
     return 0;
 }
 
-int CMinecraftApp::EthernetDisconnectReturned(
+int Game::EthernetDisconnectReturned(
     void* pParam, int iPad, const C4JStorage::EMessageResult) {
-    // CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    // Game* pApp = (Game*)pParam;
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     // if the player is null, we're in the menus
@@ -3716,7 +3716,7 @@ int CMinecraftApp::EthernetDisconnectReturned(
     return 0;
 }
 
-int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
+int Game::SignoutExitWorldThreadProc(void* lpParameter) {
     // Share AABB & Vec3 pools with default (main thread) - should be ok as long
     // as we don't tick the main thread whilst this thread is running
     Compression::UseDefaultThreadStorage();
@@ -3829,9 +3829,9 @@ int CMinecraftApp::SignoutExitWorldThreadProc(void* lpParameter) {
     return 0;
 }
 
-int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
+int Game::UnlockFullInviteReturned(void* pParam, int iPad,
                                             C4JStorage::EMessageResult result) {
-    // CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    // Game* pApp = (Game*)pParam;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     bool bNoPlayer;
 
@@ -3846,14 +3846,14 @@ int CMinecraftApp::UnlockFullInviteReturned(void* pParam, int iPad,
     return 0;
 }
 
-int CMinecraftApp::UnlockFullSaveReturned(void* pParam, int iPad,
+int Game::UnlockFullSaveReturned(void* pParam, int iPad,
                                           C4JStorage::EMessageResult result) {
     return 0;
 }
 
-int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
+int Game::UnlockFullExitReturned(void* pParam, int iPad,
                                           C4JStorage::EMessageResult result) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    Game* pApp = (Game*)pParam;
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     if (result != C4JStorage::EMessage_ResultAccept) {
@@ -3864,9 +3864,9 @@ int CMinecraftApp::UnlockFullExitReturned(void* pParam, int iPad,
     return 0;
 }
 
-int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
+int Game::TrialOverReturned(void* pParam, int iPad,
                                      C4JStorage::EMessageResult result) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    Game* pApp = (Game*)pParam;
     Minecraft* pMinecraft = Minecraft::GetInstance();
 
     if (result != C4JStorage::EMessage_ResultAccept) {
@@ -3876,13 +3876,13 @@ int CMinecraftApp::TrialOverReturned(void* pParam, int iPad,
     return 0;
 }
 
-void CMinecraftApp::ProfileReadErrorCallback(void* pParam) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+void Game::ProfileReadErrorCallback(void* pParam) {
+    Game* pApp = (Game*)pParam;
     int iPrimaryPlayer = ProfileManager.GetPrimaryPad();
     pApp->SetAction(iPrimaryPlayer, eAppAction_ProfileReadError);
 }
 
-void CMinecraftApp::ClearSignInChangeUsersMask() {
+void Game::ClearSignInChangeUsersMask() {
     // 4J-PB - When in the main menu, the user is on pad 0, and any change they
     // make to their profile will be to pad 0 data If they then go in as a
     // secondary player to a splitscreen game, their profile will not be read
@@ -3901,10 +3901,10 @@ void CMinecraftApp::ClearSignInChangeUsersMask() {
         }
     }
 }
-void CMinecraftApp::SignInChangeCallback(void* pParam,
+void Game::SignInChangeCallback(void* pParam,
                                          bool bPrimaryPlayerChanged,
                                          unsigned int uiSignInData) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    Game* pApp = (Game*)pParam;
     // check if the primary player signed out
     int iPrimaryPlayer = ProfileManager.GetPrimaryPad();
 
@@ -4075,10 +4075,10 @@ void CMinecraftApp::SignInChangeCallback(void* pParam,
     }
 }
 
-void CMinecraftApp::NotificationsCallback(void* pParam,
+void Game::NotificationsCallback(void* pParam,
                                           std::uint32_t dwNotification,
                                           unsigned int uiParam) {
-    CMinecraftApp* pClass = (CMinecraftApp*)pParam;
+    Game* pClass = (Game*)pParam;
 
     // push these on to the notifications to be handled in qnet's dowork
 
@@ -4123,14 +4123,14 @@ void CMinecraftApp::NotificationsCallback(void* pParam,
 }
 
 #if defined(_DEBUG_MENUS_ENABLED)
-bool CMinecraftApp::DebugArtToolsOn() {
+bool Game::DebugArtToolsOn() {
     return DebugSettingsOn() &&
            (GetGameSettingsDebugMask(ProfileManager.GetPrimaryPad()) &
             (1L << eDebugSetting_ArtTools)) != 0;
 }
 #endif
 
-void CMinecraftApp::SetDebugSequence(const char* pchSeq) {
+void Game::SetDebugSequence(const char* pchSeq) {
     InputManager.SetDebugSequence(pchSeq, [this]() -> int {
         // printf("sequence matched\n");
         m_bDebugOptions = !m_bDebugOptions;
@@ -4148,7 +4148,7 @@ void CMinecraftApp::SetDebugSequence(const char* pchSeq) {
     });
 }
 
-int CMinecraftApp::GetLocalPlayerCount(void) {
+int Game::GetLocalPlayerCount(void) {
     int iPlayerC = 0;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     for (int i = 0; i < XUSER_MAX_COUNT; i++) {
@@ -4160,7 +4160,7 @@ int CMinecraftApp::GetLocalPlayerCount(void) {
     return iPlayerC;
 }
 
-int CMinecraftApp::MarketplaceCountsCallback(
+int Game::MarketplaceCountsCallback(
     void* pParam, C4JStorage::DLC_TMS_DETAILS* pTMSDetails, int iPad) {
     app.DebugPrintf("Marketplace Counts= New - %d Total - %d\n",
                     pTMSDetails->dwNewOffers, pTMSDetails->dwTotalOffers);
@@ -4176,8 +4176,8 @@ int CMinecraftApp::MarketplaceCountsCallback(
     return 0;
 }
 
-bool CMinecraftApp::StartInstallDLCProcess(int iPad) {
-    app.DebugPrintf("--- CMinecraftApp::StartInstallDLCProcess: pad=%i.\n",
+bool Game::StartInstallDLCProcess(int iPad) {
+    app.DebugPrintf("--- Game::StartInstallDLCProcess: pad=%i.\n",
                     iPad);
 
     // If there is already a call to this in progress, then do nothing
@@ -4191,7 +4191,7 @@ bool CMinecraftApp::StartInstallDLCProcess(int iPad) {
         m_iTotalDLC = 0;
         m_iTotalDLCInstalled = 0;
         app.DebugPrintf(
-            "--- CMinecraftApp::StartInstallDLCProcess - "
+            "--- Game::StartInstallDLCProcess - "
             "StorageManager.GetInstalledDLC\n");
 
         StorageManager.GetInstalledDLC(
@@ -4201,24 +4201,24 @@ bool CMinecraftApp::StartInstallDLCProcess(int iPad) {
         return true;
     } else {
         app.DebugPrintf(
-            "--- CMinecraftApp::StartInstallDLCProcess - nothing to do\n");
+            "--- Game::StartInstallDLCProcess - nothing to do\n");
 
         return false;
     }
 }
 
 // Installed DLC callback
-int CMinecraftApp::dlcInstalledCallback(int iInstalledC, int iPad) {
+int Game::dlcInstalledCallback(int iInstalledC, int iPad) {
     DebugPrintf(
-        "--- CMinecraftApp::dlcInstalledCallback: totalDLC=%i, pad=%i.\n",
+        "--- Game::dlcInstalledCallback: totalDLC=%i, pad=%i.\n",
         iInstalledC, iPad);
     m_iTotalDLC = iInstalledC;
     MountNextDLC(iPad);
     return 0;
 }
 
-void CMinecraftApp::MountNextDLC(int iPad) {
-    app.DebugPrintf("--- CMinecraftApp::MountNextDLC: pad=%i.\n", iPad);
+void Game::MountNextDLC(int iPad) {
+    app.DebugPrintf("--- Game::MountNextDLC: pad=%i.\n", iPad);
     if (m_iTotalDLCInstalled < m_iTotalDLC) {
         // Mount it
         // We also need to match the ones the user wants to mount with the
@@ -4262,10 +4262,10 @@ void CMinecraftApp::MountNextDLC(int iPad) {
 #define CONTENT_DATA_DISPLAY_NAME(a) (a.wszDisplayName)
 #endif
 
-int CMinecraftApp::dlcMountedCallback(int iPad, std::uint32_t dwErr,
+int Game::dlcMountedCallback(int iPad, std::uint32_t dwErr,
                                       std::uint32_t dwLicenceMask) {
 #if defined(_WINDOWS64)
-    DebugPrintf("--- CMinecraftApp::dlcMountedCallback\n");
+    DebugPrintf("--- Game::dlcMountedCallback\n");
 
     if (dwErr != ERROR_SUCCESS) {
         // corrupt DLC
@@ -4326,7 +4326,7 @@ int CMinecraftApp::dlcMountedCallback(int iPad, std::uint32_t dwErr,
 }
 #undef CONTENT_DATA_DISPLAY_NAME
 
-//  void CMinecraftApp::InstallDefaultCape()
+//  void Game::InstallDefaultCape()
 //  {
 // 	 if(!m_bDefaultCapeInstallAttempted)
 // 	 {
@@ -4354,7 +4354,7 @@ int CMinecraftApp::dlcMountedCallback(int iPad, std::uint32_t dwErr,
 // 	 }
 //  }
 
-void CMinecraftApp::HandleDLC(DLCPack* pack) {
+void Game::HandleDLC(DLCPack* pack) {
     unsigned int dwFilesProcessed = 0;
 #if defined(_WINDOWS64) || defined(__linux__)
     std::vector<std::string> dlcFilenames;
@@ -4367,7 +4367,7 @@ void CMinecraftApp::HandleDLC(DLCPack* pack) {
     if (dwFilesProcessed == 0) m_dlcManager.removePack(pack);
 }
 
-//  int CMinecraftApp::DLCReadCallback(void*
+//  int Game::DLCReadCallback(void*
 //  pParam,C4JStorage::DLC_FILE_DETAILS *pDLCData)
 //  {
 //
@@ -4379,7 +4379,7 @@ void CMinecraftApp::HandleDLC(DLCPack* pack) {
 // Name: InitTime()
 // Desc: Initializes the timer variables
 //-------------------------------------------------------------------------------------
-void CMinecraftApp::InitTime() {
+void Game::InitTime() {
     // Save the start time
     m_Time.qwTime = time_util::clock::now();
 
@@ -4393,7 +4393,7 @@ void CMinecraftApp::InitTime() {
 // Name: UpdateTime()
 // Desc: Updates the elapsed time since our last frame.
 //-------------------------------------------------------------------------------------
-void CMinecraftApp::UpdateTime() {
+void Game::UpdateTime() {
     auto qwNewTime = time_util::clock::now();
     auto qwDeltaTime = qwNewTime - m_Time.qwTime;
 
@@ -4404,14 +4404,14 @@ void CMinecraftApp::UpdateTime() {
     m_Time.fAppTime = std::chrono::duration<float>(m_Time.qwAppTime).count();
 }
 
-bool CMinecraftApp::isXuidNotch(PlayerUID xuid) {
+bool Game::isXuidNotch(PlayerUID xuid) {
     if (m_xuidNotch != INVALID_XUID && xuid != INVALID_XUID) {
         return ProfileManager.AreXUIDSEqual(xuid, m_xuidNotch);
     }
     return false;
 }
 
-bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid) {
+bool Game::isXuidDeadmau5(PlayerUID xuid) {
     auto it = MojangData.find(xuid);  // 4J Stu - The .at and [] accessors
                                       // insert elements if they don't exist
     if (it != MojangData.end()) {
@@ -4424,7 +4424,7 @@ bool CMinecraftApp::isXuidDeadmau5(PlayerUID xuid) {
     return false;
 }
 
-void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
+void Game::AddMemoryTextureFile(const std::wstring& wName,
                                          std::uint8_t* pbData,
                                          unsigned int byteCount) {
     std::lock_guard<std::mutex> lock(csMemFilesLock);
@@ -4463,7 +4463,7 @@ void CMinecraftApp::AddMemoryTextureFile(const std::wstring& wName,
     m_MEM_Files[wName] = pData;
 }
 
-void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring& wName) {
+void Game::RemoveMemoryTextureFile(const std::wstring& wName) {
     std::lock_guard<std::mutex> lock(csMemFilesLock);
 
     auto it = m_MEM_Files.find(wName);
@@ -4485,7 +4485,7 @@ void CMinecraftApp::RemoveMemoryTextureFile(const std::wstring& wName) {
     }
 }
 
-bool CMinecraftApp::DefaultCapeExists() {
+bool Game::DefaultCapeExists() {
     std::wstring wTex = L"Special_Cape.png";
     bool val = false;
 
@@ -4498,7 +4498,7 @@ bool CMinecraftApp::DefaultCapeExists() {
     return val;
 }
 
-bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring& wName) {
+bool Game::IsFileInMemoryTextures(const std::wstring& wName) {
     bool val = false;
 
     {
@@ -4510,7 +4510,7 @@ bool CMinecraftApp::IsFileInMemoryTextures(const std::wstring& wName) {
     return val;
 }
 
-void CMinecraftApp::GetMemFileDetails(const std::wstring& wName,
+void Game::GetMemFileDetails(const std::wstring& wName,
                                       std::uint8_t** ppbData,
                                       unsigned int* pByteCount) {
     std::lock_guard<std::mutex> lock(csMemFilesLock);
@@ -4522,7 +4522,7 @@ void CMinecraftApp::GetMemFileDetails(const std::wstring& wName,
     }
 }
 
-void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
+void Game::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
                                      unsigned int byteCount) {
     std::lock_guard<std::mutex> lock(csMemTPDLock);
     // check it's not already in
@@ -4538,7 +4538,7 @@ void CMinecraftApp::AddMemoryTPDFile(int iConfig, std::uint8_t* pbData,
     }
 }
 
-void CMinecraftApp::RemoveMemoryTPDFile(int iConfig) {
+void Game::RemoveMemoryTPDFile(int iConfig) {
     std::lock_guard<std::mutex> lock(csMemTPDLock);
     // check it's not already in
     PMEMDATA pData = nullptr;
@@ -4551,9 +4551,9 @@ void CMinecraftApp::RemoveMemoryTPDFile(int iConfig) {
 }
 
 #if defined(_WINDOWS64)
-int CMinecraftApp::GetTPConfigVal(wchar_t* pwchDataFile) { return -1; }
+int Game::GetTPConfigVal(wchar_t* pwchDataFile) { return -1; }
 #endif
-bool CMinecraftApp::IsFileInTPD(int iConfig) {
+bool Game::IsFileInTPD(int iConfig) {
     bool val = false;
 
     {
@@ -4565,7 +4565,7 @@ bool CMinecraftApp::IsFileInTPD(int iConfig) {
     return val;
 }
 
-void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
+void Game::GetTPD(int iConfig, std::uint8_t** ppbData,
                            unsigned int* pByteCount) {
     std::lock_guard<std::mutex> lock(csMemTPDLock);
     auto it = m_MEM_TPD.find(iConfig);
@@ -4576,7 +4576,7 @@ void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
     }
 }
 
-// bool CMinecraftApp::UploadFileToGlobalStorage(int iQuadrant,
+// bool Game::UploadFileToGlobalStorage(int iQuadrant,
 // C4JStorage::eGlobalStorage eStorageFacility, std::wstring *wsFile  )
 // {
 // 	bool bRes=false;
@@ -4601,13 +4601,13 @@ void CMinecraftApp::GetTPD(int iConfig, std::uint8_t** ppbData,
 // 	return bRes;
 // }
 
-void CMinecraftApp::StoreLaunchData() {}
+void Game::StoreLaunchData() {}
 
-void CMinecraftApp::ExitGame() {}
+void Game::ExitGame() {}
 
 // Invites
 
-void CMinecraftApp::ProcessInvite(std::uint32_t dwUserIndex,
+void Game::ProcessInvite(std::uint32_t dwUserIndex,
                                   std::uint32_t dwLocalUsersMask,
                                   const INVITE_INFO* pInviteInfo) {
     m_InviteData.dwUserIndex = dwUserIndex;
@@ -4617,9 +4617,9 @@ void CMinecraftApp::ProcessInvite(std::uint32_t dwUserIndex,
     SetAction(dwUserIndex, eAppAction_ExitAndJoinFromInvite);
 }
 
-int CMinecraftApp::ExitAndJoinFromInvite(void* pParam, int iPad,
+int Game::ExitAndJoinFromInvite(void* pParam, int iPad,
                                          C4JStorage::EMessageResult result) {
-    CMinecraftApp* pApp = (CMinecraftApp*)pParam;
+    Game* pApp = (Game*)pParam;
     // Minecraft *pMinecraft=Minecraft::GetInstance();
 
     // buttons are swapped on this menu
@@ -4630,9 +4630,9 @@ int CMinecraftApp::ExitAndJoinFromInvite(void* pParam, int iPad,
     return 0;
 }
 
-int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
+int Game::ExitAndJoinFromInviteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    CMinecraftApp* pClass = (CMinecraftApp*)pParam;
+    Game* pClass = (Game*)pParam;
     // Exit with or without saving
     // Decline means save in this dialog
     if (result == C4JStorage::EMessage_ResultDecline ||
@@ -4661,7 +4661,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
                     ui.RequestErrorMessage(
                         IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                         IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
-                        &CMinecraftApp::WarningTrialTexturePackReturned,
+                        &Game::WarningTrialTexturePackReturned,
                         pClass);
 
                     return 0;
@@ -4680,7 +4680,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
                 ui.RequestErrorMessage(
                     IDS_TITLE_SAVE_GAME, IDS_CONFIRM_SAVE_GAME, uiIDA, 2,
                     ProfileManager.GetPrimaryPad(),
-                    &CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned,
+                    &Game::ExitAndJoinFromInviteAndSaveReturned,
                     pClass);
                 return 0;
             } else {
@@ -4694,7 +4694,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
             ui.RequestErrorMessage(
                 IDS_TITLE_DECLINE_SAVE_GAME, IDS_CONFIRM_DECLINE_SAVE_GAME,
                 uiIDA, 2, ProfileManager.GetPrimaryPad(),
-                &CMinecraftApp::ExitAndJoinFromInviteDeclineSaveReturned,
+                &Game::ExitAndJoinFromInviteDeclineSaveReturned,
                 pClass);
             return 0;
         }
@@ -4705,7 +4705,7 @@ int CMinecraftApp::ExitAndJoinFromInviteSaveDialogReturned(
     return 0;
 }
 
-int CMinecraftApp::WarningTrialTexturePackReturned(
+int Game::WarningTrialTexturePackReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // 4J Stu - I added this in when fixing an X1 bug. We should probably add
     // this as well but I don't have time to test all platforms atm
@@ -4713,9 +4713,9 @@ int CMinecraftApp::WarningTrialTexturePackReturned(
     return 0;
 }
 
-int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(
+int Game::ExitAndJoinFromInviteAndSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
-    // CMinecraftApp* pClass = (CMinecraftApp*)pParam;
+    // Game* pClass = (Game*)pParam;
 
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
@@ -4742,7 +4742,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(
                 ui.RequestErrorMessage(
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TITLE,
                     IDS_WARNING_DLC_TRIALTEXTUREPACK_TEXT, uiIDA, 2, iPad,
-                    &CMinecraftApp::WarningTrialTexturePackReturned, nullptr);
+                    &Game::WarningTrialTexturePackReturned, nullptr);
 
                 return 0;
             }
@@ -4758,7 +4758,7 @@ int CMinecraftApp::ExitAndJoinFromInviteAndSaveReturned(
     return 0;
 }
 
-int CMinecraftApp::ExitAndJoinFromInviteDeclineSaveReturned(
+int Game::ExitAndJoinFromInviteDeclineSaveReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // results switched for this dialog
     if (result == C4JStorage::EMessage_ResultDecline) {
@@ -4778,9 +4778,9 @@ int CMinecraftApp::ExitAndJoinFromInviteDeclineSaveReturned(
 // We have to assume that we've not been able to load the text for the game.
 //
 //////////////////////////////////////////////////////////////////////////
-void CMinecraftApp::FatalLoadError() {}
+void Game::FatalLoadError() {}
 
-TIPSTRUCT CMinecraftApp::m_GameTipA[MAX_TIPS_GAMETIP] = {
+TIPSTRUCT Game::m_GameTipA[MAX_TIPS_GAMETIP] = {
     {0, IDS_TIPS_GAMETIP_1},  {0, IDS_TIPS_GAMETIP_2},
     {0, IDS_TIPS_GAMETIP_3},  {0, IDS_TIPS_GAMETIP_4},
     {0, IDS_TIPS_GAMETIP_5},  {0, IDS_TIPS_GAMETIP_6},
@@ -4808,7 +4808,7 @@ TIPSTRUCT CMinecraftApp::m_GameTipA[MAX_TIPS_GAMETIP] = {
     {0, IDS_TIPS_GAMETIP_49}, {0, IDS_TIPS_GAMETIP_50},
 };
 
-TIPSTRUCT CMinecraftApp::m_TriviaTipA[MAX_TIPS_TRIVIATIP] = {
+TIPSTRUCT Game::m_TriviaTipA[MAX_TIPS_TRIVIATIP] = {
     {0, IDS_TIPS_TRIVIA_1},  {0, IDS_TIPS_TRIVIA_2},  {0, IDS_TIPS_TRIVIA_3},
     {0, IDS_TIPS_TRIVIA_4},  {0, IDS_TIPS_TRIVIA_5},  {0, IDS_TIPS_TRIVIA_6},
     {0, IDS_TIPS_TRIVIA_7},  {0, IDS_TIPS_TRIVIA_8},  {0, IDS_TIPS_TRIVIA_9},
@@ -4818,9 +4818,9 @@ TIPSTRUCT CMinecraftApp::m_TriviaTipA[MAX_TIPS_TRIVIATIP] = {
     {0, IDS_TIPS_TRIVIA_19}, {0, IDS_TIPS_TRIVIA_20},
 };
 
-Random* CMinecraftApp::TipRandom = new Random();
+Random* Game::TipRandom = new Random();
 
-int CMinecraftApp::TipsSortFunction(const void* a, const void* b) {
+int Game::TipsSortFunction(const void* a, const void* b) {
     // 4jcraft, scince the sortvalues can be negative, i changed it
     // to a three way comparison,
     // scince subtracting of signed integers can cause overflow.
@@ -4838,7 +4838,7 @@ int CMinecraftApp::TipsSortFunction(const void* a, const void* b) {
     return -1;
 }
 
-void CMinecraftApp::InitialiseTips() {
+void Game::InitialiseTips() {
     // We'll randomise the tips at start up based on their priority
 
     memset(m_TipIDA, 0, sizeof(m_TipIDA));
@@ -4896,7 +4896,7 @@ void CMinecraftApp::InitialiseTips() {
     m_uiCurrentTip = 0;
 }
 
-int CMinecraftApp::GetNextTip() {
+int Game::GetNextTip() {
     static bool bShowSkinDLCTip = true;
     if (app.GetNewDLCAvailable() && app.DisplayNewDLCTip()) {
         return IDS_TIPS_GAMETIP_NEWDLC;
@@ -4920,17 +4920,17 @@ int CMinecraftApp::GetNextTip() {
     return m_TipIDA[m_uiCurrentTip++];
 }
 
-int CMinecraftApp::GetHTMLColour(eMinecraftColour colour) {
+int Game::GetHTMLColour(eMinecraftColour colour) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     return pMinecraft->skins->getSelected()->getColourTable()->getColour(
         colour);
 }
 
-int CMinecraftApp::GetHTMLFontSize(EHTMLFontSize size) {
+int Game::GetHTMLFontSize(EHTMLFontSize size) {
     return s_iHTMLFontSizesA[size];
 }
 
-std::wstring CMinecraftApp::FormatHTMLString(
+std::wstring Game::FormatHTMLString(
     int iPad, const std::wstring& desc, int shadowColour /*= 0xFFFFFFFF*/) {
     std::wstring text(desc);
 
@@ -5097,7 +5097,7 @@ std::wstring CMinecraftApp::FormatHTMLString(
     return text;
 }
 
-std::wstring CMinecraftApp::GetActionReplacement(int iPad,
+std::wstring Game::GetActionReplacement(int iPad,
                                                  unsigned char ucAction) {
     unsigned int input = InputManager.GetGameJoypadMaps(
         InputManager.GetJoypadMapVal(iPad), ucAction);
@@ -5165,7 +5165,7 @@ std::wstring CMinecraftApp::GetActionReplacement(int iPad,
     return string;
 }
 
-std::wstring CMinecraftApp::GetVKReplacement(unsigned int uiVKey) {
+std::wstring Game::GetVKReplacement(unsigned int uiVKey) {
     std::wstring replacement = L"";
     switch (uiVKey) {
         case VK_PAD_A:
@@ -5231,7 +5231,7 @@ std::wstring CMinecraftApp::GetVKReplacement(unsigned int uiVKey) {
     return string;
 }
 
-std::wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon) {
+std::wstring Game::GetIconReplacement(unsigned int uiIcon) {
     wchar_t string[128];
 
 #if defined(_WIN64)
@@ -5259,13 +5259,13 @@ std::wstring CMinecraftApp::GetIconReplacement(unsigned int uiIcon) {
     return result;
 }
 
-std::unordered_map<PlayerUID, MOJANG_DATA*> CMinecraftApp::MojangData;
-std::unordered_map<int, uint64_t> CMinecraftApp::DLCTextures_PackID;
-std::unordered_map<uint64_t, DLC_INFO*> CMinecraftApp::DLCInfo_Trial;
-std::unordered_map<uint64_t, DLC_INFO*> CMinecraftApp::DLCInfo_Full;
-std::unordered_map<std::wstring, uint64_t> CMinecraftApp::DLCInfo_SkinName;
+std::unordered_map<PlayerUID, MOJANG_DATA*> Game::MojangData;
+std::unordered_map<int, uint64_t> Game::DLCTextures_PackID;
+std::unordered_map<uint64_t, DLC_INFO*> Game::DLCInfo_Trial;
+std::unordered_map<uint64_t, DLC_INFO*> Game::DLCInfo_Full;
+std::unordered_map<std::wstring, uint64_t> Game::DLCInfo_SkinName;
 
-int32_t CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
+int32_t Game::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
                                           wchar_t* pSkin, wchar_t* pCape) {
     int32_t hr = 0;
     eXUID eTempXuid = eXUID_Undefined;
@@ -5296,11 +5296,11 @@ int32_t CMinecraftApp::RegisterMojangData(wchar_t* pXuidName, PlayerUID xuid,
     return hr;
 }
 
-MOJANG_DATA* CMinecraftApp::GetMojangDataForXuid(PlayerUID xuid) {
+MOJANG_DATA* Game::GetMojangDataForXuid(PlayerUID xuid) {
     return MojangData[xuid];
 }
 
-int32_t CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
+int32_t Game::RegisterConfigValues(wchar_t* pType, int iValue) {
     int32_t hr = 0;
 
     // #ifdef 0
@@ -5329,7 +5329,7 @@ int32_t CMinecraftApp::RegisterConfigValues(wchar_t* pType, int iValue) {
 }
 
 #if defined(_WINDOWS64)
-int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
+int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
                                        wchar_t* pFirstSkin,
@@ -5379,20 +5379,20 @@ int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
     return hr;
 }
 #elif defined(__linux__)
-int32_t CMinecraftApp::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
+int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
                                        wchar_t* pFirstSkin,
                                        unsigned int uiSortIndex, int iConfig,
                                        wchar_t* pDataFile) {
     fprintf(stderr,
-            "warning: CMinecraftApp::RegisterDLCData unimplemented for "
+            "warning: Game::RegisterDLCData unimplemented for "
             "platform `__linux__`\n");
     return 0;
 }
 #else
 
-int32_t CMinecraftApp::RegisterDLCData(char* pchDLCName,
+int32_t Game::RegisterDLCData(char* pchDLCName,
                                        unsigned int uiSortIndex,
                                        char* pchImageURL) {
     // on PS3 we get all the required info from the name
@@ -5439,7 +5439,7 @@ int32_t CMinecraftApp::RegisterDLCData(char* pchDLCName,
 }
 #endif
 
-bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
+bool Game::GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
                                                uint64_t* pullVal) {
     auto it = DLCInfo_SkinName.find(FirstSkin);
     if (it == DLCInfo_SkinName.end()) {
@@ -5449,7 +5449,7 @@ bool CMinecraftApp::GetDLCFullOfferIDForSkinID(const std::wstring& FirstSkin,
         return true;
     }
 }
-bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,
+bool Game::GetDLCFullOfferIDForPackID(const int iPackID,
                                                uint64_t* pullVal) {
     auto it = DLCTextures_PackID.find(iPackID);
     if (it == DLCTextures_PackID.end()) {
@@ -5460,7 +5460,7 @@ bool CMinecraftApp::GetDLCFullOfferIDForPackID(const int iPackID,
         return true;
     }
 }
-DLC_INFO* CMinecraftApp::GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial) {
+DLC_INFO* Game::GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial) {
     // DLC_INFO *pDLCInfo=NULL;
     if (DLCInfo_Trial.size() > 0) {
         auto it = DLCInfo_Trial.find(ullOfferID_Trial);
@@ -5475,7 +5475,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoForTrialOfferID(uint64_t ullOfferID_Trial) {
         return nullptr;
 }
 
-DLC_INFO* CMinecraftApp::GetDLCInfoTrialOffer(int iIndex) {
+DLC_INFO* Game::GetDLCInfoTrialOffer(int iIndex) {
     std::unordered_map<uint64_t, DLC_INFO*>::iterator it =
         DLCInfo_Trial.begin();
 
@@ -5485,7 +5485,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoTrialOffer(int iIndex) {
 
     return it->second;
 }
-DLC_INFO* CMinecraftApp::GetDLCInfoFullOffer(int iIndex) {
+DLC_INFO* Game::GetDLCInfoFullOffer(int iIndex) {
     std::unordered_map<uint64_t, DLC_INFO*>::iterator it = DLCInfo_Full.begin();
 
     for (int i = 0; i < iIndex; i++) {
@@ -5494,7 +5494,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoFullOffer(int iIndex) {
 
     return it->second;
 }
-uint64_t CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
+uint64_t Game::GetDLCInfoTexturesFullOffer(int iIndex) {
     std::unordered_map<int, uint64_t>::iterator it = DLCTextures_PackID.begin();
 
     for (int i = 0; i < iIndex; i++) {
@@ -5504,7 +5504,7 @@ uint64_t CMinecraftApp::GetDLCInfoTexturesFullOffer(int iIndex) {
     return it->second;
 }
 
-DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
+DLC_INFO* Game::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
     if (DLCInfo_Full.size() > 0) {
         auto it = DLCInfo_Full.find(ullOfferID_Full);
 
@@ -5518,7 +5518,7 @@ DLC_INFO* CMinecraftApp::GetDLCInfoForFullOfferID(uint64_t ullOfferID_Full) {
         return nullptr;
 }
 
-void CMinecraftApp::lockSaveNotification() {
+void Game::lockSaveNotification() {
     std::lock_guard<std::mutex> lock(m_saveNotificationMutex);
     if (m_saveNotificationDepth++ == 0) {
         if (g_NetworkManager
@@ -5537,7 +5537,7 @@ void CMinecraftApp::lockSaveNotification() {
     }
 }
 
-void CMinecraftApp::unlockSaveNotification() {
+void Game::unlockSaveNotification() {
     std::lock_guard<std::mutex> lock(m_saveNotificationMutex);
     if (--m_saveNotificationDepth == 0) {
         if (g_NetworkManager
@@ -5556,7 +5556,7 @@ void CMinecraftApp::unlockSaveNotification() {
     }
 }
 
-int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
+int Game::RemoteSaveThreadProc(void* lpParameter) {
     // The game should be stopped while we are doing this, but the connections
     // ticks may try to create some AABB's or Vec3's
     Compression::UseDefaultThreadStorage();
@@ -5568,7 +5568,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
     // default.exe!WaterlilyTile::getAABB(Level * level, int x, int y, int z)
     // line 38 + 8 bytes	C++
     // ...
-    //  	default.exe!CMinecraftApp::RemoteSaveThreadProc(void *
+    //  	default.exe!Game::RemoteSaveThreadProc(void *
     //  lpParameter)  line 6694	C++
     // host autosave, and the clients can crash on receiving handleMoveEntity
     // when it's a tile within this thread, so need to do the tls for tiles
@@ -5603,7 +5603,7 @@ int CMinecraftApp::RemoteSaveThreadProc(void* lpParameter) {
     return 0;
 }
 
-void CMinecraftApp::ExitGameFromRemoteSave(void* lpParameter) {
+void Game::ExitGameFromRemoteSave(void* lpParameter) {
     int primaryPad = ProfileManager.GetPrimaryPad();
 
     unsigned int uiIDA[3];
@@ -5612,10 +5612,10 @@ void CMinecraftApp::ExitGameFromRemoteSave(void* lpParameter) {
 
     ui.RequestAlertMessage(
         IDS_EXIT_GAME, IDS_CONFIRM_EXIT_GAME, uiIDA, 2, primaryPad,
-        &CMinecraftApp::ExitGameFromRemoteSaveDialogReturned, nullptr);
+        &Game::ExitGameFromRemoteSaveDialogReturned, nullptr);
 }
 
-int CMinecraftApp::ExitGameFromRemoteSaveDialogReturned(
+int Game::ExitGameFromRemoteSaveDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     // CScene_Pause* pClass = (CScene_Pause*)pParam;
 
@@ -5635,7 +5635,7 @@ int CMinecraftApp::ExitGameFromRemoteSaveDialogReturned(
     return 0;
 }
 
-void CMinecraftApp::SetSpecialTutorialCompletionFlag(int iPad, int index) {
+void Game::SetSpecialTutorialCompletionFlag(int iPad, int index) {
     if (index >= 0 && index < 32 && GameSettingsA[iPad] != nullptr) {
         GameSettingsA[iPad]->uiSpecialTutorialBitmask |= (1 << index);
     }
@@ -5643,13 +5643,13 @@ void CMinecraftApp::SetSpecialTutorialCompletionFlag(int iPad, int index) {
 
 // BANNED LIST FUNCTIONS
 
-void CMinecraftApp::SetUniqueMapName(char* pszUniqueMapName) {
+void Game::SetUniqueMapName(char* pszUniqueMapName) {
     memcpy(m_pszUniqueMapName, pszUniqueMapName, 14);
 }
 
-char* CMinecraftApp::GetUniqueMapName(void) { return m_pszUniqueMapName; }
+char* Game::GetUniqueMapName(void) { return m_pszUniqueMapName; }
 
-void CMinecraftApp::InvalidateBannedList(int iPad) {
+void Game::InvalidateBannedList(int iPad) {
     if (m_bRead_BannedListA[iPad] == true) {
         m_bRead_BannedListA[iPad] = false;
         SetBanListCheck(iPad, false);
@@ -5662,7 +5662,7 @@ void CMinecraftApp::InvalidateBannedList(int iPad) {
     }
 }
 
-void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
+void Game::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
                                               char* pszLevelName,
                                               bool bWriteToTMS) {
     // we will have retrieved the banned level list from TMS, so add this one to
@@ -5698,7 +5698,7 @@ void CMinecraftApp::AddLevelToBannedLevelList(int iPad, PlayerUID xuid,
     // update telemetry too
 }
 
-bool CMinecraftApp::IsInBannedLevelList(int iPad, PlayerUID xuid,
+bool Game::IsInBannedLevelList(int iPad, PlayerUID xuid,
                                         char* pszLevelName) {
     for (auto it = m_vBannedListA[iPad]->begin();
          it != m_vBannedListA[iPad]->end(); ++it) {
@@ -5712,7 +5712,7 @@ bool CMinecraftApp::IsInBannedLevelList(int iPad, PlayerUID xuid,
     return false;
 }
 
-void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
+void Game::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
                                                    char* pszLevelName) {
     // bool bFound=false;
     // bool bRes;
@@ -5757,7 +5757,7 @@ void CMinecraftApp::RemoveLevelFromBannedLevelList(int iPad, PlayerUID xuid,
 }
 
 // function to add credits for the DLC packs
-void CMinecraftApp::AddCreditText(const wchar_t* lpStr) {
+void Game::AddCreditText(const wchar_t* lpStr) {
     DebugPrintf("ADDING CREDIT - %ls\n", lpStr);
     // add a std::string from the DLC to a credits std::vector
     SCreditTextItemDef* pCreditStruct = new SCreditTextItemDef;
@@ -5770,7 +5770,7 @@ void CMinecraftApp::AddCreditText(const wchar_t* lpStr) {
     vDLCCredits.push_back(pCreditStruct);
 }
 
-bool CMinecraftApp::AlreadySeenCreditText(const std::wstring& wstemp) {
+bool Game::AlreadySeenCreditText(const std::wstring& wstemp) {
     for (unsigned int i = 0; i < m_vCreditText.size(); i++) {
         std::wstring temp = m_vCreditText.at(i);
 
@@ -5785,22 +5785,22 @@ bool CMinecraftApp::AlreadySeenCreditText(const std::wstring& wstemp) {
     return false;
 }
 
-unsigned int CMinecraftApp::GetDLCCreditsCount() {
+unsigned int Game::GetDLCCreditsCount() {
     return (unsigned int)vDLCCredits.size();
 }
 
-SCreditTextItemDef* CMinecraftApp::GetDLCCredits(int iIndex) {
+SCreditTextItemDef* Game::GetDLCCredits(int iIndex) {
     return vDLCCredits.at(iIndex);
 }
 
 // Game Host options
 
-void CMinecraftApp::SetGameHostOption(eGameHostOption eVal,
+void Game::SetGameHostOption(eGameHostOption eVal,
                                       unsigned int uiVal) {
     SetGameHostOption(m_uiGameHostSettings, eVal, uiVal);
 }
 
-void CMinecraftApp::SetGameHostOption(unsigned int& uiHostSettings,
+void Game::SetGameHostOption(unsigned int& uiHostSettings,
                                       eGameHostOption eVal,
                                       unsigned int uiVal) {
     switch (eVal) {
@@ -6035,11 +6035,11 @@ void CMinecraftApp::SetGameHostOption(unsigned int& uiHostSettings,
     }
 }
 
-unsigned int CMinecraftApp::GetGameHostOption(eGameHostOption eVal) {
+unsigned int Game::GetGameHostOption(eGameHostOption eVal) {
     return GetGameHostOption(m_uiGameHostSettings, eVal);
 }
 
-unsigned int CMinecraftApp::GetGameHostOption(unsigned int uiHostSettings,
+unsigned int Game::GetGameHostOption(unsigned int uiHostSettings,
                                               eGameHostOption eVal) {
     // unsigned int uiVal=0;
     switch (eVal) {
@@ -6140,7 +6140,7 @@ unsigned int CMinecraftApp::GetGameHostOption(unsigned int uiHostSettings,
     return false;
 }
 
-bool CMinecraftApp::CanRecordStatsAndAchievements() {
+bool Game::CanRecordStatsAndAchievements() {
     bool isTutorial = Minecraft::GetInstance() != nullptr &&
                       Minecraft::GetInstance()->isTutorial();
     // 4J Stu - All of these options give the host player some advantage, so
@@ -6157,39 +6157,39 @@ bool CMinecraftApp::CanRecordStatsAndAchievements() {
               !isTutorial));
 }
 
-void CMinecraftApp::processSchematics(LevelChunk* levelChunk) {
+void Game::processSchematics(LevelChunk* levelChunk) {
     m_gameRules.processSchematics(levelChunk);
 }
 
-void CMinecraftApp::processSchematicsLighting(LevelChunk* levelChunk) {
+void Game::processSchematicsLighting(LevelChunk* levelChunk) {
     m_gameRules.processSchematicsLighting(levelChunk);
 }
 
-void CMinecraftApp::loadDefaultGameRules() {
+void Game::loadDefaultGameRules() {
     m_gameRules.loadDefaultGameRules();
 }
 
-void CMinecraftApp::setLevelGenerationOptions(
+void Game::setLevelGenerationOptions(
     LevelGenerationOptions* levelGen) {
     m_gameRules.setLevelGenerationOptions(levelGen);
 }
 
-const wchar_t* CMinecraftApp::GetGameRulesString(const std::wstring& key) {
+const wchar_t* Game::GetGameRulesString(const std::wstring& key) {
     return m_gameRules.GetGameRulesString(key);
 }
 
-unsigned char CMinecraftApp::m_szPNG[8] = {137, 80, 78, 71, 13, 10, 26, 10};
+unsigned char Game::m_szPNG[8] = {137, 80, 78, 71, 13, 10, 26, 10};
 
 #define PNG_TAG_tEXt 0x74455874
 
-unsigned int CMinecraftApp::FromBigEndian(unsigned int uiValue) {
+unsigned int Game::FromBigEndian(unsigned int uiValue) {
     unsigned int uiReturn =
         ((uiValue >> 24) & 0x000000ff) | ((uiValue >> 8) & 0x0000ff00) |
         ((uiValue << 8) & 0x00ff0000) | ((uiValue << 24) & 0xff000000);
     return uiReturn;
 }
 
-void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
+void Game::GetImageTextData(std::uint8_t* imageData,
                                      unsigned int imageBytes,
                                      unsigned char* seedText,
                                      unsigned int& uiHostOptions,
@@ -6287,7 +6287,7 @@ void CMinecraftApp::GetImageTextData(std::uint8_t* imageData,
     return;
 }
 
-unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t* textMetadata,
+unsigned int Game::CreateImageTextData(std::uint8_t* textMetadata,
                                                 int64_t seed, bool hasSeed,
                                                 unsigned int uiHostOptions,
                                                 unsigned int uiTexturePackId) {
@@ -6324,7 +6324,7 @@ unsigned int CMinecraftApp::CreateImageTextData(std::uint8_t* textMetadata,
     return iTextMetadataBytes;
 }
 
-void CMinecraftApp::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
+void Game::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
                                               int x, int z) {
     // check we don't already have this in
     for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
@@ -6344,7 +6344,7 @@ void CMinecraftApp::AddTerrainFeaturePosition(_eTerrainFeatureType eFeatureType,
     m_vTerrainFeatures.push_back(pFeatureData);
 }
 
-_eTerrainFeatureType CMinecraftApp::IsTerrainFeature(int x, int z) {
+_eTerrainFeatureType Game::IsTerrainFeature(int x, int z) {
     for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
          ++it) {
         FEATURE_DATA* pFeatureData = *it;
@@ -6356,7 +6356,7 @@ _eTerrainFeatureType CMinecraftApp::IsTerrainFeature(int x, int z) {
     return eTerrainFeature_None;
 }
 
-bool CMinecraftApp::GetTerrainFeaturePosition(_eTerrainFeatureType eType,
+bool Game::GetTerrainFeaturePosition(_eTerrainFeatureType eType,
                                               int* pX, int* pZ) {
     for (auto it = m_vTerrainFeatures.begin(); it < m_vTerrainFeatures.end();
          ++it) {
@@ -6372,7 +6372,7 @@ bool CMinecraftApp::GetTerrainFeaturePosition(_eTerrainFeatureType eType,
     return false;
 }
 
-void CMinecraftApp::ClearTerrainFeaturePosition() {
+void Game::ClearTerrainFeaturePosition() {
     FEATURE_DATA* pFeatureData;
     while (m_vTerrainFeatures.size() > 0) {
         pFeatureData = m_vTerrainFeatures.back();
@@ -6381,7 +6381,7 @@ void CMinecraftApp::ClearTerrainFeaturePosition() {
     }
 }
 
-void CMinecraftApp::UpdatePlayerInfo(std::uint8_t networkSmallId,
+void Game::UpdatePlayerInfo(std::uint8_t networkSmallId,
                                      int16_t playerColourIndex,
                                      unsigned int playerGamePrivileges) {
     for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
@@ -6397,7 +6397,7 @@ void CMinecraftApp::UpdatePlayerInfo(std::uint8_t networkSmallId,
     }
 }
 
-short CMinecraftApp::GetPlayerColour(std::uint8_t networkSmallId) {
+short Game::GetPlayerColour(std::uint8_t networkSmallId) {
     short index = -1;
     for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
         if (m_playerColours[i] == networkSmallId) {
@@ -6408,7 +6408,7 @@ short CMinecraftApp::GetPlayerColour(std::uint8_t networkSmallId) {
     return index;
 }
 
-unsigned int CMinecraftApp::GetPlayerPrivileges(std::uint8_t networkSmallId) {
+unsigned int Game::GetPlayerPrivileges(std::uint8_t networkSmallId) {
     unsigned int privileges = 0;
     for (unsigned int i = 0; i < MINECRAFT_NET_MAX_PLAYERS; ++i) {
         if (m_playerColours[i] == networkSmallId) {
@@ -6419,7 +6419,7 @@ unsigned int CMinecraftApp::GetPlayerPrivileges(std::uint8_t networkSmallId) {
     return privileges;
 }
 
-std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type) {
+std::wstring Game::getEntityName(eINSTANCEOF type) {
     switch (type) {
         case eTYPE_WOLF:
             return app.GetString(IDS_WOLF);
@@ -6471,7 +6471,7 @@ std::wstring CMinecraftApp::getEntityName(eINSTANCEOF type) {
     return L"";
 }
 
-std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] = {
+std::uint32_t Game::m_dwContentTypeA[e_Marketplace_MAX] = {
     XMARKETPLACE_OFFERING_TYPE_CONTENT,  // e_DLC_SkinPack, e_DLC_TexturePacks,
                                          // e_DLC_MashupPacks
     XMARKETPLACE_OFFERING_TYPE_THEME,    // e_DLC_Themes
@@ -6479,7 +6479,7 @@ std::uint32_t CMinecraftApp::m_dwContentTypeA[e_Marketplace_MAX] = {
     XMARKETPLACE_OFFERING_TYPE_TILE,        // e_DLC_Gamerpics
 };
 
-unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
+unsigned int Game::AddDLCRequest(eDLCMarketplaceType eType,
                                           bool bPromote) {
     // lock access
     {
@@ -6524,7 +6524,7 @@ unsigned int CMinecraftApp::AddDLCRequest(eDLCMarketplaceType eType,
     return 1;
 }
 
-unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
+unsigned int Game::AddTMSPPFileTypeRequest(eDLCContentType eType,
                                                     bool bPromote) {
     // lock access
     std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
@@ -6609,7 +6609,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                                 TMSPPRequest* pTMSPPreq = new TMSPPRequest;
 
                                 pTMSPPreq->CallbackFunc =
-                                    &CMinecraftApp::TMSPPFileReturned;
+                                    &Game::TMSPPFileReturned;
                                 pTMSPPreq->lpCallbackParam = this;
                                 pTMSPPreq->eStorageFacility =
                                     C4JStorage::eGlobalStorage_Title;
@@ -6679,7 +6679,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
                             memset(pTMSPPreq, 0, sizeof(TMSPPRequest));
 
                             pTMSPPreq->CallbackFunc =
-                                &CMinecraftApp::TMSPPFileReturned;
+                                &Game::TMSPPFileReturned;
                             pTMSPPreq->lpCallbackParam = this;
                             // 4J-PB - testing for now
                             // pTMSPPreq->eStorageFacility=C4JStorage::eGlobalStorage_TitleUser;
@@ -6710,7 +6710,7 @@ unsigned int CMinecraftApp::AddTMSPPFileTypeRequest(eDLCContentType eType,
     return 1;
 }
 
-bool CMinecraftApp::CheckTMSDLCCanStop() {
+bool Game::CheckTMSDLCCanStop() {
     std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
     for (auto it = m_TMSPPDownloadQueue.begin();
          it != m_TMSPPDownloadQueue.end(); ++it) {
@@ -6724,7 +6724,7 @@ bool CMinecraftApp::CheckTMSDLCCanStop() {
     return true;
 }
 
-bool CMinecraftApp::RetrieveNextDLCContent() {
+bool Game::RetrieveNextDLCContent() {
     // If there's already a retrieve in progress, quit
     // we may have re-ordered the list, so need to check every item
 
@@ -6779,10 +6779,10 @@ bool CMinecraftApp::RetrieveNextDLCContent() {
     return false;
 }
 
-int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
+int Game::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
                                      C4JStorage::PTMSPP_FILEDATA pFileData,
                                      const char* szFilename) {
-    CMinecraftApp* pClass = (CMinecraftApp*)pParam;
+    Game* pClass = (Game*)pParam;
 
     // find the right one in the vector
     {
@@ -6831,9 +6831,9 @@ int CMinecraftApp::TMSPPFileReturned(void* pParam, int iPad, int iUserData,
     return 0;
 }
 
-bool CMinecraftApp::RetrieveNextTMSPPContent() { return false; }
+bool Game::RetrieveNextTMSPPContent() { return false; }
 
-void CMinecraftApp::TickDLCOffersRetrieved() {
+void Game::TickDLCOffersRetrieved() {
     if (!m_bAllDLCContentRetrieved) {
         if (!app.RetrieveNextDLCContent()) {
             app.DebugPrintf("[Consoles_App] All content retrieved.\n");
@@ -6841,7 +6841,7 @@ void CMinecraftApp::TickDLCOffersRetrieved() {
         }
     }
 }
-void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
+void Game::ClearAndResetDLCDownloadQueue() {
     app.DebugPrintf("[Consoles_App] Clear and reset download queue.\n");
 
     int iPosition = 0;
@@ -6859,14 +6859,14 @@ void CMinecraftApp::ClearAndResetDLCDownloadQueue() {
     }
 }
 
-void CMinecraftApp::TickTMSPPFilesRetrieved() {
+void Game::TickTMSPPFilesRetrieved() {
     if (m_bTickTMSDLCFiles && !m_bAllTMSContentRetrieved) {
         if (app.RetrieveNextTMSPPContent() == false) {
             m_bAllTMSContentRetrieved = true;
         }
     }
 }
-void CMinecraftApp::ClearTMSPPFilesRetrieved() {
+void Game::ClearTMSPPFilesRetrieved() {
     int iPosition = 0;
     {
         std::lock_guard<std::mutex> lock(csTMSPPDownloadQueue);
@@ -6882,7 +6882,7 @@ void CMinecraftApp::ClearTMSPPFilesRetrieved() {
     }
 }
 
-int CMinecraftApp::dlcOffersReturned(int iOfferC, std::uint32_t dwType,
+int Game::dlcOffersReturned(int iOfferC, std::uint32_t dwType,
                                      int iPad) {
     // find the right one in the vector
     {
@@ -6907,7 +6907,7 @@ int CMinecraftApp::dlcOffersReturned(int iOfferC, std::uint32_t dwType,
     return 0;
 }
 
-eDLCContentType CMinecraftApp::Find_eDLCContentType(std::uint32_t dwType) {
+eDLCContentType Game::Find_eDLCContentType(std::uint32_t dwType) {
     for (int i = 0; i < e_DLC_MAX; i++) {
         if (m_dwContentTypeA[i] == dwType) {
             return (eDLCContentType)i;
@@ -6915,7 +6915,7 @@ eDLCContentType CMinecraftApp::Find_eDLCContentType(std::uint32_t dwType) {
     }
     return (eDLCContentType)0;
 }
-bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType) {
+bool Game::DLCContentRetrieved(eDLCMarketplaceType eType) {
     // If there's already a retrieve in progress, quit
     // we may have re-ordered the list, so need to check every item
     std::lock_guard<std::mutex> lock(csDLCDownloadQueue);
@@ -6931,7 +6931,7 @@ bool CMinecraftApp::DLCContentRetrieved(eDLCMarketplaceType eType) {
     return false;
 }
 
-void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
+void Game::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
                                            SKIN_BOX* SkinBoxA,
                                            unsigned int dwSkinBoxC) {
     EntityRenderer* renderer =
@@ -6969,7 +6969,7 @@ void CMinecraftApp::SetAdditionalSkinBoxes(std::uint32_t dwSkinID,
     }
 }
 
-std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
+std::vector<ModelPart*>* Game::SetAdditionalSkinBoxes(
     std::uint32_t dwSkinID, std::vector<SKIN_BOX*>* pvSkinBoxA) {
     EntityRenderer* renderer =
         EntityRenderDispatcher::instance->getRenderer(eTYPE_PLAYER);
@@ -7004,7 +7004,7 @@ std::vector<ModelPart*>* CMinecraftApp::SetAdditionalSkinBoxes(
     return pvModelPart;
 }
 
-std::vector<ModelPart*>* CMinecraftApp::GetAdditionalModelParts(
+std::vector<ModelPart*>* Game::GetAdditionalModelParts(
     std::uint32_t dwSkinID) {
     std::lock_guard<std::mutex> lock(csAdditionalModelParts);
     std::vector<ModelPart*>* pvModelParts = nullptr;
@@ -7018,7 +7018,7 @@ std::vector<ModelPart*>* CMinecraftApp::GetAdditionalModelParts(
     return pvModelParts;
 }
 
-std::vector<SKIN_BOX*>* CMinecraftApp::GetAdditionalSkinBoxes(
+std::vector<SKIN_BOX*>* Game::GetAdditionalSkinBoxes(
     std::uint32_t dwSkinID) {
     std::lock_guard<std::mutex> lock(csAdditionalSkinBoxes);
     std::vector<SKIN_BOX*>* pvSkinBoxes = nullptr;
@@ -7032,7 +7032,7 @@ std::vector<SKIN_BOX*>* CMinecraftApp::GetAdditionalSkinBoxes(
     return pvSkinBoxes;
 }
 
-unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
+unsigned int Game::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
     std::lock_guard<std::mutex> lock(csAnimOverrideBitmask);
     unsigned int uiAnimOverrideBitmask = 0L;
 
@@ -7046,7 +7046,7 @@ unsigned int CMinecraftApp::GetAnimOverrideBitmask(std::uint32_t dwSkinID) {
     return uiAnimOverrideBitmask;
 }
 
-void CMinecraftApp::SetAnimOverrideBitmask(std::uint32_t dwSkinID,
+void Game::SetAnimOverrideBitmask(std::uint32_t dwSkinID,
                                            unsigned int uiAnimOverrideBitmask) {
     // Make thread safe
     std::lock_guard<std::mutex> lock(csAnimOverrideBitmask);
@@ -7061,7 +7061,7 @@ void CMinecraftApp::SetAnimOverrideBitmask(std::uint32_t dwSkinID,
         dwSkinID, uiAnimOverrideBitmask));
 }
 
-std::uint32_t CMinecraftApp::getSkinIdFromPath(const std::wstring& skin) {
+std::uint32_t Game::getSkinIdFromPath(const std::wstring& skin) {
     bool dlcSkin = false;
     unsigned int skinId = 0;
 
@@ -7086,7 +7086,7 @@ std::uint32_t CMinecraftApp::getSkinIdFromPath(const std::wstring& skin) {
     return skinId;
 }
 
-std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId) {
+std::wstring Game::getSkinPathFromId(std::uint32_t skinId) {
     // 4J Stu - This function maps the encoded uint32_t we store in the player
     // profile to a filename that is stored as a memory texture and shared
     // between systems in game
@@ -7110,12 +7110,12 @@ std::wstring CMinecraftApp::getSkinPathFromId(std::uint32_t skinId) {
     return chars;
 }
 
-int CMinecraftApp::TexturePackDialogReturned(
+int Game::TexturePackDialogReturned(
     void* pParam, int iPad, C4JStorage::EMessageResult result) {
     return 0;
 }
 
-int CMinecraftApp::getArchiveFileSize(const std::wstring& filename) {
+int Game::getArchiveFileSize(const std::wstring& filename) {
     TexturePack* tPack = nullptr;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft && pMinecraft->skins)
@@ -7127,7 +7127,7 @@ int CMinecraftApp::getArchiveFileSize(const std::wstring& filename) {
         return m_mediaArchive->getFileSize(filename);
 }
 
-bool CMinecraftApp::hasArchiveFile(const std::wstring& filename) {
+bool Game::hasArchiveFile(const std::wstring& filename) {
     TexturePack* tPack = nullptr;
     Minecraft* pMinecraft = Minecraft::GetInstance();
     if (pMinecraft && pMinecraft->skins)
@@ -7139,7 +7139,7 @@ bool CMinecraftApp::hasArchiveFile(const std::wstring& filename) {
         return m_mediaArchive->hasFile(filename);
 }
 
-std::vector<uint8_t> CMinecraftApp::getArchiveFile(
+std::vector<uint8_t> Game::getArchiveFile(
     const std::wstring& filename) {
     TexturePack* tPack = nullptr;
     Minecraft* pMinecraft = Minecraft::GetInstance();
@@ -7154,44 +7154,44 @@ std::vector<uint8_t> CMinecraftApp::getArchiveFile(
 
 // DLC
 
-int CMinecraftApp::GetDLCInfoTrialOffersCount() {
+int Game::GetDLCInfoTrialOffersCount() {
     return (int)DLCInfo_Trial.size();
 }
 
-int CMinecraftApp::GetDLCInfoFullOffersCount() {
+int Game::GetDLCInfoFullOffersCount() {
     return (int)DLCInfo_Full.size();
 }
 
-int CMinecraftApp::GetDLCInfoTexturesOffersCount() {
+int Game::GetDLCInfoTexturesOffersCount() {
     return (int)DLCTextures_PackID.size();
 }
 
 // AUTOSAVE
-void CMinecraftApp::SetAutosaveTimerTime(void) {
+void Game::SetAutosaveTimerTime(void) {
     int settingValue = GetGameSettings(ProfileManager.GetPrimaryPad(), eGameSetting_Autosave);
     m_uiAutosaveTimer =
         time_util::clock::now() +
         std::chrono::minutes(settingValue * 15);
 }  // value x 15 to get mins
 
-bool CMinecraftApp::AutosaveDue(void) {
+bool Game::AutosaveDue(void) {
     return (time_util::clock::now() > m_uiAutosaveTimer);
 }
 
-int64_t CMinecraftApp::SecondsToAutosave() {
+int64_t Game::SecondsToAutosave() {
     return std::chrono::duration_cast<std::chrono::seconds>(m_uiAutosaveTimer - time_util::clock::now()).count();
 }
 
-void CMinecraftApp::SetTrialTimerStart(void) {
+void Game::SetTrialTimerStart(void) {
     m_fTrialTimerStart = m_Time.fAppTime;
     mfTrialPausedTime = 0.0f;
 }
 
-float CMinecraftApp::getTrialTimer(void) {
+float Game::getTrialTimer(void) {
     return m_Time.fAppTime - m_fTrialTimerStart - mfTrialPausedTime;
 }
 
-bool CMinecraftApp::IsLocalMultiplayerAvailable() {
+bool Game::IsLocalMultiplayerAvailable() {
     unsigned int connectedControllers = 0;
     for (unsigned int i = 0; i < XUSER_MAX_COUNT; ++i) {
         if (InputManager.IsPadConnected(i) || ProfileManager.IsSignedIn(i))
@@ -7225,7 +7225,7 @@ bool CMinecraftApp::IsLocalMultiplayerAvailable() {
 
 // 4J-PB - language and locale function
 
-void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
+void Game::getLocale(std::vector<std::wstring>& vecWstrLocales) {
     std::vector<eMCLang> locales;
 
     const unsigned int systemLanguage = XGetLanguage();
@@ -7383,15 +7383,15 @@ void CMinecraftApp::getLocale(std::vector<std::wstring>& vecWstrLocales) {
     }
 }
 
-int CMinecraftApp::get_eMCLang(wchar_t* pwchLocale) {
+int Game::get_eMCLang(wchar_t* pwchLocale) {
     return m_eMCLangA[pwchLocale];
 }
 
-int CMinecraftApp::get_xcLang(wchar_t* pwchLocale) {
+int Game::get_xcLang(wchar_t* pwchLocale) {
     return m_xcLangA[pwchLocale];
 }
 
-void CMinecraftApp::LocaleAndLanguageInit() {
+void Game::LocaleAndLanguageInit() {
     m_localeA[eMCLang_zhCHT] = L"zh-CHT";
     m_localeA[eMCLang_csCS] = L"cs-CS";
     m_localeA[eMCLang_laLAS] = L"la-LAS";
@@ -7592,14 +7592,14 @@ void CMinecraftApp::LocaleAndLanguageInit() {
     m_xcLangA[L"zh-HANT"] = XC_LOCALE_CHINA;
 }
 
-void CMinecraftApp::SetTickTMSDLCFiles(bool bVal) {
+void Game::SetTickTMSDLCFiles(bool bVal) {
     // 4J-PB - we need to stop the retrieval of minecraft store images from TMS
     // when we aren't in the DLC, since going in to Play Game will change the
     // title id group
     m_bTickTMSDLCFiles = bVal;
 }
 
-std::wstring CMinecraftApp::getFilePath(std::uint32_t packId,
+std::wstring Game::getFilePath(std::uint32_t packId,
                                         std::wstring filename,
                                         bool bAddDataFolder,
                                         std::wstring mountPoint) {
@@ -7634,7 +7634,7 @@ std::wstring titleUpdateTexturePackRoot = L"Windows64\\DLC\\";
 std::wstring titleUpdateTexturePackRoot = L"CU\\DLC\\";
 #endif
 
-std::wstring CMinecraftApp::getRootPath(std::uint32_t packId,
+std::wstring Game::getRootPath(std::uint32_t packId,
                                         bool allowOverride, bool bAddDataFolder,
                                         std::wstring mountPoint) {
     std::wstring path = mountPoint;

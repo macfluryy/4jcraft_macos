@@ -15,7 +15,7 @@
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/common/src/Network/Socket.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/include/SkinBox.h"
 #include "ServerConnection.h"
 #include "java/Class.h"

@@ -4,7 +4,7 @@
 #include <sstream>
 #include <vector>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 
 HtmlString::HtmlString(std::wstring text, eMinecraftColour hexColor,

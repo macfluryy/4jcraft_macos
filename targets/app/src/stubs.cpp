@@ -1,7 +1,7 @@
 
 #include "app/include/stubs.h"
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #if defined(__linux__)
 
 void LinuxLogStubLightmapProbe() {

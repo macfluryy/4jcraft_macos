@@ -11,7 +11,7 @@
 #include "app/common/App_enums.h"
 #include "app/common/src/DLC/DLCManager.h"
 #include "app/common/src/DLC/DLCPack.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "java/File.h"
 #include "minecraft/client/Minecraft.h"

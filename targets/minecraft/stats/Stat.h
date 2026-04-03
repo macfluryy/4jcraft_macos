@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "GenericStats.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "StatFormatter.h"
 
 class DecimalFormat;

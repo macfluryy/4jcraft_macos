@@ -8,7 +8,7 @@
 #include "EntityRenderDispatcher.h"
 #include "HumanoidMobRenderer.h"
 #include "app/common/App_enums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Class.h"
 #include "minecraft/Facing.h"
 #include "minecraft/SharedConstants.h"

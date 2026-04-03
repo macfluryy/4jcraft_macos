@@ -58,7 +58,7 @@ public:
 
             // if the xuid hasn't been defined, then we can't use the data
             if (xuid != 0LL) {
-                return CConsoleMinecraftApp::RegisterMojangData(
+                return Game::RegisterMojangData(
                     wNameXUID, xuid, wNameSkin, wNameCloak);
             } else
                 return 1;
@@ -136,7 +136,7 @@ public:
                 wprintf(L"Type - %s, Value - %d, ", wType, iValue);
 #endif
 
-                return CConsoleMinecraftApp::RegisterConfigValues(wType,
+                return Game::RegisterConfigValues(wType,
                                                                   iValue);
             } else {
                 return 1;
@@ -267,7 +267,7 @@ public:
 #endif
                 app.DebugPrintf("Full = %lld, Trial %lld\n", ullFull, ullTrial);
 
-                return CConsoleMinecraftApp::RegisterDLCData(
+                return Game::RegisterDLCData(
                     wType, wNameBanner, iGender, ullFull, ullTrial, wFirstSkin,
                     uiSortIndex, iConfig, wDataFile);
             } else {

@@ -9,6 +9,7 @@
 
 // using namespace std;
 
+#include "app/common/IPlatformGame.h"
 #include "app/common/App_structs.h"
 #include "app/common/src/Audio/Consoles_SoundEngine.h"
 #include "app/common/src/DLC/DLCManager.h"
@@ -54,12 +55,12 @@ class Merchant;
 
 class CMinecraftAudio;
 
-class CMinecraftApp {
+class Game : public IPlatformGame {
 private:
     static int s_iHTMLFontSizesA[eHTMLSize_COUNT];
 
 public:
-    CMinecraftApp();
+    Game();
 
     static const float fSafeZoneX;  // 5% of 1280
     static const float fSafeZoneY;  // 5% of 720
@@ -279,7 +280,7 @@ public:
                                       const int iPad);
     int SetDefaultOptions(C_4JProfile::PROFILESETTINGS* pSettings,
                           const int iPad);
-    virtual void SetRichPresenceContext(int iPad, int contextId) = 0;
+    void SetRichPresenceContext(int iPad, int contextId) override = 0;
 
     void SetGameSettings(int iPad, eGameSetting eVal, unsigned char ucVal);
     unsigned char GetGameSettings(int iPad, eGameSetting eVal);
@@ -681,15 +682,15 @@ public:
                               bool bCallback = false);
 
     // images for save thumbnail/social post
-    virtual void CaptureSaveThumbnail() = 0;
-    virtual void GetSaveThumbnail(std::uint8_t** thumbnailData,
-                                  unsigned int* thumbnailSize) = 0;
-    virtual void ReleaseSaveThumbnail() = 0;
-    virtual void GetScreenshot(int iPad, std::uint8_t** screenshotData,
-                               unsigned int* screenshotSize) = 0;
+    void CaptureSaveThumbnail() override = 0;
+    void GetSaveThumbnail(std::uint8_t** thumbnailData,
+                          unsigned int* thumbnailSize) override = 0;
+    void ReleaseSaveThumbnail() override = 0;
+    void GetScreenshot(int iPad, std::uint8_t** screenshotData,
+                       unsigned int* screenshotSize) override = 0;
 
-    virtual void ReadBannedList(int iPad, eTMSAction action = (eTMSAction)0,
-                                bool bCallback = false) = 0;
+    void ReadBannedList(int iPad, eTMSAction action = (eTMSAction)0,
+                        bool bCallback = false) override = 0;
 
 private:
     std::vector<SCreditTextItemDef*> vDLCCredits;
@@ -922,13 +923,13 @@ public:
     static std::uint32_t getSkinIdFromPath(const std::wstring& skin);
     static std::wstring getSkinPathFromId(std::uint32_t skinId);
 
-    virtual int LoadLocalTMSFile(wchar_t* wchTMSFile) = 0;
-    virtual int LoadLocalTMSFile(wchar_t* wchTMSFile,
-                                 eFileExtensionType eExt) = 0;
-    virtual void FreeLocalTMSFiles(eTMSFileType eType) = 0;
-    virtual int GetLocalTMSFileIndex(wchar_t* wchTMSFile,
-                                     bool bFilenameIncludesExtension,
-                                     eFileExtensionType eEXT) = 0;
+    int LoadLocalTMSFile(wchar_t* wchTMSFile) override = 0;
+    int LoadLocalTMSFile(wchar_t* wchTMSFile,
+                         eFileExtensionType eExt) override = 0;
+    void FreeLocalTMSFiles(eTMSFileType eType) override = 0;
+    int GetLocalTMSFileIndex(wchar_t* wchTMSFile,
+                             bool bFilenameIncludesExtension,
+                             eFileExtensionType eEXT) override = 0;
 
     virtual bool GetTMSGlobalFileListRead() { return true; }
     virtual bool GetTMSDLCInfoRead() { return true; }
@@ -998,6 +999,7 @@ public:
 
 #endif
 };
+
 
 // singleton
 // extern CMinecraftApp app;

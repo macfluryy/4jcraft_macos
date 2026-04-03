@@ -2,7 +2,7 @@
 
 #include "DLCManager.h"
 #include "app/common/src/DLC/DLCFile.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 
 DLCUIDataFile::DLCUIDataFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_UIData, path) {

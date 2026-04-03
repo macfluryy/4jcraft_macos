@@ -8,7 +8,7 @@
 #include <utility>
 #include <vector>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/world/inventory/CraftingContainer.h"
 #include "minecraft/world/item/CoalItem.h"
 #include "minecraft/world/item/Item.h"

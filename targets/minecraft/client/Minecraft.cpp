@@ -22,7 +22,7 @@
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/XboxStubs.h"

@@ -15,7 +15,7 @@
 #ifndef _ENABLEIGGY
 #include "app/linux/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 
 #include "minecraft/client/Minecraft.h"

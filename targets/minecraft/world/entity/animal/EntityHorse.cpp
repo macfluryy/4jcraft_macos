@@ -6,7 +6,7 @@
 #include <limits>
 #include <numbers>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/client/renderer/Textures.h"

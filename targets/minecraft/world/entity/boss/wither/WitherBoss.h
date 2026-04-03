@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Class.h"
 #include "minecraft/stdafx.h"
 #include "minecraft/world/entity/EntitySelector.h"

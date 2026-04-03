@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "StitchSlot.h"
 #include "Texture.h"

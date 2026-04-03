@@ -13,7 +13,7 @@
 #ifndef _ENABLEIGGY
 #include "app/linux/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 
 #include "java/Class.h"
 #include "minecraft/client/Lighting.h"

@@ -18,7 +18,7 @@
 #include "DLCFile.h"
 #include "DLCPack.h"
 #include "app/common/src/GameRules/GameRuleManager.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "platform/PlatformServices.h"
 #include "util/StringHelpers.h"

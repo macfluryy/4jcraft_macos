@@ -1,4 +1,4 @@
-#include "Linux_App.h"
+#include "LinuxGame.h"
 
 #include <assert.h>
 
@@ -8,7 +8,7 @@
 #include "platform/sdl2/Render.h"
 #include "platform/sdl2/Storage.h"
 #include "app/common/App_enums.h"
-#include "app/common/Consoles_App.h"
+#include "app/common/Game.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "platform/C4JThread.h"
@@ -17,35 +17,35 @@
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
 
-CConsoleMinecraftApp app;
+LinuxGame app;
 
 #define CONTEXT_GAME_STATE 0
 
-CConsoleMinecraftApp::CConsoleMinecraftApp() : CMinecraftApp() {}
+LinuxGame::LinuxGame() : Game() {}
 
-void CConsoleMinecraftApp::SetRichPresenceContext(int iPad, int contextId) {}
+void LinuxGame::SetRichPresenceContext(int iPad, int contextId) {}
 
-void CConsoleMinecraftApp::StoreLaunchData() {}
-void CConsoleMinecraftApp::ExitGame() {
-    app.DebugPrintf("Linux_App CConsoleMinecraftApp::ExitGame AFTER START\n");
+void LinuxGame::StoreLaunchData() {}
+void LinuxGame::ExitGame() {
+    app.DebugPrintf("Linux_App LinuxGame::ExitGame AFTER START\n");
     RenderManager.Close();
 }
-void CConsoleMinecraftApp::FatalLoadError() {
+void LinuxGame::FatalLoadError() {
     app.DebugPrintf(
-        "CConsoleMinecraftApp::FatalLoadError - asserting 0 and dying...\n");
+        "LinuxGame::FatalLoadError - asserting 0 and dying...\n");
     assert(0);
 }
 
-void CConsoleMinecraftApp::CaptureSaveThumbnail() {}
-void CConsoleMinecraftApp::GetSaveThumbnail(std::uint8_t** thumbnailData,
+void LinuxGame::CaptureSaveThumbnail() {}
+void LinuxGame::GetSaveThumbnail(std::uint8_t** thumbnailData,
                                             unsigned int* thumbnailSize) {}
-void CConsoleMinecraftApp::ReleaseSaveThumbnail() {}
+void LinuxGame::ReleaseSaveThumbnail() {}
 
-void CConsoleMinecraftApp::GetScreenshot(int iPad,
+void LinuxGame::GetScreenshot(int iPad,
                                          std::uint8_t** screenshotData,
                                          unsigned int* screenshotSize) {}
 
-void CConsoleMinecraftApp::TemporaryCreateGameStart() {
+void LinuxGame::TemporaryCreateGameStart() {
     //////////////////////////////////////////////////////////////////////////////////////////////
     /// From CScene_Main::OnInit
 
@@ -121,17 +121,17 @@ void CConsoleMinecraftApp::TemporaryCreateGameStart() {
     thread->run();
 }
 
-int CConsoleMinecraftApp::GetLocalTMSFileIndex(wchar_t* wchTMSFile,
+int LinuxGame::GetLocalTMSFileIndex(wchar_t* wchTMSFile,
                                                bool bFilenameIncludesExtension,
                                                eFileExtensionType eEXT) {
     return -1;
 }
 
-int CConsoleMinecraftApp::LoadLocalTMSFile(wchar_t* wchTMSFile) { return -1; }
+int LinuxGame::LoadLocalTMSFile(wchar_t* wchTMSFile) { return -1; }
 
-int CConsoleMinecraftApp::LoadLocalTMSFile(wchar_t* wchTMSFile,
+int LinuxGame::LoadLocalTMSFile(wchar_t* wchTMSFile,
                                            eFileExtensionType eExt) {
     return -1;
 }
 
-void CConsoleMinecraftApp::FreeLocalTMSFiles(eTMSFileType eType) {}
+void LinuxGame::FreeLocalTMSFiles(eTMSFileType eType) {}

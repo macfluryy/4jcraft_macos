@@ -2,7 +2,7 @@
 
 #include "KeyMapping.h"
 #include "app/common/src/Audio/SoundEngine.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/include/stubs.h"
 #include "util/StringHelpers.h"
 #include "java/File.h"

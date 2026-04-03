@@ -3,7 +3,7 @@
 #include "app/common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "app/common/src/GameRules/LevelGeneration/ConsoleGenerateStructureAction.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/levelgen/structure/StructurePiece.h"

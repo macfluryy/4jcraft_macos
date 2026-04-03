@@ -11,7 +11,7 @@
 
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "ServerChunkCache.h"
 #include "ServerLevel.h"
 #include "ServerPlayer.h"

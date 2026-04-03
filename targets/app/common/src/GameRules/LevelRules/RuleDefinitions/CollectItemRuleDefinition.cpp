@@ -4,7 +4,7 @@
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "app/common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "app/common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "util/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/network/Connection.h"

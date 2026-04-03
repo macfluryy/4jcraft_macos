@@ -16,7 +16,7 @@
 #include "app/common/App_enums.h"
 #include "app/common/src/BuildVer/BuildVer.h"
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/File.h"

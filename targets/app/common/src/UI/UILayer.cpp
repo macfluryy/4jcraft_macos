@@ -77,7 +77,7 @@
 #include "app/common/src/UI/UIGroup.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 
 UILayer::UILayer(UIGroup* parent) {

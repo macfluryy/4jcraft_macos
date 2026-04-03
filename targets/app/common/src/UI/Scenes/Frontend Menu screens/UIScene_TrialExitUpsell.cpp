@@ -5,7 +5,7 @@
 #include "platform/sdl2/Profile.h"
 #include "app/common/App_Defines.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "strings.h"

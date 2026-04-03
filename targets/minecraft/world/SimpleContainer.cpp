@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/item/ItemInstance.h"
 #include "net.minecraft.world.ContainerListener.h"

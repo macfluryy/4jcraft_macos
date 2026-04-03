@@ -12,7 +12,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "java/Exceptions.h"
 #include "java/InputOutputStream/DataInputStream.h"

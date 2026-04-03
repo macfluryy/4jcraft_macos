@@ -5,7 +5,7 @@
 #include <string>
 
 #include "app/common/src/Console_Debug_enum.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Class.h"
 #include "minecraft/Facing.h"
 #include "minecraft/stats/GenericStats.h"

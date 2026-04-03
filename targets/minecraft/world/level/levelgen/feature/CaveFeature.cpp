@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"

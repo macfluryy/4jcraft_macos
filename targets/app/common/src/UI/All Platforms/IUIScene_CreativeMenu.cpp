@@ -8,7 +8,7 @@
 
 #include "platform/InputActions.h"
 #include "app/common/src/UI/All Platforms/IUIScene_AbstractContainerMenu.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "java/JavaMath.h"
 #include "minecraft/client/Minecraft.h"

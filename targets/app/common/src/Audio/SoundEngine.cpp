@@ -14,7 +14,7 @@
 #include "app/common/App_Defines.h"
 #include "app/common/src/Audio/Consoles_SoundEngine.h"
 #include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "platform/C4JThread.h"
 #include "platform/PlatformServices.h"
 #include "java/Random.h"
@@ -58,7 +58,7 @@ int strcasecmp(const char* a, const char* b) {
 #undef FALSE
 #endif
 #if defined(_WINDOWS64)
-#include "app/windows/Windows64_App.h"
+#include "app/windows/WindowsGame.h"
 #endif
 
 // ASSETS

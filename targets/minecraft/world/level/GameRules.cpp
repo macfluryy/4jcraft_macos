@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include "app/common/App_enums.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 
 // 4J: GameRules isn't in use anymore, just routes any requests to app game host
 // options, kept things commented out for context

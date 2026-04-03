@@ -10,7 +10,7 @@
 #include "app/common/src/UI/Controls/UIControl_Slider.h"
 #include "app/common/src/UI/UILayer.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/client/Minecraft.h"
 #include "strings.h"

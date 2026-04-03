@@ -12,7 +12,7 @@
 #include "app/common/App_enums.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "util/StringHelpers.h"
 #include "java/Random.h"

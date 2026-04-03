@@ -2,7 +2,7 @@
 
 #include <unordered_set>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"

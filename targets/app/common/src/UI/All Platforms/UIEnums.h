@@ -38,7 +38,7 @@ enum EUILayer {
 
 // Defines the scenes and components that can be added to a layer
 // If you add to the enums below, you need to add the scene name in the right
-// place in CConsoleMinecraftApp::wchSceneA
+// place in Game::wchSceneA
 enum EUIScene {
     eUIScene_PartnernetPassword = 0,
     eUIScene_Intro,
@@ -107,7 +107,7 @@ enum EUIScene {
     // ****************************************
     // ****************************************
     // When adding new scenes here, you must also update the switches in
-    // CConsoleMinecraftApp::NavigateToScene There are quite a few so you need
+    // Game::NavigateToScene There are quite a few so you need
     // to check them all Also update UILayer::updateFocusState
 
     // Anything non-xbox should be added here. The ordering of scenes above is

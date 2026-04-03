@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "minecraft/world/effect/MobEffect.h"
 #include "nbt/CompoundTag.h"
 

@@ -7,7 +7,7 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/UILayer.h"
 #include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/client/MemoryTracker.h"
 #include "minecraft/client/Minecraft.h"

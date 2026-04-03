@@ -60,7 +60,7 @@ static void sigsegv_handler(int sig) {
 #include "app/common/App_Defines.h"
 #include "app/common/src/Audio/SoundEngine.h"
 #include "app/common/src/Network/GameNetworkManager.h"
-#include "app/linux/Linux_App.h"
+#include "app/linux/LinuxGame.h"
 #include "app/linux/Linux_UIController.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/client/Minecraft.h"
@@ -490,11 +490,11 @@ int main(int argc, const char* argv[]) {
     // a level if the primary player signs out
     ProfileManager.SetSignInChangeCallback(
         [](bool bVal, unsigned int uiSignInData) {
-            CConsoleMinecraftApp::SignInChangeCallback(&app, bVal, uiSignInData);
+            Game::SignInChangeCallback(&app, bVal, uiSignInData);
         });
 
     // Set a callback for when there is a read error on profile data
-    // StorageManager.SetProfileReadErrorCallback(&CConsoleMinecraftApp::ProfileReadErrorCallback,
+    // StorageManager.SetProfileReadErrorCallback(&Game::ProfileReadErrorCallback,
     // &app);
 
     // QNet needs to be setup after profile manager, as we do not want its
