@@ -6,9 +6,7 @@
 #include <cstdint>
 #include <mutex>
 
-#define Byte zlib_Byte
 #include <zlib.h>
-#undef Byte
 
 thread_local Compression::ThreadStorage* Compression::m_tlsCompression =
     nullptr;
