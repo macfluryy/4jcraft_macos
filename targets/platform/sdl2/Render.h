@@ -59,6 +59,7 @@ public:
     void CBuffLockStaticCreations();
     int CBuffCreate(int count);
     void CBuffDelete(int first, int count);
+    void CBuffDeleteAll();
     void CBuffStart(int index, bool full = false);
     void CBuffClear(int index);
     int CBuffSize(int index);

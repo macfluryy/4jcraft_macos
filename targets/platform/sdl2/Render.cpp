@@ -527,7 +527,6 @@ static void pushRenderState() {
 
 static GLuint s_sVAO_std = 0, s_sVBO_std = 0;
 static GLsizeiptr s_streamVBOSize = 0;
-static bool s_useMapRange = false;
 
 static void bindStdAttribs() {
     glEnableVertexAttribArray(0);
@@ -903,27 +902,11 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
 
     glBindVertexArray(s_sVAO_std);
     glBindBuffer(GL_ARRAY_BUFFER, s_sVBO_std);
-    // orphan buffer
-    if ((GLsizeiptr)bytes != s_streamVBOSize) {
-        s_streamVBOSize = (GLsizeiptr)bytes;
-        glBufferData(GL_ARRAY_BUFFER, s_streamVBOSize, nullptr, GL_STREAM_DRAW);
-    }
 
-    if (s_useMapRange) {
-        void* dst = glMapBufferRange(
-            GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes,
-            GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_RANGE_BIT |
-                GL_MAP_UNSYNCHRONIZED_BIT);
-        if (dst) {
-            memcpy(dst, dataIn, bytes);
-            glUnmapBuffer(GL_ARRAY_BUFFER);
-        } else {
-            s_useMapRange = false;
-        }
-    }
-    if (!s_useMapRange) {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
-    }
+    // Standard orphaning
+    glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, nullptr, GL_STREAM_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
+    s_streamVBOSize = (GLsizeiptr)bytes;
 
     glDrawArrays(glMode, 0, count);
 
@@ -959,6 +942,16 @@ void C4JRender::CBuffDelete(int first, int count) {
     pthread_mutex_unlock(&s_glCallMtx);
 }
 
+void C4JRender::CBuffDeleteAll() {
+    pthread_mutex_lock(&s_glCallMtx);
+    for (auto& kv : s_chunkPool) {
+        kv.second.destroy();
+    }
+    s_chunkPool.clear();
+    s_nextListBase = 1;
+    pthread_mutex_unlock(&s_glCallMtx);
+}
+
 void C4JRender::CBuffStart(int index, bool) {
     s_recListId = index;
     s_recVerts.clear();
@@ -987,7 +980,10 @@ void C4JRender::CBuffEnd() {
 void C4JRender::CBuffClear(int index) {
     pthread_mutex_lock(&s_glCallMtx);
     auto it = s_chunkPool.find(index);
-    if (it != s_chunkPool.end()) it->second.destroy();
+    if (it != s_chunkPool.end()) {
+        it->second.destroy();
+        s_chunkPool.erase(it);
+    }
     pthread_mutex_unlock(&s_glCallMtx);
 }
 

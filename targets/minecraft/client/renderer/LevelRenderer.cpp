@@ -434,6 +434,7 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel* level) {
         // actually exiting the game, so only when the primary player sets there
         // level to nullptr
         if (playerIndex == InputManager.GetPrimaryPad()) {
+            RenderManager.CBuffDeleteAll();
             {
                 std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
                 renderableTileEntities.clear();
