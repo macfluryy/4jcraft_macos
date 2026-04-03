@@ -35,6 +35,8 @@
 class DataInput;
 
 std::mutex McRegionChunkStorage::cs_memory;
+std::condition_variable McRegionChunkStorage::s_queueCondition;
+std::condition_variable McRegionChunkStorage::s_waitCondition;
 
 std::deque<DataOutputStream*> McRegionChunkStorage::s_chunkDataQueue;
 int McRegionChunkStorage::s_runningThreadCount = 0;
@@ -204,14 +206,15 @@ void McRegionChunkStorage::save(Level* level, LevelChunk* levelChunk) {
     DataOutputStream* output = RegionFileCache::getChunkDataOutputStream(
         m_saveFile, m_prefix, levelChunk->x, levelChunk->z);
 
-    if (m_saveFile->getOriginalSaveVersion() >=
-        SAVE_FILE_VERSION_COMPRESSED_CHUNK_STORAGE) {
-        OldChunkStorage::save(levelChunk, level, output);
+    if (m_saveFile->getOriginalSaveVersion() >= SAVE_FILE_VERSION_COMPRESSED_CHUNK_STORAGE) {
+            OldChunkStorage::save(levelChunk, level, output);
 
-        {
-            std::lock_guard<std::mutex> lock(cs_memory);
-            s_chunkDataQueue.push_back(output);
-        }
+            {
+                std::lock_guard<std::mutex> lock(cs_memory);
+                s_chunkDataQueue.push_back(output);
+            }
+            // 4jcraft: WAKE UP, WAKE THE FUCK.. UP
+            s_queueCondition.notify_one();
 
     } else {
         CompoundTag* tag;
@@ -337,52 +340,38 @@ void McRegionChunkStorage::staticCtor() {
     }
 }
 
+// 4jcraft: removed the wasting 100ms chunk loading part.
 int McRegionChunkStorage::runSaveThreadProc(void* lpParam) {
     Compression::CreateNewThreadStorage();
 
     bool running = true;
-    size_t lastQueueSize = 0;
-
     DataOutputStream* dos = nullptr;
     while (running) {
         {
-            std::unique_lock<std::mutex> lock(cs_memory, std::try_to_lock);
-            if (lock.owns_lock()) {
-                lastQueueSize = s_chunkDataQueue.size();
-                if (lastQueueSize > 0) {
-                    dos = s_chunkDataQueue.front();
-                    s_chunkDataQueue.pop_front();
-                }
-                s_runningThreadCount++;
-                lock.unlock();
+            std::unique_lock<std::mutex> lock(cs_memory);
+            s_queueCondition.wait(lock, [] { return !s_chunkDataQueue.empty(); });
+            dos = s_chunkDataQueue.front();
+            s_chunkDataQueue.pop_front();
+            s_runningThreadCount++;
+        } // Unlock so the main thread can keep working
 
-                if (dos) {
-                    // app.DebugPrintf("Compressing chunk data (%d left)\n",
-                    // lastQueueSize - 1);
-                    dos->close();
-                    dos->deleteChildStream();
-                }
-                delete dos;
-                dos = nullptr;
-
-                {
-                    std::lock_guard<std::mutex> lock2(cs_memory);
-                    s_runningThreadCount--;
-                }
-            }
+        if (dos) {
+            dos->close();
+            dos->deleteChildStream();
+            delete dos;
+            dos = nullptr;
         }
 
-        // If there was more than one thing in the queue last time we checked,
-        // then we want to spin round again soon Otherwise wait a bit longer
-        if ((lastQueueSize - 1) > 0)
-            std::this_thread::sleep_for(
-                std::chrono::milliseconds(1));  // Sleep 1 to yield
-        else
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        {
+            std::lock_guard<std::mutex> lock(cs_memory);
+            s_runningThreadCount--;
+        }
+
+        // Tell the main thread we finished a chunk
+        s_waitCondition.notify_all();
     }
 
     Compression::ReleaseThreadStorage();
-
     return 0;
 }
 
@@ -391,39 +380,13 @@ void McRegionChunkStorage::WaitForAll() { WaitForAllSaves(); }
 void McRegionChunkStorage::WaitIfTooManyQueuedChunks() { WaitForSaves(); }
 
 // Static
+// 4jcraft: Better waiting system
 void McRegionChunkStorage::WaitForAllSaves() {
-    // Wait for there to be no more tasks to be processed...
-    size_t queueSize;
-    {
-        std::lock_guard<std::mutex> lock(cs_memory);
-        queueSize = s_chunkDataQueue.size();
-    }
-
-    while (queueSize > 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
-        {
-            std::lock_guard<std::mutex> lock(cs_memory);
-            queueSize = s_chunkDataQueue.size();
-        }
-    }
-
-    // And then wait for there to be no running threads that are processing
-    // these tasks
-    int runningThreadCount;
-    {
-        std::lock_guard<std::mutex> lock(cs_memory);
-        runningThreadCount = s_runningThreadCount;
-    }
-
-    while (runningThreadCount > 0) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
-        {
-            std::lock_guard<std::mutex> lock(cs_memory);
-            runningThreadCount = s_runningThreadCount;
-        }
-    }
+    std::unique_lock<std::mutex> lock(cs_memory);
+    // Pause the main thread instantly until queue is 0 AND workers are done
+    s_waitCondition.wait(lock, [] {
+        return s_chunkDataQueue.empty() && s_runningThreadCount == 0;
+    });
 }
 
 // Static
@@ -431,21 +394,12 @@ void McRegionChunkStorage::WaitForSaves() {
     static const int MAX_QUEUE_SIZE = 12;
     static const int DESIRED_QUEUE_SIZE = 6;
 
-    // Wait for the queue to reduce to a level where we should add more elements
-    size_t queueSize;
-    {
-        std::lock_guard<std::mutex> lock(cs_memory);
-        queueSize = s_chunkDataQueue.size();
-    }
 
-    if (queueSize > MAX_QUEUE_SIZE) {
-        while (queueSize > DESIRED_QUEUE_SIZE) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-
-            {
-                std::lock_guard<std::mutex> lock(cs_memory);
-                queueSize = s_chunkDataQueue.size();
-            }
-        }
+    std::unique_lock<std::mutex> lock(cs_memory);
+    if (s_chunkDataQueue.size() > MAX_QUEUE_SIZE) {
+        // Pause until the queue drains down to the desired size
+        s_waitCondition.wait(lock, [] {
+            return s_chunkDataQueue.size() <= DESIRED_QUEUE_SIZE;
+        });
     }
 }

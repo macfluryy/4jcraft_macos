@@ -14,6 +14,7 @@
 #include "RegionFileCache.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
 #include "nbt/NbtIo.h"
+#include <condition_variable> // 4jcraft: im pretty sure there's a better alternative to this.
 
 class ConsoleSaveFile;
 class C4JThread;
@@ -38,6 +39,8 @@ public:
     ~McRegionChunkStorage();
     static void staticCtor();
 
+    static std::condition_variable s_queueCondition;
+    static std::condition_variable s_waitCondition;
     virtual LevelChunk* load(Level* level, int x, int z);
     virtual void save(Level* level, LevelChunk* levelChunk);
     virtual void saveEntities(Level* level, LevelChunk* levelChunk);
