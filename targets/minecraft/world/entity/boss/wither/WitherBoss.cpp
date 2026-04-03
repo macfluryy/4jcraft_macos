@@ -51,9 +51,9 @@ bool LivingEntitySelector::matches(std::shared_ptr<Entity> entity) const {
     }
 }
 
-EntitySelector* WitherBoss::livingEntitySelector = new LivingEntitySelector();
-
 WitherBoss::WitherBoss(Level* level) : Monster(level) {
+    // 4jcraft: moved to per-instance
+    livingEntitySelector = new LivingEntitySelector();
     // 4J Stu - This function call had to be moved here from the Entity ctor to
     // ensure that the derived version of the function is called
     this->defineSynchedData();

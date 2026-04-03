@@ -43,7 +43,8 @@ private:
     int idleHeadUpdates[IDLE_HEAD_UPDATES_SIZE];
     int destroyBlocksTick;
 
-    static EntitySelector* livingEntitySelector;
+    // 4jcraft: moved to per-instance
+    EntitySelector* livingEntitySelector;
 
 public:
     WitherBoss(Level* level);
