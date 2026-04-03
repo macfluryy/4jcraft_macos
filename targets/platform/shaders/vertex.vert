@@ -46,7 +46,7 @@ void main() {
 
         float d0 = max(dot(n, uLight0Dir), 0.0);
         float d1 = max(dot(n, uLight1Dir), 0.0);
-        vColor = vec4(col.rgb * (uLightAmbient + uLightDiffuse * (d0 + d1)), col.a);
+        vColor = vec4(col.rgb * (uLightAmbient + uLightDiffuse * clamp(d0 + d1, 0.0, 1.0)), col.a);
     } else {
         vColor = col;
     }
