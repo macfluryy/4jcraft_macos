@@ -34,7 +34,11 @@ jobs:
           python -m pip install meson
           # Set a reasonable ccache size
           ccache -M 5G || true
-          python -m pip install meson
+
+      - name: Install LLVM + libc++
+        run: |
+          wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
+          sudo apt-get install -y libc++-20-dev libc++abi-20-dev
 
       - name: Restore ccache
         uses: actions/cache@v4
@@ -75,5 +79,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: minecraft-client-linux-${{ github.sha }}
-          path: build/Minecraft.Client/Minecraft.Client
+          path: build/targets/app/Minecraft.Client
           retention-days: 7
