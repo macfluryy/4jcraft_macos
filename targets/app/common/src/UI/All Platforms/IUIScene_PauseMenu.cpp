@@ -19,7 +19,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"

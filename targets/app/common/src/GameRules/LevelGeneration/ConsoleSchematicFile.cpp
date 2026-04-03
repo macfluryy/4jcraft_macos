@@ -10,7 +10,7 @@
 
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

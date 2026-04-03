@@ -70,7 +70,7 @@
 #include "app/common/src/GameRules/LevelGeneration/ConsoleSchematicFile.h"
 #include "app/common/src/Network/Socket.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/renderer/GameRenderer.h"

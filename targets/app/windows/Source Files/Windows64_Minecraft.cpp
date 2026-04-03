@@ -28,7 +28,7 @@
 // #include "NetworkManager.h"
 #include "../Resource.h"
 #include "Sentient/SentientManager.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"

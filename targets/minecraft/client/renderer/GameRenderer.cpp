@@ -22,7 +22,7 @@
 #include "app/include/FrameProfiler.h"
 #include "app/include/stubs.h"
 #include "Tesselator.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 
 #include "java/Class.h"
 #include "java/FloatBuffer.h"

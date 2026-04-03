@@ -33,7 +33,7 @@
 #include "Timer.h"
 #include "User.h"
 #include "minecraft/world/entity/player/SkinTypes.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/client/gui/DeathScreen.h"

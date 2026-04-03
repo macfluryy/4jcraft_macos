@@ -16,7 +16,7 @@
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 

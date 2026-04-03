@@ -9,7 +9,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "ServerLevel.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/util/ProgressListener.h"
 #include "minecraft/world/level/Level.h"

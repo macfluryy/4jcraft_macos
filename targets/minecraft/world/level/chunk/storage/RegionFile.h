@@ -4,7 +4,7 @@
 #include <format>
 #include <vector>
 
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/InputOutputStream.h"
 

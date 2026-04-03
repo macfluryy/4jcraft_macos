@@ -29,7 +29,7 @@
 #include "XboxStubs.h"
 #include "util/StringHelpers.h"
 #include "platform/PlatformServices.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/File.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"

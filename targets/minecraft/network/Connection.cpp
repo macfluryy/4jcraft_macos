@@ -11,7 +11,7 @@
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/common/src/Network/Socket.h"
 #include "util/StringHelpers.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"

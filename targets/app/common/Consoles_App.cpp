@@ -83,7 +83,7 @@
 #include "Minecraft_Macros.h"
 #include "util/Timer.h"
 #include "util/StringHelpers.h"
-#include "minecraft/world/level/storage/compression.h"
+#include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/client/User.h"
 #include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/renderer/entity/EntityRenderDispatcher.h"
