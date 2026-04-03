@@ -7,7 +7,7 @@
 #include "platform/sdl2/Render.h"
 #include "Button.h"
 #include "PauseScreen.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"

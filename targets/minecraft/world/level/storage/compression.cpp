@@ -1,4 +1,4 @@
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 
 #include <assert.h>
 #include <string.h>

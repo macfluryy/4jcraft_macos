@@ -9,7 +9,7 @@
 
 #include "app/common/src/Network/Socket.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "java/System.h"

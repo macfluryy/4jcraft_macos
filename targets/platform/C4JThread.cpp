@@ -26,8 +26,8 @@
 #include <unistd.h>
 #endif
 
-#include "app/common/ShutdownManager.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/ShutdownManager.h"
+#include "platform/C4JThread.h"
 
 class Level;
 

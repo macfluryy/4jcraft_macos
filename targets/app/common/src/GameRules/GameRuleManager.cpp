@@ -20,7 +20,7 @@
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/LevelRuleset.h"
 #include "app/common/src/Localisation/StringTable.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"

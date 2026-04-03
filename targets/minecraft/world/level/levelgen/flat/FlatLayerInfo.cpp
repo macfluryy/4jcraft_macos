@@ -1,6 +1,6 @@
 #include "FlatLayerInfo.h"
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 void FlatLayerInfo::_init(int height, int id) {
     this->height = height;

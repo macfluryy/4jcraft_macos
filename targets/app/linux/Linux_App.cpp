@@ -11,7 +11,7 @@
 #include "app/common/Consoles_App.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/User.h"
 #include "minecraft/server/MinecraftServer.h"

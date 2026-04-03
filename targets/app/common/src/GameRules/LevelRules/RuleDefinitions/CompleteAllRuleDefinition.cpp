@@ -8,7 +8,7 @@
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "app/common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/network/Connection.h"
 #include "minecraft/network/packet/UpdateGameRuleProgressPacket.h"
 

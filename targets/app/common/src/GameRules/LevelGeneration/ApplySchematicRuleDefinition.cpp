@@ -8,7 +8,7 @@
 #include "app/common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"

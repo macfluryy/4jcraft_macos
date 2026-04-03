@@ -8,7 +8,7 @@
 #include "platform/sdl2/Storage.h"
 #include "app/common/App_Defines.h"
 #include "UIEnums.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 
 class Container;
 class Inventory;

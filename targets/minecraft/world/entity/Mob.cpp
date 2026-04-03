@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"

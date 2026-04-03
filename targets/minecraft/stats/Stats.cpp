@@ -6,7 +6,7 @@
 #include "Achievements.h"
 #include "GeneralStat.h"
 #include "ItemStat.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/stats/Stat.h"
 #include "minecraft/stats/StatsCounter.h"
 #include "minecraft/world/item/FishingRodItem.h"

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <mutex>
 
-#include "console_helpers/Timer.h"
+#include "util/Timer.h"
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Storage.h"
 

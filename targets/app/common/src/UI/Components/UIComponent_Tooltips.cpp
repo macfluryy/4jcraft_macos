@@ -14,7 +14,7 @@
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 UIComponent_Tooltips::UIComponent_Tooltips(int iPad, void* initData,
                                            UILayer* parentLayer)

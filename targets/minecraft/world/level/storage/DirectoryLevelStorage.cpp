@@ -16,7 +16,7 @@
 #include "app/common/src/GameRules/GameRuleManager.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"

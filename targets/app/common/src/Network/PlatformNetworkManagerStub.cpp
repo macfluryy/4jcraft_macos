@@ -12,7 +12,7 @@
 #include "app/include/NetTypes.h"
 #include "NetworkPlayerQNet.h"
 #include "Socket.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 
 IPlatformNetworkStub* g_pPlatformNetworkManager;
 

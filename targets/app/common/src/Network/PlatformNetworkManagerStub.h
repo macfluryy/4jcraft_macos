@@ -11,7 +11,7 @@
 #include "NetworkPlayerInterface.h"
 #include "platform/IPlatformNetwork.h"
 #include "SessionInfo.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 
 class C4JThread;
 class CGameNetworkManager;

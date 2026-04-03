@@ -11,7 +11,7 @@
 #include "app/linux/Stubs/iggy_stubs.h"
 #endif
 #include "app/linux/Iggy/include/rrCore.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 UIControl_Base::UIControl_Base() {
     m_bLabelChanged = false;

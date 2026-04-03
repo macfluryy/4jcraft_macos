@@ -18,7 +18,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/ProgressRenderer.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"

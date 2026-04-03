@@ -14,7 +14,7 @@
 #include "app/common/src/UI/UIScene.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"

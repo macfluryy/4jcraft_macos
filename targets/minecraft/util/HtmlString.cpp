@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 HtmlString::HtmlString(std::wstring text, eMinecraftColour hexColor,
                        bool italics, bool indent) {

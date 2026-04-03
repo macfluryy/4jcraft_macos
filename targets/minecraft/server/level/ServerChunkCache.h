@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "java/File.h"
 #include "java/JavaIntHash.h"
 #include "minecraft/world/level/biome/Biome.h"

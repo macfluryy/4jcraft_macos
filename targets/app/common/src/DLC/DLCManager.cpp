@@ -21,7 +21,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "platform/PlatformServices.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "strings.h"

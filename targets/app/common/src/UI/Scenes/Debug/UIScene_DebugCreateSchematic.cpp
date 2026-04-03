@@ -16,13 +16,13 @@
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 UIScene_DebugCreateSchematic::UIScene_DebugCreateSchematic(int iPad,
                                                            void* initData,

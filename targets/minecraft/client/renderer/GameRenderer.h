@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "app/common/App_Defines.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "minecraft/client/resources/ResourceLocation.h"
 #include "minecraft/util/SmoothFloat.h"
 #include "minecraft/world/phys/Vec3.h"

@@ -13,7 +13,7 @@
 
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/Definitions.h"
+#include "util/Definitions.h"
 #include "java/System.h"
 
 extern CConsoleMinecraftApp app;

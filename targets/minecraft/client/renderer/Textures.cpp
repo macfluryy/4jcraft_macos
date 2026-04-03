@@ -14,7 +14,7 @@
 #include "app/include/MemTexture.h"
 #include "app/include/MemTextureProcessor.h"
 #include "app/include/MobSkinMemTextureProcessor.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 #include "java/Buffer.h"
 #include "java/ByteBuffer.h"

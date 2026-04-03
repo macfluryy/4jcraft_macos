@@ -2,7 +2,7 @@
 
 #include "app/common/src/Audio/SoundEngine.h"
 #include "app/include/stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Font.h"

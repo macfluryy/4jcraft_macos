@@ -7,7 +7,7 @@
 #include <vector>
 
 // 4jcraft TODO
-#include "app/common/ShutdownManager.h"
+#include "platform/ShutdownManager.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/include/NetTypes.h"

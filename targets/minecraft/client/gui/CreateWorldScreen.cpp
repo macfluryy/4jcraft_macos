@@ -18,7 +18,7 @@
 #include "app/linux/Linux_UIController.h"
 #include "app/include/NetTypes.h"
 #include "app/include/stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/Options.h"

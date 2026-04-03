@@ -38,10 +38,10 @@
 #include "app/include/BufferedImage.h"
 #include "UIFontData.h"
 #include "XboxStubs.h"
-#include "console_helpers/C4JThread.h"
-#include "console_helpers/Timer.h"
+#include "platform/C4JThread.h"
+#include "util/Timer.h"
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 #include "java/System.h"
 #include "minecraft/client/Minecraft.h"

@@ -8,7 +8,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "platform/PlatformServices.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/FileInputStream.h"

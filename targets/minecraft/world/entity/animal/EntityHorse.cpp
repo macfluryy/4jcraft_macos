@@ -7,7 +7,7 @@
 #include <numbers>
 
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/core/particles/ParticleTypes.h"

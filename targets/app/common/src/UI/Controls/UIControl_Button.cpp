@@ -8,7 +8,7 @@
 #ifndef _ENABLEIGGY
 #include "app/linux/Stubs/iggy_stubs.h"
 #endif
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 UIControl_Button::UIControl_Button() {}
 

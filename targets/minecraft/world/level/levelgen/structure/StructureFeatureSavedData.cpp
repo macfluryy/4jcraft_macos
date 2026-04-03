@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/world/level/saveddata/SavedData.h"
 #include "nbt/CompoundTag.h"
 

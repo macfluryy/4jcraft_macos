@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "minecraft/world/phys/Vec3.h"
 
 class Level;

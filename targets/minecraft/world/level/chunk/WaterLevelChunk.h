@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "LevelChunk.h"
-#include "console_helpers/Definitions.h"
 #include "minecraft/world/level/LightLayer.h"
 
 class Level;

@@ -11,7 +11,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "RenameWorldScreen.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/client/gui/ScrolledSelectionList.h"

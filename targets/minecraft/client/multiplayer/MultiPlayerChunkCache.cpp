@@ -5,7 +5,7 @@
 
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/level/ServerChunkCache.h"
 #include "minecraft/server/level/ServerLevel.h"

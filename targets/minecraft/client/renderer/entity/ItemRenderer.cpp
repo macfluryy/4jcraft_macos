@@ -6,7 +6,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "EntityRenderDispatcher.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 #include "java/JavaMath.h"
 #include "java/Random.h"

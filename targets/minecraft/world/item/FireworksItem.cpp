@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/entity/player/Abilities.h"
 #include "minecraft/world/entity/player/Player.h"

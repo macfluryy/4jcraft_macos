@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/Timer.h"
+#include "util/Timer.h"
 #include "platform/sdl2/Storage.h"
 #include "minecraft/network/Connection.h"
 

@@ -15,7 +15,7 @@
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/UseTileRuleDefinition.h"
 #include "app/common/src/GameRules/LevelRules/Rules/GameRule.h"
 #include "app/common/src/GameRules/LevelRules/Rules/GameRulesInstance.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 CompoundGameRuleDefinition::CompoundGameRuleDefinition() {
     m_lastRuleStatusChanged = nullptr;

@@ -1,7 +1,7 @@
 #include "LeaderboardManager.h"
 
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 const std::wstring LeaderboardManager::filterNames[eNumFilterModes] = {
     L"Friends", L"MyScore", L"TopRank"};

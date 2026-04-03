@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/util/Mth.h"
 
 void Node::_init() {

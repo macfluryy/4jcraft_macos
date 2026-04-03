@@ -9,7 +9,7 @@
 #include "platform/sdl2/Render.h"
 #include "Particle.h"
 #include "TerrainParticle.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"

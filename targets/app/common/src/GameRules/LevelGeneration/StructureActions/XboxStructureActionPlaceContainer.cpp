@@ -8,7 +8,7 @@
 #include "app/common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceBlock.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/AddItemRuleDefinition.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"

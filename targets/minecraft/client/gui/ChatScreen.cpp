@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "app/include/stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Gui.h"

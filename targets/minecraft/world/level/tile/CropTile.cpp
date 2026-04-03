@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/world/IconRegister.h"
 #include "minecraft/world/item/Item.h"

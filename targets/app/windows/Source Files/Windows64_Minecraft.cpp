@@ -6,7 +6,7 @@
 #include <mutex>
 
 #include "app/common/src/Network/Socket.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/User.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/ConnectScreen.h"
@@ -28,7 +28,7 @@
 // #include "NetworkManager.h"
 #include "../Resource.h"
 #include "Sentient/SentientManager.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "minecraft/client/Options.h"
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"

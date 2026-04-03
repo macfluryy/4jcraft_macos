@@ -7,7 +7,7 @@
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/Timer.h"
+#include "util/Timer.h"
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/MobCategory.h"

@@ -17,7 +17,7 @@
 #include "app/common/src/UI/Controls/UIControl_TextInput.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/entity/player/Abilities.h"

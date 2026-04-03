@@ -15,7 +15,7 @@
 #include "app/common/src/Audio/Consoles_SoundEngine.h"
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "platform/PlatformServices.h"
 #include "java/Random.h"
 #include "minecraft/client/Minecraft.h"

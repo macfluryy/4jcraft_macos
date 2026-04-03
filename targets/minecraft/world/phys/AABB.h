@@ -4,7 +4,6 @@
 #include <string>
 
 #include "Vec3.h"
-#include "console_helpers/Definitions.h"
 
 class HitResult;
 class Vec3;

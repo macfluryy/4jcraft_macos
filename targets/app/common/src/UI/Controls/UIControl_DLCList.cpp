@@ -8,7 +8,7 @@
 #include "app/linux/Stubs/iggy_stubs.h"
 #endif
 #include "app/linux/Iggy/include/rrCore.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 bool UIControl_DLCList::setupControl(UIScene* scene, IggyValuePath* parent,
                                      const std::string& controlName) {

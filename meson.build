@@ -79,7 +79,7 @@ stb_dep = declare_dependency(include_directories: stb)
 
 miniaudio_dep = dependency('miniaudio')
 
-subdir('targets/console_helpers')
+subdir('targets/util')
 subdir('targets/java')
 subdir('targets/nbt')
 subdir('targets/platform')

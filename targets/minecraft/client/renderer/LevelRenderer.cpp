@@ -27,7 +27,7 @@
 #include "app/include/MobSkinMemTextureProcessor.h"
 #include "app/include/stubs.h"
 #include "Tesselator.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

@@ -9,7 +9,7 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/client/Minecraft.h"

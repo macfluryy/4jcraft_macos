@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/Definitions.h"
+#include "util/Definitions.h"
 
 #define MAKE_FOURCC(ch0, ch1, ch2, ch3)                                   \
     (static_cast<std::uint32_t>(static_cast<std::uint8_t>(ch0)) |         \

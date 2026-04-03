@@ -12,7 +12,7 @@
 
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "java/InputOutputStream/InputStream.h"
 #include "java/InputOutputStream/OutputStream.h"
 

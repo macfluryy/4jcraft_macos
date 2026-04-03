@@ -8,7 +8,7 @@
 #include <system_error>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"  // 4jcraft TODO
+#include "util/StringHelpers.h"  // 4jcraft TODO
 #include "platform/PlatformServices.h"
 #include "java/FileFilter.h"
 

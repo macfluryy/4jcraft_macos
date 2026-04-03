@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "ConsoleInputSource.h"
-#include "console_helpers/C4JThread.h"
-#include "console_helpers/Timer.h"
+#include "platform/C4JThread.h"
+#include "util/Timer.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"

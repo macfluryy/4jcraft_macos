@@ -22,7 +22,7 @@
 #include "app/common/src/Localisation/StringTable.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "platform/PlatformServices.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

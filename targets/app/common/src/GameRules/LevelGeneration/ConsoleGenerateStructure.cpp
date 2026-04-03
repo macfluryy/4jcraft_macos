@@ -12,7 +12,7 @@
 #include "app/common/src/GameRules/LevelGeneration/StructureActions/XboxStructureActionPlaceSpawner.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/Direction.h"
 #include "minecraft/world/level/Level.h"

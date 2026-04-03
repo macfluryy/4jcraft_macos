@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/JavaMath.h"
 #include "minecraft/Direction.h"
 #include "nbt/IntArrayTag.h"

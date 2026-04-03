@@ -21,7 +21,7 @@
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

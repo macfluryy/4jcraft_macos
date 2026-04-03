@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "SharedConstants.h"
-#include "console_helpers/C4JThread.h"
+#include "platform/C4JThread.h"
 #include "java/JavaIntHash.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/Level.h"

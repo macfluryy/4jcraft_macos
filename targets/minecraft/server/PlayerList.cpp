@@ -23,7 +23,7 @@
 #include "app/include/NetTypes.h"
 #include "MinecraftServer.h"
 #include "Settings.h"
-#include "console_helpers/Definitions.h"
+#include "util/Definitions.h"
 #include "java/Class.h"
 #include "java/JavaMath.h"
 #include "minecraft/Pos.h"

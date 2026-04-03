@@ -22,7 +22,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/System.h"
 #include "minecraft/client/Lighting.h"
 #include "minecraft/client/Minecraft.h"

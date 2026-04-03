@@ -34,7 +34,7 @@
 class Player;
 class UILayer;
 #ifdef _DEBUG_MENUS_ENABLED
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/ClientConnection.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"

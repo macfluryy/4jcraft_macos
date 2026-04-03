@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/Definitions.h"
 #include "java/Class.h"
 #include "minecraft/world/phys/AABB.h"
 #include "minecraft/world/phys/Vec3.h"

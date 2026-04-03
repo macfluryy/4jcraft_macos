@@ -8,7 +8,7 @@
 
 #include "app/common/App_enums.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
 #include "minecraft/Facing.h"

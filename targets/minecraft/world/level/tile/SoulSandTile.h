@@ -1,6 +1,5 @@
 #pragma once
 #include "Tile.h"
-#include "console_helpers/Definitions.h"
 
 class SoulSandTile : public Tile {
 public:

@@ -7,7 +7,7 @@
 #include "NumberFormatters.h"
 #include "StatFormatter.h"
 #include "Stats.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 Stat::DefaultFormat* Stat::defaultFormatter = new DefaultFormat();
 Stat::TimeFormatter* Stat::timeFormatter = new TimeFormatter();

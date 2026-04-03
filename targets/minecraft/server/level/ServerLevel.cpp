@@ -8,7 +8,7 @@
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Storage.h"
 #include "EntityTracker.h"
-#include "app/common/ShutdownManager.h"
+#include "platform/ShutdownManager.h"
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/common/src/DLC/DLCManager.h"
 #include "app/common/src/DLC/DLCPack.h"

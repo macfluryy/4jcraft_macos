@@ -12,7 +12,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Linux_UIController.h"
 #include "app/include/XboxStubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "java/System.h"

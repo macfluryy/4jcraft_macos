@@ -6,7 +6,7 @@
 #ifndef _ENABLEIGGY
 #include "app/linux/Stubs/iggy_stubs.h"
 #endif
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 bool UIControl_BitmapIcon::setupControl(UIScene* scene, IggyValuePath* parent,
                                         const std::string& controlName) {

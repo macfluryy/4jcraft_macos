@@ -3,7 +3,6 @@
 #include <optional>
 
 #include "Tile.h"
-#include "console_helpers/Definitions.h"
 
 class Random;
 class Level;

@@ -6,12 +6,12 @@
 #include <thread>
 #include <vector>
 
-#include "app/common/ShutdownManager.h"
+#include "platform/ShutdownManager.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/common/src/Network/Socket.h"
-#include "console_helpers/StringHelpers.h"
-#include "console_helpers/compression.h"
+#include "util/StringHelpers.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "java/InputOutputStream/BufferedOutputStream.h"
 #include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"

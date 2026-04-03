@@ -8,7 +8,7 @@
 #endif
 #include "app/linux/Iggy/include/rrCore.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "platform/PlatformServices.h"
 
 UITTFFont::UITTFFont(const std::string& name, const std::string& path,

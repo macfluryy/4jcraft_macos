@@ -5,7 +5,7 @@
 #include "app/linux/Linux_App.h"
 #include "PendingConnection.h"
 #include "PlayerConnection.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLevel.h"
 #include "minecraft/network/Connection.h"

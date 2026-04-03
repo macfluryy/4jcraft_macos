@@ -5,7 +5,7 @@
 
 #include "app/linux/Linux_App.h"
 #include "PacketListener.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/level/Level.h"

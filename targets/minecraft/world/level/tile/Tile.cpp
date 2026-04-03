@@ -6,7 +6,7 @@
 
 #include "Facing.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/sounds/SoundTypes.h"

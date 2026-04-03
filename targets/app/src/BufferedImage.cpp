@@ -13,7 +13,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "PlatformTypes.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "platform/PlatformServices.h"
 
 BufferedImage::BufferedImage(int width, int height, int type) {

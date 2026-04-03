@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "console_helpers/Definitions.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/level/material/Material.h"
 #include "minecraft/world/phys/AABB.h"

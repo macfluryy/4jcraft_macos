@@ -14,7 +14,7 @@
 #include "ItemInHandRenderer.h"
 #include "LevelRenderer.h"
 #include "app/common/App_enums.h"
-#include "app/common/ShutdownManager.h"
+#include "platform/ShutdownManager.h"
 #include "app/common/src/Colours/ColourTable.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
@@ -22,7 +22,7 @@
 #include "app/include/FrameProfiler.h"
 #include "app/include/stubs.h"
 #include "Tesselator.h"
-#include "console_helpers/compression.h"
+#include "minecraft/world/level/storage/compression.h"
 
 #include "java/Class.h"
 #include "java/FloatBuffer.h"

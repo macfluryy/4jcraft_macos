@@ -4,7 +4,7 @@
 #include <memory>
 #include <string>
 
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/world/entity/Entity.h"
 #include "minecraft/world/level/TilePos.h"
 

@@ -4,7 +4,6 @@
 #include <unordered_set>
 
 #include "Tile.h"
-#include "console_helpers/Definitions.h"
 #include "minecraft/world/level/TilePos.h"
 
 class Random;

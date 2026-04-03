@@ -2,7 +2,7 @@
 
 #include "app/linux/Linux_App.h"
 #include "app/include/XboxStubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 bool UIString::setCurrentLanguage() {
     int nextLanguage, nextLocale;

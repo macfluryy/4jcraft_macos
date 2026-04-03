@@ -18,7 +18,7 @@
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
 #include "SyncedEntityData.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"

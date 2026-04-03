@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "Item.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/util/HtmlString.h"
 #include "minecraft/world/entity/LivingEntity.h"

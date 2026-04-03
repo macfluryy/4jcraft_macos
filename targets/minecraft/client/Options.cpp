@@ -4,7 +4,7 @@
 #include "app/common/src/Audio/SoundEngine.h"
 #include "app/linux/Linux_App.h"
 #include "app/include/stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/File.h"
 #include "java/InputOutputStream/BufferedReader.h"
 #include "java/InputOutputStream/DataOutputStream.h"

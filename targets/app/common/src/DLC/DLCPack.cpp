@@ -22,7 +22,7 @@
 #include "app/common/src/Localisation/StringTable.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {
     m_dataPath = L"";

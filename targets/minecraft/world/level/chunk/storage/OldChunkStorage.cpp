@@ -13,7 +13,7 @@
 #include "IPlatformInput.h"
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/linux/Linux_App.h"
-#include "console_helpers/Definitions.h"
+#include "util/Definitions.h"
 #include "java/File.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

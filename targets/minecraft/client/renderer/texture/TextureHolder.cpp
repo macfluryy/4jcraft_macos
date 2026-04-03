@@ -4,7 +4,7 @@
 
 #include "Stitcher.h"
 #include "Texture.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 
 TextureHolder::TextureHolder(Texture* texture) {
     scale = 1.0f;

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "Sheep.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"
 #include "minecraft/core/particles/ParticleTypes.h"

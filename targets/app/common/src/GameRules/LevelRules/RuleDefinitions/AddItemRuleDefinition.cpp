@@ -5,7 +5,7 @@
 #include "AddEnchantmentRuleDefinition.h"
 #include "app/common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "console_helpers/StringHelpers.h"
+#include "util/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Inventory.h"
