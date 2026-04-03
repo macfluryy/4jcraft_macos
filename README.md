@@ -103,7 +103,7 @@ meson compile -C build
 The binary is output to:
 
 ```
-./build/Minecraft.Client/Minecraft.Client
+./build/targets/app/Minecraft.Client
 ```
 
 #### Clean
@@ -131,10 +131,10 @@ meson setup build
 
 ## Running
 
-In order to run the compiled binary, you have a compiled copy of the game's assets in your current working directory. These assets are automatically copied to the `Minecraft.Client` folder in your build directory. To run the game, your current working directory must be in this folder.
+Game assets are automatically copied to the build output directory during compilation. Run from that directory:
 
 ```sh
-cd build/Minecraft.Client
+cd build/targets/app
 ./Minecraft.Client
 ```
 
