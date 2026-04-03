@@ -6,8 +6,6 @@
 #include <unordered_set>
 #include <utility>
 
-#include "platform/sdl2/Profile.h"
-#include "platform/sdl2/Storage.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/DLC/DLCGameRulesHeader.h"
 #include "app/common/src/DLC/DLCManager.h"
@@ -22,8 +20,6 @@
 #include "app/common/src/Localisation/StringTable.h"
 #include "app/linux/Linux_App.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "util/StringHelpers.h"
-#include "platform/PlatformServices.h"
 #include "java/File.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
@@ -31,9 +27,14 @@
 #include "minecraft/Pos.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/chunk/LevelChunk.h"
+#include "minecraft/world/level/dimension/Dimension.h"
 #include "minecraft/world/level/levelgen/structure/BoundingBox.h"
 #include "minecraft/world/phys/AABB.h"
+#include "platform/PlatformServices.h"
+#include "platform/sdl2/Profile.h"
+#include "platform/sdl2/Storage.h"
 #include "strings.h"
+#include "util/StringHelpers.h"
 
 JustGrSource::JustGrSource() {
     m_displayName = L"Default_DisplayName";
@@ -271,7 +272,6 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
 }
 // 4jcraft: better schematic caching
 void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
-
     AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
                   Level::maxBuildHeight, chunk->z * 16 + 16);
 
@@ -299,21 +299,24 @@ void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
              ++it) {
             ConsoleGenerateStructure* structureStart = *it;
             if (structureStart->getBoundingBox()->intersects(cx, cz, cx + 15,
-                                                            cz + 15)) {
+                                                             cz + 15)) {
                 entry.structureRules.push_back(structureStart);
             }
         }
 
-        cacheIt = m_chunkRuleCache.insert(
-            std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(key, entry)).first;
-    } else if (cacheIt->second.structureRules.empty() && !m_structureRules.empty()) {
+        cacheIt = m_chunkRuleCache
+                      .insert(std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(
+                          key, entry))
+                      .first;
+    } else if (cacheIt->second.structureRules.empty() &&
+               !m_structureRules.empty()) {
         int cx = (chunk->x << 4);
         int cz = (chunk->z << 4);
         for (auto it = m_structureRules.begin(); it != m_structureRules.end();
              ++it) {
             ConsoleGenerateStructure* structureStart = *it;
             if (structureStart->getBoundingBox()->intersects(cx, cz, cx + 15,
-                                                            cz + 15)) {
+                                                             cz + 15)) {
                 cacheIt->second.structureRules.push_back(structureStart);
             }
         }
@@ -357,10 +360,13 @@ void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
                 entry.schematicRules.push_back(rule);
             }
         }
-        // structureRules is initially empty because it will be populated by processSchematics later onn
+        // structureRules is initially empty because it will be populated by
+        // processSchematics later onn
 
-        cacheIt = m_chunkRuleCache.insert(
-            std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(key, entry)).first;
+        cacheIt = m_chunkRuleCache
+                      .insert(std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(
+                          key, entry))
+                      .first;
     }
 
     for (auto it = cacheIt->second.schematicRules.begin();
@@ -426,9 +432,7 @@ void LevelGenerationOptions::clearSchematics() {
     clearChunkRuleCache();
 }
 
-void LevelGenerationOptions::clearChunkRuleCache() {
-    m_chunkRuleCache.clear();
-}
+void LevelGenerationOptions::clearChunkRuleCache() { m_chunkRuleCache.clear(); }
 
 ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
     const std::wstring& filename, std::uint8_t* pbData,
@@ -622,8 +626,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
                     uint8_t* pbData = (uint8_t*)new uint8_t[dwFileSize];
                     auto readResult = PlatformFileIO.readFile(
                         save.getPath(), pbData, dwFileSize);
-                    if (readResult.status !=
-                        IPlatformFileIO::ReadStatus::Ok) {
+                    if (readResult.status != IPlatformFileIO::ReadStatus::Ok) {
                         app.FatalLoadError();
                     }
 
@@ -644,7 +647,7 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
 void LevelGenerationOptions::reset_start() {
     clearChunkRuleCache();
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         ++it) { // what in the flip in the fuck
+         ++it) {  // what in the flip in the fuck
         (*it)->reset();
     }
 }
