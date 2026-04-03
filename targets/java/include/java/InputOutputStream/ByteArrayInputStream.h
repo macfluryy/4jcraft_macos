@@ -20,6 +20,8 @@ public:
     ByteArrayInputStream(std::vector<uint8_t>& buf, unsigned int offset,
                          unsigned int length);
     ByteArrayInputStream(std::vector<uint8_t>& buf);
+    // takes ownership of the vector
+    ByteArrayInputStream(std::vector<uint8_t>&& buf);
     virtual ~ByteArrayInputStream();
     virtual int read();
     virtual int read(std::vector<uint8_t>& b);

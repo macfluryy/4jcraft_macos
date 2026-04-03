@@ -28,6 +28,11 @@ ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>& buf)
     this->buf = buf;
 }
 
+// 4jcraft: helper function to create a ByteArrayInputStream from a vector of bytes to avoid one copy
+ByteArrayInputStream::ByteArrayInputStream(std::vector<uint8_t>&& buf)
+    : buf(std::move(buf)), pos(0), count(this->buf.size()), mark(0) {
+}
+
 // Reads the next byte of data from this input stream. The value byte is
 // returned as an int in the range 0 to 255. If no byte is available because the
 // end of the stream has been reached, the value -1 is returned. This read

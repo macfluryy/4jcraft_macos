@@ -269,39 +269,103 @@ void LevelGenerationOptions::addAttribute(const std::wstring& attributeName,
         GameRuleDefinition::addAttribute(attributeName, attributeValue);
     }
 }
-
+// 4jcraft: better schematic caching
 void LevelGenerationOptions::processSchematics(LevelChunk* chunk) {
+
     AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
                   Level::maxBuildHeight, chunk->z * 16 + 16);
-    for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         ++it) {
-        ApplySchematicRuleDefinition* rule = *it;
-        rule->processSchematic(&chunkBox, chunk);
+
+    ChunkRuleCacheKey key;
+    key.chunkX = chunk->x;
+    key.chunkZ = chunk->z;
+    key.dimension = chunk->level->dimension->id;
+
+    auto cacheIt = m_chunkRuleCache.find(key);
+    if (cacheIt == m_chunkRuleCache.end()) {
+        // if no cache hit, show em the goods
+        ChunkRuleCacheEntry entry;
+        for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
+             ++it) {
+            ApplySchematicRuleDefinition* rule = *it;
+            if (rule->checkIntersects(chunkBox.x0, chunkBox.y0, chunkBox.z0,
+                                      chunkBox.x1, chunkBox.y1, chunkBox.z1)) {
+                entry.schematicRules.push_back(rule);
+            }
+        }
+
+        int cx = (chunk->x << 4);
+        int cz = (chunk->z << 4);
+        for (auto it = m_structureRules.begin(); it != m_structureRules.end();
+             ++it) {
+            ConsoleGenerateStructure* structureStart = *it;
+            if (structureStart->getBoundingBox()->intersects(cx, cz, cx + 15,
+                                                            cz + 15)) {
+                entry.structureRules.push_back(structureStart);
+            }
+        }
+
+        cacheIt = m_chunkRuleCache.insert(
+            std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(key, entry)).first;
+    } else if (cacheIt->second.structureRules.empty() && !m_structureRules.empty()) {
+        int cx = (chunk->x << 4);
+        int cz = (chunk->z << 4);
+        for (auto it = m_structureRules.begin(); it != m_structureRules.end();
+             ++it) {
+            ConsoleGenerateStructure* structureStart = *it;
+            if (structureStart->getBoundingBox()->intersects(cx, cz, cx + 15,
+                                                            cz + 15)) {
+                cacheIt->second.structureRules.push_back(structureStart);
+            }
+        }
+    }
+
+    for (auto it = cacheIt->second.schematicRules.begin();
+         it != cacheIt->second.schematicRules.end(); ++it) {
+        (*it)->processSchematic(&chunkBox, chunk);
     }
 
     int cx = (chunk->x << 4);
     int cz = (chunk->z << 4);
 
-    for (auto it = m_structureRules.begin(); it != m_structureRules.end();
-         it++) {
+    for (auto it = cacheIt->second.structureRules.begin();
+         it != cacheIt->second.structureRules.end(); ++it) {
         ConsoleGenerateStructure* structureStart = *it;
-
-        if (structureStart->getBoundingBox()->intersects(cx, cz, cx + 15,
-                                                         cz + 15)) {
-            BoundingBox* bb = new BoundingBox(cx, cz, cx + 15, cz + 15);
-            structureStart->postProcess(chunk->level, nullptr, bb);
-            delete bb;
-        }
+        BoundingBox* bb = new BoundingBox(cx, cz, cx + 15, cz + 15);
+        structureStart->postProcess(chunk->level, nullptr, bb);
+        delete bb;
     }
 }
 
 void LevelGenerationOptions::processSchematicsLighting(LevelChunk* chunk) {
     AABB chunkBox(chunk->x * 16, 0, chunk->z * 16, chunk->x * 16 + 16,
                   Level::maxBuildHeight, chunk->z * 16 + 16);
-    for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         ++it) {
-        ApplySchematicRuleDefinition* rule = *it;
-        rule->processSchematicLighting(&chunkBox, chunk);
+
+    ChunkRuleCacheKey key;
+    key.chunkX = chunk->x;
+    key.chunkZ = chunk->z;
+    key.dimension = chunk->level->dimension->id;
+
+    auto cacheIt = m_chunkRuleCache.find(key);
+    if (cacheIt == m_chunkRuleCache.end()) {
+        // lighting shouldn't affect structure rules...
+        ChunkRuleCacheEntry entry;
+        for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
+             ++it) {
+            ApplySchematicRuleDefinition* rule = *it;
+            if (rule->checkIntersects(chunkBox.x0, chunkBox.y0, chunkBox.z0,
+                                      chunkBox.x1, chunkBox.y1, chunkBox.z1)) {
+                entry.schematicRules.push_back(rule);
+            }
+        }
+        // structureRules is initially empty because it will be populated by processSchematics later onn
+
+        cacheIt = m_chunkRuleCache.insert(
+            std::pair<ChunkRuleCacheKey, ChunkRuleCacheEntry>(key, entry)).first;
+    }
+
+    for (auto it = cacheIt->second.schematicRules.begin();
+         it != cacheIt->second.schematicRules.end(); ++it) {
+        (*it)->processSchematicLighting(&chunkBox, chunk);
     }
 }
 
@@ -359,6 +423,11 @@ void LevelGenerationOptions::clearSchematics() {
         delete it->second;
     }
     m_schematics.clear();
+    clearChunkRuleCache();
+}
+
+void LevelGenerationOptions::clearChunkRuleCache() {
+    m_chunkRuleCache.clear();
 }
 
 ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
@@ -376,8 +445,9 @@ ConsoleSchematicFile* LevelGenerationOptions::loadSchematicFile(
     }
 
     ConsoleSchematicFile* schematic = nullptr;
+    // 4jcraft: we use a constructor to reduce copies.
     std::vector<uint8_t> data(pbData, pbData + dataLength);
-    ByteArrayInputStream bais(data);
+    ByteArrayInputStream bais(std::move(data));
     DataInputStream dis(&bais);
     schematic = new ConsoleSchematicFile();
     schematic->load(&dis);
@@ -572,13 +642,15 @@ int LevelGenerationOptions::packMounted(void* pParam, int iPad, uint32_t dwErr,
 }
 
 void LevelGenerationOptions::reset_start() {
+    clearChunkRuleCache();
     for (auto it = m_schematicRules.begin(); it != m_schematicRules.end();
-         it++) {
+         ++it) { // what in the flip in the fuck
         (*it)->reset();
     }
 }
 
 void LevelGenerationOptions::reset_finish() {
+    clearChunkRuleCache();
     // if (m_spawnPos)				{ delete m_spawnPos; m_spawnPos
     // = nullptr; } if (m_stringTable)			{ delete m_stringTable;
     // m_stringTable = nullptr; }

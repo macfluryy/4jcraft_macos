@@ -106,6 +106,31 @@ public:
     };
 
 private:
+    struct ChunkRuleCacheKey {
+        int chunkX;
+        int chunkZ;
+        int dimension;
+
+        bool operator==(const ChunkRuleCacheKey& other) const {
+            return chunkX == other.chunkX && chunkZ == other.chunkZ &&
+                   dimension == other.dimension;
+        }
+    };
+
+    struct ChunkRuleCacheKeyHash {
+        std::size_t operator()(const ChunkRuleCacheKey& key) const {
+            std::size_t h1 = std::hash<int>()(key.chunkX);
+            std::size_t h2 = std::hash<int>()(key.chunkZ);
+            std::size_t h3 = std::hash<int>()(key.dimension);
+            return h1 ^ (h2 << 1) ^ (h3 << 2);
+        }
+    };
+
+    struct ChunkRuleCacheEntry {
+        std::vector<ApplySchematicRuleDefinition*> schematicRules;
+        std::vector<ConsoleGenerateStructure*> structureRules;
+    };
+
     eSrc m_src;
 
     GrSource* m_pSrc;
@@ -164,6 +189,8 @@ private:
     bool m_bHaveMinY;
     int m_minY;
     std::unordered_map<std::wstring, ConsoleSchematicFile*> m_schematics;
+    std::unordered_map<ChunkRuleCacheKey, ChunkRuleCacheEntry, ChunkRuleCacheKeyHash>
+        m_chunkRuleCache;
     std::vector<BiomeOverride*> m_biomeOverrides;
     std::vector<StartFeature*> m_features;
 
@@ -196,6 +223,7 @@ public:
 
     void processSchematics(LevelChunk* chunk);
     void processSchematicsLighting(LevelChunk* chunk);
+    void clearChunkRuleCache();
 
     bool checkIntersects(int x0, int y0, int z0, int x1, int y1, int z1);
 
