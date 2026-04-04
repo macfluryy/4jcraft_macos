@@ -36,6 +36,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Cache .git folder
+        uses: actions/cache@v5
+        with:
+          path: .git
+          key: ${{ runner.os }}-git-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-git-
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
@@ -48,7 +55,7 @@ jobs:
         with:
           ccache_dir: ${{ runner.temp }}/ccache
 
-      - name: Build meson (release)
+      - name: Compile
         uses: ./.github/actions/build-meson
         with:
           dir_name: "build_release"
@@ -58,6 +65,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Cache .git folder
+        uses: actions/cache@v5
+        with:
+          path: .git
+          key: ${{ runner.os }}-git-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-git-
+
       - uses: actions/checkout@v6
         with:
           fetch-depth: 1
@@ -70,7 +84,7 @@ jobs:
         with:
           ccache_dir: ${{ runner.temp }}/ccache
 
-      - name: Build meson (debug)
+      - name: Compile
         uses: ./.github/actions/build-meson
         with:
           dir_name: "build_debug"
