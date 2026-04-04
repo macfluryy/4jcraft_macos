@@ -50,19 +50,20 @@ jobs:
           restore-keys: ${{ runner.os }}-ccache-
 
       - name: Configure Meson
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CC_LD: lld
-          CXX_LD: lld
         run: |
-          meson setup build --native-file=scripts/llvm_native.txt --wipe
+          meson setup build --native-file=scripts/llvm_native.txt -Dunity=off --wipe
+          meson setup build_unity --native-file=scripts/llvm_native.txt -Dunity=on -Dunity_size=99999 --wipe
 
-      - name: Build with Meson
+      - name: Compile (-Dunity=on)
         env:
           CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
-          # Use all available cores for faster parallel builds
+          meson compile -C build_unity -j $(nproc) -v Minecraft.Client
+
+      - name: Compile (-Dunity=off)
+        env:
+          CCACHE_DIR: ${{ runner.temp }}/ccache
+        run: |
           meson compile -C build -j $(nproc) -v Minecraft.Client
 
       - name: Upload artifact
