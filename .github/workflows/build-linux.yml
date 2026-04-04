@@ -51,13 +51,12 @@ jobs:
       - name: Install meson
         run: |
           pip install meson
-          
+          ccache -M 5G || true # Set a reasonable ccache size
 
       - name: Install LLVM + libc++
         run: |
           wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
           sudo apt-get install -y libc++-20-dev libc++abi-20-dev
-          ccache -M 5G || true # Set a reasonable ccache size
 
       - name: Restore ccache
         uses: actions/cache@v5
