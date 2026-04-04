@@ -41,6 +41,8 @@ jobs:
         with:
           packages: build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
           version: 1.0
+
+      - name: Install meson
         run: |
           python -m pip install meson
           # Set a reasonable ccache size
