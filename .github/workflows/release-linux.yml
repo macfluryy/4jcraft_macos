@@ -66,8 +66,8 @@ jobs:
 
       - name: Package artifact
         run: |
-          cd build/targets
-          zip -r ../minecraft-client-linux.zip app --exclude "app/Minecraft.Client.p/*"
+          cd build/targets/app
+          zip -r ../../../minecraft-client-linux.zip . --exclude "./Minecraft.Client.p/*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
