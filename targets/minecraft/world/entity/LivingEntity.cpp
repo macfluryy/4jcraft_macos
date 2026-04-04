@@ -1590,11 +1590,11 @@ void LivingEntity::aiStep() {
     yya *= 0.98f;
     yRotA *= 0.9f;
 
-    travel(xxa, yya);
-
     if (!level->isClientSide) {
         pushEntities();
     }
+
+    travel(xxa, yya);
 }
 
 void LivingEntity::newServerAiStep() {}
@@ -1607,7 +1607,7 @@ void LivingEntity::pushEntities() {
         auto itEnd = entities->end();
         for (auto it = entities->begin(); it != itEnd; it++) {
             std::shared_ptr<Entity> e = *it;  // entities->at(i);
-            if (e->isPushable()) e->push(shared_from_this());
+            if (e and !e->removed and e->isPushable()) push(e);
         }
     }
 }

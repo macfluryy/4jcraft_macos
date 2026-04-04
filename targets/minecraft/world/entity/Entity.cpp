@@ -14,11 +14,10 @@
 
 #include "EntityIO.h"
 #include "EntityPos.h"
+#include "SyncedEntityData.h"
 #include "app/common/App_enums.h"
 #include "app/linux/LinuxGame.h"
 #include "app/linux/Stubs/winapi_stubs.h"
-#include "SyncedEntityData.h"
-#include "util/StringHelpers.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"
@@ -46,6 +45,7 @@
 #include "nbt/DoubleTag.h"
 #include "nbt/FloatTag.h"
 #include "nbt/ListTag.h"
+#include "util/StringHelpers.h"
 
 thread_local bool Entity::m_tlsUseSmallIds = false;
 
@@ -1167,36 +1167,29 @@ void Entity::playerTouch(std::shared_ptr<Player> player) {}
 void Entity::push(std::shared_ptr<Entity> e) {
     if (e->rider.lock().get() == this || e->riding.get() == this) return;
 
-    double xa = e->x - x;
-    double za = e->z - z;
+    const double dx = e->x - x;
+    const double dz = e->z - z;
 
-    double dd = std::max(fabs(xa), fabs(za));
+    constexpr double min_displacement = 0.1;
+    const double max_displacement = std::max(std::fabs(dx), std::fabs(dz));
 
-    if (dd >= 0.01f) {
-        dd = sqrt(dd);
-        xa /= dd;
-        za /= dd;
+    if (max_displacement >= min_displacement) {
+        constexpr double dampening = 0.05;
+        const double dist = std::sqrt(dx * dx + dz * dz);
 
-        double pow = 1 / dd;
-        if (pow > 1) pow = 1;
-        xa *= pow;
-        za *= pow;
+        const double nx = dx / dist;
+        const double nz = dz / dist;
 
-        xa *= 0.05f;
-        za *= 0.05f;
+        const double force =
+            std::min(1.0 / dist, 1.0) * dampening * (1.0 - pushthrough);
 
-        xa *= 1 - pushthrough;
-        za *= 1 - pushthrough;
-
-        push(-xa, 0, -za);
-        e->push(xa, 0, za);
+        push(-nx * force, 0.0, -nz * force);
+        e->push(nx * force, 0, nz * force);
     }
 }
 
 void Entity::push(double xa, double ya, double za) {
-    xd += xa;
-    yd += ya;
-    zd += za;
+    move(xa, ya, za);
     hasImpulse = true;
 }
 
