@@ -1,84 +1,77 @@
 name: Build (Linux, x86-64)
 
+# TODO: test with only pull-request
 on:
   push:
     paths: &workflow_paths
-      - '**.cpp'
-      - '**.h'
-      - '**.c'
-      - '**.cc'
-      - '**.cxx'
-      - '**.hh'
-      - '**.hpp'
-      - '**.hxx'
-      - '**.inl'
-      - "**meson.build"
+      - "**.cppm"
+      - "**.ixx"
+      - "**.inl"
+      - "**.mpp"
+      - "**.ipp"
+      - "**.tpp"
+      - "**.txx"
+      - "**.inc"
+      - "**.cpp"
+      - "**.hpp"
+      - "**.cxx"
+      - "**.hxx"
+      - "**.cc"
+      - "**.hh"
+      - "**.c"
+      - "**.h"
+      - ".github/workflows/build-linux.yml"
+      - "**/meson.build"
       - "flake.nix"
-      - '.github/workflows/build-linux.yml'
 
   pull_request:
     paths: *workflow_paths
 
-  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'dev/') }}
 
 jobs:
-  build-linux:
+  build-linux-amalgamate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Restore .git folder
-        uses: actions/cache@v5
+      - uses: actions/checkout@v6
         with:
-          path: .git
-          key: ${{ runner.os }}-git-${{ github.sha }}
-          restore-keys: ${{ runner.os }}-git-
+          fetch-depth: 1
 
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - name: Enter dev-shell
+        uses: ./.github/actions/enter-devshell
 
-      - name: Install system dependencies
-        uses: awalsh128/cache-apt-pkgs-action@latest
+      - name: Restore build cache
+        uses: ./.github/actions/restore-cache
         with:
-          packages: build-essential ccache meson ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
-          version: 1.0
-        
-      - name: Install LLVM + libc++
-        run: |
-          wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
-          sudo apt-get install -y libc++-20-dev libc++abi-20-dev
+          ccache_dir: ${{ runner.temp }}/ccache
 
-      - name: Restore ccache
-        uses: actions/cache@v5
+      - name: Build meson (release)
+        uses: ./.github/actions/build-meson
         with:
-          path: ${{ runner.temp }}/ccache
-          key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
-          restore-keys: ${{ runner.os }}-ccache-
+          dir_name: "build_release"
+          setup_args: "-Dunity=on -Dunity_size=99999"
 
-      - name: Configure Meson
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CC_LD: lld
-          CXX_LD: lld
-        run: |
-          meson setup build --native-file=scripts/llvm_native.txt -Dunity=off --wipe
-          meson setup build_unity --native-file=scripts/llvm_native.txt -Dunity=on -Dunity_size=99999 --wipe
+  build-linux-full:
+    runs-on: ubuntu-latest
 
-      - name: Compile (-Dunity=on)
-        env:
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          meson compile -C build_unity -j $(nproc) -v Minecraft.Client
-
-      - name: Compile (-Dunity=off)
-        env:
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          meson compile -C build -j $(nproc) -v Minecraft.Client
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+    steps:
+      - uses: actions/checkout@v6
         with:
-          name: minecraft-client-linux-${{ github.sha }}
-          path: build/targets/app/Minecraft.Client
-          retention-days: 7
+          fetch-depth: 1
+
+      - name: Enter dev-shell
+        uses: ./.github/actions/enter-devshell
+
+      - name: Restore build cache
+        uses: ./.github/actions/restore-cache
+        with:
+          ccache_dir: ${{ runner.temp }}/ccache
+
+      - name: Build meson (debug)
+        uses: ./.github/actions/build-meson
+        with:
+          dir_name: "build_debug"
+          setup_args: "-Dunity=off"
