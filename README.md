@@ -33,77 +33,88 @@ Please note that these percentages are **estimates** and do not necessarily refl
 
 ## Building (Linux)
 
-### Dependencies
+### Prerequisites
 
-Install the following packages before building (Debian/Ubuntu names shown):
+#### System Libraries
 
+Debian/Ubuntu:
 ```bash
 sudo apt-get install -y build-essential libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
 ```
 
-#### Arch/Manjaro
-
+Arch/Manjaro:
 ```bash
-sudo pacman -S base-devel gcc pkgconf cmake sdl2-compat mesa glu
+sudo pacman -S base-devel pkgconf sdl2-compat mesa glu
 ```
 
-#### Fedora/Red Hat/Nobara
-
+Fedora/Red Hat/Nobara:
 ```bash
-sudo dnf in gcc gcc-c++ make cmake SDL2-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel
+sudo dnf install gcc gcc-c++ make SDL2-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel
 ```
 
-#### Docker
+#### Toolchain
 
-If you don't want to deal with installing dependencies, you can use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension and it will set everything up for you - GCC 15, Meson, Ninja, lld, and all the libraries.
+This project requires a C++23 compiler with full standard library support.
 
-Alternatively, you can build and use the container manually:
+**If your distro ships GCC 15+**, you're good - just use the system compiler:
+
+```bash
+meson setup build
+```
+
+**If your distro ships an older GCC:** install LLVM with libc++ and use the provided toolchain file:
+
+```bash
+# Debian/Ubuntu
+wget https://apt.llvm.org/llvm.sh
+chmod +x llvm.sh
+sudo ./llvm.sh 20
+sudo apt install libc++-20-dev libc++abi-20-dev
+```
+
+```bash
+# Fedora/RHEL (if needed)
+sudo dnf install clang lld libcxx-devel libcxxabi-devel
+```
+
+Then configure with the LLVM native file (see Configure & Build below).
+
+#### Meson + Ninja
+
+Install [Meson](https://mesonbuild.com/) and [Ninja](https://ninja-build.org/):
+
+```bash
+pip install meson ninja
+```
+
+Or follow the [Meson quickstart guide](https://mesonbuild.com/Quick-guide.html).
+
+#### Docker (alternative)
+
+If you don't want to install dependencies, use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension, or build manually:
 
 ```bash
 docker build -t 4jcraft-dev .devcontainer/
 docker run -it --rm -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev bash
 ```
-(Optional) Clean up the Docker image
-```bash
-docker rmi 4jcraft-dev --force
-```
 
 ### Configure & Build
 
-This project uses the [Meson](https://mesonbuild.com/) build system (with [Ninja](https://ninja-build.org/)).
-
-#### Install Tooling
-
-Follow [this Quickstart guide](https://mesonbuild.com/Quick-guide.html) for installing or building Meson and Ninja on your respective distro.
-
-#### Configure & Build
-
 ```bash
-# 1. Configure a build directory (we'll name it `build`)
+# If using system GCC 15+
 meson setup build
 
-# 2. Compile the project
+# If using LLVM/libc++
+meson setup --native-file ./scripts/llvm_native.txt build
+
+# Compile
 meson compile -C build
 ```
-
-> [!TIP]
->
-> For the fastest compilation speeds, you may want to use the compilers and linkers provided by an [LLVM toolchain](https://llvm.org/) (`clang`/`lld`) over your system compiler and linker. To do this, install `clang` and `lld`, and configure your build using the `llvm_native.txt` nativescript in `/scripts`:
->
-> ```bash
-> meson setup --native-file ./scripts/llvm_native.txt build
-> ```
->
-> ...or if you've already configured a build directory:
->
-> ```bash
-> meson setup --native-file ./scripts/llvm_native.txt build --reconfigure
-> ```
 
 The binary is output to:
 
 ```
-./build/Minecraft.Client/Minecraft.Client
+./build/targets/app/Minecraft.Client
 ```
 
 #### Clean
@@ -117,24 +128,24 @@ meson compile --clean -C build
 ...or to reconfigure an existing build directory:
 
 ```bash
-meson setup build --reconfigure 
+meson setup --native-file ./scripts/llvm_native.txt build --reconfigure
 ```
 
 ...or to hard reset the build directory:
 
 ```bash
 rm -r ./build
-meson setup build
+meson setup --native-file ./scripts/llvm_native.txt build
 ```
 
 ---
 
 ## Running
 
-In order to run the compiled binary, you have a compiled copy of the game's assets in your current working directory. These assets are automatically copied to the `Minecraft.Client` folder in your build directory. To run the game, your current working directory must be in this folder.
+Game assets are automatically copied to the build output directory during compilation. Run from that directory:
 
 ```sh
-cd build/Minecraft.Client
+cd build/targets/app
 ./Minecraft.Client
 ```
 

@@ -1,0 +1,47 @@
+#pragma once
+
+#include <sstream>
+#include <string>
+#include <vector>
+
+std::wstring toLower(const std::wstring& a);
+std::wstring trimString(const std::wstring& a);
+std::wstring replaceAll(const std::wstring& in, const std::wstring& replace,
+                        const std::wstring& with);
+
+bool equalsIgnoreCase(const std::wstring& a, const std::wstring& b);
+template <class T>
+std::wstring toWString(T t) {
+    std::wostringstream oss;
+    oss << std::dec << t;
+    return oss.str();
+}
+template <class T>
+T fromWString(const std::wstring& s) {
+    std::wistringstream stream(s);
+    T t;
+    stream >> t;
+    return t;
+}
+template <class T>
+T fromHexWString(const std::wstring& s) {
+    std::wistringstream stream(s);
+    T t;
+    stream >> std::hex >> t;
+    return t;
+}
+
+std::wstring convStringToWstring(const std::string& converting);
+std::wstring u16string_to_wstring(const std::u16string& converting);
+std::u16string wstring_to_u16string(const std::wstring& converting);
+std::u8string wstring_to_u8string(const std::wstring& converting);
+std::string wstringtofilename(const std::wstring& name);
+std::wstring filenametowstring(const char* name);
+
+std::vector<std::wstring>& stringSplit(const std::wstring& s, wchar_t delim,
+                                       std::vector<std::wstring>& elems);
+std::vector<std::wstring> stringSplit(const std::wstring& s, wchar_t delim);
+
+void stripWhitespaceForHtml(std::wstring& string, bool bRemoveNewline = true);
+std::wstring escapeXML(const std::wstring& in);
+std::wstring parseXMLSpecials(const std::wstring& in);

@@ -1,66 +1,91 @@
 name: Build (Linux, x86-64)
 
+# TODO: test with only pull-request
 on:
   push:
     paths: &workflow_paths
-      - '**.cpp'
-      - '**.h'
-      - '**.c'
-      - '**.cc'
-      - '**.cxx'
-      - '**.hh'
-      - '**.hpp'
-      - '**.hxx'
-      - '**.inl'
-      - "**meson.build"
+      - "**.cppm"
+      - "**.ixx"
+      - "**.inl"
+      - "**.mpp"
+      - "**.ipp"
+      - "**.tpp"
+      - "**.txx"
+      - "**.inc"
+      - "**.cpp"
+      - "**.hpp"
+      - "**.cxx"
+      - "**.hxx"
+      - "**.cc"
+      - "**.hh"
+      - "**.c"
+      - "**.h"
+      - ".github/workflows/build-linux.yml"
+      - "**/meson.build"
       - "flake.nix"
-      - '.github/workflows/build-linux.yml'
 
   pull_request:
     paths: *workflow_paths
 
-  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ !contains(github.ref, 'dev/') }}
 
 jobs:
-  build-linux:
+  build-linux-amalgamate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
-          python -m pip install meson
-
-      - name: Restore ccache
+      - name: Cache .git folder
         uses: actions/cache@v5
         with:
-          path: ${{ runner.temp }}/ccache
-          key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
-          restore-keys: ${{ runner.os }}-ccache-
+          path: .git
+          key: ${{ runner.os }}-git-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-git-
 
-      - name: Configure Meson
-        env:
-          CC: "ccache clang"
-          CXX: "ccache clang++"
-          CC_LD: lld
-          CXX_LD: lld
-        run: |
-          meson setup build --wipe
-
-      - name: Build with Meson
-        env:
-          CCACHE_DIR: ${{ runner.temp }}/ccache
-        run: |
-          # Use all available cores for faster parallel builds
-          meson compile -C build -j $(nproc) -v Minecraft.Client
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/checkout@v6
         with:
-          name: minecraft-client-linux-${{ github.sha }}
-          path: build/Minecraft.Client/Minecraft.Client
-          retention-days: 7
+          fetch-depth: 1
+
+      - name: Enter dev-shell
+        uses: ./.github/actions/enter-devshell
+
+      - name: Restore build cache
+        uses: ./.github/actions/restore-cache
+        with:
+          ccache_dir: ${{ runner.temp }}/ccache
+
+      - name: Compile
+        uses: ./.github/actions/build-meson
+        with:
+          dir_name: "build_release"
+          setup_args: "-Dunity=on -Dunity_size=99999"
+
+  build-linux-full:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cache .git folder
+        uses: actions/cache@v5
+        with:
+          path: .git
+          key: ${{ runner.os }}-git-${{ github.sha }}
+          restore-keys: ${{ runner.os }}-git-
+
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Enter dev-shell
+        uses: ./.github/actions/enter-devshell
+
+      - name: Restore build cache
+        uses: ./.github/actions/restore-cache
+        with:
+          ccache_dir: ${{ runner.temp }}/ccache
+
+      - name: Compile
+        uses: ./.github/actions/build-meson
+        with:
+          dir_name: "build_debug"
+          setup_args: "-Dunity=off"

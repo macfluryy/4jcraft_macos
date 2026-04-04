@@ -4,9 +4,9 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "Minecraft.Assets/**"
+      - "resources/**"
       - "Minecraft.Client/**"
-      - "Minecraft.World/**"
+      - "minecraft/**"
       - "docs/**"
 
   workflow_dispatch:
