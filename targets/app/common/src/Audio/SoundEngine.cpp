@@ -464,19 +464,16 @@ void SoundEngine::playMusicTick() {
 
                 for (const char* r : roots) {
                     for (const char* e : {".ogg", ".mp3", ".wav"}) {
-                        char c[512];
                         // try with folder prefix (music/ or cds/)
-                        snprintf(c, 512, "%s%s%s%s%s", base.c_str(), r, folder,
+                        snprintf(m_szStreamName, sizeof(m_szStreamName), "%s%s%s%s%s", base.c_str(), r, folder,
                                  track, e);
-                        if (PlatformFileIO.exists(c)) {
-                            strncpy(m_szStreamName, c, 511);
+                        if (PlatformFileIO.exists(m_szStreamName)) {
                             found = true;
                             break;
                         }
                         // try without folder prefix
-                        snprintf(c, 512, "%s%s%s%s", base.c_str(), r, track, e);
-                        if (PlatformFileIO.exists(c)) {
-                            strncpy(m_szStreamName, c, 511);
+                        snprintf(m_szStreamName, sizeof(m_szStreamName), "%s%s%s%s", base.c_str(), r, track, e);
+                        if (PlatformFileIO.exists(m_szStreamName)) {
                             found = true;
                             break;
                         }
