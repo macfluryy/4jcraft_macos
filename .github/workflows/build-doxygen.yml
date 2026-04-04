@@ -9,6 +9,8 @@ on:
       - "minecraft/**"
       - "docs/**"
 
+  workflow_dispatch:
+
 jobs:
   build:
     permissions:

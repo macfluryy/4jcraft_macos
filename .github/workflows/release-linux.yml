@@ -1,4 +1,4 @@
-name: Build (Linux, x86-64)
+name: Nightly (Linux, x86-64)
 
 on:
   push:
@@ -15,10 +15,6 @@ on:
       - "**meson.build"
       - "flake.nix"
       - '.github/workflows/build-linux.yml'
-
-  pull_request:
-    paths: *workflow_paths
-
   workflow_dispatch:
 
 jobs:
@@ -34,40 +30,58 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential ccache python3 python3-pip ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
           python -m pip install meson
-          # Set a reasonable ccache size
           ccache -M 5G || true
 
-      - name: Install LLVM + libc++
-        run: |
-          wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
-          sudo apt-get install -y libc++-20-dev libc++abi-20-dev
-
       - name: Restore ccache
-        uses: actions/cache@v5
+        uses: actions/cache@v4
         with:
-          path: ${{ runner.temp }}/ccache
+          path: ~/.ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/meson.build') }}
-          restore-keys: ${{ runner.os }}-ccache-
+
+      - name: Restore meson cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/meson
+          key: ${{ runner.os }}-meson-${{ hashFiles('**/meson.build') }}
 
       - name: Configure Meson
         env:
           CC: "ccache clang"
           CXX: "ccache clang++"
-          CC_LD: lld
-          CXX_LD: lld
+          CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
-          meson setup build --wipe
+          mkdir -p "$CCACHE_DIR"
+          export CCACHE_DIR="$CCACHE_DIR"
+          meson setup build --wipe --native-file=./scripts/llvm_native.txt
 
       - name: Build with Meson
         env:
+          CC: "ccache clang"
+          CXX: "ccache clang++"
           CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
-          # Use all available cores for faster parallel builds
-          meson compile -C build -j $(nproc) -v Minecraft.Client
+          export CCACHE_DIR="${{ runner.temp }}/ccache"
+          meson compile -C build -j $(nproc)
+
+      - name: Install patchelf
+        run: sudo apt-get install -y patchelf
+
+      - name: Package artifact
+        run: |
+          cd build
+          zip -r ../minecraft-client-linux.zip Minecraft.Client --exclude "Minecraft.Client/Minecraft.Client.p/*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: minecraft-client-linux-${{ github.sha }}
-          path: build/targets/app/Minecraft.Client
+          path: minecraft-client-linux.zip
           retention-days: 7
+
+      - name: Create nightly release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: nightly
+          name: Nightly
+          prerelease: true
+          files: minecraft-client-linux.zip
