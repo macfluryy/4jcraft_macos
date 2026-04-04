@@ -39,20 +39,9 @@ jobs:
       - name: Install system dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
-          packages: build-essential ccache ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
+          packages: build-essential ccache meson ninja-build libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev libglm-dev
           version: 1.0
         
-      - name: Setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install meson
-        run: |
-          pip install meson
-          ccache -M 5G || true # Set a reasonable ccache size
-
       - name: Install LLVM + libc++
         run: |
           wget -qO- https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
