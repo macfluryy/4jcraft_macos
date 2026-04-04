@@ -52,7 +52,7 @@ jobs:
       - name: Configure Meson
         env:
           CC: "ccache clang-20"
-          CXX: "ccache clang-20++"
+          CXX: "ccache clang++-20"
           CC_LD: lld
           CXX_LD: lld
         run: |

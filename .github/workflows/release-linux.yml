@@ -47,7 +47,7 @@ jobs:
       - name: Configure Meson
         env:
           CC: "ccache clang-20"
-          CXX: "ccache clang-20++"
+          CXX: "ccache clang++-20"
           CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
           mkdir -p "$CCACHE_DIR"
@@ -57,7 +57,7 @@ jobs:
       - name: Build with Meson
         env:
           CC: "ccache clang-20"
-          CXX: "ccache clang-20++"
+          CXX: "ccache clang++-20"
           CCACHE_DIR: ${{ runner.temp }}/ccache
         run: |
           export CCACHE_DIR="${{ runner.temp }}/ccache"
