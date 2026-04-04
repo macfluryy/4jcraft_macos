@@ -58,9 +58,9 @@ protected:
 private:
     std::mutex m_navigationLock;
 
-    static const int UI_REPEAT_KEY_DELAY_MS =
+    static constexpr int UI_REPEAT_KEY_DELAY_MS =
         300;  // How long from press until the first repeat
-    static const int UI_REPEAT_KEY_REPEAT_RATE_MS =
+    static constexpr int UI_REPEAT_KEY_REPEAT_RATE_MS =
         100;  // How long in between repeats
     time_util::time_point m_actionRepeatTimer[XUSER_MAX_COUNT][ACTION_MAX_MENU + 1];
 
