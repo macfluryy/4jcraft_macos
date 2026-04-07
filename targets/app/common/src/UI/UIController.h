@@ -10,7 +10,7 @@
 
 #include "util/Timer.h"
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include "app/linux/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
 #include "app/linux/Stubs/iggy_stubs.h"

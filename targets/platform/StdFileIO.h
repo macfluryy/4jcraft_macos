@@ -6,8 +6,12 @@
 #include <fstream>
 #include <vector>
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 #include <unistd.h>
+#endif
+#if defined(__APPLE__)
+#include <mach-o/dyld.h>
+#include <limits.h>
 #endif
 
 // Standard filesystem implementation for desktop platforms.
@@ -81,6 +85,14 @@ public:
         if (len > 0) {
             buf[len] = '\0';
             return std::filesystem::path(buf).parent_path();
+        }
+#elif defined(__APPLE__)
+        char buf[PATH_MAX];
+        uint32_t size = sizeof(buf);
+        if (_NSGetExecutablePath(buf, &size) == 0) {
+            char resolved[PATH_MAX];
+            if (realpath(buf, resolved))
+                return std::filesystem::path(resolved).parent_path();
         }
 #endif
         return std::filesystem::current_path();

@@ -136,7 +136,7 @@ private:
     float getMasterMusicVolume();
     // platform specific functions
     int initAudioHardware(int iMinSpeakers) { return iMinSpeakers; }
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
     void updateMiniAudio();
 #endif
 

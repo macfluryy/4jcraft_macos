@@ -59,7 +59,7 @@ lib_minecraft = static_library('minecraft',
     platform_dep,
     util_dep,
     dependency('zlib'),
-  ],
+  ] + macos_compat_dep,
   include_directories : include_directories('..'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )

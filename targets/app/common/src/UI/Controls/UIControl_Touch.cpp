@@ -20,7 +20,7 @@ bool UIControl_Touch::setupControl(UIScene* scene, IggyValuePath* parent,
 void UIControl_Touch::init(int iId) {
     m_id = iId;
 
-#if !defined(__linux__)
+#if !defined(__linux__) && !defined(__APPLE__)
     switch (m_parentScene->GetParentLayer()->m_iLayer) {
         case eUILayer_Error:
         case eUILayer_Fullscreen:

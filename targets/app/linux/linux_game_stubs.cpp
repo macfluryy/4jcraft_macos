@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 
 #include "app/common/Game.h"
 #include "app/include/stubs.h"

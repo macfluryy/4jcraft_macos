@@ -38,7 +38,9 @@ static void sigsegv_handler(int sig) {
     _exit(139);
 }
 #endif
+#if defined(__linux__)
 #include <features.h>
+#endif
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>

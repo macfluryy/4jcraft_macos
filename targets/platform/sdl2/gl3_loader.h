@@ -2,8 +2,16 @@
 #ifndef GL_GLEXT_PROTOTYPES
 #define GL_GLEXT_PROTOTYPES 1
 #endif
+#if defined(__APPLE__)
+#ifndef GL_SILENCE_DEPRECATION
+#define GL_SILENCE_DEPRECATION
+#endif
+#include <OpenGL/gl3.h>
+#include <OpenGL/gl3ext.h>
+#else
 #include <GL/gl.h>
 #include <GL/glext.h>
+#endif
 #include <SDL2/SDL.h>
 
 #include <cstdio>

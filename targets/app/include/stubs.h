@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -157,7 +157,7 @@ void glActiveTexture(int);
 
 #endif
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 #include "java/File.h"
 
 class GL11 {

@@ -3643,13 +3643,13 @@ void Game::loadMediaArchive() {
 
 #if _WINDOWS64
     mediapath = L"Common\\Media\\MediaWindows64.arc";
-#elif __linux__
-    mediapath = L"app/common/Media/MediaLinux.arc";
+#elif defined(__linux__) || defined(__APPLE__)
+    mediapath = L"Common/Media/MediaLinux.arc";
 #endif
 
     if (!mediapath.empty()) {
         // boom headshot
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
         std::wstring exeDirW = PlatformFileIO.getBasePath().wstring();
         std::wstring candidate = exeDirW + File::pathSeparator + mediapath;
         if (File(candidate).exists()) {
@@ -4356,7 +4356,7 @@ int Game::dlcMountedCallback(int iPad, std::uint32_t dwErr,
 
 void Game::HandleDLC(DLCPack* pack) {
     unsigned int dwFilesProcessed = 0;
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
     std::vector<std::string> dlcFilenames;
 #endif
     StorageManager.GetMountedDLCFileList("DLCDrive", dlcFilenames);
@@ -5378,7 +5378,7 @@ int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
 
     return hr;
 }
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
 int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        int iGender, uint64_t ullOfferID_Full,
                                        uint64_t ullOfferID_Trial,
@@ -5387,7 +5387,7 @@ int32_t Game::RegisterDLCData(wchar_t* pType, wchar_t* pBannerName,
                                        wchar_t* pDataFile) {
     fprintf(stderr,
             "warning: Game::RegisterDLCData unimplemented for "
-            "platform `__linux__`\n");
+            "this platform\n");
     return 0;
 }
 #else

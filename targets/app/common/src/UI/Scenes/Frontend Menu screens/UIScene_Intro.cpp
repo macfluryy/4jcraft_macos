@@ -26,7 +26,7 @@ UIScene_Intro::UIScene_Intro(int iPad, void* initData, UILayer* parentLayer)
     bool bChina = false;
 
     // 4J Stu - These map to values in the Actionscript
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
     int platformIdx = 0;
 #endif
 

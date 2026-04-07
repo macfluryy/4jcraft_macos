@@ -1060,7 +1060,7 @@ void UIController::setupCustomDrawGameStateAndMatrices(
 }
 
 void UIController::endCustomDrawGameState() {
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
     RenderManager.Clear(GL_DEPTH_BUFFER_BIT);
 #else
     RenderManager.Clear(GL_DEPTH_BUFFER_BIT, &m_customRenderingClearRect);

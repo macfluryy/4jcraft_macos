@@ -1,4 +1,4 @@
-﻿#include "SoundEngine.h"
+#include "SoundEngine.h"
 
 #include <ctype.h>
 #include <stdio.h>
@@ -25,11 +25,12 @@
 #include "minecraft/world/entity/Mob.h"
 #include "minecraft/world/level/storage/LevelData.h"
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 #define STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
 
-// Fixes strcasecmp in miniaudio
+#if defined(__linux__)
+// Fixes strcasecmp in miniaudio - Linux glibc doesn't always expose it
 // https://stackoverflow.com/questions/31127260/strcasecmp-a-non-standard-function
 int strcasecmp(const char* a, const char* b) {
     int ca, cb;
@@ -43,6 +44,7 @@ int strcasecmp(const char* a, const char* b) {
     } while (ca == cb && ca != '\0');
     return ca - cb;
 }
+#endif
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
@@ -102,7 +104,7 @@ const char* SoundEngine::m_szStreamFileA[eStream_Max] = {"calm1",
                                                          "strad",
                                                          "ward",
                                                          "where_are_we_now"};
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 char SoundEngine::m_szSoundPath[] = {"app/common/Sound/"};
 char SoundEngine::m_szMusicPath[] = {"app/common/"};
 char SoundEngine::m_szRedistName[] = {"redist64"};
@@ -116,7 +118,7 @@ char SoundEngine::m_szRedistName[] = {"redist64"};
 // END ASSETS
 
 // Linux specific functions
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 std::wstring stws(const char* utf8) {
     size_t len = std::mbstowcs(nullptr, utf8, 0);
     if (len == static_cast<size_t>(-1)) return L"";

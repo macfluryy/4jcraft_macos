@@ -69,7 +69,11 @@ int _MapDataMappings::getDimension(int id) {
         default:
 #if !defined(_CONTENT_PACKAGE)
             printf("Read invalid dimension from MapDataMapping\n");
+#if defined(_WIN32)
             __debugbreak();
+#else
+            assert(false); abort();
+#endif
 #endif
             break;
     }
@@ -97,7 +101,11 @@ void _MapDataMappings::setMapping(int id, PlayerUID xuid, int dimension) {
 #if !defined(_CONTENT_PACKAGE)
             printf(
                 "Trinyg to set a MapDataMapping for an invalid dimension.\n");
+#if defined(_WIN32)
             __debugbreak();
+#else
+            assert(false); abort();
+#endif
 #endif
             break;
     }
@@ -278,14 +286,10 @@ LevelData* DirectoryLevelStorage::prepareLevel() {
             app.DebugPrintf("Loading %d mappings\n", count);
             for (unsigned int i = 0; i < count; ++i) {
                 PlayerUID playerUid = dis.readPlayerUID();
-#if defined(_WINDOWS64) || defined(__linux__)
-                app.DebugPrintf("  -- %d\n", playerUid);
-#else
-#if defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
                 app.DebugPrintf("  -- %d\n", playerUid);
 #else
                 app.DebugPrintf("  -- %ls\n", playerUid.toWString().c_str());
-#endif
 #endif
                 m_playerMappings[playerUid].readMappings(&dis);
             }
@@ -638,14 +642,10 @@ void DirectoryLevelStorage::saveMapIdLookup() {
         app.DebugPrintf("Saving %d mappings\n", m_playerMappings.size());
         for (auto it = m_playerMappings.begin(); it != m_playerMappings.end();
              ++it) {
-#if defined(_WINDOWS64) || defined(__linux__)
-            app.DebugPrintf("  -- %d\n", it->first);
-#else
-#if defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
             app.DebugPrintf("  -- %d\n", it->first);
 #else
             app.DebugPrintf("  -- %ls\n", it->first.toWString().c_str());
-#endif
 #endif
             dos.writePlayerUID(it->first);
             it->second.writeMappings(&dos);

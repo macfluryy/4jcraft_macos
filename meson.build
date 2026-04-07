@@ -32,13 +32,23 @@ if host_machine.system() == 'linux'
   global_cpp_defs += ['-Dlinux', '-D__linux', '-D__linux__']
 endif
 
+# Unified desktop macro — safe to define everywhere (does NOT clash with SDL headers)
+if host_machine.system() in ['linux', 'darwin']
+  global_cpp_defs += ['-D_PLATFORM_DESKTOP']
+endif
+
 if get_option('renderer') == 'gles'
   global_cpp_defs += ['-DGLES']
   gl_dep = dependency('glesv2', required: true)
   glu_dep = dependency('', required: false)
 else
-  gl_dep = dependency('gl', required: true)
-  glu_dep = dependency('glu', required: true)
+  if host_machine.system() == 'darwin'
+    gl_dep = dependency('appleframeworks', modules: ['OpenGL'])
+    glu_dep = dependency('appleframeworks', modules: ['OpenGL'])
+  else
+    gl_dep = dependency('gl', required: true)
+    glu_dep = dependency('glu', required: true)
+  endif
 endif
 
 if get_option('enable_vsync')
@@ -67,17 +77,38 @@ global_cpp_args = [
   '-Wshift-count-overflow',
   '-pipe',
 ]
+if host_machine.system() == 'darwin'
+  # Force-include the POSIX __debugbreak shim so all the existing
+  # __debugbreak() calls compile without per-file changes.
+  global_cpp_args += [
+    '-include', meson.source_root() / 'targets/platform/macos_compat/debugbreak.h',
+  ]
+endif
 add_project_arguments(global_cpp_args, language: 'cpp')
 
 sdl2_dep = dependency('sdl2')
 thread_dep = dependency('threads')
-dl_dep = cc.find_library('dl', required: true)
+if host_machine.system() == 'darwin'
+  dl_dep = dependency('', required: false)
+else
+  dl_dep = cc.find_library('dl', required: true)
+endif
 glm_dep = dependency('glm')
 
 stb = subproject('stb').get_variable('stb_inc')
 stb_dep = declare_dependency(include_directories: stb)
 
 miniaudio_dep = dependency('miniaudio')
+
+# macOS compatibility shim: provides GL/gl.h -> OpenGL/gl.h redirect and
+# empty stubs for PS4-only headers (qnet.h, xrnm.h). Prepended to all
+# sub-target include dirs on Darwin so existing source files need no changes.
+macos_compat_dep = []
+if host_machine.system() == 'darwin'
+  macos_compat_dep = [declare_dependency(
+    include_directories: include_directories('targets/platform/macos_compat')
+  )]
+endif
 
 subdir('targets/util')
 subdir('targets/java')
