@@ -36,7 +36,9 @@ source .venv/bin/activate
 pip install meson ninja
 
 # 3. Configure the build
-meson setup build
+#    ui_backend=java is required — the default 'shiggy' uses PS4 (ELF) libraries
+#    that are incompatible with macOS Mach-O format and cannot be linked.
+meson setup -Dui_backend=java build
 
 # 4. Compile
 ninja -C build
