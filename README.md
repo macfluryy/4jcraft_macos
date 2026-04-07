@@ -1,150 +1,127 @@
-# <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50" style="vertical-align: middle;"> 4JCraft — macOS Apple Silicon Port
+# 4JCraft — Minecraft Console Edition (Apple Silicon Port)
 
-![](.github-assets/transrights.png) ![](.github-assets/progress.png) ![](.github-assets/internetarchive.gif) ![](.github-assets//ieget-an.gif) ![](.github-assets/minecraft.gif) ![](.github-assets/powered-llvm.gif)
-![](.github-assets/opengl.gif) ![](.github-assets/adobe_getflash2.gif) ![](.github-assets/flash_get_20010813.gif) ![](.github-assets/SiliconValley_7479_English_imagens_get_flashplayer.gif)
-
----
-
-4JCraft is a modified version of the Minecraft Console Legacy Edition, aimed at porting old Minecraft to different platforms. This fork adds **native macOS Apple Silicon (arm64)** support.
-
-> [!NOTE]
-> This fork was tested on **MacBook Air 13" M4 · 16 GB · 512 GB (2025)**. Other Apple Silicon Macs (M1–M4) should work as well. Intel Macs are untested.
+Unofficial macOS/Apple Silicon port of **Minecraft: Xbox Edition 1.6** (4J Studios build).  
+Tested on **MacBook Air 13" M4 (2025), 16 GB RAM, 512 GB SSD**.
 
 ---
 
-## Building (macOS — Apple Silicon only)
+## Requirements
 
-### Prerequisites
+| Tool | Version | Install |
+|------|---------|---------|
+| Xcode Command Line Tools | latest | `xcode-select --install` |
+| Homebrew | latest | [brew.sh](https://brew.sh) |
+| Python 3 | ≥ 3.9 | bundled with macOS / Homebrew |
+| Meson | ≥ 1.1.0 | `brew install meson` |
+| Ninja | latest | `brew install ninja` |
+| SDL2 | latest | `brew install sdl2` |
+| GLM | latest | `brew install glm` |
+| pkg-config | latest | `brew install pkg-config` |
 
-#### 1. Xcode Command Line Tools
+> **Note:** You do **not** need `llvm`, `cmake`, or any Java runtime.  
+> The archive extraction step uses a built-in Python script — no GNU binutils required.
 
-```bash
-xcode-select --install
-```
+---
 
-#### 2. Homebrew
-
-If you don't have Homebrew installed:
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-#### 3. System Libraries
-
-```bash
-brew install sdl2 python3
-```
-
-#### 4. Meson + Ninja
-
-Using a virtual environment (recommended):
+## Build
 
 ```bash
+# 1. Clone the repository
+git clone https://github.com/macfluryy/4jcraft_macos.git
+cd 4jcraft_macos
+
+# 2. Create a Python virtual environment (used by Meson/Ninja scripts)
 python3 -m venv .venv
 source .venv/bin/activate
 pip install meson ninja
+
+# 3. Configure the build
+meson setup build
+
+# 4. Compile
+ninja -C build
 ```
 
-Or globally:
-
-```bash
-pip3 install meson ninja
-```
+Build output: `build/targets/app/Minecraft.Client`
 
 ---
 
-### Configure & Build
-
-```bash
-# Activate venv if using one
-source .venv/bin/activate
-
-# Configure
-meson setup build
-
-# Compile
-meson compile -C build
-```
-
-The binary is output to:
-
-```
-./build/targets/app/Minecraft.Client
-```
-
-#### Clean build
-
-```bash
-# Clean compiled objects only
-meson compile --clean -C build
-
-# Full reset
-rm -rf ./build
-meson setup build
-```
-
----
-
-## Running
-
-Game assets are automatically copied to the build output directory during compilation. Run from that directory:
+## Run
 
 ```bash
 cd build/targets/app
 ./Minecraft.Client
 ```
 
-The window title will show the current FPS and renderer info:
-
-```
-Minecraft Console Edition  |  60 FPS  |  GL 4.1 Metal  |  macOS arm64
-```
+The game window title shows real-time FPS and renderer info, e.g.:  
+`Minecraft Console Edition | 60 FPS | GL 4.1 Metal | macOS arm64`
 
 ---
 
-## Controls (keyboard & mouse)
+## Controls
 
-| Action | Key |
+| Key / Action | In-game function |
 |---|---|
-| Move | `W A S D` |
-| Jump | `Space` |
-| Sprint | `Left Ctrl` |
-| Sneak | `Left Shift` |
-| Attack / Break | `Enter` |
-| Use / Place | `F` |
-| Inventory | `E` |
-| Crafting (2×2) | `C` |
-| Drop item | `Q` |
-| Pause menu | `Esc` |
-| Third-person view | `F5` |
-| Game info screen | `F3` |
-| Hotbar slots | `1–9` |
-| Camera | Mouse |
+| `W A S D` | Move |
+| Mouse | Look around |
+| Left click | Break block |
+| Right click | Place block / use item |
+| `E` | Open inventory |
+| `Esc` | Pause / back |
+| `1–9` | Hotbar slots |
+| `Tab` | Toggle map (if available) |
+| `F1` | Hide HUD |
+| `F3` | In-game info overlay |
+
+---
+
+## Troubleshooting
+
+### Build fails with `ar: //: File exists`
+
+macOS's built-in `ar` cannot extract ORBIS (PS4) archives.  
+**This is already fixed** in this repo via a pure-Python extractor (`subprojects/shiggy/scripts/unpack_archive.py`).  
+If you see this error, make sure you pulled the latest code:
+
+```bash
+git pull origin dev
+meson setup --reconfigure build
+ninja -C build
+```
+
+### Build fails with `SDL2 not found`
+
+```bash
+brew install sdl2
+```
+
+### Game crashes on launch
+
+Make sure you run the binary **from its directory** so it can find the asset files:
+
+```bash
+cd build/targets/app && ./Minecraft.Client
+```
+
+### No sound
+
+miniaudio backend is included. If you get no audio, check System Settings → Privacy → Microphone.
 
 ---
 
 ## Tested Hardware
 
-| Device | Status |
+| Device | Result |
 |---|---|
-| MacBook Air 13" M4 · 16 GB · 512 GB (2025) | ✅ Fully working |
+| MacBook Air 13" M4 (2025) 16 GB | ✅ 60 FPS, fully playable |
 
-Renderer: OpenGL 4.1 via Apple's Metal backend (`GL Version: 4.1 Metal`).
-
----
-
-## Join the community
-
-- **Discord:** https://discord.gg/zFCwRWkkUg
-- **Steam:** https://steamcommunity.com/groups/4JCraft
+Community reports for M1/M2/M3 welcome — open an issue!
 
 ---
 
-### View the online documentation [here](https://4jcraft.github.io/4jcraft).
+## License & Credits
 
----
-
-## Generative AI Policy
-
-Submitting code to this repository authored by generative AI tools (LLMs, agentic coding tools, etc...) is strictly forbidden (see [CONTRIBUTING.md](./CONTRIBUTING.md)). Pull requests that are clearly vibe-coded or written by an LLM will be closed. Contributors are expected to both fully understand the code that they write **and** have the necessary skills to *maintain it*.
+- Original game: © Mojang / Microsoft  
+- Console port: © 4J Studios  
+- macOS port: community effort — see commit history  
+- This repository contains no proprietary game assets
