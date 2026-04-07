@@ -380,8 +380,8 @@ static void glShadowSetDepthTest(bool e) {
 }
 
 static void glShadowSetBlendFunc(GLint s, GLint d) {
-    if (!(s_gl_shadow_mask & SHADOW_BLEND_FUNC) ||
-        s_gl_state.blendSrc != s || s_gl_state.blendDst != d) {
+    if (!(s_gl_shadow_mask & SHADOW_BLEND_FUNC) || s_gl_state.blendSrc != s ||
+        s_gl_state.blendDst != d) {
         ::glBlendFunc(s, d);
         s_gl_state.blendSrc = s;
         s_gl_state.blendDst = d;
@@ -390,8 +390,7 @@ static void glShadowSetBlendFunc(GLint s, GLint d) {
 }
 
 static void glShadowSetDepthMask(GLboolean e) {
-    if (!(s_gl_shadow_mask & SHADOW_DEPTH_MASK) ||
-        s_gl_state.depthMask != e) {
+    if (!(s_gl_shadow_mask & SHADOW_DEPTH_MASK) || s_gl_state.depthMask != e) {
         ::glDepthMask(e);
         s_gl_state.depthMask = e;
         s_gl_shadow_mask |= SHADOW_DEPTH_MASK;
@@ -502,8 +501,7 @@ static void pushRenderState() {
             glUniform1f(s_shader.uFogStart, s_rs.fogStart);
             glUniform1f(s_shader.uFogEnd, s_rs.fogEnd);
             glUniform1f(s_shader.uFogDensity, s_rs.fogDensity);
-            glUniform4fv(s_shader.uFogColor, 1,
-                         glm::value_ptr(s_rs.fogColor));
+            glUniform4fv(s_shader.uFogColor, 1, glm::value_ptr(s_rs.fogColor));
             glUniform1i(s_shader.uFogEnable, s_rs.fogEnable ? 1 : 0);
         }
         if (s_rs_dirty_mask & DIRTY_TEXTURE) {
@@ -515,11 +513,9 @@ static void pushRenderState() {
         if (s_rs_dirty_mask & DIRTY_GAMMA)
             glUniform1f(s_shader.uInvGamma, 1.0f / s_rs.gamma);
         if (s_rs_dirty_mask & DIRTY_LMT)
-            glUniform4fv(s_shader.uLMTransform, 1,
-                         glm::value_ptr(s_rs.lmt));
+            glUniform4fv(s_shader.uLMTransform, 1, glm::value_ptr(s_rs.lmt));
         if (s_rs_dirty_mask & DIRTY_GLOBAL_LM)
-            glUniform2fv(s_shader.uGlobalLM, 1,
-                         glm::value_ptr(s_rs.globalLM));
+            glUniform2fv(s_shader.uGlobalLM, 1, glm::value_ptr(s_rs.globalLM));
         s_rs_dirty_mask = 0;
     }
     flushMatrices();
@@ -708,7 +704,9 @@ void C4JRender::Initialise() {
 #ifdef ENABLE_VSYNC
     SDL_GL_SetSwapInterval(1);
 #else
-    SDL_GL_SetSwapInterval(0);
+    // Adaptive vsync: no wait if frame is late, avoids hard 60fps cap
+    if (SDL_GL_SetSwapInterval(-1) != 0)
+        SDL_GL_SetSwapInterval(0);  // Fallback: no vsync
 #endif
 }
 
@@ -764,22 +762,23 @@ void C4JRender::Present() {
                 onFramebufferResize(ev.window.data1, ev.window.data2);
         }
     }
-    glFlush();
+    // glFlush removed — Metal handles sync in SDL_GL_SwapWindow
     SDL_GL_SwapWindow(s_window);
 
     // FPS counter in window title
     static Uint32 s_fpsLastTime = 0;
-    static int    s_fpsFrames   = 0;
+    static int s_fpsFrames = 0;
     s_fpsFrames++;
     Uint32 now = SDL_GetTicks();
     if (now - s_fpsLastTime >= 1000) {
         float fps = s_fpsFrames * 1000.f / (float)(now - s_fpsLastTime);
         char title[128];
         snprintf(title, sizeof(title),
-                 "Minecraft Console Edition  |  %.0f FPS  |  GL 4.1 Metal  |  macOS arm64",
+                 "Minecraft Console Edition  |  %.0f FPS  |  GL 4.1 Metal  |  "
+                 "macOS arm64",
                  fps);
         SDL_SetWindowTitle(s_window, title);
-        s_fpsFrames  = 0;
+        s_fpsFrames = 0;
         s_fpsLastTime = now;
     }
 }
@@ -1111,7 +1110,7 @@ void C4JRender::Set_matrixDirty() {
     s_boundProgram = 0;
     s_rs_dirty_mask = 0xFFFFFFFF;
     s_gl_shadow_mask = 0;
-    s_normalMatDirty = true; // normal matrix dirt after iggy reset
+    s_normalMatDirty = true;  // normal matrix dirt after iggy reset
     s_matDirty = true;
     s_chunkOffsetValid = false;
     if (s_shader.prog) {
@@ -1148,9 +1147,7 @@ void C4JRender::StateSetDepthMask(bool e) {
     glShadowSetDepthMask(e ? GL_TRUE : GL_FALSE);
 }
 void C4JRender::StateSetBlendEnable(bool e) { glShadowSetBlend(e); }
-void C4JRender::StateSetBlendFunc(int s, int d) {
-    glShadowSetBlendFunc(s, d);
-}
+void C4JRender::StateSetBlendFunc(int s, int d) { glShadowSetBlendFunc(s, d); }
 void C4JRender::StateSetDepthFunc(int f) { ::glDepthFunc(f); }
 void C4JRender::StateSetFaceCull(bool e) { glShadowSetCull(e); }
 void C4JRender::StateSetFaceCullCW(bool e) {
@@ -1197,7 +1194,10 @@ void C4JRender::StateSetFogEnable(bool e) {
     }
 }
 void C4JRender::StateSetFogMode(int mode) {
-    int v = (mode == GL_LINEAR) ? 1 : (mode == GL_EXP) ? 2 : (mode == 0x0801) ? 3 : 0;
+    int v = (mode == GL_LINEAR) ? 1
+            : (mode == GL_EXP)  ? 2
+            : (mode == 0x0801)  ? 3
+                                : 0;
     if (s_rs.fogMode != v) {
         s_rs.fogMode = v;
         markDirty(DIRTY_FOG);
@@ -1319,9 +1319,9 @@ void C4JRender::TextureBindVertex(int idx, bool scaleLight) {
         s_rs.useLightmap = true;
         markDirty(DIRTY_TEXTURE);
     }
-    glm::vec4 newLmt =
-        scaleLight ? glm::vec4{1.f, 1.f, 8.f / 256.f, 8.f / 256.f}
-                   : glm::vec4{1.f, 1.f, 0.f, 0.f};
+    glm::vec4 newLmt = scaleLight
+                           ? glm::vec4{1.f, 1.f, 8.f / 256.f, 8.f / 256.f}
+                           : glm::vec4{1.f, 1.f, 0.f, 0.f};
     if (s_rs.lmt != newLmt) {
         s_rs.lmt = newLmt;
         markDirty(DIRTY_LMT);
@@ -1337,7 +1337,7 @@ void C4JRender::TextureSetTextureLevels(int l) {
 }
 int C4JRender::TextureGetTextureLevels() { return 1; }
 void C4JRender::TextureData(int w, int h, void* d, int lvl, eTextureFormat) {
-    glTexImage2D(GL_TEXTURE_2D, lvl, GL_RGBA, w, h, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, lvl, GL_RGBA, w, h, 0, GL_BGRA,
                  GL_UNSIGNED_BYTE, d);
     if (lvl == 0) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -1349,7 +1349,7 @@ void C4JRender::TextureData(int w, int h, void* d, int lvl, eTextureFormat) {
 }
 void C4JRender::TextureDataUpdate(int xo, int yo, int w, int h, void* d,
                                   int lvl) {
-    glTexSubImage2D(GL_TEXTURE_2D, lvl, xo, yo, w, h, GL_RGBA, GL_UNSIGNED_BYTE,
+    glTexSubImage2D(GL_TEXTURE_2D, lvl, xo, yo, w, h, GL_BGRA, GL_UNSIGNED_BYTE,
                     d);
 }
 void C4JRender::TextureSetParam(int p, int v) {
@@ -1362,7 +1362,11 @@ static int stbLoad(unsigned char* data, int w, int h, D3DXIMAGE_INFO* info,
     for (int i = 0; i < w * h; i++) {
         unsigned char r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2],
                       a = data[i * 4 + 3];
-        px[i] = (a << 24) | (r << 16) | (g << 8) | b;
+        // PNG files in the archive are BGR-swapped (DirectX origin).
+        // GL_BGRA reads bytes as [B,G,R,A]. Pack so byte order = [r_stbi, g,
+        // b_stbi, a] → GL_BGRA: B=r_stbi(=actual_blue), G=g,
+        // R=b_stbi(=actual_red), A=a → correct.
+        px[i] = (a << 24) | (b << 16) | (g << 8) | r;
     }
     if (info) {
         info->Width = w;
