@@ -21,7 +21,7 @@ class UILayer;
 #define DYNAMODE_FONT_CREDITS_COUNT 2
 #define PS3_DOLBY_CREDIT 4
 
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
 #define MAX_CREDIT_STRINGS \
     (XBOXONE_CREDITS_COUNT + MILES_AND_IGGY_CREDITS_COUNT)
 #endif

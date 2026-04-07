@@ -18,11 +18,13 @@
 #include <Windows.h>
 #endif
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 #include <pthread.h>
 #include <sys/resource.h>
+#if defined(__linux__)
 #include <sys/syscall.h>
 #include <sys/types.h>
+#endif
 #include <unistd.h>
 #endif
 
@@ -75,6 +77,10 @@ void formatThreadName(std::string& out, const char* name) {
 std::int64_t getNativeThreadId() {
 #if defined(__linux__)
     return static_cast<std::int64_t>(::syscall(SYS_gettid));
+#elif defined(__APPLE__)
+    uint64_t tid = 0;
+    pthread_threadid_np(nullptr, &tid);
+    return static_cast<std::int64_t>(tid);
 #else
     return 0;
 #endif
@@ -126,6 +132,12 @@ void setThreadNamePlatform([[maybe_unused]] std::uint32_t threadId,
     char truncated[16];
     std::snprintf(truncated, sizeof(truncated), "%s", name);
     (void)::pthread_setname_np(::pthread_self(), truncated);
+#elif defined(__APPLE__)
+    // macOS: pthread_setname_np only sets the name for the *current* thread
+    // and takes a single string argument (no pthread_t parameter).
+    char truncated[64];
+    std::snprintf(truncated, sizeof(truncated), "%s", name);
+    (void)::pthread_setname_np(truncated);
 #endif
 }
 
@@ -142,7 +154,7 @@ void setPriorityPlatform(std::thread& threadHandle, bool isSelf,
         return;
     (void)::SetThreadPriority(handle, std::to_underlying(priority));
 
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
     std::int64_t tid = 0;
     if (isSelf) {
         tid = getNativeThreadId();

@@ -28,8 +28,8 @@ platform_sources = run_command(
   check: true,
 ).stdout().strip().split('\n')
 
-# linux-specific files
-if host_machine.system() == 'linux'
+# linux/macOS shared desktop-backend files
+if host_machine.system() in ['linux', 'darwin']
   platform_sources += run_command(
     'sh',
     '-c', 'find "'
@@ -57,7 +57,7 @@ client_dependencies = [
   miniaudio_dep,
   stb_dep,
   util_dep,
-]
+] + macos_compat_dep
 
 if get_option('ui_backend') == 'shiggy'
   shiggy_dep = dependency(

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <format>
 #include <vector>
-#ifndef __linux__
+#if !defined(__linux__) && !defined(__APPLE__)
 #include <qnet.h>
 #include <xrnm.h>
 #endif

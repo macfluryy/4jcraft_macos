@@ -2,7 +2,7 @@
 #include "app/include/stubs.h"
 
 #include "app/linux/LinuxGame.h"
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 
 void LinuxLogStubLightmapProbe() {
     static bool logged = false;

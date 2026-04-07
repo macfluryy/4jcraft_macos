@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined(__linux__) || defined(__APPLE__)
 
 #include "platform/sdl2/Render.h"
 #include "app/include/stubs.h"
@@ -165,4 +165,4 @@ void LinuxGLLogLightmapState(const char* stage, int textureId,
     fprintf(stderr, "[linux-lightmap] %s tex=%d scale=%d\n", stage, textureId,
             scaleLight ? 1 : 0);
 }
-#endif
+#endif /* __linux__ || __APPLE__ */

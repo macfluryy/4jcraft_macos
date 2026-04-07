@@ -23,7 +23,11 @@ BiomeOverrideLayer::BiomeOverrideLayer(int seedMixup) : Layer(seedMixup) {
                    m_biomeOverride.size());
         } else if (result.status == IPlatformFileIO::ReadStatus::TooLarge) {
             app.DebugPrintf("Biomemap binary is too large!!\n");
+#if defined(_WIN32)
             __debugbreak();
+#else
+            assert(false); abort();
+#endif
         } else if (result.status != IPlatformFileIO::ReadStatus::Ok) {
             app.FatalLoadError();
         }

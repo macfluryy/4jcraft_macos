@@ -139,7 +139,7 @@ std::string wstringtofilename(const std::wstring& name) {
     std::string result;
     result.reserve(name.size());
     for (wchar_t c : name) {
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
         if (c == L'\\') c = L'/';
 #else
         if (c == L'/') c = L'\\';

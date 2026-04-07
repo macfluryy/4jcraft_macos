@@ -79,8 +79,25 @@ File OldChunkStorage::getFile(int x, int z) {
 
     wchar_t xRadix36[64];
     wchar_t zRadix36[64];
-#if defined(__linux__)
-    assert(0);  // need a gcc verison of _itow ?
+#if defined(__linux__) || defined(__APPLE__)
+    // Cross-platform radix-36 conversion (no _itow on POSIX systems)
+    auto itow36 = [](int val, wchar_t* buf, size_t bufSize) {
+        static const wchar_t digits[] = L"0123456789abcdefghijklmnopqrstuvwxyz";
+        bool neg = val < 0;
+        unsigned int uval = neg ? -(unsigned int)val : (unsigned int)val;
+        wchar_t tmp[64];
+        int i = 0;
+        if (uval == 0) { tmp[i++] = L'0'; }
+        while (uval > 0) { tmp[i++] = digits[uval % 36]; uval /= 36; }
+        if (neg) tmp[i++] = L'-';
+        for (int j = 0; j < i; j++) buf[j] = tmp[i - 1 - j];
+        buf[i] = L'\0';
+    };
+    itow36(x, xRadix36, 64);
+    itow36(z, zRadix36, 64);
+    swprintf(name, MAX_PATH_SIZE, L"c.%ls.%ls.dat", xRadix36, zRadix36);
+    itow36(x & 63, path1, 64);
+    itow36(z & 63, path2, 64);
 #else
     _itow(x, xRadix36, 36);
     _itow(z, zRadix36, 36);
