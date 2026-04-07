@@ -1,111 +1,67 @@
-# <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50" style="vertical-align: middle;"> 4JCraft
+# <img src=".github-assets/logo.jpg" alt="Logo" width="50" height="50" style="vertical-align: middle;"> 4JCraft — macOS Apple Silicon Port
 
 ![](.github-assets/transrights.png) ![](.github-assets/progress.png) ![](.github-assets/internetarchive.gif) ![](.github-assets//ieget-an.gif) ![](.github-assets/minecraft.gif) ![](.github-assets/powered-llvm.gif)
 ![](.github-assets/opengl.gif) ![](.github-assets/adobe_getflash2.gif) ![](.github-assets/flash_get_20010813.gif) ![](.github-assets/SiliconValley_7479_English_imagens_get_flashplayer.gif)
----
-
-4JCraft is a modified version of the Minecraft Console Legacy Edition, aimed at porting old Minecraft to different platforms (such as Linux, Android, Emscripten, etc.) and refactoring the codebase to improve organization and use modern C++ features.
-
-## Scope & Platform Support
-
-At the moment, we're aiming to support the following platforms:
-
-Please note that these percentages are **estimates** and do not necessarily reflect the final playability of the game on each platform.
-
-- Linux (~90%)
-- Emscripten (~10%) [[Check the Emscripten Branch](https://github.com/4jcraft/4jcraft/tree/feat/emscripten)]
-- macOS (not started) [No official support but people have been able to run the game on MacOS]
-- iOS (not started)
-- Android (~35%)
-
-> [!WARNING]
-> There is NO Windows support, for that, go to [smartcmd/MinecraftConsoles](https://github.com/smartcmd/MinecraftConsoles/). 
-
-> All efforts are focused towards a native Linux port, OpenGL rendering pipeline, and modernizing the existing LCE codebase/tooling to make future platform ports easier.
-> 
-> `Windows64` and other platforms originally supported by LCE are currently unsupported, since the original Visual Studio tooling has been stripped from this repository and replaced with our own.
 
 ---
 
-## Join our community:
-* **Discord:** https://discord.gg/zFCwRWkkUg
-* **Steam:** https://steamcommunity.com/groups/4JCraft
+4JCraft is a modified version of the Minecraft Console Legacy Edition, aimed at porting old Minecraft to different platforms. This fork adds **native macOS Apple Silicon (arm64)** support.
 
-## Building (Linux)
+> [!NOTE]
+> This fork was tested on **MacBook Air 13" M4 · 16 GB · 512 GB (2025)**. Other Apple Silicon Macs (M1–M4) should work as well. Intel Macs are untested.
+
+---
+
+## Building (macOS — Apple Silicon only)
 
 ### Prerequisites
 
-#### System Libraries
+#### 1. Xcode Command Line Tools
 
-Debian/Ubuntu:
 ```bash
-sudo apt-get install -y build-essential libsdl2-dev libgl-dev libglu1-mesa-dev libpthread-stubs0-dev
+xcode-select --install
 ```
 
-Arch/Manjaro:
+#### 2. Homebrew
+
+If you don't have Homebrew installed:
+
 ```bash
-sudo pacman -S base-devel pkgconf sdl2-compat mesa glu
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-Fedora/Red Hat/Nobara:
+#### 3. System Libraries
+
 ```bash
-sudo dnf install gcc gcc-c++ make SDL2-devel mesa-libGL-devel mesa-libGLU-devel openssl-devel
+brew install sdl2 python3
 ```
 
-#### Toolchain
+#### 4. Meson + Ninja
 
-This project requires a C++23 compiler with full standard library support.
-
-**If your distro ships GCC 15+**, you're good - just use the system compiler:
+Using a virtual environment (recommended):
 
 ```bash
-meson setup build
-```
-
-**If your distro ships an older GCC:** install LLVM with libc++ and use the provided toolchain file:
-
-```bash
-# Debian/Ubuntu
-wget https://apt.llvm.org/llvm.sh
-chmod +x llvm.sh
-sudo ./llvm.sh 20
-sudo apt install libc++-20-dev libc++abi-20-dev
-```
-
-```bash
-# Fedora/RHEL (if needed)
-sudo dnf install clang lld libcxx-devel libcxxabi-devel
-```
-
-Then configure with the LLVM native file (see Configure & Build below).
-
-#### Meson + Ninja
-
-Install [Meson](https://mesonbuild.com/) and [Ninja](https://ninja-build.org/):
-
-```bash
+python3 -m venv .venv
+source .venv/bin/activate
 pip install meson ninja
 ```
 
-Or follow the [Meson quickstart guide](https://mesonbuild.com/Quick-guide.html).
-
-#### Docker (alternative)
-
-If you don't want to install dependencies, use the included devcontainer. Open the project in VS Code with the [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension, or build manually:
+Or globally:
 
 ```bash
-docker build -t 4jcraft-dev .devcontainer/
-docker run -it --rm -v $(pwd):/workspaces/4jcraft -w /workspaces/4jcraft 4jcraft-dev bash
+pip3 install meson ninja
 ```
+
+---
 
 ### Configure & Build
 
 ```bash
-# If using system GCC 15+
-meson setup build
+# Activate venv if using one
+source .venv/bin/activate
 
-# If using LLVM/libc++
-meson setup --native-file ./scripts/llvm_native.txt build
+# Configure
+meson setup build
 
 # Compile
 meson compile -C build
@@ -117,25 +73,15 @@ The binary is output to:
 ./build/targets/app/Minecraft.Client
 ```
 
-#### Clean
-
-To perform a clean compilation:
+#### Clean build
 
 ```bash
+# Clean compiled objects only
 meson compile --clean -C build
-```
 
-...or to reconfigure an existing build directory:
-
-```bash
-meson setup --native-file ./scripts/llvm_native.txt build --reconfigure
-```
-
-...or to hard reset the build directory:
-
-```bash
-rm -r ./build
-meson setup --native-file ./scripts/llvm_native.txt build
+# Full reset
+rm -rf ./build
+meson setup build
 ```
 
 ---
@@ -144,10 +90,54 @@ meson setup --native-file ./scripts/llvm_native.txt build
 
 Game assets are automatically copied to the build output directory during compilation. Run from that directory:
 
-```sh
+```bash
 cd build/targets/app
 ./Minecraft.Client
 ```
+
+The window title will show the current FPS and renderer info:
+
+```
+Minecraft Console Edition  |  60 FPS  |  GL 4.1 Metal  |  macOS arm64
+```
+
+---
+
+## Controls (keyboard & mouse)
+
+| Action | Key |
+|---|---|
+| Move | `W A S D` |
+| Jump | `Space` |
+| Sprint | `Left Ctrl` |
+| Sneak | `Left Shift` |
+| Attack / Break | `Enter` |
+| Use / Place | `F` |
+| Inventory | `E` |
+| Crafting (2×2) | `C` |
+| Drop item | `Q` |
+| Pause menu | `Esc` |
+| Third-person view | `F5` |
+| Game info screen | `F3` |
+| Hotbar slots | `1–9` |
+| Camera | Mouse |
+
+---
+
+## Tested Hardware
+
+| Device | Status |
+|---|---|
+| MacBook Air 13" M4 · 16 GB · 512 GB (2025) | ✅ Fully working |
+
+Renderer: OpenGL 4.1 via Apple's Metal backend (`GL Version: 4.1 Metal`).
+
+---
+
+## Join the community
+
+- **Discord:** https://discord.gg/zFCwRWkkUg
+- **Steam:** https://steamcommunity.com/groups/4JCraft
 
 ---
 
