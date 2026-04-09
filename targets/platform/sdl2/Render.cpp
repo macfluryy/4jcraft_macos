@@ -645,7 +645,7 @@ void C4JRender::Initialise() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     Uint32 wf = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if (s_fullscreen) wf |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    s_window = SDL_CreateWindow("Minecraft Console Edition",
+    s_window = SDL_CreateWindow("Minecraft",
                                 SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                 s_windowWidth, s_windowHeight, wf);
     if (!s_window) {
@@ -764,23 +764,6 @@ void C4JRender::Present() {
     }
     // glFlush removed — Metal handles sync in SDL_GL_SwapWindow
     SDL_GL_SwapWindow(s_window);
-
-    // FPS counter in window title
-    static Uint32 s_fpsLastTime = 0;
-    static int s_fpsFrames = 0;
-    s_fpsFrames++;
-    Uint32 now = SDL_GetTicks();
-    if (now - s_fpsLastTime >= 1000) {
-        float fps = s_fpsFrames * 1000.f / (float)(now - s_fpsLastTime);
-        char title[128];
-        snprintf(title, sizeof(title),
-                 "Minecraft Console Edition  |  %.0f FPS  |  GL 4.1 Metal  |  "
-                 "macOS arm64",
-                 fps);
-        SDL_SetWindowTitle(s_window, title);
-        s_fpsFrames = 0;
-        s_fpsLastTime = now;
-    }
 }
 
 void C4JRender::SetWindowSize(int w, int h) {
