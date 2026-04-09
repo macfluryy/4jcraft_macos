@@ -3421,8 +3421,9 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_GAME_INFO)) &&
             gameMode->isInputAllowed(MINECRAFT_ACTION_GAME_INFO)) {
-            ui.NavigateToScene(iPad, eUIScene_InGameInfoMenu);
-            ui.PlayUISFX(eSFX_Press);
+            /*ui.NavigateToScene(iPad, eUIScene_InGameInfoMenu);
+            ui.PlayUISFX(eSFX_Press);*/
+            options->renderDebug = !options->renderDebug;
         }
 
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_INVENTORY)) &&
