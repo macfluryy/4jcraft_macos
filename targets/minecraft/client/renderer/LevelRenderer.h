@@ -18,7 +18,7 @@ class ItemInstance;
 class LivingEntity;
 class Player;
 class ResourceLocation;
-#if !defined(__linux__)
+#if !defined(__linux__) && defined(__APPLE__)
 #include <xmcore.h>
 #endif
 #include <stddef.h>

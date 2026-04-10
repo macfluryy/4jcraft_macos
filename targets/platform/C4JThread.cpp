@@ -21,7 +21,7 @@
 #if defined(__linux__) || defined(__APPLE__)
 #include <pthread.h>
 #include <sys/resource.h>
-#if defined(__linux__)
+#if defined(__linux__) 
 #include <sys/syscall.h>
 #include <sys/types.h>
 #endif

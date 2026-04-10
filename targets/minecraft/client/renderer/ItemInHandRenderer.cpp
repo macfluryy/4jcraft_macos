@@ -460,7 +460,7 @@ void ItemInHandRenderer::render(float a) {
                                                   std::floor(player->z), 0);
         int u = col % 65536;
         int v = col / 65536;
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
         static int lightmapLogCount = 0;
         if (lightmapLogCount < 8) {
             ++lightmapLogCount;

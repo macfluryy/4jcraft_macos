@@ -16,7 +16,7 @@ bool IsEqualXUID(PlayerUID a, PlayerUID b) { return false; }
 uint8_t IQNetPlayer::GetSmallId() { return 0; }
 void IQNetPlayer::SendData(IQNetPlayer* player, const void* pvData,
                            uint32_t dwDataSize, uint32_t dwFlags) {
-#if !defined(__linux__)
+#if !defined(__linux__) && defined(__APPLE__)
     app.DebugPrintf("Sending from 0x%x to 0x%x %d bytes\n", this, player,
                     dwDataSize);
 #endif

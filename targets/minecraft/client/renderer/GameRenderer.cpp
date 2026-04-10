@@ -798,7 +798,7 @@ void GameRenderer::renderItemInHand(float a, int eye) {
 // 4J - change brought forward from 1.8.2
 void GameRenderer::turnOffLightLayer(double alpha) {  // 4J - TODO
     FRAME_PROFILE_SCOPE(Lightmap);
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
     if (SharedConstants::TEXTURE_LIGHTING) {
         LinuxLogStubLightmapProbe();
         RenderManager.TextureBindVertex(-1);
@@ -826,7 +826,7 @@ void GameRenderer::turnOnLightLayer(
     double alpha,
     bool scaleLight) {  // 4jcraft: added scaleLight for entity lighting
     FRAME_PROFILE_SCOPE(Lightmap);
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
     if (!SharedConstants::TEXTURE_LIGHTING) return;
 
     LinuxLogStubLightmapProbe();
@@ -988,7 +988,7 @@ void GameRenderer::updateLightTexture(float a) {
             int g = (int)(_g * 255);
             int b = (int)(_b * 255);
 
-#if defined(_WIN64) || __linux__
+#if defined(_WIN64) || __linux__ || __APPLE__
             lightPixels[j][i] = alpha << 24 | b << 16 | g << 8 | r;
 #else
             lightPixels[j][i] = r << 24 | g << 16 | b << 8 | alpha;

@@ -165,4 +165,4 @@ void LinuxGLLogLightmapState(const char* stage, int textureId,
     fprintf(stderr, "[linux-lightmap] %s tex=%d scale=%d\n", stage, textureId,
             scaleLight ? 1 : 0);
 }
-#endif /* __linux__ || __APPLE__ */
+#endif __linux__ || __APPLE__

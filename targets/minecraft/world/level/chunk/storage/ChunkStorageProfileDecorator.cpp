@@ -45,7 +45,7 @@ void ChunkStorageProfilerDecorator::tick() {
     if (counter > 500) {
         if (loadCount > 0) {
 #if !defined(_CONTENT_PACKAGE)
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
             sprintf(buf, "Average load time: %f (%lld)",
                     0.000001 * (double)timeSpentLoading / (double)loadCount,
                     (long long)loadCount);
@@ -59,7 +59,7 @@ void ChunkStorageProfilerDecorator::tick() {
         }
         if (saveCount > 0) {
 #if !defined(_CONTENT_PACKAGE)
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
             sprintf(buf, "Average save time: %f (%lld)",
                     0.000001 * (double)timeSpentSaving / (double)loadCount,
                     (long long)loadCount);

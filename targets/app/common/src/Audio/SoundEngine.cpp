@@ -29,7 +29,7 @@
 #define STB_VORBIS_HEADER_ONLY
 #include "stb_vorbis.c"
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
 // Fixes strcasecmp in miniaudio - Linux glibc doesn't always expose it
 // https://stackoverflow.com/questions/31127260/strcasecmp-a-non-standard-function
 int strcasecmp(const char* a, const char* b) {

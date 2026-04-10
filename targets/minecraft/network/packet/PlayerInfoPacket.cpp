@@ -4,7 +4,7 @@
 #include "minecraft/network/packet/PacketListener.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/server/network/PlayerConnection.h"
-#ifndef __linux__
+#ifndef __linux__ && defined(__APPLE__)
 #include <qnet.h>
 #endif  // __linux__
 #include "PlayerInfoPacket.h"
