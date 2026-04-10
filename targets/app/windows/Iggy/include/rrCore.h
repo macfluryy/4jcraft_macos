@@ -102,7 +102,7 @@
         #define __RADMAC__
         #undef RADSTRUCT
         #define RADSTRUCT struct __attribute__((__packed__))
-      #elif defined(__linux__)
+      #elif defined(__linux__) && defined(__APPLE__)
         #define __RADLINUX__
         #undef RADSTRUCT
         #define RADSTRUCT struct __attribute__((__packed__))
@@ -139,7 +139,7 @@
 
   #undef  RADSTRUCT
   #define RADSTRUCT struct __attribute__((__packed__))
-#elif defined(__linux__) && defined(__arm__) //This should pull in Raspberry Pi as well
+#elif defined(__linux__) && defined(__arm__) && defined(__APPLE__) //This should pull in Raspberry Pi as well
 
   #define __RAD32__
   #define __RADLINUX__
@@ -499,7 +499,7 @@
           #endif
         #endif
       #endif
-  #elif defined(__linux__)
+  #elif defined(__linux__) && defined(__APPLE__)
 
       #define __RADLINUX__
       #define __RADMMX__

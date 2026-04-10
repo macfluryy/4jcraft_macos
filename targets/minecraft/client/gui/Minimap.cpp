@@ -71,7 +71,7 @@ void Minimap::reloadColours() {
             int b = ((color) & 0xff) * br / 255;
 
             // 4J - changed byte order to save having to reorder later
-#if defined(_WIN64) || __linux__
+#if defined(_WIN64) || __linux__ || __APPLE__
             LUT[i] = 255 << 24 | b << 16 | g << 8 | r;
 #else
             LUT[i] = r << 24 | g << 16 | b << 8 | 255;

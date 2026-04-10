@@ -670,7 +670,7 @@ static void RADLINK gdraw_DescribeVertexBuffer(
 //   Create/free (or cache) render targets
 //
 
-#ifdef __linux__
+#ifdef __linux__ && defined(__APPLE__)
 typedef struct {
     S32 free_count;
     S32 live_count;

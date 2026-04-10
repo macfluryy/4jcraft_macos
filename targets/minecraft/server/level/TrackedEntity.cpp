@@ -59,7 +59,7 @@
 
 class AttributeInstance;
 class MobEffectInstance;
-#ifndef __linux__
+#ifndef __linux__ && __APPLE__
 #include <qnet.h>
 #endif  // __linux__
 

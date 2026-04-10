@@ -201,7 +201,7 @@ bool Connection::writeTick() {
         }
 
         Packet::writePacket(packet, bufferedDos);
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
         bufferedDos->flush();  // Ensure buffered data reaches socket before any
                                // other writes
 #endif
@@ -253,7 +253,7 @@ bool Connection::writeTick() {
         // write it to QNet as a single packet with priority flags Otherwise
         // just buffer the packet with other outgoing packets as the java game
         // did
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
         // Linux fix: For local connections, always use bufferedDos to avoid
         // byte interleaving between the BufferedOutputStream buffer and direct
         // sos writes. The shouldDelay/writeWithFlags path writes directly to

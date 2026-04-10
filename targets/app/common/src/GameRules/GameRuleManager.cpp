@@ -641,7 +641,7 @@ void GameRuleManager::processSchematicsLighting(LevelChunk* levelChunk) {
 }
 
 void GameRuleManager::loadDefaultGameRules() {
-#if !defined(__linux__)
+#if !defined(__linux__) && !defined(__APPLE__)
 #if defined(_WINDOWS64)
     File packedTutorialFile(L"Windows64Media\\Tutorial\\Tutorial.pck");
     if (!packedTutorialFile.exists())

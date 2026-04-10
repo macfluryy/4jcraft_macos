@@ -4,7 +4,7 @@
 #include <format>
 #include <string>
 #include <vector>
-#if !defined(__linux__)
+#if !defined(__linux__) && !defined(__APPLE__)
 #include <qnet.h>
 #endif
 #include "platform/PlatformTypes.h"

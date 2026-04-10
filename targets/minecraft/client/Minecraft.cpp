@@ -481,9 +481,8 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     } else {
         workingDirectory = new File(userHome, L'.' + applicationName + L'/');
     }
-// #elif defined(_MACOS)
-//		workingDirectory = new File(userHome, "Library/Application
-// Support/" + applicationName);
+#elif defined(_MACOS)
+    workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
 #else
     workingDirectory = new File(userHome, applicationName + L'/');
 #endif

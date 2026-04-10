@@ -215,7 +215,7 @@ UIController::UIController() {
 
     // 4J Stu - This is a bit of a hack until we change the Minecraft
     // initialisation to store the proper screen size for other platforms
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
     m_fScreenWidth = 1920.0f;
     m_fScreenHeight = 1080.0f;
     m_bScreenWidthSetup = true;
@@ -502,7 +502,7 @@ void UIController::tick() {
 void UIController::loadSkins() {
     std::wstring platformSkinPath = L"";
 
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
     if (m_fScreenHeight == 1080.0f) {
         platformSkinPath = L"skinHDWin.swf";
     } else {
@@ -518,7 +518,7 @@ void UIController::loadSkins() {
             loadSkin(platformSkinPath, L"platformskin.swf");
     }
 
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
 
 #if defined(_WINDOWS64)
     // 4J Stu - Load the 720/480 skins so that we have something to fallback on
@@ -619,7 +619,7 @@ void UIController::ReloadSkin() {
         m_iggyLibraries[i] = IGGY_INVALID_LIBRARY;
     }
 
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
     // 4J Stu - Don't load on a thread on windows. I haven't investigated this
     // in detail, so a quick fix
     reloadSkinThreadProc(this);
@@ -671,7 +671,7 @@ int UIController::reloadSkinThreadProc(void* lpParam) {
 
         // 4J Stu - Don't do this on windows, as we never navigated forwards to
         // start with
-#if !(defined(_WINDOWS64) || defined(__linux__))
+#if !(defined(_WINDOWS64) || defined(__linux__)) || defined(__APPLE__)
         controller->NavigateBack(0, false, eUIScene_COUNT, eUILayer_Tooltips);
 #endif
     }
@@ -974,7 +974,7 @@ void UIController::setupCustomDrawGameState() {
     RenderManager.StartFrame();
 
     gdraw_D3D11_setViewport_4J();
-#elif defined(__linux__)
+#elif defined(__linux__) || defined(__APPLE__)
     RenderManager.StartFrame();
 #endif
     RenderManager.Set_matrixDirty();
@@ -2252,7 +2252,7 @@ C4JStorage::EMessageResult UIController::RequestContentRestrictedMessageBox(
     }
 
     if (message == -1) {
-#if defined(_WINDOWS64) || defined(__linux__)
+#if defined(_WINDOWS64) || defined(__linux__) || defined(__APPLE__)
         // IDS_CONTENT_RESTRICTION doesn't exist on XB1
         message = IDS_NO_USER_CREATED_CONTENT_PRIVILEGE_CREATE;
 #else
@@ -2278,7 +2278,7 @@ void UIController::setFontCachingCalculationBuffer(int length) {
     draw call is not large enough, Iggy will crash or otherwise behave
     incorrectly.
     */
-#if defined(_WIN64) || defined(__linux__)
+#if defined(_WIN64) || defined(__linux__) || defined(__APPLE__)
     static const int CHAR_SIZE = 24;
 #else
     static const int CHAR_SIZE = 16;

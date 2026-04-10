@@ -9,7 +9,7 @@
 #include "platform/PlatformServices.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
 #include "app/linux/Stubs/winapi_stubs.h"
 #endif
 #include "java/Random.h"

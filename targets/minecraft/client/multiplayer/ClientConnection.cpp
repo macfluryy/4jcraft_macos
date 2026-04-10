@@ -1318,7 +1318,7 @@ void ClientConnection::handleTileUpdate(
 
 void ClientConnection::handleDisconnect(
     std::shared_ptr<DisconnectPacket> packet) {
-#if defined(__linux__)
+#if defined(__linux__) && defined(__APPLE__)
     // Linux fix: On local host connections, ignore DisconnectPacket. The
     // singleplayer internal server should never disconnect itself. If we see
     // this, it's likely stream desync reading garbage data as a
