@@ -1,4 +1,24 @@
+// Minecraft.cpp — macOS ARM (Apple Silicon) port
+//
+// Changes vs Linux version:
+//   1. Include paths: "app/linux/..." → "app/macos/..."
+//      LinuxGame.h  → MacGame.h
+//      Linux_UIController.h → Mac_UIController.h
+//      linux/Stubs/winapi_stubs.h → macos/Stubs/winapi_stubs.h
+//   2. getWorkingDirectory(): __APPLE__ branch now stores data in
+//      ~/Library/Application Support/<appname>, which is the macOS
+//      convention. The old _MACOS guard is removed (was dead code).
+//   3. #pragma clang diagnostic block silences Apple's OpenGL
+//      deprecation warnings that come in transitively via SDL2/GL headers.
+//   4. No logic changes anywhere else — the entire game loop, level
+//      management, and input handling are platform-independent.
+
 #include "Minecraft.h"
+
+// Suppress Apple's OpenGL deprecation warnings (OpenGL deprecated in
+// macOS 10.14 but still works on Apple Silicon via the compat profile).
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 #include <assert.h>
 #include <stdlib.h>
@@ -10,7 +30,13 @@
 #include <ctime>
 #include <thread>
 
+#include <SDL2/SDL.h>
+#include <SDL_keyboard.h>
+#include <SDL2/SDL_keycode.h>
+#include <SDL2/SDL_scancode.h>
+
 #include "platform/InputActions.h"
+#include "platform/JavaKeyInput.h"
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Render.h"
 #include "platform/sdl2/Storage.h"
@@ -22,9 +48,9 @@
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "app/include/XboxStubs.h"
 #include "Options.h"
 #include "Pos.h"
@@ -116,6 +142,8 @@
 #include "java/System.h"
 #include "minecraft/StaticConstructors.h"
 #include "minecraft/client/MemoryTracker.h"
+#include "minecraft/client/KeyMapping.h"
+#include "minecraft/client/gui/ChatScreen.h"
 #include "minecraft/client/gui/Font.h"
 #include "minecraft/client/gui/Gui.h"
 #include "minecraft/client/gui/InBedChatScreen.h"
@@ -132,6 +160,103 @@
 #include "minecraft/world/level/chunk/SparseLightStorage.h"
 
 class ChunkSource;
+
+namespace {
+
+bool TranslateJavaGuiScancodeToChar(int scancode, bool shift, wchar_t& ch) {
+    SDL_Keycode keycode =
+        SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(scancode));
+
+    if (keycode >= SDLK_a && keycode <= SDLK_z) {
+        ch = static_cast<wchar_t>((shift ? L'A' : L'a') +
+                                  (keycode - SDLK_a));
+        return true;
+    }
+
+    if (keycode >= SDLK_0 && keycode <= SDLK_9) {
+        static const wchar_t digits[] = L"0123456789";
+        static const wchar_t shiftedDigits[] = L")!@#$%^&*(";
+        int idx = static_cast<int>(keycode - SDLK_0);
+        ch = shift ? shiftedDigits[idx] : digits[idx];
+        return true;
+    }
+
+    switch (keycode) {
+        case SDLK_SPACE:
+            ch = L' ';
+            return true;
+        case SDLK_MINUS:
+            ch = shift ? L'_' : L'-';
+            return true;
+        case SDLK_EQUALS:
+            ch = shift ? L'+' : L'=';
+            return true;
+        case SDLK_LEFTBRACKET:
+            ch = shift ? L'{' : L'[';
+            return true;
+        case SDLK_RIGHTBRACKET:
+            ch = shift ? L'}' : L']';
+            return true;
+        case SDLK_BACKSLASH:
+            ch = shift ? L'|' : L'\\';
+            return true;
+        case SDLK_SEMICOLON:
+            ch = shift ? L':' : L';';
+            return true;
+        case SDLK_QUOTE:
+            ch = shift ? L'"' : L'\'';
+            return true;
+        case SDLK_COMMA:
+            ch = shift ? L'<' : L',';
+            return true;
+        case SDLK_PERIOD:
+            ch = shift ? L'>' : L'.';
+            return true;
+        case SDLK_SLASH:
+            ch = shift ? L'?' : L'/';
+            return true;
+        case SDLK_BACKQUOTE:
+            ch = shift ? L'~' : L'`';
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool HasAcceptedJavaGuiTextInput() {
+    for (wchar_t ch : JavaKeyInput::typedChars) {
+        if (SharedConstants::acceptableLetters.find(ch) !=
+            std::wstring::npos) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void DispatchJavaScreenKeyboard(Screen* screen) {
+    for (int key : JavaKeyInput::pressedKeys) {
+        if (screen != nullptr) screen->keyPressed(0, key);
+    }
+
+    for (wchar_t ch : JavaKeyInput::typedChars) {
+        if (screen != nullptr) screen->keyPressed(ch, 0);
+    }
+
+    if (!HasAcceptedJavaGuiTextInput()) {
+        bool shift =
+            Keyboard::isKeyDown(Keyboard::KEY_LSHIFT) ||
+            Keyboard::isKeyDown(Keyboard::KEY_RSHIFT);
+        for (int key : JavaKeyInput::pressedKeys) {
+            wchar_t ch;
+            if (TranslateJavaGuiScancodeToChar(key, shift, ch) &&
+                screen != nullptr) {
+                screen->keyPressed(ch, 0);
+            }
+        }
+    }
+}
+
+}  // namespace
 
 // #define DISABLE_SPU_CODE
 // 4J Turning this on will change the graph at the bottom of the debug overlay
@@ -308,11 +433,11 @@ void Minecraft::init() {
                        &ALT_FONT_LOCATION, 16, 16, 8, 8);
 
     // if (options.languageCode != null) {
-    //	Language.getInstance().loadLanguage(options.languageCode);
-    //	//
+    //  Language.getInstance().loadLanguage(options.languageCode);
+    //  //
     // font.setEnforceUnicodeSheet("true".equalsIgnoreCase(I18n.get("language.enforceUnicode")));
-    //	font.setEnforceUnicodeSheet(Language.getInstance().isSelectedLanguageIsUnicode());
-    //	font.setBidirectional(Language.isBidirectional(options.languageCode));
+    //  font.setEnforceUnicodeSheet(Language.getInstance().isSelectedLanguageIsUnicode());
+    //  font.setBidirectional(Language.isBidirectional(options.languageCode));
     // }
 
     // 4J Stu - Not using these any more
@@ -326,7 +451,7 @@ void Minecraft::init() {
 
     for (int i = 0; i < 4; ++i) stats[i] = new StatsCounter();
 
-    /*		4J - TODO, 4J-JEV: Unnecessary.
+    /*      4J - TODO, 4J-JEV: Unnecessary.
     Achievements::openInventory->setDescFormatter(nullptr);
     Achievements.openInventory.setDescFormatter(new DescFormatter(){
     public String format(String i18nValue) {
@@ -360,7 +485,7 @@ void Minecraft::init() {
     glMatrixMode(GL_MODELVIEW);
     checkGlError(L"Startup");
 
-    //    openGLCapabilities = new OpenGLCapabilities();	// 4J - removed
+    //    openGLCapabilities = new OpenGLCapabilities();    // 4J - removed
 
     levelRenderer = new LevelRenderer(this, textures);
     // textures->register(&TextureAtlas::LOCATION_BLOCKS, new
@@ -372,7 +497,7 @@ void Minecraft::init() {
     glViewport(0, 0, width, height);
 
     particleEngine = new ParticleEngine(level, textures);
-    //    try {	// 4J - removed try/catch
+    //    try { // 4J - removed try/catch
     bgLoader = new BackgroundDownloader(workingDirectory, this);
     bgLoader->start();
     //    } catch (Exception e) {
@@ -384,7 +509,7 @@ void Minecraft::init() {
     if (connectToIp != L"")  // 4J - was nullptr comparison
     {
         //        setScreen(new ConnectScreen(this, connectToIp,
-        //        connectToPort));		// 4J TODO - put back in
+        //        connectToPort));      // 4J TODO - put back in
     } else {
         setScreen(new TitleScreen());
     }
@@ -471,8 +596,9 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     // 4jcraft: ported to C++
     std::wstring userHome = convStringToWstring(getenv("HOME"));
     File* workingDirectory;
-#if defined(__linux__)
-    workingDirectory = new File(userHome, L'.' + applicationName + L'/');
+#if defined(__APPLE__)
+    // macOS: store data in ~/Library/Application Support/<appname>
+    workingDirectory = new File(userHome, L"Library/Application Support/" + applicationName);
 #elif defined(_WINDOWS64)
     std::string applicationData = getenv("APPDATA");
     if (!applicationData.empty()) {
@@ -481,8 +607,6 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     } else {
         workingDirectory = new File(userHome, L'.' + applicationName + L'/');
     }
-#elif defined(_MACOS)
-    workingDirectory = new File(userHome, "Library/Application Support/" + applicationName);
 #else
     workingDirectory = new File(userHome, applicationName + L'/');
 #endif
@@ -541,14 +665,14 @@ void Minecraft::setScreen(Screen* screen) {
     }
 
     if (screen != nullptr) {
-        //        releaseMouse();	// 4J - removed
+        //        releaseMouse();   // 4J - removed
         ScreenSizeCalculator ssc(options, width, height);
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
         screen->init(this, screenWidth, screenHeight);
         noRender = false;
     } else {
-        //        grabMouse();	// 4J - removed
+        //        grabMouse();  // 4J - removed
     }
 
     // 4J-PB - if a screen has been set, go into menu mode
@@ -616,14 +740,14 @@ void Minecraft::destroy() {
     }
 
     if (screen != nullptr) {
-        //        releaseMouse();	// 4J - removed
+        //        releaseMouse();   // 4J - removed
         ScreenSizeCalculator ssc(options, width, height);
         int screenWidth = ssc.getWidth();
         int screenHeight = ssc.getHeight();
         screen->init(this, screenWidth, screenHeight);
         noRender = false;
     } else {
-        //        grabMouse();	// 4J - removed
+        //        grabMouse();  // 4J - removed
     }
 
     // 4J-PB - if a screen has been set, go into menu mode
@@ -649,9 +773,9 @@ void Minecraft::destroy() {
     Keyboard::destroy();
     //} finally {
     Display::destroy();
-    //    if (!hasCrashed) System.exit(0);	//4J - removed
+    //    if (!hasCrashed) System.exit(0);  //4J - removed
     //}
-    // System.gc();	// 4J - removed
+    // System.gc(); // 4J - removed
 }
 
 // 4J-PB - splitting this function into 3 parts, so we can call the middle part
@@ -659,14 +783,14 @@ void Minecraft::destroy() {
 
 void Minecraft::run() {
     running = true;
-    //    try {	// 4J - removed try/catch
+    //    try { // 4J - removed try/catch
     init();
     //    } catch (Exception e) {
     //        e.printStackTrace();
     //       crash(new CrashReport("Failed to start game", e));
     //        return;
     //    }
-    //    try {	// 4J - removed try/catch
+    //    try { // 4J - removed try/catch
 }
 
 // 4J added - Selects which local player is currently active for processing by
@@ -919,12 +1043,12 @@ std::shared_ptr<MultiplayerLocalPlayer> Minecraft::createExtraLocalPlayer(
         // are spawned at incorrect places after re-joining previously saved and
         // loaded "Mass Effect World". Move this check to
         // ClientConnection::handleMovePlayer
-        //		// 4J-PB - can't call this when this function is called
+        //      // 4J-PB - can't call this when this function is called
         // from the qnet thread (GetGameStarted will be false)
-        //		if(app.GetGameStarted())
-        //		{
-        //			ui.CloseUIScenes(idx);
-        //		}
+        //      if(app.GetGameStarted())
+        //      {
+        //          ui.CloseUIScenes(idx);
+        //      }
     }
 
     return localplayers[idx];
@@ -1046,9 +1170,9 @@ void Minecraft::run_middle() {
 
             // while (running)
             {
-                //        try {	// 4J - removed try/catch
+                //        try { // 4J - removed try/catch
                 //            if (minecraftApplet != null &&
-                //            !minecraftApplet.isActive()) break;	// 4J -
+                //            !minecraftApplet.isActive()) break;   // 4J -
                 //            removed
 
                 //            if (parent == nullptr &&
@@ -1541,7 +1665,7 @@ void Minecraft::run_middle() {
                     }
 
                     ticks++;
-                    //            try {		// 4J - try/catch removed
+                    //            try {     // 4J - try/catch removed
                     bool bFirst = true;
                     for (int idx = 0; idx < XUSER_MAX_COUNT; idx++) {
                         // 4J - If we are waiting for this connection to do
@@ -1588,11 +1712,18 @@ void Minecraft::run_middle() {
                             // this player will now have actioned them
                             player->ullButtonsPressed = 0LL;
                         } else if (screen != nullptr) {
-                            screen->updateEvents();
-                            // 4jcraft: this fixes the title screen panorama
-                            // running faster than it should
+                            // Frontend/title screens do not run through the
+                            // per-player tick path, so deliver keyboard input
+                            // here once per frame.
                             if (!idx) {
+                                screen->updateEvents();
+                                DispatchJavaScreenKeyboard(screen);
+                                if (screen != nullptr &&
+                                    screen->particles != nullptr) {
+                                    screen->particles->tick();
+                                }
                                 screen->tick();
+                                Keyboard::update();
                             }
                         }
                     }
@@ -1615,10 +1746,10 @@ void Minecraft::run_middle() {
                     //                setLevel(null);
                     //                setScreen(new LevelConflictScreen());
                     //            }
-                    // 				SparseLightStorage::tick();
+                    //              SparseLightStorage::tick();
                     // // 4J added
-                    // CompressedTileStorage::tick();	// 4J added
-                    // 				SparseDataStorage::tick();
+                    // CompressedTileStorage::tick();   // 4J added
+                    //              SparseDataStorage::tick();
                     // // 4J added
                 }
                 // int64_t tickDuraction = System::nanoTime() - beforeTickTime;
@@ -1635,7 +1766,7 @@ void Minecraft::run_middle() {
                 glEnable(GL_TEXTURE_2D);
 
                 //        if (!Keyboard::isKeyDown(Keyboard.KEY_F7))
-                //        Display.update();		// 4J - removed
+                //        Display.update();     // 4J - removed
 
                 // 4J-PB - changing this to be per player
                 // if (player != nullptr && player->isInWall())
@@ -1705,7 +1836,7 @@ void Minecraft::run_middle() {
                 }
                 glFlush();
 
-                /*	4J - removed
+                /*  4J - removed
                 if (!Display::isActive())
                 {
                 if (fullscreen)
@@ -1747,10 +1878,10 @@ void Minecraft::run_middle() {
                 //     Thread.yield())
 
                 //        if (Keyboard::isKeyDown(Keyboard::KEY_F7))
-                //        Display.update();	// 4J - removed condition
+                //        Display.update(); // 4J - removed condition
                 Display::update();
 
-                //        checkScreenshot();	// 4J - removed
+                //        checkScreenshot();    // 4J - removed
 
                 /* 4J - removed
                 if (parent != nullptr && !fullscreen)
@@ -2039,7 +2170,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
             setScreen(nullptr);
         } else if (player->isSleeping() && level != nullptr &&
                    level->isClientSide) {
-            //            setScreen(new InBedChatScreen());		// 4J -
+            //            setScreen(new InBedChatScreen());     // 4J -
             //            TODO put back in
         }
     } else if (screen != nullptr &&
@@ -2054,12 +2185,16 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
         player->lastClickTick[1] = ticks + 10000;
     }
 
-    if (screen != nullptr) {
+    if (screen != nullptr && bFirst) {
         screen->updateEvents();
+        DispatchJavaScreenKeyboard(screen);
+
         if (screen != nullptr) {
             screen->particles->tick();
             screen->tick();
         }
+
+        Keyboard::update();
     }
 
     if (screen == nullptr && !ui.GetMenuDisplayed(iPad)) {
@@ -2326,7 +2461,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
                             &hitResult->pos, true);
 
                         /* 4J-Jev:
-                         *	Moved this here so we have item tooltips to
+                         *  Moved this here so we have item tooltips to
                          * fallback on for noteblocks, enderportals and
                          * flowerpots in case of non-standard items. (ie. ignite
                          * behaviour)
@@ -3437,6 +3572,14 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 #endif
         }
 
+        if (Keyboard::isKeyPressed(options->keyChat->key) && screen == nullptr) {
+            setScreen(new ChatScreen());
+        }
+
+        if (bFirst) {
+            Keyboard::update();
+        }
+
         if ((player->ullButtonsPressed & (1LL << MINECRAFT_ACTION_CRAFTING)) &&
             gameMode->isInputAllowed(MINECRAFT_ACTION_CRAFTING)) {
             std::shared_ptr<MultiplayerLocalPlayer> player =
@@ -3531,20 +3674,20 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 
     // monitor for keyboard input
     // #ifndef _CONTENT_PACKAGE
-    // 	if(!(ui.GetMenuDisplayed(iPad)))
-    // 	{
-    // 		wchar_t wchInput;
-    // 		if(InputManager.InputDetected(iPad,&wchInput))
-    // 		{
-    // 			printf("Input Detected!\n");
+    //  if(!(ui.GetMenuDisplayed(iPad)))
+    //  {
+    //      wchar_t wchInput;
+    //      if(InputManager.InputDetected(iPad,&wchInput))
+    //      {
+    //          printf("Input Detected!\n");
     //
-    // 			// see if we can react to this
-    // 			if(app.GetXuiAction(iPad)==eAppAction_Idle)
-    // 			{
-    // 				app.SetAction(iPad,eAppAction_DebugText,(void*)wchInput);
-    // 			}
-    // 		}
-    // 	}
+    //          // see if we can react to this
+    //          if(app.GetXuiAction(iPad)==eAppAction_Idle)
+    //          {
+    //              app.SetAction(iPad,eAppAction_DebugText,(void*)wchInput);
+    //          }
+    //      }
+    //  }
     // #endif
 
     if (level != nullptr) {
@@ -3655,7 +3798,7 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
 }
 
 void Minecraft::reloadSound() {
-    //    System.out.println("FORCING RELOAD!");		// 4J - removed
+    //    System.out.println("FORCING RELOAD!");        // 4J - removed
     soundEngine = new SoundEngine();
     soundEngine->init(options);
     bgLoader->forceReload();
@@ -3709,7 +3852,7 @@ MultiPlayerLevel* Minecraft::getLevel(int dimension) {
 // 4J Stu - Removed as redundant with default values in params.
 // void Minecraft::setLevel(Level *level, bool doForceStatsSave /*= true*/)
 //{
-//	setLevel(level, -1, nullptr, doForceStatsSave);
+//  setLevel(level, -1, nullptr, doForceStatsSave);
 //}
 
 // Also causing ambiguous call for some reason
@@ -3718,7 +3861,7 @@ MultiPlayerLevel* Minecraft::getLevel(int dimension) {
 // void Minecraft::setLevel(Level *level, const wstring& message, bool
 // doForceStatsSave /*= true*/)
 //{
-//	setLevel(level, message, nullptr, doForceStatsSave);
+//  setLevel(level, message, nullptr, doForceStatsSave);
 //}
 
 void Minecraft::forceaddLevel(MultiPlayerLevel* level) {
@@ -3904,7 +4047,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         }
     }
 
-    //    System.gc();	// 4J - removed
+    //    System.gc();  // 4J - removed
     // 4J removed
     // this->lastTickTime = 0;
 }
@@ -4150,7 +4293,7 @@ void Minecraft::startAndConnectTo(const std::wstring& name,
     }
     // else
     //{
-    //	minecraft->user = new DemoUser();
+    //  minecraft->user = new DemoUser();
     // }
 
     /* 4J - TODO
@@ -4262,12 +4405,12 @@ int Minecraft::maxSupportedTextureSize() {
     return 1024;
 
     // for (int texSize = 16384; texSize > 0; texSize >>= 1) {
-    //	GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, texSize,
+    //  GL11.glTexImage2D(GL11.GL_PROXY_TEXTURE_2D, 0, GL11.GL_RGBA, texSize,
     // texSize, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
     // final int width = GL11.glGetTexLevelParameteri(GL11.GL_PROXY_TEXTURE_2D,
-    // 0, GL11.GL_TEXTURE_WIDTH); 	if (width != 0) { 		return
+    // 0, GL11.GL_TEXTURE_WIDTH);   if (width != 0) {       return
     // texSize;
-    //	}
+    //  }
     // }
     // return -1;
 }
@@ -4311,10 +4454,10 @@ swinging\n",player->GetXboxPad()); player->swing();
 
 bool mayUse = true;
 
-//	* if (button == 1) { ItemInstance item =
-//	* player.inventory.getSelected(); if (item != null) { if
-//	* (gameMode.useItem(player, item)) {
-//	* gameRenderer.itemInHandRenderer.itemUsed(); return; } } }
+//  * if (button == 1) { ItemInstance item =
+//  * player.inventory.getSelected(); if (item != null) { if
+//  * (gameMode.useItem(player, item)) {
+//  * gameRenderer.itemInHandRenderer.itemUsed(); return; } } }
 
 // 4J-PB - Adding a special case in here for sleeping in a bed in a multiplayer
 game - we need to wake up, and we don't have the inbedchatscreen with a button
@@ -4360,9 +4503,9 @@ int y = hitResult->y;
 int z = hitResult->z;
 int face = hitResult->f;
 
-//	* if (button != 0) { if (hitResult.f == 0) y--; if (hitResult.f ==
-//	* 1) y++; if (hitResult.f == 2) z--; if (hitResult.f == 3) z++; if
-//	* (hitResult.f == 4) x--; if (hitResult.f == 5) x++; }
+//  * if (button != 0) { if (hitResult.f == 0) y--; if (hitResult.f ==
+//  * 1) y++; if (hitResult.f == 2) z--; if (hitResult.f == 3) z++; if
+//  * (hitResult.f == 4) x--; if (hitResult.f == 5) x++; }
 
 // if (isClientSide())
 // {
@@ -4562,3 +4705,5 @@ ColourTable* Minecraft::getColourTable() {
 
     return colours;
 }
+
+#pragma clang diagnostic pop

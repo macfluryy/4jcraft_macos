@@ -5,8 +5,8 @@
 #include <format>
 #include <utility>
 
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "app/include/BufferedImage.h"
 #include "StitchSlot.h"
 #include "StitchedTexture.h"

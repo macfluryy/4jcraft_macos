@@ -10,8 +10,8 @@
 
 #include "app/common/App_enums.h"
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "StrongholdPieces.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

@@ -1,5 +1,7 @@
 #include "Screen.h"
 
+#include <SDL2/SDL.h>
+
 #include "platform/InputActions.h"
 #include "platform/sdl2/Input.h"
 #include "platform/sdl2/Profile.h"
@@ -7,7 +9,7 @@
 #include "app/common/App_enums.h"
 #include "app/common/src/Audio/SoundEngine.h"
 #include "app/common/src/Network/GameNetworkManager.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/stubs.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
@@ -49,12 +51,18 @@ void Screen::keyPressed(wchar_t eventCharacter, int eventKey) {
 }
 
 std::wstring Screen::getClipboard() {
-    // 4J - removed
+    char* text = SDL_GetClipboardText();
+    if (text) {
+        std::string str(text);
+        SDL_free(text);
+        return std::wstring(str.begin(), str.end());
+    }
     return std::wstring();
 }
 
 void Screen::setClipboard(const std::wstring& str) {
-    // 4J - removed
+    std::string s(str.begin(), str.end());
+    SDL_SetClipboardText(s.c_str());
 }
 
 void Screen::mouseClicked(int x, int y, int buttonNum) {

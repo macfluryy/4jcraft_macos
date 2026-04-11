@@ -6,7 +6,7 @@
 #include <numbers>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "SharedConstants.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"

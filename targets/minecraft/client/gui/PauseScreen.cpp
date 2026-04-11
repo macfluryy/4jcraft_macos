@@ -12,7 +12,8 @@
 #include "MessageScreen.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/Network/GameNetworkManager.h"
-#include "app/linux/LinuxGame.h"
+#include "app/include/stubs.h"
+#include "app/mac/MacGame.h"
 #include "OptionsScreen.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
@@ -104,6 +105,22 @@ void PauseScreen::buttonClicked(Button* button) {
         //        minecraft->setScreen(new StatsScreen(this, minecraft->stats));
         //        // 4J TODO - put back
     }
+}
+
+void PauseScreen::keyPressed(wchar_t eventCharacter, int eventKey) {
+    if (eventKey == Keyboard::KEY_ESCAPE) {
+        // Ignore the keydown that opened the pause screen.
+        if (visibleTime == 0) {
+            return;
+        }
+
+        app.SetXuiServerAction(InputManager.GetPrimaryPad(),
+                               eXuiServerAction_PauseServer, (void*)false);
+        minecraft->setScreen(nullptr);
+        return;
+    }
+
+    Screen::keyPressed(eventCharacter, eventKey);
 }
 
 void PauseScreen::tick() {

@@ -3,7 +3,7 @@
 #include <cmath>
 #include <memory>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "minecraft/world/level/Level.h"

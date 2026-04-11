@@ -18,8 +18,8 @@
 #include "app/common/src/UI/Controls/UIControl_PlayerSkinPreview.h"
 #include "app/common/src/UI/UILayer.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 #include "SkinBox.h"
 #include "util/StringHelpers.h"
 

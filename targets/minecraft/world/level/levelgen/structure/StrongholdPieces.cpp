@@ -7,7 +7,7 @@
 #include <string>
 
 #include "app/common/App_enums.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "util/StringHelpers.h"
 #include "java/Random.h"
 #include "minecraft/Direction.h"

@@ -20,8 +20,8 @@
 #include "app/common/src/DLC/DLCManager.h"
 #include "app/common/src/DLC/DLCSkinFile.h"
 #include "app/common/src/Localisation/StringTable.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "util/StringHelpers.h"
 
 DLCPack::DLCPack(const std::wstring& name, std::uint32_t dwLicenseMask) {

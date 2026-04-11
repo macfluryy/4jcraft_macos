@@ -3,7 +3,7 @@
 #include <stdint.h>
 
 #include "Facing.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/world/Container.h"
 #include "minecraft/world/entity/player/Player.h"
 #include "minecraft/world/item/CoalItem.h"

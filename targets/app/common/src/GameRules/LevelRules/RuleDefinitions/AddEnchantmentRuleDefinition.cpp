@@ -5,7 +5,7 @@
 
 #include "app/common/src/GameRules/ConsoleGameRulesConstants.h"
 #include "app/common/src/GameRules/LevelRules/RuleDefinitions/GameRuleDefinition.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "util/StringHelpers.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/item/EnchantedBookItem.h"

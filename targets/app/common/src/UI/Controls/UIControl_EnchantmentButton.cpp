@@ -11,11 +11,11 @@
 #include "app/common/src/UI/Controls/UIControl_Button.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "util/StringHelpers.h"
 
 #include "minecraft/client/Minecraft.h"

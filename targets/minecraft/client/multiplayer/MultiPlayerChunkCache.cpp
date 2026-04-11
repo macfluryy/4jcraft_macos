@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "app/common/src/Network/GameNetworkManager.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "util/StringHelpers.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/server/level/ServerChunkCache.h"

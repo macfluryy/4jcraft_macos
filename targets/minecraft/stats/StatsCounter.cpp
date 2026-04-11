@@ -12,7 +12,7 @@
 #include "platform/sdl2/Profile.h"
 #include "app/common/App_structs.h"
 #include "app/common/src/Leaderboards/LeaderboardManager.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/stats/Achievement.h"
 #include "minecraft/stats/Achievements.h"
 #include "minecraft/stats/GenericStats.h"

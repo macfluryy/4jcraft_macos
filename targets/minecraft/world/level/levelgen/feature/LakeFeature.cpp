@@ -1,7 +1,7 @@
 #include "LakeFeature.h"
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/LightLayer.h"

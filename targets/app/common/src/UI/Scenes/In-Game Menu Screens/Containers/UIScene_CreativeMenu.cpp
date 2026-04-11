@@ -12,13 +12,13 @@
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/Controls/UIControl_SlotList.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_AbstractContainerMenu.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/Iggy/include/rrCore.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 #include "app/include/XboxStubs.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/player/LocalPlayer.h"

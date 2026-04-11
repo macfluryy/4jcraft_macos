@@ -14,8 +14,8 @@
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 #include "app/include/NetTypes.h"
 #include "app/include/stubs.h"
 #include "util/StringHelpers.h"
@@ -28,24 +28,29 @@
 #include "minecraft/world/level/LevelSettings.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 
-CreateWorldScreen::CreateWorldScreen(Screen* lastScreen) {
-    done = false;  // 4J added
-    moreOptions = false;
-    gameMode = L"survival";
-    generateStructures = true;
-    bonusChest = false;
-    cheatsEnabled = false;
-    flatWorld = false;
-    this->lastScreen = lastScreen;
-}
+CreateWorldScreen::CreateWorldScreen(Screen* lastScreen)
+    : lastScreen(lastScreen),
+      nameEdit(nullptr),
+      seedEdit(nullptr),
+      done(false),
+      moreOptions(false),
+      gameMode(L"survival"),
+      generateStructures(true),
+      bonusChest(false),
+      cheatsEnabled(false),
+      flatWorld(false),
+      gameModeButton(nullptr),
+      moreWorldOptionsButton(nullptr),
+      generateStructuresButton(nullptr),
+      bonusChestButton(nullptr),
+      worldTypeButton(nullptr),
+      cheatsEnabledButton(nullptr),
+      m_iGameModeId(GameType::SURVIVAL->getId()),
+      m_bGameModeCreative(false) {}
 
 void CreateWorldScreen::tick() {
-    nameEdit->tick();
-    if (moreOptions) seedEdit->tick();
-
-    // 4J - debug code - to be removed
-    // static int count = 0;
-    // if (count++ == 100) buttonClicked(buttons[0]);
+    if (nameEdit != nullptr) nameEdit->tick();
+    if (seedEdit != nullptr) seedEdit->tick();
 }
 
 void CreateWorldScreen::init() {
@@ -60,10 +65,10 @@ void CreateWorldScreen::init() {
 
     nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20,
                            language->getElement(L"selectWorld.newWorld"));
-    nameEdit->inFocus = true;
     nameEdit->setMaxLength(32);
 
     seedEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, L"");
+    seedEdit->setMaxLength(60);
 
     buttons.push_back(gameModeButton = new Button(
                           2, width / 2 - 75, 100, 150, 20,
@@ -90,11 +95,11 @@ void CreateWorldScreen::init() {
     buttons.push_back(cheatsEnabledButton = new Button(
                           6, width / 2 - 155, 136, 150, 20,
                           language->getElement(L"selectWorld.allowCommands")));
-    cheatsEnabledButton->visible = false;
-    cheatsEnabledButton->active = false;
 
+    setMoreOptionsVisible(false);
     updateStrings();
     updateResultFolder();
+    updateCreateButtonState();
 }
 
 // 4jcraft: referenced from func_73914_h in MCP 7.1 fr those wondering
@@ -148,6 +153,46 @@ void CreateWorldScreen::updateResultFolder() {
     }
     resultFolder = CreateWorldScreen::findAvailableFolderName(
         minecraft->getLevelSource(), resultFolder);
+}
+
+EditBox* CreateWorldScreen::getVisibleEditBox() const {
+    return moreOptions ? seedEdit : nameEdit;
+}
+
+void CreateWorldScreen::updateTextBoxFocus() {
+    if (nameEdit != nullptr) {
+        nameEdit->focus(!moreOptions);
+    }
+    if (seedEdit != nullptr) {
+        seedEdit->focus(moreOptions);
+    }
+}
+
+void CreateWorldScreen::updateCreateButtonState() {
+    if (!buttons.empty()) {
+        buttons[0]->active = trimString(nameEdit->getValue()).length() > 0;
+    }
+}
+
+void CreateWorldScreen::setMoreOptionsVisible(bool visible) {
+    moreOptions = visible;
+    gameModeButton->visible = !visible;
+    gameModeButton->active = !visible;
+    generateStructuresButton->visible = visible;
+    generateStructuresButton->active = visible;
+    bonusChestButton->visible = visible;
+    bonusChestButton->active = visible;
+    worldTypeButton->visible = visible;
+    worldTypeButton->active = visible;
+    cheatsEnabledButton->visible = visible;
+    cheatsEnabledButton->active = visible;
+
+    Language* language = Language::getInstance();
+    moreWorldOptionsButton->msg = visible
+                                      ? language->getElement(L"gui.done")
+                                      : language->getElement(
+                                            L"selectWorld.moreWorldOptions");
+    updateTextBoxFocus();
 }
 
 std::wstring CreateWorldScreen::findAvailableFolderName(
@@ -317,25 +362,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
             gameMode = L"survival";
         updateStrings();
     } else if (button->id == 3) {
-        moreOptions = !moreOptions;
-        gameModeButton->visible = !moreOptions;
-        gameModeButton->active = !moreOptions;
-        generateStructuresButton->visible = moreOptions;
-        generateStructuresButton->active = moreOptions;
-        bonusChestButton->visible = moreOptions;
-        bonusChestButton->active = moreOptions;
-        worldTypeButton->visible = moreOptions;
-        worldTypeButton->active = moreOptions;
-        cheatsEnabledButton->visible = moreOptions;
-        cheatsEnabledButton->active = moreOptions;
-
-        Language* language = Language::getInstance();
-        if (moreOptions) {
-            moreWorldOptionsButton->msg = language->getElement(L"gui.done");
-        } else {
-            moreWorldOptionsButton->msg =
-                language->getElement(L"selectWorld.moreWorldOptions");
-        }
+        setMoreOptionsVisible(!moreOptions);
     } else if (button->id == 4) {
         generateStructures = !generateStructures;
         updateStrings();
@@ -352,26 +379,37 @@ void CreateWorldScreen::buttonClicked(Button* button) {
 }
 
 void CreateWorldScreen::keyPressed(wchar_t ch, int eventKey) {
-    if (nameEdit->inFocus && !moreOptions)
-        nameEdit->keyPressed(ch, eventKey);
-    else
-        seedEdit->keyPressed(ch, eventKey);
-
-    if (ch == 13) {
-        buttonClicked(buttons[0]);
+    if (eventKey == Keyboard::KEY_ESCAPE) {
+        Screen::keyPressed(ch, eventKey);
+        return;
     }
-    buttons[0]->active = nameEdit->getValue().length() > 0;
+
+    if (eventKey == Keyboard::KEY_TAB) {
+        tabPressed();
+        return;
+    }
+
+    EditBox* visibleEdit = getVisibleEditBox();
+    if (visibleEdit != nullptr) {
+        visibleEdit->keyPressed(ch, eventKey);
+    }
+
+    updateCreateButtonState();
 
     updateResultFolder();
+
+    if ((eventKey == Keyboard::KEY_RETURN || ch == 13) && buttons[0]->active) {
+        buttonClicked(buttons[0]);
+    }
 }
 
 void CreateWorldScreen::mouseClicked(int x, int y, int buttonNum) {
     Screen::mouseClicked(x, y, buttonNum);
 
-    if (!moreOptions)
-        nameEdit->mouseClicked(x, y, buttonNum);
-    else
-        seedEdit->mouseClicked(x, y, buttonNum);
+    EditBox* visibleEdit = getVisibleEditBox();
+    if (visibleEdit != nullptr) {
+        visibleEdit->mouseClicked(x, y, buttonNum);
+    }
 }
 
 void CreateWorldScreen::render(int xm, int ym, float a) {
@@ -411,18 +449,6 @@ void CreateWorldScreen::render(int xm, int ym, float a) {
     }
 
     Screen::render(xm, ym, a);
-
-    Screen::render(xm, ym, a);
 }
 
-void CreateWorldScreen::tabPressed() {
-    if (!moreOptions) return;
-
-    if (nameEdit->inFocus) {
-        nameEdit->focus(false);
-        seedEdit->focus(true);
-    } else {
-        nameEdit->focus(true);
-        seedEdit->focus(false);
-    }
-}
+void CreateWorldScreen::tabPressed() { updateTextBoxFocus(); }

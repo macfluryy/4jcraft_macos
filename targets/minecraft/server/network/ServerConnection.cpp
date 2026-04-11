@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "PendingConnection.h"
 #include "PlayerConnection.h"
 #include "util/StringHelpers.h"

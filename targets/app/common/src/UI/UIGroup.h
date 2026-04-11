@@ -3,7 +3,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 #include "UILayer.h"
 
 class UIComponent_Tooltips;

@@ -14,13 +14,13 @@
 #include "app/common/src/UI/Controls/UIControl_ButtonList.h"
 #include "app/common/src/UI/Controls/UIControl_Slider.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/Iggy/include/rrCore.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 #include "minecraft/commands/common/EnchantItemCommand.h"
 #include "minecraft/commands/common/GiveItemCommand.h"
 #include "minecraft/commands/common/TimeCommand.h"

@@ -1,16 +1,16 @@
 #pragma once
 
-#ifdef __linux__
+#if defined(__APPLE__)
 
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
 
 class FloatBuffer;
 class IntBuffer;
 class ByteBuffer;
 
 void glGenTextures(IntBuffer*);
-int glGenTextures();
+int  glGenTextures();
 void glDeleteTextures(IntBuffer*);
 void glLight(int, int, FloatBuffer*);
 void glLightModel(int, FloatBuffer*);
@@ -27,10 +27,12 @@ void glNewList(int, int);
 void glEndList(int vertexCount = 0);
 void glTexImage2D(int, int, int, int, int, int, int, int, ByteBuffer*);
 void glCallLists(IntBuffer*);
+
 void glGenQueriesARB(IntBuffer*);
 void glBeginQueryARB(int, int);
 void glEndQueryARB(int);
 void glGetQueryObjectuARB(int, int, IntBuffer*);
+
 void glFog(int, FloatBuffer*);
 void glTexGen(int, int, FloatBuffer*);
 void glReadPixels(int, int, int, int, int, int, ByteBuffer*);
@@ -39,4 +41,4 @@ void glMultiTexCoord2f(int, float, float);
 void glClientActiveTexture(int);
 void glActiveTexture(int);
 
-#endif
+#endif // __APPLE__

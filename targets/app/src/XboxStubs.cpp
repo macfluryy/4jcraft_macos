@@ -5,7 +5,8 @@
 #include <string.h>
 
 #include "platform/PlatformTypes.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
 #include "app/include/NetTypes.h"
 #include "app/include/XboxStubs.h"
 
@@ -16,9 +17,8 @@ bool IsEqualXUID(PlayerUID a, PlayerUID b) { return false; }
 uint8_t IQNetPlayer::GetSmallId() { return 0; }
 void IQNetPlayer::SendData(IQNetPlayer* player, const void* pvData,
                            uint32_t dwDataSize, uint32_t dwFlags) {
-#if !defined(__linux__) && defined(__APPLE__)
-    app.DebugPrintf("Sending from 0x%x to 0x%x %d bytes\n", this, player,
-                    dwDataSize);
+#ifdef _WIN32
+    app.DebugPrintf("Sending from 0x%x to 0x%x %d bytes\n", this, player);
 #endif
 }
 bool IQNetPlayer::IsSameSystem(IQNetPlayer* player) { return true; }

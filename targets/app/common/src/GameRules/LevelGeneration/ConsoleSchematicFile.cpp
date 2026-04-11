@@ -8,8 +8,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/DataInputStream.h"

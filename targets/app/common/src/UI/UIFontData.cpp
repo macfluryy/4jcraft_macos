@@ -4,7 +4,7 @@
 
 #include <utility>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 
 /////////////////////////////////////////////////////
 //  --- -- --- THIS FILE IS IN UNICODE  --- -- --- //

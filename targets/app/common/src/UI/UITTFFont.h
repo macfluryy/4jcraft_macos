@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 
 class UITTFFont {
 private:

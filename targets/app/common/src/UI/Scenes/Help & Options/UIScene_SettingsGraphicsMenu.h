@@ -6,7 +6,7 @@
 #include "app/common/src/UI/Controls/UIControl_CheckBox.h"
 #include "app/common/src/UI/Controls/UIControl_Slider.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 
 class UILayer;
 

@@ -237,44 +237,51 @@ class Keyboard {
 public:
     static void create() {}
     static void destroy() {}
-    static bool isKeyDown(int) { return false; }
-    static std::wstring getKeyName(int) { return L"KEYNAME"; }
-    static void enableRepeatEvents(bool) {}
-    static const int KEY_A = 0;
-    static const int KEY_B = 1;
-    static const int KEY_C = 2;
-    static const int KEY_D = 3;
-    static const int KEY_E = 4;
-    static const int KEY_F = 5;
-    static const int KEY_G = 6;
-    static const int KEY_H = 7;
-    static const int KEY_I = 8;
-    static const int KEY_J = 9;
-    static const int KEY_K = 10;
-    static const int KEY_L = 11;
-    static const int KEY_M = 12;
-    static const int KEY_N = 13;
-    static const int KEY_O = 14;
-    static const int KEY_P = 15;
-    static const int KEY_Q = 16;
-    static const int KEY_R = 17;
-    static const int KEY_S = 18;
-    static const int KEY_T = 19;
-    static const int KEY_U = 20;
-    static const int KEY_V = 21;
-    static const int KEY_W = 22;
-    static const int KEY_X = 23;
-    static const int KEY_Y = 24;
-    static const int KEY_Z = 25;
-    static const int KEY_SPACE = 26;
-    static const int KEY_LSHIFT = 27;
-    static const int KEY_ESCAPE = 28;
-    static const int KEY_BACK = 29;
-    static const int KEY_RETURN = 30;
-    static const int KEY_RSHIFT = 31;
-    static const int KEY_UP = 32;
-    static const int KEY_DOWN = 33;
-    static const int KEY_TAB = 34;
+    static void update();
+    static bool isKeyDown(int key);
+    static bool isKeyPressed(int key);
+    static std::wstring getKeyName(int key);
+    static void enableRepeatEvents(bool repeat);
+    static const int KEY_A = 4;
+    static const int KEY_B = 5;
+    static const int KEY_C = 6;
+    static const int KEY_D = 7;
+    static const int KEY_E = 8;
+    static const int KEY_F = 9;
+    static const int KEY_G = 10;
+    static const int KEY_H = 11;
+    static const int KEY_I = 12;
+    static const int KEY_J = 13;
+    static const int KEY_K = 14;
+    static const int KEY_L = 15;
+    static const int KEY_M = 16;
+    static const int KEY_N = 17;
+    static const int KEY_O = 18;
+    static const int KEY_P = 19;
+    static const int KEY_Q = 20;
+    static const int KEY_R = 21;
+    static const int KEY_S = 22;
+    static const int KEY_T = 23;
+    static const int KEY_U = 24;
+    static const int KEY_V = 25;
+    static const int KEY_W = 26;
+    static const int KEY_X = 27;
+    static const int KEY_Y = 28;
+    static const int KEY_Z = 29;
+    static const int KEY_SPACE = 44;
+    static const int KEY_LSHIFT = 225;
+    static const int KEY_ESCAPE = 41;
+    static const int KEY_BACK = 42;
+    static const int KEY_RETURN = 40;
+    static const int KEY_RSHIFT = 229;
+    static const int KEY_UP = 82;
+    static const int KEY_DOWN = 81;
+    static const int KEY_TAB = 43;
+    static const int KEY_DELETE = 76;
+    static const int KEY_HOME = 74;
+    static const int KEY_END = 77;
+    static const int KEY_RIGHT = 79;
+    static const int KEY_LEFT = 80;
 };
 
 class Mouse {

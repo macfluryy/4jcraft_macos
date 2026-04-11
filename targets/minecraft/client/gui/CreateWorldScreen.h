@@ -41,6 +41,10 @@ public:
 private:
     void updateResultFolder();
     void updateStrings();
+    EditBox* getVisibleEditBox() const;
+    void updateTextBoxFocus();
+    void updateCreateButtonState();
+    void setMoreOptionsVisible(bool visible);
 
 public:
     static std::wstring findAvailableFolderName(LevelStorageSource* levelSource,

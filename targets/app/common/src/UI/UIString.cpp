@@ -1,6 +1,6 @@
 #include "UIString.h"
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/XboxStubs.h"
 #include "util/StringHelpers.h"
 

@@ -1,6 +1,7 @@
 #include "PlayerConnection.h"
 
 #include <wchar.h>
+#include <sstream>
 
 #include <algorithm>
 #include <cmath>
@@ -15,7 +16,7 @@
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
 #include "app/common/src/Network/Socket.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/SkinBox.h"
 #include "ServerConnection.h"
 #include "java/Class.h"
@@ -681,11 +682,40 @@ void PlayerConnection::handleSetCarriedItem(
 }
 
 void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
-    // 4J - TODO
+    std::wstring message = packet->m_stringArgs[0];
+    if (!message.empty() && message[0] == L'/') {
+        handleCommand(message);
+    } else {
+        // Broadcast chat
+        auto chatPacket = std::make_shared<ChatPacket>(player->getName(), ChatPacket::e_ChatCustom, -1);
+        chatPacket->m_stringArgs.push_back(message);
+        for (auto& p : server->getPlayers()->players) {
+            p->connection->send(chatPacket);
+        }
+    }
 }
 
 void PlayerConnection::handleCommand(const std::wstring& message) {
-    // 4J - TODO
+    // Simple command parsing
+    std::wstringstream ss(message.substr(1));
+    std::wstring command;
+    ss >> command;
+    if (command == L"time") {
+        std::wstring set;
+        ss >> set;
+        if (set == L"set") {
+            std::wstring time;
+            ss >> time;
+            bool night = (time == L"night");
+            std::vector<uint8_t> data;
+            // Write bool to data
+            data.push_back(night ? 1 : 0);
+            server->getCommandDispatcher()->performCommand(player, eGameCommand_Time, data);
+        }
+    } else {
+        // Unknown command
+        player->sendMessage(L"Unknown command");
+    }
 }
 
 void PlayerConnection::handleAnimate(std::shared_ptr<AnimatePacket> packet) {

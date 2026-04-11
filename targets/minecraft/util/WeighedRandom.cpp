@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "java/Random.h"
 
 int WeighedRandom::getTotalWeight(std::vector<WeighedRandomItem*>* items) {

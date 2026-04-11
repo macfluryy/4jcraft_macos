@@ -2,22 +2,24 @@
 
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "app/common/src/UI/UIController.h"
-#include "app/linux/Iggy/include/iggy.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/rrCore.h"
 
 class ConsoleUIController : public UIController {
 public:
     void init(S32 w, S32 h);
-
     void render();
-
     void shutdown();
+
     void beginIggyCustomDraw4J(IggyCustomDrawCallbackRegion* region,
-                               CustomDrawData* customDrawRegion);
-    virtual CustomDrawData* setupCustomDraw(
-        UIScene* scene, IggyCustomDrawCallbackRegion* region);
+                               CustomDrawData*               customDrawRegion);
+
+    virtual CustomDrawData* setupCustomDraw(UIScene*                      scene,
+                                            IggyCustomDrawCallbackRegion* region);
+
     virtual CustomDrawData* calculateCustomDraw(
-        IggyCustomDrawCallbackRegion* region);
+            IggyCustomDrawCallbackRegion* region);
+
     virtual void endCustomDraw(IggyCustomDrawCallbackRegion* region);
 
 protected:
@@ -25,8 +27,8 @@ protected:
 
 public:
     GDrawTexture* getSubstitutionTexture(int textureId);
-    void destroySubstitutionTexture(void* destroyCallBackData,
-                                    GDrawTexture* handle);
+    void          destroySubstitutionTexture(void*         destroyCallBackData,
+                                             GDrawTexture* handle);
 
     static void handleUnlockFullVersionCallback();
 };

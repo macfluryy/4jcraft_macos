@@ -3,8 +3,8 @@
 #include "platform/InputActions.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/iggy.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/Iggy/include/iggy.h"
+#include "app/mac/Mac_UIController.h"
 
 class UILayer;
 

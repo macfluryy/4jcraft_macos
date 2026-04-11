@@ -9,7 +9,7 @@
 #include "platform/sdl2/Render.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/Colours/ColourTable.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "Tesselator.h"
 #include "Textures.h"
 #include "TileRenderer.h"

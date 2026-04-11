@@ -11,7 +11,7 @@
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/Controls/UIControl_SlotList.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #include "UIScene_AbstractContainerMenu.h"
 
 class InventoryMenu;

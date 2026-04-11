@@ -5,62 +5,111 @@
 #include "minecraft/client/gui/Screen.h"
 
 EditBox::EditBox(Screen* screen, Font* font, int x, int y, int width,
-                 int height, const std::wstring& value) {
-    // 4J - added initialisers
-    maxLength = 0;
-    frame = 0;
-    enableBackgroundDrawing =
-        true;  // 4jcraft: for toggling the background rendering (from 1.6.4,
-               // mainly for RepairScreen)
-
-    this->screen = screen;
-    this->font = font;
-    this->x = x;
-    this->y = y;
-    this->width = width;
-    this->height = height;
-    this->setValue(value);
+                 int height, const std::wstring& value) 
+    : screen(screen), font(font), x(x), y(y), width(width), height(height),
+      maxLength(0), active(true), inFocus(false), frame(0), 
+      enableBackgroundDrawing(true), cursorPos(0) {
+    setValue(value);
 }
 
-void EditBox::setValue(const std::wstring& value) { this->value = value; }
+void EditBox::setValue(const std::wstring& value) { 
+    this->value = value;
+    cursorPos = value.length(); // 4J macOS - move cursor to end
+}
 
-std::wstring EditBox::getValue() { return value; }
+std::wstring EditBox::getValue() const { 
+    return value; 
+}
 
-void EditBox::tick() { frame++; }
+void EditBox::tick() { 
+    frame++;
+}
 
 void EditBox::keyPressed(wchar_t ch, int eventKey) {
     if (!active || !inFocus) {
         return;
     }
 
+    // 4J macOS - improved tab handling
     if (ch == 9) {
         screen->tabPressed();
+        return; // don't add tab character
     }
-    /* 4J removed
-        if (ch == 22)
-            {
-            String msg = Screen.getClipboard();
-            if (msg == null) msg = "";
-            int toAdd = 32 - value.length();
-            if (toAdd > msg.length()) toAdd = msg.length();
-            if (toAdd > 0) {
-                value += msg.substring(0, toAdd);
+    
+    // 4J macOS - handle backspace correctly
+    if (eventKey == Keyboard::KEY_BACK) {
+        if (cursorPos > 0 && value.length() > 0) {
+            if (cursorPos > value.length()) {
+                cursorPos = value.length();
             }
+            value.erase(cursorPos - 1, 1);
+            cursorPos--;
         }
-            */
-
-    if (eventKey == Keyboard::KEY_BACK && value.length() > 0) {
-        value = value.substr(0, value.length() - 1);
+        return;
     }
-    if (SharedConstants::acceptableLetters.find(ch) != std::wstring::npos &&
-        (value.length() < maxLength || maxLength == 0)) {
-        value += ch;
+    
+    // 4J macOS - handle delete key
+    if (eventKey == Keyboard::KEY_DELETE) {
+        if (cursorPos < value.length()) {
+            value.erase(cursorPos, 1);
+        }
+        return;
+    }
+    
+    // 4J macOS - handle arrow keys for cursor movement
+    if (eventKey == Keyboard::KEY_LEFT) {
+        if (cursorPos > 0) cursorPos--;
+        return;
+    }
+    
+    if (eventKey == Keyboard::KEY_RIGHT) {
+        if (cursorPos < value.length()) cursorPos++;
+        return;
+    }
+    
+    // 4J macOS - handle home/end keys
+    if (eventKey == Keyboard::KEY_HOME) {
+        cursorPos = 0;
+        return;
+    }
+    
+    if (eventKey == Keyboard::KEY_END) {
+        cursorPos = value.length();
+        return;
+    }
+    
+    // 4J macOS - improved character validation
+    if (SharedConstants::acceptableLetters.find(ch) != std::wstring::npos) {
+        if (maxLength == 0 || value.length() < (size_t)maxLength) {
+            if (cursorPos >= value.length()) {
+                value += ch;
+            } else {
+                value.insert(cursorPos, 1, ch);
+            }
+            cursorPos++;
+        }
     }
 }
 
 void EditBox::mouseClicked(int mouseX, int mouseY, int buttonNum) {
-    bool newFocus = active && (mouseX >= x && mouseX < (x + width) &&
-                               mouseY >= y && mouseY < (y + height));
+    bool newFocus = isMouseInBounds(mouseX, mouseY);
+    
+    // 4J macOS - improved focus handling
+    if (newFocus) {
+        // Calculate cursor position based on click
+        if (active && enableBackgroundDrawing) {
+            // Rough cursor position calculation
+            int textStartX = x + 4;
+            if (mouseX > textStartX && font != nullptr) {
+                // Calculate approximate cursor position
+                size_t clickPos = (mouseX - textStartX) / 5; // rough estimate
+                if (clickPos <= value.length()) {
+                    cursorPos = clickPos;
+                }
+            }
+        }
+    }
+    
     focus(newFocus);
 }
 
@@ -68,18 +117,19 @@ void EditBox::focus(bool newFocus) {
     if (newFocus && !inFocus) {
         // reset the underscore counter to give quicker selection feedback
         frame = 0;
+        cursorPos = value.length(); // move cursor to end on focus
     }
     inFocus = newFocus;
 }
 
 void EditBox::render() {
-    // 4jcraft: render the background conditionally
+    // 4J macOS - improved background rendering
     if (enableBackgroundDrawing) {
         fill(x - 1, y - 1, x + width + 1, y + height + 1, 0xffa0a0a0);
         fill(x, y, x + width, y + height, 0xff000000);
     }
 
-    // 4jcraft: offset conditionally
+    // 4J macOS - conditional text offset
     int textX = x;
     int textY = y;
     if (enableBackgroundDrawing) {
@@ -88,8 +138,20 @@ void EditBox::render() {
     }
 
     if (active) {
-        bool renderUnderscore = inFocus && (frame / 6 % 2 == 0);
-        drawString(font, value + (renderUnderscore ? L"_" : L""), textX, textY,
+        // 4J macOS - improved cursor rendering
+        bool renderCursor = inFocus && (frame / 6 % 2 == 0);
+        std::wstring displayValue = value;
+        
+        if (renderCursor) {
+            // Insert cursor at cursor position
+            if (cursorPos < displayValue.length()) {
+                displayValue.insert(cursorPos, L"|");
+            } else {
+                displayValue += L"_";
+            }
+        }
+        
+        drawString(font, displayValue, textX, textY,
                    (enableBackgroundDrawing ? 0xe0e0e0 : 0xffffff));
     } else {
         drawString(font, value, textX, textY,
@@ -97,12 +159,14 @@ void EditBox::render() {
     }
 }
 
-void EditBox::setMaxLength(int maxLength) { this->maxLength = maxLength; }
+void EditBox::setMaxLength(int maxLength) { 
+    this->maxLength = maxLength; 
+}
 
-int EditBox::getMaxLength() { return maxLength; }
+int EditBox::getMaxLength() const { 
+    return maxLength; 
+}
 
-// 4jcraft: for toggling the background rendering (from 1.6.4, mainly for
-// RepairScreen)
 void EditBox::setEnableBackgroundDrawing(bool enable) {
     enableBackgroundDrawing = enable;
 }

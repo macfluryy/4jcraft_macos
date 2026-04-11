@@ -5,12 +5,12 @@
 #include <string.h>
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "platform/PlatformServices.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/chunk/ChunkSource.h"
 #if defined(__linux__) && defined(__APPLE__)
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #endif
 #include "java/Random.h"
 #include "minecraft/world/entity/MobCategory.h"

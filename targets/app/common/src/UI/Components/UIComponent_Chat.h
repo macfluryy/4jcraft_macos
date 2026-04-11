@@ -7,7 +7,7 @@
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 
 class UILayer;
 

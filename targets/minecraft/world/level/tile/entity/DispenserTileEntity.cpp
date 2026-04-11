@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "TileEntity.h"
 #include "java/Random.h"
 #include "minecraft/world/Container.h"

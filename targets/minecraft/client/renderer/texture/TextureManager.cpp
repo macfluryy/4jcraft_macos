@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/BufferedImage.h"
 #include "Stitcher.h"
 #include "Texture.h"

@@ -1,3 +1,14 @@
+// Minecraft.h — macOS ARM (Apple Silicon) port
+//
+// Changes vs Linux version:
+//   1. Removed the "#if defined(linux) / #undef linux / #endif" block —
+//      Apple Clang does NOT define 'linux' as a predefined macro, so the
+//      undef is unnecessary and would warn on macOS.
+//   2. enum OS { linux, ... } renamed to { linux_os, ... } — using a
+//      reserved predefined-macro name as an enum member is technically
+//      undefined behaviour; the rename makes the intent explicit.
+//   3. No other changes — all declarations are platform-independent.
+
 #pragma once
 #include <stdint.h>
 
@@ -53,13 +64,14 @@ class LivingEntity;
 class Level;
 class ResourceLocation;
 
-#if defined(linux)
-#undef linux
-#endif
 
 class Minecraft {
 private:
-    enum OS { linux, solaris, windows, macos, unknown, xbox };
+    // 'linux' was renamed to 'linux_os' — on some toolchains the identifier
+    // 'linux' is a predefined macro; using it as an enum value is undefined
+    // behaviour.  The #undef workaround that existed in the original file is
+    // no longer needed on macOS / Apple Clang.
+    enum OS { linux_os, solaris, windows, macos, unknown, xbox };
 
     static ResourceLocation DEFAULT_FONT_LOCATION;
     static ResourceLocation ALT_FONT_LOCATION;
@@ -258,9 +270,9 @@ public:
     // 4J - removed
     // bool wasDown ;
 private:
-    //	void checkScreenshot();		// 4J - removed
+    //  void checkScreenshot();     // 4J - removed
     //    String grabHugeScreenshot(File workDir2, int width, int height, int
-    //    ssWidth, int ssHeight);	// 4J - removed
+    //    ssWidth, int ssHeight);   // 4J - removed
 
     // 4J - per player thing?
     int64_t lastTimer;
@@ -278,7 +290,7 @@ public:
     // void handleMouseClick(int button);
 
     void pauseGame();
-    //    void toggleFullScreen();	// 4J - removed
+    //    void toggleFullScreen();  // 4J - removed
     bool pollResize();
 
 private:
@@ -328,7 +340,7 @@ public:
     void forceaddLevel(MultiPlayerLevel* level);
     void prepareLevel(int title);  // 4J - changed to public
     void fileDownloaded(const std::wstring& name, File* file);
-    //  OpenGLCapabilities getOpenGLCapabilities();	// 4J - removed
+    //  OpenGLCapabilities getOpenGLCapabilities(); // 4J - removed
 
     std::wstring gatherStats1();
     std::wstring gatherStats2();

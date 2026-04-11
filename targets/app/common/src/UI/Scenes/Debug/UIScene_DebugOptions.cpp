@@ -4,11 +4,11 @@
 #include "app/common/src/Console_Debug_enum.h"
 #include "app/common/src/UI/Controls/UIControl_CheckBox.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 
 class UILayer;
 

@@ -76,9 +76,9 @@
 #include "app/common/src/UI/Scenes/UIScene_Timer.h"
 #include "app/common/src/UI/UIGroup.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/Iggy/include/rrCore.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 
 UILayer::UILayer(UIGroup* parent) {
     m_parentGroup = parent;

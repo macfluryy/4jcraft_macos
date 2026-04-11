@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "PacketListener.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"

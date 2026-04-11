@@ -6,8 +6,8 @@
 #include <vector>
 
 #include "platform/sdl2/Render.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "app/include/BufferedImage.h"
 #include "util/StringHelpers.h"
 #include "java/InputOutputStream/BufferedReader.h"

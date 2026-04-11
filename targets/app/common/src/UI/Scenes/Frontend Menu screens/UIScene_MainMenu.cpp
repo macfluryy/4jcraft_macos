@@ -18,9 +18,9 @@
 #include "app/common/src/UI/UILayer.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/common/src/UI/UIString.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
 #include "util/StringHelpers.h"
 
