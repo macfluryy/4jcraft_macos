@@ -1,20 +1,37 @@
-#include <GL/gl.h>
+// macOS ARM (Apple Silicon) port of Linux_UIController.cpp
+// Changes vs Linux version:
+//   - OpenGL header: <OpenGL/gl.h> replaces <GL/gl.h>
+//   - Suppressed Apple's OpenGL deprecation warnings with a pragma block
+//   - Removed the erroneous #include "app/windows/Iggy/include/gdraw.h"
+//     that was present in the Linux version — it pulled in Windows-specific
+//     headers and would fail to compile on macOS.
+//   - Iggy include paths updated: "app/linux/..." → "app/macos/..."
+//   - Guard condition changed from __linux__ to __APPLE__ where needed
 
-// GDraw GL backend for Linux
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+
+// GDraw GL backend for macOS
 #include "platform/sdl2/Render.h"
-#include "Linux_UIController.h"
+#include "Mac_UIController.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
-#include "app/linux/Iggy/gdraw/gdraw.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/gdraw/gdraw.h"
+#include "app/mac/Iggy/include/iggy.h"
+
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/LinuxGame.h"
-#include "app/windows/Iggy/include/gdraw.h"
+
+#include "app/mac/Iggy/include/rrCore.h"
+#include "app/mac/MacGame.h"
 
 ConsoleUIController ui;
 
+// ---------------------------------------------------------------------------
+// Restore fixed-function GL state after Iggy has drawn its UI.
+// On Apple Silicon the macOS OpenGL 4.1 driver runs in legacy compatibility
+// profile, so these fixed-function calls are still valid.
+// ---------------------------------------------------------------------------
 static void restoreFixedFunctionStateAfterIggy() {
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_ALPHA_TEST);
@@ -39,14 +56,14 @@ static void restoreFixedFunctionStateAfterIggy() {
     glMatrixMode(GL_MODELVIEW);
 }
 
+// ---------------------------------------------------------------------------
+
 void ConsoleUIController::init(S32 w, S32 h) {
 #ifdef _ENABLEIGGY
     // Shared init
     preInit(w, h);
 
-    // init
     gdraw_funcs = gdraw_GL_CreateContext(w, h, 0);
-
     if (!gdraw_funcs) {
         app.DebugPrintf("Failed to initialise GDraw GL!\n");
         app.FatalLoadError();
@@ -54,13 +71,14 @@ void ConsoleUIController::init(S32 w, S32 h) {
 
     gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_vertexbuffer, 5000,
                                16 * 1024 * 1024);
-    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture, 5000,
+    gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_texture,      5000,
                                128 * 1024 * 1024);
     gdraw_GL_SetResourceLimits(GDRAW_GL_RESOURCE_rendertarget, 10,
                                64 * 1024 * 1024);
 
     IggySetGDraw(gdraw_funcs);
 #endif
+
     postInit();
 }
 
@@ -69,54 +87,48 @@ void ConsoleUIController::render() {
     if (!gdraw_funcs) return;
 
     gdraw_GL_SetTileOrigin(0, 0, 0);
+
     if (!app.GetGameStarted() && gdraw_funcs->ClearID) {
         gdraw_funcs->ClearID();
     }
 
-    // render
     renderScenes();
-
     gdraw_GL_NoMoreGDrawThisFrame();
     restoreFixedFunctionStateAfterIggy();
 #endif
 }
 
 void ConsoleUIController::beginIggyCustomDraw4J(
-    IggyCustomDrawCallbackRegion* region, CustomDrawData* customDrawRegion) {
+        IggyCustomDrawCallbackRegion* region,
+        CustomDrawData*               customDrawRegion) {
     gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
 }
 
 CustomDrawData* ConsoleUIController::setupCustomDraw(
-    UIScene* scene, IggyCustomDrawCallbackRegion* region) {
-    CustomDrawData* customDrawRegion = new CustomDrawData();
-    customDrawRegion->x0 = region->x0;
-    customDrawRegion->x1 = region->x1;
-    customDrawRegion->y0 = region->y0;
-    customDrawRegion->y1 = region->y1;
-
+        UIScene* scene, IggyCustomDrawCallbackRegion* region) {
+    CustomDrawData* customDrawRegion   = new CustomDrawData();
+    customDrawRegion->x0               = region->x0;
+    customDrawRegion->x1               = region->x1;
+    customDrawRegion->y0               = region->y0;
+    customDrawRegion->y1               = region->y1;
     gdraw_GL_BeginCustomDraw_4J(region, customDrawRegion->mat);
-
     setupCustomDrawGameStateAndMatrices(scene, customDrawRegion);
-
     return customDrawRegion;
 }
 
 CustomDrawData* ConsoleUIController::calculateCustomDraw(
-    IggyCustomDrawCallbackRegion* region) {
-    CustomDrawData* customDrawRegion = new CustomDrawData();
-    customDrawRegion->x0 = region->x0;
-    customDrawRegion->x1 = region->x1;
-    customDrawRegion->y0 = region->y0;
-    customDrawRegion->y1 = region->y1;
-
+        IggyCustomDrawCallbackRegion* region) {
+    CustomDrawData* customDrawRegion   = new CustomDrawData();
+    customDrawRegion->x0               = region->x0;
+    customDrawRegion->x1               = region->x1;
+    customDrawRegion->y0               = region->y0;
+    customDrawRegion->y1               = region->y1;
     gdraw_GL_CalculateCustomDraw_4J(region, customDrawRegion->mat);
-
     return customDrawRegion;
 }
 
 void ConsoleUIController::endCustomDraw(IggyCustomDrawCallbackRegion* region) {
     endCustomDrawGameStateAndMatrices();
-
     gdraw_GL_EndCustomDraw(region);
 }
 
@@ -125,12 +137,12 @@ void ConsoleUIController::setTileOrigin(S32 xPos, S32 yPos) {
 }
 
 GDrawTexture* ConsoleUIController::getSubstitutionTexture(int textureId) {
-    // todo impl
+    // TODO: implement
     return nullptr;
 }
 
-void ConsoleUIController::destroySubstitutionTexture(void* destroyCallBackData,
-                                                     GDrawTexture* handle) {
+void ConsoleUIController::destroySubstitutionTexture(void*         destroyCallBackData,
+                                                      GDrawTexture* handle) {
     if (handle) gdraw_GL_WrappedTextureDestroy(handle);
 }
 
@@ -142,3 +154,5 @@ void ConsoleUIController::shutdown() {
     }
 #endif
 }
+
+#pragma clang diagnostic pop

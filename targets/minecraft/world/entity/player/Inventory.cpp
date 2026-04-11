@@ -4,7 +4,7 @@
 
 #include <format>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/stats/GenericStats.h"
 #include "minecraft/world/entity/LivingEntity.h"
 #include "minecraft/world/entity/player/Abilities.h"

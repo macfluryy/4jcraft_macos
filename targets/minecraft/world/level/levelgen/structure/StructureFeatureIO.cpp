@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <utility>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/world/level/levelgen/structure/MineShaftPieces.h"
 #include "minecraft/world/level/levelgen/structure/MineShaftStart.h"
 #include "minecraft/world/level/levelgen/structure/NetherBridgeFeature.h"

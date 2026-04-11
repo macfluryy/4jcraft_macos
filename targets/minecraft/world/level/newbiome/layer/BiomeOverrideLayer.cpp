@@ -2,11 +2,11 @@
 
 #include <string.h>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "platform/PlatformServices.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
 #if defined(__linux__) && defined(__APPLE__)
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #endif
 #include "minecraft/world/level/biome/Biome.h"
 

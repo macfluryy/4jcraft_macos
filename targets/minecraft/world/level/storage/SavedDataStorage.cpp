@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <utility>
 
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "java/InputOutputStream/DataInputStream.h"
 #include "java/InputOutputStream/DataOutputStream.h"
 #include "minecraft/world/entity/ai/village/Villages.h"

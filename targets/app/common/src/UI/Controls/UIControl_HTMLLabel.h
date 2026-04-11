@@ -6,11 +6,11 @@
 #include "app/common/src/UI/Controls/UIControl_HTMLLabel.h"
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 #include "UIControl_Base.h"
 
 class UIControl_HTMLLabel : public UIControl_Label {

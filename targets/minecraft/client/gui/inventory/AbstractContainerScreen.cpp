@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/stubs.h"
 #include "minecraft/client/KeyMapping.h"
 #include "minecraft/client/Lighting.h"

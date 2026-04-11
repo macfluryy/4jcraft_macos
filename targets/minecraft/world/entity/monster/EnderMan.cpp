@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/Random.h"
 #include "minecraft/core/particles/ParticleTypes.h"
 #include "minecraft/sounds/SoundTypes.h"

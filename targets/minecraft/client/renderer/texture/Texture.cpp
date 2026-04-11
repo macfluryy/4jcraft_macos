@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "platform/sdl2/Render.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/BufferedImage.h"
 #include "TextureManager.h"
 #include "java/Buffer.h"

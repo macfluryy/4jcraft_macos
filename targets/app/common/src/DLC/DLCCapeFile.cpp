@@ -2,7 +2,7 @@
 
 #include "DLCManager.h"
 #include "app/common/src/DLC/DLCFile.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 
 DLCCapeFile::DLCCapeFile(const std::wstring& path)
     : DLCFile(DLCManager::e_DLCType_Cape, path) {}

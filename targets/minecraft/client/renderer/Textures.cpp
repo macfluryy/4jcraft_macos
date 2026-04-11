@@ -9,7 +9,7 @@
 
 #include "platform/sdl2/Render.h"
 #include "HttpTexture.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "app/include/BufferedImage.h"
 #include "app/include/MemTexture.h"
 #include "app/include/MemTextureProcessor.h"

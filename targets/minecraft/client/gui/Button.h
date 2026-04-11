@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 
 #include "GuiComponent.h"
 
@@ -16,11 +17,23 @@ public:
     int id;
     bool active;
     bool visible;
+    bool hovered; // 4J macOS - add hover state tracking
 
     Button(int id, int x, int y, const std::wstring& msg);
     Button(int id, int x, int y, int w, int h, const std::wstring& msg);
-    void init(int id, int x, int y, int w, int h,
-              const std::wstring& msg);  // 4J - added
+    
+    void init(int id, int x, int y, int w, int h, const std::wstring& msg);
+    
+    // 4J macOS - improved methods
+    int getWidth() const { return w; }
+    int getHeight() const { return h; }
+    
+    bool isMouseInBounds(int mx, int my) const {
+        return active && visible && 
+               mx >= x && my >= y && 
+               mx < x + w && my < y + h;
+    }
+
 protected:
     virtual int getYImage(bool hovered);
 

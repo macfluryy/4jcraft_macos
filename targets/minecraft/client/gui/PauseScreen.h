@@ -17,6 +17,7 @@ protected:
     using Screen::buttonClicked;
 
     virtual void buttonClicked(Button* button) override;
+    virtual void keyPressed(wchar_t eventCharacter, int eventKey) override;
 
 public:
     virtual void tick() override;

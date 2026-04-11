@@ -2,7 +2,7 @@
 #include <string>
 
 #include "AbstractTexturePack.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/InputOutputStream/InputStream.h"
 #include "strings.h"
 

@@ -4,7 +4,7 @@
 #include <string>
 
 #include "app/common/App_enums.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/Class.h"
 #include "java/Random.h"
 #include "minecraft/core/AbstractProjectileDispenseBehavior.h"

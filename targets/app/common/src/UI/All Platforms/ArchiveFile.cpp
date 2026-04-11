@@ -5,8 +5,8 @@
 #include <cstdlib>
 #include <utility>
 
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "platform/PlatformServices.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"

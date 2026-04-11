@@ -12,7 +12,7 @@
 #include "app/common/src/UI/Controls/UIControl_Label.h"
 #include "app/common/src/UI/Controls/UIControl_SaveList.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 #include "java/File.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/FileHeader.h"

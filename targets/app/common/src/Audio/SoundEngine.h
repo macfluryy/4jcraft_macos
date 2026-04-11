@@ -8,7 +8,7 @@ class Random;
 
 #include "app/common/App_Defines.h"
 #include "app/common/src/Audio/Consoles_SoundEngine.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 #include "minecraft/sounds/SoundTypes.h"
 #include "miniaudio.h"
 

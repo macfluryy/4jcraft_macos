@@ -6,7 +6,7 @@
 #include <cmath>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/Random.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/biome/Biome.h"

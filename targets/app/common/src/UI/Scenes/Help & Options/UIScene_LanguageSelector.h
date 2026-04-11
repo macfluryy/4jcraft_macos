@@ -7,7 +7,7 @@
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/Controls/UIControl_ButtonList.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 #include "app/include/NetTypes.h"
 #include "app/include/SkinBox.h"
 #include "app/include/XboxStubs.h"

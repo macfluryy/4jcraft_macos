@@ -30,9 +30,9 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_TradingMenu.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "MultiPlayerLevel.h"
 #include "ReceivingLevelScreen.h"
 #include "util/Timer.h"
@@ -1493,6 +1493,13 @@ void ClientConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
         sourceDisplayName = GetDisplayNameByGamertag(packet->m_stringArgs[1]);
 
     switch (packet->m_messageType) {
+        case ChatPacket::e_ChatCustom:
+            if (packet->m_stringArgs.size() >= 2) {
+                message = L"<" + playerDisplayName + L"> " + packet->m_stringArgs[1];
+            } else {
+                message = packet->m_stringArgs[0];
+            }
+            break;
         case ChatPacket::e_ChatBedOccupied:
             message = app.GetString(IDS_TILE_BED_OCCUPIED);
             break;

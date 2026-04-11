@@ -6,8 +6,8 @@
 
 #include <algorithm>
 
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "ServerLevel.h"
 #include "minecraft/world/level/storage/ConsoleSaveFileIO/compression.h"
 #include "minecraft/server/MinecraftServer.h"

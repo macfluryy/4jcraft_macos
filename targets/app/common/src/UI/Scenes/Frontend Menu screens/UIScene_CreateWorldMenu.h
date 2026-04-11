@@ -17,7 +17,7 @@
 #include "app/common/src/UI/Controls/UIControl_TextInput.h"
 #include "app/common/src/UI/Controls/UIControl_TexturePackList.h"
 #include "app/common/src/UI/UIScene.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 
 class DLCPack;
 class UILayer;

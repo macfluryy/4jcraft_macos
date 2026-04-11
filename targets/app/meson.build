@@ -33,7 +33,7 @@ if host_machine.system() in ['linux', 'darwin']
   platform_sources += run_command(
     'sh',
     '-c', 'find "'
-    + meson.current_source_dir() / 'linux'
+    + meson.current_source_dir() / 'mac'
     + '" \\( -name "*.cpp" -o -name "*.c" \\) ',
     check: true,
   ).stdout().strip().split('\n')

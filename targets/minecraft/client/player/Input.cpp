@@ -6,7 +6,7 @@
 #include "platform/sdl2/Input.h"
 #include "LocalPlayer.h"
 #include "app/common/App_enums.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerGameMode.h"
 #include "minecraft/world/entity/player/Abilities.h"

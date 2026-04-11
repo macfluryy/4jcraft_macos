@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "ScatteredFeaturePieces.h"
 #include "java/Class.h"
 #include "java/Random.h"

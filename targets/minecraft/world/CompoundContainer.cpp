@@ -1,6 +1,6 @@
 #include "CompoundContainer.h"
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/network/packet/ContainerOpenPacket.h"
 #include "minecraft/world/Container.h"
 

@@ -8,7 +8,7 @@
 #include "app/common/src/Tutorial/Tasks/TutorialTask.h"
 #include "app/common/src/Tutorial/Tutorial.h"
 #include "app/common/src/Tutorial/TutorialEnum.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/Mac_UIController.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/world/level/material/Material.h"

@@ -15,9 +15,6 @@
 #include "minecraft/world/level/tile/Tile.h"
 #include "minecraft/world/level/tile/entity/SignTileEntity.h"
 
-const std::wstring TextEditScreen::allowedChars =
-    SharedConstants::acceptableLetters;
-
 TextEditScreen::TextEditScreen(std::shared_ptr<SignTileEntity> sign) {
     // 4J - added initialisers
     line = 0;
@@ -63,7 +60,8 @@ void TextEditScreen::keyPressed(wchar_t ch, int eventKey) {
     if (eventKey == Keyboard::KEY_BACK && temp.length() > 0) {
         temp = temp.substr(0, temp.length() - 1);
     }
-    if (allowedChars.find(ch) != std::wstring::npos && temp.length() < 15) {
+    if (SharedConstants::acceptableLetters.find(ch) != std::wstring::npos &&
+        temp.length() < 15) {
         temp += ch;
     }
 

@@ -3,7 +3,7 @@
 #include <format>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "SharedConstants.h"
 #include "minecraft/network/packet/TileEntityDataPacket.h"
 #include "minecraft/world/effect/MobEffect.h"

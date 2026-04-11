@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/Class.h"
 #include "minecraft/world/entity/monster/Silverfish.h"
 #include "minecraft/world/item/ItemInstance.h"

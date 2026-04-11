@@ -1,7 +1,8 @@
 
 #include "app/include/stubs.h"
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
+#include "platform/JavaKeyInput.h"
 #if defined(__linux__) || defined(__APPLE__)
 
 void LinuxLogStubLightmapProbe() {
@@ -66,3 +67,51 @@ void glFlush() {}
 void glTexGeni(int, int, int) {}
 
 #endif
+
+#include "strings.h"
+#include <SDL2/SDL.h>
+
+#include "util/StringHelpers.h"
+
+std::vector<int> JavaKeyInput::pressedKeys;
+std::vector<wchar_t> JavaKeyInput::typedChars;
+bool JavaKeyInput::keysCurrent[512] = {};
+bool JavaKeyInput::keysPrev[512] = {};
+
+void Keyboard::update() {
+    for (int i = 0; i < 512; i++) {
+        JavaKeyInput::keysPrev[i] = JavaKeyInput::keysCurrent[i];
+    }
+    JavaKeyInput::pressedKeys.clear();
+    JavaKeyInput::typedChars.clear();
+}
+
+bool Keyboard::isKeyDown(int key) {
+    if (key >= 0 && key < 512) return JavaKeyInput::keysCurrent[key];
+    return false;
+}
+
+bool Keyboard::isKeyPressed(int key) {
+    if (key >= 0 && key < 512) {
+        return !JavaKeyInput::keysPrev[key] && JavaKeyInput::keysCurrent[key];
+    }
+    return false;
+}
+
+std::wstring Keyboard::getKeyName(int key) {
+    if (key < 0) return L"Unknown";
+
+    const char* name = SDL_GetScancodeName((SDL_Scancode)key);
+    if (name != nullptr && name[0] != '\0') {
+        return convStringToWstring(name);
+    }
+    return L"Unknown";
+}
+
+void Keyboard::enableRepeatEvents(bool repeat) {
+    if (repeat) {
+        SDL_StartTextInput();
+    } else {
+        SDL_StopTextInput();
+    }
+}

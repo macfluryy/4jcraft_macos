@@ -25,8 +25,6 @@ protected:
     virtual void buttonClicked(Button* button) override;
 
 private:
-    static const std::wstring allowedChars;
-
 protected:
     virtual void keyPressed(wchar_t ch, int eventKey) override;
 

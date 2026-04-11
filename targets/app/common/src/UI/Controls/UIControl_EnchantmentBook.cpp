@@ -5,9 +5,9 @@
 #include "platform/sdl2/Render.h"
 #include "app/common/src/UI/Controls/UIControl.h"
 #include "app/common/src/UI/Scenes/In-Game Menu Screens/Containers/UIScene_EnchantingMenu.h"
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
 
 #include "java/Class.h"

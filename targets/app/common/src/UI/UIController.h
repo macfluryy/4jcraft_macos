@@ -11,11 +11,11 @@
 #include "util/Timer.h"
 
 #if defined(__linux__) || defined(__APPLE__)
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 #ifndef _ENABLEIGGY
-#include "app/linux/Stubs/iggy_stubs.h"
+#include "app/mac/Stubs/iggy_stubs.h"
 #endif
-#include "app/linux/Stubs/d3d11_stubs.h"
+#include "app/mac/Stubs/d3d11_stubs.h"
 #elif defined(_WINDOWS64)
 #include "app/windows/Iggy/include/iggy.h"
 #endif
@@ -28,7 +28,7 @@
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "app/common/src/UI/Controls/UIControl.h"
-#include "app/linux/Iggy/include/rrCore.h"
+#include "app/mac/Iggy/include/rrCore.h"
 #include "UIGroup.h"
 #include "minecraft/sounds/SoundTypes.h"
 

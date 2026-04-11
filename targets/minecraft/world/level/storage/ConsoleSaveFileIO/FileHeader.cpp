@@ -11,12 +11,12 @@
 #include <string>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "util/Definitions.h"
 #include "java/System.h"
 
-extern LinuxGame app;
+extern MacGame app;
 
 FileHeader::FileHeader() {
     lastFile = nullptr;

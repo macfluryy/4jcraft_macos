@@ -6,9 +6,9 @@
 #include "app/common/src/Tutorial/TutorialMode.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/UILayer.h"
-#include "app/linux/Iggy/include/rrCore.h"
-#include "app/linux/LinuxGame.h"
-#include "app/linux/Linux_UIController.h"
+#include "app/mac/Iggy/include/rrCore.h"
+#include "app/mac/MacGame.h"
+#include "app/mac/Mac_UIController.h"
 #include "minecraft/client/MemoryTracker.h"
 #include "minecraft/client/Minecraft.h"
 

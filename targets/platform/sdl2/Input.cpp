@@ -17,7 +17,10 @@
 #include <functional>
 #include <string>
 
+#include "simdutf.h"
+
 #include "../InputActions.h"
+#include "../JavaKeyInput.h"
 #include "../PlatformTypes.h"
 
 C_4JInput InputManager;
@@ -48,6 +51,56 @@ static int s_scrollTicksForButtonPressed = 0;
 static int s_scrollTicksForGetValue = 0;
 static int s_scrollTicksSnap = 0;
 static bool s_scrollSnapTaken = false;
+
+static void AppendRawTextInput(const char* text) {
+    while (text != nullptr && *text != '\0') {
+        JavaKeyInput::typedChars.push_back(
+            static_cast<unsigned char>(*text));
+        text++;
+    }
+}
+
+static void AppendUtf8TextInput(const char* text) {
+    if (text == nullptr || text[0] == '\0') {
+        return;
+    }
+
+    size_t textLength = strlen(text);
+
+    if constexpr (sizeof(wchar_t) == 4) {
+        std::u32string decoded(
+            simdutf::utf32_length_from_utf8(text, textLength), U'\0');
+        size_t written = simdutf::convert_utf8_to_utf32(
+            text, textLength, reinterpret_cast<char32_t*>(decoded.data()));
+        if (written == 0) {
+            AppendRawTextInput(text);
+            return;
+        }
+        decoded.resize(written);
+        for (char32_t ch : decoded) {
+            JavaKeyInput::typedChars.push_back(static_cast<wchar_t>(ch));
+        }
+        return;
+    }
+
+    if constexpr (sizeof(wchar_t) == 2) {
+        std::u16string decoded(
+            simdutf::utf16_length_from_utf8(text, textLength), u'\0');
+        size_t written = simdutf::convert_utf8_to_utf16(
+            text, textLength, reinterpret_cast<char16_t*>(decoded.data()));
+        if (written == 0) {
+            AppendRawTextInput(text);
+            return;
+        }
+        decoded.resize(written);
+        for (char16_t ch : decoded) {
+            JavaKeyInput::typedChars.push_back(static_cast<wchar_t>(ch));
+        }
+        return;
+    }
+
+    AppendRawTextInput(text);
+}
 
 // Text input state (non-blocking keyboard)
 static bool s_keyboardActive = false;
@@ -179,8 +232,23 @@ static int SDLCALL EventWatcher(void*, SDL_Event* e) {
     } else if (e->type == SDL_MOUSEMOTION) {
         s_accumRelX += (float)e->motion.xrel;
         s_accumRelY += (float)e->motion.yrel;
-    } else if (e->type == SDL_TEXTINPUT && s_keyboardActive) {
-        s_textInputBuf += e->text.text;
+    } else if (e->type == SDL_KEYDOWN) {
+        int sc = e->key.keysym.scancode;
+        if (sc >= 0 && sc < 512) {
+            JavaKeyInput::keysCurrent[sc] = true;
+            JavaKeyInput::pressedKeys.push_back(sc);
+        }
+    } else if (e->type == SDL_KEYUP) {
+        int sc = e->key.keysym.scancode;
+        if (sc >= 0 && sc < 512) {
+            JavaKeyInput::keysCurrent[sc] = false;
+        }
+    } else if (e->type == SDL_TEXTINPUT) {
+        if (s_keyboardActive) {
+            s_textInputBuf += e->text.text;
+        }
+
+        AppendUtf8TextInput(e->text.text);
     } else if (e->type == SDL_CONTROLLERDEVICEADDED) {  // Will search for
                                                         // controller if none
         for (int i = 0; i < SDL_NumJoysticks(); i++) {

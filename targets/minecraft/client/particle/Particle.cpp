@@ -4,7 +4,7 @@
 
 #include <cmath>
 
-#include "app/linux/Stubs/winapi_stubs.h"
+#include "app/mac/Stubs/winapi_stubs.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "minecraft/SharedConstants.h"

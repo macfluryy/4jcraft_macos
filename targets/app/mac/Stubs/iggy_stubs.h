@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "app/linux/Iggy/include/iggy.h"
+#include "app/mac/Iggy/include/iggy.h"
 
 #include <cstring>
 #include <cstdio>

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "java/Class.h"
 #include "minecraft/stdafx.h"
 #include "minecraft/world/entity/LivingEntity.h"

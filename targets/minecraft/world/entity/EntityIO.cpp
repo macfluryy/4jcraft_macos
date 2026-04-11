@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "Entity.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "Painting.h"
 #include "java/Class.h"
 #include "java/JavaIntHash.h"

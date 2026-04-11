@@ -10,7 +10,7 @@
 #include "app/common/App_enums.h"
 #include "app/common/src/Tutorial/Constraints/InputConstraint.h"
 #include "app/common/src/Tutorial/Tasks/TutorialTask.h"
-#include "app/linux/LinuxGame.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 
