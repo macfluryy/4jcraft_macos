@@ -602,15 +602,21 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         if (m_pSaveDetails == nullptr) {
             C4JStorage::ESaveGameState eSGIStatus = StorageManager.GetSavesInfo(
                 m_iPad, nullptr, (char*)"save");
-            m_pSaveDetails = StorageManager.ReturnSavesInfo();
+            //m_pSaveDetails = StorageManager.ReturnSavesInfo();
         }
 
-        unsigned int uiSaveC = 0;
+        /*unsigned int uiSaveC = 0;
         if (m_pSaveDetails) {
-            uiSaveC = m_pSaveDetails->iSaveC;
-        }
+            uiSaveC = m_pSaveDetails->iSaveC;*/
+        #if TO_BE_IMPLEMENTED
+                if (eSGIStatus == C4JStorage::ESGIStatus_NoSaves) {
+                    uiSaveC = 0;
+                    m_controlSavesTimer.setVisible(false);
+                    m_SavesList.SetEnable(true);
+                }
+        #endif
 
-        // Add default buttons (Create New World, etc.)
+        /*// Add default buttons (Create New World, etc.)
         AddDefaultButtons();
 
         // Add saved worlds
@@ -622,7 +628,7 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
 
         m_bSavesDisplayed = true;
         m_bAllLoaded = true;
-        m_bIgnoreInput = false;
+        m_bIgnoreInput = false;*/
     }
 
     return;
