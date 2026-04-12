@@ -563,14 +563,14 @@ struct ChunkBuffer {
     bool valid = false;
     bool vboReady = false;
     void destroy() {
-        if (vbo) {
-            glDeleteBuffers(1, &vbo);
-            vbo = 0;
-        }
-        if (vao) {
-            glDeleteVertexArrays(1, &vao);
-            vao = 0;
-        }
+        // if (vbo) {
+        //     glDeleteBuffers(1, &vbo);
+        //     vbo = 0;
+        // }
+        // if (vao) {
+        //     glDeleteVertexArrays(1, &vao);
+        //     vao = 0;
+        // }
         draws.clear();
         rawVerts.clear();
         valid = false;

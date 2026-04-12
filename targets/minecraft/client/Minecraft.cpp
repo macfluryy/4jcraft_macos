@@ -3880,6 +3880,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
                          bool bPrimaryPlayerSignedOut /*=false*/) {
     std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
     bool playerAdded = false;
+    int iPrimaryPlayer = InputManager.GetPrimaryPad();
     this->cameraTargetPlayer = nullptr;
 
     if (progressRenderer != nullptr) {
@@ -3894,6 +3895,9 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     // is safe to move on - will be re-enabled if we set the level to be
     // non-nullptr
     gameRenderer->DisableUpdateThread();
+    // setLevel can be reached from a non-render thread during world exit, but
+    // LevelRenderer::setLevel(nullptr) clears renderer-owned command buffers.
+    RenderManager.InitialiseContext();
 
     for (unsigned int i = 0; i < levels.size(); ++i) {
         // 4J We only need to save out in multiplayer is we are setting the
@@ -3980,9 +3984,12 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         // If no player has been set, then this is the first level to be set
         // this game, so set up a primary player & initialise some other things
         if (player == nullptr) {
-            int iPrimaryPlayer = InputManager.GetPrimaryPad();
-
-            player = gameMode->createPlayer(level);
+            // Use forceInsertPlayer if provided, otherwise create a new player
+            if (forceInsertPlayer != nullptr) {
+                player = std::dynamic_pointer_cast<MultiplayerLocalPlayer>(forceInsertPlayer);
+            } else {
+                player = gameMode->createPlayer(level);
+            }
 
             PlayerUID playerXUIDOffline = INVALID_XUID;
             PlayerUID playerXUIDOnline = INVALID_XUID;
@@ -4002,7 +4009,11 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
             for (int i = 0; i < XUSER_MAX_COUNT; i++) {
                 m_pendingLocalConnections[i] = nullptr;
                 if (i != iPrimaryPlayer) localgameModes[i] = nullptr;
+                else localgameModes[i] = gameMode;
             }
+            
+            // Ensure localplayers[iPrimaryPlayer] is set to the newly created player
+            localplayers[iPrimaryPlayer] = std::dynamic_pointer_cast<MultiplayerLocalPlayer>(player);
         }
 
         if (player != nullptr) {
@@ -4028,6 +4039,7 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         }
         updatePlayerViewportAssignments();
 
+        setLocalPlayerIdx(iPrimaryPlayer);
         this->cameraTargetPlayer = player;
 
         // 4J - allow update thread to start processing the level now both it &
