@@ -602,15 +602,27 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
         if (m_pSaveDetails == nullptr) {
             C4JStorage::ESaveGameState eSGIStatus = StorageManager.GetSavesInfo(
                 m_iPad, nullptr, (char*)"save");
+            m_pSaveDetails = StorageManager.ReturnSavesInfo();
         }
 
-#if TO_BE_IMPLEMENTED
-        if (eSGIStatus == C4JStorage::ESGIStatus_NoSaves) {
-            uiSaveC = 0;
-            m_controlSavesTimer.setVisible(false);
-            m_SavesList.SetEnable(true);
+        unsigned int uiSaveC = 0;
+        if (m_pSaveDetails) {
+            uiSaveC = m_pSaveDetails->iSaveC;
         }
-#endif
+
+        // Add default buttons (Create New World, etc.)
+        AddDefaultButtons();
+
+        // Add saved worlds
+        for (unsigned int i = 0; i < uiSaveC; i++) {
+            std::string name = m_pSaveDetails->SaveInfoA[i].UTF8SaveTitle;
+            std::wstring wname(name.begin(), name.end());
+            m_buttonListSaves.addItem(wname.c_str(), L"");
+        }
+
+        m_bSavesDisplayed = true;
+        m_bAllLoaded = true;
+        m_bIgnoreInput = false;
     }
 
     return;

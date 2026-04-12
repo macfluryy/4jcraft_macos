@@ -434,7 +434,12 @@ void LevelRenderer::setLevel(int playerIndex, MultiPlayerLevel* level) {
         // actually exiting the game, so only when the primary player sets there
         // level to nullptr
         if (playerIndex == InputManager.GetPrimaryPad()) {
-            RenderManager.CBuffDeleteAll();
+            // Only delete the chunk command buffers for the old level. Deleting
+            // every command buffer also invalidates static model lists (for
+            // example the player model/hand), and those lists are not rebuilt
+            // on world recreation because their ModelPart instances stay marked
+            // as compiled.
+            RenderManager.CBuffDelete(chunkLists, getGlobalChunkCount() * 2);
             {
                 std::lock_guard<std::mutex> lock(m_csRenderableTileEntities);
                 renderableTileEntities.clear();
