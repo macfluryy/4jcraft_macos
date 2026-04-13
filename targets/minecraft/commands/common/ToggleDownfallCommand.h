@@ -16,7 +16,7 @@ public:
                          std::vector<uint8_t>& commandData);
 
 protected:
-    void doToggleDownfall();
+    void doSetWeather(int weatherType);
 
 public:
     static std::shared_ptr<GameCommandPacket> preparePacket();
