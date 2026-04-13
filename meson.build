@@ -1,6 +1,6 @@
 project(
   '4jcraft',
-  ['cpp', 'c'],
+  ['cpp', 'c', 'objcpp'],
   version: '0.1.0',
   meson_version: '>= 1.3',
   default_options: [

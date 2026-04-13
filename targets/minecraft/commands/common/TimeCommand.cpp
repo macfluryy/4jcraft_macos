@@ -21,44 +21,42 @@ int TimeCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void TimeCommand::execute(std::shared_ptr<CommandSender> source,
                           std::vector<uint8_t>& commandData) {
-    ByteArrayInputStream bais(commandData);
-    DataInputStream dis(&bais);
+    // 4J - FIX: Properly deserialize time command data
+    if (commandData.empty()) {
+        source->sendMessage(L"§cUsage: /time set [sunrise | day | noon | sunset | night | midnight | N ]");
+        return;
+    }
+    
+    try {
+        ByteArrayInputStream bais(commandData);
+        DataInputStream dis(&bais);
 
-    bool night = dis.readBoolean();
+        int timeValue = dis.readInt();
+        
+        if (timeValue < 0 || timeValue > 23999) {
+            source->sendMessage(L"§cInvalid time value: " + std::to_wstring(timeValue));
+            source->sendMessage(L"§cTime must be between 0 and 23999 ticks");
+            source->sendMessage(L"§c0=Sunrise, 1000=Day, 6000=Noon, 12000=Sunset, 13000=Night, 18000=Midnight");
+            return;
+        }
 
-    bais.reset();
-
-    int amount = 0;
-    if (night) amount = 12500;
-    doSetTime(source, amount);
-    // logAdminAction(source, "commands.time.set", amount);
-    logAdminAction(source, ChatPacket::e_ChatCustom, L"commands.time.set");
-
-    // if (args.size() > 1) {
-    //	if (args[0].equals("set")) {
-    //		int amount;
-
-    //		if (args[1].equals("day")) {
-    //			amount = 0;
-    //		} else if (args[1].equals("night")) {
-    //			amount = 12500;
-    //		} else {
-    //			amount = convertArgToInt(source, args[1], 0);
-    //		}
-
-    //		doSetTime(source, amount);
-    //		logAdminAction(source, "commands.time.set", amount);
-    //		return;
-    //	} else if (args[0].equals("add")) {
-    //		int amount = convertArgToInt(source, args[1], 0);
-    //		doAddTime(source, amount);
-
-    //		logAdminAction(source, "commands.time.added", amount);
-    //		return;
-    //	}
-    //}
-
-    // throw new UsageException("commands.time.usage");
+        doSetTime(source, timeValue);
+        
+        std::wstring timeDesc;
+        if (timeValue == 0) timeDesc = L"Sunrise";
+        else if (timeValue == 1000) timeDesc = L"Day (Morning)";
+        else if (timeValue == 6000) timeDesc = L"Noon";
+        else if (timeValue == 12000) timeDesc = L"Sunset";
+        else if (timeValue == 13000) timeDesc = L"Night";
+        else if (timeValue == 18000) timeDesc = L"Midnight";
+        else timeDesc = L"Tick " + std::to_wstring(timeValue);
+        
+        source->sendMessage(L"§aTime set to: " + timeDesc + L" (" + std::to_wstring(timeValue) + L")");
+        //logAdminAction(source, ChatPacket::e_ChatCustom, L"commands.time.set");
+        
+    } catch (const std::exception& e) {
+        source->sendMessage(L"§cError executing time command");
+    }
 }
 
 void TimeCommand::doSetTime(std::shared_ptr<CommandSender> source, int value) {

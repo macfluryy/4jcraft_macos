@@ -1,13 +1,4 @@
 // Minecraft.h — macOS ARM (Apple Silicon) port
-//
-// Changes vs Linux version:
-//   1. Removed the "#if defined(linux) / #undef linux / #endif" block —
-//      Apple Clang does NOT define 'linux' as a predefined macro, so the
-//      undef is unnecessary and would warn on macOS.
-//   2. enum OS { linux, ... } renamed to { linux_os, ... } — using a
-//      reserved predefined-macro name as an enum member is technically
-//      undefined behaviour; the rename makes the intent explicit.
-//   3. No other changes — all declarations are platform-independent.
 
 #pragma once
 #include <stdint.h>
@@ -67,10 +58,6 @@ class ResourceLocation;
 
 class Minecraft {
 private:
-    // 'linux' was renamed to 'linux_os' — on some toolchains the identifier
-    // 'linux' is a predefined macro; using it as an enum value is undefined
-    // behaviour.  The #undef workaround that existed in the original file is
-    // no longer needed on macOS / Apple Clang.
     enum OS { linux_os, solaris, windows, macos, unknown, xbox };
 
     static ResourceLocation DEFAULT_FONT_LOCATION;

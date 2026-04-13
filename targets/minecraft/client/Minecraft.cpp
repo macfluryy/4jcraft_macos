@@ -1,22 +1,7 @@
 // Minecraft.cpp — macOS ARM (Apple Silicon) port
-//
-// Changes vs Linux version:
-//   1. Include paths: "app/linux/..." → "app/macos/..."
-//      LinuxGame.h  → MacGame.h
-//      Linux_UIController.h → Mac_UIController.h
-//      linux/Stubs/winapi_stubs.h → macos/Stubs/winapi_stubs.h
-//   2. getWorkingDirectory(): __APPLE__ branch now stores data in
-//      ~/Library/Application Support/<appname>, which is the macOS
-//      convention. The old _MACOS guard is removed (was dead code).
-//   3. #pragma clang diagnostic block silences Apple's OpenGL
-//      deprecation warnings that come in transitively via SDL2/GL headers.
-//   4. No logic changes anywhere else — the entire game loop, level
-//      management, and input handling are platform-independent.
 
 #include "Minecraft.h"
 
-// Suppress Apple's OpenGL deprecation warnings (OpenGL deprecated in
-// macOS 10.14 but still works on Apple Silicon via the compat profile).
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
@@ -2186,6 +2171,10 @@ void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
     }
 
     if (screen != nullptr && bFirst) {
+        // 4J - FIX: Handle deferred UI rebuilds BEFORE processing events
+        // This prevents use-after-free crashes when GUI scale changes
+        screen->_performDeferredUIRebuild();
+        
         screen->updateEvents();
         DispatchJavaScreenKeyboard(screen);
 

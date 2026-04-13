@@ -1081,6 +1081,8 @@ void GameRenderer::render(float a, bool bFirst) {
     if (mc->screen != nullptr) {
         FRAME_PROFILE_SCOPE(UIHud);
         glClear(GL_DEPTH_BUFFER_BIT);
+        // 4J - setupGuiScreen() to recalculate GL projection matrix for GUI scale
+        setupGuiScreen();
         mc->screen->render(xMouse, yMouse, a);
         if (mc->screen != nullptr && mc->screen->particles != nullptr)
             mc->screen->particles->render(a);

@@ -21,7 +21,9 @@
 #include "ServerConnection.h"
 #include "java/Class.h"
 #include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/ByteArrayOutputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
+#include "java/InputOutputStream/DataOutputStream.h"
 #include "java/JavaMath.h"
 #include "java/Random.h"
 #include "java/System.h"
@@ -695,26 +697,264 @@ void PlayerConnection::handleChat(std::shared_ptr<ChatPacket> packet) {
     }
 }
 
+// Helper function to convert wide string to lowercase
+static std::wstring toLower(const std::wstring& str) {
+    std::wstring result = str;
+    std::transform(result.begin(), result.end(), result.begin(),
+                   [](wchar_t c) { return std::tolower(static_cast<unsigned char>(c)); });
+    return result;
+}
+
 void PlayerConnection::handleCommand(const std::wstring& message) {
-    // Simple command parsing
+    // 4J - FIX: Properly route all commands through CommandDispatcher
+    // Remove leading "/" from message
     std::wstringstream ss(message.substr(1));
-    std::wstring command;
-    ss >> command;
-    if (command == L"time") {
-        std::wstring set;
-        ss >> set;
-        if (set == L"set") {
-            std::wstring time;
-            ss >> time;
-            bool night = (time == L"night");
-            std::vector<uint8_t> data;
-            // Write bool to data
-            data.push_back(night ? 1 : 0);
-            server->getCommandDispatcher()->performCommand(player, eGameCommand_Time, data);
+    std::wstring cmdName;
+    ss >> cmdName;
+    cmdName = toLower(cmdName);  // Convert to lowercase for case-insensitive matching
+    
+    // Parse command name to enum
+    EGameCommand cmd = parseCommandName(cmdName);
+    
+    // If command not recognized, sendMessage and return
+    if (cmd == eGameCommand_COUNT) {  // COUNT is sentinel for "not found"
+        player->sendMessage(L"Unknown command: " + cmdName);
+        return;
+    }
+    
+    // Parse arguments based on command type
+    // Each command expects specific binary data format
+    std::vector<uint8_t> commandData;
+    std::wstring arg1, arg2, arg3;
+    std::wstring arg1_orig, arg2_orig, arg3_orig;  // Keep original case for player names
+    ss >> arg1;  // First argument
+    ss >> arg2;  // Second argument (if exists)
+    ss >> arg3;  // Third argument (if exists)
+    
+    // Save originals before converting to lowercase
+    arg1_orig = arg1;
+    arg2_orig = arg2;
+    arg3_orig = arg3;
+    
+    // Convert all arguments to lowercase for case-insensitive matching
+    arg1 = toLower(arg1);
+    arg2 = toLower(arg2);
+    arg3 = toLower(arg3);
+    
+    // 4J - FIX: Serialize arguments in correct format for each command
+    // Commands use DataInputStream to deserialize, so we need proper binary format
+    try {
+        ByteArrayOutputStream baos;
+        DataOutputStream dos(&baos);
+        
+        switch (cmd) {
+            case eGameCommand_Time: {
+                // /time set [day|night|noon|midnight|sunrise|sunset|N]
+                if (arg1 == L"set") {
+                    int timeValue = 0;
+                    // Parse time value with all supported names
+                    if (arg2 == L"sunrise") {
+                        timeValue = 0;       // Beginning of day
+                    } else if (arg2 == L"day") {
+                        timeValue = 1000;    // Morning/Day
+                    } else if (arg2 == L"noon") {
+                        timeValue = 6000;    // Noon
+                    } else if (arg2 == L"sunset") {
+                        timeValue = 12000;   // Sunset
+                    } else if (arg2 == L"night") {
+                        timeValue = 13000;   // Night
+                    } else if (arg2 == L"midnight") {
+                        timeValue = 18000;   // Midnight
+                    } else {
+                        // Try to parse as number
+                        try {
+                            timeValue = std::stoi(arg2);
+                            // Validate time value (0-23999 ticks)
+                            if (timeValue < 0 || timeValue > 23999) {
+                                player->sendMessage(L"§cTime must be between 0 and 23999");
+                                return;
+                            }
+                        } catch (...) {
+                            player->sendMessage(L"§cInvalid time value: " + arg2);
+                            player->sendMessage(L"§cUsage: /time set [sunrise|day|noon|sunset|night|midnight|N]");
+                            return;
+                        }
+                    }
+                    dos.writeInt(timeValue);
+                } else {
+                    player->sendMessage(L"§cUsage: /time set [sunrise|day|noon|sunset|night|midnight|N]");
+                    return;
+                }
+                break;
+            }
+            
+            case eGameCommand_GameMode: {
+                // /gamemode [survival|s|0|creative|c|1|adventure|a|2|spectator|sp|3]
+                int gameModeId = -1;  // Invalid default
+                
+                if (arg1 == L"survival" || arg1 == L"s") {
+                    gameModeId = 0;
+                } else if (arg1 == L"creative" || arg1 == L"c") {
+                    gameModeId = 1;
+                } else if (arg1 == L"adventure" || arg1 == L"a") {
+                    gameModeId = 2;
+                } else if (arg1 == L"spectator" || arg1 == L"sp" || arg1 == L"spc") {
+                    gameModeId = 3;
+                } else {
+                    // Try to parse as numeric ID
+                    try {
+                        gameModeId = std::stoi(arg1);
+                        if (gameModeId < 0 || gameModeId > 3) {
+                            player->sendMessage(L"§cInvalid gamemode ID: " + arg1);
+                            player->sendMessage(L"§cUsage: /gamemode [survival|creative|adventure|spectator]");
+                            return;
+                        }
+                    } catch (...) {
+                        player->sendMessage(L"§cUnknown game mode: " + arg1);
+                        player->sendMessage(L"§cUsage: /gamemode [survival|creative|adventure|spectator]");
+                        return;
+                    }
+                }
+                
+                dos.writeInt(gameModeId);
+                // Optional: target player name (default: self)
+                if (!arg2_orig.empty()) {
+                    // Write target player name as UTF string (keep original case for player name)
+                    dos.writeUTF(arg2_orig);
+                }
+                break;
+            }
+            
+            case eGameCommand_Give: {
+                // /give <player> <item> [count] [data]
+                if (arg1_orig.empty() || arg2_orig.empty()) {
+                    player->sendMessage(L"Usage: /give <player> <item> [count] [data]");
+                    return;
+                }
+                dos.writeUTF(arg1_orig);  // Player name (original case)
+                dos.writeUTF(arg2_orig);  // Item ID (original case)
+                int count = 1;
+                if (!arg3.empty()) {
+                    try {
+                        count = std::stoi(arg3);
+                    } catch (...) {
+                        count = 1;
+                    }
+                }
+                dos.writeInt(count);
+                break;
+            }
+            
+            case eGameCommand_Kill: {
+                // /kill [target]
+                if (!arg1_orig.empty()) {
+                    dos.writeUTF(arg1_orig);  // Target player (original case)
+                } else {
+                    dos.writeUTF(L"@s");  // Default: self
+                }
+                break;
+            }
+            
+            case eGameCommand_Teleport: {
+                // /teleport <x> <y> <z> [yaw] [pitch]
+                if (arg1.empty() || arg2.empty() || arg3.empty()) {
+                    player->sendMessage(L"Usage: /teleport <x> <y> <z> [yaw] [pitch]");
+                    return;
+                }
+                try {
+                    double x = std::stod(arg1);
+                    double y = std::stod(arg2);
+                    double z = std::stod(arg3);
+                    dos.writeDouble(x);
+                    dos.writeDouble(y);
+                    dos.writeDouble(z);
+                } catch (...) {
+                    player->sendMessage(L"Invalid coordinates");
+                    return;
+                }
+                break;
+            }
+            
+            case eGameCommand_ToggleDownfall: {
+                // /weather [clear|rain|thunder|thunderstorm]
+                int weatherType = 0;
+                if (arg1 == L"clear") {
+                    weatherType = 0;
+                } else if (arg1 == L"rain") {
+                    weatherType = 1;
+                } else if (arg1 == L"thunder" || arg1 == L"thunderstorm") {
+                    weatherType = 2;
+                } else {
+                    player->sendMessage(L"§cUnknown weather type: " + arg1);
+                    player->sendMessage(L"§cUsage: /weather [clear|rain|thunder]");
+                    return;
+                }
+                dos.writeInt(weatherType);
+                break;
+            }
+            
+            case eGameCommand_Effect: {
+                // /effect <player> <effect> [duration] [amplifier]
+                if (arg1_orig.empty() || arg2_orig.empty()) {
+                    player->sendMessage(L"Usage: /effect <player> <effect> [duration] [amplifier]");
+                    return;
+                }
+                dos.writeUTF(arg1_orig);  // Player (original case)
+                dos.writeUTF(arg2_orig);  // Effect name (original case)
+                // Duration and amplifier are optional
+                break;
+            }
+            
+            case eGameCommand_DefaultGameMode:
+            case eGameCommand_EnchantItem:
+            case eGameCommand_Experience:
+            default: {
+                // Placeholder for unimplemented commands
+                player->sendMessage(L"This command is not yet implemented");
+                return;
+            }
         }
+        
+        // Get serialized data from stream
+        commandData = baos.toByteArray();
+        
+    } catch (const std::exception& e) {
+        player->sendMessage(L"Error processing command");
+        return;
+    }
+    
+    // Execute through CommandDispatcher
+    server->getCommandDispatcher()->performCommand(player, cmd, commandData);
+}
+
+EGameCommand PlayerConnection::parseCommandName(const std::wstring& cmdName) {
+    // 4J - FIX: Map command names to enum values
+    // This replaces the hardcoded if-else chain
+    // Note: cmdName should already be lowercase when received
+    
+    if (cmdName == L"gamemode" || cmdName == L"gm") {
+        return eGameCommand_GameMode;
+    } else if (cmdName == L"defaultgamemode" || cmdName == L"defaultgm") {
+        return eGameCommand_DefaultGameMode;
+    } else if (cmdName == L"give" || cmdName == L"g") {
+        return eGameCommand_Give;
+    } else if (cmdName == L"time") {
+        return eGameCommand_Time;
+    } else if (cmdName == L"kill") {
+        return eGameCommand_Kill;
+    } else if (cmdName == L"teleport" || cmdName == L"tp") {
+        return eGameCommand_Teleport;
+    } else if (cmdName == L"effect") {
+        return eGameCommand_Effect;
+    } else if (cmdName == L"enchant" || cmdName == L"enchantitem") {
+        return eGameCommand_EnchantItem;
+    } else if (cmdName == L"xp" || cmdName == L"experience") {
+        return eGameCommand_Experience;
+    } else if (cmdName == L"weather" || cmdName == L"toggledownfall") {
+        return eGameCommand_ToggleDownfall;
     } else {
-        // Unknown command
-        player->sendMessage(L"Unknown command");
+        // Command not recognized - return sentinel value
+        return eGameCommand_COUNT;
     }
 }
 

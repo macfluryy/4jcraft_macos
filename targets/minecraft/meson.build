@@ -44,8 +44,16 @@ if get_option('ui_backend') == 'java'
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
 endif
 
+# macOS native frameworks for clipboard operations (Cocoa Pasteboard API)
+macos_frameworks_dep = []
+macos_mm_sources = []
+if host_machine.system() == 'darwin'
+  macos_frameworks_dep = [dependency('appleframeworks', modules: ['Cocoa'])]
+  macos_mm_sources = ['client/gui/ClipboardMac.mm']
+endif
+
 lib_minecraft = static_library('minecraft',
-  minecraft_sources,
+  minecraft_sources + macos_mm_sources,
   dependencies : [
     miniaudio_dep, # TODO: remove once a SoundEngine facade is present
     render_dep,
@@ -59,7 +67,7 @@ lib_minecraft = static_library('minecraft',
     platform_dep,
     util_dep,
     dependency('zlib'),
-  ] + macos_compat_dep,
+  ] + macos_compat_dep + macos_frameworks_dep,
   include_directories : include_directories('..'),
   cpp_args : global_cpp_args + global_cpp_defs,
 )

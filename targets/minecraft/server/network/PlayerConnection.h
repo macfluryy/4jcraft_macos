@@ -77,6 +77,9 @@ public:
 
 private:
     void handleCommand(const std::wstring& message);
+    
+    // 4J - Parse command string to enum (e.g. "gamemode" → eGameCommand_GameMode)
+    EGameCommand parseCommandName(const std::wstring& cmdName);
 
 public:
     virtual void handleAnimate(std::shared_ptr<AnimatePacket> packet);

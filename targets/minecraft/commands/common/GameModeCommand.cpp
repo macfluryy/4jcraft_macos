@@ -1,6 +1,13 @@
 #include "GameModeCommand.h"
 
+#include "java/InputOutputStream/ByteArrayInputStream.h"
+#include "java/InputOutputStream/DataInputStream.h"
+#include "minecraft/commands/CommandSender.h"
 #include "minecraft/commands/CommandsEnum.h"
+#include "minecraft/server/level/ServerPlayer.h"
+#include "minecraft/server/level/ServerPlayerGameMode.h"
+#include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/client/Minecraft.h"
 
 class CommandSender;
 
@@ -10,44 +17,40 @@ int GameModeCommand::getPermissionLevel() { return LEVEL_GAMEMASTERS; }
 
 void GameModeCommand::execute(std::shared_ptr<CommandSender> source,
                               std::vector<uint8_t>& commandData) {
-    // if (args.size() > 0) {
-    //	GameType newMode = getModeForString(source, args[0]);
-    //	Player player = args.size() >= 2 ? convertToPlayer(source, args[1]) :
-    // convertSourceToPlayer(source);
-
-    //	player.setGameMode(newMode);
-    //	player.fallDistance = 0; // reset falldistance so flying people do not
-    // die :P
-
-    //	ChatMessageComponent mode =
-    // ChatMessageComponent.forTranslation("gameMode." + newMode.getName());
-
-    //	if (player != source) {
-    //		logAdminAction(source,
-    // AdminLogCommand.LOGTYPE_DONT_SHOW_TO_SELF,
-    //"commands.gamemode.success.other", player.getAName(), mode); 	} else {
-    //		logAdminAction(source,
-    // AdminLogCommand.LOGTYPE_DONT_SHOW_TO_SELF,
-    //"commands.gamemode.success.self", mode);
-    //	}
-
-    //	return;
-    //}
-
-    // throw new UsageException("commands.gamemode.usage");
-}
-
-GameType* GameModeCommand::getModeForString(
-    std::shared_ptr<CommandSender> source, const std::wstring& name) {
-    return nullptr;
-    // if (name.equalsIgnoreCase(GameType.SURVIVAL.getName()) ||
-    // name.equalsIgnoreCase("s")) { 	return GameType.SURVIVAL; } else if
-    // (name.equalsIgnoreCase(GameType.CREATIVE.getName()) ||
-    // name.equalsIgnoreCase("c")) { 	return GameType.CREATIVE; } else if
-    // (name.equalsIgnoreCase(GameType.ADVENTURE.getName()) ||
-    // name.equalsIgnoreCase("a")) { 	return GameType.ADVENTURE; } else {
-    // return
-    // LevelSettings.validateGameType(convertArgToInt(source, name, 0,
-    // GameType.values().size() - 2));
-    // }
+    if (commandData.empty()) {
+        source->sendMessage(L"§cUsage: /gamemode [survival|creative|adventure|spectator]");
+        return;
+    }
+    
+    try {
+        ByteArrayInputStream bais(commandData);
+        DataInputStream dis(&bais);
+        
+        int gameModeId = dis.readInt();
+        
+        auto player = std::dynamic_pointer_cast<ServerPlayer>(source);
+        if (player == nullptr) {
+            source->sendMessage(L"§cOnly players can change gamemode");
+            return;
+        }
+        
+        if (gameModeId < 0 || gameModeId > 3) {
+            source->sendMessage(L"§cInvalid gamemode ID: " + std::to_wstring(gameModeId));
+            return;
+        }
+        
+        GameType* gameType = GameType::byId(gameModeId);
+        if (gameType != nullptr) {
+            player->setGameMode(gameType);
+        } else {
+            source->sendMessage(L"§cInvalid gamemode");
+            return;
+        }
+        
+        std::wstring modes[] = { L"Survival", L"Creative", L"Adventure", L"Spectator" };
+        source->sendMessage(L"§aGamemode changed to: " + modes[gameModeId]);
+        
+    } catch (const std::exception& e) {
+        source->sendMessage(L"§cError executing gamemode command");
+    }
 }

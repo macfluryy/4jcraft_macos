@@ -1,12 +1,4 @@
-// macOS ARM (Apple Silicon) port of Linux_UIController.cpp
-// Changes vs Linux version:
-//   - OpenGL header: <OpenGL/gl.h> replaces <GL/gl.h>
-//   - Suppressed Apple's OpenGL deprecation warnings with a pragma block
-//   - Removed the erroneous #include "app/windows/Iggy/include/gdraw.h"
-//     that was present in the Linux version — it pulled in Windows-specific
-//     headers and would fail to compile on macOS.
-//   - Iggy include paths updated: "app/linux/..." → "app/macos/..."
-//   - Guard condition changed from __linux__ to __APPLE__ where needed
+// macOS ARM port of Linux_UIController.cpp
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -27,11 +19,6 @@
 
 ConsoleUIController ui;
 
-// ---------------------------------------------------------------------------
-// Restore fixed-function GL state after Iggy has drawn its UI.
-// On Apple Silicon the macOS OpenGL 4.1 driver runs in legacy compatibility
-// profile, so these fixed-function calls are still valid.
-// ---------------------------------------------------------------------------
 static void restoreFixedFunctionStateAfterIggy() {
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_ALPHA_TEST);

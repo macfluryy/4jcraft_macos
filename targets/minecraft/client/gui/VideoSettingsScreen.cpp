@@ -8,6 +8,7 @@
 #include "minecraft/client/Options.h"
 #include "minecraft/client/gui/Button.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/gui/ScreenSizeCalculator.h"
 #include "minecraft/locale/Language.h"
 
 // 4jcraft
@@ -61,8 +62,27 @@ void VideoSettingsScreen::init() {
 void VideoSettingsScreen::buttonClicked(Button* button) {
     if (!button->active) return;
     if (button->id < 100 && (dynamic_cast<SmallButton*>(button) != nullptr)) {
-        options->toggle(((SmallButton*)button)->getOption(), 1);
+        const Options::Option* option = ((SmallButton*)button)->getOption();
+        options->toggle(option, 1);
         button->msg = options->getMessage(Options::Option::getItem(button->id));
+        
+        // 4J - SMOOTH GUI SCALE CHANGE: If GUI_SCALE changed, schedule smooth rebuild with fade
+        if (option == Options::Option::GUI_SCALE) {
+            // Calculate new screen dimensions based on updated guiScale
+            ScreenSizeCalculator ssc(minecraft->options, minecraft->width, minecraft->height);
+            int newScreenWidth = ssc.getWidth();
+            int newScreenHeight = ssc.getHeight();
+            
+            // Schedule rebuild for next frame with smooth fade animation
+            this->pendingRebuildWidth = newScreenWidth;
+            this->pendingRebuildHeight = newScreenHeight;
+            this->needsUIRebuild = true;
+            this->rebuildFrameCounter = 0;      // Start from fade-out phase
+            this->uiFadeAlpha = 1.0f;            // Start fully visible
+            
+            // Reset clickedButton to prevent dangling pointer issues
+            this->clickedButton = nullptr;
+        }
         return;
     }
     if (button->id == 200) {

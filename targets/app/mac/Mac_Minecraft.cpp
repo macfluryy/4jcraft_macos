@@ -1,16 +1,4 @@
-// Mac_Minecraft.cpp — macOS ARM (Apple Silicon) port of Linux_Minecraft.cpp
-//
-// Key changes vs. Linux version:
-//   1. Signal handler: replaced __linux__ && __GLIBC__ guard with __APPLE__
-//      — backtrace() / backtrace_symbols_fd() are available on macOS via
-//      <execinfo.h>, so the crash handler works unchanged.
-//   2. Removed <features.h> include — that header is glibc-only and does not
-//      exist on macOS. The __linux__ guard already excluded it on macOS, but
-//      it is removed entirely here for clarity.
-//   3. App-include paths updated: "app/linux/..." → "app/macos/..."
-//   4. Class references updated: LinuxGame → MacGame.
-//   5. #pragma clang diagnostic block added to silence Apple's OpenGL
-//      deprecation warnings that surface transitively from SDL2/GL headers.
+// macOS ARM port of Linux_Minecraft.cpp
 
 // #include <system_service.h>
 
