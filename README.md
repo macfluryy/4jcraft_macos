@@ -42,19 +42,38 @@ pip install meson ninja
 #    -Denable_vsync=false: Disable VSync to prevent 60->30 FPS drops
 #    -Denable_frame_profiler=false: Disable debug performance overlay
 #    -Docclusion_culling=hardware: Use GPU for better performance
+#    -Drelease_build=true: Maximum optimization (-O3)
 meson setup build \
   -Dui_backend=java \
   -Dclassic_panorama=false \
   -Drenderer=gl3 \
   -Denable_vsync=false \
   -Denable_frame_profiler=false \
-  -Docclusion_culling=hardware
+  -Docclusion_culling=hardware \
+  -Drelease_build=true
 
 # 4. Compile
 meson compile -C build
 ```
 
 Build output: `build/targets/app/Minecraft.Client`
+
+---
+
+## Advanced Build Options
+
+You can customize the build by passing `-Doption=value` to `meson setup`.
+
+### Occlusion Culling (`-Docclusion_culling`)
+Controls how the game hides non-visible geometry (like blocks behind walls) to save performance:
+- `off`: Disables all culling. Draws everything (debug only).
+- `frustum`: (Default) Only draws objects inside the camera's field of view.
+- `bfs`: Experimental connectivity-based culling (Breadth-First Search).
+- `hardware`: **(Recommended)** Uses GPU queries to hide obscured blocks. Provides the best FPS on macOS.
+
+### Release Build (`-Drelease_build`)
+- `false`: (Default) Debug mode. Includes internal menus, debug symbols, and slower code.
+- `true`: **(Recommended for play)** Enables `-O3` maximum optimizations, removes debug overlays, and disables `assert()` calls for peak performance.
 
 ---
 
