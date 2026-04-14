@@ -184,7 +184,7 @@ RADEXPFUNC inline void RADEXPLINK IggyInit(IggyAllocator* allocator) {
     STUBBED;
 }
 RADEXPFUNC inline void RADEXPLINK
-IggySetWarningCallback(Iggy_WarningFunction* error, void* user_callback_data) {
+IggySetWarningCallback(Iggy_WarningFunction* /*error*/, void* /*user_callback_data*/) {
     STUBBED;
 }
 RADEXPFUNC inline void RADEXPLINK IggySetTraceCallbackUTF8(

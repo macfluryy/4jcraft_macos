@@ -363,8 +363,6 @@ int main(int argc, const char* argv[]) {
 
         pMinecraft->soundEngine->playMusicTick();
 
-        static bool bInitnet = false;
-        if (bInitnet) g_NetworkManager.Initialise();
 
         ui.tick();
         ui.render();
@@ -374,7 +372,7 @@ int main(int argc, const char* argv[]) {
 
         // Apply game-settings changes triggered by profile loads
         if (app.uiGameDefinedDataChangedBitmask != 0) {
-            void* pData;
+            void* pData = nullptr;
             for (int i = 0; i < XUSER_MAX_COUNT; i++) {
                 if (app.uiGameDefinedDataChangedBitmask & (1 << i)) {
                     app.ClearGameSettingsChangedFlag(i);
@@ -394,7 +392,6 @@ int main(int argc, const char* argv[]) {
             app.uiGameDefinedDataChangedBitmask = 0;
         }
 
-        g_NetworkManager.DoWork();
         app.HandleXuiActions();
 
         if (bTrialTimerDisplayed) {
@@ -405,7 +402,7 @@ int main(int argc, const char* argv[]) {
 
     // Graceful shutdown: destroy GL context and window before C++ dtors run.
     RenderManager.Shutdown();
-    _exit(0);
+    return 0;
 } // end main
 
 // ---------------------------------------------------------------------------

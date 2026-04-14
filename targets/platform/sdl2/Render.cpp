@@ -199,6 +199,7 @@ struct ShaderUniforms {
     GLint uUseTexture = -1;
     GLint uInvGamma = -1;
     GLint uChunkOffset = -1;
+    GLint uSrgbOutput = -1;
 
     void build(const char* vs, const char* fs) {
         GLuint v = compileShader(GL_VERTEX_SHADER, vs);
@@ -235,6 +236,7 @@ struct ShaderUniforms {
         L(uUseTexture);
         L(uInvGamma);
         L(uChunkOffset);
+        L(uSrgbOutput);
 #undef L
 
         glUseProgram(prog);
@@ -563,16 +565,17 @@ struct ChunkBuffer {
     bool valid = false;
     bool vboReady = false;
     void destroy() {
-        // if (vbo) {
-        //     glDeleteBuffers(1, &vbo);
-        //     vbo = 0;
-        // }
-        // if (vao) {
-        //     glDeleteVertexArrays(1, &vao);
-        //     vao = 0;
-        // }
+        if (vbo) {
+            glDeleteBuffers(1, &vbo);
+            vbo = 0;
+        }
+        if (vao) {
+            glDeleteVertexArrays(1, &vao);
+            vao = 0;
+        }
         draws.clear();
         rawVerts.clear();
+        rawVerts.shrink_to_fit();
         valid = false;
         vboReady = false;
     }
@@ -645,9 +648,9 @@ void C4JRender::Initialise() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     Uint32 wf = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if (s_fullscreen) wf |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-    s_window = SDL_CreateWindow("Minecraft",
-                                SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                s_windowWidth, s_windowHeight, wf);
+    s_window = SDL_CreateWindow("Minecraft", SDL_WINDOWPOS_CENTERED,
+                                SDL_WINDOWPOS_CENTERED, s_windowWidth,
+                                s_windowHeight, wf);
     if (!s_window) {
         fprintf(stderr, "[4J_Render] Window: %s\n", SDL_GetError());
         return;
@@ -901,7 +904,6 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
     glBindVertexArray(s_sVAO_std);
     glBindBuffer(GL_ARRAY_BUFFER, s_sVBO_std);
 
-    // Standard orphaning
     glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, nullptr, GL_STREAM_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
     s_streamVBOSize = (GLsizeiptr)bytes;

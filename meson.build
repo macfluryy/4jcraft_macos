@@ -1,15 +1,15 @@
 project(
-  '4jcraft',
+  '4jcraft_macos',
   ['cpp', 'c', 'objcpp'],
   version: '0.1.0',
   meson_version: '>= 1.3',
   default_options: [
     'cpp_std=c++23',
-    'warning_level=0',
-    'buildtype=debugoptimized', # for now
-    'unity=on', # merge source files per target
-    'unity_size=8', # TODO: mess around with this
-    'b_pch=true', # precompiled headers
+    'warning_level=2',
+    'buildtype=debugoptimized',
+    'unity=on',
+    'unity_size=8',
+    'b_pch=true',
   ],
 )
 
@@ -22,17 +22,24 @@ global_cpp_defs = [
   '-DSPLIT_SAVES',
   '-D_LARGE_WORLDS',
   '-D_EXTENDED_ACHIEVEMENTS',
-  '-D_DEBUG_MENUS_ENABLED',
-  '-D_DEBUG',
   '-D_FORTIFY_SOURCE=2',
-  '-DDEBUG',
 ]
+
+if not get_option('release_build')
+  global_cpp_defs += [
+    '-D_DEBUG_MENUS_ENABLED',
+    '-D_DEBUG',
+    '-DDEBUG',
+  ]
+else
+  global_cpp_defs += ['-DNDEBUG']
+  add_project_arguments(['-O3'], language: ['cpp', 'c'])
+endif
 
 if host_machine.system() == 'linux'
   global_cpp_defs += ['-Dlinux', '-D__linux', '-D__linux__']
 endif
 
-# Unified desktop macro — safe to define everywhere (does NOT clash with SDL headers)
 if host_machine.system() in ['linux', 'darwin']
   global_cpp_defs += ['-D_PLATFORM_DESKTOP']
 endif
@@ -71,6 +78,14 @@ if get_option('ui_backend') == 'java'
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
 endif
 
+if get_option('srgb_output')
+  global_cpp_defs += ['-DSRGB_OUTPUT']
+endif
+
+if get_option('srgb_output')
+  global_cpp_defs += ['-DSRGB_OUTPUT']
+endif
+
 add_project_arguments(global_cpp_defs, language: ['cpp', 'c'])
 
 global_cpp_args = [
@@ -78,8 +93,6 @@ global_cpp_args = [
   '-pipe',
 ]
 if host_machine.system() == 'darwin'
-  # Force-include the POSIX __debugbreak shim so all the existing
-  # __debugbreak() calls compile without per-file changes.
   global_cpp_args += [
     '-include', meson.source_root() / 'targets/platform/macos_compat/debugbreak.h',
   ]
@@ -100,9 +113,6 @@ stb_dep = declare_dependency(include_directories: stb)
 
 miniaudio_dep = dependency('miniaudio')
 
-# macOS compatibility shim: provides GL/gl.h -> OpenGL/gl.h redirect and
-# empty stubs for PS4-only headers (qnet.h, xrnm.h). Prepended to all
-# sub-target include dirs on Darwin so existing source files need no changes.
 macos_compat_dep = []
 if host_machine.system() == 'darwin'
   macos_compat_dep = [declare_dependency(

@@ -599,7 +599,7 @@ bool C_4JInput::ButtonReleased(int iPad, unsigned char ucAction) {
                    KReleased(SDL_SCANCODE_RSHIFT) ||
                    CReleased(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
         case MINECRAFT_ACTION_SPRINT:
-            KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
+            return KReleased(SDL_SCANCODE_LCTRL) || KReleased(SDL_SCANCODE_RCTRL);
         case MINECRAFT_ACTION_LEFT_SCROLL:
         case ACTION_MENU_LEFT_SCROLL:
         case MINECRAFT_ACTION_RIGHT_SCROLL:
