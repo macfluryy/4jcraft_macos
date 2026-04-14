@@ -36,8 +36,12 @@ source .venv/bin/activate
 pip install meson ninja
 
 # 3. Configure the build
-#    ui_backend=java is required — the default 'shiggy' uses PS4 (ELF) libraries
-#    that are incompatible with macOS Mach-O format and cannot be linked.
+#    -Dui_backend=java: Required for macOS (uses Mach-O compatible UI)
+#    -Dclassic_panorama=false: Use modern main menu background
+#    -Drenderer=gl3: Use OpenGL 3.3 Core (optimal for macOS Metal translation)
+#    -Denable_vsync=false: Disable VSync to prevent 60->30 FPS drops
+#    -Denable_frame_profiler=false: Disable debug performance overlay
+#    -Docclusion_culling=hardware: Use GPU for better performance
 meson setup build \
   -Dui_backend=java \
   -Dclassic_panorama=false \
