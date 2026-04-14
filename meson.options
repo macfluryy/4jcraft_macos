@@ -40,3 +40,17 @@ option(
   value: 'frustum',
   description: 'Occlusion culling mode. Off disables ALL CULLING (debug only!), Frustum disables offscreen rendering (default), BFS is experimental connectivity culling, hardware uses GPU queries.',
 )
+
+option(
+  'release_build',
+  type: 'boolean',
+  value: false,
+  description: 'Optimised release build: disables debug menus, adds -O3 and -DNDEBUG.',
+)
+
+option(
+  'srgb_output',
+  type: 'boolean',
+  value: true,
+  description: 'Use sRGB framebuffer for hardware gamma correction (faster on Apple Silicon Metal).',
+)

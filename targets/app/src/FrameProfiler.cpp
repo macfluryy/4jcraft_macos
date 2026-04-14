@@ -1,4 +1,6 @@
 
+#include "FrameProfiler.h"
+
 #ifdef ENABLE_FRAME_PROFILER
 
 #include <array>
