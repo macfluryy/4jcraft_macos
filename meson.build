@@ -1,5 +1,5 @@
 project(
-  '4jcraft_macos',
+  '4jcraft',
   ['cpp', 'c', 'objcpp'],
   version: '0.1.0',
   meson_version: '>= 1.3',

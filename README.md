@@ -38,10 +38,16 @@ pip install meson ninja
 # 3. Configure the build
 #    ui_backend=java is required — the default 'shiggy' uses PS4 (ELF) libraries
 #    that are incompatible with macOS Mach-O format and cannot be linked.
-meson setup -Dui_backend=java build
+meson setup build \
+  -Dui_backend=java \
+  -Dclassic_panorama=false \
+  -Drenderer=gl3 \
+  -Denable_vsync=false \
+  -Denable_frame_profiler=false \
+  -Docclusion_culling=hardware
 
 # 4. Compile
-ninja -C build
+meson compile -C build
 ```
 
 Build output: `build/targets/app/Minecraft.Client`
@@ -88,7 +94,7 @@ If you see this error, make sure you pulled the latest code:
 ```bash
 git pull origin dev
 meson setup --reconfigure build
-ninja -C build
+meson compile -C build
 ```
 
 ### Build fails with `SDL2 not found`
