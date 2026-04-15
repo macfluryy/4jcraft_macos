@@ -63,7 +63,7 @@ File::File(const std::wstring& pathname) {
     if (fixedPath.find(L"GAME:/") == 0) fixedPath = fixedPath.substr(6);
     m_abstractPathName = fixedPath;
 
-#if defined(__linux__)
+#if defined(__linux__) || defined(__APPLE__)
     std::string request = std::filesystem::path(m_abstractPathName).string();
     while (!request.empty() && request[0] == '/') request.erase(0, 1);
     if (request.find("res/") == 0) request.erase(0, 4);
