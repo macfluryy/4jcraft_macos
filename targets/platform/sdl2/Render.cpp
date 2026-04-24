@@ -92,13 +92,38 @@ static bool s_fullscreen = false;
 
 static pthread_key_t s_glCtxKey;
 static pthread_once_t s_glCtxKeyOnce = PTHREAD_ONCE_INIT;
-static void makeGLCtxKey() { pthread_key_create(&s_glCtxKey, nullptr); }
 static const int MAX_SHARED_CTXS = 6;
 static SDL_Window* s_sharedWins[MAX_SHARED_CTXS] = {};
 static SDL_GLContext s_sharedCtxs[MAX_SHARED_CTXS] = {};
 static int s_sharedCtxCount = 0;
 static int s_nextSharedCtx = 0;
 static pthread_mutex_t s_sharedMtx = PTHREAD_MUTEX_INITIALIZER;
+
+// TLS destructor: return a shared GL context to the pool when a worker exits.
+static void returnGLCtxToPool(void* ctx) {
+    if (!ctx) return;
+    pthread_mutex_lock(&s_sharedMtx);
+    // Find which slot this context belongs to and allow it to be reused
+    // by decrementing s_nextSharedCtx (simple: just mark the slot reusable).
+    for (int i = 0; i < s_sharedCtxCount; i++) {
+        if (s_sharedCtxs[i] == (SDL_GLContext)ctx) {
+            // Swap with the last assigned slot so round-robin picks it up next
+            if (s_nextSharedCtx > 0) {
+                --s_nextSharedCtx;
+                if (i != s_nextSharedCtx) {
+                    std::swap(s_sharedCtxs[i], s_sharedCtxs[s_nextSharedCtx]);
+                    std::swap(s_sharedWins[i], s_sharedWins[s_nextSharedCtx]);
+                }
+            }
+            break;
+        }
+    }
+    pthread_mutex_unlock(&s_sharedMtx);
+}
+
+static void makeGLCtxKey() {
+    pthread_key_create(&s_glCtxKey, returnGLCtxToPool);
+}
 static pthread_mutex_t s_glCallMtx = PTHREAD_MUTEX_INITIALIZER;
 static pthread_t s_mainThread;
 static bool s_mainThreadSet = false;
@@ -242,6 +267,11 @@ struct ShaderUniforms {
         glUseProgram(prog);
         glUniform1i(uTex0, 0);
         glUniform1i(uTex1, 1);
+#ifdef SRGB_OUTPUT
+        if (uSrgbOutput >= 0) glUniform1i(uSrgbOutput, 1);
+#else
+        if (uSrgbOutput >= 0) glUniform1i(uSrgbOutput, 0);
+#endif
     }
 } s_shader;
 
@@ -526,6 +556,33 @@ static void pushRenderState() {
 static GLuint s_sVAO_std = 0, s_sVBO_std = 0;
 static GLsizeiptr s_streamVBOSize = 0;
 
+// Pre-generated index buffer for quad→triangle conversion.
+// Pattern per quad: {0,1,2, 0,2,3} offset by 4 per quad.
+// Avoids duplicating vertices via memcpy (saves ~33% vertex bandwidth).
+static GLuint s_quadIBO = 0;
+static int s_quadIBOMaxQuads = 0;
+
+static void ensureQuadIBO(int numQuads) {
+    if (numQuads <= s_quadIBOMaxQuads) return;
+    int cap = numQuads < 4096 ? 4096 : numQuads;
+    std::vector<GLuint> idx(cap * 6);
+    for (int q = 0; q < cap; q++) {
+        GLuint base = (GLuint)(q * 4);
+        idx[q * 6 + 0] = base + 0;
+        idx[q * 6 + 1] = base + 1;
+        idx[q * 6 + 2] = base + 2;
+        idx[q * 6 + 3] = base + 0;
+        idx[q * 6 + 4] = base + 2;
+        idx[q * 6 + 5] = base + 3;
+    }
+    if (!s_quadIBO) glGenBuffers(1, &s_quadIBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_quadIBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, (GLsizeiptr)(cap * 6 * sizeof(GLuint)),
+                 idx.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    s_quadIBOMaxQuads = cap;
+}
+
 static void bindStdAttribs() {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -646,6 +703,9 @@ void C4JRender::Initialise() {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+#ifdef SRGB_OUTPUT
+    SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 1);
+#endif
     Uint32 wf = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
     if (s_fullscreen) wf |= SDL_WINDOW_FULLSCREEN_DESKTOP;
     s_window = SDL_CreateWindow("Minecraft", SDL_WINDOWPOS_CENTERED,
@@ -679,6 +739,9 @@ void C4JRender::Initialise() {
     ::glCullFace(GL_BACK);
     ::glClearColor(0, 0, 0, 1);
     glViewport(0, 0, s_windowWidth, s_windowHeight);
+#if defined(SRGB_OUTPUT) && !defined(GLES)
+    ::glEnable(GL_FRAMEBUFFER_SRGB);
+#endif
     s_shader.build(VERT_SRC, FRAG_SRC);
     initStreamingVAOs();
     pthread_once(&s_glCtxKeyOnce, makeGLCtxKey);
@@ -744,6 +807,22 @@ void C4JRender::InitialiseContext() {
 }
 
 void C4JRender::StartFrame() {
+    // Process window events at frame start so that input and resize are
+    // visible to the same frame that renders them (eliminates +1 frame lag).
+    if (s_window) {
+        SDL_Event ev;
+        while (SDL_PollEvent(&ev)) {
+            if (ev.type == SDL_QUIT)
+                s_shouldClose = true;
+            else if (ev.type == SDL_WINDOWEVENT) {
+                if (ev.window.event == SDL_WINDOWEVENT_CLOSE)
+                    s_shouldClose = true;
+                else if (ev.window.event == SDL_WINDOWEVENT_RESIZED)
+                    onFramebufferResize(ev.window.data1, ev.window.data2);
+            }
+        }
+    }
+
     Set_matrixDirty();
     int w, h;
     SDL_GetWindowSize(s_window, &w, &h);
@@ -754,17 +833,6 @@ void C4JRender::StartFrame() {
 
 void C4JRender::Present() {
     if (!s_window) return;
-    SDL_Event ev;
-    while (SDL_PollEvent(&ev)) {
-        if (ev.type == SDL_QUIT)
-            s_shouldClose = true;
-        else if (ev.type == SDL_WINDOWEVENT) {
-            if (ev.window.event == SDL_WINDOWEVENT_CLOSE)
-                s_shouldClose = true;
-            else if (ev.window.event == SDL_WINDOWEVENT_RESIZED)
-                onFramebufferResize(ev.window.data1, ev.window.data2);
-        }
-    }
     // glFlush removed — Metal handles sync in SDL_GL_SwapWindow
     SDL_GL_SwapWindow(s_window);
 }
@@ -792,6 +860,7 @@ void C4JRender::Shutdown() {
     pthread_mutex_unlock(&s_glCallMtx);
     glDeleteVertexArrays(1, &s_sVAO_std);
     glDeleteBuffers(1, &s_sVBO_std);
+    if (s_quadIBO) { glDeleteBuffers(1, &s_quadIBO); s_quadIBO = 0; }
     if (s_shader.prog) glDeleteProgram(s_shader.prog);
     if (s_glContext) {
         SDL_GL_DeleteContext(s_glContext);
@@ -862,7 +931,10 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
     }
 
     static const size_t stride = 32;
-    if (wasQuad) {
+
+    // For chunk buffer recording, we still expand quads to triangles (the
+    // recorded VBOs are later played back without an index buffer).
+    if (wasQuad && s_recListId >= 0) {
         int numQuads = count / 4;
         int triVerts = numQuads * 6;
         triData.resize((size_t)triVerts * stride);
@@ -873,11 +945,9 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
             const uint8_t* v1 = src + (q * 4 + 1) * stride;
             const uint8_t* v2 = src + (q * 4 + 2) * stride;
             const uint8_t* v3 = src + (q * 4 + 3) * stride;
-            // Triangle 1: 0,1,2
             memcpy(dst + 0 * stride, v0, stride);
             memcpy(dst + 1 * stride, v1, stride);
             memcpy(dst + 2 * stride, v2, stride);
-            // Triangle 2: 0,2,3
             memcpy(dst + 3 * stride, v0, stride);
             memcpy(dst + 4 * stride, v2, stride);
             memcpy(dst + 5 * stride, v3, stride);
@@ -886,6 +956,7 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
         dataIn = triData.data();
         count = triVerts;
         glMode = GL_TRIANGLES;
+        wasQuad = false;
     }
 
     size_t bytes = (size_t)count * stride;
@@ -904,11 +975,22 @@ void C4JRender::DrawVertices(ePrimitiveType ptype, int count, void* dataIn,
     glBindVertexArray(s_sVAO_std);
     glBindBuffer(GL_ARRAY_BUFFER, s_sVBO_std);
 
-    glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, nullptr, GL_STREAM_DRAW);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
-    s_streamVBOSize = (GLsizeiptr)bytes;
-
-    glDrawArrays(glMode, 0, count);
+    if (wasQuad) {
+        // Indexed draw: upload original 4 verts/quad, use IBO for 0,1,2,0,2,3
+        int numQuads = count / 4;
+        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, nullptr, GL_STREAM_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
+        s_streamVBOSize = (GLsizeiptr)bytes;
+        ensureQuadIBO(numQuads);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, s_quadIBO);
+        glDrawElements(GL_TRIANGLES, numQuads * 6, GL_UNSIGNED_INT, nullptr);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    } else {
+        glBufferData(GL_ARRAY_BUFFER, (GLsizeiptr)bytes, nullptr, GL_STREAM_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, (GLsizeiptr)bytes, dataIn);
+        s_streamVBOSize = (GLsizeiptr)bytes;
+        glDrawArrays(glMode, 0, count);
+    }
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -1082,7 +1164,7 @@ void C4JRender::MatrixMult(float* m) {
     if (s_matMode == 0) markNormalDirty();
 }
 const float* C4JRender::MatrixGet(int t) {
-    static float buf[16];
+    thread_local static float buf[16];
     glm::mat4* m = (t == GL_MODELVIEW_MATRIX)    ? &s_mv.cur()
                    : (t == GL_PROJECTION_MATRIX) ? &s_proj.cur()
                                                  : nullptr;

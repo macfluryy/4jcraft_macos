@@ -68,8 +68,12 @@ static bool s_fullscreen = false;
 static id<MTLDevice> s_device = nil;
 static id<MTLCommandQueue> s_cmdQueue = nil;
 static id<MTLLibrary> s_library = nil;
+static id<MTLFunction> s_vertFn = nil;
+static id<MTLFunction> s_fragFn = nil;
+static MTLVertexDescriptor* s_vertDesc = nil;
 static id<MTLRenderPipelineState> s_pipelineOpaque = nil;
 static id<MTLRenderPipelineState> s_pipelineBlend = nil;
+static std::unordered_map<uint64_t, id<MTLRenderPipelineState>> s_pipelineBlendCache;
 static id<MTLDepthStencilState> s_dsStateDefault = nil;
 static id<MTLDepthStencilState> s_dsStateNoWrite = nil;
 static id<MTLDepthStencilState> s_dsStateDisabled = nil;
@@ -159,8 +163,8 @@ struct RenderState {
     bool depthEnable = true;
     bool depthWrite = true;
     bool colorWrite[4] = {true, true, true, true};
-    int blendSrc = 0x0302;
-    int blendDst = 0x0303;
+    int blendSrc = 0x0302;  // GL_SRC_ALPHA
+    int blendDst = 0x0303;  // GL_ONE_MINUS_SRC_ALPHA
     bool frontFaceCW = false;
 
     glm::vec3 chunkOffset = {0, 0, 0};
@@ -323,6 +327,61 @@ static void flushUniforms() {
     s_uniformOffset += UNIFORM_SLOT;
 }
 
+static MTLBlendFactor mapBlendFactor(int gl) {
+    switch (gl) {
+        case 0:      return MTLBlendFactorZero;                      // GL_ZERO
+        case 1:      return MTLBlendFactorOne;                       // GL_ONE
+        case 0x0300: return MTLBlendFactorSourceColor;               // GL_SRC_COLOR
+        case 0x0301: return MTLBlendFactorOneMinusSourceColor;       // GL_ONE_MINUS_SRC_COLOR
+        case 0x0302: return MTLBlendFactorSourceAlpha;               // GL_SRC_ALPHA
+        case 0x0303: return MTLBlendFactorOneMinusSourceAlpha;       // GL_ONE_MINUS_SRC_ALPHA
+        case 0x0304: return MTLBlendFactorDestinationAlpha;          // GL_DST_ALPHA
+        case 0x0305: return MTLBlendFactorOneMinusDestinationAlpha;  // GL_ONE_MINUS_DST_ALPHA
+        case 0x0306: return MTLBlendFactorDestinationColor;          // GL_DST_COLOR
+        case 0x0307: return MTLBlendFactorOneMinusDestinationColor;  // GL_ONE_MINUS_DST_COLOR
+        case 0x0308: return MTLBlendFactorSourceAlphaSaturated;      // GL_SRC_ALPHA_SATURATE
+        default:     return MTLBlendFactorOne;
+    }
+}
+
+static id<MTLRenderPipelineState> getBlendPipeline(int glSrc, int glDst) {
+    if (glSrc == 0x0302 && glDst == 0x0303) return s_pipelineBlend;
+    uint64_t key = ((uint64_t)(uint32_t)glSrc << 32) | (uint32_t)glDst;
+    auto it = s_pipelineBlendCache.find(key);
+    if (it != s_pipelineBlendCache.end()) return it->second;
+
+    MTLRenderPipelineDescriptor* pd = [[MTLRenderPipelineDescriptor alloc] init];
+    pd.vertexFunction = s_vertFn;
+    pd.fragmentFunction = s_fragFn;
+    pd.vertexDescriptor = s_vertDesc;
+    pd.colorAttachments[0].pixelFormat = s_metalLayer.pixelFormat;
+    pd.colorAttachments[0].blendingEnabled = YES;
+    pd.colorAttachments[0].rgbBlendOperation = MTLBlendOperationAdd;
+    pd.colorAttachments[0].alphaBlendOperation = MTLBlendOperationAdd;
+    MTLBlendFactor srcBF = mapBlendFactor(glSrc);
+    MTLBlendFactor dstBF = mapBlendFactor(glDst);
+    pd.colorAttachments[0].sourceRGBBlendFactor = srcBF;
+    pd.colorAttachments[0].destinationRGBBlendFactor = dstBF;
+    pd.colorAttachments[0].sourceAlphaBlendFactor = srcBF;
+    pd.colorAttachments[0].destinationAlphaBlendFactor = dstBF;
+    pd.depthAttachmentPixelFormat = MTLPixelFormatDepth32Float_Stencil8;
+    pd.stencilAttachmentPixelFormat = MTLPixelFormatDepth32Float_Stencil8;
+    NSError* err = nil;
+    id<MTLRenderPipelineState> pso = [s_device newRenderPipelineStateWithDescriptor:pd error:&err];
+    if (!pso) {
+        fprintf(stderr, "[Metal] Pipeline (blend src=0x%x dst=0x%x): %s\n",
+                glSrc, glDst, [[err localizedDescription] UTF8String]);
+        return s_pipelineBlend;
+    }
+    s_pipelineBlendCache[key] = pso;
+    return pso;
+}
+
+static id<MTLRenderPipelineState> currentPipeline() {
+    if (!s_rs.blendEnable) return s_pipelineOpaque;
+    return getBlendPipeline(s_rs.blendSrc, s_rs.blendDst);
+}
+
 static void ensureEncoder() {
     if (s_encoder) return;
     if (!s_metalLayer) {
@@ -374,7 +433,7 @@ static void ensureEncoder() {
         return;
     }
 
-    [s_encoder setRenderPipelineState:s_rs.blendEnable ? s_pipelineBlend : s_pipelineOpaque];
+    [s_encoder setRenderPipelineState:currentPipeline()];
     [s_encoder setDepthStencilState:s_rs.depthEnable
                                         ? (s_rs.depthWrite ? s_dsStateDefault : s_dsStateNoWrite)
                                         : s_dsStateDisabled];
@@ -442,8 +501,8 @@ void C4JRender::Initialise() {
                 [[err localizedDescription] UTF8String]);
         return;
     }
-    id<MTLFunction> vertFn = [s_library newFunctionWithName:@"vertexMain"];
-    id<MTLFunction> fragFn = [s_library newFunctionWithName:@"fragmentMain"];
+    s_vertFn = [s_library newFunctionWithName:@"vertexMain"];
+    s_fragFn = [s_library newFunctionWithName:@"fragmentMain"];
 
     MTLVertexDescriptor* vd = [[MTLVertexDescriptor alloc] init];
     vd.attributes[0].format = MTLVertexFormatFloat3;
@@ -463,10 +522,11 @@ void C4JRender::Initialise() {
     vd.attributes[4].bufferIndex = 0;
     vd.layouts[0].stride = 32;
     vd.layouts[0].stepFunction = MTLVertexStepFunctionPerVertex;
+    s_vertDesc = vd;
 
     MTLRenderPipelineDescriptor* pd = [[MTLRenderPipelineDescriptor alloc] init];
-    pd.vertexFunction = vertFn;
-    pd.fragmentFunction = fragFn;
+    pd.vertexFunction = s_vertFn;
+    pd.fragmentFunction = s_fragFn;
     pd.vertexDescriptor = vd;
     pd.colorAttachments[0].pixelFormat = s_metalLayer.pixelFormat;
     pd.colorAttachments[0].blendingEnabled = NO;
@@ -609,7 +669,7 @@ void C4JRender::Clear(int flags) {
     rpd.stencilAttachment.storeAction = MTLStoreActionStore;
 
     s_encoder = [s_cmdBuf renderCommandEncoderWithDescriptor:rpd];
-    [s_encoder setRenderPipelineState:s_rs.blendEnable ? s_pipelineBlend : s_pipelineOpaque];
+    [s_encoder setRenderPipelineState:currentPipeline()];
     [s_encoder setDepthStencilState:s_rs.depthEnable
                                         ? (s_rs.depthWrite ? s_dsStateDefault : s_dsStateNoWrite)
                                         : s_dsStateDisabled];
@@ -789,16 +849,7 @@ void C4JRender::CBuffClear(int index) {
 bool C4JRender::CBuffCall(int index, bool) {
     std::lock_guard lk(s_chunkMtx);
     auto it = s_chunkPool.find(index);
-    static int dbgCalls = 0, dbgMissed = 0;
-    if (it == s_chunkPool.end() || !it->second.valid) {
-        dbgMissed++;
-        if (dbgMissed < 5)
-            fprintf(stderr, "[Metal] CBuffCall miss idx=%d pool_size=%zu\n", index, s_chunkPool.size());
-        return false;
-    }
-    if (dbgCalls++ < 8)
-        fprintf(stderr, "[Metal] CBuffCall hit idx=%d draws=%zu rawBytes=%zu uploaded=%d\n",
-                index, it->second.draws.size(), it->second.rawVerts.size(), it->second.uploaded);
+    if (it == s_chunkPool.end() || !it->second.valid) return false;
     ChunkBuffer& cb = it->second;
 
     if (!cb.uploaded) {
@@ -905,6 +956,10 @@ void C4JRender::Shutdown() {
     s_stencilTex = nil;
     s_pipelineOpaque = nil;
     s_pipelineBlend = nil;
+    s_pipelineBlendCache.clear();
+    s_vertFn = nil;
+    s_fragFn = nil;
+    s_vertDesc = nil;
     s_dsStateDefault = nil;
     s_dsStateNoWrite = nil;
     s_dsStateDisabled = nil;
@@ -940,9 +995,15 @@ void C4JRender::StateSetDepthMask(bool e) {
 }
 void C4JRender::StateSetBlendEnable(bool e) {
     s_rs.blendEnable = e;
-    if (s_encoder) [s_encoder setRenderPipelineState:e ? s_pipelineBlend : s_pipelineOpaque];
+    if (s_encoder) [s_encoder setRenderPipelineState:currentPipeline()];
 }
-void C4JRender::StateSetBlendFunc(int, int) {}
+void C4JRender::StateSetBlendFunc(int src, int dst) {
+    if (s_rs.blendSrc == src && s_rs.blendDst == dst) return;
+    s_rs.blendSrc = src;
+    s_rs.blendDst = dst;
+    if (s_encoder && s_rs.blendEnable)
+        [s_encoder setRenderPipelineState:currentPipeline()];
+}
 void C4JRender::StateSetDepthFunc(int) {}
 void C4JRender::StateSetFaceCull(bool e) {
     s_rs.cullEnable = e;

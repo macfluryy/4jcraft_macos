@@ -481,7 +481,7 @@ void Tesselator::vertex(float x, float y, float z) {
 
         vertices++;
 
-        if (vertices % 4 == 0 &&
+        if ((vertices & 3) == 0 &&
             ((p >= size - 4 * 4) ||
              ((p / 4) >=
               65532)))  // Max 65535 verts in D3D, so 65532 is the last point at
@@ -492,7 +492,7 @@ void Tesselator::vertex(float x, float y, float z) {
             tesselating = true;
         }
     } else {
-        if (mode == GL_QUADS && TRIANGLE_MODE && count % 4 == 0) {
+        if (mode == GL_QUADS && TRIANGLE_MODE && (count & 3) == 0) {
             for (int i = 0; i < 2; i++) {
                 int offs = 8 * (3 - i);
                 if (hasTexture) {
@@ -550,7 +550,7 @@ void Tesselator::vertex(float x, float y, float z) {
         p += 8;
 
         vertices++;
-        if (vertices % 4 == 0 && p >= size - 8 * 4) {
+        if ((vertices & 3) == 0 && p >= size - 8 * 4) {
             end();
             tesselating = true;
         }

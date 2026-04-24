@@ -21,63 +21,41 @@ FrustumData::~FrustumData() {
 
 bool FrustumData::pointInFrustum(float x, float y, float z) {
     for (int i = 0; i < 6; i++) {
-        if (m_Frustum[i][A] * x + m_Frustum[i][B] * y + m_Frustum[i][C] * z +
-                m_Frustum[i][D] <=
-            0) {
+        const float* __restrict__ pl = m_Frustum[i];
+        if (pl[A] * x + pl[B] * y + pl[C] * z + pl[D] <= 0)
             return false;
-        }
     }
-
     return true;
 }
 
 bool FrustumData::sphereInFrustum(float x, float y, float z, float radius) {
     for (int i = 0; i < 6; i++) {
-        if (m_Frustum[i][A] * x + m_Frustum[i][B] * y + m_Frustum[i][C] * z +
-                m_Frustum[i][D] <=
-            -radius) {
+        const float* __restrict__ pl = m_Frustum[i];
+        if (pl[A] * x + pl[B] * y + pl[C] * z + pl[D] <= -radius)
             return false;
-        }
     }
-
     return true;
 }
 
 bool FrustumData::cubeFullyInFrustum(double x1, double y1, double z1, double x2,
                                      double y2, double z2) {
+    const float fx1 = static_cast<float>(x1), fy1 = static_cast<float>(y1),
+                fz1 = static_cast<float>(z1);
+    const float fx2 = static_cast<float>(x2), fy2 = static_cast<float>(y2),
+                fz2 = static_cast<float>(z2);
+
     for (int i = 0; i < 6; i++) {
-        if (!(m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y1) +
-                  m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y1) +
-                  m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y2) +
-                  m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y2) +
-                  m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y1) +
-                  m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y1) +
-                  m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y2) +
-                  m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-              0))
-            return false;
-        if (!(m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y2) +
-                  m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-              0))
-            return false;
+        const float* __restrict__ pl = m_Frustum[i];
+        const float pa = pl[A], pb = pl[B], pc = pl[C], pd = pl[D];
+
+        if (pa * fx1 + pb * fy1 + pc * fz1 + pd <= 0) return false;
+        if (pa * fx2 + pb * fy1 + pc * fz1 + pd <= 0) return false;
+        if (pa * fx1 + pb * fy2 + pc * fz1 + pd <= 0) return false;
+        if (pa * fx2 + pb * fy2 + pc * fz1 + pd <= 0) return false;
+        if (pa * fx1 + pb * fy1 + pc * fz2 + pd <= 0) return false;
+        if (pa * fx2 + pb * fy1 + pc * fz2 + pd <= 0) return false;
+        if (pa * fx1 + pb * fy2 + pc * fz2 + pd <= 0) return false;
+        if (pa * fx2 + pb * fy2 + pc * fz2 + pd <= 0) return false;
     }
 
     return true;
@@ -85,39 +63,23 @@ bool FrustumData::cubeFullyInFrustum(double x1, double y1, double z1, double x2,
 
 bool FrustumData::cubeInFrustum(double x1, double y1, double z1, double x2,
                                 double y2, double z2) {
+    const float fx1 = static_cast<float>(x1), fy1 = static_cast<float>(y1),
+                fz1 = static_cast<float>(z1);
+    const float fx2 = static_cast<float>(x2), fy2 = static_cast<float>(y2),
+                fz2 = static_cast<float>(z2);
+
     for (int i = 0; i < 6; i++) {
-        if (m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y1) +
-                m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y1) +
-                m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y2) +
-                m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y2) +
-                m_Frustum[i][C] * (z1) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y1) +
-                m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y1) +
-                m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x1) + m_Frustum[i][B] * (y2) +
-                m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-            0)
-            continue;
-        if (m_Frustum[i][A] * (x2) + m_Frustum[i][B] * (y2) +
-                m_Frustum[i][C] * (z2) + m_Frustum[i][D] >
-            0)
-            continue;
+        const float* __restrict__ pl = m_Frustum[i];
+        const float pa = pl[A], pb = pl[B], pc = pl[C], pd = pl[D];
+
+        if (pa * fx1 + pb * fy1 + pc * fz1 + pd > 0) continue;
+        if (pa * fx2 + pb * fy1 + pc * fz1 + pd > 0) continue;
+        if (pa * fx1 + pb * fy2 + pc * fz1 + pd > 0) continue;
+        if (pa * fx2 + pb * fy2 + pc * fz1 + pd > 0) continue;
+        if (pa * fx1 + pb * fy1 + pc * fz2 + pd > 0) continue;
+        if (pa * fx2 + pb * fy1 + pc * fz2 + pd > 0) continue;
+        if (pa * fx1 + pb * fy2 + pc * fz2 + pd > 0) continue;
+        if (pa * fx2 + pb * fy2 + pc * fz2 + pd > 0) continue;
 
         return false;
     }

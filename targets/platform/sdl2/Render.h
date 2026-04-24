@@ -1,7 +1,9 @@
 #pragma once
 
 #include "gl3_loader.h"
-// NOTE: gl3_loader.h must be included before these two
+// NOTE: gl3_loader.h must be included before these two.
+// In Metal mode these shims provide typedefs + enum constants without
+// pulling in Apple's OpenGL framework headers.
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -9,6 +11,22 @@
 #include <cstdlib>
 
 #include "../IPlatformRenderer.h"
+
+#ifdef USE_METAL
+// No-op wrappers replacing direct GL calls when the native Metal backend is
+// active. The Metal implementation drives state through RenderManager.* and
+// does not expose GL entry points.
+static inline void glEnable_metal_noop(GLenum) {}
+static inline void glDisable_metal_noop(GLenum) {}
+static inline void glActiveTexture_metal_noop(GLenum) {}
+#define GL_FALLBACK_ENABLE(cap) glEnable_metal_noop(cap)
+#define GL_FALLBACK_DISABLE(cap) glDisable_metal_noop(cap)
+#define GL_FALLBACK_ACTIVE_TEX(t) glActiveTexture_metal_noop(t)
+#else
+#define GL_FALLBACK_ENABLE(cap) ::glEnable(cap)
+#define GL_FALLBACK_DISABLE(cap) ::glDisable(cap)
+#define GL_FALLBACK_ACTIVE_TEX(t) ::glActiveTexture(t)
+#endif
 
 class C4JRender : public IPlatformRenderer {
 public:
@@ -509,7 +527,7 @@ extern C4JRender RenderManager;
                  || (cap) == 0x0C62 /*GL_TEXTURE_GEN_R*/                \
                  || (cap) == 0x0C63 /*GL_TEXTURE_GEN_Q*/) { /* empty */ \
         } else                                                          \
-            ::glEnable(cap);                                            \
+            GL_FALLBACK_ENABLE(cap);                                    \
     } while (0)
 
 #undef glDisable
@@ -541,7 +559,7 @@ extern C4JRender RenderManager;
                  || (cap) == 0x0C62 /*GL_TEXTURE_GEN_R*/                \
                  || (cap) == 0x0C63 /*GL_TEXTURE_GEN_Q*/) { /* empty */ \
         } else                                                          \
-            ::glDisable(cap);                                           \
+            GL_FALLBACK_DISABLE(cap);                                   \
     } while (0)
 
 #undef glFogi
@@ -574,6 +592,41 @@ extern C4JRender RenderManager;
         RenderManager.MatrixPerspective(fovy, aspect, zNear, zFar); \
     } while (0)
 
+#undef glClear
+#define glClear(mask) RenderManager.Clear(mask)
+
+#undef glBindTexture
+#define glBindTexture(target, id)                             \
+    do {                                                       \
+        (void)(target);                                        \
+        RenderManager.TextureBind((int)(id));                  \
+    } while (0)
+
+#undef glBlendFunc
+#define glBlendFunc(src, dst) RenderManager.StateSetBlendFunc((int)(src), (int)(dst))
+
+#undef glClearColor
+#define glClearColor(r, g, b, a)                                         \
+    do {                                                                 \
+        float _cc_[] = {(float)(r), (float)(g), (float)(b), (float)(a)}; \
+        RenderManager.SetClearColour(_cc_);                              \
+    } while (0)
+
+#undef glClearDepth
+#define glClearDepth(d) \
+    do {                \
+    } while (0)
+
+#undef glViewport
+#define glViewport(x, y, w, h)                                               \
+    do {                                                                     \
+        (void)(x);                                                           \
+        (void)(y);                                                           \
+        (void)(w);                                                           \
+        (void)(h);                                                           \
+        RenderManager.StateSetViewport(C4JRender::VIEWPORT_TYPE_FULLSCREEN); \
+    } while (0)
+
 #undef glMultiTexCoord2f
 #define glMultiTexCoord2f(tex, u, v)                     \
     do {                                                 \
@@ -585,7 +638,7 @@ extern C4JRender RenderManager;
 #define glActiveTexture(tex)                      \
     do {                                          \
         RenderManager.StateSetActiveTexture(tex); \
-        ::glActiveTexture(tex);                   \
+        GL_FALLBACK_ACTIVE_TEX(tex);              \
     } while (0)
 
 #undef glClientActiveTexture
@@ -610,16 +663,15 @@ void glGetQueryObjectu_4J_Helper(unsigned int id, unsigned int pname,
 
 template <typename T>
 inline void glGenTextures_4J(T* buf) {
-    unsigned int id = 0;
-    ::glGenTextures(1, &id);
-    buf->put((int)id);
+    int id = RenderManager.TextureCreate();
+    buf->put(id);
     buf->flip();
 }
 template <typename T>
 inline void glDeleteTextures_4J(T* buf) {
     if (buf->limit() > 0) {
-        unsigned int id = (unsigned int)buf->get(0);
-        ::glDeleteTextures(1, &id);
+        int id = (int)buf->get(0);
+        RenderManager.TextureFree(id);
     }
 }
 template <typename T>
@@ -635,9 +687,14 @@ template <typename T>
 inline void glTexImage2D_4J(int target, int level, int internalformat,
                             int width, int height, int border, int format,
                             int type, T* pixels) {
+    (void)target;
+    (void)internalformat;
+    (void)border;
+    (void)format;
+    (void)type;
     void* data = pixels ? pixels->getBuffer() : nullptr;
-    ::glTexImage2D((unsigned int)target, level, internalformat, width, height,
-                   border, (unsigned int)format, (unsigned int)type, data);
+    RenderManager.TextureData(width, height, data, level,
+                              C4JRender::TEXTURE_FORMAT_RxGyBzAw);
 }
 template <typename T>
 inline void glCallLists_4J(T* lists) {
@@ -689,20 +746,23 @@ template <typename T>
 inline void glTexGen_4J(int coord, int pname, T* params) {}
 inline void glReadPixels_4J(int x, int y, int width, int height, int format,
                             int type, void* pixels) {
-    ::glReadPixels(x, y, width, height, (unsigned int)format,
-                   (unsigned int)type, pixels);
+    (void)format;
+    (void)type;
+    RenderManager.ReadPixels(x, y, width, height, pixels);
 }
 inline void glReadPixels_4J(int x, int y, int width, int height, int format,
                             int type, unsigned char* pixels) {
-    ::glReadPixels(x, y, width, height, (unsigned int)format,
-                   (unsigned int)type, (void*)pixels);
+    (void)format;
+    (void)type;
+    RenderManager.ReadPixels(x, y, width, height, (void*)pixels);
 }
 // T -> .getBuffer()
 template <typename T>
 inline void glReadPixels_4J(int x, int y, int width, int height, int format,
                             int type, T* pixels) {
-    ::glReadPixels(x, y, width, height, (unsigned int)format,
-                   (unsigned int)type, pixels->getBuffer());
+    (void)format;
+    (void)type;
+    RenderManager.ReadPixels(x, y, width, height, pixels->getBuffer());
 }
 void glBeginQuery_4J_Helper(unsigned int target, unsigned int id);
 void glEndQuery_4J_Helper(unsigned int target);

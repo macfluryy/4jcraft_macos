@@ -2,7 +2,9 @@
  * Also pulls in our gl.h shim for the ARB typedef aliases. */
 #pragma once
 #include "GL/gl.h"
+#ifndef USE_METAL
 #include <OpenGL/gl3ext.h>
+#endif
 
 /* Additional EXT/ARB enums used by gdraw.c */
 #ifndef GL_LUMINANCE8_ALPHA8

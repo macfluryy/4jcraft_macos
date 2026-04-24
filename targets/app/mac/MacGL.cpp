@@ -2,7 +2,9 @@
 
 #if defined(__APPLE__)
 
+#ifndef USE_METAL
 #include <OpenGL/gl.h>
+#endif
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
@@ -116,23 +118,39 @@ void glEndList_4J(int)                              {}
 void glTexGen_4J(int, int, FloatBuffer*)            {}
 
 void glGenQueriesARB_4J(IntBuffer* buf) {
+#ifndef USE_METAL
     if (!buf) return;
     int n = buf->limit() - buf->position();
     if (n > 0) ::glGenQueries(n, (GLuint*)getIntPtr(buf));
+#else
+    (void)buf;
+#endif
 }
 
 void glBeginQueryARB_4J(int target, int id) {
+#ifndef USE_METAL
     ::glBeginQuery((GLenum)target, (GLuint)id);
+#else
+    (void)target; (void)id;
+#endif
 }
 
 void glEndQueryARB_4J(int target) {
+#ifndef USE_METAL
     ::glEndQuery((GLenum)target);
+#else
+    (void)target;
+#endif
 }
 
 void glGetQueryObjectuARB_4J(int id, int pname, IntBuffer* params) {
+#ifndef USE_METAL
     if (params)
         ::glGetQueryObjectuiv((GLuint)id, (GLenum)pname,
                               (GLuint*)getIntPtr(params));
+#else
+    (void)id; (void)pname; (void)params;
+#endif
 }
 
 // ---------------------------------------------------------------------------

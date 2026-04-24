@@ -2,8 +2,12 @@
 
 #if defined(__APPLE__)
 
+#ifndef USE_METAL
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
+#else
+#include "GL/gl.h"
+#endif
 
 class FloatBuffer;
 class IntBuffer;

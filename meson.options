@@ -14,9 +14,9 @@ option('classic_panorama',
 option(
   'renderer',
   type: 'combo',
-  choices: ['gl3', 'gles'],
+  choices: ['gl3', 'gles', 'metal'],
   value: 'gl3',
-  description: 'Specifies a rendering implementation for the game.',
+  description: 'Specifies a rendering implementation for the game. metal = native Apple Metal (macOS only).',
 )
 
 option(

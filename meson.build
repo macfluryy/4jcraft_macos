@@ -44,10 +44,20 @@ if host_machine.system() in ['linux', 'darwin']
   global_cpp_defs += ['-D_PLATFORM_DESKTOP']
 endif
 
+metal_dep = []
 if get_option('renderer') == 'gles'
   global_cpp_defs += ['-DGLES']
   gl_dep = dependency('glesv2', required: true)
   glu_dep = dependency('', required: false)
+elif get_option('renderer') == 'metal'
+  if host_machine.system() != 'darwin'
+    error('renderer=metal requires macOS (darwin)')
+  endif
+  global_cpp_defs += ['-DUSE_METAL']
+  # Still need OpenGL framework for shim headers used by legacy code paths
+  gl_dep = dependency('appleframeworks', modules: ['OpenGL'])
+  glu_dep = dependency('appleframeworks', modules: ['OpenGL'])
+  metal_dep = [dependency('appleframeworks', modules: ['Metal', 'MetalKit', 'QuartzCore', 'Foundation', 'Cocoa'])]
 else
   if host_machine.system() == 'darwin'
     gl_dep = dependency('appleframeworks', modules: ['OpenGL'])
@@ -76,10 +86,6 @@ endif
 
 if get_option('ui_backend') == 'java'
   global_cpp_defs += '-DENABLE_JAVA_GUIS'
-endif
-
-if get_option('srgb_output')
-  global_cpp_defs += ['-DSRGB_OUTPUT']
 endif
 
 if get_option('srgb_output')

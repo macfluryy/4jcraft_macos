@@ -29,12 +29,19 @@ platform_sources = run_command(
 ).stdout().strip().split('\n')
 
 # linux/macOS shared desktop-backend files
+_mac_excludes = ''
+if get_option('ui_backend') != 'shiggy'
+  # gdraw.c is shiggy-specific C code using legacy GL function pointers;
+  # not needed with the java UI backend and incompatible with the Metal backend.
+  _mac_excludes = ' ! -path "*/Iggy/gdraw/*"'
+endif
 if host_machine.system() in ['linux', 'darwin']
   platform_sources += run_command(
     'sh',
     '-c', 'find "'
     + meson.current_source_dir() / 'mac'
-    + '" \\( -name "*.cpp" -o -name "*.c" \\) ',
+    + '" \\( -name "*.cpp" -o -name "*.c" \\) '
+    + _mac_excludes,
     check: true,
   ).stdout().strip().split('\n')
 endif

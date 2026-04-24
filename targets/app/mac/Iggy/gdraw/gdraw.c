@@ -1,8 +1,17 @@
 #define GDRAW_ASSERTS
 
+
 #include "gdraw.h"
 
+// gdraw.c is pure OpenGL — force the compat GL/gl.h to take the
+// real-GL path even when the project-wide Metal renderer is active.
+#ifdef USE_METAL
+#undef USE_METAL
 #include <GL/gl.h>
+#define USE_METAL
+#else
+#include <GL/gl.h>
+#endif
 #include <dlfcn.h>
 #include <stdbool.h>
 #include <stddef.h>

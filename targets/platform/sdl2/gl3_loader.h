@@ -7,8 +7,10 @@
 #define GL_SILENCE_DEPRECATION
 #endif
 
+#ifndef USE_METAL
 #include <OpenGL/gl3.h>
 #include <OpenGL/gl3ext.h>
+#endif
 
 #include <cstdio>
 
@@ -36,6 +38,10 @@
 
 // ── Runtime sanity check ─────────────────────────────────────────────────────
 // Call once after the OpenGL context is made current.
+#ifdef USE_METAL
+// Metal backend: gl3 loader is a no-op (no GL context to probe).
+static inline bool gl3_load() { return true; }
+#else
 static inline bool gl3_load() {
     const char* ver = (const char*)glGetString(GL_VERSION);
     if (!ver) {
@@ -55,3 +61,4 @@ static inline bool gl3_load() {
             ver);
     return true;
 }
+#endif
