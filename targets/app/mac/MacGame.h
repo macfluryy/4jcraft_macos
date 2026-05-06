@@ -43,6 +43,7 @@ public:
 
     // Temporary game-start helper (mirrors original Linux version)
     virtual void TemporaryCreateGameStart();
+    bool TemporaryDirectConnectStart(const char* host, int port);
 };
 
 extern MacGame app;

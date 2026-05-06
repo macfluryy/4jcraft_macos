@@ -1,9 +1,7 @@
 #pragma once
-
-#include <format>
+#include <memory>
 #include <string>
 #include <vector>
-
 #include "LevelStorageSource.h"
 #include "java/File.h"
 
@@ -17,6 +15,7 @@ protected:
 
 public:
     DirectoryLevelStorageSource(const File dir);
+
     virtual std::wstring getName();
     virtual std::vector<LevelSummary*>* getLevelList();
     virtual void clearAll();

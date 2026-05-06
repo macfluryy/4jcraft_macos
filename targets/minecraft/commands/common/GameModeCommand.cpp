@@ -2,11 +2,16 @@
 
 #include "java/InputOutputStream/ByteArrayInputStream.h"
 #include "java/InputOutputStream/DataInputStream.h"
+#include "app/common/App_enums.h"
+#include "app/mac/MacGame.h"
 #include "minecraft/commands/CommandSender.h"
 #include "minecraft/commands/CommandsEnum.h"
+#include "minecraft/server/MinecraftServer.h"
+#include "minecraft/server/level/ServerLevel.h"
 #include "minecraft/server/level/ServerPlayer.h"
 #include "minecraft/server/level/ServerPlayerGameMode.h"
 #include "minecraft/world/level/LevelSettings.h"
+#include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/client/Minecraft.h"
 
 class CommandSender;
@@ -42,6 +47,16 @@ void GameModeCommand::execute(std::shared_ptr<CommandSender> source,
         GameType* gameType = GameType::byId(gameModeId);
         if (gameType != nullptr) {
             player->setGameMode(gameType);
+
+            MinecraftServer* server = MinecraftServer::getInstance();
+            if (server != nullptr) {
+                for (auto* lvl : server->levels) {
+                    if (lvl != nullptr && lvl->getLevelData() != nullptr) {
+                        lvl->getLevelData()->setGameType(gameType);
+                    }
+                }
+            }
+            app.SetGameHostOption(eGameHostOption_GameType, gameModeId);
         } else {
             source->sendMessage(L"§cInvalid gamemode");
             return;

@@ -445,6 +445,8 @@ int main(int argc, const char* argv[]) {
             return app.displaySavingMessage(eMsg, iPad);
         },
         (char*)"");
+    app.SetLoadSavesFromFolderEnabled(true);
+    app.SetWriteSavesToFolderEnabled(true);
 
     app.InitTime();
 

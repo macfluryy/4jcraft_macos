@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -249,6 +250,20 @@ void CreateWorldScreen::buttonClicked(Button* button) {
             worldName = L"2slimey";
         }
 
+        {
+            File savesDir = Minecraft::getSavesDirectory();
+            std::filesystem::path savesPath(savesDir.getPath());
+            std::wstring base = worldName;
+            std::wstring candidate = base;
+            int suffix = 2;
+            while (std::filesystem::exists(savesPath / candidate)) {
+                candidate = base + L" " + std::to_wstring(suffix);
+                ++suffix;
+                if (suffix > 9999) break;  // safety net
+            }
+            worldName = candidate;
+        }
+
         StorageManager.ResetSaveData();
         StorageManager.SetSaveTitle((wchar_t*)worldName.c_str());
 
@@ -258,8 +273,6 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         NetworkGameInitData* param = new NetworkGameInitData();
 
         if (seedString.length() != 0) {
-            // try to convert it to a long first
-            //            try {	// 4J - removed try/catch
             int64_t value = fromWString<int64_t>(seedString);
 
             bool isNumber = true;
@@ -353,8 +366,6 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         Language* language = Language::getInstance();
         minecraft->setScreen(
             new MessageScreen(language->getElement(L"menu.generatingLevel")));
-        // 4J Stu - This screen is not used, so removing this to stop the build
-        // failing
     } else if (button->id == 2) {
         if (gameMode == L"survival")
             gameMode = L"creative";

@@ -18,17 +18,13 @@ private:
     FileHeader header;
 
     static const int WRITE_BANDWIDTH_BYTESPERSECOND =
-        1048576;  // Average bytes per second we will cap to when writing region
-                  // files during the tick() method
+        1048576;
     static const int WRITE_BANDWIDTH_MEASUREMENT_PERIOD_SECONDS =
-        10;  // Time period over which the bytes per second average is
-             // calculated
+        10;
     static const int WRITE_TICK_RATE_MS =
-        500;  // Time between attempts to work out which regions we should write
-              // during the tick
+        500;
     static const int WRITE_MAX_WRITE_PER_TICK =
-        WRITE_BANDWIDTH_BYTESPERSECOND;  // Maximum number of bytes we can add
-                                         // in a single tick
+        WRITE_BANDWIDTH_BYTESPERSECOND;
 
     class WriteHistory {
     public:
@@ -51,11 +47,10 @@ private:
                             unsigned int length = 0,
                             unsigned char* data = nullptr);
         ~RegionFileReference();
-        void Compress();    // Compress from data to dataCompressed
-        void Decompress();  // Decompress from dataCompressed -> data
-        unsigned int GetCompressedSize();  // Gets byte size for what this
-                                           // region will compress to
-        void ReleaseCompressed();          // Release dataCompressed
+        void Compress();
+        void Decompress();
+        unsigned int GetCompressedSize();
+        void ReleaseCompressed();
         FileEntry* fileEntry;
         unsigned char* data;
         unsigned char* dataCompressed;
@@ -115,9 +110,6 @@ public:
                          ProgressListener* progress = nullptr);
     virtual ~ConsoleSaveFileSplit();
 
-    // 4J Stu - Initial implementation is intended to have a similar interface
-    // to the standard Xbox file access functions
-
     virtual FileEntry* createFile(const ConsoleSavePath& fileName);
     virtual void deleteFile(FileEntry* file);
 
@@ -144,6 +136,8 @@ public:
     virtual void DebugFlushToFile(void* compressedData = nullptr,
                                   unsigned int compressedDataSize = 0);
 #endif
+    void WriteEntriesAsFolderToDisk(const std::wstring& worldName);
+    int ReadEntriesFromFolderOnDisk(const std::wstring& worldName);
     virtual unsigned int getSizeOnDisk();
 
     virtual std::wstring getFilename();

@@ -1,6 +1,7 @@
 #include "MacGame.h"
 
 #include <assert.h>
+#include <stdio.h>
 #include <string>
 
 #include "platform/sdl2/Profile.h"
@@ -10,6 +11,10 @@
 #include "app/common/App_enums.h"
 #include "app/common/Game.h"
 #include "app/common/src/Network/GameNetworkManager.h"
+#include "app/common/src/Network/NetworkPlayerInterface.h"
+#include "app/common/src/Network/PlatformNetworkManagerStub.h"
+#include "app/common/src/Network/RemoteNetworkPlayer.h"
+#include "app/common/src/Network/Socket.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
 #include "platform/C4JThread.h"
 
@@ -17,6 +22,9 @@
 #include "minecraft/client/User.h"
 #include "minecraft/server/MinecraftServer.h"
 #include "minecraft/world/level/LevelSettings.h"
+
+extern bool _bQNetStubIsHost;
+extern bool _bQNetStubGameRunning;
 
 MacGame app;
 
@@ -112,6 +120,94 @@ void MacGame::TemporaryCreateGameStart() {
     C4JThread* thread = new C4JThread(loadingParams->func,
                                       loadingParams->lpParam, "RunNetworkGame");
     thread->run();
+}
+
+bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
+    // -------------------------------------------------------------------------
+    // Baseline app/profile init - same as TemporaryCreateGameStart.
+    app.setLevelGenerationOptions(nullptr);
+
+    Minecraft* pMinecraft = Minecraft::GetInstance();
+    app.ReleaseSaveThumbnail();
+    ProfileManager.SetLockedProfile(0);
+    pMinecraft->user->name = L"Client";
+    app.ApplyGameSettingsChanged(0);
+
+    MinecraftServer::resetFlags();
+
+    app.SetTutorialMode(false);
+    app.SetCorruptSaveDeleted(false);
+    app.ClearTerrainFeaturePosition();
+
+    // Required by assorted game-host-option consumers even when joining.
+    app.SetGameHostOption(eGameHostOption_GameType,
+                          GameType::CREATIVE->getId());
+
+    // -------------------------------------------------------------------------
+    // Flip IQNet stub into client mode BEFORE any session bookkeeping so
+    // g_NetworkManager.IsHost() returns false throughout setup.
+    _bQNetStubIsHost = false;
+    _bQNetStubGameRunning = true;
+    g_NetworkManager.SetLocalGame(false);
+
+    // Spawn the local IQNet-backed player so the rest of the stack has
+    // someone to hand the socket to. FakeLocalPlayerJoined is the only
+    // path that registers a NetworkPlayerQNet in the stub.
+    g_NetworkManager.FakeLocalPlayerJoined();
+
+    // -------------------------------------------------------------------------
+    // Build the remote host stand-in (small id 1, flagged as host) and open
+    // the real TCP connection to the server. Both need to exist before we
+    // attach the socket to the local player.
+    RemoteNetworkPlayer* remoteHost =
+        RemoteNetworkPlayer::CreateForOutgoing(host ? host : "host");
+    IPlatformNetworkStub::s_pRemoteHostOverride = remoteHost;
+
+    fprintf(stderr, "[TCP] Direct-connect -> %s:%d\n", host, port);
+    Socket* tcpSock = Socket::ConnectTcp(std::string(host), port, remoteHost);
+    if (tcpSock == nullptr) {
+        fprintf(stderr, "[TCP] Direct-connect FAILED, aborting client start.\n");
+        IPlatformNetworkStub::s_pRemoteHostOverride = nullptr;
+        delete remoteHost;
+        _bQNetStubIsHost = true;
+        _bQNetStubGameRunning = false;
+        return false;
+    }
+    remoteHost->SetSocket(tcpSock);
+
+    // Attach the TCP socket to the local player so StartNetworkGame picks it
+    // up via pNetworkPlayer->GetSocket() on the client branch.
+    INetworkPlayer* localPlayer = g_NetworkManager.GetLocalPlayerByUserIndex(0);
+    if (localPlayer == nullptr) {
+        fprintf(stderr,
+                "[TCP] No local player available - direct-connect aborted.\n");
+        delete tcpSock;
+        IPlatformNetworkStub::s_pRemoteHostOverride = nullptr;
+        delete remoteHost;
+        _bQNetStubIsHost = true;
+        _bQNetStubGameRunning = false;
+        return false;
+    }
+    localPlayer->SetSocket(tcpSock);
+
+    // -------------------------------------------------------------------------
+    // Kick off the usual network-game thread - it will notice IsHost()==false
+    // and enter the client handshake path.
+    NetworkGameInitData* param = new NetworkGameInitData();
+    param->seed = 0;
+    param->saveData = nullptr;
+    param->settings = app.GetGameHostOption(eGameHostOption_All);
+
+    LoadingInputParams* loadingParams = new LoadingInputParams();
+    loadingParams->func = &CGameNetworkManager::RunNetworkGameThreadProc;
+    loadingParams->lpParam = param;
+
+    app.SetAutosaveTimerTime();
+
+    C4JThread* thread = new C4JThread(loadingParams->func,
+                                      loadingParams->lpParam, "RunNetworkGame");
+    thread->run();
+    return true;
 }
 
 int MacGame::GetLocalTMSFileIndex(wchar_t* wchTMSFile,

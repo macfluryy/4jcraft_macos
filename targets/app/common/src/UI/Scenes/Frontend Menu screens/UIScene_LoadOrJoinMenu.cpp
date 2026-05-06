@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
+#include <wctype.h>
 
 #include <compare>
 
@@ -106,6 +107,7 @@ UIScene_LoadOrJoinMenu::UIScene_LoadOrJoinMenu(int iPad, void* initData,
     m_pSaveDetails = nullptr;
     m_bSavesDisplayed = false;
     m_saveDetails = nullptr;
+    m_saves = nullptr;
     m_iSaveDetailsCount = 0;
     m_iTexturePacksNotInstalled = 0;
     m_bCopying = false;
@@ -565,11 +567,43 @@ void UIScene_LoadOrJoinMenu::GetSaveInfo() {
 
     if (app.DebugSettingsOn() && app.GetLoadSavesFromFolderEnabled()) {
         uiSaveC = 0;
-        File savesDir(L"Saves");
-        if (savesDir.exists()) {
-            m_saves = savesDir.listFiles();
-            uiSaveC = (unsigned int)m_saves->size();
+        if (m_saves != nullptr) {
+            for (auto it = m_saves->begin(); it != m_saves->end(); ++it) {
+                delete *it;
+            }
+            delete m_saves;
         }
+        m_saves = new std::vector<File*>();
+        File savesDir = Minecraft::getSavesDirectory();
+        if (savesDir.exists()) {
+            // Only keep regular .mcs files (skip ".DS_Store", subdirs, etc.)
+            std::vector<File*>* all = savesDir.listFiles();
+            if (all != nullptr) {
+                for (auto it = all->begin(); it != all->end(); ++it) {
+                    File* f = *it;
+                    if (f == nullptr) continue;
+                    if (!f->isFile()) {
+                        delete f;
+                        continue;
+                    }
+                    std::wstring name = f->getName();
+                    // Match "*.mcs" case-insensitively.
+                    bool isMcs = false;
+                    if (name.size() >= 4) {
+                        std::wstring ext = name.substr(name.size() - 4);
+                        for (auto& c : ext) c = (wchar_t)towlower(c);
+                        isMcs = (ext == L".mcs");
+                    }
+                    if (isMcs) {
+                        m_saves->push_back(f);
+                    } else {
+                        delete f;
+                    }
+                }
+                delete all;
+            }
+        }
+        uiSaveC = (unsigned int)m_saves->size();
         // add the New Game and Tutorial after the saves list is retrieved, if
         // there are any saves
 

@@ -11,10 +11,12 @@
 #include "app/mac/Stubs/winapi_stubs.h"
 #include "app/include/NetTypes.h"
 #include "NetworkPlayerQNet.h"
+#include "RemoteNetworkPlayer.h"
 #include "Socket.h"
 #include "platform/C4JThread.h"
 
 IPlatformNetworkStub* g_pPlatformNetworkManager;
+INetworkPlayer* IPlatformNetworkStub::s_pRemoteHostOverride = nullptr;
 
 void IPlatformNetworkStub::NotifyPlayerJoined(IQNetPlayer* pQNetPlayer) {
     const char* pszDescription;
@@ -212,6 +214,10 @@ bool IPlatformNetworkStub::LeaveGame(bool bMigrateHost) {
 
 bool IPlatformNetworkStub::_LeaveGame(bool bMigrateHost,
                                              bool bLeaveRoom) {
+    if (Socket::IsTcpListenerRunning()) {
+        fprintf(stderr, "[TCP] Stopping listener on leave-game.\n");
+        Socket::StopTcpListener();
+    }
     return true;
 }
 
@@ -238,7 +244,25 @@ void IPlatformNetworkStub::HostGame(
 
 void IPlatformNetworkStub::_HostGame(
     int usersMask, unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
-    unsigned char privateSlots /*= 0*/) {}
+    unsigned char privateSlots /*= 0*/) {
+    if (m_bIsOfflineGame) return;
+    int port = 25565;
+    if (const char* env = std::getenv("MC_LISTEN_PORT")) {
+        int p = atoi(env);
+        if (p > 0 && p < 65536) port = p;
+    }
+    if (!Socket::StartTcpListener(port)) {
+        fprintf(stderr,
+                "[TCP] Failed to start listener on port %d - multiplayer "
+                "will be local-only.\n",
+                port);
+    } else {
+        fprintf(stderr,
+                "[TCP] Direct-connect listener ready on port %d. Tell "
+                "clients to set MC_DIRECT_CONNECT=<your-ip>:%d\n",
+                port, port);
+    }
+}
 
 bool IPlatformNetworkStub::_StartGame() { return true; }
 
@@ -539,10 +563,17 @@ INetworkPlayer* IPlatformNetworkStub::GetPlayerByXuid(PlayerUID xuid) {
 
 INetworkPlayer* IPlatformNetworkStub::GetPlayerBySmallId(
     unsigned char smallId) {
+    if (INetworkPlayer* remote =
+            RemoteNetworkPlayer::LookupBySmallId(smallId)) {
+        return remote;
+    }
     return getNetworkPlayer(m_pIQNet->GetPlayerBySmallId(smallId));
 }
 
 INetworkPlayer* IPlatformNetworkStub::GetHostPlayer() {
+    if (s_pRemoteHostOverride != nullptr) {
+        return s_pRemoteHostOverride;
+    }
     return getNetworkPlayer(m_pIQNet->GetHostPlayer());
 }
 

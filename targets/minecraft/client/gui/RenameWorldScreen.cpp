@@ -18,14 +18,37 @@ RenameWorldScreen::RenameWorldScreen(Screen* lastScreen,
     this->levelId = levelId;
 }
 
-void RenameWorldScreen::tick() { nameEdit->tick(); }
-
-void RenameWorldScreen::init() {
-    // 4J Stu - Removed this as we don't need the screen. Changed to how we pass
-    // save data around stopped this compiling
+void RenameWorldScreen::tick() {
+    if (nameEdit != nullptr) nameEdit->tick();
 }
 
-void RenameWorldScreen::removed() { Keyboard::enableRepeatEvents(false); }
+void RenameWorldScreen::init() {
+    Language* language = Language::getInstance();
+
+    Keyboard::enableRepeatEvents(true);
+    buttons.clear();
+
+    buttons.push_back(new Button(
+        0, width / 2 - 100, height / 4 + 96 + 12, 98, 20,
+        language->getElement(L"selectWorld.renameButton")));
+    buttons.push_back(new Button(1, width / 2 + 2, height / 4 + 96 + 12, 98, 20,
+                                 language->getElement(L"gui.cancel")));
+
+    // Pre-fill with the existing levelId so the user can edit it directly.
+    nameEdit = new EditBox(this, font, width / 2 - 100, 60, 200, 20, levelId);
+    nameEdit->setMaxLength(32);
+    nameEdit->focus(true);
+
+    buttons[0]->active = trimString(nameEdit->getValue()).length() > 0;
+}
+
+void RenameWorldScreen::removed() {
+    Keyboard::enableRepeatEvents(false);
+    if (nameEdit != nullptr) {
+        delete nameEdit;
+        nameEdit = nullptr;
+    }
+}
 
 void RenameWorldScreen::buttonClicked(Button* button) {
     if (!button->active) return;
@@ -40,18 +63,20 @@ void RenameWorldScreen::buttonClicked(Button* button) {
 }
 
 void RenameWorldScreen::keyPressed(wchar_t ch, int eventKey) {
+    if (nameEdit == nullptr) return;
     nameEdit->keyPressed(ch, eventKey);
-    buttons[0]->active = trimString(nameEdit->getValue()).length() > 0;
+    if (!buttons.empty()) {
+        buttons[0]->active = trimString(nameEdit->getValue()).length() > 0;
+    }
 
-    if (ch == 13) {
+    if (ch == 13 && !buttons.empty()) {
         buttonClicked(buttons[0]);
     }
 }
 
 void RenameWorldScreen::mouseClicked(int x, int y, int buttonNum) {
     Screen::mouseClicked(x, y, buttonNum);
-
-    nameEdit->mouseClicked(x, y, buttonNum);
+    if (nameEdit != nullptr) nameEdit->mouseClicked(x, y, buttonNum);
 }
 
 void RenameWorldScreen::render(int xm, int ym, float a) {
@@ -65,7 +90,7 @@ void RenameWorldScreen::render(int xm, int ym, float a) {
     drawString(font, language->getElement(L"selectWorld.enterName"),
                width / 2 - 100, 47, 0xa0a0a0);
 
-    nameEdit->render();
+    if (nameEdit != nullptr) nameEdit->render();
 
     Screen::render(xm, ym, a);
 }

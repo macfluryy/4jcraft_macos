@@ -119,20 +119,18 @@ public:
 
     C4JStorage::EMessageResult GetMessageBoxResult();
 
-    // save device
     bool SetSaveDevice(std::function<int(const bool)> callback,
                        bool bForceResetOfSaveDevice = false);
 
-    // savegame
     void Init(unsigned int uiSaveVersion, const wchar_t* pwchDefaultSaveName,
               char* pszSavePackName, int iMinimumSaveSize,
               std::function<int(const ESavingMessage, int)> callback,
               const char* szGroupID);
-    void ResetSaveData();  // Call before a new save to clear out stored save
-                           // file name
+    void ResetSaveData();
     void SetDefaultSaveNameForKeyboardDisplay(
         const wchar_t* pwchDefaultSaveName);
     void SetSaveTitle(const wchar_t* pwchDefaultSaveName);
+    const std::wstring& GetSaveTitle();
     bool GetSaveUniqueNumber(int* piVal);
     bool GetSaveUniqueFilename(char* pszName);
     void SetSaveUniqueFilename(char* szFilename);
@@ -147,9 +145,7 @@ public:
         std::uint8_t* pbThumbnail, unsigned int thumbnailBytes,
         std::uint8_t* pbImage, unsigned int imageBytes,
         std::uint8_t* pbTextData,
-        unsigned int textDataBytes);  // Sets the thumbnail & image for the
-                                      // save, optionally setting the
-                                      // metadata in the png
+        unsigned int textDataBytes);
     C4JStorage::ESaveGameState SaveSaveData(
         std::function<int(const bool)> callback);
     void CopySaveDataToNewSave(std::uint8_t* pbThumbnail,
@@ -161,9 +157,7 @@ public:
     bool EnoughSpaceForAMinSaveGame();
 
     void SetSaveMessageVPosition(
-        float fY);  // The 'Saving' message will display at a default position
-                    // unless changed
-    // Get the info for the saves
+        float fY);
     C4JStorage::ESaveGameState GetSavesInfo(
         int iPad,
         std::function<int(SAVE_DETAILS* pSaveDetails, const bool)> callback,
@@ -174,16 +168,12 @@ public:
         PSAVE_INFO pSaveInfo,
         std::function<int(std::uint8_t* thumbnailData,
                           unsigned int thumbnailBytes)>
-            callback);  // Get the thumbnail for an individual save referenced
-                        // by pSaveInfo
-
+            callback);
     void GetSaveCacheFileInfo(unsigned int fileIndex,
                               XCONTENT_DATA& xContentData);
     void GetSaveCacheFileInfo(unsigned int fileIndex,
                               std::uint8_t** ppbImageData,
                               unsigned int* pImageBytes);
-
-    // Load the save. Need to call GetSaveData once the callback is called
     C4JStorage::ESaveGameState LoadSaveData(
         PSAVE_INFO pSaveInfo,
         std::function<int(const bool, const bool)> callback);
@@ -242,26 +232,12 @@ public:
     int GetUserQuotaInfo(int iPad, TMSCLIENT_CALLBACK Func, void* lpParam);
 #endif
 
-    // Older TMS++ write/quota entry points were kept in platform-specific
-    // implementations and are intentionally not part of this shared API.
     C4JStorage::ETMSStatus TMSPP_ReadFile(
         int iPad, C4JStorage::eGlobalStorage eStorageFacility,
         C4JStorage::eTMS_FILETYPEVAL eFileTypeVal, const char* szFilename,
         std::function<int(int, int, PTMSPP_FILEDATA, const char*)> callback =
             nullptr,
         int iUserData = 0);
-    // Older TMS++ list/delete helpers stayed platform-specific. The shared
-    // surface keeps the read path plus CRC/subfile helpers below.
-
-    // 	enum eXBLWS
-    // 	{
-    // 		eXBLWS_GET,
-    // 		eXBLWS_POST,
-    // 		eXBLWS_PUT,
-    // 		eXBLWS_DELETE,
-    // 	};
-    // bool
-    // XBLWS_Command(eXBLWS eCommand);
 
     unsigned int CRC(unsigned char* buf, int len);
 

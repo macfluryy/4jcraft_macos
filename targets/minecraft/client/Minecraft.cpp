@@ -606,6 +606,18 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     return *workingDirectory;
 }
 
+File Minecraft::getSavesDirectory() {
+    // 4J macOS - always return an absolute path under the working directory so
+    // that saves don't land in whatever happens to be the process CWD (which on
+    // a bundled .app is often "/", making "Saves" unwritable).
+    File wd = getWorkingDirectory();
+    File savesDir(wd, L"Saves");
+    if (!savesDir.exists()) {
+        savesDir.mkdirs();
+    }
+    return savesDir;
+}
+
 LevelStorageSource* Minecraft::getLevelSource() { return levelSource; }
 
 void Minecraft::setScreen(Screen* screen) {

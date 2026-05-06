@@ -26,7 +26,10 @@ uint32_t IQNetPlayer::GetSendQueueSize(IQNetPlayer* player, uint32_t dwFlags) {
     return 0;
 }
 uint32_t IQNetPlayer::GetCurrentRtt() { return 0; }
-bool IQNetPlayer::IsHost() { return this == &IQNet::m_player[0]; }
+extern bool _bQNetStubIsHost;
+bool IQNetPlayer::IsHost() {
+    return _bQNetStubIsHost && (this == &IQNet::m_player[0]);
+}
 bool IQNetPlayer::IsGuest() { return false; }
 bool IQNetPlayer::IsLocal() { return true; }
 PlayerUID IQNetPlayer::GetXuid() { return INVALID_XUID; }
@@ -48,6 +51,7 @@ uintptr_t IQNetPlayer::GetCustomDataValue() { return m_customData; }
 IQNetPlayer IQNet::m_player[4];
 
 bool _bQNetStubGameRunning = false;
+bool _bQNetStubIsHost = true;
 
 int32_t IQNet::AddLocalPlayerByUserIndex(uint32_t dwUserIndex) { return 0; }
 IQNetPlayer* IQNet::GetHostPlayer() { return &m_player[0]; }
@@ -63,13 +67,19 @@ uint32_t IQNet::GetPlayerCount() { return 1; }
 QNET_STATE IQNet::GetState() {
     return _bQNetStubGameRunning ? QNET_STATE_GAME_PLAY : QNET_STATE_IDLE;
 }
-bool IQNet::IsHost() { return true; }
+bool IQNet::IsHost() { return _bQNetStubIsHost; }
 int32_t IQNet::JoinGameFromInviteInfo(uint32_t dwUserIndex, uint32_t dwUserMask,
                                       const INVITE_INFO* pInviteInfo) {
     return 0;
 }
-void IQNet::HostGame() { _bQNetStubGameRunning = true; }
-void IQNet::EndGame() { _bQNetStubGameRunning = false; }
+void IQNet::HostGame() {
+    _bQNetStubGameRunning = true;
+    _bQNetStubIsHost = true;
+}
+void IQNet::EndGame() {
+    _bQNetStubGameRunning = false;
+    _bQNetStubIsHost = true;  // reset for next session
+}
 
 uint32_t XUserGetSigninInfo(uint32_t dwUserIndex, uint32_t dwFlags,
                             PXUSER_SIGNIN_INFO pSigninInfo) {

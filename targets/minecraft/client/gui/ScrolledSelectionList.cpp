@@ -1,5 +1,7 @@
 #include "ScrolledSelectionList.h"
 
+#include <chrono>
+
 #include "Button.h"
 
 class Minecraft;
@@ -97,8 +99,53 @@ void ScrolledSelectionList::buttonClicked(Button* button) {
     }
 }
 
+int64_t ScrolledSelectionList::_currentTimeMs() {
+    using namespace std::chrono;
+    return duration_cast<milliseconds>(
+               steady_clock::now().time_since_epoch())
+        .count();
+}
 void ScrolledSelectionList::render(int xm, int ym, float a) {
-    // 4J Unused
+    int n = getNumberOfItems();
+    if (n <= 0) return;
+
+    int listHalfWidth = 110;
+    int listLeft = width / 2 - listHalfWidth;
+    int listRight = width / 2 + listHalfWidth;
+
+    for (int i = 0; i < n; ++i) {
+        int yTop = y0 + 4 + i * itemHeight + headerHeight - (int)yo;
+        int h = itemHeight - 4;
+
+        // Skip rows that are fully outside the visible viewport.
+        if (yTop + h < y0 || yTop > y1) continue;
+
+        if (isSelectedItem(i)) {
+            // White outline + black fill, same look as Java Edition's GuiSlot.
+            fill(listLeft - 2, yTop - 2, listRight + 2, yTop + h + 2,
+                 0xFFFFFFFF);
+            fill(listLeft - 1, yTop - 1, listRight + 1, yTop + h + 1,
+                 0xFF000000);
+        }
+
+        renderItem(i, listLeft, yTop, h, nullptr);
+    }
+}
+
+bool ScrolledSelectionList::mouseClicked(int x, int y, int button) {
+    if (button != 0) return false;
+    int item = getItemAtPosition(x, y);
+    if (item < 0) return false;
+
+    int64_t now = _currentTimeMs();
+    bool doubleClick =
+        (item == lastSelection) && (now - lastSelectionTime < 250);
+
+    selectItem(item, doubleClick);
+
+    lastSelection = item;
+    lastSelectionTime = now;
+    return true;
 }
 
 void ScrolledSelectionList::renderHoleBackground(int y0, int y1, int a0,

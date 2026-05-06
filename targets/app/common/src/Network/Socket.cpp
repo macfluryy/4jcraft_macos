@@ -10,8 +10,21 @@
 #include "platform/ShutdownManager.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
+#include "app/common/src/Network/RemoteNetworkPlayer.h"
 #include "app/include/NetTypes.h"
 #include "minecraft/server/network/ServerConnection.h"
+#include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <netinet/in.h>
+#include <netinet/tcp.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <atomic>
+#include <string>
 
 class SocketAddress {};
 
@@ -71,6 +84,11 @@ void Socket::Initialise(ServerConnection* serverConnection) {
 }
 
 Socket::Socket(bool response) {
+    m_isTcp = false;
+    m_tcpFd = -1;
+    m_tcpReaderThread = nullptr;
+    m_tcpRunning = false;
+
     m_hostServerConnection = true;
     m_hostLocal = true;
     if (response) {
@@ -98,6 +116,11 @@ Socket::Socket(bool response) {
 
 Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
                bool hostLocal /*= false*/) {
+    m_isTcp = false;
+    m_tcpFd = -1;
+    m_tcpReaderThread = nullptr;
+    m_tcpRunning = false;
+
     m_hostServerConnection = false;
     m_hostLocal = hostLocal;
 
@@ -121,6 +144,228 @@ Socket::Socket(INetworkPlayer* player, bool response /* = false*/,
     // printf("New socket made %s\n", player->GetGamertag() );
     networkPlayerSmallId = player->GetSmallId();
     createdOk = true;
+}
+Socket::Socket(INetworkPlayer* player, int tcpFd, bool response) {
+    m_hostServerConnection = false;
+    m_hostLocal = false;
+    m_isTcp = true;
+    m_tcpFd = tcpFd;
+    m_tcpReaderThread = nullptr;
+    m_tcpRunning = false;
+
+    for (int i = 0; i < 2; i++) {
+        m_inputStream[i] = nullptr;
+        m_outputStream[i] = nullptr;
+        m_endClosed[i] = false;
+    }
+
+    if (response) {
+        // Host / server-side socket.
+        m_end = SOCKET_SERVER_END;
+        m_inputStream[SOCKET_SERVER_END] =
+            new SocketInputStreamNetwork(this, SOCKET_SERVER_END);
+        m_outputStream[SOCKET_SERVER_END] =
+            new SocketOutputStreamNetwork(this, SOCKET_SERVER_END);
+    } else {
+        // Client-side socket.
+        m_end = SOCKET_CLIENT_END;
+        m_inputStream[SOCKET_CLIENT_END] =
+            new SocketInputStreamNetwork(this, SOCKET_CLIENT_END);
+        m_outputStream[SOCKET_CLIENT_END] =
+            new SocketOutputStreamNetwork(this, SOCKET_CLIENT_END);
+    }
+
+    m_socketClosedEvent = new C4JThread::Event;
+    networkPlayerSmallId = (player != nullptr) ? player->GetSmallId() : 0;
+    createdOk = true;
+
+    // Disable Nagle so latency-sensitive small packets (keepalives, input)
+    // are flushed immediately. Minecraft bursts a lot of tiny packets.
+    int one = 1;
+    setsockopt(m_tcpFd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one));
+
+    m_tcpRunning = true;
+    m_tcpReaderThread = new std::thread([this]() {
+        // Reader loop - blocking recv on the TCP fd, push bytes into the
+        // queue that matches this socket's end. Exits when recv returns
+        // 0 / -1 or when m_tcpRunning is cleared.
+        std::uint8_t buf[4096];
+        while (m_tcpRunning.load()) {
+            ssize_t n = recv(m_tcpFd, buf, sizeof(buf), 0);
+            if (n <= 0) {
+                if (n < 0 && (errno == EINTR || errno == EAGAIN)) continue;
+                break;
+            }
+            {
+                std::lock_guard<std::mutex> lock(m_queueLockNetwork[m_end]);
+                for (ssize_t i = 0; i < n; ++i) {
+                    m_queueNetwork[m_end].push(buf[i]);
+                }
+            }
+        }
+        // Mark this end as closed so upper-layer reads bail out.
+        m_endClosed[m_end] = true;
+        if (m_socketClosedEvent != nullptr) m_socketClosedEvent->set();
+    });
+}
+
+Socket::~Socket() {
+    if (m_isTcp) {
+        m_tcpRunning = false;
+        if (m_tcpFd >= 0) {
+            ::shutdown(m_tcpFd, SHUT_RDWR);
+            ::close(m_tcpFd);
+            m_tcpFd = -1;
+        }
+        if (m_tcpReaderThread != nullptr) {
+            if (m_tcpReaderThread->joinable()) {
+                m_tcpReaderThread->join();
+            }
+            delete m_tcpReaderThread;
+            m_tcpReaderThread = nullptr;
+        }
+    }
+}
+namespace {
+std::atomic<int> g_tcpListenerFd{-1};
+std::atomic<int> g_tcpListenerPort{0};
+std::atomic<bool> g_tcpListenerRunning{false};
+std::thread* g_tcpAcceptThread = nullptr;
+}  // namespace
+
+bool Socket::IsTcpListenerRunning() { return g_tcpListenerRunning.load(); }
+int Socket::GetTcpListenerPort() { return g_tcpListenerPort.load(); }
+
+Socket* Socket::ConnectTcp(const std::string& host, int port,
+                           INetworkPlayer* player) {
+    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) {
+        fprintf(stderr, "[TCP] socket() failed: %s\n", strerror(errno));
+        return nullptr;
+    }
+
+    struct addrinfo hints;
+    memset(&hints, 0, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    char portStr[16];
+    snprintf(portStr, sizeof(portStr), "%d", port);
+
+    struct addrinfo* result = nullptr;
+    int err = getaddrinfo(host.c_str(), portStr, &hints, &result);
+    if (err != 0 || result == nullptr) {
+        fprintf(stderr, "[TCP] getaddrinfo(%s:%d) failed: %s\n", host.c_str(),
+                port, gai_strerror(err));
+        ::close(fd);
+        return nullptr;
+    }
+
+    if (::connect(fd, result->ai_addr, result->ai_addrlen) != 0) {
+        fprintf(stderr, "[TCP] connect(%s:%d) failed: %s\n", host.c_str(), port,
+                strerror(errno));
+        freeaddrinfo(result);
+        ::close(fd);
+        return nullptr;
+    }
+    freeaddrinfo(result);
+
+    fprintf(stderr, "[TCP] Connected to %s:%d (fd=%d)\n", host.c_str(), port,
+            fd);
+    return new Socket(player, fd, /*response=*/false);
+}
+
+bool Socket::StartTcpListener(int port) {
+    if (g_tcpListenerRunning.load()) {
+        fprintf(stderr, "[TCP] Listener already running on port %d\n",
+                g_tcpListenerPort.load());
+        return true;
+    }
+
+    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) {
+        fprintf(stderr, "[TCP] listener socket() failed: %s\n", strerror(errno));
+        return false;
+    }
+    int yes = 1;
+    setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes));
+
+    struct sockaddr_in addr;
+    memset(&addr, 0, sizeof(addr));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = htons((uint16_t)port);
+    if (::bind(fd, (struct sockaddr*)&addr, sizeof(addr)) != 0) {
+        fprintf(stderr, "[TCP] bind(%d) failed: %s\n", port, strerror(errno));
+        ::close(fd);
+        return false;
+    }
+    if (::listen(fd, 8) != 0) {
+        fprintf(stderr, "[TCP] listen() failed: %s\n", strerror(errno));
+        ::close(fd);
+        return false;
+    }
+
+    g_tcpListenerFd = fd;
+    g_tcpListenerPort = port;
+    g_tcpListenerRunning = true;
+
+    g_tcpAcceptThread = new std::thread([]() {
+        fprintf(stderr, "[TCP] Listener accepting on port %d\n",
+                g_tcpListenerPort.load());
+        while (g_tcpListenerRunning.load()) {
+            struct sockaddr_in peer;
+            socklen_t peerLen = sizeof(peer);
+            int clientFd = ::accept(g_tcpListenerFd.load(),
+                                    (struct sockaddr*)&peer, &peerLen);
+            if (clientFd < 0) {
+                if (!g_tcpListenerRunning.load()) break;
+                if (errno == EINTR) continue;
+                fprintf(stderr, "[TCP] accept() failed: %s\n", strerror(errno));
+                break;
+            }
+
+            char ipbuf[INET_ADDRSTRLEN] = {0};
+            inet_ntop(AF_INET, &peer.sin_addr, ipbuf, sizeof(ipbuf));
+            fprintf(stderr,
+                    "[TCP] Incoming connection from %s:%d (fd=%d)\n", ipbuf,
+                    ntohs(peer.sin_port), clientFd);
+
+            // Create a remote-player stub for this connection and wire it
+            // through the existing server machinery. The small-id is handed
+            // out by RemoteNetworkPlayer::AllocateSmallId.
+            RemoteNetworkPlayer* remote = RemoteNetworkPlayer::CreateForIncoming(
+                ipbuf, ntohs(peer.sin_port));
+            Socket* serverSock = new Socket(remote, clientFd, /*response=*/true);
+            remote->SetSocket(serverSock);
+
+            // Let the CGameNetworkManager know a player has joined so the
+            // rest of the session bookkeeping (player lists, events) fires.
+            g_NetworkManager.DirectConnectPlayerJoining(remote);
+
+            // Hand off to ServerConnection so the existing PendingConnection
+            // flow picks up the handshake packets.
+            Socket::addIncomingSocket(serverSock);
+        }
+        fprintf(stderr, "[TCP] Listener thread exiting.\n");
+    });
+
+    return true;
+}
+
+void Socket::StopTcpListener() {
+    if (!g_tcpListenerRunning.load()) return;
+    g_tcpListenerRunning = false;
+    int fd = g_tcpListenerFd.exchange(-1);
+    if (fd >= 0) {
+        ::shutdown(fd, SHUT_RDWR);
+        ::close(fd);
+    }
+    if (g_tcpAcceptThread != nullptr) {
+        if (g_tcpAcceptThread->joinable()) g_tcpAcceptThread->join();
+        delete g_tcpAcceptThread;
+        g_tcpAcceptThread = nullptr;
+    }
 }
 
 SocketAddress* Socket::getRemoteSocketAddress() { return nullptr; }
@@ -447,6 +692,28 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(
     int flags) {
     if (m_streamOpen != true) return;
     if (length == 0) return;
+    if (m_socket->m_isTcp) {
+        std::lock_guard<std::mutex> lock(m_socket->m_tcpWriteMutex);
+        int fd = m_socket->m_tcpFd;
+        if (fd < 0) return;
+        const uint8_t* p = &b[offset];
+        size_t remaining = length;
+        while (remaining > 0) {
+            ssize_t sent = ::send(fd, p, remaining, 0);
+            if (sent <= 0) {
+                if (sent < 0 && (errno == EINTR || errno == EAGAIN)) continue;
+                fprintf(stderr, "[TCP] send() failed on fd=%d: %s\n", fd,
+                        strerror(errno));
+                m_socket->m_endClosed[m_socket->m_end] = true;
+                if (m_socket->m_socketClosedEvent != nullptr)
+                    m_socket->m_socketClosedEvent->set();
+                return;
+            }
+            p += sent;
+            remaining -= (size_t)sent;
+        }
+        return;
+    }
 
     // If this is a local connection, don't bother going through QNet as it just
     // delivers it straight anyway

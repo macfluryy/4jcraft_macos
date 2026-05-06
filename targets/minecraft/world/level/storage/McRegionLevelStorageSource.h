@@ -20,6 +20,9 @@ public:
     virtual std::wstring getName();
     virtual std::vector<LevelSummary*>* getLevelList();
     virtual void clearAll();
+    virtual void renameLevel(const std::wstring& levelId,
+                             const std::wstring& newLevelName);
+    virtual void deleteLevel(const std::wstring& levelId);
     virtual std::shared_ptr<LevelStorage> selectLevel(
         ConsoleSaveFile* saveFile, const std::wstring& levelId,
         bool createPlayerDir);

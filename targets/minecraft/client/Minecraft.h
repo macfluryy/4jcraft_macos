@@ -233,6 +233,7 @@ private:
 public:
     static File getWorkingDirectory();
     static File getWorkingDirectory(const std::wstring& applicationName);
+    static File getSavesDirectory();
 
 public:
     LevelStorageSource* getLevelSource();

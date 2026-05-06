@@ -60,6 +60,7 @@ public:
 
 protected:
     virtual void buttonClicked(Button* button) override;
+    virtual void mouseClicked(int x, int y, int buttonNum) override;
 
 public:
     void worldSelected(int id);

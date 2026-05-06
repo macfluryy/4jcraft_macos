@@ -7,8 +7,12 @@
 #include <qnet.h>
 #include <xrnm.h>
 #endif
+#include <atomic>
+#include <functional>
 #include <mutex>
 #include <queue>
+#include <string>
+#include <thread>
 
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/Network/NetworkPlayerInterface.h"
@@ -131,6 +135,11 @@ private:
     SocketInputStreamNetwork* m_inputStream[2];
     SocketOutputStreamNetwork* m_outputStream[2];
     bool m_endClosed[2];
+    bool m_isTcp;
+    int m_tcpFd;
+    std::thread* m_tcpReaderThread;
+    std::atomic<bool> m_tcpRunning;
+    std::mutex m_tcpWriteMutex;
 
     // Host only connection class
     static ServerConnection* s_serverConnection;
@@ -153,6 +162,14 @@ public:
     Socket(
         INetworkPlayer* player, bool response = false,
         bool hostLocal = false);  // 4J - Create a socket for an INetworkPlayer
+    Socket(INetworkPlayer* player, int tcpFd, bool response);
+    static Socket* ConnectTcp(const std::string& host, int port,
+                              INetworkPlayer* player);
+    static bool StartTcpListener(int port);
+    static void StopTcpListener();
+    static bool IsTcpListenerRunning();
+    static int GetTcpListenerPort();
+
     SocketAddress* getRemoteSocketAddress();
     void pushDataToQueue(const std::uint8_t* pbData, std::size_t dataSize,
                          bool fromHost = true);
@@ -162,8 +179,11 @@ public:
     void setTrafficClass(int a);
     SocketOutputStream* getOutputStream(bool isServerConnection);
     bool close(bool isServerConnection);
+    ~Socket();
     bool createdOk;
     bool isLocal() { return m_hostLocal; }
+    bool isTcp() { return m_isTcp; }
+    int getTcpFd() { return m_tcpFd; }
 
     bool isClosing() {
         return m_endClosed[SOCKET_CLIENT_END] || m_endClosed[SOCKET_SERVER_END];

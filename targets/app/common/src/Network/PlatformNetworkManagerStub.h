@@ -197,4 +197,7 @@ private:
     void FakeLocalPlayerJoined() {
         NotifyPlayerJoined(m_pIQNet->GetLocalPlayerByUserIndex(0));
     }
+
+public:
+    static INetworkPlayer* s_pRemoteHostOverride;
 };

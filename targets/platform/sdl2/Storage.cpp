@@ -41,7 +41,12 @@ void C4JStorage::Init(unsigned int uiSaveVersion,
 void C4JStorage::ResetSaveData() {}
 void C4JStorage::SetDefaultSaveNameForKeyboardDisplay(
     const wchar_t* pwchDefaultSaveName) {}
-void C4JStorage::SetSaveTitle(const wchar_t* pwchDefaultSaveName) {}
+static std::wstring s_currentSaveTitle;
+void C4JStorage::SetSaveTitle(const wchar_t* pwchDefaultSaveName) {
+    s_currentSaveTitle = (pwchDefaultSaveName != nullptr) ? pwchDefaultSaveName
+                                                          : std::wstring();
+}
+const std::wstring& C4JStorage::GetSaveTitle() { return s_currentSaveTitle; }
 bool C4JStorage::GetSaveUniqueNumber(int* piVal) {
     if (piVal) *piVal = 0;
     return true;

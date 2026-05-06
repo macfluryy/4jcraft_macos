@@ -212,6 +212,12 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
     int64_t levelNanoTime = System::nanoTime();
 
     std::wstring levelName = settings->getString(L"level-name", L"world");
+    {
+        const std::wstring& storageTitle = StorageManager.GetSaveTitle();
+        if (!storageTitle.empty()) {
+            levelName = storageTitle;
+        }
+    }
     std::wstring levelTypeString;
 
     bool gameRuleUseFlatWorld = false;
@@ -429,7 +435,11 @@ bool MinecraftServer::loadLevel(LevelStorageSource* storageSource,
             ConsoleSaveFileOriginal oldFormatSave(L"");
             newFormatSave = new ConsoleSaveFileSplit(&oldFormatSave);
         } else {
-            newFormatSave = new ConsoleSaveFileSplit(L"");
+            newFormatSave = new ConsoleSaveFileSplit(name);
+        }
+
+        if (!bLevelGenBaseSave) {
+            newFormatSave->ReadEntriesFromFolderOnDisk(name);
         }
 
         storage = std::shared_ptr<McRegionLevelStorage>(

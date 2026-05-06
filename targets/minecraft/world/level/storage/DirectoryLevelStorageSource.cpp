@@ -15,86 +15,142 @@
 #include "nbt/NbtIo.h"
 
 DirectoryLevelStorageSource::DirectoryLevelStorageSource(const File dir)
-    : baseDir(dir) {
-    // if (!dir.exists()) dir.mkdirs(); // 4J Removed
-    // this->baseDir = dir;
+    : baseDir(dir) {}
+
+std::wstring DirectoryLevelStorageSource::getName() {
+    return L"Old Format";
 }
 
-std::wstring DirectoryLevelStorageSource::getName() { return L"Old Format"; }
-
 std::vector<LevelSummary*>* DirectoryLevelStorageSource::getLevelList() {
-    // 4J Stu - We don't use directory list with the Xbox save locations
-    std::vector<LevelSummary*>* levels = new std::vector<LevelSummary*>;
-    return levels;
+    return new std::vector<LevelSummary*>();
 }
 
 void DirectoryLevelStorageSource::clearAll() {}
 
 LevelData* DirectoryLevelStorageSource::getDataTagFor(
     ConsoleSaveFile* saveFile, const std::wstring& levelId) {
-    // File dataFile(dir, L"level.dat");
-    ConsoleSavePath dataFile = ConsoleSavePath(std::wstring(L"level.dat"));
-    if (saveFile->doesFileExist(dataFile)) {
-        ConsoleSaveFileInputStream fis =
-            ConsoleSaveFileInputStream(saveFile, dataFile);
+    if (saveFile == nullptr) {
+        return nullptr;
+    }
+
+    ConsoleSavePath dataFile(std::wstring(L"level.dat"));
+
+    if (!saveFile->doesFileExist(dataFile)) {
+        return nullptr;
+    }
+
+    try {
+        ConsoleSaveFileInputStream fis(saveFile, dataFile);
         CompoundTag* root = NbtIo::readCompressed(&fis);
+        if (root == nullptr) {
+            return nullptr;
+        }
+
         CompoundTag* tag = root->getCompound(L"Data");
+        if (tag == nullptr) {
+            delete root;
+            return nullptr;
+        }
+
         LevelData* ret = new LevelData(tag);
         delete root;
         return ret;
+    } catch (...) {
+        return nullptr;
     }
-
-    return nullptr;
 }
 
 void DirectoryLevelStorageSource::renameLevel(
     const std::wstring& levelId, const std::wstring& newLevelName) {
-    ConsoleSaveFileOriginal tempSave(levelId);
+    if (levelId.empty() || newLevelName.empty()) {
+        return;
+    }
 
-    // File dataFile = File(dir, L"level.dat");
-    ConsoleSavePath dataFile = ConsoleSavePath(std::wstring(L"level.dat"));
-    if (tempSave.doesFileExist(dataFile)) {
-        ConsoleSaveFileInputStream fis =
-            ConsoleSaveFileInputStream(&tempSave, dataFile);
+    ConsoleSaveFileOriginal tempSave(levelId);
+    ConsoleSavePath dataFile(std::wstring(L"level.dat"));
+
+    if (!tempSave.doesFileExist(dataFile)) {
+        return;
+    }
+
+    try {
+        ConsoleSaveFileInputStream fis(&tempSave, dataFile);
         CompoundTag* root = NbtIo::readCompressed(&fis);
+        if (root == nullptr) {
+            return;
+        }
+
         CompoundTag* tag = root->getCompound(L"Data");
+        if (tag == nullptr) {
+            delete root;
+            return;
+        }
+
         tag->putString(L"LevelName", newLevelName);
 
-        ConsoleSaveFileOutputStream fos =
-            ConsoleSaveFileOutputStream(&tempSave, dataFile);
+        ConsoleSaveFileOutputStream fos(&tempSave, dataFile);
         NbtIo::writeCompressed(root, &fos);
+
+        delete root;
+    } catch (...) {
     }
 }
 
 bool DirectoryLevelStorageSource::isNewLevelIdAcceptable(
     const std::wstring& levelId) {
-    // 4J Jev, removed try/catch.
+    if (levelId.empty()) {
+        return false;
+    }
 
-    File levelFolder = File(baseDir, levelId);
+    File levelFolder(baseDir, levelId);
+
     if (levelFolder.exists()) {
         return false;
     }
 
     levelFolder.mkdir();
-
     return true;
 }
 
 void DirectoryLevelStorageSource::deleteLevel(const std::wstring& levelId) {
-    File dir = File(baseDir, levelId);
-    if (!dir.exists()) return;
+    if (levelId.empty()) {
+        return;
+    }
 
-    deleteRecursive(dir.listFiles());
+    File dir(baseDir, levelId);
+
+    if (!dir.exists()) {
+        return;
+    }
+
+    std::vector<File*>* files = dir.listFiles();
+    if (files != nullptr) {
+        deleteRecursive(files);
+        delete files;
+    }
+
     dir._delete();
 }
 
 void DirectoryLevelStorageSource::deleteRecursive(std::vector<File*>* files) {
-    auto itEnd = files->end();
-    for (auto it = files->begin(); it != itEnd; it++) {
+    if (files == nullptr) {
+        return;
+    }
+
+    for (auto it = files->begin(); it != files->end(); ++it) {
         File* file = *it;
-        if (file->isDirectory()) {
-            deleteRecursive(file->listFiles());
+        if (file == nullptr) {
+            continue;
         }
+
+        if (file->isDirectory()) {
+            std::vector<File*>* subFiles = file->listFiles();
+            if (subFiles != nullptr) {
+                deleteRecursive(subFiles);
+                delete subFiles;
+            }
+        }
+
         file->_delete();
     }
 }
@@ -102,6 +158,10 @@ void DirectoryLevelStorageSource::deleteRecursive(std::vector<File*>* files) {
 std::shared_ptr<LevelStorage> DirectoryLevelStorageSource::selectLevel(
     ConsoleSaveFile* saveFile, const std::wstring& levelId,
     bool createPlayerDir) {
+    if (saveFile == nullptr || levelId.empty()) {
+        return nullptr;
+    }
+
     return std::shared_ptr<LevelStorage>(
         new DirectoryLevelStorage(saveFile, baseDir, levelId, createPlayerDir));
 }

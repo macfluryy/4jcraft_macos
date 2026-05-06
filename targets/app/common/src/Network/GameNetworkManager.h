@@ -203,6 +203,9 @@ private:
 public:
     void FakeLocalPlayerJoined();  // Temporary method whilst we don't have real
                                    // networking to make this happen
+    void DirectConnectPlayerJoining(INetworkPlayer* pNetworkPlayer) {
+        PlayerJoining(pNetworkPlayer);
+    }
 };
 
 extern CGameNetworkManager g_NetworkManager;
