@@ -17,9 +17,12 @@
 #include "OptionsScreen.h"
 #include "minecraft/client/Minecraft.h"
 #include "minecraft/client/gui/Screen.h"
+#include "minecraft/client/gui/achievement/AchievementScreen.h"
+#include "minecraft/client/gui/achievement/StatsScreen.h"
 #include "minecraft/client/multiplayer/MultiPlayerLocalPlayer.h"
 #include "minecraft/locale/I18n.h"
 #include "minecraft/server/MinecraftServer.h"
+#include "minecraft/world/entity/player/Player.h"
 
 PauseScreen::PauseScreen() {
     saveStep = 0;
@@ -98,12 +101,16 @@ void PauseScreen::buttonClicked(Button* button) {
     }
 
     if (button->id == 5) {
-        //        minecraft->setScreen(new AchievementScreen(minecraft->stats));
-        //        // 4J TODO - put back
+        // 4jcraft: re-enable the achievements screen for the java GUI path.
+        // Minecraft::stats is per-pad, so route through the active player's
+        // pad index, mirroring what InventoryScreen does.
+        minecraft->setScreen(new AchievementScreen(
+            minecraft->stats[minecraft->player->GetXboxPad()]));
     }
     if (button->id == 6) {
-        //        minecraft->setScreen(new StatsScreen(this, minecraft->stats));
-        //        // 4J TODO - put back
+        // 4jcraft: re-enable the stats screen alongside achievements.
+        minecraft->setScreen(new StatsScreen(
+            this, minecraft->stats[minecraft->player->GetXboxPad()]));
     }
 }
 
