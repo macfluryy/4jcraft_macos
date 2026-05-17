@@ -195,8 +195,6 @@ useful when reporting issues.
 
 ### Known limitations
 
-These are tracked in `targets/app/common/src/Network/MULTIPLAYER.md`:
-
 - **Dark spawn ring.** Skylight is not recomputed on the client when full
   chunks arrive — chunks render dim until a block update repropagates light.
 - **No HUD on the joining client.** The fullscreen progress UI scene is not
