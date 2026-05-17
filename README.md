@@ -88,6 +88,79 @@ The game window title shows real-time FPS and renderer info, e.g.:
 
 ---
 
+## Packaging — `.app` bundle and `.dmg`
+
+Once the project is built, you can wrap the executable into a standalone
+double-clickable macOS application bundle and ship it as a DMG image:
+
+```bash
+# Make sure the project has been compiled at least once first
+meson compile -C build
+
+# Then run the packaging script
+scripts/make_macos_app.sh
+```
+
+Outputs land in `dist/`:
+
+```
+dist/
+├── 4JCraft.app           # double-click to launch from Finder
+└── 4JCraft-1.0.0.dmg     # drag-and-drop installer image
+```
+
+The script:
+
+1. Copies `build/targets/app/Minecraft.Client` into `Contents/MacOS/`.
+2. Copies the runtime asset folders (`Common/`, `Sound/`, `music/`) next
+   to the binary, because the engine loads textures and sounds via
+   CWD-relative paths.
+3. Generates `AppIcon.icns` from `MinecraftIcon.png` at all the sizes
+   `iconutil` wants (16×, 32×, 128×, 256×, 512× plus `@2x` variants).
+4. Writes a sensible `Info.plist` (game category, Retina-capable,
+   `LSMinimumSystemVersion = 13.0`).
+5. Adds a small bash wrapper as `CFBundleExecutable` so Finder-launched
+   apps `cd` into `Contents/MacOS/` before exec'ing `Minecraft.Client` —
+   without this the binary cannot find its assets when launched from
+   Finder (CWD = `/`).
+6. Ad-hoc signs the bundle with `codesign --sign -` so Gatekeeper does
+   not flag it as broken on the local machine.
+7. Builds a compressed DMG with a drag-to-`/Applications` shortcut.
+
+### Customising the build
+
+All names and versions are overridable via environment variables:
+
+```bash
+APP_NAME="My Minecraft"        \
+BUNDLE_ID="com.example.mymc"   \
+VERSION="1.2.3"                \
+MIN_MACOS="14.0"               \
+scripts/make_macos_app.sh
+```
+
+### "App is damaged and can't be opened" on someone else's Mac
+
+Because the bundle is **ad-hoc signed** (no Apple Developer ID, no
+notarisation), Gatekeeper will refuse to open it on any machine that
+downloads the DMG until quarantine is cleared. Two options for the
+user receiving the build:
+
+```bash
+# Option 1 — strip the quarantine attribute manually
+xattr -d com.apple.quarantine /Applications/4JCraft.app
+
+# Option 2 — right-click the .app once, choose Open, then confirm the
+# dialog. macOS will remember the decision after that.
+```
+
+For real public distribution you would need to enrol in the Apple
+Developer Program and replace `--sign -` in the script with your
+Developer ID Application certificate, then run `xcrun notarytool
+submit` against the resulting DMG.
+
+---
+
 ## Controls
 
 | Key / Action | In-game function |
