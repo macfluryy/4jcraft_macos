@@ -24,3 +24,9 @@
 !/meson.build
 !/meson.options
 !/README.md
+
+# macOS Finder metadata — should never be committed
+**/.DS_Store
+
+# Build / packaging artifacts
+targets/Archive.zip
