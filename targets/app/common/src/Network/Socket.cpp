@@ -202,7 +202,20 @@ Socket::Socket(INetworkPlayer* player, int tcpFd, bool response) {
                     m_queueNetwork[m_end].push(buf[i]);
                 }
             }
+            // 4J macOS - TCP recv throughput counter (per ~64 KB).
+            m_tcpBytesRecv += (size_t)n;
+            size_t total = m_tcpBytesRecv.load();
+            size_t prev = m_tcpBytesRecvLastLog.load();
+            if (total - prev >= 65536) {
+                m_tcpBytesRecvLastLog.store(total);
+                fprintf(stderr,
+                        "[TCP] fd=%d recv total=%zu bytes (last=%zd)\n",
+                        m_tcpFd, total, n);
+            }
         }
+        fprintf(stderr,
+                "[TCP] reader exit fd=%d totalRecv=%zu\n", m_tcpFd,
+                m_tcpBytesRecv.load());
         // Mark this end as closed so upper-layer reads bail out.
         m_endClosed[m_end] = true;
         if (m_socketClosedEvent != nullptr) m_socketClosedEvent->set();
@@ -478,6 +491,15 @@ bool Socket::close(bool isServerConnection) {
     } else {
         allClosed = true;
         m_endClosed[m_end] = true;
+        // 4J macOS - tear down the TCP fd so the reader thread unblocks and
+        // remote sends start failing immediately. The std::thread object and
+        // memory are cleaned up in ~Socket.
+        if (m_isTcp) {
+            m_tcpRunning = false;
+            if (m_tcpFd >= 0) {
+                ::shutdown(m_tcpFd, SHUT_RDWR);
+            }
+        }
     }
     if (allClosed && m_socketClosedEvent != nullptr) {
         m_socketClosedEvent->set();
@@ -620,6 +642,12 @@ int Socket::SocketInputStreamNetwork::read() {
                     m_socket->m_queueNetwork[m_queueIdx].pop();
                     return retval;
                 }
+                // 4J macOS - TCP path: reader thread sets m_endClosed[end]
+                // when the fd is torn down. No more bytes will ever arrive,
+                // so stop blocking and report EOF to the upper layer.
+                if (m_socket->m_isTcp && m_socket->m_endClosed[m_queueIdx]) {
+                    return -1;
+                }
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
@@ -650,6 +678,13 @@ int Socket::SocketInputStreamNetwork::read(std::vector<uint8_t>& b,
                         m_socket->m_queueNetwork[m_queueIdx].pop();
                     }
                     return length;
+                }
+                // 4J macOS - TCP path: if the remote has gone away and there
+                // aren't enough bytes left in the queue to satisfy the read,
+                // return EOF instead of spinning forever.
+                if (m_socket->m_isTcp && m_socket->m_endClosed[m_queueIdx] &&
+                    m_socket->m_queueNetwork[m_queueIdx].size() < length) {
+                    return -1;
                 }
             }
         }
@@ -711,6 +746,16 @@ void Socket::SocketOutputStreamNetwork::writeWithFlags(
             }
             p += sent;
             remaining -= (size_t)sent;
+        }
+        // 4J macOS - TCP send throughput counter (logged once per ~64 KB).
+        m_socket->m_tcpBytesSent += length;
+        size_t total = m_socket->m_tcpBytesSent.load();
+        size_t prev = m_socket->m_tcpBytesSentLastLog.load();
+        if (total - prev >= 65536) {
+            m_socket->m_tcpBytesSentLastLog.store(total);
+            fprintf(stderr,
+                    "[TCP] fd=%d sent total=%zu bytes (last chunk=%u)\n", fd,
+                    total, length);
         }
         return;
     }

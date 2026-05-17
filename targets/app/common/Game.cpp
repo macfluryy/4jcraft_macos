@@ -1043,9 +1043,14 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
             break;
         case eGameSetting_Difficulty:
             if (iPad == ProfileManager.GetPrimaryPad()) {
-                pMinecraft->options->toggle(
-                    Options::Option::DIFFICULTY,
-                    GameSettingsA[iPad]->usBitmaskValues & 0x03);
+                // 4J macOS - The Iggy slider passes an absolute 0..3
+                // value, so set the field directly instead of routing
+                // through Options::toggle which now performs an
+                // increment (see comment in Options::toggle). Going
+                // through toggle here would advance from the slider
+                // value rather than landing on it.
+                pMinecraft->options->difficulty =
+                    GameSettingsA[iPad]->usBitmaskValues & 0x03;
                 app.DebugPrintf("Difficulty toggle to %d\n",
                                 GameSettingsA[iPad]->usBitmaskValues & 0x03);
 
@@ -5833,11 +5838,13 @@ void Game::SetGameHostOption(unsigned int& uiHostSettings,
                 (GAME_HOST_OPTION_BITMASK_GAMETYPE & (uiVal << 4));
             break;
         case eGameHostOption_LevelType:
-            if (uiVal != 0) {
+            uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_LEVELTYPE;
+            uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_LEVELTYPE_EXTRA;
+            if ((uiVal & 1) != 0) {
                 uiHostSettings |= GAME_HOST_OPTION_BITMASK_LEVELTYPE;
-            } else {
-                // off
-                uiHostSettings &= ~GAME_HOST_OPTION_BITMASK_LEVELTYPE;
+            }
+            if ((uiVal & 2) != 0) {
+                uiHostSettings |= GAME_HOST_OPTION_BITMASK_LEVELTYPE_EXTRA;
             }
 
             break;
@@ -6070,7 +6077,11 @@ unsigned int Game::GetGameHostOption(unsigned int uiHostSettings,
                     GAME_HOST_OPTION_BITMASK_STRUCTURES | 1);
             break;
         case eGameHostOption_LevelType:
-            return (uiHostSettings & GAME_HOST_OPTION_BITMASK_LEVELTYPE);
+            return ((uiHostSettings & GAME_HOST_OPTION_BITMASK_LEVELTYPE) ? 1
+                                                                          : 0) |
+                   ((uiHostSettings & GAME_HOST_OPTION_BITMASK_LEVELTYPE_EXTRA)
+                        ? 2
+                        : 0);
             break;
         case eGameHostOption_Structures:
             return (uiHostSettings & GAME_HOST_OPTION_BITMASK_STRUCTURES);

@@ -3,6 +3,9 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string>
+#include <ctime>
+#include <unistd.h>
+#include <wchar.h>
 
 #include "platform/sdl2/Profile.h"
 #include "platform/sdl2/Render.h"
@@ -130,7 +133,19 @@ bool MacGame::TemporaryDirectConnectStart(const char* host, int port) {
     Minecraft* pMinecraft = Minecraft::GetInstance();
     app.ReleaseSaveThumbnail();
     ProfileManager.SetLockedProfile(0);
-    pMinecraft->user->name = L"Client";
+    // 4J macOS - Generate a per-process random "PlayerNNN" name so multiple
+    // direct-connect clients on the same machine show up as distinct names
+    // in chat / tab list, matching what vanilla Minecraft.cpp does for
+    // anonymous users (`L"Player" + currentTimeMillis() % 1000`).
+    {
+        struct timespec ts;
+        clock_gettime(CLOCK_REALTIME, &ts);
+        unsigned int suffix =
+            (unsigned int)((ts.tv_nsec ^ (ts.tv_sec << 4) ^ getpid()) % 10000);
+        wchar_t buf[32];
+        swprintf(buf, sizeof(buf) / sizeof(buf[0]), L"Player%u", suffix);
+        pMinecraft->user->name = std::wstring(buf);
+    }
     app.ApplyGameSettingsChanged(0);
 
     MinecraftServer::resetFlags();

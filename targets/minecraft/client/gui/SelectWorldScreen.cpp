@@ -6,9 +6,12 @@
 
 #include <vector>
 
+#include <stdio.h>
+
 #include "Button.h"
 #include "ConfirmScreen.h"
 #include "CreateWorldScreen.h"
+#include "JoinMultiplayerScreen.h"
 #include "MessageScreen.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/Network/GameNetworkManager.h"
@@ -103,6 +106,16 @@ void SelectWorldScreen::postInit() {
     buttons.push_back(new Button(BUTTON_CANCEL_ID, width / 2 + 4, height - 28,
                                  150, 20, language->getElement(L"gui.cancel")));
 
+    // 4J macOS - "Multiplayer" button. Place it at top-center, where the
+    // user can't miss it. Width 200 so the label fits on any GUI scale.
+    /*buttons.push_back(new Button(BUTTON_MULTIPLAYER_ID,
+                                 width / 2 - 100, 4, 200, 20,
+                                 L"Multiplayer (Direct Connect)"));
+    fprintf(stderr,
+            "[TCP] SelectWorldScreen::postInit - added Multiplayer button "
+            "(width=%d height=%d)\n",
+            width, height);*/
+
     selectButton->active = false;
     deleteButton->active = false;
     renameButton->active = false;
@@ -142,6 +155,12 @@ void SelectWorldScreen::buttonClicked(Button* button) {
             "SelectWorldScreen::buttonClicked 'Cancel' "
             "minecraft->setScreen(lastScreen)\n");
         minecraft->setScreen(lastScreen);
+    /*} else if (button->id == BUTTON_MULTIPLAYER_ID) {
+        // 4J macOS - jump to the IP entry screen for direct-connect TCP join.
+        fprintf(stderr,
+                "[TCP] SelectWorldScreen::Multiplayer -> "
+                "JoinMultiplayerScreen\n");
+        minecraft->setScreen(new JoinMultiplayerScreen(this));*/
     } else {
         worldSelectionList->buttonClicked(button);
     }
@@ -172,16 +191,13 @@ void SelectWorldScreen::worldSelected(int id) {
         worldFolderName = L"World" + toWString<int>(id);
     }
 
-    std::wstring worldName = summary->getLevelName();
-    if (worldName.empty()) worldName = worldFolderName;
-
     minecraft->setScreen(new Screen());  // blank screen while world loads
 
     // Point the StorageManager at the save slot named after this world so any
     // autosave writes land in the matching .mcs file under ~/Library/
     // Application Support/4jcraft/Saves/.
     StorageManager.ResetSaveData();
-    StorageManager.SetSaveTitle((wchar_t*)worldName.c_str());
+    StorageManager.SetSaveTitle((wchar_t*)worldFolderName.c_str());
 
     NetworkGameInitData* param = new NetworkGameInitData();
     param->seed = 0;

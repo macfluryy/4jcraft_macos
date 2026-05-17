@@ -165,7 +165,11 @@ bool IPlatformNetworkStub::isSystemPrimaryPlayer(
 void IPlatformNetworkStub::DoWork() {}
 
 int IPlatformNetworkStub::GetPlayerCount() {
-    return m_pIQNet->GetPlayerCount();
+    // 4J macOS - include remote direct-connect players in the count so the
+    // chunk-streaming "slow queue" can cycle through all real participants.
+    int count = (int)m_pIQNet->GetPlayerCount();
+    count += RemoteNetworkPlayer::GetActiveCount();
+    return count;
 }
 
 bool IPlatformNetworkStub::ShouldMessageForFullSession() {
@@ -245,9 +249,15 @@ void IPlatformNetworkStub::HostGame(
 void IPlatformNetworkStub::_HostGame(
     int usersMask, unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
     unsigned char privateSlots /*= 0*/) {
-    if (m_bIsOfflineGame) return;
+    // 4J macOS - start the direct-connect TCP listener.
+    //   * For "online" games (m_bIsOfflineGame=false) we always listen.
+    //   * For offline games we only listen when MC_LISTEN_PORT is explicitly
+    //     set, so accidental local worlds don't expose a port.
+    const char* env = std::getenv("MC_LISTEN_PORT");
+    if (m_bIsOfflineGame && env == nullptr) return;
+
     int port = 25565;
-    if (const char* env = std::getenv("MC_LISTEN_PORT")) {
+    if (env != nullptr) {
         int p = atoi(env);
         if (p > 0 && p < 65536) port = p;
     }
@@ -428,9 +438,24 @@ void IPlatformNetworkStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
     if ((index < 0) || (index >= m_flagIndexSize)) return;
     if (pNetworkPlayer == nullptr) return;
 
+    bool foundExactPlayer = false;
     for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
-        if (pNetworkPlayer->IsSameSystem(m_playerFlags[i]->m_pNetworkPlayer)) {
+        if (m_playerFlags[i]->m_pNetworkPlayer == pNetworkPlayer) {
+            foundExactPlayer = true;
+        }
+        if (m_playerFlags[i]->m_pNetworkPlayer == pNetworkPlayer ||
+            pNetworkPlayer->IsSameSystem(m_playerFlags[i]->m_pNetworkPlayer)) {
             m_playerFlags[i]->flags[index / 8] |= (128 >> (index % 8));
+        }
+    }
+    if (!foundExactPlayer) {
+        SystemFlagAddPlayer(pNetworkPlayer);
+        for (unsigned int i = 0; i < m_playerFlags.size(); i++) {
+            if (m_playerFlags[i]->m_pNetworkPlayer == pNetworkPlayer ||
+                pNetworkPlayer->IsSameSystem(
+                    m_playerFlags[i]->m_pNetworkPlayer)) {
+                m_playerFlags[i]->flags[index / 8] |= (128 >> (index % 8));
+            }
         }
     }
 }
@@ -554,7 +579,15 @@ INetworkPlayer* IPlatformNetworkStub::GetLocalPlayerByUserIndex(
 }
 
 INetworkPlayer* IPlatformNetworkStub::GetPlayerByIndex(int playerIndex) {
-    return getNetworkPlayer(m_pIQNet->GetPlayerByIndex(playerIndex));
+    // 4J macOS - first slot(s) belong to the local IQNet players; anything
+    // beyond is a direct-connect remote peer. Keep the same dense ordering
+    // that RemoteNetworkPlayer::GetSessionIndex returns (smallId - 1) so
+    // MinecraftServer's slow-queue cycler matches up.
+    int localCount = (int)m_pIQNet->GetPlayerCount();
+    if (playerIndex < localCount) {
+        return getNetworkPlayer(m_pIQNet->GetPlayerByIndex(playerIndex));
+    }
+    return RemoteNetworkPlayer::GetByActiveIndex(playerIndex - localCount);
 }
 
 INetworkPlayer* IPlatformNetworkStub::GetPlayerByXuid(PlayerUID xuid) {

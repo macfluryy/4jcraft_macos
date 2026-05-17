@@ -24,13 +24,21 @@ public:
     // before falling back to IQNet.
     static INetworkPlayer* LookupBySmallId(unsigned char smallId);
 
+    // 4J macOS - enumeration helpers for the platform stub's GetPlayerCount /
+    // GetPlayerByIndex overrides.
+    static int GetActiveCount();
+    static INetworkPlayer* GetByActiveIndex(int activeIndex);
+
     ~RemoteNetworkPlayer();
 
     // INetworkPlayer interface
     unsigned char GetSmallId() override { return m_smallId; }
     void SendData(INetworkPlayer* player, const void* pvData, int dataSize,
                   bool lowPriority, bool ack) override;
-    bool IsSameSystem(INetworkPlayer* player) override { return false; }
+    bool IsSameSystem(INetworkPlayer* player) override {
+        return player == this ||
+               (player != nullptr && player->GetUID() == m_uid);
+    }
     int GetOutstandingAckCount() override { return 0; }
     int GetSendQueueSizeBytes(INetworkPlayer* player,
                               bool lowPriority) override {
@@ -44,7 +52,13 @@ public:
     bool IsHost() override { return m_isHost; }
     bool IsGuest() override { return !m_isHost; }
     bool IsLocal() override { return false; }
-    int GetSessionIndex() override { return m_smallId; }
+    // 4J macOS - The chunk-streaming pump in MinecraftServer cycles a
+    // "slow queue" index through [0, playerCount). The host's local
+    // IQNetPlayer reports SessionIndex 0, so remote peers must report
+    // 1, 2, ... in the same dense range; otherwise the gating check in
+    // chunkPacketManagement_CanSendTo never matches and no chunks are
+    // shipped to the remote client. Smallids start at 2, so subtract 1.
+    int GetSessionIndex() override { return (int)m_smallId - 1; }
     bool IsTalking() override { return false; }
     bool IsMutedByLocalUser(int userIndex) override { return false; }
     bool HasVoice() override { return false; }

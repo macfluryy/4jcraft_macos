@@ -481,6 +481,29 @@ int main(int argc, const char* argv[]) {
     app.InitGameSettings();
     app.InitialiseTips();
 
+    // 4J macOS - direct-connect bootstrap. If MC_DIRECT_CONNECT=host[:port] is
+    // set in the environment, skip the main menu UI and immediately open a
+    // TCP connection to the given host. The default port is 25565, matching
+    // Socket::StartTcpListener.
+    const char* dc = std::getenv("MC_DIRECT_CONNECT");
+    fprintf(stderr, "[TCP] MC_DIRECT_CONNECT env = %s\n",
+            dc ? dc : "(unset)");
+    if (dc) {
+        std::string spec(dc);
+        std::string host = spec;
+        int port = 25565;
+        auto colon = spec.find(':');
+        if (colon != std::string::npos) {
+            host = spec.substr(0, colon);
+            port = std::atoi(spec.substr(colon + 1).c_str());
+            if (port <= 0 || port >= 65536) port = 25565;
+        }
+        fprintf(stderr,
+                "[TCP] About to TemporaryDirectConnectStart(%s, %d)...\n",
+                host.c_str(), port);
+        app.TemporaryDirectConnectStart(host.c_str(), port);
+    }
+
     // ---- Main game loop ----
     while (!RenderManager.ShouldClose()) {
         RenderManager.StartFrame();

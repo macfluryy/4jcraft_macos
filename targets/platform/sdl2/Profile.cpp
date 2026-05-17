@@ -2,7 +2,9 @@
 
 #include <cstdio>
 #include <cstring>
+#include <ctime>
 #include <functional>
+#include <unistd.h>
 
 #include "../ProfileConstants.h"
 #include "../sdl2/Input.h"
@@ -10,7 +12,20 @@
 C_4JProfile ProfileManager;
 
 namespace {
-constexpr PlayerUID kFakeXuidBase = 0xe000d45248242f2eULL;
+// 4J macOS - base XUID used to be a constexpr constant, which meant every
+// Minecraft.Client instance on the same machine had the same XUID. That
+// caused ClientConnection::handleAddPlayer to reject remote players as
+// "local" due to XUID equality. Randomise a per-process offset at startup
+// so host and each remote client get distinct XUIDs.
+PlayerUID ComputePerProcessXuidBase() {
+    PlayerUID base = 0xe000d45248242f2eULL;
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    uint64_t mix = ((uint64_t)getpid() << 32) ^ (uint64_t)ts.tv_nsec ^
+                   ((uint64_t)ts.tv_sec << 16);
+    return (base & 0xffff000000000000ULL) | (mix & 0x0000ffffffffffffULL);
+}
+const PlayerUID kFakeXuidBase = ComputePerProcessXuidBase();
 
 struct ProfileGameSettings {
     bool bSettingsChanged;
@@ -60,9 +75,19 @@ void ensureFakeIdentity(int iPad) {
         return;
     }
 
-    std::snprintf(s_gamertags[iPad], sizeof(s_gamertags[iPad]), "Player%d",
-                  iPad + 1);
-    s_displayNames[iPad] = std::wstring(L"Player") + std::to_wstring(iPad + 1);
+    // 4J macOS - For direct-connect multiplayer two clients on the same
+    // machine would otherwise both call themselves "Player1" because the
+    // gamertag was deterministic per-pad. Mix in a per-process suffix so
+    // the host sees distinct names in chat / tab list. Same one-shot
+    // randomisation used for kFakeXuidBase above.
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    unsigned int suffix =
+        (unsigned int)((ts.tv_nsec ^ (ts.tv_sec << 4) ^ getpid()) % 10000);
+    std::snprintf(s_gamertags[iPad], sizeof(s_gamertags[iPad]), "Player%u",
+                  suffix + (unsigned int)(iPad));
+    s_displayNames[iPad] =
+        std::wstring(L"Player") + std::to_wstring(suffix + (unsigned int)iPad);
 }
 
 void initialiseDefaultGameSettings(ProfileGameSettings* gameSettings) {

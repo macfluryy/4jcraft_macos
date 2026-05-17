@@ -2,6 +2,7 @@
 
 #include <limits.h>
 
+#include "RemoteNetworkPlayer.h"
 #include "app/include/NetTypes.h"
 #include "java/System.h"
 
@@ -28,8 +29,25 @@ void NetworkPlayerQNet::SendData(INetworkPlayer* player, const void* pvData,
 int NetworkPlayerQNet::GetOutstandingAckCount() { return 0; }
 
 bool NetworkPlayerQNet::IsSameSystem(INetworkPlayer* player) {
-    return (m_qnetPlayer->IsSameSystem(
-                static_cast<NetworkPlayerQNet*>(player)->m_qnetPlayer) == true);
+    if (player == nullptr) return false;
+    // 4J macOS - The original cast was a static_cast which assumed every
+    // INetworkPlayer is a NetworkPlayerQNet. With direct-connect TCP
+    // multiplayer this isn't true: remote peers are RemoteNetworkPlayer
+    // instances, and following the static_cast would deref a wild
+    // m_qnetPlayer pointer. To make matters worse the IQNetPlayer stub
+    // unconditionally returns true from IsSameSystem(), so the random
+    // memory we'd hit usually said "yes, same system" and PlayerList
+    // refused to add the remote client to receiveAllPlayers (so they
+    // never received AddPlayerPacket etc.). Use dynamic_cast and treat
+    // anything that isn't a fellow QNet-backed local-system player as
+    // a different system.
+    NetworkPlayerQNet* qnetOther = dynamic_cast<NetworkPlayerQNet*>(player);
+    if (qnetOther == nullptr) {
+        // Almost certainly a RemoteNetworkPlayer - definitely a different
+        // system.
+        return false;
+    }
+    return (m_qnetPlayer->IsSameSystem(qnetOther->m_qnetPlayer) == true);
 }
 
 int NetworkPlayerQNet::GetSendQueueSizeBytes(INetworkPlayer* player,

@@ -594,7 +594,7 @@ enum eGameHostOption {
     eGameHostOption_Gamertags,
     eGameHostOption_Tutorial,  // special case
     eGameHostOption_GameType,
-    eGameHostOption_LevelType,  // flat or default
+    eGameHostOption_LevelType,  // default, flat, large biomes or amplified
     eGameHostOption_Structures,
     eGameHostOption_BonusChest,
     eGameHostOption_HasBeenInCreative,

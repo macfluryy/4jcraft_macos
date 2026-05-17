@@ -5,6 +5,7 @@
 #include <cmath>
 #include <vector>
 
+#include "platform/sdl2/Input.h"
 #include "platform/sdl2/Render.h"
 #include "app/mac/MacGame.h"
 #include "app/mac/Stubs/winapi_stubs.h"
@@ -24,9 +25,145 @@
 #include "minecraft/client/renderer/Tesselator.h"
 #include "minecraft/client/renderer/Textures.h"
 #include "minecraft/client/resources/ResourceLocation.h"
+#include "minecraft/client/skins/TexturePack.h"
+#include "minecraft/client/skins/TexturePackRepository.h"
 #include "minecraft/locale/Language.h"
 
 Random* TitleScreen::random = new Random();
+
+namespace {
+class TexturePackSelectScreen : public Screen {
+private:
+    static const int BUTTON_DONE = 200;
+    static const int BUTTON_PREV_PAGE = 201;
+    static const int BUTTON_NEXT_PAGE = 202;
+    static const int BUTTON_PACK_BASE = 1000;
+
+    Screen* lastScreen;
+    int page;
+    int visibleSlots;
+
+    int getPageCount() {
+        int count = (int)minecraft->skins->getTexturePackCount();
+        if (visibleSlots <= 0) return 1;
+        int pages = (count + visibleSlots - 1) / visibleSlots;
+        return pages > 0 ? pages : 1;
+    }
+
+    void rebuildButtons() {
+        Language* language = Language::getInstance();
+        buttons.clear();
+
+        int top = 48;
+        visibleSlots = (height - 112) / 24;
+        if (visibleSlots < 1) visibleSlots = 1;
+
+        int pageCount = getPageCount();
+        if (page >= pageCount) page = pageCount - 1;
+        if (page < 0) page = 0;
+
+        TexturePack* selected = minecraft->skins->getSelected();
+        std::uint32_t selectedId = selected != nullptr ? selected->getId() : 0;
+
+        int count = (int)minecraft->skins->getTexturePackCount();
+        int first = page * visibleSlots;
+        int last = first + visibleSlots;
+        if (last > count) last = count;
+
+        for (int i = first; i < last; ++i) {
+            TexturePack* pack = minecraft->skins->getTexturePackByIndex(i);
+            if (pack == nullptr) continue;
+
+            std::wstring label = pack->getName();
+            if (pack->getId() == selectedId) label = L"> " + label;
+
+            buttons.push_back(new Button(BUTTON_PACK_BASE + i,
+                                         width / 2 - 150,
+                                         top + (i - first) * 24,
+                                         300, 20, label));
+        }
+
+        buttons.push_back(new Button(BUTTON_PREV_PAGE, width / 2 - 150,
+                                     height - 52, 96, 20, L"Previous"));
+        buttons.push_back(new Button(BUTTON_NEXT_PAGE, width / 2 + 54,
+                                     height - 52, 96, 20, L"Next"));
+        buttons.push_back(new Button(BUTTON_DONE, width / 2 - 100,
+                                     height - 28,
+                                     language->getElement(L"gui.done")));
+
+        for (Button* button : buttons) {
+            if (button->id == BUTTON_PREV_PAGE) button->active = page > 0;
+            if (button->id == BUTTON_NEXT_PAGE)
+                button->active = page + 1 < pageCount;
+        }
+    }
+
+public:
+    TexturePackSelectScreen(Screen* lastScreen) {
+        this->lastScreen = lastScreen;
+        page = 0;
+        visibleSlots = 1;
+    }
+
+    void init() override { rebuildButtons(); }
+
+    void keyPressed(wchar_t eventCharacter, int eventKey) override {
+        if (eventKey == Keyboard::KEY_ESCAPE) {
+            minecraft->setScreen(lastScreen);
+            return;
+        }
+        Screen::keyPressed(eventCharacter, eventKey);
+    }
+
+protected:
+    void buttonClicked(Button* button) override {
+        if (!button->active) return;
+
+        if (button->id == BUTTON_DONE) {
+            minecraft->setScreen(lastScreen);
+            return;
+        }
+
+        if (button->id == BUTTON_PREV_PAGE) {
+            --page;
+            rebuildButtons();
+            return;
+        }
+
+        if (button->id == BUTTON_NEXT_PAGE) {
+            ++page;
+            rebuildButtons();
+            return;
+        }
+
+        if (button->id >= BUTTON_PACK_BASE) {
+            int index = button->id - BUTTON_PACK_BASE;
+            TexturePack* pack = minecraft->skins->getTexturePackByIndex(index);
+            if (pack != nullptr) {
+                minecraft->skins->selectTexturePackById(pack->getId());
+                rebuildButtons();
+            }
+        }
+    }
+
+public:
+    void render(int xm, int ym, float a) override {
+        renderBackground();
+        drawCenteredString(font, L"Texture Packs", width / 2, 20, 0xffffff);
+
+        TexturePack* selected = minecraft->skins->getSelected();
+        if (selected != nullptr) {
+            std::wstring desc = selected->getDesc1();
+            if (!desc.empty()) {
+                drawCenteredString(font, desc, width / 2, height - 76,
+                                   0x808080);
+            }
+        }
+
+        Screen::render(xm, ym, a);
+    }
+};
+}
 
 TitleScreen::TitleScreen() {
     // 4J - added initialisers
@@ -134,12 +271,17 @@ if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
                                      language->getElement(L"menu.quit")));
     }
 
-    if (minecraft->user == nullptr) {
-        multiplayerButton->active = false;
-    }
+    // 4J macOS - the Multiplayer button used to be disabled when user==null,
+    // but on the desktop port we don't always wire up minecraft->user before
+    // this screen loads. Keep it always active so direct-connect works.
+    multiplayerButton->active = true;
+    fprintf(stderr,
+            "[TCP] TitleScreen::init - multiplayerButton forced active\n");
 }
 
 void TitleScreen::buttonClicked(Button* button) {
+    fprintf(stderr, "[TCP] TitleScreen::buttonClicked id=%d\n",
+            button ? button->id : -1);
     if (button->id == 0) {
         app.DebugPrintf(
             "TitleScreen::buttonClicked() 'Options...' if (button->id == 0)\n");
@@ -161,8 +303,7 @@ void TitleScreen::buttonClicked(Button* button) {
         app.DebugPrintf(
             "TitleScreen::buttonClicked() 'Texture Pack' if (button->id == "
             "3)\n");
-        //       minecraft->setScreen(new TexturePackSelectScreen(this));
-        //       // 4J - TODO put back in
+        minecraft->setScreen(new TexturePackSelectScreen(this));
     }
     if (button->id == 4) {
         app.DebugPrintf(

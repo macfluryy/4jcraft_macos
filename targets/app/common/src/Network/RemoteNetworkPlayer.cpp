@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 
+#include <algorithm>
+#include <vector>
+
 #include "Socket.h"
 
 std::mutex RemoteNetworkPlayer::s_mapLock;
@@ -56,6 +59,26 @@ INetworkPlayer* RemoteNetworkPlayer::LookupBySmallId(unsigned char smallId) {
     auto it = s_byId.find(smallId);
     if (it != s_byId.end()) return it->second;
     return nullptr;
+}
+
+int RemoteNetworkPlayer::GetActiveCount() {
+    std::lock_guard<std::mutex> lock(s_mapLock);
+    return (int)s_byId.size();
+}
+
+INetworkPlayer* RemoteNetworkPlayer::GetByActiveIndex(int activeIndex) {
+    std::lock_guard<std::mutex> lock(s_mapLock);
+    if (activeIndex < 0 || (size_t)activeIndex >= s_byId.size()) {
+        return nullptr;
+    }
+    // s_byId is sorted by smallId thanks to map ordering... actually it's
+    // unordered_map, so sort the keys ourselves to keep the index stable
+    // across calls.
+    std::vector<unsigned char> ids;
+    ids.reserve(s_byId.size());
+    for (auto& kv : s_byId) ids.push_back(kv.first);
+    std::sort(ids.begin(), ids.end());
+    return s_byId[ids[activeIndex]];
 }
 
 void RemoteNetworkPlayer::SendData(INetworkPlayer* player, const void* pvData,

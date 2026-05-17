@@ -44,6 +44,21 @@ private:
     Minecraft* minecraft;
     MultiPlayerLevel* level;
     bool started;
+    // 4J macOS - For TCP direct-connect we delay closing the
+    // ReceivingLevelScreen until enough chunks have arrived around the
+    // player's spawn position, otherwise the player drops into an
+    // unloaded chunk and gets stuck in a black void.
+    bool m_pendingStart = false;
+    double m_pendingStartX = 0;
+    double m_pendingStartY = 0;
+    double m_pendingStartZ = 0;
+    float m_pendingStartYRot = 0;
+    float m_pendingStartXRot = 0;
+    bool m_finishingPendingStart = false;
+    int m_brupsSinceLogin = 0;
+public:
+    void tryFinishStartedHandshake();
+private:
 
     // 4J Stu - I don't think we are interested in the PlayerInfo data, so I'm
     // not going to use it at the moment

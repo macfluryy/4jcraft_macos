@@ -128,13 +128,24 @@ void UIScene_JoinMenu::tick() {
         else
             m_labelValues[eLabel_Structures].init(app.GetString(IDS_OFF));
 
-        if (app.GetGameHostOption(uiGameHostSettings,
-                                  eGameHostOption_LevelType))
-            m_labelValues[eLabel_LevelType].init(
-                app.GetString(IDS_LEVELTYPE_SUPERFLAT));
-        else
-            m_labelValues[eLabel_LevelType].init(
-                app.GetString(IDS_LEVELTYPE_NORMAL));
+        switch (app.GetGameHostOption(uiGameHostSettings,
+                                      eGameHostOption_LevelType)) {
+            case e_levelType_Superflat:
+                m_labelValues[eLabel_LevelType].init(
+                    app.GetString(IDS_LEVELTYPE_SUPERFLAT));
+                break;
+            case e_levelType_LargeBiomes:
+                m_labelValues[eLabel_LevelType].init(L"Large Biomes");
+                break;
+            case e_levelType_Amplified:
+                m_labelValues[eLabel_LevelType].init(L"Amplified");
+                break;
+            case e_levelType_Normal:
+            default:
+                m_labelValues[eLabel_LevelType].init(
+                    app.GetString(IDS_LEVELTYPE_NORMAL));
+                break;
+        }
 
         if (app.GetGameHostOption(uiGameHostSettings, eGameHostOption_PvP))
             m_labelValues[eLabel_PVP].init(app.GetString(IDS_ON));

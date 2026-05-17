@@ -140,6 +140,11 @@ private:
     std::thread* m_tcpReaderThread;
     std::atomic<bool> m_tcpRunning;
     std::mutex m_tcpWriteMutex;
+    // 4J macOS - throughput counters for the TCP path.
+    std::atomic<size_t> m_tcpBytesSent{0};
+    std::atomic<size_t> m_tcpBytesSentLastLog{0};
+    std::atomic<size_t> m_tcpBytesRecv{0};
+    std::atomic<size_t> m_tcpBytesRecvLastLog{0};
 
     // Host only connection class
     static ServerConnection* s_serverConnection;

@@ -1,9 +1,11 @@
 #include "UIScene_Intro.h"
 
 #include "platform/InputActions.h"
+#include "app/common/Game.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
 #include "app/common/src/UI/UIScene.h"
 #include "app/mac/Iggy/include/iggy.h"
+#include "app/mac/MacGame.h"
 #include "app/mac/Mac_UIController.h"
 
 class UILayer;
@@ -89,6 +91,20 @@ void UIScene_Intro::tick() {
     // since we have no SWF renderer to play the intro animation
     s_introTickCount++;
     if (s_introTickCount == 60 && !m_bIgnoreNavigate) {
+        // 4J macOS - If a direct-connect was kicked off from main() (env
+        // var MC_DIRECT_CONNECT), the player has already been thrown
+        // into a multiplayer world by the time this 2-second timer
+        // fires, and navigating back to the MainMenu here would
+        // overwrite the HUD with the main menu UI. Suppress the auto
+        // navigation in that case - GameStarted is true once the
+        // first MovePlayerPacket has come in for the joined session.
+        if (app.GetGameStarted()) {
+            m_bIgnoreNavigate = true;
+            fprintf(stderr,
+                    "[Linux] Suppressing intro -> MainMenu nav: game already "
+                    "started (direct-connect)\n");
+            return;
+        }
         fprintf(stderr,
                 "[Linux] Auto-skipping intro -> MainMenu after %d ticks\n",
                 s_introTickCount);

@@ -252,9 +252,20 @@ void Options::toggle(const Options::Option* option, int dir) {
         framerateLimit = (framerateLimit + dir + 4) % 4;
 #endif
 
-    // 4J-PB - Change for Xbox
-    // if (option ==  Option::DIFFICULTY) difficulty = (difficulty + dir) & 3;
-    if (option == Option::DIFFICULTY) difficulty = (dir) & 3;
+    // 4J-PB - Change for Xbox: the original Java toggle behaviour was an
+    // increment of dir (1 = next state). 4J switched it to assignment
+    // because the Xbox / Iggy slider passes an absolute 0..3 value
+    // through ActionGameSettings(eGameSetting_Difficulty). However the
+    // Java-style menus (OptionsScreen / VideoSettingsScreen) call
+    // toggle(DIFFICULTY, 1), which under the assignment form pegs the
+    // value at 1 ("Easy") on every click - meaning the Difficulty
+    // button in the in-game Options menu never advances. The Xbox/Iggy
+    // path now sets options->difficulty directly in Game.cpp instead
+    // of routing through toggle, so we can restore the original
+    // increment semantics here and the Difficulty button cycles
+    // Peaceful -> Easy -> Normal -> Hard -> Peaceful as expected.
+    if (option == Option::DIFFICULTY)
+        difficulty = (difficulty + dir) & 3;
 
     app.DebugPrintf("Option::DIFFICULTY = %d", difficulty);
 

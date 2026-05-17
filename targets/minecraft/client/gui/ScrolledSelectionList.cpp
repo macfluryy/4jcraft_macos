@@ -63,6 +63,15 @@ int ScrolledSelectionList::getItemAtPosition(int x, int y) {
     int x0 = width / 2 - (92 + 16 + 2);
     int x1 = width / 2 + (92 + 16 + 2);
 
+    // 4J macOS - reject clicks outside the list viewport. Without this,
+    // once the world list grew long enough, the calculated slot for clicks
+    // on the bottom-row buttons (Select / Delete / Rename / Create / Cancel
+    // at y >= height-52) fell inside [0, numberOfItems) and the parent
+    // screen treated the click as a list selection - hijacking the button
+    // press and, when it matched the previous selection within 250 ms,
+    // double-clicking into a random world.
+    if (y < y0 || y > y1) return -1;
+
     int clickSlotPos = (y - y0 - headerHeight + (int)yo - 4);
     int slot = clickSlotPos / itemHeight;
     if (x >= x0 && x <= x1 && slot >= 0 && clickSlotPos >= 0 &&

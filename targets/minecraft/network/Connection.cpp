@@ -332,13 +332,21 @@ bool Connection::readTick() {
 
     if (packet != nullptr) {
         readSizes[packet->getId()] += packet->getEstimatedSize() + 1;
+        // 4J macOS DEBUG - log every packet that gets queued so we can
+        // pair it up with the dispatch-side log and find packets that go
+        // missing between read and handle.
+        bool wasQueued = false;
         {
             std::lock_guard<std::mutex> lock(incoming_cs);
             if (!quitting) {
                 incoming.push(packet);
+                wasQueued = true;
             }
         }
-        didSomething = true;
+        /*fprintf(stderr,
+                "[TCP] queue packet id=%d type=%s queued=%d quitting=%d\n",
+                packet->getId(), typeid(*packet).name(), (int)wasQueued,
+                (int)quitting);*/ didSomething = true;
     } else {
         //		printf("Con:0x%x readTick close EOS\n",this);
 
@@ -480,10 +488,30 @@ void Connection::tick() {
         }
     }
 
+    // 4J macOS DEBUG - report drain results so we can see how many packets
+    // are queued for handling vs how many actually get dispatched (looks
+    // for accidental early termination of the for-loop below from things
+    // like recursive Connection::tick from setScreen during handleLogin).
+    if (packetsToHandle.size() > 1) {
+        /*fprintf(stderr, "[TCP] tick drain: pulled %zu packets to handle\n",
+                packetsToHandle.size());*/
+    }
     // MGH - moved the packet handling outside of the incoming_cs block, as it
     // was locking up sometimes when disconnecting
     for (int i = 0; i < packetsToHandle.size(); i++) {
+        // 4J macOS DEBUG - log every dispatched packet id+typeinfo so we can
+        // see which incoming packets reach the listener and which silently
+        // get dropped between read and handle.
+        /*fprintf(stderr,
+                "[TCP] dispatch packet id=%d type=%s listener=%p i=%d/%zu\n",
+                packetsToHandle[i]->getId(),
+                typeid(*packetsToHandle[i]).name(), (void*)packetListener, i,
+                packetsToHandle.size());*/
         packetsToHandle[i]->handle(packetListener);
+    }
+    if (packetsToHandle.size() > 1) {
+        /*fprintf(stderr, "[TCP] tick drain: finished dispatching %zu packets\n",
+                packetsToHandle.size());*/
     }
     flush();
 

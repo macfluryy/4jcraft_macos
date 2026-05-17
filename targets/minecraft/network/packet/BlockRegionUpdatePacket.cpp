@@ -68,8 +68,8 @@ BlockRegionUpdatePacket::BlockRegionUpdatePacket(int x, int y, int z, int xs,
         // We don't know how this will compress - just make a fixed length
         // buffer to initially decompress into Some small sets of blocks can end
         // up compressing into something bigger than their source
-        unsigned char* ucTemp = new unsigned char[(256 * 16 * 16 * 5) / 2];
-        unsigned int inputSize = (256 * 16 * 16 * 5) / 2;
+        unsigned int inputSize = (unsigned int)rawBuffer.size() * 2;
+        unsigned char* ucTemp = new unsigned char[inputSize];
 
         Compression::getCompression()->CompressLZXRLE(
             ucTemp, &inputSize, rawBuffer.data(),
