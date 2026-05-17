@@ -1472,22 +1472,15 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
     xo -= xOffs * 2048;
     zo -= zOffs * 2048;
 
-    // 4J - we are now conditionally rendering the clouds in two ways
-    // (1) if we are (by our y height) in the clouds, then we render in a mode
-    // quite like the original, with no backface culling, and decisions on which
-    // sides of the clouds to render based on the positions of the 8x8 blocks of
-    // cloud texels (2) if we aren't in the clouds, then we do a simpler form of
-    // rendering with backface culling on This is because the complex sort of
-    // rendering is really there so that the clouds seem more solid when you
-    // might be in them, but it has more risk of artifacts so we don't want to
-    // do it when not necessary
-
-    bool noBFCMode = ((yy > -h - 1) && (yy <= h + 1));
-    if (noBFCMode) {
-        glDisable(GL_CULL_FACE);
-    } else {
-        glEnable(GL_CULL_FACE);
-    }
+    // 4jcraft: always render the cloud volume with both faces and no back
+    // face culling. The original conditional path produced a one-sided
+    // top quad that was completely culled when the camera was far above
+    // the cloud deck, which is why clouds looked black / invisible from
+    // above (the bottom face was disabled and the top face's back side
+    // got culled). Rendering both faces with bright colour keeps clouds
+    // looking solidly white whether the camera is below, inside or above
+    // the deck.
+    glDisable(GL_CULL_FACE);
 
     textures->bindTexture(
         &CLOUDS_LOCATION);  // 4J was L"/environment/clouds.png"
@@ -1559,39 +1552,39 @@ void LevelRenderer::renderAdvancedClouds(float alpha) {
                 float xp = xx - xoffs;
                 float zp = zz - zoffs;
 
-                if (yy > -h - 1) {
-                    t->color(cr * 0.7f, cg * 0.7f, cb * 0.7f, 0.8f);
-                    t->normal(0, -1, 0);
-                    t->vertexUV((float)(xp + 0), (float)(yy + 0),
-                                (float)(zp + D), (float)((xx + 0) * scale + uo),
-                                (float)((zz + D) * scale + vo));
-                    t->vertexUV((float)(xp + D), (float)(yy + 0),
-                                (float)(zp + D), (float)((xx + D) * scale + uo),
-                                (float)((zz + D) * scale + vo));
-                    t->vertexUV((float)(xp + D), (float)(yy + 0),
-                                (float)(zp + 0), (float)((xx + D) * scale + uo),
-                                (float)((zz + 0) * scale + vo));
-                    t->vertexUV((float)(xp + 0), (float)(yy + 0),
-                                (float)(zp + 0), (float)((xx + 0) * scale + uo),
-                                (float)((zz + 0) * scale + vo));
-                }
+                // 4jcraft: emit both top and bottom faces (culling is
+                // disabled above) and apply the classic Minecraft cloud
+                // face shading so the deck doesn't read as a flat sheet
+                // of pure white.
+                t->color(cr * 0.7f, cg * 0.7f, cb * 0.7f, 0.8f);
+                t->normal(0, -1, 0);
+                t->vertexUV((float)(xp + 0), (float)(yy + 0),
+                            (float)(zp + D), (float)((xx + 0) * scale + uo),
+                            (float)((zz + D) * scale + vo));
+                t->vertexUV((float)(xp + D), (float)(yy + 0),
+                            (float)(zp + D), (float)((xx + D) * scale + uo),
+                            (float)((zz + D) * scale + vo));
+                t->vertexUV((float)(xp + D), (float)(yy + 0),
+                            (float)(zp + 0), (float)((xx + D) * scale + uo),
+                            (float)((zz + 0) * scale + vo));
+                t->vertexUV((float)(xp + 0), (float)(yy + 0),
+                            (float)(zp + 0), (float)((xx + 0) * scale + uo),
+                            (float)((zz + 0) * scale + vo));
 
-                if (yy <= h + 1) {
-                    t->color(cr, cg, cb, 0.8f);
-                    t->normal(0, 1, 0);
-                    t->vertexUV((float)(xp + 0), (float)(yy + h - e),
-                                (float)(zp + D), (float)((xx + 0) * scale + uo),
-                                (float)((zz + D) * scale + vo));
-                    t->vertexUV((float)(xp + D), (float)(yy + h - e),
-                                (float)(zp + D), (float)((xx + D) * scale + uo),
-                                (float)((zz + D) * scale + vo));
-                    t->vertexUV((float)(xp + D), (float)(yy + h - e),
-                                (float)(zp + 0), (float)((xx + D) * scale + uo),
-                                (float)((zz + 0) * scale + vo));
-                    t->vertexUV((float)(xp + 0), (float)(yy + h - e),
-                                (float)(zp + 0), (float)((xx + 0) * scale + uo),
-                                (float)((zz + 0) * scale + vo));
-                }
+                t->color(cr, cg, cb, 0.8f);
+                t->normal(0, 1, 0);
+                t->vertexUV((float)(xp + 0), (float)(yy + h - e),
+                            (float)(zp + D), (float)((xx + 0) * scale + uo),
+                            (float)((zz + D) * scale + vo));
+                t->vertexUV((float)(xp + D), (float)(yy + h - e),
+                            (float)(zp + D), (float)((xx + D) * scale + uo),
+                            (float)((zz + D) * scale + vo));
+                t->vertexUV((float)(xp + D), (float)(yy + h - e),
+                            (float)(zp + 0), (float)((xx + D) * scale + uo),
+                            (float)((zz + 0) * scale + vo));
+                t->vertexUV((float)(xp + 0), (float)(yy + h - e),
+                            (float)(zp + 0), (float)((xx + 0) * scale + uo),
+                            (float)((zz + 0) * scale + vo));
 
                 t->color(cr * 0.9f, cg * 0.9f, cb * 0.9f, 0.8f);
                 if (xPos > -1) {

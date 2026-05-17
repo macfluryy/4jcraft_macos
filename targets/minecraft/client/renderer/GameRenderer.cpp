@@ -888,6 +888,12 @@ void GameRenderer::updateLightTexture(float a) {
         bool hasNV = player->hasEffect(MobEffect::nightVision);
         float nvScale = hasNV ? getNightVisionScale(player, a) : 0.0f;
 
+        // 4J macOS - include the gamma/brightness slider value in the
+        // cache key so dragging the Brightness slider in Video Settings
+        // actually invalidates the cached lightmap and produces a
+        // visible change.
+        float gammaVal = (mc && mc->options) ? mc->options->gamma : 0.0f;
+
         uint64_t key = 0;
         key |= (uint64_t)light_q8(skyDarken1);
         key |= (uint64_t)light_q8(blr) << 8;
@@ -896,6 +902,7 @@ void GameRenderer::updateLightTexture(float a) {
         key |= (uint64_t)light_q8(nvScale) << 32;
         key |= (uint64_t)(level->skyFlashTime > 0 ? 1 : 0) << 40;
         key |= (uint64_t)((unsigned int)level->dimension->id & 0xFF) << 48;
+        key |= (uint64_t)light_q8(gammaVal) << 56;
 
         if (s_lightTexKeyValid[j] && s_lightTexKey[j] == key) continue;
         s_lightTexKey[j] = key;
@@ -960,7 +967,12 @@ void GameRenderer::updateLightTexture(float a) {
             if (_g > 1) _g = 1;
             if (_b > 1) _b = 1;
 
-            float brightness = 0.0f;  // 4J - TODO - was mc->options->gamma;
+            // 4J macOS - restored from original Java path. Was hard-coded
+            // to 0.0 with a TODO, which made the Brightness slider in
+            // Video Settings do nothing visible. gamma is 0..1 (set by
+            // SlideButton in VideoSettingsScreen / OptionsScreen).
+            float brightness =
+                (mc && mc->options) ? mc->options->gamma : 0.0f;
 
             float ir = 1 - _r;
             float ig = 1 - _g;
@@ -1329,7 +1341,14 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         }
 #endif
 
-        if (cameraEntity->y < Level::genDepth) {
+        // 4jcraft: always render clouds in the pre-terrain pass so they
+        // blend against the bright sky clear colour instead of the dim
+        // terrain. The original code split this into a pre/post-terrain
+        // path based on player height, but the post-terrain branch ended
+        // up blending the alpha cloud quad on top of the already shaded
+        // ground, which read as a black overlay when the camera was just
+        // above the cloud deck.
+        {
             FRAME_PROFILE_SCOPE(WeatherSky);
             prepareAndRenderClouds(levelRenderer, a);
         }
@@ -1491,10 +1510,11 @@ void GameRenderer::renderLevel(float a, int64_t until) {
         }
         glDisable(GL_BLEND);
 
-        if (cameraEntity->y >= Level::genDepth) {
-            FRAME_PROFILE_SCOPE(WeatherSky);
-            prepareAndRenderClouds(levelRenderer, a);
-        }
+        // 4jcraft: clouds are now always rendered in the pre-terrain pass
+        // above (see comment near the first prepareAndRenderClouds call).
+        // The post-terrain branch was removed because it could leave the
+        // cloud quad blended against shaded ground when the camera was just
+        // above the cloud deck, which read as a black overlay.
 
         // 4J - rain rendering moved here so that it renders after clouds & can
         // blend properly onto them
