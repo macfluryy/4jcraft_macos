@@ -12,6 +12,7 @@
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/entity/MobCategory.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/MobSpawner.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeSource.h"
@@ -51,6 +52,8 @@ RandomLevelSource::RandomLevelSource(Level* level, int64_t seed,
     canyonFeature = new CanyonFeature();
 
     this->level = level;
+    amplified =
+        level->getLevelData()->getGenerator() == LevelType::lvl_amplified;
 
     random = new Random(seed);
     pprandom = new Random(
@@ -429,37 +432,51 @@ void RandomLevelSource::buildSurfaces(int xOffs, int zOffs,
                     if (old == 0) {
                         run = -1;
                     } else if (old == Tile::stone_Id) {
+                        // Amplified high alpine: keep bare stone on the very
+                        // top of the mountains so the peaks read as rocky
+                        // (and so the high-altitude snow cap can sit on
+                        // stone rather than grass / dirt slopes).
+                        uint8_t useTop = top;
+                        uint8_t useMaterial = material;
+                        if (amplified && y > waterHeight + 50) {
+                            useTop = (uint8_t)Tile::stone_Id;
+                            useMaterial = (uint8_t)Tile::stone_Id;
+                        }
+
                         if (run == -1) {
                             if (runDepth <= 0) {
-                                top = 0;
-                                material = (uint8_t)Tile::stone_Id;
+                                useTop = 0;
+                                useMaterial = (uint8_t)Tile::stone_Id;
                             } else if (y >= waterHeight - 4 &&
                                        y <= waterHeight + 1) {
-                                top = b->topMaterial;
-                                material = b->material;
+                                useTop = b->topMaterial;
+                                useMaterial = b->material;
                                 if (lgo != nullptr) {
-                                    lgo->getBiomeOverride(b->id, material, top);
+                                    lgo->getBiomeOverride(b->id, useMaterial,
+                                                          useTop);
                                 }
                             }
 
-                            if (y < waterHeight && top == 0) {
+                            if (y < waterHeight && useTop == 0) {
                                 if (temp < 0.15f)
-                                    top = (uint8_t)Tile::ice_Id;
+                                    useTop = (uint8_t)Tile::ice_Id;
                                 else
-                                    top = (uint8_t)Tile::calmWater_Id;
+                                    useTop = (uint8_t)Tile::calmWater_Id;
                             }
 
                             run = runDepth;
+                            top = useTop;
+                            material = useMaterial;
                             if (y >= waterHeight - 1)
-                                blocks[offs] = top;
+                                blocks[offs] = useTop;
                             else
-                                blocks[offs] = material;
+                                blocks[offs] = useMaterial;
                         } else if (run > 0) {
                             run--;
-                            blocks[offs] = material;
+                            blocks[offs] = useMaterial;
 
                             // place a few sandstone blocks beneath sand runs
-                            if (run == 0 && material == Tile::sand_Id) {
+                            if (run == 0 && useMaterial == Tile::sand_Id) {
                                 run = random->nextInt(4);
                                 material = (uint8_t)Tile::sandStone_Id;
                             }
@@ -498,6 +515,7 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
                                            16, true);
 
     buildSurfaces(xOffs, zOffs, blocks, biomes);
+    addAmplifiedFloatingIslands(xOffs, zOffs, blocks, biomes);
 
     caveFeature->apply(this, level, xOffs, zOffs, blocks);
     // 4J Stu Design Change - 1.8 gen goes stronghold, mineshaft, village,
@@ -526,6 +544,160 @@ LevelChunk* RandomLevelSource::getChunk(int xOffs, int zOffs) {
     free(tileData);
 
     return levelChunk;
+}
+
+void RandomLevelSource::addAmplifiedFloatingIslands(
+    int xOffs, int zOffs, std::vector<uint8_t>& blocks,
+    std::vector<Biome*>& biomes) {
+    // Three styles of floating land. Mostly rare so the sky stays open
+    // and traversable, but each occurrence is dramatic.
+    //   0 - small "shard": narrow rock chunk, sometimes with a stalactite.
+    //   1 - medium plateau: classic flat-bottomed sky island.
+    //   2 - massive sky bastion: huge plateau with a deep stalactite trail.
+    if (!amplified) return;
+
+    int roll = random->nextInt(280);
+    int style;
+    if (roll < 1) {
+        style = 2;  // ~0.36% chance per chunk - rare colossal island
+    } else if (roll < 6) {
+        style = 1;  // ~1.8% chance per chunk
+    } else if (roll < 20) {
+        style = 0;  // ~5% chance per chunk
+    } else {
+        return;
+    }
+
+    int minY = level->seaLevel + 48;
+    int maxY = Level::genDepth - 12;
+    if (maxY <= minY) return;
+
+    int cx = 5 + random->nextInt(6);
+    int cz = 5 + random->nextInt(6);
+    Biome* biome = biomes[cz + cx * 16];
+
+    // Avoid placing islands directly above oceans / rivers / swamps so the
+    // huge structures read as continental sky bastions rather than weird
+    // water artefacts.
+    if (biome == Biome::ocean || biome == Biome::frozenOcean ||
+        biome == Biome::river || biome == Biome::frozenRiver ||
+        biome == Biome::swampland) {
+        return;
+    }
+
+    int cy = random->nextInt(minY, maxY);
+    int rx, rz, ry;
+    int stalactiteDepth = 0;
+    double edgeJitter = 0.35;
+    switch (style) {
+        case 0:
+            rx = random->nextInt(4, 7);
+            rz = random->nextInt(4, 7);
+            ry = random->nextInt(3, 5);
+            stalactiteDepth = random->nextInt(0, 6);
+            edgeJitter = 0.45;
+            break;
+        case 1:
+            rx = random->nextInt(8, 13);
+            rz = random->nextInt(8, 13);
+            ry = random->nextInt(3, 5);
+            stalactiteDepth = random->nextInt(4, 12);
+            edgeJitter = 0.30;
+            break;
+        case 2:
+        default:
+            rx = random->nextInt(13, 18);
+            rz = random->nextInt(13, 18);
+            ry = random->nextInt(5, 8);
+            stalactiteDepth = random->nextInt(12, 24);
+            edgeJitter = 0.25;
+            break;
+    }
+
+    int columnTop = 0;
+    for (int y = Level::genDepthMinusOne; y >= 0; y--) {
+        if (blocks[(cx * 16 + cz) * Level::genDepth + y] != 0) {
+            columnTop = y;
+            break;
+        }
+    }
+    // Keep enough vertical clearance below the island so it really hangs in
+    // the air rather than touching the mountain top.
+    if (columnTop > cy - ry - 8) return;
+
+    // ---- Place the main ellipsoidal mass of rock ----
+    for (int dx = -rx; dx <= rx; dx++) {
+        int xx = cx + dx;
+        if (xx < 0 || xx >= 16) continue;
+        for (int dz = -rz; dz <= rz; dz++) {
+            int zz = cz + dz;
+            if (zz < 0 || zz >= 16) continue;
+            double horiz = (double)(dx * dx) / (double)(rx * rx) +
+                           (double)(dz * dz) / (double)(rz * rz);
+            for (int dy = -ry; dy <= ry; dy++) {
+                int yy = cy + dy;
+                if (yy <= 1 || yy >= Level::genDepth) continue;
+
+                double ny = (double)dy / (double)(ry + 1);
+                double edgeNoise = random->nextDouble() * edgeJitter;
+                if (horiz + ny * ny > 1.0 + edgeNoise) continue;
+
+                int offs = (xx * 16 + zz) * Level::genDepth + yy;
+                if (blocks[offs] == 0) {
+                    blocks[offs] = (uint8_t)Tile::stone_Id;
+                }
+            }
+
+            // Trailing stalactite under the bottom of the island so it has
+            // a dramatic silhouette from below.
+            if (stalactiteDepth > 0) {
+                double t = horiz;
+                if (t < 0.55) {
+                    int reach =
+                        (int)((1.0 - t / 0.55) * stalactiteDepth +
+                              random->nextDouble() * 2.0);
+                    int baseY = cy - ry;
+                    for (int s = 1; s < reach; s++) {
+                        int yy = baseY - s;
+                        if (yy <= 2) break;
+                        if (s > stalactiteDepth - 2 &&
+                            random->nextInt(3) == 0) {
+                            break;
+                        }
+                        int offs = (xx * 16 + zz) * Level::genDepth + yy;
+                        if (blocks[offs] == 0) {
+                            blocks[offs] = (uint8_t)Tile::stone_Id;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ---- Surface the top of the island with biome materials ----
+    uint8_t top = biome->topMaterial;
+    uint8_t material = biome->material;
+    for (int dx = -rx; dx <= rx; dx++) {
+        int xx = cx + dx;
+        if (xx < 0 || xx >= 16) continue;
+        for (int dz = -rz; dz <= rz; dz++) {
+            int zz = cz + dz;
+            if (zz < 0 || zz >= 16) continue;
+            int materialRun = 0;
+            for (int yy = cy + ry; yy >= cy - ry; yy--) {
+                if (yy <= 1 || yy >= Level::genDepth) continue;
+                int offs = (xx * 16 + zz) * Level::genDepth + yy;
+                if (blocks[offs] == Tile::stone_Id) {
+                    if (materialRun == 0) {
+                        blocks[offs] = top;
+                    } else if (materialRun < 4) {
+                        blocks[offs] = material;
+                    }
+                    materialRun++;
+                }
+            }
+        }
+    }
 }
 
 // 4J - removed & moved into its own method from getChunk, so we can call
@@ -595,12 +767,20 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
                 for (int zb = -rr; zb <= rr; zb++) {
                     Biome* b =
                         biomes[(xx + xb + 2) + (zz + zb + 2) * (xSize + 5)];
-                    float ppp = pows[xb + 2 + (zb + 2) * 5] / (b->depth + 2);
+                    float biomeDepth = b->depth;
+                    float biomeScale = b->scale;
+                    if (amplified && biomeDepth > 0.0f) {
+                        biomeDepth = 1.0f + biomeDepth * 2.0f;
+                        biomeScale = 1.0f + biomeScale * 4.0f;
+                    }
+
+                    float ppp =
+                        pows[xb + 2 + (zb + 2) * 5] / (biomeDepth + 2);
                     if (b->depth > mb->depth) {
                         ppp /= 2;
                     }
-                    sss += b->scale * ppp;
-                    ddd += b->depth * ppp;
+                    sss += biomeScale * ppp;
+                    ddd += biomeDepth * ppp;
                     pow += ppp;
                 }
             }
@@ -609,6 +789,42 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
 
             sss = sss * 0.9f + 0.1f;
             ddd = (ddd * 4 - 1) / 8.0f;
+
+            bool amplifiedLand = amplified && mb->depth > 0.0f;
+            double amplifiedRidge = 0.0;
+            double amplifiedValley = 0.0;
+            double amplifiedRegion = 0.0;
+            if (amplifiedLand) {
+                double terrainNoise = sr[pp];
+                if (terrainNoise < -1.0) terrainNoise = -1.0;
+                if (terrainNoise > 1.0) terrainNoise = 1.0;
+
+                // Sharp ridge: only the high crests rise dramatically, with
+                // a steeper exponent so the peaks read as cliff-like rather
+                // than rounded hills.
+                amplifiedRidge = terrainNoise - 0.02;
+                if (amplifiedRidge < 0.0) amplifiedRidge = 0.0;
+                amplifiedRidge =
+                    amplifiedRidge * amplifiedRidge * amplifiedRidge * 2.4;
+                if (amplifiedRidge > 1.6) amplifiedRidge = 1.6;
+
+                // Deep valley: cuts canyons where noise is strongly negative.
+                amplifiedValley = -terrainNoise - 0.30;
+                if (amplifiedValley < 0.0) amplifiedValley = 0.0;
+                amplifiedValley = amplifiedValley * amplifiedValley * 1.6;
+                if (amplifiedValley > 1.2) amplifiedValley = 1.2;
+
+                // Macro region modulation: use the slow depth noise to mark
+                // "super mountain" zones where the lift is amplified even
+                // further. Range roughly [-1, +1], remapped to [0, 1.4]
+                // so flat regions still exist between mountain bands.
+                double region = dr[pp] / 7000.0;
+                if (region < -1.0) region = -1.0;
+                if (region > 1.0) region = 1.0;
+                amplifiedRegion = (region + 0.2) * 0.7;
+                if (amplifiedRegion < 0.0) amplifiedRegion = 0.0;
+                if (amplifiedRegion > 1.4) amplifiedRegion = 1.4;
+            }
 
             double rdepth = (dr[pp] / 8000.0);
             if (rdepth < 0) rdepth = -rdepth * 0.3;
@@ -654,8 +870,56 @@ std::vector<double> RandomLevelSource::getHeights(std::vector<double>& buffer,
                     val = bb + (cc - bb) * v;
                 val -= yOffs;
 
-                if (yy > ySize - 4) {
-                    double slide = (yy - (ySize - 4)) / (4 - 1.0f);
+                if (amplifiedLand) {
+                    // Vertical profile that ramps up only above the mid
+                    // height and fades again near the very top so we get
+                    // sharp mountain peaks instead of a carpet of floating
+                    // pockets across the whole vertical range.
+                    double yFrac = (double)yy / (double)(ySize - 1);
+                    double profile = 0.0;
+                    if (yFrac > 0.38) {
+                        double t = (yFrac - 0.38) / 0.50;
+                        if (t > 1.0) t = 1.0;
+                        profile = t * t * (3.0 - 2.0 * t);
+                    }
+                    if (yFrac > 0.94) {
+                        double fade = (1.0 - yFrac) / 0.06;
+                        if (fade < 0.0) fade = 0.0;
+                        profile *= fade;
+                    }
+
+                    // Lift scales further inside macro mountain regions, so
+                    // some bands of the world become truly colossal while
+                    // others stay tame enough to keep the world traversable.
+                    double regionLift = 1.0 + amplifiedRegion * 1.8;
+                    double cliffLift =
+                        (amplifiedRidge * 9.5 * regionLift -
+                         amplifiedValley * 3.5) *
+                        profile;
+                    val += cliffLift;
+
+                    if (amplifiedValley > 0.0) {
+                        // Carve dramatic canyons across the lower half.
+                        double valleyProfile = 0.0;
+                        if (yFrac < 0.60) {
+                            double t = (0.60 - yFrac) / 0.60;
+                            if (t > 1.0) t = 1.0;
+                            valleyProfile = t * t;
+                        }
+                        val -= amplifiedValley * 7.5 * valleyProfile;
+                    }
+                }
+
+                // Push the slide cutoff higher inside amplified mountain
+                // ridges so peaks can actually punch close to the world
+                // ceiling instead of being clipped a few cells down.
+                int slideStart = ySize - 4;
+                if (amplifiedLand) {
+                    slideStart = amplifiedRidge > 0.4 ? ySize - 2 : ySize - 3;
+                }
+                if (yy > slideStart) {
+                    double slide = (yy - slideStart) /
+                                   (double)(ySize - 1 - slideStart);
                     val = val * (1 - slide) + -10 * slide;
                 }
 
@@ -797,6 +1061,9 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
     }
 
     biome->decorate(level, pprandom, xo, zo);
+    addAmplifiedMountainResources(xt, zt);
+    addAmplifiedHighWaterfalls(xt, zt);
+    addAmplifiedCliffCaves(xt, zt);
 
     app.processSchematics(parent->getChunk(xt, zt));
 
@@ -818,10 +1085,220 @@ void RandomLevelSource::postProcess(ChunkSource* parent, int xt, int zt) {
                 level->setTileAndData(x + xo, y, z + zo, Tile::topSnow_Id, 0,
                                       Tile::UPDATE_CLIENTS);
             }
+            // Amplified: only cover the very high stone peaks with snow.
+            // No grass/dirt slopes - we want the snow to read as alpine cap
+            // sitting on rock, and only on the truly extreme summits.
+            if (amplified && y > level->seaLevel + 58 &&
+                y < Level::genDepthMinusOne &&
+                level->getTile(x + xo, y, z + zo) == 0 &&
+                level->getTile(x + xo, y - 1, z + zo) == Tile::stone_Id) {
+                level->setTileAndData(x + xo, y, z + zo, Tile::topSnow_Id, 0,
+                                      Tile::UPDATE_CLIENTS);
+            }
         }
     }
 
     HeavyTile::instaFall = false;
+}
+
+void RandomLevelSource::addAmplifiedMountainResources(int xt, int zt) {
+    if (!amplified) return;
+
+    int xo = xt * 16;
+    int zo = zt * 16;
+    int clusters = 1 + pprandom->nextInt(3);
+    for (int i = 0; i < clusters; i++) {
+        int x = xo + pprandom->nextInt(16) + 8;
+        int z = zo + pprandom->nextInt(16) + 8;
+        int top = level->getHeightmap(x, z);
+        int minY = level->seaLevel + 8;
+        int maxY = top - 4;
+        if (top < level->seaLevel + 24 || maxY <= minY) continue;
+
+        int roll = pprandom->nextInt(100);
+        int tile = Tile::coalOre_Id;
+        int count = pprandom->nextInt(5, 9);
+        if (roll >= 62 && roll < 90) {
+            tile = Tile::ironOre_Id;
+            count = pprandom->nextInt(4, 7);
+        } else if (roll >= 90 && roll < 97) {
+            tile = Tile::goldOre_Id;
+            count = pprandom->nextInt(3, 5);
+        } else if (roll >= 97) {
+            tile = Tile::emeraldOre_Id;
+            count = pprandom->nextInt(1, 2);
+        }
+
+        int y = pprandom->nextInt(minY, maxY);
+        for (int n = 0; n < count; n++) {
+            int xx = x + pprandom->nextInt(-2, 2);
+            int yy = y + pprandom->nextInt(-1, 1);
+            int zz = z + pprandom->nextInt(-2, 2);
+            if (yy <= 1 || yy >= Level::genDepthMinusOne) continue;
+            if (level->getTile(xx, yy, zz) == Tile::stone_Id) {
+                level->setTileAndData(xx, yy, zz, tile, 0,
+                                      Tile::UPDATE_INVISIBLE_NO_LIGHT);
+            }
+        }
+    }
+}
+
+void RandomLevelSource::addAmplifiedHighWaterfalls(int xt, int zt) {
+    if (!amplified || pprandom->nextInt(2) != 0) return;
+
+    int xo = xt * 16;
+    int zo = zt * 16;
+    static const int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    int placed = 0;
+    int targetWaterfalls = 1 + pprandom->nextInt(2);
+    for (int tries = 0; tries < 12 && placed < targetWaterfalls; tries++) {
+        int x = xo + pprandom->nextInt(16) + 8;
+        int z = zo + pprandom->nextInt(16) + 8;
+        int y = level->getHeightmap(x, z);
+        if (y < level->seaLevel + 28 || y >= Level::genDepthMinusOne - 2) {
+            continue;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            int dir = (i + pprandom->nextInt(4)) & 3;
+            int wx = x + dirs[dir][0];
+            int wz = z + dirs[dir][1];
+            int wy = y - 1;
+
+            if (level->getTile(wx, wy, wz) != 0 ||
+                level->getTile(wx, wy - 1, wz) != 0) {
+                continue;
+            }
+
+            int drop = 0;
+            for (int yy = wy - 1; yy > level->seaLevel && drop < 40; yy--) {
+                if (level->getTile(wx, yy, wz) != 0) break;
+                drop++;
+            }
+            if (drop < 8) continue;
+
+            level->setTileAndData(wx, wy, wz, Tile::calmWater_Id, 0,
+                                  Tile::UPDATE_CLIENTS);
+            placed++;
+            break;
+        }
+    }
+}
+
+void RandomLevelSource::addAmplifiedCliffCaves(int xt, int zt) {
+    if (!amplified || pprandom->nextInt(3) != 0) return;
+
+    int xo = xt * 16;
+    int zo = zt * 16;
+    static const int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    int attempts = 1 + pprandom->nextInt(2);
+    int placed = 0;
+    for (int attempt = 0; attempt < attempts * 4 && placed < attempts;
+         attempt++) {
+        int x = xo + pprandom->nextInt(16) + 8;
+        int z = zo + pprandom->nextInt(16) + 8;
+        int cliffTop = level->getHeightmap(x, z);
+
+        if (cliffTop < level->seaLevel + 18 ||
+            cliffTop >= Level::genDepthMinusOne - 4) {
+            continue;
+        }
+
+        // Look for a steep face in one of the cardinal directions.
+        int faceDir = -1;
+        int faceDrop = 0;
+        for (int i = 0; i < 4; i++) {
+            int dir = (i + pprandom->nextInt(4)) & 3;
+            int probeX = x + dirs[dir][0] * 4;
+            int probeZ = z + dirs[dir][1] * 4;
+            int neighborTop = level->getHeightmap(probeX, probeZ);
+            int drop = cliffTop - neighborTop;
+            if (drop > 14 && drop > faceDrop) {
+                faceDrop = drop;
+                faceDir = dir;
+            }
+        }
+        if (faceDir < 0) continue;
+
+        int outX = dirs[faceDir][0];
+        int outZ = dirs[faceDir][1];
+        int inX = -outX;
+        int inZ = -outZ;
+
+        // Entrance roughly half way up the cliff so the mouth is clearly
+        // visible from the valley but still has plenty of stone above it.
+        int entranceY = cliffTop - 4 - pprandom->nextInt(faceDrop - 8);
+        if (entranceY < level->seaLevel + 4) continue;
+
+        // Walk outwards until we hit air - that is the cliff face.
+        int faceX = x;
+        int faceZ = z;
+        bool foundFace = false;
+        for (int step = 0; step < 12; step++) {
+            int probeX = faceX + outX;
+            int probeZ = faceZ + outZ;
+            if (level->getTile(probeX, entranceY, probeZ) == 0) {
+                foundFace = true;
+                break;
+            }
+            faceX = probeX;
+            faceZ = probeZ;
+        }
+        if (!foundFace) continue;
+
+        int length = 7 + pprandom->nextInt(9);
+        int baseRadius = 2 + pprandom->nextInt(2);
+
+        double cx = faceX + 0.5;
+        double cy = entranceY + 0.5;
+        double cz = faceZ + 0.5;
+
+        for (int l = 0; l < length; l++) {
+            double t = (double)l / (double)length;
+            // Gentle wander into the mountain so it doesn't look too
+            // surgical.
+            double wanderY = sin(l * 0.35) * 1.5 +
+                             (pprandom->nextDouble() - 0.5) * 0.8;
+            double wanderH = sin(l * 0.5) * 0.8;
+            cx += inX + (inZ != 0 ? wanderH : 0.0);
+            cz += inZ + (inX != 0 ? wanderH : 0.0);
+            cy += wanderY * 0.4;
+
+            // The entrance flares out wider than the tail of the tunnel.
+            double tailFactor = 1.0 - t * 0.6;
+            int rr = (int)(baseRadius * tailFactor + 0.5);
+            if (rr < 1) rr = 1;
+
+            for (int dx = -rr - 1; dx <= rr + 1; dx++) {
+                for (int dy = -rr - 1; dy <= rr + 1; dy++) {
+                    for (int dz = -rr - 1; dz <= rr + 1; dz++) {
+                        double dd =
+                            (dx * dx) +
+                            (dy * dy) * (1.4 + tailFactor * 0.6) +
+                            (dz * dz);
+                        if (dd > (double)(rr * rr)) continue;
+                        int wx = (int)cx + dx;
+                        int wy = (int)cy + dy;
+                        int wz = (int)cz + dz;
+                        if (wy <= 2 || wy >= Level::genDepthMinusOne) continue;
+
+                        int tile = level->getTile(wx, wy, wz);
+                        if (tile == Tile::stone_Id || tile == Tile::dirt_Id ||
+                            tile == Tile::grass_Id || tile == Tile::sand_Id ||
+                            tile == Tile::sandStone_Id ||
+                            tile == Tile::gravel_Id) {
+                            level->setTileAndData(
+                                wx, wy, wz, 0, 0,
+                                Tile::UPDATE_INVISIBLE_NO_LIGHT);
+                        }
+                    }
+                }
+            }
+        }
+        placed++;
+    }
 }
 
 bool RandomLevelSource::save(bool force, ProgressListener* progressListener) {

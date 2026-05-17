@@ -15,6 +15,7 @@
 #include "platform/sdl2/Storage.h"
 #include "ConsoleInput.h"
 #include "DispenserBootstrap.h"
+#include "app/common/App_Defines.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/GameRules/GameRuleManager.h"
 #include "app/common/src/GameRules/LevelGeneration/LevelGenerationOptions.h"
@@ -225,12 +226,19 @@ bool MinecraftServer::initServer(int64_t seed, NetworkGameInitData* initData,
         gameRuleUseFlatWorld =
             app.getLevelGenerationOptions()->getuseFlatWorld();
     }
-    if (gameRuleUseFlatWorld ||
-        app.GetGameHostOption(eGameHostOption_LevelType) > 0) {
-        levelTypeString = settings->getString(L"level-type", L"flat");
-    } else {
-        levelTypeString = settings->getString(L"level-type", L"default");
+    std::wstring defaultLevelType = L"default";
+    unsigned int levelTypeOption =
+        app.GetGameHostOption(eGameHostOption_LevelType);
+    if (gameRuleUseFlatWorld) {
+        defaultLevelType = L"flat";
+    } else if (levelTypeOption == e_levelType_Superflat) {
+        defaultLevelType = L"flat";
+    } else if (levelTypeOption == e_levelType_LargeBiomes) {
+        defaultLevelType = L"largeBiomes";
+    } else if (levelTypeOption == e_levelType_Amplified) {
+        defaultLevelType = L"amplified";
     }
+    levelTypeString = settings->getString(L"level-type", defaultLevelType);
 
     LevelType* pLevelType = LevelType::getLevelType(levelTypeString);
     if (pLevelType == nullptr) {

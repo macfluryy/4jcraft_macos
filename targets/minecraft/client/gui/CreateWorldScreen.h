@@ -20,7 +20,7 @@ private:
     bool generateStructures;
     bool bonusChest;
     bool cheatsEnabled;
-    bool flatWorld;
+    int worldType;
 
     Button* gameModeButton;
     Button* moreWorldOptionsButton;
@@ -68,6 +68,7 @@ private:
         bool bGenerateOptions;
         bool bStructures;
         bool bFlatWorld;
+        int iLevelType;
         bool bBonusChest;
         bool bPVP;
         bool bTrust;

@@ -20,6 +20,7 @@ LevelType* LevelType::lvl_normal =
 LevelType* LevelType::lvl_flat = nullptr;  // = new LevelType(1, "flat");
 LevelType* LevelType::lvl_largeBiomes =
     nullptr;  // = new LevelType(2, "largeBiomes");
+LevelType* LevelType::lvl_amplified = nullptr;
 LevelType* LevelType::lvl_normal_1_1 =
     nullptr;  // = new LevelType(8, "default_1_1",
               // 0).setSelectableByUser(false);
@@ -30,6 +31,7 @@ void LevelType::staticCtor() {
     lvl_normal->setHasReplacement();
     lvl_flat = new LevelType(1, L"flat");
     lvl_largeBiomes = new LevelType(2, L"largeBiomes");
+    lvl_amplified = new LevelType(3, L"amplified");
     lvl_normal_1_1 = new LevelType(8, L"default_1_1", 0);
     lvl_normal_1_1->setSelectableByUser(false);
 }
@@ -39,10 +41,7 @@ LevelType::LevelType(int id, std::wstring generatorName) {
 }
 
 LevelType::LevelType(int id, std::wstring generatorName, int version) {
-    m_generatorName = generatorName;
-    m_version = version;
-    m_selectable = true;
-    levelTypes[id] = this;
+    init(id, generatorName, version);
 }
 
 void LevelType::init(int id, std::wstring generatorName, int version) {
@@ -50,6 +49,7 @@ void LevelType::init(int id, std::wstring generatorName, int version) {
     m_generatorName = generatorName;
     m_version = version;
     m_selectable = true;
+    m_replacement = false;
     levelTypes[id] = this;
 }
 
@@ -85,9 +85,10 @@ bool LevelType::hasReplacement() { return m_replacement; }
 LevelType* LevelType::getLevelType(std::wstring name) {
     if (name.length() > 0) {
         for (int i = 0; i < 16; i++) {
+            if (levelTypes[i] == nullptr) continue;
             std::wstring genname = levelTypes[i]->m_generatorName;
 
-            if (levelTypes[i] != nullptr && (genname.compare(name) == 0)) {
+            if (genname.compare(name) == 0) {
                 return levelTypes[i];
             }
         }

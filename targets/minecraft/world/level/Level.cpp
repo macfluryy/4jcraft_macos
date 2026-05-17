@@ -651,8 +651,6 @@ void Level::_init(std::shared_ptr<LevelStorage> levelStorage,
 
     if (levelData == nullptr) {
         levelData = new LevelData(levelSettings, levelName);
-    } else {
-        levelData->setLevelName(levelName);
     }
     if (!this->levelData->useNewSeaLevel())
         seaLevel = Level::genDepth /

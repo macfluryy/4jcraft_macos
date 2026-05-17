@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "EditBox.h"
 #include "MessageScreen.h"
+#include "app/common/App_Defines.h"
 #include "app/common/App_enums.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/All Platforms/UIEnums.h"
@@ -39,7 +40,7 @@ CreateWorldScreen::CreateWorldScreen(Screen* lastScreen)
       generateStructures(true),
       bonusChest(false),
       cheatsEnabled(false),
-      flatWorld(false),
+      worldType(e_levelType_Normal),
       gameModeButton(nullptr),
       moreWorldOptionsButton(nullptr),
       generateStructuresButton(nullptr),
@@ -126,10 +127,15 @@ void CreateWorldScreen::updateStrings() {
                             (bonusChest ? language->getElement(L"options.on")
                                         : language->getElement(L"options.off"));
 
+    const wchar_t* worldTypeKeys[] = {
+        L"selectWorld.mapType.normal", 
+        L"selectWorld.mapType.flat",
+        L"selectWorld.mapType.largeBiomes",
+        L"selectWorld.mapType.amplified"
+    };
     worldTypeButton->msg =
         language->getElement(L"selectWorld.mapType") + L" " +
-        (flatWorld ? language->getElement(L"selectWorld.mapType.flat")
-                   : language->getElement(L"selectWorld.mapType.normal"));
+        language->getElement(worldTypeKeys[worldType]);
 
     cheatsEnabledButton->msg =
         language->getElement(L"selectWorld.allowCommands") + L" " +
@@ -226,7 +232,8 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         // for a temp ui
         moreOptionsParams->bGenerateOptions = true;
         moreOptionsParams->bStructures = generateStructures;
-        moreOptionsParams->bFlatWorld = flatWorld;
+        moreOptionsParams->bFlatWorld = worldType == e_levelType_Superflat;
+        moreOptionsParams->iLevelType = worldType;
         moreOptionsParams->bBonusChest = bonusChest;
         moreOptionsParams->bPVP = true;
         moreOptionsParams->bTrust = true;
@@ -319,7 +326,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
                                   ? GameType::SURVIVAL->getId()
                                   : GameType::CREATIVE->getId());
         app.SetGameHostOption(eGameHostOption_LevelType,
-                              moreOptionsParams->bFlatWorld);
+                              moreOptionsParams->iLevelType);
         app.SetGameHostOption(eGameHostOption_Structures,
                               moreOptionsParams->bStructures);
         app.SetGameHostOption(eGameHostOption_BonusChest,
@@ -381,7 +388,7 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         bonusChest = !bonusChest;
         updateStrings();
     } else if (button->id == 5) {
-        flatWorld = !flatWorld;
+        worldType = (worldType + 1) % 4;
         updateStrings();
     } else if (button->id == 6) {
         cheatsEnabled = !cheatsEnabled;

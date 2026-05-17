@@ -8,7 +8,9 @@
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
@@ -165,10 +167,14 @@ void CanyonFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 
 void CanyonFeature::addFeature(Level* level, int x, int z, int xOffs, int zOffs,
                                std::vector<uint8_t>& blocks) {
-    if (random->nextInt(50) != 0) return;
+    bool amplified =
+        level->getLevelData()->getGenerator() == LevelType::lvl_amplified;
+    if (random->nextInt(amplified ? 14 : 50) != 0) return;
 
     double xCave = x * 16 + random->nextInt(16);
-    double yCave = random->nextInt(random->nextInt(40) + 8) + 20;
+    double yCave = amplified
+                       ? random->nextInt(random->nextInt(90) + 18) + 10
+                       : random->nextInt(random->nextInt(40) + 8) + 20;
     double zCave = z * 16 + random->nextInt(16);
 
     int tunnels = 1;
@@ -177,9 +183,10 @@ void CanyonFeature::addFeature(Level* level, int x, int z, int xOffs, int zOffs,
         float yRot = random->nextFloat() * std::numbers::pi * 2;
         float xRot = ((random->nextFloat() - 0.5f) * 2) / 8;
         float thickness = (random->nextFloat() * 2 + random->nextFloat()) * 2;
+        if (amplified) thickness *= 1.75f;
 
         addTunnel(random->nextLong(), xOffs, zOffs, blocks, xCave, yCave, zCave,
-                  thickness, yRot, xRot, 0, 0, 3.0);
+                  thickness, yRot, xRot, 0, 0, amplified ? 5.0 : 3.0);
 
         // 4J Add to feature list
         app.AddTerrainFeaturePosition(eTerrainFeature_Ravine,

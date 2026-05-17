@@ -381,6 +381,8 @@ void UIScene_LaunchMoreOptionsMenu::handleCheckboxToggled(F64 controlId,
             break;
         case eLaunchCheckbox_FlatWorld:
             m_params->bFlatWorld = selected;
+            m_params->iLevelType =
+                selected ? e_levelType_Superflat : e_levelType_Normal;
             break;
         case eLaunchCheckbox_BonusChest:
             m_params->bBonusChest = selected;

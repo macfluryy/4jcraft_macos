@@ -2330,10 +2330,7 @@ int LevelChunk::getHighestNonEmptyY() {
 std::vector<uint8_t> LevelChunk::getReorderedBlocksAndData(int x0, int y0,
                                                            int z0, int xs,
                                                            int& ys, int zs) {
-    int highestNonEmpty = getHighestNonEmptyY();
-
-    ys = std::min(highestNonEmpty - y0, ys);
-    if (ys < 0) ys = 0;
+    ys = std::min(Level::maxBuildHeight - y0, ys);
 
     int x1 = x0 + xs;
     int y1 = y0 + ys;

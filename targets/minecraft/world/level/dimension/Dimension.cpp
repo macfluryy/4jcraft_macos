@@ -201,7 +201,12 @@ Dimension* Dimension::getNew(int id) {
     return nullptr;
 }
 
-float Dimension::getCloudHeight() { return (float)Level::genDepth; }
+float Dimension::getCloudHeight() {
+    if (levelType == LevelType::lvl_amplified) {
+        return (float)Level::genDepth * 0.74f;
+    }
+    return (float)Level::genDepth;
+}
 
 bool Dimension::hasGround() { return true; }
 

@@ -290,6 +290,15 @@ void PlayerList::placeNewPlayer(Connection* connection,
 
     sendLevelInfo(player, level);
 
+    // 4J macOS - We previously sent a forced RespawnPacket here for the
+    // join-the-game flow, but the client doesn't have its chunks rebuilt
+    // around the correct player position at that point (the chunk grid
+    // gets initialised at the origin during Minecraft::setLevel because
+    // cameraTargetPlayer is still nullptr when LevelRenderer::allChanged
+    // first runs). Instead, the client now triggers a fresh respawn-style
+    // chunk grid rebuild from inside handleMovePlayer once the actual
+    // player position arrives - see ClientConnection::handleMovePlayer.
+
     // 4J-PB - removed, since it needs to be localised in the language the
     // client is in
     // server->players->broadcastAll( std::shared_ptr<ChatPacket>( new
@@ -305,6 +314,13 @@ void PlayerList::placeNewPlayer(Connection* connection,
                  // player is teleported, so we have somewhere to arrive on...
     playerConnection->teleport(player->x, player->y, player->z, player->yRot,
                                player->xRot);
+    if (!playerConnection->isLocal() && !g_NetworkManager.SystemFlagGet(
+            playerConnection->getNetworkPlayer(),
+            ServerPlayer::getFlagIndexForChunk(
+                ChunkPos(player->xChunk, player->zChunk),
+                player->level->dimension->id))) {
+        player->doTick(true, true, true);
+    }
 
     server->getConnection()->addPlayerConnection(playerConnection);
     playerConnection->send(std::make_shared<SetTimePacket>(

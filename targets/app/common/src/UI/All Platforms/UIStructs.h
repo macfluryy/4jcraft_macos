@@ -252,6 +252,7 @@ typedef struct _LaunchMoreOptionsMenuInitData {
     bool bGenerateOptions;
     bool bStructures;
     bool bFlatWorld;
+    int iLevelType;
     bool bBonusChest;
 
     bool bPVP;
@@ -291,6 +292,7 @@ typedef struct _LaunchMoreOptionsMenuInitData {
         bGenerateOptions = false;
         bStructures = false;
         bFlatWorld = false;
+        iLevelType = e_levelType_Normal;
         bBonusChest = false;
         bPVP = true;
         bTrust = false;

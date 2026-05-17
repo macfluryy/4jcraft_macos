@@ -14,6 +14,7 @@
 #include "minecraft/world/level/ChunkPos.h"
 #include "minecraft/world/level/Level.h"
 #include "minecraft/world/level/TilePos.h"
+#include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/biome/Biome.h"
 #include "minecraft/world/level/biome/BiomeCache.h"
 #include "minecraft/world/level/newbiome/layer/Layer.h"
@@ -365,6 +366,17 @@ int64_t BiomeSource::findSeed(LevelType* generator) {
 
     ProgressRenderer* mcprogress = Minecraft::GetInstance()->progressRenderer;
     mcprogress->progressStage(IDS_PROGRESS_NEW_WORLD_SEED);
+
+    // 4J macOS - on Large Biomes the biome scale is ~4x larger linearly
+    // (Layer::getDefaultLayers uses zoomLevel=6 instead of 4), so the fixed
+    // ~200x200 raw biome sample inspected below cannot contain all the
+    // critical biome types getIsMatch() requires. The do/while loop would
+    // never find a matching seed and world creation would hang on the
+    // "Generating new world seed" stage. Use a random seed in that case.
+    if (generator == LevelType::lvl_largeBiomes) {
+        Random rand(System::nanoTime());
+        return rand.nextLong();
+    }
 
 #if !defined(_CONTENT_PACKAGE)
     if (app.DebugSettingsOn() &&

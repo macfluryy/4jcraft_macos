@@ -6,7 +6,9 @@
 #include "java/Random.h"
 #include "minecraft/util/Mth.h"
 #include "minecraft/world/level/Level.h"
+#include "minecraft/world/level/LevelType.h"
 #include "minecraft/world/level/biome/Biome.h"
+#include "minecraft/world/level/storage/LevelData.h"
 #include "minecraft/world/level/tile/Tile.h"
 
 void LargeCaveFeature::addRoom(int64_t seed, int xOffs, int zOffs,
@@ -139,6 +141,12 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
                     for (int yy = y1 - 1; yy >= y0; yy--) {
                         double yd = (yy + 0.5 - yCave) / yRad;
                         if (yd > -0.7 && xd * xd + yd * yd + zd * zd < 1) {
+                            if (level->getLevelData()->getGenerator() ==
+                                    LevelType::lvl_amplified &&
+                                yy > level->seaLevel + 24) {
+                                p--;
+                                continue;
+                            }
                             int block = blocks[p];
                             if (block == Tile::grass_Id) hasGrass = true;
                             if (block == Tile::stone_Id ||
@@ -169,8 +177,10 @@ void LargeCaveFeature::addTunnel(int64_t seed, int xOffs, int zOffs,
 
 void LargeCaveFeature::addFeature(Level* level, int x, int z, int xOffs,
                                   int zOffs, std::vector<uint8_t>& blocks) {
+    bool amplified =
+        level->getLevelData()->getGenerator() == LevelType::lvl_amplified;
     int caves = random->nextInt(random->nextInt(random->nextInt(40) + 1) + 1);
-    if (random->nextInt(15) != 0) caves = 0;
+    if (random->nextInt(amplified ? 10 : 15) != 0) caves = 0;
 
     for (int cave = 0; cave < caves; cave++) {
         double xCave = x * 16 + random->nextInt(16);
@@ -184,6 +194,9 @@ void LargeCaveFeature::addFeature(Level* level, int x, int z, int xOffs,
                     zCave);
             tunnels += random->nextInt(4);
         }
+        if (amplified && random->nextInt(3) == 0) {
+            tunnels += random->nextInt(3);
+        }
 
         for (int i = 0; i < tunnels; i++) {
             float yRot = random->nextFloat() * std::numbers::pi * 2;
@@ -191,6 +204,7 @@ void LargeCaveFeature::addFeature(Level* level, int x, int z, int xOffs,
             float thickness = random->nextFloat() * 2 + random->nextFloat();
             if (random->nextInt(10) == 0)
                 thickness *= random->nextFloat() * random->nextFloat() * 3 + 1;
+            if (amplified) thickness *= 1.2f;
 
             addTunnel(random->nextLong(), xOffs, zOffs, blocks, xCave, yCave,
                       zCave, thickness, yRot, xRot, 0, 0, 1.0);

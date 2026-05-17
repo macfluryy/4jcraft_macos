@@ -50,6 +50,7 @@ public:
 private:
     Level* level;
     const bool generateStructures;
+    bool amplified;
 
     std::vector<float> pows;
 
@@ -69,6 +70,14 @@ public:
 public:
     void buildSurfaces(int xOffs, int zOffs, std::vector<uint8_t>& blocks,
                        std::vector<Biome*>& biomes);
+
+private:
+    void addAmplifiedFloatingIslands(int xOffs, int zOffs,
+                                     std::vector<uint8_t>& blocks,
+                                     std::vector<Biome*>& biomes);
+    void addAmplifiedMountainResources(int xt, int zt);
+    void addAmplifiedHighWaterfalls(int xt, int zt);
+    void addAmplifiedCliffCaves(int xt, int zt);
 
 private:
     LargeFeature* caveFeature;

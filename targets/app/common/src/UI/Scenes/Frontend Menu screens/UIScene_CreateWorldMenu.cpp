@@ -91,6 +91,7 @@ UIScene_CreateWorldMenu::UIScene_CreateWorldMenu(int iPad, void* initData,
     m_MoreOptionsParams.bGenerateOptions = true;
     m_MoreOptionsParams.bStructures = true;
     m_MoreOptionsParams.bFlatWorld = false;
+    m_MoreOptionsParams.iLevelType = e_levelType_Normal;
     m_MoreOptionsParams.bBonusChest = false;
     m_MoreOptionsParams.bPVP = true;
     m_MoreOptionsParams.bTrust = true;
@@ -718,7 +719,6 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
     }
 
     // start the game
-    bool isFlat = pClass->m_MoreOptionsParams.bFlatWorld;
     int64_t seedValue = 0;
 
     NetworkGameInitData* param = new NetworkGameInitData();
@@ -782,7 +782,7 @@ void UIScene_CreateWorldMenu::CreateGame(UIScene_CreateWorldMenu* pClass,
 
     app.SetGameHostOption(eGameHostOption_GameType, pClass->m_iGameModeId);
     app.SetGameHostOption(eGameHostOption_LevelType,
-                          pClass->m_MoreOptionsParams.bFlatWorld);
+                          pClass->m_MoreOptionsParams.iLevelType);
     app.SetGameHostOption(eGameHostOption_Structures,
                           pClass->m_MoreOptionsParams.bStructures);
     app.SetGameHostOption(eGameHostOption_BonusChest,

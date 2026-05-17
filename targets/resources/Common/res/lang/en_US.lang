@@ -74,6 +74,8 @@ selectWorld.mapFeatures.info=Villages, dungeons etc
 selectWorld.mapType=World Type:
 selectWorld.mapType.normal=Normal
 selectWorld.mapType.flat=Superflat
+selectWorld.mapType.largeBiomes=Large Biomes
+selectWorld.mapType.amplified=Amplified
 selectWorld.allowCommands=Allow Cheats:
 selectWorld.allowCommands.info=Commands like /gamemode, /xp
 selectWorld.hardcoreMode=Hardcore:
@@ -83,6 +85,7 @@ selectWorld.bonusItems=Bonus Chest:
 generator.default=Default
 generator.flat=Superflat
 generator.largeBiomes=Large Biomes
+generator.amplified=Amplified
 
 selectServer.title=Select Server
 selectServer.empty=empty
