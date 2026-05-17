@@ -1,7 +1,6 @@
 # 4JCraft — Minecraft Console Edition (Apple Silicon Port)
 
 Unofficial macOS/Apple Silicon port of **Minecraft: Xbox Edition 1.6** (4J Studios build).  
-Tested on **MacBook Air 13" M4 (2025), 16 GB RAM, 512 GB SSD**.
 
 ---
 
@@ -100,9 +99,129 @@ The game window title shows real-time FPS and renderer info, e.g.:
 | `E` | Open inventory |
 | `Esc` | Pause / back |
 | `1–9` | Hotbar slots |
-| `Tab` | Toggle map (if available) |
-| `F1` | Hide HUD |
 | `F3` | In-game info overlay |
+
+---
+
+## World Types
+
+When creating a new world, the **World Type** button on the Create World screen
+cycles through four generators. Each one produces a fundamentally different
+landscape:
+
+| Type | Description |
+|---|---|
+| **Normal** | Default Minecraft Console Edition terrain. Balanced hills, plains, oceans, caves. Recommended starting point. |
+| **Superflat** | Endless flat layers of grass / dirt / bedrock. No mountains, no caves, no biomes. Useful for redstone / building tests. |
+| **Large Biomes** | Same generator as Normal, but biome regions are scaled up several times. You can walk for a long time without leaving a desert / forest / ocean. |
+| **Amplified** | Heavily modified generator: gigantic mountain ranges that can reach the build height limit, deep canyons, frequent rare floating islands with stalactites, snow caps on high stone peaks, large cave entrances cut into mountain sides, tall waterfalls. Designed for cinematic exploration; survival is harder because flat ground is rare. **CPU-intensive** — first chunk batch can stutter on lower-spec machines. |
+
+The selected world type is persisted in the level data and used for both
+single-player and multiplayer sessions.
+
+---
+
+## Multiplayer (Experimental)
+
+> ⚠️ **Experimental.** Direct-connect TCP multiplayer is implemented but
+> incomplete. It is good enough for two people to share a world and walk
+> around, but several systems are still missing or buggy (see *Known
+> limitations* below). Use it for testing, not for serious play.
+
+The multiplayer stack is a thin TCP transport layered on top of the original
+4J Studios `ClientConnection` / `ServerConnection` packet code. There is **no
+matchmaking, no Xbox Live auth, no Realms** — peers exchange data over a raw
+TCP socket on **port 25565** (Minecraft's traditional port; chosen for
+familiarity, this client is **not** compatible with Java / Bedrock servers).
+
+### How it works
+
+1. The host launches a world. As soon as the world is loaded, a TCP listener
+   is started by `PlatformNetworkManagerStub` on port 25565.
+2. The client opens a TCP socket to the host's IP:port and sends a
+   `LoginPacket`. The server replies with `PreLoginPacket`, accepts the
+   login, and starts streaming chunks via `BlockRegionUpdatePacket`.
+3. From that point on the connection uses the same packet framing as the
+   single-player code path — chat, block updates, entity moves, etc. all
+   ride the same `Packet::readPacket` / `writePacket` helpers, just sent
+   through the TCP socket instead of the in-process queue used by
+   split-screen.
+4. Both peers must be running **exactly the same build** of this client —
+   `SharedConstants::NETWORK_PROTOCOL_VERSION` is checked for byte-equality
+   on login.
+
+### Hosting
+
+Just create or load a world the normal way and host it as an online game from
+the world options screen. The TCP listener attaches itself automatically.
+
+To host an **offline** world (useful for quick testing) without going through
+the online toggle, set the listener port via an environment variable before
+launching:
+
+```bash
+cd build/targets/app
+MC_LISTEN_PORT=25565 ./Minecraft.Client
+```
+
+Find the host's LAN IP with `ifconfig | grep "inet "` (or System Settings →
+Network) and share it with the player who wants to join.
+
+### Joining (in-game UI)
+
+1. Click **Play Game** on the title screen.
+2. On the world list, press the **Multiplayer (Direct Connect)** button.
+3. Type the server address. Both forms are supported:
+   - `192.168.1.50` (defaults to port 25565)
+   - `192.168.1.50:25577` (custom port)
+   - `[::1]:25565` (IPv6)
+4. Press **Connect**.
+
+The previously used IP is remembered between launches in `options.txt`
+(`lastMpIp`).
+
+### Joining (command line)
+
+For automated tests or quick connect without going through the menus:
+
+```bash
+cd build/targets/app
+MC_DIRECT_CONNECT=192.168.1.50:25565 ./Minecraft.Client
+```
+
+The client skips the title screen and connects directly. All `[TCP] ...`
+lines printed to the console come from the multiplayer transport and are
+useful when reporting issues.
+
+### Known limitations
+
+These are tracked in `targets/app/common/src/Network/MULTIPLAYER.md`:
+
+- **Dark spawn ring.** Skylight is not recomputed on the client when full
+  chunks arrive — chunks render dim until a block update repropagates light.
+- **No HUD on the joining client.** The fullscreen progress UI scene is not
+  closed automatically because direct-connect bypasses
+  `StateChange_AnyToStarting`.
+- **Other players and mobs are invisible.** `AddPlayerPacket` is dropped on
+  the client because both processes share the same default XUID (no Xbox
+  Live profile is loaded).
+- **Position correction snaps you back.** The server's authoritative
+  player position desynchronises from the client's, so the host's view of
+  the joining player keeps teleporting.
+- **No reconnect.** Disconnecting and rejoining inside the same process
+  has not been tested and will likely require a relaunch.
+- **Same build only.** No protocol-version negotiation; both peers must
+  be built from the same commit.
+
+### Not supported
+
+Connecting to a **Java Edition** or **Bedrock Edition** server is **not
+possible**. This client speaks the original 4J Studios console packet
+format (length-prefixed, big-endian, no VarInts, packet IDs as plain
+bytes, custom `LoginPacket` carrying XUIDs and 4J-specific fields). The
+two protocols share nothing except the default port number. A protocol
+bridge would be a project on the order of ViaVersion / Geyser and is
+out of scope here.
 
 ---
 
