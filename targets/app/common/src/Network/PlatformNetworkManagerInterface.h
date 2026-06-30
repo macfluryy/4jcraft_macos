@@ -16,12 +16,6 @@ class ClientConnection;
 class Minecraft;
 class CGameNetworkManager;
 
-// This is the interface to be implemented by the platform-specific versions of
-// the PlatformNetworkManagers. This API is used directly by GameNetworkManager
-// so that it can remain as platform independent as possible.
-
-// This value should be incremented if the server version changes, or the game
-// session data changes
 #define MINECRAFT_NET_VERSION VER_NETWORK
 
 typedef struct _SearchForGamesData {
@@ -114,9 +108,6 @@ private:
 public:
     virtual void SystemFlagSet(INetworkPlayer* pNetworkPlayer, int index) = 0;
     virtual bool SystemFlagGet(INetworkPlayer* pNetworkPlayer, int index) = 0;
-    // 4J macOS task 5.2 (Req 4.5) - clear a per-system flag so that a chunk
-    // unloaded for a Remote_Client gets re-sent (re-BRUP'd) if the player
-    // later re-enters its view distance.
     virtual void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index) = 0;
 
     virtual std::wstring GatherStats() = 0;
@@ -141,6 +132,5 @@ public:
     virtual void ForceFriendsSessionRefresh() = 0;
 
     virtual void FakeLocalPlayerJoined() {
-    };  // Temporary method whilst we don't have real networking to make this
-        // happen
+    };
 };

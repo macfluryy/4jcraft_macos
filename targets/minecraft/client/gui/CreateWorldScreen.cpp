@@ -133,9 +133,6 @@ void CreateWorldScreen::updateStrings() {
         L"selectWorld.mapType.flat",
         L"selectWorld.mapType.largeBiomes",
         L"selectWorld.mapType.amplified",
-        // 4J macOS - Triple world type uses the same chunk shape as Normal,
-        // but BiomeInitLayer restricts the placement table to only forest /
-        // ice plains / extreme hills. The new key adds the cycle button entry.
         L"selectWorld.mapType.triple"
     };
     worldTypeButton->msg =
@@ -354,17 +351,8 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         param->settings = app.GetGameHostOption(eGameHostOption_All);
         param->xzSize = LEVEL_MAX_WIDTH;
         param->hellScale = HELL_LEVEL_MAX_SCALE;
-
-        // 4J macOS - clear leftover terrain feature positions from a
-        // previously loaded world before generating a new one. The
-        // legacy Iggy menus did this in UIScene_CreateWorldMenu /
-        // UIScene_LoadMenu but our Java-style CreateWorldScreen never
-        // did, so the F3 overlay would mix stronghold/village/ravine
-        // entries from the previous session into the brand new world.
         app.ClearTerrainFeaturePosition();
 
-        // 4J macOS - apply the chosen nickname before hosting (see
-        // SelectWorldScreen for the rationale).
         if (minecraft->user != nullptr && minecraft->options != nullptr &&
             !minecraft->options->lastMpNickname.empty()) {
             minecraft->user->name = minecraft->options->lastMpNickname;
@@ -408,7 +396,6 @@ void CreateWorldScreen::buttonClicked(Button* button) {
         bonusChest = !bonusChest;
         updateStrings();
     } else if (button->id == 5) {
-        // 4J macOS - cycle through 5 entries now (added Triple slot 4).
         worldType = (worldType + 1) % 5;
         updateStrings();
     } else if (button->id == 6) {

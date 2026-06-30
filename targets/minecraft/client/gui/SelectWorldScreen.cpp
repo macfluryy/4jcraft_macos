@@ -106,9 +106,6 @@ void SelectWorldScreen::postInit() {
                                  language->getElement(L"selectWorld.create")));
     buttons.push_back(new Button(BUTTON_CANCEL_ID, width / 2 + 4, height - 28,
                                  150, 20, language->getElement(L"gui.cancel")));
-
-    // 4J macOS - "Multiplayer" button. Place it at top-center, where the
-    // user can't miss it. Width 200 so the label fits on any GUI scale.
     /*buttons.push_back(new Button(BUTTON_MULTIPLAYER_ID,
                                  width / 2 - 100, 4, 200, 20,
                                  L"Multiplayer (Direct Connect)"));
@@ -157,7 +154,6 @@ void SelectWorldScreen::buttonClicked(Button* button) {
             "minecraft->setScreen(lastScreen)\n");
         minecraft->setScreen(lastScreen);
     /*} else if (button->id == BUTTON_MULTIPLAYER_ID) {
-        // 4J macOS - jump to the IP entry screen for direct-connect TCP join.
         fprintf(stderr,
                 "[TCP] SelectWorldScreen::Multiplayer -> "
                 "JoinMultiplayerScreen\n");
@@ -243,16 +239,8 @@ void SelectWorldScreen::worldSelected(int id) {
     param->xzSize = LEVEL_MAX_WIDTH;
     param->hellScale = HELL_LEVEL_MAX_SCALE;
 
-    // 4J macOS - clear stale terrain feature positions from any
-    // previously loaded world before re-mounting this save. The
-    // structures will repopulate as chunks generate / are read from
-    // disk; without this clear the F3 overlay shows entries from the
-    // previous world layered on top of the new one.
     app.ClearTerrainFeaturePosition();
 
-    // 4J macOS - apply the player's chosen nickname (Title -> Username
-    // screen) before hosting so chat / tab list / death messages use it
-    // instead of the auto-generated PlayerNNNN created at startup.
     if (minecraft->user != nullptr && minecraft->options != nullptr &&
         !minecraft->options->lastMpNickname.empty()) {
         minecraft->user->name = minecraft->options->lastMpNickname;

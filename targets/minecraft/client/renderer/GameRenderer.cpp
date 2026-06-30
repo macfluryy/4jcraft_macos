@@ -250,10 +250,6 @@ void GameRenderer::tick(bool first)  // 4J - add bFirst
         mc->cameraTargetPlayer = std::dynamic_pointer_cast<Mob>(mc->player);
     }
 
-    // 4J macOS - If we still have no camera target (e.g. between levels
-    // or on a half-set-up second-client multiplayer join) bail out of the
-    // tick instead of null-derefing in getBrightness below. The next
-    // frame will have a valid player once handleLogin / setLevel finish.
     if (mc->cameraTargetPlayer == nullptr) {
         return;
     }
@@ -897,11 +893,6 @@ void GameRenderer::updateLightTexture(float a) {
             darkenWorldAmountO + (darkenWorldAmount - darkenWorldAmountO) * a;
         bool hasNV = player->hasEffect(MobEffect::nightVision);
         float nvScale = hasNV ? getNightVisionScale(player, a) : 0.0f;
-
-        // 4J macOS - include the gamma/brightness slider value in the
-        // cache key so dragging the Brightness slider in Video Settings
-        // actually invalidates the cached lightmap and produces a
-        // visible change.
         float gammaVal = (mc && mc->options) ? mc->options->gamma : 0.0f;
 
         uint64_t key = 0;
@@ -977,10 +968,6 @@ void GameRenderer::updateLightTexture(float a) {
             if (_g > 1) _g = 1;
             if (_b > 1) _b = 1;
 
-            // 4J macOS - restored from original Java path. Was hard-coded
-            // to 0.0 with a TODO, which made the Brightness slider in
-            // Video Settings do nothing visible. gamma is 0..1 (set by
-            // SlideButton in VideoSettingsScreen / OptionsScreen).
             float brightness =
                 (mc && mc->options) ? mc->options->gamma : 0.0f;
 
@@ -1271,9 +1258,7 @@ void GameRenderer::renderLevel(float a, int64_t until) {
     {
         mc->cameraTargetPlayer = mc->player;
     }
-    // 4J macOS - bail out if we still have no camera target. Hits during
-    // handleLogin -> setLevel transitions on slow remote clients where
-    // mc->player has not been wired up yet.
+
     if (mc->cameraTargetPlayer == nullptr) return;
     pick(a);
 
@@ -2143,26 +2128,6 @@ void GameRenderer::setupFog(int i, float alpha) {
             }
         }
 
-        // 4J macOS - Phase B3 atmosphere polish. Amplified-only,
-        // overworld-only. We don't touch Nether / End / cloud /
-        // underwater / underlava paths above. Two effects:
-        //
-        //   1. Slightly thicker distance fog (-7%) so the giant
-        //      cliffs read with a bit of atmospheric depth instead
-        //      of crisp edge-of-render visibility.
-        //
-        //   2. Biome-aware nudge using the camera column's biome
-        //      temperature:
-        //        cold (taiga / ice plains, temp < 0.4): alpine
-        //          haze, push fog slightly closer (-5% more).
-        //        hot+humid (jungle, temp > 0.95):
-        //          humid jungle haze, push fog closer (-8% more).
-        //        temperate: leave at -7% baseline.
-        //
-        // All effects are tiny (single-digit percentage) so vanilla
-        // gameplay sightlines are preserved. We only scale `distance`
-        // here; FOG_START / FOG_END are derived from it just below
-        // and inherit the change automatically.
         if (mc->level != nullptr &&
             mc->level->getLevelData() != nullptr &&
             mc->level->getLevelData()->getGenerator() ==

@@ -970,11 +970,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
 
         // TERRAIN FEATURES
         int iYPos = 82;
-
-        // 4J macOS - read player coords for the structure-distance
-        // calculation. Coords themselves are already shown by the
-        // existing x:/y:/z:/f: block further down, so don't render
-        // them here - just compute the values.
         int playerX = 0, playerY = 0, playerZ = 0;
         (void)playerY;
         if (minecraft->player != nullptr) {
@@ -993,13 +988,6 @@ void Gui::render(float a, bool mouseFree, int xMouse, int yMouse) {
 
             for (int i = 0; i < (int)app.m_vTerrainFeatures.size(); i++) {
                 FEATURE_DATA* pFeatureData = app.m_vTerrainFeatures[i];
-
-                // 4J macOS - convert stored chunk coordinates to the
-                // block-space centre of the chunk (chunk*16 + 8) and
-                // show the straight-line distance from the player so
-                // the entry is actually navigable. Was raw chunk*16
-                // before, which read as the NW corner of the chunk -
-                // off by a few blocks and offered no scale reference.
                 int featX = pFeatureData->x * 16 + 8;
                 int featZ = pFeatureData->z * 16 + 8;
                 int dx = featX - playerX;
@@ -1127,11 +1115,6 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
     unsigned int max = 10;
     bool isChatting = false;
     if (dynamic_cast<ChatScreen*>(minecraft->screen) != nullptr) {
-        // 4J macOS - ChatScreen renders its own scrollable log overlay
-        // (with mouse-wheel / PgUp / PgDn scrolling). The vanilla Java
-        // Gui::render path below would draw a second, non-scrollable
-        // 20-line stack on top of it. Skip the duplicate here; we still
-        // hide the Iggy/Flash chat via getOpacity().
         max = 0;
         isChatting = true;
     }
@@ -1197,17 +1180,7 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
         glPopMatrix();
     }
 
-    // 4J macOS - Tab-key player list overlay. Drawn last so it sits on
-    // top of the rest of the HUD. Only show when the player has the
-    // TAB-bound key held and we're actually in a world with a screen
-    // dismissed (no inventory/menu open).
     {
-        // Tab can come from either path: the engine's mirror in
-        // JavaKeyInput::keysCurrent (driven by SDL_KEYDOWN events) or a
-        // direct query of SDL's keyboard state. We accept either, because
-        // on macOS the SDL_KEYDOWN path can be swallowed when other
-        // windows steal focus, while SDL_GetKeyboardState() still
-        // reflects the physical key.
         bool tabDown = Keyboard::isKeyDown(Keyboard::KEY_TAB);
         if (!tabDown) {
             const Uint8* sdlState = SDL_GetKeyboardState(nullptr);
@@ -1219,12 +1192,6 @@ max) + "% (" + (total / 1024 / 1024) + "MB)"; drawString(font, msg, screenWidth
             renderPlayerList(screenWidth, screenHeight);
         }
     }
-
-    // 4J macOS - tutorial popup overlay was rendered here. Removed at
-    // user request - the bundled Tutorial.mcs world remains usable
-    // without the on-screen prompts; players who specifically want
-    // tutorial guidance can still play the world, just without the
-    // hint banner.
 
     glColor4f(1, 1, 1, 1);
     glDisable(GL_BLEND);
@@ -1352,11 +1319,6 @@ void Gui::renderTp(float br, int w, int h) {
     glColor4f(1, 1, 1, 1);
 }
 
-// 4J macOS - Vanilla-style player list shown while TAB is held. We pull
-// the current set of players directly from the level (Level::players is a
-// public std::vector of shared_ptr<Player>) so this works for both the
-// host (server tick keeps the list up-to-date) and remote direct-connect
-// clients (handleAddPlayer / handleRemoveEntity drive the same list).
 void Gui::renderPlayerList(int screenWidth, int screenHeight) {
     if (minecraft == nullptr || minecraft->level == nullptr) return;
     Font* font = minecraft->font;
@@ -1427,15 +1389,6 @@ void Gui::renderPlayerList(int screenWidth, int screenHeight) {
     int y0 = 10;
     int x1 = x0 + totalWidth;
     int y1 = y0 + totalHeight;
-
-    // 4J macOS - Re-establish the full GUI projection / state.
-    // Gui::render goes through many sub-paths (HUD, status bars, item
-    // tooltips, debug overlay, ENABLE_JAVA_GUIS chat block) that each
-    // fiddle with matrix mode, blend, alpha and texture state. By the
-    // time we get here at the very end of Gui::render, glOrtho /
-    // glLoadIdentity / alpha-func are not necessarily what Font::draw
-    // expects. setupGuiScreen() resets the lot in one shot, exactly the
-    // way the chat-screen path does (which renders text reliably).
     minecraft->gameRenderer->setupGuiScreen(-1);
 
     glEnable(GL_BLEND);
@@ -1450,13 +1403,6 @@ void Gui::renderPlayerList(int screenWidth, int screenHeight) {
     fill(x1 - 1, y0, x1, y1, 0xFFFFFFFF);
     // Header strip a little brighter so it visually separates.
     fill(x0 + 1, y0 + 1, x1 - 1, y0 + lineHeight + 1, 0xC0202060);
-
-    // 4J macOS - re-establish GL state for text after fill(). fill() ends
-    // with glDisable(GL_BLEND) and the texture unit pointed at whatever
-    // was last used; Font::draw expects blending to be ON and color set
-    // to (1,1,1,1) before it overrides it per-character. Without these
-    // resets the glyphs would silently render with the wrong blend mode
-    // (or get culled entirely by the alpha test path).
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_TEXTURE_2D);
@@ -1684,10 +1630,6 @@ void Gui::addMessage(const std::wstring& _string, int iPad,
 
 // 4J Added
 float Gui::getOpacity(int iPad, std::size_t index) {
-    // 4J macOS - hide Iggy/Flash HUD chat lines while the Java
-    // ChatScreen is open. ChatScreen renders its own scrollable
-    // overlay (which lets the player read /help, /list etc.) and
-    // without this we get a duplicate stack of lines on screen.
     if (minecraft != nullptr &&
         dynamic_cast<ChatScreen*>(minecraft->screen) != nullptr) {
         return 0.0f;

@@ -1044,12 +1044,6 @@ void Game::ActionGameSettings(int iPad, eGameSetting eVal) {
             break;
         case eGameSetting_Difficulty:
             if (iPad == ProfileManager.GetPrimaryPad()) {
-                // 4J macOS - The Iggy slider passes an absolute 0..3
-                // value, so set the field directly instead of routing
-                // through Options::toggle which now performs an
-                // increment (see comment in Options::toggle). Going
-                // through toggle here would advance from the slider
-                // value rather than landing on it.
                 pMinecraft->options->difficulty =
                     GameSettingsA[iPad]->usBitmaskValues & 0x03;
                 app.DebugPrintf("Difficulty toggle to %d\n",
@@ -2574,17 +2568,6 @@ void Game::HandleXuiActions(void) {
                 } break;
 
                 case eAppAction_ExitWorld:
-                    // 4J macOS - restore the vanilla invariant that a valid
-                    // screen exists BEFORE exitingWorldRightNow makes
-                    // run_middle render `screen`. Vanilla LCE assigned the
-                    // DisconnectedScreen up front in ClientConnection::
-                    // handleDisconnect; the macOS port moved screen creation to
-                    // the async ExitWorldThreadProc, which runs only after
-                    // run_middle has already null-dereferenced `screen` (no menu
-                    // is open on an in-world server disconnect). Recreate it here
-                    // synchronously on the main thread - the reason was stashed
-                    // in app by handleDisconnect - so the very next run_middle
-                    // renders a valid disconnect screen instead of crashing.
                     if (pMinecraft->screen == nullptr) {
                         std::wstring reasonText = app.GetDisconnectReasonText();
                         if (reasonText.empty()) {
@@ -7235,7 +7218,6 @@ bool Game::IsLocalMultiplayerAvailable() {
 
     return available;
 
-    // Found this in GameNetworkManager?
     // #ifdef 0
     //		iOtherConnectedControllers =
     // InputManager.GetConnectedGamepadCount();
@@ -7626,9 +7608,6 @@ void Game::LocaleAndLanguageInit() {
 }
 
 void Game::SetTickTMSDLCFiles(bool bVal) {
-    // 4J-PB - we need to stop the retrieval of minecraft store images from TMS
-    // when we aren't in the DLC, since going in to Play Game will change the
-    // title id group
     m_bTickTMSDLCFiles = bVal;
 }
 

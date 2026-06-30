@@ -35,11 +35,6 @@ void VideoSettingsScreen::init() {
         Options::Option::ADVANCED_OPENGL,
         Options::Option::GAMMA,
         Options::Option::FOV,
-        // 4J macOS - performance toggles. Both options were defined
-        // on Options::Option but never wired into the visible menu;
-        // adding them here lets the player turn off cloud rendering
-        // (free FPS over big amplified maps) and dial particles down
-        // to "minimal" without editing options.txt by hand.
         Options::Option::RENDER_CLOUDS,
         Options::Option::PARTICLES};
 

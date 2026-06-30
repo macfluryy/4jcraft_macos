@@ -1,6 +1,5 @@
 #pragma once
 
-// 4J Stu - For non-splitscreen menus, default to this screen
 #define DEFAULT_XUI_MENU_USER 0
 #define MULTITHREAD_ENABLE
 #define MAX_CAPENAME_SIZE 32
@@ -8,14 +7,9 @@
 #define MAX_TMSFILENAME_SIZE 40
 #define MAX_TYPE_SIZE 32
 #define MAX_EXTENSION_TYPES 3
-
 #define MAX_LOCAL_PLAYERS 4
-
-// 4J Stu - Required for sentient reporting of whether the volume level has been
-// changed or not
 #define DEFAULT_VOLUME_LEVEL 100
-
-#define GAME_HOST_OPTION_BITMASK_DIFFICULTY 0x00000003  // 0 - 3
+#define GAME_HOST_OPTION_BITMASK_DIFFICULTY 0x00000003
 #define GAME_HOST_OPTION_BITMASK_FRIENDSOFFRIENDS 0x00000004
 #define GAME_HOST_OPTION_BITMASK_GAMERTAGS 0x00000008
 #define GAME_HOST_OPTION_BITMASK_GAMETYPE 0x00000030
@@ -35,8 +29,7 @@
 #define GAME_HOST_OPTION_BITMASK_DISABLESAVE 0x00040000
 #define GAME_HOST_OPTION_BITMASK_NOTOWNER 0x00080000
 #define GAME_HOST_OPTION_BITMASK_WORLDSIZE \
-    0x00700000  // 3 bits, 5 values (unset(0), classic(1), small(2), medium(3),
-                // large(4))
+    0x00700000
 #define GAME_HOST_OPTION_BITMASK_MOBGRIEFING 0x00800000
 #define GAME_HOST_OPTION_BITMASK_KEEPINVENTORY 0x01000000
 #define GAME_HOST_OPTION_BITMASK_DOMOBSPAWNING 0x02000000
@@ -45,7 +38,6 @@
 #define GAME_HOST_OPTION_BITMASK_NATURALREGEN 0x10000000
 #define GAME_HOST_OPTION_BITMASK_DODAYLIGHTCYCLE 0x20000000
 #define GAME_HOST_OPTION_BITMASK_ALL 0xFFFFFFFF
-
 #define GAME_HOST_OPTION_BITMASK_WORLDSIZE_BITSHIFT 20
 
 enum EGameHostOptionLevelType {
@@ -53,8 +45,6 @@ enum EGameHostOptionLevelType {
     e_levelType_Superflat = 1,
     e_levelType_LargeBiomes = 2,
     e_levelType_Amplified = 3,
-    // 4J macOS - "Triple" world type. Only three biomes (forest /
-    // ice plains / extreme hills) generate. Same chunk shape as Normal.
     e_levelType_Triple = 4
 };
 
@@ -68,22 +58,12 @@ enum EGameHostOptionWorldSize {
 
 #define PROFILE_VERSION_8 10
 #define PROFILE_VERSION_9 11
-
 #define PROFILE_VERSION_10 12
-
-// 4J-JEV: New Statistics and Achievements for 'NexGen' platforms.
 #define PROFILE_VERSION_11 13
-
-// Java 1.6.4
 #define PROFILE_VERSION_12 14
-
 #define PROFILE_VERSION_CURRENT PROFILE_VERSION_12
-
 #define MAX_FAVORITE_SKINS \
-    10  // these are stored in the profile data so keep it small
-
-// defines for game settings - uiBitmaskValues
-
+    10
 #define GAMESETTING_CLOUDS 0x00000001
 #define GAMESETTING_ONLINE 0x00000002
 #define GAMESETTING_INVITEONLY 0x00000004

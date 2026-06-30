@@ -140,7 +140,6 @@ void UIScene_JoinMenu::tick() {
             case e_levelType_Amplified:
                 m_labelValues[eLabel_LevelType].init(L"Amplified");
                 break;
-            // 4J macOS - Triple world type label in the Join Menu summary.
             case e_levelType_Triple:
                 m_labelValues[eLabel_LevelType].init(L"Triple");
                 break;

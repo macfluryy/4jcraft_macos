@@ -283,25 +283,14 @@ if (c.get(Calendar.MONTH) + 1 == 11 && c.get(Calendar.DAY_OF_MONTH) == 9) {
         buttons.push_back(new Button(4, width / 2 + 2,
                                      topPos + spacing * 3 + 12, 98, 20,
                                      language->getElement(L"menu.quit")));
-        // 4J macOS - Tutorial entry. Loads the bundled Tutorial.mcs save
-        // (the original 4J Studios pre-built tutorial world). The Iggy /
-        // Flash main menu had a button for this but we use the Java-style
-        // TitleScreen instead, so without this row the only way to play
-        // the tutorial was an env-var trigger.
         buttons.push_back(new Button(5, width / 2 - 100,
                                      topPos + spacing * 4 + 12, 200, 20,
                                      L"Play Tutorial"));
-        // 4J macOS - "Username" entry below Tutorial. Opens a small
-        // editor screen that writes Options::lastMpNickname so direct-
-        // connect MP picks up the user's chosen name.
         buttons.push_back(new Button(6, width / 2 - 100,
                                      topPos + spacing * 5 + 12, 200, 20,
                                      L"Username"));
     }
 
-    // 4J macOS - the Multiplayer button used to be disabled when user==null,
-    // but on the desktop port we don't always wire up minecraft->user before
-    // this screen loads. Keep it always active so direct-connect works.
     multiplayerButton->active = true;
     fprintf(stderr,
             "[TCP] TitleScreen::init - multiplayerButton forced active\n");
@@ -339,12 +328,6 @@ void TitleScreen::buttonClicked(Button* button) {
         RenderManager.Close();  // minecraft->stop();
     }
     if (button->id == 5) {
-        // 4J macOS - Play Tutorial. Mirrors UIScene_MainMenu::LoadTrial
-        // from the original Iggy/Flash main menu, just without the
-        // trial-timer overlay (we are not running a time-limited demo).
-        // Tutorial.mcs is bundled in res/TitleUpdate/GameRules and
-        // GameRuleManager registers it at index 0 of the level
-        // generators list during InitGameSettings.
         app.DebugPrintf(
             "TitleScreen::buttonClicked() 'Play Tutorial' if (button->id == "
             "5)\n");
@@ -400,7 +383,6 @@ void TitleScreen::buttonClicked(Button* button) {
                            eUIScene_FullscreenProgress, loadingParams);
     }
     if (button->id == 6) {
-        // 4J macOS - open the dedicated username editor.
         app.DebugPrintf(
             "TitleScreen::buttonClicked() 'Username' if (button->id == 6)\n");
         minecraft->setScreen(new UsernameScreen(this));

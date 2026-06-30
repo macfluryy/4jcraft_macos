@@ -907,47 +907,18 @@ void ItemInHandRenderer::renderFire(float a) {
     float gCol = ((col >> 8) & 0xFF) / 255.0;
     float bCol = (col & 0xFF) / 255.0;
 
-    // 4J macOS - Fire screen overlay must be drawn without fog and
-    // without lighting. The overlay quads sit at z = -0.5 in eye space
-    // which is well inside the GL_EXP/GL_EXP2 fog ranges used while
-    // the player is submerged in lava (density 2.0); without the
-    // disable below, the fog factor at z=-0.5 collapses the overlay
-    // colour toward the (dark / black) lava fog colour, leaving the
-    // burning overlay rendering as solid black instead of orange.
-    //
-    // We can't trust glIsEnabled here - the renderer routes fog state
-    // through the C4JRender shader uniform pipeline, not the legacy
-    // fixed-function GL flags, so glIsEnabled would always report false
-    // even while the shader's uFogEnable is 1. Just disable it
-    // unconditionally and re-enable on the way out.
     glDisable(GL_FOG);
     glDisable(GL_LIGHTING);
-    // 4J macOS - DEBUG: disable texturing so the quad is solid color
-    // (no texture sampling at all). If the quad still renders black
-    // it's a vertex color / blend issue, not a texture issue.
     glDisable(GL_TEXTURE_2D);
 
-    // 4J macOS - the killer was lightmap multiplication in the shader.
-    // The fragment shader does `c.rgb *= texture(uTex1, vUV1).rgb`
-    // when uUseLightmap != 0, and the lightmap texture left over from
-    // entity / particle rendering can be black at the overlay's UV
-    // coords (the screen-fire quad has no real lightmap binding).
-    // Multiplying our orange overlay by black gave the solid black
-    // quad we were seeing. Force the lightmap path off here.
     RenderManager.TextureBindVertex(-1);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // 4J macOS - DEBUG: force state cache reset by flipping color
-    // twice. This bypasses the s_rs.baseColor change-detection and
-    // ensures uBaseColor really gets pushed.
     RenderManager.StateSetColour(0.0f, 0.0f, 0.0f, 0.0f);
     RenderManager.StateSetColour(1.0f, 0.5f, 0.0f, 1.0f);
 
-    // 4J macOS - DEBUG: temporarily ignore the colourtable & always
-    // render bright orange so we can confirm whether the path is
-    // actually reaching the screen.
     int rb = 255;
     int gb = 128;
     int bb = 0;
@@ -993,7 +964,6 @@ void ItemInHandRenderer::renderFire(float a) {
     }
     glColor4f(1, 1, 1, 1);
     glDisable(GL_BLEND);
-    // 4J macOS - DEBUG: restore texturing.
     glEnable(GL_TEXTURE_2D);
 
     // Re-enable fog so the rest of the frame (water overlay, etc) goes

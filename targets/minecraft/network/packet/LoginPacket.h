@@ -30,11 +30,6 @@ public:
     unsigned int m_uiGamePrivileges;
     int m_xzSize;     // 4J Added
     int m_hellScale;  // 4J Added
-
-    // 4J macOS - Server -> Client Server_View_Distance in chunks. Sent during
-    // login so the remote client can compute its Effective_View_Distance before
-    // any BlockRegionUpdatePacket arrives. Meaningless (0) for the
-    // Client -> Server direction.
     int serverViewDistance;
 
     // 1.8.2

@@ -13,19 +13,10 @@
 #include "minecraft/client/gui/Screen.h"
 #include "minecraft/locale/Language.h"
 #include "util/StringHelpers.h"
-
-// JavaEdition module (the ONLY networking the browser is allowed to reach).
 #include "app/common/src/JavaEdition/JavaAddressParser.h"
 #include "app/common/src/JavaEdition/JavaServerEntry.h"
 #include "app/common/src/JavaEdition/JavaServerProxy.h"
-// Phase 2 chat-only screen, kept as fallback if proxy startup fails.
 #include "JavaChatSessionScreen.h"
-
-// Phase 3 direct-connect path. We can't call JoinMultiplayerScreen::tryConnect
-// because it is private to that class, so the connect logic below mirrors it
-// locally: start a local TCP proxy, then hand 127.0.0.1:<proxyPort> to the
-// LCE direct-connect helper (TemporaryDirectConnectStartEx + Fullscreen
-// Progress) so the existing LCE multiplayer stack creates the world.
 #include "app/common/App_enums.h"
 #include "app/common/src/Network/GameNetworkManager.h"
 #include "app/common/src/UI/All Platforms/UIStructs.h"
@@ -34,20 +25,8 @@
 #include "app/mac/Mac_UIController.h"
 #include "platform/sdl2/Profile.h"
 
-// This screen is fully isolated from the LCE networking core: it does NOT
-// include Connection.h / Packet.h / PlayerConnection.h / Socket.h and never
-// touches g_NetworkManager or Packet::writePacket (Req 20.1 / 20.3). Java
-// server I/O is reached exclusively through the JavaEdition module. The
-// pending-mode-switch indirection below exists because Screen::mouseClicked
-// iterates the `buttons` vector while dispatching buttonClicked(); rebuilding
-// that vector synchronously inside a handler would invalidate the iterator, so
-// every mode change is deferred to the next tick() instead.
-
 namespace {
 
-// Converts a wstring nickname to a plain ASCII string (low-byte per code unit)
-// for the Java 1.8 Login Start username field. Minecraft usernames are ASCII-
-// only by the game's own constraint, so this is lossless for valid names.
 std::string narrowAsciiNick(const std::wstring& s) {
     std::string out;
     out.reserve(s.size());
@@ -57,19 +36,14 @@ std::string narrowAsciiNick(const std::wstring& s) {
     return out;
 }
 
-}  // namespace
+}
 
 JavaServerListScreen::JavaServerListScreen(Screen* lastScreen)
-    // Resolve the store the same way Options does, but via the static accessor
-    // since `minecraft` is not yet wired up at construction time. This yields
-    // the same working directory (~/Library/Application Support/4jcraft).
     : m_lastScreen(lastScreen),
       m_store(Minecraft::getWorkingDirectory()),
       m_pinger(nullptr) {}
 
 JavaServerListScreen::~JavaServerListScreen() {
-    // Safety net in case removed() did not run: the pinger's destructor joins
-    // every worker thread so none outlives this object.
     delete m_pinger;
     m_pinger = nullptr;
     clearEditBoxes();
@@ -80,9 +54,6 @@ void JavaServerListScreen::init() {
     (void)language;
 
     Keyboard::enableRepeatEvents(true);
-
-    // Load the persisted list (Req 3.2) and surface a notice if any line was
-    // corrupt (Req 3.6).
     JavaServerListStore::LoadResult loaded = m_store.load();
     m_list = loaded.list;
     m_corruptNotice = loaded.hadCorruptLines;
@@ -102,18 +73,12 @@ void JavaServerListScreen::init() {
 }
 
 void JavaServerListScreen::tick() {
-    // Apply any mode switch requested from inside a button handler now that the
-    // Screen::mouseClicked dispatch loop has finished iterating `buttons`.
     if (m_pendingModeSwitch) {
         applyPendingModeSwitch();
     }
 
     if (m_nameEdit != nullptr) m_nameEdit->tick();
     if (m_addrEdit != nullptr) m_addrEdit->tick();
-
-    // Poll the asynchronous pinger on the UI thread; this never blocks
-    // (Req 4.9). Each row keeps the id of its in-flight ping so stale results
-    // from a previous refresh generation are simply ignored.
     if (m_pinger != nullptr) {
         const size_t n = std::min(m_results.size(), m_pingIds.size());
         for (size_t i = 0; i < n; ++i) {
@@ -128,8 +93,6 @@ void JavaServerListScreen::tick() {
 
 void JavaServerListScreen::removed() {
     Keyboard::enableRepeatEvents(false);
-    // Stop and join all ping workers before this screen goes away (Req 4.8 /
-    // 20.1), then release the pinger deterministically.
     if (m_pinger != nullptr) {
         m_pinger->cancelAll();
         delete m_pinger;
@@ -137,8 +100,6 @@ void JavaServerListScreen::removed() {
     }
     clearEditBoxes();
 }
-
-// --- Mode / widget management ------------------------------------------------
 
 void JavaServerListScreen::clearEditBoxes() {
     delete m_nameEdit;
@@ -167,9 +128,6 @@ void JavaServerListScreen::enterEditMode(int index) {
 
 void JavaServerListScreen::applyPendingModeSwitch() {
     m_pendingModeSwitch = false;
-
-    // The about-to-be-deleted buttons may be referenced by the base class's
-    // clickedButton; drop that reference first to avoid a dangling compare.
     clickedButton = nullptr;
     clearEditBoxes();
 
@@ -197,8 +155,6 @@ void JavaServerListScreen::applyPendingModeSwitch() {
         m_addrEdit->focus(false);
     } else {
         m_editIndex = -1;
-        // Re-ping after any list mutation so results stay aligned to the new
-        // order; entering the list also (re)starts pings from scratch.
         refreshPings();
     }
 
@@ -214,7 +170,6 @@ void JavaServerListScreen::rebuildButtons() {
     Language* language = Language::getInstance();
 
     if (m_mode == Mode::List) {
-        // A row of selection/action buttons, then a full-width Back button.
         const int bw = 72;
         const int bh = 20;
         const int gap = 4;
@@ -261,20 +216,13 @@ void JavaServerListScreen::updateButtonStates() {
     }
 }
 
-// --- List operations ---------------------------------------------------------
-
 void JavaServerListScreen::commitAddEdit() {
     if (m_nameEdit == nullptr || m_addrEdit == nullptr) return;
 
     const std::wstring name = trimString(m_nameEdit->getValue());
     const std::wstring addr = trimString(m_addrEdit->getValue());
-
-    // Parse the address exactly like the LCE screen does (Req 2.2/2.3/2.4,
-    // 5.2) via the shared parser.
     const ParsedAddress parsed = parseAddress(addr);
     if (parsed.hostEmpty) {
-        // Reject and leave the list unchanged (Req 2.7); keep the form open so
-        // the user can fix the address.
         m_statusMessage = L"Server address must not be empty";
         return;
     }
@@ -287,16 +235,16 @@ void JavaServerListScreen::commitAddEdit() {
     bool ok;
     if (m_editIndex >= 0 &&
         static_cast<size_t>(m_editIndex) < m_list.size()) {
-        ok = m_list.edit(static_cast<size_t>(m_editIndex), entry);  // Req 2.5
+        ok = m_list.edit(static_cast<size_t>(m_editIndex), entry);
     } else {
-        ok = m_list.add(entry);  // Req 2.1
+        ok = m_list.add(entry);
     }
     if (!ok) {
         m_statusMessage = L"Server address must not be empty";
         return;
     }
 
-    m_store.save(m_list);  // persist on every change (Req 3.1)
+    m_store.save(m_list);
     m_selected = -1;
     enterListMode();
 }
@@ -305,10 +253,10 @@ void JavaServerListScreen::deleteSelected() {
     if (m_selected < 0 || static_cast<size_t>(m_selected) >= m_list.size()) {
         return;
     }
-    m_list.remove(static_cast<size_t>(m_selected));  // Req 2.6
-    m_store.save(m_list);                            // persist (Req 3.1)
+    m_list.remove(static_cast<size_t>(m_selected));
+    m_store.save(m_list);
     m_selected = -1;
-    enterListMode();  // re-pings the updated list
+    enterListMode();
 }
 
 void JavaServerListScreen::connectSelected() {
@@ -325,10 +273,6 @@ void JavaServerListScreen::connectSelected() {
         for (unsigned char c : entry.host) displayName.push_back((wchar_t)c);
     }
 
-    // Phase 3: launch the bridge proxy and hand the LCE direct-connect
-    // helper a 127.0.0.1 address. The proxy stays alive for the duration of
-    // the game session via the g_activeJavaProxy global; replacing an existing
-    // active proxy disposes of it cleanly first.
     if (g_activeJavaProxy != nullptr) {
         g_activeJavaProxy->requestStop();
         delete g_activeJavaProxy;
@@ -338,8 +282,6 @@ void JavaServerListScreen::connectSelected() {
     int proxyPort = proxy->startListening();
     if (proxyPort <= 0) {
         delete proxy;
-        // Fallback to Phase 2 chat-only screen so the user at least gets
-        // a useful surface rather than a silent no-op.
         minecraft->setScreen(new JavaChatSessionScreen(
             this, displayName, entry.host, entry.port, narrowAsciiNick(nick)));
         return;
@@ -348,10 +290,6 @@ void JavaServerListScreen::connectSelected() {
                        displayName);
     g_activeJavaProxy = proxy;
 
-    // Hand the LCE multiplayer client to 127.0.0.1:<proxyPort>. The proxy's
-    // listener thread is already waiting in accept(), and the LCE handshake
-    // (PreLogin/Login) will round-trip through it. From here the existing
-    // LCE multiplayer pipeline takes over.
     if (!app.TemporaryDirectConnectStartEx("127.0.0.1", proxyPort,
                                            /*spawnOwnThread*/ false,
                                            nick.c_str())) {
@@ -383,7 +321,7 @@ void JavaServerListScreen::refreshPings() {
     if (m_pinger == nullptr) return;
 
     const size_t n = m_list.size();
-    m_results.assign(n, PingResult{});  // all default to Querying
+    m_results.assign(n, PingResult{});
     m_pingIds.assign(n, -1);
 
     for (size_t i = 0; i < n; ++i) {
@@ -393,8 +331,6 @@ void JavaServerListScreen::refreshPings() {
         m_pinger->startPing(id, e.host, e.port);
     }
 }
-
-// --- Geometry helpers --------------------------------------------------------
 
 int JavaServerListScreen::listTop() const { return 54; }
 int JavaServerListScreen::rowHeight() const { return 24; }
@@ -412,9 +348,9 @@ std::wstring JavaServerListScreen::formatStatusLine(int index) const {
     const PingResult& r = m_results[index];
     switch (r.status) {
         case PingStatus::Querying:
-            return L"\u00A77Querying...";  // indicator held until RTT/timeout (Req 4.8)
+            return L"\u00A77Querying...";
         case PingStatus::Unreachable:
-            return L"\u00A7cCan't reach server";  // Req 4.6 / 4.7
+            return L"\u00A7cCan't reach server";
         case PingStatus::Online: {
             std::wstring line;
             if (!r.motd.empty()) line += r.motd;
@@ -433,29 +369,27 @@ std::wstring JavaServerListScreen::formatStatusLine(int index) const {
     return L"";
 }
 
-// --- Input -------------------------------------------------------------------
-
 void JavaServerListScreen::buttonClicked(Button* button) {
     if (button == nullptr || !button->active) return;
 
     switch (button->id) {
         case ID_BACK:
-            minecraft->setScreen(m_lastScreen);  // Req 1.3
+            minecraft->setScreen(m_lastScreen);
             return;
         case ID_CONNECT:
-            connectSelected();  // Req 5
+            connectSelected();
             return;
         case ID_ADD:
-            enterAddMode();  // Req 2.1
+            enterAddMode();
             return;
         case ID_EDIT:
-            enterEditMode(m_selected);  // Req 2.5
+            enterEditMode(m_selected);
             return;
         case ID_DELETE:
-            deleteSelected();  // Req 2.6
+            deleteSelected();
             return;
         case ID_REFRESH:
-            refreshPings();  // Req 4.1
+            refreshPings();
             return;
         case ID_SAVE:
             commitAddEdit();
@@ -482,8 +416,6 @@ void JavaServerListScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
 
-    // List mode: Escape returns to the previous multiplayer menu (Req 1.3)
-    // rather than the title screen.
     if (eventKey == Keyboard::KEY_ESCAPE) {
         minecraft->setScreen(m_lastScreen);
         return;
@@ -501,9 +433,8 @@ void JavaServerListScreen::tabPressed() {
 }
 
 void JavaServerListScreen::mouseClicked(int x, int y, int buttonNum) {
-    // Dispatch to the buttons first (this may switch screens via Back).
     Screen::mouseClicked(x, y, buttonNum);
-    if (minecraft->screen != this) return;  // guard against UAF after Back
+    if (minecraft->screen != this) return;
 
     if (m_mode == Mode::AddEdit) {
         if (m_nameEdit != nullptr) m_nameEdit->mouseClicked(x, y, buttonNum);
@@ -511,7 +442,6 @@ void JavaServerListScreen::mouseClicked(int x, int y, int buttonNum) {
         return;
     }
 
-    // List mode: hit-test the rows to update the selection (Req 2 selection).
     if (buttonNum != 0) return;
     const int top = listTop();
     const int rh = rowHeight();
@@ -530,15 +460,12 @@ void JavaServerListScreen::mouseClicked(int x, int y, int buttonNum) {
     }
 }
 
-// --- Render ------------------------------------------------------------------
 
 void JavaServerListScreen::render(int xm, int ym, float a) {
     renderBackground();
 
     drawCenteredString(font, L"Java Edition Servers", width / 2, 20, 0xffffff);
 
-    // Corruption notice (Req 3.6) and any transient status / error message
-    // (Req 5.3) are drawn just under the title.
     int noticeY = 34;
     if (m_corruptNotice) {
         drawCenteredString(
@@ -571,9 +498,7 @@ void JavaServerListScreen::render(int xm, int ym, float a) {
         return;
     }
 
-    // List mode.
     if (m_list.size() == 0) {
-        // Empty-list hint (Req 2.8).
         drawCenteredString(font,
                            L"\u00A77No Java servers saved yet. Use Add to "
                            L"create one.",

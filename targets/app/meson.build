@@ -16,9 +16,6 @@ client_sources = run_command(
 
 exclude_platform_common_sources = [
   ' ! -name "UIScene_InGameSaveManagementMenu.cpp"',
-  # Standalone JavaEdition property tests carry their own main() and are built
-  # into their own small test executables below; keep them OUT of the client
-  # source glob (mirrors view_distance_util_test in targets/minecraft).
   ' ! -path "*/JavaEdition/tests/*"',
 ]
 
@@ -105,14 +102,6 @@ custom_target(
   build_by_default: true,
 )
 
-# --- Standalone property tests for the pure JavaEdition module (Phase 1) -----
-# Each test carries its own main() and a tiny deterministic property harness
-# (fixed-seed std::mt19937, >=100 iterations), modelled on view_distance_util_test
-# in targets/minecraft/meson.build. They compile only the lightweight, pure
-# JavaEdition translation units directly (no graphics/network/app globals), so
-# they do NOT link the whole client. include_directories('include','..') makes
-# the `app/common/src/JavaEdition/...` include paths resolve.
-
 java_address_parser_test = executable(
   'java_address_parser_test',
   [
@@ -165,11 +154,6 @@ status_json_extractor_test = executable(
 
 test('status_json_extractor', status_json_extractor_test)
 
-# JavaServerListStore performs real file I/O through the project File / stream
-# stack, so this test links java_dep (File + FileInputStream / DataOutputStream
-# / BufferedReader) and util_dep (StringHelpers include path + symbols). The
-# test runs entirely against unique temp working directories and provides its
-# own PlatformFileIO stub, so it pulls in no graphics/SDL/app globals.
 java_server_list_store_test = executable(
   'java_server_list_store_test',
   [

@@ -423,10 +423,6 @@ void MultiPlayerLevel::setChunkVisible(int x, int z, bool visible) {
     if (visible) {
         chunkCache->create(x, z);
     } else {
-        // 4J macOS task 5.3 (Req 4.3/4.4) - free the client LevelChunk when the
-        // server tells us the chunk left our view distance. drop() unloads the
-        // chunk's entities and tile data so memory is reclaimed; marking the
-        // tiles dirty lets the renderer rebuild the now-empty area.
         chunkCache->drop(x, z);
     }
     if (!visible) {

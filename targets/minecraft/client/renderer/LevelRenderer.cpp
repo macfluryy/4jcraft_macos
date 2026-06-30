@@ -495,13 +495,6 @@ void LevelRenderer::allChanged(int playerIndex) {
     yChunks = Level::maxBuildHeight / CHUNK_SIZE;
     zChunks = dist;
 
-    // 4J macOS - hold the dirty-chunks lock across the whole grid teardown
-    // + rebuild. resortChunks (called from the render thread) takes the
-    // same lock, so without this a render-thread resort could iterate the
-    // chunks[playerIndex] vector while we're mid-reallocation here,
-    // dereferencing a dangling Chunk* and crashing in Chunk::setPos. This
-    // is the root cause of the remote-join SIGSEGV; the earlier
-    // null-guards only narrowed the window.
     std::lock_guard<std::recursive_mutex> rebuildLock(m_csDirtyChunks);
 
     if (!chunks[playerIndex].empty()) {
@@ -706,12 +699,6 @@ std::wstring LevelRenderer::gatherStats2() {
 void LevelRenderer::resortChunks(int xc, int yc, int zc) {
     std::lock_guard<std::recursive_mutex> lock(m_csDirtyChunks);
 
-    // 4J macOS - hard guards against being called before the per-player
-    // chunk grid is built (allChanged hasn't run yet for this pad). This
-    // happens on a slow remote direct-connect join where invalidateLast
-    // PlayerPos forces a resort one frame before the renderer's grid is
-    // allocated. Without this we dereference a null Chunk* in setPos and
-    // SIGSEGV.
     if (mc == nullptr || mc->player == nullptr) return;
     int playerIndex = mc->player->GetXboxPad();  // 4J added
     if (playerIndex < 0 || playerIndex >= 4) return;
@@ -760,9 +747,6 @@ void LevelRenderer::resortChunks(int xc, int yc, int zc) {
 
                 Chunk* chunk =
                     chunks[playerIndex][(z * yChunks + y) * xChunks + x].chunk;
-                // 4J macOS - skip not-yet-constructed slots (see guard
-                // above). allChanged fills these in; a partially built
-                // grid must not be dereferenced.
                 if (chunk != nullptr) chunk->setPos(xx, yy, zz);
             }
         }

@@ -69,7 +69,6 @@ private:
     void renderVignette(float br, int w, int h);
     void renderTp(float br, int w, int h);
     void renderSlot(int slot, int x, int y, float a);
-    // 4J macOS - Tab-key player list overlay
     void renderPlayerList(int screenWidth, int screenHeight);
 
 public:

@@ -15,7 +15,6 @@ enum eTMSFileType {
 enum eTPDFileType {
     eTPDFileType_Loc = 0,
     eTPDFileType_Icon,
-    //	eTPDFileType_Banner,
     eTPDFileType_Comparison,
 };
 
@@ -24,7 +23,7 @@ enum eFont {
     eFont_Korean,
     eFont_Japanese,
     eFont_Chinese,
-    eFont_None,  // to fallback to nothing
+    eFont_None,
 };
 
 enum eXuiAction {

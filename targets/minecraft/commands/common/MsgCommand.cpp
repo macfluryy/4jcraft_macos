@@ -60,10 +60,6 @@ void MsgCommand::execute(std::shared_ptr<CommandSender> source,
         // Echo back to the sender so they have a record
         source->sendMessage(L"§d[me -> " + targetName + L"] §r" + message);
 
-        // 4J macOS - remember /r targets so the next /r reply goes to the
-        // right person. Set on both ends: the recipient should be able to
-        // /r straight back, and the sender's own /r should also remember
-        // who they just talked to.
         target->m_lastReplyTo = senderName;
         if (sourcePlayer != nullptr) {
             sourcePlayer->m_lastReplyTo = targetName;

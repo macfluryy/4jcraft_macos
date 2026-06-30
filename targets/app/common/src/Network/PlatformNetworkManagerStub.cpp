@@ -145,8 +145,6 @@ bool IPlatformNetworkStub::Initialise(
         m_currentSearchResultsCount[i] = 0;
     }
 
-    // 4J macOS - bring up the LAN-discovery UDP listener so the JoinMenu
-    // server-browser can populate even when no Xbox Live equivalent exists.
     LanDiscovery::Start();
 
     // Success!
@@ -172,8 +170,6 @@ bool IPlatformNetworkStub::isSystemPrimaryPlayer(
 void IPlatformNetworkStub::DoWork() {}
 
 int IPlatformNetworkStub::GetPlayerCount() {
-    // 4J macOS - include remote direct-connect players in the count so the
-    // chunk-streaming "slow queue" can cycle through all real participants.
     int count = (int)m_pIQNet->GetPlayerCount();
     count += RemoteNetworkPlayer::GetActiveCount();
     return count;
@@ -220,17 +216,8 @@ bool IPlatformNetworkStub::LeaveGame(bool bMigrateHost) {
         g_NetworkManager.ServerStoppedWait();
         g_NetworkManager.ServerStoppedDestroy();
     } else {
-        // 4J macOS - For a direct-connect client, the IQNet stub stays in
-        // QNET_STATE_GAME_PLAY forever unless we explicitly tell it to
-        // end. Without this, IUIScene_PauseMenu::_ExitWorld busy-waits on
-        // IsInSession() forever (the "stuck on disconnect" we kept seeing
-        // when leaving a server). EndGame just flips _bQNetStubGameRunning
-        // back to false so GetState() returns QNET_STATE_IDLE.
         m_pIQNet->EndGame();
-        // Clean up the TCP socket and reset state so a subsequent
-        // direct-connect can succeed without a process restart.
         _LeaveGame(bMigrateHost, /*bLeaveRoom*/ true);
-        // Reset the leaving flag now - we're done leaving for this session.
         m_bLeavingGame = false;
     }
     return true;
@@ -243,9 +230,6 @@ bool IPlatformNetworkStub::_LeaveGame(bool bMigrateHost,
         fprintf(stderr, "[TCP] Stopping listener on leave-game.\n");
         Socket::StopTcpListener();
     }
-    // 4J macOS - Drop the direct-connect remote-host override so that a
-    // subsequent JoinMultiplayer attempt or return to MainMenu doesn't
-    // dereference a stale RemoteNetworkPlayer pointer.
     s_pRemoteHostOverride = nullptr;
     return true;
 }
@@ -274,13 +258,6 @@ void IPlatformNetworkStub::HostGame(
 void IPlatformNetworkStub::_HostGame(
     int usersMask, unsigned char publicSlots /*= MINECRAFT_NET_MAX_PLAYERS*/,
     unsigned char privateSlots /*= 0*/) {
-    // 4J macOS - the original Xbox Live flow only opened a network listener
-    // for games explicitly flagged "Online". On this port we have no working
-    // sign-in UI, so m_bIsOfflineGame is always true and the listener never
-    // came up. Flip the default: always listen unless MC_NO_LISTEN is set.
-    // The host doesn't pay much for an idle TCP socket on a non-routable
-    // network, and it makes "Singleplayer" worlds joinable from another
-    // machine on the LAN out of the box.
     if (std::getenv("MC_NO_LISTEN") != nullptr) return;
 
     int port = 25565;
@@ -298,11 +275,6 @@ void IPlatformNetworkStub::_HostGame(
                 "[TCP] Direct-connect listener ready on port %d. Tell "
                 "clients to set MC_DIRECT_CONNECT=<your-ip>:%d\n",
                 port, port);
-        // 4J macOS - start advertising this session over LAN UDP so other
-        // clients on the same network can discover it without manual IP
-        // entry. The actual payload (player count / world name) is filled
-        // in once the world is ready; this just opens the broadcast socket
-        // and starts the periodic sender.
         LanDiscovery::SetBeaconPayload(
             (uint16_t)port, (uint16_t)VER_NETWORK,
             /*playerCount*/ 1, /*maxPlayers*/ MINECRAFT_NET_MAX_PLAYERS,
@@ -497,12 +469,7 @@ void IPlatformNetworkStub::SystemFlagSet(INetworkPlayer* pNetworkPlayer,
     }
 }
 
-// 4J macOS task 5.2 (Req 4.5) - clear a per system flag - mirror of
-// SystemFlagSet but clearing the bit on every player that shares that system.
-// Unlike SystemFlagSet we do NOT add a player entry if none exists: if a system
-// has no flags storage yet then there is nothing to clear. This is used when a
-// chunk is unloaded for a Remote_Client so that re-entering its view distance
-// re-sends the BRUP.
+
 void IPlatformNetworkStub::SystemFlagClear(INetworkPlayer* pNetworkPlayer,
                                                   int index) {
     if ((index < 0) || (index >= m_flagIndexSize)) return;
@@ -573,9 +540,6 @@ std::vector<FriendSessionInfo*>* IPlatformNetworkStub::GetSessionList(
     std::vector<FriendSessionInfo*>* filteredList =
         new std::vector<FriendSessionInfo*>();
 
-    // 4J macOS - hand back live entries from the LAN UDP discoverer. The UI
-    // (UIScene_LoadOrJoinMenu / UIScene_JoinMenu) takes ownership of the
-    // outer vector and the FriendSessionInfo* it contains.
     if (partyOnly) return filteredList;
 
     auto found = LanDiscovery::GetActiveServers();
@@ -687,10 +651,6 @@ INetworkPlayer* IPlatformNetworkStub::GetLocalPlayerByUserIndex(
 }
 
 INetworkPlayer* IPlatformNetworkStub::GetPlayerByIndex(int playerIndex) {
-    // 4J macOS - first slot(s) belong to the local IQNet players; anything
-    // beyond is a direct-connect remote peer. Keep the same dense ordering
-    // that RemoteNetworkPlayer::GetSessionIndex returns (smallId - 1) so
-    // MinecraftServer's slow-queue cycler matches up.
     int localCount = (int)m_pIQNet->GetPlayerCount();
     if (playerIndex < localCount) {
         return getNetworkPlayer(m_pIQNet->GetPlayerByIndex(playerIndex));

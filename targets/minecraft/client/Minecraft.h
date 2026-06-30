@@ -1,5 +1,3 @@
-// Minecraft.h — macOS ARM (Apple Silicon) port
-
 #pragma once
 #include <stdint.h>
 
@@ -108,14 +106,6 @@ public:
     LevelRenderer* levelRenderer;
     std::shared_ptr<MultiplayerLocalPlayer> player;
 
-    // 4J macOS - Effective_View_Distance (in chunks) negotiated with the
-    // server during login. Computed in ClientConnection::handleLogin as
-    // effectiveViewDistance(serverViewDistance, viewDistanceOptionToChunks(
-    // options->viewDistance)) for remote clients, or clampViewDistance(
-    // serverViewDistance) for the Host_Client/local case (Req 1.2, 1.6, 9.1).
-    // It is the min(server, client-option) so it never exceeds the user's
-    // chosen render distance. Streaming/subscription is gated server-side; the
-    // client keeps this purely so it KNOWS and RESPECTS the negotiated value.
     int m_serverViewDistanceChunks = 0;
 
     std::vector<MultiPlayerLevel*> levels;

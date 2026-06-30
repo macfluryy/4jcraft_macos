@@ -19,11 +19,6 @@
 // front when MAX_HISTORY is reached.
 std::deque<std::wstring> ChatScreen::s_history;
 
-// 4J macOS - chat scroll. Persists across re-opens of the chat input
-// for the duration of the process so a player can quickly close the
-// chat to peek at the world without losing their scroll position. Reset
-// to 0 when a new message arrives is not implemented; instead we clamp
-// to the current message count whenever we render.
 int ChatScreen::s_scrollOffset = 0;
 
 ChatScreen::ChatScreen()
@@ -44,11 +39,6 @@ void ChatScreen::removed() {
 void ChatScreen::tick() { 
     frame++; 
 
-    // 4J macOS - drain the chat-specific mouse wheel accumulator. We
-    // can't use the generic GetScrollDelta() because the hotbar /
-    // inventory scroll snapshot also drains it, so wheel events would
-    // get swallowed before our tick runs. GetChatScrollDelta() is a
-    // dedicated accumulator that nothing else touches.
     int wheel = InputManager.GetChatScrollDelta();
     if (wheel != 0) {
         scrollBy(wheel * 3);
@@ -116,7 +106,6 @@ void ChatScreen::browseHistoryDown() {
 }
 
 void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
-    // 4J macOS - improved escape handling
     if (eventKey == Keyboard::KEY_ESCAPE) {
         if (minecraft != nullptr) {
             minecraft->setScreen(nullptr);
@@ -124,7 +113,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - improved return handling with better message validation
     if (eventKey == Keyboard::KEY_RETURN) {
         std::wstring msg = trimString(message);
         if (!msg.empty()) {
@@ -141,7 +129,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - improved backspace handling that respects cursorPos.
     if (eventKey == Keyboard::KEY_BACK) {
         if (cursorPos > 0 && !message.empty()) {
             message.erase(cursorPos - 1, 1);
@@ -156,8 +143,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
 
-    // 4J macOS - Delete key: erase the character to the right of the
-    // cursor, like in any text editor.
     if (eventKey == Keyboard::KEY_DELETE) {
         if (cursorPos < message.length()) {
             message.erase(cursorPos, 1);
@@ -169,8 +154,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
 
-    // 4J macOS - cursor navigation. Left/Right move one char; Home/End
-    // jump to the ends of the line.
     if (eventKey == Keyboard::KEY_LEFT) {
         if (cursorPos > 0) cursorPos--;
         return;
@@ -188,7 +171,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
 
-    // 4J macOS - history browsing via Up / Down arrows
     if (eventKey == Keyboard::KEY_UP) {
         browseHistoryUp();
         return;
@@ -198,10 +180,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
 
-    // 4J macOS - chat log scroll via Page Up / Page Down. SDL HID
-    // scancodes are 75 (PAGEUP) and 78 (PAGEDOWN). Each press scrolls
-    // the chat overlay by ~10 lines, matching the vanilla Java client
-    // shift+wheel behaviour.
     if (eventKey == 75) {
         scrollBy(10);
         return;
@@ -211,7 +189,6 @@ void ChatScreen::keyPressed(wchar_t ch, int eventKey) {
         return;
     }
     
-    // 4J macOS - improved character validation, insertion at cursor.
     if (SharedConstants::acceptableLetters.find(ch) != std::wstring::npos) {
         if (message.length() < (size_t)SharedConstants::maxChatLength) {
             message.insert(cursorPos, 1, ch);
@@ -282,16 +259,11 @@ void ChatScreen::renderScrollableLog(int x0, int y0, int maxLines,
 }
 
 void ChatScreen::render(int xm, int ym, float a) {
-    // 4J macOS - scrollable chat log overlay. Drawn ABOVE the input
-    // bar so long command output (/help, /list, /seed) is readable.
-    // Mouse-wheel + Page Up/Down adjust s_scrollOffset.
     renderScrollableLog(2, height - 16, 20, width - 4);
 
     // Draw chat input box background
     fill(2, height - 14, width - 2, height - 2, 0x80000000);
 
-    // 4J macOS - draw "> " prefix + message; position the blinking
-    // cursor at cursorPos (so Left/Right/Home/End/Insert all work).
     bool showCursor = frame / 6 % 2 == 0;
     const std::wstring prefix = L"> ";
     drawString(font, prefix + message, 4, height - 12, 0xe0e0e0);
@@ -307,10 +279,6 @@ void ChatScreen::render(int xm, int ym, float a) {
 
 void ChatScreen::mouseClicked(int x, int y, int buttonNum) {
     if (buttonNum == 0) {
-        // 4J macOS - hit-test against the scrollable chat log first.
-        // If the click landed on a rendered chat line, copy that line
-        // to the clipboard (and short-circuit the regular handling so
-        // we don't accidentally insert a player name into the input).
         if (minecraft != nullptr && minecraft->gui != nullptr &&
             minecraft->player != nullptr) {
             const int x0 = 2;
@@ -345,8 +313,6 @@ void ChatScreen::mouseClicked(int x, int y, int buttonNum) {
             }
         }
 
-        // 4J macOS - fallback: insert selectedName at cursor (existing
-        // tab-list click-to-mention behaviour).
         if (minecraft != nullptr && minecraft->gui != nullptr) {
             if (!minecraft->gui->selectedName.empty()) {
                 std::wstring insertion = minecraft->gui->selectedName;

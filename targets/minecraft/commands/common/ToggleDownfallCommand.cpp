@@ -85,10 +85,6 @@ void ToggleDownfallCommand::doSetWeather(int weatherType) {
             levelData->setThundering(true);
             level->setRainLevel(1.0f);
 
-            // 4J macOS - param=1 signals a thunderstorm so the client can
-            // raise its thunderLevel (darker sky + lightning ambience),
-            // not just plain rain. param=0 (used by the rain branch above)
-            // stays a normal downpour.
             auto startRainPacket = std::shared_ptr<GameEventPacket>(
                 new GameEventPacket(GameEventPacket::START_RAINING, 1));
             for (auto& player : server->getPlayers()->players) {

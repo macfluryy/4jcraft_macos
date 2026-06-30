@@ -1,5 +1,3 @@
-// Minecraft.cpp — macOS ARM (Apple Silicon) port
-
 #include "Minecraft.h"
 
 #pragma clang diagnostic push
@@ -406,11 +404,6 @@ void Minecraft::init() {
         new McRegionLevelStorageSource(File(workingDirectory, L"saves"));
     //        levelSource = new MemoryLevelStorageSource();
     options = new Options(this, workingDirectory);
-    // The sound engine was init(nullptr)'d above (before options existed), so
-    // its master volumes defaulted to full. Now that options are loaded from
-    // disk, push the saved Music / Sound volumes into the engine so the title
-    // and menu audio honour them immediately - not only after entering a world
-    // (ApplyGameSettingsChanged) or touching a slider.
     if (soundEngine != nullptr) {
         soundEngine->updateMusicVolume(options->music);
         soundEngine->updateSoundEffectVolume(options->sound);
@@ -591,7 +584,6 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
     std::wstring userHome = convStringToWstring(getenv("HOME"));
     File* workingDirectory;
 #if defined(__APPLE__)
-    // macOS: store data in ~/Library/Application Support/<appname>
     workingDirectory = new File(userHome, L"Library/Application Support/" + applicationName);
 #elif defined(_WINDOWS64)
     std::string applicationData = getenv("APPDATA");
@@ -616,9 +608,6 @@ File Minecraft::getWorkingDirectory(const std::wstring& applicationName) {
 }
 
 File Minecraft::getSavesDirectory() {
-    // 4J macOS - always return an absolute path under the working directory so
-    // that saves don't land in whatever happens to be the process CWD (which on
-    // a bundled .app is often "/", making "Saves" unwritable).
     File wd = getWorkingDirectory();
     File savesDir(wd, L"Saves");
     if (!savesDir.exists()) {
@@ -1158,10 +1147,6 @@ void Minecraft::run_middle() {
 
 #if defined(ENABLE_JAVA_GUIS)
     // 4jcraft: while the java ui is leaving world, don't run the rest of
-    // run_middle - just keep drawing the current screen during teardown. The
-    // screen is guaranteed non-null here: the eAppAction_ExitWorld handler
-    // assigns a DisconnectedScreen synchronously (on this same main thread,
-    // earlier in the loop) before it ever sets exitingWorldRightNow.
     if (exitingWorldRightNow) {
         screen->render(0, 0, 1);
         return;
@@ -2142,10 +2127,6 @@ void Minecraft::levelTickThreadInitFunc() {
 // textures are to be updated - this will be true for the last time this tick
 // runs with bFirst true
 void Minecraft::tick(bool bFirst, bool bUpdateTextures) {
-    // 4J macOS - guard against ticking before a player is wired up. This
-    // happens during slow remote direct-connect joins between the time
-    // ConnectScreen finishes and handleLogin actually runs setLevel.
-    // Without this, accessing `player->GetXboxPad()` crashes the client.
     if (player == nullptr) return;
     int iPad = player->GetXboxPad();
     // OutputDebugString("Minecraft::tick\n");
@@ -3899,13 +3880,6 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     std::lock_guard<std::recursive_mutex> lock(m_setLevelCS);
     bool playerAdded = false;
     int iPrimaryPlayer = InputManager.GetPrimaryPad();
-    // 4J macOS - Do NOT null cameraTargetPlayer at the top of setLevel.
-    // The render thread does not take m_setLevelCS, so a render frame
-    // running concurrently would see a null camera target and either
-    // render a black void or null-deref. We only need to clear the camera
-    // target on the EXIT path (level == nullptr), and we do that below
-    // inside the explicit `if (level == nullptr)` block. For the level-set
-    // path the new player is assigned at the end as before.
 
     if (progressRenderer != nullptr) {
         this->progressRenderer->progressStart(message);
@@ -3948,14 +3922,6 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
     // 4J If we are setting the level to nullptr then we are exiting, so delete
     // the levels
     if (level == nullptr) {
-        // 4J macOS - Clear every render-thread-visible reference to the level's
-        // entities BEFORE the level and its players are freed. The render thread
-        // deliberately does not take m_setLevelCS, so leaving cameraTargetPlayer
-        // / cameraEntity pointing at an entity we are about to delete is a
-        // use-after-free + render-thread race (SIGSEGV on a server disconnect).
-        // Null them first: a concurrent frame then sees null (handled) instead
-        // of a dangling pointer. The owning shared_ptrs in localplayers[] keep
-        // the objects alive until they are explicitly released below.
         cameraTargetPlayer = nullptr;
         if (EntityRenderDispatcher::instance != nullptr)
             EntityRenderDispatcher::instance->cameraEntity = nullptr;
@@ -4075,16 +4041,6 @@ void Minecraft::setLevel(MultiPlayerLevel* level, int message /*=-1*/,
         if (player->input != nullptr) delete player->input;
         player->input = new Input();
 
-        // 4J macOS - Set cameraTargetPlayer BEFORE LevelRenderer::setLevel
-        // runs. LevelRenderer::setLevel triggers allChanged() which builds
-        // the per-player chunk grid centred on cameraTargetPlayer; if it's
-        // still nullptr at that point the grid is built at the world origin
-        // and the player drops into a black void of unloaded chunks. This
-        // was previously patched up in ClientConnection::handleMovePlayer
-        // ("dark zone" workaround) and again in handleLogin for non-host
-        // clients, but doing it here at the source removes the need for
-        // those scattered workarounds and fixes second-client joins where
-        // those gates didn't fire correctly.
         this->cameraTargetPlayer = player;
 
         if (levelRenderer != nullptr)
@@ -4469,11 +4425,6 @@ bool Minecraft::renderDebug() {
 }
 
 bool Minecraft::handleClientSideCommand(const std::wstring& chatMessage) {
-    // 4J macOS - client-only commands handled without a server round-trip.
-    // Returning true means "handled, don't forward to the server"; false
-    // forwards the message to the server's CommandDispatcher (or broadcasts
-    // it as normal chat). We keep this list tiny - gameplay commands
-    // (/weather, /time, /give, /tp, ...) all live server-side.
     if (chatMessage.empty() || chatMessage[0] != L'/') return false;
 
     // Extract the bare command word (lowercased).

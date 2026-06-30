@@ -73,29 +73,10 @@ public:
     DLCManager m_dlcManager;
 
     // storing credits text from the DLC
-    std::vector<std::wstring> m_vCreditText;  // hold the credit text lines so
-                                              // we can avoid duplicating them
-
-    // In builds prior to TU5, the size of the GAME_SETTINGS struct was 204
-    // bytes. We added a few new values to the internal struct in TU5, and even
-    // though we changed the size of the ucUnused array to be decreased by the
-    // size of the values we added, the packing of the struct has introduced
-    // some extra padding that resulted in the GAME_SETTINGS struct being 208
-    // bytes. The knock-on effect from this was that all the stats, which come
-    // after the game settings in the profile data, we being read offset by 4
-    // bytes. We need to ensure that the GAME_SETTINGS struct does not grow
-    // larger than 204 bytes or if we need it to then we need to rebuild the
-    // profile data completely and increase the profile version. There should be
-    // enough free space to grow larger for a few more updates as long as we
-    // take into account the padding issues and check that settings are still
-    // stored at the same positions when we read them
+    std::vector<std::wstring> m_vCreditText;
     static const int GAME_SETTINGS_PROFILE_DATA_BYTES = 204;
 
 #if defined(_EXTENDED_ACHIEVEMENTS)
-    /* 4J-JEV:
-     * We need more space in the profile data because of the new achievements
-     * and statistics necessary for the new expanded achievement set.
-     */
     static const int GAME_DEFINED_PROFILE_DATA_BYTES = 2 * 972;  // per user
 #else
     static const int GAME_DEFINED_PROFILE_DATA_BYTES = 972;  // per user
@@ -226,10 +207,6 @@ public:
     void SetDisconnectReason(DisconnectPacket::eDisconnectReason bVal) {
         m_disconnectReason = bVal;
     }
-    // 4J macOS - arbitrary disconnect text (e.g. a flattened Java kick message)
-    // to show verbatim on the disconnect screen. Empty for ordinary code-based
-    // LCE disconnects, which keep their localized message. Always set alongside
-    // SetDisconnectReason so it never goes stale across disconnects.
     const std::wstring& GetDisconnectReasonText() {
         return m_disconnectReasonText;
     }
@@ -561,7 +538,7 @@ private:
     // bool m_bHandRenderingOff;
 
     DisconnectPacket::eDisconnectReason m_disconnectReason;
-    std::wstring m_disconnectReasonText;  // 4J macOS - custom disconnect text
+    std::wstring m_disconnectReasonText;
 
 public:
     virtual void RunFrame() {};

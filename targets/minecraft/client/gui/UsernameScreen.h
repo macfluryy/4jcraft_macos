@@ -5,10 +5,6 @@
 
 class EditBox;
 class Button;
-
-// 4J macOS - small dialog accessible from the TitleScreen ("Username")
-// that lets the player set the nickname used for direct-connect MP.
-// Persists to Options::lastMpNickname (stored in options.txt).
 class UsernameScreen : public Screen {
 private:
     Screen* lastScreen;

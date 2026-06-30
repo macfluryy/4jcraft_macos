@@ -1,4 +1,3 @@
-
 #pragma once
 
 // 3 bit user index

@@ -5,12 +5,6 @@
 #include "minecraft/commands/Command.h"
 #include "minecraft/commands/CommandsEnum.h"
 
-// 4J macOS - small QoL location commands. They all live as separate
-// Command subclasses so the dispatcher can route by enum, but their
-// implementations sit together in PlayerLocationCommands.cpp because
-// they share the same plumbing (resolving the source player, calling
-// PlayerConnection::teleport, etc).
-
 class SpawnCommand : public Command {
 public:
     virtual EGameCommand getId();

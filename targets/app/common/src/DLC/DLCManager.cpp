@@ -26,13 +26,9 @@
 #include "minecraft/client/skins/TexturePackRepository.h"
 #include "strings.h"
 
-// 4jcraft, this is the size of wchar_t on disk
-// the DLC was created on windows, with wchar_t beeing 2 bytes and UTF-16
 static const std::size_t DLC_WCHAR_BIN_SIZE = 2;
 
 #if WCHAR_MAX > 0xFFFF
-// than sizeof(wchar_t) != DLC_WCHAR_BIN_SIZE
-// e.g. Linux and all Posix/Unix systems with wchar_t beeing 4B/32bit
 static_assert(sizeof(wchar_t) == 4,
               "wchar_t is not 4bytes but larger than 2bytes ???");
 
@@ -547,15 +543,6 @@ bool DLCManager::processDLCDataFile(unsigned int& dwFilesProcessed,
             bool validPack =
                 processDLCDataFile(texturePackFilesProcessed, pbTemp,
                                    fileBuf.uiFileSize, dlcTexturePack);
-            // The child texture pack's m_data points INTO the parent's single
-            // new[] buffer (processDLCDataFile set it to the interior pbTemp),
-            // so the child must never delete[] it. Clear the CHILD's pointer -
-            // not the parent's. The previous code nulled `pack` (the parent),
-            // which (a) leaked the parent's real allocation and (b) left this
-            // child holding an interior pointer; on the invalid-pack cleanup
-            // path below (`delete dlcTexturePack`, before addChildPack sets its
-            // parent) the dtor's `if (m_parentPack == nullptr) delete[] m_data`
-            // then bad-freed that interior pointer.
             dlcTexturePack->SetDataPointer(nullptr);
             if (!validPack || texturePackFilesProcessed == 0) {
                 delete dlcTexturePack;
@@ -695,8 +682,6 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t* pbData,
                     if (it->second == e_DLCParamType_PackId) {
                         std::wstring wsTemp = DLC_PARAM_WSTR(pbTemp, 0);
                         std::wstringstream ss;
-                        // 4J Stu - numbered using decimal to make it easier for
-                        // artists/people to number manually
                         ss << std::dec << wsTemp.c_str();
                         ss >> packId;
                         bPackIDSet = true;
@@ -709,7 +694,6 @@ std::uint32_t DLCManager::retrievePackID(std::uint8_t* pbData,
         }
 
         if (bPackIDSet) break;
-        // Move the pointer to the start of the next files data;
         pbTemp += fileBuf.uiFileSize;
         uiCurrentByte += DLC_DETAIL_ADV(fileBuf.dwWchCount);
 

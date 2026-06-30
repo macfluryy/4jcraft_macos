@@ -383,17 +383,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
             level->difficulty = packet->difficulty;  // 4J Added
             level->isClientSide = true;
 
-            // 4J macOS - For remote direct-connect clients the existing
-            // minecraft->player object was created against a previous
-            // (singleplayer / title-screen stub) level, so it doesn't carry
-            // a proper MultiPlayerLevel binding. Minecraft::setLevel will
-            // only create a fresh player when minecraft->player is nullptr
-            // (see Minecraft.cpp `if (player == nullptr)` branch in
-            // setLevel). Clear it here so that the multiplayer level
-            // initialisation produces a brand-new MultiplayerLocalPlayer
-            // wired to the new level / gameMode. This is what was missing
-            // and the reason death-respawn (which goes through the same
-            // gameMode->createPlayer(level) path) "fixed" things later.
             if (!g_NetworkManager.IsHost()) {
                 int primaryPad = InputManager.GetPrimaryPad();
                 if (minecraft->player != nullptr) {
@@ -414,19 +403,7 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
         minecraft->player->setPlayerIndex(packet->m_playerIndex);
         minecraft->player->setCustomSkin(app.GetPlayerSkinId(m_userIndex));
         minecraft->player->setCustomCape(app.GetPlayerCapeId(m_userIndex));
-
         minecraft->createPrimaryLocalPlayer(InputManager.GetPrimaryPad());
-
-        // 4J macOS - Apply the server-decided game type to the primary
-        // player's local game mode. The non-primary-pad else-branch
-        // below already does this, but the primary branch was missing
-        // it - leaving MultiPlayerGameMode::localPlayerMode stuck on its
-        // SURVIVAL default and the player's abilities desynced from the
-        // server. Symptoms include "HUD shows for a second then vanishes
-        // and you can't break blocks", because adventure / spectator-ish
-        // ability bits are never applied client-side. Server still
-        // overwrites individual ability bits via PlayerAbilitiesPacket
-        // which arrives right after LoginPacket, so this is safe.
         ((MultiPlayerGameMode*)minecraft->gameMode)
             ->setLocalMode(GameType::byId(packet->gameType));
         fprintf(stderr,
@@ -434,15 +411,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
                 "client\n",
                 (int)packet->gameType);
 
-        // 4J macOS - For non-host (remote direct-connect) clients, the
-        // primary local player's `connection` was never wired up, so the
-        // main-thread tick loop (which iterates localplayers[i]->connection)
-        // never called connection->tick(). Packets would pile up in the
-        // incoming queue after ReceivingLevelScreen closed and the game
-        // screen (sky + hand only) appeared. Assign it here so the loop
-        // picks it up. Also force the LevelRenderer to use this new level
-        // because Minecraft::setLevel may have bound it before the primary
-        // player existed, leaving the renderer pointing at nothing.
         if (!g_NetworkManager.IsHost()) {
             int primaryPad = InputManager.GetPrimaryPad();
             if (minecraft->localplayers[primaryPad] != nullptr) {
@@ -465,15 +433,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
             // the just-created primary so the view is rendered from the
             // remote player's position.
             minecraft->cameraTargetPlayer = minecraft->player;
-
-            // 4J macOS - The full post-death respawn flow is triggered by
-            // PlayerList::placeNewPlayer on the server immediately after
-            // it sends LoginPacket / sendLevelInfo for any non-local
-            // (i.e. direct-connect TCP) client. That RespawnPacket
-            // arrives here moments later and runs handleRespawn ->
-            // Minecraft::respawnPlayer, fully rebuilding the local
-            // player, hooking the HUD, making other players visible etc.
-            // No client-side scheduling is needed.
         }
 
         {
@@ -519,17 +478,6 @@ void ClientConnection::handleLogin(std::shared_ptr<LoginPacket> packet) {
                 startingPrivileges, Player::ePlayerGamePrivilege_HOST, 1);
         }
 
-        // 4J macOS - On initial multiplayer join we get the privileges
-        // straight from the server, which legitimately differ from the
-        // "all enabled" baseline above (regular joiners are not Op /
-        // moderator, can't teleport, etc.). displayPrivilegeChanges
-        // would then spam the chat with "You are no longer a moderator",
-        // "You can no longer teleport", etc. - confusing messages
-        // because the player never had those privileges to lose. Skip
-        // the change-detection entirely for non-host clients on the
-        // first login; subsequent SetPlayerPrivilegePacket handling
-        // (handleSetPlayerPrivilege) will continue to report actual
-        // privilege changes the host makes during the game.
         if (!g_NetworkManager.IsHost()) {
             startingPrivileges = packet->m_uiGamePrivileges;
         }
@@ -1270,11 +1218,6 @@ void ClientConnection::handleMovePlayer(
 
         started = true;
         minecraft->setScreen(nullptr);
-
-        // 4J macOS - Remote direct-connect bypasses the normal
-        // StateChange_AnyToStarting path, so app.m_bGameStarted stays
-        // false and UIScene_HUD::render gates out the HUD. Flip it on
-        // here the first time we reach in-world state.
         if (!g_NetworkManager.IsHost() && !app.GetGameStarted()) {
             app.SetGameStarted(true);
             fprintf(stderr, "[TCP] Forced SetGameStarted(true) on remote "
@@ -1430,12 +1373,6 @@ void ClientConnection::handleBlockRegionUpdate(
                                                       &packet->buffer);
             }
         }
-        // 4J macOS - In remote direct-connect multiplayer, chunks aren't
-        // shared with a local MinecraftServer. Before we can write block
-        // data into them, the MultiPlayerChunkCache must have actually
-        // allocated a LevelChunk; otherwise Level::setBlocksAndData writes
-        // into the shared `emptyChunk` sentinel and nothing becomes visible.
-        // Force the chunks touched by this packet to be created now.
         if (!g_NetworkManager.IsHost()) {
             int xc0 = packet->x >> 4;
             int zc0 = packet->z >> 4;
@@ -1576,11 +1513,7 @@ void ClientConnection::handleDisconnect(
     Minecraft* pMinecraft = Minecraft::GetInstance();
     pMinecraft->connectionDisconnected(m_userIndex, packet->reason);
     app.SetDisconnectReason(packet->reason);
-    // 4J macOS - carry any custom (Java) disconnect text through to the screen.
-    // Empty for ordinary code-based LCE disconnects, which clears stale text so
-    // vanilla behavior is preserved.
     app.SetDisconnectReasonText(packet->m_customText);
-
     app.SetAction(m_userIndex, eAppAction_ExitWorld, (void*)true);
     // minecraft->setLevel(nullptr);
     // minecraft->setScreen(new DisconnectedScreen(L"disconnect.disconnected",

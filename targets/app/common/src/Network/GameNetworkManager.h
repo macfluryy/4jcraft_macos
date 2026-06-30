@@ -131,7 +131,6 @@ public:
 
     void SystemFlagSet(INetworkPlayer* pNetworkPlayer, int index);
     bool SystemFlagGet(INetworkPlayer* pNetworkPlayer, int index);
-    // 4J macOS task 5.2 (Req 4.5) - clear a per-system chunk flag on unload.
     void SystemFlagClear(INetworkPlayer* pNetworkPlayer, int index);
 
     // Events

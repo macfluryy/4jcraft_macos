@@ -52,8 +52,6 @@ BeaconPayload g_payload;
 
 std::mutex g_serversMutex;
 std::vector<DiscoveredServer> g_servers;
-
-// Wakes the beacon thread out of its sleep so Stop() returns quickly.
 std::mutex g_wakeMutex;
 std::condition_variable g_wakeCv;
 
@@ -75,7 +73,6 @@ void writeU32(uint8_t* p, uint32_t v) {
     p[3] = (uint8_t)((v >> 24) & 0xff);
 }
 
-// Returns the encoded byte length, or 0 on failure (e.g. payload not set).
 size_t encodeBeacon(const BeaconPayload& p, uint8_t* out, size_t cap) {
     if (!p.valid) return 0;
     size_t nameChars = std::min<size_t>(p.worldName.size(), kMaxWorldNameChars);
@@ -103,7 +100,6 @@ size_t encodeBeacon(const BeaconPayload& p, uint8_t* out, size_t cap) {
         memcpy(w, p.worldName.data(), nameChars * sizeof(wchar_t));
         w += nameChars * sizeof(wchar_t);
     }
-    // proto >= 2: MOTD string.
     writeU16(w, (uint16_t)motdChars);
     w += 2;
     if (motdChars > 0) {
@@ -113,7 +109,6 @@ size_t encodeBeacon(const BeaconPayload& p, uint8_t* out, size_t cap) {
     return (size_t)(w - out);
 }
 
-// Returns true on a well-formed beacon, false if the buffer is bogus.
 bool decodeBeacon(const uint8_t* in, size_t len, DiscoveredServer& out) {
     if (len < 4 + 2 + 2 + 2 + 1 + 1 + 1 + 1 + 2) return false;
     const uint8_t* r = in;
@@ -122,8 +117,6 @@ bool decodeBeacon(const uint8_t* in, size_t len, DiscoveredServer& out) {
     if (magic != kBeaconMagic) return false;
     uint16_t proto = readU16(r);
     r += 2;
-    // Accept proto 1 (no MOTD) and proto 2 (with MOTD). Reject anything
-    // newer/unknown.
     if (proto != 1 && proto != kProtoVersion) return false;
     out.netVersion = readU16(r);
     r += 2;
@@ -141,13 +134,12 @@ bool decodeBeacon(const uint8_t* in, size_t len, DiscoveredServer& out) {
     if ((size_t)((r - in) + nameBytes) > len) return false;
     out.worldName.assign((const wchar_t*)r, nameChars);
     r += nameBytes;
-    // proto >= 2: optional MOTD. Tolerate truncated/missing for proto 1.
     out.motd.clear();
     if (proto >= 2) {
-        if ((size_t)((r - in) + 2) > len) return true;  // no MOTD field
+        if ((size_t)((r - in) + 2) > len) return true;
         uint16_t motdChars = readU16(r);
         r += 2;
-        if (motdChars > kMaxMotdChars) return true;  // ignore bad MOTD
+        if (motdChars > kMaxMotdChars) return true;
         size_t motdBytes = (size_t)motdChars * sizeof(wchar_t);
         if ((size_t)((r - in) + motdBytes) > len) return true;
         out.motd.assign((const wchar_t*)r, motdChars);
@@ -160,7 +152,6 @@ void mergeOrInsertServer(const DiscoveredServer& s) {
     std::lock_guard<std::mutex> lk(g_serversMutex);
     for (auto& e : g_servers) {
         if (e.host == s.host && e.tcpPort == s.tcpPort) {
-            // Update in place so the entry stays at its current slot.
             DiscoveredServer copy = s;
             copy.lastSeen = std::chrono::steady_clock::now();
             e = copy;
@@ -201,7 +192,6 @@ void listenLoop() {
                 pruneExpiredServers();
                 continue;
             }
-            // Unexpected error: surface and bail out.
             fprintf(stderr,
                     "[LAN] recvfrom failed: %s. Stopping listener.\n",
                     strerror(errno));
@@ -219,14 +209,9 @@ void listenLoop() {
     }
 }
 
-// 4J macOS - collect the per-interface directed broadcast addresses
-// (e.g. 192.168.0.255) plus the global 255.255.255.255. Directed
-// broadcasts are far more reliably delivered across machines on the
-// same subnet than the limited broadcast, which some routers / the
-// macOS stack drop. Skips loopback and down interfaces.
+
 std::vector<uint32_t> collectBroadcastTargets() {
     std::vector<uint32_t> targets;
-    // Always include the limited broadcast as a fallback.
     targets.push_back(INADDR_BROADCAST);
 
     ifaddrs* ifap = nullptr;
@@ -237,7 +222,7 @@ std::vector<uint32_t> collectBroadcastTargets() {
             if ((ifa->ifa_flags & IFF_UP) == 0) continue;
             if (ifa->ifa_flags & IFF_LOOPBACK) continue;
             if ((ifa->ifa_flags & IFF_BROADCAST) == 0) continue;
-            if (ifa->ifa_dstaddr == nullptr) continue;  // broadaddr union
+            if (ifa->ifa_dstaddr == nullptr) continue;
             sockaddr_in* bcast = (sockaddr_in*)ifa->ifa_dstaddr;
             uint32_t addr = bcast->sin_addr.s_addr;
             if (addr == 0) continue;
@@ -261,8 +246,6 @@ void beaconLoop() {
             std::lock_guard<std::mutex> lk(g_payloadMutex);
             snapshot = g_payload;
         }
-        // Re-enumerate interfaces every ~15 s in case the machine changes
-        // network (Wi-Fi <-> ethernet, new VPN, etc).
         if (++refreshCounter >= 10) {
             refreshCounter = 0;
             targets = collectBroadcastTargets();
@@ -319,7 +302,6 @@ bool openListenSocket() {
         close(fd);
         return false;
     }
-    // Non-blocking with a tiny timeout so the loop can poll g_shouldStop.
     timeval tv{};
     tv.tv_sec = 0;
     tv.tv_usec = 250 * 1000;
@@ -345,7 +327,7 @@ bool openBroadcastSocket() {
     return true;
 }
 
-}  // namespace
+}
 
 bool Start(uint16_t port) {
     if (g_listenerRunning.load()) return true;
@@ -356,11 +338,6 @@ bool Start(uint16_t port) {
     g_listenThread = std::thread(listenLoop);
     fprintf(stderr, "[LAN] discovery listener up on UDP %u\n",
             (unsigned)g_port);
-
-    // 4J macOS - register std::exit handler so a graceful Exit-Game (which
-    // hits std::exit -> static destructors) tears the listener down before
-    // ~thread runs. Without this, the std::thread destructor sees a still-
-    // joinable thread and calls std::terminate, aborting the process.
     static bool s_atexitRegistered = false;
     if (!s_atexitRegistered) {
         s_atexitRegistered = true;
@@ -440,7 +417,6 @@ std::vector<DiscoveredServer> GetActiveServers() {
     pruneExpiredServers();
     std::lock_guard<std::mutex> lk(g_serversMutex);
     std::vector<DiscoveredServer> out = g_servers;
-    // Fill in the freshness (ms since last beacon) at query time.
     auto now = std::chrono::steady_clock::now();
     for (auto& s : out) {
         s.lastSeenMs =
@@ -451,4 +427,4 @@ std::vector<DiscoveredServer> GetActiveServers() {
     return out;
 }
 
-}  // namespace LanDiscovery
+}

@@ -18,7 +18,7 @@ namespace {
 constexpr int BTN_SAVE = 0;
 constexpr int BTN_CANCEL = 1;
 constexpr int kMaxNicknameLen = 16;
-}  // namespace
+}
 
 UsernameScreen::UsernameScreen(Screen* lastScreen)
     : lastScreen(lastScreen), nickEdit(nullptr) {}
@@ -33,8 +33,6 @@ void UsernameScreen::init() {
 
     std::wstring current = minecraft->options->lastMpNickname;
     if (current.empty()) {
-        // 4J macOS - First-launch placeholder so the field isn't blank.
-        // The user can clear it and type whatever they want.
         struct timespec ts;
         clock_gettime(CLOCK_REALTIME, &ts);
         unsigned int suffix =
@@ -75,16 +73,12 @@ void UsernameScreen::buttonClicked(Button* button) {
         std::wstring nick =
             nickEdit != nullptr ? trimString(nickEdit->getValue()) : L"";
         if (nick.empty()) {
-            // Reject empty - just bail; user can type something or
-            // hit Cancel.
             return;
         }
         if (nick != minecraft->options->lastMpNickname) {
             minecraft->options->lastMpNickname = nick;
             minecraft->options->save();
         }
-        // 4J macOS - apply the new identity immediately so subsequent
-        // host / join operations see it without needing a relaunch.
         for (int p = 0; p < XUSER_MAX_COUNT; ++p) {
             SetUserGamertag(p, nick);
         }
@@ -102,7 +96,6 @@ void UsernameScreen::keyPressed(wchar_t ch, int eventKey) {
     }
     if (nickEdit != nullptr) nickEdit->keyPressed(ch, eventKey);
     if (ch == 13) {
-        // Enter -> Save
         buttonClicked(buttons.empty() ? nullptr : buttons[0]);
     }
 }
